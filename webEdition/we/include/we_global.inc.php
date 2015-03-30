@@ -63,7 +63,7 @@ function makePIDTail($pid, $cid, we_database_base $db = null, $table = FILE_TABL
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE){
-	if(strlen($paths) == 0 || strlen($table) == 0){
+	if(!$paths || !$table){
 		return '';
 	}
 	$foo = is_array($paths) ? $paths : explode(',', $paths);

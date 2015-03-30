@@ -39,7 +39,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 */
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		if(isWE()){
 			if(defined('SHOP_TABLE')){
@@ -66,36 +66,35 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'] = array();
 		}
 		$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
+		$id = we_base_request::_(we_base_request::INT, 'we_editDocument_ID', 0);
 		if((!$session) || (!isset($_SESSION['weS']['we_document_session_' . $formname])) || $wewrite){
 			if($session){
 				$_SESSION['weS']['we_document_session_' . $formname] = array();
 			}
 			$GLOBALS['we_document'][$formname]->we_new();
-			if(($id = we_base_request::_(we_base_request::INT, 'we_editDocument_ID', 0))){
+			if($id){
 				$GLOBALS['we_document'][$formname]->initByID($id, FILE_TABLE);
 			} else {
-				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType LIKE '" . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . "'", '', $GLOBALS['we_document'][$formname]->DB_WE);
+				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . '"', '', $GLOBALS['we_document'][$formname]->DB_WE);
 				$GLOBALS['we_document'][$formname]->changeDoctype($dt);
 				if($tid){
 					$GLOBALS['we_document'][$formname]->setTemplateID($tid);
 				}
 				if($categories){
-					$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-					$GLOBALS['we_document'][$formname]->Category = $categories;
+					$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 				}
 			}
 			if($session){
 				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION['weS']['we_document_session_' . $formname]);
 			}
 		} else {
-			if(($id = we_base_request::_(we_base_request::STRING, 'we_editDocument_ID'))){
+			if($id){
 				$GLOBALS['we_document'][$formname]->initByID($id, FILE_TABLE);
 			} elseif($session){
 				$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION['weS']['we_document_session_' . $formname]);
 			}
 			if($categories){
-				$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-				$GLOBALS['we_document'][$formname]->Category = $categories;
+				$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 			}
 		}
 
@@ -110,16 +109,21 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 		}
 
-		if(($cats = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_categories')) !== false){
+		if(($cats = we_base_request::_(we_base_request::STRING_LIST, 'we_ui_' . $formname . '_categories')) !== false){
 			// Bug Fix #750
-			$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS(is_array($cats) ? implode(',', $cats) : $cats, CATEGORY_TABLE);
+			$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
 		}
 		if(($cats = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_Category')) !== false){
-			$_REQUEST['we_ui_' . $formname . '_Category'] = makeCSVFromArray((is_array($cats) ? $cats : makeArrayFromCSV($cats)), true);
+			$_REQUEST['we_ui_' . $formname . '_Category'] = implode(',', $cats);
 		}
 		foreach($GLOBALS['we_document'][$formname]->persistent_slots as $slotname){
-			if($slotname != 'categories' && ($slot = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_' . $slotname)) !== false){
-				$GLOBALS["we_document"][$formname]->$slotname = $slot;
+			switch($slotname){
+				case 'categories':
+					break;
+				default:
+					if(($slot = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_' . $slotname)) !== false){
+						$GLOBALS["we_document"][$formname]->$slotname = $slot;
+					}
 			}
 		}
 
@@ -177,7 +181,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * Form functions for generating the html of the input fields
 	 */
 
-	function formIsDynamic($disabled = false){
+	private function formIsDynamic($disabled = false){
 		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = "we_" . $this->Name . "_IsDynamic";
@@ -234,7 +238,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	</tr></table>';
 	}
 
-	function formTemplateWindow(){
+	private function formTemplateWindow(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$table = TEMPLATES_TABLE;
 		$textname = 'we_' . $this->Name . '_TemplateName';
@@ -273,7 +277,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	// creates the Template PopupMenue
-	function formTemplatePopup($leftsize, $disable){
+	private function formTemplatePopup($leftsize, $disable){
 		if($this->DocType){
 			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', 'Templates', $this->DB_WE);
 		}
@@ -286,9 +290,10 @@ class we_webEditionDocument extends we_textContentDocument{
 			  g_l('weClass', '[template]')); */
 
 			if($this->DocType){
-				return (!$templateFromDoctype ?
-						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont') :
-						$this->xformTemplatePopup(388));
+				return ($templateFromDoctype ?
+						$this->xformTemplatePopup(388) :
+						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont')
+					);
 			}
 			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					'<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
@@ -302,59 +307,49 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($this->DocType){
 
 			// if a Doctype is set and this Doctype has defined some templates, just show a select box
-			return (empty($templateFromDoctype) ?
-					$this->formTemplateWindow() :
-					$this->xformTemplatePopup(388));
+			return ($templateFromDoctype ?
+					$this->xformTemplatePopup(388) :
+					$this->formTemplateWindow() );
 		}
 		return $this->formTemplateWindow();
 	}
 
-	function xformTemplatePopup($width = 50){
+	private function xformTemplatePopup($width = 50){
 		$ws = get_ws(TEMPLATES_TABLE);
-
-		$fieldname = 'we_' . $this->Name . '_TemplateID';
 
 		$hash = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
 		$TID = $hash['TemplateID'];
 		$Templates = $hash['Templates'];
-		$tlist = '';
-		if($TID != ''){
-			$tlist = $TID;
-		}
-		if($Templates != ''){
-			$tlist.=',' . $Templates;
-		}
+		$tlist = ($TID? : '') . ($Templates ? ',' . $Templates : '');
+
 		if($tlist){
-			$temps = explode(',', $tlist);
-			if(in_array($this->TemplateID, $temps)){
-				$TID = $this->TemplateID;
-			}
-			$tlist = implode(',', array_unique($temps));
+			$temps = array_filter(explode(',', $tlist));
 		} else {
-			$foo = array();
-			$wsArray = makeArrayFromCSV($ws);
+			$temps = array();
+			$wsArray = explode(',', $ws);
 			foreach($wsArray as $wid){
-				pushChilds($foo, $wid, TEMPLATES_TABLE, 0, $this->DB_WE);
+				pushChilds($temps, $wid, TEMPLATES_TABLE, 0, $this->DB_WE);
 			}
-			$tlist = makeCSVFromArray($foo);
 		}
 		if($this->TemplateID){
-			$tlist = $tlist ? ($tlist . ',' . $this->TemplateID) : $this->TemplateID;
+			$temps[] = $this->TemplateID;
 			$TID = $this->TemplateID;
 		}
+		$tlist = array_unique($temps);
 
+		$fieldname = 'we_' . $this->Name . '_TemplateID';
 		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
-		if(!empty($tlist)){
+		if($tlist){
 			$foo = array();
-			$arr = makeArrayFromCSV($tlist);
-			foreach($arr as $tid){
+			foreach($tlist as $tid){
 				if(($tid == $this->TemplateID) || in_workspace($tid, $ws, TEMPLATES_TABLE)){
 					$foo[] = $tid;
 				}
 			}
-			$tlist = $foo ? implode(',', $foo) : -1;
-			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . $tlist . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
+
+
+			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
 		}
 		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), 'WHERE IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
 	}
@@ -466,7 +461,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			WE_INCLUDES_PATH . 'we_templates/' . we_template::NO_TEMPLATE_INC;
 	}
 
-	function setTemplateID($templID){
+	public function setTemplateID($templID){
 		$this->TemplateID = $templID;
 		$this->setTemplatePath();
 	}
@@ -576,7 +571,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $fieldTypes;
 	}
 
-	function correctFields(){
+	private function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
 		$regs = array();
@@ -758,6 +753,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	protected function i_getDocumentToSave(){
+		static $cache = array();
 		if($this->IsDynamic){
 			$data = array();
 
@@ -795,7 +791,6 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showDocument.inc.php\');
 }';
 		}
-		static $cache = array();
 		if(isset($cache[$this->ID])){
 			return $cache[$this->ID];
 		}
@@ -818,7 +813,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @desc This function sets special fields in the document to control i.e. the existing EDIT_PAGES or the available buttons
 	 * 		for this document, use with tags we:hidePages and we:controlElement
 	 */
-	function setDocumentControlElements(){
+	public function setDocumentControlElements(){
+	////FIXME: use Tagparser & save this to DB
 		//	get code of the matching template
 		$_templateCode = $this->getTemplateCode();
 
@@ -829,7 +825,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$this->setControlElements($_templateCode);
 	}
 
-	function executeDocumentControlElements(){
+	public function executeDocumentControlElements(){
 		// here we must check, if setDocumentControlElements() already worked
 		if(!isset($this->controlElement) || !is_array($this->controlElement)){
 			$this->setDocumentControlElements();
@@ -893,7 +889,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @desc	if tag we:hidePages exists in template, this function sets the given pages in persistent_slot
 	 *
 	 */
-	function setHidePages($templatecode){
+	private function setHidePages($templatecode){
 		if($this->InWebEdition){
 			//	delete exisiting hidePages ...
 			if(in_array('hidePages', $this->persistent_slots)){
@@ -924,30 +920,31 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @return void
 	 * @desc disables the editpages saved in persistent_slot hidePages inside webEdition
 	 */
-	function disableHidePages(){
-		if(isset($this->hidePages) && $this->InWebEdition){
-			$MNEMONIC_EDITPAGES = array(
-				we_base_constants::WE_EDITPAGE_PROPERTIES => 'properties',
-				we_base_constants::WE_EDITPAGE_CONTENT => 'edit',
-				we_base_constants::WE_EDITPAGE_INFO => 'information',
-				we_base_constants::WE_EDITPAGE_PREVIEW => 'preview',
-				we_base_constants::WE_EDITPAGE_SCHEDULER => 'schedpro',
-				we_base_constants::WE_EDITPAGE_VALIDATION => 'validation',
-				we_base_constants::WE_EDITPAGE_VERSIONS => 'versions',
-				we_base_constants::WE_EDITPAGE_VARIANTS => 'variants',
-				we_base_constants::WE_EDITPAGE_WEBUSER => 'customer',
-			);
+	private function disableHidePages(){
+		if(!(isset($this->hidePages) && $this->InWebEdition)){
+			return;
+		}
+		$MNEMONIC_EDITPAGES = array(
+			we_base_constants::WE_EDITPAGE_PROPERTIES => 'properties',
+			we_base_constants::WE_EDITPAGE_CONTENT => 'edit',
+			we_base_constants::WE_EDITPAGE_INFO => 'information',
+			we_base_constants::WE_EDITPAGE_PREVIEW => 'preview',
+			we_base_constants::WE_EDITPAGE_SCHEDULER => 'schedpro',
+			we_base_constants::WE_EDITPAGE_VALIDATION => 'validation',
+			we_base_constants::WE_EDITPAGE_VERSIONS => 'versions',
+			we_base_constants::WE_EDITPAGE_VARIANTS => 'variants',
+			we_base_constants::WE_EDITPAGE_WEBUSER => 'customer',
+		);
 
-			$_hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
+		$_hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
 
-			if(in_array('all', $_hidePagesArr)){
-				$this->EditPageNrs = array();
-				return;
-			}
-			foreach($this->EditPageNrs as $key => $editPage){
-				if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
-					unset($this->EditPageNrs[$key]);
-				}
+		if(in_array('all', $_hidePagesArr)){
+			$this->EditPageNrs = array();
+			return;
+		}
+		foreach($this->EditPageNrs as $key => $editPage){
+			if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
+				unset($this->EditPageNrs[$key]);
 			}
 		}
 	}

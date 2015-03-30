@@ -1183,10 +1183,6 @@ abstract class we_root extends we_class{
 
 	}
 
-	function correctFields(){
-
-	}
-
 	public function we_republish(){
 		return true;
 	}

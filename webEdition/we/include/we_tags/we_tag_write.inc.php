@@ -84,15 +84,12 @@ function we_tag_write($attribs){
 			$GLOBALS['we_object_write_ok'] = false;
 			return;
 		}
-		$isOwner = (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ?
-				($protected && isset($_SESSION['webuser']['ID']) ?
-					($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID) :
-					$userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid))) :
-				false);
+		$isOwner = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && (
+			($protected && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID)) ||
+			($userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)))
+			);
 
-		$isAdmin = (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ?
-				$admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin] :
-				false);
+		$isAdmin = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
 
 		$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($admin/* only if this field is used */ ? $isAdmin : true) : false); //FR #8411
 
@@ -181,7 +178,7 @@ function we_tag_write($attribs){
 						case 'increment':
 							$z = 1;
 							$footext = $objname . '_' . $z;
-							while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . "/" . $footext)) . '"')){
+							while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $footext)) . '"')){
 								$z++;
 								$footext = $objname . '_' . $z;
 							}
