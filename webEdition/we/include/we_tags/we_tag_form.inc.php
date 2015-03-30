@@ -94,8 +94,8 @@ function we_tag_form($attribs){
 									(isset($GLOBALS['lv']) && $GLOBALS['lv']->getDBf('OF_ID') != '' ?
 											$GLOBALS['lv']->getDBf('OF_ID') :
 											($GLOBALS['we_doc']->getDBf('OF_ID') ? :
-													(isset($GLOBALS['we_doc']->OF_ID) ?
-															$GLOBALS['we_doc']->OF_ID :
+													(isset($GLOBALS['we_obj']) ?
+															$GLOBALS['we_obj']->ID :
 															$GLOBALS['we_doc']->ID))) :
 									(isset($GLOBALS['lv']) ?
 											($GLOBALS['lv'] instanceof we_object_tag ?
