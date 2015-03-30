@@ -25,19 +25,19 @@
 		Deny from all
 	</ifModule>
 </FilesMatch>
-<ifModule mod_expires.c>
-ExpiresActive On
-ExpiresDefault "access plus 1 month"
-ExpiresByType text/javascript   "access plus 1 month"
-ExpiresByType application/javascript   "access plus 1 month"
-ExpiresByType text/css   "access plus 1 month"
-ExpiresByType image/svg+xml "access plus 1 month"
-ExpiresByType image/gif "access plus 1 month"
-ExpiresByType image/jpeg        "access plus 1 month"
-ExpiresByType image/png        "access plus 1 month"
+#<ifModule mod_expires.c>
+#ExpiresActive On
+#ExpiresDefault "access plus 1 month"
+#ExpiresByType text/javascript   "access plus 1 month"
+#ExpiresByType application/javascript   "access plus 1 month"
+#ExpiresByType text/css   "access plus 1 month"
+#ExpiresByType image/svg+xml "access plus 1 month"
+#ExpiresByType image/gif "access plus 1 month"
+#ExpiresByType image/jpeg        "access plus 1 month"
+#ExpiresByType image/png        "access plus 1 month"
 
 
-</ifModule>
-<ifModule mod_deflate.c>
-	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
-</ifModule>
+#</ifModule>
+#<ifModule mod_deflate.c>
+#	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+#</ifModule>
