@@ -101,6 +101,9 @@ class we_objectFile extends we_document{
 			$GLOBALS['we_object'][$formname]->we_new();
 			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
 				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
+				if(!$GLOBALS['we_object'][$formname]->TableID){
+					return false;
+				}
 			} else {
 				$GLOBALS['we_object'][$formname]->TableID = $classID;
 				$GLOBALS['we_object'][$formname]->setRootDirID(true);
@@ -115,8 +118,7 @@ class we_objectFile extends we_document{
 					$parentfolder = new we_class_folder();
 					$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
 
-					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) ||
-						strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
+					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) || strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
 						$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
 						$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
 					}
@@ -956,6 +958,7 @@ class we_objectFile extends we_document{
 		return we_html_tools::htmlFormElementTable(
 				$this->htmlTextInput($textname, 30, $path, '', ' readonly', "text", $inputWidth, 0), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . ( isset($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) && $this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription'] ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", we_html_element::htmlHidden($idname, $myid), we_html_tools::getPixel(5, 4), $button) .
 			$objectpreview;
+
 	}
 
 	private function getMultiObjectFieldHTML($type, $name, array $attribs, $editable = true){
@@ -1104,7 +1107,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function getShopVatFieldHtml($type, $name, array $attribs, $we_editmode = true){
-		if($we_editmode){
+		if($we_editmode && defined('WE_SHOP_VAT_TABLE')){
 
 			$shopVats = we_shop_vats::getAllShopVATs();
 
@@ -1209,6 +1212,7 @@ class we_objectFile extends we_document{
 					we_html_button::create_button('select', "javascript:we_cmd('" . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
 					we_html_button::create_button('select', "javascript:we_cmd('openDirselector'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0);")
 				);
+
 		} else {
 			$trashbut = we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['" . $Path_elem_Name . "'].value");

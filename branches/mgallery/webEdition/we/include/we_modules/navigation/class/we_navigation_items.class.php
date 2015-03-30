@@ -88,7 +88,7 @@ class we_navigation_items{
 
 		$items = $navigation->getDynamicPreview($this->Storage);
 
-		$_new_items = self::getStaticSavedDynamicItems($navigation);
+		$_new_items = $this->getStaticSavedDynamicItems($navigation);
 
 // fetch the new items in item array
 		$_depended = array();
@@ -118,7 +118,7 @@ class we_navigation_items{
 		}
 	}
 
-	private static function getStaticSavedDynamicItems(we_navigation_navigation $_nav, $rules = false){
+	private function getStaticSavedDynamicItems(we_navigation_navigation $_nav, $rules = false){
 		$items = array();
 		$dyn_items = $_nav->getDynamicEntries();
 		if(is_array($dyn_items)){

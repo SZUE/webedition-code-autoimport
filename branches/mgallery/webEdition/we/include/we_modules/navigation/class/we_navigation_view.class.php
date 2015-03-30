@@ -851,12 +851,12 @@ function submitForm() {
 					}
 
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn  . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
 
-								if(' . $this->editorBodyForm . '.Ordn.value==1){
+								if(' . $this->editorBodyForm . '.Ordn.value==0){
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "disabled");
 								} else {
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
@@ -873,7 +873,7 @@ function submitForm() {
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
@@ -897,7 +897,7 @@ function submitForm() {
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . ($this->Model->Ordn + 1) . ';' .
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 									' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
@@ -1133,7 +1133,6 @@ function submitForm() {
 		}
 
 		if(($page = we_base_request::_(we_base_request::INT, "page")) !== false){
-
 			$this->page = ($this->Model->IsFolder && $page != 1 && $page != 3 ? 1 : $page);
 		}
 	}

@@ -261,14 +261,14 @@ class we_navigation_navigation extends weModelBase{
 		$this->setPath();
 
 		if($order){
-			$_ord_count = f('SELECT COUNT(ID) as OrdCount FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ';', 'OrdCount', $this->db);
+			$_ord_count = f('SELECT COUNT(ID) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 			if($this->ID == 0){
 				$this->Ordn = $_ord_count;
 			} else {
 				if($this->Ordn > ($_ord_count - 1)){
 					$this->Ordn = $_ord_count;
 				}
-				$_oldPid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), 'ParentID', $this->db);
+				$_oldPid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
 			}
 		}
 
@@ -641,18 +641,23 @@ class we_navigation_navigation extends weModelBase{
 			$this->Ordn = 99999;
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
-			$this->Ordn = f('SELECT Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
 		} else {
 			//check position
 			if($newPos < 0 || $newPos > $max = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db)){
 				return false;
 			}
-			$inc = ($this->Ordn < $newPos ? -1 : 1);
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn+' . $inc . ' WHERE Ordn>' . ($inc < 0 ? $this->Ordn : $newPos) . ' AND ParentID=' . $this->ParentID);
-			$this->Ordn = $newPos;
+
+			if($newPos < $this->Ordn){
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn+1 WHERE (Ordn BETWEEN ' . $newPos . ' AND ' . $this->Ordn . ') AND ParentID=' . $this->ParentID . ' AND ID!=' . $this->ID);
+			} else {//$newPos>Ordn
+				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn-1 WHERE (Ordn BETWEEN ' . $this->Ordn . ' AND ' . $newPos . ') AND ParentID=' . $this->ParentID . ' AND ID!=' . $this->ID);
+			}
+
+			$this->Ordn =$newPos;
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 		}
+		$this->Ordn = f('SELECT Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->db);
 		return true;
 	}
 
@@ -665,8 +670,7 @@ class we_navigation_navigation extends weModelBase{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn - 1));
-		$this->Ordn--;
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -678,8 +682,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . abs($this->Ordn + 1));
-			$this->Ordn++;
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
@@ -798,20 +801,7 @@ class we_navigation_navigation extends weModelBase{
 		return $_path;
 	}
 
-	function setOrdn($num){
-		$_db = new DB_WE();
-		if($this->ID){
-			$_db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn>=' . abs($num) . ' ORDER BY Ordn');
-			while($_db->next_record()){
-				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . abs($_db->f('Ordn') + 1) . ' WHERE ID=' . intval($_db->f('ID')));
-			}
-			$this->Ordn = $num;
-			$this->saveField('Ordn');
-		}
-		$this->reorder($this->ParentID);
-	}
-
-	function findCharset($pid){
+		function findCharset($pid){
 		$_charset = '';
 		$_count = 0;
 		$_db = new DB_WE();

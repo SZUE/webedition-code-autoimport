@@ -298,12 +298,11 @@ class we_document extends we_root{
 	function addNavi($id, $text, $parentid, $ordn){
 		$text = urldecode($text); //Bug #3769
 		if($this->ID){
-//$navis = $this->getNavigationItems();
 
 			if(is_numeric($ordn)){
 				$ordn--;
 			}
-			$_ord = ($ordn === 'end' ? 10000 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
+			$_ord = ($ordn === 'end' ? f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid)) : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
 			$_new_path = rtrim($_ppath, '/') . '/' . $text;
@@ -317,7 +316,6 @@ class we_document extends we_root{
 			}
 
 			$_naviItem = new we_navigation_navigation($id);
-//$_old_path = ($id ? $_naviItem->Path : '');
 
 			$_naviItem->Ordn = $_ord;
 			$_naviItem->ParentID = $parentid;
@@ -336,19 +334,7 @@ class we_document extends we_root{
 			}
 
 			$_naviItem->save();
-			$_naviItem->setOrdn($_ord);
-// replace or set new item in the multi selector
-			/* if($id && !$rename){
-			  foreach($navis as $_k => $_v){
-			  if($_old_path == $_v){
-			  $navis[$_k] = $_new_path;
-			  }
-			  }
-			  } else {
-			  $navis[] = $_new_path;
-			  }
-
-			  $this->NavigationItems = makeCSVFromArray($navis, true); */
+			$_naviItem->reorder($parentid);
 		}
 	}
 
