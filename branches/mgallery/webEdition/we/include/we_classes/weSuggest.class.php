@@ -136,7 +136,6 @@ class weSuggest{
 			we_html_element::jsScript(JS_DIR . 'weSuggest.js');
 	}
 
-
 	/**
 	 * This function generates the individual js code for the autocomletion
 	 *
@@ -278,7 +277,7 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 				$this->additionalButton ?
 					array("text" => '<div style="margin-right : ' . $this->additionalButtonSpace . 'px">' . $this->additionalButton . '</div>', "valign" => "top") :
 					''
-				), we_html_tools::getPixel(intval($this->trashButtonSpace), 4), (
+				), (
 				$this->trashButton ?
 					array("text" => '<div style="margin-right : ' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
 					''

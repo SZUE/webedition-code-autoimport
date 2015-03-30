@@ -23,10 +23,7 @@
  */
 
 function we_lcmd(par) {
-	swpar = par.match(/^new_dtPage_/) ? "new_dtPage" : par;
-	swpar = swpar.match(/^new_ClObjectFile_/) ? "new_ClObjectFile" : swpar;
-
-	switch (swpar) {
+	switch (par) {
 		case 'trigger_save_document':
 			if (top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter && top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.weCanSave) {
 				top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
@@ -117,10 +114,10 @@ function we_lcmd(par) {
 			top.we_cmd("tocollection", 1, tables.OBJECT_FILES_TABLE);
 			return;
 		case 'new_dtPage':
-			top.we_cmd("new", tables.FILE_TABLE, "", contentTypes.WEDOCUMENT, par.replace(/^new_dtPage_/, ""));
+			top.we_cmd("new", tables.FILE_TABLE, "", contentTypes.WEDOCUMENT, arguments[1]);
 			return;
 		case 'new_ClObjectFile':
-			top.we_cmd("new", OBJECT_FILES, "", contentTypes.OBJECT_FILE, par.replace(/^new_ClObjectFile_/, ""));
+			top.we_cmd("new", OBJECT_FILES, "", contentTypes.OBJECT_FILE, arguments[1]);
 			return;
 		case 'openDelSelector':
 			//setTimeout(function () {

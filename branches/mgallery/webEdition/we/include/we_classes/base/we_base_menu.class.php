@@ -43,8 +43,40 @@ class we_base_menu{
 
 		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 			we_html_element::jsElement('
-function menuaction(cmd) {
-	' . $this->lcmdFrame . '.location.replace("' . WEBEDITION_DIR . 'we_lcmd.php?we_cmd[0]="+cmd);
+	var g_l = {
+		"nothing_to_save": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) . '",
+		"nothing_to_publish": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) . '",
+	};
+	var tables = {
+		"FILE_TABLE": "' . (defined('FILE_TABLE') ? FILE_TABLE : 'f') . '",
+		"TEMPLATES_TABLE": "' . (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 't' ) . '",
+		"VFILE_TABLE": "' . (defined('VFILE_TABLE') ? VFILE_TABLE : 'v' ) . '",
+		"OBJECT_FILES_TABLE": "' . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'o') . '"
+	};
+	var contentTypes = {
+		"TEMPLATE": "' . we_base_ContentTypes::TEMPLATE . '",
+		"WEDOCUMENT": "' . we_base_ContentTypes::WEDOCUMENT . '",
+		"OBJECT_FILE": "' . we_base_ContentTypes::OBJECT_FILE . '",
+		"IMAGE": "' . we_base_ContentTypes::IMAGE . '",
+		"HTML": "' . we_base_ContentTypes::HTML . '",
+		"FLASH": "' . we_base_ContentTypes::FLASH . '",
+		"QUICKTIME": "' . we_base_ContentTypes::QUICKTIME . '",
+		"VIDEO": "' . we_base_ContentTypes::VIDEO . '",
+		"AUDIO": "' . we_base_ContentTypes::AUDIO . '",
+		"JS": "' . we_base_ContentTypes::JS . '",
+		"TEXT": "' . we_base_ContentTypes::TEXT . '",
+		"XML": "' . we_base_ContentTypes::XML . '",
+		"HTACESS": "' . we_base_ContentTypes::HTACESS . '",
+		"CSS": "' . we_base_ContentTypes::CSS . '",
+		"APPLICATION": "' . we_base_ContentTypes::APPLICATION . '",
+		"COLLECTION": "' . we_base_ContentTypes::COLLECTION . '"
+	};
+	var openTable = "' . (isset($_SESSION["weS"]["seemForOpenDelSelector"]["Table"]) ? $_SESSION["weS"]["seemForOpenDelSelector"]["Table"] : FILE_TABLE) . '";
+') .
+			we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
+			we_html_element::jsElement('
+function menuaction(cmd,cmd1) {
+we_lcmd(cmd,cmd1);
 }');
 	}
 
@@ -122,13 +154,13 @@ function menuaction(cmd) {
 				} else {
 					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
 						if($e['enabled'] == 1){
-							$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
+							$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>';
 							$this->h_pCODE($men, $opt, $id, $newAst);
-							$opt .= '</ul></li>' . "\n";
+							$opt .= '</ul></li>';
 						}
 					} else if($mtext){
 						if($e['enabled'] == 1){
-							$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . $e["cmd"] . '\')">' . $mtext . '</a></li>';
+							$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . (is_array($e["cmd"]) ? implode('\',\'', $e["cmd"]) : $e["cmd"]) . '\')">' . $mtext . '</a></li>';
 						}
 					} elseif($e['enabled'] == 1){//separator
 						$opt .= '<li class="disabled"></li>';
