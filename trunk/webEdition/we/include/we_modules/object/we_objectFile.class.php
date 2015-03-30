@@ -2789,7 +2789,10 @@ class we_objectFile extends we_document{
 			}
 		}
 		if($this->ID){
-			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . " SET OF_TEXT='" . $this->DB_WE->escape($this->Text) . "',OF_PATH='" . $this->DB_WE->escape($this->Path) . "' WHERE OF_ID=" . intval($this->ID));
+			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET ' . we_database_base::arraySetter(array(
+					'OF_TEXT' => $this->Text,
+					'OF_PATH' => $this->Path)) .
+				' WHERE OF_ID=' . intval($this->ID));
 		}
 		return $this->i_savePersistentSlotsToDB('Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,IsSearchable,Charset,Url,TriggerID');
 	}
@@ -2799,6 +2802,8 @@ class we_objectFile extends we_document{
 		if(isset($GLOBALS['we_doc'])){
 			$backupdoc = $GLOBALS['we_doc'];
 		}
+		$backObj = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj'] : 0;
+		$GLOBALS['we_obj'] = $this;
 
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
 		$GLOBALS['we_doc']->elements = $this->elements;
@@ -2822,6 +2827,11 @@ class we_objectFile extends we_document{
 			$GLOBALS['we_doc'] = $backupdoc;
 		} else {
 			unset($GLOBALS['we_doc']);
+		}
+		if($backObj){
+			$GLOBALS['we_obj'] = $backObj;
+		} else {
+			unset($GLOBALS['we_obj']);
 		}
 
 		return $contents;

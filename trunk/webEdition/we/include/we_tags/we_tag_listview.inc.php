@@ -181,12 +181,12 @@ function we_tag_listview($attribs){
 
 					/**
 					* Fix #9694
-					* attention: we can not check $we_lv_langguagesdoc instanceof we_objectFile 
+					* attention: we can not check $we_lv_langguagesdoc instanceof we_objectFile
 					* $we_lv_langguagesdoc is always instance of webEditionDocument because
 					* we need an webEdition Document to show webEdition object detail pages
 					*/
-					$we_lv_pageID = !empty($we_lv_langguagesdoc->OF_ID) ? $we_lv_langguagesdoc->OF_ID : $we_lv_langguagesdoc->ID;
-					$we_lv_linktype = !empty($we_lv_langguagesdoc->OF_ID) ? 'tblObjectFile' : 'tblFile';
+					$we_lv_pageID = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj']->ID : $we_lv_langguagesdoc->ID;
+					$we_lv_linktype = isset($GLOBALS['we_obj']) ? 'tblObjectFile' : 'tblFile';
 			}
 			unset($we_lv_langguagesdoc);
 
