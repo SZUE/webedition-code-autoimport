@@ -24,5 +24,5 @@
  */
 function we_tag_ifWritten($attribs){
 	$type = (weTag_getAttribute('type', $attribs)? : weTag_getAttribute('var', $attribs, 'document'))? : weTag_getAttribute('doc', $attribs, 'document');
-	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == true);
+	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok']);
 }
