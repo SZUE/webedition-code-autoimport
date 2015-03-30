@@ -1798,7 +1798,7 @@ weSearch.g_l = {
 				$out .= '<tr><td><em>' . g_l('global', '[' . $type . ']') . ':</em></td></tr>';
 				foreach($links as $link){
 					$out .= '<tr><td style="padding-left:12px;">' .
-							we_html_button::create_button("image:edit_edit", "javascript:weSearch.openToEdit('" . FILE_TABLE . "'," . $_result[$f]["docID"] . ",'" . $_result[$f]["ContentType"] . "');", true, 27, 22) .
+							we_html_button::create_button("image:edit_edit", "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) .
 							'<a href="javascript:weSearch.openToEdit(\'' . $link['table'] . '\',\'' . $link["id"] . '\',\'\')" title="' . $link['path'] . '"><u>' . $link['path'] . '</u></a></td></tr>';
 				}
 			}
