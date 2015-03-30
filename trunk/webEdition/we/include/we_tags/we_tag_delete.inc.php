@@ -37,7 +37,7 @@ function we_tag_delete($attribs){
 	$forceedit = weTag_getAttribute('forceedit', $attribs, false, we_base_request::BOOL);
 
 	switch($type){
-		case "document":
+		case 'document':
 			$docID = $id ? : we_base_request::_(we_base_request::INT, 'we_delDocument_ID');
 			if(!$docID){
 				return '';
@@ -78,25 +78,18 @@ function we_tag_delete($attribs){
 			return;
 	}
 
-	if($pid){
-		if($doc->ParentID != $pid){
-			$GLOBALS['we_' . $type . '_delete_ok'] = false;
-			return '';
-		}
+	if($pid && $doc->ParentID != $pid){
+		$GLOBALS['we_' . $type . '_delete_ok'] = false;
+		return '';
 	}
 
-	$isOwner = (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ?
-			($protected ?
-				($_SESSION['webuser']['ID'] == $doc->WebUserID) :
-				($userid ?
-					($_SESSION['webuser']['ID'] == $doc->getElement($userid)) : false)) : false);
+	$isOwner = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && (
+		($protected && $_SESSION['webuser']['ID'] == $doc->WebUserID) ||
+		($userid && $_SESSION['webuser']['ID'] == $doc->getElement($userid))
+		);
 
 
-	$isAdmin = (isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] ?
-			($admin ?
-				isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin] :
-				false) :
-			false);
+	$isAdmin = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
 
 	if($isAdmin || $isOwner || $forceedit){
 		we_base_delete::deleteEntry($docID, $table);
