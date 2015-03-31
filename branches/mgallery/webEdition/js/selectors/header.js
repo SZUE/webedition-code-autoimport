@@ -79,3 +79,8 @@ function selectIt() {
 	var a = document.we_form.elements.lookin;
 	a.selectedIndex = a.options.length - 1;
 }
+
+function setview(view){
+	top.options.view=view;
+	top.writeBody(top.fsbody.document.body);
+}
