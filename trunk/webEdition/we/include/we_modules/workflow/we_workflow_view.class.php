@@ -1101,7 +1101,7 @@ function checkData(){
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[file_size]'),
-				'html' => round(($fs / 1024), 2) . '&nbsp;KB&nbsp;(' . number_format($fs, 0, ',', '.') . '&nbsp;Byte)',
+				'html' => we_base_file::getHumanFileSize($fs) . '&nbsp;KB&nbsp;(' . we_base_file::getHumanFileSize($fs, we_base_file::SZ_BYTE) . ')',
 				'space' => $_space
 			);
 		}
@@ -1478,7 +1478,7 @@ function checkData(){
 			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) .
 			we_html_tools::getPixel(5, 1) . ' ' . g_l('global', '[from]') . ' ' . we_html_tools::getPixel(5, 1) . $anz . '</b></td><td>' . we_html_tools::getPixel(23, 1) .
 			((($offset + $numRows) < $anz) ?
-				we_html_button::create_button('next', WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows)/* . "&order=$order"*/) :
+				we_html_button::create_button('next', WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows)/* . "&order=$order" */) :
 				we_html_button::create_button('next', '', '', 100, 22, '', '', true)
 			) .
 			'</td><td></tr></table>';
