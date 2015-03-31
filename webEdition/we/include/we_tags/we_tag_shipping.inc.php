@@ -28,62 +28,54 @@ function we_tag_shipping($attribs){
 	}
 
 	$sumName = weTag_getAttribute('sum', $attribs, '', we_base_request::STRING);
+	if(!isset($GLOBALS['summe'][$sumName])){
+		return 0;
+	}
+
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
-	$shippingCost = 0;
 
 	// shipping depends on total value of basket
-	if(isset($GLOBALS['summe'][$sumName])){
-		$orderVal = $GLOBALS['summe'][$sumName];
-		$weShippingControl = we_shop_shippingControl::getShippingControl();
+	$orderVal = $GLOBALS['summe'][$sumName];
+	$weShippingControl = we_shop_shippingControl::getShippingControl();
 
-		// check if user is registered
-		$customer = (we_tag('ifRegisteredUser') ? $_SESSION['webuser'] : false);
+	// check if user is registered
+	$customer = (we_tag('ifRegisteredUser') ? $_SESSION['webuser'] : false);
 
-		$shippingCost = $weShippingControl->getShippingCostByOrderValue($orderVal, $customer);
+	$shippingCost = $weShippingControl->getShippingCostByOrderValue($orderVal, $customer);
 
-		// get calculated value if needed
-		if($type){
-			// if user must NOT pay vat always return net prices
-			$mustPayVat = we_tag('ifShopPayVat'); // alayways return net prices
+	// get calculated value if needed
+	// if user must NOT pay vat always return net prices
+	$mustPayVat = we_tag('ifShopPayVat'); // alayways return net prices
 
-			if($mustPayVat){
-				switch($type){
-					case 'net':
-						if(!$weShippingControl->isNet){
-							// y = x * (100/116)
-							$shippingCost = $shippingCost * (100 / ((1 + ($weShippingControl->vatRate / 100)) * 100) );
-						}
-						break;
-					case 'gros':
-						if($weShippingControl->isNet){
-							// y = x * (1.16)
-							$shippingCost = $shippingCost * (1 + ($weShippingControl->vatRate / 100));
-						}
-						break;
-					case 'vat':
-						$shippingCost = ($weShippingControl->isNet ?
-										// y = x * 0.16
-										$shippingCost * ($weShippingControl->vatRate / 100) :
-										// y = x /116 * 16
-										$shippingCost / ( ((1 + ($weShippingControl->vatRate / 100)) * 100) ) * $weShippingControl->vatRate);
-						break;
-				}
-			} else { // always return net prices
-				switch($type){
-					case 'gros':
-					case 'net':
-						if(!$weShippingControl->isNet){
-							// y = x * (100/116)
-							$shippingCost = $shippingCost * (100 / ((1 + ($weShippingControl->vatRate / 100)) * 100) );
-						}
-						break;
-					case 'vat':
-						$shippingCost = 0;
-						break;
-				}
+	switch($type){
+		case 'net':
+			//no difference if $mustPayVat or not
+			if(!$weShippingControl->isNet){
+				// y = x * (100/116)
+				$shippingCost = $shippingCost * (100 / ((1 + ($weShippingControl->vatRate / 100)) * 100) );
 			}
-		}
-		return we_util_Strings::formatNumber($shippingCost, weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING));
+			break;
+		case 'gros':
+			if($weShippingControl->isNet){
+				// y = x * (1.16)
+				$shippingCost = ($mustPayVat ?
+						$shippingCost * (1 + ($weShippingControl->vatRate / 100)) :
+						//return net prices
+						$shippingCost * (100 / ((1 + ($weShippingControl->vatRate / 100)) * 100) )
+					);
+			}
+			break;
+		case 'vat':
+			$shippingCost = ($mustPayVat ?
+					($weShippingControl->isNet ?
+						// y = x * 0.16
+						$shippingCost * ($weShippingControl->vatRate / 100) :
+						// y = x /116 * 16
+						$shippingCost / ( ((1 + ($weShippingControl->vatRate / 100)) * 100) ) * $weShippingControl->vatRate) :
+					0);
+			break;
+		default:
 	}
-	return 0;
+
+	return we_util_Strings::formatNumber($shippingCost, weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING));
 }

@@ -174,10 +174,7 @@ function we_setVarArray(&$arr, $string, $value){
 }
 
 function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
-	if(isset($GLOBALS['calculate'])){
-		$to = 'calculate';
-	}
-	switch($to){
+	switch(isset($GLOBALS['calculate']) ? 'calculate' : $to){
 		case 'request':
 			we_setVarArray($_REQUEST, $nameTo, $returnvalue);
 			return null;
@@ -220,7 +217,7 @@ function mta($hash, $key){
 }
 
 function printElement($code){
-	if(!$code){
+	if($code === ''){//tag calculate can return 0, we need to write this.
 		return;
 	}
 	if(strpos($code, '<?') === FALSE){
