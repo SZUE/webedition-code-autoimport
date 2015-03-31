@@ -36,6 +36,7 @@ function we_tag_ifEqual($attribs){
 			echo $foo;
 			return false;
 		}
+		echo $GLOBALS['we_doc']->getElement($name);
 		return ($GLOBALS['we_doc']->getElement($name) == $value);
 	}
 
