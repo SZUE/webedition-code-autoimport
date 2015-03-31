@@ -154,56 +154,57 @@ foreach($_SESSION['perms'] as $perm => $access){
 ?>
 };
 var g_l = {
-	'unable_to_call_setpagenr': '<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>',
-	'open_link_in_SEEM_edit_include': '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
-	'browser_crashed': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
-	'no_perms_action': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
-	'no_document_opened': '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
-	'no_editor_left': "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
-	'eplugin_exit_doc': "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
-	"delete_single_confirm_delete": "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
-	'cockpit_reset_settings': '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
-	'cockpit_not_activated': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
-	'no_perms': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
-	'nav_first_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
-	'nav_last_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
-	'nav_no_open_document': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
-	'nav_no_entry': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>',
-	'unable_to_call_ping': '<?php echo g_l('global', '[unable_to_call_ping]'); ?>'
+	unable_to_call_setpagenr: '<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>',
+	open_link_in_SEEM_edit_include: '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
+	browser_crashed: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
+	no_perms_action: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
+	no_document_opened: '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
+	no_editor_left: "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
+	eplugin_exit_doc: "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
+	delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
+	cockpit_reset_settings: '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
+	cockpit_not_activated: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
+	no_perms: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
+	nav_first_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
+	nav_last_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
+	nav_no_open_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
+	nav_no_entry: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>',
+	unable_to_call_ping: '<?php echo g_l('global', '[unable_to_call_ping]'); ?>',
+	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) . '",
+	nothing_to_publish: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) . '"
 };
 var size = {
-	'tree': {
-		'hidden':<?php echo weTree::HiddenWidth; ?>,
-		'defaultWidth':<?php echo weTree::DefaultWidth; ?>,
-		'min':<?php echo weTree::MinWidth; ?>,
-		'max':<?php echo weTree::MaxWidth; ?>,
-		'step':<?php echo weTree::StepWidth; ?>,
-		'moveWidth':<?php echo weTree::MoveWidth; ?>,
-		'deleteWidth':<?php echo weTree::DeleteWidth; ?>
-
+	tree: {
+		hidden:<?php echo weTree::HiddenWidth; ?>,
+		defaultWidth:<?php echo weTree::DefaultWidth; ?>,
+		min:<?php echo weTree::MinWidth; ?>,
+		max:<?php echo weTree::MaxWidth; ?>,
+		step:<?php echo weTree::StepWidth; ?>,
+		moveWidth:<?php echo weTree::MoveWidth; ?>,
+		deleteWidth:<?php echo weTree::DeleteWidth; ?>
 	},
-	'catSelect': {
-		'width':<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
-		'height':<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
+	catSelect: {
+		width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
 	},
-	'docSelect': {
-		'width':<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
-		'height':<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
+	docSelect: {
+		width:<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
 	},
-	'windowSelect': {
-		'width':<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
-		'height':<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
+	windowSelect: {
+		width:<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
 	},
-	'windowDirSelect': {
-		'width':<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
-		'height':<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
+	windowDirSelect: {
+		width:<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
 	},
-	'windowDelSelect': {
-		'width':<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
-		'height':<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
+	windowDelSelect: {
+		width:<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
 	},
-	'sidebar': {
-		'defaultWidth':<?php echo SIDEBAR_DEFAULT_WIDTH; ?>
+	sidebar: {
+		defaultWidth:<?php echo SIDEBAR_DEFAULT_WIDTH; ?>
 	}
 };
 var tables = {
@@ -212,6 +213,7 @@ var tables = {
 	'OBJECT_FILES_TABLE': "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
 	'OBJECT_TABLE': "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
 	'CATEGORY_TABLE': "<?php echo CATEGORY_TABLE; ?>",
+	"VFILE_TABLE": "<?php echo (defined('VFILE_TABLE') ? VFILE_TABLE : 'v' ); ?>",
 	'table_to_load': "<?php echo $_table_to_load; ?>",
 	'TBL_PREFIX': '<?php echo TBL_PREFIX; ?>'
 };
@@ -225,6 +227,19 @@ var contentTypes = {
 	'TEMPLATE': '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 	'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
 	'OBJECT_FILE': '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
+	"IMAGE": "<?php echo we_base_ContentTypes::IMAGE; ?>",
+	"HTML": "<?php echo we_base_ContentTypes::HTML; ?>",
+	"FLASH": "<?php echo we_base_ContentTypes::FLASH; ?>",
+	"QUICKTIME": "<?php echo we_base_ContentTypes::QUICKTIME; ?>",
+	"VIDEO": "<?php echo we_base_ContentTypes::VIDEO; ?>",
+	"AUDIO": "<?php echo we_base_ContentTypes::AUDIO; ?>",
+	"JS": "<?php echo we_base_ContentTypes::JS; ?>",
+	"TEXT": "<?php echo we_base_ContentTypes::TEXT; ?>",
+	"XML": "<?php echo we_base_ContentTypes::XML; ?>",
+	"HTACESS": "<?php echo we_base_ContentTypes::HTACESS; ?>",
+	"CSS": "<?php echo we_base_ContentTypes::CSS; ?>",
+	"APPLICATION": "<?php echo we_base_ContentTypes::APPLICATION; ?>",
+	"COLLECTION": "<?php echo we_base_ContentTypes::COLLECTION; ?>"
 };
 var modules = {
 	'MESSAGING_SYSTEM':<?php echo intval(defined('MESSAGING_SYSTEM')); ?>

@@ -41,38 +41,10 @@ class we_base_menu{
 
 	public function getJS(){
 
-		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-			we_html_element::jsElement('
-	var g_l = {
-		"nothing_to_save": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) . '",
-		"nothing_to_publish": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) . '",
-	};
-	var tables = {
-		"FILE_TABLE": "' . (defined('FILE_TABLE') ? FILE_TABLE : 'f') . '",
-		"TEMPLATES_TABLE": "' . (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 't' ) . '",
-		"VFILE_TABLE": "' . (defined('VFILE_TABLE') ? VFILE_TABLE : 'v' ) . '",
-		"OBJECT_FILES_TABLE": "' . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'o') . '"
-	};
-	var contentTypes = {
-		"TEMPLATE": "' . we_base_ContentTypes::TEMPLATE . '",
-		"WEDOCUMENT": "' . we_base_ContentTypes::WEDOCUMENT . '",
-		"OBJECT_FILE": "' . we_base_ContentTypes::OBJECT_FILE . '",
-		"IMAGE": "' . we_base_ContentTypes::IMAGE . '",
-		"HTML": "' . we_base_ContentTypes::HTML . '",
-		"FLASH": "' . we_base_ContentTypes::FLASH . '",
-		"QUICKTIME": "' . we_base_ContentTypes::QUICKTIME . '",
-		"VIDEO": "' . we_base_ContentTypes::VIDEO . '",
-		"AUDIO": "' . we_base_ContentTypes::AUDIO . '",
-		"JS": "' . we_base_ContentTypes::JS . '",
-		"TEXT": "' . we_base_ContentTypes::TEXT . '",
-		"XML": "' . we_base_ContentTypes::XML . '",
-		"HTACESS": "' . we_base_ContentTypes::HTACESS . '",
-		"CSS": "' . we_base_ContentTypes::CSS . '",
-		"APPLICATION": "' . we_base_ContentTypes::APPLICATION . '",
-		"COLLECTION": "' . we_base_ContentTypes::COLLECTION . '"
-	};
-	var openTable = "' . (isset($_SESSION["weS"]["seemForOpenDelSelector"]["Table"]) ? $_SESSION["weS"]["seemForOpenDelSelector"]["Table"] : FILE_TABLE) . '";
-') .
+		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js').
+			/*we_html_element::jsElement('
+var openTable = "' . (isset($_SESSION["weS"]["seemForOpenDelSelector"]["Table"]) ? $_SESSION["weS"]["seemForOpenDelSelector"]["Table"] : FILE_TABLE) . '";
+') .*/
 			we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
 			we_html_element::jsElement('
 function menuaction(cmd,cmd1) {

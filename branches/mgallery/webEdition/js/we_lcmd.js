@@ -117,11 +117,11 @@ function we_lcmd(par) {
 			top.we_cmd("new", tables.FILE_TABLE, "", contentTypes.WEDOCUMENT, arguments[1]);
 			return;
 		case 'new_ClObjectFile':
-			top.we_cmd("new", OBJECT_FILES, "", contentTypes.OBJECT_FILE, arguments[1]);
+			top.we_cmd("new", tables.OBJECT_FILES_TABLE, "", contentTypes.OBJECT_FILE, arguments[1]);
 			return;
 		case 'openDelSelector':
 			//setTimeout(function () {
-			top.we_cmd('openDelSelector', '', openTable, '', '', '', '', '', '', 1);
+			top.we_cmd('openDelSelector', '', -1, '', '', '', '', '', '', 1);
 			//}, 50);
 			return;
 		default:
