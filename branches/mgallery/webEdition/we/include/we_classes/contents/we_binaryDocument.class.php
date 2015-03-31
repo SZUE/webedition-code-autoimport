@@ -106,10 +106,32 @@ class we_binaryDocument extends we_document{
 		if(parent::we_save($resave)){
 			$this->DocChanged = false;
 			$this->setElement('data', $this->getSitePath());
+			$this->i_writeMetaProposals();
 			return $this->insertAtIndex();
 		}
 
 		return false;
+	}
+
+	private function i_writeMetaProposals(){
+		$this->DB_WE->query('SELECT tag,type,importFrom,proposals FROM ' . METADATA_TABLE);
+		foreach($this->DB_WE->getAll() as $meta){
+			if($this->getElement($meta['tag'])){
+				$value = $this->DB_WE->escape($this->getElement($meta['tag']));
+				$proposals = $meta['proposals'] ? explode("','", $meta['proposals']) : array();
+
+				if(!in_array($value, $proposals)){
+					$proposals[] = $value;
+					sort($proposals);
+					$this->DB_WE->query('REPLACE INTO ' . METADATA_TABLE . ' SET ' . we_database_base::arraySetter(array(
+							'tag' => $meta['tag'],
+							'type' => $meta['type'],
+							'importFrom' => $meta['importFrom'],
+							'proposals' => implode("','", $proposals)
+						)));
+				}
+			}
+		}
 	}
 
 	public function we_publish(){

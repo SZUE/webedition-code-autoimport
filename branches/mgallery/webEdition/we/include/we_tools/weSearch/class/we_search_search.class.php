@@ -207,7 +207,7 @@ class we_search_search extends we_search_base{
 
 	function getFieldsMeta($usePrefix = false, $getTypes = false){
 		$_db = new DB_WE();
-		$_db->query('SELECT tag,type DocType FROM ' . METADATA_TABLE);
+		$_db->query('SELECT tag,type FROM ' . METADATA_TABLE);
 		$ret = array(
 			($usePrefix ? 'meta__' : '') . 'Title' => ($getTypes ? 'text' : 'Metadaten: Titel'), // FIXME: G_L()
 			($usePrefix ? 'meta__' : '') . 'Description' => ($getTypes ? 'text' : 'Metadaten: Beschreibung'), // FIXME: G_L()

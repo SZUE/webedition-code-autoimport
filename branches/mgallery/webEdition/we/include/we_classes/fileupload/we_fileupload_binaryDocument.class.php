@@ -125,6 +125,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	public function getCss(){
 
 		return self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
+/* FIXME: we should not overwrite .we_file_drag here! */
 div.we_file_drag{
 	width: 300px;
 	margin: 1em 0.2em 0px 0.1em;
@@ -132,6 +133,9 @@ div.we_file_drag{
 	border: dotted 2px gray;
 	border-radius: 0px;
 	box-shadow: none;
+}
+div.we_file_drag_binDoc{
+	margin: 1px 0 10px 1px;
 }
 .fileInputIE10{
 	left: 0px;
