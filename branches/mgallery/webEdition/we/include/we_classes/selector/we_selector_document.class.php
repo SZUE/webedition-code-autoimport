@@ -319,8 +319,7 @@ function queryString(what,id,o,we_editDirID,filter){
 </table>';
 	}
 
-	protected function printHeaderTableExtraCols(){
-		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
+	/*protected function printHeaderTableExtraCols(){
 		$ret = parent::printHeaderTableExtraCols();
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
@@ -329,15 +328,9 @@ function queryString(what,id,o,we_editDirID,filter){
 			case we_base_ContentTypes::WEDOCUMENT:
 				return $ret;
 			default:
-				return $ret .
-					'<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
-					we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-					($this->filter && isset($this->ctb[$this->filter]) ?
-						we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
-						we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
-					'</td>';
+				return $ret;
 		}
-	}
+	}*/
 
 	protected function printHeaderJSDef(){
 		switch($this->filter){
@@ -391,10 +384,6 @@ function enableNewFileBut() {
 		}
 
 		return true;
-	}
-
-	protected function printHeaderTableSpaceRow(){
-		return '<tr><td colspan="13">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
 	function printSetDirHTML(){

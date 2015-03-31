@@ -90,34 +90,19 @@ class we_selector_category extends we_selector_multiple{
 
 	protected function printHeaderTable(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">' .
-			$this->printHeaderTableSpaceRow() . '
+<table class="selectorHeaderTable">
 	<tr valign="middle">
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="70" class="defaultfont"><b>' . g_l('fileselector', '[lookin]') . '</b></td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' . $this->printHeaderOptions() . '</select></td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="40">' . we_html_button::create_button("root_dir", "javascript:top.setRootDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' .
+		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
+		<td class="lookin"><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' . $this->printHeaderOptions() . '</select></td>
+		<td>' . we_html_button::create_button("root_dir", "javascript:top.setRootDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
+		<td>' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
 			($this->userCanEditCat() ?
-				'<td width="40">' . we_html_button::create_button("image:btn_new_dir", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="38">' . we_html_button::create_button("image:btn_add_cat", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>
-
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' : '') .
+				'<td>' . we_html_button::create_button("image:btn_new_dir", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>
+		<td width="38">' . we_html_button::create_button("image:btn_add_cat", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>' : '') .
 			($this->userCanEditCat() ?
-				'<td width="27">' . we_html_button::create_button("image:btn_function_trash", 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>' : '') .
-			'</tr>' .
-			$this->printHeaderTableSpaceRow() . '
+				'<td class="trash">' . we_html_button::create_button("image:btn_function_trash", 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>' : '') .
+			'</tr>
 </table>';
-	}
-
-	protected function printHeaderTableSpaceRow(){
-		return '<tr><td colspan="15">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
 	}
 
 	function userCanEditCat(){

@@ -35,53 +35,30 @@ echo we_html_tools::getHtmlTop() .
 <body class="selectorHeader" onload="setLookin();
 		self.focus()">
 	<form name="we_form" method="post">
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<table class="selectorHeaderTable">
 			<tr valign="middle">
-				<td width="10"><?php echo we_html_tools::getPixel(10, 49); ?></td>
-				<td width="70" class="defaultfont"><b><?php echo g_l('fileselector', '[lookin]') ?></b></td>
-				<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
-				<td><select name="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
+				<td class="defaultfont lookinText"><?php echo g_l('fileselector', '[lookin]') ?></td>
+				<td class="lookin"><select name="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
 						<option value="/">/</option>
-					</select><?php echo we_html_tools::getPixel(1, 1); ?></td>
-				<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
-				<td width="40">
-					<?php echo we_html_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?>
-				</td>
-				<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
-				<td width="40">
-					<?php echo we_html_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?>
-				</td>
+					</select></td>
+				<td><?php echo we_html_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?></td>
+				<td><?php echo we_html_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();"); ?></td>
 				<?php if(!we_base_request::_(we_base_request::BOOL, "ret")){ ?>
-					<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
-					<td width="40">
-						<?php echo we_html_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss"); ?>
-					</td>
-					<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
-					<td width="40">
-						<?php echo we_html_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
-					</td>
-					<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
-					<td width="25">
-						<?php echo we_html_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss"); ?>
-					</td>
+					<td><?php echo we_html_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss"); ?></td>
+					<td><?php echo we_html_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss"); ?></td>
+					<td class="trash">
+						<?php echo we_html_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss"); ?></td>
 				<?php } ?>
-				<td width="10"><?php echo we_html_tools::getPixel(10, 29); ?></td>
 			</tr>
 		</table>
-		<table class="headerLines" style="width:100%">
+		<table class="headerLines">
 			<tr>
-				<td><?php echo we_html_tools::getPixel(25, 20) ?></td>
-				<td class="selector"><b><a href="#" onclick="reorder('name');"><?php echo g_l('fileselector', '[filename]') ?></a></b></td>
-				<td class="selector"><b><a href="#" onclick="reorder('type');"><?php echo g_l('fileselector', '[type]') ?></b></a></td>
-				<td class="selector"><b><a href="#" onclick="reorder('date');"><?php echo g_l('fileselector', '[modified]') ?></b></a></td>
-				<td class="selector"><b><a href="#" onclick="reorder('size');"><?php echo g_l('fileselector', '[filesize]') ?></b></a></td>
-			</tr>
-			<tr>
-				<td width="25"><?php echo we_html_tools::getPixel(25, 1) ?></td>
-				<td width="200"><?php echo we_html_tools::getPixel(200, 1) ?></td>
-				<td width="150"><?php echo we_html_tools::getPixel(150, 1) ?></td>
-				<td width="200"><?php echo we_html_tools::getPixel(200, 1) ?></td>
-				<td><?php echo we_html_tools::getPixel(15, 1) ?></td>
+				<th class="selector treeIcon"></th>
+				<th class="selector filename"><a href="#" onclick="reorder('name');"><?php echo g_l('fileselector', '[filename]') ?></a></th>
+				<th class="selector filetype"><a href="#" onclick="reorder('type');"><?php echo g_l('fileselector', '[type]') ?></a></th>
+				<th class="selector moddate"><a href="#" onclick="reorder('date');"><?php echo g_l('fileselector', '[modified]') ?></a></th>
+				<th class="selector filesize"><a href="#" onclick="reorder('size');"><?php echo g_l('fileselector', '[filesize]') ?></a></th>
+				<th class="selector remain"></th>
 			</tr>
 		</table>
 	</form>

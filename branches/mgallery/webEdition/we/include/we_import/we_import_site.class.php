@@ -854,11 +854,9 @@ function doUnload() {
 			if(count($this->_files) == 0){
 				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
 				if(count(scandir($importDirectory)) <= 2){
-					return we_html_element::jsElement('alert(\'' . addslashes(
-								g_l('importFiles', '[emptyDir]')) . '\');top.close()');
+					return we_html_element::jsElement('alert(\'' . addslashes(g_l('importFiles', '[emptyDir]')) . '\');top.close()');
 				}
-				return we_html_element::jsElement('alert(\'' . addslashes(
-							g_l('importFiles', '[noFiles]')) . '\');top.close();');
+				return we_html_element::jsElement('alert(\'' . addslashes(g_l('importFiles', '[noFiles]')) . '\');top.close();');
 			}
 			new we_import_siteFrag($this);
 			return '';
@@ -1823,7 +1821,7 @@ function doUnload() {
 		while(false !== ($entry = $d->read())){
 			switch($entry){
 				default:
-					if(!(strlen($entry) >= 2) && substr($entry, 0, 2) === "._"){
+					if(!((strlen($entry) >= 2) && substr($entry, 0, 2) === "._")){
 						break;
 					}
 				case '.':

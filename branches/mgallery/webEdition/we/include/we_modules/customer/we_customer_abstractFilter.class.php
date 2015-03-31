@@ -191,7 +191,7 @@ abstract class we_customer_abstractFilter{
 		}
 
 		if($invalidFields){
-			t_e('Customerfilter on document ? has invalid Parameters, maybe deleted Customer fields: ' . implode(',', $invalidFields));
+			t_e('Customerfilter on document/navigation has invalid Parameters, maybe deleted Customer fields: ' . implode(',', $invalidFields));
 		}
 
 		return $hasPermission;

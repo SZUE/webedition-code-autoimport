@@ -324,8 +324,8 @@ function queryString(what,id,o){
 						link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 					}
 					link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-					body += '<tr><td class="selector" align="center">' +
-									link + '<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0"></a></td>' +
+					body += '<tr><td class="treeIcon" align="center">' +
+									link + '<img class="treeIcon" src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '"></a></td>' +
 									'<td class="selector filename" title="' + entries[i].text + '">' + link + '<div class="cutText">' + entries[i].text + '</div></a></td></tr>' +
 									'<tr>' +
 									'<td width="25"></td>' +
@@ -399,10 +399,6 @@ function queryString(what,id,o){
 </html>';
 	}
 
-	protected function printHeaderTableSpaceRow(){
-		return '<tr><td colspan="9">' . we_html_tools::getPixel(5, 10) . '</td></tr>';
-	}
-
 	protected function printHeaderTableExtraCols(){
 		// overwrite
 	}
@@ -428,37 +424,27 @@ function queryString(what,id,o){
 
 	protected function printHeaderTable(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0" width="100%">' .
-			$this->printHeaderTableSpaceRow() . '
+<table class="selectorHeaderTable">
 	<tr valign="middle">
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="70" class="defaultfont"><b>' . g_l('fileselector', '[lookin]') . '</b></td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td>
-		<select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
+		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
+		<td><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
 			$this->printHeaderOptions() . '
 		</select>
 		</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="40">' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 29) . '</td>
-		<td width="40">' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
+		<td>' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
+		<td>' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
 			$this->printHeaderTableExtraCols() .
-			'<td width="10">' . we_html_tools::getPixel(10, 29) . '</td></tr>' .
-			$this->printHeaderTableSpaceRow() . '
+			'</tr>
 </table>';
 	}
 
 	function printHeaderHeadlines(){
 		return '
-<table class="headerLines" width="100%">
+<table class="headerLines">
 	<tr>
-		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[filename]') . '</a></b></td>
-	</tr>
-	<tr>
-		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
-		<td>' . we_html_tools::getPixel(200, 1) . '</td>
+		<th class="selector treeIcon"></th>
+		<th class="selector filename"><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('fileselector', '[filename]') . '</a></th>
+		<th class="selector remain"></th>
 	</tr>
 </table>';
 	}
@@ -582,18 +568,20 @@ function press_ok_button() {
 			case TEMPLATES_TABLE:
 				$this->col2js = "entries[i].ID";
 				$this->tableHeadlines = "
-<td class='treeIcon'></td>
-<td class='selector filename'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
-<td class='selector title'>&nbsp;<b>ID</b></td>
-<td class='selector modddate'>&nbsp;<b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>";
+<th class='selector treeIcon'></th>
+<th class='selector filename'><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></th>
+<th class='selector title'>ID</th>
+<th class='selector modddate'><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></th>
+<th class='selector remain'></th>";
 				break;
 			default:
 				$this->col2js = "entries[i].title";
 				$this->tableHeadlines = "
-<td class='treeIcon'></td>
-<td class='selector filename'><b><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></b></td>
-<td class='selector title'><b>" . g_l('fileselector', '[title]') . "</b></td>
-<td class='selector moddate'><b><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></b></td>";
+<th class='selector treeIcon'></th>
+<th class='selector filename'><a href='#' onclick='javascript:top.orderIt(\"Text\");'>" . g_l('fileselector', '[filename]') . "</a></th>
+<th class='selector title'>" . g_l('fileselector', '[title]') . "</th>
+<th class='selector moddate'><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></th>
+<th class='selector remain'></th>";
 		}
 	}
 

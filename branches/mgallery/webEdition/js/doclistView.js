@@ -214,7 +214,7 @@ function makeAjaxRequestDoclist() {
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
 	var scroll = document.getElementById("scrollContent_doclist");
-	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=\"" + dirs.IMAGE_DIR + "logo-busy.gif\"/><div id=\'scrollActive\'></div></td></tr></table>";
+	scroll.innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><img src="' + dirs.IMAGE_DIR + 'logo-busy.gif"/><div id="scrollActive"></div></td></tr></table>';
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=" + docID + "&table=" + docTable + "&we_transaction=" + transaction + args + "");
 }
 
@@ -473,7 +473,6 @@ function changeit(value, rowNr) {
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
 							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
 							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.CATEGORY_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\">" +
-
 							g_l.select_value +
 							"</button></td></tr></tbody></table>";
 
@@ -571,13 +570,12 @@ function changeit(value, rowNr) {
 
 			row.removeChild(searchTD);
 
-			var innerhtml = "<table id=\"search[" + rowNr + "]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>"+
-							 "<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />"+
-							 "</td><td>&nbsp;</td><td><a href=\"#\">"+
-							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\">"+
-
-							"<img src=\"" + dirs.BUTTONS_DIR + "icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"+
-							 "</button></a></td></tr></tbody></table>";
+			var innerhtml = "<table id=\"search[" + rowNr + "]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>" +
+							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />" +
+							"</td><td>&nbsp;</td><td><a href=\"#\">" +
+							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\">" +
+							"<img src=\"" + dirs.BUTTONS_DIR + "icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>" +
+							"</button></a></td></tr></tbody></table>";
 
 
 			cell = document.createElement("TD");

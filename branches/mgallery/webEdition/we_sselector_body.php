@@ -53,18 +53,19 @@ function _cutText($text, $l){
 	}
 //-->
 </script><?php
-echo we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js');
+echo we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
+ we_html_element::cssLink(CSS_DIR . 'selectors.css');
 ?>
 
 </head>
 <body style="background-color:white" LINK="#000000" ALINK="#000000" VLINK="#000000" onload="doScrollTo();">
 	<form name="we_form" target="fscmd" action="we_sselector_cmd.php" method="post" onsubmit="return false;">
-		<table border="0" cellpadding="0" cellspacing="0" width="100%"><?php
+		<table border="0" cellpadding="0" cellspacing="0"><?php
 
 			function getDataType($dat){
 				$ct = getContentTypeFromFile($dat);
 				return (($ct = g_l('contentTypes', '[' . $ct . ']', true)) !== false ?
-								$ct : '');
+						$ct : '');
 			}
 
 			$arDir = $arFile = $ordDir = $ordFile = $final = array();
@@ -164,11 +165,11 @@ var i = 0;';
 			if($nf === 'new_folder'){
 				?>
 				<tr style="background-color:#DFE9F5;">
-					<td align="center" width="25"><img src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>" width="16" height="18" border="0"></td>
-					<td class="selector" width="200"><?php echo we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
-					<td class="selector" width="150"><?php echo g_l('fileselector', '[folder]') ?></td>
-					<td class="selector"><?php echo date("d.m.Y H:i:s") ?></td>
-					<td class="selector"></td>
+					<td class="selector treeIcon"><img class="treeIcon" src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>"></td>
+					<td class="selector filename"><?php echo we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
+					<td class="selector filetype"><?php echo g_l('fileselector', '[folder]') ?></td>
+					<td class="selector moddate"><?php echo date("d.m.Y H:i:s") ?></td>
+					<td class="selector filesize"></td>
 				</tr>
 				<?php
 			}
@@ -220,10 +221,10 @@ var i = 0;';
 				$filesize = file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0;
 
 				$_size = ($isfolder ?
-								'' :
-								($islink ?
-										'-> ' . readlink($dir . '/' . $entry) :
-										'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
+						'' :
+						($islink ?
+							'-> ' . readlink($dir . '/' . $entry) :
+							'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
 
 				switch((($entry == $sid) && (!$indb) ? $nf : '')){
 					case "rename_folder":
@@ -237,34 +238,26 @@ var i = 0;';
 					case "rename_file":
 						$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
 						$set_rename = true;
-						$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
+						$_type = '<span title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
 						$_date = date("d.m.Y H:i:s");
 						break;
 					default:
-						$_text_to_show = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($entry) . '">' .
-								((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
-								'</span>';
-						$_type = '<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
-						$_date = '<span' . ($indb ? ' style="color:#006699"' : '') . '>' . (file_exists($dir . "/" . $entry) ? date("d.m.Y H:i:s", filectime($dir . '/' . $entry)) : 'n/a') . '<span>';
+						$_text_to_show = '<span title="' . oldHtmlspecialchars($entry) . '">' .
+							((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
+							'</span>';
+						$_type = '<span title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
+						$_date = (file_exists($dir . "/" . $entry) ? date("d.m.Y H:i:s", filectime($dir . '/' . $entry)) : 'n/a');
 				}
 
 				if($show){
-					echo '<tr id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
-	<td class="selector" align="center" width="25"><img src="' . TREE_ICON_DIR . $icon . '" width="16" height="18" border="0"></td>
-	<td class="selector" width="200">' . $_text_to_show . '</td>
-	<td class="selector" width="150">' . $_type . '</td>
-	<td class="selector" width="200">' . $_date . '</td>
-	<td class="selector">' . $_size . '</td>
+					echo '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
+	<td class="selector treeIcon"><img class="treeIcon" src="' . TREE_ICON_DIR . $icon . '"></td>
+	<td class="selector filename">' . $_text_to_show . '</td>
+	<td class="selector filetype">' . $_type . '</td>
+	<td class="selector moddate">' . $_date . '</td>
+	<td class="selector filesize">' . $_size . '</td>
  </tr>';
-					?>
-					<tr>
-						<td width="25"><?php echo we_html_tools::getPixel(25, 1) ?></td>
-						<td width="200"><?php echo we_html_tools::getPixel(200, 1) ?></td>
-						<td width="150"><?php echo we_html_tools::getPixel(150, 1) ?></td>
-						<td width="200"><?php echo we_html_tools::getPixel(200, 1) ?></td>
-						<td><?php echo we_html_tools::getPixel(10, 1) ?></td>
-					</tr>
-					<?php
+		
 				}
 			}
 			?>

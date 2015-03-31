@@ -35,8 +35,8 @@ class we_navigation_dirSelector extends we_selector_directory{
 		return '
 <table class="headerLines" width="550">
 	<tr>
-		<td>' . we_html_tools::getPixel(25, 14) . '</td>
-		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('navigation', '[name]') . '</a></b></td>
+		<th class="selector treeIcon"></th>
+		<th class="selector"colspan="2"><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('navigation', '[name]') . '</a></th>
 	</tr>
 	<tr>
 		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
@@ -79,7 +79,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 
 	protected function printHeaderTableExtraCols(){
 		$makefolderState = permissionhandler::hasPerm("EDIT_NAVIGATION");
-		return '<td width="10">' . we_html_tools::getPixel(10, 10) . '</td><td width="40">' .
+		return '<td>' .
 			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
 			we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
 			'</td>';

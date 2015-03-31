@@ -98,27 +98,49 @@ div.cutText{
 div.extension{
 	display:inline-block;
 	width:50px;
+	overflow:hidden;
+}
+th.selector{
+	text-align: left;
+	font-weight: bold;
 }
 
-td.treeIcon{
-	width: 16px;
+.treeIcon{
+	min-width: 16px;
 	padding-right: 5px;
 }
 
-td.filename{
-	width:200px;
+.filename,
+.filesize{
+	min-width:200px;
 }
 
-td.title{
-	width:220px;
+.filetype{
+	min-width:150px;
+}
+
+.directory{
+	min-width:300px;
+}
+
+.title{
+	min-width:220px;
 }
 
 td.title div.cutText{
 	max-width:220px;
 }
 
-td.moddate{
-	width:150px;
+.moddate{
+	min-width:150px;
+}
+/*fill the rest*/
+.remain{
+	width:100%;
+}
+
+tr.WEFile td{
+	color:#006699 !important;
 }
 
 #fsheaderDiv{
@@ -195,10 +217,12 @@ table.headerLines{
 	border-top: 1px solid #808080;
 	border-bottom: 1px solid #808080;
 	border-spacing: 0px;
+	width:100%;
 }
 
 table.headerLines td,
-table.footer td{
+table.footer td,
+table.selectorHeaderTable td{
 	padding:0px;
 }
 
@@ -207,4 +231,27 @@ table.footer{
 	border-spacing: 0px;
 	padding-top:5px;
 	width:100%;
+}
+
+table.selectorHeaderTable{
+	width:100%;
+	border-spacing: 0px;
+	padding:10px;
+}
+
+table.selectorHeaderTable td{
+	padding-right:10px;
+	width:40px;
+}
+
+table.selectorHeaderTable td.lookinText{
+	width:70px;
+	font-weight: bold;
+}
+	table.selectorHeaderTable td.lookin{
+	width:auto;
+}
+
+td.trash{
+	width:27px;
 }
