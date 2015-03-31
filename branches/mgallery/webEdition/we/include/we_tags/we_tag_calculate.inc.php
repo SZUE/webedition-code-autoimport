@@ -42,7 +42,7 @@ function we_tag_calculate($attribs, $content){
 			$sum = weTag_getAttribute('sum', $attribs, '', we_base_request::STRING);
 			$num_format = weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING);
 			$print = weTag_getAttribute('print', $attribs, true, we_base_request::BOOL);
-			@eval('$result = (' . (trim($content) ? $content : 0) . ') ;');
+			eval('$result = (' . (trim($content) ? $content : 0) . ') ;');
 			if(!isset($result)){
 				$result = 0;
 			}

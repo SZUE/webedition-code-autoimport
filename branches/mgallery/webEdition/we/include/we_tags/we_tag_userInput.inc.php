@@ -97,7 +97,7 @@ function we_tag_userInput($attribs, $content){
 	}
 	switch($type){
 		case 'img' :
-			$_imgDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$_imgDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 			if($editable){
 				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){

@@ -114,11 +114,7 @@ function we_tag_write($attribs){
 				}
 			}
 			$GLOBALS['we_' . $type . '_write_ok'] = true;
-			$checkType = ($type === 'document' ? 'we_document' : 'we_object');
-			checkAndCreateImage($name, $checkType);
-			checkAndCreateFlashmovie($name, $checkType);
-			checkAndCreateQuicktime($name, $checkType);
-			checkAndCreateBinary($name, $checkType);
+			checkAndCreateBinary($name, ($type === 'document' ? 'we_document' : 'we_object'));
 
 			$GLOBALS['we_' . $type][$name]->i_checkPathDiffAndCreate();
 			if(!$objname){
@@ -256,286 +252,121 @@ function we_tag_write($attribs){
 	}
 	if(isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START']){
 		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]); //fix #8051
-		$GLOBALS['we_' . $type . '_session_' . $name] = array();
-		//FIXME: There is no $GLOBALS['we_' . $type . '_session_' . $name]. Should it be $GLOBALS['weS']['we'...?
-	}
-}
-
-function checkAndCreateFlashmovie($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-	$regs = array();
-	foreach($_REQUEST as $key => $_flashmovieDataId){
-		if(preg_match('|^WE_UI_FLASHMOVIE_DATA_ID_(.*)$|', $key, $regs)){
-
-			$_flashName = $regs[1];
-			$flashId = isset($_SESSION[$_flashmovieDataId]['id']) ? $_SESSION[$_flashmovieDataId]['id'] : 0;
-			if(isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] == 1){
-
-				if($flashId){
-					$flashDocument = new we_flashDocument();
-					$flashDocument->initByID($flashId);
-					if($flashDocument->WebUserID == $webuserId){
-						//everything ok, now delete
-						we_base_delete::deleteEntry($flashId, FILE_TABLE);
-						$GLOBALS[$type][$formname]->setElement($_flashName, 0);
-					}
-				}
-			} elseif(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
-				if(substr($_SESSION[$_flashmovieDataId]['type'], 0, 29) == we_base_ContentTypes::FLASH){
-					$flashDocument = new we_flashDocument();
-
-					if($flashId){
-						// document has already an image
-						// so change binary data
-						$flashDocument->initByID($flashId);
-					}
-
-					$flashDocument->Filename = $_SESSION[$_flashmovieDataId]['fileName'];
-					$flashDocument->Extension = $_SESSION[$_flashmovieDataId]['extension'];
-					$flashDocument->Text = $_SESSION[$_flashmovieDataId]['text'];
-
-					if(!$flashId){
-						$flashDocument->setParentID($_SESSION[$_flashmovieDataId]['parentid']);
-					}
-					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != '/') ? '/' : '') . $flashDocument->Text;
-
-					$flashDocument->setElement('width', $_SESSION[$_flashmovieDataId]['imgwidth'], 'attrib');
-					$flashDocument->setElement('height', $_SESSION[$_flashmovieDataId]['imgheight'], 'attrib');
-					$flashDocument->setElement('origwidth', $_SESSION[$_flashmovieDataId]['imgwidth'], 'attrib');
-					$flashDocument->setElement('origheight', $_SESSION[$_flashmovieDataId]['imgheight'], 'attrib');
-
-					$flashDocument->setElement('type', we_base_ContentTypes::FLASH, 'attrib');
-
-					$flashDocument->setElement('data', $_SESSION[$_flashmovieDataId]['serverPath'], 'image');
-
-					$flashDocument->setElement('filesize', $_SESSION[$_flashmovieDataId]['size'], 'attrib');
-
-					$flashDocument->Table = FILE_TABLE;
-					$flashDocument->Published = time();
-					$flashDocument->WebUserID = $webuserId;
-					$flashDocument->we_save();
-					$newId = $flashDocument->ID;
-
-					$t = explode('_', $flashDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$flashDocument->Filename = $fn;
-					$flashDocument->Path = $flashDocument->getParentPath() . (($flashDocument->getParentPath() != '/') ? '/' : '') . $flashDocument->Filename . $flashDocument->Extension;
-					$flashDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_flashName, $newId);
-				}
-			}
-			if(isset($_SESSION[$_flashmovieDataId])){
-				unset($_SESSION[$_flashmovieDataId]);
-			}
-		}
-	}
-}
-
-function checkAndCreateQuicktime($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-	$regs = array();
-	foreach($_REQUEST as $key => $_quicktimeDataId){
-		if(preg_match('|^WE_UI_QUICKTIME_DATA_ID_(.*)$|', $key, $regs)){
-			$_quicktimeName = $regs[1];
-			$quicktimeId = isset($_SESSION[$_quicktimeDataId]['id']) ? $_SESSION[$_quicktimeDataId]['id'] : 0;
-			if(isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete'] == 1){
-
-				if($quicktimeId){
-					$quicktimeDocument = new we_quicktimeDocument();
-					$quicktimeDocument->initByID($quicktimeId);
-					if($quicktimeDocument->WebUserID == $webuserId){
-						//everything ok, now delete
-						we_base_delete::deleteEntry($quicktimeId, FILE_TABLE);
-						$GLOBALS[$type][$formname]->setElement($_quicktimeName, 0);
-					}
-				}
-			} elseif(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
-				if(substr($_SESSION[$_quicktimeDataId]['type'], 0, 15) == we_base_ContentTypes::QUICKTIME){
-					$quicktimeDocument = new we_quicktimeDocument();
-
-					if($quicktimeId){
-						// document has already an image
-						// so change binary data
-						$quicktimeDocument->initByID(
-							$quicktimeId);
-					}
-
-					$quicktimeDocument->Filename = $_SESSION[$_quicktimeDataId]['fileName'];
-					$quicktimeDocument->Extension = $_SESSION[$_quicktimeDataId]['extension'];
-					$quicktimeDocument->Text = $_SESSION[$_quicktimeDataId]['text'];
-
-					if(!$quicktimeId){
-						$quicktimeDocument->setParentID($_SESSION[$_quicktimeDataId]['parentid']);
-					}
-					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != '/') ? '/' : '') . $quicktimeDocument->Text;
-
-					//$quicktimeDocument->setElement('width', $_SESSION[$_quicktimeDataId]['imgwidth'], 'attrib');
-					//$quicktimeDocument->setElement('height', $_SESSION[$_quicktimeDataId]['imgheight'], 'attrib');
-					//$quicktimeDocument->setElement('origwidth', $_SESSION[$_quicktimeDataId]['imgwidth']);
-					//$quicktimeDocument->setElement('origheight', $_SESSION[$_quicktimeDataId]['imgheight']);
-
-					$quicktimeDocument->setElement('type', we_base_ContentTypes::QUICKTIME, 'attrib');
-
-					$quicktimeDocument->setElement('data', $_SESSION[$_quicktimeDataId]['serverPath'], 'image');
-
-					$quicktimeDocument->setElement('filesize', $_SESSION[$_quicktimeDataId]['size'], 'attrib');
-
-					$quicktimeDocument->Table = FILE_TABLE;
-					$quicktimeDocument->Published = time();
-					$quicktimeDocument->WebUserID = $webuserId;
-					$quicktimeDocument->we_save();
-					$newId = $quicktimeDocument->ID;
-
-					$t = explode('_', $quicktimeDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$quicktimeDocument->Filename = $fn;
-					$quicktimeDocument->Path = $quicktimeDocument->getParentPath() . (($quicktimeDocument->getParentPath() != '/') ? '/' : '') . $quicktimeDocument->Filename . $quicktimeDocument->Extension;
-					$quicktimeDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_quicktimeName, $newId);
-				}
-			}
-			if(isset($_SESSION[$_quicktimeDataId])){
-				unset($_SESSION[$_quicktimeDataId]);
-			}
-		}
-	}
-}
-
-function checkAndCreateImage($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-	$regs = array();
-	foreach($_REQUEST as $key => $_imgDataId){
-		if(preg_match('|^WE_UI_IMG_DATA_ID_(.*)$|', $key, $regs)){
-			$_imgName = $regs[1];
-			$imgId = isset($_SESSION[$_imgDataId]['id']) ? $_SESSION[$_imgDataId]['id'] : 0;
-			if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete'] == 1){
-
-				if($imgId){
-					$imgDocument = new we_imageDocument();
-					$imgDocument->initByID($imgId);
-					if($imgDocument->WebUserID == $webuserId){
-						//everything ok, now delete
-						we_base_delete::deleteEntry($imgId, FILE_TABLE);
-						$GLOBALS[$type][$formname]->setElement($_imgName, 0);
-					}
-				}
-			} elseif(isset($_SESSION[$_imgDataId]['serverPath'])){
-				if(substr($_SESSION[$_imgDataId]['type'], 0, 6) === 'image/'){
-					$imgDocument = new we_imageDocument();
-
-					if($imgId){
-						// document has already an image
-						// so change binary data
-						$imgDocument->initByID($imgId);
-					} else {
-						$imgDocument->setParentID($_SESSION[$_imgDataId]['parentid']);
-					}
-
-					$imgDocument->Filename = $_SESSION[$_imgDataId]['fileName'];
-					$imgDocument->Extension = $_SESSION[$_imgDataId]['extension'];
-					$imgDocument->Text = $_SESSION[$_imgDataId]['text'];
-					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Text;
-
-					$imgDocument->setElement('width', $_SESSION[$_imgDataId]['imgwidth'], 'attrib');
-					$imgDocument->setElement('height', $_SESSION[$_imgDataId]['imgheight'], 'attrib');
-					$imgDocument->setElement('origwidth', $_SESSION[$_imgDataId]['imgwidth'], 'attrib');
-					$imgDocument->setElement('origheight', $_SESSION[$_imgDataId]['imgheight'], 'attrib');
-					$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
-					$imgDocument->setElement('data', $_SESSION[$_imgDataId]['serverPath'], 'image');
-					$imgDocument->setElement('filesize', $_SESSION[$_imgDataId]['size'], 'attrib');
-
-					$imgDocument->Table = FILE_TABLE;
-					$imgDocument->Published = time();
-					$imgDocument->WebUserID = $webuserId;
-					$imgDocument->we_save();
-					$newId = $imgDocument->ID;
-
-					$t = explode('_', $imgDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$imgDocument->Filename = $fn;
-					$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Filename . $imgDocument->Extension;
-					$imgDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_imgName, $newId);
-				}
-			}
-			if(isset($_SESSION[$_imgDataId])){
-				unset($_SESSION[$_imgDataId]);
-			}
-		}
 	}
 }
 
 function checkAndCreateBinary($formname, $type = 'we_document'){
 	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 	$regs = array();
-	foreach($_REQUEST as $key => $_binaryDataId){
-		if(preg_match('|^WE_UI_BINARY_DATA_ID_(.*)$|', $key, $regs)){
-			$_binaryName = $regs[1];
-			$binaryId = isset($_SESSION[$_binaryDataId]['id']) ? $_SESSION[$_binaryDataId]['id'] : 0;
-			if(isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] == 1){
 
-				if($binaryId){
-					$binaryDocument = new we_otherDocument();
-					$binaryDocument->initByID($binaryId);
-					if($binaryDocument->WebUserID == $webuserId){
-						//everything ok, now delete
-						we_base_delete::deleteEntry($binaryId, FILE_TABLE);
-						$GLOBALS[$type][$formname]->setElement($_binaryName, 0);
-					}
-				}
-			} elseif(isset($_SESSION[$_binaryDataId]['serverPath'])){
-				if(substr($_SESSION[$_binaryDataId]['type'], 0, 12) === 'application/'){
-					$binaryDocument = new we_otherDocument();
-
-					if($binaryId){
-						// document has already an image
-						// so change binary data
-						$binaryDocument->initByID(
-							$binaryId);
-					}
-
-					$binaryDocument->Filename = $_SESSION[$_binaryDataId]['fileName'];
-					$binaryDocument->Extension = $_SESSION[$_binaryDataId]['extension'];
-					$binaryDocument->Text = $_SESSION[$_binaryDataId]['text'];
-
-					if(!$binaryId){
-						$binaryDocument->setParentID($_SESSION[$_binaryDataId]['parentid']);
-					}
-					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != '/') ? '/' : '') . $binaryDocument->Text;
-
-
-					$binaryDocument->setElement('type', we_base_ContentTypes::APPLICATION, 'attrib');
-
-					$binaryDocument->setElement('data', $_SESSION[$_binaryDataId]['serverPath'], 'application');
-
-					$binaryDocument->setElement('filesize', $_SESSION[$_binaryDataId]['size'], 'attrib');
-
-					$binaryDocument->Table = FILE_TABLE;
-					$binaryDocument->Published = time();
-					$binaryDocument->WebUserID = $webuserId;
-					$binaryDocument->we_save();
-
-					$newId = $binaryDocument->ID;
-
-					$t = explode('_', $binaryDocument->Filename);
-					$t[1] = $newId;
-					$fn = implode('_', $t);
-					$binaryDocument->Filename = $fn;
-					$binaryDocument->Path = $binaryDocument->getParentPath() . (($binaryDocument->getParentPath() != '/') ? '/' : '') . $binaryDocument->Filename . $binaryDocument->Extension;
-					$binaryDocument->we_save();
-
-					$GLOBALS[$type][$formname]->setElement($_binaryName, $newId);
+	$checks = array(
+		'BINARY' => array(
+			'we_otherDocument',
+			'application/',
+			we_base_ContentTypes::APPLICATION,
+			'application',
+			array()
+		),
+		'FLASHMOVIE' => array(
+			'we_flashDocument',
+			we_base_ContentTypes::FLASH,
+			we_base_ContentTypes::FLASH,
+			'image',
+			array(
+				'width' => 'imgwidth',
+				'height' => 'imgheight',
+				'origwidth' => 'imgwidth',
+				'origheight' => 'imgheight'
+			)
+		),
+		'QUICKTIME' => array(
+			'we_quicktimeDocument',
+			we_base_ContentTypes::QUICKTIME,
+			we_base_ContentTypes::QUICKTIME,
+			'image',
+			array()
+		),
+		'IMG' => array(
+			'we_imageDocument',
+			'image/',
+			we_base_ContentTypes::IMAGE,
+			'image',
+			array(
+				'width' => 'imgwidth',
+				'height' => 'imgheight',
+				'origwidth' => 'imgwidth',
+				'origheight' => 'imgheight'
+			)
+		),
+	);
+	foreach($_REQUEST as $key => $dataID){
+		$doc = '';
+		foreach($checks as $check => $checkData){
+			if(preg_match('|^WE_UI_' . $check . '_DATA_ID_(.*)$|', $key, $regs)){
+				list($doc, $matchType, $contentType, $dataType, $moreAttribs) = $checkData;
+				break;
+			}
+		}
+		if(!$doc){
+			continue;
+		}
+		$name = $regs[1];
+		$id = isset($_SESSION[$dataID]['id']) ? $_SESSION[$dataID]['id'] : 0;
+		if(isset($_SESSION[$dataID]['doDelete']) && $_SESSION[$dataID]['doDelete'] == 1){
+			if($id){
+				$document = new $doc();
+				$document->initByID($id);
+				if($document->WebUserID == $webuserId){
+					//everything ok, now delete
+					we_base_delete::deleteEntry($id, FILE_TABLE);
+					$GLOBALS[$type][$formname]->setElement($name, 0);
 				}
 			}
-			if(isset($_SESSION[$_binaryDataId])){
-				unset($_SESSION[$_binaryDataId]);
+			unset($_SESSION[$dataID]);
+			continue;
+		}
+		if(isset($_SESSION[$dataID]['serverPath'])){
+			if(strpos($_SESSION[$dataID]['type'], $matchType) === 0){
+				$document = new $doc();
+
+				if($id){
+					// document has already an image
+					// so change binary data
+					$document->initByID($id);
+				} else {
+					$document->setParentID($_SESSION[$dataID]['parentid']);
+				}
+
+				$document->Table = FILE_TABLE;
+				$document->Published = time();
+				$document->WebUserID = $webuserId;
+				$document->Filename = $_SESSION[$dataID]['fileName'];
+				$document->Extension = $_SESSION[$dataID]['extension'];
+				$document->Text = $_SESSION[$dataID]['text'];
+				$document->Path = rtrim($document->getParentPath(), '/') . '/' . $document->Text;
+				$document->setElement('type', $contentType, 'attrib');
+				$document->setElement('data', $_SESSION[$dataID]['serverPath'], $dataType);
+				$document->setElement('filesize', $_SESSION[$dataID]['size'], 'attrib');
+				foreach($moreAttribs as $eName => $sKey){
+					$document->setElement($eName, $_SESSION[$dataID][$sKey], 'attrib');
+				}
+
+				$document->we_save();
+
+				$newId = $document->ID;
+
+				$t = explode('_', $document->Filename);
+				$t[1] = $newId;
+				$fn = implode('_', $t);
+				$document->Filename = $fn;
+				$document->Path = rtrim($document->getParentPath(), '/') . '/' . $document->Filename . $document->Extension;
+				$document->we_save();
+
+				$GLOBALS[$type][$formname]->setElement($name, $newId);
 			}
+		}
+		if(isset($_SESSION[$dataID])){
+			unset($_SESSION[$dataID]);
 		}
 	}
 }

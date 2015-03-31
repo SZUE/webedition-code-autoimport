@@ -80,23 +80,7 @@ abstract class we_util_Strings{
 	 * @return array
 	 */
 	static function makeArrayFromCSV($csv){
-		$csv = str_replace("\\,", "###komma###", $csv);
-
-		if($csv{0} === ','){
-			$csv = substr($csv, 1);
-		}
-		if(substr($csv, -1) === ','){
-			$csv = substr($csv, 0, strlen($csv) - 1);
-		}
-		if($csv == '' && $csv != '0'){
-			$foo = array();
-		} else {
-			$foo = explode(",", $csv);
-			for($i = 0; $i < count($foo); $i++){
-				$foo[$i] = str_replace("###komma###", ",", $foo[$i]);
-			}
-		}
-		return $foo;
+		return makeArrayFromCSV($csv);
 	}
 
 	/**

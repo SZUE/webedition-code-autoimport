@@ -41,10 +41,7 @@ function we_tag_href($attribs){
 
 	if($GLOBALS['we_doc'] instanceof we_objectFile){
 		$hrefArr = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
-		if(!is_array($hrefArr)){
-			$hrefArr = array();
-		}
-		return ($hrefArr ? we_document::getHrefByArray($hrefArr) : '');
+		return (is_array($hrefArr) && $hrefArr ? we_document::getHrefByArray($hrefArr) : '');
 	}
 
 	$nint = $name . we_base_link::MAGIC_INT_LINK;

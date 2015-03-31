@@ -832,7 +832,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[file_size]'),
-				'html' => round(($fs / 1024), 2) . '&nbsp;KB&nbsp;(' . number_format($fs, 0, ',', '.') . '&nbsp;Byte)',
+				'html' => we_base_file::getHumanFileSize($fs) . '&nbsp;KB&nbsp;(' . we_base_file::getHumanFileSize($fs, we_base_file::SZ_BYTE) . ')',
 				'space' => $_space
 			);
 		}
