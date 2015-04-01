@@ -209,7 +209,8 @@ function weonclick(e){
 	protected function printFramesetJSFunctioWriteBody(){//FIXME: extension is display some pixel below, due to overflow:hidden, move to a new col to get rid of this.
 		ob_start();
 		?><script type="text/javascript"><!--
-					function writeBody(d) {
+
+					function writeBodyDocument(d) {
 				var body =
 								'<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' +
 								(we_editDirID ?
@@ -251,6 +252,9 @@ function weonclick(e){
 					top.fsbody.document.we_form.we_FolderText_tmp.focus();
 					top.fsbody.document.we_form.we_FolderText_tmp.select();
 				}
+			}
+			function writeBody(d) {
+			writeBodyDocument(d);
 			}
 			//-->
 		</script>
