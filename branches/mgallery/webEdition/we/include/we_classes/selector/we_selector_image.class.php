@@ -46,12 +46,12 @@ class we_selector_image extends we_selector_document{
 
 	protected function printFooterTable(){
 		//IE doesn't support slider correctly inside tables, disable this
-		return parent::printFooterTable(we_base_browserDetect::inst()->isIE() ? '' : '<input type="range" style="width:120px;height:20px;" name="zoom" min="50" step="25" max="250" onchange="parent.frames.fsbody.document.body.style.fontSize=this.value+\'%\';"/>');
+		return parent::printFooterTable(we_base_browserDetect::inst()->isIE() ? '<input name="zoom" type="hidden"/>' : '<input type="range" style="width:120px;height:20px;" name="zoom" min="50" step="25" max="250" value="100" onchange="top.fsbody.document.body.style.fontSize=this.value+\'%\';"/>');
 	}
 
 	protected function printCMDWriteAndFillSelectorHTML(){
 		return parent::printCMDWriteAndFillSelectorHTML() .
-			'parent.frames.fsbody.document.body.style.fontSize=parent.frames.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
+			'top.fsbody.document.body.style.fontSize=top.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
 	}
 
 	//FIXME: printFramesetSelectFileHTML should only set a class "selected", not the background itself
@@ -98,7 +98,7 @@ class we_selector_image extends we_selector_document{
 					//-->
 		</script>
 		<?php
-		return $ret + ob_get_clean();
+		return $ret . ob_get_clean();
 	}
 
 	//FIXME: get/set view using tblFile.viewType
@@ -106,8 +106,8 @@ class we_selector_image extends we_selector_document{
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 
 		return parent::printHeaderTableExtraCols() .
-			'<td>' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
-		<td>' . we_html_button::create_button("image:listview", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
+			'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
+		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button("image:listview", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
 			'<td>' .
 			we_html_element::jsElement('newFileState=' . $newFileState . ';') .
 			($this->filter && isset($this->ctb[$this->filter]) ?

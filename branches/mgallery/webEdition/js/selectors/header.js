@@ -80,7 +80,23 @@ function selectIt() {
 	a.selectedIndex = a.options.length - 1;
 }
 
-function setview(view){
-	top.options.view=view;
+function setview(view) {
+	top.options.view = view;
+	var zoom = top.fsfooter.document.getElementsByName("zoom")[0];
+	switch (view) {
+		case 'list':
+			zoom.value = 100;
+			zoom.onchange();
+			zoom.disabled = true;
+			zoom.style.display = "none";
+			break;
+		case 'icons':
+			zoom.disabled = false;
+			zoom.style.display = "inline";
+			break;
+	}
+	top.fsheader.document.getElementById('list').style.display = (view == 'list' ? "none" : "table-cell");
+	top.fsheader.document.getElementById('icons').style.display = (view == 'icons' ? "none" : "table-cell");
+
 	top.writeBody(top.fsbody.document.body);
 }
