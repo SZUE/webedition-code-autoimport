@@ -269,7 +269,7 @@ class we_collection extends we_root{
 	function formCollection(){
 		$checkboxes = we_html_forms::checkboxWithHidden($this->insertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_insertRecursive', 'Verzeichnisse rekursiv einfügen') .
 			we_html_forms::checkboxWithHidden($this->useEmpty, 'we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 'Leere Felder im Anschluss an die Einfügeposition auffüllen') .
-			we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $GLOBALS['we_doc']->Name . '_doubleOk', 'Doubletten zulassen');
+			we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $GLOBALS['we_doc']->Name . '_doubleOk', 'Dubletten zulassen');
 
 		$items = $this->getCollectionVerified(false, true, true);
 		if($items[count($items) - 1]['id'] !== -1){
