@@ -142,6 +142,18 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
+	function formInput2WithSelect($width, $name, $size = 25, $type = 'txt', $attribs = '', $selValues = array(), $selWidth = 200, $reload = false, $resetSel = false){
+		if(!$type){
+			$ps = $this->$name;
+		}
+		$doReload = $reload ? "top.we_cmd('reload_editpage');" : '';
+		$doReset = $resetSel ? "this.selectedIndex=0;" : '';
+		$inputName = $type ? ('we_' . $this->Name . '_' . $type . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name);
+		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $selValues, 1, '', false, array("onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;" . $doReset . $doReload), "value", $selWidth);
+
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput($inputName, $size, ($type && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), '', $attribs, $type, $width), (g_l('weClass', '[' . $name . ']', true)? : $name), '', '', $sel);
+	}
+
 	function formInputField($elementtype, $name, $text, $size, $width, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
 		if(!$elementtype){
 			$ps = $this->$name;
@@ -237,8 +249,6 @@ abstract class we_class{
 		}
 		$vals = we_html_tools::groupArray($vals, false, 1);
 		$myname = 'we_' . $this->Name . '_' . $name;
-
-
 
 		$ps = $this->$name;
 

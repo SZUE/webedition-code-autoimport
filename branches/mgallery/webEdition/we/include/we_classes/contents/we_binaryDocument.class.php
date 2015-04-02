@@ -106,30 +106,21 @@ class we_binaryDocument extends we_document{
 		if(parent::we_save($resave)){
 			$this->DocChanged = false;
 			$this->setElement('data', $this->getSitePath());
-			$this->i_writeMetaProposals();
+			$this->i_writeMetaValues();
 			return $this->insertAtIndex();
 		}
 
 		return false;
 	}
 
-	private function i_writeMetaProposals(){
-		$this->DB_WE->query('SELECT tag,type,importFrom,proposals FROM ' . METADATA_TABLE);
+	private function i_writeMetaValues(){
+		$this->DB_WE->query('SELECT tag,type,importFrom,mode FROM ' . METADATA_TABLE);
 		foreach($this->DB_WE->getAll() as $meta){
-			if($this->getElement($meta['tag'])){
-				$value = $this->DB_WE->escape($this->getElement($meta['tag']));
-				$proposals = $meta['proposals'] ? explode("','", $meta['proposals']) : array();
-
-				if(!in_array($value, $proposals)){
-					$proposals[] = $value;
-					sort($proposals);
-					$this->DB_WE->query('REPLACE INTO ' . METADATA_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'tag' => $meta['tag'],
-							'type' => $meta['type'],
-							'importFrom' => $meta['importFrom'],
-							'proposals' => implode("','", $proposals)
-						)));
-				}
+			if($meta['mode'] === 'auto' && $meta['type'] === 'textfield' && $this->getElement($meta['tag'])){
+				$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'tag' => $meta['tag'],
+						'value' => $this->getElement($meta['tag'])
+					)));
 			}
 		}
 	}
@@ -272,7 +263,7 @@ class we_binaryDocument extends we_document{
 		 */
 		// first we fetch all defined metadata fields from tblMetadata:
 		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
-
+		$_defined_values = we_metadata_metaData::getDefinedMetaValues(true);
 
 		// show an alert if there are none
 		if(empty($_defined_fields)){
@@ -284,33 +275,33 @@ class we_binaryDocument extends we_document{
 		$_fieldcount = count($_defined_fields);
 		$_fieldcounter = (int) 0; // needed for numbering the table rows
 		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
-		$_mdcontent = "";
+		$_mdcontent = '';
 		for($i = 0; $i < $_fieldcount; $i++){
 			$_tagName = $_defined_fields[$i]["tag"];
-			if($_tagName != "Title" && $_tagName != "Description" && $_tagName != "Keywords"){
-				$_type = $_defined_fields[$i]["type"];
-
+			if($_tagName != 'Title' && $_tagName != 'Description' && $_tagName != 'Keywords'){
+				$_type = $_defined_fields[$i]['type'];
+				$_mode = $_defined_fields[$i]['mode'];
 
 				switch($_type){
-
 					case 'textarea':
 						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
-
 					case 'wysiwyg':
 						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
-
 					case 'date':
 						$_inp = we_html_tools::htmlFormElementTable(
 								we_html_tools::getDateInput2('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName
 						);
 						break;
-
 					default:
-						$_inp = $this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"');
+						if($_mode === 'none'){
+							$_inp = $this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"');
+						} else {
+							array_unshift($_defined_values[$_tagName], '');
+							$_inp = $this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
+						}
 				}
-
 
 				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), $_inp);
 				$_fieldcounter++;

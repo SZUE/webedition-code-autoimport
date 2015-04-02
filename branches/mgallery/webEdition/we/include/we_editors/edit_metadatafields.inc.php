@@ -119,16 +119,28 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $
 function save_all_values(){
 	//SAVE METADATA FIELDS TO DB
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
-		t_e("props", $_REQUEST['metadataProposal'], we_base_request::_(we_base_request::STRING, 'metadataProposal', ''));
-		// save all fields
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METADATA_TABLE);
+		//$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METAVALUES_TABLE);
+
 		if(isset($_REQUEST['metadataTag']) && is_array($_REQUEST['metadataTag'])){
-			foreach($_REQUEST['metadataTag'] as $key => $value){
+			foreach(we_base_request::_(we_base_request::STRING, 'metadataTag', '') as $key => $value){
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . METADATA_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'tag' => $value,
 						'type' => we_base_request::_(we_base_request::STRING, 'metadataType', '', $key),
 						'importFrom' => we_base_request::_(we_base_request::RAW, 'metadataImportFrom', '', $key),
+						'mode' => we_base_request::_(we_base_request::RAW, 'metadataMode', '', $key)
 				)));
+			}
+
+			foreach(we_base_request::_(we_base_request::STRING, 'metadataProposal', '') as $key => $proposals){
+				foreach($proposals as $proposal){
+					if($proposal){
+						$GLOBALS['DB_WE']->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
+								'tag' => we_base_request::_(we_base_request::STRING, 'metadataTag', '', $key),
+								'value' => $proposal
+						)));
+					}
+				}
 			}
 		}
 	}
@@ -156,9 +168,8 @@ function build_dialog($selected_setting = 'ui'){
 		case 'dialog':
 			$_headline = we_html_element::htmlDiv(array('class' => 'weDialogHeadline', 'style' => 'padding:10px 25px 5px 25px;'), g_l('metadata', '[headline]'));
 
-			// read already defined metadata fields from db:
-			$GLOBALS['DB_WE']->query('SELECT * FROM ' . METADATA_TABLE);
-			$_defined_fields = $GLOBALS['DB_WE']->getAll();
+			$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
+			$_defined_values = we_metadata_metaData::getDefinedMetaValues();
 
 			$_metadata_types = array(
 				'textfield' => 'textfield',
@@ -166,11 +177,10 @@ function build_dialog($selected_setting = 'ui'){
 				//'wysiwyg' 	=> 'wysiwyg',
 				'date' => 'date'
 			);
-			
-			$_proposal_types = array(
-				'none' => 'keine',
-				'manually' => 'manuell',
 
+			$_metadata_modes = array(
+				'none' => 'keine',
+				'manual' => 'manuell',
 				'auto' => 'automatisch'
 			);
 
@@ -189,6 +199,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_adv_row = '';
 
 			foreach($_defined_fields as $key => $value){
+				$value['mode'] = $value['mode'] ? '' : 'none';
 				$_adv_row .= '
 <tr>
 	<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', '[tagname]') . '</strong></td>
@@ -196,7 +207,7 @@ function build_dialog($selected_setting = 'ui'){
 </tr>
 <tr id="metadataRow_' . $key . '">
 	<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
-	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont")) . '</td>
+	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "onchange" => "toggleType(this, " . $key . ")")) . '</td>
 	<td align="right" width="30">' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow(" . $_i . ")") . '</td>
 </tr>
 <tr id="metadataRow2_' . $key . '">
@@ -209,21 +220,31 @@ function build_dialog($selected_setting = 'ui'){
 	</td>
 </tr>
 <tr id="metadataRow3_' . $key . '">
-	<td style="padding-bottom:4px;padding-right:5px;">
-		<div class="small">Vorschlagsliste</div>' . we_html_tools::htmlSelect('metadataProposalType_' . $key, $_proposal_types, 1, "", false, array('class' => "defaultfont", 'style' => "width:98%", 'onchange' => "togglePropositionTable(this, " . $key . ");")) . '
+	<td style="padding-bottom:1px;padding-right:5px;">
+		<div class="small">Vorschlagsliste</div>' . we_html_tools::htmlSelect('metadataMode[' . $key . ']', $_metadata_modes, 1, $value['mode'], false, array(($value['type'] === 'textfield' ? '' : 'disabled') => ($value['type'] === 'textfield' ? '' : '1') , 'class' => "defaultfont", 'style' => "width:98%", 'onchange' => "togglePropositionTable(this, " . $key . ");")) . '
 	</td>
-	<td colspan="2" style="padding-bottom:4px;">
+	<td colspan="2" style="padding-bottom:1px;">
 	</td>
 </tr>
 <tr id="metadataRow4_' . $key . '">
 	<td colspan="3" style="padding-bottom:16px;padding-right:5px;">
-		<table id="propositionTable_' . $key . '" style="width:100%;border:1px solid gray;display:none;padding-top:8px;">
-			<tr>
-				<td width="15%"></td>
-				<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, '', 255, "", "text", 310) . '</td>
-				<td width="25">' . we_html_button::create_button("image:btn_function_trash", "javascript:delProposition(this)") . '</td>
-			</tr>
-			<tr>
+		<table id="proposalTable_' . $key . '" style="width:100%;border:1px solid gray;display:' . ($value['mode'] === 'none' ? 'none' : 'block')  . ';padding-top:8px;">';
+			if(isset($_defined_values[$value['tag']])){
+				foreach($_defined_values[$value['tag']] as $proposal){
+					$_adv_row .= '<tr>
+						<td width="15%"></td>
+						<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, $proposal, 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
+						<td width="25">' . we_html_button::create_button("image:btn_function_trash", "javascript:delProposition(this)") . '</td>
+					</tr>';
+				}
+			} else {
+				$_adv_row .= '<tr>
+					<td width="15%"></td>
+					<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, '', 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
+					<td width="25">' . we_html_button::create_button("image:btn_function_trash", "javascript:delProposition(this)") . '</td>
+				</tr>';
+			}
+			$_adv_row .= '<tr>
 				<td align="right" width="15%"></td>
 				<td align="left" style="">' . we_html_button::create_button('image:btn_function_plus', 'javascript:addProposition(this, ' . $key . ')') . '</td>
 				<td width="25"></td>
@@ -243,16 +264,29 @@ function build_dialog($selected_setting = 'ui'){
 
 			$js = we_html_element::jsElement('
 	function togglePropositionTable(sel, index){
-		row = document.getElementById("propositionTable_" + index);
-		row.style.display = sel.value === "manually" ? "block" : "none";
+		var row = document.getElementById("proposalTable_" + index);
+		row.style.display = sel.value === "none" ? "none" : "block";
+
+		var fields = row.getElementsByTagName("INPUT");
+		for(var i = 0; i < fields.length; i++){
+			fields[i].disabled = sel.value === "auto" ? true : false;
+		}
+	}
+
+	function toggleType(sel, index){
+		var row = document.getElementById("proposalTable_" + index);
+		var selMode = document.forms[0].elements["metadataMode[" + index + "]"];
+
+		row.style.display = sel.value !== "textfield" ? "none" : (selMode.options[selMode.selectedIndex].value === "none" ? "none" : "block");
+		selMode.disabled = sel.value === "textfield" ? false : true;
 	}
 
 	function addRow() {
 		var tagInp = "' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
 		var importInp = "' . addslashes(we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
-		var typeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, "textfield", false, array('class' => "defaultfont")))) . '";
-		var fieldSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, "", false, array('class' => "defaultfont", 'style' => "width:100%", 'onchange' => "addFieldToInput(this,__we_new_id__)")))) . '";
-		var propositionTypeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataProposalType_[__we_new_id__]', $_proposal_types, 1, "none", false, array('class' => "defaultfont", 'style' => "width:100%", 'onchange' => 'togglePropositionTable(this, __we_new_id__)')))) . '";
+		var typeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, 'textfield', false, array('class' => 'defaultfont', 'onchange' => 'toggleType(this, __we_new_id__)')))) . '";
+		var fieldSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, '', false, array('class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)')))) . '";
+		var modeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $_metadata_modes, 1, 'none', false, array('class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)')))) . '";
 		var addPropositionBtn = "' . str_replace("\n", "\\n", addslashes(we_html_button::create_button('image:btn_function_plus', 'javascript:addProposition(this, __we_new_id__)'))) . '";
 
 		var elem = document.getElementById("metadataTable");
@@ -275,17 +309,17 @@ function build_dialog($selected_setting = 'ui'){
 			newRow = document.createElement("TR");
 			newRow.setAttribute("id", "metadataRow_" + newID);
 				cell = document.createElement("TD");
-				cell.innerHTML=tagInp.replace(/__we_new_id__/,newID);
+				cell.innerHTML=tagInp.replace(/__we_new_id__/g,newID);
 				cell.width="210";
 			newRow.appendChild(cell);
 				cell = document.createElement("TD");
-				cell.innerHTML=typeSel.replace(/__we_new_id__/,newID);
+				cell.innerHTML=typeSel.replace(/__we_new_id__/g,newID);
 				cell.width="200";
 			newRow.appendChild(cell);
 				cell = document.createElement("TD");
 				cell.width="30";
 				cell.align="right"
-				cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+newID+')") . '\';
+				cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow(' + newID + ')") . '\';
 			newRow.appendChild(cell);
 			elem.appendChild(newRow);
 
@@ -305,8 +339,8 @@ function build_dialog($selected_setting = 'ui'){
 			newRow = document.createElement("TR");
 			newRow.setAttribute("id", "metadataRow3_" + newID);
 				cell = document.createElement("TD");
-				cell.style.paddingBottom="4px";
-				cell.innerHTML=\'<div class="small">Vorschlagsliste</div>\'+propositionTypeSel.replace(/__we_new_id__/g,newID);
+				cell.style.paddingBottom="1px";
+				cell.innerHTML=\'<div class="small">Vorschlagsliste</div>\' + modeSel.replace(/__we_new_id__/g,newID);
 			newRow.appendChild(cell);
 				cell = document.createElement("TD");
 				cell.setAttribute("colspan",2);
@@ -320,7 +354,7 @@ function build_dialog($selected_setting = 'ui'){
 				cell.style.paddingBottom = "16px";
 				cell.paddingRight = "5px";
 					var nestedTable = document.createElement("TABLE");
-					nestedTable.setAttribute("id", "propositionTable_" + newID);
+					nestedTable.setAttribute("id", "proposalTable_" + newID);
 					nestedTable.style.width = "100%";
 					nestedTable.style.display = "none";
 					//nestedTable.style.backgroundColor = "white";
@@ -372,7 +406,7 @@ function build_dialog($selected_setting = 'ui'){
 	}
 
 	function getPropositionRow(indexMeta, indexProp){
-		var propositionInp = "' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '";
+		var proposalInp = "' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '";
 		var delPropositionBtn = "' . str_replace("\n", "\\n", addslashes(we_html_button::create_button('image:btn_function_trash', 'javascript:delProposition(this)'))) . '";
 
 		var row = document.createElement("TR");
@@ -381,7 +415,7 @@ function build_dialog($selected_setting = 'ui'){
 		row.appendChild(cell);
 
 		cell = document.createElement("TD");
-		cell.innerHTML = propositionInp.replace(/__we_meta_id__/,indexMeta).replace(/__we_prop_id__/,indexProp);
+		cell.innerHTML = proposalInp.replace(/__we_meta_id__/,indexMeta).replace(/__we_prop_id__/,indexProp);
 		row.appendChild(cell);
 
 		cell = document.createElement("TD");
