@@ -119,16 +119,21 @@ if(($_userID && $_userID != $_SESSION['user']['ID']) || (we_base_request::_(we_b
 } else { //	view with template
 	$tid = we_base_request::_(we_base_request::INT, 'we_cmd', (isset($we_objectTID) ? $we_objectTID : 0), 2);
 
-	$GLOBALS['we_obj'] = new we_objectFile();
-	$GLOBALS['we_obj']->initByID(we_base_request::_(we_base_request::INT, 'we_objectID', 0), OBJECT_FILES_TABLE);
-	$GLOBALS['we_obj']->setTitleAndDescription();
+	if(($oid = we_base_request::_(we_base_request::INT, 'we_objectID', 0))){
+		$GLOBALS['we_obj'] = new we_objectFile();
+		$GLOBALS['we_obj']->initByID($oid, OBJECT_FILES_TABLE);
+		$GLOBALS['we_obj']->setTitleAndDescription();
+	}
 
-	if(!$GLOBALS['we_obj']->Published){
+	if(!$oid || !$GLOBALS['we_obj']->Published){
 		we_html_tools::setHttpCode(404);
 
-		$path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE);
-		if($path){
-			header('Location: ' . $path);
+		if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
+			//if set, we show object again!
+			unset($_REQUEST);
+			include($_SERVER['DOCUMENT_ROOT'] . $path);
+		} else {
+			echo 'Sorry, we are unable to locate your requested Page.';
 		}
 		exit;
 	}
@@ -176,6 +181,8 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 				if($_errorDocId){
 					unset($_errorDocId);
 					we_html_tools::setHttpCode(401);
+					//if set, we show object again!
+					unset($_REQUEST);
 					include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
 					unset($_errorDocPath);
 				}
@@ -190,21 +197,22 @@ if(!isset($pid) || !($pid)){
 	$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"');
 }
 
-if(!isset($tid) || !($tid)){
-	$tid = $GLOBALS['we_obj']->getTemplateID($pid);
-}
+$tid = (!isset($tid) || !($tid) ? $GLOBALS['we_obj']->getTemplateID($pid) : $tid);
 
 if(!$tid){
-	$tids = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID)));
-	if($tids){
+	if(($tids = explode(',', f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($GLOBALS['we_obj']->TableID))))){
 		$tid = $tids[0];
 	}
 }
-
 if(!$tid){
 	we_html_tools::setHttpCode(404);
-	if(($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
-		header('Location: ' . $path);
+
+	if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
+		//if set, we show object again!
+		unset($_REQUEST);
+		include($_SERVER['DOCUMENT_ROOT'] . $path);
+	} else {
+		echo 'Sorry, we are unable to locate your requested Page.';
 	}
 	exit;
 }

@@ -34,7 +34,7 @@ function we_tag_printVersion($attribs, $content){
 
 	$doc = we_getDocForTag($docAttr);
 
-	$id = isset($doc->OF_ID) ? $doc->OF_ID : $doc->ID;
+	$id = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj']->ID : $doc->ID;
 
 	$_query_string = array();
 

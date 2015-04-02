@@ -312,8 +312,7 @@ if(we_backup_preparer::prepareImport() === true){
 		print "\nUpdate...\n";
 	}
 
-	$updater = new we_updater();
-	$updater->doUpdate();
+	we_updater::doUpdate();
 } else {
 	print we_backup_preparer::getErrorMessage();
 }

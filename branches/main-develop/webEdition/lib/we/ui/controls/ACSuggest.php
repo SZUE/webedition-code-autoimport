@@ -445,7 +445,7 @@ HTS;
 		for($i = 0; $i < count($this->inputfields); $i++){
 			$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);\n";
 			$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
-			//$weWorkspacePathArray = we_util_Strings::makeArrayFromCSV(we_util_Path::id2Path(get_ws($this->tables[$i])));
+			//$weWorkspacePathArray = makeArrayFromCSV(we_util_Path::id2Path(get_ws($this->tables[$i])));
 			$weWorkspacePathArray = "";
 			$weWorkspacePathArrayJS = "";
 			if(is_array($weWorkspacePathArray)){

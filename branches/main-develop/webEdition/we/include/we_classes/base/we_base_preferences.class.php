@@ -98,7 +98,10 @@ class we_base_preferences{
 				$content = we_base_file::load($file);
 				//leave settings in their current state
 				foreach($leave as $settingname){
-					$content = self::changeSourceCode('define', $content, $settingname, constant($settingname), true);
+					if($settingname == 'DB_SET_CHARSET'){
+						continue;
+					}
+					$content = self::changeSourceCode('define', $content, $settingname, (defined($settingname) ? constant($settingname) : ''), true);
 				}
 				//moved constants
 				$content = self::changeSourceCode('define', $content, 'DB_SET_CHARSET', '', false);

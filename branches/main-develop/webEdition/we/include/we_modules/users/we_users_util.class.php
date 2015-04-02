@@ -213,32 +213,27 @@ abstract class we_users_util{
 
 	public static function getAllowedClasses(we_database_base $db = null){
 		if(!defined('OBJECT_FILES_TABLE')){
-			return '';
+			return array();
 		}
 		$db = ($db ? : new DB_WE());
 		$out = array();
-		$ws = get_ws();
-		$ofWs = get_ws(OBJECT_FILES_TABLE);
-		$ofWsArray = makeArrayFromCSV(id_to_path($ofWs, OBJECT_FILES_TABLE));
-		if(intval($ofWs) == 0){
-			$ofWs = 0;
-		}
-		if(intval($ws) == 0){
-			$ws = 0;
-		}
-		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE . ' WHERE IsFolder=0');
+		//FIXME: why do we need the Workspaces of documents do determine allowed classes??
+		$ws = get_ws(FILE_TABLE, $db);
+		$ofWs = get_ws(OBJECT_FILES_TABLE, false, true);
+		$ofWsArray = id_to_path($ofWs, OBJECT_FILES_TABLE, $db, false, true);
+
+		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE);
 
 		while($db->next_record()){
-			$path = $db->f('Path');
-			if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, null, true)){
-				$path2 = $path . '/';
+			if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$db->f('Workspaces')) || in_workspace($db->f('Workspaces'), $ws, FILE_TABLE, $GLOBALS['DB_WE'], true)){
 				if(!$ofWs || permissionhandler::hasPerm('ADMINISTRATOR')){
 					$out[] = $db->f('ID');
 				} else {
+					$path = $db->f('Path') . '/';
 
-// object Workspace check (New since Version 4.x)
+// object Workspace check
 					foreach($ofWsArray as $w){
-						if($w == $db->f('Path') || (strlen($w) >= strlen($path2) && substr($w, 0, strlen($path2)) == ($path2))){
+						if($w == $db->f('Path') || (strlen($w) >= strlen($path) && substr($w, 0, strlen($path)) == ($path))){
 							$out[] = $db->f('ID');
 							break;
 						}

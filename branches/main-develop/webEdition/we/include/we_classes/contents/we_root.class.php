@@ -764,7 +764,7 @@ abstract class we_root extends we_class{
 		}
 		$this->update_filehash();
 		$a = $this->i_saveContentDataInDB();
-		if(!$resave && !$this instanceof we_class_folder){
+		if(!$resave && !($this instanceof we_class_folder)){
 			we_history::insertIntoHistory($this);
 		}
 		return $a;
@@ -1180,10 +1180,6 @@ abstract class we_root extends we_class{
 	}
 
 	protected function update_filehash(){
-
-	}
-
-	function correctFields(){
 
 	}
 

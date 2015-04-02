@@ -55,7 +55,7 @@ function we_tag_var($attribs){
 		case 'get' :
 			$return = we_base_util::rmPhp(we_base_request::filterVar(getArrayValue($_GET, null, $name_orig), $varType));
 			break;
-		case 'global' :
+		case 'global':
 			$return = getArrayValue($GLOBALS, null, $name_orig);
 			break;
 		case 'multiobject' :

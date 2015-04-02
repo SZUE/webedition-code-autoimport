@@ -76,7 +76,8 @@ function we_profiler($start = true){
 function we_tag($name, $attribs = array(), $content = ''){
 	//keep track of editmode
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
-	$user = weTag_getAttribute('user', $attribs);
+	//FIXME: do we support this????
+	$user = weTag_getAttribute('user', $attribs, array(), we_base_request::STRING_LIST);
 	if(defined('WE_PROFILER')){
 		$bt = WE_PROFILER_54 ? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1) : debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 		$prof = array('tag' => $name, 'line' => $bt[0]['line'], 'file' => $bt[0]['file'], 'time' => round((microtime(true) - WE_PROFILER), 5) . ' s', 'mem' => round(((memory_get_usage() / 1024))) . ' kB');
@@ -88,20 +89,23 @@ function we_tag($name, $attribs = array(), $content = ''){
 		$attribs['data-file'] = $prof['file'];
 	}
 	//make sure comment attribute is never shown
-	if($name === 'setVar' || $name === 'xmlnode'){//special handling inside tag setVar and xmlnode
-		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'user'));
-		$nameTo = '';
-		$to = 'screen';
-	} else {
-		$to = weTag_getAttribute('to', $attribs, 'screen');
-		$nameTo = weTag_getAttribute('nameto', $attribs, isset($attribs['name']) ? $attribs['name'] : '');
-		$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto', 'user'));
+	switch($name){
+		case 'setVar':
+		case 'xmlnode'://special handling inside tag setVar and xmlnode
+			$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'user'));
+			$nameTo = '';
+			$to = 'screen';
+			break;
+		default:
+			$to = weTag_getAttribute('to', $attribs, 'screen');
+			$nameTo = weTag_getAttribute('nameto', $attribs, isset($attribs['name']) ? $attribs['name'] : '');
+			$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto', 'user'));
 
-		/* if to attribute is set, output of the tag is redirected to a variable
-		 * this makes only sense if tag output is equal to non-editmode */
-		if($to != 'screen'){
-			$GLOBALS['we_editmode'] = false;
-		}
+			/* if to attribute is set, output of the tag is redirected to a variable
+			 * this makes only sense if tag output is equal to non-editmode */
+			if($to != 'screen'){
+				$GLOBALS['we_editmode'] = false;
+			}
 	}
 
 	//make a copy of the name - this copy is never touched even not inside blocks/listviews etc.
@@ -114,7 +118,7 @@ function we_tag($name, $attribs = array(), $content = ''){
 	}
 
 	if($edMerk && $user && (!permissionhandler::hasPerm('ADMINISTRATOR'))){
-		if(!in_array($_SESSION['user']['Username'], makeArrayFromCSV($user))){
+		if(!in_array($_SESSION['user']['Username'], $user)){
 			$GLOBALS['we_editmode'] = false;
 		}
 	}
@@ -124,7 +128,6 @@ function we_tag($name, $attribs = array(), $content = ''){
 	}
 
 	$fn = 'we_tag_' . $name;
-	$foo = '';
 	switch($fn){
 		case 'we_tag_setVar':
 			$fn($attribs, $content);
@@ -132,10 +135,9 @@ function we_tag($name, $attribs = array(), $content = ''){
 			return;
 		default:
 			$foo = $fn($attribs, $content);
+			$GLOBALS['we_editmode'] = $edMerk;
+			return we_redirect_tagoutput($foo, $nameTo, $to);
 	}
-
-	$GLOBALS['we_editmode'] = $edMerk;
-	return we_redirect_tagoutput($foo, $nameTo, $to);
 }
 
 ### tag utility functions ###
@@ -172,10 +174,7 @@ function we_setVarArray(&$arr, $string, $value){
 }
 
 function we_redirect_tagoutput($returnvalue, $nameTo, $to = 'screen'){
-	if(isset($GLOBALS['calculate'])){
-		$to = 'calculate';
-	}
-	switch($to){
+	switch(isset($GLOBALS['calculate']) ? 'calculate' : $to){
 		case 'request':
 			we_setVarArray($_REQUEST, $nameTo, $returnvalue);
 			return null;
@@ -218,14 +217,15 @@ function mta($hash, $key){
 }
 
 function printElement($code){
-	if(isset($code)){
-		if(strpos($code, '<?') !== FALSE){
-			//FIXME:eval????
-			eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
-		} else {
-			echo $code;
-		}
+	if($code === ''){//tag calculate can return 0, we need to write this.
+		return;
 	}
+	if(strpos($code, '<?') === FALSE){
+		echo $code;
+		return;
+	}
+	//FIXME:eval????
+	eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
 }
 
 function getArrayValue($var, $name, $arrayIndex){
@@ -250,7 +250,6 @@ function getArrayValue($var, $name, $arrayIndex){
  * @param string $name attributes name
  * @param array $attribs array containg the attributes
  * @param mixed $default default value
- * @param bool $isFlag determines if this is a flag (true/false -value)
  * @return mixed returns the attributes value or default if not set
  */
 function weTag_getParserAttribute($name, $attribs, $default = '', $type = we_base_request::RAW){
@@ -262,7 +261,6 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $type = we_bas
  * @param string $name attributes name
  * @param array $attribs array containg the attributes
  * @param mixed $default default value
- * @param bool $isFlag determines if this is a flag (true/false -value)
  * @param bool $useGlobal check if attribute value is a php-variable and is found in $GLOBALS
  * @return mixed returns the attributes value or default if not set
  */
@@ -272,29 +270,13 @@ function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_requ
 	$regs = array();
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
-						getArrayValue($GLOBALS, $regs[1], $regs[2]) :
-						(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
+				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
+				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
 
 	$value = we_base_request::filterVar($value, (is_bool($type) ? we_base_request::BOOL : $type), $default);
 
 	return is_array($value) || is_bool($value) ? $value : htmlspecialchars_decode($value);
-}
-
-/**
- * @deprecated since version 6.3.0
- */
-function we_getTagAttributeTagParser($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false){
-	t_e('warning', 'you use an old tag, which still uses function we_getTagAttributeTagParser, use weTag_getParserAttribute instead! This function will be removed in 6.4.1.');
-	return weTag_getAttribute($name, $attribs, ($isFlag ? $checkForFalse : $default), $isFlag, false);
-}
-
-/**
- * @deprecated since version 6.3.0
- */
-function we_getTagAttribute($name, $attribs, $default = '', $isFlag = false, $checkForFalse = false, $useGlobal = true){
-	t_e('warning', 'you use an old tag, which still uses function we_getTagAttribute, use weTag_getAttribute instead! This function will be removed in 6.4.1.');
-	return weTag_getAttribute($name, $attribs, ($isFlag ? $checkForFalse : $default), $isFlag, $useGlobal);
 }
 
 function we_tag_path_hasIndex($path, $indexArray){
@@ -307,25 +289,28 @@ function we_tag_path_hasIndex($path, $indexArray){
 }
 
 function cutSimpleText($text, $len){
+	if($len >= strlen($text)){
+		return $text;
+	}
 	$text = substr($text, 0, $len);
-	$pos = array(
-		0,
-		strrpos($text, ' '),
-		strrpos($text, '.'),
-		strrpos($text, ','),
-		strrpos($text, "\n"),
-		strrpos($text, "\t"),
+	//cut to last whitespace, if any.
+	return substr($text, 0, max(array(
+			strrpos($text, ' '),
+			strrpos($text, '.'),
+			strrpos($text, ','),
+			strrpos($text, "\n"),
+			strrpos($text, "\t"),
+		))? : $len
 	);
-	//cut to last whitespace
-	return substr($text, 0, max($pos));
 }
 
 function cutText($text, $max = 0, $striphtml = false){
+	$text = $striphtml ? strip_tags($text) : $text;
 	if((!$max) || (strlen($text) <= $max)){
 		return $text;
 	}
 	//no tags, simple cut off
-	if(strstr($text, '<') == FALSE){
+	if($striphtml || strstr($text, '<') === FALSE){
 		return cutSimpleText($text, $max) . ($striphtml ? ' ...' : ' &hellip;');
 	}
 
@@ -368,7 +353,7 @@ function cutText($text, $max = 0, $striphtml = false){
 	}
 
 //close open tags
-	while(!empty($tags)){
+	while($tags){
 		$ret.='</' . array_pop($tags) . '>';
 	}
 
@@ -383,14 +368,13 @@ function we_getDocForTag($docAttr, $maindefault = false){
 			return $GLOBALS['WE_MAIN_DOC'];
 		default :
 			return ($maindefault ?
-							$GLOBALS['WE_MAIN_DOC'] :
-							$GLOBALS['we_doc']);
+					$GLOBALS['WE_MAIN_DOC'] :
+					$GLOBALS['we_doc']);
 	}
 }
 
 function modulFehltError($modul, $tag){
-	$tag = str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag);
-	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, $tag));
+	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag)));
 }
 
 function parseError($text, $extra = ''){
@@ -436,14 +420,8 @@ function removeEmptyAttribs($atts, $ignore = array()){
  * @param array $ignore
  * @desc only uses the attribs given in the array use
  */
-function useAttribs($atts, $use = array()){
-	$keys = array_keys($atts);
-	foreach($keys as $k){
-		if(!in_array($k, $use)){
-			unset($atts[$k]);
-		}
-	}
-	return $atts;
+function useAttribs(array $atts, array $use){
+	return array_intersect_key($atts, array_flip($use));
 }
 
 function we_getInputRadioField($name, $value, $itsValue, $atts){
@@ -517,14 +495,25 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', array(
 			'value' => oldHtmlspecialchars($value), 'selected' => 'selected'
-				), oldHtmlspecialchars($value), true);
+			), oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }
 
-/* * *************************************************
- * 	we:tags										 *
-  /*  ************************************************* */
+//this function is used by all tags adding elements to we_lv_array
+function we_post_tag_listview(){
+	if(isset($GLOBALS['we_lv_array'])){
+		if(isset($GLOBALS['lv'])){
+			array_pop($GLOBALS['we_lv_array']);
+		}
+		if($GLOBALS['we_lv_array']){
+			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
+		} else {
+			unset($GLOBALS['lv']);
+			unset($GLOBALS['we_lv_array']);
+		}
+	}
+}
 
 function we_tag_ifSidebar(){
 	return defined('WE_SIDEBAR');
@@ -536,10 +525,6 @@ function we_tag_ifDemo(){
 
 function we_tag_ifSeeMode($attribs, $content){
 	return (we_tag('ifWebEdition', $attribs, $content)) && (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE);
-}
-
-function we_tag_ifNotSeeMode($attribs, $content){
-	return (we_tag('ifWebEdition', $attribs, $content)) || !(we_tag('ifSeeMode', $attribs, $content));
 }
 
 function we_tag_ifTdEmpty(){
@@ -558,44 +543,20 @@ function we_tag_ifLastCol(){
 	return (isset($GLOBALS['lv'])) && $GLOBALS['lv']->shouldPrintEndTR();
 }
 
-function we_tag_ifNew($attribs){
-	$type = weTag_getAttribute('type', $attribs);
-	return !we_base_request::_(we_base_request::BOOL, 'we_edit' . ($type === 'object' ? 'Object' : 'Document') . '_ID');
-}
-
 function we_tag_ifNotEmpty($attribs){
 	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_tag('ifEmpty', $attribs);
 }
 
-function we_tag_ifNotVar($attribs){
-	if(isset($attribs['_name_orig'])){
-		$attribs['name'] = $attribs['_name_orig'];
-	}
-	return !we_tag('ifVar', $attribs);
-}
-
-
 function we_tag_ifReturnPage(){
 	return we_base_request::_(we_base_request::RAW_CHECKED, 'we_returnpage') !== false;
-}
-
-function we_tag_ifVarNotEmpty($attribs){
-	if(isset($attribs['_name_orig'])){
-		$attribs['name'] = $attribs['_name_orig'];
-	}
-	return !we_tag('ifVarEmpty', $attribs);
 }
 
 function we_tag_ifWebEdition(){
 	return $GLOBALS['WE_MAIN_DOC']->InWebEdition;
 }
 
-function we_tag_ifWritten($attribs){
-	$type = (weTag_getAttribute('type', $attribs)? : weTag_getAttribute('var', $attribs, 'document'))? : weTag_getAttribute('doc', $attribs, 'document');
-	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok'] == true);
-}
-
 function we_tag_linkToSEEM($attribs, $content){
+	t_e('deprecated', __FUNCTION__);
 	return we_tag('linkToSeeMode', $attribs, $content);
 }
 
@@ -604,8 +565,7 @@ function we_tag_listviewPageNr(){
 }
 
 function we_tag_listviewPages(){
-	return $GLOBALS['lv']->rows ? ceil(
-					((float) $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float) $GLOBALS['lv']->maxItemsPerPage )) : 1;
+	return $GLOBALS['lv']->rows ? ceil(((float) $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float) $GLOBALS['lv']->maxItemsPerPage )) : 1;
 }
 
 function we_tag_listviewRows(){
@@ -616,46 +576,32 @@ function we_tag_listviewStart(){
 	return $GLOBALS['lv']->start + 1 - abs($GLOBALS['lv']->offset);
 }
 
-function we_tag_makeMail(){
-	t_e('deprecated', 'makeMail');
-	return '';
-}
-
 function we_tag_ifshopexists(){
+	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'shop'));
 }
 
 function we_tag_ifobjektexists(){
+	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'object'));
 }
 
 function we_tag_ifnewsletterexists(){
+	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'newsletter'));
 }
 
 function we_tag_ifcustomerexists(){
+	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'customer'));
 }
 
 function we_tag_ifbannerexists(){
+	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'banner'));
 }
 
 function we_tag_ifvotingexists(){
+	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'voting'));
-}
-
-//this function is used by all tags adding elements to we_lv_array
-function we_post_tag_listview(){
-	if(isset($GLOBALS['we_lv_array'])){
-		if(isset($GLOBALS['lv'])){
-			array_pop($GLOBALS['we_lv_array']);
-		}
-		if($GLOBALS['we_lv_array']){
-			$GLOBALS['lv'] = clone(end($GLOBALS['we_lv_array']));
-		} else {
-			unset($GLOBALS['lv']);
-			unset($GLOBALS['we_lv_array']);
-		}
-	}
 }

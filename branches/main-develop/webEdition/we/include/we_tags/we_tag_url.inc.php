@@ -53,6 +53,7 @@ function we_tag_url($attribs){
 										'' : $path_parts['filename'] . '/') .
 								$GLOBALS['WE_MAIN_DOC']->Url;
 					} else {
+						//FIXME: check if $GLOBALS['we_obj'] can be used instead of $GLOBALS['WE_MAIN_DOC']->OF_ID
 						$url = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 										($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
 										$GLOBALS['WE_MAIN_DOC']->Path . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID);
@@ -65,14 +66,14 @@ function we_tag_url($attribs){
 		}
 		if($urlNotSet){
 			if($type === 'document'){
-				$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($testid), $GLOBALS['DB_WE']);
+				$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($testid));
 				$url = isset($row['Path']) ? ($row['Path'] . ($row['IsFolder'] ? '/' : '')) : '';
 				$path_parts = pathinfo($url);
 				if(show_SeoLinks() && $hidedirindex && NAVIGATION_DIRECTORYINDEX_NAMES && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 			} else {
-				$row = getHash('SELECT ID,Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($testid), $GLOBALS['DB_WE']);
+				$row = getHash('SELECT ID,Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($testid));
 				if(!$row){
 					$urls[$type . $id] = '';
 					return '';
