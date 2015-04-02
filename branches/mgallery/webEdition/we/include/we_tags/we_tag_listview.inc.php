@@ -253,7 +253,7 @@ function we_tag_listview($attribs){
 			}
 			$defaultname = weTag_getAttribute('defaultname', $attribs, '', we_base_request::STRING);
 			$docId = weTag_getAttribute('documentid', $attribs, 0, we_base_request::INT);
-			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT)? : intval($GLOBALS['lv']->f('WE_ID'));
+			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT)? : (is_object($GLOBALS['lv']) ? intval($GLOBALS['lv']->f('WE_ID')) : 0);
 
 			$GLOBALS['lv'] = new we_shop_listviewShopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls, $triggerid);
 			break;
