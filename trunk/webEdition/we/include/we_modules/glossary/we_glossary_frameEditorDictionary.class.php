@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 
-	function Header(&$weGlossaryFrames){
+	function Header($weGlossaryFrames){
 		$cmdid = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
 		$we_tabs = new we_tabs();
@@ -36,7 +36,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[dictionary]'), $frontendL[$cmdid]);
 	}
 
-	function Body(&$weGlossaryFrames){
+	function Body($weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
@@ -47,7 +47,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 		);
 	}
 
-	function Footer(&$weGlossaryFrames){
+	function Footer($weGlossaryFrames){
 		$table2 = new we_html_table(array(
 			'border' => 0,
 			'cellpadding' => 0,
@@ -63,7 +63,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
-	function getHTMLTabProperties(&$weGlossaryFrames){
+	function getHTMLTabProperties($weGlossaryFrames){
 		$language = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0">
