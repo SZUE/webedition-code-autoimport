@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 
-	function Header(&$weGlossaryFrames){
+	function Header($weGlossaryFrames){
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[overview]'), we_tab::ACTIVE, "setTab('1');"));
 		$frontendL = getWeFrontendLanguagesForBackend();
@@ -32,7 +32,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[folder]'), $frontendL[substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5)]);
 	}
 
-	function Body(&$weGlossaryFrames){
+	function Body($weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		return self::buildBody($weGlossaryFrames, we_html_element::jsElement(
 					$weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_folder&cmdid=' . $cmdid . '";'
@@ -40,12 +40,12 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_html_multiIconBox::getHTML('', "100%", self::getHTMLOverview($weGlossaryFrames), 30, '', -1, '', '', false)));
 	}
 
-	function Footer(&$weGlossaryFrames){
+	function Footer($weGlossaryFrames){
 
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 
-	function getHTMLOverview(&$weGlossaryFrames){
+	function getHTMLOverview($weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		$_list = array(
 			we_glossary_glossary::TYPE_ABBREVATION,
