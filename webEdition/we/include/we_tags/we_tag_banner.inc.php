@@ -30,13 +30,13 @@ function we_tag_banner($attribs, $content){
 	$bannername = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 	$paths = weTag_getAttribute('paths', $attribs, '', we_base_request::RAW);
 	$type = weTag_getAttribute('type', $attribs, 'js', we_base_request::STRING);
-	$target = weTag_getAttribute("target", $attribs, '', we_base_request::STRING);
-	$width = weTag_getAttribute("width", $attribs, ($type === "pixel") ? 1 : "", we_base_request::UNIT);
-	$height = weTag_getAttribute("height", $attribs, ($type === "pixel") ? 1 : "", we_base_request::UNIT);
-	$link = weTag_getAttribute("link", $attribs, true, we_base_request::BOOL);
-	$page = weTag_getAttribute("page", $attribs, '', we_base_request::RAW);
-	$bannerclick = weTag_getAttribute("clickscript", $attribs, WEBEDITION_DIR . 'bannerclick.php', we_base_request::URL);
-	$getbanner = weTag_getAttribute("getscript", $attribs, WEBEDITION_DIR . 'getBanner.php', we_base_request::URL);
+	$target = weTag_getAttribute('target', $attribs, '', we_base_request::STRING);
+	$width = weTag_getAttribute('width', $attribs, ($type === "pixel") ? 1 : '', we_base_request::UNIT);
+	$height = weTag_getAttribute('height', $attribs, ($type === "pixel") ? 1 : '', we_base_request::UNIT);
+	$link = weTag_getAttribute('link', $attribs, true, we_base_request::BOOL);
+	$page = weTag_getAttribute('page', $attribs, '', we_base_request::RAW);
+	$bannerclick = weTag_getAttribute('clickscript', $attribs, WEBEDITION_DIR . 'bannerclick.php', we_base_request::URL);
+	$getbanner = weTag_getAttribute('getscript', $attribs, WEBEDITION_DIR . 'getBanner.php', we_base_request::URL);
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
 	$nocount = $GLOBALS["WE_MAIN_DOC"]->InWebEdition;
@@ -49,8 +49,8 @@ function we_tag_banner($attribs, $content){
 					'type' => 'pixel',
 					'paths' => $paths,
 					'bannername' => $bannername,
-					'cats' => $GLOBALS["WE_MAIN_DOC"]->Category,
-					'dt' => (isset($GLOBALS["WE_MAIN_DOC"]->DocType) ? $GLOBALS["WE_MAIN_DOC"]->DocType : ""),
+					'cats' => $GLOBALS['WE_MAIN_DOC']->Category,
+					'dt' => (isset($GLOBALS['WE_MAIN_DOC']->DocType) ? $GLOBALS['WE_MAIN_DOC']->DocType : ""),
 					($page ? 'page' : '') => $page,
 					(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
 					'xml' => $xml ? "1" : "0",
