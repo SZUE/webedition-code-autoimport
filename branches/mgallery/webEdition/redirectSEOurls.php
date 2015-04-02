@@ -3,6 +3,10 @@
 /**
  * webEdition CMS
  *
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,135 +28,116 @@ if(!defined('NO_SESS')){
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$myRequest = array();
-if(isset($_SERVER['REDIRECT_QUERY_STRING']) && $_SERVER['REDIRECT_QUERY_STRING'] != ''){
-	parse_str($_SERVER['REDIRECT_QUERY_STRING'], $myRequest);
-} elseif(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != '' && strpos($_SERVER['REQUEST_URI'], '?') !== false){
-	$zw = explode('?', $_SERVER['REQUEST_URI']);
-	parse_str($zw[1], $myRequest);
+if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
+	return;
 }
 
+/**
+* url without query string
+* we need this in some we_tag()
+*/
 define('WE_REDIRECTED_SEO', (isset($_SERVER['REDIRECT_URL']) ?
 				$_SERVER['REDIRECT_URL'] :
 				(isset($_SERVER['PHP_SELF']) ?
 						$_SERVER['PHP_SELF'] :
 						$_SERVER['SCRIPT_NAME'])
 		)
-); //url without query string
-// get attributes
-$error404doc = (ERROR_DOCUMENT_NO_OBJECTFILE ? : 0);
+);
 
-$hiddendirindex = false;
-$dirindexarray = array();
-if(NAVIGATION_DIRECTORYINDEX_NAMES && ( NAVIGATION_DIRECTORYINDEX_HIDE || WYSIWYGLINKS_DIRECTORYINDEX_HIDE || TAGLINKS_DIRECTORYINDEX_HIDE )){
-	$dirindexarray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
-	$hiddendirindex = true;
+//do we need this any more?
+$prefix = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE urlMap="' . $DB_WE->escape($_SERVER["HTTP_HOST"]) . '"'); //multidomains
+
+$pathParts = array();
+$urlQueryString = array();
+
+switch(true){
+	case (isset($_SERVER['SCRIPT_URL']) && !empty($_SERVER['SCRIPT_URL']) && !strpos($_SERVER['SCRIPT_URL'], WEBEDITION_DIR)):
+		$pathParts = pathinfo($prefix . urldecode($_SERVER['SCRIPT_URL']));
+		break;
+	case (isset($_SERVER['REDIRECT_URL']) && !empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], WEBEDITION_DIR)):
+		$pathParts = pathinfo($prefix . urldecode($_SERVER['REDIRECT_URL']));
+		break;
+	case (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], WEBEDITION_DIR)):
+		$splittUrl = (strpos($_SERVER['REQUEST_URI'], '?') !== false) ? explode('?', urldecode($_SERVER['REQUEST_URI'])) : urldecode($_SERVER['REQUEST_URI']);
+		if(is_array($splittUrl)){
+			$pathParts = pathinfo($prefix . $splittUrl[0]);
+			parse_str($splittUrl[1], $urlQueryString); //get query string
+		}else{
+			$pathParts = pathinfo($prefix . $splittUrl);
+		}
+		break;
 }
-$prefix = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE urlMap="' . $DB_WE->escape($_SERVER["HTTP_HOST"]) . '"');
 
-$path_parts = array();
-if(isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != ''){
-	$path_parts = pathinfo($prefix . urldecode($_SERVER['SCRIPT_URL']));
-} elseif(isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] && $_SERVER['REDIRECT_URL'] != WEBEDITION_DIR . 'redirectSEOurls.php'){
-	$path_parts = pathinfo($prefix . urldecode($_SERVER['REDIRECT_URL']));
-} elseif(isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']){
-	if(strpos($_SERVER['REQUEST_URI'], '?') !== false){
-		$zw2 = explode('?', urldecode($_SERVER['REQUEST_URI']));
-		$path_parts = pathinfo($prefix . $zw2[0]);
-	} else {
-		$path_parts = pathinfo($prefix . urldecode($_SERVER['REQUEST_URI']));
-	}
+//get query string if there
+switch(true){
+	case (isset($_SERVER['REDIRECT_QUERY_STRING']) && !empty($_SERVER['REDIRECT_QUERY_STRING'])):
+		parse_str($_SERVER['REDIRECT_QUERY_STRING'], $urlQueryString);
+		break;
+	case (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])):
+		parse_str($_SERVER['QUERY_STRING'], $urlQueryString);
+		break;
 }
 
-if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
-	return;
-}
-$db = $GLOBALS['DB_WE'];
-$displayid = $objectid = 0;
-$searchfor = '';
-$notfound = true;
+/**
+* now, we looking for an object ID an starting with the last part of the URL
+* for that we split the URL via pathinfo()
+* and then we are checking the URL from right to left
+* e.g.
+* /mainfolder/subfolder/part-1-of-seo-url/part-2-of-seo-url
+* 
+* first check: part-2-of-seo-url --> nothing is found
+* second check: part-1-of-seo-url/part-2-of-seo-url --> we get the object
+* and so one
+*/
+$urlLookingFor = '';
+while(!empty($pathParts['filename'])){
+	$urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
+						strtr(urlencode($pathParts['filename']), array('%2F' => '/', '//' => '/')) :
+						strtr($pathParts['filename'], array('//' => '/'))
+					).(!empty($urlLookingFor) ? '/'.$urlLookingFor :'');
 
-while($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] != '/' && $path_parts['dirname'] != '\\'){
-	$display = $path_parts['dirname'] . DEFAULT_DYNAMIC_EXT;
-	$displayid = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND Path="' . $db->escape($display) . '" LIMIT 1'));
-	$searchfor = $path_parts['basename'] . ($searchfor ? '/' . $searchfor : '');
-	if(!$displayid && $hiddendirindex && $dirindexarray){
-		//z79
-		$display = "";
-
-		foreach($dirindexarray as $dirindex){
-			$displaytest = $path_parts['dirname'] . '/' . $dirindex;
-			$displayidtest = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND Path="' . $db->escape($displaytest) . '" LIMIT 1'));
-			if($displayidtest){
-				$displayid = $displayidtest;
-				$display = $displaytest; //nur, wenn Datei vorhanden
-				break; //wenn gefunden, kann man sich die weiteren Schleifen sparen.
+	if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Url="' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '"')){
+		$object = getHash('SELECT ID, TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Url="' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1');
+		
+		//do not know what that mean
+		$ro = ini_get('request_order');
+		if(stripos('C', $ro ? : ini_get('variables_order'))){
+			//unset all cookies from request
+			foreach(array_keys($_COOKIE) as $name){
+				unset($_REQUEST[$name]);
 			}
 		}
+		
+		//should we also send $_GET?
+		$_GET = isset($_GET) ? array_merge($_GET, $urlQueryString) : $urlQueryString;
+		
+		$_REQUEST = isset($_REQUEST) ? array_merge($_REQUEST, $urlQueryString) : $urlQueryString;
+		$_REQUEST['we_objectID'] = $object['ID'];
+		$_REQUEST['we_oid'] = $object['ID'];
+		$_SERVER['SCRIPT_NAME'] = id_to_path($object['TriggerID'], FILE_TABLE);
+		
+		we_html_tools::setHttpCode(200);
+		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_SERVER['SCRIPT_NAME']);
+		
+		exit;
+	}else{//reduce the rest of the given url and try again
+		$pathParts = pathinfo($pathParts['dirname']);
 	}
-	if($displayid){
-		$searchforInternal = (URLENCODE_OBJECTSEOURLS ?
-						strtr(urlencode($searchfor), array('%2F' => '/', '//' => '/')) :
-						strtr($searchfor, array('//' => '/'))
-				);
-
-		$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url="' . $db->escape($searchforInternal) . '" LIMIT 1'));
-		if($objectid){
-			$notfound = false;
-			break;
-		}
-	}
-	$path_parts = pathinfo($path_parts['dirname']);
+	
 }
 
-if($notfound && isset($path_parts['dirname']) && $path_parts['dirname'] === '/' && $hiddendirindex){
-	$searchfor = $path_parts['basename'] . ($searchfor ? '/' . $searchfor : '');
+/**
+* noting found show errorDoc404
+* for seo it's better to make a redirect to errorDoc404 instead of include, 
+* but for that we need en separate webedition config parameter
+*
+* header("Location: http://" . $_SERVER['HTTP_HOST'] . $errorDoc404, true, (SUPPRESS404CODE ? 200 : 404));
+*/
 
-	//z109
-	$display = '';
-	foreach($dirindexarray as $dirindex){
-		$displaytest = $path_parts['dirname'] . $dirindex;
-		$displayidtest = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND Path="' . $db->escape($displaytest) . '" LIMIT 1'));
-		if($displayidtest){
-			$displayid = $displayidtest;
-			$display = $displaytest; //nur, wenn Datei vorhanden
-			break; //wenn gefunden, kann man sich die weiteren Schleifen sparen
-		}
-	}
-	if($displayid){
-		$searchforInternal = (URLENCODE_OBJECTSEOURLS ?
-						strtr(urlencode($searchfor), array('%2F' => '/')) :
-						$searchfor
-				);
-
-		$objectid = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url="' . $db->escape($searchforInternal) . '" LIMIT 1'));
-		if($objectid){
-			$notfound = false;
-		}
-	}
+we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
+$errorDoc404 = ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE) : 0;
+if($errorDoc404){
+	include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $errorDoc404);
 }
-if(!$notfound){
-	$ro = ini_get('request_order');
-	if(stripos('C', $ro ? : ini_get('variables_order'))){
-		//unset all cookies from request
-		foreach(array_keys($_COOKIE) as $name){
-			unset($_REQUEST[$name]);
-		}
-	}
-	$_REQUEST = array_merge($_REQUEST, $myRequest);
-	$_REQUEST['we_objectID'] = $objectid;
-	$_REQUEST['we_oid'] = $objectid;
-	$_GET = array_merge($_GET, $myRequest);
-	$_SERVER['SCRIPT_NAME'] = $display;
-	we_html_tools::setHttpCode(200);
 
-	include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $display);
-
-	exit;
-} elseif($error404doc){
-	we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
-	if(($doc = id_to_path($error404doc, FILE_TABLE))){
-		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $doc);
-	}
-	exit;
-}
+exit;
