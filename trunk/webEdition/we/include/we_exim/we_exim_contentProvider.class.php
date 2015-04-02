@@ -179,7 +179,7 @@ class we_exim_contentProvider{
 		$encoded = array(
 			'we_element' => array('Dat', 'dat'),
 			'we_backup_tableItem' => array('Dat', 'strFelder', 'strSerial', 'DocumentObject',
-				'QASet', 'QASetAdditions', 'Catfields'/*fixme: remove*/, 'RevoteUserAgent', 'agent',
+				'QASet', 'QASetAdditions', 'RevoteUserAgent', 'agent',
 				'LogData', 'strSerialOrder',
 				'documentElements', 'documentScheduler', 'documentCustomFilter'//tblVersions
 			),
@@ -187,7 +187,6 @@ class we_exim_contentProvider{
 			'we_objectFile' => array('DefArray', 'schedArr'),
 			'weBinary' => array('Data'),
 			'weVersion' => array('Data',),
-			'we_category' => array('Catfields'),
 			'weNavigation' => array('Sort', 'Attributes')
 		);
 

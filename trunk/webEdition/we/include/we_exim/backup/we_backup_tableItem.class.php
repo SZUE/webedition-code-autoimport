@@ -114,7 +114,6 @@ class we_backup_tableItem extends weModelBase{
 		$tables = array();
 		$table = $this->table;
 		$tables[NAVIGATION_TABLE] = array('Attributes');
-		$tables[CATEGORY_TABLE] = array('Catfields');//fixme:remove
 		if(defined('OBJECT_TABLE')){
 			$tables[OBJECT_TABLE] = array('dDefaultValues'); //DefaultValues bewusst entfernt
 			$tables[OBJECT_X_TABLE] = array('link', 'variant'); //href nicht da ser str in ser str
@@ -132,7 +131,6 @@ class we_backup_tableItem extends weModelBase{
 
 	function doPrepareCorrectSerializedLenghtValues($was){
 		$tables = array();
-		$tables[CATEGORY_TABLE] = array('Catfields');
 		$table = $this->table;
 		return (array_key_exists($table, $tables) && in_array($was, $tables[$table]));
 	}
