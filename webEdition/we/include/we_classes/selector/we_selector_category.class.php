@@ -871,8 +871,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 					'Path' => $path,
 					'ParentID' => $parentid,
 					'Title' => $title,
-					'Description' => $description,
-					'Catfields' => serialize(array('default' => array('Title' => $title, 'Category' => $category)))//FIXME: remove in 6.5
+					'Description' => $description
 				)) . ' WHERE ID=' . $catId);
 		if($updateok){
 			$this->renameChildrenPath($catId);
