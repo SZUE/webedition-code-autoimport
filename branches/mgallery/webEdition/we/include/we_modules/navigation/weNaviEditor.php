@@ -33,8 +33,6 @@ $_path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
 
 $_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE) : 0;
 
-$_cmd = 'opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_form.Text.value),dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);';
-
 $_navi = new we_navigation_navigation($_id);
 
 $_wrkNavi = array();
@@ -97,9 +95,7 @@ $_parts = array(
 $_js = '
 function save() {
 	var dir = document.we_form.ParentID;
-	' . $_cmd . '
-	self.close();
-
+	opener.we_cmd("add_navi",' . $_id . ',encodeURIComponent(document.we_form.Text.value),dir.options[dir.selectedIndex].value,document.we_form.Ordn.value);	self.close();
 }
 
 var ajaxObj = {

@@ -1068,7 +1068,7 @@ self.close();');
 	}
 
 	private function getEncryptionHandling($field, $hasContent){
-		return '<span style="margin-left:1em;" class="fa fa-lock"></span>';
+		return '<span style="margin-left:1em;" class="fa fa-lock" onclick=""></span>';
 	}
 
 	function getHTMLProperties($preselect = ''){

@@ -37,7 +37,7 @@ class rpcGetItemsFromDBCmd extends rpcCmd{
 		$transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 'transaction');
 		if($transaction && $we_dt = isset($_SESSION['weS']['we_data'][$transaction]) ? $_SESSION['weS']['we_data'][$transaction] : ''){
 			$collection->we_initSessDat($we_dt);
-		} else if($collectionID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'collection')){
+		} else if(($collectionID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'collection'))){
 			$collection->initByID($collectionID);
 		} else {
 			$resp->setData("error", array("no collection error"));

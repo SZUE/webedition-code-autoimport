@@ -26,8 +26,7 @@ class rpcGetDocElementView extends rpcView{
 
 	function getResponse($response){
 		$elem = we_base_request::_(we_base_request::STRING, 'element');
-		return $elem . ':' .
-			$response->getData($elem);
+		return $elem . ':' . $response->getData($elem);
 	}
 
 }

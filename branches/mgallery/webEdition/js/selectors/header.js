@@ -86,7 +86,9 @@ function setview(view) {
 	switch (view) {
 		case 'list':
 			zoom.value = 100;
-			zoom.onchange();
+			if (zoom.onchange) {
+				zoom.onchange();
+			}
 			zoom.disabled = true;
 			zoom.style.display = "none";
 			break;

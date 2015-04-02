@@ -47,6 +47,8 @@ class rpcCmd{
 	protected $Permissions = array();
 	protected $Status = self::STATUS_OK;
 	protected $Parameters = array();
+
+	//note this is not used as constructor, even though this is really wired
 	function rpcCmd($shell){
 		$this->checkSession();
 		$this->checkParameters();
