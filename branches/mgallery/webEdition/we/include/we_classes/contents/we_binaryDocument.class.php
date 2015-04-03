@@ -295,12 +295,12 @@ class we_binaryDocument extends we_document{
 						);
 						break;
 					default:
-						if($_mode === 'none'){
-							$_inp = $this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"');
-						} else {
-							array_unshift($_defined_values[$_tagName], '');
-							$_inp = $this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
-						}
+						$_inp = ($_mode === 'none') ? 
+							$this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"') : 
+							(is_array($_defined_values[$_tagName]) ? 
+								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', array_unshift($_defined_values[$_tagName], ''), 200, false, true) :
+								''
+							);
 				}
 
 				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), $_inp);
