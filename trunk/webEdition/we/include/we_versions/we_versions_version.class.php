@@ -866,7 +866,7 @@ class we_versions_version{
 		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($id) . ' AND documentTable="' . $db->escape($table) . '" ' . $where . ' ORDER BY version ASC');
 		while($db->next_record()){
 			foreach($tblFields as $k => $v){
-				$versionArray[$v] = $db->f("" . $v);
+				$versionArray[$v] = $db->f( $v);
 			}
 
 			$versionArr[] = $versionArray;
@@ -887,7 +887,7 @@ class we_versions_version{
 		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' ' . $where);
 		while($db->next_record()){
 			foreach($tblFields as $k => $v){
-				$versionArray[$v] = $db->f("" . $v);
+				$versionArray[$v] = $db->f( $v);
 			}
 		}
 

@@ -143,7 +143,7 @@ class we_app_controller_EditorAction extends Zend_Controller_Action{
 			$this->_model = $session->model;
 		} else {
 			try{
-				$args = array("" . $appName . "_models_Default");
+				$args = array($appName . "_models_Default");
 				$modelId = $this->getRequest()->getParam('modelId');
 				if($modelId){
 					$args[] = $modelId;
