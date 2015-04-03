@@ -34,7 +34,10 @@ function getFooter(){
 	$_javascript = <<< END_OF_SCRIPT
 function we_save() {
 	var _doc = document;
-
+	var inputs = _doc.getElementsByTagName('INPUT');
+	for(var i = 0; i < inputs.length; i++){
+		inputs[i].disabled = false;
+	}
 
 	var _z = 0;
 	var _field = _doc.forms[0].elements['metadataTag[' + _z + ']'] !== undefined ? _doc.forms[0].elements['metadataTag[' + _z + ']'] : null;
@@ -120,7 +123,7 @@ function save_all_values(){
 	//SAVE METADATA FIELDS TO DB
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METADATA_TABLE);
-		//$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METAVALUES_TABLE);
+		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METAVALUES_TABLE);
 
 		if(isset($_REQUEST['metadataTag']) && is_array($_REQUEST['metadataTag'])){
 			foreach(we_base_request::_(we_base_request::STRING, 'metadataTag', '') as $key => $value){
@@ -199,7 +202,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_adv_row = '';
 
 			foreach($_defined_fields as $key => $value){
-				$value['mode'] = $value['mode'] ? '' : 'none';
+				$value['mode'] = $value['mode'] ? : 'none';
 				$_adv_row .= '
 <tr>
 	<td class="defaultfont" style="width:210px;"><strong>' . g_l('metadata', '[tagname]') . '</strong></td>
@@ -230,10 +233,11 @@ function build_dialog($selected_setting = 'ui'){
 	<td colspan="3" style="padding-bottom:16px;padding-right:5px;">
 		<table id="proposalTable_' . $key . '" style="width:100%;border:1px solid gray;display:' . ($value['mode'] === 'none' ? 'none' : 'block')  . ';padding-top:8px;">';
 			if(isset($_defined_values[$value['tag']])){
+				$i = 0;
 				foreach($_defined_values[$value['tag']] as $proposal){
 					$_adv_row .= '<tr>
 						<td width="15%"></td>
-						<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, $proposal, 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
+						<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][' . $i++ . ']', 24, $proposal, 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
 						<td width="25">' . we_html_button::create_button("image:btn_function_trash", "javascript:delProposition(this)") . '</td>
 					</tr>';
 				}
