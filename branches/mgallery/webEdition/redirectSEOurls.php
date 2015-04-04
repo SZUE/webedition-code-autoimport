@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,107 +32,97 @@ if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
 }
 
 /**
-* url without query string
-* we need this in some we_tag()
-*/
+ * url without query string
+ * we need this in some we_tag()
+ */
 define('WE_REDIRECTED_SEO', (isset($_SERVER['REDIRECT_URL']) ?
-				$_SERVER['REDIRECT_URL'] :
-				(isset($_SERVER['PHP_SELF']) ?
-						$_SERVER['PHP_SELF'] :
-						$_SERVER['SCRIPT_NAME'])
-		)
+		$_SERVER['REDIRECT_URL'] :
+		(isset($_SERVER['PHP_SELF']) ?
+			$_SERVER['PHP_SELF'] :
+			$_SERVER['SCRIPT_NAME'])
+	)
 );
 
 //do we need this any more?
 $prefix = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE urlMap="' . $DB_WE->escape($_SERVER["HTTP_HOST"]) . '"'); //multidomains
 
-$pathParts = array();
 $urlQueryString = array();
 
-switch(true){
-	case (isset($_SERVER['SCRIPT_URL']) && !empty($_SERVER['SCRIPT_URL']) && !strpos($_SERVER['SCRIPT_URL'], WEBEDITION_DIR)):
-		$pathParts = pathinfo($prefix . urldecode($_SERVER['SCRIPT_URL']));
-		break;
-	case (isset($_SERVER['REDIRECT_URL']) && !empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], WEBEDITION_DIR)):
-		$pathParts = pathinfo($prefix . urldecode($_SERVER['REDIRECT_URL']));
-		break;
-	case (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], WEBEDITION_DIR)):
-		$splittUrl = (strpos($_SERVER['REQUEST_URI'], '?') !== false) ? explode('?', urldecode($_SERVER['REQUEST_URI'])) : urldecode($_SERVER['REQUEST_URI']);
-		if(is_array($splittUrl)){
-			$pathParts = pathinfo($prefix . $splittUrl[0]);
-			parse_str($splittUrl[1], $urlQueryString); //get query string
-		}else{
-			$pathParts = pathinfo($prefix . $splittUrl);
-		}
-		break;
+if(isset($_SERVER['SCRIPT_URL']) && ($_SERVER['SCRIPT_URL']) && !strpos($_SERVER['SCRIPT_URL'], WEBEDITION_DIR)){
+	$pathParts = pathinfo($prefix . urldecode($_SERVER['SCRIPT_URL']));
+} elseif(isset($_SERVER['REDIRECT_URL']) && ($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], WEBEDITION_DIR)){
+	$pathParts = pathinfo($prefix . urldecode($_SERVER['REDIRECT_URL']));
+} elseif(isset($_SERVER['REQUEST_URI']) && ($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], WEBEDITION_DIR)){
+	$splittUrl = (strpos($_SERVER['REQUEST_URI'], '?') !== false) ? explode('?', urldecode($_SERVER['REQUEST_URI'])) : urldecode($_SERVER['REQUEST_URI']);
+	if(is_array($splittUrl)){
+		$pathParts = pathinfo($prefix . $splittUrl[0]);
+		parse_str($splittUrl[1], $urlQueryString); //get query string
+	} else {
+		$pathParts = pathinfo($prefix . $splittUrl);
+	}
+} else {
+	$pathParts = array();
 }
 
 //get query string if there
-switch(true){
-	case (isset($_SERVER['REDIRECT_QUERY_STRING']) && !empty($_SERVER['REDIRECT_QUERY_STRING'])):
-		parse_str($_SERVER['REDIRECT_QUERY_STRING'], $urlQueryString);
-		break;
-	case (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])):
-		parse_str($_SERVER['QUERY_STRING'], $urlQueryString);
-		break;
+if(isset($_SERVER['REDIRECT_QUERY_STRING']) && ($_SERVER['REDIRECT_QUERY_STRING'])){
+	parse_str($_SERVER['REDIRECT_QUERY_STRING'], $urlQueryString);
+} elseif(isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'])){
+	parse_str($_SERVER['QUERY_STRING'], $urlQueryString);
 }
 
 /**
-* now, we looking for an object ID an starting with the last part of the URL
-* for that we split the URL via pathinfo()
-* and then we are checking the URL from right to left
-* e.g.
-* /mainfolder/subfolder/part-1-of-seo-url/part-2-of-seo-url
-* 
-* first check: part-2-of-seo-url --> nothing is found
-* second check: part-1-of-seo-url/part-2-of-seo-url --> we get the object
-* and so one
-*/
+ * now, we looking for an object ID an starting with the last part of the URL
+ * for that we split the URL via pathinfo()
+ * and then we are checking the URL from right to left
+ * e.g.
+ * /mainfolder/subfolder/part-1-of-seo-url/part-2-of-seo-url
+ *
+ * first check: part-2-of-seo-url --> nothing is found
+ * second check: part-1-of-seo-url/part-2-of-seo-url --> we get the object
+ * and so one
+ */
 $urlLookingFor = '';
-while(!empty($pathParts['filename'])){
+while(($pathParts['filename'])){
 	$urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
-						strtr(urlencode($pathParts['filename']), array('%2F' => '/', '//' => '/')) :
-						strtr($pathParts['filename'], array('//' => '/'))
-					).(!empty($urlLookingFor) ? '/'.$urlLookingFor :'');
+			strtr(urlencode($pathParts['filename']), array('%2F' => '/', '//' => '/')) :
+			strtr($pathParts['filename'], array('//' => '/'))
+		) . (($urlLookingFor) ? '/' . $urlLookingFor : '');
 
-	if(f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Url="' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '"')){
-		$object = getHash('SELECT ID, TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 AND Url="' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1');
-		
-		//do not know what that mean
-		$ro = ini_get('request_order');
-		if(stripos('C', $ro ? : ini_get('variables_order'))){
+	if(($object = getHash('SELECT ID,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url="' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
+
+		//remove all cookies from Request String if set (if not, cookies are exposed on listviews etc & max interfer with given Cookies)
+		if(stristr('C', ini_get('request_order') ? : ini_get('variables_order'))){
 			//unset all cookies from request
 			foreach(array_keys($_COOKIE) as $name){
 				unset($_REQUEST[$name]);
 			}
 		}
-		
+
 		//should we also send $_GET?
 		$_GET = isset($_GET) ? array_merge($_GET, $urlQueryString) : $urlQueryString;
-		
+
 		$_REQUEST = isset($_REQUEST) ? array_merge($_REQUEST, $urlQueryString) : $urlQueryString;
 		$_REQUEST['we_objectID'] = $object['ID'];
 		$_REQUEST['we_oid'] = $object['ID'];
 		$_SERVER['SCRIPT_NAME'] = id_to_path($object['TriggerID'], FILE_TABLE);
-		
+
 		we_html_tools::setHttpCode(200);
 		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_SERVER['SCRIPT_NAME']);
-		
+
 		exit;
-	}else{//reduce the rest of the given url and try again
+	} else {//reduce the rest of the given url and try again
 		$pathParts = pathinfo($pathParts['dirname']);
 	}
-	
 }
 
 /**
-* noting found show errorDoc404
-* for seo it's better to make a redirect to errorDoc404 instead of include, 
-* but for that we need en separate webedition config parameter
-*
-* header("Location: http://" . $_SERVER['HTTP_HOST'] . $errorDoc404, true, (SUPPRESS404CODE ? 200 : 404));
-*/
-
+ * noting found show errorDoc404
+ * for seo it's better to make a redirect to errorDoc404 instead of include,
+ * but for that we need en separate webedition config parameter
+ *
+ * header("Location: http://" . $_SERVER['HTTP_HOST'] . $errorDoc404, true, (SUPPRESS404CODE ? 200 : 404));
+ */
 we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
 $errorDoc404 = ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE) : 0;
 if($errorDoc404){
