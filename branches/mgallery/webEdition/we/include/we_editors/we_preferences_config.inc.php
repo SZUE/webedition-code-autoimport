@@ -128,6 +128,7 @@ $GLOBALS['configs'] = array(
 		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRINGC, 'index.php,index.html'),
 		'WYSIWYGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Wysiwyg-editor output', we_base_request::BOOL, false),
 		'TAGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in tag output', we_base_request::BOOL, false),
+		'OBJECTSEOURLS_LOWERCASE' => array('Flag if object SEO-URLs save in lower or camelcase', we_base_request::BOOL, false),
 		'NAVIGATION_OBJECTSEOURLS' => array('Flag if we_objectID should be hidden from output of navigation', we_base_request::BOOL, false),
 		'WYSIWYGLINKS_OBJECTSEOURLS' => array('Flag if we_objectID should be hidden from output of wysiwyg editior', we_base_request::BOOL, false),
 		'TAGLINKS_OBJECTSEOURLS' => array('Flag if we_objectID should be hidden from output of tags', we_base_request::BOOL, false),
