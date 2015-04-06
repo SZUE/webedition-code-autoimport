@@ -498,13 +498,29 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				}
 			}
 
-//  If needed - js output for rollover.
-
-			if(isset($attribs['only'])){
-				return (array_key_exists($attribs['only'], $attribs) ? $attribs[$attribs['only']] : '');
-			}
-			if(isset($attribs['pathonly']) && $attribs['pathonly']){
-				return $attribs['src'];
+			$showAttrOnly = (isset($attribs['only']) && $attribs['only']) ? 
+				$attribs['only'] : 
+				((isset($attribs['pathonly']) && $attribs['pathonly']) ? 
+					'src' :
+					''
+				);
+				
+			switch($showAttrOnly){
+				case 'src':
+				case 'alt':
+				case 'width':
+				case 'height':
+					return $attribs[$showAttrOnly];
+				case 'filename':
+					return $this->Filename;
+				case 'size':
+					return $this->getFilesize();
+				case 'extension':
+					return $this->Extension;
+				case 'parentpath':
+					return $this->getParentPath();
+				default:
+					break;
 			}
 
 			if((isset($href) && $href) && $inc_href){ //  use link with rollover
