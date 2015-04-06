@@ -2009,15 +2009,12 @@ class we_objectFile extends we_document{
 				$zwtext = ltrim(str_replace($classN, '', $zwtext), '/');
 				$text = str_replace('%PathNoC%', $zwtext, $text);
 			}
-			//remove duplicate "//" which will produce errors
-			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
+			//remove duplicate "//" which will produce errors and transform URL to lowercase
+			$text = str_replace(array(' ', '//'), array('-', '/'), (OBJECTSEOURLS_LOWERCASE ? strtolower($text) : $text));
 			$text = (URLENCODE_OBJECTSEOURLS) ?
 				str_replace('%2F', '/', urlencode($text)) :
 				preg_replace(array('~&szlig;~', '~&(.)dash;~', '~&(.)uml;~', '~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~&[^;]+;~', '~[^0-9a-zA-Z/._-]~',), array('ss', '-', '${1}e', '${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
-			$this->Url = (OBJECTSEOURLS_LOWERCASE ? 
-				strtolower(substr($text, 0, 256)) :
-				substr($text, 0, 256)
-				);
+			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
 		}
