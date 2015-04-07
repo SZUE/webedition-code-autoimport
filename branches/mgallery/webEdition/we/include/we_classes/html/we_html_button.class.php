@@ -118,7 +118,7 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false){
+	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = ''){
 		$cmd = '';
 
 		// Check width
@@ -183,11 +183,10 @@ abstract class we_html_button{
 			$cmd .= $_button_link;
 		}
 
-		$value = $isImg ?
-			we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage')) :
+		$value = $isImg ? we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage')) :
 			g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 
-		$title = $alt && ($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '';
+		$title = !$alt ? '' : ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : ''));
 
 		return self::getButton($value, $_button_name, $cmd, $width, $title, $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false));
 	}

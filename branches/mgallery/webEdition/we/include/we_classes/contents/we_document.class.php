@@ -1539,7 +1539,7 @@ class we_document extends we_root{
 		$this->i_savePersistentSlotsToDB('Filehash,RebuildDate');
 	}
 
-	public static function parseInternalLinks(&$text, $pid, $path = ''){
+	public static function parseInternalLinks(&$text, $pid, $path = '', $returnAllFileIDs = false){
 		$DB_WE = new DB_WE();
 		$regs = array();
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
@@ -1547,6 +1547,10 @@ class we_document extends we_root{
 			foreach($regs as $reg){
 				$allIds[] = intval($reg[2]);
 			}
+			if($returnAllFileIDs){
+				return $allIds;
+			}
+
 			$DB_WE->query('SELECT ID,Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $allIds) . ')' . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'));
 			$allDocs = $DB_WE->getAllFirst(true, MYSQL_ASSOC);
 			foreach($regs as $reg){

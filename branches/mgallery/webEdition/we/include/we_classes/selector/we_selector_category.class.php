@@ -632,7 +632,7 @@ function we_checkName() {
 		'</body></html>';
 	}
 
-	function saveFileLinks($id, $fileLinks){// FIXME: use object property for $id and $fileLinks
+	function saveFileLinks($id, $fileLinks){// FIXME: use method on we_category
 		// FIXME: maybe move this function to sme new fileLink class
 		$db = $GLOBALS['DB_WE'];
 		$ret = $db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($id) . ' AND DocumentTable="' . stripTblPrefix(CATEGORY_TABLE) . '" AND type="media"');

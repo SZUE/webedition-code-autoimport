@@ -150,7 +150,6 @@ function save_all_values(){
 }
 
 function build_dialog($selected_setting = 'ui'){
-
 	switch($selected_setting){
 		// save dialog:
 		case 'save':
@@ -158,7 +157,6 @@ function build_dialog($selected_setting = 'ui'){
 				array('headline' => '', 'html' => g_l('metadata', '[save]'), 'space' => 0)
 			);
 			return create_dialog('', g_l('metadata', '[save_wait]'), $_settings);
-
 		// SAVED SUCCESSFULLY DIALOG:
 		case 'saved':
 			$_content = array(
@@ -166,7 +164,6 @@ function build_dialog($selected_setting = 'ui'){
 			);
 			// Build dialog element if user has permission
 			return create_dialog('', g_l('metadata', '[saved_successfully]'), $_content);
-
 		// THUMBNAILS
 		case 'dialog':
 			$_headline = we_html_element::htmlDiv(array('class' => 'weDialogHeadline', 'style' => 'padding:10px 25px 5px 25px;'), g_l('metadata', '[headline]'));

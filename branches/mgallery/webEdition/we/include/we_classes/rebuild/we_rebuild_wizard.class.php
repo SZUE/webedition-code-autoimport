@@ -211,6 +211,12 @@ abstract class we_rebuild_wizard{
 			"space" => 0
 		);
 
+		$parts[] = array(
+			"headline" => "",
+			"html" => we_html_forms::radiobutton("rebuild_medialinks", ($type === "rebuild_medialinks" && true), "type", 'Media-Links neu schreiben', true, "defaultfont", "", false, "langer Text", 0, 495),
+			"space" => 0
+		);
+
 		$allbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm("REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm("REBUILD_META"));
 
 
@@ -241,6 +247,7 @@ abstract class we_rebuild_wizard{
 					case "rebuild_objects":
 					case "rebuild_index":
 					case "rebuild_navigation":
+					case "rebuild_medialinks":
 						set_button_state(1);
 						f.target="wizcmd";
 						f.step.value="2";
@@ -380,6 +387,9 @@ abstract class we_rebuild_wizard{
 				case 'rebuild_metadata':
 					$data = we_rebuild_base::getMetadata($metaFields, $onlyEmpty, $metaFolders);
 					break;
+				case 'rebuild_medialinks':
+					$data = we_rebuild_base::getMedialinks();
+					break;
 			}
 			if($data){
 				$fr = new we_rebuild_fragment($taskname, 1, 0, array(), $data);
@@ -408,6 +418,9 @@ abstract class we_rebuild_wizard{
 				}
 			case 'rebuild_metadata':
 				$count = 15;
+				break;
+			case 'rebuild_medialinks':
+				$count = 8;
 				break;
 		}
 

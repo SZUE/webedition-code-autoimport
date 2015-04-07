@@ -164,13 +164,11 @@ function setTab(tab) {
 				), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 				we_html_element::htmlForm(array(
 					'name' => 'we_form', 'onsubmit' => 'return false'
-					), $this->getHTMLProperties() . we_html_element::htmlHidden(
+					), $this->getHTMLProperties() . we_html_element::htmlHiddens(
 						array(
-							'name' => 'predefined', 'value' => $this->Model->predefined
-					)) . we_html_element::htmlHidden(
-						array(
-							'name' => 'savedSearchName', 'value' => $this->Model->Text
-		))));
+							'predefined' => $this->Model->predefined,
+							'savedSearchName' => $this->Model->Text
+					))));
 
 		$whichSearch = we_search_view::SEARCH_DOCS;
 		$tabNr = $this->getTab();
@@ -364,9 +362,7 @@ function setTab(tab) {
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
 
 		$_searchResult_block = '<div>
-		<div id=\'parametersTop_' . $innerSearch . '\'><span style="color: #aaaaaa"> => TODO: zweizeilige Einträge mit Thumb und Verlinkungs-Dropdown in zweiter Zeile. <br>'
-			. ' -- Löschen-Checkbox für Media-Dokumente die weder verlinkt noch geschützt sind<br>'
-			. ' -- IsProtected ausgeben + Info, ob alt/title gesetzt sind<br><br></span>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+		<div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
 		return array(

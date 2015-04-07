@@ -81,6 +81,36 @@ abstract class we_rebuild_base{
 					flush();
 				}
 				break;
+			case 'medialink':
+				switch($data['cn']){
+					case 'we_category':
+						$cat = new we_category(intval($data['id']));
+						$cat->saveMediaLinks();
+						break;
+					case 'we_temporaryDocument':
+						//
+						break;
+					case 'we_template':
+						//
+						break;
+					case 'we_class':
+						//
+						break;
+					default:
+						$doc = new $data['cn'];
+						$doc->initByID($data['id']);
+						if($printIt){
+							echo ('Rebulding Media-Links for: ' . $doc->Path);
+							flush();
+						}
+						$doc->registerFileLinks();
+						unset($doc);
+				}
+				if($printIt){
+					echo ("   done$_newLine");
+					flush();
+				}
+				break;
 			default:
 				switch($data['type']){
 					case 'document':
@@ -256,6 +286,63 @@ abstract class we_rebuild_base{
 				);
 			}
 		}
+		return $data;
+	}
+	
+	public static function getMediaLinks(){
+		
+		//FIXME: add permission
+		$data = array();
+		//FIXME: add classes and templates
+
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE (ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" OR ContentType="' . we_base_ContentTypes::IMAGE . '") AND IsFolder = 0 ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'medialink',
+				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+				'mt' => 1,
+				'tt' => 0,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
+				'it' => 0);
+		}
+
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder = 0 ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'medialink',
+				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+				'mt' => 1,
+				'tt' => 0,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
+				'it' => 0);
+		}
+
+		$GLOBALS['DB_WE']->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' ORDER BY DocumentID');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('DocumentID'),
+				'type' => 'medialink',
+				'cn' => 'we_temporaryDocument',
+				'mt' => 0,
+				'tt' => 1,
+				'path' => '',
+				'it' => 0);
+		}
+
+		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . CATEGORY_TABLE . ' WHERE Description != "" ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'medialink',
+				'cn' => 'we_category',
+				'mt' => 1,
+				'tt' => 0,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
+				'it' => 0);
+		}
+
 		return $data;
 	}
 
