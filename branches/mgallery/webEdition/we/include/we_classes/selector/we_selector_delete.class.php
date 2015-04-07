@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_selector_delete extends we_selector_multiple{
+class we_selector_delete extends we_selector_file{
 
 	function __construct($id, $table = FILE_TABLE){
 		parent::__construct($id, $table);
@@ -31,22 +31,22 @@ class we_selector_delete extends we_selector_multiple{
 
 	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case we_selector_file::HEADER:
+			case self::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_selector_file::FOOTER:
+			case self::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_selector_file::BODY:
+			case self::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_selector_file::CMD:
+			case self::CMD:
 				$this->printCmdHTML();
 				break;
 			case self::DEL:
 				$this->printDoDelEntryHTML();
 				break;
-			case we_selector_file::FRAMESET:
+			case self::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}
@@ -64,7 +64,7 @@ function deleteEntry(){
 		for	(var i=0;i < entries.length; i++){
 			if(isFileSelected(entries[i].ID)){
 				todel += entries[i].ID + ",";' .
-				($tmp ? '
+						($tmp ? '
 						if(entries[i].ID=="' . $_SESSION['weS']['seemForOpenDelSelector']['ID'] . '") {
 							docIsOpen = true;
 						}' : '') . '
@@ -86,7 +86,7 @@ function deleteEntry(){
 	}
 
 	protected function getFramsetJSFile(){
-		return parent::getFramsetJSFile() .we_html_element::jsScript(JS_DIR . 'selectors/delete_selector.js');
+		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/delete_selector.js');
 	}
 
 	protected function printCmdHTML(){
@@ -103,17 +103,14 @@ top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
 	}
 
-	function renameChildrenPath($id){
-		//FIXME: this can be done with one db connection!
-		$db = new DB_WE();
-		$db2 = new DB_WE();
-		$db->query('SELECT ID,IsFolder,Text FROM ' . $db->escape($this->table) . ' WHERE ParentID=' . intval($id));
-		while($db->next_record()){
-			$newPath = f('SELECT Path FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($id), "", $db2) . '/' . $db->f('Text');
-			$db2->query('UPDATE ' . $db->escape($this->table) . " SET Path='" . $db->escape($newPath) . "' WHERE ID=" . intval($db->f('ID')));
-			if($db->f('IsFolder')){
-				$this->renameChildrenPath($db->f("ID"));
-			}
+	function renameChildrenPath($id, we_database_base $db = null){
+		$db = $db? : new DB_WE();
+		$parentPath = f('SELECT Path FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($id), "", $db);
+		$db->query('UPDATE ' . $db->escape($this->table) . ' SET Path=CONCAT("' . $parentPath . '/",Text) WHERE ParentID=' . intval($id));
+		$db->query('SELECT ID FROM ' . $db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($id));
+		$all = $db->getAll(true);
+		foreach($all as $id){
+			$this->renameChildrenPath($id, $db);
 		}
 	}
 
@@ -167,7 +164,7 @@ top.close();');
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ')' .
-			getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+				getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 

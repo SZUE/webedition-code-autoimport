@@ -85,8 +85,36 @@ function doClick(id, ct) {
 			setDir(id);
 			setTimeout("wasdblclick=0;", 400);
 		}
+	} else if (options.multiple) {
+		if (fsbody.shiftpressed) {
+			var oldid = currentID;
+			var currendPos = getPositionByID(id);
+			var firstSelected = getFirstSelected();
+
+			if (currendPos > firstSelected) {
+				selectFilesFrom(firstSelected, currendPos);
+			} else if (currendPos < firstSelected) {
+				selectFilesFrom(currendPos, firstSelected);
+			} else {
+				selectFile(id);
+			}
+			currentID = oldid;
+		} else if (!fsbody.ctrlpressed) {
+			selectFile(id);
+		} else if (isFileSelected(id)) {
+			unselectFile(id);
+		} else {
+			selectFile(id);
+		}
 	} else {
 		selectFile(id);
+
+	}
+	if (fsbody.ctrlpressed) {
+		fsbody.ctrlpressed = 0;
+	}
+	if (fsbody.shiftpressed) {
+		fsbody.shiftpressed = 0;
 	}
 }
 
@@ -105,11 +133,26 @@ function setRootDir() {
 }
 
 function selectFile(id) {
-	e = getEntry(id);
-	top.fsfooter.document.we_form.fname.value = e.text;
-	currentText = e.text;
-	currentPath = e.path;
-	currentID = id;
+	if (id) {
+		e = getEntry(id);
+
+		if (
+						top.fsfooter.document.we_form.fname.value != e.text &&
+						top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == -1 &&
+						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1 &&
+						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1) {
+
+			top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
+							(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+							e.text;
+		}
+		top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+		currentPath = e.path;
+		currentID = id;
+	} else {
+		top.fsfooter.document.we_form.fname.value = "";
+		currentPath = "";
+	}
 }
 
 function entry(ID, icon, text, isFolder, path) {
@@ -120,6 +163,85 @@ function entry(ID, icon, text, isFolder, path) {
 	this.path = path;
 }
 
-function addEntry(ID,icon,text,isFolder,path){
-	entries[entries.length] = new entry(ID,icon,text,isFolder,path);
+function addEntry(ID, icon, text, isFolder, path) {
+	entries[entries.length] = new entry(ID, icon, text, isFolder, path);
+}
+
+function writeBody(d) {
+	var body = '<table>';
+	for (i = 0; i < entries.length; i++) {
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
+		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_' + entries[i].ID + '" style="cursor:pointer;"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
+						'<td class="selector" width="25" align="center">' +
+						'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/>' +
+						'</td>' +
+						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
+						'</tr>'
+	}
+	body += '</table>';
+	d.innerHTML = body;
+}
+
+function getFirstSelected() {
+	for (var i = 0; i < entries.length; i++) {
+		if (top.fsbody.document.getElementById("line_" + entries[i].ID).style.backgroundColor != "white") {
+			return i;
+		}
+	}
+	return -1;
+}
+
+
+function unselectFile(id) {
+	e = getEntry(id);
+	top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "white";
+
+	var foo = top.fsfooter.document.we_form.fname.value.split(/,/);
+
+	for (var i = 0; i < foo.length; i++) {
+		if (foo[i] == e.text) {
+			foo[i] = "";
+			break;
+		}
+	}
+	var str = "";
+	for (var i = 0; i < foo.length; i++) {
+		if (foo[i]) {
+			str += foo[i] + ",";
+		}
+	}
+	str = str.replace(/(.*),$/, "$1");
+	top.fsfooter.document.we_form.fname.value = str;
+}
+
+
+function selectFilesFrom(from, to) {
+	unselectAllFiles();
+	for (var i = from; i <= to; i++) {
+		selectFile(entries[i].ID);
+	}
+}
+
+
+function getPositionByID(id) {
+	for (var i = 0; i < entries.length; i++) {
+		if (entries[i].ID == id) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+function isFileSelected(id) {
+	return (top.fsbody.document.getElementById("line_" + id).style.backgroundColor && (top.fsbody.document.getElementById("line_" + id).style.backgroundColor != "white"));
+}
+
+function unselectAllFiles() {
+	for (var i = 0; i < entries.length; i++) {
+		if (elem = top.fsbody.document.getElementById("line_" + entries[i].ID)) {
+			elem.style.backgroundColor = "white";
+		}
+	}
+	top.fsfooter.document.we_form.fname.value = "";
 }

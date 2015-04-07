@@ -51,3 +51,15 @@ function selectFile(id) {
 		we_editDirID = 0;
 	}
 }
+
+function addEntry(ID, icon, text, isFolder, path) {
+	entries[entries.length] = new entry(ID, icon, text, isFolder, path);
+}
+
+function entry(ID, icon, text, isFolder, path) {
+	this.ID = ID;
+	this.icon = icon;
+	this.text = text;
+	this.isFolder = isFolder;
+	this.path = path;
+}

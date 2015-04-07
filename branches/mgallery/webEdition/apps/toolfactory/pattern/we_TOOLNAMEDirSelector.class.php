@@ -93,12 +93,12 @@ ob_start();
 ?><script type="text/javascript"><!--
 			function writeBody(d) {
 					var body = (top.we_editDirID?
-									'<input type="hidden" name="what" value="'+top.consts.DORENAMEFOLDER+'" />' +
+									'<input type="hidden" name="what" value="' + top.consts.DORENAMEFOLDER + '" />' +
 									'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />':
-									'<input type="hidden" name="what" value="'+top.consts.CREATEFOLDER+'" />'
+									'<input type="hidden" name="what" value="' + top.consts.CREATEFOLDER + '" />'
 									) +
 									'<input type="hidden" name="order" value="' + top.order + '" />' +
-									'<input type="hidden" name="rootDirID" value="'+top.options.rootDirID+'" />' +
+									'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
 									'<input type="hidden" name="table" value="' + top.options.table + '" />' +
 									'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
 									'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
@@ -140,7 +140,7 @@ function printFramesetJSFunctionQueryString(){
 	function queryString(what, id, o, we_editDirID){
 	if (!o) o = top.order;
 					if (!we_editDirID) we_editDirID = "";
-					return '<?php echo '<?php echo $_SERVER["SCRIPT_NAME"]; ?>'; ?>?what=' + what + '&rootDirID=<?php echo '<?php echo $this->rootDirID;  if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>'; ?>&table=<?php echo '<?php echo $this->table; ?>'; ?>&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+					return '<?php echo '<?php echo $_SERVER["SCRIPT_NAME"]; ?>'; ?>?what=' + what + '&rootDirID=<?php echo '<?php echo $this->rootDirID; if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>'; ?>&table=<?php echo '<?php echo $this->table; ?>'; ?>&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 	}
 -->
 </script>
@@ -152,6 +152,10 @@ protected function printFramesetJSFunctionEntry(){
 <?php echo '?>'; ?>
 <script type="text/javascript">
 <!--
+	function addEntry(ID, icon, text, isFolder, path){
+	entries[entries.length] = new entry(ID, icon, text, isFolder, path);
+					}
+
 	function entry(ID, icon, text, isFolder, path){
 	this.ID = ID;
 					this.icon = icon;
@@ -165,16 +169,6 @@ protected function printFramesetJSFunctionEntry(){
 
 }
 
-function printFramesetJSFunctionAddEntry(){
-
-return we_html_element::jsElement('
-function addEntry(ID,icon,text,isFolder,path){
-entries[entries.length] = new entry(ID,icon,text,isFolder,path);
-}
-');
-
-
-}
 
 function printFramesetJSFunctionAddEntries(){
 $ret = '';

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_selector extends we_selector_multiple{
+class we_users_selector extends we_selector_file{
 
 	function __construct($id, $table = USER_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
 
@@ -59,22 +59,22 @@ class we_users_selector extends we_selector_multiple{
 
 	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case we_selector_file::HEADER:
+			case self::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_selector_file::FOOTER:
+			case self::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_selector_file::BODY:
+			case self::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_selector_multiple::SETDIR:
+			case self::SETDIR:
 				$this->printSetDirHTML();
 				break;
-			case we_selector_file::CMD:
+			case self::CMD:
 				$this->printCmdHTML();
 				break;
-			case we_selector_file::FRAMESET:
+			case self::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}

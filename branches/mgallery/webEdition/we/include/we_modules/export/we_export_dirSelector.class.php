@@ -165,6 +165,11 @@ top.unselectAllFiles();
 		return ob_get_clean();
 	}
 
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() .
+				we_html_element::jsScript(JS_DIR . 'selectors/exportdir_selector.js');
+	}
+
 	protected function printFramesetJSFunctionQueryString(){
 		return we_html_element::jsElement('
 		function queryString(what,id,o,we_editDirID){
@@ -177,21 +182,7 @@ top.unselectAllFiles();
 		}');
 	}
 
-	protected function printFramesetJSFunctionEntry(){
-		return we_html_element::jsElement('
-		function addEntry(ID,icon,text,isFolder,path){
-		entries[entries.length] = new entry(ID,icon,text,isFolder,path);
-		}
-		function entry(ID,icon,text,isFolder,path){
-		this.ID=ID;
-		this.icon=icon;
-		this.text=text;
-		this.isFolder=isFolder;
-		this.path=path;
-		}');
-	}
-
-	protected function printFramesetJSFunctionAddEntries(){
+		protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
 			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";

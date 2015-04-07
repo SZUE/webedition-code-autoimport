@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_selector_directory extends we_selector_multiple{
+class we_selector_directory extends we_selector_file{
 
 	protected $userCanMakeNewFolder = true;
 	protected $userCanRenameFolder = true;

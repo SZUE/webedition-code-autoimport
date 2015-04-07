@@ -224,3 +224,52 @@ function hidePref() {
 	if (self.fsvalues)
 		self.fsvalues.location = top.queryString(queryType.PROPERTIES);
 }
+
+function writeBody(d) {
+	var body = (needIEEscape ?
+					'<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
+					'<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
+					) +
+					(we_editCatID ?
+									'<input type="hidden" name="what" value="' + queryType.DO_RENAME_ENTRY + '" />' +
+									'<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />' :
+									(makeNewFolder ?
+													'<input type="hidden" name="what" value="' + queryType.CREATEFOLDER + '" />' :
+													'<input type="hidden" name="what" value="' + queryType.CREATE_CAT + '" />'
+													)) +
+					'<input type="hidden" name="order" value="' + top.order + '" />' +
+					'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
+					'<input type="hidden" name="table" value="' + top.options.table + '" />' +
+					'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+					'<table class="selector">' +
+					(makeNewFolder ?
+									'<tr style="background-color:#DFE9F5;">' +
+									'<td align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + top.consts.FOLDER_ICON + '"/></td>' +
+									'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
+									'</tr>' :
+									(makeNewCat ?
+													'<tr style="background-color:#DFE9F5;">' +
+													'<td align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + 'cat.gif"/></td>' +
+													'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:35%" /></td>' +
+													'</tr>' :
+													'')
+									);
+
+	for (i = 0; i < entries.length; i++) {
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
+		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+		body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
+						'<td class="selector" width="25" align="center">' +
+						'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/></td>' +
+						(we_editCatID == entries[i].ID ?
+										'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+										'<td class="selector filename"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
+										) +
+						'</td></tr>';
+	}
+	d.innerHTML = body + '</table></form>';
+	if (makeNewFolder || makeNewCat || we_editCatID) {
+		top.fsbody.document.we_form.we_EntryText_tmp.focus();
+		top.fsbody.document.we_form.we_EntryText_tmp.select();
+	}
+}

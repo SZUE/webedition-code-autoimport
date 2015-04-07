@@ -27,7 +27,7 @@ we_html_tools::protect(/* array('BROWSE_SERVER') */);
 
 $_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_fs.php';
 
-$fs = new we_selector_multiple(
+$fs = new we_selector_file(
 		isset($id) ? $id : we_base_request::_(we_base_request::INT, 'id', 0), isset($table) ? $table : we_base_request::_(we_base_request::TABLE, 'table', FILE_TABLE), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', isset($order) ? $order : we_base_request::_(we_base_request::RAW, 'order', ''), isset($rootDirID) ? $rootDirID : we_base_request::_(we_base_request::INT, 'rootDirID', 0), isset($multiple) ? $multiple : we_base_request::_(we_base_request::BOOL, 'multiple'), isset($filter) ? $filter : we_base_request::_(we_base_request::RAW, 'filter', ''));
 
 $fs->printHTML(we_base_request::_(we_base_request::INT, 'what', we_selector_file::FRAMESET));

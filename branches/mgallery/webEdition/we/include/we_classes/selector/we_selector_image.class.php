@@ -60,7 +60,7 @@ class we_selector_image extends we_selector_document{
 		ob_start();
 		?><script type="text/javascript"><!--
 					function writeBody(d) {
-						if (top.options.view == "<?php echo we_search_view::VIEW_LIST; ?>") {
+						if (top.options.view == consts.VIEW_LIST) {
 							writeBodyDocument(d);
 							return;
 						}
@@ -117,7 +117,10 @@ class we_selector_image extends we_selector_document{
 	}
 
 	function getFramesetJavaScriptDef(){
-		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('options.view="' . we_search_view::VIEW_ICONS . '";');
+		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
+options.view="' . we_search_view::VIEW_ICONS . '";
+consts.VIEW_LIST="'.we_search_view::VIEW_LIST.'";
+');
 	}
 
 }

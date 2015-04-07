@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_dirSelector extends we_selector_multiple{
+class we_shop_dirSelector extends we_selector_file{
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = ""){
 		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order);
@@ -63,22 +63,22 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 
 	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case we_selector_file::HEADER:
+			case self::HEADER:
 				$this->printHeaderHTML();
 				break;
-			case we_selector_file::FOOTER:
+			case self::FOOTER:
 				$this->printFooterHTML();
 				break;
-			case we_selector_file::BODY:
+			case self::BODY:
 				$this->printBodyHTML();
 				break;
-			case we_selector_file::CMD:
+			case self::CMD:
 				$this->printCmdHTML();
 				break;
-			case we_selector_multiple::SETDIR:
+			case self::SETDIR:
 				$this->printSetDirHTML();
 				break;
-			case we_selector_file::FRAMESET:
+			case self::FRAMESET:
 			default:
 				$this->printFramesetHTML();
 		}

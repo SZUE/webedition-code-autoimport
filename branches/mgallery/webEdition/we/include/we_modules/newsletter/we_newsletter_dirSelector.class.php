@@ -58,23 +58,21 @@ top.clearEntries();
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+			} elseif(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
+				$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
-					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
-					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-				} else {
-					$folder->we_save();
-					echo 'var ref;
+				$folder->we_save();
+				echo 'var ref;
 if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ref.makeNewEntry("' . $folder->Icon . '",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"' . $folder->ContentType . '","' . $this->table . '");
 ';
-					if($this->canSelectDir){
-						echo 'top.currentPath = "' . $folder->Path . '";
+				if($this->canSelectDir){
+					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
-					}
 				}
 			}
 		}
@@ -111,26 +109,22 @@ top.clearEntries();
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} else {
-				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
-					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
-					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-				} else {
-					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
-						$folder->we_save();
-						echo 'var ref;
+			} elseif(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
+				$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
+				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+			} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
+				$folder->we_save();
+				echo 'var ref;
 if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ';
-						echo 'ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");
+				echo 'ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");
 ';
-						if($this->canSelectDir){
-							echo 'top.currentPath = "' . $folder->Path . '";
+				if($this->canSelectDir){
+					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
 ';
-						}
-					}
 				}
 			}
 		}
@@ -172,18 +166,9 @@ top.selectFile(top.currentID);
 		return $ret;
 	}
 
-	protected function printFramesetJSFunctionEntry(){
-		return we_html_element::jsElement('
-		function addEntry(ID,icon,text,isFolder,path){
-		entries[entries.length] = new entry(ID,icon,text,isFolder,path);
-		}
-		function entry(ID,icon,text,isFolder,path){
-		this.ID=ID;
-		this.icon=icon;
-		this.text=text;
-		this.isFolder=isFolder;
-		this.path=path;
-		}');
+	protected function getFramsetJSFile(){
+		return parent::getFramsetJSFile() .
+				we_html_element::jsScript(JS_DIR . 'selectors/newsletterdir_selector.js');
 	}
 
 	function printHeaderHeadlines(){

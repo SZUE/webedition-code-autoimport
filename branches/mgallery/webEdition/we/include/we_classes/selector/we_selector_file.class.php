@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class we_selector_file{
+class we_selector_file{
 
 	const FRAMESET = 0;
 	const HEADER = 1;
@@ -73,8 +73,12 @@ abstract class we_selector_file{
 	var $col2js;
 	protected $title = '';
 	protected $startID = 0;
+	var $multiple = true;
 
-	public function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $startID = 0){
+	public function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $rootDirID = 0, $multiple = true, $filter = "", $startID = 0){
+		if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE){
+			$this->fields = str_replace('Text', 'CONCAT(Text," (",Forename," ", Surname,")") AS Text', $this->fields);
+		}
 
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
 			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
@@ -104,6 +108,7 @@ abstract class we_selector_file{
 		$this->rootDirID = intval($rootDirID);
 		$this->filter = $filter;
 		$this->startID = $startID;
+		$this->multiple = $multiple;
 		$this->setDirAndID();
 		$this->setTableLayoutInfos();
 	}
@@ -259,7 +264,8 @@ var options={
   "rootDirID":' . $this->rootDirID . ',
 	"table":"' . $this->table . '",
 	"formtarget":"' . $_SERVER["SCRIPT_NAME"] . '",
-	"rootDirID":' . $this->rootDirID . '
+	"rootDirID":' . $this->rootDirID . ',
+	"multiple":' . intval($this->multiple) . '
 };
 
 var consts={
@@ -328,37 +334,6 @@ function queryString(what,id,o){
 }');
 	}
 
-	protected function printFramesetJSFunctioWriteBody(){
-		ob_start();
-		?><script type="text/javascript"><!--
-					function writeBody(d) {
-						var body = '<table border="0" cellpadding="0" cellspacing="0">';
-						for (i = 0; i < entries.length; i++) {
-							var link = '<a title="' + entries[i].text + '" href="javascript://"';
-							if (entries[i].isFolder) {
-								link += ' onDblClick="this.blur();top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							}
-							link += ' onclick="this.blur();tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true">' + "\n";
-							body += '<tr><td class="treeIcon" align="center">' +
-											link + '<img class="treeIcon" src="'.dirs.TREE_ICON_DIR + entries[i].icon + '"></a></td>' +
-											'<td class="selector filename" title="' + entries[i].text + '">' + link + '<div class="cutText">' + entries[i].text + '</div></a></td></tr>' +
-											'<tr>' +
-											'<td width="25"></td>' +
-											'<td width="200"></td></tr>';
-						}
-						body += '</table>';
-						d.innerHTML = body;
-					}
-					//-->
-		</script>
-		<?php
-		return ob_get_clean();
-	}
-
-	protected function printFramesetJSFunctionEntry(){
-
-	}
-
 	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
@@ -372,8 +347,62 @@ function queryString(what,id,o){
 		return
 				$this->printFramesetJSFunctioWriteBody() .
 				$this->printFramesetJSFunctionQueryString() .
-				$this->printFramesetJSFunctionEntry() .
-				$this->printFramesetJSFunctionAddEntries();
+				$this->printFramesetJSFunctionAddEntries() .
+				we_html_element::jsElement('
+var allIDs ="";
+var allPaths ="";
+var allTexts ="";
+var allIsFolder ="";
+
+function fillIDs() {
+	allIDs =",";
+	allPaths =",";
+	allTexts =",";
+	allIsFolder =",";
+
+	for	(var i=0;i < entries.length; i++) {
+		if (isFileSelected(entries[i].ID)) {
+			allIDs += (entries[i].ID + ",");
+			allPaths += (entries[i].path + ",");
+			allTexts += (entries[i].text + ",");
+			allIsFolder += (entries[i].isFolder + ",");
+		}
+	}
+	if(currentID != ""){
+		if(allIDs.indexOf(","+currentID+",") == -1){
+			allIDs += (currentID + ",");
+		}
+	}
+	if(currentPath != ""){
+		if(allPaths.indexOf(","+currentPath+",") == -1){
+			allPaths += (currentPath + ",");
+			allTexts += (we_makeTextFromPath(currentPath) + ",");
+		}
+	}
+
+	if (allIDs == ",") {
+		allIDs = "";
+	}
+	if (allPaths == ",") {
+		allPaths = "";
+	}
+	if (allTexts == ",") {
+		allTexts = "";
+	}
+
+	if (allIsFolder == ",") {
+		allIsFolder = "";
+	}
+}
+
+function we_makeTextFromPath(path){
+	position =  path.lastIndexOf("/");
+	if(position > -1 &&  position < path.length){
+		return path.substring(position+1);
+	}else{
+		return "";
+	}
+}');
 	}
 
 	protected function printBodyHTML(){
@@ -386,8 +415,41 @@ function queryString(what,id,o){
 				<body class="selectorBody" onload="top.writeBody(self.document.body);" onclick="weonclick(event);"></body></html>';
 	}
 
-	protected function getWriteBodyHead(){
+	protected function printFramesetJSFunctioWriteBody(){
+		return '';
+	}
 
+	protected function getWriteBodyHead(){
+		return we_html_element::jsElement('
+var ctrlpressed=false;
+var shiftpressed=false;
+var wasdblclick=false;
+var inputklick=false;
+var tout=null;
+function weonclick(e){
+		if(document.all){
+			if(e.ctrlKey || e.altKey){
+				ctrlpressed=true;
+			}
+			if(e.shiftKey){
+				shiftpressed=true;
+			}
+		}else{
+			if(e.altKey || e.metaKey || e.ctrlKey){
+				ctrlpressed=true;
+			}
+			if(e.shiftKey){
+				shiftpressed=true;
+			}
+		}
+		if(top.options.multiple){
+		if((self.shiftpressed==false) && (self.ctrlpressed==false)){
+			top.unselectAllFiles();
+		}
+		}else{
+		top.unselectAllFiles();
+		}
+}');
 	}
 
 	protected function printHeaderHTML(){
