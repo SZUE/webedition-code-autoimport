@@ -142,7 +142,7 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
-	function formInput2WithSelect($width, $name, $size = 25, $type = 'txt', $attribs = '', $selValues = array(), $selWidth = 200, $reload = false, $resetSel = false){
+	function formInput2WithSelect($width, $name, $size = 25, $type = 'txt', $attribs = '', array $selValues = array(), $selWidth = 200, $reload = false, $resetSel = false){
 		if(!$type){
 			$ps = $this->$name;
 		}

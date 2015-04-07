@@ -340,11 +340,14 @@ class we_metadata_metaData{
 		return $GLOBALS['WE_METADATA_DEFINED_FIELDS'];
 	}
 
-	static function getDefinedMetaValues($getAssoc = false){
+	static function getDefinedMetaValues($getAssoc = false, $leadingEmpty = false){
 		// defined_values change more often than defined_fields, so we do not cache them!
 		$_defined_values = array();
 		$GLOBALS['DB_WE']->query('SELECT * FROM ' . METAVALUES_TABLE . ' ORDER BY value');
 		while($GLOBALS['DB_WE']->next_record()){
+			if($leadingEmpty && !isset($_defined_values[$GLOBALS['DB_WE']->f('tag')])){
+				$_defined_values[$GLOBALS['DB_WE']->f('tag')][] = '--';
+			}
 			if($getAssoc){
 				$_defined_values[$GLOBALS['DB_WE']->f('tag')][$GLOBALS['DB_WE']->f('value')] = $GLOBALS['DB_WE']->f('value');
 			} else {

@@ -263,7 +263,7 @@ class we_binaryDocument extends we_document{
 		 */
 		// first we fetch all defined metadata fields from tblMetadata:
 		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
-		$_defined_values = we_metadata_metaData::getDefinedMetaValues(true);
+		$_defined_values = we_metadata_metaData::getDefinedMetaValues(true, true);
 
 		// show an alert if there are none
 		if(empty($_defined_fields)){
@@ -295,12 +295,9 @@ class we_binaryDocument extends we_document{
 						);
 						break;
 					default:
-						$_inp = ($_mode === 'none') ? 
+						$_inp = $_mode === 'none' || !isset($_defined_values[$_tagName]) || !is_array($_defined_values[$_tagName]) ? 
 							$this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"') : 
-							(is_array($_defined_values[$_tagName]) ? 
-								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', array_unshift($_defined_values[$_tagName], ''), 200, false, true) :
-								''
-							);
+								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
 				}
 
 				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), $_inp);
