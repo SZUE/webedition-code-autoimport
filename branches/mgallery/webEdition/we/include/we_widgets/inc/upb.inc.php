@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $oTblCont = new we_html_table(array(
-	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
 		), 1, 1);
 $oTblCont->setCol(
 		0, 0, null, we_html_element::htmlDiv(

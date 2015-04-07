@@ -57,7 +57,6 @@ abstract class we_base_widget{
 
 		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:100%"), 1, 1);
 		$oDrag->setCol(0, 0, array("width" => $w_icon), $show_seizer ? we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_seizer.gif")) : we_html_tools::getPixel('100%', 16));
-		//$oDrag->setCol(0, 1, array("id" => $iId . "_lbl_old", "align" => "center", "class" => "label", "style" => "width:100%;"), "");
 
 		$oIco_prc = new we_html_table(array(), 1, 3);
 		$oIco_prc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
@@ -84,7 +83,7 @@ abstract class we_base_widget{
 		return we_html_element::htmlDiv(
 				array("id" => $iId . "_bx", "style" => "width:" . $w . "px;", "class" => 'widget bgc_' . $sCls), $oTb->getHtml() .
 				we_html_element::htmlDiv(array("id" => $iId . "_lbl", "class" => "label widgetTitle widgetTitle_" . $sCls,)) .
-				we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "class" => "content"), we_html_element::htmlDiv(array("id" => $iId . "_content"), ((isset($oContent)) ? $oContent->getHtml() : "")) .
+				we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "class" => "content"), we_html_element::htmlDiv(array("id" => $iId . "_content"), $oContent) .
 					we_html_element::htmlHidden($iId . '_prefix', $aLabel[0], $iId . '_prefix') .
 					we_html_element::htmlHidden($iId . '_postfix', $aLabel[1], $iId . '_postfix') .
 					we_html_element::htmlHidden($iId . '_res', $iRes, $iId . '_res') .

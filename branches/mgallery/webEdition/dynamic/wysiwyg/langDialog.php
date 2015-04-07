@@ -56,13 +56,5 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 
 $dialog = new we_dialog_lang($noInternals);
 $dialog->initByHttp();
-$dialog->registerOkJsFN("weDoLangJS");
 echo $dialog->getHTML() .
  we_html_element::jsElement($appendJS);
-
-function weDoLangJS(){
-	return '
-WelangDialog.insert();
-top.close();
-';
-}

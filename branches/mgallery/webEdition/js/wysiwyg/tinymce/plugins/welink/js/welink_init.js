@@ -1,6 +1,7 @@
 /* Functions for the welink plugin popup */
 
 //tinyMCEPopup.requireLangPack();
+var weFocusedField;
 
 function preinit() {
 	var url;
@@ -215,8 +216,19 @@ function setFormValue(name, value) {
 	document.forms[0].elements[name].value = value;
 }
 
+function changeTypeSelect(s) {
+	var elem = document.getElementsByClassName("we_change");
+	for (var i = 0; i < elem.length; i++) {
+		elem[i].style.display = (elem[i].className.match(s.value) ? "" : "none");
+	}
+}
+
+
+function setFocusedField(elem) {
+	weFocusedField = elem;
+}
+
+
 // the rest of tiny-functions is deleted
 
-// While loading
-preinit();
-tinyMCEPopup.onInit.add(init);
+

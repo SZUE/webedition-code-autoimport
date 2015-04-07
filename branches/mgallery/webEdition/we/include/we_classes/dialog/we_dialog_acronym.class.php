@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_acronym extends we_dialog_base{
+
 	var $dialogWidth = 370;
 	var $JsOnly = true;
 	var $changeableArgs = array("title",
@@ -38,6 +39,13 @@ class we_dialog_acronym extends we_dialog_base{
 		$this->defaultInit();
 	}
 
+	function getOkJs(){
+		return '
+WeacronymDialog.insert();
+top.close();
+';
+	}
+
 	function defaultInit(){
 		$this->args = array(
 			"title" => "",
@@ -49,7 +57,7 @@ class we_dialog_acronym extends we_dialog_base{
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weacronym/js/acronym_init.js');
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weacronym/js/acronym_init.js');
 	}
 
 	function getDialogContentHTML(){
@@ -64,11 +72,11 @@ class we_dialog_acronym extends we_dialog_base{
 <tr><td>' . $lang . '</td></tr>
 </table>
 ' .
-			(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
-				we_html_tools::hidden("weSaveToGlossary", 0) .
-				we_html_tools::hidden("language", we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
-				we_html_tools::hidden("text", "") :
-				'');
+				(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
+						we_html_tools::hidden("weSaveToGlossary", 0) .
+						we_html_tools::hidden("language", we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
+						we_html_tools::hidden("text", "") :
+						'');
 	}
 
 	function getDialogButtons(){

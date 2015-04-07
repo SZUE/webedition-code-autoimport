@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorException extends we_glossary_frameEditor{
 
-	function Header(&$weGlossaryFrames){
+	function Header($weGlossaryFrames){
 		$cmdid = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[exception]'), we_tab::ACTIVE, "setTab('1');"));
@@ -34,7 +34,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[exception]'), (isset($frontendL[$cmdid]) ? $frontendL[$cmdid] : "-"));
 	}
 
-	function Body(&$weGlossaryFrames){
+	function Body($weGlossaryFrames){
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
@@ -43,7 +43,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 					. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $cmdid . '"'). we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false)));
 	}
 
-	function Footer(&$weGlossaryFrames){
+	function Footer($weGlossaryFrames){
 		$table2 = new we_html_table(array(
 			'border' => 0,
 			'cellpadding' => 0,
@@ -58,7 +58,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
-	function getHTMLTabProperties(&$weGlossaryFrames){
+	function getHTMLTabProperties($weGlossaryFrames){
 
 		$parts = array();
 

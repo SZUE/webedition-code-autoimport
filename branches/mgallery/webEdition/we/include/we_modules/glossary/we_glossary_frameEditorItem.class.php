@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
-	function Header(&$weGlossaryFrames){
+	function Header($weGlossaryFrames){
 
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
@@ -50,7 +50,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
 	}
 
-	function Body(&$weGlossaryFrames){
+	function Body($weGlossaryFrames){
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 
@@ -191,7 +191,7 @@ function submitForm() {
 		return self::buildBody($weGlossaryFrames, $out);
 	}
 
-	function Footer(&$weGlossaryFrames){
+	function Footer($weGlossaryFrames){
 		$SaveButton = we_html_button::create_button("save", "javascript:if(top.publishWhenSave==1){" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=1;};we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 		$UnpublishButton = we_html_button::create_button("deactivate", "javascript:" . $weGlossaryFrames->View->EditorBodyFrame . ".document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 
@@ -236,7 +236,7 @@ function we_save() {
 		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
-	function getHTMLTabProperties(&$weGlossaryFrames){
+	function getHTMLTabProperties($weGlossaryFrames){
 		$_types = array(
 			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
 			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
@@ -281,7 +281,7 @@ function we_save() {
 		return array_merge($parts, self::getHTMLLinkAttributes($weGlossaryFrames));
 	}
 
-	function getHTMLAbbreviation(&$weGlossaryFrames){
+	function getHTMLAbbreviation($weGlossaryFrames){
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_ABBREVATION){
 			$text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$title = html_entity_decode($weGlossaryFrames->View->Glossary->Title);
@@ -304,7 +304,7 @@ function we_save() {
 </div>';
 	}
 
-	function getHTMLAcronym(&$weGlossaryFrames){
+	function getHTMLAcronym($weGlossaryFrames){
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_ACRONYM){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title);
@@ -326,7 +326,7 @@ function we_save() {
 </div>';
 	}
 
-	function getHTMLForeignWord(&$weGlossaryFrames){
+	function getHTMLForeignWord($weGlossaryFrames){
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_FOREIGNWORD){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_language = $weGlossaryFrames->View->Glossary->getAttribute('lang');
@@ -342,7 +342,7 @@ function we_save() {
 </table></div>';
 	}
 
-	function getHTMLTextReplacement(&$weGlossaryFrames){
+	function getHTMLTextReplacement($weGlossaryFrames){
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_TEXTREPLACE){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text, null, $GLOBALS["WE_BACKENDCHARSET"]);
 			$_title = html_entity_decode($weGlossaryFrames->View->Glossary->Title, null, $GLOBALS["WE_BACKENDCHARSET"]);
@@ -359,7 +359,7 @@ function we_save() {
 </table></div>';
 	}
 
-	function getHTMLLink(&$weGlossaryFrames){
+	function getHTMLLink($weGlossaryFrames){
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK){
 			$_text = html_entity_decode($weGlossaryFrames->View->Glossary->Text);
 			$_mode = $weGlossaryFrames->View->Glossary->getAttribute('mode');
@@ -388,7 +388,7 @@ function we_save() {
 			'</div>';
 	}
 
-	function getHTMLIntern(&$weGlossaryFrames){
+	function getHTMLIntern($weGlossaryFrames){
 		$_rootDirID = 0;
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkID]'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkPath]'].value");
@@ -417,7 +417,7 @@ function we_save() {
 </table></div>';
 	}
 
-	function getHTMLExtern(&$weGlossaryFrames){
+	function getHTMLExtern($weGlossaryFrames){
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') === "extern"){
 			$_url = $weGlossaryFrames->View->Glossary->getAttribute('ExternUrl');
 			$_parameter = $weGlossaryFrames->View->Glossary->getAttribute('ExternParameter');
@@ -437,7 +437,7 @@ function we_save() {
 </div>';
 	}
 
-	function getHTMLObject(&$weGlossaryFrames){
+	function getHTMLObject($weGlossaryFrames){
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') === "object"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('ObjectLinkID');
@@ -477,7 +477,7 @@ function we_save() {
 	</table></div>';
 	}
 
-	function getHTMLCategory(&$weGlossaryFrames){
+	function getHTMLCategory($weGlossaryFrames){
 		if($weGlossaryFrames->View->Glossary->Type == we_glossary_glossary::TYPE_LINK && $weGlossaryFrames->View->Glossary->getAttribute('mode') === "category"){
 			$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('CategoryLinkPath');
 			$_linkID = $weGlossaryFrames->View->Glossary->getAttribute('CategoryLinkID');
@@ -613,7 +613,7 @@ function we_save() {
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
 
-	function getHTMLLinkAttributes(&$weGlossaryFrames){
+	function getHTMLLinkAttributes($weGlossaryFrames){
 		$_parts = array(
 			array(
 				'headline' => '',

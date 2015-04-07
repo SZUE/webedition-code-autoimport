@@ -44,7 +44,7 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) ' . $queryFailedLogins, '', 
 
 	$cur = 0;
 //	while($maxRows > $cur){
-	$db->query('SELECT f.Username, count(f.isValid) AS numberFailedLogins,c.ID AS UID' . $queryFailedLogins . ' GROUP BY f.Username LIMIT ' . $cur . ',100');
+	$db->query('SELECT f.Username, COUNT(f.isValid) AS numberFailedLogins,c.ID AS UID' . $queryFailedLogins . ' GROUP BY f.Username LIMIT ' . $cur . ',100');
 	$i = 1;
 	while($db->next_record()){
 		$webUserID = $db->f('UID');

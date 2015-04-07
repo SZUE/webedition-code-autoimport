@@ -236,59 +236,41 @@ class we_messaging_proto extends we_class{
 
 	/* get subtree starting with node $id (only the folders) */
 
-	function &get_f_children($id){
-		$fids = array();
-
+	function get_f_children($id){
 		$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE ParentID=' . intval($id) . ' AND UserID=' . intval($this->userid));
-		while($this->DB_WE->next_record())
-			$fids[] = $this->DB_WE->f('ID');
+		$fids = $this->DB_WE->getAll(true);
 
-		foreach($fids as $fid)
+		foreach($fids as $fid){
 			$fids = array_merge($fids, $this->get_f_children($fid));
+		}
 
 		return $fids;
 	}
 
-	function delete_folders($f_arr){
+	function delete_folders(array $f_arr){
+		$ret = array(
+			"res" => 0,
+			"ids" => array()
+		);
 
-		$ret = array();
-		$ret["res"] = 0;
-		$ret["ids"] = array();
-
-		if(empty($f_arr)){
+		if(!$f_arr){
 			return $ret;
 		}
 
-		$rm_folders = array();
 		$rm_fids = $f_arr;
-		$norm_folderds = array();
 
 		foreach($f_arr as $id){
 			$rm_fids = array_merge($rm_fids, $this->get_f_children($id));
 		}
 
-		$cond = '';
-		foreach($rm_fids as $rf){
-			$cond .= 'ID=' . intval($rf) . ' OR ';
-		}
-		$cond = substr($cond, 0, -4);
+		$this->DB_WE->query('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE ID IN(' . implode(',', array_map('intval', $rm_fids)) . ') AND UserID=' . intval($this->userid) . ' AND Properties & ' . we_messaging_proto::FOLDER_NR . '!=1');
+		$rm_folders = $this->DB_WE->getAll(true);
 
-		$query = 'SELECT ID, Name, (Properties & ' . we_messaging_proto::FOLDER_NR . ') as norm FROM ' . $this->DB_WE->escape($this->folder_tbl) . " WHERE ($cond) AND UserID=" . intval($this->userid);
-		$this->DB_WE->query($query);
-		while($this->DB_WE->next_record()){
-			if($this->DB_WE->f('norm') == 1){
-				$norm_folders[] = $this->DB_WE->f('Name') . ' (ID=' . $this->DB_WE->f('ID') . ')';
-			} else {
-				$rm_folders[] = $this->DB_WE->f('ID');
-			}
-		}
-
-		if(empty($rm_folders)){
+		if(!$rm_folders){
 			return $ret;
-		} else {
-			$query = 'DELETE FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE (ID=' . implode(' OR ID=', $rm_folders) . ') AND UserID=' . intval($this->userid);
-			$this->DB_WE->query($query);
 		}
+		$this->DB_WE->query('DELETE FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE (ID=' . implode(' OR ID=', $rm_folders) . ') AND UserID=' . intval($this->userid));
+
 
 		$ret["res"] = 1;
 		$ret["ids"] = $rm_folders;

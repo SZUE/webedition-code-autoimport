@@ -29,25 +29,9 @@ class liveUpdateHttp{
 	}
 
 	function connectFopen($server, $url, $parameters = array()){
-
 		// try fopen first
-		$parameterStr = '';
-		foreach($parameters as $key => $value){
-			$parameterStr .= "$key=" . urlencode($value) . "&";
-		}
-
-		$address = 'https://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
-		$response = false;
-
-		$fh = @fopen($address, "rb");
-		if($fh){
-			$response = "";
-			while(!feof($fh)){
-				$response .= fgets($fh, 1024);
-			}
-			fclose($fh);
-		}
-		return $response;
+		$address = 'https://' . $server . $url . ($parameters ? '?' . http_build_query($parameters) : '');
+		return file_get_contents($address);
 	}
 
 	function connectProxy($server, $url, $parameters){
@@ -56,62 +40,54 @@ class liveUpdateHttp{
 		$proxy_user = defined("WE_PROXYUSER") ? WE_PROXYUSER : "";
 		$proxy_pass = defined("WE_PROXYPASSWORD") ? WE_PROXYPASSWORD : "";
 
-		$response = @fsockopen($proxyhost, $proxyport, $errno, $errstr, 20);
+		$response = fsockopen($proxyhost, $proxyport, $errno, $errstr, 20);
 
 		if(!$response){
-
 			return false;
-		} else {
-
-			$parameterStr = '';
-			foreach($parameters as $key => $value){
-				$parameterStr .= "$key=" . urlencode($value) . "&";
-			}
-
-			$address = 'https://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
-
-			$realm = base64_encode($proxy_user . ":" . $proxy_pass);
-
-			// send headers
-			fputs($response, "GET $address HTTP/1.0\r\n");
-			//fputs($response, "Proxy-Connection: Keep-Alive\r\n");
-			fputs($response, 'User-Agent: PHP ' . phpversion() . "\r\n");
-			fputs($response, "Pragma: no-cache\r\n");
-			if($proxy_user != ""){
-				fputs($response, "Proxy-authorization: Basic $realm\r\n");
-			}
-			fputs($response, "\r\n");
-
-			$zeile = "";
-			while(!feof($response)){
-				$zeile = $zeile . fread($response, 4096);
-			}
-			fclose($response);
-
-			return substr($zeile, strpos($zeile, "\r\n\r\n") + 4);
 		}
+
+		$parameterStr = '';
+		foreach($parameters as $key => $value){
+			$parameterStr .= "$key=" . urlencode($value) . "&";
+		}
+
+		$address = 'https://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
+
+		$realm = base64_encode($proxy_user . ":" . $proxy_pass);
+
+		// send headers
+		fputs($response, "GET $address HTTP/1.0\r\n");
+		//fputs($response, "Proxy-Connection: Keep-Alive\r\n");
+		fputs($response, 'User-Agent: PHP ' . phpversion() . "\r\n");
+		fputs($response, "Pragma: no-cache\r\n");
+		if($proxy_user != ""){
+			fputs($response, "Proxy-authorization: Basic $realm\r\n");
+		}
+		fputs($response, "\r\n");
+
+		$zeile = "";
+		while(!feof($response)){
+			$zeile = $zeile . fread($response, 4096);
+		}
+		fclose($response);
+
+		return substr($zeile, strpos($zeile, "\r\n\r\n") + 4);
 	}
 
 	function getCurlHttpResponse($server, $url, $parameters){
 
 		$_address = 'https://' . $server . $url;
 
-		$_parameters = '';
-		foreach($parameters as $key => $value){
-			$_parameters .= "$key=" . urlencode($value) . "&";
-		}
-
 		$session = curl_init();
 		curl_setopt($session, CURLOPT_URL, $_address);
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, 1);
 
-		if($_parameters != ''){
+		if($parameters){
 			curl_setopt($session, CURLOPT_POST, 1);
-			curl_setopt($session, CURLOPT_POSTFIELDS, $_parameters);
+			curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($parameters));
 		}
 
 		if(defined('WE_PROXYHOST') && WE_PROXYHOST != ''){
-
 			$_proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : '';
 			$_proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : 80;
 			$_proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : '';

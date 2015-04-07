@@ -38,7 +38,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
-			$okBut = ($this->getBackBut() != "") ? we_html_button::create_button_table(array($this->getBackBut(), we_html_button::create_button("ok", "javascript:weCheckAcFields()"))) : we_html_button::create_button("ok", "javascript:weCheckAcFields()");
+			$back = $this->getBackBut();
+			$ok = we_html_button::create_button("ok", "javascript:weCheckAcFields()");
+			$okBut = $back ? we_html_button::create_button_table(array($back, $ok)) : $ok;
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
@@ -326,8 +328,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					);
 
 			// EXTERNAL LINK
-			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extHref]'].value");
-			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
+			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
+			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
 
 			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? : we_base_link::EMPTY_EXT, '', 'onchange="if(this.value==\'\'){
 					this.value=\'http://\';
@@ -343,9 +345,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 
 			// INTERNAL LINK
-			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileID]'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value");
-			$_internal_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
+			$_internal_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
@@ -364,13 +365,13 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 			// OBJECT LINK
 			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
-				$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objID]'].value");
+				$cmd1 = "document.we_form.elements['we_dialog_args[objID]'].value";
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
 				//$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-				$_object_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
+				$_object_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 
 				$yuiSuggest->setAcId("Obj");
-				$yuiSuggest->setContentType("folder,".we_base_ContentTypes::OBJECT_FILE);
+				$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 				$yuiSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
 				$yuiSuggest->setMaxResults(20);
 				$yuiSuggest->setMayBeEmpty(0);
@@ -540,16 +541,12 @@ function weonsubmit() {
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js');
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);');
 	}
 
 	function getJs(){
 		return parent::getJs() . we_html_element::jsElement('
 var weAcCheckLoop = 0;
-var weFocusedField;
-function setFocusedField(elem){
-	weFocusedField = elem;
-}
 
 function weCheckAcFields(){
 	if(!!weFocusedField) weFocusedField.blur();
@@ -579,13 +576,6 @@ function weDoCheckAcFields(){
 		}
 	} else {' .
 						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	}
-}
-
-function changeTypeSelect(s){
-var elem=document.getElementsByClassName("we_change");
-	for(var i=0; i< elem.length; i++){
-		elem[i].style.display = (elem[i].className.match(s.value)?"":"none");
 	}
 }
 
@@ -659,6 +649,57 @@ function showanchors(name, val, onCh) {
 	}
 }' : '')
 		);
+	}
+
+	function cmdFunction(array $args){
+		if((!isset($args['href'])) || $args['href'] == we_base_link::EMPTY_EXT){
+			$args['href'] = '';
+		}
+		$param = trim($args['param'], '?& ');
+		$anchor = trim($args['anchor'], '# ');
+		if(!empty($param)){
+			$tmp = array();
+			parse_str($param, $tmp);
+			$param = '?' . http_build_query($tmp, null, '&');
+		}
+		// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
+		$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
+						(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
+
+		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
+			$query = array();
+			if(!empty($args['mail_subject'])){
+				$query['subject'] = $args['mail_subject'];
+			}
+			if(!empty($args['mail_cc'])){
+				$query['cc'] = $args['mail_cc'];
+			}
+			if(!empty($args['mail_bcc'])){
+				$query['bcc'] = $args['mail_bcc'];
+			}
+
+			$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query));
+
+			$tmpClass = $args['class'];
+			foreach($args as &$val){
+				$val = '';
+			}
+			$args['class'] = $tmpClass;
+		}
+
+		return we_dialog_base::getTinyMceJS() .
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
+				'<form name="tiny_form">' . we_html_element::htmlHiddens(array(
+					"href" => $href,
+					"target" => $args["target"],
+					"class" => $args["cssclass"],
+					"lang" => $args["lang"],
+					"hreflang" => $args["hreflang"],
+					"title" => $args["title"],
+					"accesskey" => $args["accesskey"],
+					"tabindex" => $args["tabindex"],
+					"rel" => $args["rel"],
+					"rev" => $args["rev"])) . '</form>';
 	}
 
 }

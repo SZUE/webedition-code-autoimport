@@ -26,11 +26,10 @@ class we_dialog_base{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
+
 	var $db = '';
 	var $what = '';
 	var $args = array();
-	var $cmdFN = '';
-	var $okJsFN = '';
 	var $dialogTitle = '';
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array();
@@ -64,14 +63,6 @@ class we_dialog_base{
 		$this->dialogTitle = $title;
 	}
 
-	function registerOkJsFN($fnName){
-		$this->okJsFN = $fnName;
-	}
-
-	function registerCmdFn($fnName){
-		$this->cmdFN = $fnName;
-	}
-
 	function initByHttp(){
 		$this->what = we_base_request::_(we_base_request::STRING, 'we_what', '');
 		$this->we_cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', array());
@@ -96,12 +87,11 @@ class we_dialog_base{
 				return $this->getCmdHTML();
 			default:
 				return $this->getHeaderHTML(true) .
-					$this->getFramesetHTML() . '</html>';
+						$this->getFramesetHTML() . '</html>';
 		}
 	}
 
 	function getCmdHTML(){
-		$fn = $this->cmdFN;
 		$send = array();
 
 		// " quote for correct work within ""
@@ -109,29 +99,20 @@ class we_dialog_base{
 			$send[$k] = str_replace('"', '\"', $v);
 		}
 
-		if($this->cmdFN){
-			return $fn($send);
-		}
 		return $this->cmdFunction($send);
 	}
 
-	function cmdFunction($args){
+	function cmdFunction(array $args){
 		// overwrite
 	}
 
 	function getOkJs(){
-		if($this->okJsFN){
-			$fn = $this->okJsFN;
-			return $fn();
-		}
+		return '';
 	}
 
 	function getFramesetHTML(){
-		return we_html_element::jsElement('
-var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
-var isOpera = ' . (we_base_browserDetect::isOpera() ? 'true' : 'false') . ';' .
-				((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ?
-					'document.onkeydown = doKeyDown;' : '') . '
+		return we_html_element::jsElement(
+						((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ? 'document.onkeydown = doKeyDown;' : '') . '
 
 function doKeyDown() {
 	var key = event.keyCode;
@@ -146,26 +127,26 @@ function doKeyDown() {
 			break;
 	}
 }') .
-			we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
-				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
-					we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
+						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+								, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+								we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		));
 	}
 
-	function getNextBut(){
+	protected function getNextBut(){
 		return we_html_button::create_button('next', "javascript:document.forms['0'].submit();");
 	}
 
-	function getOkBut(){
+	protected function getOkBut(){
 		return we_html_button::create_button('ok', 'javascript:weDoOk();');
 	}
 
-	function getCancelBut(){
+	protected function getCancelBut(){
 		return we_html_button::create_button('cancel', 'javascript:top.close();');
 	}
 
-	function getbackBut(){
+	protected function getbackBut(){
 		return ($this->pageNr > 1) ? we_html_button::create_button('back', 'javascript:history.back();') . we_html_tools::getPixel(10, 2) : '';
 	}
 
@@ -173,20 +154,18 @@ function doKeyDown() {
 		$dc = $this->getDialogContentHTML();
 
 		$dialogContent = (is_array($dc) ?
-				we_html_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle, '', $this->getDialogHeight()) :
-				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
+						we_html_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
+						we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
-			we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
-	}
-
-	function getDialogHeight(){
-		return '';
+				we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
 	}
 
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
-			$okBut = ($back = $this->getBackBut() ) ? we_html_button::create_button_table(array($back, we_html_button::create_button('ok', 'form:we_form'))) : we_html_button::create_button('ok', 'form:we_form');
+			$back = $this->getBackBut();
+			$ok = we_html_button::create_button('ok', 'form:we_form');
+			$okBut = $back ? we_html_button::create_button_table(array($back, $ok)) : $ok;
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
@@ -238,47 +217,38 @@ function doKeyDown() {
 	}
 
 	function getHeaderHTML($printJS_Style = false){
-		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . STYLESHEET . static::getTinyMceJS() .
-			($printJS_Style ? STYLESHEET . $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
-			'</head>';
+		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . ($printJS_Style ? STYLESHEET : '') . static::getTinyMceJS() .
+				($printJS_Style ? $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
+				'</head>';
 	}
 
 	public static function getTinyMceJS(){
 		return
-			we_html_element::jsElement('var isWeDialog = true;') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
-			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
+				we_html_element::jsElement('var isWeDialog = true;') .
+				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
+				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
+				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
+				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
+				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
 	}
 
 	function getJs(){
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
-var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 var textareaFocus = false;
 var onEnterKey=' . ($this->pageNr == $this->numPages && $this->JsOnly) . ';
 
 function weDoOk() {' .
-				($this->pageNr == $this->numPages && $this->JsOnly ? '
+						($this->pageNr == $this->numPages && $this->JsOnly ? '
 			if (!textareaFocus) {
 				' . $this->getOkJs() . '
 			}' : '') .
-				'
+						'
 }') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', array('onload' => 'addKeyListener();self.focus();'));
+				we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
 	}
 
 	function formColor($size, $name, $value, $width = ""){
 		return '<input size="' . $size . '" type="text" name="' . $name . '" style="' . ($width ? 'width:' . $width . 'px;' : '') . 'background-color:' . $value . '" value="' . $value . '" onclick="openColorChooser(\'' . $name . '\',this.value);" readonly />';
-	}
-
-	function getBodyTagHTML(){
-		return '<body class="weDialogBody" onunload="doUnload()">';
-	}
-
-	function getFooterHTML(){
-		return '</body></html>';
 	}
 
 	function getHttpVar($type, $name, $alt = ""){
@@ -303,15 +273,21 @@ function weDoOk() {' .
 	}
 
 	function getClassSelect(){
-		$clSelect = new we_html_select(array("name" => "we_dialog_args[cssclass]", "id" => "we_dialog_args[cssclass]", "size" => 1, "style" => "width: 300px;", 'class' => 'defaultfont'));
+		$clSelect = new we_html_select(array(
+			"name" => "we_dialog_args[cssclass]",
+			"id" => "we_dialog_args[cssclass]",
+			"size" => 1,
+			"style" => "width: 300px;",
+			'class' => 'defaultfont'
+		));
 		$clSelect->addOption("", g_l('wysiwyg', '[none]'));
-		$classesCSV = trim($this->args["cssclasses"], ",");
-		if(!empty($classesCSV)){
+		$classesCSV = trim($this->args['cssclasses'], ",");
+		if($classesCSV){
 			foreach(explode(",", $classesCSV) as $val){
 				$clSelect->addOption($val, "." . $val);
 			}
 		}
-		if(isset($this->args["cssclass"]) && !empty($this->args["cssclass"])){
+		if(isset($this->args["cssclass"]) && $this->args["cssclass"]){
 			$clSelect->selectOption($this->args["cssclass"]);
 		}
 

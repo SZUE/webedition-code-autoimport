@@ -26,11 +26,8 @@ $oTblCont = new we_html_table(
 	array(
 	"id" => "m_" . $iCurrId . "_inline",
 	"style" => "width:" . $iWidth . "px;",
-	"cellpadding" => 0,
-	"cellspacing" => 0,
-	"border" => 0
 	), 1, 1);
 $oTblCont->setCol(0, 0, null, $inline);
 $aLang = array(
 	g_l('cockpit', '[users_online]'), ' (' . $UO->getNumUsers() . ")"
-); 
+);

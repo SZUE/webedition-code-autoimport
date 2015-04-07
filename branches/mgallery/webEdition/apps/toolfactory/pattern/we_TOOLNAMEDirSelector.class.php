@@ -18,7 +18,7 @@
 * webEdition/licenses/webEditionCMS/License.txt
 *
 * @category   webEdition
- * @package none
+* @package none
 * @license    http://www.gnu.org/copyleft/gpl.html  GPL
 */
 
@@ -58,7 +58,7 @@ echo '<td></td>';
 }
 
 protected function getWriteBodyHead(){
-		return we_html_element::jsElement('
+return we_html_element::jsElement('
 var ctrlpressed=false;
 var shiftpressed=false;
 var inputklick=false;
@@ -72,7 +72,7 @@ document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.v
 }else{
 inputklick=false;
 }
-	}else{
+}else{
 inputklick=false;
 if(document.all){
 if(e.ctrlKey || e.altKey){ ctrlpressed=true;}
@@ -83,55 +83,50 @@ if(e.shiftKey){ shiftpressed=true;}
 }' . ($this->multiple ? '
 if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}' : '
 top.unselectAllFiles();') . '
-	}
+}
 }
 ');
-	}
+}
 
 function printFramesetJSFunctioWriteBody(){
-		ob_start();
-		?><script type="text/javascript"><!--
-					function writeBody(d) {
-						var body ='<form name="we_form" target="fscmd" action="<?php echo '<?php echo $_SERVER["SCRIPT_NAME"]; ?>'; ?>">'+
-									(top.we_editDirID?
-					'<input type="hidden" name="what" value="<?php echo '<?php echo self::DORENAMEFOLDER; ?>'; ?>" />'+
+ob_start();
+?><script type="text/javascript"><!--
+			function writeBody(d) {
+					var body = (top.we_editDirID?
+									'<input type="hidden" name="what" value="'+top.consts.DORENAMEFOLDER+'" />' +
 									'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />':
-									'<input type="hidden" name="what" value="<?php echo '<?php echo self::CREATEFOLDER; ?>'; ?>" />'
-					)+
-					'<input type="hidden" name="order" value="' + top.order + '" />'+
-					'<input type="hidden" name="rootDirID" value="<?php echo '<?php echo $this->rootDirID; ?>'; ?>" />'+
-					'<input type="hidden" name="table" value="<?php echo '<?php echo $this->table; ?>'; ?>" />'+
-					'<input type="hidden" name="id" value="' + top.currentDir + '" />'+
-					'<table border="0" cellpadding="0" cellspacing="0" width="100%">'+
-					(makeNewFolder?
-					'<tr style="background-color:#DFE9F5;">'+
-									'<td align="center"><img src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/folder.gif" width="16" height="18" border="0"></td>'+
-									'<td><input type="hidden" name="we_FolderText" value="<?php echo g_l('tools', '[newFolder]'); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('tools', '[newFolder]'); ?>"  class="wetextinput" style="width:100%" /></td>'+
-									'</tr>':
-									'');
-					for (i = 0; i < entries.length; i++){
+									'<input type="hidden" name="what" value="'+top.consts.CREATEFOLDER+'" />'
+									) +
+									'<input type="hidden" name="order" value="' + top.order + '" />' +
+									'<input type="hidden" name="rootDirID" value="'+top.options.rootDirID+'" />' +
+									'<input type="hidden" name="table" value="' + top.options.table + '" />' +
+									'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+									'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
+									(makeNewFolder?
+													'<tr style="background-color:#DFE9F5;">' +
+													'<td align="center"><img class="treeIcon" src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/folder.gif" ></td>' +
+													'<td><input type="hidden" name="we_FolderText" value="<?php echo g_l('tools', '[newFolder]'); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('tools', '[newFolder]'); ?>"  class="wetextinput" style="width:100%" /></td>' +
+													'</tr>':
+													'');
+									for (i = 0; i < entries.length; i++){
 					var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
 									var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-									body+='<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder))  ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >'+
-													'<td class="selector" width="25" align="center">'+
-													'<img src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/' + entries[i].icon + '" width="16" height="18" border="0">'+
-													'</td>'+
-													(we_editDirID == entries[i].ID?
-									'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />':
-													'<td class="selector" style="" >'+entries[i].text
-									)+
-									'</td></tr><tr><td colspan="3"><?php echo '<?php echo we_html_tools::getPixel(2,1); ?>'; ?></td></tr>';
-									}
-					body+='<tr><td width="25"><?php echo '<?php echo we_html_tools::getPixel(25,2)?>'; ?></td>'+
-									'<td><?php echo '<?php echo we_html_tools::getPixel(200,2)?>'; ?></td>'+
-									'</tr>'+
-									'</table></form>':
-						d.innerHTML = body;
+									body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder))  ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
+									'<td class="selector" width="25" align="center">' +
+									'<img class="treeIcon" src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/' + entries[i].icon + '">' +
+									'</td>' +
+									(we_editDirID == entries[i].ID?
+													'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '"><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />':
+													'<td class="selector" style="" >' + entries[i].text
+													) +
+									'</td></tr>';
+					}
+					d.innerHTML = '<form name="we_form" target="fscmd" action="' + options.formtarget + '">' + body + '</table></form>';
 									if (makeNewFolder || top.we_editDirID){
 					document.we_form.we_FolderText_tmp.focus();
-	document.we_form.we_FolderText_tmp.select();
-									}
-}
+									document.we_form.we_FolderText_tmp.select();
+					}
+					}
 -->
 </script>
 <?php echo '<?php'; ?>
@@ -142,11 +137,11 @@ function printFramesetJSFunctionQueryString(){
 ?>
 <script type="text/javascript">
 <!--
-									function queryString(what, id, o, we_editDirID){
-									if (!o) o = top.order;
-													if (!we_editDirID) we_editDirID = "";
-													return '<?php echo '<?php echo $_SERVER["SCRIPT_NAME"]; ?>'; ?>?what=' + what + '&rootDirID=<?php echo '<?php echo $this->rootDirID;  if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>'; ?>&table=<?php echo '<?php echo $this->table; ?>'; ?>&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
-}
+	function queryString(what, id, o, we_editDirID){
+	if (!o) o = top.order;
+					if (!we_editDirID) we_editDirID = "";
+					return '<?php echo '<?php echo $_SERVER["SCRIPT_NAME"]; ?>'; ?>?what=' + what + '&rootDirID=<?php echo '<?php echo $this->rootDirID;  if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>'; ?>&table=<?php echo '<?php echo $this->table; ?>'; ?>&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+	}
 -->
 </script>
 <?php echo '<?php'; ?>
@@ -157,13 +152,13 @@ protected function printFramesetJSFunctionEntry(){
 <?php echo '?>'; ?>
 <script type="text/javascript">
 <!--
-													function entry(ID, icon, text, isFolder, path){
-													this.ID = ID;
-																	this.icon = icon;
-																	this.text = text;
-																	this.isFolder = isFolder;
-																	this.path = path;
-}
+	function entry(ID, icon, text, isFolder, path){
+	this.ID = ID;
+					this.icon = icon;
+					this.text = text;
+					this.isFolder = isFolder;
+					this.path = path;
+	}
 -->
 </script>
 <?php echo '<?php'; ?>
@@ -208,51 +203,51 @@ we_html_tools::protect();
 
 print we_html_element('<script type="text/javascript">
 <!--
-																	top.clearEntries(); ';
-																	$this - > FolderText = rawurldecode($this - > FolderText);
-																	$txt = '';
-																	if (we_base_request::_(we_base_request::BOOL, 'we_FolderText_tmp')){
-													$txt = rawurldecode(we_base_request::_(we_base_request::RAW, 'we_FolderText_tmp'));
-																	}
-													if ($txt == ''){
-													echo we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
-																	} else{
-													$folder = new we_folder();
-																	$folder - > we_new();
-																	$folder - > setParentID($this - > dir);
-																	$folder - > Table = $this - > table;
-																	$folder - > Icon = we_base_ContentTypes::FOLDER_ICON;
-																	$folder - > Text = $txt;
-																	$folder - > Path = $folder - > getPath();
-																	$this - > db - > query("SELECT ID FROM ".$this - > db - > escape($this - > table)." WHERE Path='".$this - > db - > escape($folder - > Path)."'");
-																	if ($this - > db - > next_record()){
-													echo we_message_reporting::getShowMessageCall(g_l('tools', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
-													} else{
-													if (<?php echo $CLASSNAME; ?>::textNotValid($folder - > Text)){
-													echo we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
-													} else{
-													$folder - > we_save();
-																	print 'var ref = top.opener.top.content;
-																	if (ref.makeNewEntry){
-													ref.makeNewEntry("'.we_base_ContentTypes::FOLDER_ICON.'", '.$folder->ID.', "'.$folder->ParentID.'", "'.$txt.'", 1, "folder", "'.$this->table.'", 0, 0);
-																	}
-													';
-																	if ($this - > canSelectDir){
-													echo 'top.currentPath = "'.$folder - > Path.'";
-																	top.currentID = "'.$folder->ID.'";
-																	top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
-																	';
-																	}
-													}
+	top.clearEntries(); ';
+					$this - > FolderText = rawurldecode($this - > FolderText);
+					$txt = '';
+					if (we_base_request::_(we_base_request::BOOL, 'we_FolderText_tmp')){
+	$txt = rawurldecode(we_base_request::_(we_base_request::RAW, 'we_FolderText_tmp'));
+	}
+	if ($txt == ''){
+	echo we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+	} else{
+	$folder = new we_folder();
+					$folder - > we_new();
+					$folder - > setParentID($this - > dir);
+					$folder - > Table = $this - > table;
+					$folder - > Icon = we_base_ContentTypes::FOLDER_ICON;
+					$folder - > Text = $txt;
+					$folder - > Path = $folder - > getPath();
+					$this - > db - > query("SELECT ID FROM ".$this - > db - > escape($this - > table)." WHERE Path='".$this - > db - > escape($folder - > Path)."'");
+					if ($this - > db - > next_record()){
+	echo we_message_reporting::getShowMessageCall(g_l('tools', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+	} else{
+	if (<?php echo $CLASSNAME; ?>::textNotValid($folder - > Text)){
+	echo we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+	} else{
+	$folder - > we_save();
+					print 'var ref = top.opener.top.content;
+					if (ref.makeNewEntry){
+	ref.makeNewEntry("'.we_base_ContentTypes::FOLDER_ICON.'", '.$folder->ID.', "'.$folder->ParentID.'", "'.$txt.'", 1, "folder", "'.$this->table.'", 0, 0);
+	}
+	';
+					if ($this - > canSelectDir){
+	echo 'top.currentPath = "'.$folder - > Path.'";
+					top.currentID = "'.$folder->ID.'";
+					top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
+					';
+	}
+	}
 
-													}
-													}
+	}
+	}
 
 
-													$this - > printCmdAddEntriesHTML();
-																	$this - > printCMDWriteAndFillSelectorHTML();
-																	print 'top.makeNewFolder = 0;
-																	top.selectFile(top.currentID);
+	$this - > printCmdAddEntriesHTML();
+					$this - > printCMDWriteAndFillSelectorHTML();
+					print 'top.makeNewFolder = 0;
+					top.selectFile(top.currentID);
 //-->
 </script>
 </head><body></body></html>';
@@ -272,51 +267,51 @@ echo we_html_tools::getHtmlTop();
 we_html_tools::protect();
 
 echo '<script type="text/javascript"><!--
-																	top.clearEntries();
-																	';
-																	$this - > FolderText = rawurldecode($this - > FolderText);
-																	$txt = $this - > FolderText;
-																	if ($txt == ''){
-													echo we_message_reporting::getShowMessageCall($GLOBALS['l_<?php echo $TOOLNAME; ?>']['folder_empty'], we_message_reporting::WE_MESSAGE_ERROR);
-																	} else{
-													$folder = new we_folder();
-																	$folder - > initByID($this - > we_editDirID, $this - > table);
-																	$folder - > Text = $txt;
-																	$folder - > Filename = $txt;
-																	$folder - > Path = $folder - > getPath();
-																	$this - > db - > query("SELECT ID,Text FROM ".$this - > db - > escape($this - > table)." WHERE Path='".$this - > db - > escape($folder - > Path)."' AND ID != ".intval($this - > we_editDirID));
-																	if ($this - > db - > next_record()){
-													$we_responseText = sprintf($GLOBALS["l_<?php echo $TOOLNAME; ?>"]["folder_exists"], $folder - > Path);
-																	echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-													} else{
-													if (preg_match('/[%/\\"\']/', $folder - > Text)){
-													$we_responseText = $GLOBALS["l_<?php echo $TOOLNAME; ?>"]["wrongtext"];
-																	echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-													} else{
-													if (f("SELECT Text FROM ".$this - > db - > escape($this - > table)." WHERE ID=".intval($this - > we_editDirID), "Text", $this - > db) != $txt){
-													$folder - > we_save();
-																	echo 'var ref = top.opener.top.content;
-																	if (ref.updateEntry){
-													ref.updateEntry('.$folder->ID.', "'.$txt.'", "'.$folder->ParentID.'", 1, 0);
-																	}
-													';
-																	if ($this - > canSelectDir){
-													echo 'top.currentPath = "'.$folder - > Path.'";
-																	top.currentID = "'.$folder->ID.'";
-																	top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
-																	';
-													}
-													}
-													}
+					top.clearEntries();
+					';
+					$this - > FolderText = rawurldecode($this - > FolderText);
+					$txt = $this - > FolderText;
+					if ($txt == ''){
+	echo we_message_reporting::getShowMessageCall($GLOBALS['l_<?php echo $TOOLNAME; ?>']['folder_empty'], we_message_reporting::WE_MESSAGE_ERROR);
+	} else{
+	$folder = new we_folder();
+					$folder - > initByID($this - > we_editDirID, $this - > table);
+					$folder - > Text = $txt;
+					$folder - > Filename = $txt;
+					$folder - > Path = $folder - > getPath();
+					$this - > db - > query("SELECT ID,Text FROM ".$this - > db - > escape($this - > table)." WHERE Path='".$this - > db - > escape($folder - > Path)."' AND ID != ".intval($this - > we_editDirID));
+					if ($this - > db - > next_record()){
+	$we_responseText = sprintf($GLOBALS["l_<?php echo $TOOLNAME; ?>"]["folder_exists"], $folder - > Path);
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+	} else{
+	if (preg_match('/[%/\\"\']/', $folder - > Text)){
+	$we_responseText = $GLOBALS["l_<?php echo $TOOLNAME; ?>"]["wrongtext"];
+					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+	} else{
+	if (f("SELECT Text FROM ".$this - > db - > escape($this - > table)." WHERE ID=".intval($this - > we_editDirID), "Text", $this - > db) != $txt){
+	$folder - > we_save();
+					echo 'var ref = top.opener.top.content;
+					if (ref.updateEntry){
+	ref.updateEntry('.$folder->ID.', "'.$txt.'", "'.$folder->ParentID.'", 1, 0);
+	}
+	';
+					if ($this - > canSelectDir){
+	echo 'top.currentPath = "'.$folder - > Path.'";
+					top.currentID = "'.$folder->ID.'";
+					top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
+					';
+	}
+	}
+	}
 
-													}
-													}
+	}
+	}
 
-													print
-																	$this - > printCmdAddEntriesHTML().
-																	$this - > printCMDWriteAndFillSelectorHTML().
-																	'top.makeNewFolder = 0;
-																	top.selectFile(top.currentID);
+	print
+					$this - > printCmdAddEntriesHTML().
+					$this - > printCMDWriteAndFillSelectorHTML().
+					'top.makeNewFolder = 0;
+					top.selectFile(top.currentID);
 //-->
 </script>
 ';
@@ -330,33 +325,33 @@ function printFramesetSelectFileHTML(){
 ?>
 <script type="text/javascript">
 <!--
-																	function selectFile(id){
-																	if (id){
-																	e = getEntry(id);
-																					if (top.fsfooter.document.we_form.fname.value != e.text &&
-																									top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == - 1 &&
-																									top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == - 1 &&
-																									top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == - 1){
+					function selectFile(id){
+					if (id){
+					e = getEntry(id);
+									if (top.fsfooter.document.we_form.fname.value != e.text &&
+													top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == - 1 &&
+													top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == - 1 &&
+													top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == - 1){
 
-																	top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
-																					(top.fsfooter.document.we_form.fname.value + "," + e.text) :
-																					e.text;
-																					var show = top.fsfooter.document.getElementById("showDiv");
-																					if (show){
-																	show.innerHTML = top.fsfooter.document.we_form.fname.value;
-																	}
+					top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
+									(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+									e.text;
+									var show = top.fsfooter.document.getElementById("showDiv");
+									if (show){
+					show.innerHTML = top.fsfooter.document.we_form.fname.value;
+					}
 
-																	}
-																	if (top.fsbody.document.getElementById("line_" + id)) top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
-																					currentPath = e.path;
-																					currentID = id;
-																					we_editDirID = 0;
-																	} else{
-																	top.fsfooter.document.we_form.fname.value = "";
-																					currentPath = "";
-																					we_editDirID = 0;
-																	}
-}
+					}
+					if (top.fsbody.document.getElementById("line_" + id)) top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+									currentPath = e.path;
+									currentID = id;
+									we_editDirID = 0;
+					} else{
+					top.fsfooter.document.we_form.fname.value = "";
+									currentPath = "";
+									we_editDirID = 0;
+					}
+					}
 -->
 </script>
 <?php echo '<?php'; ?>

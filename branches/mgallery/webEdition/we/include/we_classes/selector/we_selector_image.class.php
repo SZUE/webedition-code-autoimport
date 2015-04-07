@@ -31,16 +31,16 @@ class we_selector_image extends we_selector_document{
 
 	protected function getFrameset(){
 		return
-			STYLESHEET .
-			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			'<body class="selector">' .
-			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
-			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
-			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
-			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
-			we_html_element::htmlIFrame('fspath', HTML_DIR . 'gray2.html', '', '', '', false) .
-			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-			'</body>
+				STYLESHEET .
+				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+				'<body class="selector">' .
+				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
+				we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
+				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
+				we_html_element::htmlIFrame('fspath', HTML_DIR . 'gray2.html', '', '', '', false) .
+				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+				'</body>
 </html>';
 	}
 
@@ -51,7 +51,7 @@ class we_selector_image extends we_selector_document{
 
 	protected function printCMDWriteAndFillSelectorHTML(){
 		return parent::printCMDWriteAndFillSelectorHTML() .
-			'top.fsbody.document.body.style.fontSize=top.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
+				'top.fsbody.document.body.style.fontSize=top.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
 	}
 
 	//FIXME: printFramesetSelectFileHTML should only set a class "selected", not the background itself
@@ -65,16 +65,16 @@ class we_selector_image extends we_selector_document{
 							return;
 						}
 						var body = (we_editDirID ?
-										'<input type="hidden" name="what" value="<?php echo self::DORENAMEFOLDER ?>" />' +
+										'<input type="hidden" name="what" value="' + top.consts.DORENAMEFOLDER + '" />' +
 										'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />' :
-										'<input type="hidden" name="what" value="<?php echo self::CREATEFOLDER ?>" />'
+										'<input type="hidden" name="what" value="' + top.consts.CREATEFOLDER + '" />'
 										) +
 										'<input type="hidden" name="order" value="' + top.order + '" />' +
-										'<input type="hidden" name="rootDirID" value="<?php echo $this->rootDirID ?>" />' +
-										'<input type="hidden" name="table" value="<?php echo $this->table ?>" />' +
+										'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
+										'<input type="hidden" name="table" value="' + top.options.table + '" />' +
 										'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
 										(makeNewFolder ?
-														'<div class="imgDiv"><img class="icon" src="<?php echo ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON ?>"/><br/>' +
+														'<div class="imgDiv"><img class="icon" src="' + top.dirs.ICON_DIR + 'doclist/' + top.consts.FOLDER_ICON + '"/><br/>' +
 														'<input type="hidden" name="we_FolderText" value="<?php echo g_l('fileselector', "[new_folder_name]") ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('fileselector', "[new_folder_name]") ?>" class="wetextinput" style="width:100%" />' +
 														'</div>' :
 														'');
@@ -82,14 +82,14 @@ class we_selector_image extends we_selector_document{
 							var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
 							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 							body += '<div class="imgDiv ' + ((entries[i].ID == top.currentID) ? "selected" : "") + '" id="line_' + entries[i].ID + '" title="' + entries[i].text + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-											'<img src="' + ((entries[i].isFolder) ? "<?php echo ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON ?>" : "<?php echo WEBEDITION_DIR ?>thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size2=200") + '" class="icon"/>' +
+											'<img src="' + ((entries[i].isFolder) ? top.dirs.ICON_DIR + 'doclist/' + top.consts.FOLDER_ICON : top.dirs.WEBEDITION_DIR + "thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size2=200") + '" class="icon"/>' +
 											'<br/><div class="imgText selector">' +
 											(we_editDirID == entries[i].ID ?
 															'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onmousedown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 															entries[i].text) +
 											'</div></div>';
 						}
-						d.innerHTML = '<form name="we_form" target="fscmd" action="<?php echo $_SERVER["SCRIPT_NAME"] ?>" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</form>';
+						d.innerHTML = '<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</form>';
 						if (makeNewFolder || top.we_editDirID) {
 							top.fsbody.document.we_form.we_FolderText_tmp.focus();
 							top.fsbody.document.we_form.we_FolderText_tmp.select();
@@ -106,14 +106,14 @@ class we_selector_image extends we_selector_document{
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 
 		return parent::printHeaderTableExtraCols() .
-			'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
+				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button("image:listview", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
-			'<td>' .
-			we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-			($this->filter && isset($this->ctb[$this->filter]) ?
-				we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
-				we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
-			'</td>';
+				'<td>' .
+				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+				($this->filter && isset($this->ctb[$this->filter]) ?
+						we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+						we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
+				'</td>';
 	}
 
 	function getFramesetJavaScriptDef(){

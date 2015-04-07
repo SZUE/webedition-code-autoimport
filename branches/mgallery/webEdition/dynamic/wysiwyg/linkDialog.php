@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -25,9 +26,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $noInternals = false;
 if(!(
-	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
-	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend')
-	)){
+		we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
+		we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'isFrontend')
+		)){
 	we_html_tools::protect();
 } else {
 	$noInternals = true;
@@ -36,56 +37,4 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 
 $dialog = new we_dialog_Hyperlink('', '', 0, 0, $noInternals);
 $dialog->initByHttp();
-$dialog->registerCmdFn('weDoLinkCmd');
 echo $dialog->getHTML();
-
-function weDoLinkCmd($args){
-	if((!isset($args['href'])) || $args['href'] == we_base_link::EMPTY_EXT){
-		$args['href'] = '';
-	}
-	$param = trim($args['param'], '?& ');
-	$anchor = trim($args['anchor'], '# ');
-	if(!empty($param)){
-		$tmp = array();
-		parse_str($param, $tmp);
-		$param = '?' . http_build_query($tmp, null, '&');
-	}
-	// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
-	$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
-			(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
-
-	if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
-		$query = array();
-		if(!empty($args['mail_subject'])){
-			$query['subject'] = $args['mail_subject'];
-		}
-		if(!empty($args['mail_cc'])){
-			$query['cc'] = $args['mail_cc'];
-		}
-		if(!empty($args['mail_bcc'])){
-			$query['bcc'] = $args['mail_bcc'];
-		}
-
-		$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query));
-
-		$tmpClass = $args['class'];
-		foreach($args as &$val){
-			$val = '';
-		}
-		$args['class'] = $tmpClass;
-	}
-
-	return we_dialog_base::getTinyMceJS() .
-		we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
-		'<form name="tiny_form">' . we_html_element::htmlHiddens(array(
-			"href" => $href,
-			"target" => $args["target"],
-			"class" => $args["cssclass"],
-			"lang" => $args["lang"],
-			"hreflang" => $args["hreflang"],
-			"title" => $args["title"],
-			"accesskey" => $args["accesskey"],
-			"tabindex" => $args["tabindex"],
-			"rel" => $args["rel"],
-			"rev" => $args["rev"])) . '</form>';
-}

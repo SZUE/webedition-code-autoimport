@@ -259,9 +259,8 @@ class we_wysiwyg_editor{
 		}
 
 		return we_html_element::cssElement('
-.tbButtonWysiwygBorder {
+.tiny-wetextarea{
 	border: 1px solid #006DB8;
-	background-image: url(' . IMAGE_DIR . 'pixel.gif);
 	margin: 0px;
 	padding:4px;
 	text-align: left;
@@ -270,6 +269,17 @@ class we_wysiwyg_editor{
 	overflow: auto;
 	height: auto;
 	width: auto;
+}
+.tbButtonWysiwygBorder {
+	border: 1px solid #006DB8;
+	margin: 0px;
+	padding:4px;
+	text-align: left;
+	text-decoration: none;
+	position: relative;
+	height: auto;
+	width:25px;
+	background-color: #F5F5F5;
 }') .
 			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
 			($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
@@ -562,7 +572,7 @@ class we_wysiwyg_editor{
 
 	public static function reparseInternalLinks(&$content, $replace = false){
 		$regs = $internalIDs = array();
-		
+
 		if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $content) : $content;

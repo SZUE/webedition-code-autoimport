@@ -273,7 +273,7 @@ class we_binaryDocument extends we_document{
 		// second we build all input fields for them and take
 		// the elements of this imageDocument as values:
 		$_fieldcount = count($_defined_fields);
-		$_fieldcounter = (int) 0; // needed for numbering the table rows
+		$_fieldcounter = 0; // needed for numbering the table rows
 		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
 		$_mdcontent = '';
 		for($i = 0; $i < $_fieldcount; $i++){
@@ -295,8 +295,8 @@ class we_binaryDocument extends we_document{
 						);
 						break;
 					default:
-						$_inp = $_mode === 'none' || !isset($_defined_values[$_tagName]) || !is_array($_defined_values[$_tagName]) ? 
-							$this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"') : 
+						$_inp = $_mode === 'none' || !isset($_defined_values[$_tagName]) || !is_array($_defined_values[$_tagName]) ?
+							$this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"') :
 								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
 				}
 

@@ -136,14 +136,12 @@ function weonclick(e){
 							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 							body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_' + entries[i].ID + '" style="cursor:pointer;"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
 											'<td class="selector" width="25" align="center">' +
-											'<img src="<?php echo TREE_ICON_DIR; ?>' + entries[i].icon + '" width="16" height="18" border="0" />' +
+											'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/>' +
 											'</td>' +
 											'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
 											'</tr>'
 						}
-						body += '<tr><td width="25"><?php echo we_html_tools::getPixel(25, 2) ?></td>' +
-										'<td><?php echo we_html_tools::getPixel(150, 2) ?></td>' +
-										'</tr></table>';
+						body += '</table>';
 						d.innerHTML = body;
 					}
 					//->
@@ -160,7 +158,7 @@ options.multiple=' . intval($this->multiple) . ';
 	}
 
 	protected function getFramsetJSFile(){
-		return parent::getFramsetJSFile() .we_html_element::jsScript(JS_DIR . 'selectors/multiple_selector.js');
+		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/multiple_selector.js');
 	}
 
 }

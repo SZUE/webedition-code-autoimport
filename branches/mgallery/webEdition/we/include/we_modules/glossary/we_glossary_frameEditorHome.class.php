@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorHome{
 
-	function Header(&$weGlossaryFrames){
+	function Header($weGlossaryFrames){
 
 		$_body = array(
 			'bgcolor' => '#F0EFF0',
@@ -35,7 +35,7 @@ class we_glossary_frameEditorHome{
 		return $weGlossaryFrames->getHTMLDocument($body);
 	}
 
-	function Body(&$weGlossaryFrames){
+	function Body($weGlossaryFrames){
 
 		$_hidden = array(
 			'cmd' => 'home',
@@ -70,7 +70,7 @@ class we_glossary_frameEditorHome{
 		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody($_body, $content), "");
 	}
 
-	function Footer(&$weGlossaryFrames){
+	function Footer($weGlossaryFrames){
 
 		$_body = array(
 			'bgcolor' => '#EFF0EF',

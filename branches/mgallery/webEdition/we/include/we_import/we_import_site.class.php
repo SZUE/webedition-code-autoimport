@@ -680,7 +680,7 @@ function doUnload() {
 			"0" => g_l('siteimport', '[nolimit]'), "0.5" => "0.5"
 		);
 		for($i = 1; $i <= $maxallowed; $i++){
-			$maxarray["" . $i] = $i;
+			$maxarray[ $i] = $i;
 		}
 
 		// maxSize

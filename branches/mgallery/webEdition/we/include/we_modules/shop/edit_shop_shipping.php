@@ -60,17 +60,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 }
 
 echo we_html_element::jsElement(
-		'var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';' .
 		(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
 				'document.addEventListener("keyup",doKeyDown,true);' :
 				'document.onkeydown = doKeyDown;'
 		) . '
 function doKeyDown(e) {
-	var key;' .
-(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
-		'key = e.keyCode;' :
-		'key = event.keyCode;'
-) . '
+	var key=e.keyCode===undefined?event.keyCode:e.keyCode;
 	switch (key) {
 		case 27:
 			top.close();
@@ -78,11 +73,7 @@ function doKeyDown(e) {
 }
 
 function IsDigit(e) {
-	var key;' .
-(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
-		'key = e.charCode;' :
-		'key = event.keyCode;'
-) . '
+	var key=e.keyCode===undefined?event.keyCode:e.keyCode;
 	return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
 }
 
@@ -186,7 +177,7 @@ function we_submitForm(url){
 	f.method = "post";
 
 	f.submit();
-}' . 
+}' .
 
 (isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')
 	) .

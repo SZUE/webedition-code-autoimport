@@ -66,7 +66,6 @@ if(!isset($weShopVat)){
 	$weShopVat = new we_shop_vat(0, g_l('modules_shop', '[vat][new_vat_name]'), 19, 0);
 }
 $jsFunction = '
-var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 var hot = 0;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
@@ -80,7 +79,7 @@ function addListeners(){
 }
 
 function doKeyDown(e) {
-	var key = ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'e.keyCode;' : 'event.keyCode;') . '
+	var key = e.keyCode===undefined?event.keyCode:e.keyCode;
 
 	switch (key) {
 		case 27:
@@ -89,9 +88,7 @@ function doKeyDown(e) {
 }
 
 function IsDigit(e) {
-	var key;
-
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'key = e.charCode;' : 'key = event.keyCode;') . '
+	var key = e.charCode===undefined?event.keyCode:e.charCode;
 	return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
 }
 

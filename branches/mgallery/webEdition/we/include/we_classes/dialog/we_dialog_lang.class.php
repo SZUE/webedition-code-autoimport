@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_lang extends we_dialog_base{
+
 	var $dialogWidth = 370;
 	var $JsOnly = true;
 	var $changeableArgs = array(
@@ -36,37 +37,40 @@ class we_dialog_lang extends we_dialog_base{
 		$this->defaultInit();
 	}
 
+	function getOkJs(){
+		return '
+WelangDialog.insert();
+top.close();
+';
+	}
+
 	function defaultInit(){
 		$this->args = array("lang" => "");
 	}
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welang/js/lang_init.js');
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welang/js/lang_init.js');
 	}
 
 	function getDialogContentHTML(){
 		return '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>' . $this->getLangField("lang", g_l('wysiwyg', '[language]'), 260) . '</td></tr>
-</table>
-' .
-			(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
-				we_html_tools::hidden("weSaveToGlossary", 0) .
-				we_html_tools::hidden("language", we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
-				we_html_tools::hidden("text", "") : ''
-			);
+</table>' .
+				(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
+						we_html_tools::hidden("weSaveToGlossary", 0) .
+						we_html_tools::hidden("language", we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
+						we_html_tools::hidden("text", "") : ''
+				);
 	}
 
 	function getDialogButtons(){
-		$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[lang]'].value='';weDoOk();");
-
 		$buttons = array(
-			$trashbut
+			we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[lang]'].value='';weDoOk();")
 		);
 
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
-			$glossarybut = we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
-			$buttons[] = $glossarybut;
+			$buttons[] = we_html_button::create_button("to_glossary", "javascript:weSaveToGlossaryFn();", true, 100);
 		}
 
 		$buttons[] = parent::getDialogButtons();

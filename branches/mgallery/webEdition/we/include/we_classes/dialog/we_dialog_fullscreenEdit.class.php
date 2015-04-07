@@ -46,7 +46,6 @@ class we_dialog_fullscreenEdit extends we_dialog_base{
 
 	function getJs(){
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
-var isGecko = ' . (we_base_browserDetect::isGecko() ? 'true' : 'false') . ';
 var textareaFocus = false;
 
 ' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
@@ -61,6 +60,7 @@ function doKeyDown(e) {
 }
 
 function weDoOk() {
+	top.opener.tinyMCECallRegisterDialog({},"unregisterDialog");
 	WefullscreenDialog.writeback();
 	top.close();
 }
@@ -86,16 +86,8 @@ function doUnload() {
 self.focus();');
 	}
 
-	function getOkBut(){
-		return we_html_button::create_button("ok", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');weDoOk();");
-	}
-
-	function getCancelBut(){
+	protected function getCancelBut(){
 		return we_html_button::create_button("cancel", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');top.close();");
-	}
-
-	function getBodyTagHTML(){
-		return '<body id="weFullscreenDialog" class="weDialogBody" onunload="doUnload()" onbeforeunload="top.opener.tinyMCECallRegisterDialog({},\'unregisterDialog\')" >';
 	}
 
 }

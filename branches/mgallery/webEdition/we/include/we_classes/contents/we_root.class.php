@@ -1103,9 +1103,7 @@ abstract class we_root extends we_class{
 
 	function i_fileExtensionNotValid(){
 		if(isset($this->Extension)){
-			$ext = (substr($this->Extension, 0, 1) === '.' ?
-					substr($this->Extension, 1) :
-					$this->Extension);
+			$ext = ltrim($this->Extension, '.');
 
 			return !(preg_match('/^[a-zA-Z0-9]+$/iD', $ext) || !$ext);
 		}
@@ -1209,7 +1207,7 @@ abstract class we_root extends we_class{
 
 	function we_resaveMainTable(){
 		$this->wasUpdate = true;
-		return we_root::we_save(1, 1);
+		return we_root::we_save(true, true);
 	}
 
 	public function we_rewrite(){

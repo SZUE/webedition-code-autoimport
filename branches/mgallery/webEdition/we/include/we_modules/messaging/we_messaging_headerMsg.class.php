@@ -38,7 +38,7 @@ class we_messaging_headerMsg{
 			$load = '';
 		}
 
-		echo we_html_element::jsScript(JS_DIR . 'header_msg.js', array('onload' => $load));
+		echo we_html_element::jsScript(JS_DIR . 'header_msg.js', $load);
 	}
 
 	static function pbody(){
@@ -47,8 +47,8 @@ class we_messaging_headerMsg{
 		$todo_cmd = "we_cmd('messaging_start', " . we_messaging_frames::TYPE_TODO . ");";
 		?>
 		<table>
-			<?php echo '
-<tr>
+			<tr>
+				<?php echo '
 	<td id="msgCount" align="right" class="middlefont"><div onclick="' . $msg_cmd . '">0</div></td>
 	<td>' . we_html_tools::getPixel(5, 1) . '</td>
 	<td valign="bottom"><img src="' . IMAGE_DIR . 'modules/messaging/launch_messages.gif" style="width:16px;height:12px;" alt="" onclick="' . $msg_cmd . '"/></td>
@@ -56,9 +56,9 @@ class we_messaging_headerMsg{
 <tr>
 	<td id="todoCount" align="right" class="middlefont"><div onclick="' . $todo_cmd . '">0</div></td>
 	<td>' . we_html_tools::getPixel(5, 1) . '</td>
-	<td valign="bottom"><img src="' . IMAGE_DIR . 'modules/messaging/launch_tasks.gif" style="width:16px;height:12px;" alt="" onclick="' . $todo_cmd . '"/></td>
-</tr>'
-			?>
+	<td valign="bottom"><img src="' . IMAGE_DIR . 'modules/messaging/launch_tasks.gif" style="width:16px;height:12px;" alt="" onclick="' . $todo_cmd . '"/></td>'
+				?>
+			</tr>
 		</table>
 		<?php
 	}
