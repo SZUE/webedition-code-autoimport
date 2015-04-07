@@ -5,7 +5,7 @@
 
 CREATE TABLE ###TBLPREFIX###tblCleanUp (
   Path char(255) NOT NULL default '',
-  `Date` int(10) unsigned NOT NULL default '0',
+  `Date` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (Path),
   KEY `Date` (`Date`)
 ) ENGINE=MyISAM;
