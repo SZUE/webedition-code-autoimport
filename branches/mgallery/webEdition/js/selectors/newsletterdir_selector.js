@@ -69,11 +69,6 @@ function writeBody(d) {
 	}
 }
 
-var ctrlpressed = false;
-var shiftpressed = false;
-var inputklick = false;
-var wasdblclick = false;
-var tout = null;
 function weonclick(e) {
 	if (top.makeNewFolder || top.we_editDirID) {
 		if (!inputklick) {

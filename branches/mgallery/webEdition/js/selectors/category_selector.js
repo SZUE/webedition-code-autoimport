@@ -284,11 +284,6 @@ function queryString(what, id, o, we_editCatID) {
 	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
 }
 
-var ctrlpressed = false;
-var shiftpressed = false;
-var inputklick = false;
-var wasdblclick = false;
-var tout = null;
 function weonclick(e) {
 	if (top.makeNewFolder || top.makeNewCat || top.we_editCatID) {
 		if (!inputklick) {

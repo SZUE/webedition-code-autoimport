@@ -220,18 +220,6 @@ function exit_open() {
 </table>';
 	}
 
-	/* protected function printHeaderTableExtraCols(){
-	  $ret = parent::printHeaderTableExtraCols();
-	  switch($this->filter){
-	  case we_base_ContentTypes::TEMPLATE:
-	  case we_base_ContentTypes::OBJECT:
-	  case we_base_ContentTypes::OBJECT_FILE:
-	  case we_base_ContentTypes::WEDOCUMENT:
-	  return $ret;
-	  default:
-	  return $ret;
-	  }
-	  } */
 
 	protected function printHeaderJSDef(){
 		switch($this->filter){

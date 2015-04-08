@@ -58,12 +58,12 @@ class we_banner_dirSelector extends we_selector_directory{
 </table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
-	protected function printHeaderTableExtraCols(){
+	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("NEW_BANNER");
-		return '<td>' .
+		return parent::printHeaderTable('<td>' .
 			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
 			we_html_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-			'</td>';
+			'</td>');
 	}
 
 	protected function getFramsetJSFile(){

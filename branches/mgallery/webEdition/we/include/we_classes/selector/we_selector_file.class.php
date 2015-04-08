@@ -348,11 +348,7 @@ function exit_open(){' . ($this->JSIDName ? '
 		STYLESHEET_SCRIPT .
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 		$this->getFramsetJSFile() .
-		$this->getWriteBodyHead() .
 		'</head><body class="selectorBody" onload="top.writeBody(self.document.body);" onclick="weonclick(event);"></body></html>';
-	}
-
-	protected function getWriteBodyHead(){
 	}
 
 	protected function printHeaderHTML(){
@@ -366,21 +362,16 @@ function exit_open(){' . ($this->JSIDName ? '
 </head>
 	<body class="selectorHeader">
 		<form name="we_form" method="post">' .
-		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
-			$this->printHeaderTable() : '') .
+		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? $this->printHeaderTable() : '') .
 		$this->printHeaderHeadlines() .
 		'</form>
 	</body>
 </html>';
 	}
 
-	protected function printHeaderTableExtraCols(){
-		// overwrite
-	}
-
 	protected function printHeaderOptions(){
 		$pid = $this->dir;
-		$out = '';
+		$out = '<option value="0">/</option>';
 		$c = $z = 0;
 		while($pid != 0){
 			$c++;
@@ -394,10 +385,10 @@ function exit_open(){' . ($this->JSIDName ? '
 				$pid = 0;
 			}
 		}
-		return '<option value="0">/</option>' . $out;
+		return $out;
 	}
 
-	protected function printHeaderTable(){
+	protected function printHeaderTable($extra = ''){
 		return '
 <table class="selectorHeaderTable">
 	<tr valign="middle">
@@ -408,7 +399,7 @@ function exit_open(){' . ($this->JSIDName ? '
 		</td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
 		<td>' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
-			$this->printHeaderTableExtraCols() .
+			$extra .
 			'</tr>
 </table>';
 	}
@@ -477,7 +468,6 @@ top.fsheader.selectIt();';
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-		$this->printFooterJSDef() .
 		we_html_element::jsElement('
 function press_ok_button() {
 	if(document.we_form.fname.value==""){
@@ -491,7 +481,8 @@ function disableDelBut(){
 }
 function enableDelBut(){
 	switch_button_state("delete", "delete_enabled", "enabled");
-}') . '
+}') .
+		$this->printFooterJSDef() . '
 </head>
 	<body class="selectorFooter">
 	<form name="we_form" target="fscmd">' .
@@ -514,8 +505,8 @@ function enableDelBut(){
 		<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
 	</tr>
-	</tr>
-	</table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
+</table>
+<div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
 	private function setTableLayoutInfos(){

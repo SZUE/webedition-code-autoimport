@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_category extends we_selector_file{
-
 	private $we_editCatID = '';
 	private $EntryText = '';
 	private $noChoose = false;
@@ -82,7 +81,7 @@ class we_selector_category extends we_selector_file{
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-				we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js');
+			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js');
 	}
 
 	protected function getFsQueryString($what){
@@ -97,12 +96,12 @@ class we_selector_category extends we_selector_file{
 		<td class="lookin"><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' . $this->printHeaderOptions() . '</select></td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:top.setRootDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
 		<td>' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
-				($this->userCanEditCat() ?
-						'<td>' . we_html_button::create_button("image:btn_new_dir", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>
+			($this->userCanEditCat() ?
+				'<td>' . we_html_button::create_button("image:btn_new_dir", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>
 		<td width="38">' . we_html_button::create_button("image:btn_add_cat", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>' : '') .
-				($this->userCanEditCat() ?
-						'<td class="trash">' . we_html_button::create_button("image:btn_function_trash", 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>' : '') .
-				'</tr>
+			($this->userCanEditCat() ?
+				'<td class="trash">' . we_html_button::create_button("image:btn_function_trash", 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>' : '') .
+			'</tr>
 </table>';
 	}
 
@@ -118,7 +117,7 @@ class we_selector_category extends we_selector_file{
 		return 'var changeCatState=' . ($this->userCanChangeCat() ? 1 : 0) . ';';
 	}
 
-		function getFramesetJavaScriptDef(){
+	function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=false;
 var hot=0; // this is hot for category edit!!
@@ -153,12 +152,12 @@ options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 			$js.= we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-						'Category' => $txt,
-						'ParentID' => intval($this->dir),
-						'Text' => $txt,
-						'Path' => $Path,
-						'IsFolder' => intval($what),
-						'Icon' => (($what == 1) ? we_base_ContentTypes::FOLDER_ICON : 'cat.gif'),
+					'Category' => $txt,
+					'ParentID' => intval($this->dir),
+					'Text' => $txt,
+					'Path' => $Path,
+					'IsFolder' => intval($what),
+					'Icon' => (($what == 1) ? we_base_ContentTypes::FOLDER_ICON : 'cat.gif'),
 			)));
 			$folderID = $this->db->getInsertId();
 			$js.='top.currentPath = "' . $Path . '";
@@ -172,10 +171,10 @@ if(top.currentID){
 		}
 
 		echo we_html_element::jsElement(
-				$js .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.makeNewFolder = false;
+			$js .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.makeNewFolder = false;
 top.selectFile(top.currentID);') .
 		'</head><body></body></html>';
 	}
@@ -213,12 +212,12 @@ top.selectFile(top.currentID);') .
 			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), 'Text', $this->db) != $txt){
 			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-						'Category' => $txt,
-						'ParentID' => intval($this->dir),
-						'Text' => $txt,
-						'Path' => $Path,
-					)) .
-					' WHERE ID=' . intval($this->we_editCatID));
+					'Category' => $txt,
+					'ParentID' => intval($this->dir),
+					'Text' => $txt,
+					'Path' => $Path,
+				)) .
+				' WHERE ID=' . intval($this->we_editCatID));
 			if(f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db)){
 				$this->renameChildrenPath($this->we_editCatID);
 			}
@@ -233,10 +232,10 @@ if(top.currentID){
 		}
 
 		echo we_html_element::jsElement(
-				$js .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.fsfooter.document.we_form.fname.value = "";
+			$js .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.fsfooter.document.we_form.fname.value = "";
 top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;') .
 		'</head><body></body></html>';
 	}
@@ -244,9 +243,9 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;') .
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				(intval($this->dir) == 0 ? '
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			(intval($this->dir) == 0 ? '
 top.fsheader.disableRootDirButs();
 top.fsheader.disableDelBut();' : '
 top.fsheader.enableRootDirButs();
@@ -271,10 +270,8 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		if($IsDir){
 			return $this->DirInUse($id, $db);
 		}
-		if(f('SELECT 1  FROM ' . FILE_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) OR FIND_IN_SET(' . intval($id) . ',temp_category) LIMIT 1', '', $db)){
-			return true;
-		}
-		if(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) LIMIT 1', '', $db)){
+		if(f('SELECT 1  FROM ' . FILE_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) OR FIND_IN_SET(' . intval($id) . ',temp_category) LIMIT 1', '', $db) ||
+			(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) LIMIT 1', '', $db))){
 			return true;
 		}
 
@@ -307,7 +304,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			foreach($catsToDel as $id){
 				$IsDir = f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "", $this->db);
 				if($this->CatInUse($id, $IsDir)){
-					$catlistNotDeleted .= id_to_path($id, CATEGORY_TABLE) . "\\n";
+					$catlistNotDeleted .= id_to_path($id, CATEGORY_TABLE) . '\n';
 				} else {
 					$finalDelete[] = array('id' => $id, 'IsDir' => $IsDir);
 				}
@@ -332,16 +329,16 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			}
 			$this->id = $this->dir;
 			$hash = ($this->id ?
-							getHash('SELECT Path,Text FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), $this->db) :
-							array('Path' => '', 'Text' => ''));
+					getHash('SELECT Path,Text FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), $this->db) :
+					array('Path' => '', 'Text' => ''));
 			$Path = $hash['Path'];
 			$Text = $hash['Text'];
 
 			echo we_html_element::jsElement(
-					'top.clearEntries();' .
-					$this->printCmdAddEntriesHTML() .
-					$this->printCMDWriteAndFillSelectorHTML() .
-					'top.makeNewFolder = false;
+				'top.clearEntries();' .
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.makeNewFolder = false;
 top.currentPath = "' . $Path . '";
 top.currentID = "' . $this->id . '";
 top.selectFile(' . $this->id . ');
@@ -390,17 +387,17 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 	protected function getFrameset(){
 		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'openCatselector' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
 		return
-				STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-				'<body class="selector" onload="self.focus();">' .
-				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
-				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
-				($isMainChooser ?
-						we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true) : ''
-				) .
-				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false) .
-				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-				'</body>
+			STYLESHEET .
+			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+			'<body class="selector" onload="self.focus();">' .
+			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
+			($isMainChooser ?
+				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true) : ''
+			) .
+			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false) .
+			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+			'</body>
 </html>';
 	}
 
@@ -436,14 +433,14 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			$path = ($parentid ? $targetPath : '') . '/' . $category;
 		}
 		$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'Category' => $category,
-					'Text' => $category,
-					'Path' => $path,
-					'ParentID' => $parentid,
-					'Title' => $title,
-					'Description' => $description,
-					'Catfields' => serialize(array('default' => array('Title' => $title, 'Category' => $category)))//FIXME: remove in 6.5
-				)) . ' WHERE ID=' . $catId);
+				'Category' => $category,
+				'Text' => $category,
+				'Path' => $path,
+				'ParentID' => $parentid,
+				'Title' => $title,
+				'Description' => $description,
+				'Catfields' => serialize(array('default' => array('Title' => $title, 'Category' => $category)))//FIXME: remove in 6.5
+			)) . ' WHERE ID=' . $catId);
 
 		$updateok &= $this->saveFileLinks($catId, we_wysiwyg_editor::reparseInternalLinks($description));
 
@@ -453,7 +450,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
 		we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements.lookin.value);' .
-				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
+			($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
 		) .
 		'</head><body></body></html>';
 	}
@@ -470,10 +467,10 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 			$result = getHash('SELECT ID,Category,Title,Description,Path,ParentID FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $showPrefs, $db);
 
 			$path = ($result["ParentID"] ?
-							(f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($result["ParentID"]), '', $db)? :
-									'/'
-							) :
-							'/');
+					(f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($result["ParentID"]), '', $db)? :
+						'/'
+					) :
+					'/');
 
 			$parentId = $result ? $result["ParentID"] : 0;
 			$category = $result ? $result["Category"] : '';
@@ -518,9 +515,9 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsElement('
+		we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+		we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
@@ -542,7 +539,7 @@ function we_cmd(){
 function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
 	if(regExp.test(document.getElementById("category").value)) {' .
-				we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
+			we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();
 	}
@@ -554,7 +551,7 @@ function we_checkName() {
 		' . $table->getHtml() . "<br/>" . $ta . "<br/>" . $saveBut . '
 	</div>' : '' ) .
 		(isset($yuiSuggest) ?
-				$yuiSuggest->getYuiJs() : '') .
+			$yuiSuggest->getYuiJs() : '') .
 		'</body></html>';
 	}
 
@@ -574,12 +571,12 @@ function we_checkName() {
 		if($fileLinks){
 			foreach(array_unique($fileLinks) as $remObj){
 				$ret &= $db->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'ID' => $id,
-							'DocumentTable' => stripTblPrefix(CATEGORY_TABLE),
-							'type' => 'media',
-							'remObj' => $remObj,
-							'remTable' => stripTblPrefix(FILE_TABLE),
-							'position' => 0,
+						'ID' => $id,
+						'DocumentTable' => stripTblPrefix(CATEGORY_TABLE),
+						'type' => 'media',
+						'remObj' => $remObj,
+						'remTable' => stripTblPrefix(FILE_TABLE),
+						'position' => 0,
 				)));
 			}
 		}

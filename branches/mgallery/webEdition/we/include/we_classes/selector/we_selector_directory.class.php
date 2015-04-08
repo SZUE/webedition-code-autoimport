@@ -272,7 +272,7 @@ if(top.options.rootDirID){
 top.fsheader.selectIt();';
 	}
 
-	protected function printHeaderTable(){
+	protected function printHeaderTable($extra = '', $append = false){
 		return '
 <table class="selectorHeaderTable">
 	<tr valign="middle">
@@ -284,7 +284,8 @@ top.fsheader.selectIt();';
 		</td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
 		<td>' . we_html_button::create_button("image:btn_fs_back", "javascript:if(rootDirButsState){top.goBackDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>' .
-				$this->printHeaderTableExtraCols() :
+				($extra? : '') .
+				($append || !$extra ? '<td>' . we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) . '</td>' : '') :
 				''
 			) . '
 	</tr>
@@ -293,7 +294,7 @@ top.fsheader.selectIt();';
 
 	protected function printHeaderOptions(){
 		$pid = $this->dir;
-		$out = '';
+		$out = ($this->rootDirID ? '' : '<option value="0">/</option>');
 		$c = 0;
 		$z = 0;
 		while($pid != 0){
@@ -311,11 +312,7 @@ top.fsheader.selectIt();';
 				$pid = 0;
 			}
 		}
-		return ($this->rootDirID ? '' : '<option value="0">/</option>') . $out;
-	}
-
-	protected function printHeaderTableExtraCols(){
-		return '<td>' . we_html_button::create_button("image:btn_new_dir", "javascript:top.drawNewFolder();", true, 0, 0, '', '', !$this->userCanMakeNewDir(), false) . '</td>';
+		return $out;
 	}
 
 	function printSetDirHTML(){

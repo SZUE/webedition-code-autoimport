@@ -204,10 +204,6 @@ function queryString(what, id, o, we_editDirID, filter) {
 	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc="+options.open_doc+"&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "") + (filter ? ("&filter=" + filter) : "");
 }
 
-var ctrlpressed = false;
-var shiftpressed = false;
-var inputklick = false;
-var wasdblclick = false;
 function weonclick(e) {
 	if (top.makeNewFolder || top.we_editDirID) {
 		if (!inputklick) {

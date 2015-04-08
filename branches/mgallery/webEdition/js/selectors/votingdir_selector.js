@@ -79,10 +79,6 @@ function queryString(what, id, o, we_editDirID) {
 	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc="+options.open_doc+"&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 }
 
-var ctrlpressed = false;
-var shiftpressed = false;
-var inputklick = false;
-var tout = null;
 function weonclick(e) {
 	if (top.makeNewFolder || top.we_editDirID) {
 		if (!inputklick) {

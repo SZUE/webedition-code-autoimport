@@ -35,7 +35,7 @@ class we_selector_image extends we_selector_document{
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 			'<body class="selector" onload="self.focus();">' .
 			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
-			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
 			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
@@ -59,18 +59,18 @@ class we_selector_image extends we_selector_document{
 	}
 
 	//FIXME: get/set view using tblFile.viewType
-	protected function printHeaderTableExtraCols(){
+	protected function printHeaderTable($extra = ''){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 
-		return parent::printHeaderTableExtraCols() .
-			'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
+		return parent::printHeaderTable(
+				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button("image:listview", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
-			'<td>' .
-			we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-			($this->filter && isset($this->ctb[$this->filter]) ?
-				we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
-				we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
-			'</td>';
+				'<td>' .
+				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+				($this->filter && isset($this->ctb[$this->filter]) ?
+					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+					we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
+				'</td>', true);
 	}
 
 	function getFramesetJavaScriptDef(){
