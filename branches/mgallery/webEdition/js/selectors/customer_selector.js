@@ -32,5 +32,5 @@ function setDir(id) {
 	} else {
 		path = id;
 	}
-	top.fscmd.location.replace(top.queryString(queryType.SETDIR, path));
+	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, path));
 }

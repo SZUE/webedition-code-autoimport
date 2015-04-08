@@ -127,12 +127,12 @@ function doClick(id, ct) {
 				top.RenameEntry(id);
 			}
 		}
-	} else if (top.currentID == id && (!fsbody.ctrlpressed)) {
+	} else if (top.currentID == id && (!top.ctrlpressed)) {
 		if (perms.EDIT_KATEGORIE) {
 			top.RenameEntry(id);
 		}
 
-	} else if (fsbody.shiftpressed) {
+	} else if (top.shiftpressed) {
 		var oldid = currentID;
 		var currendPos = getPositionByID(id);
 		var firstSelected = getFirstSelected();
@@ -145,7 +145,7 @@ function doClick(id, ct) {
 		}
 		currentID = oldid;
 		hidePref(id);
-	} else if (!fsbody.ctrlpressed) {
+	} else if (!top.ctrlpressed) {
 		showPref(id);
 		selectFile(id);
 	} else {
@@ -157,12 +157,12 @@ function doClick(id, ct) {
 		}
 	}
 
-	if (fsbody.ctrlpressed) {
-		fsbody.ctrlpressed = 0;
+	if (top.ctrlpressed) {
+		top.ctrlpressed = 0;
 	}
 
-	if (fsbody.shiftpressed) {
-		fsbody.shiftpressed = 0;
+	if (top.shiftpressed) {
+		top.shiftpressed = 0;
 	}
 }
 
@@ -178,7 +178,7 @@ function setDir(id) {
 	if (id) {
 		top.fsheader.enableDelBut();
 	}
-	top.fscmd.location.replace(top.queryString(queryType.CMD, id));
+	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
 }
 
 function drawNewFolder() {
@@ -202,9 +202,9 @@ function deleteEntry() {
 		if (todel) {
 			todel = "," + todel;
 		}
-		top.fscmd.location.replace(top.queryString(queryType.DEL, top.currentID) + "&todel=" + encodeURI(todel));
+		top.fscmd.location.replace(top.queryString(top.queryType.DEL, top.currentID) + "&todel=" + encodeURI(todel));
 		if (top.fsvalues)
-			top.fsvalues.location.replace(top.queryString(queryType.PROPERTIES, 0));
+			top.fsvalues.location.replace(top.queryString(top.queryType.PROPERTIES, 0));
 		top.fsheader.disableDelBut();
 	}
 
@@ -217,12 +217,12 @@ function RenameEntry(id) {
 
 function showPref(id) {
 	if (self.fsvalues)
-		self.fsvalues.location = top.queryString(queryType.PROPERTIES) + "&catid=" + id;
+		self.fsvalues.location = top.queryString(top.queryType.PROPERTIES) + "&catid=" + id;
 }
 
 function hidePref() {
 	if (self.fsvalues)
-		self.fsvalues.location = top.queryString(queryType.PROPERTIES);
+		self.fsvalues.location = top.queryString(top.queryType.PROPERTIES);
 }
 
 function writeBody(d) {
@@ -231,11 +231,11 @@ function writeBody(d) {
 					'<form name="we_form" target="fscmd" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
 					) +
 					(we_editCatID ?
-									'<input type="hidden" name="what" value="' + queryType.DO_RENAME_ENTRY + '" />' +
+									'<input type="hidden" name="what" value="' + top.queryType.DO_RENAME_ENTRY + '" />' +
 									'<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />' :
 									(makeNewFolder ?
-													'<input type="hidden" name="what" value="' + queryType.CREATEFOLDER + '" />' :
-													'<input type="hidden" name="what" value="' + queryType.CREATE_CAT + '" />'
+													'<input type="hidden" name="what" value="' + top.queryType.CREATEFOLDER + '" />' :
+													'<input type="hidden" name="what" value="' + top.queryType.CREATE_CAT + '" />'
 													)) +
 					'<input type="hidden" name="order" value="' + top.order + '" />' +
 					'<input type="hidden" name="rootDirID" value="' + options.rootDirID + '" />' +

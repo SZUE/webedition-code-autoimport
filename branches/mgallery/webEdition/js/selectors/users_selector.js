@@ -24,9 +24,9 @@
 function setDir(id) {
 	if (currentType === "user") {
 		currentDir = id;
-		top.fscmd.location.replace(top.queryString(queryType.CMD, id));
+		top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
 	} else {
-		top.fscmd.location.replace(top.queryString(queryType.SETDIR, id));
+		top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
 	}
 }
 

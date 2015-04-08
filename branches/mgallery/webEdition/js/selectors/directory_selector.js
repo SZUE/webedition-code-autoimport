@@ -23,17 +23,17 @@
 
 function drawNewFolder() {
 	unselectAllFiles();
-	top.fscmd.location.replace(top.queryString(queryType.NEWFOLDER, currentDir));
+	top.fscmd.location.replace(top.queryString(top.queryType.NEWFOLDER, currentDir));
 }
 
 function RenameFolder(id) {
 	unselectAllFiles();
-	top.fscmd.location.replace(top.queryString(queryType.RENAMEFOLDER, currentDir, "", id));
+	top.fscmd.location.replace(top.queryString(top.queryType.RENAMEFOLDER, currentDir, "", id));
 }
 
 function showPreview(id) {
 	if (top.fspreview) {
-		top.fspreview.location.replace(top.queryString(queryType.PREVIEW, id));
+		top.fspreview.location.replace(top.queryString(top.queryType.PREVIEW, id));
 	}
 }
 
@@ -47,7 +47,7 @@ function doClick(id, ct) {
 			setTimeout("wasdblclick=0;", 400);
 		}
 	} else {
-		if (top.currentID == id && (!fsbody.ctrlpressed)) {
+		if (top.currentID == id && (!top.ctrlpressed)) {
 			if (top.options.userCanRenameFolder) {
 				top.RenameFolder(id);
 			} else {
@@ -56,7 +56,7 @@ function doClick(id, ct) {
 
 		} else {
 			if (top.options.multiple) {
-				if (fsbody.shiftpressed) {
+				if (top.shiftpressed) {
 					var oldid = currentID;
 					var currendPos = getPositionByID(id);
 					var firstSelected = getFirstSelected();
@@ -70,7 +70,7 @@ function doClick(id, ct) {
 					}
 					currentID = oldid;
 
-				} else if (!fsbody.ctrlpressed) {
+				} else if (!top.ctrlpressed) {
 					selectFile(id);
 				} else {
 					if (isFileSelected(id)) {
@@ -86,11 +86,11 @@ function doClick(id, ct) {
 
 		}
 	}
-	if (fsbody.ctrlpressed) {
-		fsbody.ctrlpressed = 0;
+	if (top.ctrlpressed) {
+		top.ctrlpressed = 0;
 	}
-	if (fsbody.shiftpressed) {
-		fsbody.shiftpressed = 0;
+	if (top.shiftpressed) {
+		top.shiftpressed = 0;
 	}
 }
 
@@ -99,9 +99,9 @@ function setDir(id) {
 	if (top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
-	top.fscmd.location.replace(top.queryString(queryType.SETDIR, id));
+	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
 	e = getEntry(id);
-	document.getElementById('fspath').innerHTML = e.path;
+	top.document.getElementById('fspath').innerHTML = e.path;
 }
 
 function selectFile(id) {

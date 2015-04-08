@@ -32,7 +32,7 @@ function doClick(id, ct) {
 		}
 	} else if (getEntry(id).contentType != "folder" || (option.canSelectDir)) {
 		if (top.options.multiple) {
-			if (fsbody.shiftpressed) {
+			if (top.shiftpressed) {
 				var oldid = currentID;
 				var currendPos = getPositionByID(id);
 				var firstSelected = getFirstSelected();
@@ -46,7 +46,7 @@ function doClick(id, ct) {
 				}
 				currentID = oldid;
 
-			} else if (!fsbody.ctrlpressed) {
+			} else if (!top.ctrlpressed) {
 				selectFile(id);
 			} else if (isFileSelected(id)) {
 				unselectFile(id);
@@ -61,11 +61,11 @@ function doClick(id, ct) {
 		showPreview(id);
 
 	}
-	if (fsbody.ctrlpressed) {
-		fsbody.ctrlpressed = 0;
+	if (top.ctrlpressed) {
+		top.ctrlpressed = 0;
 	}
-	if (fsbody.shiftpressed) {
-		fsbody.shiftpressed = 0;
+	if (top.shiftpressed) {
+		top.shiftpressed = 0;
 	}
 }
 
@@ -78,16 +78,16 @@ function setDir(id) {
 	if (top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
-	top.fscmd.location.replace(top.queryString(queryType.SETDIR, id));
+	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
 	e = getEntry(id);
-	document.getElementById('fspath').innerHTML = e.path;
+	top.document.getElementById('fspath').innerHTML = e.path;
 }
 
 function selectFile(id) {
 	fname = top.fsfooter.document.getElementsByName("fname");
 	if (id) {
 		e = getEntry(id);
-		document.getElementById('fspath').innerHTML = e.path;
+		top.document.getElementById('fspath').innerHTML = e.path;
 		if (fname && fname[0].value != e.text &&
 						fname[0].value.indexOf(e.text + ",") == -1 &&
 						fname[0].value.indexOf("," + e.text + ",") == -1 &&
@@ -128,17 +128,17 @@ function addEntry(ID, icon, text, extension, isFolder, path, modDate, contentTyp
 }
 
 function setFilter(ct) {
-	top.fscmd.location.replace(top.queryString(queryType.CMD, top.currentDir, "", "", ct));
+	top.fscmd.location.replace(top.queryString(top.queryType.CMD, top.currentDir, "", "", ct));
 }
 
 function showPreview(id) {
 	if (top.fspreview) {
-		top.fspreview.location.replace(top.queryString(queryType.PREVIEW, id));
+		top.fspreview.location.replace(top.queryString(top.queryType.PREVIEW, id));
 	}
 }
 
 function reloadDir() {
-	top.fscmd.location.replace(top.queryString(queryType.CMD, top.currentDir));
+	top.fscmd.location.replace(top.queryString(top.queryType.CMD, top.currentDir));
 }
 
 function newFile() {

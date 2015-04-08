@@ -50,7 +50,7 @@ function in_array(needle, haystack) {
 
 function orderIt(o) {
 	order = o + (order == o ? " DESC" : "");
-	top.fscmd.location.replace(top.queryString(queryType.CMD, top.currentDir, order));
+	top.fscmd.location.replace(top.queryString(top.queryType.CMD, top.currentDir, order));
 }
 
 function goBackDir() {
@@ -58,9 +58,9 @@ function goBackDir() {
 }
 
 function getEntry(id) {
-	for (var i = 0; i < entries.length; i++) {
-		if (entries[i].ID == id) {
-			return entries[i];
+	for (var i = 0; i < top.entries.length; i++) {
+		if (top.entries[i].ID == id) {
+			return top.entries[i];
 		}
 	}
 	return {
@@ -92,7 +92,7 @@ function doClick(id, ct) {
 			setTimeout("wasdblclick=0;", 400);
 		}
 	} else if (top.options.multiple) {
-		if (fsbody.shiftpressed) {
+		if (top.shiftpressed) {
 			var oldid = currentID;
 			var currendPos = getPositionByID(id);
 			var firstSelected = getFirstSelected();
@@ -105,7 +105,7 @@ function doClick(id, ct) {
 				selectFile(id);
 			}
 			currentID = oldid;
-		} else if (!fsbody.ctrlpressed) {
+		} else if (!top.ctrlpressed) {
 			selectFile(id);
 		} else if (isFileSelected(id)) {
 			unselectFile(id);
@@ -116,11 +116,11 @@ function doClick(id, ct) {
 		selectFile(id);
 
 	}
-	if (fsbody.ctrlpressed) {
-		fsbody.ctrlpressed = 0;
+	if (top.ctrlpressed) {
+		top.ctrlpressed = 0;
 	}
-	if (fsbody.shiftpressed) {
-		fsbody.shiftpressed = 0;
+	if (top.shiftpressed) {
+		top.shiftpressed = 0;
 	}
 }
 
@@ -131,7 +131,7 @@ function setDir(id) {
 	currentPath = e.path;
 	currentText = e.text;
 	top.fsfooter.document.we_form.fname.value = e.text;
-	top.fscmd.location.replace(top.queryString(queryType.CMD, id));
+	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
 }
 
 function setRootDir() {

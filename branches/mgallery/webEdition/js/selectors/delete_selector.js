@@ -27,7 +27,7 @@ function doClick(id, ct) {
 			setDir(id);
 			setTimeout("wasdblclick=0;", 400);
 		}
-	} else if (fsbody.shiftpressed) {
+	} else if (top.shiftpressed) {
 		var oldid = currentID;
 		var currendPos = getPositionByID(id);
 		var firstSelected = getFirstSelected();
@@ -41,18 +41,18 @@ function doClick(id, ct) {
 		}
 		currentID = oldid;
 
-	} else if (!fsbody.ctrlpressed) {
+	} else if (!top.ctrlpressed) {
 		selectFile(id);
 	} else if (isFileSelected(id)) {
 		unselectFile(id);
 	} else {
 		selectFile(id);
 	}
-	if (fsbody.ctrlpressed) {
-		fsbody.ctrlpressed = 0;
+	if (top.ctrlpressed) {
+		top.ctrlpressed = 0;
 	}
-	if (fsbody.shiftpressed) {
-		fsbody.shiftpressed = 0;
+	if (top.shiftpressed) {
+		top.shiftpressed = 0;
 	}
 }
 
@@ -68,7 +68,7 @@ function setDir(id) {
 	if (id) {
 		top.fsfooter.enableDelBut();
 	}
-	top.fscmd.location.replace(top.queryString(queryType.CMD, id));
+	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
 }
 
 function selectFile(id) {

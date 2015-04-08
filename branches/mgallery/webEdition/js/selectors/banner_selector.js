@@ -40,5 +40,5 @@ function doClick(id, ct) {
 }
 
 function setDir(id){
-	top.fscmd.location.replace(top.queryString(queryType.SETDIR,id));
+	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR,id));
 }
