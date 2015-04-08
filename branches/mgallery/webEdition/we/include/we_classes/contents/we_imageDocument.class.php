@@ -514,7 +514,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				case 'filename':
 					return $this->Filename;
 				case 'size':
-					return $this->getFilesize();
+					return we_base_file::getHumanFileSize($this->getFilesize());
 				case 'extension':
 					return $this->Extension;
 				case 'parentpath':
