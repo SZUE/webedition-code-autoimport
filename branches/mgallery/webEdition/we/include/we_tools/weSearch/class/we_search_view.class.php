@@ -525,11 +525,13 @@ weSearch.g_l = {
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
-		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
-			$pages[($i * $anzahl)] = ($i + 1);
+		if($anzahl){
+			for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
+				$pages[($i * $anzahl)] = ($i + 1);
+			}
 		}
 
-		$page = ceil($searchstart / $anzahl) * $anzahl;
+		$page = $anzahl ? ceil($searchstart / $anzahl) * $anzahl : 0;
 
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements['searchstart" . $whichSearch . "'].value = this.value;search(false);"));
 		if(!isset($GLOBALS['setInputSearchstart']) && !defined('searchstart' . $whichSearch) && $isTop){
@@ -1667,8 +1669,8 @@ weSearch.g_l = {
 									array('elem' => 'row', 'attribs' => '', 'dat' => array(
 											array('elem' => 'td', 'attribs' => '', 'dat' => '&nbsp;'),
 										))
-									)
 								)
+							)
 						)),
 					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '">' . $iconHTML['imageView']),
 					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
@@ -1767,7 +1769,7 @@ weSearch.g_l = {
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
 
 		if(isset($usedMediaLinks['mediaID_' . $result['docID']]) && $usedMediaLinks['mediaID_' . $result['docID']]){
-			$out = '<table style="font-weight:normal"><tr><td>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</td></tr>';// FIXME: G_L()
+			$out = '<table style="font-weight:normal"><tr><td>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</td></tr>'; // FIXME: G_L()
 			foreach($usedMediaLinks['mediaID_' . $result['docID']] as $type => $links){
 				$out .= '<tr><td><em>' . g_l('global', '[' . $type . ']') . ':</em></td></tr>';
 				foreach($links as $link){
@@ -1791,11 +1793,11 @@ weSearch.g_l = {
 							}
 					}
 					$out .= '<tr><td style="padding-left:12px;">' .
-							($makeLink ? we_html_button::create_button('image:edit_edit', "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) .
-							'<a href="javascript:weSearch.openToEdit(\'' . $link['table'] . '\',\'' . $link["id"] . '\',\'\')" title="' . $link['path'] . '"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a>' : 
+						($makeLink ? we_html_button::create_button('image:edit_edit', "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) .
+							'<a href="javascript:weSearch.openToEdit(\'' . $link['table'] . '\',\'' . $link["id"] . '\',\'\')" title="' . $link['path'] . '"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a>' :
 							we_html_button::create_button('image:edit_edit', '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . // FIXME: G_L()
 							'<span style="color:' . $color . ';">' . $link['path'] . '</span>') .
-							'</td></tr>';
+						'</td></tr>';
 				}
 			}
 			$out .= '</table>';
@@ -2417,11 +2419,11 @@ weSearch.g_l = {
 
 				for($m = 0; $m < $x; $m++){
 					$out .= $whichSearch !== self::SEARCH_MEDIA ? ('<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
-							self::tblListRowIconView($content[$m], $class, $m, $whichSearch)
-						. '</div>') : 
-							('<div style="float:left;width:200px;height:200px;margin:20px 0px 0px 20px;z-index:1;">' .
-								self::tblListRowMediaIconView($content[$m], $class, $m, $whichSearch)
-							. '</div>');
+						self::tblListRowIconView($content[$m], $class, $m, $whichSearch)
+						. '</div>') :
+						('<div style="float:left;width:200px;height:200px;margin:20px 0px 0px 20px;z-index:1;">' .
+						self::tblListRowMediaIconView($content[$m], $class, $m, $whichSearch)
+						. '</div>');
 				}
 
 				$out .= '</td></tr></table>' .
@@ -2561,12 +2563,12 @@ weSearch.g_l = {
 </tr></table>';
 	}
 
-		private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
+	private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
 		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '">
 <tr>
 	<td width="100%" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((isset($content[5]["dat"]) && $content[5]["dat"]) ? $content[5]["dat"] : "&nbsp;") .
-	'</td>
+			'</td>
 </tr>
 <tr>
 		<td width="100%" valign="top" style="line-height:20px;text-align:center">
