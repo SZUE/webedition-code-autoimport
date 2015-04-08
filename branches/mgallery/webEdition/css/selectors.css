@@ -156,7 +156,7 @@ tr.WEFile td{
 	right:0px;
 }
 #fsbodyDiv.preview{
-	right:200px;
+	right:250px;
 }
 #fsbodyDiv.catproperties{
 	right:65%;
@@ -169,7 +169,7 @@ tr.WEFile td{
 	position: fixed;
 	top:67px;
 	bottom:110px;
-	width:199px;
+	width:249px;
 	right:0px;
 	border-left:1px solid grey;
 }

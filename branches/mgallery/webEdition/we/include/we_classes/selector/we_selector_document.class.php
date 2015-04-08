@@ -113,16 +113,6 @@ class we_selector_document extends we_selector_directory{
 		);
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
-		switch($what){
-			case self::PREVIEW:
-				$this->printPreviewHTML();
-				break;
-			default:
-				parent::printHTML($what);
-		}
-	}
-
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/document_selector.js');
 	}

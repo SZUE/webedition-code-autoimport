@@ -40,12 +40,6 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 $nf = we_base_request::_(we_base_request::RAW, 'nf');
 $sid = we_base_request::_(we_base_request::RAW, "sid");
 
-function _cutText($text, $l){
-	if(strlen($text) > $l){
-		return substr($text, 0, $l - 8) . '...' . substr($text, strlen($text) - 5, 5);
-	}
-	return $text;
-}
 ?>
 <script type="text/javascript"><!--
 	function setScrollTo() {
@@ -238,14 +232,14 @@ var i = 0;';
 					case "rename_file":
 						$_text_to_show = we_html_tools::htmlTextInput("txt", 20, $entry, "", 'onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%");
 						$set_rename = true;
-						$_type = '<span title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
+						$_type = '<div class="cutText" title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars($type) . '</div>';
 						$_date = date("d.m.Y H:i:s");
 						break;
 					default:
-						$_text_to_show = '<span title="' . oldHtmlspecialchars($entry) . '">' .
-							((strlen($entry) > 24) ? oldHtmlspecialchars(_cutText($entry, 24)) : oldHtmlspecialchars($entry)) .
-							'</span>';
-						$_type = '<span title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars(_cutText($type, 17)) . '</span>';
+						$_text_to_show = '<div class="cutText" title="' . oldHtmlspecialchars($entry) . '">' .
+							((strlen($entry) > 24) ? oldHtmlspecialchars($entry) : oldHtmlspecialchars($entry)) .
+							'</div>';
+						$_type = '<div class="cutText" title="' . oldHtmlspecialchars($type) . '">' . oldHtmlspecialchars($type) . '</div>';
 						$_date = (file_exists($dir . "/" . $entry) ? date("d.m.Y H:i:s", filectime($dir . '/' . $entry)) : 'n/a');
 				}
 
@@ -257,7 +251,7 @@ var i = 0;';
 	<td class="selector moddate">' . $_date . '</td>
 	<td class="selector filesize">' . $_size . '</td>
  </tr>';
-		
+
 				}
 			}
 			?>

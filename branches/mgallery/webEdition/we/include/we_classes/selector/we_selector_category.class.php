@@ -40,18 +40,6 @@ class we_selector_category extends we_selector_file{
 
 	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case self::HEADER:
-				$this->printHeaderHTML();
-				break;
-			case self::FOOTER:
-				$this->printFooterHTML();
-				break;
-			case self::BODY:
-				$this->printBodyHTML();
-				break;
-			case self::CMD:
-				$this->printCmdHTML();
-				break;
 			case self::CREATEFOLDER:
 				$this->printCreateEntryHTML(1);
 				break;
@@ -73,9 +61,8 @@ class we_selector_category extends we_selector_file{
 			case self::CHANGE_CAT:
 				$this->printchangeCatHTML();
 				break;
-			case self::FRAMESET:
 			default:
-				$this->printFramesetHTML();
+				parent::printHTML($what);
 		}
 	}
 

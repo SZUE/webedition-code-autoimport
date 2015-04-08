@@ -31,7 +31,7 @@ function doClick(id, ct) {
 			setTimeout("wasdblclick=0;", 400);
 		}
 	} else if (getEntry(id).contentType != "folder" || (option.canSelectDir)) {
-		if (options.multiple) {
+		if (top.options.multiple) {
 			if (fsbody.shiftpressed) {
 				var oldid = currentID;
 				var currendPos = getPositionByID(id);

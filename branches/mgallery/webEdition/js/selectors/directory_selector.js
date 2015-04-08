@@ -48,14 +48,14 @@ function doClick(id, ct) {
 		}
 	} else {
 		if (top.currentID == id && (!fsbody.ctrlpressed)) {
-			if (options.userCanRenameFolder) {
+			if (top.options.userCanRenameFolder) {
 				top.RenameFolder(id);
 			} else {
 				selectFile(id);
 			}
 
 		} else {
-			if (options.multiple) {
+			if (top.options.multiple) {
 				if (fsbody.shiftpressed) {
 					var oldid = currentID;
 					var currendPos = getPositionByID(id);

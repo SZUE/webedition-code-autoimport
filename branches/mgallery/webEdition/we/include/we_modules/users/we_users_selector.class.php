@@ -59,24 +59,11 @@ class we_users_selector extends we_selector_file{
 
 	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case self::HEADER:
-				$this->printHeaderHTML();
-				break;
-			case self::FOOTER:
-				$this->printFooterHTML();
-				break;
-			case self::BODY:
-				$this->printBodyHTML();
-				break;
 			case self::SETDIR:
 				$this->printSetDirHTML();
 				break;
-			case self::CMD:
-				$this->printCmdHTML();
-				break;
-			case self::FRAMESET:
 			default:
-				$this->printFramesetHTML();
+				parent::printHTML($what);
 		}
 	}
 

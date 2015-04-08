@@ -91,7 +91,7 @@ function doClick(id, ct) {
 			setDir(id);
 			setTimeout("wasdblclick=0;", 400);
 		}
-	} else if (options.multiple) {
+	} else if (top.options.multiple) {
 		if (fsbody.shiftpressed) {
 			var oldid = currentID;
 			var currendPos = getPositionByID(id);

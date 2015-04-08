@@ -48,18 +48,6 @@ class we_selector_directory extends we_selector_file{
 
 	function printHTML($what = we_selector_file::FRAMESET){
 		switch($what){
-			case we_selector_file::HEADER:
-				$this->printHeaderHTML();
-				break;
-			case we_selector_file::FOOTER:
-				$this->printFooterHTML();
-				break;
-			case we_selector_file::BODY:
-				$this->printBodyHTML();
-				break;
-			case we_selector_file::CMD:
-				$this->printCmdHTML();
-				break;
 			case self::SETDIR:
 				$this->printSetDirHTML();
 				break;
@@ -78,9 +66,8 @@ class we_selector_directory extends we_selector_file{
 			case self::PREVIEW:
 				$this->printPreviewHTML();
 				break;
-			case self::FRAMESET:
 			default:
-				$this->printFramesetHTML();
+				parent::printHTML($what);
 		}
 	}
 
