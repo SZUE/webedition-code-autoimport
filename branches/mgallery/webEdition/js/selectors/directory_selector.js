@@ -101,7 +101,7 @@ function setDir(id) {
 	}
 	top.fscmd.location.replace(top.queryString(queryType.SETDIR, id));
 	e = getEntry(id);
-	fspath.document.body.innerHTML = e.path;
+	document.getElementById('fspath').innerHTML = e.path;
 }
 
 function selectFile(id) {
@@ -189,4 +189,48 @@ function queryString(what, id, o, we_editDirID) {
 		we_editDirID = "";
 	}
 	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc="+options.open_doc+"&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+}
+
+var ctrlpressed = false;
+var shiftpressed = false;
+var inputklick = false;
+var wasdblclick = false;
+var tout = null;
+function weonclick(e) {
+	if (top.fspreview.document.body) {
+		top.fspreview.document.body.innerHTML = "";
+	}
+	if (top.makeNewFolder || top.we_editDirID) {
+		if (!inputklick) {
+			top.makeNewFolder = top.we_editDirID = false;
+			document.we_form.we_FolderText.value = escape(document.we_form.we_FolderText_tmp.value);
+			document.we_form.submit();
+		} else {
+			inputklick = false;
+		}
+	} else {
+		inputklick = false;
+		if (document.all) {
+			if (e.ctrlKey || e.altKey) {
+				ctrlpressed = true;
+			}
+			if (e.shiftKey) {
+				shiftpressed = true;
+			}
+		} else {
+			if (e.altKey || e.metaKey || e.ctrlKey) {
+				ctrlpressed = true;
+			}
+			if (e.shiftKey) {
+				shiftpressed = true;
+			}
+		}
+		if (top.options.multiple) {
+			if ((self.shiftpressed == false) && (self.ctrlpressed == false)) {
+				top.unselectAllFiles();
+			}
+		} else {
+			top.unselectAllFiles();
+		}
+	}
 }

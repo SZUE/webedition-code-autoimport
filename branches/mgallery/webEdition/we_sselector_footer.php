@@ -33,14 +33,14 @@ var g_l={
 	"edit_file_nok":"' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')) . '",
 	"edit_file_is_folder":"' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')) . '"
 };
-') . we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_footer.js').
-	we_html_element::cssLink(CSS_DIR . 'selectors.css');
+') . we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_footer.js') .
+ we_html_element::cssLink(CSS_DIR . 'selectors.css');
 ?>
 
 </head>
 <body class="selectorFooter" onunload="doUnload();">
 	<form name="we_form" target="fscmd">
-		<table class="footer">
+		<table id="footer">
 			<?php
 			if(we_base_request::_(we_base_request::BOOL, "ret")){
 				$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
@@ -49,14 +49,10 @@ var g_l={
 				$cancel_button = we_html_button::create_button("close", "javascript:top.exit_close();");
 				$yes_button = we_html_button::create_button("edit", "javascript:editFile();");
 			}
-			$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 			if(we_base_request::_(we_base_request::STRING, "filter") === "all_Types"){
 				?>
 				<tr>
-					<td></td>
-					<td class="defaultfont">
-						<b><?php echo g_l('fileselector', '[type]'); ?></b></td>
-					<td></td>
+					<td class="defaultfont description"><?php echo g_l('fileselector', '[type]'); ?></td>
 					<td class="defaultfont">
 						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(document.we_form.elements.filter.options[document.we_form.elements.filter.selectedIndex].value)" style="width:100%">
 							<option value="<?php echo str_replace(' ', '%20', g_l('contentTypes', '[all_Types]')); ?>"><?php echo g_l('contentTypes', '[all_Types]'); ?></option>
@@ -67,37 +63,14 @@ var g_l={
 							}
 							?>
 						</select></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td colspan="5"><?php echo we_html_tools::getPixel(5, 5); ?></td>
 				</tr>
 			<?php } ?>
 			<tr>
-				<td></td>
-				<td class="defaultfont">
-					<b><?php
-						echo g_l('fileselector', '[name]');
-						?></b>
-				</td>
-				<td></td>
-				<td class="defaultfont" align="left"><?php echo we_html_tools::htmlTextInput("fname", 24, we_base_request::_(we_base_request::FILE, "currentName"), "", "style=\"width:100%\" readonly=\"readonly\""); ?>
-				</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td width="10"><?php echo we_html_tools::getPixel(10, 5); ?></td>
-				<td width="70"><?php echo we_html_tools::getPixel(70, 5); ?></td>
-				<td width="10"><?php echo we_html_tools::getPixel(10, 5); ?></td>
-				<td><?php echo we_html_tools::getPixel(5, 5); ?></td>
-				<td width="10"><?php echo we_html_tools::getPixel(10, 5); ?></td>
-			</tr>
-		</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr>
-				<td align="right"><?php echo $buttons; ?></td>
-				<td width="10"><?php echo we_html_tools::getPixel(10, 5); ?></td>
+				<td class="defaultfont description"><?php echo g_l('fileselector', '[name]');?></td>
+				<td class="defaultfont" align="left"><?php echo we_html_tools::htmlTextInput("fname", 24, we_base_request::_(we_base_request::FILE, "currentName"), "", "style=\"width:100%\" readonly=\"readonly\""); ?>				</td>
 			</tr>
 		</table>
+		<div id="footerButtons"><?php echo we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button); ?></div>
 	</form>
 </body>
 </html>

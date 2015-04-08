@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_newsletter_dirSelector extends we_selector_directory{
-
 	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $rootDirID = 0, $multiple = 0){
@@ -141,8 +140,8 @@ top.selectFile(top.currentID);
 
 	function query(){
 		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) .
-				getWsQueryForSelector(NEWSLETTER_TABLE) .
-				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+			getWsQueryForSelector(NEWSLETTER_TABLE) .
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 
@@ -161,14 +160,14 @@ top.selectFile(top.currentID);
 			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
 		}
 		$ret.=($this->userCanMakeNewDir() ?
-						'top.fsheader.enableNewFolderBut();' :
-						'top.fsheader.disableNewFolderBut();');
+				'top.fsheader.enableNewFolderBut();' :
+				'top.fsheader.disableNewFolderBut();');
 		return $ret;
 	}
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-				we_html_element::jsScript(JS_DIR . 'selectors/newsletterdir_selector.js');
+			we_html_element::jsScript(JS_DIR . 'selectors/newsletterdir_selector.js');
 	}
 
 	function printHeaderHeadlines(){
@@ -184,39 +183,6 @@ top.selectFile(top.currentID);
 		<td width="300">' . we_html_tools::getPixel(300, 1) . '</td>
 	</tr>
 </table>';
-	}
-
-	protected function getWriteBodyHead(){
-		return we_html_element::jsElement('
-var ctrlpressed=false;
-var shiftpressed=false;
-var inputklick=false;
-var wasdblclick=false;
-var tout=null;
-function weonclick(e){
-if(top.makeNewFolder ||  top.we_editDirID){
-if(!inputklick){
-top.makeNewFolder =  top.we_editDirID=false;
-document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);
-document.we_form.submit();
-}else{
-inputklick=false;
-}
-	}else{
-inputklick=false;
-if(document.all){
-if(e.ctrlKey || e.altKey){ ctrlpressed=true;}
-if(e.shiftKey){ shiftpressed=true;}
-}else{
-if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-if(e.shiftKey){ shiftpressed=true;}
-}
-if(top.options.multiple){
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}
-}else{
-top.unselectAllFiles();
-}
-	}');
 	}
 
 	protected function userCanSeeDir($showAll = false){

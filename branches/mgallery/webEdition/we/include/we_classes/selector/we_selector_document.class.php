@@ -172,39 +172,6 @@ function exit_open() {
 		return $_SERVER['SCRIPT_NAME'] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startID=" . $this->startID . "&filter=" . $this->filter . "&open_doc=" . $this->open_doc;
 	}
 
-	protected function getWriteBodyHead(){
-		return we_html_element::jsElement('
-var ctrlpressed=false
-var shiftpressed=false
-var inputklick=false
-var wasdblclick=false
-function weonclick(e){
-	if(top.makeNewFolder ||  top.we_editDirID){
-		if(!inputklick){
-		top.makeNewFolder =  top.we_editDirID=false;
-			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);
-			document.we_form.submit();
-		}else{
-			inputklick=false;
-		}
-	}else{
-		inputklick=false;
-		if(document.all){
-			if(e.ctrlKey || e.altKey){ ctrlpressed=true;}
-			if(e.shiftKey){ shiftpressed=true;}
-		}else{
-			if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-			if(e.shiftKey){ shiftpressed=true;}
-		}
-		if(top.options.multiple){
-		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}
-		}else{
-		top.unselectAllFiles();
-		}
-	}
-}');
-	}
-
 	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		if($this->userCanSeeDir(true)){
@@ -331,14 +298,13 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	protected function printFooterTable($more = ''){
+	protected function printFooterTable($more = null){
 		$ret = '
-<table class="footer">';
+<table id="footer">';
 		if(!$this->filter){
 			$ret.= '
 	<tr>
-		<td class="defaultfont"><b>' . g_l('fileselector', '[type]') . '</b></td>
-		<td></td>
+		<td class="defaultfont description">' . g_l('fileselector', '[type]') . '</td>
 		<td class="defaultfont">
 			<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
 				<option value="">' . g_l('fileselector', '[all_Types]') . '</option>';
@@ -347,27 +313,15 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			}
 			$ret.= '
 			</select></td>
-	</tr>
-';
+	</tr>';
 		}
 
-
-		$seval = $this->values["Text"] === '/' ? '' : $this->values["Text"];
 		$ret.= '
 	<tr>
-		<td class="defaultfont">
-			<b>' . g_l('fileselector', '[name]') . '</b>
-		</td>
-		<td></td>
-		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $seval, "", 'style="width:100%" readonly="readonly"') . '</td>
-		<td style="' . ($more ? 'width:150px;' : '') . '">' . $more . '</td>
+		<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
+		<td class="defaultfont">' . we_html_tools::htmlTextInput("fname", 24, ($this->values["Text"] === '/' ? '' : $this->values["Text"]), "", 'style="width:100%" readonly="readonly"') . '</td>
 	</tr>
-	<tr>
-		<td width="70"></td>
-		<td width="10"></td>
-		<td></td>
-	</tr>
-</table><div id="footerButtons">' . we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_button();"), null, we_html_button::create_button("cancel", "javascript:top.exit_close();")) . '</div>';
+</table><div id="footerButtons">' . we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_button();"), we_html_button::create_button("cancel", "javascript:top.exit_close();"), $more) . '</div>';
 		return $ret;
 	}
 
@@ -375,12 +329,13 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$is_object = defined('OBJECT_TABLE') && $this->table === OBJECT_TABLE;
 		return STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			'<body class="selector">' .
+			'<body class="selector" onload="self.focus();">' .
 			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false, $is_object ? 'object' : '') .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
-			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path' . ($this->filter ? '' : ' filter')) .
-			we_html_element::htmlIFrame('fspath', HTML_DIR . 'gray2.html', '', '', '', false) .
+			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path radient' . ($this->filter ? '' : ' filter')) .
+			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
+
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>
 </html>';
@@ -414,8 +369,8 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	}
 	var weCountWriteBC = 0;
 	function weWriteBreadCrumb(BreadCrumb){
-		if(top.fspath && top.fspath.document && top.fspath.document.body){
-			top.fspath.document.body.innerHTML = BreadCrumb;
+		if(top.document.getElementById("fspath")){
+			top.document.getElementById("fspath").innerHTML = BreadCrumb;
 		}else if(weCountWriteBC<10){
 			setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 		}

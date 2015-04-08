@@ -118,47 +118,6 @@ class we_selector_category extends we_selector_file{
 		return 'var changeCatState=' . ($this->userCanChangeCat() ? 1 : 0) . ';';
 	}
 
-	protected function getWriteBodyHead(){
-		return we_html_element::jsElement('
-var ctrlpressed=false;
-var shiftpressed=false;
-var inputklick=false;
-var wasdblclick=false;
-var tout=null;
-function weonclick(e){
-if(top.makeNewFolder || top.makeNewCat || top.we_editCatID){
-if(!inputklick){' . (we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ?
-								'document.we_form.we_EntryText.value=escape(top.fsbody.document.we_form.we_EntryText_tmp.value);' :
-								'document.we_form.we_EntryText.value=top.fsbody.document.we_form.we_EntryText_tmp.value;') . '
-top.makeNewFolder=top.makeNewCat=top.we_editCatID=false;
-document.we_form.submit();
-}else{
-inputklick=false;
-}
-}else{
-inputklick=false;
-if(document.all){
-if(e.ctrlKey || e.altKey){
-ctrlpressed=true;
-}
-if(e.shiftKey){
-shiftpressed=true;
-}
-}else{
-if(e.altKey || e.metaKey || e.ctrlKey){
-ctrlpressed=true;
-}
-if(e.shiftKey){
-shiftpressed=true;
-}
-}
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){
-	top.unselectAllFiles();
-}
-}
-}');
-	}
-
 		function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=false;
@@ -415,24 +374,17 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		if($this->values['Text'] === '/'){
 			$this->values['Text'] = '';
 		}
-		$csp = $this->noChoose ? 4 : 5;
 
 		$okBut = (!$this->noChoose ? we_html_button::create_button('ok', 'javascript:press_ok_button();') : '');
 		$cancelbut = we_html_button::create_button('close', 'javascript:top.exit_close();');
-		$buttons = ($okBut ? we_html_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut);
+
 		return '
-<table class="footer">
+<table id="footer">
 	<tr>
-		<td class="defaultfont"><b>' . g_l('fileselector', '[catname]') . '</b></td>
-		<td></td>
+		<td class="defaultfont description">' . g_l('fileselector', '[catname]') . '</td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
 	</tr>
-	<tr>
-		<td width="70"></td>
-		<td width="10"></td>
-		<td></td>
-	</tr>
-</table><div id="footerButtons">' . $buttons . '</div>';
+</table><div id="footerButtons">' . ($okBut ? we_html_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut) . '</div>';
 	}
 
 	protected function getFrameset(){
@@ -440,7 +392,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		return
 				STYLESHEET .
 				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-				'<body class="selector">' .
+				'<body class="selector" onload="self.focus();">' .
 				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
 				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
 				($isMainChooser ?
@@ -458,8 +410,8 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		}
 		$db = $GLOBALS['DB_WE'];
 		$result = getHash('SELECT Category,Title,Description,ParentID,Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $catId, $db);
-		$title = we_base_request::_(we_base_request::STRING, "catTitle", $result["Title"]);
-		$description = we_base_request::_(we_base_request::RAW, "catDescription", $result["Description"]);
+		$title = we_base_request::_(we_base_request::STRING, 'catTitle', $result["Title"]);
+		$description = we_base_request::_(we_base_request::RAW, 'catDescription', $result["Description"]);
 		$path = $result['Path'];
 		$parentid = we_base_request::_(we_base_request::INT, 'FolderID', $result['ParentID']);
 		$category = we_base_request::_(we_base_request::STRING, 'Category', $result['Category']);

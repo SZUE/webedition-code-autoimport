@@ -139,42 +139,6 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			we_html_element::jsScript(JS_DIR . 'selectors/directory_selector.js');
 	}
 
-	protected function getWriteBodyHead(){
-		return we_html_element::jsElement('
-var ctrlpressed=false;
-var shiftpressed=false;
-var inputklick=false;
-var wasdblclick=false;
-var tout=null;
-function weonclick(e){
-	if(top.fspreview.document.body){
-		top.fspreview.document.body.innerHTML = "";
-	}
-if(top.makeNewFolder ||  top.we_editDirID){
-		if(!inputklick){
-		top.makeNewFolder =top.we_editDirID=false;
-			document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);document.we_form.submit();
-		}else{
-			inputklick=false;
-		}
-	}else{
-		inputklick=false;
-		if(document.all){
-			if(e.ctrlKey || e.altKey){ ctrlpressed=true;}
-			if(e.shiftKey){ shiftpressed=true;}
-		}else{
-			if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-			if(e.shiftKey){ shiftpressed=true;}
-		}
-		if(top.options.multiple){
-		if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}
-		}else{
-		top.unselectAllFiles();
-		}
-	}
-}');
-	}
-
 	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
 		while($this->next_record()){
@@ -460,12 +424,12 @@ top.selectFile(top.currentID);
 	protected function getFrameset(){
 		return STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			'<body class="selector">' .
+			'<body class="selector" onload="self.focus();">' .
 			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
 			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
-			we_html_element::htmlIFrame('fspath', HTML_DIR . 'gray2.html', '', '', '', false) .
+			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>
 </html>';
@@ -595,8 +559,8 @@ top.selectFile(top.currentID);
 	}
 	var weCountWriteBC = 0;
 	function weWriteBreadCrumb(BreadCrumb){
-		if(top.fspath && top.fspath.document && top.fspath.document.body){
-			top.fspath.document.body.innerHTML = BreadCrumb;
+		if(top.document.getElementById("fspath")){
+			top.document.getElementById("fspath").innerHTML = BreadCrumb;
 		}else if(weCountWriteBC<10){
 			setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
 		}

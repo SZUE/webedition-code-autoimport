@@ -52,49 +52,27 @@ class we_selector_delete extends we_selector_file{
 		}
 	}
 
-	protected function printFramesetJSFunctions(){
-		$tmp = (isset($_SESSION['weS']['seemForOpenDelSelector']['ID']) ? $_SESSION['weS']['seemForOpenDelSelector']['ID'] : 0);
+	public function getFramesetJavaScriptDef(){
+		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
+g_l.deleteQuestion="' . g_l('fileselector', '[deleteQuestion]') . '";
+options.seemForOpenDelSelector=' . intval(isset($_SESSION['weS']['seemForOpenDelSelector']['ID']) ? $_SESSION['weS']['seemForOpenDelSelector']['ID'] : 0) . ';
+consts.DEL=' . self::DEL . ';
+');
 		unset($_SESSION['weS']['seemForOpenDelSelector']['ID']);
-
-		return parent::printFramesetJSFunctions() . we_html_element::jsElement('
-function deleteEntry(){
-	if(confirm(\'' . g_l('fileselector', '[deleteQuestion]') . '\')){
-		var todel = "";
-		var docIsOpen = false;
-		for	(var i=0;i < entries.length; i++){
-			if(isFileSelected(entries[i].ID)){
-				todel += entries[i].ID + ",";' .
-						($tmp ? '
-						if(entries[i].ID=="' . $_SESSION['weS']['seemForOpenDelSelector']['ID'] . '") {
-							docIsOpen = true;
-						}' : '') . '
-			}
-		}
-		if (todel) {
-			todel = "," + todel;
-		}
-
-		top.fscmd.location.replace(top.queryString(' . self::DEL . ',top.currentID)+"&todel="+encodeURI(todel));
-		top.fsfooter.disableDelBut();
-
-		if(docIsOpen) {
-			top.opener.top.we_cmd("close_all_documents");
-			top.opener.top.we_cmd("start_multi_editor");
-		}
-	}
-}');
 	}
 
-	protected function getFramsetJSFile(){
-		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/delete_selector.js');
+	protected function printFramesetJSFunctions(){
+
+		return we_html_element::jsElement('
+');
 	}
 
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				(intval($this->dir) == 0 ? '
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			(intval($this->dir) == 0 ? '
 top.fsheader.disableRootDirButs();
 top.fsfooter.disableDelBut();' : '
 top.fsheader.enableRootDirButs();
@@ -133,29 +111,19 @@ top.close();');
 		$okBut = we_html_button::create_button("delete", "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true, 100, 22, "", "", true, false);
 
 		$cancelbut = we_html_button::create_button("cancel", "javascript:top.exit_close();");
-		$buttons = ($okBut ? we_html_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut);
 
 		return '
-<table class="footer">
+<table id="footer">
 	<tr>
-		<td class="defaultfont">
-			<b>' . g_l('fileselector', '[filename]') . '</b>
-		</td>
-		<td></td>
-		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
-		</td>
+		<td class="defaultfont description">' . g_l('fileselector', '[filename]') . '</td>
+		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
 	</tr>
-	<tr>
-		<td width="70"></td>
-		<td width="10"></td>
-		<td></td>
-	</tr>
-</table><div id="footerButtons">' . $buttons . '</div>';
+</table><div id="footerButtons">' . ($okBut ? we_html_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut) . '</div>';
 	}
 
 	function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ')' .
-				getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+			getWsQueryForSelector($this->table, false) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 

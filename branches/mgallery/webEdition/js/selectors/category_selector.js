@@ -283,3 +283,44 @@ function queryString(what, id, o, we_editCatID) {
 	}
 	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
 }
+
+var ctrlpressed = false;
+var shiftpressed = false;
+var inputklick = false;
+var wasdblclick = false;
+var tout = null;
+function weonclick(e) {
+	if (top.makeNewFolder || top.makeNewCat || top.we_editCatID) {
+		if (!inputklick) {
+			if (parent.options.needIEEscape) {
+				document.we_form.we_EntryText.value = escape(top.fsbody.document.we_form.we_EntryText_tmp.value);
+			} else {
+				document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;
+			}
+			top.makeNewFolder = top.makeNewCat = top.we_editCatID = false;
+			document.we_form.submit();
+		} else {
+			inputklick = false;
+		}
+	} else {
+		inputklick = false;
+		if (document.all) {
+			if (e.ctrlKey || e.altKey) {
+				ctrlpressed = true;
+			}
+			if (e.shiftKey) {
+				shiftpressed = true;
+			}
+		} else {
+			if (e.altKey || e.metaKey || e.ctrlKey) {
+				ctrlpressed = true;
+			}
+			if (e.shiftKey) {
+				shiftpressed = true;
+			}
+		}
+		if ((self.shiftpressed == false) && (self.ctrlpressed == false)) {
+			top.unselectAllFiles();
+		}
+	}
+}

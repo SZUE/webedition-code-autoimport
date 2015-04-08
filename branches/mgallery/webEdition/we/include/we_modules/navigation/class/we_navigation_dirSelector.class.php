@@ -49,23 +49,13 @@ class we_navigation_dirSelector extends we_selector_directory{
 	protected function printFooterTable(){
 		$cancel_button = we_html_button::create_button('cancel', 'javascript:top.exit_close();');
 		$yes_button = we_html_button::create_button('ok', "javascript:press_ok_button();");
-		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 		return '
-<table class="footer">
+<table id="footer">
 	<tr>
-		<td class="defaultfont">
-			<b>' . g_l('navigation', '[name]') . '</b>
-		</td>
-		<td></td>
-		<td class="defaultfont" align="left"><div id="showDiv" style="width:100%; height:2.2ex; background-color: #dce6f2; border: #AAAAAA solid 1px;"></div><div style="display:none;">' . we_html_tools::htmlTextInput('fname', 24, $this->values['Text'], '', 'style="width:100%" readonly="readonly"') . '</div>
-		</td>
+		<td class="defaultfont description">' . g_l('navigation', '[name]') . '</td>
+		<td class="defaultfont" align="left"><div id="showDiv" style="width:100%; height:2.2ex; background-color: #dce6f2; border: #AAAAAA solid 1px;"></div><div style="display:none;">' . we_html_tools::htmlTextInput('fname', 24, $this->values['Text'], '', 'style="width:100%" readonly="readonly"') . '</div></td>
 	</tr>
-	<tr>
-		<td width="70"></td>
-		<td width="10"></td>
-		<td></td>
-	</tr>
-</table><div id="footerButtons">' . $buttons . '</div>';
+</table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
 	protected function printHeaderTableExtraCols(){
@@ -74,41 +64,6 @@ class we_navigation_dirSelector extends we_selector_directory{
 			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
 			we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
 			'</td>';
-	}
-
-	protected function getWriteBodyHead(){
-		return we_html_element::jsElement('
-var ctrlpressed=false;
-var shiftpressed=false;
-var inputklick=false;
-var wasdblclick=false;
-var tout=null;
-function weonclick(e){
-if(top.makeNewFolder ||  top.we_editDirID){
-if(!inputklick){
-top.makeNewFolder =  top.we_editDirID=false;
-document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);
-document.we_form.submit();
-}else{
-inputklick=false;
-}
-	}else{
-inputklick=false;
-if(document.all){
-if(e.ctrlKey || e.altKey){ ctrlpressed=true;}
-if(e.shiftKey){ shiftpressed=true;}
-}else{
-if(e.altKey || e.metaKey || e.ctrlKey){ ctrlpressed=true;}
-if(e.shiftKey){ shiftpressed=true;}
-}
-if(top.options.multiple){
-if((self.shiftpressed==false) && (self.ctrlpressed==false)){top.unselectAllFiles();}
-}else{
-top.unselectAllFiles();
-}
-	}
-}
-');
 	}
 
 	protected function printFramesetJSFunctionAddEntries(){

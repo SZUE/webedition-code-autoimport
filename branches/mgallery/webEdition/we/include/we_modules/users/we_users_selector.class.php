@@ -139,23 +139,13 @@ top.parentID = "' . $this->values["ParentID"] . '";';
 	protected function printFooterTable(){
 		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
-		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 		return '
-<table class="footer">
+<table id="footer">
 	<tr>
-		<td class="defaultfont">
-			<b>' . g_l('fileselector', '[name]') . '</b>
-		</td>
-		<td></td>
-		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, isset($this->values["Text"]) ? $this->values["Text"] : '', "", 'style="width:100%" readonly="readonly"') . '
-		</td>
+		<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
+		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, isset($this->values["Text"]) ? $this->values["Text"] : '', "", 'style="width:100%" readonly="readonly"') . '</td>
 	</tr>
-	<tr>
-		<td width="70"></td>
-		<td width="10"></td>
-		<td></td>
-	</tr>
-</table><div id="footerButtons">' . $buttons . '</div>';
+</table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
 	protected function printFooterJSDef(){

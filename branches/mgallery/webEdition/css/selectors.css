@@ -42,12 +42,6 @@ body.selectorFooter a:active
 	color: #000000;
 }
 
-body.fspath{
-	padding-left: 1em;
-	padding-right: 1em;
-	padding-top: 0.5ex;
-}
-
 table.selector{
 	border-spacing: 0px;
 }
@@ -157,7 +151,7 @@ tr.WEFile td{
 #fsbodyDiv{
 	position: fixed;
 	top:67px;
-	bottom:85px;
+	bottom:110px;
 	left:0px;
 	right:0px;
 }
@@ -174,7 +168,7 @@ tr.WEFile td{
 #fspreviewDiv{
 	position: fixed;
 	top:67px;
-	bottom:85px;
+	bottom:110px;
 	width:199px;
 	right:0px;
 	border-left:1px solid grey;
@@ -189,10 +183,10 @@ tr.WEFile td{
 }
 #fsfooterDiv{
 	position: fixed;
-	height:65px;
+	height:90px;
 	left: 0px;
 	right:0px;
-	bottom:0px;
+	bottom:20px;
 }
 #fsfooterDiv.path{
 	bottom:20px;
@@ -201,12 +195,15 @@ tr.WEFile td{
 	height:90px;
 }
 
-#fspathDiv{
+#fspath{
 	position: fixed;
 	bottom:0px;
 	left: 0px;
 	right:0px;
 	height:20px;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 0.5ex;
 }
 
 #fscmdDiv{
@@ -221,22 +218,26 @@ table.headerLines{
 }
 
 table.headerLines td,
-table.footer td,
+#footer td,
 table.selectorHeaderTable td{
 	padding:0px;
 }
 
-table.footer{
+#footer{
 	border-top: 1px solid #808080;
 	border-spacing: 0px;
-	padding-top:5px;
 	width:100%;
-	padding-left:10px;
-	padding-right:10px;
+	padding: 5px 10px 0px;
 }
 
-table.footer td{
+#footer td{
 	padding-bottom:5px;
+}
+
+#footer td.description{
+	width: 70px;
+	margin-right:10px;
+	font-weight: bold;
 }
 
 #footerButtons{

@@ -31,16 +31,16 @@ class we_selector_image extends we_selector_document{
 
 	protected function getFrameset(){
 		return
-				STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-				'<body class="selector">' .
-				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
-				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
-				we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
-				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
-				we_html_element::htmlIFrame('fspath', HTML_DIR . 'gray2.html', '', '', '', false) .
-				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-				'</body>
+			STYLESHEET .
+			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+			'<body class="selector" onload="self.focus();">' .
+			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
+			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
+			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
+			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
+			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+			'</body>
 </html>';
 	}
 
@@ -51,33 +51,32 @@ class we_selector_image extends we_selector_document{
 
 	protected function printCMDWriteAndFillSelectorHTML(){
 		return parent::printCMDWriteAndFillSelectorHTML() .
-				'top.fsbody.document.body.style.fontSize=top.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
+			'top.fsbody.document.body.style.fontSize=top.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
 	}
 
 	protected function getFramsetJSFile(){
-		return parent::getFramsetJSFile().we_html_element::jsScript(JS_DIR . 'selectors/image_selector.js');
+		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/image_selector.js');
 	}
-
 
 	//FIXME: get/set view using tblFile.viewType
 	protected function printHeaderTableExtraCols(){
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 
 		return parent::printHeaderTableExtraCols() .
-				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
+			'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button("image:listview", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
-				'<td>' .
-				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-				($this->filter && isset($this->ctb[$this->filter]) ?
-						we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
-						we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
-				'</td>';
+			'<td>' .
+			we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+			($this->filter && isset($this->ctb[$this->filter]) ?
+				we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+				we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false)) .
+			'</td>';
 	}
 
 	function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 options.view="' . we_search_view::VIEW_ICONS . '";
-consts.VIEW_LIST="'.we_search_view::VIEW_LIST.'";
+consts.VIEW_LIST="' . we_search_view::VIEW_LIST . '";
 ');
 	}
 

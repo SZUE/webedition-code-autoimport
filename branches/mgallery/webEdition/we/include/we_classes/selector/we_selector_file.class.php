@@ -207,11 +207,10 @@ class we_selector_file{
 		$this->getFramesetJavaScriptDef() .
 		$this->getFramsetJSFile() .
 		$this->getExitOpen() .
-		$this->printFramesetJSFunctions() .
-		we_html_element::jsElement('self.focus();');
+		$this->query();
+		echo $this->printFramesetJSFunctionAddEntries();
 		?>
-		</head>
-		<?php
+		</head><?php
 		echo $this->getFrameset();
 	}
 
@@ -292,10 +291,11 @@ var g_l={
 		return
 			STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			'<body class="selector">' .
+			'<body class="selector" onload="self.focus();">' .
 			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false) .
+			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>
 </html>';
@@ -342,108 +342,17 @@ function exit_open(){' . ($this->JSIDName ? '
 		return we_html_element::jsElement($ret);
 	}
 
-	protected function printFramesetJSFunctions(){
-		$this->query();
-		return
-			$this->printFramesetJSFunctionAddEntries() .
-			we_html_element::jsElement('
-var allIDs ="";
-var allPaths ="";
-var allTexts ="";
-var allIsFolder ="";
-
-function fillIDs() {
-	allIDs =",";
-	allPaths =",";
-	allTexts =",";
-	allIsFolder =",";
-
-	for	(var i=0;i < entries.length; i++) {
-		if (isFileSelected(entries[i].ID)) {
-			allIDs += (entries[i].ID + ",");
-			allPaths += (entries[i].path + ",");
-			allTexts += (entries[i].text + ",");
-			allIsFolder += (entries[i].isFolder + ",");
-		}
-	}
-	if(currentID != ""){
-		if(allIDs.indexOf(","+currentID+",") == -1){
-			allIDs += (currentID + ",");
-		}
-	}
-	if(currentPath != ""){
-		if(allPaths.indexOf(","+currentPath+",") == -1){
-			allPaths += (currentPath + ",");
-			allTexts += (we_makeTextFromPath(currentPath) + ",");
-		}
-	}
-
-	if (allIDs == ",") {
-		allIDs = "";
-	}
-	if (allPaths == ",") {
-		allPaths = "";
-	}
-	if (allTexts == ",") {
-		allTexts = "";
-	}
-
-	if (allIsFolder == ",") {
-		allIsFolder = "";
-	}
-}
-
-function we_makeTextFromPath(path){
-	position =  path.lastIndexOf("/");
-	if(position > -1 &&  position < path.length){
-		return path.substring(position+1);
-	}else{
-		return "";
-	}
-}');
-	}
-
 	protected function printBodyHTML(){
 		echo we_html_tools::getHtmlTop('', '', '4Trans') .
 		we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js') .
 		STYLESHEET_SCRIPT .
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+		$this->getFramsetJSFile() .
 		$this->getWriteBodyHead() .
-		'</head>
-				<body class="selectorBody" onload="top.writeBody(self.document.body);" onclick="weonclick(event);"></body></html>';
+		'</head><body class="selectorBody" onload="top.writeBody(self.document.body);" onclick="weonclick(event);"></body></html>';
 	}
 
 	protected function getWriteBodyHead(){
-		return we_html_element::jsElement('
-var ctrlpressed=false;
-var shiftpressed=false;
-var wasdblclick=false;
-var inputklick=false;
-var tout=null;
-function weonclick(e){
-		if(document.all){
-			if(e.ctrlKey || e.altKey){
-				ctrlpressed=true;
-			}
-			if(e.shiftKey){
-				shiftpressed=true;
-			}
-		}else{
-			if(e.altKey || e.metaKey || e.ctrlKey){
-				ctrlpressed=true;
-			}
-			if(e.shiftKey){
-				shiftpressed=true;
-			}
-		}
-		if(top.options.multiple){
-		if((self.shiftpressed==false) && (self.ctrlpressed==false)){
-			top.unselectAllFiles();
-		}
-		}else{
-		top.unselectAllFiles();
-		}
-}');
 	}
 
 	protected function printHeaderHTML(){
@@ -570,6 +479,13 @@ top.fsheader.selectIt();';
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 		$this->printFooterJSDef() .
 		we_html_element::jsElement('
+function press_ok_button() {
+	if(document.we_form.fname.value==""){
+		top.exit_close();
+	}else{
+		top.exit_open();
+	};
+}
 function disableDelBut(){
 	switch_button_state("delete", "delete_enabled", "disabled");
 }
@@ -586,36 +502,20 @@ function enableDelBut(){
 	}
 
 	protected function printFooterJSDef(){
-		return we_html_element::jsElement("
-function press_ok_button() {
-	if(document.we_form.fname.value==''){
-		top.exit_close();
-	}else{
-		top.exit_open();
-	};
-}");
+		return '';
 	}
 
 	protected function printFooterTable(){
 		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
 		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
-		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 		return '
-<table class="footer">
+<table id="footer">
 	<tr>
-		<td class="defaultfont">
-			<b>' . g_l('fileselector', '[name]') . '</b>
-		</td>
-		<td></td>
-		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
-		</td>
+		<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
+		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
 	</tr>
-	<tr>
-		<td width="70"></td>
-		<td width="10"></td>
-		<td></td>
 	</tr>
-	</table><div id="footerButtons">' . $buttons . '</div>';
+	</table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
 	private function setTableLayoutInfos(){

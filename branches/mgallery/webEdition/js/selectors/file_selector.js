@@ -257,3 +257,87 @@ function queryString(what, id, o) {
 	}
 	return options.formtarget + '?what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
 }
+
+var allIDs = "";
+var allPaths = "";
+var allTexts = "";
+var allIsFolder = "";
+
+function fillIDs() {
+	allIDs = ",";
+	allPaths = ",";
+	allTexts = ",";
+	allIsFolder = ",";
+
+	for (var i = 0; i < entries.length; i++) {
+		if (isFileSelected(entries[i].ID)) {
+			allIDs += (entries[i].ID + ",");
+			allPaths += (entries[i].path + ",");
+			allTexts += (entries[i].text + ",");
+			allIsFolder += (entries[i].isFolder + ",");
+		}
+	}
+	if (currentID != "") {
+		if (allIDs.indexOf("," + currentID + ",") == -1) {
+			allIDs += (currentID + ",");
+		}
+	}
+	if (currentPath != "") {
+		if (allPaths.indexOf("," + currentPath + ",") == -1) {
+			allPaths += (currentPath + ",");
+			allTexts += (we_makeTextFromPath(currentPath) + ",");
+		}
+	}
+
+	if (allIDs == ",") {
+		allIDs = "";
+	}
+	if (allPaths == ",") {
+		allPaths = "";
+	}
+	if (allTexts == ",") {
+		allTexts = "";
+	}
+
+	if (allIsFolder == ",") {
+		allIsFolder = "";
+	}
+}
+
+function we_makeTextFromPath(path) {
+	position = path.lastIndexOf("/");
+	if (position > -1 && position < path.length) {
+		return path.substring(position + 1);
+	}
+	return "";
+}
+
+var ctrlpressed = false;
+var shiftpressed = false;
+var wasdblclick = false;
+var inputklick = false;
+var tout = null;
+function weonclick(e) {
+	if (document.all) {
+		if (e.ctrlKey || e.altKey) {
+			ctrlpressed = true;
+		}
+		if (e.shiftKey) {
+			shiftpressed = true;
+		}
+	} else {
+		if (e.altKey || e.metaKey || e.ctrlKey) {
+			ctrlpressed = true;
+		}
+		if (e.shiftKey) {
+			shiftpressed = true;
+		}
+	}
+	if (top.options.multiple) {
+		if ((self.shiftpressed == false) && (self.ctrlpressed == false)) {
+			top.unselectAllFiles();
+		}
+	} else {
+		top.unselectAllFiles();
+	}
+}

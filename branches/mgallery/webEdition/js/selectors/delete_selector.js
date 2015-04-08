@@ -98,10 +98,36 @@ function selectFile(id) {
 	}
 }
 
-function unselectAllFiles(){
-	for	(var i=0;i < entries.length; i++){
-		top.fsbody.document.getElementById("line_"+entries[i].ID).style.backgroundColor="white";
+function unselectAllFiles() {
+	for (var i = 0; i < entries.length; i++) {
+		top.fsbody.document.getElementById("line_" + entries[i].ID).style.backgroundColor = "white";
 	}
 	top.fsfooter.document.we_form.fname.value = "";
 	top.fsfooter.disableDelBut();
+}
+
+function deleteEntry() {
+	if (confirm(g_l.deleteQuestion)) {
+		var todel = "";
+		var docIsOpen = false;
+		for (var i = 0; i < entries.length; i++) {
+			if (isFileSelected(entries[i].ID)) {
+				todel += entries[i].ID + ",";
+				if (options.seemForOpenDelSelector && entries[i].ID == options.seemForOpenDelSelector) {
+					docIsOpen = true;
+				}
+			}
+		}
+		if (todel) {
+			todel = "," + todel;
+		}
+
+		top.fscmd.location.replace(top.queryString(consts.DEL, top.currentID) + "&todel=" + encodeURI(todel));
+		top.fsfooter.disableDelBut();
+
+		if (docIsOpen) {
+			top.opener.top.we_cmd("close_all_documents");
+			top.opener.top.we_cmd("start_multi_editor");
+		}
+	}
 }

@@ -52,6 +52,12 @@ body.radient,
 body.selectorHeader,
 body.selectorFooter{
 	height: 100%;
+}
+
+#fsfooterDiv,
+.radient,
+body.selectorHeader,
+body.selectorFooter{
 	background-color:lightgrey;/*for old browsers*/
 	background: linear-gradient(white, #E7E7E7); /*backgrounds/radient.gif*/
 }
