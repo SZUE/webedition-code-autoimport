@@ -197,4 +197,8 @@ top.selectFile(top.currentID);
 		return permissionhandler::hasPerm('NEW_NEWSLETTER');
 	}
 
+	function printHTML($what = we_selector_file::FRAMESET){
+		parent::printHTML($what, false);
+	}
+
 }

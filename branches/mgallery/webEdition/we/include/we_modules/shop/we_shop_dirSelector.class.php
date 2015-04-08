@@ -30,9 +30,8 @@ class we_shop_dirSelector extends we_selector_file{
 	}
 
 	protected function getFramsetJSFile(){
-		return parent::getFramsetJSFile() .we_html_element::jsScript(JS_DIR . 'selectors/shopDir_selector.js');
+		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/shopDir_selector.js');
 	}
-
 
 	function printHeaderHeadlines(){
 		return '
@@ -53,8 +52,8 @@ class we_shop_dirSelector extends we_selector_file{
 
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() . '
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() . '
 top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
@@ -67,7 +66,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 				$this->printSetDirHTML();
 				break;
 			default:
-				parent::printHTML($what);
+				parent::printHTML($what, false);
 		}
 	}
 

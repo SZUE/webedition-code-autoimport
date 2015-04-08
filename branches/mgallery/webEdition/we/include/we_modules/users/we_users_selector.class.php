@@ -135,15 +135,5 @@ top.parentID = "' . $this->values["ParentID"] . '";';
 </table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
-	protected function printFooterJSDef(){
-		return we_html_element::jsElement("
-function press_ok_button() {
-	if(document.we_form.fname.value==''&&top.currentType!='group'){
-		top.exit_close();
-	}else{
-		top.exit_open();
-	};
-}");
-	}
 
 }

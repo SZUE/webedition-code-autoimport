@@ -30,7 +30,7 @@ function applyOnEnter(evt) {
 	if (!(evt[_elemName].tagName == "SELECT" ||
 					(evt[_elemName].tagName == "INPUT" && evt[_elemName].name != "fname")
 					)) {
-		top.fsfooter.press_ok_button();
+		top.press_ok_button();
 		return true;
 	}
 
@@ -340,4 +340,18 @@ function weonclick(e) {
 	} else {
 		top.unselectAllFiles();
 	}
+}
+
+function press_ok_button() {
+	if(top.fsfooter.document.we_form.fname.value==""){
+		top.exit_close();
+	}else{
+		top.exit_open();
+	};
+}
+function disableDelBut(){
+	switch_button_state("delete", "delete_enabled", "disabled");
+}
+function enableDelBut(){
+	switch_button_state("delete", "delete_enabled", "enabled");
 }

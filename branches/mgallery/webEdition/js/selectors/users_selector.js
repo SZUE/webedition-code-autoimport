@@ -59,3 +59,11 @@ function queryString(what, id, o) {
 	}
 	return options.formtarget + '?what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
 }
+
+function press_ok_button() {
+	if(top.fsfooter.document.we_form.fname.value==''&&top.currentType!='group'){
+		top.exit_close();
+	}else{
+		top.exit_open();
+	};
+}

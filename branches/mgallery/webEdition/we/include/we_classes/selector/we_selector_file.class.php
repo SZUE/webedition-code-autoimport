@@ -165,7 +165,7 @@ class we_selector_file{
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET,$withPreview=true){
 		switch($what){
 			case self::HEADER:
 				$this->printHeaderHTML();
@@ -181,11 +181,11 @@ class we_selector_file{
 				break;
 			case self::FRAMESET:
 			default:
-				$this->printFramesetHTML();
+				$this->printFramesetHTML($withPreview);
 		}
 	}
 
-	function printFramesetHTML(){
+	function printFramesetHTML($withPreview=true){
 		$this->setDirAndID(); //set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset') .
 		we_html_element::jsScript(JS_DIR . 'keyListener.js') .
@@ -196,7 +196,7 @@ class we_selector_file{
 		we_html_element::jsElement($this->printCmdAddEntriesHTML());
 		?>
 		</head><?php
-		echo $this->getFrameset();
+		echo $this->getFrameset($withPreview);
 	}
 
 	protected function getFramsetJSFile(){
@@ -443,21 +443,7 @@ top.fsheader.selectIt();';
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-		we_html_element::jsElement('
-function press_ok_button() {
-	if(document.we_form.fname.value==""){
-		top.exit_close();
-	}else{
-		top.exit_open();
-	};
-}
-function disableDelBut(){
-	switch_button_state("delete", "delete_enabled", "disabled");
-}
-function enableDelBut(){
-	switch_button_state("delete", "delete_enabled", "enabled");
-}') .
-		$this->printFooterJSDef() . '
+			$this->getFramsetJSFile().'
 </head>
 	<body class="selectorFooter">
 	<form name="we_form" target="fscmd">' .
@@ -465,10 +451,6 @@ function enableDelBut(){
 	</form>
 	</body>
 </html>';
-	}
-
-	protected function printFooterJSDef(){
-		return '';
 	}
 
 	protected function printFooterTable(){

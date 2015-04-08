@@ -46,7 +46,7 @@ class we_selector_directory extends we_selector_file{
 		$this->FolderText = $FolderText;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET){
+	function printHTML($what = we_selector_file::FRAMESET,$withPreview=true){
 		switch($what){
 			case self::SETDIR:
 				$this->printSetDirHTML();
@@ -67,7 +67,7 @@ class we_selector_directory extends we_selector_file{
 				$this->printPreviewHTML();
 				break;
 			default:
-				parent::printHTML($what);
+				parent::printHTML($what,$withPreview);
 		}
 	}
 
@@ -395,13 +395,13 @@ top.selectFile(top.currentID);
 </head><body></body></html>';
 	}
 
-	protected function getFrameset(){
+	protected function getFrameset($withPreview = true){
 		return STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 			'<body class="selector" onload="self.focus();">' .
 			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
-			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
-			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, $withPreview ? 'preview' : '') .
+			($withPreview ? we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) : '') .
 			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .

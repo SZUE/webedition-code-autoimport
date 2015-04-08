@@ -61,9 +61,9 @@ class we_export_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("NEW_EXPORT");
 		return parent::printHeaderTable('<td>' .
-			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-			we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-			'</td>');
+				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+				we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+				'</td>');
 	}
 
 	protected function getFramsetJSFile(){
@@ -75,7 +75,7 @@ class we_export_dirSelector extends we_selector_directory{
 		$ret = '';
 		$this->query();
 		while($this->db->next_record()){
-			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Text") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '");' ;
+			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Text") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '");';
 		}
 		return $ret;
 	}
@@ -191,6 +191,10 @@ top.selectFile(top.currentID);
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 g_l.newFolder="' . g_l('export', '[newFolder]') . '";
 ');
+	}
+
+	function printHTML($what = we_selector_file::FRAMESET){
+		parent::printHTML($what, false);
 	}
 
 }

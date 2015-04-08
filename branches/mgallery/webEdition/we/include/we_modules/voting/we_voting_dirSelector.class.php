@@ -208,4 +208,8 @@ g_l.newFolder="' . g_l('modules_voting', '[newFolder]') . '";
 ');
 	}
 
+	function printHTML($what = we_selector_file::FRAMESET){
+		parent::printHTML($what, false);
+	}
+
 }
