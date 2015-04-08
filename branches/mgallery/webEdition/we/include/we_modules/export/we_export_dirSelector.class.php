@@ -71,19 +71,11 @@ class we_export_dirSelector extends we_selector_directory{
 			we_html_element::jsScript(JS_DIR . 'selectors/exportdir_selector.js');
 	}
 
-	protected function printFramesetJSFunctionAddEntries(){
-		$ret = '';
-		while($this->next_record()){
-			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
-		}
-		return we_html_element::jsElement($ret);
-	}
-
 	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()){
-			$ret.= 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
+		while($this->db->next_record()){
+			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Text") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '");' ;
 		}
 		return $ret;
 	}

@@ -114,30 +114,27 @@ class we_selector_file{
 	}
 
 	protected function setDirAndID(){
-		$id = $this->id;
-		if($id > 0){
+		if($this->id > 0 &&
 			// get default Directory
-			$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id));
+			($data = getHash('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db))){
 
 			// getValues of selected Dir
-			if($this->db->next_record()){
-				$this->values = $this->db->getRecord();
+			$this->values = $data;
 
-				$this->dir = ($this->values['IsFolder'] ?
-						$id :
-						$this->values['ParentID']);
+			$this->dir = ($this->values['IsFolder'] ?
+					$this->id :
+					$this->values['ParentID']);
 
-				$this->path = $this->values['Path'];
-				return;
-			}
+			$this->path = $this->values['Path'];
+			return;
 		}
-		$this->setDefaultDirAndID($id === 0 ? false : true);
+
+		$this->setDefaultDirAndID($this->id === 0 ? false : true);
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
 		$this->dir = $this->startID ? : ($setLastDir ? ( isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0);
 		$this->id = $this->dir;
-
 		$this->path = '';
 
 		$this->values = array(
@@ -157,10 +154,7 @@ class we_selector_file{
 		if($pid == $folderID){
 			return true;
 		}
-		if($pid != 0){
-			return $this->isIDInFolder($pid, $folderID, $db);
-		}
-		return false;
+		return $pid && $this->isIDInFolder($pid, $folderID, $db);
 	}
 
 	function query(){
@@ -169,14 +163,6 @@ class we_selector_file{
 			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-	}
-
-	function next_record(){
-		return $this->db->next_record();
-	}
-
-	function f($key){
-		return $this->db->f($key);
 	}
 
 	function printHTML($what = we_selector_file::FRAMESET){
@@ -207,8 +193,7 @@ class we_selector_file{
 		$this->getFramesetJavaScriptDef() .
 		$this->getFramsetJSFile() .
 		$this->getExitOpen() .
-		$this->query();
-		echo $this->printFramesetJSFunctionAddEntries();
+		we_html_element::jsElement($this->printCmdAddEntriesHTML());
 		?>
 		</head><?php
 		echo $this->getFrameset();
@@ -219,9 +204,7 @@ class we_selector_file{
 	}
 
 	function getFramesetJavaScriptDef(){
-		$startPathQuery = new DB_WE();
-		$startPathQuery->query('SELECT Path FROM ' . $startPathQuery->escape($this->table) . ' WHERE ID=' . intval($this->dir));
-		$startPath = $startPathQuery->next_record() ? $startPathQuery->f('Path') : '/';
+		$startPath = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($this->table) . ' WHERE ID=' . intval($this->dir))? : '/';
 		if($this->id == 0){
 			$this->path = '/';
 		}
@@ -334,14 +317,6 @@ function exit_open(){' . ($this->JSIDName ? '
 		return $_SERVER['SCRIPT_NAME'] . '?what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter;
 	}
 
-	protected function printFramesetJSFunctionAddEntries(){
-		$ret = '';
-		while($this->next_record()){
-			$ret.= 'addEntry(' . $this->f('ID') . ',"' . $this->f('Icon') . '","' . addcslashes($this->f('Text'), '"') . '",' . ($this->f('IsFolder') | 0) . ',"' . addcslashes($this->f('Path'), '"') . '");';
-		}
-		return we_html_element::jsElement($ret);
-	}
-
 	protected function printBodyHTML(){
 		echo we_html_tools::getHtmlTop('', '', '4Trans') .
 		we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js') .
@@ -435,8 +410,8 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()){
-			$ret.= 'top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes(str_replace(array("\n", "\r"), "", $this->f("Text")), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->f("Path")), '"') . '");';
+		while($this->db->next_record()){
+			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Text")), '"') . '",' . $this->db->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Path")), '"') . '");';
 		}
 		return $ret;
 	}

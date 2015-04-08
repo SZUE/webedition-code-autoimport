@@ -145,19 +145,11 @@ top.selectFile(top.currentID);
 		);
 	}
 
-	protected function printFramesetJSFunctionAddEntries(){
-		$ret = '';
-		while($this->next_record()){
-			$ret.='addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Text"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '");';
-		}
-		return we_html_element::jsElement($ret);
-	}
-
 	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()){
-			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Text") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '");' . "\n";
+		while($this->db->next_record()){
+			$ret.='top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Text") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '");';
 		}
 		$ret.=($this->userCanMakeNewDir() ?
 				'top.fsheader.enableNewFolderBut();' :

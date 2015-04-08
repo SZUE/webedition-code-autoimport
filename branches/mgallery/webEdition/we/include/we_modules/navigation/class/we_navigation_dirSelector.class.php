@@ -66,29 +66,16 @@ class we_navigation_dirSelector extends we_selector_directory{
 				'</td>');
 	}
 
-	protected function printFramesetJSFunctionAddEntries(){
-		$ret = '';
-		while($this->next_record()){
-			$_text = $this->f('Text');
-			$_charset = $this->f('Charset');
-			if(function_exists('mb_convert_encoding') && !empty($_charset)){
-				$_text = mb_convert_encoding($this->f('Text'), 'HTML-ENTITIES', $_charset);
-			}
-			$ret.='addEntry(' . $this->f('ID') . ',"' . $this->f('Icon') . '","' . $_text . '",' . $this->f('IsFolder') . ',"' . $this->f('Path') . '");' . "\n";
-		}
-		return we_html_element::jsElement($ret);
-	}
-
 	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()){
-			$_text = $this->f('Text');
-			$_charset = $this->f('Charset');
-			if(function_exists('mb_convert_encoding') && !empty($_charset)){
-				$_text = mb_convert_encoding($this->f('Text'), 'HTML-ENTITIES', $_charset);
+		while($this->db->next_record()){
+			$_text = $this->db->f('Text');
+			$_charset = $this->db->f('Charset');
+			if(function_exists('mb_convert_encoding') && $_charset){
+				$_text = mb_convert_encoding($this->db->f('Text'), 'HTML-ENTITIES', $_charset);
 			}
-			$ret.='top.addEntry(' . $this->f('ID') . ',"' . $this->f('Icon') . '","' . $_text . '",' . $this->f('IsFolder') . ',"' . $this->f('Path') . '");';
+			$ret.='top.addEntry(' . $this->db->f('ID') . ',"' . ( $this->db->f('IsFolder') ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON) . '","' . $_text . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f('Path') . '");';
 		}
 		return $ret;
 	}

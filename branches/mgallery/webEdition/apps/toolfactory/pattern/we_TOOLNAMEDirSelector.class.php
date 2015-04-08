@@ -169,24 +169,13 @@ function addEntry(ID, icon, text, isFolder, path) {
 }
 
 
-function printFramesetJSFunctionAddEntries(){
-$ret = '';
-while($this->next_record()){
-$_text = $this->f('Text');
-$_charset = $this->f('Charset');
-
-$ret .=  'addEntry('.$this->f('ID').',"'.we_ui_layout_Image::getIconClass($this->f('ContentType')).'.gif","'.$_text.'",'.$this->f('IsFolder').',"'.$this->f('Path').'");'."\n";
-}
-return we_html_element::jsElement($ret);
-}
-
 function printCmdAddEntriesHTML(){
 $this->query();
-while($this->next_record()){
-$_text = $this->f('Text');
-$_charset = $this->f('Charset');
+while($this->db->next_record()){
+$_text = $this->db->f('Text');
+$_charset = $this->db->f('Charset');
 
-print 'top.addEntry('.$this->f('ID').',"'.we_ui_layout_Image::getIconClass($this->f('ContentType')).'.gif","'.$_text.'",'.$this->f('IsFolder').',"'.$this->f('Path').'");'."\n";
+print 'top.addEntry('.$this->db->f('ID').',"'.we_ui_layout_Image::getIconClass($this->db->f('ContentType')).'.gif","'.$_text.'",'.$this->db->f('IsFolder').',"'.$this->db->f('Path').'");'."\n";
 }
 }
 

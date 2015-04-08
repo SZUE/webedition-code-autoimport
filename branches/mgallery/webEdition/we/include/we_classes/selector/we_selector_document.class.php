@@ -162,28 +162,15 @@ function exit_open() {
 		return $_SERVER['SCRIPT_NAME'] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startID=" . $this->startID . "&filter=" . $this->filter . "&open_doc=" . $this->open_doc;
 	}
 
-	protected function printFramesetJSFunctionAddEntries(){
-		$ret = '';
-		if($this->userCanSeeDir(true)){
-			while($this->next_record()){
-				$title = strip_tags(strtr((isset($this->titles[$this->f('ID')]) ? $this->titles[$this->f('ID')] : '&nbsp;'), array('\\' => '\\\\', '"' => '\"', "\n" => ' ',)));
-				$title = $title === '&nbsp;' ? '-' : oldHtmlspecialchars($title);
-				$published = ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? $this->f("Published") : 1);
-				$ret.= 'addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . addcslashes($this->f("Filename"), '"') . '","' . addcslashes($this->f("Extension"), '"') . '",' . $this->f("IsFolder") . ',"' . addcslashes($this->f("Path"), '"') . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . addcslashes($title, '"') . '");';
-			}
-		}
-		return we_html_element::jsElement($ret);
-	}
-
 	protected function printCmdAddEntriesHTML(){
 		$ret = '';
 		$this->query();
-		while($this->next_record()){
+		while($this->db->next_record()){
 
-			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->f("ID")]) : '-')));
+			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
-			$published = $this->table == FILE_TABLE ? $this->f("Published") : 1;
-			$ret.='top.addEntry(' . $this->f("ID") . ',"' . $this->f("Icon") . '","' . $this->f("Filename") . '","' . $this->f("Extension") . '",' . $this->f("IsFolder") . ',"' . $this->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->f("ModDate")) . '","' . $this->f("ContentType") . '","' . $published . '","' . $title . '");';
+			$published = $this->table == FILE_TABLE ? $this->db->f("Published") : 1;
+			$ret.='top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
 
 		switch($this->filter){
@@ -209,7 +196,6 @@ function exit_open() {
 	<tr>' . $this->tableHeadlines . '</tr>
 </table>';
 	}
-
 
 	protected function printHeaderJSDef(){
 		switch($this->filter){
@@ -313,7 +299,6 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
 			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path radient' . ($this->filter ? '' : ' filter')) .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
-
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>
 </html>';
