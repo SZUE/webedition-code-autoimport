@@ -134,7 +134,7 @@ class we_customer_selector extends we_users_selector{
 		$js = 'top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.fsheader.' . (($this->dir) ? 'enable' : 'disable' ) . 'RootDirButs();';
+			'top.' . (($this->dir) ? 'enable' : 'disable' ) . 'RootDirButs();';
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			if($this->id == 0){
@@ -142,7 +142,7 @@ class we_customer_selector extends we_users_selector{
 			}
 			$js.= 'top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";';
-//top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";';
+//top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 //top.parentID = "' . $this->values["ParentID"] . '";
@@ -164,29 +164,17 @@ top.currentID = "' . $this->id . '";';
 		return $out;
 	}
 
-	protected function printHeaderOptions(){
-		$elem = $this->getHeaderElements();
-		end($elem);
-		$last = key($elem);
-		$out = '';
-		foreach($elem as $key => $val){
-			$out.='<option value="' . $key . '"' . ($last == $key ? ' selected="selected"' : '') . '>' . $val . '</option>';
-		}
-		return $out;
-	}
-
-	protected function printCMDWriteAndFillSelectorHTML(){
+	protected function printCMDWriteAndFillSelectorHTML($withWrite = true){
 		$elem = $this->getHeaderElements();
 		$out = '';
 		foreach($elem as $key => $val){
-			$out .= 'top.fsheader.addOption("' . $val . '","' . $key . '");';
+			$out .= 'top.addOption("' . $val . '","' . $key . '");';
 		}
 
-		return '
-top.writeBody(top.fsbody.document.body);
-top.fsheader.clearOptions();' .
+		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
+top.clearOptions();' .
 			$out . '
-top.fsheader.selectIt();';
+top.selectIt();';
 	}
 
 }

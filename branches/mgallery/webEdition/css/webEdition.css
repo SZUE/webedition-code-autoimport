@@ -44,20 +44,18 @@ img{
 	border: none;
 }
 
-select,textarea{
+select,
+textarea{
 	border:#AAAAAA solid 1px;
 }
 
-body.radient,
-body.selectorHeader,
-body.selectorFooter{
+body.radient{
 	height: 100%;
 }
 
-#fsfooterDiv,
+#fsfooter,
 .radient,
-body.selectorHeader,
-body.selectorFooter{
+#fsheader{
 	background-color:lightgrey;/*for old browsers*/
 	background: linear-gradient(white, #E7E7E7); /*backgrounds/radient.gif*/
 }

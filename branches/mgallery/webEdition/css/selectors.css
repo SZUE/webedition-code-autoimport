@@ -29,15 +29,12 @@ body.selectorBody{
 	width:100%;
 }
 
+body.selector a,
+body.selector a:visited,
+body.selector a:active
 body.selectorBody a,
 body.selectorBody a:visited,
 body.selectorBody a:active
-body.selectorHeader a,
-body.selectorHeader a:visited,
-body.selectorHeader a:active
-body.selectorFooter a,
-body.selectorFooter a:visited,
-body.selectorFooter a:active
 {
 	color: #000000;
 }
@@ -137,7 +134,7 @@ tr.WEFile td{
 	color:#006699 !important;
 }
 
-#fsheaderDiv{
+#fsheader{
 	position: fixed;
 	top:0px;
 	left: 0px;
@@ -181,17 +178,17 @@ tr.WEFile td{
 	right:0px;
 	border-left:1px solid grey;
 }
-#fsfooterDiv{
+#fsfooter{
 	position: fixed;
 	height:90px;
 	left: 0px;
 	right:0px;
 	bottom:20px;
 }
-#fsfooterDiv.path{
+#fsfooter.path{
 	bottom:20px;
 }
-#fsfooterDiv.filter{
+#fsfooter.filter{
 	height:90px;
 }
 
@@ -244,6 +241,7 @@ table.selectorHeaderTable td{
 	padding-right:10px;
 	position: absolute;
 	right: 0px;
+	bottom:5px;
 }
 
 table.selectorHeaderTable{

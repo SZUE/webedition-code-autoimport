@@ -38,7 +38,7 @@ if(!$cmd || $cmd != "save_last"){
 	?>
 	<script type="text/javascript"><!--
 		function setDir(dir) {
-			var a = top.fsheader.document.we_form.elements.lookin.options;
+			var a = top.document.getElementById("lookin").options;
 			if (a.length - 2 > -1) {
 				for (j = 0; j < a.length; j++) {
 					if (a[j].value === dir) {
@@ -62,7 +62,7 @@ if(!$cmd || $cmd != "save_last"){
 		}
 
 		function goUp() {
-			var a = top.fsheader.document.we_form.elements.lookin.options;
+			var a = top.document.getElementById("lookin").options;
 			if (a.length - 2 > -1) {
 				setDir(a[a.length - 2].value);
 			} else {

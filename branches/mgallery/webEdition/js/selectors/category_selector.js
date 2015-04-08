@@ -25,7 +25,7 @@ function unselectFile(id) {
 	e = getEntry(id);
 	top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "white";
 
-	var foo = top.fsfooter.document.we_form.fname.value.split(/,/);
+	var foo = top.document.getElementsByName("fname")[0].value.split(/,/);
 
 	for (var i = 0; i < foo.length; i++) {
 		if (foo[i] == e.text) {
@@ -40,7 +40,7 @@ function unselectFile(id) {
 		}
 	}
 	str = str.replace(/(.*),$/, "$1");
-	top.fsfooter.document.we_form.fname.value = str;
+	top.document.getElementsByName("fname")[0].value = str;
 }
 
 function selectFilesFrom(from, to) {
@@ -75,21 +75,21 @@ function unselectAllFiles() {
 	for (var i = 0; i < entries.length; i++) {
 		top.fsbody.document.getElementById("line_" + entries[i].ID).style.backgroundColor = "white";
 	}
-	top.fsfooter.document.we_form.fname.value = "";
-	top.fsheader.disableDelBut();
+	top.document.getElementsByName("fname")[0].value = "";
+	top.disableDelBut();
 }
 
 function selectFile(id) {
 	if (id) {
 		e = getEntry(id);
+		var a=top.document.getElementsByName("fname")[0];
+		if (a.value != e.text &&
+						a.indexOf(e.text + ",") == -1 &&
+						a.value.indexOf("," + e.text + ",") == -1 &&
+						a.value.indexOf("," + e.text + ",") == -1) {
 
-		if (top.fsfooter.document.we_form.fname.value != e.text &&
-						top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1) {
-
-			top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
-							(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+			a.value = a.value ?
+							(a.value + "," + e.text) :
 							e.text;
 		}
 		if (top.fsbody.document.getElementById("line_" + id))
@@ -97,13 +97,13 @@ function selectFile(id) {
 		currentPath = e.path;
 		currentID = id;
 		if (id) {
-			top.fsheader.enableDelBut();
+			top.enableDelBut();
 		}
 		if (id !== we_editCatID) {
 			we_editCatID = 0;
 		}
 	} else {
-		top.fsfooter.document.we_form.fname.value = "";
+		top.document.getElementsByName("fname")[0].value = "";
 		currentPath = "";
 		we_editCatID = 0;
 	}
@@ -174,9 +174,9 @@ function setDir(id) {
 	currentID = id;
 	currentDir = id;
 	currentPath = e.path;
-	top.fsfooter.document.we_form.fname.value = e.text;
+	top.document.getElementsByName("fname")[0].value = e.text;
 	if (id) {
-		top.fsheader.enableDelBut();
+		top.enableDelBut();
 	}
 	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
 }
@@ -205,7 +205,7 @@ function deleteEntry() {
 		top.fscmd.location.replace(top.queryString(top.queryType.DEL, top.currentID) + "&todel=" + encodeURI(todel));
 		if (top.fsvalues)
 			top.fsvalues.location.replace(top.queryString(top.queryType.PROPERTIES, 0));
-		top.fsheader.disableDelBut();
+		top.disableDelBut();
 	}
 
 }

@@ -70,7 +70,7 @@ ref.makeNewEntry("' . $folder->Icon . '",' . $folder->ID . ',"' . $folder->Paren
 				if($this->canSelectDir){
 					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ';
 				}
 			}
@@ -122,7 +122,7 @@ else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 				if($this->canSelectDir){
 					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ';
 				}
 			}
@@ -151,9 +151,10 @@ top.selectFile(top.currentID);
 		while($this->db->next_record()){
 			$ret.='top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Text") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '");';
 		}
-		$ret.=($this->userCanMakeNewDir() ?
-				'top.fsheader.enableNewFolderBut();' :
-				'top.fsheader.disableNewFolderBut();');
+
+		$ret.=' function startFrameset(){'.($this->userCanMakeNewDir() ?
+				'top.enableNewFolderBut();' :
+				'top.disableNewFolderBut();').'}';
 		return $ret;
 	}
 

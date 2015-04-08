@@ -31,16 +31,17 @@ function setDir(id) {
 }
 
 function selectFile(id) {
+	var a=top.document.getElementsByName("fname")[0];
 	if (id) {
 		e = top.getEntry(id);
 		if (currentType !== "user" || !e.isFolder) {
-			if (top.fsfooter.document.we_form.fname.value != e.text &&
-							top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == -1 &&
-							top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1 &&
-							top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1) {
+			if (a.value != e.text &&
+							a.value.indexOf(e.text + ",") == -1 &&
+							a.value.indexOf("," + e.text + ",") == -1 &&
+							a.value.indexOf("," + e.text + ",") == -1) {
 
-				top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
-								(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+				a.value = a.value ?
+								(a.value + "," + e.text) :
 								e.text;
 			}
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
@@ -48,7 +49,7 @@ function selectFile(id) {
 			currentID = id;
 		}
 	} else {
-		top.fsfooter.document.we_form.fname.value = "";
+		a.value = "";
 		currentPath = "";
 	}
 }
@@ -61,7 +62,7 @@ function queryString(what, id, o) {
 }
 
 function press_ok_button() {
-	if(top.fsfooter.document.we_form.fname.value==''&&top.currentType!='group'){
+	if(top.document.getElementsByName("fname")[0].value==''&&top.currentType!='group'){
 		top.exit_close();
 	}else{
 		top.exit_open();

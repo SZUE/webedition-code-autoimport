@@ -77,7 +77,7 @@ function queryString(what, id, o, we_editDirID) {
 	if (!we_editDirID) {
 		we_editDirID = "";
 	}
-	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc="+options.open_doc+"&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc=' + options.open_doc + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 }
 
 function weonclick(e) {

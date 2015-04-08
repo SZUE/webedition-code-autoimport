@@ -80,7 +80,7 @@ class we_selector_category extends we_selector_file{
 <table class="selectorHeaderTable">
 	<tr valign="middle">
 		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
-		<td class="lookin"><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' . $this->printHeaderOptions() . '</select></td>
+		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select></td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:top.setRootDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
 		<td>' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
 			($this->userCanEditCat() ?
@@ -152,7 +152,7 @@ top.currentID = "' . $folderID . '";
 top.hot = 1; // this is hot for category edit!!
 
 if(top.currentID){
-	top.fsheader.enableDelBut();
+	top.enableDelBut();
 	top.showPref(top.currentID);
 }';
 		}
@@ -213,7 +213,7 @@ top.selectFile(top.currentID);') .
 top.hot = 1; // this is hot for category edit!!
 top.currentID = "' . $this->we_editCatID . '";
 if(top.currentID){
-	top.fsheader.enableDelBut();
+	top.enableDelBut();
 	top.showPref(top.currentID);
 }';
 		}
@@ -222,7 +222,7 @@ if(top.currentID){
 			$js .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.fsfooter.document.we_form.fname.value = "";
+			'top.document.getElementsByName("fname")[0].value = "";
 top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;') .
 		'</head><body></body></html>';
 	}
@@ -233,10 +233,10 @@ top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
 			(intval($this->dir) == 0 ? '
-top.fsheader.disableRootDirButs();
-top.fsheader.disableDelBut();' : '
-top.fsheader.enableRootDirButs();
-top.fsheader.enableDelBut();' ) . '
+top.disableRootDirButs();
+top.disableDelBut();' : '
+top.enableRootDirButs();
+top.enableDelBut();' ) . '
 top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
 	}
@@ -329,8 +329,8 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 top.currentPath = "' . $Path . '";
 top.currentID = "' . $this->id . '";
 top.selectFile(' . $this->id . ');
-if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
-	top.fsheader.enableDelBut();
+if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
+	top.enableDelBut();
 }');
 		}
 		echo '</head><body></body></html>';
@@ -376,13 +376,14 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		return
 			STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+			$this->getFramsetJSFile() .
 			'<body class="selector" onload="self.focus();">' .
-			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
 			($isMainChooser ?
 				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true) : ''
 			) .
-			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false) .
+			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>
 </html>';
@@ -436,7 +437,7 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		}
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement($js . 'top.setDir(top.fsheader.document.we_form.elements.lookin.value);' .
+		we_html_element::jsElement($js . 'top.setDir(top.document.getElementById("lookin").value);' .
 			($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
 		) .
 		'</head><body></body></html>';

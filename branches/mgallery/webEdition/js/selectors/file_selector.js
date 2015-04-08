@@ -130,7 +130,7 @@ function setDir(id) {
 	currentDir = id;
 	currentPath = e.path;
 	currentText = e.text;
-	top.fsfooter.document.we_form.fname.value = e.text;
+	top.document.getElementsByName("fname")[0].value = e.text;
 	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
 }
 
@@ -139,24 +139,25 @@ function setRootDir() {
 }
 
 function selectFile(id) {
+	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
 		e = getEntry(id);
 
 		if (
-						top.fsfooter.document.we_form.fname.value != e.text &&
-						top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1) {
+						a.value != e.text &&
+						a.value.indexOf(e.text + ",") == -1 &&
+						a.value.indexOf("," + e.text + ",") == -1 &&
+						a.value.indexOf("," + e.text + ",") == -1) {
 
-			top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
-							(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+			a.value = a.value ?
+							(a.value + "," + e.text) :
 							e.text;
 		}
 		top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
 		currentPath = e.path;
 		currentID = id;
 	} else {
-		top.fsfooter.document.we_form.fname.value = "";
+		a.value = "";
 		currentPath = "";
 	}
 }
@@ -201,7 +202,7 @@ function unselectFile(id) {
 	e = getEntry(id);
 	top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "white";
 
-	var foo = top.fsfooter.document.we_form.fname.value.split(/,/);
+	var foo = top.document.getElementsByName("fname")[0].value.split(/,/);
 
 	for (var i = 0; i < foo.length; i++) {
 		if (foo[i] == e.text) {
@@ -216,7 +217,7 @@ function unselectFile(id) {
 		}
 	}
 	str = str.replace(/(.*),$/, "$1");
-	top.fsfooter.document.we_form.fname.value = str;
+	top.document.getElementsByName("fname")[0].value = str;
 }
 
 
@@ -247,7 +248,7 @@ function unselectAllFiles() {
 			elem.style.backgroundColor = "white";
 		}
 	}
-	top.fsfooter.document.we_form.fname.value = "";
+	top.document.getElementsByName("fname")[0].value = "";
 }
 
 
@@ -343,15 +344,105 @@ function weonclick(e) {
 }
 
 function press_ok_button() {
-	if(top.fsfooter.document.we_form.fname.value==""){
+	if (top.document.getElementsByName("fname")[0].value == "") {
 		top.exit_close();
-	}else{
+	} else {
 		top.exit_open();
-	};
+	}
 }
-function disableDelBut(){
+
+function disableDelBut() {
 	switch_button_state("delete", "delete_enabled", "disabled");
 }
-function enableDelBut(){
+
+function enableDelBut() {
 	switch_button_state("delete", "delete_enabled", "enabled");
+}
+
+function startFrameset() {
+
+}
+
+function disableRootDirButs() {
+	switch_button_state("root_dir", "root_dir_enabled", "disabled");
+	switch_button_state("btn_fs_back", "back_enabled", "disabled", "image");
+	rootDirButsState = 0;
+}
+function enableRootDirButs() {
+	switch_button_state("root_dir", "root_dir_enabled", "enabled");
+	switch_button_state("btn_fs_back", "back_enabled", "enabled", "image");
+	rootDirButsState = 1;
+}
+function disableNewFolderBut() {
+	switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
+	makefolderState = 0;
+}
+function enableNewFolderBut() {
+	switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
+	makefolderState = 1;
+}
+function disableNewBut() {
+	switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
+	switch_button_state("btn_add_cat", "newCategorie_enabled", "disabled", "image");
+}
+
+function disableDelBut() {
+	switch_button_state("btn_function_trash", "btn_function_trash_enabled", "disabled", "image");
+	changeCatState = 0;
+}
+
+function enableNewBut() {
+	if (top.options.userCanEditCat) {
+		switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
+		switch_button_state("btn_add_cat", "newCategorie_enabled", "enabled", "image");
+	}
+}
+
+function enableDelBut() {
+	if (top.options.userCanEditCat) {
+		switch_button_state("btn_function_trash", "btn_function_trash_enabled", "enabled", "image");
+		changeCatState = 1;
+	}
+}
+
+function clearOptions() {
+	var a = top.document.getElementById("lookin");
+	while(a.options.length){
+		a.options.remove(0);
+	}
+}
+function addOption(txt, id) {
+	var a = top.document.getElementById("lookin");
+	a.options[a.options.length] = new Option(txt, id);
+	a.selectedIndex = (a.options.length > 0 ?
+					a.options.length - 1 :
+					0);
+
+}
+function selectIt() {
+	var a = top.document.getElementById("lookin");
+	a.selectedIndex = a.options.length - 1;
+}
+
+function setview(view) {
+	top.options.view = view;
+	var zoom = top.document.getElementsByName("zoom")[0];
+	switch (view) {
+		case 'list':
+			zoom.value = 100;
+			if (zoom.onchange) {
+				zoom.onchange();
+			}
+			zoom.disabled = true;
+			zoom.style.display = "none";
+			break;
+		case 'icons':
+			zoom.disabled = false;
+			zoom.style.display = "inline";
+			break;
+	}
+	top.document.getElementById('list').style.display = (view == 'list' ? "none" : "table-cell");
+	top.document.getElementById('icons').style.display = (view == 'icons' ? "none" : "table-cell");
+
+	top.writeBody(top.fsbody.document.body);
 }

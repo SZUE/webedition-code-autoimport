@@ -140,7 +140,7 @@ function printFramesetJSFunctionQueryString(){
 	function queryString(what, id, o, we_editDirID){
 	if (!o) o = top.order;
 					if (!we_editDirID) we_editDirID = "";
-					return options.formtarget+\'?what=' + what + '&rootDirID="+options.rootDirID+"&open_doc="+options.open_doc+"&table="+options.table+"&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+					return options.formtarget + \'?what=' + what + '&rootDirID="+options.rootDirID+"&open_doc="+options.open_doc+"&table="+options.table+"&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 	}
 -->
 </script>
@@ -152,15 +152,15 @@ protected function printFramesetJSFunctionEntry(){
 <?php echo '?>'; ?>
 <script type="text/javascript">
 <!--
-function addEntry(ID, icon, text, isFolder, path) {
+	function addEntry(ID, icon, text, isFolder, path) {
 	entries.push({
-		"ID": ID,
-		"icon": icon,
-		"text": text,
-		"isFolder": isFolder,
-		"path": path
+	"ID": ID,
+					"icon": icon,
+					"text": text,
+					"isFolder": isFolder,
+					"path": path
 	});
-}
+					}
 
 -->
 </script>
@@ -217,7 +217,7 @@ print we_html_element('<script type="text/javascript">
 					if ($this - > canSelectDir){
 	echo 'top.currentPath = "'.$folder - > Path.'";
 					top.currentID = "'.$folder->ID.'";
-					top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
+					top.document.getElementsByName("fname")[0].value = "'.$folder->Text.'";
 					';
 	}
 	}
@@ -280,7 +280,7 @@ echo '<script type="text/javascript"><!--
 					if ($this - > canSelectDir){
 	echo 'top.currentPath = "'.$folder - > Path.'";
 					top.currentID = "'.$folder->ID.'";
-					top.fsfooter.document.we_form.fname.value = "'.$folder->Text.'";
+					top.document.getElementsByName("fname")[0].value = "'.$folder->Text.'";
 					';
 	}
 	}
@@ -310,17 +310,17 @@ function printFramesetSelectFileHTML(){
 					function selectFile(id){
 					if (id){
 					e = getEntry(id);
-									if (top.fsfooter.document.we_form.fname.value != e.text &&
-													top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == - 1 &&
-													top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == - 1 &&
-													top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == - 1){
+									if (top.document.getElementsByName("fname")[0].value != e.text &&
+													top.document.getElementsByName("fname")[0].value.indexOf(e.text + ",") == - 1 &&
+													top.document.getElementsByName("fname")[0].value.indexOf("," + e.text + ",") == - 1 &&
+													top.document.getElementsByName("fname")[0].value.indexOf("," + e.text + ",") == - 1){
 
-					top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
-									(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+					top.document.getElementsByName("fname")[0].value = top.document.getElementsByName("fname")[0].value ?
+									(top.document.getElementsByName("fname")[0].value + "," + e.text) :
 									e.text;
-									var show = top.fsfooter.document.getElementById("showDiv");
+									var show = top.document.getElementById("showDiv");
 									if (show){
-					show.innerHTML = top.fsfooter.document.we_form.fname.value;
+					show.innerHTML = top.document.getElementsByName("fname")[0].value;
 					}
 
 					}
@@ -329,7 +329,7 @@ function printFramesetSelectFileHTML(){
 									currentID = id;
 									we_editDirID = 0;
 					} else{
-					top.fsfooter.document.we_form.fname.value = "";
+					top.document.getElementsByName("fname")[0].value = "";
 									currentPath = "";
 									we_editDirID = 0;
 					}

@@ -46,7 +46,7 @@ class we_selector_directory extends we_selector_file{
 		$this->FolderText = $FolderText;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET,$withPreview=true){
+	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
 				$this->printSetDirHTML();
@@ -67,7 +67,7 @@ class we_selector_directory extends we_selector_file{
 				$this->printPreviewHTML();
 				break;
 			default:
-				parent::printHTML($what,$withPreview);
+				parent::printHTML($what, $withPreview);
 		}
 	}
 
@@ -78,8 +78,8 @@ top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
 			(intval($this->dir) == intval($this->rootDirID) ?
-				'top.fsheader.disableRootDirButs();' :
-				'top.fsheader.enableRootDirButs();') .
+				'top.disableRootDirButs();' :
+				'top.enableRootDirButs();') .
 			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
@@ -126,13 +126,14 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			we_html_element::jsScript(JS_DIR . 'selectors/directory_selector.js');
 	}
 
-	function cmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(){
 		$this->query();
 		$ret = '';
 		while($this->db->next_record()){
 			$ret.='top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Text") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->db->f("ModDate")) ? $this->db->f("ModDate") : 0)) . '");';
 		}
-		$ret.='top.fsheader.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();';
+		$ret.=' function startFrameset(){
+top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}';
 		return $ret;
 	}
 
@@ -221,7 +222,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		return true;
 	}
 
-	protected function printCMDWriteAndFillSelectorHTML(){
+	protected function printCMDWriteAndFillSelectorHTML($withWrite = true){
 		$pid = $this->dir;
 		$out = '';
 		$c = 0;
@@ -229,26 +230,20 @@ top.parentID = "' . $this->values["ParentID"] . '";
 			$c++;
 			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
 			if($this->db->next_record()){
-				$out = 'top.fsheader.addOption("' . $this->db->f('Text') . '",' . $this->db->f('ID') . ');' . $out;
+				$out = 'top.addOption("' . $this->db->f('Text') . '",' . $this->db->f('ID') . ');' . $out;
 			}
 			$pid = $this->db->f("ParentID");
-			if($c > 500){
+			if($c > 500 || ($this->rootDirID && $this->db->f('ID') == $this->rootDirID)){
 				$pid = 0;
 			}
-			if($this->rootDirID){
-				if($this->db->f('ID') == $this->rootDirID){
-					$pid = 0;
-				}
-			}
 		}
-		return '
-top.writeBody(top.fsbody.document.body);
-top.fsheader.clearOptions();
-if(top.options.rootDirID){
-	top.fsheader.addOption("/",0);
+		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
+top.clearOptions();
+if(!top.options.rootDirID){
+	top.addOption("/",0);
 }' .
 			$out . '
-top.fsheader.selectIt();';
+top.selectIt();';
 	}
 
 	protected function printHeaderTable($extra = '', $append = false){
@@ -256,9 +251,7 @@ top.fsheader.selectIt();';
 <table class="selectorHeaderTable">
 	<tr valign="middle">
 		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
-		<td class="lookin"><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
-			$this->printHeaderOptions() . '
-			</select>' .
+		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select>' .
 			((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
 		</td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
@@ -270,36 +263,13 @@ top.fsheader.selectIt();';
 	</tr>
 </table>';
 	}
-
-	protected function printHeaderOptions(){
-		$pid = $this->dir;
-		$out = ($this->rootDirID ? '' : '<option value="0">/</option>');
-		$c = 0;
-		$z = 0;
-		while($pid != 0){
-			++$c;
-			$data = getHash('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid), $this->db);
-			if($data){
-				$out = '<option value="' . $data['ID'] . '"' . (($z == 0) ? ' selected="selected"' : '') . '>' . $data['Text'] . '</option>' . $out;
-				$z++;
-			}
-			$pid = $data['ParentID'];
-			if($c > 500){
-				$pid = 0;
-			}
-			if($this->rootDirID && $data['ID'] == $this->rootDirID){
-				$pid = 0;
-			}
-		}
-		return $out;
-	}
-
+	
 	function printSetDirHTML(){
 		echo '<script type="text/javascript"><!--
 top.clearEntries();' .
 		$this->printCmdAddEntriesHTML() .
 		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
+		'top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
 		if(in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
 			if($this->id == 0){
 				$this->path = '/';
@@ -308,7 +278,7 @@ top.clearEntries();' .
 top.unselectAllFiles();
 top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";
-top.fsfooter.document.we_form.fname.value = "' . (($this->id == 0) ? '/' : $this->values["Text"]) . '";';
+top.document.getElementsByName("fname")[0].value = "' . (($this->id == 0) ? '/' : $this->values["Text"]) . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		echo '
@@ -380,7 +350,7 @@ ref.makeNewEntry("' . $folder->Icon . '",' . $folder->ID . ',"' . $folder->Paren
 				($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";' : '');
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
 			}
 		}
 
@@ -398,11 +368,12 @@ top.selectFile(top.currentID);
 	protected function getFrameset($withPreview = true){
 		return STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			'<body class="selector" onload="self.focus();">' .
-			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+			$this->getFramsetJSFile() .
+			'<body class="selector" onload="startFrameset();">' .
+			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, $withPreview ? 'preview' : '') .
 			($withPreview ? we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) : '') .
-			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
+			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>
@@ -470,7 +441,7 @@ ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","
 					($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 				}
 			}

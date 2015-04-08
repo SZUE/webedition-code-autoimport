@@ -64,24 +64,25 @@ function setDir(id) {
 	currentID = id;
 	currentDir = id;
 	currentPath = e.path;
-	top.fsfooter.document.we_form.fname.value = e.text;
+	top.document.getElementsByName("fname")[0].value = e.text;
 	if (id) {
-		top.fsfooter.enableDelBut();
+		top.enableDelBut();
 	}
 	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
 }
 
 function selectFile(id) {
+	var a=top.document.getElementsByName("fname")[0];
 	if (id) {
 		e = getEntry(id);
 
-		if (top.fsfooter.document.we_form.fname.value != e.text &&
-						top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1) {
+		if (a.value != e.text &&
+						a.value.indexOf(e.text + ",") == -1 &&
+						a.value.indexOf("," + e.text + ",") == -1 &&
+						a.value.indexOf("," + e.text + ",") == -1) {
 
-			top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
-							(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+			a.value = a.value ?
+							(a.value + "," + e.text) :
 							e.text;
 		}
 		if (top.fsbody.document.getElementById("line_" + id))
@@ -89,10 +90,10 @@ function selectFile(id) {
 		currentPath = e.path;
 		currentID = id;
 		if (id)
-			top.fsfooter.enableDelBut();
+			top.enableDelBut();
 		we_editDelID = 0;
 	} else {
-		top.fsfooter.document.we_form.fname.value = "";
+		a.value = "";
 		currentPath = "";
 		we_editDelID = 0;
 	}
@@ -102,8 +103,8 @@ function unselectAllFiles() {
 	for (var i = 0; i < entries.length; i++) {
 		top.fsbody.document.getElementById("line_" + entries[i].ID).style.backgroundColor = "white";
 	}
-	top.fsfooter.document.we_form.fname.value = "";
-	top.fsfooter.disableDelBut();
+	top.document.getElementsByName("fname")[0].value = "";
+	top.disableDelBut();
 }
 
 function deleteEntry() {
@@ -123,7 +124,7 @@ function deleteEntry() {
 		}
 
 		top.fscmd.location.replace(top.queryString(consts.DEL, top.currentID) + "&todel=" + encodeURI(todel));
-		top.fsfooter.disableDelBut();
+		top.disableDelBut();
 
 		if (docIsOpen) {
 			top.opener.top.we_cmd("close_all_documents");

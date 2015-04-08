@@ -45,43 +45,31 @@ class we_shop_listviewShopVariants extends we_listview_base{
 
 		// we have to init a new document and look for the given field
 		// get id of given document and check if it is a document or an objectfile
-		if($documentid || ($objectid && defined('OBJECT_TABLE'))){
+		if($documentid){
+			$this->Id = $documentid;
 
-			if($documentid){
+			$doc = new we_webEditionDocument();
+			$doc->initByID($this->Id);
+		} else if($objectid && defined('OBJECT_TABLE')){
 
-				$this->Id = $documentid;
+			$this->IsObjectFile = true;
 
-				$doc = new we_webEditionDocument();
-				$doc->initByID($this->Id);
-			} else if($objectid){
+			$this->Id = $objectid;
 
-				$this->IsObjectFile = true;
-
-				$this->Id = $objectid;
-
-				$doc = new we_objectFile();
-				$doc->initByID($this->Id, OBJECT_FILES_TABLE);
-			}
-		} else {
-
+			$doc = new we_objectFile();
+			$doc->initByID($this->Id, OBJECT_FILES_TABLE);
 			// check if its a document or a objectFile
-			if($GLOBALS['we_doc'] instanceof we_objectFile){ // is an objectFile can this happen??!
-				$this->Id = $GLOBALS['we_doc']->ID;
-				$this->IsObjectFile = true;
-
-				$doc = $GLOBALS['we_doc'];
-				//$doc->initByID($this->Id, OBJECT_FILES_TABLE);
-			} elseif(isset($GLOBALS['we_obj'])){
-				$this->Id = $GLOBALS['we_obj']->ID;
-				$this->IsObjectFile = true;
-
-				$doc = $GLOBALS['we_obj'];
-			} else {
-
-				$this->Id = $GLOBALS['we_doc']->ID;
-				$doc = $GLOBALS['we_doc']; //new we_webEditionDocument();
-//				$doc->initByID($this->Id);
-			}
+		} elseif($GLOBALS['we_doc'] instanceof we_objectFile){ // is an objectFile can this happen??!
+			$this->Id = $GLOBALS['we_doc']->ID;
+			$this->IsObjectFile = true;
+			$doc = $GLOBALS['we_doc'];
+		} elseif(isset($GLOBALS['we_obj'])){
+			$this->Id = $GLOBALS['we_obj']->ID;
+			$this->IsObjectFile = true;
+			$doc = $GLOBALS['we_obj'];
+		} else {
+			$this->Id = $GLOBALS['we_doc']->ID;
+			$doc = $GLOBALS['we_doc'];
 		}
 
 		// store model in listview object
@@ -148,9 +136,9 @@ class we_shop_listviewShopVariants extends we_listview_base{
 			} else // webEdition Document
 
 			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-				$ret['WE_PATH'] = $this->Model->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? '?'.$varUrl : '');
+				$ret['WE_PATH'] = $this->Model->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? '?' . $varUrl : '');
 			} else {
-				$ret['WE_PATH'] = $this->Model->Path . ($varUrl ? '?'.$varUrl : '');
+				$ret['WE_PATH'] = $this->Model->Path . ($varUrl ? '?' . $varUrl : '');
 			}
 
 			$this->Record = $ret;

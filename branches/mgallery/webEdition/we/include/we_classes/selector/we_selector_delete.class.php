@@ -60,10 +60,10 @@ top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
 			(intval($this->dir) == 0 ? '
-top.fsheader.disableRootDirButs();
-top.fsfooter.disableDelBut();' : '
-top.fsheader.enableRootDirButs();
-top.fsfooter.enableDelBut();') . '
+top.disableRootDirButs();
+top.disableDelBut();' : '
+top.enableRootDirButs();
+top.enableDelBut();') . '
 top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
 	}

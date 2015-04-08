@@ -45,7 +45,7 @@ class we_selector_query{
 	 *
 	 * @return we_selector_query
 	 */
-	function __construct(){
+	public function __construct(){
 		$this->db = new DB_WE();
 		$this->fields = array('ID', 'Path');
 	}

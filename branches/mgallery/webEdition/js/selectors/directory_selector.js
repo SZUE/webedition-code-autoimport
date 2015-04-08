@@ -38,7 +38,7 @@ function showPreview(id) {
 }
 
 function doClick(id, ct) {
-	if (top.fspreview.document.body) {
+	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
 	if (ct == 1) {
@@ -96,7 +96,7 @@ function doClick(id, ct) {
 
 function setDir(id) {
 	showPreview(id);
-	if (top.fspreview.document.body) {
+	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
 	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
@@ -105,16 +105,17 @@ function setDir(id) {
 }
 
 function selectFile(id) {
+	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
 		showPreview(id);
 		e = getEntry(id);
-		if (top.fsfooter.document.we_form.fname.value != e.text &&
-						top.fsfooter.document.we_form.fname.value.indexOf(e.text + ",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1 &&
-						top.fsfooter.document.we_form.fname.value.indexOf("," + e.text + ",") == -1) {
+		if (a.value != e.text &&
+						a.value.indexOf(e.text + ",") == -1 &&
+						a.value.indexOf("," + e.text + ",") == -1 &&
+						a.value.indexOf("," + e.text + ",") == -1) {
 
-			top.fsfooter.document.we_form.fname.value = top.fsfooter.document.we_form.fname.value ?
-							(top.fsfooter.document.we_form.fname.value + "," + e.text) :
+			a.value = a.value ?
+							(a.value + "," + e.text) :
 							e.text;
 		}
 		if (top.fsbody.document.getElementById("line_" + id))
@@ -124,7 +125,7 @@ function selectFile(id) {
 
 		we_editDirID = 0;
 	} else {
-		top.fsfooter.document.we_form.fname.value = "";
+		a.value = "";
 		currentPath = "";
 		we_editDirID = 0;
 	}
@@ -188,11 +189,11 @@ function queryString(what, id, o, we_editDirID) {
 	if (!we_editDirID) {
 		we_editDirID = "";
 	}
-	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc="+options.open_doc+"&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc=' + options.open_doc + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 }
 
 function weonclick(e) {
-	if (top.fspreview.document.body) {
+	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
 	if (top.makeNewFolder || top.we_editDirID) {

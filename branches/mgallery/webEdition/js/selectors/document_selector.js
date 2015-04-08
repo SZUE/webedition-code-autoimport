@@ -22,7 +22,7 @@
  */
 
 function doClick(id, ct) {
-	if (top.fspreview.document.body) {
+	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
 	if (ct == 1) {
@@ -75,7 +75,7 @@ function previewFolder(id) {
 
 function setDir(id) {
 	showPreview(id);
-	if (top.fspreview.document.body) {
+	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
 	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
@@ -84,7 +84,7 @@ function setDir(id) {
 }
 
 function selectFile(id) {
-	fname = top.fsfooter.document.getElementsByName("fname");
+	fname = top.document.getElementsByName("fname");
 	if (id) {
 		e = getEntry(id);
 		top.document.getElementById('fspath').innerHTML = e.path;
@@ -92,12 +92,12 @@ function selectFile(id) {
 						fname[0].value.indexOf(e.text + ",") == -1 &&
 						fname[0].value.indexOf("," + e.text + ",") == -1 &&
 						fname[0].value.indexOf("," + e.text + ",") == -1) {
-			fname[0].value = top.fsfooter.document.we_form.fname.value ?
+			fname[0].value = fname[0].value ?
 							(fname[0].value + "," + e.text) :
 							e.text;
 		}
 
-		if (top.fsbody.document.getElementById("line_" + id)){
+		if (top.fsbody.document.getElementById("line_" + id)) {
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
 		}
 		currentPath = e.path;
@@ -202,7 +202,7 @@ function queryString(what, id, o, we_editDirID, filter) {
 	if (!filter) {
 		filter = currentType;
 	}
-	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc="+options.open_doc+"&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "") + (filter ? ("&filter=" + filter) : "");
+	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc=' + options.open_doc + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "") + (filter ? ("&filter=" + filter) : "");
 }
 
 function weonclick(e) {

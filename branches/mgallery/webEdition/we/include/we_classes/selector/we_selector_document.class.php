@@ -172,7 +172,7 @@ function exit_open() {
 			$published = $this->table == FILE_TABLE ? $this->db->f("Published") : 1;
 			$ret.='top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
-
+		$ret.=' function startFrameset(){';
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
 			case we_base_ContentTypes::OBJECT:
@@ -181,12 +181,12 @@ function exit_open() {
 				break;
 			default:
 				$tmp = ((in_workspace($this->dir, get_ws($this->table))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
-				$ret.= 'if(top.fsheader.' . $tmp . 'NewFileBut){top.fsheader.' . $tmp . 'NewFileBut();}';
+				$ret.= 'if(top.' . $tmp . 'NewFileBut){top.' . $tmp . 'NewFileBut();}';
 		}
 
 
 		$tmp = ($this->userCanMakeNewDir() ? 'enable' : 'disable');
-		$ret.='top.fsheader.' . $tmp . 'NewFolderBut();';
+		$ret.='top.' . $tmp . 'NewFolderBut();}';
 		return $ret;
 	}
 
@@ -256,7 +256,7 @@ function enableNewFileBut() {
 top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() . '
-top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
+top.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
@@ -293,11 +293,12 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$is_object = defined('OBJECT_TABLE') && $this->table === OBJECT_TABLE;
 		return STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			'<body class="selector" onload="self.focus();">' .
-			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false, $is_object ? 'object' : '') .
+			$this->getFramsetJSFile() .
+			'<body class="selector" onload="startFrameset()">' .
+			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
-			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path radient' . ($this->filter ? '' : ' filter')) .
+			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>

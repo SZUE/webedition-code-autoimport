@@ -33,11 +33,12 @@ class we_selector_image extends we_selector_document{
 		return
 			STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			'<body class="selector" onload="self.focus();">' .
-			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+			$this->getFramsetJSFile() .
+			'<body class="selector" onload="startFrameset();">' .
+			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
-			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false, 'path') .
+			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>
@@ -49,9 +50,9 @@ class we_selector_image extends we_selector_document{
 		return parent::printFooterTable(we_base_browserDetect::inst()->isIE() ? '<input name="zoom" type="hidden"/>' : '<input type="range" style="width:120px;height:20px;" name="zoom" min="50" step="25" max="250" value="100" onchange="top.fsbody.document.body.style.fontSize=this.value+\'%\';"/>');
 	}
 
-	protected function printCMDWriteAndFillSelectorHTML(){
-		return parent::printCMDWriteAndFillSelectorHTML() .
-			'top.fsbody.document.body.style.fontSize=top.fsfooter.document.getElementsByName("zoom")[0].value+"%";';
+	protected function printCMDWriteAndFillSelectorHTML($withWrite = true){
+		return parent::printCMDWriteAndFillSelectorHTML($withWrite) .
+			'top.fsbody.document.body.style.fontSize=top.document.getElementsByName("zoom")[0].value+"%";';
 	}
 
 	protected function getFramsetJSFile(){

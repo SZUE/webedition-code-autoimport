@@ -54,7 +54,7 @@ class we_shop_dirSelector extends we_selector_file{
 top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() . '
-top.fsheader.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
+top.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
 top.currentDir = "' . $this->dir . '";
 top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;

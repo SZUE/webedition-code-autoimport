@@ -115,7 +115,7 @@ if(top.opener.top.makeNewEntry){
 				if($this->canSelectDir){
 					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ';
 				}
 			}
@@ -166,7 +166,7 @@ if(top.opener.top.updateEntry){
 }' . ($this->canSelectDir ?
 					'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.fsfooter.document.we_form.fname.value = "' . $folder->Text . '";
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' :
 					''
 				);

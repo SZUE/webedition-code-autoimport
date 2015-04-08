@@ -38,7 +38,7 @@ echo we_html_tools::getHtmlTop() .
 		<table class="selectorHeaderTable">
 			<tr valign="middle">
 				<td class="defaultfont lookinText"><?php echo g_l('fileselector', '[lookin]') ?></td>
-				<td class="lookin"><select name="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
+				<td class="lookin"><select name="lookin" id="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
 						<option value="/">/</option>
 					</select></td>
 				<td><?php echo we_html_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');"); ?></td>

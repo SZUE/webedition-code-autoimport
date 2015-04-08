@@ -100,7 +100,7 @@ class we_users_selector extends we_selector_file{
 		$js = 'top.clearEntries();' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
+			'top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
@@ -115,7 +115,7 @@ class we_users_selector extends we_selector_file{
 			}
 			$js.= 'top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";
-top.fsfooter.document.we_form.fname.value = "' . $this->values["Text"] . '";';
+top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		$js.= 'top.currentDir = "' . $this->dir . '";
