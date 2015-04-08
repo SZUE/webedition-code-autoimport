@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_selector_file{
-
 	const FRAMESET = 0;
 	const HEADER = 1;
 	const FOOTER = 2;
@@ -70,10 +69,11 @@ class we_selector_file{
 	protected $canSelectDir = true;
 	var $rootDirID = 0;
 	protected $filter = '';
-	var $col2js;
+	protected $col2js;
 	protected $title = '';
 	protected $startID = 0;
-	var $multiple = true;
+	protected $multiple = true;
+	protected $open_doc = 0;
 
 	public function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $rootDirID = 0, $multiple = true, $filter = "", $startID = 0){
 		if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE){
@@ -124,8 +124,8 @@ class we_selector_file{
 				$this->values = $this->db->getRecord();
 
 				$this->dir = ($this->values['IsFolder'] ?
-								$id :
-								$this->values['ParentID']);
+						$id :
+						$this->values['ParentID']);
 
 				$this->path = $this->values['Path'];
 				return;
@@ -166,8 +166,8 @@ class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-				( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
-				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
+			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
@@ -255,17 +255,21 @@ var queryType={
 	"DO_RENAME_ENTRY":' . self::DO_RENAME_ENTRY . ',
 	"SETDIR":' . self::SETDIR . '
 };
+
 var dirs={
 	"TREE_ICON_DIR":"' . TREE_ICON_DIR . '",
 	"WEBEDITION_DIR":"' . WEBEDITION_DIR . '",
 	"ICON_DIR":"' . ICON_DIR . '"
 };
+
 var options={
   "rootDirID":' . $this->rootDirID . ',
 	"table":"' . $this->table . '",
 	"formtarget":"' . $_SERVER["SCRIPT_NAME"] . '",
 	"rootDirID":' . $this->rootDirID . ',
-	"multiple":' . intval($this->multiple) . '
+	"multiple":' . intval($this->multiple) . ',
+	"needIEEscape":' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',
+	"open_doc":"' . $this->open_doc . '"
 };
 
 var consts={
@@ -274,20 +278,26 @@ var consts={
 	"CREATEFOLDER":"' . self::CREATEFOLDER . '"
 };
 
-var needIEEscape=' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ';
+var g_l={
+	"deleteQuestion":\'' . g_l('fileselector', '[deleteQuestion]') . '\',
+	"new_folder_name":"' . g_l('fileselector', '[new_folder_name]') . '",
+	"date_format":"' . date(g_l('date', '[format][default]')) . '",
+	"folder":"' . g_l('contentTypes', '[folder]') . '"
+};
+
 ');
 	}
 
 	protected function getFrameset(){
 		return
-				STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-				'<body class="selector">' .
-				we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
-				we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
-				we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false) .
-				we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-				'</body>
+			STYLESHEET .
+			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+			'<body class="selector">' .
+			we_html_element::htmlIFrame('fsheader', $this->getFsQueryString(we_selector_file::HEADER), '', '', '', false) .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
+			we_html_element::htmlIFrame('fsfooter', $this->getFsQueryString(we_selector_file::FOOTER), '', '', '', false) .
+			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
+			'</body>
 </html>';
 	}
 
@@ -296,7 +306,7 @@ var needIEEscape=' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKEN
 		return we_html_element::jsElement('
 function exit_open(){' . ($this->JSIDName ? '
 	opener.' . $this->JSIDName . '=currentID;' : '') .
-						($this->JSTextName ? 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+				($this->JSTextName ? 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
 	if((!!opener.parent) && (!!opener.parent.frames.editHeader) && (!!opener.parent.frames.editHeader.setPathGroup)) {
 			if(currentType!="")	{
 				switch(currentType){
@@ -313,25 +323,15 @@ function exit_open(){' . ($this->JSIDName ? '
 	}
 	if(!!opener.' . $frameRef . 'YAHOO && !!opener.' . $frameRef . 'YAHOO.autocoml) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 	' : '') .
-						($this->JSCommand ?
-								'	' . str_replace('WE_PLUS', '+', $this->JSCommand) . ';' : '') .
-						'	self.close();
+				($this->JSCommand ?
+					'	' . str_replace('WE_PLUS', '+', $this->JSCommand) . ';' : '') .
+				'	self.close();
 	}'
 		);
 	}
 
 	protected function getFsQueryString($what){
 		return $_SERVER['SCRIPT_NAME'] . '?what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter;
-	}
-
-	protected function printFramesetJSFunctionQueryString(){
-		return we_html_element::jsElement('
-function queryString(what,id,o){
-	if(!o){
-		o=top.order;
-	}
-	return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&table=' . $this->table . '&id=\'+id+"&order="+o+"&filter=' . $this->filter . '";
-}');
 	}
 
 	protected function printFramesetJSFunctionAddEntries(){
@@ -345,10 +345,8 @@ function queryString(what,id,o){
 	protected function printFramesetJSFunctions(){
 		$this->query();
 		return
-				$this->printFramesetJSFunctioWriteBody() .
-				$this->printFramesetJSFunctionQueryString() .
-				$this->printFramesetJSFunctionAddEntries() .
-				we_html_element::jsElement('
+			$this->printFramesetJSFunctionAddEntries() .
+			we_html_element::jsElement('
 var allIDs ="";
 var allPaths ="";
 var allTexts ="";
@@ -415,10 +413,6 @@ function we_makeTextFromPath(path){
 				<body class="selectorBody" onload="top.writeBody(self.document.body);" onclick="weonclick(event);"></body></html>';
 	}
 
-	protected function printFramesetJSFunctioWriteBody(){
-		return '';
-	}
-
 	protected function getWriteBodyHead(){
 		return we_html_element::jsElement('
 var ctrlpressed=false;
@@ -464,7 +458,7 @@ function weonclick(e){
 	<body class="selectorHeader">
 		<form name="we_form" method="post">' .
 		((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ?
-				$this->printHeaderTable() : '') .
+			$this->printHeaderTable() : '') .
 		$this->printHeaderHeadlines() .
 		'</form>
 	</body>
@@ -500,13 +494,13 @@ function weonclick(e){
 	<tr valign="middle">
 		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
 		<td><select name="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">' .
-				$this->printHeaderOptions() . '
+			$this->printHeaderOptions() . '
 		</select>
 		</td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
 		<td>' . we_html_button::create_button("image:btn_fs_back", "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
-				$this->printHeaderTableExtraCols() .
-				'</tr>
+			$this->printHeaderTableExtraCols() .
+			'</tr>
 </table>';
 	}
 
@@ -528,12 +522,12 @@ function weonclick(e){
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				(($this->dir) == 0 ?
-						'top.fsheader.disableRootDirButs();' :
-						'top.fsheader.enableRootDirButs();') .
-				'top.currentPath = "' . $this->path . '";
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			(($this->dir) == 0 ?
+				'top.fsheader.disableRootDirButs();' :
+				'top.fsheader.enableRootDirButs();') .
+			'top.currentPath = "' . $this->path . '";
 top.parentID = "' . $this->values["ParentID"] . '";
 ');
 	}
@@ -566,7 +560,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 top.writeBody(top.fsbody.document.body);
 top.fsheader.clearOptions();
 top.fsheader.addOption("/",0);' .
-				$out . '
+			$out . '
 top.fsheader.selectIt();';
 	}
 
@@ -609,28 +603,19 @@ function press_ok_button() {
 		return '
 <table class="footer">
 	<tr>
-		<td></td>
 		<td class="defaultfont">
 			<b>' . g_l('fileselector', '[name]') . '</b>
 		</td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
 		</td>
+	</tr>
+	<tr>
+		<td width="70"></td>
+		<td width="10"></td>
 		<td></td>
 	</tr>
-	<tr>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td>' . we_html_tools::getPixel(5, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-	</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td align="right">' . $buttons . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table>';
+	</table><div id="footerButtons">' . $buttons . '</div>';
 	}
 
 	private function setTableLayoutInfos(){

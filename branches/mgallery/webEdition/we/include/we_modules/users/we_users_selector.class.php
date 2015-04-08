@@ -99,18 +99,10 @@ class we_users_selector extends we_selector_file{
 		$upath = '';
 		//}
 		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
-				$this->db->escape($this->table) .
-				' WHERE ParentID=' . intval($this->dir) .
-				($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
-				$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
-	}
-
-	protected function printFramesetJSFunctionQueryString(){
-		return we_html_element::jsElement('
-function queryString(what,id,o){
-	if(!o) o=top.order;
-	return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&table=' . $this->table . '&id=\'+id+"&order="+o+"&filter=' . $this->filter . '";
-}');
+			$this->db->escape($this->table) .
+			' WHERE ParentID=' . intval($this->dir) .
+			($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .
+			$q . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->db->escape($this->order)) : ''));
 	}
 
 	protected function getFramsetJSFile(){
@@ -119,9 +111,9 @@ function queryString(what,id,o){
 
 	function printSetDirHTML(){
 		$js = 'top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
@@ -151,28 +143,19 @@ top.parentID = "' . $this->values["ParentID"] . '";';
 		return '
 <table class="footer">
 	<tr>
-		<td></td>
 		<td class="defaultfont">
 			<b>' . g_l('fileselector', '[name]') . '</b>
 		</td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, isset($this->values["Text"]) ? $this->values["Text"] : '', "", 'style="width:100%" readonly="readonly"') . '
 		</td>
+	</tr>
+	<tr>
+		<td width="70"></td>
+		<td width="10"></td>
 		<td></td>
 	</tr>
-	<tr>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td>' . we_html_tools::getPixel(5, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td align="right">' . $buttons . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table>';
+</table><div id="footerButtons">' . $buttons . '</div>';
 	}
 
 	protected function printFooterJSDef(){

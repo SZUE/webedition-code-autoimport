@@ -159,24 +159,7 @@ if((self.shiftpressed==false) && (self.ctrlpressed==false)){
 }');
 	}
 
-	protected function printFramesetJSFunctioWriteBody(){//FIXME:cuttext
-		return '';
-	}
-
-	protected function printFramesetJSFunctionQueryString(){
-		return we_html_element::jsElement('
-		function queryString(what,id,o,we_editCatID){
-		if(!o){
-		o=top.order;
-		}
-		if(!we_editCatID){
-		we_editCatID="";
-		}
-		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editCatID ? ("&we_editCatID="+we_editCatID) : "");
-		}');
-	}
-
-	function getFramesetJavaScriptDef(){
+		function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=false;
 var hot=0; // this is hot for category edit!!
@@ -188,11 +171,8 @@ var perms={
 	"EDIT_KATEGORIE":' . intval(permissionhandler::hasPerm("EDIT_KATEGORIE")) . '
 };
 
-var g_l={
-	"deleteQuestion":\'' . g_l('fileselector', '[deleteQuestion]') . '\',
-	"new_folder_name":"' . g_l('fileselector', '[new_folder_name]') . '",
-	"new_cat_name":"' . g_l('fileselector', '[new_cat_name]') . '",
-};
+g_l.new_cat_name="' . g_l('fileselector', '[new_cat_name]') . '";
+
 options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 ');
 	}
@@ -264,7 +244,7 @@ top.selectFile(top.currentID);') .
 		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db)) . '/' . $txt : '');
 		$js = 'top.clearEntries();';
 
-		if(empty($txt)){
+		if(!$txt){
 			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', ($what == 1 ? '[folder]' : '[category]') . '[filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(strpos($txt, ',') !== false){
 			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
@@ -443,25 +423,16 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		return '
 <table class="footer">
 	<tr>
-		<td></td>
 		<td class="defaultfont"><b>' . g_l('fileselector', '[catname]') . '</b></td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
+	</tr>
+	<tr>
+		<td width="70"></td>
+		<td width="10"></td>
 		<td></td>
 	</tr>
-	<tr>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td>' . we_html_tools::getPixel(5, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td align="right">' . $buttons . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table>';
+</table><div id="footerButtons">' . $buttons . '</div>';
 	}
 
 	protected function getFrameset(){
@@ -594,7 +565,10 @@ if(top.currentID && top.fsfooter.document.we_form.fname.value != ""){
 		we_html_tools::protect();
 
 		echo we_html_tools::getHtmlTop() .
-		STYLESHEET . we_html_element::jsScript(JS_DIR . 'we_textarea.js') . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		STYLESHEET .
+			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+			we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
@@ -645,7 +619,7 @@ function we_checkName() {
 			}
 		}
 
-		if(!empty($fileLinks)){
+		if($fileLinks){
 			foreach(array_unique($fileLinks) as $remObj){
 				$ret &= $db->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 							'ID' => $id,

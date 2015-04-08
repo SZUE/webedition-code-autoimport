@@ -53,13 +53,59 @@ function selectFile(id) {
 }
 
 function addEntry(ID, icon, text, isFolder, path) {
-	entries[entries.length] = new entry(ID, icon, text, isFolder, path);
+	entries.push({
+		"ID": ID,
+		"icon": icon,
+		"text": text,
+		"isFolder": isFolder,
+		"path": path
+	});
 }
 
-function entry(ID, icon, text, isFolder, path) {
-	this.ID = ID;
-	this.icon = icon;
-	this.text = text;
-	this.isFolder = isFolder;
-	this.path = path;
+function writeBody(d) {
+	var body = (top.we_editDirID ?
+					'<input type="hidden" name="what" value="' + top.consts.DORENAMEFOLDER + '" />' +
+					'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />' :
+					'<input type="hidden" name="what" value="' + top.consts.CREATEFOLDER + '" />'
+					) +
+					'<input type="hidden" name="order" value="' + top.order + '" />' +
+					'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
+					'<input type="hidden" name="table" value="' + top.options.table + '" />' +
+					'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+					'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
+					(makeNewFolder ?
+									'<tr style="background-color:#DFE9F5;">' +
+									'<td align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + top.consts.FOLDER_ICON + '"/></td>' +
+									'<td><input type="hidden" name="we_FolderText" value="' + g_l.newFolder + '" />' +
+									'<input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.newFolder + '"  class="wetextinput" style="width:100%" /></td>' +
+									'</tr>' :
+									'');
+	for (i = 0; i < entries.length; i++) {
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
+		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + '>' +
+						'<td class="selector" width="25" align="center">' +
+						'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/></td>' +
+						(we_editDirID == entries[i].ID ?
+										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+										'<td class="selector" style="" >' + entries[i].text
+										) +
+						'</td></tr>';
+	}
+
+	d.innerHTML = '<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" />' + body + '</table></form>';
+	if (makeNewFolder || top.we_editDirID) {
+		top.fsbody.document.we_form.we_FolderText_tmp.focus();
+		top.fsbody.document.we_form.we_FolderText_tmp.select();
+	}
+}
+
+function queryString(what, id, o, we_editDirID) {
+	if (!o) {
+		o = top.order;
+	}
+	if (!we_editDirID) {
+		we_editDirID = "";
+	}
+	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc="+options.open_doc+"&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 }

@@ -231,6 +231,18 @@ table.footer{
 	border-spacing: 0px;
 	padding-top:5px;
 	width:100%;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+table.footer td{
+	padding-bottom:5px;
+}
+
+#footerButtons{
+	padding-right:10px;
+	position: absolute;
+	right: 0px;
 }
 
 table.selectorHeaderTable{
@@ -248,7 +260,7 @@ table.selectorHeaderTable td.lookinText{
 	width:70px;
 	font-weight: bold;
 }
-	table.selectorHeaderTable td.lookin{
+table.selectorHeaderTable td.lookin{
 	width:auto;
 }
 

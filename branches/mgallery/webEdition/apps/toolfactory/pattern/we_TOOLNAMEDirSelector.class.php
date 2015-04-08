@@ -140,7 +140,7 @@ function printFramesetJSFunctionQueryString(){
 	function queryString(what, id, o, we_editDirID){
 	if (!o) o = top.order;
 					if (!we_editDirID) we_editDirID = "";
-					return '<?php echo '<?php echo $_SERVER["SCRIPT_NAME"]; ?>'; ?>?what=' + what + '&rootDirID=<?php echo '<?php echo $this->rootDirID; if(isset($this->open_doc)){print "&open_doc=".$this->open_doc;} ?>'; ?>&table=<?php echo '<?php echo $this->table; ?>'; ?>&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+					return options.formtarget+\'?what=' + what + '&rootDirID="+options.rootDirID+"&open_doc="+options.open_doc+"&table="+options.table+"&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 	}
 -->
 </script>
@@ -152,17 +152,16 @@ protected function printFramesetJSFunctionEntry(){
 <?php echo '?>'; ?>
 <script type="text/javascript">
 <!--
-	function addEntry(ID, icon, text, isFolder, path){
-	entries[entries.length] = new entry(ID, icon, text, isFolder, path);
-					}
+function addEntry(ID, icon, text, isFolder, path) {
+	entries.push({
+		"ID": ID,
+		"icon": icon,
+		"text": text,
+		"isFolder": isFolder,
+		"path": path
+	});
+}
 
-	function entry(ID, icon, text, isFolder, path){
-	this.ID = ID;
-					this.icon = icon;
-					this.text = text;
-					this.isFolder = isFolder;
-					this.path = path;
-	}
 -->
 </script>
 <?php echo '<?php'; ?>

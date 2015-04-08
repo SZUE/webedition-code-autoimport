@@ -226,9 +226,9 @@ function hidePref() {
 }
 
 function writeBody(d) {
-	var body = (needIEEscape ?
-					'<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
-					'<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
+	var body = (options.needIEEscape ?
+					'<form name="we_form" target="fscmd" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
+					'<form name="we_form" target="fscmd" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
 					) +
 					(we_editCatID ?
 									'<input type="hidden" name="what" value="' + queryType.DO_RENAME_ENTRY + '" />' +
@@ -238,8 +238,8 @@ function writeBody(d) {
 													'<input type="hidden" name="what" value="' + queryType.CREATE_CAT + '" />'
 													)) +
 					'<input type="hidden" name="order" value="' + top.order + '" />' +
-					'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
-					'<input type="hidden" name="table" value="' + top.options.table + '" />' +
+					'<input type="hidden" name="rootDirID" value="' + options.rootDirID + '" />' +
+					'<input type="hidden" name="table" value="' + options.table + '" />' +
 					'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
 					'<table class="selector">' +
 					(makeNewFolder ?
@@ -272,4 +272,14 @@ function writeBody(d) {
 		top.fsbody.document.we_form.we_EntryText_tmp.focus();
 		top.fsbody.document.we_form.we_EntryText_tmp.select();
 	}
+}
+
+function queryString(what, id, o, we_editCatID) {
+	if (!o) {
+		o = top.order;
+	}
+	if (!we_editCatID) {
+		we_editCatID = "";
+	}
+	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
 }

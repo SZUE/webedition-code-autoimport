@@ -63,7 +63,13 @@ function getEntry(id) {
 			return entries[i];
 		}
 	}
-	return new entry(0, "", "/", 1, "/");
+	return {
+		"ID": 0,
+		"icon": "",
+		"text": "/",
+		"isFolder": 1,
+		"path": "/"
+	};
 }
 
 function clearEntries() {
@@ -155,16 +161,14 @@ function selectFile(id) {
 	}
 }
 
-function entry(ID, icon, text, isFolder, path) {
-	this.ID = ID;
-	this.icon = icon;
-	this.text = text;
-	this.isFolder = isFolder;
-	this.path = path;
-}
-
 function addEntry(ID, icon, text, isFolder, path) {
-	entries[entries.length] = new entry(ID, icon, text, isFolder, path);
+	entries.push({
+		"ID": ID,
+		"icon": icon,
+		"text": text,
+		"isFolder": isFolder,
+		"path": path
+	});
 }
 
 function writeBody(d) {
@@ -244,4 +248,12 @@ function unselectAllFiles() {
 		}
 	}
 	top.fsfooter.document.we_form.fname.value = "";
+}
+
+
+function queryString(what, id, o) {
+	if (!o) {
+		o = top.order;
+	}
+	return options.formtarget + '?what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
 }

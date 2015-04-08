@@ -138,28 +138,19 @@ top.close();');
 		return '
 <table class="footer">
 	<tr>
-		<td></td>
 		<td class="defaultfont">
 			<b>' . g_l('fileselector', '[filename]') . '</b>
 		</td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
 		</td>
+	</tr>
+	<tr>
+		<td width="70"></td>
+		<td width="10"></td>
 		<td></td>
 	</tr>
-	<tr>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td>' . we_html_tools::getPixel(5, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td align="right">' . $buttons . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table>';
+</table><div id="footerButtons">' . $buttons . '</div>';
 	}
 
 	function query(){

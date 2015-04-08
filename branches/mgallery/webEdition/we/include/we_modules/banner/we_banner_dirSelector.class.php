@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_banner_dirSelector extends we_selector_directory{
-
 	var $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
 
 	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editDirID = 0, $FolderText = ''){
@@ -54,36 +53,27 @@ class we_banner_dirSelector extends we_selector_directory{
 		return '
 <table class="footer">
 	<tr>
-		<td></td>
 		<td class="defaultfont">
 			<b>' . g_l('modules_banner', '[name]') . '</b>
 		</td>
 		<td></td>
 		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '
 		</td>
+	</tr>
+	<tr>
+		<td width="70"></td>
+		<td width="10"></td>
 		<td></td>
 	</tr>
-	<tr>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td width="70">' . we_html_tools::getPixel(70, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-		<td>' . we_html_tools::getPixel(5, 5) . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td align="right">' . $buttons . '</td>
-		<td width="10">' . we_html_tools::getPixel(10, 5) . '</td>
-	</tr>
-</table>';
+</table><div id="footerButtons">' . $buttons . '</div>';
 	}
 
 	protected function printHeaderTableExtraCols(){
 		$makefolderState = permissionhandler::hasPerm("NEW_BANNER");
 		return '<td>' .
-				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-				we_html_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-				'</td>';
+			we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+			we_html_button::create_button("image:btn_new_bannergroup", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+			'</td>';
 	}
 
 	protected function getWriteBodyHead(){
@@ -123,68 +113,10 @@ if(top.options.multiple){
 }');
 	}
 
-	protected function printFramesetJSFunctioWriteBody(){
-		ob_start();
-		?><script type="text/javascript"><!--
-					function writeBody(d) {
-						var body = (top.we_editDirID ?
-										'<input type="hidden" name="what" value="'+top.consts.DORENAMEFOLDER+'" />' +
-										'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />' :
-										'<input type="hidden" name="what" value="'+top.consts.CREATEFOLDER+'" />'
-										) +
-										'<input type="hidden" name="order" value="' + top.order + '" />' +
-										'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
-										'<input type="hidden" name="table" value="' + top.options.table + '" />' +
-										'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-										'<table class="selector">' +
-										(makeNewFolder ?
-														'<tr style="background-color:#DFE9F5;">' +
-														'<td align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + consts.FOLDER_ICON + '"/></td>' +
-														'<td><input type="hidden" name="we_FolderText" value="<?php echo g_l('modules_banner', '[newbannergroup]') ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('modules_banner', '[newbannergroup]') ?>"  class="wetextinput" style="width:100%" /></td>' +
-														'</tr>'
-														: '');
-						for (i = 0; i < entries.length; i++) {
-							var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
-							var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
-							body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + '>' +
-											'<td class="selector" width="25" align="center">' +
-											'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/>' +
-											'</td>' +
-											(we_editDirID == entries[i].ID ?
-															'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-															'<td class="selector filename" style="" ><div class="cutText">' + entries[i].text + '</div>'
-															) +
-											'</td></tr>');
-						}
-						d.innerHTML = '<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</table></form>';
-						if (makeNewFolder || top.we_editDirID) {
-							top.fsbody.document.we_form.we_FolderText_tmp.focus();
-							top.fsbody.document.we_form.we_FolderText_tmp.select();
-						}
-					}
-					//-->
-		</script>
-		<?php
-		return ob_get_clean();
-	}
-
-	protected function printFramesetJSFunctionQueryString(){
-		return we_html_element::jsElement('
-		function queryString(what,id,o,we_editDirID){
-		if(!o) o=top.order;
-		if(!we_editDirID) we_editDirID="";
-		return \'' . $_SERVER["SCRIPT_NAME"] . '?what=\'+what+\'&rootDirID=' .
-						$this->rootDirID . (isset($this->open_doc) ?
-								"&open_doc=" . $this->open_doc : '') .
-						'&table=' . $this->table . '&id=\'+id+(o ? ("&order="+o) : "")+(we_editDirID ? ("&we_editDirID="+we_editDirID) : "");
-		}');
-	}
-
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-				we_html_element::jsScript(JS_DIR . 'selectors/bannerdir_selector.js');
+			we_html_element::jsScript(JS_DIR . 'selectors/bannerdir_selector.js');
 	}
-
 
 	protected function printFramesetJSFunctionAddEntries(){
 		$ret = '';
@@ -308,6 +240,12 @@ top.selectFile(top.currentID);
 //-->
 </script>
 </head><body></body></html>';
+	}
+
+	function getFramesetJavaScriptDef(){
+		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
+g_l.newbannergroup="' . g_l('modules_banner', '[newbannergroup]') . '";
+');
 	}
 
 }

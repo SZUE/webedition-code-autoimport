@@ -244,8 +244,7 @@ if($_SERVER['argv'] && realpath($_SERVER['argv'][0]) == __FILE__){
 
 // Check the options are valid
 if(PEAR::isError($options)){
-	fwrite(STDERR, $options->getMessage() . "\n");
-	fwrite(STDERR, $_cliHelp . "\n");
+	fwrite(STDERR, $options->getMessage() . "\n" . $_cliHelp . "\n");
 	exit(INVALID_OPTION);
 }
 
@@ -291,7 +290,6 @@ foreach($options[0] as $opt){
 }
 
 switch(($type = we_base_request(we_base_request::STRING, 'type'))){
-
 	case 'static':
 		$_REQUEST['type'] = "filter";
 	case 'all':
