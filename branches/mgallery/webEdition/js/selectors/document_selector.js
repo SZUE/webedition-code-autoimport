@@ -97,8 +97,9 @@ function selectFile(id) {
 							e.text;
 		}
 
-		if (top.fsbody.document.getElementById("line_" + id))
+		if (top.fsbody.document.getElementById("line_" + id)){
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+		}
 		currentPath = e.path;
 		currentID = id;
 		we_editDirID = 0;
