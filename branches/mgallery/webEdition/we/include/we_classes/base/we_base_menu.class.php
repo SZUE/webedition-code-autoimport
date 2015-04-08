@@ -48,7 +48,11 @@ var openTable = "' . (isset($_SESSION["weS"]["seemForOpenDelSelector"]["Table"])
 			we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
 			we_html_element::jsElement('
 function menuaction(cmd,cmd1) {
+if(cmd1===undefined){
+we_lcmd(cmd);
+}else{
 we_lcmd(cmd,cmd1);
+}
 }');
 	}
 
