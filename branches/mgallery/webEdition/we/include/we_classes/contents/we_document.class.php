@@ -856,7 +856,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$bin->initByID($val, FILE_TABLE);
-				return array($bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, (isset($bin->elements['filesize']) ? $bin->elements['filesize']['dat'] : ''));
+				return array($bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, $bin->getFilesize());
 			case 'video':
 				$video = new we_document_video();
 				if(isset($attribs['name'])){

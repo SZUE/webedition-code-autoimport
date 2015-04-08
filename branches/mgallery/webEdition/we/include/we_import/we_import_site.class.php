@@ -1639,8 +1639,7 @@ function doUnload() {
 			case we_base_ContentTypes::AUDIO:
 				break;
 			default:
-				if(!is_dir($path) && filesize($path) > 0){
-					//if(!is_dir($path) && filesize($path) > 0 && !$GLOBALS["we_doc"]->isBinary()){
+				if(!is_dir($path) && filesize($path)){
 					$data = we_base_file::load($path);
 				}
 		}
