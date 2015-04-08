@@ -1766,14 +1766,36 @@ weSearch.g_l = {
 	function makeAdditionalContentMedia($result){
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
 
-		if(isset($usedMediaLinks['mediaID_' . $result["docID"]]) && $usedMediaLinks['mediaID_' . $result["docID"]]){
+		if(isset($usedMediaLinks['mediaID_' . $result['docID']]) && $usedMediaLinks['mediaID_' . $result['docID']]){
 			$out = '<table style="font-weight:normal"><tr><td>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</td></tr>';// FIXME: G_L()
-			foreach($usedMediaLinks['mediaID_' . $result["docID"]] as $type => $links){
+			foreach($usedMediaLinks['mediaID_' . $result['docID']] as $type => $links){
 				$out .= '<tr><td><em>' . g_l('global', '[' . $type . ']') . ':</em></td></tr>';
 				foreach($links as $link){
+					$color = 'black';
+					$makeLink = true;
+					switch($link['referencedIn']){
+						case 'temp':
+						case 'both':
+							if($link['isUnpublished']){
+								$color = 'red';
+							} else {
+								$color = '#3366cc';
+							}
+							break;
+						case 'main':
+							if($link['isModified']){
+								$color = 'gray';
+								$makeLink = false;
+							} else if($link['isUnpublished']){
+								$color = 'red';
+							}
+					}
 					$out .= '<tr><td style="padding-left:12px;">' .
-							we_html_button::create_button("image:edit_edit", "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) .
-							'<a href="javascript:weSearch.openToEdit(\'' . $link['table'] . '\',\'' . $link["id"] . '\',\'\')" title="' . $link['path'] . '"><u>' . $link['path'] . '</u></a></td></tr>';
+							($makeLink ? we_html_button::create_button('image:edit_edit', "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) .
+							'<a href="javascript:weSearch.openToEdit(\'' . $link['table'] . '\',\'' . $link["id"] . '\',\'\')" title="' . $link['path'] . '"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a>' : 
+							we_html_button::create_button('image:edit_edit', '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . // FIXME: G_L()
+							'<span style="color:' . $color . ';">' . $link['path'] . '</span>') .
+							'</td></tr>';
 				}
 			}
 			$out .= '</table>';
@@ -2089,21 +2111,21 @@ weSearch.g_l = {
 			}
 //FIXME: $whichSearch is uninitialized
 			$out .= '<tr id="filterRow_' . $i . '">
-     <td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
+	<td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
 				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, $whichSearch), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
 				'</td>
-     <td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
-     <td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
-     <td id="td_delButton[' . $i . ']">' . $button . '</td>
-    </tr>';
+	<td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
+	<td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>
+	<td id="td_delButton[' . $i . ']">' . $button . '</td>
+	</tr>';
 		}
 
 		$out .= '</tbody></table>' .
 			'<table>
 <tr>
- <td>' . we_html_button::create_button("add", "javascript:weSearch.newinputAdvSearch();") . '</td>
- <td>' . we_html_tools::getPixel(10, 10) . '</td>
- <td colspan="7" align="right"></td>
+<td>' . we_html_button::create_button("add", "javascript:weSearch.newinputAdvSearch();") . '</td>
+<td>' . we_html_tools::getPixel(10, 10) . '</td>
+<td colspan="7" align="right"></td>
 </tr>
 </table></div>' .
 			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
@@ -2347,8 +2369,8 @@ weSearch.g_l = {
 </colgroup>'
 			) .
 			'<tr style="height:20px;">
-     <td style="">&nbsp;</td>
-     <td style="">&nbsp;</td>';
+	<td style="">&nbsp;</td>
+	<td style="">&nbsp;</td>';
 
 		for($f = 0; $f < $anz; $f++){
 			$out .= '<td  class="' . $class . '">' . $headline[$f]["dat"] . '</td>';
@@ -2539,7 +2561,7 @@ weSearch.g_l = {
 </tr></table>';
 	}
 
-		private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){t_e("content", $content);
+		private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
 		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '">
 <tr>
 	<td width="100%" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .

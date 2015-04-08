@@ -615,10 +615,8 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
-		$this->parseTextareaFields();
 		// First off correct corupted fields
 		$this->correctFields();
-		$this->registerFileLinks();
 
 //FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
 		// Bug Fix #6615
@@ -627,6 +625,11 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
+		if($out){
+			$this->parseTextareaFields();
+			$this->registerFileLinks(true);
+		}
+		
 		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
 			$this->setLanguageLink($docID, 'tblFile', false, false); // response deactivated
 		} else {
@@ -650,10 +653,18 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_category = $this->Category;
-		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
+		$out = parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
+		if($out){
+			//$this->parseTextareaFields();
+			$this->registerFileLinks(false, true);
+		}
+
+		return $out;
 	}
 
 	public function we_unpublish($skipHook = 0){
+		$this->unregisterFileLinks(true);
+
 		return ($this->ID ? parent::we_unpublish($skipHook) : false);
 	}
 

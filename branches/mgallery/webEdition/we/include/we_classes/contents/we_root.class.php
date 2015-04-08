@@ -1222,7 +1222,7 @@ abstract class we_root extends we_class{
 
 	}
 
-	function registerFileLinks(){
+	function registerFileLinks($setIsTemp = false, $notDelete = false){
 		foreach($this->elements as $v){
 			switch(isset($v['type']) ? $v['type'] : ''){
 				case 'audio':
@@ -1245,13 +1245,18 @@ abstract class we_root extends we_class{
 							$this->FileLinks[] = $link['img_id'];
 						}
 					}
+					break;
 				default:
 				//
 			}
 		}
 
-		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND type="media"');
+		if(!$notDelete){
+			$delTempOnly = !intval($this->Published) ? false : $setIsTemp;// unpublished docs 
+			$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" ' . ($delTempOnly ? 'AND isTemp=1' : '') . ' AND type="media"');
+		}
 
+		// verify the existence of the media file
 		if(!empty($this->FileLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
@@ -1270,10 +1275,21 @@ abstract class we_root extends we_class{
 						'remObj' => $remObj,
 						'remTable' => stripTblPrefix(FILE_TABLE),
 						'position' => 0,
+						'isTemp' => ($setIsTemp ? 1 : 0),
 				)));
 			}
 		}
 		//FIXME: we should return $ret
+	}
+
+	function unregisterFileLinks($unpublish = false){
+		if($unpublish){
+			if($this->Published && ($this->ModDate > $this->Published)){
+				$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND isTemp=0 AND type="media"');
+			}
+		} else {
+			$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND type="media"');
+		}
 	}
 
 	public function we_republish(){

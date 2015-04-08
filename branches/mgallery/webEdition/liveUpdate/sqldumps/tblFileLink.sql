@@ -5,6 +5,7 @@ CREATE TABLE ###TBLPREFIX###tblFileLink (
 	remObj int unsigned NOT NULL default '0',
 	remTable enum('tblFile','tblObjectFiles','tblVFile') NOT NULL default 'tblFile',
 	`position` int unsigned NOT NULL default '0',
-	PRIMARY KEY  (ID,DocumentTable,remObj,`position`),
+	`isTemp` tinyint(1) unsigned NOT NULL default '0',
+	PRIMARY KEY (ID,DocumentTable,remObj,`position`,isTemp),
 	KEY remObj (remTable,remObj)
 ) ENGINE=MyISAM;

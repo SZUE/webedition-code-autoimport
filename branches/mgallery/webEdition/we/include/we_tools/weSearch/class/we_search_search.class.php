@@ -714,9 +714,9 @@ class we_search_search extends we_search_base{
 	function searchMediaLinks($useState = 0, $holdAllLinks = true, $inIDs = ''){
 		$db = new DB_WE();
 		$useState = intval($useState);
-		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLInks = $groups = $paths = array();
+		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLinks = $groups = $paths = array();
 
-		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj' : 'DISTINCT remObj';
+		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj,isTemp' : 'DISTINCT remObj';
 		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type="media" AND remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND position=0');
 
 		if($holdAllLinks){
@@ -730,17 +730,40 @@ class we_search_search extends we_search_base{
 
 			while($db->next_record()){
 				$rec = $db->getRecord();
-				$tmpMediaLInks[$rec['remObj']][] = array($rec['ID'],$rec['DocumentTable']);
+				$tmpMediaLinks[$rec['remObj']][] = array($rec['ID'],$rec['DocumentTable'],$rec['isTemp']);
 				$groups[$rec['DocumentTable']][] = $rec['ID'];
 				$this->usedMedia[] = $rec['remObj'];
 			}
+
+			// get some more information about referencing objects
+			$paths = $isModified = $isUnpublished = array();
 			foreach($groups as $k => $v){
-				$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
+				if(addTblPrefix($k) === CATEGORY_TABLE){
+					$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
+				} else {
+					$db->query('SELECT ID,Path,ModDate,Published FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
+					while($db->next_record()){
+						$paths[$k][$db->f('ID')] = $db->f('Path');
+						$isModified[$k][$db->f('ID')] = $db->f('Published') > 0 && $db->f('ModDate') > $db->f('Published');
+						$isUnpublished[$k][$db->f('ID')] = $db->f('Published') == 0;
+					}
+				}
 			}
 
-			foreach($tmpMediaLInks as $m_id => $v){
+			foreach($tmpMediaLinks as $m_id => $v){
 				foreach($v as $val){
-					$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][] = array('id' => $val[0], 'table' => addTblPrefix($val[1]), 'path' => $paths[$val[1]][$val[0]]);
+					if(!isset($this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
+						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
+							'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
+							'id' => $val[0],
+							'table' => addTblPrefix($val[1]),
+							'path' => $paths[$val[1]][$val[0]],
+							'isModified' => addTblPrefix($val[1]) === CATEGORY_TABLE ? false : $isModified[$val[1]][$val[0]],
+							'isUnpublished' => addTblPrefix($val[1]) === CATEGORY_TABLE ? false : $isUnpublished[$val[1]][$val[0]]
+						);
+					} else {
+						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]]['referencedIn'] = 'both';
+					}
 				}
 			}
 		} else {

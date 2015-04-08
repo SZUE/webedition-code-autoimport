@@ -85,10 +85,26 @@ abstract class we_rebuild_base{
 				switch($data['cn']){
 					case 'we_category':
 						$cat = new we_category(intval($data['id']));
+						if($printIt){
+							echo ('Rebulding Media-Links for: ' . $cat->Text);
+							flush();
+						}
 						$cat->saveMediaLinks();
 						break;
 					case 'we_temporaryDocument':
-						//
+						$content = unserialize(we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']));
+						$doc = $data['tbl'] === 'tblFile' ? new we_webEditionDocument() : new we_objectFile;
+						$doc->elements = $content[0]['elements'];
+						$doc->Table = $data['tbl'] === 'tblFile' ? FILE_TABLE : OBJECT_FILES_TABLE;
+						$doc->ID = $data['id'];
+
+						if($printIt){
+							echo ('Rebulding Media-Links for: ' . $doc->Path);
+							flush();
+						}
+						//$doc->$this->parseTextareaFields();
+						$doc->registerFileLinks(true, true);
+						unset($doc);
 						break;
 					case 'we_template':
 						//
@@ -103,7 +119,8 @@ abstract class we_rebuild_base{
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
 							flush();
 						}
-						$doc->registerFileLinks();
+						//$doc->$this->parseTextareaFields();
+						$doc->registerFileLinks(false, true);
 						unset($doc);
 				}
 				if($printIt){
@@ -295,36 +312,43 @@ abstract class we_rebuild_base{
 		$data = array();
 		//FIXME: add classes and templates
 
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE (ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" OR ContentType="' . we_base_ContentTypes::IMAGE . '") AND IsFolder = 0 ORDER BY ID');
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,ModDate,Published FROM ' . FILE_TABLE . ' WHERE (ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" OR ContentType="' . we_base_ContentTypes::IMAGE . '") AND IsFolder = 0 ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
-				'type' => 'medialink',
-				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-				'mt' => 1,
-				'tt' => 0,
-				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
+			// beware of a very special case: when a document is unpublished && mofified we must not have any main-table entries!
+			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
+				$data[] = array(
+					'id' => $GLOBALS['DB_WE']->f('ID'),
+					'type' => 'medialink',
+					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+					'mt' => 1,
+					'tt' => 0,
+					'path' => $GLOBALS['DB_WE']->f('Path'),
+					'it' => 0);
+			}
 		}
 
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder = 0 ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
-				'type' => 'medialink',
-				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
-				'mt' => 1,
-				'tt' => 0,
-				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
+			// beware of a very special case: when an object is unpublished && mofified we must not have any main-table entries!
+			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
+				$data[] = array(
+					'id' => $GLOBALS['DB_WE']->f('ID'),
+					'type' => 'medialink',
+					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
+					'mt' => 1,
+					'tt' => 0,
+					'path' => $GLOBALS['DB_WE']->f('Path'),
+					'it' => 0);
+			}
 		}
 
-		$GLOBALS['DB_WE']->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' ORDER BY DocumentID');
+		$GLOBALS['DB_WE']->query('SELECT DocumentID,DocTable FROM ' . TEMPORARY_DOC_TABLE . ' ORDER BY DocumentID');
 		while($GLOBALS['DB_WE']->next_record()){
 			$data[] = array(
 				'id' => $GLOBALS['DB_WE']->f('DocumentID'),
 				'type' => 'medialink',
 				'cn' => 'we_temporaryDocument',
+				'tbl' => $GLOBALS['DB_WE']->f('DocTable'),
 				'mt' => 0,
 				'tt' => 1,
 				'path' => '',
