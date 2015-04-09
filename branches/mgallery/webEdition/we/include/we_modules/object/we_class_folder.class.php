@@ -497,12 +497,7 @@ class we_class_folder extends we_folder{
 							break;
 						case 'href':
 							$text = $this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']);
-							$hrefArr = $text ? unserialize($text) : array();
-							if(!is_array($hrefArr)){
-								$hrefArr = array();
-							}
-							//FIXME: this is not php compliant getHrefByArray is a dynamic method - and must be
-							$content[$f][$i + 5]['dat'] = we_document::getHrefByArray($hrefArr);
+							$content[$f][$i + 5]['dat'] = we_document::getHrefByArray(we_unserialize($text));
 							//$text = $DefaultValues[$type[$i+3]."_".$head[$i+3]['dat']]["meta"][$this->searchclass->f($type[$i+3]."_".$head[$i+3]['dat'])];
 							//$content[$f][$i+3]['dat'] = "TEST";
 							break;
@@ -541,7 +536,7 @@ class we_class_folder extends we_folder{
 
 
 			if(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && (substr($this->searchclass->objsearchField[$i], 0, 4) === "meta" || substr($this->searchclass->objsearchField[$i], 0, 8) === "checkbox")){
-				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
+				$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 
 				$values = (substr($this->searchclass->objsearchField[$i], 0, 4) === "meta" ?
 						$DefaultValues[$this->searchclass->objsearchField[$i]]["meta"] :
@@ -565,7 +560,7 @@ class we_class_folder extends we_folder{
 	<td align="right">' . $button . '</td>
 </tr>';
 			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i], 0, 4) === "date"){
-				$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'DefaultValues', $this->DB_WE));
+				$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'DefaultValues', $this->DB_WE));
 
 				$month = array('' => '');
 				for($j = 1; $j <= 12; $j++){
@@ -997,7 +992,7 @@ for ( frameId in _usedEditors ) {
 
 	function copyCharsetfromClass(){
 		$this->setClassProp();
-		$fooo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
+		$fooo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
 		$Charset = (isset($fooo["elements"]["Charset"]['dat']) ? $fooo["elements"]["Charset"]['dat'] : DEFAULT_CHARSET );
 
 		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));

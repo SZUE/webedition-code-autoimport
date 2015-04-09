@@ -1094,7 +1094,7 @@ function submitForm() {
 					)
 				);
 			} else {
-				$this->Model->Sort = array();
+				$this->Model->Sort = '';
 			}
 		}
 

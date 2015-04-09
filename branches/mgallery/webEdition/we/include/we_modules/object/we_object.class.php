@@ -1290,10 +1290,7 @@ class we_object extends we_document{
 		$type = $this->getElement($n . "hreftype");
 
 		$n .= 'default';
-		$hrefArr = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
-		if(!is_array($hrefArr)){
-			$hrefArr = array();
-		}
+		$hrefArr = we_unserialize($this->getElement($n));
 
 		$nint = $n . we_base_link::MAGIC_INT_LINK;
 		$nintID = $n . we_base_link::MAGIC_INT_LINK_ID;
@@ -1333,12 +1330,8 @@ class we_object extends we_document{
 			'name' => $n
 		);
 		$elem = $this->getElement($n);
-		$link = $elem ? (is_array($elem) ? $elem : unserialize($elem)) : array();
-		if(!is_array($link)){
-			$link = array();
-		}
-
-		$link = $link ? : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
+		$link = ($elem ? (is_array($elem) ? $elem : we_unserialize($elem)) : array())? :
+			array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
 
 		$img = new we_imageDocument();
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
@@ -1527,7 +1520,7 @@ class we_object extends we_document{
 
 	function formUsers($canChange = true){
 		$users = makeArrayFromCSV($this->Users);
-		$usersReadOnly = $this->UsersReadOnly ? unserialize($this->UsersReadOnly) : array();
+		$usersReadOnly = we_unserialize($this->UsersReadOnly);
 
 		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
@@ -2021,8 +2014,8 @@ class we_object extends we_document{
 
 			$this->DefaultValues = $rec["DefaultValues"];
 
-			$vals = unserialize($this->DefaultValues);
-			$names = (is_array($vals) ? array_keys($vals) : array());
+			$vals = we_unserialize($this->DefaultValues);
+			$names = array_keys($vals);
 
 			foreach($names as $name){
 				if($name === 'WE_CSS_FOR_CLASS'){
@@ -2042,7 +2035,7 @@ class we_object extends we_document{
 
 			$this->DefaultCategory = $rec["DefaultCategory"];
 			$this->Category = $this->DefaultCategory;
-			$this->SerializedArray = unserialize($rec["DefaultValues"]);
+			$this->SerializedArray = we_unserialize($rec["DefaultValues"]);
 
 			//	charset must be in other namespace -> for header !!!
 			$this->setElement("Charset", (isset($this->SerializedArray["elements"]["Charset"]["dat"]) ? $this->SerializedArray["elements"]["Charset"]["dat"] : ""));
@@ -2341,12 +2334,10 @@ class we_object extends we_document{
 	 */
 	function getAllVariantFields(){
 		$return = array();
-		$fields = unserialize($this->DefaultValues);
-		if(is_array($fields)){
-			foreach($fields as $name => $field){
-				if($this->isVariantField($name)){
-					$return[$name] = $field;
-				}
+		$fields = we_unserialize($this->DefaultValues);
+		foreach($fields as $name => $field){
+			if($this->isVariantField($name)){
+				$return[$name] = $field;
 			}
 		}
 		return $return;
@@ -2388,7 +2379,7 @@ class we_object extends we_document{
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
-		$ownersReadOnly = $this->UsersReadOnly ? unserialize($this->UsersReadOnly) : array();
+		$ownersReadOnly = we_unserialize($this->UsersReadOnly);
 		$readers = array();
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1){

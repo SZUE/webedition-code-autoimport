@@ -771,7 +771,7 @@ we_templateInit();?>';
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		$this->_updateCompleteCode();
 		if(defined('SHOP_TABLE') && ($tmp = $this->getElement('allVariants'))){
-			$tmp = @unserialize($tmp);
+			$tmp = we_unserialize($tmp, '');
 			$this->setElement('allVariants', (is_array($tmp) ?
 					$tmp :
 					$this->readAllVariantFields($this->getElement('completeData'))

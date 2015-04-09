@@ -866,7 +866,7 @@ class we_versions_version{
 		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($id) . ' AND documentTable="' . $db->escape($table) . '" ' . $where . ' ORDER BY version ASC');
 		while($db->next_record()){
 			foreach($tblFields as $k => $v){
-				$versionArray[$v] = $db->f( $v);
+				$versionArray[$v] = $db->f($v);
 			}
 
 			$versionArr[] = $versionArray;
@@ -887,7 +887,7 @@ class we_versions_version{
 		$db->query('SELECT * FROM ' . VERSIONS_TABLE . ' ' . $where);
 		while($db->next_record()){
 			foreach($tblFields as $k => $v){
-				$versionArray[$v] = $db->f( $v);
+				$versionArray[$v] = $db->f($v);
 			}
 		}
 
@@ -1264,10 +1264,10 @@ class we_versions_version{
 								if(!$lastEntryField){
 									$lastEntryField = array();
 								} else {
-									$lastEntryField = unserialize(
+									$lastEntryField = we_unserialize(
 										(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
 											html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-											gzuncompress($lastEntryField))
+											$lastEntryField)
 									);
 								}
 								switch($val){
@@ -1607,27 +1607,27 @@ class we_versions_version{
 								break;
 							case "documentElements":
 								if($v){
-									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
+									$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
 											html_entity_decode(urldecode($v), ENT_QUOTES) :
-											gzuncompress($v))
+											$v)
 									);
 									$resetDoc->elements = $docElements;
 								}
 								break;
 							case 'documentScheduler':
 								if($v){
-									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
+									$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
 											html_entity_decode(urldecode($v), ENT_QUOTES) :
-											gzuncompress($v))
+											$v)
 									);
 									$resetDoc->schedArr = $docElements;
 								}
 								break;
 							case 'documentCustomFilter':
 								if($v){
-									$docElements = unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
+									$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
 											html_entity_decode(urldecode($v), ENT_QUOTES) :
-											gzuncompress($v))
+											$v)
 									);
 									$resetDoc->documentCustomerFilter = new we_customer_documentFilter();
 									foreach($docElements as $k => $v){
@@ -1915,7 +1915,7 @@ class we_versions_version{
 			case 'OwnersReadOnly':
 				$fieldValueText = "";
 				if($v != '' && !is_array($v)){
-					$v = unserialize($v);
+					$v = we_unserialize($v);
 				}
 				if(is_array($v) && !empty($v)){
 					foreach($v as $key => $val){
@@ -1930,7 +1930,7 @@ class we_versions_version{
 			case 'weInternVariantElement':
 				$fieldValueText = "";
 				if($v != '' && !is_array($v)){
-					$v = unserialize($v);
+					$v = we_unserialize($v);
 				}
 				if(is_array($v) && !empty($v)){
 					foreach($v as $key => $val){

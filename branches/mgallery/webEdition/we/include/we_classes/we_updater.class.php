@@ -152,7 +152,9 @@ abstract class we_updater{
 	}
 
 	private static function updateObjectFilesX(){
+	//FIXME: this takes long, so try to remove this
 		if(defined('OBJECT_X_TABLE')){
+			//this is from 6.3.9
 			$_db = new DB_WE();
 			//correct folder properties
 			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET IsClassFolder=IF(ParentID=0,1,0)');
@@ -164,7 +166,7 @@ abstract class we_updater{
 			//all files without a tableID can be deleted
 			$_db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
 
-
+//this is from WE 6.2/6.3.0
 			$_db->query('SHOW TABLES LIKE "' . str_replace('_', '', OBJECT_X_TABLE) . '\_%"'); //note: _% ignores _, so escaping _ with \_ does the job
 			$allTab = $_db->getAll(true);
 			foreach($allTab as $_table){
@@ -399,7 +401,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			return;
 		}
 		$now = microtime(true);
-		$times[] = $name . ': ' . ($now - $last);
+		$times[] = $name . ': ' . round($now - $last,3);
 		$last = $now;
 	}
 
@@ -433,6 +435,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::meassure('fixHistory');
 		self::replayUpdateDB();
 		self::meassure('replayUpdateDB');
+		self::meassure(-1);
 	}
 
 }

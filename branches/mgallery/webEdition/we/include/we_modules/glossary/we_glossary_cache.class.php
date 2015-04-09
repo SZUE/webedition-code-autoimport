@@ -124,7 +124,7 @@ class we_glossary_cache{
 			$Text = trim($DB_WE->f('Text'));
 			$Title = trim($DB_WE->f('Title'));
 			$Attributes = we_unserialize($DB_WE->f('Attributes'));
-			$Attributes = array_map('trim', $Attributes);
+			$Attributes = !is_array($Attributes) ? array() : array_map('trim', $Attributes);
 
 
 			if($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' && isset($GLOBALS['we_doc']->elements['Charset']['dat']) && $GLOBALS['we_doc']->elements['Charset']['dat'] != 'UTF-8'){

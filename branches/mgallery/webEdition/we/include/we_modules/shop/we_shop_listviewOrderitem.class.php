@@ -125,7 +125,7 @@ class we_shop_listviewOrderitem extends we_listview_base{
 							$this->DB_WE->Record[$key] = (is_array($value) ?
 									$value :
 									(substr($value, 0, 2) === 'a:' ?
-										unserialize($value) :
+										we_unserialize($value) :
 										$value));
 					}
 				}

@@ -413,10 +413,7 @@ class we_document extends we_root{
 	}
 
 	function insertEntryAtList($name, $nr, $number = 1){
-		$list = $this->getElement($name);
-
-		$listarray = $list ? unserialize($list) : array();
-		$listarray = is_array($listarray) ? $listarray : array();
+		$listarray = we_unserialize($this->getElement($name));
 
 		for($f = 0; $f < $number; $f++){
 

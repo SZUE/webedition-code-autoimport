@@ -222,7 +222,7 @@ class we_voting_voting extends weModelBase{
 
 		parent::save(false, true);
 
-		$this->Scores = ($with_scores || $oldid == 0 ? unserialize($this->Scores) : $temp);
+		$this->Scores = ($with_scores || $oldid == 0 ? we_unserialize($this->Scores) : $temp);
 
 		$this->Owners = makeArrayFromCSV($this->Owners);
 		$this->BlackList = makeArrayFromCSV($this->BlackList);
@@ -469,10 +469,7 @@ class we_voting_voting extends weModelBase{
 				$this->Revote[$_SERVER['REMOTE_ADDR']] = time();
 				$this->saveField('Revote', true);
 				if($this->UserAgent){
-					$this->RevoteUserAgent = unserialize($this->RevoteUserAgent);
-					if(!is_array($this->RevoteUserAgent)){
-						$this->RevoteUserAgent = array();
-					}
+					$this->RevoteUserAgent = we_unserialize($this->RevoteUserAgent);
 					if(!isset($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']]) || !is_array($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']])){
 						$this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']] = array();
 					}
@@ -529,20 +526,14 @@ class we_voting_voting extends weModelBase{
 
 	function canVoteIP(){
 
-		$this->Revote = unserialize($this->Revote);
-		if(!is_array($this->Revote)){
-			$this->Revote = array();
-		}
+		$this->Revote = we_unserialize($this->Revote);
 
 		$revotetime = ($this->RevoteTime < 0 ? time() + 5 : $this->RevoteTime);
 
 		if(in_array($_SERVER['REMOTE_ADDR'], array_keys($this->Revote))){
 			if(($revotetime + $this->Revote[$_SERVER['REMOTE_ADDR']]) > time()){
-				$revoteua = unserialize($this->RevoteUserAgent);
+				$revoteua = we_unserialize($this->RevoteUserAgent);
 				if($this->UserAgent){
-					if(!is_array($revoteua)){
-						return self::ERROR_REVOTE;
-					}
 					if(isset($revoteua[$_SERVER['REMOTE_ADDR']]) && is_array($revoteua[$_SERVER['REMOTE_ADDR']])){
 						if(in_array($_SERVER['HTTP_USER_AGENT'], $revoteua[$_SERVER['REMOTE_ADDR']])){
 							return self::ERROR_REVOTE;
@@ -614,10 +605,7 @@ class we_voting_voting extends weModelBase{
 		if($this->LogDB){
 			$this->logVotingDB($status, $votingsession, $answer, $answertext, $successor, $additionalfields);
 		} else {
-			$this->LogData = unserialize($this->LogData);
-			if(!is_array($this->LogData)){
-				$this->LogData = array();
-			}
+			$this->LogData = we_unserialize($this->LogData);
 			$this->LogData[] = array(
 				'time' => time(),
 				'ip' => $_SERVER['REMOTE_ADDR'],
@@ -766,30 +754,31 @@ class we_voting_voting extends weModelBase{
 	 * @since 6.1.0.2 - 019.09.2010
 	 */
 	function switchToLogDataDB(){
-		$LogData = @unserialize($this->LogData);
-		if(is_array($LogData) && !empty($LogData)){
-			foreach($LogData as $ld){
-				$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
-						'votingsession' => '',
-						'voting' => $this->ID,
-						'time' => $ld['time'],
-						'ip' => $ld['ip'],
-						'agent' => $ld['agent'],
-						'userid' => 0,
-						'cookie' => $ld['cookie'],
-						'fallback' => $ld['fallback'],
-						'answer' => '',
-						'answertext' => '',
-						'successor' => '',
-						'additionalfields' => '',
-						'status' => $ld['status'],
-				)));
-			}
-			$this->LogData = '';
-			$this->saveField('LogData', false);
-			$this->LogDB = true;
-			return true;
+		$LogData = we_unserialize($this->LogData);
+		if(!$LogData){
+			return false;
 		}
+		foreach($LogData as $ld){
+			$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
+					'votingsession' => '',
+					'voting' => $this->ID,
+					'time' => $ld['time'],
+					'ip' => $ld['ip'],
+					'agent' => $ld['agent'],
+					'userid' => 0,
+					'cookie' => $ld['cookie'],
+					'fallback' => $ld['fallback'],
+					'answer' => '',
+					'answertext' => '',
+					'successor' => '',
+					'additionalfields' => '',
+					'status' => $ld['status'],
+			)));
+		}
+		$this->LogData = '';
+		$this->saveField('LogData', false);
+		$this->LogDB = true;
+		return true;
 	}
 
 }

@@ -474,7 +474,7 @@ class we_users_user{
 		$this->permissions_slots = array();
 		$this->permissions_titles = array();
 		$this->permissions_defaults = array();
-		$permissions = unserialize($this->Permissions);
+		$permissions = we_unserialize($this->Permissions);
 
 		$entries = we_tool_lookup::getPermissionIncludes();
 
@@ -567,7 +567,7 @@ class we_users_user{
 			$this->workspaces[NEWSLETTER_TABLE] = makeArrayFromCSV($this->workSpaceNwl);
 		}
 		if(defined('CUSTOMER_TABLE')){
-			$this->workspaces[CUSTOMER_TABLE] = $this->workSpaceCust ? unserialize($this->workSpaceCust) : array();
+			$this->workspaces[CUSTOMER_TABLE] = we_unserialize($this->workSpaceCust);
 		}
 
 		if($this->workSpaceDef){

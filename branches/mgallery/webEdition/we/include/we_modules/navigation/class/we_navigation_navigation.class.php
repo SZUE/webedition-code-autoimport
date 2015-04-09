@@ -272,7 +272,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_preAttrib = $this->Attributes;
 		if(is_array($this->Attributes)){
-			$this->Attributes = serialize($this->Attributes);
+			$this->Attributes = serialize(array_filter($this->Attributes));
 		}
 
 		if(defined('CUSTOMER_TABLE') && $this->LimitAccess){
@@ -776,14 +776,14 @@ class we_navigation_navigation extends weModelBase{
 		}
 
 		if(!is_array($this->Attributes)){
-			$this->Attributes = we_unserialize($this->Attributes);
+			$this->Attributes = array_filter(we_unserialize($this->Attributes));
 		}
 		$_path = str_replace(' ', '%20', trim($_path)) .
 			($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
 
 		//leave this, because of strpos
-		$_path .= (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
-			((isset($this->Attributes['anchor']) && !empty($this->Attributes['anchor'])) ? ('#' . $this->Attributes['anchor']) : '');
+		$_path .= (($this->CurrentOnAnker && isset($this->Attributes['anchor']) && $this->Attributes['anchor']) ? ( (strpos($_path, '?') === false ? '?' : '&amp;') . 'we_anchor=' . $this->Attributes['anchor']) : '') .
+			((isset($this->Attributes['anchor']) && $this->Attributes['anchor']) ? ('#' . $this->Attributes['anchor']) : '');
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 

@@ -312,15 +312,12 @@ function zeichne(startEntry, zweigEintrag) {
 			if (deleteMode) {
 				if (nf[ai].name != -1) {
 					trg = "javascript:top.content.check(\"img_" + nf[ai].name + "\");";
-					if (nf[ai].checked) {
-						ret += '<a href="' + trg + '"><img src="' + tree_img_dir + "check1.gif\" alt=\"" + g_l.tree_select_statustext + "\" name=\"img_" + nf[ai].name + "\"></a>";
-					} else {
-						ret += "<a href=\"" + trg + "\"><img src=\"" + tree_img_dir + "check0.gif\" alt=\"" + g_l.tree_select_statustext + "\" name=\"img_" + nf[ai].name + "\"></a>";
-					}
+					ret += '<a href="' + trg + '"><img src="' + tree_img_dir + (nf[ai].checked ? "check1.gif" : "check0.gif") + '" alt="' + g_l.tree_select_statustext + '" name="img_' + nf[ai].name + '"></a>';
+
 				}
 			} else {
-				ret += "<a name=\"_" + nf[ai].name + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ");return true;\" BORDER=0>" +
-								"<IMG SRC=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">" +
+				ret += '<a name="_' + nf[ai].name + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ");return true;\" BORDER=0>" +
+								"<img src=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">" +
 								"</a>";
 				trg = "doClick(" + nf[ai].name + ");return true;";
 			}

@@ -171,7 +171,7 @@ class we_search_model extends we_tool_model{
 		$array = get_object_vars($this);
 		foreach($array as $key => $cur){
 			if(is_string($cur) && substr($cur, 0, 2) === 'a:'){
-				$this->{$key} = unserialize($cur);
+				$this->{$key} = we_unserialize($cur);
 			}
 		}
 	}

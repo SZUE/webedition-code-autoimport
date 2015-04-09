@@ -569,7 +569,7 @@ class we_backup_backup extends we_backup_base{
 	}
 
 	function saveState($of = ""){
-//FIXME: use __sleep/__wakeup + serialize/unserialize
+//FIXME: use __sleep/__wakeup
 		$save = $this->_saveState() . '
 $this->file_list=' . var_export($this->file_list, true) . ';';
 

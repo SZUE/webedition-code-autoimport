@@ -1037,7 +1037,7 @@ abstract class we_backup_base{
 	}
 
 	protected function _saveState(){
-		//FIXME: use __sleep/__wakeup + serialize/unserialize
+		//FIXME: use __sleep/__wakeup
 		//		// Initialize variable
 		return '
 $this->errors=' . var_export($this->errors, true) . ';
@@ -1068,7 +1068,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 * Description:
 	 */
 	function restoreState($temp_filename){
-		//FIXME: use __sleep/__wakeup + serialize/unserialize
+		//FIXME: use __sleep/__wakeup
 		if(file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename)){
 			include($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename);
 			return $temp_filename;

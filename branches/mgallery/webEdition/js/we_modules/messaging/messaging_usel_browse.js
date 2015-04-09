@@ -105,7 +105,7 @@ function zeichne(startEntry, zweigEintrag) {
 				fr.write("&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" class=\"treeKreuz\">");
 			}
 			if (nf[ai].name != -1) {
-				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" BORDER=\"0\">");
+				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">");
 			}
 			fr.write("<IMG SRC=\"" + tree_img_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">");
 			fr.write("</a>");

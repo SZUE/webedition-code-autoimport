@@ -1114,7 +1114,7 @@ function refreshTexts(){
 					$mess = g_l('modules_voting', '[log_success]');
 				}
 
-				$addData = unserialize($data['additionalfields']);
+				$addData = we_unserialize($data['additionalfields']);
 				$addDataString = "";
 				if(is_array($addData) && !empty($addData)){
 					foreach($addData as $key => $value){

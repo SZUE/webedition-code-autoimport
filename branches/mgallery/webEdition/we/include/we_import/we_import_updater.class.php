@@ -320,7 +320,7 @@ class we_import_updater extends we_exim_XMLExIm{
 					debug2($ev);
 				}
 				if(isset($ev["dat"])){
-					$dat = @unserialize($ev["dat"]);
+					$dat = we_unserialize($ev["dat"], '');
 					if(is_array($dat)){
 						$this->updateArray($dat);
 						$object->elements[$ek]["dat"] = serialize($dat);

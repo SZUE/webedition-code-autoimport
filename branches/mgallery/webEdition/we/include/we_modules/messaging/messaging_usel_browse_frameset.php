@@ -63,7 +63,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 		fr.write("<body class=\"weEditorBody\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=\"10\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"10\" onunload=\"doUnload()\">");
 		fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
 		zeichne(top.startloc, "");
-		fr.write("</NOBR>\n</td></tr></table>\n");
+		fr.write("</nobr>\n</td></tr></table>\n");
 		fr.writeln("  <script type=\"text/javascript\">");
 		fr.writeln("    var k;");
 
