@@ -570,9 +570,13 @@ class we_wysiwyg_editor{
 		return $editValue;
 	}
 
+	/*
+	 * this function is used to prepare textaea content for db
+	 * is returns an array of img/href-ids (for use in registerFileLinks)
+	 */
+
 	public static function reparseInternalLinks(&$content, $replace = false){
 		$regs = $internalIDs = array();
-
 		if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$content = $replace ? str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $content) : $content;

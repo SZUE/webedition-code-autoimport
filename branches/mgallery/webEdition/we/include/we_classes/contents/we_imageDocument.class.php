@@ -62,14 +62,13 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param boolean $resave
 	 */
 	public function we_save($resave = 0){
-		$this->registerFileLinks();
-
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
 		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		if(parent::we_save($resave)){
+			$this->registerFileLinks();
 			$thumbs = $this->getThumbs();
 			if($docChanged){
 				we_thumbnail::deleteByImageID($this->ID);
@@ -98,7 +97,7 @@ class we_imageDocument extends we_binaryDocument{
 			$this->FileLinks[] = $this->elements['RollOverID']['dat'];
 		}
 
-		parent::registerFileLinks();
+		parent::registerFileLinks(true);
 	}
 
 	/**

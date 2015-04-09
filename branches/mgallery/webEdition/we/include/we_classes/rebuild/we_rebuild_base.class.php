@@ -91,26 +91,25 @@ abstract class we_rebuild_base{
 						}
 						$cat->saveMediaLinks();
 						break;
+					case 'we_template':
+						//
+						break;
+					case 'we_class':
+						//
+						break;
 					case 'we_temporaryDocument':
 						$content = unserialize(we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']));
 						$doc = $data['tbl'] === 'tblFile' ? new we_webEditionDocument() : new we_objectFile;
 						$doc->elements = $content[0]['elements'];
 						$doc->Table = $data['tbl'] === 'tblFile' ? FILE_TABLE : OBJECT_FILES_TABLE;
 						$doc->ID = $data['id'];
-
 						if($printIt){
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
 							flush();
 						}
-						//$doc->$this->parseTextareaFields();
-						$doc->registerFileLinks(true, true);
+						$doc->parseTextareaFields(true);
+						$doc->registerFileLinks();
 						unset($doc);
-						break;
-					case 'we_template':
-						//
-						break;
-					case 'we_class':
-						//
 						break;
 					default:
 						$doc = new $data['cn'];
@@ -119,8 +118,8 @@ abstract class we_rebuild_base{
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
 							flush();
 						}
-						//$doc->$this->parseTextareaFields();
-						$doc->registerFileLinks(false, true);
+						$doc->parseTextareaFields(true);
+						$doc->registerFileLinks(true);
 						unset($doc);
 				}
 				if($printIt){
@@ -307,7 +306,9 @@ abstract class we_rebuild_base{
 	}
 	
 	public static function getMediaLinks(){
-		
+		// delete all media links
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE type="media"');
+
 		//FIXME: add permission
 		$data = array();
 		//FIXME: add classes and templates

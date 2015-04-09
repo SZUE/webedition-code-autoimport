@@ -602,8 +602,25 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 		}
 	}
+	
+	/*
+	 * this function is used to replace to prepare wysiwyg img sources for db
+	 * it also writes img sources and hrefs to $this->FileLinks
+	 * 
+	 * when $isRebuildMediaLinks it only writes $this->FileLinks (img sources come from db and must not be vhanged)
+	 */
+	function parseTextareaFields($isRebuildMediaLinks = false){
+		if($isRebuildMediaLinks){
+			//FIXME: implement textarea as element-type for textareas!
+			$allElements = array();
+			foreach($this->elements as $name => $elem){
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="document:') !== false || strpos($elem['dat'], 'src="document:') !== false)){
+					$this->FileLinks = array_merge($this->FileLinks, we_document::parseInternalLinks($elem['dat'], 0, '', true));
+				}
+			}
+			return;
+		}
 
-	function parseTextareaFields(){
 		$allElements = $this->getUsedElements();
 		if(isset($allElements['textarea'])){
 			foreach($allElements['textarea'] as $name){
@@ -627,7 +644,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$out = parent::we_save($resave, $skipHook);
 		if($out){
 			$this->parseTextareaFields();
-			$this->registerFileLinks(true);
+			$this->registerFileLinks();
 		}
 		
 		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
@@ -655,8 +672,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->temp_category = $this->Category;
 		$out = parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
 		if($out){
-			//$this->parseTextareaFields();
-			$this->registerFileLinks(false, true);
+			$this->registerFileLinks(true);// FIXME: test $this->registerFileLinks(true, true);
 		}
 
 		return $out;

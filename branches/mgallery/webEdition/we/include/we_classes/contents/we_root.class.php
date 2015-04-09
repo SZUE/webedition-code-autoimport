@@ -1218,73 +1218,92 @@ abstract class we_root extends we_class{
 
 	}
 
-	function parseWysiwygFields(){
+	function parseTextareaFields(){
 
 	}
 
-	function registerFileLinks($setIsTemp = false, $notDelete = false){
-		foreach($this->elements as $v){
-			switch(isset($v['type']) ? $v['type'] : ''){
-				case 'audio':
-				case 'binary':
-				case 'flashmovie':
-				case 'href':
-				case 'img':
-				case 'quicktime':
-				case 'video':
-					if(isset($v['bdid']) && $v['bdid']){
-						$this->FileLinks[] = $v['bdid'];
-					}
-					break;
-				case 'link':
-					if(isset($v['dat']) && ($link = unserialize($v['dat']))){
-						if($link['type'] === 'int' && $link['id']){
-							$this->FileLinks[] = $link['id'];
+	function registerFileLinks($publish = false, $filelinksReady = false){
+		if(!$filelinksReady){
+			foreach($this->elements as $k => $v){
+				switch(isset($v['type']) ? $v['type'] : ''){
+					case 'audio':
+					case 'binary':
+					case 'flashmovie':
+					case 'href':
+					case 'img':
+					case 'quicktime':
+					case 'video':
+						if(isset($v['bdid']) && $v['bdid']){
+							$this->FileLinks[] = $v['bdid'];
 						}
-						if($link['img_id']){
-							$this->FileLinks[] = $link['img_id'];
+						break;
+					case 'link':
+						if(isset($v['dat']) && ($link = unserialize($v['dat']))){
+							if($link['type'] === 'int' && $link['id']){
+								$this->FileLinks[] = $link['id'];
+							}
+							if($link['img_id']){
+								$this->FileLinks[] = $link['img_id'];
+							}
 						}
+						break;
+					default:
+						if(isset($v['bdid']) && $v['bdid']){
+							$this->FileLinks[] = $v['bdid'];
+						}
+				}
+
+				// workaround for missing type='link'
+				// => FIXME: to throw this out fix type='link' for we:link 
+				if(isset($v['type']) && (!$v['type'] || $v['type'] === 'txt') && ($dat = @unserialize($v['dat'])) !== false && isset($dat['href'])){
+					if(isset($dat['type']) && $dat['type'] === 'int' && $dat['id']){
+						$this->FileLinks[] = $dat['id'];
 					}
-					break;
-				default:
-				//
+					if($dat['img_id']){
+						$this->FileLinks[] = $dat['img_id'];
+					}
+				}
+			}
+
+			// filter FileLinks by media contenttype
+			if(!empty($this->FileLinks)){
+				$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+				$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
+				$this->FileLinks = array();
+				while($this->DB_WE->next_record()){
+					$this->FileLinks[] = $this->DB_WE->f('ID');
+				}
 			}
 		}
 
-		if(!$notDelete){
-			$delTempOnly = !intval($this->Published) ? false : $setIsTemp;// unpublished docs 
-			$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" ' . ($delTempOnly ? 'AND isTemp=1' : '') . ' AND type="media"');
+		$isTemp = 0;
+		$where = '';
+		if(!$publish){
+			$isTemp = 1;
+			$where = 'AND isTemp=1';
 		}
 
-		// verify the existence of the media file
-		if(!empty($this->FileLinks)){
-			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
-			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
-			$this->FileLinks = array();
-			while($this->DB_WE->next_record()){
-				$this->FileLinks[] = $this->DB_WE->f('ID');
-			}
-		}
-
+		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" ' . $where . ' AND type="media"');
 		if(!empty($this->FileLinks)){
 			foreach(array_unique($this->FileLinks) as $remObj){
-				$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'ID' => $this->ID,
 						'DocumentTable' => stripTblPrefix($this->Table),
 						'type' => 'media', // FIXME: change to "media"
 						'remObj' => $remObj,
 						'remTable' => stripTblPrefix(FILE_TABLE),
 						'position' => 0,
-						'isTemp' => ($setIsTemp ? 1 : 0),
+						'isTemp' => $isTemp
 				)));
 			}
 		}
+
 		//FIXME: we should return $ret
 	}
 
 	function unregisterFileLinks($unpublish = false){
 		if($unpublish){
-			if($this->Published && ($this->ModDate > $this->Published)){
+			if($this->Published && ($this->ModDate > $this->Published)){// document was modified before unpublishing: the actual version is in tblTemporaryDoc
 				$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND isTemp=0 AND type="media"');
 			}
 		} else {
