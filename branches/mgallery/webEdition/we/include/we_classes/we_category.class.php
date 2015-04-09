@@ -108,24 +108,23 @@ class we_category extends weModelBase{
 		return ' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
 	}
 
-	public function saveMediaLinks($isRebuild = false){
-		$fileLinks = $isRebuild ? we_wysiwyg_editor::reparseInternalLinks($this->Description, true) : 
-			we_document::parseInternalLinks($this->Description, 0, '', true);
-
-		$ret = $this->db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(CATEGORY_TABLE) . '" AND type="media"');
+	public static function saveMediaLinks($catID, $description){
+		$fileLinks = we_wysiwyg_editor::reparseInternalLinks($description);
+		$db = new DB_WE();
+		$ret = $db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($catID) . ' AND DocumentTable="' . stripTblPrefix(CATEGORY_TABLE) . '" AND type="media"');
 		if(!empty($fileLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
-			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($fileLinks)) . ') ' . $whereType);
+			$db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($fileLinks)) . ') ' . $whereType);
 			$fileLinks = array();
-			while($this->db->next_record()){
-				$fileLinks[] = $this->db->f('ID');
+			while($db->next_record()){
+				$fileLinks[] = $db->f('ID');
 			}
 		}
 
 		if(!empty($fileLinks)){
 			foreach(array_unique($fileLinks) as $remObj){
-				$ret &= $this->db->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ID' => $this->ID,
+				$ret &= $db->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'ID' => $catID,
 						'DocumentTable' => stripTblPrefix(CATEGORY_TABLE),
 						'type' => 'media',
 						'remObj' => $remObj,
@@ -134,6 +133,8 @@ class we_category extends weModelBase{
 				)));
 			}
 		}
+
+		return $ret;
 	}
 
 	static function we_getCatsFromDoc($doc, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = ''){

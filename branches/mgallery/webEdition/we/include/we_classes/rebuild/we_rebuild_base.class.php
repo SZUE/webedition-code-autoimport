@@ -89,7 +89,7 @@ abstract class we_rebuild_base{
 							echo ('Rebulding Media-Links for: ' . $cat->Text);
 							flush();
 						}
-						$cat->saveMediaLinks(true);
+						we_category::saveMediaLinks($cat->ID, $cat->Description);
 						break;
 					case 'we_template':
 						//
