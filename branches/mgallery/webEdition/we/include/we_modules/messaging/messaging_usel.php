@@ -240,7 +240,7 @@ if($maxsel){
 		return;
 				}\n";
 } else {
-	echo "var len=sel_elems.length\n";
+	echo "var len=sel_elems.length;";
 }
 ?>
 
@@ -273,7 +273,7 @@ if($maxsel){
 </script>
 <?php echo STYLESHEET; ?>
 </head>
-<body class="weDialogBody" onload="doOnLoad()" onunload="doUnload();">
+<body class="weDialogBody" onload="doOnLoad();init();" onunload="doUnload();">
 	<form name="usel">
 		<?php
 		$tbl = '  <table cellspacing="6">
@@ -315,6 +315,6 @@ if($maxsel){
 		we_html_tools::hidden('we_transaction', $transaction) .
 		we_html_tools::hidden('addrbook_arr', '');
 		?>
-	</form><?php echo we_html_element::jsElement('init();'); ?>
+	</form>
 </body>
 </html>
