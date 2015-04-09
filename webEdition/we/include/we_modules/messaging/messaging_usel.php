@@ -163,7 +163,7 @@ if($maxsel){
 	  return;
 	  }\n"; */
 } else {
-	echo "var len=delta_sel.length";
+	echo "var len=delta_sel.length;";
 }
 ?>
 			var len = delta_sel.length;
@@ -237,7 +237,7 @@ if($maxsel){
 		return;
 				}\n";
 } else {
-	echo "var len=sel_elems.length\n";
+	echo "var len=sel_elems.length;";
 }
 ?>
 
