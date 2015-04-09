@@ -25,7 +25,9 @@ function doClick(id, ct) {
 	if (ct == 1) {
 		if (wasdblclick) {
 			setDir(id);
-			setTimeout("wasdblclick=0;", 400);
+			setTimeout(function () {
+				wasdblclick = false;
+			}, 400);
 		}
 	} else {
 		e = top.getEntry(id);
@@ -39,6 +41,6 @@ function doClick(id, ct) {
 	}
 }
 
-function setDir(id){
-	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR,id));
+function setDir(id) {
+	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
 }

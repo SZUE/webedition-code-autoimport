@@ -33,7 +33,7 @@ Array.prototype.contains = function (obj) {
 		}
 	}
 	return listed;
-}
+};
 
 function checkAllRevert() {
 	var checkbox = document.getElementById("version_all");
@@ -77,7 +77,7 @@ function handle_message_reporting_click() {
 }
 
 function set_state_error_handler() {
-	if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked == true) {
+	if (document.getElementsByName('newconf[WE_ERROR_HANDLER]')[0].checked === true) {
 		_new_state = false;
 		_new_style = 'black';
 		_new_cursor = document.all ? 'hand' : 'pointer';
@@ -111,7 +111,7 @@ function set_state_error_handler() {
 }
 
 function set_state_auth() {
-	if (document.getElementsByName('useauthEnabler')[0].checked == true) {
+	if (document.getElementsByName('useauthEnabler')[0].checked === true) {
 		document.getElementsByName('newconf[useauth]')[0].value = 1;
 		_new_state = false;
 	} else {
@@ -124,8 +124,8 @@ function set_state_auth() {
 }
 
 function IsDigit(e) {
-	var key = (e != null && e.charCode ? e.charCode : event.keyCode);
-	return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
+	var key = (e !== null && e.charCode ? e.charCode : event.keyCode);
+	return (((key >= 48) && (key <= 57)) || (key === 0) || (key === 13));
 }
 
 function setJavaEditorDisabled(disabled) {
@@ -163,7 +163,7 @@ function displayEditorOptions(editor) {
 	}
 
 	tmp = document.getElementsByClassName("editor_" + editor);
-	for (var k = 0; k < tmp.length; k++) {
+	for (k = 0; k < tmp.length; k++) {
 		tmp[k].style.display = "block";
 	}
 }
@@ -184,7 +184,7 @@ function resetLocales() {
 }
 
 function initLocale(Locale) {
-	if (Locale != "") {
+	if (Locale !== "") {
 		setDefaultLocale(Locale);
 	}
 	resetLocales();
@@ -216,7 +216,7 @@ function setDefaultLocale(Value) {
 function set_state_edit_delete_recipient() {
 	var p = document.forms[0].elements.we_recipient;
 	var i = p.length;
-	if (i == 0) {
+	if (i === 0) {
 		edit_enabled = switch_button_state('edit', 'edit_enabled', 'disabled');
 		delete_enabled = switch_button_state('delete', 'delete_enabled', 'disabled');
 	} else {
@@ -292,7 +292,7 @@ function formmailBlockOnOff() {
 }
 
 function set_state() {
-	if (document.getElementsByName('newconf[useproxy]')[0].checked == true) {
+	if (document.getElementsByName('newconf[useproxy]')[0].checked === true) {
 		_new_state = false;
 	} else {
 		_new_state = true;
@@ -321,12 +321,14 @@ function addLocale() {
 	if (CountryValue.substr(0, 1) === "~") {
 		CountryValue = CountryValue.substr(1);
 	}
+	var LocaleValue;
+	var LocaleText;
 	if (CountryValue !== "") {
-		var LocaleValue = LanguageValue + '_' + CountryValue;
-		var LocaleText = LanguageText + ' (' + CountryText + ')';
+		LocaleValue = LanguageValue + '_' + CountryValue;
+		LocaleText = LanguageText + ' (' + CountryText + ')';
 	} else {
-		var LocaleValue = LanguageValue;
-		var LocaleText = LanguageText;
+		LocaleValue = LanguageValue;
+		LocaleText = LanguageText;
 	}
 
 	var found = false;
@@ -409,12 +411,13 @@ function add_recipient() {
 
 function edit_recipient() {
 	var p = document.forms[0].elements.we_recipient;
+	var editRecipient;
 	if (p.selectedIndex >= 0) {
-		var editRecipient = p.options[p.selectedIndex].text;
+		editRecipient = p.options[p.selectedIndex].text;
 		editRecipient = prompt(g_l.recipient_new_name, editRecipient);
 	}
 
-	if (p.selectedIndex >= 0 && editRecipient != null) {
+	if (p.selectedIndex >= 0 && editRecipient !== null) {
 		if (editRecipient !== "") {
 			if (p.options[p.selectedIndex].text == editRecipient) {
 				return;

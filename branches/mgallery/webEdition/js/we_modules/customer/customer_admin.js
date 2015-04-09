@@ -23,7 +23,7 @@
 
 function doUnload() {
 	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
+		for (var i = 0; i < jsWindow_count; i++) {
 			eval("jsWindow" + i + "Object.close()");
 		}
 	}
@@ -44,7 +44,6 @@ function saveField() {
 }
 
 function we_cmd() {
-	var args = "";
 	var url = frameUrl + "?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -52,16 +51,17 @@ function we_cmd() {
 			url += "&";
 		}
 	}
-
+	var branch, field;
 	switch (arguments[0]) {
+
 		case "open_add_field":
-			var branch = document.we_form.branch.value;
+			branch = document.we_form.branch.value;
 			url = frameUrl + "?pnt=field_editor&art=add&branch=" + branch;
 			new jsWindow(url, "field_editor", -1, -1, 380, 250, true, false, true);
 			break;
 		case "open_edit_field":
-			var field = document.we_form.fields_select.value;
-			var branch = document.we_form.branch.value;
+			field = document.we_form.fields_select.value;
+			branch = document.we_form.branch.value;
 			if (field === "") {
 				top.we_showMessage(g_l.no_field, WE_MESSAGE_ERROR, window);
 			} else {
@@ -70,7 +70,7 @@ function we_cmd() {
 			}
 			break;
 		case "delete_field":
-			var field = document.we_form.fields_select.value;
+			field = document.we_form.fields_select.value;
 			if (field === "") {
 				top.we_showMessage(g_l.no_field, WE_MESSAGE_ERROR, window);
 			} else {
@@ -81,16 +81,16 @@ function we_cmd() {
 			}
 			break;
 		case "reset_edit_order":
-			var field = document.we_form.fields_select.value;
-			var branch = document.we_form.branch.value;
+			field = document.we_form.fields_select.value;
+			branch = document.we_form.branch.value;
 			if (confirm(g_l.reset_edit_order_question)) {
 				document.we_form.cmd.value = arguments[0];
 				submitForm();
 			}
 			break;
 		case "move_field_up":
-			var field = document.we_form.fields_select.value;
-			var branch = document.we_form.branch.value;
+			field = document.we_form.fields_select.value;
+			branch = document.we_form.branch.value;
 			if (field === "") {
 				top.we_showMessage(g_l.no_field, WE_MESSAGE_ERROR, window);
 			} else {
@@ -99,8 +99,8 @@ function we_cmd() {
 			}
 			break;
 		case "move_field_down":
-			var field = document.we_form.fields_select.value;
-			var branch = document.we_form.branch.value;
+			field = document.we_form.fields_select.value;
+			branch = document.we_form.branch.value;
 			if (field === "") {
 				top.we_showMessage(g_l.no_field, WE_MESSAGE_ERROR, window);
 			} else {
@@ -109,7 +109,7 @@ function we_cmd() {
 			}
 			break;
 		case "open_edit_branch":
-			var branch = document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
+			branch = document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
 			if (branch === "") {
 				top.we_showMessage(g_l.no_branch, WE_MESSAGE_ERROR, window);
 			} else if (branch == g_l.other) {
@@ -131,7 +131,7 @@ function we_cmd() {
 			break;
 		default:
 			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 			top.content.we_cmd.apply(this, args);

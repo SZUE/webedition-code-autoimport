@@ -28,7 +28,9 @@ function doClick(id, ct) {
 	if (ct == 1) {
 		if (wasdblclick) {
 			setDir(id);
-			setTimeout("wasdblclick=0;", 400);
+			setTimeout(function () {
+				wasdblclick = false;
+			}, 400);
 		}
 	} else if (getEntry(id).contentType != "folder" || (option.canSelectDir)) {
 		if (top.options.multiple) {
@@ -167,11 +169,11 @@ function writeBodyDocument(d) {
 									'</tr>' :
 									'');
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true"';
-		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true"';
+		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : "") + ' id="line_' + entries[i].ID + '" style="cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="selector treeIcon" align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '" /></td>' +
-						'<td class="selector filename"' + (entries[i].published == 0 && entries[i].isFolder == 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
+						'<td class="selector filename"' + (entries[i].published === 0 && entries[i].isFolder === 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
 						(we_editDirID == entries[i].ID ?
 										'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<div class="cutText">' + entries[i].text + '</div><div class="extension">' + entries[i].extension + '</div>'
@@ -232,7 +234,7 @@ function weonclick(e) {
 			}
 		}
 		if (top.options.multiple) {
-			if ((self.shiftpressed == false) && (self.ctrlpressed == false)) {
+			if (!self.shiftpressed && !self.ctrlpressed) {
 				top.unselectAllFiles();
 			}
 		} else {

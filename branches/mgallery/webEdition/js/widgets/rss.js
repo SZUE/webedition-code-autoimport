@@ -37,7 +37,7 @@ function gel(id_) {
 }
 
 function isUrl(s) {
-	var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+	var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 	return regexp.test(s);
 }
 
@@ -48,7 +48,7 @@ function handleButtonState() {
 		sImplodeArgs += '\'' + arguments[i] + '\'' + ((i < iArgsLen - 1) ? ',' : '');
 	}
 	eval('var aDisable=[' + sImplodeArgs + ']');
-	for (var i = 0; i < iArgsLen - 1; i++) {
+	for (i = 0; i < iArgsLen - 1; i++) {
 		switch_button_state(aDisable[i], aDisable[i] + '_enabled', (arguments[0]) ? 'enabled' : 'disabled');
 	}
 }
@@ -83,7 +83,7 @@ function init() {
 	toggleRssTopFeed();
 	var oChbxConf = _fo.elements.chbx_conf;
 	var iChbxConfLen = oChbxConf.length;
-	for (var i = iChbxConfLen - 1; i >= 0; i--) {
+	for (i = iChbxConfLen - 1; i >= 0; i--) {
 		oChbxConf[i].checked = (parseInt(_sInitRssCfg.charAt(i))) ? true : false;
 	}
 	var oSctConf = _fo.elements.sct_conf;
@@ -92,7 +92,7 @@ function init() {
 	_sInitTbCfg = aCsv[3];
 	var oChbxTb = _fo.elements.chbx_tb;
 	var iChbxTbLen = oChbxTb.length;
-	for (var i = iChbxTbLen - 1; i >= 0; i--) {
+	for (i = iChbxTbLen - 1; i >= 0; i--) {
 		oChbxTb[i].checked = (parseInt(aCsv[3].charAt(i))) ? true : false;
 	}
 	_iInitTbTitlePers = aCsv[4];
@@ -105,7 +105,7 @@ function onChangeSctRss(obj) {
 	var sUri = obj.options[obj.selectedIndex].value;
 	var sTitle = obj.options[obj.selectedIndex].text;
 	toggleRssTopFeed();
-	if (sUri != '') {
+	if (sUri !== '') {
 		var oIptUri = _fo.elements.ipt_uri;
 		oIptUri.value = sUri;
 		oIptUri.title = sUri;
@@ -123,7 +123,7 @@ function onDisableRdoGroup(sId) {
 function getTbPersTitle(sUri) {
 	var oRdoTitle = _fo.elements.rdo_title;
 	var sTbTitle = '';
-	if (oRdoTitle[1].checked == true) {
+	if (oRdoTitle[1].checked) {
 		var oSctRss = _fo.elements.sct_rss;
 		for (var i = 1; _iTopRssFeedsLen > i; i++) {
 			if (oSctRss.options[i].value == sUri) {
@@ -138,7 +138,7 @@ function getTbPersTitle(sUri) {
 function displayRssFeed(sUri, bOnChange) {
 	var sRssCfgBinary = getBinary('conf');
 	var sRssCfgSelIdx = _fo.elements.sct_conf.selectedIndex;
-	if (!bOnChange || (_sLastPreviewUri != '' && sUri != _sLastPreviewUri) || (_sLastPreviewUri == '' && sUri != _sInitUri) ||
+	if (!bOnChange || (_sLastPreviewUri !== '' && sUri != _sLastPreviewUri) || (_sLastPreviewUri === '' && sUri != _sInitUri) ||
 					_sInitRssCfg != sRssCfgBinary || _iInitRssCfgNumEntries != sRssCfgSelIdx) {
 		_sLastPreviewUri = sUri;
 		var sTbBinary = getBinary('tb');
@@ -149,7 +149,7 @@ function displayRssFeed(sUri, bOnChange) {
 function resetRssFeed() {
 	var iSctConfSel = _fo.elements.sct_conf.selectedIndex;
 	var iRdoTitleSel = (_fo.elements.rdo_title.checked) ? 0 : 1;
-	if ((_sLastPreviewUri != '' && _sInitUri != _sLastPreviewUri) ||
+	if ((_sLastPreviewUri !== '' && _sInitUri != _sLastPreviewUri) ||
 					(getBinary('conf') != _sInitRssCfg) ||
 					(getBinary('tb') != _sInitTbCfg) ||
 					(_iInitRssCfgNumEntries != iSctConfSel) ||
@@ -188,7 +188,7 @@ function save() {
 					',' + getBinary('tb') + ',' + ((oRdoTitle[0].checked) ? 0 : 1);
 	if (_bIsHotTopRssFeeds) {
 		var oSctRss = _fo.elements.sct_rss;
-		var aNewTopRssFeeds = new Array();
+		var aNewTopRssFeeds = [];
 		for (var i = 0; _iTopRssFeedsLen > i; i++) {
 			aNewTopRssFeeds[i] = [opener.base64_encode(oSctRss.options[i + 1].text),
 				opener.base64_encode(oSctRss.options[i + 1].value)];
@@ -231,28 +231,28 @@ function handleTopRssFeed(sAction) {
 			oIptUri.value = oSctRss.options[iSelIdx].value;
 			break;
 		case 'add':
-			if (sNewTitle != '' && sNewUri != '') {
+			if (sNewTitle !== '' && sNewUri !== '') {
 				if (oSctRss.length <= 1) {
 					var newOpt1 = new Option(sNewTitle, sNewUri);
 					oSctRss.options[1] = newOpt1;
 					oSctRss.selectedIndex = 1;
 				} else if (iSelIdx != -1) {
-					var aSctText = new Array();
-					var aSctValues = new Array();
+					var aSctText = [];
+					var aSctValues = [];
 					var iCount = -1;
 					var iNewSelected = -1;
 					for (var i = 0; i < oSctRss.length; i++) {
 						iCount++;
 						if (iCount == iSelIdx) {
-							aSctText[(iSelIdx == 0 && iCount == 0) ? 1 : iCount] = sNewTitle;
-							aSctValues[(iSelIdx == 0 && iCount == 0) ? 1 : iCount] = sNewUri;
-							iNewSelected = (iSelIdx == 0 && iCount == 0) ? 1 : iCount;
+							aSctText[(iSelIdx === 0 && iCount === 0) ? 1 : iCount] = sNewTitle;
+							aSctValues[(iSelIdx === 0 && iCount === 0) ? 1 : iCount] = sNewUri;
+							iNewSelected = (iSelIdx === 0 && iCount === 0) ? 1 : iCount;
 							iCount++;
 						}
-						aSctText[(iSelIdx == 0 && iCount == 1) ? 0 : iCount] = oSctRss.options[i].text;
-						aSctValues[(iSelIdx == 0 && iCount == 1) ? 0 : iCount] = oSctRss.options[i].value;
+						aSctText[(iSelIdx === 0 && iCount === 1) ? 0 : iCount] = oSctRss.options[i].text;
+						aSctValues[(iSelIdx === 0 && iCount === 1) ? 0 : iCount] = oSctRss.options[i].value;
 					}
-					for (var i = 0; i <= iCount; i++) {
+					for (i = 0; i <= iCount; i++) {
 						var newOpt = new Option(aSctText[i], aSctValues[i]);
 						oSctRss.options[i] = newOpt;
 						oSctRss.options[i].selected = (i == iNewSelected) ? true : false;

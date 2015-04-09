@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 var clickCount = 0;
-var wasdblclick = 0;
+var wasdblclick = false;
 var tout = null;
 var mk = null;
 var old = 0;
@@ -32,7 +32,9 @@ function doClick(id, ct, indb) {
 			top.fscmd.selectDir(id);
 			if (top.filter !== "folder" && top.filter !== "filefolder")
 				top.fscmd.selectFile("");
-			setTimeout('wasdblclick=0;', 400);
+			setTimeout(function () {
+				wasdblclick = false;
+			}, 400);
 		} else {
 			if ((top.filter === "folder" || top.filter === "filefolder") && (!indb)) {
 				top.fscmd.selectFile(id);

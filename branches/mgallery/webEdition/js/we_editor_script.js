@@ -347,7 +347,7 @@ function we_cmd() {
 			break;
 			// it must be the last command
 		case "delete_navi":
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				arguments[i] = encodeURIComponent(arguments[i]);
 			}
 			if (!confirm(g_l.confirm_navDel)) {

@@ -27,7 +27,7 @@
 
 function doUnload() {
 	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
+		for (var i = 0; i < jsWindow_count; i++) {
 			eval("jsWindow" + i + "Object.close()");
 		}
 	}
@@ -35,7 +35,6 @@ function doUnload() {
 
 
 function we_cmd() {
-	var args = "";
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -46,6 +45,7 @@ function we_cmd() {
 	if (hot == 1 && arguments[0] != "save_workflow") {
 		var hotConfirmMsg = confirm(g_l.save_changed_workflow);
 		if (hotConfirmMsg === true) {
+			//FIXME: bad assignment
 			arguments[0] = "save_workflow";
 			top.content.usetHot();
 		} else {
@@ -118,7 +118,7 @@ function we_cmd() {
 			break;
 		default:
 			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 			top.opener.top.we_cmd.apply(this, args);

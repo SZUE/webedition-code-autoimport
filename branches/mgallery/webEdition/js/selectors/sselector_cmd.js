@@ -37,12 +37,13 @@ function setFilter(filter) {
 
 
 function selectFile(fid) {
+	var i;
 	if (fid !== "/") {
 		top.currentID = top.sitepath + top.rootDir + top.currentDir + ((top.currentDir != "/") ? "/" : "") + fid;
 		top.currentName = fid;
 		top.fsfooter.document.we_form.elements.fname.value = fid;
 		if (top.fsbody.document.getElementById(fid)) {
-			for (var i = 0; i < top.allentries.length; i++) {
+			for (i = 0; i < top.allentries.length; i++) {
 				if (top.fsbody.document.getElementById(top.allentries[i]))
 					top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
 			}
@@ -53,7 +54,7 @@ function selectFile(fid) {
 		top.currentName = fid;
 		top.fsfooter.document.we_form.elements.fname.value = fid;
 		if (top.fsbody.document.getElementById(fid)) {
-			for (var i = 0; i < top.allentries.length; i++) {
+			for (i = 0; i < top.allentries.length; i++) {
 				if (top.fsbody.document.getElementById(top.allentries[i]))
 					top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
 			}

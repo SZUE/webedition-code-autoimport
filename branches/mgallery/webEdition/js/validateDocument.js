@@ -33,8 +33,6 @@ function we_submitForm(target, url) {
 }
 
 function we_cmd() {
-
-	var args = "";
 	var url = "/webEdition/we_cmd.php?";
 
 	for (var i = 0; i < arguments.length; i++) {
@@ -51,7 +49,7 @@ function we_cmd() {
 			break;
 		default:
 			var args = [];
-			for (var i = 0; i < arguments.length; i++)
+			for (i = 0; i < arguments.length; i++)
 			{
 				args.push(arguments[i]);
 			}

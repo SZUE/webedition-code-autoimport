@@ -214,7 +214,7 @@ var table="' . $this->table . '";
 var order="' . $this->order . '";
 var entries = [];
 var clickCount=0;
-var wasdblclick=0;
+var wasdblclick=false;
 var tout=null;
 var mk=null;
 

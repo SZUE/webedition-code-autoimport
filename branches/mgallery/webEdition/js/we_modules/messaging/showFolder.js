@@ -46,7 +46,7 @@ function check(elem, groupSel) {
 			highlight_TR(parent.entries_selected[j], default_color, default_text_color);
 		}
 
-		parent.entries_selected = new Array();
+		parent.entries_selected = [];
 		doSelectMessage(id);
 	} else if (array_search(id, parent.entries_selected) != -1) {
 		unSelectMessage(id);

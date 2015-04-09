@@ -34,7 +34,7 @@ function unselectFile(id) {
 		}
 	}
 	var str = "";
-	for (var i = 0; i < foo.length; i++) {
+	for (i = 0; i < foo.length; i++) {
 		if (foo[i]) {
 			str += foo[i] + ",";
 		}
@@ -121,7 +121,9 @@ function doClick(id, ct) {
 	if (ct == 1) {
 		if (wasdblclick) {
 			setDir(id);
-			setTimeout("wasdblclick=0;", 400);
+			setTimeout(function () {
+				wasdblclick = false;
+			}, 400);
 		} else if (top.currentID == id) {
 			if (perms.EDIT_KATEGORIE) {
 				top.RenameEntry(id);
@@ -256,8 +258,8 @@ function writeBody(d) {
 									);
 
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
-		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true;"';
+		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
 						'<td class="selector" width="25" align="center">' +
 						'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/></td>' +
@@ -314,7 +316,7 @@ function weonclick(e) {
 				shiftpressed = true;
 			}
 		}
-		if ((self.shiftpressed == false) && (self.ctrlpressed == false)) {
+		if (!self.shiftpressed && !self.ctrlpressed) {
 			top.unselectAllFiles();
 		}
 	}

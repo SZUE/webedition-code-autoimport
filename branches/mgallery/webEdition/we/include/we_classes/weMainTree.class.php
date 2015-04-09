@@ -92,7 +92,7 @@ function doClick(id){
 	setScrollY();
 	if(' . $this->topFrame . '.wasdblclick && ct != \'folder\' && table!=\'' . TEMPLATES_TABLE . '\' && table!=\'' . VFILE_TABLE . '\'' . (defined('OBJECT_TABLE') ? ' && table!=\'' . OBJECT_TABLE . '\' && table!=\'' . OBJECT_FILES_TABLE . '\'' : '' ) . '){
 		top.openBrowser(id);
-		setTimeout(\'wasdblclick=0;\',400);
+		setTimeout(\'wasdblclick=false;\',400);
 	} else {
 		top.weEditorFrameController.openDocument(table,id,ct);
 	}

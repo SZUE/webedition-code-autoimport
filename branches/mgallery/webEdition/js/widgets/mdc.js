@@ -34,10 +34,7 @@ function toggle(id) {
 function setVisible(id, visible) {
 	var elem = document.getElementById(id);
 	if (elem) {
-		if (visible == true)
-			elem.style.display = 'block';
-		else
-			elem.style.display = 'none';
+		elem.style.display = (visible ? 'block' : 'none');
 	}
 }
 
@@ -69,7 +66,7 @@ function getTreeSelected() {
 	var iTemsLen = SelectedItems[table].length;
 	for (var i = 0; i < iTemsLen; i++) {
 		sCsvIds += SelectedItems[table][i];
-		if (i < iTemsLen - 1 && SelectedItems[table][i] != undefined && SelectedItems[table][i] != '')
+		if (i < iTemsLen - 1 && SelectedItems[table][i] !== undefined && SelectedItems[table][i] !== '')
 			sCsvIds += ',';
 	}
 	return sCsvIds;
@@ -91,7 +88,7 @@ function exit_close() {
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	var aInitCsv = _sInitCsv_.split(';');
 	var sInitTitle = opener.base64_decode(aInitCsv[0]);
-	if ((sInitTitle != '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
+	if ((sInitTitle !== '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
 		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, _sObjId, _sMdcInc);
 	}
 	exitPrefs();

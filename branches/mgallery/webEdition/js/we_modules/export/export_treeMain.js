@@ -55,6 +55,7 @@ function updateEntry(id, text, pid) {
 
 function doClick(id, typ) {
 	var cmd = "";
+	var node;
 	if (top.content.hot == "1") {
 		if (confirm(g_l.save_changed_export)) {
 			cmd = "save_export";
@@ -62,12 +63,12 @@ function doClick(id, typ) {
 		} else {
 			top.content.usetHot();
 			cmd = "export_edit";
-			var node = frames.top.get(id);
+			node = frames.top.get(id);
 			frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 		}
 	} else {
 		cmd = "export_edit";
-		var node = frames.top.get(id);
+		node = frames.top.get(id);
 		frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 	}
 }

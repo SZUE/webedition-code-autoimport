@@ -23,14 +23,13 @@
 
 function doUnload() {
 	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
+		for (var i = 0; i < jsWindow_count; i++) {
 			eval("jsWindow" + i + "Object.close()");
 		}
 	}
 }
 
 function we_cmd() {
-	var args = "";
 	var url = frames.set + "?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -70,7 +69,7 @@ function we_cmd() {
 			break;
 		default:
 			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 			top.content.we_cmd.apply(this, args);

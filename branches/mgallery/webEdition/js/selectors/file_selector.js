@@ -89,7 +89,9 @@ function doClick(id, ct) {
 	if (ct == 1) {
 		if (wasdblclick) {
 			setDir(id);
-			setTimeout("wasdblclick=0;", 400);
+			setTimeout(function () {
+				wasdblclick = false;
+			}, 400);
 		}
 	} else if (top.options.multiple) {
 		if (top.shiftpressed) {
@@ -175,14 +177,14 @@ function addEntry(ID, icon, text, isFolder, path) {
 function writeBody(d) {
 	var body = '<table>';
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(top.wasdblclick==0){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=0;}\',300);return true;"';
-		var ondblclick = ' onDblClick="top.wasdblclick=1;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true;"';
+		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_' + entries[i].ID + '" style="cursor:pointer;"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
 						'<td class="selector" width="25" align="center">' +
 						'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/>' +
 						'</td>' +
 						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
-						'</tr>'
+						'</tr>';
 	}
 	body += '</table>';
 	d.innerHTML = body;
@@ -211,7 +213,7 @@ function unselectFile(id) {
 		}
 	}
 	var str = "";
-	for (var i = 0; i < foo.length; i++) {
+	for (i = 0; i < foo.length; i++) {
 		if (foo[i]) {
 			str += foo[i] + ",";
 		}
@@ -244,7 +246,7 @@ function isFileSelected(id) {
 
 function unselectAllFiles() {
 	for (var i = 0; i < entries.length; i++) {
-		if (elem = top.fsbody.document.getElementById("line_" + entries[i].ID)) {
+		if ((elem = top.fsbody.document.getElementById("line_" + entries[i].ID))) {
 			elem.style.backgroundColor = "white";
 		}
 	}
@@ -278,13 +280,13 @@ function fillIDs() {
 			allIsFolder += (entries[i].isFolder + ",");
 		}
 	}
-	if (currentID != "") {
-		if (allIDs.indexOf("," + currentID + ",") == -1) {
+	if (currentID !== "") {
+		if (allIDs.indexOf("," + currentID + ",") === -1) {
 			allIDs += (currentID + ",");
 		}
 	}
-	if (currentPath != "") {
-		if (allPaths.indexOf("," + currentPath + ",") == -1) {
+	if (currentPath !== "") {
+		if (allPaths.indexOf("," + currentPath + ",") === -1) {
 			allPaths += (currentPath + ",");
 			allTexts += (we_makeTextFromPath(currentPath) + ",");
 		}
@@ -335,7 +337,7 @@ function weonclick(e) {
 		}
 	}
 	if (top.options.multiple) {
-		if ((self.shiftpressed == false) && (self.ctrlpressed == false)) {
+		if ((self.shiftpressed === false) && (self.ctrlpressed === false)) {
 			top.unselectAllFiles();
 		}
 	} else {
@@ -344,7 +346,7 @@ function weonclick(e) {
 }
 
 function press_ok_button() {
-	if (top.document.getElementsByName("fname")[0].value == "") {
+	if (top.document.getElementsByName("fname")[0].value === "") {
 		top.exit_close();
 	} else {
 		top.exit_open();

@@ -201,7 +201,7 @@ abstract class we_modules_frame{
 				we_html_element::cssLink(CSS_DIR . 'tree.css') .
 				we_html_tools::getJSErrorHandler() . we_html_element::jsElement('
 	clickCount=0;
-	wasdblclick=0;
+	wasdblclick=false;
 	tout=null;' . $this->getDoClick() . '
 function loadFinished(){
 	top.content.loaded=1;

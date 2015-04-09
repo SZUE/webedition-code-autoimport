@@ -58,18 +58,17 @@ function updateEntry(id, text, pid, pub) {
 }
 
 function doClick(id, typ) {
-	var cmd = "";
+	var node;
 	if (top.content.hot == "1") {
 		if (confirm(g_l.save_changed_glossary)) {
-			cmd = "save_export";
 			top.content.we_cmd("save_glossary");
 		} else {
 			top.content.usetHot();
-			var node = frames.top.get(id);
+			node = frames.top.get(id);
 			frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + node.cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 		}
 	} else {
-		var node = frames.top.get(id);
+		node = frames.top.get(id);
 		frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + node.cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 	}
 }

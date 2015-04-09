@@ -25,7 +25,9 @@ function doClick(id, ct) {
 	if (ct == 1) {
 		if (wasdblclick) {
 			setDir(id);
-			setTimeout("wasdblclick=0;", 400);
+			setTimeout(function () {
+				wasdblclick = false;
+			}, 400);
 		}
 	} else {
 		e = top.getEntry(id);

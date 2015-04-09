@@ -108,7 +108,7 @@ YAHOO.autocoml = {
 								YAHOO.autocoml.ajaxFailure(o, i);
 							}
 						}, 'protocol=text&cmd=SelectorGetSelectedId&we_cmd[1]=' + YAHOO.autocoml.newInputVal[i] + '&we_cmd[2]=' + YAHOO.autocoml.yuiAcFields[i].table + '&we_cmd[3]=' + YAHOO.autocoml.cTypes + '&we_cmd[4]=' + YAHOO.autocoml.yuiAcFields[i].checkValues + '&we_cmd[5]=' + i);
-						if (x == y == 0) {
+						if (x === y && y === 0) {
 							//call from timeout
 						} else {
 							setTimeout("YAHOO.autocoml.doOnTextfieldBlur(0, 0, " + i + ")", YAHOO.autocoml.ajaxResponseStep);

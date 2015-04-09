@@ -163,7 +163,7 @@ function addSort(object){
 
 	function getJSTreeFunctions(){
 		return '
-var wasdblclick=0;
+var wasdblclick=false;
 var tout=null;
 
 function setScrollY(){

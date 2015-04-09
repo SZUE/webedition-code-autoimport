@@ -442,6 +442,7 @@ function changeit(value, rowNr) {
 	var searchTD = document.getElementById("td_search[" + rowNr + "]");
 	var delButtonTD = document.getElementById("td_delButton[" + rowNr + "]");
 	var location = document.getElementById("location[" + rowNr + "]");
+	var innerhtml;
 
 	switch (value) {
 		case "Content":
@@ -469,7 +470,7 @@ function changeit(value, rowNr) {
 			}
 			row.removeChild(searchTD);
 
-			var innerhtml = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>" +
+			innerhtml = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
 							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
 							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'openCatselector\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.CATEGORY_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\">" +
@@ -497,7 +498,7 @@ function changeit(value, rowNr) {
 			}
 			row.removeChild(searchTD);
 
-			var innerhtml = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>" +
+			innerhtml = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
 							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
 							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'openDocselector\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.TEMPLATES_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\" >" +
@@ -547,7 +548,7 @@ function changeit(value, rowNr) {
 				row.removeChild(delButtonTD);
 			}
 
-			var cell = document.createElement("TD");
+			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_search[" + rowNr + "]");
 			cell.innerHTML = searchSpeicherat.replace(/__we_new_id__/g, rowNr);
 			row.appendChild(cell);
@@ -563,14 +564,14 @@ function changeit(value, rowNr) {
 
 			row.removeChild(locationTD);
 
-			var cell = document.createElement("TD");
+			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_location[" + rowNr + "]");
 			cell.innerHTML = locationDateFields.replace(/__we_new_id__/g, rowNr);
 			row.appendChild(cell);
 
 			row.removeChild(searchTD);
 
-			var innerhtml = "<table id=\"search[" + rowNr + "]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>" +
+			innerhtml = "<table id=\"search[" + rowNr + "]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />" +
 							"</td><td>&nbsp;</td><td><a href=\"#\">" +
 							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\">" +

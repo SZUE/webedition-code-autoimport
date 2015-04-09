@@ -44,7 +44,9 @@ function doClick(id, ct) {
 	if (ct == 1) {
 		if (wasdblclick) {
 			setDir(id);
-			setTimeout("wasdblclick=0;", 400);
+			setTimeout(function () {
+				wasdblclick = false;
+			}, 400);
 		}
 	} else {
 		if (top.currentID == id && (!top.ctrlpressed)) {
@@ -164,8 +166,8 @@ function writeBody(d) {
 									'');
 
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(wasdblclick==0){doClick(' + entries[i].ID + ',0);}else{wasdblclick=0;}\',300);return true"';
-		var ondblclick = ' onDblClick="wasdblclick=1;clearTimeout(tout);doClick(' + entries[i].ID + ',1);return true;"';
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!wasdblclick){doClick(' + entries[i].ID + ',0);}else{wasdblclick=false;}\',300);return true"';
+		var ondblclick = ' onDblClick="wasdblclick=true;clearTimeout(tout);doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="treeIcon"><img class="treeIcon" src="' + dirs.TREE_ICON_DIR + (entries[i].icon ? entries[i].icon : consts.FOLDER_ICON) + '"/></td>' +
 						(we_editDirID == entries[i].ID ?
@@ -222,7 +224,7 @@ function weonclick(e) {
 			}
 		}
 		if (top.options.multiple) {
-			if ((self.shiftpressed == false) && (self.ctrlpressed == false)) {
+			if (!self.shiftpressed && !self.ctrlpressed) {
 				top.unselectAllFiles();
 			}
 		} else {

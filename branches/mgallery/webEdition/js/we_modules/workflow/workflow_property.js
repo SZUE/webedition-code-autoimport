@@ -26,14 +26,13 @@
 
 function doUnload() {
 	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
+		for (var i = 0; i < jsWindow_count; i++) {
 			eval("jsWindow" + i + "Object.close()");
 		}
 	}
 }
 
 function we_cmd() {
-	var args = "";
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -97,7 +96,7 @@ function we_cmd() {
 			break;
 		default:
 			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 			top.content.we_cmd.apply(this, args);
@@ -186,10 +185,10 @@ function checkData() {
 		top.we_showMessage(g_l.objects_empty, WE_MESSAGE_ERROR, window);
 		return false;
 	}
-
+	var _txt;
 	for (i = 0; i < nsteps.value; i++) {
 		if (document.we_form[uid + '_step' + i + '_Worktime'].value === "") {
-			var _txt = g_l.worktime_empty;
+			_txt = g_l.worktime_empty;
 			top.we_showMessage(_txt.replace(/%s/, i + 1), WE_MESSAGE_ERROR, window);
 			return false;
 		}
@@ -200,7 +199,7 @@ function checkData() {
 			}
 		}
 		if (userempty) {
-			var _txt = g_l.user_empty;
+			_txt = g_l.user_empty;
 			top.we_showMessage(_txt.replace(/%s/, i + 1), WE_MESSAGE_ERROR, window);
 			return false;
 		}

@@ -25,17 +25,17 @@
 function setHotDocuments() {
 	var allHotDocuments = top.opener.top.weEditorFrameController.getEditorsInUse();
 	var liStr = "";
-	var _hotDocumentsOfCt = new Object();
-	for (frameId in allHotDocuments) {
+	var _hotDocumentsOfCt = {};
+	for (var frameId in allHotDocuments) {
 		if (allHotDocuments[frameId].getEditorIsHot()) {
 			if (!_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()]) {
-				_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()] = new Array();
+				_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()] = [];
 			}
 			_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()].push(allHotDocuments[frameId]);
 		}
 	}
 
-	for (ct in _hotDocumentsOfCt) {
+	for (var ct in _hotDocumentsOfCt) {
 		var liCtElem = document.createElement("li");
 		liCtElem.innerHTML = ctLngs[ct];
 
@@ -59,7 +59,7 @@ function setHotDocuments() {
 
 function yes_cmd_pressed() {
 	var allHotDocuments = top.opener.top.weEditorFrameController.getEditorsInUse();
-	for (frameId in allHotDocuments) {
+	for (var frameId in allHotDocuments) {
 		if (allHotDocuments[frameId].getEditorIsHot()) {
 			allHotDocuments[frameId].setEditorIsHot(false);
 		}

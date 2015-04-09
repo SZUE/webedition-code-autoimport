@@ -257,7 +257,7 @@ function applyOnEnter(evt) {
 		_elemName = "srcElement";
 	}
 
-	if (!(evt[_elemName].tagName == "SELECT")) {
+	if (evt[_elemName].tagName != "SELECT") {
 		we_cmd("saveTag");
 		return true;
 	}

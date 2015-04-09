@@ -43,7 +43,6 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = "";
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -53,6 +52,7 @@ function we_cmd() {
 	}
 	if (hot == 1 && arguments[0] !== "save_customer") {
 		if (confirm(g_l.save_changed_customer)) {
+			//FIXME: bad assignment
 			arguments[0] = "save_customer";
 		} else {
 			top.content.usetHot();
@@ -141,7 +141,7 @@ function we_cmd() {
 			break;
 		default:
 			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 			top.opener.top.we_cmd.apply(this, args);

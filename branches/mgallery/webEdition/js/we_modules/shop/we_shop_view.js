@@ -43,25 +43,25 @@ function we_cmd() {
 			url += "&";
 		}
 	}
-
+	var wind;
 	switch (arguments[0]) {
 
 		case "edit_shipping_cost":
-			var wind = new jsWindow(url + "&bid=" + bid, "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
+			wind = new jsWindow(url + "&bid=" + bid, "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
 			break;
 
 		case "edit_shop_cart_custom_field":
-			var wind = new jsWindow(url + "&bid=" + bid + "&cartfieldname=" + (arguments[1] ? arguments[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
+			wind = new jsWindow(url + "&bid=" + bid + "&cartfieldname=" + (arguments[1] ? arguments[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
 			break;
 
 		case "edit_order_customer":
-			var wind = new jsWindow(url + "&bid=" + bid, "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
+			wind = new jsWindow(url + "&bid=" + bid, "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
 			break;
 		case "customer_edit":
 			top.document.location = dirs.WE_MODULES_DIR + 'show_frameset.php?mod=customer&sid=' + cid;
 			break;
 		case "add_new_article":
-			var wind = new jsWindow(url + "&bid=" + bid, "add_new_article", -1, -1, 650, 600, true, false, true, false);
+			wind = new jsWindow(url + "&bid=" + bid, "add_new_article", -1, -1, 650, 600, true, false, true, false);
 			break;
 	}
 }

@@ -26,7 +26,7 @@
 
 
 function imageChanged(wasThumbnailChange) {
-	if (wasThumbnailChange != null && wasThumbnailChange) {
+	if (wasThumbnailChange !== null && wasThumbnailChange) {
 		document.we_form.wasThumbnailChange.value = "1";
 	}
 	if (top.opener.tinyMCECallRegisterDialog) {

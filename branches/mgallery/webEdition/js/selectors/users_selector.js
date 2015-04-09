@@ -31,7 +31,7 @@ function setDir(id) {
 }
 
 function selectFile(id) {
-	var a=top.document.getElementsByName("fname")[0];
+	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
 		e = top.getEntry(id);
 		if (currentType !== "user" || !e.isFolder) {
@@ -62,9 +62,9 @@ function queryString(what, id, o) {
 }
 
 function press_ok_button() {
-	if(top.document.getElementsByName("fname")[0].value==''&&top.currentType!='group'){
+	if (top.document.getElementsByName("fname")[0].value === '' && top.currentType != 'group') {
 		top.exit_close();
-	}else{
+	} else {
 		top.exit_open();
-	};
+	}
 }

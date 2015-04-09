@@ -45,7 +45,6 @@ function doUnload() {
  * Menu command controler
  */
 function we_cmd() {
-	var args = "";
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
 	var i;
 	for (i = 0; i < arguments.length; i++) {
@@ -57,6 +56,7 @@ function we_cmd() {
 
 	if (hot == 1 && arguments[0] !== "save_newsletter") {
 		if (confirm(g_l.save_changed_newsletter)) {
+			//FIXME:bad assignment
 			arguments[0] = "save_newsletter";
 		} else {
 			top.content.usetHot();
@@ -220,7 +220,7 @@ function we_cmd() {
 
 		default:
 			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
+			for (i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 			top.opener.top.we_cmd.apply(this, args);

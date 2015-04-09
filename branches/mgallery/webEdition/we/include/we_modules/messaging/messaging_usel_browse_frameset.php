@@ -54,7 +54,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 		fr.writeln("<script type=\"text/javascript\" src=\"<?php echo JS_DIR . 'we_modules/messaging/messaging_std.js'; ?>\"></" + "script>");
 		fr.writeln("<script type=\"text/javascript\">");
 		fr.writeln("var clickCount=0;");
-		fr.writeln("var wasdblclick=0;");
+		fr.writeln("var wasdblclick=false;");
 		fr.writeln("var tout=null;");
 		fr.writeln("top.loaded=1;");
 		fr.writeln("</" + "script>");

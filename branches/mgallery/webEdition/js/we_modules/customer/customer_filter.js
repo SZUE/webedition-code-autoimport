@@ -148,7 +148,7 @@ function updateFilterTable() {
 				for (var n = 0; n < _prevRow.cells.length; n++) {
 					_prevRow.cells[n].style.paddingBottom = (_logic == "OR") ? "10px" : "0";
 				}
-				for (var n = 0; n < _row.cells.length; n++) {
+				for (n = 0; n < _row.cells.length; n++) {
 					_row.cells[n].style.paddingTop = (_logic == "OR") ? "10px" : "0";
 					_row.cells[n].style.borderTop = (_logic == "OR") ? "1px solid grey" : "0";
 				}

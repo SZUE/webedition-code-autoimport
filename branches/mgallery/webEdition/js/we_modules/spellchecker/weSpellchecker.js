@@ -35,20 +35,21 @@ var retry = 0;
 
 
 function customAdapter() {
-	this.innerHTML;
+//	this.innerHTML;
 	this.getSelectedText = function () {
-	}
+	};
 }
 
 function setDialog() {
+	var text;
 	if (mode === 'tinyMce') {
 		editorObj = tinyMCEPopup.editor;
-		var text = editorObj.selection.isCollapsed() ? editorObj.getContent({format: "html"}) : editorObj.selection.getContent({format: "html"});
+		text = editorObj.selection.isCollapsed() ? editorObj.getContent({format: "html"}) : editorObj.selection.getContent({format: "html"});
 	} else {
 		var elements = top.opener.document.getElementsByName(editname);
 		if (elements[0]) {
 			editorObj = elements[0];
-			var text = editorObj.value;
+			text = editorObj.value;
 		}
 	}
 
@@ -74,7 +75,7 @@ function getTextFromWysiwyg() {
 
 	}
 
-	if (text == "") {
+	if (text === "") {
 		text = editorObj.getHTML();
 		rangeSelection = false;
 	}
@@ -92,7 +93,7 @@ function fade(id, opacity) {
 
 function fadeout(id, from, step, speed) {
 	fade(id, from);
-	if (from == 0) {
+	if (from === 0) {
 		document.getElementById(id).style.display = "none";
 	} else {
 		setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
