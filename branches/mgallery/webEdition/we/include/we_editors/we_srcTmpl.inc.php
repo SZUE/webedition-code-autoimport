@@ -386,7 +386,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 			$tagGroups = we_wizard_tag::getWeTagGroups($allWeTags);
 
-			$groupJs = "tagGroups = new Array();\n";
+			$groupJs = "tagGroups = [];";
 			$selectedGroup = isset($we_doc->TagWizardSelection) && $we_doc->TagWizardSelection ? $we_doc->TagWizardSelection : "alltags";
 			$groupselect = '<select class="weSelect" style="width: 250px;" id="weTagGroupSelect" name="we_' . $we_doc->Name . '_TagWizardSelection" onchange="selectTagGroup(this.value);">
 <optgroup label="' . g_l('weCodeWizard', '[snippets]') . '">
@@ -406,7 +406,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 				if($tagGroupName === 'alltags'){
 					$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 				}
-				$groupJs .= "tagGroups['" . $tagGroupName . "'] = new Array('" . implode("', '", $tags) . "');\n";
+				$groupJs .= "tagGroups['" . $tagGroupName . "'] = ['" . implode("', '", $tags) . "'];";
 			}
 			$groupselect .= '</optgroup></select>';
 

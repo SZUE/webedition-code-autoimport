@@ -473,7 +473,7 @@ function doUnload() {
 				return false;
 			}
 			// check value of fields
-			var fields = new Array();
+			var fields = [];
 			var inputElements = f.getElementsByTagName("input");
 			for (var i=0; i<inputElements.length; i++) {
 				if (inputElements[i].name.indexOf("fields[") == 0) {
@@ -482,7 +482,7 @@ function doUnload() {
 					var index = parseInt(result[1]);
 					var key = result[2];
 					if (fields[index] == null) {
-						fields[index] = new Object();
+						fields[index] = {};
 					}
 					fields[index][key] = inputElements[i].value;
 				}
@@ -495,7 +495,7 @@ function doUnload() {
 					var index = parseInt(result[1]);
 					var key = result[2];
 					if (fields[index] == null) {
-						fields[index] = new Object();
+						fields[index] = {};
 					}
 					fields[index][key] = textareaElements[i].value;
 				}

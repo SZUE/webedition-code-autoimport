@@ -460,8 +460,8 @@ self.focus();
 function setLocation(loc){
 	location.href=loc;
 }
-extra_files=new Array();
-extra_files_desc=new Array();';
+extra_files=[];
+extra_files_desc=[];';
 			$select = new we_html_select(array("name" => "backup_select", "size" => 7, "style" => "width: 600px;"));
 
 

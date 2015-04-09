@@ -33,7 +33,7 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-we_ui_controls_Button = new Object();
+we_ui_controls_Button = {};
 
 /**
  * disables / enables Button element, hidden input element of button = submit and <a> tag of button=href

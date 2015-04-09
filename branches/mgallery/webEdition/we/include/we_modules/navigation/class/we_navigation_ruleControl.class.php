@@ -140,7 +140,7 @@ doc.categories_edit.showVariant(0);
 doc.weInput.setValue('CategoriesCount', doc.categories_edit.itemCount);
 
 
-var optionList = new Array();
+var optionList = [];
 $_workspaceList
 doc.weSelect.setOptions('WorkspaceID', optionList);
 $_selectWorkspace";

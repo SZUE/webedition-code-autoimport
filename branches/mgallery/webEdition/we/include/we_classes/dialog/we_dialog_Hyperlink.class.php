@@ -624,7 +624,7 @@ function showclasss(name, val, onCh) {' .
 function showanchors(name, val, onCh) {
 	var pageAnchors = top.opener.document.getElementsByTagName("A");
 	var objAnchors = top.opener.weWysiwygObject_' . $this->args["editname"] . '.eDocument.getElementsByTagName("A");
-	var allAnchors = new Array();
+	var allAnchors = [];
 
 	for(var i = 0; i < pageAnchors.length; i++) {
 		if (!pageAnchors[i].href && pageAnchors[i].name != "") {

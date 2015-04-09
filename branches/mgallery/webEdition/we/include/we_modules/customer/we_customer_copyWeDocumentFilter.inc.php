@@ -42,7 +42,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 
 	$_db->query('SELECT ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '" ) AND PATH LIKE "' . $_theFolder->Path . '/%"');
 
-	$_allChildsJS = 'var _allChilds = new Object();';
+	$_allChildsJS = 'var _allChilds = {};';
 
 	while($_db->next_record()){
 		$_allChildsJS .= "_allChilds['id_" . $_db->f("ID") . "'] = '" . $_db->f("ContentType") . "';";

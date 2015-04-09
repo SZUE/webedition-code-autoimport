@@ -33,7 +33,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-we_ui_controls_WeWysiwygEditor = new Object();
+we_ui_controls_WeWysiwygEditor = {};
 /**
  * enables / disables TextInput and Button of AC element
  *

@@ -133,8 +133,8 @@ function we_tag_writeShopData($attribs){
 
 			if(isset($GLOBALS['weEconda'])){
 				$GLOBALS['weEconda']['emosBasket'] .= "
-                    if(emosBasketPageArray === undefined) var emosBasketPageArray = new Array();
-                    emosBasketPageArray[$articleCount] = new Array();
+                    if(emosBasketPageArray === undefined) var emosBasketPageArray = [];
+                    emosBasketPageArray[$articleCount] = [];
                     emosBasketPageArray[$articleCount][0]='" . $shoppingItem['id'] . "';
                     emosBasketPageArray[$articleCount][1]='" . rawurlencode($shoppingItem['serial'][WE_SHOP_TITLE_FIELD_NAME]) . "';
                     emosBasketPageArray[$articleCount][2]='$preis';
@@ -197,7 +197,7 @@ function we_tag_writeShopData($attribs){
 				//$emosBillingStreet = $_SESSION['webuser'][$shopPaymentPrefs[2]];
 			}
 			$GLOBALS['weEconda']['emosBilling'] .= "
-                if(emosBillingPageArray === undefined) var emosBillingPageArray = new Array();
+                if(emosBillingPageArray === undefined) var emosBillingPageArray = [];
                 emosBillingPageArray [0]='" . $orderID . "';
                 emosBillingPageArray [1]='" . md5($_SESSION["webuser"]["ID"]) . "';
                 emosBillingPageArray [2]='" . rawurlencode($emosBillingCountry) . "/" . rawurlencode($emosBillingCity) . "';

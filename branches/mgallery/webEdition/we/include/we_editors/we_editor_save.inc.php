@@ -66,7 +66,7 @@ if(isset($wasSaved) && $wasSaved){
 	$reload = array_filter($reload);
 
 	if($reload){
-		echo 'var _reloadTabs = new Object();';
+		echo 'var _reloadTabs = {};';
 		foreach($reload as $table => $vals){
 			echo "_reloadTabs['" . $table . "'] = '," . $vals . ",';";
 		}

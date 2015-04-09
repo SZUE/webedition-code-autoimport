@@ -82,9 +82,9 @@ function doClickDirect(id, ct, table, fenster) {
 	if (!fenster) {
 		fenster = window;
 	}
-		//  the actual position is the top-window, maybe the first window was closed
-		if (!fenster.top.opener || fenster.top.opener.isLoginScreen || /*fenster.top.opener.win || FIXME: what is win??*/ fenster.top.opener.closed) {
-	top.weEditorFrameController.openDocument(table, id, ct);
+	//  the actual position is the top-window, maybe the first window was closed
+	if (!fenster.top.opener || fenster.top.opener.isLoginScreen || fenster.top.opener.closed) {
+		top.weEditorFrameController.openDocument(table, id, ct);
 
 	} else {
 		//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
@@ -192,7 +192,7 @@ function incTree() {
 		w = size.tree.max;
 		setTreeWidth(w);
 		self.document.getElementById("incBaum").style.backgroundColor = "grey";
-	}else{
+	} else {
 
 	}
 }

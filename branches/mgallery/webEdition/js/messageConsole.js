@@ -40,9 +40,7 @@ var messageConsole = new function () {
 		if (this.messages.length > 35) { // remove one message
 			this.messages.shift();
 		}
-		this.messages.push(
-						new Object({"prio": prio, "message": message})
-						);
+		this.messages.push({"prio": prio, "message": message});
 		this.notifyObservers();
 	};
 

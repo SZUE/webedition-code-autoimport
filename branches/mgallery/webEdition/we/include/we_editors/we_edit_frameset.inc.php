@@ -248,7 +248,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 	var scrollToVal = 0;
 	var editorScrollPosTop = 0;
 	var editorScrollPosLeft = 0;
-	var weAutoCompetionFields = new Array();
+	var weAutoCompetionFields = [];
 	var openedInEditor = true;
 
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);

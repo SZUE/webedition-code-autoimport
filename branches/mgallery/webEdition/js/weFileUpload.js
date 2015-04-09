@@ -370,7 +370,7 @@ var weFileUpload = (function () {
 								_.view.elems.fileSelect.value = '';
 							}
 
-							var transformables = new Array('image/jpeg', 'image/gif', 'image/png');//TODO: add all transformable types
+							var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
 
 							//clientside editing diabled!
 							if(false && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1){//TODO: && !cur.doTrans!!)
@@ -1106,7 +1106,7 @@ var weFileUpload = (function () {
 				fd.append('imgsSearchable', sf.imgsSearchable.value);
 				fd.append('thumbs', sf.thumbs.value);
 
-				var transformables = new Array('image/jpeg', 'image/gif', 'image/png');//TODO: add all transformable types
+				var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
 				//clientside editing disabled!
 				if (true || cur.partNum === cur.totalParts && this.isGdOk && transformables.indexOf(cur.type) === -1) {//transformables are transformed by js
 					fd.append('width', sf.width.value);

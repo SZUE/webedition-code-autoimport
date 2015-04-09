@@ -222,12 +222,12 @@ class we_navigation_ruleFrames{
 			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 
-var allFields = new Array("FolderID", "DoctypeID", "ClassID", "WorkspaceID");
-var resetFields = new Array("NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID");
+var allFields = ["FolderID", "DoctypeID", "ClassID", "WorkspaceID"];
+var resetFields = ["NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID"];
 
-var dependencies = new Array();
-dependencies["' . we_navigation_navigation::STPYE_CLASS . '"] = new Array("ClassID", "WorkspaceID", "Categories");
-dependencies["' . we_navigation_navigation::STPYE_DOCTYPE . '"] = new Array("FolderID", "DoctypeID", "Categories");
+var dependencies = [];
+dependencies["' . we_navigation_navigation::STPYE_CLASS . '"] = ["ClassID", "WorkspaceID", "Categories"];
+dependencies["' . we_navigation_navigation::STPYE_DOCTYPE . '"] = ["FolderID", "DoctypeID", "Categories"];
 
 
 function switchType(value) {

@@ -130,13 +130,13 @@ we_core_JsonRpc.callMethod = function(cmdObj, url, service, method) {
 		form = arguments[4];
 		// look if there are additional parameters
 		if (arguments.length > 5) {
-			args = new Array();
+			args = [];
 			for (var i = 5; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
 		}
 	} else if (arguments.length > 4) {
-		args = new Array();
+		args = [];
 		for (var i = 4; i < arguments.length; i++) {
 			args.push(arguments[i]);
 		}

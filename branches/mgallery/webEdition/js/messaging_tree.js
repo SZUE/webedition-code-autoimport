@@ -511,7 +511,7 @@ function delete_menu_entries(ids) {
 		if (array_search(t[i].name, ids) == -1) {
 			cont.add(t[i]);
 		} else {
-			del_parents = del_parents.concat(new Array(String(t[i].vorfahr)));
+			del_parents = del_parents.concat([String(t[i].vorfahr)]);
 		}
 	}
 	menuDaten = cont;

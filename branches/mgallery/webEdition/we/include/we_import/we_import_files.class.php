@@ -102,7 +102,7 @@ class we_import_files{
 function makeArrayFromCSV(csv) {
 	if(csv.length && csv.substring(0,1)==\",\"){csv=csv.substring(1,csv.length);}
 	if(csv.length && csv.substring(csv.length-1,csv.length)==\",\"){csv=csv.substring(0,csv.length-1);}
-	if(csv.length==0){return new Array();}else{return csv.split(/,/);};
+	if(csv.length==0){return [];}else{return csv.split(/,/);};
 }
 
 function inArray(needle,haystack){
@@ -1046,7 +1046,7 @@ function addCat(paths){
 }
 
 function selectCategories() {
-	var cats = new Array();
+	var cats = [];
 	for(var i=0;i<categories_edit.itemCount;i++){
 		cats.push(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+i].value);
 	}

@@ -63,7 +63,7 @@
 
  */
 
-we_ui_controls_DateTime = new Object();
+we_ui_controls_DateTime = {};
 
 
 

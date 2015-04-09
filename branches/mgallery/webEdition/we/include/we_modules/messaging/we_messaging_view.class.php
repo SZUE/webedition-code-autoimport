@@ -150,7 +150,7 @@ function submitForm() {
 				');
 			case 'reset_right_view':
 				return we_html_element::jsElement('
-				top.content.editor.edbody.entries_selected = new Array();
+				top.content.editor.edbody.entries_selected = [];
 				top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
 				top.content.editor.edbody.messaging_msg_view.location="about:blank"
 				');
@@ -185,7 +185,7 @@ function submitForm() {
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
 				$js_out = '
-				top.content.editor.edbody.entries_selected = new Array();
+				top.content.editor.edbody.entries_selected = [];
 				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
 				top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
 				top.content.editor.edbody.messaging_msg_view.location="about:blank";
@@ -208,7 +208,7 @@ function submitForm() {
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
 				$js_out = '
-				top.content.editor.edbody.entries_selected = new Array();
+				top.content.editor.edbody.entries_selected = [];
 				//we_class::2xok
 				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
 				top.content.editor.edbody.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
@@ -305,8 +305,8 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 				if(($folders = we_base_request::_(we_base_request::INTLIST, 'folders'))){
 
 					$out .= we_html_element::jsElement('
-					top.content.delete_menu_entries(new Array(String(' . implode('), String(', $folders) . ')));
-					top.content.folders_removed(new Array(String(' . implode('), String(', $folders) . ')));
+					top.content.delete_menu_entries([String(' . implode('), String(', $folders) . ')]);
+					top.content.folders_removed([String(' . implode('), String(', $folders) . ')]);
 					top.content.drawEintraege();
 					');
 				}
@@ -338,7 +338,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 	private function print_fc_html($blank = true){
 
 		return we_html_element::jsElement('
-top.content.editor.edbody.entries_selected = new Array(' . $this->messaging->get_ids_selected() . ');
+top.content.editor.edbody.entries_selected = [' . $this->messaging->get_ids_selected() . '];
 top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
 if (top.content.editor.edbody.messaging_messages_overview) {
 	top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . "messaging_show_folder_content.php") . '";

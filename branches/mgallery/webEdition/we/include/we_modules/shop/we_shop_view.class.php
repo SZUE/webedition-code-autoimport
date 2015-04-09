@@ -1662,7 +1662,7 @@ function submitForm() {
 				$tt = addslashes($tt ? : $this->raw->Text);
 				$js = ($newone ?
 						'
-var attribs = new Array();
+var attribs = [];
 attribs["icon"]="' . $this->raw->Icon . '";
 attribs["id"]="' . $this->raw->ID . '";
 attribs["typ"]="item";

@@ -43,7 +43,7 @@ for (i = 0; i < opener.current_sel.length; i++) {
 	if (opener.current_sel[i][0] != 'we_message') {
 		continue;
 	}
-	entries_selected = entries_selected.concat(new Array(opener.current_sel[i][1] + '&' + opener.current_sel[i][2]));
+	entries_selected = entries_selected.concat([opener.current_sel[i][1] + '&' + opener.current_sel[i][2]]);
 }
 
 function setHot() {

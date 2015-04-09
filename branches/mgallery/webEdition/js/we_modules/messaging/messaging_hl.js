@@ -55,11 +55,11 @@ function doSelectMessage(id, mode, doc) {
 	if (mode == "fv") {
 		showContent(id);
 		//IE Mac 5.01 doesnt support Array.push()
-		parent.entries_selected = parent.entries_selected.concat(new Array(String(id)));
+		parent.entries_selected = parent.entries_selected.concat([String(id)]);
 		parent.last_entry_selected = id;
 		highlight_TR(id, highlight_color, '');
 	} else {
-		entries_selected = entries_selected.concat(new Array(String(id)));
+		entries_selected = entries_selected.concat([String(id)]);
 		highlight_Elem(id, highlight_color, doc);
 	}
 

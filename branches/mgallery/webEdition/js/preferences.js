@@ -66,7 +66,7 @@ function set_xhtml_field(val, field) {
 
 function handle_message_reporting_click() {
 	val = 0;
-	var fields = new Array("message_reporting_notices", "message_reporting_warnings", "message_reporting_errors");
+	var fields = ["message_reporting_notices", "message_reporting_warnings", "message_reporting_errors"];
 	for (i = 0; i < fields.length; i++) {
 
 		if (document.getElementById(fields[i]).checked) {
@@ -174,7 +174,7 @@ function initEditorMode() {
 
 function resetLocales() {
 	if (document.getElementById('locale_temp_locales').options.length > 0) {
-		var temp = new Array(document.getElementById('locale_temp_locales').options.length);
+		var temp = [document.getElementById('locale_temp_locales').options.length];
 		for (i = 0; i < document.getElementById('locale_temp_locales').options.length; i++) {
 			temp[i] = document.getElementById('locale_temp_locales').options[i].value;
 		}

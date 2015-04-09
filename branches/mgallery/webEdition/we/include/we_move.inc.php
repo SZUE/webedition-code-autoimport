@@ -190,7 +190,7 @@ echo $table;
 ?>";
 		var _move_ids = "," + sel;
 
-		var _open_move_editors = new Array();
+		var _open_move_editors = [];
 
 		for (frameId in _usedEditors) {
 			if (_move_table == _usedEditors[frameId].getEditorEditorTable()) {

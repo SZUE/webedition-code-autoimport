@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 function we_core_EventController() {
-	this.events = new Object();
+	this.events = {};
 
 	this.fire = function(eventName, data) {
 		if (this.events[eventName] !== undefined) {

@@ -137,7 +137,7 @@ class weTree{
 var frames={
 };
 var treeData = new container();
-var we_scrollY = new Array();
+var we_scrollY = [];
 ' . $this->getJSIncludeFunctions()
 			) . $this->customJSFile();
 	}

@@ -1244,7 +1244,7 @@ function addCat(paths){
 function setFields() {
 	var list = document.we_form.fields.options;
 
-	var fields = new Array();
+	var fields = [];
 	for(i=0;i<list.length;i++){
 		if(list[i].selected){
 			fields.push(list[i].value);

@@ -92,7 +92,7 @@ class we_customer_frames extends we_modules_frame{
 		$select = new we_html_select(array('name' => 'branch'));
 
 		$fields_names = $this->View->customer->getFieldsNames($branch, $this->View->settings->getEditSort());
-		$this->jsOut_fieldTypesByName = 'var fieldTypesByName = new Array();';
+		$this->jsOut_fieldTypesByName = 'var fieldTypesByName = [];';
 		foreach($fields_names as $val){
 			$tmp = $this->View->getFieldProperties($val);
 			$this->jsOut_fieldTypesByName .= "fieldTypesByName['" . $val . "'] = '" . (isset($tmp['type']) ? $tmp['type'] : '') . "';";

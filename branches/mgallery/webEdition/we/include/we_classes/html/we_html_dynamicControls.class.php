@@ -151,7 +151,7 @@ class we_html_dynamicControls{
 
 				function toggle_all() {
 					// Define all groups
-					_all_groups = new Array(2);
+					_all_groups = [2];
 
 					' . $_groups_array . '
 

@@ -860,7 +860,7 @@ abstract class we_rebuild_wizard{
 				case "del_cat":
 					var catToDel = arguments[1];
 					var cats = makeArrayFromCSV(f.categories.value);
-					var newcats = new Array();
+					var newcats = [];
 					for(var i=0;i<cats.length;i++){
 						if(cats[i] != catToDel){
 							newcats.push(cats[i]);
@@ -890,7 +890,7 @@ abstract class we_rebuild_wizard{
 				case "del_folder":
 					var folderToDel = arguments[1];
 					var folders = makeArrayFromCSV(f.' . $folders . '.value);
-					var newfolders = new Array();
+					var newfolders = [];
 					for(var i=0;i<folders.length;i++){
 						if(folders[i] != folderToDel){
 							newfolders.push(folders[i]);
@@ -954,7 +954,7 @@ abstract class we_rebuild_wizard{
 			function makeArrayFromCSV(csv) {
 				if(csv.length && csv.substring(0,1)==","){csv=csv.substring(1,csv.length);}
 				if(csv.length && csv.substring(csv.length-1,csv.length)==","){csv=csv.substring(0,csv.length-1);}
-				if(csv.length==0){return new Array();}else{return csv.split(/,/);};
+				if(csv.length==0){return [];}else{return csv.split(/,/);};
 			}
 			function inArray(needle,haystack){
 				for(var i=0;i<haystack.length;i++){

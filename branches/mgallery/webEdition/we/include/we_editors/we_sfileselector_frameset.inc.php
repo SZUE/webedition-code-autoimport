@@ -65,7 +65,7 @@ $selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 	var sitepath = "<?php echo $docroot; ?>";
 	var dirsel = 1;
 	var scrollToVal = 0;
-	var allentries = new Array();
+	var allentries = [];
 
 	function exit_close() {
 		if (!browseServer) {

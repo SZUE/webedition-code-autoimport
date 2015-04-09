@@ -249,7 +249,7 @@ function we_cmd() {
 <?php
 $GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
 $dtNames = implode(',', $GLOBALS['DB_WE']->getAll(true));
-echo 'var docTypeNames = new Array(' . $dtNames . ');';
+echo 'var docTypeNames = [' . $dtNames . '];';
 ?>
 
 			var name = prompt("<?php echo g_l('weClass', '[newDocTypeName]'); ?>", "");

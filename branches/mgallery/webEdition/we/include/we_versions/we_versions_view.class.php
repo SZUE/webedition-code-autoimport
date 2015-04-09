@@ -395,7 +395,7 @@ function back(anzahl){
 }
 
 function setOrder(order){
-	columns = new Array("version", "modifierID", "timestamp");
+	columns = ["version", "modifierID", "timestamp"];
 	for(var i=0;i<columns.length;i++) {
 		if(order!=columns[i]) {
 			deleteArrow = document.getElementById(""+columns[i]+"");

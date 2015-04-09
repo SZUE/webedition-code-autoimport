@@ -183,7 +183,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			$Replaced = (trim($TextReplaced) != trim($Text));
 			$Text = trim($TextReplaced);
 			if($Replaced){
-				echo "top.frames.glossarycheck.addPredefinedRow('" . $Value['Text'] . "',new Array(),'" . $Value['Type'] . "','" . $Value['Title'] . "','" . $Value['Lang'] . "');\n";
+				echo "top.frames.glossarycheck.addPredefinedRow('" . $Value['Text'] . "',[],'" . $Value['Type'] . "','" . $Value['Title'] . "','" . $Value['Lang'] . "');\n";
 			}
 		}
 

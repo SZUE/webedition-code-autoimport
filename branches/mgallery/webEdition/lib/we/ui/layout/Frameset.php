@@ -104,6 +104,7 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	 * @return string
 	 */
 	protected function _renderHTML($isTopFrame = false, $appName = ''){
+		t_e('deprecated', 'usage of this class is deprecated');
 		if(!$isTopFrame || !$appName || we_app_Common::isJMenu($appName)){
 			$html = '<frameset' . $this->_getNonBooleanAttribs('id,framespacing,border,frameborder,rows,cols,onload') . '>';
 			foreach($this->_frames as $frame){
@@ -130,9 +131,9 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 				$names = array('', $this->_frames[1]['name'], $this->_frames[2]['name']);
 			}
 			$html = we_html_element::htmlDiv(array('style' => 'position: absolute; ' . $positioning[0] . ' left: 0px; right: 0px;'), $this->getHTMLCssMenu($appName)) .
-				($isToolbar ? we_html_element::htmlIFrame($names[1], $sources[1], 'position: absolute; ' . $positioning[1] . ' left: 0px; right: 0px; overflow: hidden;','','',false) : '') .
+				($isToolbar ? we_html_element::htmlIFrame($names[1], $sources[1], 'position: absolute; ' . $positioning[1] . ' left: 0px; right: 0px; overflow: hidden;', '', '', false) : '') .
 				we_html_element::htmlIFrame($names[2], $sources[2], 'position: absolute; ' . $positioning[2] . ' left: 0px; right: 0px; overflow: hidden;') .
-				we_html_element::htmlIFrame('cmd_' . $appName, 'about:blank', 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;','','',false);
+				we_html_element::htmlIFrame('cmd_' . $appName, 'about:blank', 'position: absolute; bottom: 0px; height: 1px; left: 0px; right: 0px; overflow: hidden;', '', '', false);
 		}
 		return $html;
 	}

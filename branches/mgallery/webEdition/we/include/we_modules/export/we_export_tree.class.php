@@ -139,7 +139,7 @@ function checkNode(imgName) {
 					}}
 					' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length=' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table].length-2;
 				}
-				else ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table]=new Array();
+				else ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.table]=[];
 
 				treeData[i].applylayout();
 				break;
@@ -178,16 +178,16 @@ function setHead(tab){
 	setTimeout(' . $this->topFrame . '.startTree,100);
 }
 
-var SelectedItems= new Array();
-SelectedItems["' . FILE_TABLE . '"]=new Array();' .
+var SelectedItems= [];
+SelectedItems["' . FILE_TABLE . '"]=[];' .
 				(defined('OBJECT_FILES_TABLE') ? (
-					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
-	SelectedItems["' . OBJECT_TABLE . '"]=new Array();
+					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=[];
+	SelectedItems["' . OBJECT_TABLE . '"]=[];
 	') : '') . '
 
-SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
+SelectedItems["' . TEMPLATES_TABLE . '"]=[];
 
-var openFolders= new Array();
+var openFolders= [];
 openFolders["' . FILE_TABLE . '"]="";' .
 				(defined('OBJECT_FILES_TABLE') ? ('
 openFolders["' . OBJECT_FILES_TABLE . '"]="";

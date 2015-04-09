@@ -205,7 +205,7 @@ function we_submitForm(url){
 $allVats = we_shop_vats::getAllShopVATs();
 
 $vatJavaScript = '
-	var allVats = new Object();
+	var allVats = {};
 	allVats["vat_0"] = {"id":"0","text":"' . g_l('modules_shop', '[vat][new_vat_name]') . '","vat":"19","standard":"0","country":"DE","province":"", "textProvince":""};';
 
 if($allVats){

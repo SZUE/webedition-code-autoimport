@@ -249,7 +249,7 @@ function getMouseOverDivs() {
 }
 
 function setOrder(order) {
-	columns = new Array("Text", "SiteTitle", "CreationDate", "ModDate");
+	columns = ["Text", "SiteTitle", "CreationDate", "ModDate"];
 	for (var i = 0; i < columns.length; i++) {
 		if (order != columns[i]) {
 			deleteArrow = document.getElementById(columns[i]);

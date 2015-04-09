@@ -198,16 +198,16 @@ var filename="";
 var export_to="server";
 var path="/";
 
-var SelectedItems= new Array();
-SelectedItems["' . FILE_TABLE . '"]=new Array();' .
+var SelectedItems= [];
+SelectedItems["' . FILE_TABLE . '"]=[];' .
 				(defined('OBJECT_FILES_TABLE') ? (
-					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=new Array();
-	SelectedItems["' . OBJECT_TABLE . '"]=new Array();
+					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=[];
+	SelectedItems["' . OBJECT_TABLE . '"]=[];
 	') : '') . '
 
-SelectedItems["' . TEMPLATES_TABLE . '"]=new Array();
+SelectedItems["' . TEMPLATES_TABLE . '"]=[];
 
-var openFolders= new Array();
+var openFolders= [];
 openFolders["' . FILE_TABLE . '"]="";' .
 				(defined('OBJECT_FILES_TABLE') ? ('
 openFolders["' . OBJECT_FILES_TABLE . '"]="";

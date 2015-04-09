@@ -128,7 +128,7 @@ function weToggleBox(name,textDown,textRight){
 
 function weGetCookieVariable(name){
 	var c = weGetCookie("we' . session_id() . '");
-	var vals = new Array();
+	var vals = [];
 	if(c != null){
 		var parts = c.split(/&/);
 		for(var i=0; i<parts.length; i++){
@@ -160,7 +160,7 @@ function weGetCookie(name){
 
 function weSetCookieVariable(name,value){
 	var c = weGetCookie("we' . session_id() . '");
-	var vals = new Array();
+	var vals = [];
 	if(c != null){
 		var parts = c.split(/&/);
 		for(var i=0; i<parts.length; i++){

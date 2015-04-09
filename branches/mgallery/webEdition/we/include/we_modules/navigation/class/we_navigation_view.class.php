@@ -611,7 +611,7 @@ function setFolderSelection(value){
 
 
 }
-var weNavTitleField = new Array();
+var weNavTitleField = [];
 ' . $_objFields;
 
 		$out.=we_html_element::jsElement($js);

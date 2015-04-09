@@ -201,7 +201,7 @@ $jsCode = "
 var _sSctInc='sct/sct';
 var _sCsvInit_;
 var _bPrev=false;
-_aLang=new Object();
+_aLang={};
 " . $jsLang . "
 function init(){
 	_fo=document.forms[0];
@@ -291,7 +291,7 @@ function unSelectMatchingOptions(obj,regex){
 }
 
 function sortSelect(obj){
-	var o=new Array();
+	var o=[];
 	if(!hasOptions(obj)){ return; }
 	for(var i=0;i<obj.options.length;i++){
 		o[o.length]=new Option(obj.options[i].text,obj.options[i].value,obj.options[i].defaultSelected,obj.options[i].selected);
@@ -350,7 +350,7 @@ function moveSelectedOptions(from,to){
 }
 
 function copySelectedOptions(from,to){
-	var options=new Object();
+	var options={};
 	if(hasOptions(to)){
 		for(var i=0;i<to.options.length;i++){
 			options[to.options[i].value]=to.options[i].text;
@@ -478,13 +478,13 @@ function removeOption(obj){
 }
 
 function getCsv(){
-	aSct=new Array();
-	aSctLen=new Array()
+	aSct=[];
+	aSctLen=[];
 	aSct[0]=_fo['list11'];
 	aSctLen[0]=aSct[0].length;
 	aSct[1]=_fo['list21'];
 	aSctLen[1]=aSct[1].length;
-	aValue=new Array();
+	aValue=[];
 	aValue[0]=aValue[1]='';
 	for(var i=0;i<2;i++){
 		for(var k=0;k<aSctLen[i];k++){

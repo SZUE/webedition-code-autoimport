@@ -87,7 +87,7 @@ function get_sel_elems(sel_box) {
 
 	for (i = 0; i < sel_box.length; i++) {
 		if (sel_box.options[i].selected === true) {
-			arr_sel = arr_sel.concat(new Array(String(sel_box.options[i].value)));
+			arr_sel = arr_sel.concat([String(sel_box.options[i].value)]);
 		}
 	}
 

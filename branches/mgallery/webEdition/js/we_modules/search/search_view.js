@@ -247,7 +247,6 @@ weSearch = {
 		this.elem = document.getElementById(picID);
 		this.elem.style.visibility = 'hidden';
 		this.elem.style.left = '-9999px';
-		//' . $showSelects . ' // FIXME: what's that?
 	},
 
 	updateElem: function(e) {
@@ -273,7 +272,6 @@ weSearch = {
 			else if((h-y)<250) {
 				this.elem.style.top = (y - elemHeight - 10) + 'px';
 			}
-			//' . $showSelects . ' // FIXME: what's that? it's nowhere filled
 		}
 	},
 
@@ -312,7 +310,7 @@ weSearch = {
 	},
 
 	setOrder: function(order, whichSearch){
-		var columns = new Array('Text', 'SiteTitle', 'CreationDate', 'ModDate'),
+		var columns = ['Text', 'SiteTitle', 'CreationDate', 'ModDate'],
 			deleteArrow, arrow, foo;
 
 		for(var i=0; i < columns.length;i++) {
@@ -709,7 +707,7 @@ weSearch = {
 	},
 
 	resetVersions: function() {
-		var checkboxes = new Array();
+		var checkboxes = [];
 		check = false;
 		var m = 0;
 		for(var i = 0; i < document.we_form.elements.length; i++) {

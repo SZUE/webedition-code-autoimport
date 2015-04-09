@@ -36,7 +36,7 @@ wePropertiesEdit = {
 	},
 
 	sortSelect: function(obj){
-		var o=new Array();
+		var o=[];
 		if(!this.hasOptions(obj)){ return; }
 		for(var i=0;i<obj.options.length;i++){
 			o[o.length]=new Option(obj.options[i].text,obj.options[i].value,obj.options[i].defaultSelected,obj.options[i].selected);
@@ -56,7 +56,7 @@ wePropertiesEdit = {
 
 	retrieveCsv: function(type){
 		type = type || 'document';
-		var mimeListTo = document.getElementById(type === 'document' ? 'mimeListTo' : 'classListTo'), 
+		var mimeListTo = document.getElementById(type === 'document' ? 'mimeListTo' : 'classListTo'),
 			mimeStr = '';
 
 		for(var i = 0; i < mimeListTo.options.length; i++){
@@ -74,7 +74,7 @@ weCollectionEdit = {
 	},
 
 	we_doc: {
-		ID: 0, 
+		ID: 0,
 		name: '',
 		remTable: '',
 		remCT: '',
@@ -142,7 +142,7 @@ weCollectionEdit = {
 
 		for(var i = 0; i < el.parentNode.childNodes.length; i++){
 			if(el.parentNode.childNodes[i].id == el.id){
-				pos = i; 
+				pos = i;
 				break;
 			}
 		}
@@ -325,7 +325,7 @@ weCollectionEdit = {
 					el.style.border = '1px solid red';
 				}
 				break;
-			default: 
+			default:
 				return;
 		}
 	},
@@ -373,7 +373,7 @@ weCollectionEdit = {
 					alert("the tree you try to drag from doesn't match your collection's table property");
 				}
 				break;
-			default: 
+			default:
 				return;
 		}
 	},

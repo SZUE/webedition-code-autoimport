@@ -180,7 +180,7 @@ if($maxsel){
 					continue;
 				}
 
-				current_sel = current_sel.concat(new Array(new Array(user_type, String(tarr[0]), String(tarr[1]))));
+				current_sel = current_sel.concat([[user_type, String(tarr[0]), String(tarr[1])]]);
 				opt = new Option(tarr[1], tarr[0], false, false);
 				document.usel.usel_currentsel.options[document.usel.usel_currentsel.length] = opt;
 			}
@@ -223,7 +223,7 @@ if($maxsel){
 					continue;
 				}
 
-				addrbook_sel = addrbook_sel.concat(new Array(current_sel[curr_offset]));
+				addrbook_sel = addrbook_sel.concat([current_sel[curr_offset]]);
 				opt = new Option(current_sel[curr_offset][2], current_sel[curr_offset][1], false, false);
 				document.usel.usel_addrbook.options[document.usel.usel_addrbook.length] = opt;
 			}
@@ -250,7 +250,7 @@ if($maxsel){
 					continue;
 				}
 
-				current_sel = current_sel.concat(new Array(addrbook_sel[addr_offset]));
+				current_sel = current_sel.concat([addrbook_sel[addr_offset]]);
 				opt = new Option(addrbook_sel[addr_offset][2], addrbook_sel[addr_offset][1], false, false);
 				document.usel.usel_currentsel.options[document.usel.usel_currentsel.length] = opt;
 			}

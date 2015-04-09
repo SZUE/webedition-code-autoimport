@@ -75,7 +75,7 @@ function we_ui_controls_Tree(treeId){
 		else {
 			var mParentNode = this.rootNode;
 		}
-		var classA = new Array();
+		var classA = [];
 		classA.push('selected');
 		if (published == 0) {
 			classA.push('unpublished');
@@ -166,7 +166,7 @@ function we_ui_controls_Tree(treeId){
 	this.markNodeStatus = function (id, status) {
 		var mNodeSpan = document.getElementById('spanText_' + this.id + '_' + id + '');
 		if (mNodeSpan) {
-			classB = new Array();
+			classB = [];
 			classA = mNodeSpan.className.split(" ");
 			for (var i = 0; i < classA.length; i++) {
 				if (classA[i] == 'selected' || classA[i] == 'unpublished') {

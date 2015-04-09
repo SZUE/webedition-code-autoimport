@@ -110,7 +110,7 @@ function getUrlParts(url) {
 	 u = paramArr.shift();
 	 param = (paramArr[0]) ? paramArr.join('?') : param;
 	 */
-	return new Array(u, anch, param);
+	return [u, anch, param];
 }
 
 function addClassesToList(list_id, specific_option) {
