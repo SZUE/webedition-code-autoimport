@@ -105,12 +105,12 @@ function modifyLayoutCols(iCols) {
 		while (k <= _iLayoutCols) {
 			var aSoc = getColumnAsoc('c_' + k);
 			var aSocLen = aSoc.length;
-			for (var i = 0; i < aSocLen; i++) {
+			for (i = 0; i < aSocLen; i++) {
 				createWidget(aSoc[i].type, 0, iCols);
 			}
 			k++;
 		}
-		for (var i = _iLayoutCols; i > iCols; i--) {
+		for (i = _iLayoutCols; i > iCols; i--) {
 			var asoc = getColumnAsoc('c_' + i);
 			for (var j = 0; j < asoc.length; j++) {
 				gel(asoc[j].id).parentNode.removeChild(gel(asoc[j].id));
@@ -160,12 +160,12 @@ function saveSettings() {
 	}
 	rss = [];
 	var topRssFeedsLen = _trf.length;
-	for (var i = 0; i < topRssFeedsLen; i++) {
+	for (i = 0; i < topRssFeedsLen; i++) {
 		rss[i] = [_trf[i][0], _trf[i][1]];
 	}
 	if (_bDgSave) {
 		var sDg = '';
-		for (var i = 0; i < aDat.length; i++) {
+		for (i = 0; i < aDat.length; i++) {
 			sDg += i + ":\n";
 			for (var j = 0; j < aDat[i].length; j++) {
 				sDg += "\t" + aDat[i][j] + "\n";
