@@ -351,7 +351,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 
 		//FIXME: use we_html_table
 		$rowHtml = '<table cellspacing="0" draggable="false">
-				<tr style="background-color:#f5f5f5;" height="34px">
+				<tr style="background-color:#f5f5f5;cursor:move;" height="34px">
 					<td width="60px" style="padding:0 0 0 20px;" class="weMultiIconBoxHeadline">Nr. <span id="label_' . $index . '">' . $index . '</span></td>
 					<td width="200px" style="padding:4px 40px 0 0;">' . $yuiSuggest->getHTML() . '</td>
 					<td width="" style="padding:4px 40px 0 0;">' . $rowControlls . '</td>
@@ -367,6 +367,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 				'ondrop' => 'weCollectionEdit.dropOnRow(event)',
 				'ondragover' => 'weCollectionEdit.allowDrop(event)',
 				'ondragenter' => 'weCollectionEdit.enterDrag(event)',
+				'ondragend' => 'weCollectionEdit.dragEnd(event)'
 				), $rowHtml);
 	}
 

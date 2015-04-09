@@ -89,6 +89,7 @@ weCollectionEdit = {
 	dd: {
 		dragID: 0,
 		dragEl: null,
+		dragNextsibling: null,
 		lastY: 0,
 		removed: false,
 		isDragRow: false,
@@ -334,13 +335,13 @@ weCollectionEdit = {
 		this.dd.lastY = evt.clientY;
 		this.dd.dragEl = evt.target;
 		this.dd.dragID = evt.target.id;
+		this.dd.dragNextsibling = evt.target.nextSibling;
 		this.dd.removed = false;
 		evt.dataTransfer.setData('text', 'moveRow,' + evt.target.id);
 	},
 
 	dropOnRow: function(evt) {
 		evt.preventDefault();
-
 		var data = evt.dataTransfer.getData("text").split(','),
 			el, index;
 
@@ -349,6 +350,11 @@ weCollectionEdit = {
 				this.dd.isDragRow = false;
 				document.getElementById('content_table').replaceChild(this.dd.dragEl, this.getSpacer());
 				this.repaintAndRetrieveCsv();
+				this.dd.dragEl.style.borderColor = 'green';
+				setTimeout(function(){
+					weCollectionEdit.dd.dragEl.style.borderColor = '#006db8';
+					weCollectionEdit.resetDdParams();
+				}, 200);
 				break;
 			case 'dragItem':
 			case 'dragFolder':
@@ -357,8 +363,6 @@ weCollectionEdit = {
 				el.style.border = '1px solid #006db8';
 
 				if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
-					
-					
 					if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
 						this.callForVerifiedItemsAndInsert(index, data[2]);
 					} else {
@@ -372,6 +376,34 @@ weCollectionEdit = {
 			default: 
 				return;
 		}
+	},
+
+	dragEnd: function(evt){
+		if(this.dd.isDragRow){
+			this.cancelDragRow();
+		}
+	},
+
+	cancelDragRow: function(){
+		document.getElementById('content_table').removeChild(this.getSpacer());
+		this.dd.dragEl.style.borderColor = 'red';
+		this.repaintAndRetrieveCsv();
+		document.getElementById('content_table').insertBefore(this.dd.dragEl, this.dd.dragNextsibling);
+		setTimeout(function(){
+			weCollectionEdit.dd.dragEl.style.borderColor = '#006db8';
+			weCollectionEdit.resetDdParams();
+		}, 300);
+	},
+
+	resetDdParams: function(){
+		this.dd.dragID = 0;
+		this.dd.dragEl = null;
+		this.dd.dragNextsibling = null;
+		this.dd.lastY = 0;
+		this.dd.removed = false;
+		this.dd.isDragRow = false;
+		this.dd.fillEmptyRows = false;
+		this.dd.spacer = null;
 	},
 
 	callForVerifiedItemsAndInsert: function (index, csvIDs, message) {
