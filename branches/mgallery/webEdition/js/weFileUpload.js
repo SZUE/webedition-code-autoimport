@@ -998,11 +998,11 @@ var weFileUpload = (function () {
 				var files = e.target.files;
 				var f;
 				if (files[0] instanceof File && !_.utils.contains(_.sender.preparedFiles, files[0])) {
-					f = _.controller.prepareFile(files[0]),
-									inputId = 'fileInput_uploadFiles_',
-									index = e.target.id.substring(inputId.length),
-									nameField = document.getElementById('name_uploadFiles_' + index),
-									sizeField = document.getElementById('size_uploadFiles_' + index);
+					f = _.controller.prepareFile(files[0]);
+					var inputId = 'fileInput_uploadFiles_',
+						index = e.target.id.substring(inputId.length),
+						nameField = document.getElementById('name_uploadFiles_' + index),
+						sizeField = document.getElementById('size_uploadFiles_' + index);
 
 					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
 					nameField.value = f.file.name;
