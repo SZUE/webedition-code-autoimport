@@ -480,7 +480,7 @@ function checkFooter(){
 			if($hasLock){
 				$DB_WE->unlock();
 			}
-			$s = unserialize($rec['Schedpro']);
+			$s = we_unserialize($rec['Schedpro']);
 			if(is_array($s)){
 				$s['lasttime'] = self::getPrevTimestamp($s, $now);
 				$tmp = array(

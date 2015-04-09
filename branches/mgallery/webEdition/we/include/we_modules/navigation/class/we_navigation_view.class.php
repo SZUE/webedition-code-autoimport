@@ -730,7 +730,7 @@ function submitForm() {
 				}
 
 				if($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS && $this->Model->TitleField != ""){
-					$_classFields = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
+					$_classFields = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
 					if(is_array($_classFields) && count($_classFields) > 0){
 						$_fieldsByNamePart = array();
 						foreach(array_keys($_classFields) as $_key){

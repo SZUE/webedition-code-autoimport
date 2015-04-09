@@ -76,7 +76,7 @@ class we_newsletter_group extends we_newsletter_base{
 
 	function load($groupID){
 		parent::load($groupID);
-		$this->aFilter = unserialize($this->Filter);
+		$this->aFilter = we_unserialize($this->Filter);
 		return true;
 	}
 
@@ -118,7 +118,7 @@ class we_newsletter_group extends we_newsletter_base{
 		if($this->aFilter){
 			return $this->aFilter;
 		}
-		$this->aFilter = unserialize($this->Filter);
+		$this->aFilter = we_unserialize($this->Filter);
 		return $this->aFilter;
 	}
 

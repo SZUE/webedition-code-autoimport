@@ -27,7 +27,7 @@ class we_selector_document extends we_selector_directory{
 	protected $titles = array();
 	protected $titleName = '';
 	protected $startPath;
-	protected $ctp = array(//FIXME: add movie/audio button
+	protected $ctp = array(//FIXME: add audio button
 		we_base_ContentTypes::IMAGE => "NEW_GRAFIK",
 		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME",
 		we_base_ContentTypes::FLASH => "NEW_FLASH",

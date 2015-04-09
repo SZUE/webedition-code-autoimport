@@ -240,7 +240,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 					}
 
 					if(isset($ev["dat"])){
-						$dat = @unserialize($ev["dat"]);
+						$dat = we_unserialize($ev["dat"]);
 						if(!is_array($dat) && $this->options["handle_document_linked"]){
 							$this->getExternalLinked($ev["dat"], $level);
 						}
@@ -253,7 +253,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 							$this->addToDepArray($level, $ev['dat']);
 						}
 					} else if(isset($ev["dat"])){
-						$dat = @unserialize($ev["dat"]);
+						$dat = we_unserialize($ev["dat"]);
 						if(is_array($dat)){
 							$elarray = $this->getDepFromArray($dat);
 							foreach($elarray as $elk => $elv){

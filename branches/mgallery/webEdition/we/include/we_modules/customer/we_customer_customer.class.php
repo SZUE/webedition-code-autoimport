@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_customer_customer extends weModelBase{
-
 	const NOPWD_CHANGE = '__WE__PWD_NO_CHANGE';
 	const ENCRYPTED_DATA = '**ENCRYPTED**';
 	const ENCRYPT_NONE = 0;
@@ -333,7 +331,7 @@ class we_customer_customer extends weModelBase{
 				$useSalt = 0;
 				$pwd = we_users_user::makeSaltedPassword($useSalt, '', $pass, 10);
 				return ($useSalt != we_users_user::SALT_CRYPT ?
-								$pass : $pwd);
+						$pass : $pwd);
 		}
 	}
 
@@ -401,17 +399,19 @@ class we_customer_customer extends weModelBase{
 		if(is_array($fields)){
 			return $fields;
 		}
-		$customerFields = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '',$GLOBALS['DB_WE']);
-		$customerFields = $customerFields ? unserialize($customerFields) : '';
-		if($customerFields){
-			$fields = array();
-			foreach($customerFields as $key => $value){
-				if(isset($value['encryption']) && $value['encryption']){
-					$fields[$key] = self::ENCRYPTED_DATA;
-				}
+		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $GLOBALS['DB_WE']));
+		$fields = array();
+		if(!$customerFields){
+			return $fields;
+		}
+		
+		foreach($customerFields as $key => $value){
+			if(isset($value['encryption']) && $value['encryption']){
+				$fields[$key] = self::ENCRYPTED_DATA;
 			}
 		}
-		return is_array($fields) ? $fields : array();
+
+		return $fields;
 	}
 
 }

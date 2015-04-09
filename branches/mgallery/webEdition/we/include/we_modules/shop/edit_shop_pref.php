@@ -102,7 +102,7 @@ $categorymode = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="sho
 
 $strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"');
 if($strFelder !== ''){
-	$CLFields = unserialize($strFelder);
+	$CLFields = we_unserialize($strFelder);
 } else {
 	$CLFields['stateField'] = '-';
 	$CLFields['stateFieldIsISO'] = 0;
@@ -201,7 +201,7 @@ foreach($extraIgnore as $cur){
 $_entry = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"');
 
 // ...
-if(($fields = @unserialize($_entry))){
+if(($fields = we_unserialize($_entry))){
 	// we have an array with following syntax:
 	// array ( 'customerFields' => array('fieldname ...',...)
 	//         'orderCustomerFields' => array('fieldname', ...) )

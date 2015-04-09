@@ -53,7 +53,7 @@ class we_navigation_items{
 		}
 
 		if(!is_array($navi->CustomerFilter)){
-			$navi->CustomerFilter = @unserialize($navi->CustomerFilter);
+			$navi->CustomerFilter = we_unserialize($navi->CustomerFilter);
 		}
 
 		return ($navi->LimitAccess ?
@@ -186,7 +186,7 @@ class we_navigation_items{
 
 		$navigationRulesStorage = we_navigation_cache::getCachedRule();
 		if($navigationRulesStorage !== false){
-			$this->currentRules = unserialize($navigationRulesStorage);
+			$this->currentRules = we_unserialize($navigationRulesStorage);
 		}
 		unset($navigationRulesStorage);
 

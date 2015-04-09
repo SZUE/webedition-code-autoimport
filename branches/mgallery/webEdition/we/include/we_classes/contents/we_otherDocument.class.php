@@ -55,8 +55,8 @@ class we_otherDocument extends we_binaryDocument{
 	function getHtml($dyn = false){
 		$_data = $this->getElement('data');
 		$this->html = ($this->ID || ($_data && !is_dir($_data) && is_readable($_data)) ?
-						'<p class="defaultfont"><b>Datei</b>: ' . $this->Text . '</p>' :
-						g_l('global', '[no_file_uploaded]'));
+				'<p class="defaultfont"><b>Datei</b>: ' . $this->Text . '</p>' :
+				g_l('global', '[no_file_uploaded]'));
 
 		return $this->html;
 	}
@@ -75,8 +75,8 @@ class we_otherDocument extends we_binaryDocument{
 	 */
 	protected function getMetaDataReader($force = false){
 		return ($this->Extension === '.pdf' ?
-						parent::getMetaDataReader(true) :
-						false);
+				parent::getMetaDataReader(true) :
+				false);
 	}
 
 	public function insertAtIndex(array $only = null, array $fieldTypes = null){
@@ -88,7 +88,7 @@ class we_otherDocument extends we_binaryDocument{
 		$text = '';
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
-			$foo = (isset($v['dat']) && substr($v['dat'], 0, 2) === 'a:') ? unserialize($v['dat']) : '';
+			$foo = (isset($v['dat']) ? we_unserialize($v['dat']) : '');
 			if(!is_array($foo)){
 				if(isset($v['type']) && $v['type'] === 'txt' && isset($v['dat'])){
 					$text .= ' ' . trim($v['dat']);
@@ -102,7 +102,7 @@ class we_otherDocument extends we_binaryDocument{
 			case '.xls':
 			case '.pps':
 			case '.ppt':
-				$content='';
+				$content = '';
 				break;
 			case '.rtf':
 				$content = $this->i_getDocument(1000000);
@@ -161,8 +161,8 @@ class we_otherDocument extends we_binaryDocument{
 
 	function i_descriptionMissing(){
 		return ($this->IsSearchable ?
-						($this->getElement('Description') === '') :
-						false);
+				($this->getElement('Description') === '') :
+				false);
 	}
 
 	public function setMetaDataFromFile($file){
@@ -186,7 +186,7 @@ class we_otherDocument extends we_binaryDocument{
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
 		if(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) &&
-				isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
+			isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 			foreach($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename){
 				$_binaryDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_BINARY_DATA_ID_' . $binaryName);
 
@@ -204,12 +204,12 @@ class we_otherDocument extends we_binaryDocument{
 							// move document from upload location to tmp dir
 							$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
 							move_uploaded_file(
-									$_FILES["we_ui_$formname"]['tmp_name'][$binaryName], $_SESSION[$_binaryDataId]['serverPath']);
+								$_FILES["we_ui_$formname"]['tmp_name'][$binaryName], $_SESSION[$_binaryDataId]['serverPath']);
 
 
 
 							$tmp_Filename = $binaryName . '_' . we_base_file::getUniqueId() . '_' . preg_replace(
-											'/[^A-Za-z0-9._-]/', '', $_FILES["we_ui_$formname"]['name'][$binaryName]);
+									'/[^A-Za-z0-9._-]/', '', $_FILES["we_ui_$formname"]['name'][$binaryName]);
 
 							if($binaryId){
 								$_SESSION[$_binaryDataId]['id'] = $binaryId;

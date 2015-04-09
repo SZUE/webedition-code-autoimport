@@ -78,13 +78,13 @@ class we_folder extends we_root{
 			if(we_base_request::_(we_base_request::BOOL, 'we_edit_weDocumentCustomerFilter')){
 				$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
 			} else if(isset($sessDat[3])){ // init webUser from session
-				$this->documentCustomerFilter = unserialize($sessDat[3]);
+				$this->documentCustomerFilter = we_unserialize($sessDat[3]);
 			}
 		}
 		$this->adjustEditPageNr();
 
 		if(isset($this->searchclassFolder_class) && !is_object($this->searchclassFolder_class)){
-			$this->searchclassFolder_class = unserialize($this->searchclassFolder_class);
+			$this->searchclassFolder_class = we_unserialize($this->searchclassFolder_class);
 		}
 		if(is_object($this->searchclassFolder_class)){
 			$this->searchclassFolder = $this->searchclassFolder_class;
@@ -327,7 +327,7 @@ class we_folder extends we_root{
 
 		$DB_WE->query('SELECT a.ID,b.DocumentObject FROM ' . $DB_WE->escape($this->Table) . ' a JOIN ' . TEMPORARY_DOC_TABLE . ' t ON a.ID=t.DocumentID WHERE a.Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND a.ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND t.DocTable="' . stripTblPrefix($this->Table) . '" AND t.Active=1');
 		while($DB_WE->next_record()){
-			$DocumentObject = unserialize($DB_WE->f('DocumentObject'));
+			$DocumentObject = we_unserialize($DB_WE->f('DocumentObject'));
 			$DocumentObject[0]['TriggerID'] = $this->TriggerID;
 
 			if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape(serialize($DocumentObject)) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1')){

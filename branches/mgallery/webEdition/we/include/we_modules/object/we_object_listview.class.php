@@ -247,7 +247,7 @@ class we_object_listview extends we_object_listviewBase{
 						) . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
 				}
 				if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && ($dat = $this->f(WE_SHOP_VARIANTS_ELEMENT_NAME))){
-					$ShopVariants = unserialize($dat);
+					$ShopVariants = we_unserialize($dat);
 					if(is_array($ShopVariants) && count($ShopVariants) > 0){
 						$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = count($ShopVariants);
 					}

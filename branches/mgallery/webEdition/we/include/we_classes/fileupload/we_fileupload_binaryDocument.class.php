@@ -473,8 +473,8 @@ div.we_file_drag_binDoc{
 		return $this->_checkFileType('', $fileName, 'ext');
 	}
 
-	private function _isFileMimeOk($mime){//FIXME:unused!
+/*	private function _isFileMimeOk($mime){
 		return $this->_checkFileType($mime, '', 'mime');
-	}
+	}*/
 
 }

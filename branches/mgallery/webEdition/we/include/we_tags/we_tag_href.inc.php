@@ -40,8 +40,8 @@ function we_tag_href($attribs){
 	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
 
 	if($GLOBALS['we_doc'] instanceof we_objectFile){
-		$hrefArr = $GLOBALS['we_doc']->getElement($name) ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
-		return (is_array($hrefArr) && $hrefArr ? we_document::getHrefByArray($hrefArr) : '');
+		$hrefArr = we_unserialize($GLOBALS['we_doc']->getElement($name));
+		return we_document::getHrefByArray($hrefArr);
 	}
 
 	$nint = $name . we_base_link::MAGIC_INT_LINK;

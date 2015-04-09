@@ -79,7 +79,7 @@ function we_isVarNotEmpty($attribs){
 					//FIXME: this makes no sense
 					$attribs['name'] = $match;
 					$attribs['_name_orig'] = $match_orig;
-					$data = unserialize($doc->getField($attribs, $type, true));
+					$data = we_unserialize($doc->getField($attribs, $type, true));
 					if(!is_array($data['objects'])){
 						$data['objects'] = array();
 					}

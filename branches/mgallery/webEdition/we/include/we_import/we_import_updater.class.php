@@ -324,12 +324,14 @@ class we_import_updater extends we_exim_XMLExIm{
 					if(is_array($dat)){
 						$this->updateArray($dat);
 						$object->elements[$ek]["dat"] = serialize($dat);
-					} else {
-						if(isset($object->ContentType) && ($object->ContentType == we_base_ContentTypes::WEDOCUMENT || $object->ContentType == we_base_ContentTypes::HTML)){
-							$source = $ev["dat"];
-							$this->updateSource($this->Patterns->wysiwyg_patterns['doc'], $source);
-							$this->updateSource($this->Patterns->wysiwyg_patterns['obj'], $source);
-							$object->elements[$ek]["dat"] = $source;
+					} elseif(isset($object->ContentType)){
+						switch($object->ContentType){
+							case we_base_ContentTypes::WEDOCUMENT:
+							case we_base_ContentTypes::HTML:
+								$source = $ev["dat"];
+								$this->updateSource($this->Patterns->wysiwyg_patterns['doc'], $source);
+								$this->updateSource($this->Patterns->wysiwyg_patterns['obj'], $source);
+								$object->elements[$ek]["dat"] = $source;
 						}
 					}
 				}

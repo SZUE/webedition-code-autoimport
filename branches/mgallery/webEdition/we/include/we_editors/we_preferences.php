@@ -115,7 +115,7 @@ function get_value($settingname){
 			if(isset($GLOBALS['configs']['user'][$settingname])){
 				if(isset($all[1])){
 					//handle subkey
-					$tmp = @unserialize(isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
+					$tmp = we_unserialize(isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);
 					return isset($tmp[$all[1]]) ? $tmp[$all[1]] : 0;
 				}
 				return (isset($_SESSION['prefs'][$settingname]) ? $_SESSION['prefs'][$settingname] : $GLOBALS['configs']['user'][$settingname][0]);

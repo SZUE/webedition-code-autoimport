@@ -111,7 +111,7 @@ function we_tag_block($attribs){
 	}
 
 	if($list && is_string($list) && $list{0} === 'a'){
-		$list = unserialize($list);
+		$list = we_unserialize($list);
 		if(is_array($list) && count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!
 			$list = array_values($list);

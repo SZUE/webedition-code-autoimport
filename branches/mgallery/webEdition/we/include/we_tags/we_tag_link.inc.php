@@ -31,7 +31,7 @@ function we_tag_link($attribs, $content){
 			return $GLOBALS['we']['ll']->getLinktag($link, $attribs) . ($only ? '' : $linkcontent . '</a>');
 		}
 		return $linkcontent;
-	}elseif(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
+	} elseif(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
@@ -51,7 +51,7 @@ function we_tag_link($attribs, $content){
 
 	$attribs = removeAttribs($attribs, array('text', 'id', 'imageid', 'to', 'nameto'));
 	$data = $GLOBALS['we_doc']->getElement($name);
-	$link = $data && $data{0} === 'a' ? unserialize($GLOBALS['we_doc']->getElement($name)) : array();
+	$link = we_unserialize($GLOBALS['we_doc']->getElement($name));
 
 	if(!$GLOBALS['we_editmode']){
 		return $GLOBALS['we_doc']->getField($attribs, 'link');
@@ -92,9 +92,9 @@ function we_tag_link($attribs, $content){
 		$delbut = we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
 
 		return we_html_button::create_button_table(
-						array(
-					($startTag ? : '') . ($content ? : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
-						), 5);
+				array(
+				($startTag ? : '') . ($content ? : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
+				), 5);
 	}
 
 	return '';

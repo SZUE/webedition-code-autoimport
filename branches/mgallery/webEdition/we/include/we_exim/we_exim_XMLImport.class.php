@@ -544,7 +544,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			}
 			$object->Owners = implode(',',$newowners);
 			if(isset($object->OwnersReadOnly)){
-				$readonly = unserialize($object->OwnersReadOnly);
+				$readonly = we_unserialize($object->OwnersReadOnly);
 				$readonly_new = array();
 				if(is_array($readonly)){
 					foreach($readonly as $key => $value){

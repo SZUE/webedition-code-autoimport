@@ -184,15 +184,12 @@ class we_navigation_navigation extends weModelBase{
 			}
 			$this->Categories = $this->convertToPaths($this->Categories, CATEGORY_TABLE);
 
-			$this->Sort = $this->Sort ? @unserialize($this->Sort) : '';
+			$this->Sort = we_unserialize($this->Sort);
 
 			if(!$this->IsFolder){
 				$this->Charset = $this->findCharset($this->ParentID);
 			}
-			$this->Attributes = @unserialize($this->Attributes);
-			if(!is_array($this->Attributes)){
-				$this->Attributes = array();
-			}
+			$this->Attributes = we_unserialize($this->Attributes);
 
 			if(defined('CUSTOMER_TABLE')){
 				if(!is_array($this->Customers)){
@@ -205,10 +202,7 @@ class we_navigation_navigation extends weModelBase{
 					$this->WhiteList = makeArrayFromCSV($this->WhiteList);
 				}
 
-				$this->CustomerFilter = @unserialize($this->CustomerFilter);
-				if(!is_array($this->CustomerFilter)){
-					$this->CustomerFilter = array();
-				}
+				$this->CustomerFilter = we_unserialize($this->CustomerFilter);
 			}
 		}
 		$this->ContentType = 'weNavigation';
@@ -256,7 +250,7 @@ class we_navigation_navigation extends weModelBase{
 
 		$_preSort = $this->Sort;
 		if(is_array($this->Sort)){
-			$this->Sort = serialize($this->Sort);
+			$this->Sort = $this->Sort ? serialize($this->Sort) : '';
 		}
 		$this->setPath();
 
@@ -320,7 +314,7 @@ class we_navigation_navigation extends weModelBase{
 			$this->Customers = $_cus_paths;
 			$this->WhiteList = $_wl_paths;
 			$this->BlackList = $_bl_paths;
-			$this->CustomerFilter = unserialize($this->CustomerFilter);
+			$this->CustomerFilter = we_unserialize($this->CustomerFilter);
 		}
 		$this->Name = $this->Text;
 		if(!$rebuild){
@@ -653,7 +647,7 @@ class we_navigation_navigation extends weModelBase{
 				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn-1 WHERE (Ordn BETWEEN ' . $this->Ordn . ' AND ' . $newPos . ') AND ParentID=' . $this->ParentID . ' AND ID!=' . $this->ID);
 			}
 
-			$this->Ordn =$newPos;
+			$this->Ordn = $newPos;
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 		}
@@ -670,7 +664,7 @@ class we_navigation_navigation extends weModelBase{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -682,7 +676,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
@@ -782,7 +776,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 
 		if(!is_array($this->Attributes)){
-			$this->Attributes = unserialize($this->Attributes);
+			$this->Attributes = we_unserialize($this->Attributes);
 		}
 		$_path = str_replace(' ', '%20', trim($_path)) .
 			($_param ? ((strpos($_path, '?') === false ? '?' : '&amp;') . $_param) : '');
@@ -801,7 +795,7 @@ class we_navigation_navigation extends weModelBase{
 		return $_path;
 	}
 
-		function findCharset($pid){
+	function findCharset($pid){
 		$_charset = '';
 		$_count = 0;
 		$_db = new DB_WE();
@@ -846,7 +840,7 @@ class we_navigation_navigation extends weModelBase{
 	function initByRawData($data){
 		foreach($data as $key => $value){
 			if(!is_numeric($key)){
-				$this->$key = in_array($key, $this->serializedFields) ? @unserialize($value) : $value;
+				$this->$key = in_array($key, $this->serializedFields) ? we_unserialize($value) : $value;
 			}
 		}
 	}

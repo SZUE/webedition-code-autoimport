@@ -321,7 +321,7 @@ abstract class we_root extends we_class{
 
 	function formOwners($canChange = true){
 		$owners = makeArrayFromCSV($this->Owners);
-		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
+		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
 
 		$content = '<table style="border-spacing: 0px;border-style:none;width:370px;" cellpadding="0">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
@@ -428,7 +428,7 @@ abstract class we_root extends we_class{
 		if(!$this->userHasPerms()){
 			return false;
 		}
-		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
+		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
 		$readers = array();
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1){
@@ -975,7 +975,7 @@ abstract class we_root extends we_class{
 			$type = $this->DB_WE->f('Type');
 
 			if($type === 'formfield'){ // Artjom garbage fix!
-				$this->elements[$Name] = unserialize($this->DB_WE->f('Dat'));
+				$this->elements[$Name] = we_unserialize($this->DB_WE->f('Dat'));
 			} elseif($this->i_isElement($Name)){
 				foreach($this->DB_WE->Record as $k => $v){
 					if(!in_array($k, $filter) && !is_numeric($k)){
@@ -1238,7 +1238,7 @@ abstract class we_root extends we_class{
 						}
 						break;
 					case 'link':
-						if(isset($v['dat']) && ($link = unserialize($v['dat']))){
+						if(isset($v['dat']) && ($link = we_unserialize($v['dat']))){
 							if($link['type'] === 'int' && $link['id']){
 								$this->FileLinks[] = $link['id'];
 							}
@@ -1254,8 +1254,8 @@ abstract class we_root extends we_class{
 				}
 
 				// workaround for missing type='link'
-				// => FIXME: to throw this out fix type='link' for we:link 
-				if(isset($v['type']) && (!$v['type'] || $v['type'] === 'txt') && ($dat = @unserialize($v['dat'])) !== false && isset($dat['href'])){
+				// => FIXME: to throw this out fix type='link' for we:link
+				if(isset($v['type']) && (!$v['type'] || $v['type'] === 'txt') && ($dat = we_unserialize($v['dat'])) && isset($dat['href'])){
 					if(isset($dat['type']) && $dat['type'] === 'int' && $dat['id']){
 						$this->FileLinks[] = $dat['id'];
 					}

@@ -667,7 +667,7 @@ this.selectedIndex = 0;' .
 
 	//FIXME: remove deprecated
 	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = ''){
-		t_e('deprecated');
+		t_e('deprecated','call of deprecated function');
 		echo self::getHtmlTop($title, $charset, $doctype);
 	}
 

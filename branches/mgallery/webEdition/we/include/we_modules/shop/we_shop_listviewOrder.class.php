@@ -118,40 +118,40 @@ class we_shop_listviewOrder extends we_listview_base{
 	function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
-			$strSerialOrder = unserialize($this->DB_WE->Record['strSerialOrder']);
+			$strSerialOrder = we_unserialize($this->DB_WE->Record['strSerialOrder']);
 			unset($this->DB_WE->Record['strSerialOrder']);
-			if(is_array($strSerialOrder)){
-				if(is_array($strSerialOrder['we_sscf'])){
-					foreach($strSerialOrder['we_sscf'] as $key => &$value){
-						$this->DB_WE->Record[$key] = $value;
-					}
-					unset($value);
+
+			if(is_array($strSerialOrder['we_sscf'])){
+				foreach($strSerialOrder['we_sscf'] as $key => &$value){
+					$this->DB_WE->Record[$key] = $value;
 				}
-				if(is_array($strSerialOrder['we_shopPriceShipping'])){
-					foreach($strSerialOrder['we_shopPriceShipping'] as $key => &$value){
-						$this->DB_WE->Record['Shipping_' . $key] = $value;
-					}
-					unset($value);
-				}
-				if(is_array($strSerialOrder['we_shopCustomer'])){
-					foreach($strSerialOrder['we_shopCustomer'] as $key => &$value){
-						if(!is_numeric($key)){
-							$this->DB_WE->Record['Customer_' . $key] = $value;
-						}
-					}
-					unset($value);
-				}
-				if(isset($strSerialOrder['we_shopPriceIsNet'])){
-					$this->DB_WE->Record['shopPriceIsNet'] = $strSerialOrder['we_shopPriceIsNet'];
-				}
-				if(isset($strSerialOrder['we_shopCalcVat'])){
-					$this->DB_WE->Record['shopCalcVat'] = $strSerialOrder['we_shopCalcVat'];
-				}
-				//Fix #7993
-				if(isset($strSerialOrder['we_shopPricename'])){
-					$this->DB_WE->Record['shopPricename'] = $strSerialOrder['we_shopPricename'];
-				}
+				unset($value);
 			}
+			if(is_array($strSerialOrder['we_shopPriceShipping'])){
+				foreach($strSerialOrder['we_shopPriceShipping'] as $key => &$value){
+					$this->DB_WE->Record['Shipping_' . $key] = $value;
+				}
+				unset($value);
+			}
+			if(is_array($strSerialOrder['we_shopCustomer'])){
+				foreach($strSerialOrder['we_shopCustomer'] as $key => &$value){
+					if(!is_numeric($key)){
+						$this->DB_WE->Record['Customer_' . $key] = $value;
+					}
+				}
+				unset($value);
+			}
+			if(isset($strSerialOrder['we_shopPriceIsNet'])){
+				$this->DB_WE->Record['shopPriceIsNet'] = $strSerialOrder['we_shopPriceIsNet'];
+			}
+			if(isset($strSerialOrder['we_shopCalcVat'])){
+				$this->DB_WE->Record['shopCalcVat'] = $strSerialOrder['we_shopCalcVat'];
+			}
+			//Fix #7993
+			if(isset($strSerialOrder['we_shopPricename'])){
+				$this->DB_WE->Record['shopPricename'] = $strSerialOrder['we_shopPricename'];
+			}
+
 			//$this->DB_WE->Record['CustomerID'] = $this->DB_WE->Record['IntCustomerID'];
 			$this->DB_WE->Record['we_cid'] = $this->DB_WE->Record['CustomerID'];
 			//$this->DB_WE->Record['OrderID'] = $this->DB_WE->Record['IntOrderID'];

@@ -173,7 +173,7 @@ class we_exim_contentProvider{
 		}
 
 		if($data !== self::CODING_OLD){//all arrays, strings & objects can be changed due to line-ending conversion
-			return preg_match('!(^a:\d+:{)|(^s:\d+:)|(^O:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
+			return preg_match('!(^[asO]:\d+:)|([\\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 		}
 //FIXME: remove the following code in 6.5
 		$encoded = array(
@@ -376,7 +376,7 @@ class we_exim_contentProvider{
 		switch($classname){
 			case 'we_object':
 				$tableInfo = self::objectMetadata(OBJECT_X_TABLE . $object->ID);
-				$defvalues = unserialize($object->DefaultValues);
+				$defvalues = we_unserialize($object->DefaultValues);
 				foreach($tableInfo as $cur){
 					$fieldname = $cur['name'];
 					if(isset($defvalues[$fieldname])){

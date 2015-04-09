@@ -39,8 +39,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 
 		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs
 		$aTrf = we_base_preferences::getUserPref('cockpit_rss');
-		$aDat = ($aDatTblPref ? @unserialize($aDatTblPref) : $aCfgProps)? : $aCfgProps;
-		$aTrf = $aTrf ? @unserialize($aTrf) : $aTopRssFeeds;
+		$aDat = we_unserialize($aDatTblPref)? : $aCfgProps;
+		$aTrf = we_unserialize($aTrf)? : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
@@ -208,13 +208,13 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			}
 			if(file_exists(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php')){
 				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
-				$$aProps[0] = we_base_widget::create('m_' . $iCurrId, $aProps[0], (isset($oTblCont)?$oTblCont->getHtml():$oTblDiv), $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
+				$$aProps[0] = we_base_widget::create('m_' . $iCurrId, $aProps[0], (isset($oTblCont) ? $oTblCont->getHtml() : $oTblDiv), $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $$aProps[0]);
 			}
 		}
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
-				$s2 .
-				we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>';
+			$s2 .
+			we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>';
 		if($iDatLen > $iCurrCol){
 			$s1 .= '<td id="spacer_' . $iCurrCol . '" style="width: 5px;"></td>';
 		}
@@ -222,13 +222,13 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . '_collapse">' .
-				we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
-				($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
+			we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
+			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
 	$oTblWidgets = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "height" => "98%"), 1, 1);
 	$oTblWidgets->setCol(0, 0, array("valign" => "top", "width" => "100%", "align" => "left"), we_html_element::htmlDiv(
-					array("id" => "modules"), '<table id="le_tblWidgets" cellspacing="0" border="0"><tr id="rowWidgets">' . $s1 . '</tr></table>')
+			array("id" => "modules"), '<table id="le_tblWidgets" cellspacing="0" border="0"><tr id="rowWidgets">' . $s1 . '</tr></table>')
 	);
 
 	// this is the clone widget
@@ -236,21 +236,21 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 
 	echo
 	we_html_element::htmlBody(
-			array(
+		array(
 		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=gel('le_tblWidgets');initDragWidgets();",
-			), we_html_element::htmlForm(
-					array("name" => "we_form"
-					), we_html_element::htmlHiddens(array(
-						"we_cmd[0]" => "save",
-						"we_cmd[1]" => "",
-						"we_cmd[2]" => ""))
-			) .
-			we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), we_html_element::htmlImg(
-							array("src" => IMAGE_DIR . "pd/busy.gif",))
-			) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
-			$oTblWidgets->getHtml() .
-			we_base_widget::getJs() .
-			we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
+		), we_html_element::htmlForm(
+			array("name" => "we_form"
+			), we_html_element::htmlHiddens(array(
+				"we_cmd[0]" => "save",
+				"we_cmd[1]" => "",
+				"we_cmd[2]" => ""))
+		) .
+		we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), we_html_element::htmlImg(
+				array("src" => IMAGE_DIR . "pd/busy.gif",))
+		) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
+		$oTblWidgets->getHtml() .
+		we_base_widget::getJs() .
+		we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
 	);
 } else { // no right to see cockpit!!!
 	echo
@@ -273,14 +273,14 @@ _EditorFrame.initEditorFrameData(
 );') .
 	'</head>' .
 	we_html_element::htmlBody(
-			array(
+		array(
 		'class' => 'noHome',
 		"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
-			), we_html_element::htmlDiv(
-					array("class" => "defaultfont errorMessage", "style" => "width: 400px;"), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
-							we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
-									we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
-							we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
+		), we_html_element::htmlDiv(
+			array("class" => "defaultfont errorMessage", "style" => "width: 400px;"), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
+				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
+					we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
+				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
 ?>
 <iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>

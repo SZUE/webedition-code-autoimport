@@ -169,7 +169,7 @@ class we_shop_statusMails{
 		));
 
 		if($zw2){
-			$zw2 = unserialize($zw2);
+			$zw2 = we_unserialize($zw2);
 			foreach($zw->FieldsHidden as $key => &$value){
 				if(isset($zw2->FieldsHidden[$key])){
 					$value = $zw2->FieldsHidden[$key];
@@ -345,7 +345,7 @@ class we_shop_statusMails{
 		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(serialize($this)) . '",strDateiname="weShopStatusMails"')){
 			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
 			if($strFelder !== ''){
-				$CLFields = unserialize($strFelder);
+				$CLFields = we_unserialize($strFelder);
 				$CLFields['languageField'] = $this->LanguageData['languageField'];
 				$CLFields['languageFieldIsISO'] = $this->LanguageData['languageFieldIsISO'];
 				$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(serialize($CLFields)) . '", strDateiname ="shop_CountryLanguage"');

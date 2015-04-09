@@ -259,7 +259,7 @@ function back(id) {
 	public static function handleData($logId, $start, $anzahl){
 		$hash = getHash('SELECT data,typ FROM `' . VERSIONSLOG_TABLE . '` WHERE ID=' . intval($logId), new DB_WE());
 		$action = $hash['typ'];
-		$data = unserialize($hash['data']);
+		$data = we_unserialize($hash['data']);
 
 		$out = '';
 
@@ -267,7 +267,7 @@ function back(id) {
 			case we_versions_log::VERSIONS_DELETE:
 			case we_versions_log::VERSIONS_RESET:
 
-				$out .= '<table cellpadding="3" cellspacing="0" border="0" style="width:100%;border:1px solid #BBBAB9;" class="middlefont">' .
+				$out = '<table cellpadding="3" cellspacing="0" border="0" style="width:100%;border:1px solid #BBBAB9;" class="middlefont">' .
 					'<thead><tr style="background-color:#dddddd;font-weight:bold;"><td>' .
 					we_html_tools::getPixel(1, 1) . '</td><td>' .
 					g_l('logging', '[ID]') . '</td><td>' .

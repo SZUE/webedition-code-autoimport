@@ -313,7 +313,7 @@ function we_cmd() {
 
 		// Get Country and Lanfield Data
 		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $this->db);
-		$this->CLFields = ($strFelder ? unserialize($strFelder) : array(
+		$this->CLFields = (we_unserialize($strFelder)? : array(
 				'stateField' => '-',
 				'stateFieldIsISO' => 0,
 				'languageField' => '-',
@@ -358,7 +358,7 @@ function we_cmd() {
 		// Get Customer data
 		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
 
-		if(($fields = @unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
+		if(($fields = we_unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
 			// we have an array with following syntax:
 			// array ( 'customerFields' => array('fieldname ...',...)
 			//         'orderCustomerFields' => array('fieldname', ...) )
@@ -394,13 +394,10 @@ function we_cmd() {
 				if($this->db->num_rows() == 1){
 					$this->db->next_record();
 
-					$strSerial = $this->db->f('strSerial');
-					$tmpDoc = @unserialize($strSerial);
+					$tmpDoc = we_unserialize($this->db->f('strSerial'));
 					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
 
 					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(serialize($tmpDoc)) . '" WHERE IntID=' . $article);
-					unset($strSerial);
-					unset($tmpDoc);
 				}
 			}
 		}
@@ -461,7 +458,7 @@ function we_cmd() {
 			if($ArticleId){
 				// first unserialize order-data
 				if($SerialOrder[0]){
-					$orderData = @unserialize($SerialOrder[0]);
+					$orderData = we_unserialize($SerialOrder[0]);
 					$customCartFields = isset($orderData[WE_SHOP_CART_CUSTOM_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOM_FIELD] : array();
 				} else {
 					$orderData = array();
@@ -616,7 +613,7 @@ function we_cmd() {
 						// this should not happen any more
 						we_shop_Basket::getserial($currentArticle, we_shop_shop::DOCUMENT) :
 						// output if $Serial[$i] is not empty. This is when a user ordered an article online
-						@unserialize($Serial[$i]));
+						we_unserialize($Serial[$i]));
 
 				if($shopArticleObject === false){
 					t_e('Error in DB-data', $currentArticle, $Serial[$i]);
@@ -1026,7 +1023,7 @@ function submitForm() {
 					unset($customFieldsTmp);
 
 					// shop vats must be calculated
-					$orderArray = unserialize($_strSerialOrder);
+					$orderArray = we_unserialize($_strSerialOrder);
 					$standardVat = we_shop_vats::getStandardShopVat();
 
 					if(we_shop_category::isCategoryMode()){
@@ -1272,7 +1269,7 @@ function submitForm() {
 
 				$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
-				$serialOrder = @unserialize($strSerialOrder);
+				$serialOrder = we_unserialize($strSerialOrder);
 				$serialOrder[WE_SHOP_CALC_VAT] = we_base_request::_(we_base_request::INT, 'pay', 0);
 
 				// update all orders with this orderId
@@ -1293,7 +1290,7 @@ function submitForm() {
 
 					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
-					$serialOrder = @unserialize($strSerialOrder);
+					$serialOrder = we_unserialize($strSerialOrder);
 					unset($serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']]);
 
 					// update all orders with this orderId
@@ -1335,7 +1332,7 @@ function submitForm() {
 				if(isset($_REQUEST['cartfieldname']) && $_REQUEST['cartfieldname']){
 
 					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-					$serialOrder = @unserialize($strSerialOrder);
+					$serialOrder = we_unserialize($strSerialOrder);
 
 					$val = $serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] ? : '';
 
@@ -1373,7 +1370,7 @@ function submitForm() {
 				if(isset($_REQUEST['cartfieldname']) && $_REQUEST['cartfieldname']){
 
 					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-					$serialOrder = @unserialize($strSerialOrder);
+					$serialOrder = we_unserialize($strSerialOrder);
 					$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = htmlentities($_REQUEST['cartfieldvalue']);
 					$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = $_REQUEST['cartfieldvalue'];
 
@@ -1412,7 +1409,7 @@ function submitForm() {
 
 				if($strSerialOrder){
 
-					$serialOrder = @unserialize($strSerialOrder);
+					$serialOrder = we_unserialize($strSerialOrder);
 
 					$shippingCost = $serialOrder[WE_SHOP_SHIPPING]['costs'];
 					$shippingIsNet = $serialOrder[WE_SHOP_SHIPPING]['isNet'];
@@ -1459,7 +1456,7 @@ function submitForm() {
 			case 'save_shipping_cost':
 
 				$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-				$serialOrder = @unserialize($strSerialOrder);
+				$serialOrder = we_unserialize($strSerialOrder);
 
 				if($serialOrder){
 
@@ -1609,7 +1606,7 @@ function submitForm() {
 				// just get this order and save this userdata in there.
 				$_strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
-				$_orderData = @unserialize($_strSerialOrder);
+				$_orderData = we_unserialize($_strSerialOrder);
 				$_customer = $_REQUEST['weCustomerOrder'];
 				$_orderData[WE_SHOP_CART_CUSTOMER_FIELD] = $_customer;
 
@@ -1700,7 +1697,7 @@ attribs["tooltip"]="";' .
 
 	function processVariables(){
 		if(isset($_SESSION['weS']['raw_session'])){
-			$this->raw = unserialize($_SESSION['weS']['raw_session']);
+			$this->raw = we_unserialize($_SESSION['weS']['raw_session']);
 		}
 
 		if(is_array($this->raw->persistent_slots)){
@@ -1735,7 +1732,7 @@ attribs["tooltip"]="";' .
 		// get Customer
 		$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerId), $this->db, MYSQL_ASSOC);
 
-		$orderData = @unserialize($tmp);
+		$orderData = we_unserialize($tmp);
 		$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : array());
 
 		if(empty($strFelder)){ //used only if edit customer data is selected!!!

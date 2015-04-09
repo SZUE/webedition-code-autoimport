@@ -98,34 +98,6 @@ abstract class we_updater{
 		}
 	}
 
-	private static function fix_user($db){
-		//FIXME: since this is done ever and ever, remove this after 6.4.3
-		$db2 = new DB_WE();
-		$db->query('SELECT ID,username,ParentID,Path FROM ' . USER_TABLE);
-		while($db->next_record()){
-			update_time_limit(30);
-			$id = $db->f('ID');
-			$pid = $db->f('ParentID');
-			$path = '/' . $db->f("username");
-			while($pid > 0){
-				$db2->query('SELECT username,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid));
-				if($db2->next_record()){
-					$path = '/' . $db2->f("username") . $path;
-					$pid = $db2->f("ParentID");
-				} else {
-					$pid = 0;
-				}
-			}
-			if($db->f('Path') != $path){
-				$db2->query('UPDATE ' . USER_TABLE . " SET Path='" . $db2->escape($path) . "' WHERE ID=" . intval($id));
-			}
-		}
-		$db->query('UPDATE ' . USER_TABLE . ' SET Text=username');
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user_alias.gif' WHERE Type=" . we_users_user::TYPE_ALIAS);
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='usergroup.gif' WHERE Type=" . we_users_user::TYPE_USER_GROUP);
-		$db->query('UPDATE ' . USER_TABLE . " SET Icon='user.gif' WHERE Type=" . we_users_user::TYPE_USER);
-	}
-
 	private static function updateUnindexedCols($tab, $col){
 		global $DB_WE;
 		$DB_WE->query('SHOW COLUMNS FROM ' . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "'");
@@ -142,7 +114,6 @@ abstract class we_updater{
 
 	public static function updateUsers($DB_WE = null){ // from 6300/update6300.php
 		$DB_WE = $DB_WE? : new DB_WE();
-		self::fix_user($DB_WE);
 
 		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
 		$users = $DB_WE->getAll(true);

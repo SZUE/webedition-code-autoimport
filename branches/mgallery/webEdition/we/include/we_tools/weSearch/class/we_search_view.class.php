@@ -669,7 +669,7 @@ weSearch.g_l = {
 
 	function getSearchDialogCheckboxesAdvSearch(){
 		if(!is_array($this->Model->search_tables_advSearch)){
-			$this->Model->search_tables_advSearch = unserialize($this->Model->search_tables_advSearch);
+			$this->Model->search_tables_advSearch = we_unserialize($this->Model->search_tables_advSearch);
 			if(is_array($this->Model->search_tables_advSearch)){
 				//tablenames are hardcoded in the tblsearchtool, get the real tablenames if they have a prefix
 				foreach($this->Model->search_tables_advSearch as $k => $v){
@@ -862,7 +862,7 @@ weSearch.g_l = {
 					unset($_SESSION['weS']['weSearch']["keyword"]);
 				}
 				if(!is_array($this->Model->searchDocSearch)){
-					$this->Model->searchDocSearch = unserialize($this->Model->searchDocSearch);
+					$this->Model->searchDocSearch = we_unserialize($this->Model->searchDocSearch);
 				}
 				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchDocSearch) && is_array($this->Model->searchDocSearch) && isset($this->Model->searchDocSearch[0]) ? $this->Model->searchDocSearch[0] : ''), "", "", "search", 380);
 				break;
@@ -890,7 +890,7 @@ weSearch.g_l = {
 					unset($_SESSION['weS']['weSearch']["keyword"]);
 				}
 				if(!is_array($this->Model->searchTmplSearch)){
-					$this->Model->searchTmplSearch = unserialize($this->Model->searchTmplSearch);
+					$this->Model->searchTmplSearch = we_unserialize($this->Model->searchTmplSearch);
 				}
 				$searchInput = we_html_tools::htmlTextInput($searchTextName, 30, (isset($this->Model->searchTmplSearch) && is_array($this->Model->searchTmplSearch) && isset($this->Model->searchTmplSearch[0]) ? $this->Model->searchTmplSearch[0] : ''), "", "", "search", 380);
 				break;
@@ -926,7 +926,7 @@ weSearch.g_l = {
 				}
 
 				if(!is_array($this->Model->searchMediaSearch)){
-					$this->Model->searchMediaSearch = unserialize($this->Model->searchMediaSearch);
+					$this->Model->searchMediaSearch = we_unserialize($this->Model->searchMediaSearch);
 				}
 
 				$searchInput = we_html_element::htmlHidden($searchFieldName, 'keyword') .
@@ -1503,7 +1503,7 @@ weSearch.g_l = {
 			} elseif($_result[$k]['docTable'] == FILE_TABLE){
 				$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND DocTable = "tblFile" AND Active = 1', 'DocumentObject', $DB_WE);
 				if(!empty($tempDoc)){
-					$tempDoc = unserialize($tempDoc);
+					$tempDoc = we_unserialize($tempDoc);
 					if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
 						$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
 					}

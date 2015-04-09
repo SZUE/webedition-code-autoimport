@@ -256,7 +256,7 @@ switch($_SESSION['prefs']['editorMode']){
 				}
 
 
-				$tmp = @unserialize($_SESSION['prefs']['editorCodecompletion']);
+				$tmp = we_unserialize($_SESSION['prefs']['editorCodecompletion']);
 				$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
 				$settings = http_build_query(array('settings' => is_array($tmp) ? $tmp : array()));
 

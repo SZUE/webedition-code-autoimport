@@ -74,7 +74,7 @@ function loadData() {
 				if($this->db->f('Type') == we_users_user::TYPE_USER_GROUP){
 					$jsCode .= "menuDaten.add(new dirEntry('folder'," . $this->db->f('ID') . ',' . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
 				} else {
-					$p = unserialize($this->db->f("Permissions"));
+					$p = we_unserialize($this->db->f("Permissions"));
 					$jsCode .= "menuDaten.add(new urlEntry('" . ($this->db->f('Type') == we_users_user::TYPE_ALIAS ? 'user_alias.gif' : 'user.gif') . "'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "','" . ($this->db->f("Type") == we_users_user::TYPE_ALIAS ? 'alias' : 'user') . "','" . USER_TABLE . "','" . (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"]) . "','" . $this->db->f("LoginDenied") . "'));";
 				}
 			}

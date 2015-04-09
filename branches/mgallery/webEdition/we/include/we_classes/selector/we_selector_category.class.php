@@ -427,7 +427,6 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 				'ParentID' => $parentid,
 				'Title' => $title,
 				'Description' => $description,
-				'Catfields' => serialize(array('default' => array('Title' => $title, 'Category' => $category)))//FIXME: remove in 6.5
 			)) . ' WHERE ID=' . $catId);
 
 		$updateok &= we_category::saveMediaLinks($catId, $description);

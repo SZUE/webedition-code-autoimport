@@ -506,7 +506,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 						$elem = $we_doc->getElement($k);
 						if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs)){ // is a we:href field
 							$v['type'] = 'href';
-						} elseif(substr($elem, 0, 2) === 'a:' && is_array($link = unserialize($elem))){ // is a we:link field
+						} elseif(substr($elem, 0, 2) === 'a:' && is_array($link = we_unserialize($elem))){ // is a we:link field
 							if(isset($link['type']) && ($link['type'] == we_base_link::TYPE_INT)){
 								$intID = $link['id'];
 								$path = id_to_path($intID, FILE_TABLE, $DB_WE);

@@ -943,10 +943,7 @@ function refreshTexts(){
 		$voting->load($this->View->voting->ID);
 
 		if(!is_array($voting->LogData)){
-			$log = unserialize($voting->LogData);
-			if(empty($log)){
-				$log = array();
-			}
+			$log = we_unserialize($voting->LogData);
 		} else {
 			$log = array();
 		}

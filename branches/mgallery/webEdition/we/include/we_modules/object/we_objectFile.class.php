@@ -444,7 +444,7 @@ class we_objectFile extends we_document{
 			}
 
 			if($hash['DefaultValues']){
-				$vals = unserialize($hash['DefaultValues']);
+				$vals = we_unserialize($hash['DefaultValues']);
 				if(isset($vals['WE_CSS_FOR_CLASS'])){
 					$this->CSS = $vals['WE_CSS_FOR_CLASS'];
 				}
@@ -490,7 +490,7 @@ class we_objectFile extends we_document{
 						$val = $this->getElement('we_object_' . $name);
 						break;
 					case self::TYPE_MULTIOBJECT:
-						$temp = unserialize($this->getElement($name));
+						$temp = we_unserialize($this->getElement($name));
 						$_array = isset($temp['objects']) ? $temp['objects'] : array();
 						if(count($_array) === 0){
 							$val = 0;
@@ -790,11 +790,7 @@ class we_objectFile extends we_document{
 			case self::TYPE_LANGUAGE:
 				return $this->getElement($name);
 			case self::TYPE_HREF:
-				$hrefArr = $this->getElement($name) ? unserialize($this->getElement($name)) : array();
-				if(!is_array($hrefArr)){
-					$hrefArr = array();
-				}
-				return parent::getHrefByArray($hrefArr);
+				return parent::getHrefByArray(we_unserialize($this->getElement($name)));
 			case self::TYPE_LINK:
 				return $this->htmlLinkInput($name, $attribs, false, false);
 			case self::TYPE_DATE:
@@ -810,12 +806,8 @@ class we_objectFile extends we_document{
 	}
 
 	function getFieldsHTML($editable, $asString = false){
-		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
+		$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 
-		$dv = $foo ? unserialize($foo) : array();
-		if(!is_array($dv)){
-			$dv = array();
-		}
 		$tableInfo_sorted = $this->getSortedTableInfo($this->TableID, true, $this->DB_WE);
 		$fields = $regs = array();
 		foreach($tableInfo_sorted as $cur){
@@ -958,11 +950,10 @@ class we_objectFile extends we_document{
 		return we_html_tools::htmlFormElementTable(
 				$this->htmlTextInput($textname, 30, $path, '', ' readonly', "text", $inputWidth, 0), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . ( isset($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) && $this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription'] ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", we_html_element::htmlHidden($idname, $myid), we_html_tools::getPixel(5, 4), $button) .
 			$objectpreview;
-
 	}
 
 	private function getMultiObjectFieldHTML($type, $name, array $attribs, $editable = true){
-		$temp = unserialize($this->getElement($name, 'dat'));
+		$temp = we_unserialize($this->getElement($name, 'dat'));
 		$objects = isset($temp['objects']) ? $temp['objects'] : array();
 		$max = intval($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]['max']);
 		$show = (($max == 0) || ($max >= count($objects)) ? count($objects) : $max);
@@ -1158,7 +1149,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function getHrefFieldHTML($type, $n, array $attribs, $we_editmode = true, $variant = false){
-		$hrefArr = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
+		$hrefArr = we_unserialize($this->getElement($n));
 		if(!is_array($hrefArr)){
 			$hrefArr = array();
 		}
@@ -1212,7 +1203,6 @@ class we_objectFile extends we_document{
 					we_html_button::create_button('select', "javascript:we_cmd('" . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
 					we_html_button::create_button('select', "javascript:we_cmd('openDirselector'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0);")
 				);
-
 		} else {
 			$trashbut = we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['" . $Path_elem_Name . "'].value");
@@ -1241,7 +1231,7 @@ class we_objectFile extends we_document{
 
 	private function htmlLinkInput($type, $n, array $attribs, $we_editmode = true, $headline = true){
 		$attribs["name"] = $n;
-		$link = $this->getElement($n) ? unserialize($this->getElement($n)) : array();
+		$link = we_unserialize($this->getElement($n));
 		$link = $link ? : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
 
 		$img = new we_imageDocument();
@@ -1550,8 +1540,7 @@ class we_objectFile extends we_document{
 
 	public function getDefaultValueArray(){
 		if($this->TableID){
-			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
-			return $foo ? unserialize($foo) : array();
+			return we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 		}
 		t_e('error no tableID!', $this);
 		t_e('error', 'error no tableID!');
@@ -1885,13 +1874,13 @@ class we_objectFile extends we_document{
 		$elem = $this->getElement($t);
 		switch($f){
 			case self::TYPE_HREF:
-				$hrefArr = $elem ? unserialize($elem) : array();
+				$hrefArr = we_unserialize($elem);
 				if(!is_array($hrefArr)){
 					$hrefArr = array();
 				}
 				return parent::getHrefByArray($hrefArr);
 			case self::TYPE_LINK:
-				$link = $elem ? unserialize($elem) : array();
+				$link = we_unserialize($elem);
 				if(is_array($link)){
 					$img = new we_imageDocument();
 					return parent::getLinkContent($link, 0, '', $this->DB_WE, $img);
@@ -2055,8 +2044,8 @@ class we_objectFile extends we_document{
 					case self::TYPE_TEXT:
 						if(strpos($v["dat"], 'a:') === 0){
 							//link/href
-							$tmp = @unserialize($v["dat"]);
-							if($tmp && isset($tmp['text'])){
+							$tmp = we_unserialize($v["dat"]);
+							if(isset($tmp['text'])){
 								$text .= ' ' . $tmp['text'];
 							}
 						} else {
@@ -2237,8 +2226,7 @@ class we_objectFile extends we_document{
 			return false;
 		}
 
-		$foo = getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		$dv = $foo['DefaultValues'] ? unserialize($foo["DefaultValues"]) : array();
+		$dv = we_unserialize(getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE));
 
 		foreach($this->elements as $n => $elem){
 			if(isset($elem["type"]) && $elem["type"] == self::TYPE_TEXT){
@@ -2360,7 +2348,7 @@ class we_objectFile extends we_document{
 					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
 					if($sessDat){
 						$this->i_getPersistentSlotsFromDB(/* "Path,Text,ParentID,CreatorID,Published,ModDate,Owners,ModifierID,RestrictOwners,OwnersReadOnly,IsSearchable,Charset,Url,TriggerID" */);
-						if($this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
+						if($this->i_initSerializedDat(we_unserialize($sessDat))){
 
 							//make sure at least TableID is set from db
 							//and Published as well #5742
@@ -2376,7 +2364,7 @@ class we_objectFile extends we_document{
 				parent::we_load($from);
 				break;
 			case we_class::LOAD_TEMP_DB:
-				$sessDat = unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
+				$sessDat = we_unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
 				if($sessDat){
 //fixed: at least TableID must be fetched
 					$this->i_getPersistentSlotsFromDB();
@@ -2523,7 +2511,7 @@ class we_objectFile extends we_document{
 				$this->resetParentID();
 			}
 			if(($def = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE))){
-				$vals = unserialize($def);
+				$vals = we_unserialize($def);
 				if(isset($vals["WE_CSS_FOR_CLASS"])){
 					$this->CSS = $vals['WE_CSS_FOR_CLASS'];
 				}
@@ -2738,7 +2726,7 @@ class we_objectFile extends we_document{
 	function getContentDataFromTemporaryDocs($ObjectID/* , $loadBinary = 0 */){
 		$DocumentObject = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($ObjectID) . ' AND Active=1 AND  DocTable="tblObjectFiles"', '', $this->DB_WE);
 		if($DocumentObject){
-			$DocumentObject = unserialize($DocumentObject);
+			$DocumentObject = we_unserialize($DocumentObject);
 			if(isset($DocumentObject[0]['elements']) && is_array($DocumentObject[0]['elements'])){
 				$this->elements = $DocumentObject[0]['elements'];
 			}
@@ -2883,7 +2871,7 @@ class we_objectFile extends we_document{
 				$this->resetElements();
 				$multiobjects = array();
 				while((list($k, $v) = $this->nextElement(self::TYPE_MULTIOBJECT))){
-					$old = is_string($v['dat']) && $v['dat']{0} == 'a' ? unserialize($v['dat']) : '';
+					$old = is_string($v['dat']) ? we_unserialize($v['dat'], '') : '';
 					if(is_array($old) && isset($old['class'])){
 						$multiobjects[$k] = array(
 							'class' => $old['class'],
@@ -2919,7 +2907,7 @@ class we_objectFile extends we_document{
 			return true;
 		}
 
-		$ownersReadOnly = $this->OwnersReadOnly ? unserialize($this->OwnersReadOnly) : array();
+		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
 		$readers = array();
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1){
@@ -2973,9 +2961,9 @@ class we_objectFile extends we_document{
 	function initVariantDataFromDb(){
 		if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			$dat = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
-			if($dat && !is_array($dat) && substr($dat, 0, 2) === 'a:'){
+			if($dat && !is_array($dat)){
 // unserialize the variant data when loading the model
-				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($dat), 'variant');
+				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, we_unserialize($dat), 'variant');
 			}
 			we_shop_variants::setVariantDataForModel($this);
 		}
@@ -2994,7 +2982,7 @@ class we_objectFile extends we_document{
 	}
 
 	function downMetaAtObject($name, $i){
-		$old = unserialize($this->getElement($name));
+		$old = we_unserialize($this->getElement($name));
 		$objects = $old['objects'];
 		$temp = $objects[($i + 1)];
 		$objects[($i + 1)] = $objects[$i];
@@ -3008,7 +2996,7 @@ class we_objectFile extends we_document{
 	}
 
 	function upMetaAtObject($name, $i){
-		$old = unserialize($this->getElement($name));
+		$old = we_unserialize($this->getElement($name));
 		$objects = $old['objects'];
 		$temp = $objects[($i - 1)];
 		$objects[($i - 1)] = $objects[$i];
@@ -3023,7 +3011,7 @@ class we_objectFile extends we_document{
 
 	function addMetaToObject($name, $pos){
 		$amount = 1;
-		$old = unserialize($this->getElement($name));
+		$old = we_unserialize($this->getElement($name));
 		$objects = $old['objects'];
 		for($i = count($objects) + $amount - 1; 0 <= $i; $i--){
 			if(($pos + $amount) < $i){
@@ -3041,7 +3029,7 @@ class we_objectFile extends we_document{
 	}
 
 	function removeMetaFromObject($name, $nr){
-		$old = unserialize($this->getElement($name));
+		$old = we_unserialize($this->getElement($name));
 		$objects = $old['objects'];
 		for($i = 0; $i < count($objects) - 1; $i++){
 			if($i >= $nr){

@@ -139,11 +139,7 @@ abstract class we_shop_variants{
 		if($unserialize){
 			$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) ?
 				$model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'] :
-				(
-				(substr($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'], 0, 2) === "a:") ?
-					unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']) :
-					array()
-				);
+				we_unserialize($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat']);
 		}
 
 		$elements = $model->elements;
@@ -472,10 +468,7 @@ abstract class we_shop_variants{
 		if(!isset($record[WE_SHOP_VARIANTS_ELEMENT_NAME])){
 			return;
 		}
-		$variantDatArray = unserialize($record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
-		if(!is_array($variantDatArray)){
-			return;
-		}
+		$variantDatArray = we_unserialize($record[WE_SHOP_VARIANTS_ELEMENT_NAME]);
 
 		foreach($variantDatArray as $variant){
 			foreach($variant as $variantName => $variantData){
@@ -527,7 +520,7 @@ abstract class we_shop_variants{
 		$elements = $model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'];
 		//this elemets contains only the variant fields, not the non-variant fields of the object
 		if(!is_array($elements) && $elements{0} == 'a'){
-			$elements = unserialize($elements);
+			$elements = we_unserialize($elements);
 		}
 
 		$newPos = count($elements);

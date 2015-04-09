@@ -147,7 +147,7 @@ class we_customer_settings{
 		}
 
 		if(isset($this->properties['SortView'])){
-			$this->SortView = unserialize($this->properties['SortView']);
+			$this->SortView = we_unserialize($this->properties['SortView']);
 		}
 		if(!is_array($this->SortView)){
 			$this->SortView = array();
@@ -163,7 +163,7 @@ class we_customer_settings{
 
 
 		if(isset($this->properties['FieldAdds'])){
-			$this->FieldAdds = unserialize($this->properties['FieldAdds']);
+			$this->FieldAdds = we_unserialize($this->properties['FieldAdds']);
 			//check if all fields are set
 			$fields = $this->customer->getFieldset();
 			foreach($fields as $name){
@@ -181,7 +181,7 @@ class we_customer_settings{
 
 		$defprefs = $this->Prefs;
 		if(isset($this->properties['Prefs'])){
-			$this->Prefs = unserialize($this->properties['Prefs']);
+			$this->Prefs = we_unserialize($this->properties['Prefs']);
 		}
 
 		foreach($defprefs as $k => $v){

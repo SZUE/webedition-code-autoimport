@@ -65,7 +65,7 @@ class we_xml_browser extends we_xml_parser{
 		} else {
 			$this->cache = $cache;
 		}
-		$this->nodes = unserialize(we_base_file::load($cache));
+		$this->nodes = we_unserialize(we_base_file::load($cache));
 	}
 
 	function getNodeDataset($xpath = "*"){

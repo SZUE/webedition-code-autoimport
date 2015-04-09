@@ -646,7 +646,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$this->parseTextareaFields();
 			$this->registerFileLinks();
 		}
-		
+
 		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
 			$this->setLanguageLink($docID, 'tblFile', false, false); // response deactivated
 		} else {
@@ -655,7 +655,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 
 		if($resave == 0){
-			$hy = unserialize(we_base_preferences::getUserPref('History'));
+			$hy = we_unserialize(we_base_preferences::getUserPref('History'));
 			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
 			we_base_preferences::setUserPref('History', serialize($hy));
 		}
@@ -690,8 +690,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . " AND ClassName='" . $this->DB_WE->escape($this->ClassName) . "' AND Was=" . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE);
 
-					if($sessDat &&
-						$this->i_initSerializedDat(unserialize(substr_compare($sessDat, 'a:', 0, 2) == 0 ? $sessDat : gzuncompress($sessDat)))){
+					if($sessDat && $this->i_initSerializedDat(we_unserialize($sessDat))){
 						$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
 						break;
 					}
@@ -832,7 +831,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * 		for this document, use with tags we:hidePages and we:controlElement
 	 */
 	public function setDocumentControlElements(){
-	////FIXME: use Tagparser & save this to DB
+		////FIXME: use Tagparser & save this to DB
 		//	get code of the matching template
 		$_templateCode = $this->getTemplateCode();
 
@@ -1029,11 +1028,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
 			return ($this->hasVariants = !empty($tmp));
 		}
-		if(substr($tmp, 0, 2) === 'a:'){
-			$_vars = unserialize($tmp);
-			return ($this->hasVariants = (is_array($_vars) && $_vars));
-		}
-		return ($this->hasVariants = false);
+		$_vars = we_unserialize($tmp);
+		return ($this->hasVariants = (is_array($_vars) && $_vars));
 	}
 
 	function correctVariantFields(){
@@ -1047,7 +1043,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 			// unserialize the variant data when loading the model
 			//if(!is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
-			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, unserialize($tmp), 'variant');
+			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, we_unserialize($tmp), 'variant');
 			//}
 			// now register variant fields in document
 			we_shop_variants::setVariantDataForModel($this);

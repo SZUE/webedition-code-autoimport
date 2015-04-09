@@ -98,7 +98,7 @@ abstract class we_rebuild_base{
 						//
 						break;
 					case 'we_temporaryDocument':
-						$content = unserialize(we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']));
+						$content = we_unserialize(we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']));
 						$doc = $data['tbl'] === 'tblFile' ? new we_webEditionDocument() : new we_objectFile;
 						$doc->elements = $content[0]['elements'];
 						$doc->Table = $data['tbl'] === 'tblFile' ? FILE_TABLE : OBJECT_FILES_TABLE;
@@ -304,7 +304,7 @@ abstract class we_rebuild_base{
 		}
 		return $data;
 	}
-	
+
 	public static function getMediaLinks(){
 		// delete all media links
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE type="media"');

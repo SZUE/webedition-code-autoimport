@@ -108,9 +108,9 @@ if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 
 				// for the articlelist, we need also all these article, so save them in array
 				// initialize all data saved for an article
-				$shopArticleObject = unserialize($DB_WE->f('strSerial'));
+				$shopArticleObject = we_unserialize($DB_WE->f('strSerial'));
 				$serialOrder = $DB_WE->f('strSerialOrder');
-				$orderData = ($serialOrder ? unserialize($serialOrder) : array());
+				$orderData = we_unserialize($serialOrder);
 
 				// all data from strSerialOrders
 				// first unserialize order-data

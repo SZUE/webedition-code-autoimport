@@ -142,9 +142,9 @@ if(!($isObj || $isTempl)){
 }
 if($isTempl){
 	if($newDoc['documentElements']){
-		$nDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
+		$nDocElements = we_unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
 				html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
-				gzuncompress($newDoc['documentElements']))
+				$newDoc['documentElements'])
 		);
 	} else {
 		$nDocElements = array();
@@ -156,9 +156,9 @@ if(!empty($oldDoc) && !($isObj || $isTempl)){
 }
 if(!empty($oldDoc) && $isTempl){
 	if($oldDoc['documentElements']){
-		$oDocElements = unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
+		$oDocElements = we_unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
 				html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
-				gzuncompress($oldDoc['documentElements']))
+				$oldDoc['documentElements'])
 		);
 	} else {
 		$oDocElements = array();
@@ -186,8 +186,7 @@ foreach($versions as $k => $v){
 	$_versions_time_days->addOption($k, $txt);
 }
 
-$contentDiff =
-	'<div style="margin-left:25px;" id="top">' . g_l('versions', '[VersionChangeTxt]') . '<br/><br/>' .
+$contentDiff = '<div style="margin-left:25px;" id="top">' . g_l('versions', '[VersionChangeTxt]') . '<br/><br/>' .
 	g_l('versions', '[VersionNumber]') . " " . $_versions_time_days->getHtml() . '
 			<div style="margin:20px 0px 0px 0px;" class="defaultfont"><a href="javascript:window.print()">' . g_l('versions', '[printPage]') . '</a></div>
 			</div>
@@ -255,9 +254,9 @@ $contentDiff .= '<table style="width:95%;background-color:#F5F5F5;margin:15px 15
 		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[contentElementsMod]') . '</strong>' .
 	'</td></tr>';
 if($newDoc['documentElements']){
-	$newDocElements = unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
+	$newDocElements = we_unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
 			html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
-			gzuncompress($newDoc['documentElements']))
+			$newDoc['documentElements'])
 	);
 } else {
 	$newDocElements = array();
@@ -265,9 +264,9 @@ if($newDoc['documentElements']){
 
 if(isset($oldDoc['documentElements'])){
 	if($oldDoc['documentElements']){
-		$oldDocElements = unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
+		$oldDocElements = we_unserialize((substr_compare($oldDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
 				html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
-				gzuncompress($oldDoc['documentElements']))
+				$oldDoc['documentElements'])
 		);
 	} else {
 		$oldDocElements = array();
@@ -364,18 +363,18 @@ $contentDiff .= '</table>' .
 </tr>';
 
 if($newDoc['documentScheduler']){
-	$newDocScheduler = unserialize((substr_compare($newDoc['documentScheduler'], 'a%3A', 0, 4) == 0 ?
+	$newDocScheduler = we_unserialize((substr_compare($newDoc['documentScheduler'], 'a%3A', 0, 4) == 0 ?
 			html_entity_decode(urldecode($newDoc['documentScheduler']), ENT_QUOTES) :
-			gzuncompress($newDoc['documentScheduler']))
+			$newDoc['documentScheduler'])
 	);
 } else {
 	$newDocScheduler = array();
 }
 if(isset($oldDoc['documentScheduler'])){
 	if($oldDoc['documentScheduler']){
-		$oldDocScheduler = unserialize((substr_compare($oldDoc['documentScheduler'], 'a%3A', 0, 4) == 0 ?
+		$oldDocScheduler = we_unserialize((substr_compare($oldDoc['documentScheduler'], 'a%3A', 0, 4) == 0 ?
 				html_entity_decode(urldecode($oldDoc['documentScheduler']), ENT_QUOTES) :
-				gzuncompress($oldDoc['documentScheduler']))
+				$oldDoc['documentScheduler'])
 		);
 	} else {
 		$oldDocScheduler = array();
@@ -476,18 +475,18 @@ $contentDiff .= '</table>' .
 </tr>';
 
 if($newDoc['documentCustomFilter']){
-	$newCustomFilter = unserialize((substr_compare($newDoc['documentCustomFilter'], 'a%3A', 0, 4) == 0 ?
+	$newCustomFilter = we_unserialize((substr_compare($newDoc['documentCustomFilter'], 'a%3A', 0, 4) == 0 ?
 			html_entity_decode(urldecode($newDoc['documentCustomFilter']), ENT_QUOTES) :
-			gzuncompress($newDoc['documentCustomFilter']))
+			$newDoc['documentCustomFilter'])
 	);
 } else {
 	$newCustomFilter = array();
 }
 if(isset($oldDoc['documentCustomFilter'])){
 	if($oldDoc['documentCustomFilter']){
-		$oldCustomFilter = unserialize((substr_compare($oldDoc['documentCustomFilter'], 'a%3A', 0, 4) == 0 ?
+		$oldCustomFilter = we_unserialize((substr_compare($oldDoc['documentCustomFilter'], 'a%3A', 0, 4) == 0 ?
 				html_entity_decode(urldecode($oldDoc['documentCustomFilter']), ENT_QUOTES) :
-				gzuncompress($oldDoc['documentCustomFilter']))
+				$oldDoc['documentCustomFilter'])
 		);
 	} else {
 		$oldCustomFilter = array();

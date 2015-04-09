@@ -1226,11 +1226,9 @@ _multiEditorreload = true;";
 		$db->query('SELECT ParentID,' . ($onlyParent ? '1 AS ' : '') . ' ParentPerms,' . ($onlyParent ? '"a:0:{}" AS ' : '') . 'Permissions,Alias FROM ' . USER_TABLE . ' WHERE ID=' . intval($uid) . ($onlyParent ? '' : ' OR Alias=' . intval($uid)));
 		while($db->next_record(MYSQL_ASSOC)){
 			if($db->f('Alias') != $uid){
-				$group_permissions = unserialize($db->f('Permissions'));
-				if(is_array($group_permissions)){
-					foreach($group_permissions as $key => $val){
-						$user_permissions[$key] = (isset($user_permissions[$key]) ? $user_permissions[$key] : 0) | $group_permissions[$key];
-					}
+				$group_permissions = we_unserialize($db->f('Permissions'));
+				foreach($group_permissions as $key => $val){
+					$user_permissions[$key] = (isset($user_permissions[$key]) ? $user_permissions[$key] : 0) | $group_permissions[$key];
 				}
 			}
 			$lpid = $db->f('ParentID');
@@ -1238,14 +1236,12 @@ _multiEditorreload = true;";
 				while($lpid){
 					$db_tmp->query('SELECT ParentID,ParentPerms,Permissions FROM ' . USER_TABLE . ' WHERE ID=' . intval($lpid));
 					if($db_tmp->next_record(MYSQL_ASSOC)){
-						$group_permissions = unserialize($db_tmp->f('Permissions'));
-						if(is_array($group_permissions)){
-							foreach($group_permissions as $key => $val){
-								$user_permissions[$key] = (isset($user_permissions[$key]) ? $user_permissions[$key] : 0) | $group_permissions[$key];
-							}
-							$lpid = ($db_tmp->f('ParentPerms') ? $db_tmp->f('ParentID') : 0);
-							continue;
+						$group_permissions = we_unserialize($db_tmp->f('Permissions'));
+						foreach($group_permissions as $key => $val){
+							$user_permissions[$key] = (isset($user_permissions[$key]) ? $user_permissions[$key] : 0) | $group_permissions[$key];
 						}
+						$lpid = ($db_tmp->f('ParentPerms') ? $db_tmp->f('ParentID') : 0);
+						continue;
 					}
 					$lpid = 0;
 				}
@@ -1738,7 +1734,7 @@ function delElement(elvalues,elem) {
 
 				$parent = '';
 				foreach($parentWsp[CUSTOMER_TABLE] as $setting){
-					$setting = unserialize($setting);
+					$setting = we_unserialize($setting);
 					foreach($setting as $cur){
 						$parent.=($parent ? $cur['logic'] . ' ' : '') . we_customer_abstractFilter::evalSingleFilterQuery($cur['operation'], $cur['field'], $cur['value']) . "\n";
 					}
@@ -2478,7 +2474,7 @@ top.content.hloaded=1;') .
 			//setup customer
 			$filter = array();
 			foreach($_SESSION['user']['workSpace'][CUSTOMER_TABLE] as $cur){
-				$filter[] = we_customer_abstractFilter::getQueryFromFilter(unserialize($cur));
+				$filter[] = we_customer_abstractFilter::getQueryFromFilter(we_unserialize($cur));
 			}
 
 			//FIXME: this won't hold for alias users

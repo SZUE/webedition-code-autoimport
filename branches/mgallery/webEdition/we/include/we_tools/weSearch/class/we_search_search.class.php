@@ -293,7 +293,7 @@ class we_search_search extends we_search_base{
 		//check unpublished documents
 		$_db2->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblFile' AND Active = 1 AND DocumentObject LIKE '%" . $_db2->escape(trim($keyword)) . "%'");
 		while($_db2->next_record()){
-			$tempDoc = unserialize($_db2->f('DocumentObject'));
+			$tempDoc = we_unserialize($_db2->f('DocumentObject'));
 			if(isset($tempDoc[0]['elements']['Title']) && $tempDoc[0]['elements']['Title']['dat'] != ''){
 				$keyword = str_replace(array('\_', '\%'), array('_', '%'), $keyword);
 				if(stristr($tempDoc[0]['elements']['Title']['dat'], $keyword)){
@@ -354,7 +354,7 @@ class we_search_search extends we_search_base{
 				$query2 = 'SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocTable = "tblObjectFiles" AND Active=1';
 				$_db->query($query2);
 				while($_db->next_record()){
-					$tempObj = unserialize($_db->f('DocumentObject'));
+					$tempObj = we_unserialize($_db->f('DocumentObject'));
 					if(isset($tempObj[0]['Category']) && $tempObj[0]['Category'] != ''){
 						if(!array_key_exists($tempObj[0]['ID'], $res)){
 							$res[$tempObj[0]['ID']] = $tempObj[0]['Category'];
@@ -518,11 +518,11 @@ class we_search_search extends we_search_base{
 	}
 
 	/*
-	function searchIsAttributeNotEmpty($id, $attribute, $table = FILE_TABLE){
-		$_db->query('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.CID=' . intval($id) . ' AND l.Name="' . $attribute . '" AND l.DocumentTable="' . stripTblPrefix($table) . '"');
-		
-	}
-	*/
+	  function searchIsAttributeNotEmpty($id, $attribute, $table = FILE_TABLE){
+	  $_db->query('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.CID=' . intval($id) . ' AND l.Name="' . $attribute . '" AND l.DocumentTable="' . stripTblPrefix($table) . '"');
+
+	  }
+	 */
 
 	function getStatusFiles($status, $table){//IMI: IMPORTANT: veröffentlichungsstatus grenzt die contenttypes auf djenigen ein, die solch einen status haben!!
 		// also kann auch beim verlinkungsstatus auf media-docs eingegremzt werden
@@ -645,7 +645,7 @@ class we_search_search extends we_search_base{
 
 				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
 				while($_db->next_record()){
-					$elements = unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
+					$elements = we_unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
 							html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
 							gzuncompress($_db->f('documentElements')))
 					);
@@ -730,7 +730,7 @@ class we_search_search extends we_search_base{
 
 			while($db->next_record()){
 				$rec = $db->getRecord();
-				$tmpMediaLinks[$rec['remObj']][] = array($rec['ID'],$rec['DocumentTable'],$rec['isTemp']);
+				$tmpMediaLinks[$rec['remObj']][] = array($rec['ID'], $rec['DocumentTable'], $rec['isTemp']);
 				$groups[$rec['DocumentTable']][] = $rec['ID'];
 				$this->usedMedia[] = $rec['remObj'];
 			}
@@ -818,7 +818,7 @@ class we_search_search extends we_search_base{
 				//check unpublished documents
 				$this->db->query('SELECT DocumentID, DocumentObject  FROM `' . TEMPORARY_DOC_TABLE . '` WHERE DocTable="tblFile" AND Active=1 ' . $tmpTableWhere);
 				while($this->db->next_record()){
-					$tempDoc = unserialize($this->db->f('DocumentObject'));
+					$tempDoc = we_unserialize($this->db->f('DocumentObject'));
 					if(isset($tempDoc[0]['elements']['Title'])){
 						$titles[$this->db->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
 					}
@@ -865,7 +865,7 @@ class we_search_search extends we_search_base{
 				break;
 		}
 	}
-	
+
 	function insertMediaAttribsToTempTable(){
 		$this->db->query('SELECT docID FROM SEARCH_TEMP_TABLE');
 		$IDs = implode(',', $this->db->getAll(true));

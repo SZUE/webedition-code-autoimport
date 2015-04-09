@@ -236,7 +236,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				)
 			);
 
-			$values = unserialize($Search->getField('Attributes'));
+			$values = we_unserialize($Search->getField('Attributes'));
 			switch($Type){
 
 				case we_glossary_glossary::TYPE_ABBREVATION:

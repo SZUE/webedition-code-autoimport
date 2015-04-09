@@ -276,7 +276,7 @@ function we_tag_field($attribs){
 			break;
 
 		case 'multiobject':
-			$temp = unserialize($GLOBALS['lv']->f($name));
+			$temp = we_unserialize($GLOBALS['lv']->f($name));
 			$out = (isset($temp['objects']) && !empty($temp['objects']) ? implode(',', $temp['objects']) : '');
 			break;
 		case 'country' :
@@ -353,7 +353,7 @@ function we_tag_field($attribs){
 					case 'we_object_tag':
 					case 'we_shop_shop':
 					case 'we_shop_listviewOrderitem': //Fix #7816
-						$hrefArr = $GLOBALS['lv']->f($name) ? unserialize($GLOBALS['lv']->f($name)) : array();
+						$hrefArr = we_unserialize($GLOBALS['lv']->f($name));
 						if(!is_array($hrefArr)){
 							$hrefArr = array();
 						}

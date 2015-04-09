@@ -44,12 +44,8 @@ class we_base_linklist{
 		$this->objectseourls = $objectseourls;
 		$this->docName = $docName;
 		$this->attribs = $attribs;
-		$this->listArray = $sString && $sString{0} === 'a' ? unserialize($sString) : array();
-		if(!is_array($this->listArray)){
-			$this->listArray = array();
-		} else {
-			ksort($this->listArray, SORT_NUMERIC);
-		}
+		$this->listArray = we_unserialize($sString);
+		ksort($this->listArray, SORT_NUMERIC);
 		$limit = isset($attribs['limit']) && $attribs['limit'] > 0 ? abs($attribs['limit']) : 0;
 		$editmode = (isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"] && (!isset($GLOBALS["lv"])));
 		if(!$editmode){

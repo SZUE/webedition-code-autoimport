@@ -602,7 +602,7 @@ setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('modules_voting', 
 						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['successor'])) . $enclose . $delimiter;
 
 					if($data['additionalfields'] != ''){
-						$addData = unserialize($data['additionalfields']);
+						$addData = we_unserialize($data['additionalfields']);
 
 						if(is_array($addData) && !empty($addData)){
 							foreach($addData as $key => $values){

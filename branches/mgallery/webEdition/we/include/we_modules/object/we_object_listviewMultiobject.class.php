@@ -61,15 +61,15 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		$data = 0;
 		if(isset($GLOBALS['we_lv_array']) && ($parent_lv = end($GLOBALS['we_lv_array']))){
 			if(($dat = $parent_lv->f($name))){
-				$data = unserialize($dat);
+				$data = we_unserialize($dat);
 			}
 		} elseif(isset($GLOBALS['lv'])){
 			if(($dat = $GLOBALS['lv']->f($name))){
-				$data = unserialize($dat);
+				$data = we_unserialize($dat);
 			}
 		} else {
 			if($GLOBALS['we_doc']->getElement($name)){
-				$data = unserialize($GLOBALS['we_doc']->getElement($name));
+				$data = we_unserialize($GLOBALS['we_doc']->getElement($name));
 			}
 		}
 
@@ -113,7 +113,7 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		$this->Path = ($this->triggerID && show_SeoLinks() ?
 				id_to_path($this->triggerID, FILE_TABLE, $this->DB_WE) :
 				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '')
-);
+			);
 
 
 		// IMPORTANT for seeMode !!!! #5317

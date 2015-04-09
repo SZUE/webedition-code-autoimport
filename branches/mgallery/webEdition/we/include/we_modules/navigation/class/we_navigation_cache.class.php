@@ -78,14 +78,15 @@ class we_navigation_cache{
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		we_base_file::save(self::CACHEDIR . 'navigation_' . $id . '.php', gzdeflate(serialize($_naviItemes->items), 9));
+		we_base_file::save(self::CACHEDIR . 'navigation_' . $id . '.php', gzcompress(serialize($_naviItemes->items), 9));
 	}
 
 	static function getCacheFromFile($parentid){
 		$_cache = self::CACHEDIR . 'navigation_' . $parentid . '.php';
 
 		if(file_exists($_cache)){
-			return @unserialize(@gzinflate(we_base_file::load($_cache)));
+			$data = we_base_file::load($_cache);
+			return $data ? we_unserialize($data[0] === 'x' ? gzuncompress($data) : gzinflate($data)) : array();
 		}
 		return false;
 	}

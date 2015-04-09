@@ -385,8 +385,7 @@ class we_document extends we_root{
 	function addEntryToList($name, $number = 1){
 		$list = $this->getElement($name);
 
-		$listarray = $list ? unserialize($list) : array();
-		$listarray = is_array($listarray) ? $listarray : array();
+		$listarray = we_unserialize($list);
 
 		for($f = 0; $f < $number; $f++){
 			$content = $this->getElement($name, 'content');
@@ -445,7 +444,7 @@ class we_document extends we_root{
 			t_e('failed');
 			return;
 		}
-		$listarray = unserialize($list);
+		$listarray = we_unserialize($list);
 		$newPos = max($nr - $number, 0);
 		$temp = $listarray[$newPos];
 		$listarray[$newPos] = $listarray[$nr];
@@ -459,7 +458,7 @@ class we_document extends we_root{
 		if(!$list){
 			return;
 		}
-		$listarray = unserialize($list);
+		$listarray = we_unserialize($list);
 		$newPos = min($nr + $number, count($listarray) - 1);
 		$temp = $listarray[$newPos];
 		$listarray[$newPos] = $listarray[$nr];
@@ -469,7 +468,7 @@ class we_document extends we_root{
 
 	function removeEntryFromList($name, $nr, $names = '', $isBlock = false){
 		$list = $this->getElement($name);
-		$listarray = $list ? unserialize($list) : array();
+		$listarray = we_unserialize($list);
 		if(is_array($listarray)){
 			if($isBlock){
 				foreach(array_keys($this->elements) as $key){
@@ -702,7 +701,7 @@ class we_document extends we_root{
 		if(we_base_request::_(we_base_request::INT, 'wecf_mode') !== false){
 			$this->documentCustomerFilter = we_customer_documentFilter::getCustomerFilterFromRequest($this->ID, $this->ContentType, $this->Table);
 		} else if(isset($sessDat[3])){ // init webUser from session
-			$this->documentCustomerFilter = unserialize($sessDat[3]);
+			$this->documentCustomerFilter = we_unserialize($sessDat[3]);
 		}
 
 
@@ -897,7 +896,7 @@ class we_document extends we_root{
 				}
 				return $pathOnly ? $fl->Path : $fl->getHtml();
 			case 'link':
-				$link = $val ? unserialize($val) : array();
+				$link = we_unserialize($val);
 
 				$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 
@@ -965,7 +964,7 @@ class we_document extends we_root{
 					if($classID){
 						$defVals = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), '', $db);
 						if($defVals){
-							$arr = unserialize($defVals);
+							$arr = we_unserialize($defVals);
 							return isset($arr['meta_' . $attribs['name']]['meta'][$val]) ? $arr['meta_' . $attribs['name']]['meta'][$val] : '';
 						}
 					}
@@ -1062,8 +1061,7 @@ class we_document extends we_root{
 				}
 				$val = $this->getElement($attribs['name']);
 				if($this instanceof we_objectFile || (is_string($val) && $val && $val{0} == 'a')){
-					$hrefArr = $val ? unserialize($val) : array();
-					return (is_array($hrefArr) ? self::getHrefByArray($hrefArr) : '');
+					return self::getHrefByArray(we_unserialize($val));
 				}
 				break;
 			default:
@@ -1096,7 +1094,7 @@ class we_document extends we_root{
 		return $this->getValFromSrc($fn, $n);
 	}
 
-	static function getHrefByArray($hrefArr){
+	static function getHrefByArray(array $hrefArr){
 		if(isset($hrefArr['int']) && $hrefArr['int']){
 			$intID = isset($hrefArr['intID']) ? $hrefArr['intID'] : 0;
 			return $intID ? id_to_path($intID) : '';
@@ -1429,7 +1427,7 @@ class we_document extends we_root{
 				$this->schedArr = array();
 			}
 			while($this->DB_WE->next_record()){
-				$s = unserialize($this->DB_WE->f('Schedpro'));
+				$s = we_unserialize($this->DB_WE->f('Schedpro'));
 				if(is_array($s)){
 					$s['active'] = $this->DB_WE->f('Active');
 					$this->schedArr[] = $s;

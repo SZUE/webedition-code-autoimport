@@ -61,7 +61,7 @@ function we_isNotEmpty($attribs){
 
 		default:
 			//   #3938 added this - some php version crashed, when unserialize started with a ?,?,?
-			if((substr($doc->getElement($match), 0, 2) === 'a:')){ //  only unserialize, when $match cluld be an array
+			if((substr($doc->getElement($match), 0, 2) === 'a:')){ //  only unserialize, when $match could be an array
 				// Added @-operator in front of the unserialze function because there
 				// were some PHP notices that had no effect on the output of the function
 				// remark holeg: when it is a serialized array, the function looks if it is not empty

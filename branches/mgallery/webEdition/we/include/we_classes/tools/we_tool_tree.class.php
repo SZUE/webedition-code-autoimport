@@ -175,7 +175,7 @@ function addSort(object){
 
 		function getHTMLContruct(){
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead(//FIXME: missing title
+			we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET .
 					$this->getStyles()

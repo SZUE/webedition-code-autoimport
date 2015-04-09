@@ -105,7 +105,7 @@ class we_fragment_base{
 			if(!$ser){
 				exit("Could not read: " . $filename);
 			}
-			$this->alldata = unserialize($ser);
+			$this->alldata = we_unserialize($ser);
 		} else {
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();

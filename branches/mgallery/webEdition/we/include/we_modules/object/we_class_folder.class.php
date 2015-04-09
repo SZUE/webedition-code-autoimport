@@ -61,10 +61,10 @@ class we_class_folder extends we_folder{
 	function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		if(isset($this->searchclass_class) && !is_object($this->searchclass_class)){
-			$this->searchclass_class = unserialize($this->searchclass_class);
+			$this->searchclass_class = we_unserialize($this->searchclass_class);
 		} else if(isset($_SESSION['weS']['we_objectSearch'][$this->ID])){
-			$temp = unserialize($_SESSION['weS']['we_objectSearch'][$this->ID]);
-			$this->searchclass_class = unserialize($temp['Serialized']);
+			$temp = we_unserialize($_SESSION['weS']['we_objectSearch'][$this->ID]);
+			$this->searchclass_class = we_unserialize($temp['Serialized']);
 			$this->SearchStart = $temp['SearchStart'];
 			$this->GreenOnly = $temp['GreenOnly'];
 			$this->EditPageNr = $temp['EditPageNr'];
@@ -250,7 +250,7 @@ class we_class_folder extends we_folder{
 
 
 		$content = array();
-		$foo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
+		$foo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
 
 		$ok = isset($foo["WorkspaceFlag"]) ? $foo["WorkspaceFlag"] : "";
 
@@ -368,10 +368,10 @@ class we_class_folder extends we_folder{
 		//$this->searchclass->searchquery($where." AND OF_ID !=0 ",$fields); #4076 orig
 		$this->searchclass->searchquery($where . " AND OF_PATH LIKE '" . $this->Path . "/%' AND OF_ID !=0 ", $fields);
 
-		$DefaultValues = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
+		$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 
 		$content = array();
-		$foo = unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
+		$foo = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
 
 		$ok = isset($foo["WorkspaceFlag"]) ? $foo["WorkspaceFlag"] : "";
 
@@ -465,7 +465,7 @@ class we_class_folder extends we_folder{
 							$content[$f][$i + 5]['dat'] = $obj;
 							break;
 						case we_objectFile::TYPE_MULTIOBJECT:
-							$temp = unserialize($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
+							$temp = we_unserialize($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
 							if(is_array($temp['objects']) && !empty($temp['objects'])){
 								$objects = $temp['objects'];
 								$class = $temp['class'];

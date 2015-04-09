@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -36,7 +35,7 @@ abstract class permissionhandler{
 
 	public static function hasPerm($perm){
 		return (isset($_SESSION['perms']['ADMINISTRATOR']) && $_SESSION['perms']['ADMINISTRATOR']) ||
-				((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]));
+			((isset($_SESSION['perms'][$perm]) && $_SESSION['perms'][$perm]));
 	}
 
 	/**
@@ -91,7 +90,7 @@ abstract class permissionhandler{
 
 
 		return (isset($knownActions[$requestedAction][$parameter]) ?
-						$knownActions[$requestedAction][$parameter] : 'none');
+				$knownActions[$requestedAction][$parameter] : 'none');
 	}
 
 	/**
@@ -155,12 +154,13 @@ abstract class permissionhandler{
 
 			//	user belongs to owners of document, check if he has only read access !!!
 			if($row['OwnersReadOnly']){
-				$arr = unserialize($row['OwnersReadOnly']);
+				$arr = we_unserialize($row['OwnersReadOnly']);
 				if(is_array($arr)){
 
 					if(isset($arr[$_SESSION['user']['ID']]) && $arr[$_SESSION['user']['ID']]){ //	if user is readonly user -> no delete
 						return false;
-					} elseif(in_array($_SESSION['user']['ID'], $userArray)){ //	user NOT readonly and in restricted -> delete allowed
+					}
+					if(in_array($_SESSION['user']['ID'], $userArray)){ //	user NOT readonly and in restricted -> delete allowed
 						return true;
 					}
 

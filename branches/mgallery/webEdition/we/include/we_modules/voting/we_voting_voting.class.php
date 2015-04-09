@@ -145,9 +145,9 @@ class we_voting_voting extends weModelBase{
 
 	function load($id = 0, $isAdvanced = false){
 		if(parent::load($id, true)){
-			$this->QASet = unserialize($this->QASet);
-			$this->QASetAdditions = unserialize($this->QASetAdditions);
-			$this->Scores = unserialize($this->Scores);
+			$this->QASet = we_unserialize($this->QASet);
+			$this->QASetAdditions = we_unserialize($this->QASetAdditions);
+			$this->Scores = we_unserialize($this->Scores);
 			$this->Owners = makeArrayFromCSV($this->Owners);
 			$this->BlackList = makeArrayFromCSV($this->BlackList);
 			if(!$this->LogData || $this->LogData === 'a:0:{}'){

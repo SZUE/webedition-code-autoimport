@@ -52,11 +52,7 @@ class we_import_wizard extends we_import_wizardBase{
 	 */
 	private static function getClassFields($classID){
 		$db = new DB_WE();
-		$dv = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), '', $db);
-		$dv = $dv ? unserialize($dv) : array();
-		if(!is_array($dv)){
-			$dv = array();
-		}
+		$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classID), '', $db));
 		$tableInfo_sorted = we_objectFile::getSortedTableInfo($classID, true, $db);
 		$fields = array();
 		$regs = array();

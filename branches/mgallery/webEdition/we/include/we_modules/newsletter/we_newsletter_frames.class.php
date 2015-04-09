@@ -2352,7 +2352,7 @@ self.focus();');
 					break;
 				}
 				if(file_exists(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc)){
-					$_buffer = @unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc));
+					$_buffer = we_unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc));
 					if(is_array($_buffer) && isset($_buffer['inlines'])){
 						foreach($_buffer['inlines'] as $_fn){
 							if(file_exists($_fn)){

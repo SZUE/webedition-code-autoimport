@@ -753,7 +753,7 @@ we_templateInit();?>';
 			t_e('save template failed', $this->Path);
 		}
 		if(defined('SHOP_TABLE')){
-			$this->setElement('allVariants', unserialize($this->getElement('allVariants')), 'variants');
+			$this->setElement('allVariants', we_unserialize($this->getElement('allVariants')), 'variants');
 		}
 		return $_ret;
 	}

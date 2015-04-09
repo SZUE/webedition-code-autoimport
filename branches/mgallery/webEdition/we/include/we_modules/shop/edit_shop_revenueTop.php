@@ -183,8 +183,8 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 		// for the articlelist, we need also all these article, so save them in array
 		// initialize all data saved for an article
-		$shopArticleObject = unserialize($DB_WE->f('strSerial'));
-		$orderData = (($serialOrder = $DB_WE->f('strSerialOrder')) ? unserialize($serialOrder) : array());
+		$shopArticleObject = we_unserialize($DB_WE->f('strSerial'));
+		$orderData = we_unserialize($DB_WE->f('strSerialOrder'));
 
 
 		$netPrice = $orderData['we_shopPriceIsNet'] ? $DB_WE->f('Price') :  ($DB_WE->f('Price')/(1+(floatval($shopArticleObject['shopvat'])/100)));
@@ -224,9 +224,8 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 			// for the articlelist, we need also all these article, so sve them in array
 			// initialize all data saved for an article
-			$shopArticleObject = @unserialize($DB_WE->f('strSerial'));
-			$serialOrder = $DB_WE->f('strSerialOrder');
-			$orderData = ($serialOrder ? @unserialize($serialOrder) : array());
+			$shopArticleObject = we_unserialize($DB_WE->f('strSerial'));
+			$orderData = we_unserialize($DB_WE->f('strSerialOrder'));
 
 			// all data from strSerialOrders
 			// first unserialize order-data

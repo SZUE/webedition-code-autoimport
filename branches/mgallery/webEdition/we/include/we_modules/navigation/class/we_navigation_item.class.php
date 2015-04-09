@@ -77,7 +77,7 @@ class we_navigation_item{
 		$this->CurrentOnAnker = $CurrentOnAnker;
 
 		if(!is_array($attributes)){
-			$attributes = @unserialize($attributes);
+			$attributes = we_unserialize($attributes);
 		}
 		$this->attributes = $attributes;
 

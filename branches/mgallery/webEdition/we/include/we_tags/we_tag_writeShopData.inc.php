@@ -186,8 +186,8 @@ function we_tag_writeShopData($attribs){
 			/*
 			 * first get the prefs for country, city, address by shop default settings and shop payment settings
 			 */
-			$shopDefaultPrefs = @unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"'));
-			if(is_array($shopDefaultPrefs)){ // check for array
+			$shopDefaultPrefs = we_unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"'));
+			if(is_set($shopDefaultPrefs['stateField'])){ // check for array
 				$fieldCountry = $shopDefaultPrefs['stateField'];
 				$emosBillingCountry = $_SESSION['webuser'][$fieldCountry];
 			}

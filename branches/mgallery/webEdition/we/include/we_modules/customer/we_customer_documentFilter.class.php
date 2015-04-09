@@ -111,7 +111,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @return we_customer_documentFilter
 	 */
 	private static function getFilterByDbHash($hash){
-		$f = $hash['filter'] ? unserialize($hash['filter']) : array();
+		$f = we_unserialize($hash['filter']);
 		return new self(
 				intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f) ? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
 		);
