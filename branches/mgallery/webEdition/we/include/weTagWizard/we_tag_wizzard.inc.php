@@ -57,7 +57,7 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 	if($_typeOptions){
 		$typeAttributeJs .= '
 var typeAttributeAllows = {};
-var typeAttributeRequires = {}';
+var typeAttributeRequires = {};';
 
 		foreach($_typeOptions as $option){
 			$_allowedAttribs = $option->getAllowedAttributes();
