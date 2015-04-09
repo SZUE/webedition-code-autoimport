@@ -84,7 +84,7 @@ function selectFile(id) {
 		e = getEntry(id);
 		var a=top.document.getElementsByName("fname")[0];
 		if (a.value != e.text &&
-						a.indexOf(e.text + ",") == -1 &&
+						a.value.indexOf(e.text + ",") == -1 &&
 						a.value.indexOf("," + e.text + ",") == -1 &&
 						a.value.indexOf("," + e.text + ",") == -1) {
 
