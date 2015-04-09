@@ -119,7 +119,7 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".openClose('" + nf[ai].id + "')\"";
 
-	row += "&nbsp;&nbsp;<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (nf[ai].open === 0 ? "auf" : "zu") + (ai == nf.laenge ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>" +
+	row += "&nbsp;&nbsp;<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (nf[ai].open === 0 ? "auf" : "zu") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\" border=0>" +
 					"<img src=\"" + treeData.tree_image_dir + "icons/" + nf[ai].icon + "\" alt=\"\">" +
 					"</a>" +
@@ -129,7 +129,7 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 					"&nbsp;&nbsp;<br/>\n";
 
 	if (nf[ai].open) {
-		newAst = newAst + "<img src=\"" + treeData.tree_image_dir + (ai == nf.laenge ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\" />";
+		newAst = newAst + "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\" />";
 		row += draw(nf[ai].id, newAst);
 	}
 }

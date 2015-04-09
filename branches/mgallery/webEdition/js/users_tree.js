@@ -42,11 +42,11 @@ function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
 	var ai = 1;
 	ret = "";
-	while (ai <= nf.laenge) {
+	while (ai <= nf.len) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == "user") {
 			ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir +
-							(ai == nf.laenge ?
+							(ai == nf.len ?
 											"kreuzungend.gif" :
 											"kreuzung.gif") +
 							"\" class=\"treeKreuz\">" +
@@ -58,7 +58,7 @@ function zeichne(startEntry, zweigEintrag) {
 							"&nbsp;<a name=\'_" + nf[ai].name + "\' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",\'" + nf[ai].contentType + "\',\'" + nf[ai].table + "\');return true;\"><font color=\"" + ((nf[ai].contentType == "alias") ? "#006DB8" : (parseInt(nf[ai].denied) ? "red" : "black")) + "\">" + (parseInt(nf[ai].published) ? "<b>" : "") + "<label title=\'" + nf[ai].name + "\'>" + nf[ai].text + "</label>" + (parseInt(nf[ai].published) ? "</b>" : "") + "</font></A>&nbsp;&nbsp;<br/>";
 		} else {
 			var newAst = zweigEintrag;
-			var zusatz = (ai == nf.laenge) ? "end" : "";
+			var zusatz = (ai == nf.len) ? "end" : "";
 			var zusatz2 = "";
 
 			if (nf[ai].offen === 0) {
@@ -75,7 +75,7 @@ function zeichne(startEntry, zweigEintrag) {
 							"</a>" +
 							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].offen) {
-				if (ai == nf.laenge) {
+				if (ai == nf.len) {
 					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
 				} else {
 					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
@@ -101,7 +101,7 @@ function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub, denied) {
 
 function updateEntry(id, pid, text, pub, denied) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == "user")) {
 			if (menuDaten[ai].name == id) {
 				menuDaten[ai].vorfahr = pid;
@@ -118,7 +118,7 @@ function updateEntry(id, pid, text, pub, denied) {
 function deleteEntry(id) {
 	var ai = 1;
 	var ind = 0;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == "folder") || (menuDaten[ai].typ == "user")) {
 			if (menuDaten[ai].name == id) {
 				ind = ai;
@@ -129,12 +129,12 @@ function deleteEntry(id) {
 	}
 	if (ind !== 0) {
 		ai = ind;
-		while (ai <= menuDaten.laenge - 1) {
+		while (ai <= menuDaten.len - 1) {
 			menuDaten[ai] = menuDaten[ai + 1];
 			ai++;
 		}
-		menuDaten.laenge[menuDaten.laenge] = null;
-		menuDaten.laenge--;
+		menuDaten.len[menuDaten.len] = null;
+		menuDaten.len--;
 		drawEintraege();
 	}
 }
@@ -147,7 +147,7 @@ function openClose(name, status) {
 
 function indexOfEntry(name) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ === "root") || (menuDaten[ai].typ === "folder")) {
 			if (menuDaten[ai].name == name) {
 				return ai;
@@ -161,7 +161,7 @@ function indexOfEntry(name) {
 function search(eintrag) {
 	var nf = new container();
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'user')) {
 			if (menuDaten[ai].vorfahr == eintrag) {
 				nf.add(menuDaten[ai]);
@@ -173,7 +173,7 @@ function search(eintrag) {
 }
 
 function container() {
-	this.laenge = 0;
+	this.len = 0;
 	this.clear = containerClear;
 	this.add = add;
 	this.addSort = addSort;
@@ -181,24 +181,12 @@ function container() {
 }
 
 function add(object) {
-	this.laenge++;
-	this[this.laenge] = object;
+	this.len++;
+	this[this.len] = object;
 }
 
 function containerClear() {
-	this.laenge = 0;
-}
-
-function addSort(object) {
-	this.laenge++;
-	for (var i = this.laenge; i > 0; i--) {
-		if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
-			this[i] = this[i - 1];
-		} else {
-			this[i] = object;
-			break;
-		}
-	}
+	this.len = 0;
 }
 
 function rootEntry(name, text, rootstat) {
@@ -242,5 +230,3 @@ function start() {
 	loadData();
 	drawEintraege();
 }
-
-self.focus();

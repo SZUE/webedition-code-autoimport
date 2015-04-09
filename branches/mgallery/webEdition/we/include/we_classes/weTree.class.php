@@ -132,7 +132,7 @@ class weTree{
 
 	function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsScript(JS_DIR . 'tree.js') .
+			we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
 			we_html_element::jsElement('
 var frames={
 };
@@ -338,7 +338,7 @@ function updateEntry(attribs){
 					we_html_tools::getHtmlInnerHead() .
 					STYLESHEET .
 					$this->getStyles() .
-					we_html_element::jsScript(JS_DIR . 'tree.js')
+					we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();')
 				) .
 				we_html_element::htmlBody(array(
 					'id' => 'treetable',

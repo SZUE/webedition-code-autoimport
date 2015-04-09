@@ -23,8 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_voting_tree extends weMainTree{
+
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_VOTING_MODULE_DIR. 'voting_tree.js');
+		return we_html_element::jsScript(WE_JS_VOTING_MODULE_DIR . 'voting_tree.js');
 	}
 
 	function getJSOpenClose(){
@@ -52,29 +53,7 @@ treeData.frames=frames;
 	}
 
 	function getJSMakeNewEntry(){
-		return '
-function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
-	if(treeData[indexOfEntry(pid)]&&treeData[indexOfEntry(pid)].loaded){
-		ct=(ct=="folder"? "group":"item");
-
-		var attribs={
-		"id":id,
-		"icon":icon,
-		"text":txt,
-		"parentid":pid,
-		"open":open,
-		"tooltip":id,
-		"typ":ct,
-		"disabled":0,
-		"published":(ct=="item"?pub:1),
-		"selected":0
-		};
-
-		treeData.addSort(new node(attribs));
-
-		drawTree();
-	}
-}';
+		return '';
 	}
 
 	function getJSInfo(){

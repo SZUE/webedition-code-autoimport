@@ -57,30 +57,7 @@ treeData.frames=frames;
 	}
 
 	function getJSMakeNewEntry(){
-		return '
-function makeNewEntry(icon,id,pid,txt,open,ct,tab,pub){
-	if(treeData[indexOfEntry(pid)]){
-		if(treeData[indexOfEntry(pid)].loaded){
-		 ct=(ct=="folder"?"group":"item");
-			var attribs={
-			"id":id,
-			"icon":icon,
-			"text":txt,
-			"parentid":pid,
-			"open":open,
-			"tooltip":id,
-			"typ":ct,
-			"disabled":0,
-			"published":(ct=="item"?pub:1),
-			"selected":0
-			};
-
-			treeData.addSort(new node(attribs));
-
-			drawTree();
-	}
-	}
-}';
+		return '';
 	}
 
 	function getJSInfo(){

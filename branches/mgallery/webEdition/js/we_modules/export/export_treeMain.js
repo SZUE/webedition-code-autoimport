@@ -72,3 +72,27 @@ function doClick(id, typ) {
 		frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 	}
 }
+
+function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
+	if (treeData[indexOfEntry(pid)] && treeData[indexOfEntry(pid)].loaded) {
+		ct = (ct == "folder" ? "group" : "item");
+		var attribs = {
+			"id": id,
+			"icon": icon,
+			"text": txt,
+			"parentid": pid,
+			"open": open,
+			"tooltip": id,
+			"typ": ct,
+			"selected": 0,
+			"disabled": 0
+		};
+
+		if (attribs["typ"] == "item") {
+			attribs["published"] = 0;
+		}
+
+		treeData.addSort(new node(attribs));
+		drawTree();
+	}
+}

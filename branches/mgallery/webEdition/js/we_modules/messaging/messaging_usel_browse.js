@@ -66,7 +66,7 @@ function check(entry) {
 	var id = tarr[0];
 	var img = "img_" + id;
 
-	for (i = 1; i <= menuDaten.laenge; i++) {
+	for (i = 1; i <= menuDaten.len; i++) {
 		if (menuDaten[i].name == id) {
 			if (menuDaten[i].checked) {
 				if (document.images) {
@@ -96,48 +96,38 @@ function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
 	var ai = 1;
 	ret = "";
-	while (ai <= nf.laenge) {
-		fr.write(zweigEintrag);
+	while (ai <= nf.len) {
+		ret += zweigEintrag;
 		if (nf[ai].typ == 'user') {
-			if (ai == nf.laenge) {
-				fr.write("&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" class=\"treeKreuz\">");
+			if (ai == nf.len) {
+				ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" class=\"treeKreuz\">";
 			} else {
-				fr.write("&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" class=\"treeKreuz\">");
+				ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" class=\"treeKreuz\">";
 			}
 			if (nf[ai].name != -1) {
-				fr.write("<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">");
+				ret += "<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">";
 			}
-			fr.write("<IMG SRC=\"" + tree_img_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">");
-			fr.write("</a>");
-
-			if (nf[ai].checked) {
-				checkpic = "check1.gif";
-			} else {
-				checkpic = "check0.gif";
-			}
-
-			fr.write("<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"" + tree_img_dir + checkpic + "\" \" alt=\"\" name=\"img_" + nf[ai].name + "\" /></a>");
-			fr.write("&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A>&nbsp;&nbsp;<br/>\n");
+			ret += "<IMG SRC=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\"></a>" +
+							"<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"" + tree_img_dir + (nf[ai].checked ? "check1.gif" : "check0.gif") + "\" \" alt=\"\" name=\"img_" + nf[ai].name + "\" /></a>" +
+							"&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A>&nbsp;&nbsp;<br/>"
 		} else {
 			var newAst = zweigEintrag;
 
-			var zusatz = (ai == nf.laenge) ? "end" : "";
+			var zusatz = (ai == nf.len) ? "end" : "";
 			var zusatz2 = "";
 			if (nf[ai].offen === 0) {
-				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>");
+				ret += "&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
 			} else {
-				fr.write("&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_close_statustext + "\"></A>");
+				ret += "&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_close_statustext + "\"></A>";
 				zusatz2 = "open";
 			}
-			fr.write("<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
-			fr.write("<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" alt=\"" + g_l.tree_edit_statustext + "\">");
-			fr.write("</a>");
-			fr.write("<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">");
-			fr.write("&nbsp;<b>" + nf[ai].text + "</b>");
-			fr.write("</a>");
-			fr.write("&nbsp;&nbsp;<br/>\n");
+			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
+							"<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" alt=\"" + g_l.tree_edit_statustext + "\"></a>" +
+							"<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
+							"&nbsp;<b>" + nf[ai].text + "</b></a>" +
+							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].offen) {
-				if (ai == nf.laenge) {
+				if (ai == nf.len) {
 					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
 				} else {
 					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
@@ -168,7 +158,7 @@ function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
 
 function updateEntry(id, pid, text, pub) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'user')) {
 			if (menuDaten[ai].name == id) {
 				menuDaten[ai].vorfahr = pid;
@@ -184,7 +174,7 @@ function updateEntry(id, pid, text, pub) {
 function deleteEntry(id) {
 	var ai = 1;
 	var ind = 0;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'user'))
 			if (menuDaten[ai].name == id) {
 				ind = ai;
@@ -194,12 +184,12 @@ function deleteEntry(id) {
 	}
 	if (ind !== 0) {
 		ai = ind;
-		while (ai <= menuDaten.laenge - 1) {
+		while (ai <= menuDaten.len - 1) {
 			menuDaten[ai] = menuDaten[ai + 1];
 			ai++;
 		}
-		menuDaten.laenge[menuDaten.laenge] = null;
-		menuDaten.laenge--;
+		menuDaten.len[menuDaten.len] = null;
+		menuDaten.len--;
 		drawEintraege();
 	}
 }
@@ -212,7 +202,7 @@ function openClose(name, status) {
 
 function indexOfEntry(name) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == 'root') || (menuDaten[ai].typ == 'folder')) {
 			if (menuDaten[ai].name == name) {
 				return ai;
@@ -226,7 +216,7 @@ function indexOfEntry(name) {
 function search(eintrag) {
 	var nf = new container();
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'user')) {
 			if (menuDaten[ai].vorfahr == eintrag) {
 				nf.add(menuDaten[ai]);
@@ -238,7 +228,7 @@ function search(eintrag) {
 }
 
 function container() {
-	this.laenge = 0;
+	this.len = 0;
 	this.clear = containerClear;
 	this.add = add;
 	this.addSort = addSort;
@@ -246,17 +236,17 @@ function container() {
 }
 
 function add(object) {
-	this.laenge++;
-	this[this.laenge] = object;
+	this.len++;
+	this[this.len] = object;
 }
 
 function containerClear() {
-	this.laenge = 0;
+	this.len = 0;
 }
 
 function addSort(object) {
-	this.laenge++;
-	for (var i = this.laenge; i > 0; i--) {
+	this.len++;
+	for (var i = this.len; i > 0; i--) {
 		if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
 			this[i] = this[i - 1];
 		} else {
@@ -300,4 +290,15 @@ function urlEntry(icon, name, vorfahr, text, contentType, table, published, chec
 	this.published = published;
 	this.checked = checked;
 	return this;
+}
+
+function drawEintraege() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
+	messaging_usel_main.window.document.body.innerHTML = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\"><NOBR>" +
+					zeichne(top.startloc, "") +
+					"</nobr></td></tr></table>";
+
+
+	for (var k = 0; k < parent.entries_selected.length; k++) {
+		parent.highlight_Elem(parent.entries_selected[k], parent.sel_color, parent.messaging_usel_main);
+	}
 }

@@ -32,10 +32,7 @@ function openClose(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {
-		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id +
-						(sort !== "" ?
-										("&sort=" + sort) :
-										"");
+		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort !== "" ? ("&sort=" + sort) : "");
 	} else {
 		drawTree();
 	}
@@ -81,4 +78,28 @@ function showSegment() {
 	parentnode.clear();
 	frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();
+}
+
+function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
+	if (treeData[indexOfEntry(pid)]) {
+		if (treeData[indexOfEntry(pid)].loaded) {
+			ct = (ct == "folder" ? "group" : "item");
+			var attribs = {
+				"id": id,
+				"icon": icon,
+				"text": txt,
+				"parentid": pid,
+				"open": open,
+				"tooltip": id,
+				"typ": ct,
+				"disabled": 0,
+				"published": (ct == "item" ? pub : 1),
+				"selected": 0
+			};
+
+			treeData.addSort(new node(attribs));
+
+			drawTree();
+		}
+	}
 }

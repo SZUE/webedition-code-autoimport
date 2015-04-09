@@ -74,7 +74,7 @@ function check(img) {
 	var i;
 	var tarr = img.split("_");
 	var id = tarr[1];
-	for (i = 1; i <= menuDaten.laenge; i++) {
+	for (i = 1; i <= menuDaten.len; i++) {
 		if (menuDaten[i].name == id) {
 			if (menuDaten[i].checked) {
 				if (left.document.images) {
@@ -131,7 +131,7 @@ function update_icon(fid) {
 	if (fid == open_folder) {
 		return 1;
 	}
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if (menuDaten[ai].name == fid) {
 			menuDaten[ai].icon = menuDaten[ai].iconbasename + "_open.gif";
 			if (++s == 2) {
@@ -152,7 +152,7 @@ function update_icon(fid) {
 
 function get_mentry_index(name) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if (menuDaten[ai].name == name) {
 			return ai;
 		}
@@ -296,11 +296,11 @@ function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
 	var ai = 1;
 	ret = "";
-	while (ai <= nf.laenge) {
+	while (ai <= nf.len) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == "leaf_Folder") {
-			ret += '&nbsp;&nbsp;<IMG SRC="' + tree_img_dir +
-							(ai == nf.laenge ?
+			ret += '&nbsp;&nbsp;<img src="' + tree_img_dir +
+							(ai == nf.len ?
 											'kreuzungend.gif' :
 											'kreuzung.gif'
 											) +
@@ -324,12 +324,12 @@ function zeichne(startEntry, zweigEintrag) {
 			ret += "&nbsp;<a name=\"_" + nf[ai].name + "\" href=\"javascript://\" onclick=\"" + trg + "\"><font color=\"black\">" + (parseInt(nf[ai].published) ? " <b>" : "") + translate(nf[ai].text) + (parseInt(nf[ai].published) ? " </b>" : "") + "</font></A>&nbsp;&nbsp;<br/>";
 		} else {
 			var newAst = zweigEintrag;
-			var zusatz = (ai == nf.laenge) ? "end" : "";
+			var zusatz = (ai == nf.len) ? "end" : "";
 			var zusatz2 = "";
 			if (nf[ai].offen === 0) {
-				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
+				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
 			} else {
-				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose(\'" + nf[ai].name + "\',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"alt=\"" + g_l.tree_close_statustext + "\"></A>";
+				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"alt=\"" + g_l.tree_close_statustext + "\"></A>";
 				zusatz2 = "open";
 			}
 			if (deleteMode) {
@@ -340,24 +340,23 @@ function zeichne(startEntry, zweigEintrag) {
 													"check1.gif" :
 													"check0.gif"
 													) +
-									"\" alt=\"" + tree_select_statustext + "\" name=\'img_" + nf[ai].name + "\'></a>";
+									"\" alt=\"" + tree_select_statustext + "\" name='img_" + nf[ai].name + "'></a>";
 				}
 			} else {
 				trg = "doClick(" + nf[ai].name + ");return true;";
 			}
 
-			ret += "<a name=\'_" + nf[ai].name + "\' href=\"javascript://\" onclick=\"" + trg + "\" BORDER=0>" +
-							"<IMG SRC=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">" +
+			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"" + trg + "\" BORDER=0>" +
+							"<img src=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">" +
 							"</a>" +
-							"<A name=\"_" + nf[ai].name + "\" HREF=\"javascript://\" onclick=\"" + trg + "\">" +
-							"&nbsp;" + translate(nf[ai].text) +
-							"</a>" +
+							"<a name=\"_" + nf[ai].name + "\" href=\"javascript://\" onclick=\"" + trg + "\">" +
+							"&nbsp;" + translate(nf[ai].text) + "</a>" +
 							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].offen) {
-				if (ai == nf.laenge) {
-					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
+				if (ai == nf.len) {
+					newAst = newAst + "<img src=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
 				} else {
-					newAst = newAst + "<IMG SRC=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
+					newAst = newAst + "<img src=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
 				}
 				ret += zeichne(nf[ai].name, newAst);
 			}
@@ -369,7 +368,7 @@ function zeichne(startEntry, zweigEintrag) {
 
 function updateEntry(id, pid, text, pub, redraw) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == "parent_Folder") || (menuDaten[ai].typ == "leaf_Folder")) {
 			if (menuDaten[ai].name == id) {
 				if (pid != -1) {
@@ -392,7 +391,7 @@ function updateEntry(id, pid, text, pub, redraw) {
 function deleteEntry(id) {
 	var ai = 1;
 	var ind = 0;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == "parent_Folder") || (menuDaten[ai].typ == "leaf_Folder")) {
 			if (menuDaten[ai].name == id) {
 				ind = ai;
@@ -412,7 +411,7 @@ function openClose(name, status) {
 
 function indexOfEntry(name) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == "root") || (menuDaten[ai].typ == "parent_Folder")) {
 			if (menuDaten[ai].name == name) {
 				return ai;
@@ -426,7 +425,7 @@ function indexOfEntry(name) {
 function search(eintrag) {
 	var nf = new container();
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == "parent_Folder") || (menuDaten[ai].typ == "leaf_Folder")) {
 			if (menuDaten[ai].vorfahr == eintrag) {
 				nf.add(menuDaten[ai]);
@@ -438,7 +437,7 @@ function search(eintrag) {
 }
 
 function container() {
-	this.laenge = 0;
+	this.len = 0;
 	this.clear = containerClear;
 	this.add = add;
 	this.addSort = addSort;
@@ -446,14 +445,14 @@ function container() {
 }
 
 function add(object) {
-	this.laenge++;
-	this[this.laenge] = object;
+	this.len++;
+	this[this.len] = object;
 }
 
 function update_Node(id) {
 	var i;
 	var off = -1;
-	for (i = 1; i < menuDaten.laenge; i++) {
+	for (i = 1; i < menuDaten.len; i++) {
 		if (menuDaten[i].name == id) {
 			off = i;
 			break;
@@ -463,7 +462,7 @@ function update_Node(id) {
 
 function get_index(id) {
 	var i;
-	for (i = 1; i <= menuDaten.laenge; i++) {
+	for (i = 1; i <= menuDaten.len; i++) {
 		if (menuDaten[i].name == id) {
 			return i;
 		}
@@ -504,7 +503,7 @@ function delete_menu_entries(ids) {
 	var t = menuDaten;
 	var cont = new container();
 	del_parents = [];
-	for (i = 1; i <= t.laenge; i++) {
+	for (i = 1; i <= t.len; i++) {
 		if (array_search(t[i].name, ids) == -1) {
 			cont.add(t[i]);
 		} else {
@@ -515,19 +514,7 @@ function delete_menu_entries(ids) {
 }
 
 function containerClear() {
-	this.laenge = 0;
-}
-
-function addSort(object) {
-	this.laenge++;
-	for (var i = this.laenge; i > 0; i--) {
-		if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
-			this[i] = this[i - 1];
-		} else {
-			this[i] = object;
-			break;
-		}
-	}
+	this.len = 0;
 }
 
 function rootEntry(name, text, rootstat) {

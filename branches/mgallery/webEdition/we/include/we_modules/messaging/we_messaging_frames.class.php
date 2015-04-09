@@ -170,7 +170,7 @@ function loadData() {
 		';
 		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::jsElement($jsinit) .
-			we_html_element::jsScript(JS_DIR . 'tree.js') .
+			we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
 			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
 			we_html_element::jsElement($jsOut);
 	}

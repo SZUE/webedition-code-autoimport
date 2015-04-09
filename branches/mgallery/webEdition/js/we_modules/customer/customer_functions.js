@@ -22,18 +22,11 @@
  */
 
 
-function showDatePickerIcon(fieldNr) {
-	document.getElementsByName('value_' + fieldNr)[0].style.display = 'none';
-	document.getElementsByName('value_date_' + fieldNr)[0].style.display = '';
-	document.getElementById('date_picker_' + fieldNr).style.display = '';
-	document.getElementById('dpzell_' + fieldNr).style.display = '';
-}
-
-function hideDatePickerIcon(fieldNr) {
-	document.getElementsByName('value_' + fieldNr)[0].style.display = '';
-	document.getElementsByName('value_date_' + fieldNr)[0].style.display = 'none';
-	document.getElementById('date_picker_' + fieldNr).style.display = 'none';
-	document.getElementById('dpzell_' + fieldNr).style.display = 'none';
+function showHideDatePickerIcon(fieldNr, show) {
+	document.getElementsByName('value_' + fieldNr)[0].style.display = (show ? 'none' : '');
+	document.getElementsByName('value_date_' + fieldNr)[0].style.display = (show ? '' : 'none');
+	document.getElementById('date_picker_' + fieldNr).style.display = (show ? '' : 'none');
+	document.getElementById('dpzell_' + fieldNr).style.display = (show ? '' : 'none');
 }
 
 function isDateField(fieldNr) {
@@ -41,9 +34,9 @@ function isDateField(fieldNr) {
 	selField = document.getElementsByName('field_' + fieldNr)[0].value;
 	selField = selField.substring(selBranch.length + 1, selField.length);
 	if (fieldTypesByName[selField] === 'date') {
-		showDatePickerIcon(fieldNr);
+		showHideDatePickerIcon(fieldNr, true);
 	} else {
-		hideDatePickerIcon(fieldNr);
+		showHideDatePickerIcon(fieldNr, false);
 	}
 }
 
@@ -57,7 +50,7 @@ function lookForDateFields() {
 				document.getElementById('value_date_' + i).value = fieldDate.timestempToDate(document.getElementsByName('value_' + i)[0].value);
 
 			}
-			showDatePickerIcon(i);
+			showHideDatePickerIcon(i, true);
 		}
 		Calendar.setup({inputField: 'value_date_' + i, ifFormat: date_format_dateonly, button: 'date_picker_' + i, align: 'Tl', singleClick: true});
 	}

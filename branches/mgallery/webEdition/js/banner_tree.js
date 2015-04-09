@@ -52,11 +52,11 @@ function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
 	var ai = 1;
 	ret = "";
-	while (ai <= nf.laenge) {
+	while (ai <= nf.len) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == 'file') {
 			ret += "&nbsp;&nbsp;<img src=\"" + tree_img_dir +
-							(ai == nf.laenge ?
+							(ai == nf.len ?
 											"kreuzungend.gif" :
 											"kreuzung.gif"
 											) +
@@ -64,17 +64,17 @@ function zeichne(startEntry, zweigEintrag) {
 			if (nf[ai].name != -1) {
 				ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
 			}
-			ret += "<IMG SRC=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\"/>" +
+			ret += "<img src=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\"/>" +
 							"</a>" +
 							"&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</a>&nbsp;&nbsp;<br/>";
 		} else {
 			var newAst = zweigEintrag;
-			var zusatz = (ai == nf.laenge ? "end" : "");
+			var zusatz = (ai == nf.len ? "end" : "");
 			var zusatz2 = "";
 			if (nf[ai].offen === 0) {
-				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
+				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\"></a>";
 			} else {
-				ret += "&nbsp;&nbsp;<A href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
+				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"></a>";
 				zusatz2 = "open";
 			}
 			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
@@ -85,8 +85,8 @@ function zeichne(startEntry, zweigEintrag) {
 							"</a>" +
 							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].offen) {
-				newAst += "<IMG SRC=\"" + tree_img_dir +
-								(ai == nf.laenge ?
+				newAst += "<img src=\"" + tree_img_dir +
+								(ai == nf.len ?
 												"leer.gif" :
 												"strich2.gif"
 												) + "\" class=\"treeKreuz\">";
@@ -111,7 +111,7 @@ function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
 
 function updateEntry(id, pid, text, pub) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if (menuDaten[ai].name == id) {
 			menuDaten[ai].vorfahr = pid;
 			menuDaten[ai].text = text;
@@ -125,7 +125,7 @@ function updateEntry(id, pid, text, pub) {
 function deleteEntry(id, type) {
 	var ai = 1;
 	var ind = 0;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == type) && menuDaten[ai].name == id) {
 			ind = ai;
 			break;
@@ -144,7 +144,7 @@ function openClose(name, status) {
 
 function indexOfEntry(name) {
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')) {
 			if (menuDaten[ai].name == name) {
 				return ai;
@@ -158,7 +158,7 @@ function indexOfEntry(name) {
 function search(eintrag) {
 	var nf = new container();
 	var ai = 1;
-	while (ai <= menuDaten.laenge) {
+	while (ai <= menuDaten.len) {
 		if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'file')) {
 			if (menuDaten[ai].vorfahr == eintrag) {
 				nf.add(menuDaten[ai]);
@@ -170,7 +170,7 @@ function search(eintrag) {
 }
 
 function container() {
-	this.laenge = 0;
+	this.len = 0;
 	this.clear = containerClear;
 	this.add = add;
 	this.addSort = addSort;
@@ -178,24 +178,12 @@ function container() {
 }
 
 function add(object) {
-	this.laenge++;
-	this[this.laenge] = object;
+	this.len++;
+	this[this.len] = object;
 }
 
 function containerClear() {
-	this.laenge = 0;
-}
-
-function addSort(object) {
-	this.laenge++;
-	for (var i = this.laenge; i > 0; i--) {
-		if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
-			this[i] = this[i - 1];
-		} else {
-			this[i] = object;
-			break;
-		}
-	}
+	this.len = 0;
 }
 
 function rootEntry(name, text, rootstat) {
@@ -207,38 +195,7 @@ function rootEntry(name, text, rootstat) {
 	return this;
 }
 
-function dirEntry(icon, name, vorfahr, text, offen, contentType, table, published) {
-	this.icon = icon;
-	this.name = name;
-	this.vorfahr = vorfahr;
-	this.text = text;
-	this.typ = 'folder';
-	this.offen = (offen ? 1 : 0);
-	this.contentType = contentType;
-	this.table = table;
-	this.loaded = (offen ? 1 : 0);
-	this.checked = false;
-	this.published = published;
-	return this;
-}
-
-function urlEntry(icon, name, vorfahr, text, contentType, table, published) {
-	this.icon = icon;
-	this.name = name;
-	this.vorfahr = vorfahr;
-	this.text = text;
-	this.typ = 'file';
-	this.checked = false;
-	this.contentType = contentType;
-	this.table = table;
-	this.published = published;
-	return this;
-}
-
 function start() {
 	loadData();
 	drawEintraege();
 }
-
-var startloc = 0;
-self.focus();

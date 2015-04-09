@@ -85,7 +85,7 @@ class we_banner_frames extends we_modules_frame{
 		$out.='}';
 		echo we_html_element::cssLink(CSS_DIR . 'tree.css') .
 		we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'tree.js') .
+		we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
 		we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsElement('
 var table="' . BANNER_TABLE . '";

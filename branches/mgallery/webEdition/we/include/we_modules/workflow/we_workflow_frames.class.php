@@ -84,7 +84,7 @@ class we_workflow_frames extends we_modules_frame{
 		echo
 		we_html_element::jsScript(JS_DIR . 'images.js') .
 		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(JS_DIR . 'tree.js') .
+		we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
 		we_html_element::cssLink(CSS_DIR . 'tree.css') .
 		// TODO: move shared code for (some of the) modules-tree (not based on weTree!!) to new weModulesTree.class
 		we_html_element::jsElement('

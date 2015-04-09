@@ -63,7 +63,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
 var treeYear="' . g_l('modules_shop', '[treeYear]') . '";
 var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
-') . we_html_element::jsScript(JS_DIR . 'tree.js') .
+') . we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
 				we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 		$menu = 'function loadData() {
 

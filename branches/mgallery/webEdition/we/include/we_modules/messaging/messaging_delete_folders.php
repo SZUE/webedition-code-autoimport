@@ -42,7 +42,7 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 	function we_submitForm(target, url) {
 		var f = self.document.we_form;
 		var sel = "";
-		for (var i = 1; i <= top.menuDaten.laenge; i++) {
+		for (var i = 1; i <= top.menuDaten.len; i++) {
 			if (top.menuDaten[i].checked)
 				sel += (top.menuDaten[i].name + ",");
 		}

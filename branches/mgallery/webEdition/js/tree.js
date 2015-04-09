@@ -333,16 +333,55 @@ function containerClear() {
 function updateTreeAfterDel(ind) {
 	if (ind !== 0) {
 		ai = ind;
-		while (ai <= menuDaten.laenge - 1) {
+		while (ai <= menuDaten.len - 1) {
 			menuDaten[ai] = menuDaten[ai + 1];
 			ai++;
 		}
-		menuDaten.laenge[menuDaten.laenge] = null;
-		menuDaten.laenge--;
+		menuDaten.len[menuDaten.len] = null;
+		menuDaten.len--;
 		drawEintraege();
 	}
 }
 
+
+function addSort(object) {
+	this.len++;
+	for (var i = this.len; i > 0; i--) {
+		if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
+			this[i] = this[i - 1];
+		} else {
+			this[i] = object;
+			break;
+		}
+	}
+}
+function dirEntry(icon, name, vorfahr, text, offen, contentType, table, published) {
+	this.icon = icon;
+	this.name = name;
+	this.vorfahr = vorfahr;
+	this.text = text;
+	this.typ = 'folder';
+	this.offen = (offen ? 1 : 0);
+	this.contentType = contentType;
+	this.table = table;
+	this.loaded = (offen ? 1 : 0);
+	this.checked = false;
+	this.published = published;
+	return this;
+}
+
+function urlEntry(icon, name, vorfahr, text, contentType, table, published) {
+	this.icon = icon;
+	this.name = name;
+	this.vorfahr = vorfahr;
+	this.text = text;
+	this.typ = 'file';
+	this.checked = false;
+	this.contentType = contentType;
+	this.table = table;
+	this.published = published;
+	return this;
+}
+
 var startloc = 0;
 var treeHTML;
-self.focus();

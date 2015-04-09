@@ -85,6 +85,7 @@ function loadData() {
 ';
 
 		return we_html_element::jsElement($jsInit) .
+			we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
 			we_html_element::jsScript(JS_DIR . 'users_tree.js') .
 			we_html_element::jsElement($jsCode);
 	}

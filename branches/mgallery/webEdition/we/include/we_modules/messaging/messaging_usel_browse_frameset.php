@@ -38,44 +38,13 @@ var table="' . USER_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";'
-		. we_modules_frame::getTree_g_l()
+	. we_modules_frame::getTree_g_l()
 ) .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_usel_browse.js');
 
 //FIXME: make the js code equal to *_tree.js
 ?>
 <script type="text/javascript"><!--
-
-	function drawEintraege() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
-		fr = messaging_usel_main.window.document;
-		fr.open();
-		fr.writeln("<html><head>");
-		fr.writeln("<?php echo str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler());?>");
-		fr.writeln("<script type=\"text/javascript\" src=\"<?php echo JS_DIR . 'we_modules/messaging/messaging_std.js'; ?>\"></" + "script>");
-		fr.writeln("<script type=\"text/javascript\">");
-		fr.writeln("var clickCount=0;");
-		fr.writeln("var wasdblclick=false;");
-		fr.writeln("var tout=null;");
-		fr.writeln("top.loaded=1;");
-		fr.writeln("</" + "script>");
-		fr.writeln('<?php echo STYLESHEET_SCRIPT; ?>');
-		fr.write("</head>");
-		fr.write("<body class=\"weEditorBody\" LINK=\"#000000\" ALINK=\"#000000\" VLINK=\"#000000\" leftmargin=\"10\" topmargin=\"0\" marginheight=\"0\" marginwidth=\"10\" onunload=\"doUnload()\">");
-		fr.write("<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\">\n<NOBR>\n");
-		zeichne(top.startloc, "");
-		fr.write("</nobr>\n</td></tr></table>\n");
-		fr.writeln("  <script type=\"text/javascript\">");
-		fr.writeln("    var k;");
-
-		fr.writeln("for (k = 0; k < parent.entries_selected.length; k++) {");
-		fr.writeln("  parent.highlight_Elem(parent.entries_selected[k], parent.sel_color, parent.messaging_usel_main);");
-		fr.writeln("}");
-		fr.writeln("</" + "script>");
-		fr.write("</body></html>");
-
-		fr.close();
-	}
-
 	function loadData() {
 
 		menuDaten.clear();
@@ -142,11 +111,11 @@ while($DB_WE->next_record()){
 </head>
 
 <?php
-echo we_html_element::htmlBody(array('class' => 'weDialogBody','onload'=>'start();')
-		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-				, we_html_element::htmlIFrame('messaging_usel_main', 'about:blank', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-				we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_selupdate();"), "", we_html_button::create_button("cancel", "javascript:close();")
-				))
+echo we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'start();')
+	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'usel.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
+		we_html_element::htmlDiv(array('style' => 'position:absolute;height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;background-repeat:repeat;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_selupdate();"), "", we_html_button::create_button("cancel", "javascript:close();")
+		))
 ));
 ?>
 

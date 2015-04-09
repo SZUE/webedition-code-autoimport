@@ -61,3 +61,30 @@ function openClose(id) {
 		treeData[eintragsIndex].loaded = 1;
 	}
 }
+
+function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
+	if (treeData[indexOfEntry(pid)]) {
+		if (treeData[indexOfEntry(pid)].loaded) {
+
+			ct = (ct == "folder" ? "group" : "item");
+
+			var attribs = {
+				"id": id,
+				"icon": icon,
+				"text": txt,
+				"parentid": pid,
+				"open": open,
+				"tooltip": id,
+				"typ": ct,
+				"contenttype": "newsletter",
+				"disabled": 0,
+				"published": 1,
+				"selected": 0
+			};
+
+			treeData.addSort(new node(attribs));
+
+			drawTree();
+		}
+	}
+}

@@ -27,17 +27,17 @@
 var oldTreeWidth = size.tree.default;
 
 function toggleTree() {
-	var tDiv = self.document.getElementById("left");
+	var tfd = self.document.getElementById("left");
 	var w = getTreeWidth();
 
-	if (tDiv.style.display == "none") {
+	if (tfd.style.display == "none") {
 		oldTreeWidth = (oldTreeWidth < size.tree.min ? size.tree.default : oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
-		tDiv.style.display = "block";
+		tfd.style.display = "block";
 		setTreeArrow("left");
 		storeTreeWidth(oldTreeWidth);
 	} else {
-		tDiv.style.display = "none";
+		tfd.style.display = "none";
 		oldTreeWidth = w;
 		setTreeWidth(size.tree.hidden);
 		setTreeArrow("right");
