@@ -78,7 +78,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "openDocselector":
 		case "openImgselector":
-			new jsWindow(url, "we_fileselector", -1, -1, docSelect.width, docSelect.height, true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
 			new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);
