@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_javaMenu_global=array(
+	'add_to_collection'=>'Add to collection',
 	'back'=>'Takaisin',
 	'backup'=>'Varmuuskopioi',
 	'browse_server'=>'Selaa palvelinta',
@@ -12,6 +13,7 @@ $l_javaMenu_global=array(
 	'close_all_but_active_document'=>'Sulje kaikki ei-aktiiviset dokumentit',
 	'close_all_documents'=>'Sulje kaikki dokumentit',
 	'close_single_document'=>'Sulje dokumentti',
+	'collection'=>'Collection',
 	'collection_directory'=>'Collection directory',
 	'common'=>'Yleiset',
 	'css_stylesheet'=>'CSS tyylitiedosto',

@@ -1,6 +1,7 @@
 <?php
 /** Generated language file of webEdition CMS */
 $l_javaMenu_global=array(
+	'add_to_collection'=>'In Sammlung',
 	'back'=>'Zurück',
 	'backup'=>'Backup',
 	'browse_server'=>'Server durchsuchen',
@@ -12,6 +13,7 @@ $l_javaMenu_global=array(
 	'close_all_but_active_document'=>'Schließe inaktive Tabs',
 	'close_all_documents'=>'Schließe alle Tabs',
 	'close_single_document'=>'Schließe Tab',
+	'collection'=>'Sammlung',
 	'collection_directory'=>'Sammlungen Verzeichnis',
 	'common'=>'Allgemein',
 	'css_stylesheet'=>'CSS-Datei',
