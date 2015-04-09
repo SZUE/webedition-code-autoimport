@@ -244,7 +244,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	function renameChildrenPath($id, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
 		$path = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id));
-		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("' . $path . '","/",Text) ParentID=' . intval($id));
+		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("' . $path . '","/",Text) WHERE ParentID=' . intval($id));
 		$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE IsFolder=1 AND ParentID=' . intval($id));
 		$updates = $db->getAll(true);
 		foreach($updates as $id){

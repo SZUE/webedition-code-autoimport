@@ -90,7 +90,6 @@ class we_ui_dialog_OkDialog extends we_ui_layout_Dialog{
 		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? oldHtmlspecialchars($this->_message) : $this->_message) . '</div>');
 		$this->addElement($table);
 
-		// TODO localize buttons
 		$buttonOk = new we_ui_controls_Button(array('text' => $translate->_('Ok'), 'onClick' => $this->_okAction . '; ' . ($this->_topClose ? 'top.close()' : ''), 'type' => 'onClick', 'width' => 100));
 
 		if(!$this->_okAction){

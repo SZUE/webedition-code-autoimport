@@ -200,7 +200,7 @@ $we_menu = array(
 		'hide' => $seeMode
 	),
 	array(// File > COLLECTION
-		'text' => 'Sammlung', //g_l('javaMenu_global', '[collection]'),//FIXME: g_l()
+		'text' => g_l('javaMenu_global', '[collection]'),
 		'parent' => 1010000,
 		'cmd' => 'new_collection',
 		'perm' => '' //NEW_COLLECTION',
@@ -329,7 +329,7 @@ $we_menu = array(
 		'hide' => $seeMode,
 	),
 	1095000 => array(// File > add to collection
-		'text' => 'In Sammlung',
+		'text' => g_l('javaMenu_global', '[add_to_collection]'),
 		'parent' => 1000000,
 		'hide' => $seeMode,
 		'perm' => '',
@@ -337,14 +337,14 @@ $we_menu = array(
 	array(// File > add to collection > documents
 		'text' => g_l('javaMenu_global', '[documents]'),
 		'parent' => 1095000,
-		'cmd' => 'add_documents_to_collection', // FIXME: g_l()
+		'cmd' => 'add_documents_to_collection',
 		'perm' => '',
 		'hide' => $seeMode,
 	),
 	array(/// File > add to collection > objects
 		'text' => g_l('javaMenu_object', '[objects]'),
 		'parent' => 1095000,
-		'cmd' => 'add_objectfiles_to_collection', // FIXME: g_l()
+		'cmd' => 'add_objectfiles_to_collection',
 		'perm' => '',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),

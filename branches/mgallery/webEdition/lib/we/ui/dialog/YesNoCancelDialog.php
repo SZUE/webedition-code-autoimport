@@ -82,7 +82,6 @@ class we_ui_dialog_YesNoCancelDialog extends we_ui_layout_Dialog{
 		$table->addHTML('<div>' . nl2br($this->_encodeMessage ? oldHtmlspecialchars($this->_message) : $this->_message) . '</div>');
 		$this->addElement($table);
 
-		// TODO localize buttons
 		$buttonYes = new we_ui_controls_Button(array('text' => $translate->_('Yes'), 'onClick' => $this->_yesAction . ';top.close()', 'type' => 'onClick', 'width' => 100));
 
 		$buttonNo = new we_ui_controls_Button(array('text' => $translate->_('No'), 'onClick' => $this->_noAction . ';top.close()', 'type' => 'onClick', 'width' => 100));
