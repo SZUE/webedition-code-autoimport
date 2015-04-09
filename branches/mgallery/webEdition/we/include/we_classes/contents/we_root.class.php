@@ -1222,6 +1222,10 @@ abstract class we_root extends we_class{
 
 	}
 
+	function correctFields(){
+
+	}
+
 	function registerFileLinks($publish = false, $filelinksReady = false){
 		if(!$filelinksReady){
 			foreach($this->elements as $k => $v){
@@ -1252,10 +1256,10 @@ abstract class we_root extends we_class{
 							$this->FileLinks[] = $v['bdid'];
 						}
 				}
-
-				// workaround for missing type='link'
-				// => FIXME: to throw this out fix type='link' for we:link
-				if(isset($v['type']) && (!$v['type'] || $v['type'] === 'txt') && ($dat = we_unserialize($v['dat'])) && isset($dat['href'])){
+				/* 
+				* workaround for missing type='link'
+				* => FIXME: throw out as soon as we know correctFields() works correct and that link elements from tlTemporaryDocs have correct type
+				if(isset($v['type']) && (!$v['type'] || $v['type'] === 'txt') && strpos($v['dat'], 'a:') === 0 && ($dat = we_unserialize($v['dat'])) && isset($dat['href'])){
 					if(isset($dat['type']) && $dat['type'] === 'int' && $dat['id']){
 						$this->FileLinks[] = $dat['id'];
 					}
@@ -1263,6 +1267,7 @@ abstract class we_root extends we_class{
 						$this->FileLinks[] = $dat['img_id'];
 					}
 				}
+				*/
 			}
 
 			// filter FileLinks by media contenttype

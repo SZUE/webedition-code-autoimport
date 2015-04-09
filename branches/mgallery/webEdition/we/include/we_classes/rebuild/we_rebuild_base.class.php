@@ -118,6 +118,7 @@ abstract class we_rebuild_base{
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
 							flush();
 						}
+						$doc->correctFields();
 						$doc->parseTextareaFields(true);
 						$doc->registerFileLinks(true);
 						unset($doc);

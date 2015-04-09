@@ -569,7 +569,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $fieldTypes;
 	}
 
-	private function correctFields(){
+	function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
 		$types = $this->getFieldTypes($this->getTemplateCode());
@@ -597,8 +597,14 @@ class we_webEditionDocument extends we_textContentDocument{
 					}
 					break;
 				default:
-					$this->elements[$k]['type'] = 'txt';
-					break;
+					switch(isset($types[$k]) ? $types[$k] : ''){
+						case 'link':
+							// FIXME: make sure fixed types are written to tblFile too!
+							$this->elements[$k]['type'] = $types[$k];
+							break;
+						default: 
+							$this->elements[$k]['type'] = 'txt';
+					}
 			}
 		}
 	}
