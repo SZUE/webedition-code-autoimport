@@ -107,9 +107,10 @@ class we_category extends weModelBase{
 
 		return ' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
 	}
-	
-	public function saveMediaLinks(){
-		$fileLinks = we_document::parseInternalLinks($this->Description, 0, '', true);
+
+	public function saveMediaLinks($isRebuild = false){
+		$fileLinks = $isRebuild ? we_wysiwyg_editor::reparseInternalLinks($this->Description, true) : 
+			we_document::parseInternalLinks($this->Description, 0, '', true);
 
 		$ret = $this->db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(CATEGORY_TABLE) . '" AND type="media"');
 		if(!empty($fileLinks)){
