@@ -91,9 +91,6 @@ abstract class we_rebuild_base{
 						}
 						we_category::saveMediaLinks($cat->ID, $cat->Description);
 						break;
-					case 'we_template':
-						//
-						break;
 					case 'we_class':
 						//
 						break;
@@ -107,19 +104,21 @@ abstract class we_rebuild_base{
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
 							flush();
 						}
-						$doc->parseTextareaFields(true);
+						$doc->parseTextareaFields('temp');
 						$doc->registerFileLinks();
 						unset($doc);
 						break;
 					default:
 						$doc = new $data['cn'];
-						$doc->initByID($data['id']);
+						$doc->initByID($data['id'], $doc->Table);
 						if($printIt){
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
 							flush();
 						}
-						$doc->correctFields();
-						$doc->parseTextareaFields(true);
+						if($data['cn'] !== 'we_template'){
+							$doc->correctFields();
+							$doc->parseTextareaFields('main');
+						}
 						$doc->registerFileLinks(true);
 						unset($doc);
 				}
@@ -354,6 +353,18 @@ abstract class we_rebuild_base{
 				'mt' => 0,
 				'tt' => 1,
 				'path' => '',
+				'it' => 0);
+		}
+
+		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder = 0 ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'medialink',
+				'cn' => 'we_template',
+				'mt' => 1,
+				'tt' => 0,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
 				'it' => 0);
 		}
 

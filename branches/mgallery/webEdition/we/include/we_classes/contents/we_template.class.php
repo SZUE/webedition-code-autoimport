@@ -749,6 +749,8 @@ we_templateInit();?>';
 			if(file_exists($tmplPathWithTmplExt)){
 				unlink($tmplPathWithTmplExt);
 			}
+
+			$this->registerFileLinks();
 		} else {
 			t_e('save template failed', $this->Path);
 		}
@@ -776,6 +778,82 @@ we_templateInit();?>';
 					$tmp :
 					$this->readAllVariantFields($this->getElement('completeData'))
 				), 'variants');
+		}
+	}
+
+	function registerFileLinks() {
+		$tp = new we_tag_tagParser($this->getTemplateCode());
+		foreach($tp->getTagsWithAttributes() as $tag){
+			switch($tag['name']){
+				//case 'a': //id: sollte wedoc sein
+				case 'icon':
+				case 'img':
+				case 'linkToSeeMode':
+				case 'metadata':
+				case 'flash':
+				case 'quicktime':
+				case 'video':
+					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						$this->FileLinks[] = intval($tag['attribs']['id']);
+					}
+					break;
+				case 'url':
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' && 
+							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						$this->FileLinks[] = intval($tag['attribs']['id']);
+					}
+					break;
+				case 'include': //nur type=document: id, path
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document'){
+						if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+							$this->FileLinks[] = intval($tag['attribs']['id']);
+						}
+						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id_ct($tag['attribs']['path'], FILE_TABLE))){
+							$this->FileLinks[] = intval($tag['attribs']['id']);
+						}
+					}
+					break;
+				case 'link': //id, imageid
+					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						$this->FileLinks[] = intval($tag['attribs']['id']);
+					}
+					if(isset($tag['attribs']['imageid']) && is_numeric($tag['attribs']['imageid'])){
+						$this->FileLinks[] = intval($tag['attribs']['imageid']);
+					}
+					break;
+				case 'listview':
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' && isset($tag['attribs']['id']) && $tag['attribs']['id']){
+						$ids = explode(',', $tag['attribs']['id']);
+						foreach($ids as $id){
+							$id = trim($id);
+							if(is_numenric($id)){
+								$this->FileLinks[] = intval($id);
+							}
+						}
+					}
+					break;
+				case 'sessionfield': //nur type=img: id
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'img' && 
+							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						$this->FileLinks[] = intval($tag['attribs']['id']);
+					}
+					break;
+				default: 
+					//
+			}
+		}
+
+		if(!empty($this->FileLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
+			$this->FileLinks = array();
+			while($this->DB_WE->next_record()){
+				$this->FileLinks[] = $this->DB_WE->f('ID');
+			}
+		}
+		
+		if(!empty($this->FileLinks)){
+			parent::registerFileLinks(true, true);
 		}
 	}
 

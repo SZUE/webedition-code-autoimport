@@ -615,24 +615,32 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * 
 	 * when $isRebuildMediaLinks it only writes $this->FileLinks (img sources come from db and must not be vhanged)
 	 */
-	function parseTextareaFields($isRebuildMediaLinks = false){
-		if($isRebuildMediaLinks){
-			//FIXME: implement textarea as element-type for textareas!
-			$allElements = array();
-			foreach($this->elements as $name => $elem){
-				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="document:') !== false || strpos($elem['dat'], 'src="document:') !== false)){
-					$this->FileLinks = array_merge($this->FileLinks, we_document::parseInternalLinks($elem['dat'], 0, '', true));
+	function parseTextareaFields($rebuildMode = false){
+		if($rebuildMode === false){
+			$allElements = $this->getUsedElements();
+			if(isset($allElements['textarea'])){
+				foreach($allElements['textarea'] as $name){
+					$value = $this->getElement($name);
+					$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($value, true)); //true: replace internal file paths
+					$this->setElement($name, $value);
 				}
 			}
+
 			return;
 		}
 
-		$allElements = $this->getUsedElements();
-		if(isset($allElements['textarea'])){
-			foreach($allElements['textarea'] as $name){
-				$value = $this->getElement($name);
-				$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($value, true)); //true: replace internal file paths
-				$this->setElement($name, $value);
+		//FIXME: implement textarea as element-type for textareas!
+		if($rebuildMode === 'main'){
+			foreach($this->elements as $name => $elem){
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="document:') !== false || strpos($elem['dat'], 'href="document:') !== false)){
+					$this->FileLinks = array_merge($this->FileLinks, we_document::parseInternalLinks($elem['dat'], 0, '', true));
+				}
+			}
+		} else {//rebuilding from tblTemporaryDoc
+			foreach($this->elements as $name => $elem){
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="') !== false || strpos($elem['dat'], 'href="document:') !== false)){
+					$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($elem['dat'], true));
+				}
 			}
 		}
 	}
@@ -678,7 +686,16 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->temp_category = $this->Category;
 		$out = parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
 		if($out){
-			$this->registerFileLinks(true);// FIXME: test $this->registerFileLinks(true, true);
+			if($DoNotMark){
+				// when called directly by rebuild we must prepare elements as is normally done in we_save
+				$this->correctFields();
+				$this->parseTextareaFields('main');
+				// TODO: we should try to throw out obsolete elements from temporary! but this affects static docs only!
+				// TODO: when doing rebuild media link test all elements against template!
+				$this->registerFileLinks(true, false, true); // last param: when rebuilding static docs do not delete temp entries!
+			} else {
+				$this->registerFileLinks(true);
+			}
 		}
 
 		return $out;

@@ -1226,8 +1226,8 @@ abstract class we_root extends we_class{
 
 	}
 
-	function registerFileLinks($publish = false, $filelinksReady = false){
-		if(!$filelinksReady){
+	function registerFileLinks($publish = false, $filelinksReady = false, $notDeleteTemp = false){
+		if(!$filelinksReady){//FIXME: maybe move this part do we_webEditionDocument
 			foreach($this->elements as $k => $v){
 				switch(isset($v['type']) ? $v['type'] : ''){
 					case 'audio':
@@ -1282,10 +1282,10 @@ abstract class we_root extends we_class{
 		}
 
 		$isTemp = 0;
-		$where = '';
+		$where = $notDeleteTemp ? 'AND isTemp=0' : '';
 		if(!$publish){
 			$isTemp = 1;
-			$where = 'AND isTemp=1';
+			$where = $notDeleteTemp ? 'AND 0' : 'AND isTemp=1';
 		}
 
 		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" ' . $where . ' AND type="media"');
