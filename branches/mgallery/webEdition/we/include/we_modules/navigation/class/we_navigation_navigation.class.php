@@ -293,7 +293,9 @@ class we_navigation_navigation extends weModelBase{
 			$this->CustomerFilter = '';
 		}
 
-		parent::save(false, true);
+		if(($res = parent::save(false, true))){
+			$this->registerFileLinks();
+		}
 
 		if($order && isset($_oldPid) && $_oldPid != $this->ParentID){
 			// the entry has been moved
@@ -326,6 +328,18 @@ class we_navigation_navigation extends weModelBase{
 		}
 	}
 
+	function registerFileLinks(){
+		if($this->IconID){
+			$this->FileLinks[] = $this->IconID;
+		}
+		if($this->SelectionType === 'docLink' && $this->LinkID){
+			$this->FileLinks[] = $this->LinkID;
+		}
+
+		parent::unregisterFileLinks();
+		parent::registerFileLinks();
+	}
+
 	function convertToPaths($ids, $table){
 		if(!is_array($ids)){
 			return array();
@@ -346,6 +360,7 @@ class we_navigation_navigation extends weModelBase{
 			$this->deleteChilds();
 		}
 		parent::delete();
+		parent::unregisterFileLinks();
 
 		we_navigation_cache::delNavigationTree($this->ParentID);
 

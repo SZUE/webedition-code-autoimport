@@ -108,6 +108,15 @@ class we_category extends weModelBase{
 		return ' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
 	}
 
+	public function registerFileLinks(){
+		if($this->Description){
+			$this->FileLinks = we_wysiwyg_editor::reparseInternalLinks($this->Description);
+		}
+
+		$this->unregisterFileLinks();
+		parent::registerFileLinks();
+	}
+
 	public static function saveMediaLinks($catID, $description){
 		$fileLinks = we_wysiwyg_editor::reparseInternalLinks($description);
 		$db = new DB_WE();

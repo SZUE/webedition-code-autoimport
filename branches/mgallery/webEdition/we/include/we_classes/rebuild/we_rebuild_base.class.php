@@ -84,14 +84,16 @@ abstract class we_rebuild_base{
 			case 'medialink':
 				switch($data['cn']){
 					case 'we_category':
-						$cat = new we_category(intval($data['id']));
+					case 'we_navigation_navigation':
+					case 'we_newsletter_newsletter':
+						$model = new $data['cn'](intval($data['id']));
 						if($printIt){
-							echo ('Rebulding Media-Links for: ' . $cat->Text);
+							echo ('Rebulding Media-Links for: ' . $model->Text);
 							flush();
 						}
-						we_category::saveMediaLinks($cat->ID, $cat->Description);
+						$model->registerFileLinks();
 						break;
-					case 'we_class':
+					case 'we_object':
 						//
 						break;
 					case 'we_temporaryDocument':
@@ -309,6 +311,7 @@ abstract class we_rebuild_base{
 		// delete all media links
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE type="media"');
 
+
 		//FIXME: add permission
 		$data = array();
 		//FIXME: add classes and templates
@@ -374,6 +377,30 @@ abstract class we_rebuild_base{
 				'id' => $GLOBALS['DB_WE']->f('ID'),
 				'type' => 'medialink',
 				'cn' => 'we_category',
+				'mt' => 1,
+				'tt' => 0,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
+				'it' => 0);
+		}
+
+		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IconID != 0 OR (SelectionType = "docLink" AND LinkID != 0) ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'medialink',
+				'cn' => 'we_navigation_navigation',
+				'mt' => 1,
+				'tt' => 0,
+				'path' => $GLOBALS['DB_WE']->f('Path'),
+				'it' => 0);
+		}
+
+		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NEWSLETTER_TABLE . ' ORDER BY ID');
+		while($GLOBALS['DB_WE']->next_record()){
+			$data[] = array(
+				'id' => $GLOBALS['DB_WE']->f('ID'),
+				'type' => 'medialink',
+				'cn' => 'we_newsletter_newsletter',
 				'mt' => 1,
 				'tt' => 0,
 				'path' => $GLOBALS['DB_WE']->f('Path'),

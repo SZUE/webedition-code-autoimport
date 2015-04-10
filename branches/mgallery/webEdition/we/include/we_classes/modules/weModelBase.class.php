@@ -32,6 +32,7 @@ class weModelBase{
 	var $persistent_slots = array();
 	var $keys = array('ID');
 	var $isnew = true;
+	protected $FileLinks = array();
 
 	/**
 	 * Default Constructor
@@ -125,6 +126,33 @@ class weModelBase{
 		}
 		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->getKeyWhere());
 		return true;
+	}
+	
+	function registerFileLinks(){ // FIXME: use this for categorys and newsletter too
+		if(!empty($this->FileLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
+			$this->FileLinks = array();
+			while($this->db->next_record()){
+				$this->FileLinks[] = $this->db->f('ID');
+			}
+		}
+
+		foreach(array_unique($this->FileLinks) as $remObj){
+			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => $this->ID,
+					'DocumentTable' => stripTblPrefix($this->table),
+					'type' => 'media',
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'position' => 0,
+					'isTemp' => 0
+				)));
+		}
+	}
+
+	function unregisterFileLinks(){
+		$this->db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . $this->db->escape(stripTblPrefix($this->table)) . '"  AND type="media"');
 	}
 
 	function getKeyWhere(){

@@ -141,6 +141,8 @@ abstract class we_base_delete{
 
 		we_temporaryDocument::delete($id, $table, $DB_WE);
 
+		$DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE (ID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '") OR (remObj=' . intval($id) . ' AND remTable="' . $DB_WE->escape(stripTblPrefix($table)) . '")');
+
 		switch($table){
 			case FILE_TABLE:
 				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
@@ -227,8 +229,6 @@ abstract class we_base_delete{
 				we_workflow_utility::removeDocFromWorkflow($id, $table, $_SESSION['user']['ID'], g_l('modules_workflow', '[doc_deleted]'));
 			}
 		}
-
-		$DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($id) . ' AND DocumentTable="' . $DB_WE->escape(stripTblPrefix($table)) . '" AND type="media"');
 
 		if($id){
 			$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);

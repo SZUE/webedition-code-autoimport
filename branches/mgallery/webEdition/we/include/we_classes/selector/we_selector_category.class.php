@@ -429,10 +429,11 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 				'Description' => $description,
 			)) . ' WHERE ID=' . $catId);
 
-		$updateok &= we_category::saveMediaLinks($catId, $description);
-
 		if($updateok){
 			$this->renameChildrenPath($catId);
+
+			$cat = new we_category($catId);
+			$cat->registerFileLinks();
 		}
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
