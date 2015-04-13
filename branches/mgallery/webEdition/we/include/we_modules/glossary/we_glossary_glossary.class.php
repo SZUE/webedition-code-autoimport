@@ -273,12 +273,28 @@ class we_glossary_glossary extends weModelBase{
 			$this->ID = $this->db->getInsertId();
 		}
 
+		if($retVal){
+			$this->registerFileLinks();
+		}
+
 		// unserialize all needed attributes
 		foreach($this->_Serialized as $Attribute){
 			$this->$Attribute = we_unserialize($this->$Attribute);
 		}
 
 		return $retVal;
+	}
+
+	function registerFileLinks(){
+		if($this->Type === 'link' && !intval($this->IsFolder)){
+			$attribs = is_array($this->Attributes) ? $this->Attributes : we_unserialize($this->Attributes);
+			if(!empty($attribs) && $attribs['mode'] === 'intern' && $attribs['InternLinkID']){
+				$this->FileLinks[] = $attribs['InternLinkID'];
+			}
+		}
+
+		parent::unregisterFileLinks();
+		parent::registerFileLinks();
 	}
 
 	/**

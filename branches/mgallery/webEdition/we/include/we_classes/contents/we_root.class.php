@@ -1226,58 +1226,15 @@ abstract class we_root extends we_class{
 
 	}
 
-	function registerFileLinks($publish = false, $filelinksReady = false, $notDeleteTemp = false){
-		if(!$filelinksReady){//FIXME: maybe move this part do we_webEditionDocument
-			foreach($this->elements as $k => $v){
-				switch(isset($v['type']) ? $v['type'] : ''){
-					case 'audio':
-					case 'binary':
-					case 'flashmovie':
-					case 'href':
-					case 'img':
-					case 'quicktime':
-					case 'video':
-						if(isset($v['bdid']) && $v['bdid']){
-							$this->FileLinks[] = $v['bdid'];
-						}
-						break;
-					case 'link':
-						if(isset($v['dat']) && ($link = we_unserialize($v['dat']))){
-							if($link['type'] === 'int' && $link['id']){
-								$this->FileLinks[] = $link['id'];
-							}
-							if($link['img_id']){
-								$this->FileLinks[] = $link['img_id'];
-							}
-						}
-						break;
-					default:
-						if(isset($v['bdid']) && $v['bdid']){
-							$this->FileLinks[] = $v['bdid'];
-						}
-				}
-				/* 
-				* workaround for missing type='link'
-				* => FIXME: throw out as soon as we know correctFields() works correct and that link elements from tlTemporaryDocs have correct type
-				if(isset($v['type']) && (!$v['type'] || $v['type'] === 'txt') && strpos($v['dat'], 'a:') === 0 && ($dat = we_unserialize($v['dat'])) && isset($dat['href'])){
-					if(isset($dat['type']) && $dat['type'] === 'int' && $dat['id']){
-						$this->FileLinks[] = $dat['id'];
-					}
-					if($dat['img_id']){
-						$this->FileLinks[] = $dat['img_id'];
-					}
-				}
-				*/
-			}
-
-			// filter FileLinks by media contenttype
-			if(!empty($this->FileLinks)){
-				$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
-				$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
-				$this->FileLinks = array();
-				while($this->DB_WE->next_record()){
-					$this->FileLinks[] = $this->DB_WE->f('ID');
-				}
+	function writeFileLinks($publish = false, $filelinksReady = false, $notDeleteTemp = false){//FIXME: $filelinksReady is obsolete on this level
+																								//FIXME: make publish default (for all types other than webEDitionDocument and ObjectFile
+		// filter FileLinks by media contenttype
+		if(!empty($this->FileLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
+			$this->FileLinks = array();
+			while($this->DB_WE->next_record()){
+				$this->FileLinks[] = $this->DB_WE->f('ID');
 			}
 		}
 
@@ -1288,6 +1245,7 @@ abstract class we_root extends we_class{
 			$where = $notDeleteTemp ? 'AND 0' : 'AND isTemp=1';
 		}
 
+		// FIXME: move to unregisterFileLinks on some level
 		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" ' . $where . ' AND type="media"');
 		if(!empty($this->FileLinks)){
 			foreach(array_unique($this->FileLinks) as $remObj){
@@ -1303,7 +1261,7 @@ abstract class we_root extends we_class{
 			}
 		}
 
-		//FIXME: we should return $ret
+		return $ret;
 	}
 
 	function unregisterFileLinks($unpublish = false){

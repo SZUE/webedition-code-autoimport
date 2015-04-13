@@ -83,7 +83,9 @@ abstract class we_rebuild_base{
 				break;
 			case 'medialink':
 				switch($data['cn']){
+					case 'we_banner_banner':
 					case 'we_category':
+					case 'we_glossary_glossary':
 					case 'we_navigation_navigation':
 					case 'we_newsletter_newsletter':
 						$model = new $data['cn'](intval($data['id']));
@@ -92,9 +94,6 @@ abstract class we_rebuild_base{
 							flush();
 						}
 						$model->registerFileLinks();
-						break;
-					case 'we_object':
-						//
 						break;
 					case 'we_temporaryDocument':
 						$content = we_unserialize(we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']));
@@ -316,7 +315,10 @@ abstract class we_rebuild_base{
 		$data = array();
 		//FIXME: add classes and templates
 
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,ModDate,Published FROM ' . FILE_TABLE . ' WHERE (ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" OR ContentType="' . we_base_ContentTypes::IMAGE . '") AND IsFolder = 0 ORDER BY ID');
+		//FIXME: pack this queries into the loop too
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,ModDate,Published FROM ' . FILE_TABLE . ' WHERE
+			ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::CSS . '","' . we_base_ContentTypes::JS . '")
+			AND IsFolder = 0 ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
 			// beware of a very special case: when a document is unpublished && mofified we must not have any main-table entries!
 			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
@@ -359,52 +361,28 @@ abstract class we_rebuild_base{
 				'it' => 0);
 		}
 
-		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder = 0 ORDER BY ID');
-		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
-				'type' => 'medialink',
-				'cn' => 'we_template',
-				'mt' => 1,
-				'tt' => 0,
-				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
-		}
+		$tables = array(
+			array(TEMPLATES_TABLE, 'WHERE IsFolder = 0', 'we_template'),
+			array(OBJECT_TABLE, 'WHERE IsFolder = 0', 'we_object'),
+			array(BANNER_TABLE, '', 'we_banner_banner'),
+			array(CATEGORY_TABLE, 'WHERE Description != ""', 'we_category'),
+			array(GLOSSARY_TABLE, 'WHERE IsFolder = 0 AND type = "link"', 'we_glossary_glossary'),
+			array(NAVIGATION_TABLE, 'WHERE IconID != 0 OR (SelectionType = "docLink" AND LinkID != 0)', 'we_navigation_navigation'),
+			array(NEWSLETTER_TABLE, '', 'we_newsletter_newsletter')
+		);
 
-		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . CATEGORY_TABLE . ' WHERE Description != "" ORDER BY ID');
-		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
-				'type' => 'medialink',
-				'cn' => 'we_category',
-				'mt' => 1,
-				'tt' => 0,
-				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
-		}
-
-		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IconID != 0 OR (SelectionType = "docLink" AND LinkID != 0) ORDER BY ID');
-		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
-				'type' => 'medialink',
-				'cn' => 'we_navigation_navigation',
-				'mt' => 1,
-				'tt' => 0,
-				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
-		}
-
-		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NEWSLETTER_TABLE . ' ORDER BY ID');
-		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
-				'type' => 'medialink',
-				'cn' => 'we_newsletter_newsletter',
-				'mt' => 1,
-				'tt' => 0,
-				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
+		foreach($tables as $table){
+			$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . $table[0] . ' ' . $table[1] . ' ORDER BY ID');
+			while($GLOBALS['DB_WE']->next_record()){
+				$data[] = array(
+					'id' => $GLOBALS['DB_WE']->f('ID'),
+					'type' => 'medialink',
+					'cn' => $table[2],
+					'mt' => 1,
+					'tt' => 0,
+					'path' => $GLOBALS['DB_WE']->f('Path'),
+					'it' => 0);
+			}
 		}
 
 		return $data;

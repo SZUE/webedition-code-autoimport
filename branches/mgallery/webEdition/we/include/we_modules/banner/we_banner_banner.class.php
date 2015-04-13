@@ -61,6 +61,7 @@ class we_banner_banner extends we_banner_base{
 	var $Customers = '';
 	var $TagName = '';
 	var $weight = 4;
+	protected $FileLinks = array();
 
 	/**
 	 * steps for WorkFlow Definition
@@ -163,7 +164,47 @@ class we_banner_banner extends we_banner_base{
 	public function save(){
 		$ppath = id_to_path($this->ParentID, BANNER_TABLE);
 		$this->Path = ($ppath === '/') ? $ppath . $this->Text : $ppath . '/' . $this->Text;
-		parent::save();
+		$retVal = parent::save();
+
+		//if($retVal){
+			$this->registerFileLinks();
+		//}
+	}
+
+	function registerFileLinks(){// FIXME: base banner on we_ModelBase to us registerFileLink()
+		if($this->bannerID){
+			$this->FileLinks[] = $this->bannerID;
+		}
+		if(!intval($this->IsFolder) && $this->IntHref && $this->bannerIntID){
+			$this->FileLinks[] = $this->bannerIntID;
+		}
+
+		$this->unregisterFileLinks();
+
+		if(!empty($this->FileLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
+			$this->FileLinks = array();
+			while($this->db->next_record()){
+				$this->FileLinks[] = $this->db->f('ID');
+			}
+		}
+
+		foreach(array_unique($this->FileLinks) as $remObj){
+			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => $this->ID,
+					'DocumentTable' => stripTblPrefix($this->table),
+					'type' => 'media',
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'position' => 0,
+					'isTemp' => 0
+				)));
+		}
+	}
+
+	function unregisterFileLinks(){
+		$this->db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . $this->db->escape(stripTblPrefix($this->table)) . '"  AND type="media"');
 	}
 
 	/**

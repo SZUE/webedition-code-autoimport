@@ -2288,7 +2288,82 @@ class we_object extends we_document{
 				return false;
 			}
 		}
+
+		$this->registerFileLinks(true, false);
+
 		return true;
+	}
+
+	function registerFileLinks($publish = false, $filelinksReady = false, $notDeleteTemp = false){// FIXME: publish is obsolete for classes
+		$serializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
+		foreach($serializedArray as $k => $v){
+			if(($type = strstr($k, '_', true)) !== false){
+				switch($type){
+					case 'binary':
+					case 'flashmovie':
+					case 'img':
+					case 'quicktime':
+						if($v['default']){
+							$this->FileLinks[] = $v['default'];
+						}
+						break;
+					case 'link':
+						$default = we_unserialize($v['default'], array('type' => 0, 'ctype' => 0));
+						if($default['type'] === 'int' && $default['id']){
+							$this->FileLinks[] = $default['id'];
+						}
+						if($default['ctype'] === 'int' && $default['img_id']){
+							$this->FileLinks[] = $default['img_id'];
+						}
+						break;
+					case 'text':
+						if($v['dhtmledit'] == 'on' || $v['dhtmledit'] === true ){//FIXME: make bool!
+							$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($v['default']));
+						}
+						break;
+					default:
+						//
+				}
+			}
+
+			$this->writeFileLinks();
+		}
+		/*
+		if(!$filelinksReady){//FIXME: maybe move this part do we_webEditionDocument
+			foreach($this->elements as $k => $v){
+				switch(isset($v['type']) ? $v['type'] : ''){
+					case 'audio':
+					case 'binary':
+					case 'flashmovie':
+					case 'href':
+					case 'img':
+					case 'quicktime':
+					case 'video':
+						if(isset($v['bdid']) && $v['bdid']){
+							$this->FileLinks[] = $v['bdid'];
+						}
+						break;
+					case 'link':
+						if(isset($v['dat']) && ($link = we_unserialize($v['dat']))){
+							if($link['type'] === 'int' && $link['id']){
+								$this->FileLinks[] = $link['id'];
+							}
+							if($link['img_id']){
+								$this->FileLinks[] = $link['img_id'];
+							}
+						}
+						break;
+					default:
+						if(isset($v['bdid']) && $v['bdid']){
+							$this->FileLinks[] = $v['bdid'];
+						}
+				}
+			}
+		}
+		 * 
+		 */
+
+		$this->writeFileLinks($publish, true, $notDeleteTemp);// IMPORTANT: not call parent but we_root!
 	}
 
 	/**

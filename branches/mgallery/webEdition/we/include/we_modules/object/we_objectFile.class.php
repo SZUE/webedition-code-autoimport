@@ -2216,7 +2216,6 @@ class we_objectFile extends we_document{
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
-		t_e("save on of", $this->elements, $this);
 		if(intval($this->TableID) == 0 || $this->IsFolder){
 			return false;
 		}

@@ -80,17 +80,21 @@ class we_textDocument extends we_document{
 		return parent::isValidEditPage($editPageNr);
 	}
 
-	private static function replaceWEIDs($doc){
+	function replaceWEIDs($doc = '', $registerOnly = false){
+		$doc = $doc ? : parent::i_getDocumentToSave();
 		$matches = array();
 		if(preg_match_all('|#WE:(\d+)#|', $doc, $matches)){
 			$matches = array_unique($matches[1], SORT_NUMERIC);
-			if(!$matches){
-				return $doc;
-			}
-			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
-			$paths = id_to_path($matches, FILE_TABLE, $GLOBALS['DB_WE'], false, true);
-			foreach($paths as $match => $path){
-				$doc = str_replace('#WE:' . $match . '#', ($urlReplace ? preg_replace($urlReplace, array_keys($urlReplace), $path) : $path), $doc);
+			$this->FileLinks = $matches;
+			if(!$registerOnly){
+				if(!$matches){
+					return $doc;
+				}
+				$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
+				$paths = id_to_path($matches, FILE_TABLE, $GLOBALS['DB_WE'], false, true);
+				foreach($paths as $match => $path){
+					$doc = str_replace('#WE:' . $match . '#', ($urlReplace ? preg_replace($urlReplace, array_keys($urlReplace), $path) : $path), $doc);
+				}
 			}
 		}
 		return $doc;
@@ -115,7 +119,12 @@ class we_textDocument extends we_document{
 				return false;
 			}
 		}
-		return parent::we_save($resave, $skipHook);
+
+		if(($ret = parent::we_save($resave, $skipHook))){t_e("ret a", $ret);
+			$ret = $this->registerFileLinks(true, true);
+		}
+
+		return $ret;
 	}
 
 	protected function i_writeSiteDir($doc){
@@ -173,12 +182,17 @@ class we_textDocument extends we_document{
 				}
 			//no break;
 			case we_base_ContentTypes::JS:
-				$doc = self::replaceWEIDs($doc);
+				$doc = $this->replaceWEIDs($doc);
 				//FIXME: write all dependend files to database link, this should be the same table, as used for media queries in 6.5
 				break;
 			default:
 		}
 		return $doc;
+	}
+
+	// FIXME: obsolete as soon as defaults on we_root are fixed
+	function unregisterFileLinks(){
+		we_root::unregisterFileLinks();
 	}
 
 	function formParseFile(){
