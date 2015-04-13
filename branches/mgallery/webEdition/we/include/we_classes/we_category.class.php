@@ -114,7 +114,7 @@ class we_category extends weModelBase{
 		}
 
 		$this->unregisterFileLinks();
-		parent::registerFileLinks();
+		$this->writeFileLinks();
 	}
 
 	public static function saveMediaLinks($catID, $description){

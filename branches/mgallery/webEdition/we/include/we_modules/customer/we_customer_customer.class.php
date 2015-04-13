@@ -117,11 +117,19 @@ class we_customer_customer extends weModelBase{
 		}
 
 		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
-		$ret = $hook->executeHook();
-		if($ret === true){
-			return weModelBase::save();
+
+		return $hook->executeHook() && weModelBase::save() && $this->registerFileLinks();
+	}
+
+	function registerFileLinks(){
+		foreach(self::getImageFields() as $field){
+			if($this->$field){
+				$this->FileLinks[] = $this->$field;
+			}
 		}
-		return false;
+
+		$this->unregisterFileLinks();
+		$this->writeFileLinks();
 	}
 
 	/**
@@ -404,10 +412,30 @@ class we_customer_customer extends weModelBase{
 		if(!$customerFields){
 			return $fields;
 		}
-		
+
 		foreach($customerFields as $key => $value){
 			if(isset($value['encryption']) && $value['encryption']){
 				$fields[$key] = self::ENCRYPTED_DATA;
+			}
+		}
+
+		return $fields;
+	}
+
+	public static function getImageFields(){
+		static $fields = -1;
+		if(is_array($fields)){
+			return $fields;
+		}
+		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $GLOBALS['DB_WE']));
+		$fields = array();
+		if(!$customerFields){
+			return $fields;
+		}
+
+		foreach($customerFields as $key => $value){
+			if(isset($value['type']) && $value['type'] === 'img'){
+				$fields[] = $key;
 			}
 		}
 

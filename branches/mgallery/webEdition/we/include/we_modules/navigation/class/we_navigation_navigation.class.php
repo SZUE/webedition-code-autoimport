@@ -336,8 +336,8 @@ class we_navigation_navigation extends weModelBase{
 			$this->FileLinks[] = $this->LinkID;
 		}
 
-		parent::unregisterFileLinks();
-		parent::registerFileLinks();
+		$this->unregisterFileLinks();
+		$this->writeFileLinks();
 	}
 
 	function convertToPaths($ids, $table){
@@ -360,7 +360,7 @@ class we_navigation_navigation extends weModelBase{
 			$this->deleteChilds();
 		}
 		parent::delete();
-		parent::unregisterFileLinks();
+		$this->unregisterFileLinks();
 
 		we_navigation_cache::delNavigationTree($this->ParentID);
 

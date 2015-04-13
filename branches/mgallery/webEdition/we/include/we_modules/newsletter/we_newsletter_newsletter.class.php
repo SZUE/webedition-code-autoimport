@@ -195,8 +195,15 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		}
 
 		$this->unregisterFileLinks();
+		$this->writeFileLinks();
+	}
 
-		if(!empty($this->FileLinks)){
+	function unregisterFileLinks(){
+		$this->db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . $this->db->escape(stripTblPrefix($this->table)) . '"  AND type="media"');
+	}
+
+	function writeFileLinks(){
+				if(!empty($this->FileLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
 			$this->FileLinks = array();
@@ -216,10 +223,6 @@ class we_newsletter_newsletter extends we_newsletter_base{
 					'isTemp' => 0
 				)));
 		}
-	}
-
-	function unregisterFileLinks(){
-		$this->db->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . $this->db->escape(stripTblPrefix($this->table)) . '"  AND type="media"');
 	}
 
 	/**

@@ -293,8 +293,8 @@ class we_glossary_glossary extends weModelBase{
 			}
 		}
 
-		parent::unregisterFileLinks();
-		parent::registerFileLinks();
+		$this->unregisterFileLinks();
+		$this->writeFileLinks();
 	}
 
 	/**

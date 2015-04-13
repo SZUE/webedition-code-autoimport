@@ -85,6 +85,7 @@ abstract class we_rebuild_base{
 				switch($data['cn']){
 					case 'we_banner_banner':
 					case 'we_category':
+					case 'we_customer_customer':
 					case 'we_glossary_glossary':
 					case 'we_navigation_navigation':
 					case 'we_newsletter_newsletter':
@@ -368,7 +369,8 @@ abstract class we_rebuild_base{
 			array(CATEGORY_TABLE, 'WHERE Description != ""', 'we_category'),
 			array(GLOSSARY_TABLE, 'WHERE IsFolder = 0 AND type = "link"', 'we_glossary_glossary'),
 			array(NAVIGATION_TABLE, 'WHERE IconID != 0 OR (SelectionType = "docLink" AND LinkID != 0)', 'we_navigation_navigation'),
-			array(NEWSLETTER_TABLE, '', 'we_newsletter_newsletter')
+			array(NEWSLETTER_TABLE, '', 'we_newsletter_newsletter'),
+			array(CUSTOMER_TABLE, 'WHERE IsFolder = 0', 'we_customer_customer'), 
 		);
 
 		foreach($tables as $table){
