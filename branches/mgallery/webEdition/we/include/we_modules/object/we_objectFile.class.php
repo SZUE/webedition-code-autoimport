@@ -401,20 +401,7 @@ class we_objectFile extends we_document{
 		$hash = getHash('SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		if($hash){
 // fix - the class access permissions should not be applied
-			/* if($this->DB_WE->f("Users")){
-			  $this->Owners = $this->DB_WE->f("Users");
-			  }
-			  if($this->DB_WE->f("UsersReadOnly")){
-			  $this->OwnersReadOnly = $this->DB_WE->f("UsersReadOnly");
-			  }
-			  if($this->DB_WE->f("RestrictUsers")){
-			  $this->RestrictOwners = $this->DB_WE->f("RestrictUsers");
-			  }
 
-			  if($this->DB_WE->f('DefaultTriggerID')){
-			  $this->TriggerID = $this->DB_WE->f('DefaultTriggerID');
-			  }
-			 */
 			$this->Category = $hash['DefaultCategory'] ? : '';
 			if($hash['DefaultText']){
 				$text = $hash['DefaultText'];
@@ -3190,14 +3177,14 @@ class we_objectFile extends we_document{
 	}
 
 	public function getPropertyPage(){
-		$parts = array();
-
 		if($this->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
-			$parts[] = array(
-				"headline" => g_l('weClass', '[path]'),
-				"html" => $this->formPath(),
-				"space" => 140,
-				"icon" => "path.gif"
+			$parts = array(
+				array(
+					"headline" => g_l('weClass', '[path]'),
+					"html" => $this->formPath(),
+					"space" => 140,
+					"icon" => "path.gif"
+				)
 			);
 
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE || !permissionhandler::hasPerm('CAN_SEE_OBJECTS')){ // No link to class in normal mode
@@ -3263,18 +3250,20 @@ class we_objectFile extends we_document{
 				"icon" => "charset.gif"
 			);
 		} elseif($this->hasWorkspaces()){ //	Show workspaces
-			$parts[] = array(
-				"headline" => g_l('weClass', '[workspaces]'),
-				"html" => $this->formWorkspaces(),
-				"space" => 140,
-				"noline" => 1,
-				"icon" => "workspace.gif"
-			);
-			$parts[] = array(
-				"headline" => g_l('weClass', '[extraWorkspaces]'),
-				"html" => $this->formExtraWorkspaces(),
-				"space" => 140,
-				"forceRightHeadline" => 1
+			$parts = array(
+				array(
+					"headline" => g_l('weClass', '[workspaces]'),
+					"html" => $this->formWorkspaces(),
+					"space" => 140,
+					"noline" => 1,
+					"icon" => "workspace.gif"
+				),
+				array(
+					"headline" => g_l('weClass', '[extraWorkspaces]'),
+					"html" => $this->formExtraWorkspaces(),
+					"space" => 140,
+					"forceRightHeadline" => 1
+				)
 			);
 
 			$button = we_html_button::create_button('ws_from_class', "javascript:we_cmd('object_ws_from_class');_EditorFrame.setEditorIsHot(true);");
@@ -3285,10 +3274,12 @@ class we_objectFile extends we_document{
 				"space" => 140
 			);
 		} else { //	No workspaces defined
-			$parts[] = array(
-				"headline" => "",
-				"html" => g_l('modules_object', '[no_workspace_defined]'),
-				"space" => 0
+			$parts = array(
+				array(
+					"headline" => "",
+					"html" => g_l('modules_object', '[no_workspace_defined]'),
+					"space" => 0
+				)
 			);
 		}
 		echo we_html_multiIconBox::getJS() .
