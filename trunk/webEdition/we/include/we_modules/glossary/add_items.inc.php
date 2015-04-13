@@ -328,12 +328,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				break;
 			case 'prepare':
 
-				$configFile = WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile;
-				if(!file_exists($configFile) || !is_file($configFile)){
-					we_glossary_settingControl::saveSettings(true);
-				}
-				include($configFile);
-
 				//FIXME: these values should be obtained from global settings
 				$Languages = array(
 					'de' => 'de',
