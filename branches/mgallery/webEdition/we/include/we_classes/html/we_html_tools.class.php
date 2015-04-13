@@ -430,6 +430,14 @@ this.selectedIndex = 0;' .
 		echo self::getExtensionPopup($name, $selected, $extensions);
 	}
 
+	/**
+	 *
+	 * @param int $w
+	 * @param int $h
+	 * @param type $border
+	 * @return type
+	 * @deprecated since version 6.3.0
+	 */
 	static function getPixel($w, $h, $border = 0){
 		if($w == ''){
 			$w = 0;
