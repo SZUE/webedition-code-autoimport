@@ -41,7 +41,7 @@ if($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 }
 
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
-//$openFolders = array_filter(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', '', 3));
+$openFolders = array_filter(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 3));
 
 
-$tree->loadHTML($table, $parentFolder);
+$tree->loadHTML($table, $parentFolder, $openFolders);

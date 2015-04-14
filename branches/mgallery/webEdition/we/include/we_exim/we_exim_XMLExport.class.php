@@ -148,7 +148,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		foreach($selDocs as $k => $v){
 			$this->RefTable->add2(array(
 				"ID" => $v,
-				"ContentType" => f('Select ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
+				"ContentType" => f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
 				"level" => 0
 				)
 			);

@@ -1126,7 +1126,7 @@ function setState(a) {
 				if($start_export){
 					$hiddens .= we_html_element::htmlHidden("cmd", "do_export");
 
-					$out .=
+					$out =
 						we_html_element::jsElement('
 if (top.footer.setProgressText){
 	top.footer.setProgressText("current_description","Exportiere ...");
@@ -1257,7 +1257,7 @@ if (top.footer.setProgress){
 
 					$ids = array();
 					foreach($finalDocs as $k => $v){
-						$ct = f("Select ContentType FROM " . FILE_TABLE . " WHERE ID=" . $v . ";", "ContentType", $this->db);
+						$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $v , "", $this->db);
 						$ids[] = array(
 							"ID" => $v,
 							"ContentType" => $ct,

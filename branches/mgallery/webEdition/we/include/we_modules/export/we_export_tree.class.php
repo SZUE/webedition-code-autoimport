@@ -141,74 +141,68 @@ var openFolders= {
 		return $out ? implode(' OR ', $out) : '';
 	}
 
-	private static function getItems($table, $ParentID, array &$treeItems){
-		static $openFolders = array();
+	private static function getItems($table, $ParentID, array &$treeItems, $of = array(), we_database_base $DB_WE = null){
+		static $openFolders = -1;
+		if($openFolders == -1){
+			$openFolders = $of;
+		}
 
-		$DB_WE = new DB_WE();
+		$DB_WE = $DB_WE? : new DB_WE();
 		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate,ContentType';
 
 		switch($table){
 			case FILE_TABLE :
-				$selDocs = explode(',', $_SESSION['weS']['exportVars_session']["selDocs"]);
-				$elem.=',Published';
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selDocs) : array();
+				$elem.=',Published,0 AS IsClassFolder';
+				break;
+			case (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 'TEMPLATES_TABLE'):
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selTempl) : array();
+				$elem.=',ModDate AS Published,0 AS IsClassFolder';
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$elem.=',Published,IsClassFolder';
-				$selObjs = explode(',', $_SESSION['weS']['exportVars_session']["selObjs"]);
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selObjs) : array();
+				break;
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selClasses) : array();
+				$elem.=',ModDate AS Published,0 AS IsClassFolder';
+				break;
 		}
 
 		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $DB_WE->escape($table) . ' WHERE  ParentID=' . intval($ParentID) . ' AND((1' . we_users_util::makeOwnersSql() . ')' . $GLOBALS['wsQuery'] . ') ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,ABS(text),Text');
 
-		while($DB_WE->next_record()){
-			$ID = $DB_WE->f("ID");
-			$ParentID = $DB_WE->f("ParentID");
-			$Text = $DB_WE->f("Text");
-			$Path = $DB_WE->f("Path");
-			$IsFolder = $DB_WE->f("IsFolder");
-			$ContentType = $DB_WE->f("ContentType");
-			$Icon = $DB_WE->f("Icon");
-			$IsClassFolder = $DB_WE->f("IsClassFolder");
-			$published = (($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate"))) ? -1 : $DB_WE->f("Published");
+		$entries = $DB_WE->getAll();
 
-			switch($table){
-				case FILE_TABLE:
-					$checked = (isset($_SESSION['weS']['exportVars_session']["selDocs"]) && in_array($ID, $selDocs));
-					break;
-				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$checked = (isset($_SESSION['weS']['exportVars_session']["selObjs"]) && in_array($ID, $selObjs));
-					break;
-				default:
-					$published = 1;
-					$checked = 0;
-					break;
-			}
+		foreach($entries as $entry){
+			$ID = $entry["ID"];
+			$IsFolder = $entry["IsFolder"];
+			$published = $entry["Published"];
 
 			$OpenCloseStatus = in_array($ID, $openFolders);
 
-
 			$treeItems[] = array(
-				"icon" => $Icon,
+				"icon" => $entry["Icon"],
 				"id" => $ID,
-				"parentid" => $ParentID,
-				"text" => $Text,
-				"contenttype" => $ContentType,
-				"isclassfolder" => $IsClassFolder,
+				"parentid" => $entry["ParentID"],
+				"text" => $entry["Text"],
+				"contenttype" => $entry["ContentType"],
+				"isclassfolder" => $entry["IsClassFolder"],
 				"table" => $table,
-				"checked" => $checked,
+				"checked" => (isset($selDocs) && in_array($ID, $selDocs)),
 				"typ" => $IsFolder ? "group" : "item",
 				"open" => $OpenCloseStatus,
-				"published" => $published,
-				"disabled" =>  in_array($Path, $GLOBALS['parentpaths']),
+				"published" => ($published && ($published < $entry["ModDate"])) ? -1 : $published,
+				"disabled" => in_array($entry["Path"], $GLOBALS['parentpaths']),
 				"tooltip" => $ID
 			);
 
 			if($IsFolder && $OpenCloseStatus){
-				self::getItems($table, $ID, $treeItems);
+				self::getItems($table, $ID, $treeItems, $of, $DB_WE);
 			}
 		}
 	}
 
-	public function loadHTML($table, $parentFolder){
+	public function loadHTML($table, $parentFolder, $openFolders){
 		$GLOBALS["OBJECT_FILES_TREE_COUNT"] = 20;
 		$GLOBALS['parentpaths'] = $wsQuery = array();
 
@@ -257,7 +251,7 @@ var openFolders= {
 
 		$treeItems = array();
 
-		self::getItems($table, $parentFolder, $treeItems);
+		self::getItems($table, $parentFolder, $treeItems, $openFolders);
 
 		echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() .

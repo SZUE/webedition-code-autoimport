@@ -61,7 +61,7 @@ class we_export_view extends we_modules_view{
 				"selTempl_open" => we_base_request::_(we_base_request::INTLIST, "selTempl_open", ''),
 				"selObjs_open" => we_base_request::_(we_base_request::INTLIST, "selObjs_open", ''),
 				"selClasses_open" => we_base_request::_(we_base_request::INTLIST, "selClasses_open", '')
-			));
+		));
 	}
 
 	function getJSTop(){
@@ -493,6 +493,7 @@ function submitForm() {
 				}
 			}
 		}
+
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 	}
 

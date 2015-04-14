@@ -387,14 +387,10 @@ function closeAllType(){
 	}
 
 	function getHTMLDirChooser(){
-
 		$path = id_to_path($this->View->export->ParentID, EXPORT_TABLE);
+		$cmd1 = "document.we_form.elements.ParentID.value";
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.ParentID.value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.ParentPath.value");
-		$wecmdenc3 = we_base_request::encCmd("top.hot=1;");
-
-		$button = we_html_button::create_button('select', "javascript:top.content.setHot();we_cmd('export_openDirselector',document.we_form.elements.ParentID.value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+		$button = we_html_button::create_button('select', "javascript:top.content.setHot();we_cmd('export_openDirselector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.ParentPath.value") . "','" . we_base_request::encCmd("top.hot=1;") . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
