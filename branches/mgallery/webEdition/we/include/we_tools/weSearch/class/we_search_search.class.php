@@ -721,11 +721,17 @@ class we_search_search extends we_search_base{
 
 		if($holdAllLinks){
 			$types = array(
-				FILE_TABLE => 'documents',
-				TEMPLATES_TABLE => 'templates',
-				OBJECT_FILES_TABLE => 'objects',
-				OBJECT_TABLE => 'classes',
-				CATEGORY_TABLE => 'categorys'
+				FILE_TABLE => g_l('global', '[documents]'),
+				TEMPLATES_TABLE => g_l('global', '[templates]'),
+				OBJECT_FILES_TABLE => g_l('global', '[objects]'),
+				OBJECT_TABLE => g_l('searchtool', '[classes]'),
+				CATEGORY_TABLE => g_l('global', '[categorys]'),
+				NEWSLETTER_TABLE => g_l('javaMenu_moduleInformation', '[newsletter][text]'),
+				BANNER_TABLE => g_l('javaMenu_moduleInformation', '[banner][text]'),
+				CUSTOMER_TABLE => g_l('javaMenu_moduleInformation', '[customer][text]'),
+				GLOSSARY_TABLE => g_l('javaMenu_moduleInformation', '[glossary][text]'),
+				VFILE_TABLE => 'Sammlungen',
+				NAVIGATION_TABLE => g_l('javaMenu_moduleInformation', '[navigation][text]'),
 			);
 
 			while($db->next_record()){

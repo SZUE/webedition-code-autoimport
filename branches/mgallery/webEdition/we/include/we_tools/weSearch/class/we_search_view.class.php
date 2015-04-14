@@ -1773,7 +1773,7 @@ weSearch.g_l = {
 		if(isset($usedMediaLinks['mediaID_' . $result['docID']]) && $usedMediaLinks['mediaID_' . $result['docID']]){
 			$out = '<table style="font-weight:normal"><tr><td>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</td></tr>'; // FIXME: G_L()
 			foreach($usedMediaLinks['mediaID_' . $result['docID']] as $type => $links){
-				$out .= '<tr><td><em>' . g_l('global', '[' . $type . ']') . ':</em></td></tr>';
+				$out .= '<tr><td><em>' . $type . ':</em></td></tr>';
 				foreach($links as $link){
 					$color = 'black';
 					$makeLink = true;
