@@ -107,10 +107,6 @@ function refreshForm(){
 			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_property.js');
 	}
 
-	function getJSSortAdmin(){
-		return we_customer_add::getJSSortAdmin($this);
-	}
-
 	function getJSAdmin(){
 		return we_html_element::jsElement('
 var frameUrl="' . $this->frameset . '";

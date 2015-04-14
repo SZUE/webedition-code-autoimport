@@ -160,7 +160,9 @@ if(weWindow.treeData){
 				$js.= 'if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
 					. "attribs={";
 				foreach($item as $k => $v){
-					$js.='"' . strtolower($k) . '":' . ($v === 0 ? 0 : '\'' . addslashes($v) . '\'') . ',';
+					$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
+						$v:
+						'\'' . addslashes($v) . '\'') . ',';
 				}
 
 				$js.='};' . $this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));

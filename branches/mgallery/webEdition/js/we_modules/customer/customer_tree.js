@@ -32,11 +32,11 @@ function openClose(id) {
 		sort = frames.top.document.we_form_treeheader.sort.value;
 	}
 
-	var openstatus = (treeData[eintragsIndex].open === 0 ? 1 : 0);
+	var openstatus = !treeData[eintragsIndex].open;
 
 	treeData[eintragsIndex].open = openstatus;
 
-	if (openstatus && treeData[eintragsIndex].loaded != 1) {
+	if (openstatus && !treeData[eintragsIndex].loaded) {
 		id = encodeURI(id);
 		sort = encodeURI(sort);
 		id = id.replace(/\+/g, "%2B");
@@ -45,7 +45,7 @@ function openClose(id) {
 	} else {
 		drawTree();
 	}
-	if (openstatus == 1) {
+	if (openstatus) {
 		treeData[eintragsIndex].loaded = 1;
 	}
 }
@@ -92,23 +92,23 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 	var cur = nf[ai];
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + cur.id + "')\"";
-	row = "&nbsp;&nbsp;<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (cur.open == 1 ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>";
+	row = "&nbsp;&nbsp;<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (cur.open ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>";
 
-	cur.icon = "folder" + (cur.open == 1 ? "open" : "") + (cur.disabled == 1 ? "_disabled" : "") + ".gif";
+	cur.icon = "folder" + (cur.open ? "open" : "") + (cur.disabled ? "_disabled" : "") + ".gif";
 
-	row += (cur.disabled != 1 ?
-					"<a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">" :
-					"") +
+	row += (cur.disabled ?
+					"" :
+					"<a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
 					"<img src=\"" + treeData.tree_image_dir + "icons/" + cur.icon + "\" alt=\"\">" +
-					(cur.disabled != 1 ?
-									"</a><a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">" :
-									"") +
+					(cur.disabled ?
+									"" :
+									"</a><a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
 					"<label id=\"lab_" + cur.id + "\" class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label>" +
-					(cur.disabled != 1 ?
-									"</a>" :
-									"") +
+					(cur.disabled ?
+									"" :
+									"</a>") +
 					"&nbsp;&nbsp;<br/>";
-	if (cur.open == 1) {
+	if (cur.open) {
 		newAst += "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\"/>";
 		row += draw(cur.id, newAst);
 	}
@@ -119,14 +119,14 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".openClose('" + nf[ai].id + "')\"";
 
-	row += "&nbsp;&nbsp;<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (nf[ai].open === 0 ? "auf" : "zu") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>" +
+	row += "&nbsp;&nbsp;<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (nf[ai].open ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\" border=0>" +
 					"<img src=\"" + treeData.tree_image_dir + "icons/" + nf[ai].icon + "\" alt=\"\">" +
 					"</a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\">" +
 					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + treeData.node_layout[nf[ai].state] + "\">&nbsp;" + nf[ai].text + "</label>" +
 					"</a>" +
-					"&nbsp;&nbsp;<br/>\n";
+					"&nbsp;&nbsp;<br/>";
 
 	if (nf[ai].open) {
 		newAst = newAst + "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\" />";

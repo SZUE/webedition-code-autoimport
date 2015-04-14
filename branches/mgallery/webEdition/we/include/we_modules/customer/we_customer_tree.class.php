@@ -91,7 +91,10 @@ function startTree(){
 						$v = g_l('date', '[month][long][' . $months[$v] . ']');
 					}
 				}
-				$js.='"' . strtolower($k) . '":\'' . addslashes(stripslashes(str_replace(array("\n", "\r", '\''), '', $v))) . '\',';
+				$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
+						$v :
+						'\'' . addslashes(stripslashes(str_replace(array("\n", "\r", '\''), '', $v))) . '\'') .
+					',';
 			}
 
 			$js.='};' .

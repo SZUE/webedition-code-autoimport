@@ -164,7 +164,7 @@ abstract class we_customer_add{
 
 
 
-		$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "doScrollTo()"), we_html_element::jsElement($pob->View->getJSSortAdmin()) .
+		$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "doScrollTo()"), self::getJSSortAdmin($pob->View) .
 				we_html_element::htmlForm(array("name" => "we_form"), $sort_code
 				)
 		);
@@ -172,8 +172,8 @@ abstract class we_customer_add{
 		return $pob->getHTMLDocument($out);
 	}
 
-	public static function getJSSortAdmin(&$pob){
-		return '
+	public static function getJSSortAdmin($pob){
+		return we_html_element::jsElement('
 var frames={
 	"set":"' . $pob->frameset . '"
 };
@@ -197,7 +197,7 @@ function doScrollTo(){
 function setScrollTo(){
 		opener.' . $pob->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
 }' .
-			$pob->getJSSubmitFunction("sort_admin") .
+			$pob->getJSSubmitFunction("sort_admin")) .
 			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_sortAdmin.js');
 	}
 
