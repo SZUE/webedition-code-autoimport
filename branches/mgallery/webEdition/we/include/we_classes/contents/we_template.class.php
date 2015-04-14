@@ -744,6 +744,7 @@ we_templateInit();?>';
 			$this->doUpdateCode = false;
 		}
 		$_ret = parent::we_save($resave);
+
 		if($_ret){
 			$tmplPathWithTmplExt = parent::getRealPath();
 			if(file_exists($tmplPathWithTmplExt)){
@@ -796,7 +797,7 @@ we_templateInit();?>';
 					}
 					break;
 				case 'url':
-					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' && 
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' &&
 							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[] = intval($tag['attribs']['id']);
 					}
@@ -810,7 +811,7 @@ we_templateInit();?>';
 					}
 					break;
 				case 'sessionfield':
-					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'img' && 
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'img' &&
 							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[] = intval($tag['attribs']['id']);
 					}
@@ -845,7 +846,7 @@ we_templateInit();?>';
 						}
 					}
 					break;
-				default: 
+				default:
 					//
 			}
 		}
@@ -853,6 +854,7 @@ we_templateInit();?>';
 		if(!empty($this->MediaLinks)){
 			return parent::registerMediaLinks(false, true);
 		}
+		return true;
 	}
 
 	// .tmpl mod
