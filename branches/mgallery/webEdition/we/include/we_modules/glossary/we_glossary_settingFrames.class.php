@@ -58,12 +58,6 @@ class we_glossary_settingFrames{
 	}
 
 	function getHTMLContent(){
-		$configFile = WE_GLOSSARY_MODULE_PATH . we_glossary_replace::configFile;
-		if(!file_exists($configFile) || !is_file($configFile)){
-			we_glossary_settingControl::saveSettings(true);
-		}
-		include($configFile);
-
 		// Automatic Replacement
 		$content = we_html_forms::checkboxWithHidden(we_glossary_replace::useAutomatic(), 'GlossaryAutomaticReplacement', g_l('modules_glossary', '[enable_replacement]'));
 
