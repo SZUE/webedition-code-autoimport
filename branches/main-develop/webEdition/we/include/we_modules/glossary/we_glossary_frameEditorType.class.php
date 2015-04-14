@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
-	function Header(&$weGlossaryFrames){
+	function Header($weGlossaryFrames){
 		$we_tabs = new we_tabs();
 
 		$we_tabs->addTab(new we_tab("#", g_l('modules_glossary', '[overview]'), we_tab::ACTIVE, "setTab('1');"));
@@ -32,7 +32,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode('_', we_base_request::_(we_base_request::STRING, 'cmdid'))) . ']'));
 	}
 
-	function Body(&$weGlossaryFrames){
+	function Body($weGlossaryFrames){
 		$_js = '';
 
 		$Temp = explode("_", we_base_request::_(we_base_request::STRING, 'cmdid'));
@@ -171,12 +171,12 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		return self::buildBody($weGlossaryFrames, $content);
 	}
 
-	function Footer(&$weGlossaryFrames){
+	function Footer($weGlossaryFrames){
 
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 
-	private static function getHTMLSearchResult(&$weGlossaryFrames, &$Search, $Type){
+	private static function getHTMLSearchResult($weGlossaryFrames, &$Search, $Type){
 
 		$Search->execute();
 
@@ -311,7 +311,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		return $retVal;
 	}
 
-	private static function getHTMLPreferences(&$Search, $Type, $Language){
+	private static function getHTMLPreferences($Search, $Type, $Language){
 		global $we_transaction;
 
 		$button = we_html_button::create_button("search", "javascript:SubmitForm();");
@@ -356,7 +356,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		</table>';
 	}
 
-	private static function getHTMLPrevNext(&$Search, $extended = false){
+	private static function getHTMLPrevNext($Search, $extended = false){
 
 		$sum = $Search->countItems();
 		$min = ($Search->Offset) + 1;

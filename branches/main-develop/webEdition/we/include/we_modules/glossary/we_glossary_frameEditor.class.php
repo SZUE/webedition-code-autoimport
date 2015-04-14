@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditor{
 
-	function buildHeader(&$weGlossaryFrames, $we_tabs, $titlePre, $titlePost){
+	function buildHeader($weGlossaryFrames, $we_tabs, $titlePre, $titlePost){
 		$we_tabs->onResize();
 		$tabsHead = $we_tabs->getHeader();
 		$bodyContent = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $titlePre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . $titlePost . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
@@ -45,7 +45,7 @@ class we_glossary_frameEditor{
 		return $weGlossaryFrames->getHTMLDocument($body, $tabsHead . $js);
 	}
 
-	function buildBody(&$weGlossaryFrames, $content = ""){
+	function buildBody($weGlossaryFrames, $content = ""){
 
 		$_hidden = array(
 			'cmd' => we_base_request::_(we_base_request::RAW, 'cmd', ''),
@@ -73,7 +73,7 @@ class we_glossary_frameEditor{
 		return $weGlossaryFrames->getHTMLDocument($body, $weGlossaryFrames->View->getJSProperty());
 	}
 
-	function buildFooter(&$weGlossaryFrames, $content = ""){
+	function buildFooter($weGlossaryFrames, $content = ""){
 
 		$_body = array(
 			'bgcolor' => 'white',

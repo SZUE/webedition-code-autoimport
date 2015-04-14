@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_base_file{
+
 	const SZ_HUMAN = 0;
 	const SZ_BYTE = 1;
 	const SZ_KB = 2;
@@ -57,7 +58,7 @@ abstract class we_base_file{
 					break;
 				}
 				$buffer .= $data;
-			} while(true);
+			}while(true);
 			$close($fp);
 			return $buffer;
 		}
@@ -287,16 +288,16 @@ abstract class we_base_file{
 	static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
 		return (self::hasURL($path) ?
-				false :
-				($path ? self::createLocalFolderByPath($path) : false));
+						false :
+						($path ? self::createLocalFolderByPath($path) : false));
 	}
 
 	public static function insertIntoCleanUp($path, $date){
 		$DB_WE = new DB_WE();
 		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'Path' => $DB_WE->escape($path),
-				'Date' => intval($date)
-			)) . ' ON DUPLICATE KEY UPDATE Date=' . intval($date));
+					'Path' => $DB_WE->escape($path),
+					'Date' => date('Y-m-d H:i:s', intval($date))
+				)) . ' ON DUPLICATE KEY UPDATE Date=VALUES(Date)');
 	}
 
 	public static function deleteLocalFile($filename){
@@ -454,7 +455,7 @@ abstract class we_base_file{
 					if($_data_size != $_written){
 						return false;
 					}
-				} while(true);
+				}while(true);
 				$close($gzfp);
 			} else {
 				fclose($fp);
@@ -485,7 +486,7 @@ abstract class we_base_file{
 						break;
 					}
 					fwrite($fp, $data);
-				} while(true);
+				}while(true);
 				fclose($fp);
 			} else {
 				gzclose($gzfp);
@@ -603,37 +604,41 @@ abstract class we_base_file{
 	}
 
 	public static function cleanTempFiles($cleanSessFiles = false){
-		$db2 = new DB_WE();
-		$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= ' . (time() - 300));
-		while($GLOBALS['DB_WE']->next_record()){
-			$p = $GLOBALS['DB_WE']->f('Path');
+		$db = $GLOBALS['DB_WE'];
+		$db->query('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Date <= NOW()-INTERVAL 300 second');
+		$files = $db->getAll(true);
+		foreach($files as $p){
 			if(file_exists($p)){
-				self::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+				self::deleteLocalFile($p);
 			}
-			$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE DATE=' . intval($GLOBALS['DB_WE']->f('Date')) . ' AND Path="' . $GLOBALS['DB_WE']->f('Path') . '"');
+			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path="' . $p . '"');
 		}
 		if($cleanSessFiles){
 			$seesID = session_id();
-			$GLOBALS['DB_WE']->query('SELECT Date,Path FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
-			while($GLOBALS['DB_WE']->next_record()){
-				$p = $GLOBALS['DB_WE']->f('Path');
+			$db->query('SELECT Path FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"');
+			$files = $db->getAll(true);
+			foreach($files as $p){
 				if(file_exists($p)){
-					self::deleteLocalFile($GLOBALS['DB_WE']->f('Path'));
+					self::deleteLocalFile($p);
 				}
-				$db2->query('DELETE FROM ' . CLEAN_UP_TABLE . " WHERE Path LIKE '%" . $GLOBALS['DB_WE']->escape($seesID) . "%'");
 			}
+			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"');
 		}
 		$d = dir(TEMP_PATH);
 		while(false !== ($entry = $d->read())){
-			if($entry != '.' && $entry != '..'){
-				$foo = TEMP_PATH . $entry;
-				if(filemtime($foo) <= (time() - 300)){
-					if(is_dir($foo)){
-						self::deleteLocalFolder($foo, 1);
-					} elseif(file_exists($foo)){
-						self::deleteLocalFile($foo);
+			switch($entry){
+				case '.':
+				case '..':
+					break;
+				default:
+					$foo = TEMP_PATH . $entry;
+					if(filemtime($foo) <= (time() - 300)){
+						if(is_dir($foo)){
+							self::deleteLocalFolder($foo, 1);
+						} else {
+							self::deleteLocalFile($foo);
+						}
 					}
-				}
 			}
 		}
 		$d->close();
@@ -641,15 +646,19 @@ abstract class we_base_file{
 		if(self::checkAndMakeFolder($dstr)){
 			$d = dir($dstr);
 			while(false !== ($entry = $d->read())){
-				if($entry != '.' && $entry != '..'){
-					$foo = $dstr . $entry;
-					if(filemtime($foo) <= (time() - 300)){
-						if(is_dir($foo)){
-							self::deleteLocalFolder($foo, 1);
-						} elseif(file_exists($foo) && is_writable($foo)){
-							self::deleteLocalFile($foo);
+				switch($entry){
+					case '.':
+					case '..':
+						break;
+					default:
+						$foo = $dstr . $entry;
+						if(filemtime($foo) <= (time() - 300)){
+							if(is_dir($foo)){
+								self::deleteLocalFolder($foo, 1);
+							} else {
+								self::deleteLocalFile($foo);
+							}
 						}
-					}
 				}
 			}
 			$d->close();
@@ -658,15 +667,19 @@ abstract class we_base_file{
 // when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 		while(false !== ($entry = $d->read())){
-			if($entry != '.' && $entry != '..'){
-				$foo = WE_FRAGMENT_PATH . $entry;
-				if(filemtime($foo) <= (time() - 3600 * 24)){
-					if(is_dir($foo)){
-						self::deleteLocalFolder($foo, true);
-					} elseif(file_exists($foo)){
-						self::deleteLocalFile($foo);
+			switch($entry){
+				case '.':
+				case '..':
+					break;
+				default:
+					$foo = WE_FRAGMENT_PATH . $entry;
+					if(filemtime($foo) <= (time() - 3600 * 24)){
+						if(is_dir($foo)){
+							self::deleteLocalFolder($foo, true);
+						} else {
+							self::deleteLocalFile($foo);
+						}
 					}
-				}
 			}
 		}
 		$d->close();
@@ -692,13 +705,17 @@ abstract class we_base_file{
 			$foo = (substr($filename, -1) === '/') ? $filename : ($filename . '/');
 			$d = dir($filename);
 			while(false !== ($entry = $d->read())){
-				if($entry != ".." && $entry != "."){
-					$path = $foo . $entry;
-					if(is_dir($path)){
-						self::deleteLocalFolder($path, 1);
-					} else {
-						self::deleteLocalFile($path);
-					}
+				switch($entry){
+					case '.':
+					case '..':
+						break;
+					default:
+						$path = $foo . $entry;
+						if(is_dir($path)){
+							self::deleteLocalFolder($path, 1);
+						} else {
+							self::deleteLocalFile($path);
+						}
 				}
 			}
 			$d->close();

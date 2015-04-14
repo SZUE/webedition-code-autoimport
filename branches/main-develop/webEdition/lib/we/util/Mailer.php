@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition SDK
  *
@@ -24,6 +25,7 @@
  *
  */
 class we_util_Mailer extends Zend_Mail{
+
 	/**
 	 * Type of Message, either text/html or text/plain
 	 *
@@ -132,8 +134,8 @@ class we_util_Mailer extends Zend_Mail{
 				$suhosin = extension_loaded('suhosin');
 				$_sender = $sender ? $this->parseEmailUser($sender) : '';
 				$tr = ($_sender && isset($_sender['email']) && $_sender['email'] != '' && !$suhosin ?
-						new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
-						new Zend_Mail_Transport_Sendmail());
+								new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
+								new Zend_Mail_Transport_Sendmail());
 
 				Zend_Mail::setDefaultTransport($tr);
 				break;
@@ -162,8 +164,8 @@ class we_util_Mailer extends Zend_Mail{
 		if($sender){
 			$_sender = $this->parseEmailUser($sender);
 			$this->setFrom($_sender['email'], $_sender['name']);
-		}else{
-			$this->setFrom('noreply','noreply');
+		} else {
+			$this->setFrom('noreply', 'noreply');
 		}
 
 		$this->setSubject($subject);
@@ -265,8 +267,8 @@ class we_util_Mailer extends Zend_Mail{
 								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 							}
 							$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
-								((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
-								((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
+									((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
+									((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
 							$attachmentpath = $this->basedir . $directory . $filename;
 							$attachmentpath = str_replace('//', '/', $attachmentpath);
 							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
@@ -318,15 +320,15 @@ class we_util_Mailer extends Zend_Mail{
 	public function parseHtml2TextPart($html){
 
 		$this->AltBody = trim(strip_tags(
-				preg_replace(array(
+						preg_replace(array(
 			'-<br[^>]*>-s',
 			'-<(ul|ol)[^>]*>-s',
 			'-<(head|title|style|script)[^>]*>.*?</\1>-s'
-					), array(
+								), array(
 			"\n",
 			"\n\n",
 			''
-					), strtr($html, array(
+								), strtr($html, array(
 			"\n" => '',
 			"\r" => '',
 			'</h1>' => "\n\n",
@@ -340,8 +342,8 @@ class we_util_Mailer extends Zend_Mail{
 			'</li>' => "\n",
 			'&lt;' => '<',
 			'&gt;' => '>',
-						)
-				))
+										)
+						))
 		));
 	}
 
@@ -579,7 +581,7 @@ class we_util_Mailer extends Zend_Mail{
 	public function Send(){
 		try{
 			$t = parent::send();
-		} catch (Zend_Exception $e){
+		}catch(Zend_Exception $e){
 			t_e('warning', 'Error while sending mail: ', $e);
 			return false;
 		}
@@ -627,6 +629,22 @@ class we_util_Mailer extends Zend_Mail{
 		}
 
 		return parent::setBodyHtml($html, $charset, $encoding);
+	}
+
+	public function setTextPartOutOfHTML($html){
+		//remove css/js code
+		$html = preg_replace('|<script.*</script>|', '', preg_replace('|<style.*/[ ]*style>|', '', $html));
+		$this->addTextPart(
+				trim(
+						strip_tags(
+								strtr($html, array(
+			'&nbsp;' => ' ',
+			'<br />' => "\n",
+			'<br/>' => "\n")
+								)
+						)
+				)
+		);
 	}
 
 }

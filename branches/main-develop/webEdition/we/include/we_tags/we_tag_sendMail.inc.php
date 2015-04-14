@@ -148,7 +148,7 @@ function we_tag_sendMail($attribs, $content){
 		}
 		$phpmail->setCharSet($charset);
 		if($mimetype != 'text/html'){
-			$phpmail->addTextPart(strip_tags(strtr($codes, array("&nbsp;" => " ", "<br />" => "\n", "<br/>" => "\n"))));
+			$phpmail->setTextPartOutOfHTML($codes);
 		} else {
 			$phpmail->addHTMLPart($codes);
 		}

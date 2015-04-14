@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_statusMails{
+
 	var $FieldsHidden; //an array of statusfield names not to be shown in order
 	var $FieldsHiddenCOV; //an array of statusfield names not to be shown in order
 	var $FieldsText; //an array with keys equal to name of statusfield, and value = text to be shown
@@ -45,7 +46,7 @@ class we_shop_statusMails{
 
 	public static function initByRequest(){//FIXME: this is unchecked!!
 		return new self(
-			we_base_request::_(we_base_request::STRING, 'FieldsHidden'), we_base_request::_(we_base_request::STRING, 'FieldsHiddenCOV'), we_base_request::_(we_base_request::STRING, 'FieldsText'), we_base_request::_(we_base_request::STRING, 'FieldsMails'), we_base_request::_(we_base_request::STRING, 'EMailData'), we_base_request::_(we_base_request::STRING, 'LanguageData'), we_base_request::_(we_base_request::INT, 'FieldsDocuments', 0)
+				we_base_request::_(we_base_request::STRING, 'FieldsHidden'), we_base_request::_(we_base_request::STRING, 'FieldsHiddenCOV'), we_base_request::_(we_base_request::STRING, 'FieldsText'), we_base_request::_(we_base_request::STRING, 'FieldsMails'), we_base_request::_(we_base_request::STRING, 'EMailData'), we_base_request::_(we_base_request::STRING, 'LanguageData'), we_base_request::_(we_base_request::INT, 'FieldsDocuments', 0)
 		);
 	}
 
@@ -81,7 +82,7 @@ class we_shop_statusMails{
 			$documentsarray[$langkey] = $documentsarray['default'];
 		}
 		$zw = new self(
-			array(//Fieldshidden
+				array(//Fieldshidden
 			'DateOrder' => 0,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -98,7 +99,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 1
-			), array(//FieldshiddenCOV
+				), array(//FieldshiddenCOV
 			'DateOrder' => 0,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -115,7 +116,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 1
-			), array(//FieldsTexts
+				), array(//FieldsTexts
 			'DateOrder' => g_l('modules_shop', '[bestelldatum]'),
 			'DateConfirmation' => g_l('modules_shop', '[bestaetigt]'),
 			'DateCustomA' => g_l('modules_shop', '[customA]'),
@@ -132,7 +133,7 @@ class we_shop_statusMails{
 			'DateCustomI' => g_l('modules_shop', '[customI]'),
 			'DateCustomJ' => g_l('modules_shop', '[customJ]'),
 			'DateFinished' => g_l('modules_shop', '[beendet]')
-			), array(//FieldsMails
+				), array(//FieldsMails
 			'DateOrder' => 1,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -149,7 +150,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 0
-			), array(//EMailData
+				), array(//EMailData
 			'address' => '',
 			'name' => '',
 			'bcc' => '',
@@ -158,11 +159,11 @@ class we_shop_statusMails{
 			'DocumentAttachmentFieldB' => '',
 			'emailField' => '',
 			'titleField' => ''
-			), array(//LanguageData
+				), array(//LanguageData
 			'useLanguages' => 1,
 			'languageField' => '',
 			'languageFieldIsISO' => 0
-			), $documentsarray
+				), $documentsarray
 		);
 		$zw2 = strtr(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"', '', $DB_WE), array('O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":'));
 
@@ -224,8 +225,8 @@ class we_shop_statusMails{
 				$field = 1;
 			} else {
 				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was]) ?
-						$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
-						$this->FieldsDocuments['default']['Date' . $was]);
+								$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
+								$this->FieldsDocuments['default']['Date' . $was]);
 				$field = 2;
 			}
 			if(isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
@@ -262,21 +263,19 @@ class we_shop_statusMails{
 		}
 
 
-		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
-		if(!$subject){
-			$subject = 'no subject given';
-		}
+		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField'])? : 'no subject given';
+
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
 			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address'] ?
-					$this->EMailData['address'] :
-					array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
-				);
+							$this->EMailData['address'] :
+							array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
+					);
 
 			$phpmail = new we_util_Mailer('', $subject, $from);
 			$phpmail->setIsEmbedImages(true);
 
 			$phpmail->addHTMLPart($codes);
-			$phpmail->addTextPart(strip_tags(strtr($codes, array('&nbsp;' => ' ', '<br />' => "\n", '<br/>' => "\n"))));
+			$phpmail->setTextPartOutOfHTML($codes);
 			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
 			if(isset($this->EMailData['bcc']) && $this->EMailData['bcc'] != ''){
 				$bccArray = explode(',', $this->EMailData['bcc']);

@@ -623,7 +623,7 @@ function we_mail($recipient, $subject, $txt, $from = '', $replyTo = ''){
 	$phpmail->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 	$txtMail = strip_tags($txt);
 	if($txt != $txtMail){
-		$phpmail->addTextPart(trim($txtMail));
+		$phpmail->setTextPartOutOfHTML($txt);
 		$phpmail->addHTMLPart($txt);
 	} else {
 		$phpmail->addTextPart(trim($txt));

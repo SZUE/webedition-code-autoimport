@@ -256,11 +256,11 @@ class we_messaging_message extends we_messaging_proto{
 		return $this->selected_set;
 	}
 
-	function &retrieve_items(&$int_hdrs){
+	function retrieve_items($int_hdrs){
 		$ret = array();
 		$i = 0;
 
-		if(empty($int_hdrs)){
+		if(!$int_hdrs){
 			return $ret;
 		}
 
