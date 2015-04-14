@@ -390,7 +390,7 @@ function closeAllType(){
 		$path = id_to_path($this->View->export->ParentID, EXPORT_TABLE);
 		$cmd1 = "document.we_form.elements.ParentID.value";
 
-		$button = we_html_button::create_button('select', "javascript:top.content.setHot();we_cmd('export_openDirselector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.ParentPath.value") . "','" . we_base_request::encCmd("top.hot=1;") . "')");
+		$button = we_html_button::create_button('select', "javascript:top.content.setHot();we_cmd('we_export_dirSelector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.ParentPath.value") . "','" . we_base_request::encCmd("top.hot=1;") . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
@@ -410,7 +410,7 @@ function closeAllType(){
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
+			return we_html_element::jsElement("self.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
 		}
 		return '';
 	}

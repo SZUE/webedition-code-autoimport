@@ -187,7 +187,7 @@ top.selectFile(top.currentID);
 		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/naviagationDir_selector.js');
 	}
 
-	function getFramesetJavaScriptDef(){
+	protected function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 g_l.newFolder="' . g_l('navigation', '[newFolder]') . '";
 ');

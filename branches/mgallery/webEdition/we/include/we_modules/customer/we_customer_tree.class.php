@@ -92,7 +92,7 @@ function startTree(){
 					}
 				}
 				$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
-						$v :
+						intval($v) :
 						'\'' . addslashes(stripslashes(str_replace(array("\n", "\r", '\''), '', $v))) . '\'') .
 					',';
 			}

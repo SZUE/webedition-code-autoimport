@@ -118,7 +118,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
+		return $_SERVER["SCRIPT_NAME"]."what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
 	}
 
 	protected function getFramsetJSFile(){
@@ -263,7 +263,7 @@ top.selectIt();';
 	</tr>
 </table>';
 	}
-	
+
 	function printSetDirHTML(){
 		echo '<script type="text/javascript"><!--
 top.clearEntries();' .
@@ -380,7 +380,7 @@ top.selectFile(top.currentID);
 </html>';
 	}
 
-	function getFramesetJavaScriptDef(){
+	protected function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=0;
 var we_editDirID="";

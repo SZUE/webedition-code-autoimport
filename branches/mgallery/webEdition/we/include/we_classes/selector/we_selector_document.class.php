@@ -159,7 +159,7 @@ function exit_open() {
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . "?what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startID=" . $this->startID . "&filter=" . $this->filter . "&open_doc=" . $this->open_doc;
+		return $_SERVER["SCRIPT_NAME"]."what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startID=" . $this->startID . "&filter=" . $this->filter . "&open_doc=" . $this->open_doc;
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -605,7 +605,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		echo $out;
 	}
 
-	function getFramesetJavaScriptDef(){
+	protected function getFramesetJavaScriptDef(){
 		$ctypes = array();
 		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $ctype){

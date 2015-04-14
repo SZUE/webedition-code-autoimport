@@ -35,6 +35,21 @@ function findInclude($cmd){
 	switch($cmd){
 		case ''://empty command
 			exit();
+		case 'export_edit_ifthere':
+		case 'export_edit':
+			$GLOBALS['mod'] = 'export';
+			return 'we_modules/show_frameset.php';
+		case 'we_users_selector':
+		case 'we_export_dirSelector':
+		case 'we_navigation_dirSelector':
+			return 'selectors.inc.php';
+		case 'backupLog':
+			return 'we_exim/backup/backuplog.inc.php';
+		case 'newMsg':
+			return 'newMsg.inc.php';
+		case 'phpinfo':
+		case 'sysinfo':
+			return 'sysinfo.inc.php';
 		case 'versions_preview':
 			return 'we_versions/weVersionsPreview.inc.php';
 		case 'versions_wizard':
@@ -53,6 +68,8 @@ function findInclude($cmd){
 		case 'siteImport':
 		case 'updateSiteImportTable':
 			return 'we_siteimport.inc.php';
+		case 'loadTree':
+			return 'loadTree.inc.php';
 		case 'openDelSelector':
 			if(isset($_SESSION['weS']['seemForOpenDelSelector']['Table'])){
 				unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
@@ -216,8 +233,6 @@ function findInclude($cmd){
 			return 'we_editors/we_recover_backup.php';
 		case 'import_docs':
 			return 'we_editors/we_import_documents.inc.php';
-		case 'browse_users':
-			return 'we_modules/users/browse_users_frameset.inc.php';
 		case 'start_multi_editor':
 			return 'multiEditor/start_multi_editor.inc.php';
 		case 'import':

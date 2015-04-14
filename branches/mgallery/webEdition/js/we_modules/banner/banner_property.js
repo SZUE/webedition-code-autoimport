@@ -53,7 +53,7 @@ function we_cmd() {
 		case "openDirselector":
 			new jsWindow(url, "we_dirselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
 			break;
-		case "banner_openDirselector":
+		case "we_banner_dirSelector":
 			new jsWindow(url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
 			break;
 		case "switchPage":

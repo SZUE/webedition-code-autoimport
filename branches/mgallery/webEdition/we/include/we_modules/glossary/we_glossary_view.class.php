@@ -126,17 +126,22 @@ function doUnload() {
 parent.document.title = "' . $title . '";
 
 function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var args = [];
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+		for(var i = 0; i < arguments.length; i++){
+						args.push(arguments[i]);
+		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		if(i < (arguments.length - 1)){ url += "&"; }
+		}
 
-	if(hot == "1" && arguments[0] != "save_glossary") {
+	if(hot == "1" && args[0] != "save_glossary") {
 		if(confirm("' . g_l('modules_glossary', '[save_changed_glossary]') . '")) {
-			arguments[0] = "save_glossary";
+			args[0] = "save_glossary";
 		} else {
 			top.content.usetHot();
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "exit_glossary":
 			if(hot != "1") {
 				top.opener.top.we_cmd("exit_modules");
@@ -148,18 +153,18 @@ function we_cmd() {
 		case "new_glossary_link":
 		case "new_glossary_textreplacement":
 			if(' . $this->topFrame . '.editor.edbody.loaded) {
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
-				if(arguments[1] != undefined) {
-					' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = args[0];
+				if(args[1] != undefined) {
+					' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = args[1];
 				}
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 1;
 				' . $this->topFrame . '.editor.edbody.submitForm();
 			} else {
-				if(arguments[1] != undefined) {
-					str = \'we_cmd("\' + arguments[0] + \'", "\' + arguments[1] + \'");\';
+				if(args[1] != undefined) {
+					str = \'we_cmd("\' + args[0] + \'", "\' + args[1] + \'");\';
 					setTimeout(str, 10);
 				} else {
-					str = \'we_cmd(\' + arguments[0] + \');\';
+					str = \'we_cmd(\' + args[0] + \');\';
 					setTimeout(str, 10);
 				}
 			}
@@ -186,7 +191,7 @@ function we_cmd() {
 								('
 				if (' . $this->topFrame . '.editor.edbody.loaded) {
 					if (confirm("' . g_l('modules_glossary', '[delete_alert]') . '")) {
-						' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+						' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
 						' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 						' . $this->EditorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
 						' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
@@ -202,13 +207,13 @@ function we_cmd() {
 		case "save_glossary":
 			var exc = ' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value;
 			if (exc.substring(exc.length-10, exc.length)=="_exception") {
-				arguments[0] = "save_exception";
+				args[0] = "save_exception";
 			}
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 			if(top.content.editor.edbody.document.we_form.cmd.value=="glossary_view_folder") return;
 			if(top.content.editor.edbody.document.we_form.cmd.value=="glossary_view_type") return;
 			if (' . $this->topFrame . '.editor.edbody.loaded) {
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 				if(top.makeNewEntry==1) {
 					' . $this->topFrame . '.editor.edbody.submitForm("cmd");
@@ -228,14 +233,14 @@ function we_cmd() {
 		case "glossary_edit_textreplacement":
 			' . (!permissionhandler::hasPerm("EDIT_GLOSSARY") ? we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
 			' . $this->topFrame . '.hot=0;
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=args[1];
 			' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 			' . $this->topFrame . '.editor.edbody.submitForm();
 			break;
 
 		case "load":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
 			break;
 
 		case "home":
@@ -243,10 +248,6 @@ function we_cmd() {
 			break;
 
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 
 	}

@@ -1310,7 +1310,7 @@ _multiEditorreload = true;";
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(450);
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -1424,7 +1424,7 @@ _multiEditorreload = true;";
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(403);
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value);"));
 
 
 		$CreatorIDtext = ($this->CreatorID ?
@@ -2247,7 +2247,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(200);
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_Alias.value','document.we_form." . $this->Name . "_Alias_Text.value','noalias',document.we_form." . $this->Name . "_Alias.value)"));
 
 		$weAcSelectorName = $yuiSuggest->getHTML();
 
@@ -2260,7 +2260,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(USER_TABLE);
 		$yuiSuggest->setWidth(200);
-		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('browse_users','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('we_users_selector','document.we_form." . $this->Name . "_ParentID.value','document.we_form." . $this->Name . "_ParentID_Text.value','group',document.we_form." . $this->Name . "_ParentID.value)"));
 
 		$weAcSelectorGroup = $yuiSuggest->getHTML();
 

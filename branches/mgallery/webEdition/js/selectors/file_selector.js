@@ -258,7 +258,7 @@ function queryString(what, id, o) {
 	if (!o) {
 		o = top.order;
 	}
-	return options.formtarget + '?what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
+	return options.formtarget + 'what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
 }
 
 var allIDs = "";

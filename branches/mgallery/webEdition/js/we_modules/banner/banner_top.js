@@ -44,22 +44,23 @@ function usetHot() {
 
 
 function we_cmd() {
+	var args = [];
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
+		args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
-	if (hot == "1" && arguments[0] != "save_banner") {
+	if (hot == "1" && args[0] != "save_banner") {
 		if (confirm(g_l.save_changed_banner)) {
-			//FIXME: this is bad
-			arguments[0] = "save_banner";
+			args[0] = "save_banner";
 		} else {
 			top.content.usetHot();
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "exit_banner":
 			if (hot != "1") {
 				top.opener.top.we_cmd('exit_modules');
@@ -67,7 +68,7 @@ function we_cmd() {
 			break;
 		case "new_banner":
 			if (top.content.editor.edbody.loaded) {
-				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout(function () {
@@ -77,7 +78,7 @@ function we_cmd() {
 			break;
 		case "new_bannergroup":
 			if (top.content.editor.edbody.loaded) {
-				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout(function () {
@@ -98,7 +99,7 @@ function we_cmd() {
 					top.we_showMessage(g_l.nothing_to_delete, WE_MESSAGE_WARNING, window);
 					return;
 				}
-				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			}
 			break;
@@ -113,7 +114,7 @@ function we_cmd() {
 					return;
 				}
 
-				top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
+				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
@@ -122,15 +123,11 @@ function we_cmd() {
 			top.content.usetHot();
 			break;
 		case "banner_edit":
-			top.content.editor.edbody.document.we_form.ncmd.value = arguments[0];
-			top.content.editor.edbody.document.we_form.bid.value = arguments[1];
+			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
+			top.content.editor.edbody.document.we_form.bid.value = args[1];
 			top.content.editor.edbody.submitForm();
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 
 	}

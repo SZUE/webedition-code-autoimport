@@ -52,7 +52,7 @@ function writeBody(d) {
 												entries[i].text) +
 								'</div></div>';
 			}
-			d.innerHTML = '<form name="we_form" target="fscmd" action="' + options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</form>';
+			d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</form>';
 			if (makeNewFolder || we_editDirID) {
 				top.fsbody.document.we_form.we_FolderText_tmp.focus();
 				top.fsbody.document.we_form.we_FolderText_tmp.select();

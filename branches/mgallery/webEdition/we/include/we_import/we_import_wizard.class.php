@@ -520,9 +520,10 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {" . '
 		case "openNavigationDirselector":
-				url = "' . WE_INCLUDES_DIR . 'we_tools/navigation/we_navigationDirSelect.php?";
-				for(var i = 0; i < arguments.length; i++){
-					url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+				url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_navigation_dirSelector&";
+				for(var i = 1; i < arguments.length; i++){
+					url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+					if(i < (arguments.length - 1)){ url += "&"; }
 				}
 				new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;' . "

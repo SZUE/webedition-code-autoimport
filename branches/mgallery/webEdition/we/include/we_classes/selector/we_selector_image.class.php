@@ -73,7 +73,7 @@ class we_selector_image extends we_selector_document{
 				'</td>', true);
 	}
 
-	function getFramesetJavaScriptDef(){
+	protected function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 options.view="' . we_search_view::VIEW_ICONS . '";
 consts.VIEW_LIST="' . we_search_view::VIEW_LIST . '";

@@ -229,7 +229,7 @@ function we_cmd() {
 	}
 
 	switch (arguments[0]) {
-		case "browse_users":
+		case "we_users_selector":
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 
@@ -247,8 +247,8 @@ function we_cmd() {
 			break;
 
 		case "openNewsletterDirselector":
-			url = dirs.WE_MODULES_DIR + "newsletter/we_dirfs.php?";
-			for (i = 0; i < arguments.length; i++) {
+			url = dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_newsletter_dirSelector&";
+			for (i = 1; i < arguments.length; i++) {
 				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += "&";

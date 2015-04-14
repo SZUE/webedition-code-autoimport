@@ -161,7 +161,7 @@ if(weWindow.treeData){
 					. "attribs={";
 				foreach($item as $k => $v){
 					$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
-						$v:
+						intval($v):
 						'\'' . addslashes($v) . '\'') . ',';
 				}
 

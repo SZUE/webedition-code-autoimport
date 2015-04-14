@@ -56,24 +56,25 @@ function doUnload(){
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
 
 	for(var i = 0; i < arguments.length; i++) {
+					args.push(arguments[i]);
 		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
 
-	if(hot == "1" && arguments[0] != "save_user") {
+	if(hot == "1" && args[0] != "save_user") {
 		if(confirm("' . g_l('modules_users', '[save_changed_user]') . '")) {
-			arguments[0] = "save_user";
+			args[0] = "save_user";
 		} else {
 			top.content.usetHot();
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "exit_users":
 			if(hot != "1") {
 				top.opener.top.we_cmd("exit_modules");
@@ -89,14 +90,14 @@ function we_cmd() {
 					top.content.usetHot();
 					top.content.editor.edbody.document.we_form.ucmd.value="new_user";
 				}
-				if(arguments[1]){
-					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
+				if(args[1]){
+					top.content.editor.edbody.document.we_form.uid.value=args[1];
 				}
-				if(arguments[2]){
-					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
+				if(args[2]){
+					top.content.editor.edbody.document.we_form.ctype.value=args[2];
 				}
-				if(arguments[3]){
-					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				if(args[3]){
+					top.content.editor.edbody.document.we_form.ctable.value=args[3];
 				}
 				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 			} else {
@@ -104,7 +105,7 @@ function we_cmd() {
 			}
 			break;
 		case "check_user_display":
-			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=check_user_display&uid="+arguments[1];
+			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=check_user_display&uid="+args[1];
 			break;
 		case "display_user":
 			top.content.editor.edbody.focus();
@@ -117,16 +118,16 @@ function we_cmd() {
 					top.content.usetHot();
 					top.content.editor.edbody.document.we_form.ucmd.value="display_user";
 				}
-				if(arguments[1])
-					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
-				if(arguments[2])
-					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
-				if(arguments[3])
-					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				if(args[1])
+					top.content.editor.edbody.document.we_form.uid.value=args[1];
+				if(args[2])
+					top.content.editor.edbody.document.we_form.ctype.value=args[2];
+				if(args[3])
+					top.content.editor.edbody.document.we_form.ctable.value=args[3];
 				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 			}
 			else {
-				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
+				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+args[1];
 			}
 			break;
 		case "display_alias":
@@ -141,19 +142,19 @@ function we_cmd() {
 					top.content.usetHot();
 					top.content.editor.edbody.document.we_form.ucmd.value="display_user";
 				}
-				if(arguments[1]){
-					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
+				if(args[1]){
+					top.content.editor.edbody.document.we_form.uid.value=args[1];
 				}
-				if(arguments[2]){
-					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
+				if(args[2]){
+					top.content.editor.edbody.document.we_form.ctype.value=args[2];
 				}
-				if(arguments[3]){
-					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				if(args[3]){
+					top.content.editor.edbody.document.we_form.ctable.value=args[3];
 				}
 				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 			}
 			else {
-				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+arguments[1];
+				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=display_user&uid="+args[1];
 			}
 			break;
 		case "new_group":
@@ -165,12 +166,12 @@ function we_cmd() {
 					top.content.usetHot();
 					top.content.editor.edbody.document.we_form.ucmd.value="new_group";
 				}
-				if(arguments[1])
-					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
-				if(arguments[2])
-					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
-				if(arguments[3])
-					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				if(args[1])
+					top.content.editor.edbody.document.we_form.uid.value=args[1];
+				if(args[2])
+					top.content.editor.edbody.document.we_form.ctype.value=args[2];
+				if(args[3])
+					top.content.editor.edbody.document.we_form.ctable.value=args[3];
 				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 			} else {
 				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_group&cgroup="+cgroup;
@@ -185,12 +186,12 @@ function we_cmd() {
 					top.content.usetHot();
 					top.content.editor.edbody.document.we_form.ucmd.value="new_alias";
 				}
-				if(arguments[1])
-					top.content.editor.edbody.document.we_form.uid.value=arguments[1];
-				if(arguments[2])
-					top.content.editor.edbody.document.we_form.ctype.value=arguments[2];
-				if(arguments[3])
-					top.content.editor.edbody.document.we_form.ctable.value=arguments[3];
+				if(args[1])
+					top.content.editor.edbody.document.we_form.uid.value=args[1];
+				if(args[2])
+					top.content.editor.edbody.document.we_form.ctype.value=args[2];
+				if(args[3])
+					top.content.editor.edbody.document.we_form.ctable.value=args[3];
 				top.content.editor.edbody.we_submitForm("cmd","' . $this->frameset . '?pnt=cmd");
 			} else {
 				top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=new_alias&cgroup="+cgroup;
@@ -207,7 +208,7 @@ function we_cmd() {
 			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=delete_user";
 			break;
 		case "search":
-			new jsWindow("' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd="+arguments[1],"customer_settings",-1,-1,580,400,true,false,true);
+			new jsWindow("' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd="+args[1],"customer_settings",-1,-1,580,400,true,false,true);
 			break;
 		case "new_organization":
 			var orgname = prompt("' . g_l('modules_users', '[give_org_name]') . '","");
@@ -216,10 +217,6 @@ function we_cmd() {
 			}
 			break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 
 	}
@@ -320,17 +317,18 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
 
-	switch (arguments[0]) {
-		case "browse_users":
+	switch (args[0]) {
+		case "we_users_selector":
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 
@@ -359,26 +357,21 @@ function we_cmd() {
 			break;
 		case "openNavigationDirselector":
 		case "openNewsletterDirselector":
-			if (arguments[0] == "openNewsletterDirselector") {
-				url = "' . WE_MODULES_DIR . 'newsletter/we_dirfs.php?";
+			if (args[0] == "openNewsletterDirselector") {
+				url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_newsletter_dirSelector";//FIXME
 			}else {
-				url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php?";
+				url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_navigation_dirSelector&";
 			}
-			for (var i = 0; i < arguments.length; i++) {
-				url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
-				if (i < (arguments.length - 1)) {
+			for (var i = 1; i < args.length; i++) {
+				url += "we_cmd[" + i + "]=" +encodeURI(args[i]);
+				if (i < (args.length - 1)) {
 					url += "&";
 				}
 			}
 			new jsWindow(url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.content.we_cmd.apply(this, args);
-			break;
 	}
 }
 		');

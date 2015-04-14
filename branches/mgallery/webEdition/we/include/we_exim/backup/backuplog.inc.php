@@ -21,9 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-we_html_tools::protect();
 
 if(permissionhandler::hasPerm("BACKUPLOG")){
 	$_parts = array(
@@ -35,8 +32,8 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 		array(
 			'headline' => '',
 			'html' => (file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile) ?
-					'<pre>' . file_get_contents($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile) . '</pre>' :
-					'<p>' . g_l('backup', '[view_log_not_found]') . '</p>'),
+				'<pre>' . file_get_contents($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile) . '</pre>' :
+				'<p>' . g_l('backup', '[view_log_not_found]') . '</p>'),
 			'space' => 10
 		)
 	);
@@ -58,18 +55,14 @@ echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]')) .
 ') .
  STYLESHEET;
 ?>
-
 </head>
-
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info"><?php
-$buttons = we_html_button::position_yes_no_cancel(
-				we_html_button::create_button("close", "javascript:self.close()"), '', ''
-);
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("close", "javascript:self.close()"), '', '');
 
-echo we_html_multiIconBox::getJS() .
- we_html_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 0, "auto");
-?>
+		echo we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML('', 500, $_parts, 30, $buttons, -1, '', '', false, "", "", 0, "auto");
+		?>
 	</div>
 
 </body>

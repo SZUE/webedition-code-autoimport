@@ -23,7 +23,7 @@
 
 function we_cmd_users(args, url) {
 	switch (args[0]) {
-		case "browse_users":
+		case "we_users_selector":
 			if (hasPerm(wePerms.NEW_USER) || hasPerm(wePerms.NEW_GROUP) || hasPerm(wePerms.SAVE_USER) || hasPerm(wePerms.SAVE_GROUP) || hasPerm(wePerms.DELETE_USER) || hasPerm(wePerms.DELETE_GROUP)) {
 				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			} else {

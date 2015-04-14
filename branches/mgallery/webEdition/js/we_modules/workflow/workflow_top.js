@@ -35,32 +35,33 @@ function doUnload() {
 
 
 function we_cmd() {
+	var args = [];
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
+		args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
-	if (hot == 1 && arguments[0] != "save_workflow") {
+	if (hot == 1 && args[0] !== "save_workflow") {
 		var hotConfirmMsg = confirm(g_l.save_changed_workflow);
 		if (hotConfirmMsg === true) {
-			//FIXME: bad assignment
-			arguments[0] = "save_workflow";
+			args[0] = "save_workflow";
 			top.content.usetHot();
 		} else {
 			top.content.setHot();
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "exit_workflow":
 			if (hot != 1) {
 				top.opener.top.we_cmd('exit_modules');
 			}
 			break;
 		case "new_workflow":
-			top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
-			top.content.editor.edbody.document.we_form.wid.value = arguments[1];
+			top.content.editor.edbody.document.we_form.wcmd.value = args[0];
+			top.content.editor.edbody.document.we_form.wid.value = args[1];
 			top.content.editor.edbody.submitForm();
 			break;
 		case "delete_workflow":
@@ -74,7 +75,7 @@ function we_cmd() {
 					top.we_showMessage(g_l.nothing_to_delete, WE_MESSAGE_ERROR, window);
 				}
 
-				top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
+				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			}
 			break;
@@ -97,15 +98,15 @@ function we_cmd() {
 				} else {
 					top.we_showMessage(g_l.nothing_to_save, WE_MESSAGE_ERROR, window);
 				}
-				top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
+				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 				top.content.usetHot();
 			}
 			break;
 		case "workflow_edit":
 		case "show_document":
-			top.content.editor.edbody.document.we_form.wcmd.value = arguments[0];
-			top.content.editor.edbody.document.we_form.wid.value = arguments[1];
+			top.content.editor.edbody.document.we_form.wcmd.value = args[0];
+			top.content.editor.edbody.document.we_form.wid.value = args[1];
 			top.content.editor.edbody.submitForm();
 			break;
 			/*
@@ -117,10 +118,6 @@ function we_cmd() {
 			new jsWindow(dirs.WE_WORKFLOW_MODULE_DIR + "edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 
 	}

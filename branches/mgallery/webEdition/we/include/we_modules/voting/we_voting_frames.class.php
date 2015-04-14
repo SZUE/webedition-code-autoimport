@@ -285,7 +285,7 @@ class we_voting_frames extends we_modules_frame{
 		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_element::htmlHiddens(array(
 				$idname => '',
 				$textname => '')) .
-			we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('browse_users','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "',''," . $cmd1 . ",'" . $wecmdenc5 . "','','',1);")
+			we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "',''," . $cmd1 . ",'" . $wecmdenc5 . "','','',1);")
 		);
 
 		$parts = array(

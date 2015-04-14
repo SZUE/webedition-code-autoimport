@@ -21,9 +21,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
-we_html_tools::protect();
+if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'phpinfo'){
+	phpinfo();
+	return;
+}
 
 function getInfoTable($_infoArr, $name){
 
@@ -302,7 +303,7 @@ echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'));
 	function showPhpInfo() {
 		document.getElementById("info").style.display = "none";
 		document.getElementById("more").style.display = "block";
-		document.getElementById("phpinfo").src = "phpinfo.php";
+		document.getElementById("phpinfo").src = "/webEdition/we_cmd.php?we_cmd[0]=phpinfo";
 	}
 
 	function showInfoTable() {

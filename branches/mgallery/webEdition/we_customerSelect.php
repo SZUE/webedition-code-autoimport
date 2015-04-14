@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_customerSelect.php';
+$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_customerSelect.php?';
 
 $fs = new we_customer_selector(we_base_request::_(we_base_request::STRINGC, 'id', 0), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, 'order', ''), we_base_request::_(we_base_request::INT, 'rootDirID', 0), '', we_base_request::_(we_base_request::BOOL, 'multiple'));
 

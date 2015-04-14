@@ -88,16 +88,22 @@ function doUnload() {
 parent.document.title = "' . $title . '";
 
 function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	if(hot == "1" && arguments[0] != "save_voting") {
+	var args = [];
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+		for(var i = 0; i < arguments.length; i++){
+						args.push(arguments[i]);
+
+		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		if(i < (arguments.length - 1)){ url += "&"; }
+		}
+	if(hot == "1" && args[0] != "save_voting") {
 		if(confirm("' . g_l('modules_voting', '[save_changed_voting]') . '")) {
-			arguments[0] = "save_voting";
+			args[0] = "save_voting";
 		} else {
 			top.content.usetHot();
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "exit_voting":
 			if(hot != "1") {
 				top.opener.top.we_cmd("exit_modules");
@@ -105,21 +111,21 @@ function we_cmd() {
 					break;
 
 		case "vote":
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = args[0];
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 3;
-				' . $this->topFrame . '.editor.edbody.document.we_form.votnr.value = arguments[1];
+				' . $this->topFrame . '.editor.edbody.document.we_form.votnr.value = args[1];
 				' . $this->topFrame . '.editor.edbody.submitForm();
 				break;
 		case "resetscores":
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = args[0];
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 3;
 				' . $this->topFrame . '.editor.edbody.submitForm();
 				break;
 					case "new_voting":
 					case "new_voting_group":
 			if(' . $this->topFrame . '.editor.edbody.loaded) {
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = arguments[0];
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = arguments[1];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = args[0];
+				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = args[1];
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 1;
 				' . $this->topFrame . '.editor.edbody.document.we_form.vernr.value = 0;
 				' . $this->topFrame . '.editor.edbody.submitForm();
@@ -140,7 +146,7 @@ function we_cmd() {
 					('
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_voting', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
 							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 							' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
 							' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
@@ -159,7 +165,7 @@ function we_cmd() {
 
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
 							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 							' . $this->topFrame . '.editor.edbody.document.we_form.owners_name.value=' . $this->topFrame . '.editor.edbody.owners_label.name;
 							' . $this->topFrame . '.editor.edbody.document.we_form.owners_count.value=' . $this->topFrame . '.editor.edbody.owners_label.itemCount;
@@ -183,24 +189,19 @@ function we_cmd() {
 
 		case "voting_edit":
 			' . (!permissionhandler::hasPerm("EDIT_VOTING") ? we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=arguments[1];
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
+			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=args[1];
 			' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 			' . $this->topFrame . '.editor.edbody.submitForm();
 		break;
 		case "load":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
 		break;
 		case "home":
 			' . $this->editorBodyFrame . '.parent.location="' . $this->frameset . '?pnt=editor";
 		break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
-
 	}
 }');
 	}
@@ -236,7 +237,7 @@ function we_cmd() {
 		case "browse_server":
 			new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
 			break;
-		case "browse_users":
+		case "we_users_selector":
 			new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
 		break;
 		case "users_add_owner":

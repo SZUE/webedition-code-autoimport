@@ -43,22 +43,23 @@ function doUnload() {
 }
 
 function we_cmd() {
+	var args = [];
 	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
+		args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
 	}
-	if (hot == 1 && arguments[0] !== "save_customer") {
+	if (hot == 1 && args[0] !== "save_customer") {
 		if (confirm(g_l.save_changed_customer)) {
-			//FIXME: bad assignment
-			arguments[0] = "save_customer";
+			args[0] = "save_customer";
 		} else {
 			top.content.usetHot();
 		}
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "exit_customer":
 			if (hot != "1") {
 				top.opener.top.we_cmd("exit_modules");
@@ -66,8 +67,8 @@ function we_cmd() {
 			break;
 		case "new_customer":
 			if (topFrame.editor.edbody.loaded) {
-				topFrame.editor.edbody.document.we_form.cmd.value = arguments[0];
-				topFrame.editor.edbody.document.we_form.cmdid.value = arguments[1];
+				topFrame.editor.edbody.document.we_form.cmd.value = args[0];
+				topFrame.editor.edbody.document.we_form.cmdid.value = args[1];
 				topFrame.editor.edbody.submitForm();
 			} else {
 				setTimeout(function () {
@@ -87,7 +88,7 @@ function we_cmd() {
 
 			if (topFrame.editor.edbody.loaded) {
 				if (confirm(g_l.delete_alert)) {
-					topFrame.editor.edbody.document.we_form.cmd.value = arguments[0];
+					topFrame.editor.edbody.document.we_form.cmd.value = args[0];
 					topFrame.editor.edbody.submitForm();
 				}
 			} else {
@@ -107,7 +108,7 @@ function we_cmd() {
 			}
 
 			if (topFrame.editor.edbody.loaded) {
-				topFrame.editor.edbody.document.we_form.cmd.value = arguments[0];
+				topFrame.editor.edbody.document.we_form.cmd.value = args[0];
 				topFrame.editor.edbody.submitForm();
 			} else {
 				top.we_showMessage(g_l.nothing_to_save, WE_MESSAGE_WARNING, window);
@@ -117,8 +118,8 @@ function we_cmd() {
 			break;
 
 		case "customer_edit":
-			topFrame.editor.edbody.document.we_form.cmd.value = arguments[0];
-			topFrame.editor.edbody.document.we_form.cmdid.value = arguments[1];
+			topFrame.editor.edbody.document.we_form.cmd.value = args[0];
+			topFrame.editor.edbody.document.we_form.cmdid.value = args[1];
 			topFrame.editor.edbody.submitForm();
 			break;
 		case "show_admin":
@@ -126,24 +127,20 @@ function we_cmd() {
 			if (topFrame.editor.edbody.document.we_form.cmd.value === "home") {
 				topFrame.editor.edbody.document.we_form.home.value = 1;
 			}
-			topFrame.editor.edbody.document.we_form.cmd.value = arguments[0];
-			topFrame.editor.edbody.document.we_form.cmdid.value = arguments[1];
+			topFrame.editor.edbody.document.we_form.cmd.value = args[0];
+			topFrame.editor.edbody.document.we_form.cmdid.value = args[1];
 			topFrame.editor.edbody.submitForm();
 			break;
 		case "show_search":
 		case "show_customer_settings":
 		case "export_customer":
 		case "import_customer":
-			topFrame.editor.edbody.we_cmd(arguments[0]);
+			topFrame.editor.edbody.we_cmd(args[0]);
 			break;
 		case "load":
-			topFrame.cmd.location = frameUrl + "?pnt=cmd&pid=" + arguments[1] + "&offset=" + arguments[2] + "&sort=" + arguments[3];
+			topFrame.cmd.location = frameUrl + "?pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		default:
-			var args = [];
-			for (i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 	}
 }

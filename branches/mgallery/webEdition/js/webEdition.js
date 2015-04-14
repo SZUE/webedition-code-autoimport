@@ -1079,13 +1079,13 @@ function we_cmd_base(args, url) {
 			we_cmd("glossary_settings");
 			break;
 		case "sysinfo":
-			new jsWindow("/webEdition/sysinfo.php", "we_sysinfo", -1, -1, 720, 660, true, false, true);
+			new jsWindow("/webEdition/we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", -1, -1, 720, 660, true, false, true);
 			break;
 		case "showerrorlog":
 			new jsWindow("/webEdition/errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
 			break;
 		case "view_backuplog":
-			new jsWindow("/webEdition/backuplog.php", "we_backuplog", -1, -1, 720, 660, true, false, true);
+			new jsWindow("/webEdition/we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", -1, -1, 720, 660, true, false, true);
 			break;
 		case "show_message_console":
 			new jsWindow("/webEdition/we/include/jsMessageConsole/messageConsole.php", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);

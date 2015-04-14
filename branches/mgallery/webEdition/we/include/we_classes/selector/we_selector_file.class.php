@@ -196,7 +196,7 @@ class we_selector_file{
 		return we_html_element::jsScript(JS_DIR . 'selectors/file_selector.js');
 	}
 
-	function getFramesetJavaScriptDef(){
+	protected function getFramesetJavaScriptDef(){
 		$startPath = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($this->table) . ' WHERE ID=' . intval($this->dir))? : '/';
 		if($this->id == 0){
 			$this->path = '/';
@@ -241,6 +241,7 @@ var options={
   "rootDirID":' . $this->rootDirID . ',
 	"table":"' . $this->table . '",
 	"formtarget":"' . $_SERVER["SCRIPT_NAME"] . '",
+	"type":"' . get_class($this) . '",
 	"rootDirID":' . $this->rootDirID . ',
 	"multiple":' . intval($this->multiple) . ',
 	"needIEEscape":' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',
@@ -311,7 +312,7 @@ function exit_open(){' . ($this->JSIDName ? '
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER['SCRIPT_NAME'] . '?what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter;
+		return $_SERVER["SCRIPT_NAME"].'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter;
 	}
 
 	protected function printBodyHTML(){

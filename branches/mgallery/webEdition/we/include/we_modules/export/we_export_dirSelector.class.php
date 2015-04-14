@@ -187,7 +187,7 @@ top.selectFile(top.currentID);
 </head><body></body></html>';
 	}
 
-	function getFramesetJavaScriptDef(){
+	protected function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 g_l.newFolder="' . g_l('export', '[newFolder]') . '";
 ');

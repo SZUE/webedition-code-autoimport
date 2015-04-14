@@ -121,7 +121,7 @@ ob_start();
 													) +
 									'</td></tr>';
 					}
-					d.innerHTML = '<form name="we_form" target="fscmd" action="' + options.formtarget + '">' + body + '</table></form>';
+					d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + options.formtarget + '">' + body + '</table></form>';
 									if (makeNewFolder || top.we_editDirID){
 					document.we_form.we_FolderText_tmp.focus();
 									document.we_form.we_FolderText_tmp.select();
@@ -140,7 +140,7 @@ function printFramesetJSFunctionQueryString(){
 	function queryString(what, id, o, we_editDirID){
 	if (!o) o = top.order;
 					if (!we_editDirID) we_editDirID = "";
-					return options.formtarget + \'?what=' + what + '&rootDirID="+options.rootDirID+"&open_doc="+options.open_doc+"&table="+options.table+"&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+					return options.formtarget + \'what=' + what + '&rootDirID="+options.rootDirID+"&open_doc="+options.open_doc+"&table="+options.table+"&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 	}
 -->
 </script>

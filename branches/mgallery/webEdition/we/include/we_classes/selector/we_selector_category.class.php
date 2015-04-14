@@ -72,7 +72,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "?what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&noChoose=" . $this->noChoose;
+		return $_SERVER["SCRIPT_NAME"]. "what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&noChoose=" . $this->noChoose;
 	}
 
 	protected function printHeaderTable(){
@@ -104,7 +104,7 @@ class we_selector_category extends we_selector_file{
 		return 'var changeCatState=' . ($this->userCanChangeCat() ? 1 : 0) . ';';
 	}
 
-	function getFramesetJavaScriptDef(){
+	protected function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=false;
 var hot=0; // this is hot for category edit!!

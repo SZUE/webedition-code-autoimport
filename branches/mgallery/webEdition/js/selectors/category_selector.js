@@ -229,8 +229,8 @@ function hidePref() {
 
 function writeBody(d) {
 	var body = (options.needIEEscape ?
-					'<form name="we_form" target="fscmd" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
-					'<form name="we_form" target="fscmd" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
+					'<form name="we_form" target="fscmd" method="post" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
+					'<form name="we_form" target="fscmd" method="post" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
 					) +
 					(we_editCatID ?
 									'<input type="hidden" name="what" value="' + top.queryType.DO_RENAME_ENTRY + '" />' +
@@ -283,7 +283,7 @@ function queryString(what, id, o, we_editCatID) {
 	if (!we_editCatID) {
 		we_editCatID = "";
 	}
-	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
+	return options.formtarget + 'what=' + what + '&rootDirID=' + options.rootDirID + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
 }
 
 function weonclick(e) {

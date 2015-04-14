@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_dirSelect.php';
+$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_dirSelect.php?';
 
 $fs = new we_selector_directory(
 		we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, "order", ''), 0, we_base_request::_(we_base_request::INT, "we_editDirID", 0), we_base_request::_(we_base_request::RAW, "we_FolderText", ''), we_base_request::_(we_base_request::INT, "rootDirID", 0), we_base_request::_(we_base_request::BOOL, "multiple"));

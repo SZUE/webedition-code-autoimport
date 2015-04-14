@@ -68,30 +68,36 @@ class we_search_view{
    var hot = 0;
 
    function we_cmd() {
-    var args = "";
-    var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-    if(' . $this->topFrame . '.hot && (arguments[0]=="tool_' . $this->toolName . '_edit" || arguments[0]=="tool_' . $this->toolName . '_new" || arguments[0]=="tool_' . $this->toolName . '_new_group" || arguments[0]=="tool_' . $this->toolName . '_exit")){
-     ' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = arguments[0];
-     ' . $this->editorBodyFrame . '.document.we_form.delayParam.value = arguments[1];
-     arguments[0] = "exit_doc_question";
+    var args = [];
+    var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+			for(var i = 0; i < arguments.length; i++){
+							args.push(arguments[i]);
+
+			url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+			if(i < (arguments.length - 1)){ url += "&"; }
+			}
+    if(' . $this->topFrame . '.hot && (args[0]=="tool_' . $this->toolName . '_edit" || args[0]=="tool_' . $this->toolName . '_new" || args[0]=="tool_' . $this->toolName . '_new_group" || args[0]=="tool_' . $this->toolName . '_exit")){
+     ' . $this->editorBodyFrame . '.document.we_form.delayCmd.value = args[0];
+     ' . $this->editorBodyFrame . '.document.we_form.delayParam.value = args[1];
+     args[0] = "exit_doc_question";
     }
-    switch (arguments[0]) {
+    switch (args[0]) {
      case "tool_' . $this->toolName . '_edit":
       if(' . $this->editorBodyFrame . '.loaded) {
-       ' . $this->editorBodyFrame . '.document.we_form.cmd.value = arguments[0];
-       ' . $this->editorBodyFrame . '.document.we_form.cmdid.value=arguments[1];
+       ' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
+       ' . $this->editorBodyFrame . '.document.we_form.cmdid.value=args[1];
        ' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
        ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
        ' . $this->editorBodyFrame . '.submitForm();
       } else {
-       setTimeout(\'we_cmd("tool_' . $this->toolName . '_edit",\'+arguments[1]+\');\', 10);
+       setTimeout(\'we_cmd("tool_' . $this->toolName . '_edit",\'+args[1]+\');\', 10);
       }
      break;
      case "tool_' . $this->toolName . '_new":
      case "tool_' . $this->toolName . '_new_group":
       if(' . $this->editorBodyFrame . '.loaded) {
        ' . $this->topFrame . '.hot = 0;
-       ' . $this->editorBodyFrame . '.document.we_form.cmd.value = arguments[0];
+       ' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
        ' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
        ' . $this->editorBodyFrame . '.document.we_form.tabnr.value = 1;
        ' . $this->editorBodyFrame . '.submitForm();
@@ -112,10 +118,6 @@ class we_search_view{
      break;
      ' . $this->getTopJSAdditional() . '
      default:
-		 			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 
     }

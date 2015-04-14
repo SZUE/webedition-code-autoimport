@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_delSelect.php';
+$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_delSelect.php?';
 
 $fs = new we_selector_delete(we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE));
 

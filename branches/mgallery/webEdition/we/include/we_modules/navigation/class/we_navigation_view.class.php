@@ -73,23 +73,29 @@ var hot = 0;
 var makeNewDoc = false;
 
 function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	if(' . $this->topFrame . '.hot && (arguments[0]=="module_navigation_edit" || arguments[0]=="module_navigation_new" || arguments[0]=="module_navigation_new_group" || arguments[0]=="module_navigation_exit")){
-		' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value = arguments[0];
-		' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value = arguments[1];
-		arguments[0] = "exit_doc_question";
+	var args = [];
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+		for(var i = 0; i < arguments.length; i++){
+						args.push(arguments[i]);
+
+		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		if(i < (arguments.length - 1)){ url += "&"; }
+		}
+	if(' . $this->topFrame . '.hot && (args[0]=="module_navigation_edit" || args[0]=="module_navigation_new" || args[0]=="module_navigation_new_group" || args[0]=="module_navigation_exit")){
+		' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value = args[0];
+		' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value = args[1];
+		args[0] = "exit_doc_question";
 	}
-	switch (arguments[0]) {
+	switch (args[0]) {
 		case "module_navigation_edit":
 			if(' . $this->editorBodyFrame . '.loaded) {
-				' . $this->editorBodyFrame . '.document.we_form.cmd.value = arguments[0];
-				' . $this->editorBodyFrame . '.document.we_form.cmdid.value=arguments[1];
+				' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
+				' . $this->editorBodyFrame . '.document.we_form.cmdid.value=args[1];
 				' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 				' . $this->editorBodyFrame . '.submitForm();
 			} else {
-				setTimeout(\'we_cmd("module_navigation_edit",\'+arguments[1]+\');\', 10);
+				setTimeout(\'we_cmd("module_navigation_edit",\'+args[1]+\');\', 10);
 			}
 		break;
 		case "module_navigation_new":
@@ -97,12 +103,12 @@ function we_cmd() {
 			if(' . $this->editorBodyFrame . '.loaded) {
 				' . $this->topFrame . '.hot = 0;
 				if(' . $this->editorBodyFrame . '.document.we_form.presetFolder !== undefined) ' . $this->editorBodyFrame . '.document.we_form.presetFolder.value = false;
-				' . $this->editorBodyFrame . '.document.we_form.cmd.value = arguments[0];
+				' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
 				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 				' . $this->editorBodyFrame . '.document.we_form.tabnr.value = 1;
 				' . $this->editorBodyFrame . '.submitForm();
 			} else {
-				setTimeout(\'we_cmd("\' + arguments[0] + \'");\', 10);
+				setTimeout(\'we_cmd("\' + args[0] + \'");\', 10);
 			}
 			if((window.treeData!==undefined) && treeData){
 				treeData.unselectnode();
@@ -119,7 +125,7 @@ function we_cmd() {
 						}
 					}
 					if(cont){
-						' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+						' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 						' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 						' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
 						' . $this->editorBodyFrame . '.submitForm();
@@ -132,14 +138,14 @@ function we_cmd() {
 		case "depopulate":
 			if(' . $this->editorBodyFrame . '.document.we_form.cmd.value=="home") return;
 			if (' . $this->editorBodyFrame . '.loaded) {
-					if(arguments[0]=="populate") {
+					if(args[0]=="populate") {
 						q="' . g_l('navigation', '[populate_question]') . '";
 					} else {
 						q="' . g_l('navigation', '[depopulate_question]') . '";
 					}
 					if(confirm(q)){
 						' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-						' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+						' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 						' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 						if(' . $this->editorBodyFrame . '.document.we_form.pnt.value=="previewIframe") {
 						' . $this->editorBodyFrame . '.document.we_form.pnt.value="preview";
@@ -166,7 +172,7 @@ function we_cmd() {
 					('
 					if (' . $this->topFrame . '.editor.edbody.loaded) {
 						if (confirm("' . g_l('navigation', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
 							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 							' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
 							' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
@@ -179,18 +185,18 @@ function we_cmd() {
 			')) . '
 		break;
 		case "move_abs":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+arguments[0]+"&pos="+arguments[1];
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+args[0]+"&pos="+args[1];
 		break;
 		case "move_up":
 		case "move_down":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+arguments[0];
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+args[0];
 		break;
 		case "dyn_preview":
 		case "create_template":
 		case "populateWorkspaces":
 		case "populateFolderWs":
 		case "populateText":
-			' . $this->editorBodyFrame . '.document.we_form.cmd.value=arguments[0];
+			' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
 			' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 			' . $this->editorBodyFrame . '.document.we_form.pnt.value="cmd";
 			' . $this->editorBodyFrame . '.submitForm("cmd");
@@ -218,10 +224,6 @@ function we_cmd() {
 			}
 		break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 
 	}
@@ -268,9 +270,10 @@ function we_cmd() {
 			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "openNavigationDirselector":
-			url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/we_navigationDirSelect.php?";
-			for(var i = 0; i < arguments.length; i++){
-				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
+			url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_navigation_dirSelector&";
+			for(var i = 1; i < arguments.length; i++){
+				url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+				if(i < (arguments.length - 1)){ url += "&"; }
 			}
 			new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;
@@ -851,7 +854,7 @@ function submitForm() {
 					}
 
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn  . ';' .
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
 								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
 								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");

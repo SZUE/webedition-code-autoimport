@@ -94,7 +94,7 @@ function writeBody(d) {
 						'</td></tr>';
 	}
 
-	d.innerHTML = '<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" />' + body + '</table></form>';
+	d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + top.options.formtarget + '" />' + body + '</table></form>';
 	if (makeNewFolder || top.we_editDirID) {
 		top.fsbody.document.we_form.we_FolderText_tmp.focus();
 		top.fsbody.document.we_form.we_FolderText_tmp.select();
@@ -108,7 +108,7 @@ function queryString(what, id, o, we_editDirID) {
 	if (!we_editDirID) {
 		we_editDirID = "";
 	}
-	return options.formtarget + '?what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc=' + options.open_doc + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+	return options.formtarget + 'what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc=' + options.open_doc + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 }
 
 function weonclick(e) {

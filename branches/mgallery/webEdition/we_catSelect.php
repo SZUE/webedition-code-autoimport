@@ -25,7 +25,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_catSelect.php';
+$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_catSelect.php?';
 
 $fs = new we_selector_category(
 		we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : "", isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, "order", ""), we_base_request::_(we_base_request::INT, "we_editCatID", 0), we_base_request::_(we_base_request::RAW, "we_EntryText", ""), we_base_request::_(we_base_request::INT, "rootDirID", 0), we_base_request::_(we_base_request::BOOL, "noChoose"));

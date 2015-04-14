@@ -271,7 +271,7 @@ function we_cmd() {
 		case "browse_server":
 			new jsWindow(url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
-		case "browse_users":
+		case "we_users_selector":
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "object_editObjectTextArea":

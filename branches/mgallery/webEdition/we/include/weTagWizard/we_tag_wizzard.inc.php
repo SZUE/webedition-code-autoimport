@@ -157,7 +157,7 @@ function we_cmd(){
 		case "openCatselector":
 			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
-		case "browse_users":
+		case "we_users_selector":
 	        new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);
 	        break;
 		default:

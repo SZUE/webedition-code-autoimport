@@ -21,8 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
+
 //$_SESSION["prefs"]["FileFilter"] = we_base_request::_(we_base_request::RAW, 'we_cmd', $_SESSION["prefs"]["FileFilter"], 5);
 
 $topFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', "top", 4);

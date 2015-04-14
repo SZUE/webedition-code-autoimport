@@ -38,7 +38,7 @@ function we_cmd() {
 		}
 	}
 	switch (arguments[0]) {
-		case "banner_openSelector":
+		case "we_banner_selector":
 			new jsWindow(url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 			break;
 		default:

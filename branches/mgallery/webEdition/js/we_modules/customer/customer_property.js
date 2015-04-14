@@ -106,7 +106,7 @@ function we_cmd() {
 	}
 
 	switch (arguments[0]) {
-		case "browse_users":
+		case "we_users_selector":
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "openImgselector":

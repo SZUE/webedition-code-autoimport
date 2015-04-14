@@ -61,7 +61,7 @@ function writeBody(d) {
 										) +
 						'</td></tr>';
 	}
-	d.innerHTML = '<form name="we_form" target="fscmd" action="' + top.options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</table></form>';
+	d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + top.options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</table></form>';
 
 	if (makeNewFolder || top.we_editDirID) {
 		top.fsbody.document.we_form.we_FolderText_tmp.focus();
