@@ -259,9 +259,10 @@ function we_cmd() {
 			break;
 		case "openDirselector":
 		case "openDocselector":
-		case "openImgselector":
+		case "we_selector_image":
 			new jsWindow(url, "we_fileselector", -1, -1, winSelectSize.docSelect.width, winSelectSize.docSelect.height, true, true, true, true);
 			break;
+		case "we_customer_selector":
 		case "openSelector":
 			new jsWindow(url, "we_fileselector", -1, -1, 900, 685, true, true, true, true);
 			break;

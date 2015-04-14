@@ -46,7 +46,6 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 		$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 9);
 		break;
 	case 'openDocselector':
-	case 'openImgselector':
 		$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 		$_REQUEST['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
 		$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
@@ -58,8 +57,8 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 		$_REQUEST['open_doc'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 9);
 		$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 10);
 		$_REQUEST['canSelectDir'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 11);
-		if($cmd0 === 'openDocselector' && $_REQUEST['filter'] === 'image/*'){
-			$cmd0 = 'openImgselector';
+		if($cmd0 === 'openDocselector' && $_REQUEST['filter'] === we_base_ContentTypes::IMAGE){
+			$_REQUEST['we_cmd'][0] = $cmd0 = 'we_selector_image';
 			//t_e('notice', 'called incorrect selector');
 		}
 		break;
@@ -70,13 +69,13 @@ switch($cmd0){
 		require_once (WEBEDITION_PATH . 'we_dirSelect.php');
 		break;
 	case 'openSelector':
-		require_once (WEBEDITION_PATH . ($table == CUSTOMER_TABLE ? 'we_customerSelect.php' : 'we_fs.php'));
+		require_once (WEBEDITION_PATH . 'we_fs.php');
 		break;
 	case 'openDocselector':
 		require_once (WEBEDITION_PATH . 'we_docSelect.php');
 		break;
-	case 'openImgselector':
-		require_once (WEBEDITION_PATH . 'we_imgSelect.php');
+	case 'we_selector_image'://FIXME: obsolete
+		require_once (WE_INCLUDES_PATH . 'selectors.inc.php');
 		break;
 	case 'openCatselector':
 		require_once (WEBEDITION_PATH . 'we_catSelect.php');

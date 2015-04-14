@@ -760,13 +760,14 @@ function we_cmd_base(args, url) {
 		case "help_changelog":
 			new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
 			break;
+		case "we_customer_selector":
 		case "openSelector":
 			new jsWindow(url, "we_fileselector", -1, -1, size.windowSelect.width, size.windowSelect.height, true, true, true, true);
 			break;
 		case "openDirselector":
 			new jsWindow(url, "we_fileselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
 			break;
-		case "openImgselector":
+		case "we_selector_image":
 		case "openDocselector":
 			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;

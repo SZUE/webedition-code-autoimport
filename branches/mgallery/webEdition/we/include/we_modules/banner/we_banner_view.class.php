@@ -748,7 +748,7 @@ var g_l={
 
 	function formCustomer(){
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot();we_cmd('del_all_customers')");
-		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");
 		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 		return $obj->get();
 	}
@@ -780,7 +780,7 @@ var g_l={
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDocselector',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setLabel($title);

@@ -473,7 +473,7 @@ if($ok && $cmd === "edit_link_at_class"){
 			}
 
 			switch (arguments[0]) {
-				case "openImgselector":
+				case "we_selector_image":
 				case "openDocselector":
 					new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 					break;
@@ -650,7 +650,7 @@ if($ok && $cmd === "edit_link_at_class"){
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.img_id.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.src_int.value");
-		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].img_id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but = we_html_button::create_button("select", "javascript:we_cmd('we_selector_image',document.forms[0].img_id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);

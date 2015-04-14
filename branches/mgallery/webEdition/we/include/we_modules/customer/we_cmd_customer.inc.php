@@ -30,4 +30,6 @@ switch($cmd){
 
 	case 'customer_applyWeDocumentCustomerFilterFromFolder':
 		return 'we_editors/we_editor.inc.php';
+	case 'we_customer_selector':
+		return 'selectors.inc.php';
 }

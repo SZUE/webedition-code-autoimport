@@ -230,8 +230,8 @@ function we_cmd() {
 			submitForm();
 		break;
 		case "voting_openDirselector":
-			url="' . WE_VOTING_MODULE_DIR . 'we_votingDirSelect.php?";
-			for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+			url="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_voting_dirSelector&";
+			for(var i = 1; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 			new jsWindow(url,"we_votingSelector",-1,-1,600,350,true,true,true);
 		break;
 		case "browse_server":

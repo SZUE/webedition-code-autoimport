@@ -46,7 +46,7 @@ function we_cmd() {
 		case "openCatselector":
 			new jsWindow(url, "we_catselector", -1, -1, size.catSelect.width, size.catSelect.height, true, true, true, true);
 			break;
-		case "openImgselector":
+		case "we_selector_image":
 		case "openDocselector":
 			new jsWindow(url, "we_docselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;

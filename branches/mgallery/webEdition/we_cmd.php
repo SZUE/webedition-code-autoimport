@@ -35,13 +35,7 @@ function findInclude($cmd){
 	switch($cmd){
 		case ''://empty command
 			exit();
-		case 'export_edit_ifthere':
-		case 'export_edit':
-			$GLOBALS['mod'] = 'export';
-			return 'we_modules/show_frameset.php';
-		case 'we_users_selector':
-		case 'we_export_dirSelector':
-		case 'we_navigation_dirSelector':
+		case 'we_selector_image':
 			return 'selectors.inc.php';
 		case 'backupLog':
 			return 'we_exim/backup/backuplog.inc.php';
@@ -78,7 +72,6 @@ function findInclude($cmd){
 		case 'openDirselector':
 		case 'openDocselector':
 		case 'openCatselector':
-		case 'openImgselector':
 			return 'we_fs.inc.php';
 		case 'open_tag_wizzard':
 			return 'weTagWizard/we_tag_wizzard.inc.php';
@@ -265,7 +258,8 @@ function findInclude($cmd){
 		default:
 			//	In we.inc.php all names of the active modules have already been searched
 //	so we only have to use the array $GLOBALS['_we_active_integrated_modules']
-			list($m) = explode('_', $cmd);
+			list($m, $m2) = explode('_', $cmd);
+			$m = ($m == 'we' ? $m2 : $m);
 			if(in_array($m, $GLOBALS['_we_active_integrated_modules'])){
 				if(($INCLUDE = include(WE_MODULES_PATH . $m . '/we_cmd_' . $m . '.inc.php'))){
 					return $INCLUDE;

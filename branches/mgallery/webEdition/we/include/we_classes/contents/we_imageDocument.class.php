@@ -667,7 +667,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setWidth(328);
 		$cmd1 = "document.we_form.elements['" . $longdesc_id_name . "'].value";
 
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openImgselector'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
 		$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $longdesc_id_name . "'].value='-1';document.we_form.elements['" . $longdesc_text_name . "'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
 		$_content->setCol(7, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
 		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs());
@@ -805,14 +805,14 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$idname = 'we_' . $this->Name . '_txt[LinkID]';
 		$extname = 'we_' . $this->Name . '_txt[LinkHref]';
 		$linkType = $this->getElement('LinkType') ? : 'no';
-		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), 'Path', $this->DB_WE);
+		$linkPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), '', $this->DB_WE);
 
 		$RollOverFlagName = 'we_' . $this->Name . '_txt[RollOverFlag]';
 		$RollOverFlag = $this->getElement('RollOverFlag') ? 1 : 0;
 		$RollOverIDName = 'we_' . $this->Name . '_txt[RollOverID]';
 		$RollOverID = $this->getElement('RollOverID') ? : '';
 		$RollOverPathname = 'we_' . $this->Name . '_txt[RollOverPath]';
-		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($RollOverID), 'Path', $this->DB_WE);
+		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($RollOverID), '', $this->DB_WE);
 
 		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
@@ -823,7 +823,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$cmd1 = "document.we_form.elements['" . $RollOverIDName . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $RollOverPathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['" . $RollOverFlagName . "'].value=1;opener.document.we_form.elements['" . $checkFlagName . "'].checked=true;");
-		$but2 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', " . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but2 = we_html_button::create_button('select', "javascript:we_cmd('we_selector_image', " . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 
 		$cmd1 = "document.we_form.elements['" . $extname . "'].value";

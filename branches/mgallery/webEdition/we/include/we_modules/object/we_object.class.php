@@ -1598,7 +1598,7 @@ class we_object extends we_document{
 
 		$content = '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
-				we_html_button::create_button("edit", "javascript:we_cmd('openDocselector','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')"),
+				we_html_button::create_button("edit", "javascript:we_cmd('we_selector_image','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')"),
 				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .

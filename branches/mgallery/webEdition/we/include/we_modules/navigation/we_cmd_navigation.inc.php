@@ -29,4 +29,6 @@ switch($cmd){
 	case 'navigation_edit':
 		$GLOBALS['mod'] = 'navigation';
 		return 'we_modules/show_frameset.php';
+		case 'we_navigation_dirSelector':
+			return 'selectors.inc.php';
 }

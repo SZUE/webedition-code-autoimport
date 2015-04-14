@@ -22,10 +22,12 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
+switch($cmd){
+	case 'export_edit_ifthere':
+	case 'export_edit':
+		$GLOBALS['mod'] = 'export';
+		return 'we_modules/show_frameset.php';
 
-$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_imgSelect.php?';
-
-
-$fs->printHTML(we_base_request::_(we_base_request::INT, 'what', we_selector_file::FRAMESET));
+	case 'we_export_dirSelector':
+		return 'selectors.inc.php';
+}

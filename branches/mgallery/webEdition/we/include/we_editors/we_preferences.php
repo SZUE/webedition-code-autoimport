@@ -2567,7 +2567,7 @@ switch (arguments[0]){
 case "browse_server":
 new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
 break;
-case "openImgselector":
+case "we_selector_image":
 case "openDocselector":
 new jsWindow(url,"openDocselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 break;

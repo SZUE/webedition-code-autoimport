@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -37,4 +36,6 @@ switch($cmd){
 		return 'we_editors/we_editor.inc.php';
 	case 'users_changeR':
 		return 'we_modules/users/changeRec_users.inc.php';
+	case 'we_users_selector':
+		return 'selectors.inc.php';
 }

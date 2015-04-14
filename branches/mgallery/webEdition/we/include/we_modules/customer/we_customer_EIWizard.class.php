@@ -1739,7 +1739,7 @@ function selector_cmd(){
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
-		$addbut = we_html_button::create_button("add", "javascript:selector_cmd('openSelector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
+		$addbut = we_html_button::create_button("add", "javascript:selector_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
 		$custs = new we_chooser_multiDir(400, ($customers ? : array()), "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 
 		$custs->isEditable = permissionhandler::hasPerm("EDIT_CUSTOMER");
