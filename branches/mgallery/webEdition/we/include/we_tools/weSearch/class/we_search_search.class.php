@@ -725,12 +725,12 @@ class we_search_search extends we_search_base{
 				TEMPLATES_TABLE => g_l('global', '[templates]'),
 				OBJECT_FILES_TABLE => g_l('global', '[objects]'),
 				OBJECT_TABLE => g_l('searchtool', '[classes]'),
+				VFILE_TABLE => g_l('global', '[vfile]'),
 				CATEGORY_TABLE => g_l('global', '[categorys]'),
 				NEWSLETTER_TABLE => g_l('javaMenu_moduleInformation', '[newsletter][text]'),
 				BANNER_TABLE => g_l('javaMenu_moduleInformation', '[banner][text]'),
 				CUSTOMER_TABLE => g_l('javaMenu_moduleInformation', '[customer][text]'),
 				GLOSSARY_TABLE => g_l('javaMenu_moduleInformation', '[glossary][text]'),
-				VFILE_TABLE => 'Sammlungen',
 				NAVIGATION_TABLE => g_l('javaMenu_moduleInformation', '[navigation][text]'),
 			);
 
