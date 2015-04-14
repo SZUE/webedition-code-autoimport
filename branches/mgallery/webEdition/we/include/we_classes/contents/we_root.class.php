@@ -1226,7 +1226,7 @@ abstract class we_root extends we_class{
 
 	}
 
-	function writeFileLinks($publish = false, $filelinksReady = false, $notDeleteTemp = false){//FIXME: $filelinksReady is obsolete on this level
+	function writeFileLinks($temp = false){//FIXME: $filelinksReady is obsolete on this level
 																								//FIXME: make publish default (for all types other than webEDitionDocument and ObjectFile
 		// filter FileLinks by media contenttype
 		if(!empty($this->FileLinks)){
@@ -1237,7 +1237,7 @@ abstract class we_root extends we_class{
 				$this->FileLinks[] = $this->DB_WE->f('ID');
 			}
 		}
-
+/*
 		$isTemp = 0;
 		$where = $notDeleteTemp ? 'AND isTemp=0' : '';
 		if(!$publish){
@@ -1247,30 +1247,33 @@ abstract class we_root extends we_class{
 
 		// FIXME: move to unregisterFileLinks on some level
 		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" ' . $where . ' AND type="media"');
-		if(!empty($this->FileLinks)){
-			foreach(array_unique($this->FileLinks) as $remObj){
-				$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ID' => $this->ID,
-						'DocumentTable' => stripTblPrefix($this->Table),
-						'type' => 'media', // FIXME: change to "media"
-						'remObj' => $remObj,
-						'remTable' => stripTblPrefix(FILE_TABLE),
-						'position' => 0,
-						'isTemp' => $isTemp
-				)));
-			}
+*/
+		if(empty($this->FileLinks)){
+			return true;
+		}
+
+		$ret = true;
+		foreach(array_unique($this->FileLinks) as $remObj){
+			$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ID' => $this->ID,
+					'DocumentTable' => stripTblPrefix($this->Table),
+					'type' => 'media', // FIXME: change to "media"
+					'remObj' => $remObj,
+					'remTable' => stripTblPrefix(FILE_TABLE),
+					'position' => 0,
+					'isTemp' => $temp ? 1 : 0
+			)));
 		}
 
 		return $ret;
 	}
 
-	function unregisterFileLinks($unpublish = false){
-		if($unpublish){
-			if($this->Published && ($this->ModDate > $this->Published)){// document was modified before unpublishing: the actual version is in tblTemporaryDoc
+	function unregisterFileLinks($delPublished = true, $delTemp = true){
+		if($delPublished){
 				$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND isTemp=0 AND type="media"');
-			}
-		} else {
-			$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND type="media"');
+		}
+		if($delTemp){
+				$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND isTemp=1 AND type="media"');
 		}
 	}
 

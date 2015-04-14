@@ -120,7 +120,7 @@ class we_textDocument extends we_document{
 			}
 		}
 
-		if(($ret = parent::we_save($resave, $skipHook))){t_e("ret a", $ret);
+		if(($ret = parent::we_save($resave, $skipHook))){
 			$ret = $this->registerFileLinks(true, true);
 		}
 
@@ -188,11 +188,6 @@ class we_textDocument extends we_document{
 			default:
 		}
 		return $doc;
-	}
-
-	// FIXME: obsolete as soon as defaults on we_root are fixed
-	function unregisterFileLinks(){
-		we_root::unregisterFileLinks();
 	}
 
 	function formParseFile(){

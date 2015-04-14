@@ -654,54 +654,56 @@ class we_document extends we_root{
 		}
 	}
 
-	function registerFileLinks($publish = false, $filelinksReady = false, $notDeleteTemp = false){
-		switch($this->ContentType){
-			case we_base_ContentTypes::CSS:
-			case we_base_ContentTypes::JS:
-				if(!$filelinksReady){
-					$this->replaceWEIDs('', true);
-				}
-				$this->writeFileLinks(true);
-				return;
-			case we_base_ContentTypes::WEDOCUMENT:
-			case we_base_ContentTypes::OBJECT_FILE:
-				if(!$filelinksReady){//FIXME: maybe move this part do we_webEditionDocument
-					foreach($this->elements as $k => $v){
-						switch(isset($v['type']) ? $v['type'] : ''){
-							case 'audio':
-							case 'binary':
-							case 'flashmovie':
-							case 'href':
-							case 'img':
-							case 'quicktime':
-							case 'video':
-								if(isset($v['bdid']) && $v['bdid']){
-									$this->FileLinks[] = $v['bdid'];
-								}
-								break;
-							case 'link':
-								if(isset($v['dat']) && ($link = we_unserialize($v['dat']))){
-									if($link['type'] === 'int' && $link['id']){
-										$this->FileLinks[] = $link['id'];
+	function registerFileLinks($temp = false, $linksReady = false){
+		if(!$linksReady){
+			switch($this->ContentType){
+				case we_base_ContentTypes::CSS:
+				case we_base_ContentTypes::JS:
+					if(!$filelinksReady){
+						$this->replaceWEIDs('', true);
+					}
+					$this->writeFileLinks(true);
+					return;
+				case we_base_ContentTypes::WEDOCUMENT:
+				case we_base_ContentTypes::OBJECT_FILE:
+					if(!$linksReady){//FIXME: maybe move this part do we_webEditionDocument
+						foreach($this->elements as $k => $v){
+							switch(isset($v['type']) ? $v['type'] : ''){
+								case 'audio':
+								case 'binary':
+								case 'flashmovie':
+								case 'href':
+								case 'img':
+								case 'quicktime':
+								case 'video':
+									if(isset($v['bdid']) && $v['bdid']){
+										$this->FileLinks[] = $v['bdid'];
 									}
-									if($link['img_id']){
-										$this->FileLinks[] = $link['img_id'];
+									break;
+								case 'link':
+									if(isset($v['dat']) && ($link = we_unserialize($v['dat']))){
+										if($link['type'] === 'int' && $link['id']){
+											$this->FileLinks[] = $link['id'];
+										}
+										if($link['img_id']){
+											$this->FileLinks[] = $link['img_id'];
+										}
 									}
-								}
-								break;
-							default:
-								if(isset($v['bdid']) && $v['bdid']){
-									$this->FileLinks[] = $v['bdid'];
-								}
+									break;
+								default:
+									if(isset($v['bdid']) && $v['bdid']){
+										$this->FileLinks[] = $v['bdid'];
+									}
+							}
 						}
 					}
-				}
-				break;
-			default:
-				//
+					break;
+				default:
+					//
+			}
 		}
 
-		$this->writeFileLinks($publish, true, $notDeleteTemp);// IMPORTANT: not call parent but we_root!
+		$this->writeFileLinks($temp);
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){

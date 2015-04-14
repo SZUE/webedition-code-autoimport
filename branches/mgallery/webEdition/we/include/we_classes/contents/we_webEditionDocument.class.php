@@ -658,7 +658,8 @@ class we_webEditionDocument extends we_textContentDocument{
 		$out = parent::we_save($resave, $skipHook);
 		if($out){
 			$this->parseTextareaFields();
-			$this->registerFileLinks();
+			$this->unregisterFileLinks(false, true);
+			$this->registerFileLinks(true);
 		}
 
 		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
@@ -692,9 +693,11 @@ class we_webEditionDocument extends we_textContentDocument{
 				$this->parseTextareaFields('main');
 				// TODO: we should try to throw out obsolete elements from temporary! but this affects static docs only!
 				// TODO: when doing rebuild media link test all elements against template!
-				$this->registerFileLinks(true, false, true); // last param: when rebuilding static docs do not delete temp entries!
+				$this->unregisterFileLinks(true, false);
+				$this->registerFileLinks(); // last param: when rebuilding static docs do not delete temp entries!
 			} else {
-				$this->registerFileLinks(true);
+				$this->unregisterFileLinks();
+				$this->registerFileLinks(false, true);
 			}
 		}
 

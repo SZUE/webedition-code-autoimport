@@ -101,13 +101,14 @@ abstract class we_rebuild_base{
 						$doc = $data['tbl'] === 'tblFile' ? new we_webEditionDocument() : new we_objectFile;
 						$doc->elements = $content[0]['elements'];
 						$doc->Table = $data['tbl'] === 'tblFile' ? FILE_TABLE : OBJECT_FILES_TABLE;
+						$doc->TableID = $content[0]['TableID'];
 						$doc->ID = $data['id'];
 						if($printIt){
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
 							flush();
 						}
 						$doc->parseTextareaFields('temp');
-						$doc->registerFileLinks();
+						$doc->registerFileLinks(true);
 						unset($doc);
 						break;
 					default:
@@ -121,7 +122,7 @@ abstract class we_rebuild_base{
 							$doc->correctFields();
 							$doc->parseTextareaFields('main');
 						}
-						$doc->registerFileLinks(true);
+						$doc->registerFileLinks();
 						unset($doc);
 				}
 				if($printIt){

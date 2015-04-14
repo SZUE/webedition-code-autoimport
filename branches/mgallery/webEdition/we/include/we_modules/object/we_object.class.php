@@ -2299,7 +2299,7 @@ class we_object extends we_document{
 				}
 			}
 
-			$this->writeFileLinks();
+			//$this->writeFileLinks();
 		}
 		/*
 		if(!$filelinksReady){//FIXME: maybe move this part do we_webEditionDocument

@@ -2212,17 +2212,20 @@ class we_objectFile extends we_document{
 			return false;
 		}
 
-		$dv = we_unserialize(getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE));
-
+		$foo = getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+		//$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), "DefaultValues", $this->DB_WE));
+		$dv = we_unserialize($foo['DefaultValues']);
 		foreach($this->elements as $n => $elem){
 			if(isset($elem["type"]) && $elem["type"] == self::TYPE_TEXT){
 				if(isset($dv["text_$n"]["xml"]) && $dv["text_$n"]["xml"] === "on"){
-					$this->elements[$n] = $elem;
+					$this->elements[$n] = $elem;//FIXME: what do we do here?
 				}
 			}
 		}
-		$this->parseTextareaFields();
-		$this->registerFileLinks();
+
+		$this->parseTextareaFields('temp');
+		$this->unregisterFileLinks(false);
+		$this->registerFileLinks(true);
 
 		if($this->canHaveVariants()){
 			we_shop_variants::correctModelFields($this);
@@ -2293,6 +2296,29 @@ class we_objectFile extends we_document{
 		}
 
 		return $a;
+	}
+	
+	function registerFileLinks($temp = false, $linksReady = false) {
+		//register media in fields type link
+		if(!$linksReady){
+			$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), "DefaultValues", $this->DB_WE));
+			foreach($dv as $k => $v){
+				if(strpos($k, 'link_') === 0){
+					$link = $this->getElement(str_replace('link_', '', $k));
+					$link = is_array($link) ? $link : we_unserialize($link, array());
+						if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){ //FIXME: $link should be an object so we can check class
+						if($link['type'] === 'int' && $link['id']){
+							$this->FileLinks[] = $link['id'];
+						}
+						if($link['img_id']){
+							$this->FileLinks[] = $link['img_id'];
+						}
+					}
+				}
+			}
+		}
+
+		parent::registerFileLinks($temp, $linksReady);
 	}
 
 	function ModifyPathInformation($parentID){
@@ -2429,10 +2455,19 @@ class we_objectFile extends we_document{
 		if($saveinMainDB && !we_root::we_save()){
 			return false;
 		}
-		if($DoNotMark == false){
+		if($DoNotMark){
+			$this->parseTextareaFields('main');
+			// TODO: we should try to throw out obsolete elements from temporary! but this affects static docs only!
+			// TODO: when doing rebuild media link test all elements against template!
+			$this->unregisterFileLinks(true, false);
+			$this->registerFileLinks(); // last param: when rebuilding static docs do not delete temp entries!
+		} else {
 			if(!$this->markAsPublished()){
 				return false;
 			}
+
+			$this->unregisterFileLinks();
+			$this->registerFileLinks(false, true);
 		}
 		//hook
 		if(!$skipHook){

@@ -750,6 +750,7 @@ we_templateInit();?>';
 				unlink($tmplPathWithTmplExt);
 			}
 
+			$this->unregisterFileLinks();
 			$this->registerFileLinks();
 		} else {
 			t_e('save template failed', $this->Path);
@@ -853,7 +854,7 @@ we_templateInit();?>';
 		}
 		
 		if(!empty($this->FileLinks)){
-			parent::registerFileLinks(true, true);
+			$this->writeFileLinks();
 		}
 	}
 
