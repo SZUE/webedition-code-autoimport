@@ -22,22 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_glossary_tree extends weMainTree{
+class we_glossary_tree extends weTree{
 
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_GLOSSARY_MODULE_DIR . 'glossary_tree.js');
-	}
-
-	function getJSOpenClose(){
-		return '';
-	}
-
-	function getJSUpdateItem(){
-		return '';
-	}
-
-	function getJSTreeFunctions(){
-		return parent::getJSTreeFunctions(true);
+		return parent::customJSFile() . we_html_element::jsScript(WE_JS_GLOSSARY_MODULE_DIR . 'glossary_tree.js');
 	}
 
 	function getJSStartTree(){
@@ -56,16 +44,187 @@ treeData.frames=frames;
 }';
 	}
 
-	function getJSMakeNewEntry(){
-		return '';
+	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
+		$Types = array(
+			we_glossary_glossary::TYPE_ABBREVATION,
+			we_glossary_glossary::TYPE_ACRONYM,
+			we_glossary_glossary::TYPE_FOREIGNWORD,
+			we_glossary_glossary::TYPE_LINK,
+			we_glossary_glossary::TYPE_TEXTREPLACE,
+		);
+
+		$Temp = explode('_', $ParentId);
+
+		if(in_array($Temp[(count($Temp) - 1)], $Types)){
+			$Type = array_pop($Temp);
+			$Language = implode('_', $Temp);
+			return self::getItemsFromDB($Language, $Type, $Offset, $Segment);
+		}
+		if(in_array($ParentId, $GLOBALS['weFrontendLanguages'])){
+			return self::getTypes($ParentId);
+		}
+		return self::getLanguages();
 	}
 
-	function getJSInfo(){
-		return '';
+	private static function getLanguages(){
+		$Items = array();
+
+		foreach(getWeFrontendLanguagesForBackend() as $Key => $Val){
+			$Items[] = array(
+				'id' => $Key,
+				'parentid' => 0,
+				'text' => $Val,
+				'typ' => 'group',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $Val,
+				'offset' => 0,
+				'published' => 1,
+				'cmd' => "glossary_view_folder",
+			);
+		}
+
+		return $Items;
 	}
 
-	function getJSShowSegment(){
-		return '';
+	private static function getTypes($Language){
+
+		$Items = array();
+
+		$Types = array(
+			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
+			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
+			we_glossary_glossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
+			we_glossary_glossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
+			we_glossary_glossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
+		);
+
+		foreach($Types as $Key => $Val){
+			$Items[] = array(
+				'id' => $Language . "_" . $Key,
+				'parentid' => $Language,
+				'text' => $Val,
+				'typ' => 'group',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $Val,
+				'offset' => 0,
+				'published' => 1,
+				'cmd' => 'glossary_view_type',
+			);
+		}
+
+		if(permissionhandler::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
+			$Items[] = array(
+				'id' => $Language . "_exception",
+				'parentid' => $Language,
+				'text' => g_l('modules_glossary', '[exception]'),
+				'typ' => 'item',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => g_l('modules_glossary', '[exception]'),
+				'offset' => 0,
+				'published' => 1,
+				'cmd' => 'glossary_view_exception',
+				'Icon' => 'prog.gif'
+			);
+		}
+
+		return $Items;
+	}
+
+	private static function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500){
+
+		$Db = new DB_WE();
+
+		$Items = array();
+
+		$Where = " WHERE Language='" . $Db->escape($Language) . "' AND Type='" . $Db->escape($Type) . "'";
+
+		$PrevOffset = max(0, $Offset - $Segment);
+
+		if($Offset && $Segment){
+			$Item = array(
+				"id" => "prev_" . $Language . "_" . $Type,
+				"parentid" => $Language . "_" . $Type,
+				"text" => "display (" . $PrevOffset . "-" . $Offset . ")",
+				"contenttype" => "arrowup",
+				"table" => GLOSSARY_TABLE,
+				"typ" => "threedots",
+				"icon" => "arrowup.gif",
+				"open" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $PrevOffset,
+			);
+			$Items[] = $Item;
+		}
+
+		$Db->query('SELECT ID,Type,Language,Text,Icon,Published FROM ' . GLOSSARY_TABLE . ' ' .
+			$Where . ' ORDER BY (Text REGEXP "^[0-9]") DESC,abs(Text),Text' .
+			($Segment ? ' LIMIT ' . intval($Offset) . ',' . intval($Segment) : ''));
+
+		while($Db->next_record(MYSQL_ASSOC)){
+
+			$Item = array(
+				'id' => $Db->f('ID'),
+				'parentid' => $Language . '_' . $Type,
+				'text' => $Db->f('Text'),
+				'typ' => 'item',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $Db->f('ID'),
+				'offset' => $Offset,
+				'published' => ($Db->f('Published') > 0 ? true : false),
+				'icon' => $Db->f('Icon'),
+			);
+
+			switch($Type){
+
+				case we_glossary_glossary::TYPE_ABBREVATION:
+					$Item['cmd'] = "glossary_edit_abbreviation";
+					break;
+				case we_glossary_glossary::TYPE_ACRONYM:
+					$Item['cmd'] = "glossary_edit_acronym";
+					break;
+				case we_glossary_glossary::TYPE_FOREIGNWORD:
+					$Item['cmd'] = "glossary_edit_foreignword";
+					break;
+				case we_glossary_glossary::TYPE_LINK:
+					$Item['cmd'] = "glossary_edit_link";
+					break;
+				case we_glossary_glossary::TYPE_TEXTREPLACE:
+					$Item['cmd'] = "glossary_edit_textreplacement";
+					break;
+			}
+
+			foreach($Db->Record as $Key => $Val){
+				$Item[strtolower($Key)] = (strtolower($Key) === 'text' ? oldHtmlspecialchars($Val) : $Val);
+			}
+
+			$Items[] = $Item;
+		}
+
+		$Total = f('SELECT COUNT(1) FROM ' . $Db->escape(GLOSSARY_TABLE) . ' ' . $Where, '', $Db);
+
+		$NextOffset = $Offset + $Segment;
+		if($Segment && ($Total > $NextOffset)){
+			$Items[] = array(
+				"id" => 'next_' . $Language . "_" . $Type,
+				"parentid" => $Language . "_" . $Type,
+				"text" => "display (" . $NextOffset . "-" . ($NextOffset + $Segment) . ")",
+				"contenttype" => "arrowdown",
+				"table" => GLOSSARY_TABLE,
+				"typ" => "threedots",
+				"icon" => "arrowdown.gif",
+				"open" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $NextOffset,
+			);
+		}
+
+		return $Items;
 	}
 
 }

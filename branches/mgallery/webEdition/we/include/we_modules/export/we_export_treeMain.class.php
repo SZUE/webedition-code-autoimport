@@ -25,15 +25,7 @@
 class we_export_treeMain extends weTree{
 
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_EXPORT_MODULE_DIR . 'export_treeMain.js');
-	}
-
-	function getJSOpenClose(){
-		return '';
-	}
-
-	function getJSUpdateItem(){
-		return '';
+		return parent::customJSFile() . we_html_element::jsScript(WE_JS_EXPORT_MODULE_DIR . 'export_treeMain.js');
 	}
 
 	function getJSStartTree(){
@@ -52,8 +44,76 @@ treeData.frames=frames;
 			}';
 	}
 
-	function getJSMakeNewEntry(){
-		return '';
+	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+		$db = new DB_WE();
+		$table = EXPORT_TABLE;
+
+		$items = array();
+
+		$prevoffset = max(0, $offset - $segment);
+		if($offset && $segment){
+			$items[] = array(
+				'icon' => 'arrowup.gif',
+				'id' => 'prev_' . $ParentID,
+				'parentid' => $ParentID,
+				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
+				'contenttype' => 'arrowup',
+				'table' => EXPORT_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'published' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $prevoffset
+			);
+		}
+
+		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere;
+
+		$db->query('SELECT ' . $elem . ' FROM ' . $table . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text' . ($segment ? " LIMIT $offset,$segment" : '' ));
+
+		while($db->next_record()){
+
+			$typ = array(
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $db->f('ID'),
+				'offset' => $offset,
+			);
+			$tt = '';
+
+			$fileds = array();
+
+			foreach($db->Record as $k => $v){
+				if(!is_numeric($k)){
+					$fileds[strtolower($k)] = $v;
+				}
+			}
+
+			$fileds['text'] = trim($tt) ? $tt : $db->f('Text');
+			$items[] = array_merge($fileds, $typ);
+		}
+
+		$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $db);
+		$nextoffset = $offset + $segment;
+		if($segment && ($total > $nextoffset)){
+			$items[] = array(
+				'icon' => 'arrowdown.gif',
+				'id' => 'next_' . $ParentID,
+				'parentid' => 0,
+				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
+				'contenttype' => 'arrowdown',
+				'table' => EXPORT_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $nextoffset
+			);
+		}
+
+		return $items;
 	}
 
 }

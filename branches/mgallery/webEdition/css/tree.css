@@ -46,6 +46,7 @@
 	border-collapse: collapse;
 }
 
+.treetable img,
 .tree img {
 	width: 16px;
 	height: 18px;
@@ -55,6 +56,7 @@
 img.treeKreuz{
 	width:19px;
 }
+
 .item,
 .group,
 #treetable a{
@@ -136,4 +138,16 @@ img.treeKreuz{
 
 .checked_notpublished {
 	color: red;
+}
+
+.bold{
+	font-weight: bold;
+}
+
+.blue{
+	color:blue;
+}
+
+.red{
+	color:red;
 }

@@ -1,6 +1,10 @@
-js/menu/clickMenu_IE8.js
-html/gray2.html
-we/include/we_classes/selector/we_selector_multiple.class.php
+js/we_modules/banner/banner_cmd.js
+we/include/we_modules/glossary/we_glossary_treeLoader.class.php
+we/include/we_modules/customer/we_customer_treeLoader.class.php
+we/include/we_modules/newsletter/we_newsletter_treeLoader.class.php
+we/include/we_modules/voting/we_voting_treeLoader.class.php
+we/include/we_classes/tools/we_tool_tree.class.php
+we/include/we_classes/modules/we_modules_tree.class.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2210,6 +2214,7 @@ we/include/we_classes/tools/weToolFrames.class.php
 we/include/we_classes/taskFragment.class.php
 we/include/we_classes/smtp.class.php
 we/include/we_classes/sidebar/we_sidebar_documentParser.class
+we/include/we_classes/selector/we_selector_multiple.class.php
 we/include/we_classes/SEEM/we_SEEM_openExtDoc_header.php
 we/include/we_classes/SEEM/we_SEEM_openExtDoc_frameset.php
 we/include/we_classes/SEEM/we_SEEM_openExtDoc_footer.php
@@ -2313,6 +2318,7 @@ we/include/webEdition_normal.inc.php
 we/include/we_ajax/weSelectorSuggest.inc.php
 we/include/we_ajax
 we/include/we_active_integrated_modules.inc.php
+we/include/treeInfo.inc.php
 we/include/notInstalledModules.inc.php
 we/include/messageModuleNotActivated.inc.php
 we/include/jsMessageConsole/messageConsole.inc.php
@@ -2504,6 +2510,7 @@ js/weDOM_Safari.js
 js/we_colors.js
 js/seeMode.php
 js/messageConsoleImages.js
+js/menu/clickMenu_IE8.js
 js/md5.js
 js/libs/yui/yahoo-min.js
 js/libs/yui/treeview/treeview-min.js
@@ -2835,6 +2842,7 @@ html/msg_white_fr2.html
 html/msg_aqua_sep.html
 html/ieResize.html
 html/grayWithTopLine.html
+html/gray2.html
 html/frameheader.html
 html/blank.html
 html/aqua_nb.html

@@ -27,7 +27,7 @@ class we_users_frames extends we_modules_frame{
 	function __construct(){
 		parent::__construct(WE_USERS_MODULE_DIR . "edit_users_frameset.php");
 		$this->module = 'users';
-		$this->useMainTree = false;
+		$this->Tree = new we_users_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->treeFooterHeight = 40;
 		$this->treeDefaultWidth = 224;
 		$this->View = new we_users_view(WE_USERS_MODULE_DIR . 'edit_users_frameset.php', 'top.content');
@@ -37,66 +37,37 @@ class we_users_frames extends we_modules_frame{
 		return $this->View->getJSTop_tmp();
 	}
 
-	protected function getDoClick(){
-		return 'function doClick(id,ct,table){
-	top.content.we_cmd(\'display_user\',id,ct,table);
-	}';
-	}
-
-	function getJSTreeCode(){ //TODO: move to new class weUsersTree
-		$jsInit = '
-var table="' . USER_TABLE . '";
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";
-' . parent::getTree_g_l();
-
-		$jsCode = '
-function loadData() {
-	menuDaten.clear();
-';
-
-		if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){
-			if(permissionhandler::hasPerm("ADMINISTRATOR")){
-				$parent_path = '/';
-				$startloc = 0;
-			} else {
-				$foo = getHash('SELECT Path,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $this->db);
-				$parent_path = str_replace("\\", "/", dirname($foo["Path"]));
-				$startloc = $foo["ParentID"];
-			}
-
-			$jsCode .= 'startloc=' . $startloc . ';';
-
-			$this->db->query('SELECT ID,ParentID,Text,Type,Permissions,LoginDenied FROM ' . USER_TABLE . " WHERE Path LIKE '" . $this->db->escape($parent_path) . "%' ORDER BY Text ASC");
-
-			while($this->db->next_record()){
-				if($this->db->f('Type') == we_users_user::TYPE_USER_GROUP){
-					$jsCode .= "menuDaten.add(new dirEntry('folder'," . $this->db->f('ID') . ',' . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "',false,'group','" . USER_TABLE . "',1));";
-				} else {
-					$p = we_unserialize($this->db->f("Permissions"));
-					$jsCode .= "menuDaten.add(new urlEntry('" . ($this->db->f('Type') == we_users_user::TYPE_ALIAS ? 'user_alias.gif' : 'user.gif') . "'," . $this->db->f("ID") . "," . $this->db->f("ParentID") . ",'" . addslashes($this->db->f("Text")) . "','" . ($this->db->f("Type") == we_users_user::TYPE_ALIAS ? 'alias' : 'user') . "','" . USER_TABLE . "','" . (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"]) . "','" . $this->db->f("LoginDenied") . "'));";
-				}
-			}
-		}
-
-		$jsCode .= '
-}
-';
-
-		return we_html_element::jsElement($jsInit) .
-			we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
-			we_html_element::jsScript(JS_DIR . 'users_tree.js') .
-			we_html_element::jsElement($jsCode);
-	}
-
-	function getHTMLFrameset(){//TODO: use parent as soon as userTree.class exists
-		$extraHead = $this->getJSCmdCode() . $this->getJSTreeCode();
-		return parent::getHTMLFrameset($extraHead);
+	function getHTMLFrameset(){
+		return parent::getHTMLFrameset(
+				$this->Tree->getJSTreeCode()
+		);
 	}
 
 	function getHTMLCmd(){
-		$this->View->processCommands();
+		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
+			exit;
+		}
+
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
+
+		$rootjs = "";
+		if(!$pid){
+			$rootjs.=
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+		}
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "cmd",
+				"cmd" => "no_cmd"));
+
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::jsElement($rootjs .
+							$this->Tree->getJSLoadTree(we_users_tree::getItems($pid, $offset, $this->Tree->default_segment))
+							)
+					)
+				)
+		);
 	}
 
 	/* use parent
@@ -135,10 +106,10 @@ function loadData() {
 	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){//FIXME: find one working condition
 			echo we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), '');
-		} else {
-			$user_object = $_SESSION["user_session_data"];
-			echo we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'id' => 'eHeaderBody'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
+			return;
 		}
+		$user_object = $_SESSION["user_session_data"];
+		echo we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'id' => 'eHeaderBody'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
 	}
 
 	protected function getHTMLEditorBody(){
@@ -187,10 +158,6 @@ function loadData() {
 	}
 
 	protected function getHTMLEditorFooter(){
-		if(isset($_SESSION["user_session_data"])){
-			$user_object = $_SESSION["user_session_data"];
-		}
-
 		return parent::getHTMLEditorFooter('save_user');
 	}
 

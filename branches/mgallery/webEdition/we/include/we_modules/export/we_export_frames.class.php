@@ -52,9 +52,9 @@ class we_export_frames extends we_modules_frame{
 			case "load":
 				return $this->getHTMLCmd();
 			case "treeheader":
-				return $this->getHTMLTreeHeader();
+				return '';
 			case "treefooter":
-				return $this->getHTMLTreeFooter();
+				return '';
 			default:
 				return parent::getHTML($what);
 		}
@@ -62,16 +62,13 @@ class we_export_frames extends we_modules_frame{
 
 	function getHTMLFrameset(){
 		$this->View->export->clearSessionVars();
-		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
+		$extraHead = $this->Tree->getJSTreeCode();
 
 		return parent::getHTMLFrameset($extraHead);
 	}
 
 	function getJSCmdCode(){
-		return $this->View->getJSTop() .
-			we_html_element::jsElement($this->Tree->getJSMakeNewEntry() .
-				$this->Tree->getJSUpdateItem()
-		);
+		return $this->View->getJSTop();
 	}
 
 	protected function getHTMLEditorHeader(){
@@ -139,7 +136,7 @@ top.content.hloaded = 1;');
 			return ob_get_clean();
 		}
 		$yuiSuggest = & weSuggest::getInstance();
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;start();", "onunload" => "doUnload()"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;" . $this->getJSStart(), "onunload" => "doUnload()"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
 		);
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -415,23 +412,6 @@ function closeAllType(){
 		return $yuiSuggest->getHTML();
 	}
 
-	/* use parent
-	  function getHTMLLeft(){}
-	 *
-	 */
-
-	protected function getHTMLTreeHeader(){
-		return '';
-	}
-
-	protected function getHTMLTreeFooter(){
-
-		$body = we_html_element::htmlBody(array("id" => "footerBody"), ""
-		);
-
-		return $this->getHTMLDocument($body);
-	}
-
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
 			return we_html_element::jsElement("self.location='" . WE_EXPORT_MODULE_DIR . "exportLoadTree.php?we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
@@ -441,17 +421,12 @@ function closeAllType(){
 
 	private function getMainLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			$treeItems = we_export_treeLoader::getItems($pid);
-			$js = 'if(!' . $this->Tree->topFrame . '.treeData) {
-								' . we_message_reporting::getShowMessageCall("A fatal Error ocured", we_message_reporting::WE_MESSAGE_ERROR) . '
-							}';
 
-			if(!$pid){
-				$js.=$this->Tree->topFrame . '.treeData.clear();' .
-					$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . we_base_request::_(we_base_request::STRING, "pid") . '\',\'root\',\'root\'));';
-			}
+			$js = ($pid ? '' :
+					$this->Tree->topFrame . '.treeData.clear();' .
+					$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . we_base_request::_(we_base_request::STRING, "pid") . '\',\'root\',\'root\'));');
 
-			return we_html_element::jsElement($js . $this->Tree->getJSLoadTree($treeItems));
+			return we_html_element::jsElement($js . $this->Tree->getJSLoadTree(we_export_treeMain::getItemsFromDB($pid)));
 		}
 		return '';
 	}

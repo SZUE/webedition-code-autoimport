@@ -566,8 +566,8 @@ function we_submit(){
 					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
 							"pnt" => "body",
 							"step" => 4,
-							"selDocs" => "",
-							"selTempl" => "",
+							"selDocs" => '',
+							"selTempl" => '',
 							"selObjs" => (isset($_SESSION['weS']['exportVars_session']["selObjs"]) ? $_SESSION['weS']['exportVars_session']["selObjs"] : ""),
 							"selClasses" => (isset($_SESSION['weS']['exportVars_session']["selClasses"]) ? $_SESSION['weS']['exportVars_session']["selClasses"] : ""))) .
 						we_html_multiIconBox::getHTML("", 530, $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))

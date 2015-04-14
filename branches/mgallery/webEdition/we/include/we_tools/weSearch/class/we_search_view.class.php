@@ -644,16 +644,16 @@ weSearch.g_l = {
 				$n = 2;
 
 				$_table->setCol(3, 0, array(), 'Verwendungsstatus: ');
-				$_table->setCol(3, 1, array('colspan' => '2'), we_html_element::htmlHiddens(array(
+				$_table->setCol(3, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsUsed',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
-					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array('0' => 'alle', '1' => 'nur benutzte Medien', '2' => 'nur unbenutzte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
+					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(0 => 'alle', 1 => 'nur benutzte Medien', 2 => 'nur unbenutzte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
 
 				$_table->setCol(4, 0, array(), 'Schutz: ');
-				$_table->setCol(4, 1, array('colspan' => '2'), we_html_element::htmlHiddens(array(
+				$_table->setCol(4, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsProtected',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
-					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array('0' => 'alle', '1' => 'nur geschützte Medien', '2' => 'nur ungeschützte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
+					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(0 => 'alle', 1 => 'nur geschützte Medien', 2 => 'nur ungeschützte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
 
 				$this->searchMediaOptFieldIndex = $n;
 				break;
@@ -661,7 +661,7 @@ weSearch.g_l = {
 				return;
 		}
 		$_table->setCol(5, 0, array('colspan' => 4), $this->getSearchDialogOptFields($whichSearch));
-		$_table->setCol(6, 0, array('colspan' => '3', 'style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
+		$_table->setCol(6, 0, array('colspan' => 3, 'style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
 		$_table->setCol(6, 3, array(), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
@@ -2111,10 +2111,10 @@ weSearch.g_l = {
 						$searchInput = $selector;
 				}
 			}
-//FIXME: $whichSearch is uninitialized
+
 			$out .= '<tr id="filterRow_' . $i . '">
 	<td>' . we_html_tools::hidden("hidden_searchFieldsAdvSearch[" . $i . "]", isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : "") .
-				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, $whichSearch), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
+				we_html_tools::htmlSelect("searchFieldsAdvSearch[" . $i . "]", $this->searchclass->getFields($i, 'AdvSearch'), 1, (isset($this->Model->searchFieldsAdvSearch) && is_array($this->Model->searchFieldsAdvSearch) && isset($this->Model->searchFieldsAdvSearch[$i]) ? $this->Model->searchFieldsAdvSearch[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFieldsAdvSearch[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
 				'</td>
 	<td id="td_locationAdvSearch[' . $i . ']">' . we_html_tools::htmlSelect("locationAdvSearch[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($this->Model->locationAdvSearch) && is_array($this->Model->locationAdvSearch) && isset($this->Model->locationAdvSearch[$i]) ? $this->Model->locationAdvSearch[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'locationAdvSearch[' . $i . ']')) . '</td>
 	<td id="td_searchAdvSearch[' . $i . ']">' . $searchInput . '</td>

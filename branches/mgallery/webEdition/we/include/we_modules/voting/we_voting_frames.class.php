@@ -59,13 +59,13 @@ class we_voting_frames extends we_modules_frame{
 
 	function getHTMLFrameset(){
 		$this->View->voting->clearSessionVars();
-		$extraHead = $this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart());
+		$extraHead = $this->Tree->getJSTreeCode();
 
 		return parent::getHTMLFrameset($extraHead);
 	}
 
 	function getJSCmdCode(){
-		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
+		return $this->View->getJSTop();
 	}
 
 	protected function getHTMLEditorHeader(){
@@ -808,16 +808,6 @@ function refreshTexts(){
 		return $yuiSuggest->getHTML();
 	}
 
-	protected function getHTMLTreeHeader(){
-		return '';
-	}
-
-	protected function getHTMLTreeFooter(){
-		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("id" => "footerBody", "background" => IMAGE_DIR . "edit/editfooterback.gif", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), "")
-		);
-	}
-
 	function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) === false){
 			exit;
@@ -838,7 +828,7 @@ function refreshTexts(){
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array(), we_html_element::htmlForm(
-						array("name" => "we_form"), $hiddens . we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_voting_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
+						array("name" => "we_form"), $hiddens . we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_voting_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))
 					)
 				)
 		);

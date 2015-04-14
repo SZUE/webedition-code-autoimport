@@ -24,12 +24,12 @@
  */
 class we_banner_frames extends we_modules_frame{
 	var $edit_cmd = "banner_edit";
-	protected $useMainTree = false;
 	protected $treeDefaultWidth = 224;
 
 	function __construct($frameset){
 		parent::__construct($frameset);
 		$this->View = new we_banner_view();
+		$this->Tree = new we_banner_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->module = 'banner';
 	}
 
@@ -45,57 +45,11 @@ class we_banner_frames extends we_modules_frame{
 	}
 
 	function getHTMLFrameset(){
-		$extraHead = $this->getJSTreeCode();
-		return parent::getHTMLFrameset($extraHead);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	protected function getHTMLEditor(){
 		return parent::getHTMLEditor('&home=1');
-	}
-
-	protected function getDoClick(){
-		return "function doClick(id,ct,table){
-	top.content.we_cmd('" . $this->edit_cmd . "',id,ct,table);
-}";
-	}
-
-	function getJSTreeCode(){//TODO: move (as in all modules...) to some future moduleTree class
-		//start of code from ex class weModuleBannerFrames
-		$startloc = 0;
-
-		$out = '
-		function loadData(){
-			menuDaten.clear();
-			startloc=' . $startloc . ';';
-
-		$this->db->query('SELECT ID,ParentID,Path,Text,Icon,IsFolder FROM ' . BANNER_TABLE . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');
-		while($this->db->next_record()){
-			$ID = $this->db->f("ID");
-			$ParentID = $this->db->f("ParentID");
-			$Path = $this->db->f("Path");
-			$Text = addslashes($this->db->f("Text"));
-			$Icon = $this->db->f("Icon");
-			$IsFolder = $this->db->f("IsFolder");
-
-			$out.=($IsFolder ?
-					"  menuDaten.add(new dirEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "',0,'folder','" . BANNER_TABLE . "',1));" :
-					"  menuDaten.add(new urlEntry('" . $Icon . "'," . $ID . "," . $ParentID . ",'" . $Text . "','file','" . BANNER_TABLE . "',1));");
-		}
-
-		$out.='}';
-		echo we_html_element::cssLink(CSS_DIR . 'tree.css') .
-		we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement('
-var table="' . BANNER_TABLE . '";
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";'
-			. parent::getTree_g_l()
-		) .
-		we_html_element::jsScript(JS_DIR . 'banner_tree.js') .
-		we_html_element::jsElement($out);
 	}
 
 	function getJSCmdCode(){
@@ -169,9 +123,30 @@ var we_dir="' . WEBEDITION_DIR . '";'
 	}
 
 	function getHTMLCmd(){
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array(), we_html_element::htmlHiddens(array("ncmd" => "", "nopt" => ""))
+		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
+			exit;
+		}
+
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
+
+		$rootjs = "";
+		if(!$pid){
+			$rootjs.=
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+		}
+		$hiddens = we_html_element::htmlHiddens(array(
+				"pnt" => "cmd",
+				"cmd" => "no_cmd"));
+
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						we_html_element::jsElement($rootjs .
+							$this->Tree->getJSLoadTree(we_banner_tree::getItems($pid, $offset, $this->Tree->default_segment))
+						)
 					)
-				), $this->View->getJSCmd());
+				)
+		);
 	}
 
 	function getHTMLDCheck(){

@@ -27,7 +27,7 @@ class weMainTree extends weTree{
 	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
 
-		$this->setNodeLayouts(array(
+		$this->node_layouts = array(
 			'item' => 'item',
 			'group' => 'group',
 			'threedots' => 'changed',
@@ -47,56 +47,27 @@ class weMainTree extends weTree{
 			'item-selected-changed' => 'selected_changed_item',
 			'group-selected' => 'selected_group',
 			'group-selected-open' => 'selected_open_group'
-		));
+		);
 
-		$this->setStyles(array(
+		$this->styles = array(
 			'.item {cursor: pointer;}',
 			'.group {cursor: pointer;}',
 			'.selected_item {background-color: #D4DBFA;}',
 			'.selected_group {background-color: #D4DBFA;}',
 			'.selected_notpublished_item {color: red;}',
 			'.selected_open_group {color: black;}',
-				)
 		);
 	}
 
-	function getJSOpenClose(){
+	function getJSStartTree(){
 		return '
-function openClose(id) {
-	if(id==""){
-		return;
-	}
-	var eintragsIndex = indexOfEntry(id);
-	var openstatus = (treeData[eintragsIndex].open==0 ? 1:0);
-	treeData[eintragsIndex].open=openstatus;
-	if(openstatus && treeData[eintragsIndex].loaded!=1){
-		we_cmd("loadFolder",top.treeData.table,treeData[eintragsIndex].id);
-		toggleBusy(1);
-	}else{
-		we_cmd("closeFolder",top.treeData.table,treeData[eintragsIndex].id);
-		drawTree();
-	}
-	if(openstatus==1){
-		treeData[eintragsIndex].loaded=1;
-	}
-}';
-	}
-
-	function getJSTreeFunctions($overridden = false){
-		return parent::getJSTreeFunctions() . ($overridden ? '' : '
-function doClick(id){
-	var node=' . $this->topFrame . '.get(id);
-	var ct=node.contenttype;
-	var table=node.table;
-	var id = node.we_id ? node.we_id : id;
-	setScrollY();
-	if(' . $this->topFrame . '.wasdblclick && ct != \'folder\' && table!=\'' . TEMPLATES_TABLE . '\' && table!=\'' . VFILE_TABLE . '\'' . (defined('OBJECT_TABLE') ? ' && table!=\'' . OBJECT_TABLE . '\' && table!=\'' . OBJECT_FILES_TABLE . '\'' : '' ) . '){
-		top.openBrowser(id);
-		setTimeout(\'wasdblclick=false;\',400);
-	} else {
-		top.weEditorFrameController.openDocument(table,id,ct);
-	}
-}');
+we_scrollY["' . FILE_TABLE . '"] = 0;
+we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
+			(defined('OBJECT_TABLE') ? '
+we_scrollY["' . OBJECT_TABLE . '"] = 0;
+we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
+				'') . '
+treeData.table="' . FILE_TABLE . '";';
 	}
 
 	function getJSUpdateTreeScript($doc, $select = true){
@@ -123,10 +94,10 @@ while(1){
 if(weWindow.treeData){
 	var obj = weWindow.treeData;
 	var isIn = false;' .
-				($select ? '
+			($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
 	weWindow.treeData.selection="' . $doc->ID . '";' :
-						'weWindow.treeData.unselectnode();') . '
+				'weWindow.treeData.unselectnode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.indexOfEntry(' . $doc->ParentID . ')]){
 				var attribs={
@@ -144,12 +115,14 @@ if(weWindow.treeData){
 				if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
 						isIn=true;
 						var ai = 1;
+						var elem;
 						while (ai <= ' . $this->topFrame . '.treeData.len) {
-							if (' . $this->topFrame . '.treeData[ai].id==attribs["id"]){
-								' . $this->topFrame . '.treeData[ai].text=attribs["text"];
-								' . $this->topFrame . '.treeData[ai].parentid=attribs["parentid"];
-								' . $this->topFrame . '.treeData[ai].table=attribs["table"];
-								' . $this->topFrame . '.treeData[ai].published=attribs["published"];
+							elem=' . $this->topFrame . '.treeData[ai];
+							if (elem.id==attribs["id"]){
+								elem.text=attribs["text"];
+								elem.parentid=attribs["parentid"];
+								elem.table=attribs["table"];
+								elem.published=attribs["published"];
 							}
 							++ai;
 						}
@@ -175,115 +148,17 @@ if(weWindow.treeData){
 		return $s;
 	}
 
-	function getJSGetLayout(){
-		return '
-function getLayout(){
-		if(this.typ=="threedots") return treeData.node_layouts["threedots"];
-		var layout_key=(this.typ=="group"&&this.contenttype!=="text/weCollection" ? "group" : "item")+
-			(this.selected==1 ? "-selected" : "")+
-			(this.disabled==1 ? "-disabled" : "")+
-			(this.checked==1 ? "-checked" : "")+
-			(this.open==1 ? "-open" : "")+
-			(this.typ=="item" && this.published==0 ? "-notpublished" : "")+
-			(this.typ=="item" && this.published==-1 ? "-changed" : "") ;
-
-		return treeData.node_layouts[layout_key];
-}';
+	function customJSFile(){
+		return parent::customJSFile() . we_html_element::jsScript(JS_DIR . 'main_tree.js');
 	}
 
-	function getJSInfo(){
-		return '
-function info(text) {
-	t=TreeInfo.window.document.getElementById("infoField");
-	s=TreeInfo.window.document.getElementById("search");
-	if(text!=" "){
-		s.style.display="none";
-		t.style.display="block";
-		t.innerHTML = text;
-	} else {
-		s.style.display="block";
-		t.innerHTML = text;
-		t.style.display="none";
-	}
-}';
-	}
-
-	function getJSUpdateItem(){
-		return '
-function updateEntry(id,text,pid,tab){
-	//if((treeData.table == tab)&&(treeData[indexOfEntry(pid)])&&(treeData[indexOfEntry(pid)].loaded)){
-	if((treeData.table == tab)&&(treeData[indexOfEntry(pid)])){
-		var ai = 1;
-		while (ai <= treeData.len) {
-			if (treeData[ai].id==id){
-				if(text){
-				treeData[ai].text=text;
-				}
-				if(pid){
-				treeData[ai].parentid=pid;
-				}
-				if(tab){
-				treeData[ai].table=tab;
-				}
-			}
-			ai++;
-		}
-		drawTree();
-	}
-}';
-	}
-
-	function getJSMakeNewEntry(){
-		return '
-function makeNewEntry(icon,id,pid,txt,open,ct,tab){
-	if(treeData.table == tab){
-		if(treeData[indexOfEntry(pid)]){
-			if(treeData[indexOfEntry(pid)].loaded){
-
-				var attribs={
-					"id":id,
-					"icon":icon,
-					"text":txt,
-					"parentid":pid,
-					"open":open,
-					"typ":(ct=="folder" ? "group" : "item"),
-					"table":tab,
-					"tooltip":id,
-					"contenttype":ct,
-					"disabled":0,
-					"selected":0
-				};
-				if(attribs["typ"]=="item"){
-					attribs["published"]=0;
-				}
-
-				treeData.addSort(new node(attribs));
-
-				drawTree();
-			}
-		}
-	}
-}';
-	}
-
-	function getJSIncludeFunctions(){
-		return parent::getJSIncludeFunctions() . '
-we_scrollY["' . FILE_TABLE . '"] = 0;
-we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
-				(defined('OBJECT_TABLE') ? '
-we_scrollY["' . OBJECT_TABLE . '"] = 0;
-we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
-						'') . '
-treeData.table="' . FILE_TABLE . '";';
-	}
-
-	function getJSLoadTree($treeItems){
-		$js = 'var attribs={};';
+	function getJSLoadTree(array $treeItems){
+		$js = 'var attribs;';
 
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
 				$js.= 'if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
-						. "attribs={";
+					. "attribs={";
 				foreach($item as $k => $v){
 					$js.='"' . strtolower($k) . '":' . ($v === 0 ? 0 : '\'' . addslashes($v) . '\'') . ',';
 				}

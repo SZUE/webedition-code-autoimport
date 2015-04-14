@@ -22,26 +22,51 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_tree extends we_tool_tree{
+class we_search_tree extends weTree{
 
-	function we_search_tree($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-
+	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-		$this->setTreeIconDir(WE_INCLUDES_DIR . 'we_tools/weSearch/layout/icons/');
-	}
 
-	function getJSTreeFunctions(){
-
-		return parent::getJSTreeFunctions(true) . '
-				function doClick(id,typ){
-					var node=' . $this->topFrame . '.get(id);
-					' . $this->topFrame . '.resize.right.editor.edbody.we_cmd("tool_weSearch_edit",node.id);
-				}';
+		$this->styles = array(
+			'.selected_item {background-color: #D4DBFA;}',
+			'.selected_group {background-color: #D4DBFA;}',
+		);
+		$this->tree_icon_dir = WE_INCLUDES_DIR . 'we_tools/weSearch/layout/icons/';
 	}
 
 	function getJSTreeCode(){
 		return parent::getJSTreeCode() .
-				we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
+			we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
+	}
+
+	function getJSStartTree(){
+		return '
+function startTree(){
+frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+treeData.frames=frames;
+	pid = arguments[0] ? arguments[0] : 0;
+	offset = arguments[1] ? arguments[1] : 0;
+	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	drawTree();
+}';
+	}
+
+	function getHTMLContruct(){
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead() .
+					STYLESHEET .
+					$this->getStyles()
+				) .
+				we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
+		);
+	}
+
+	function customJSFile(){
+		return parent::customJSFile() . we_html_element::jsScript(JS_DIR . 'search_tree.js');
 	}
 
 }

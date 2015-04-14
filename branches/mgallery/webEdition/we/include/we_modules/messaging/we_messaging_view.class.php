@@ -208,12 +208,10 @@ function submitForm() {
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
 				$js_out = '
-				top.content.editor.edbody.entries_selected = [];
-				//we_class::2xok
-				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
-				top.content.editor.edbody.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.messaging_msg_view.location="about:blank";
-				';
+top.content.editor.edbody.entries_selected = [];
+top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+top.content.editor.edbody.messaging_messages_overview.location=" ' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+top.content.editor.edbody.messaging_msg_view.location="about:blank";';
 
 				$aid = $this->messaging->Folder_ID;
 				$js_out = '
@@ -226,7 +224,7 @@ function submitForm() {
 			case 'update_msgs':
 				$out .= $this->update_treeview();
 				$blank = false;
-			/* FALLTHROUGH */
+			/* no break */
 			case 'update_fcview':
 				$id = $this->messaging->Folder_ID;
 				$blank = isset($blank) ? $blank : true;
@@ -255,19 +253,19 @@ function submitForm() {
 						$type = we_base_request::_(we_base_request::STRING, 'type');
 						$out .= we_html_element::jsElement('
 top.content.folder_added(' . $parent . ');
-top.content.menuDaten.add(new top.content.urlEntry("' . ($type === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif", "' . $id . '", "' . $parent . '", "' . we_base_request::_(we_base_request::STRING, 'name') . ' - (0)", "leaf_Folder", "' . MESSAGES_TABLE . '", "' . ($type === 'we_todo' ? 'todo_folder' : 'msg_folder') . '"));' .
+top.content.treeData.add(new top.content.urlEntry("' . ($type === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif", "' . $id . '", "' . $parent . '", "' . we_base_request::_(we_base_request::STRING, 'name') . ' - (0)", "leaf_Folder", "' . MESSAGES_TABLE . '", "' . ($type === 'we_todo' ? 'todo_folder' : 'msg_folder') . '"));' .
 								we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 top.content.drawEintraege();
 						');
 					} else {
 						$js_out = '
-top.content.menuDaten.clear();
+top.content.treeData.clear();
 top.content.startloc=0;
-top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
+top.content.treeData.add(new top.content.self.rootEntry(0,"root","root"));';
 
 						foreach($this->messaging->available_folders as $folder){
 							if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0){
-								$js_out .= 'top.content.menuDaten.add(
+								$js_out .= 'top.content.treeData.add(
 	new top.content.dirEntry(
 		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
 		"' . $folder['ID'] . '","' . $folder['ParentID'] . '",
@@ -280,7 +278,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 	)
 );';
 							} else {
-								$js_out .= 'top.content.menuDaten.add(
+								$js_out .= 'top.content.treeData.add(
 	new top.content.urlEntry(
 		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
 		"' . $folder['ID'] . '",

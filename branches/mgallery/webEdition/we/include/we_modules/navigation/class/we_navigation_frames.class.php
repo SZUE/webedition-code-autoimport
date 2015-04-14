@@ -63,7 +63,6 @@ class we_navigation_frames extends we_modules_frame{
 	function getHTMLFrameset(){
 		$extraHead = $this->getJSCmdCode() .
 				$this->Tree->getJSTreeCode() .
-				we_html_element::jsElement($this->getJSStart()) .
 				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 				we_main_headermenu::css();
 
@@ -102,7 +101,7 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	function getJSCmdCode(){
-		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
+		return $this->View->getJSTop();
 	}
 
 	public function getHTMLDocumentHeader(){

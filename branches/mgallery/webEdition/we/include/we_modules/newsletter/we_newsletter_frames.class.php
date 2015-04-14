@@ -114,8 +114,7 @@ class we_newsletter_frames extends we_modules_frame{
 				var hot = 0;
 				var scrollToVal = 0;
 			') .
-			$this->Tree->getJSTreeCode() .
-			we_html_element::jsElement($this->getJSStart());
+			$this->Tree->getJSTreeCode();
 
 		return parent::getHTMLFrameset($extraHead);
 	}
@@ -452,7 +451,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 				"nopt" => ""));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_newsletter_treeLoader::getItems($pid)))
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_newsletter_tree::getItemsFromDB($pid)))
 					)
 		));
 	}

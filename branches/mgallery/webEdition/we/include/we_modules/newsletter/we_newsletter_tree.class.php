@@ -22,23 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_newsletter_tree extends weMainTree{
-
-	function getJSMakeNewEntry(){
-		return '';
-	}
+class we_newsletter_tree extends weTree{
 
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR. 'newsletter_tree.js');
-	}
-
-	function getJSUpdateItem(){
-		return '';
-	}
-
-	function getJSTreeFunctions(){
-
-		return weTree::getJSTreeFunctions(true);
+		return parent::customJSFile() . we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_tree.js');
 	}
 
 	function getJSStartTree(){
@@ -53,12 +40,99 @@ treeData.frames=frames;
 			}';
 	}
 
-	function getJSInfo(){
-		return '';
+	private static function getQueryParents($path){
+		$out = '';
+		while($path != '/' && $path != '\\' && $path){
+			$out .= 'Path="' . $path . '" OR ';
+			$path = dirname($path);
+		}
+		return ($out ? substr($out, 0, strlen($out) - 3) : '');
 	}
 
-	function getJSOpenClose(){
-		return '';
+	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+		$db = new DB_WE();
+		$table = NEWSLETTER_TABLE;
+		$wsQuery = '';
+
+		$items = $_aWsQuery = $parentpaths = array();
+
+		if(($ws = get_ws($table))){
+			$wsPathArray = id_to_path($ws, $table, $db, false, true);
+			foreach($wsPathArray as $path){
+				$_aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . self::getQueryParents($path);
+				while($path != "/" && $path != "\\" && $path){
+					$parentpaths[] = $path;
+					$path = dirname($path);
+				}
+			}
+			$wsQuery = $_aWsQuery ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
+		}
+
+		$prevoffset = max(0, $offset - $segment);
+		if($offset && $segment){
+			$items[] = array(
+				'icon' => 'arrowup.gif',
+				'id' => 'prev_' . $ParentID,
+				'parentid' => $ParentID,
+				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
+				'contenttype' => 'arrowup',
+				'table' => NEWSLETTER_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'published' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $prevoffset
+			);
+		}
+
+		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . ' ' . $addWhere;
+
+		$db->query('SELECT ' . $db->escape($elem) . " FROM $table $where ORDER BY (text REGEXP '^[0-9]') DESC,abs(text),Text " . ($segment ? 'LIMIT ' . $offset . ',' . $segment : '' ));
+
+		while($db->next_record()){
+			$typ = array(
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $db->f('ID'),
+				'offset' => $offset,
+				'disabled' => in_array($db->f('Path'), $parentpaths) ? 1 : 0,
+				'text' => $db->f('Text'),
+				'path' => $db->f('Path'),
+				'published' => 1,
+			);
+
+			$fileds = array();
+
+			foreach($db->Record as $k => $v){
+				if(!is_numeric($k)){
+					$fileds[strtolower($k)] = $v;
+				}
+			}
+
+			$items[] = array_merge($fileds, $typ);
+		}
+
+		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $db);
+		$nextoffset = $offset + $segment;
+		if($segment && ($total > $nextoffset)){
+			$items[] = array(
+				'icon' => 'arrowdown.gif',
+				'id' => 'next_' . $ParentID,
+				'parentid' => 0,
+				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
+				'contenttype' => 'arrowdown',
+				'table' => NEWSLETTER_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $nextoffset
+			);
+		}
+
+		return $items;
 	}
 
 }

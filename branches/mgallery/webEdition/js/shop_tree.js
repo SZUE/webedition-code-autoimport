@@ -26,7 +26,6 @@
 
 //FIXME: compare & unite all _tree.js files
 
-var menuDaten = new container();
 var count = 0;
 var folder = 0;
 
@@ -76,7 +75,7 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz = (ai === nf.len) ? "end" : "";
 			var zusatz2 = "";
 
-			if (nf[ai].offen === 0) {
+			if (nf[ai].open === 0) {
 				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + g_l.tree_open_statustext + "\"></a>";
 			} else {
 				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + g_l.tree_close_statustext + "\"></a>";
@@ -95,7 +94,7 @@ function zeichne(startEntry, zweigEintrag) {
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" : "") +
 							"&nbsp;&nbsp;<br/>";
-			if (nf[ai].offen) {
+			if (nf[ai].open) {
 				newAst = newAst + "<img src=\"" + tree_img_dir + (ai === nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\">";
 				ret += zeichne(nf[ai].name, newAst);
 			}
@@ -105,12 +104,12 @@ function zeichne(startEntry, zweigEintrag) {
 	return ret;
 }
 
-function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
-	if (table === tab && menuDaten[indexOfEntry(pid)]) {
+function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
+	if (table === tab && treeData[indexOfEntry(pid)]) {
 		if (ct === "folder") {
-			menuDaten.addSort(new dirEntry(icon, id, pid, txt, offen, ct, tab));
+			treeData.addSort(new dirEntry(icon, id, pid, txt, open, ct, tab));
 		} else {
-			menuDaten.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
+			treeData.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
 		}
 		drawEintraege();
 	}
@@ -119,11 +118,11 @@ function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
 
 function updateEntry(id, text, pub) {
 	var ai = 1;
-	while (ai <= menuDaten.len) {
-		if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
-			if (menuDaten[ai].name == id) {
-				menuDaten[ai].text = text;
-				menuDaten[ai].published = pub;
+	while (ai <= treeData.len) {
+		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
+			if (treeData[ai].name == id) {
+				treeData[ai].text = text;
+				treeData[ai].published = pub;
 			}
 		}
 		ai++;
@@ -134,9 +133,9 @@ function updateEntry(id, text, pub) {
 function deleteEntry(id) {
 	var ai = 1;
 	var ind = 0;
-	while (ai <= menuDaten.len) {
-		if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
-			if (menuDaten[ai].name == id) {
+	while (ai <= treeData.len) {
+		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
+			if (treeData[ai].name == id) {
 				ind = ai;
 				break;
 			}
@@ -148,15 +147,15 @@ function deleteEntry(id) {
 
 function openClose(name, status) {
 	var eintragsIndex = indexOfEntry(name);
-	menuDaten[eintragsIndex].offen = status;
+	treeData[eintragsIndex].open = status;
 	drawEintraege();
 }
 
 function indexOfEntry(name) {
 	var ai = 1;
-	while (ai <= menuDaten.len) {
-		if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')) {
-			if (menuDaten[ai].name == name) {
+	while (ai <= treeData.len) {
+		if ((treeData[ai].typ === 'root') || (treeData[ai].typ === 'folder')) {
+			if (treeData[ai].name == name) {
 				return ai;
 			}
 		}
@@ -168,10 +167,10 @@ function indexOfEntry(name) {
 function search(eintrag) {
 	var nf = new container();
 	var ai = 1;
-	while (ai <= menuDaten.len) {
-		if ((menuDaten[ai].typ === 'folder') || (menuDaten[ai].typ === 'shop')) {
-			if (menuDaten[ai].vorfahr == eintrag) {
-				nf.add(menuDaten[ai]);
+	while (ai <= treeData.len) {
+		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
+			if (treeData[ai].parentid == eintrag) {
+				nf.add(treeData[ai]);
 			}
 		}
 		ai++;
@@ -181,7 +180,9 @@ function search(eintrag) {
 
 function container() {
 	this.len = 0;
-	this.clear = containerClear;
+	this.clear = function () {
+		this.len = 0;
+	};
 	this.add = add;
 	this.addSort = addSort;
 	return this;
@@ -192,9 +193,6 @@ function add(object) {
 	this[this.len] = object;
 }
 
-function containerClear() {
-	this.len = 0;
-}
 
 function rootEntry(name, text, rootstat) {
 	this.name = name;
@@ -206,10 +204,10 @@ function rootEntry(name, text, rootstat) {
 }
 
 //changed for #6786
-function urlEntry(icon, name, vorfahr, text, contentType, table, published, style) {
+function urlEntry(icon, name, parentid, text, contentType, table, published, style) {
 	this.icon = icon;
 	this.name = name;
-	this.vorfahr = vorfahr;
+	this.parentid = parentid;
 	this.text = text;
 	this.typ = 'shop';
 	this.checked = false;
@@ -224,3 +222,14 @@ function start() {
 	loadData();
 	drawEintraege();
 }
+
+function doClick(id, ct, table) {
+	top.content.editor.location = '/webEdition/we/include/we_modules/shop/edit_shop_frameset.php?pnt=editor&bid=' + id;
+}
+function doFolderClick(id, ct, table) {
+	top.content.editor.location = '/webEdition/we/include/we_modules/shop/edit_shop_frameset.php?pnt=editor&mid=' + id;
+}
+function doYearClick(yearView) {
+	top.content.editor.location = '/webEdition/we/include/we_modules/shop/edit_shop_frameset.php?pnt=editor&ViewYear=' + yearView;
+}
+var treeData = new container();

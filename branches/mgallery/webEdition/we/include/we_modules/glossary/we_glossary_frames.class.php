@@ -22,8 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//TEST: was it ok to abandon treefooter?
-
 class we_glossary_frames extends we_modules_frame{
 	var $_space_size = 150;
 	var $_width_size = 535;
@@ -38,12 +36,12 @@ class we_glossary_frames extends we_modules_frame{
 	}
 
 	function getJSCmdCode(){
-		return $this->View->getJSTop() . we_html_element::jsElement($this->Tree->getJSMakeNewEntry());
+		return $this->View->getJSTop();
 	}
 
 	function getHTMLFrameset(){
 		return parent::getHTMLFrameset(
-				$this->Tree->getJSTreeCode() . we_html_element::jsElement($this->getJSStart())
+				$this->Tree->getJSTreeCode()
 		);
 	}
 
@@ -122,14 +120,6 @@ class we_glossary_frames extends we_modules_frame{
 		}
 	}
 
-	protected function getHTMLTreeHeader(){
-		return "";
-	}
-
-	protected function getHTMLTreeFooter(){
-		return $this->getHTMLDocument(we_html_element::htmlBody(array("id" => "footerBody"), ""));
-	}
-
 	function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
 			exit;
@@ -149,7 +139,7 @@ class we_glossary_frames extends we_modules_frame{
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, "")))
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(we_glossary_tree::getItems($pid, $offset, $this->Tree->default_segment)))
 					)
 				)
 		);

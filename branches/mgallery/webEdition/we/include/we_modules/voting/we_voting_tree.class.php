@@ -22,18 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_voting_tree extends weMainTree{
+class we_voting_tree extends weTree{
 
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_VOTING_MODULE_DIR . 'voting_tree.js');
-	}
-
-	function getJSOpenClose(){
-		return '';
-	}
-
-	function getJSUpdateItem(){
-		return '';
+		return parent::customJSFile() . we_html_element::jsScript(WE_JS_VOTING_MODULE_DIR . 'voting_tree.js');
 	}
 
 	function getJSStartTree(){
@@ -52,16 +44,79 @@ treeData.frames=frames;
 			}';
 	}
 
-	function getJSMakeNewEntry(){
-		return '';
-	}
+	static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,Icon,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
+		$db = new DB_WE();
+		$table = VOTING_TABLE;
 
-	function getJSInfo(){
-		return '';
-	}
+		$items = array();
 
-	function getJSShowSegment(){
-		return '';
+		$owners_sql = we_voting_voting::getOwnersSql();
+
+		$prevoffset = max(0, $offset - $segment);
+		if($offset && $segment){
+			$items[] = array(
+				"icon" => "arrowup.gif",
+				"id" => "prev_" . $ParentID,
+				"parentid" => $ParentID,
+				"text" => "display (" . $prevoffset . "-" . $offset . ")",
+				"contenttype" => "arrowup",
+				"table" => VOTING_TABLE,
+				"typ" => "threedots",
+				"open" => 0,
+				"published" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $prevoffset
+			);
+		}
+
+		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere . $owners_sql;
+
+		$db->query('SELECT ' . $db->escape($elem) . ' FROM ' . $db->escape($table) . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,ABS(text),Text' . ($segment ? ' LIMIT ' . abs($offset) . "," . abs($segment) : '' ));
+		$now = time();
+
+		while($db->next_record()){
+			$typ = array(
+				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => $db->f('ID'),
+				'offset' => $offset,
+			);
+
+			if($db->f('IsFolder') == 0){
+				$typ['published'] = ($db->f('Active') && ($db->f('ActiveTime') == 0 || ($now < $db->f('Valid')))) ? 1 : 0;
+			}
+			$fileds = array();
+
+			foreach($db->Record as $k => $v){
+				if(!is_numeric($k)){
+					$fileds[strtolower($k)] = $v;
+				}
+			}
+
+			$items[] = array_merge($fileds, $typ);
+		}
+
+		$total = f('SELECT COUNT(1) FROM ' . $db->escape($table) . ' ' . $where, '', $db);
+		$nextoffset = $offset + $segment;
+		if($segment && ($total > $nextoffset)){
+			$items[] = array(
+				"icon" => "arrowdown.gif",
+				"id" => "next_" . $ParentID,
+				"parentid" => 0,
+				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
+				"contenttype" => "arrowdown",
+				"table" => VOTING_TABLE,
+				"typ" => "threedots",
+				"open" => 0,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $nextoffset
+			);
+		}
+
+		return $items;
 	}
 
 }

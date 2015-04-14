@@ -26,10 +26,7 @@
 
 //FIXME: compare & unite all _tree.js files
 
-var loaded = 0;
-var hot = 0;
 var hloaded = 0;
-var menuDaten = new container();
 var count = 0;
 var folder = 0;
 var startloc = 0;
@@ -42,176 +39,15 @@ function usetHot() {
 	hot = 0;
 }
 
-function drawEintraege() {
-	fr = top.content.tree.window.document.body;//IMI: set tree indstead of left
-	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
-					zeichne(top.content.startloc, "") +
-					"</nobr></div>" +
-					"</body></html>";
-}
-
-function zeichne(startEntry, zweigEintrag) {
-	var nf = search(startEntry);
-	var ai = 1;
-	ret = "";
-	while (ai <= nf.len) {
-		ret += zweigEintrag;
-		nf[ai].text = nf[ai].text.replace(/</g, "&lt;");
-		nf[ai].text = nf[ai].text.replace(/>/g, "&gt;");
-		if (nf[ai].typ == 'file') {
-			ret += "&nbsp;&nbsp;<img src=\"" + tree_img_dir +
-							(ai == nf.len ?
-											"kreuzungend.gif" :
-											"kreuzung.gif"
-											) +
-							"\" class=\"treeKreuz\">" +
-							(nf[ai].name != -1 ?
-											"<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
-											"") +
-							"<img src=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\"/>" +
-							"</a>" +
-							"&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + (parseInt(nf[ai].published) ? "" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "" : "") + "</a>&nbsp;&nbsp;<br/>";
-		} else {
-			var newAst = zweigEintrag;
-
-			var zusatz = (ai == nf.len ? "end" : "");
-			var zusatz2 = "";
-
-			if (nf[ai].offen === 0) {
-				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\"></a>";
-			} else {
-				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"></a>";
-				zusatz2 = "open";
-			}
-			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
-							"<img src=\"" + tree_img_dir + "icons/workflow_folder" + zusatz2 + ".gif\"/>" +
-							"</a>" +
-							"<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
-							"&nbsp;<b>" + (!parseInt(nf[ai].published) ? "<font color=\"red\">" : "") + nf[ai].text + (parseInt(nf[ai].published) ? "</font>" : "") + "</b>" +
-							"</a>" +
-							"&nbsp;&nbsp;<br/>";
-			if (nf[ai].offen) {
-				if (ai == nf.len) {
-					newAst = newAst + "<img src=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
-				} else {
-					newAst = newAst + "<img src=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
-				}
-				ret += zeichne(nf[ai].name, newAst);
-			}
-		}
-		ai++;
+function doClick(id) {
+	var item = top.content.get(id);
+	ct = item.contenttype;
+	table = item.table;
+	switch (ct) {
+		case 'folder':
+			top.content.we_cmd('workflow_edit', id, ct, table);
+			break;
+		case 'file':
+			top.content.we_cmd('show_document', id, ct, table);
 	}
-	return ret;
-}
-
-function makeNewEntry(icon, id, pid, txt, offen, ct, tab, pub) {
-	if (ct === "folder") {
-		menuDaten.addSort(new dirEntry(icon, id, pid, txt, offen, ct, tab, pub));
-	} else {
-		menuDaten.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
-	}
-	drawEintraege();
-}
-
-function updateEntry(id, pid, text, pub) {
-	var ai = 1;
-	while (ai <= menuDaten.len) {
-		if ((menuDaten[ai].typ == 'folder')) {
-			if (menuDaten[ai].name == id) {
-				menuDaten[ai].vorfahr = pid;
-				menuDaten[ai].text = text;
-				menuDaten[ai].published = pub;
-			}
-		}
-		ai++;
-	}
-	drawEintraege();
-}
-
-function deleteEntry(id, type) {
-	var ai = 1;
-	var ind = 0;
-	while (ai <= menuDaten.len) {
-		if ((menuDaten[ai].typ == type)) {
-			if (menuDaten[ai].name == id) {
-				ind = ai;
-				break;
-			}
-		}
-		ai++;
-	}
-	if (ind !== 0) {
-		ai = ind;
-		while (ai <= menuDaten.len - 1) {
-			menuDaten[ai] = menuDaten[ai + 1];
-			ai++;
-		}
-		menuDaten.len[menuDaten.len] = null;
-		menuDaten.len--;
-		drawEintraege();
-	}
-}
-
-function openClose(name, status) {
-	var eintragsIndex = indexOfEntry(name);
-	menuDaten[eintragsIndex].offen = status;
-	drawEintraege();
-}
-
-function indexOfEntry(name) {
-	var ai = 1;
-	while (ai <= menuDaten.len) {
-		if ((menuDaten[ai].typ === 'root') || (menuDaten[ai].typ === 'folder')) {
-			if (menuDaten[ai].name == name) {
-				return ai;
-			}
-		}
-		ai++;
-	}
-	return -1;
-}
-
-function search(eintrag) {
-	var nf = new container();
-	var ai = 1;
-	while (ai <= menuDaten.len) {
-		if ((menuDaten[ai].typ == 'folder') || (menuDaten[ai].typ == 'file')) {
-			if (menuDaten[ai].vorfahr == eintrag) {
-				nf.add(menuDaten[ai]);
-			}
-		}
-		ai++;
-	}
-	return nf;
-}
-
-function container() {
-	this.len = 0;
-	this.clear = containerClear;
-	this.add = add;
-	this.addSort = addSort;
-	return this;
-}
-
-function add(object) {
-	this.len++;
-	this[this.len] = object;
-}
-
-function containerClear() {
-	this.len = 0;
-}
-
-function rootEntry(name, text, rootstat) {
-	this.name = name;
-	this.text = text;
-	this.loaded = true;
-	this.typ = 'root';
-	this.rootstat = rootstat;
-	return this;
-}
-
-function start() {
-	loadData();
-	drawEintraege();
 }

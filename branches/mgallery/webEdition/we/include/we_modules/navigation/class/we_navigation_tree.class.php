@@ -22,20 +22,50 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_tree extends we_modules_tree{
+class we_navigation_tree extends weTree{
 
-	function getJSTreeFunctions(){
-		return parent::getJSTreeFunctions(true) . '
-				function doClick(id,typ){
-					var node=frames.top.get(id);
-					frames.top.editor.edbody.we_cmd("module_navigation_edit",node.id);
-				}
-				';
+	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+
+		$this->styles = array(
+			'.selected_item {background-color: #D4DBFA;}',
+			'.selected_group {background-color: #D4DBFA;}',
+		);
+	}
+
+	function customJSFile(){
+		return parent::customJSFile() . we_html_element::jsScript(JS_DIR . 'navigation_tree.js');
 	}
 
 	function getJSTreeCode(){
 		return parent::getJSTreeCode() .
 			we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
+	}
+
+	function getJSStartTree(){
+		return '
+function startTree(){
+frames={
+	"top":' . $this->topFrame . ',
+	"cmd":' . $this->cmdFrame . '
+};
+	pid = arguments[0] ? arguments[0] : 0;
+	offset = arguments[1] ? arguments[1] : 0;
+	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	drawTree();
+}';
+	}
+
+	function getHTMLContruct(){
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+				we_html_element::htmlHead(//FIXME: missing title
+					we_html_tools::getHtmlInnerHead() .
+					STYLESHEET .
+					$this->getStyles()
+				) .
+				we_html_element::htmlBody(array('id' => 'treetable',), '<div id="treetable"></div>'
+				)
+		);
 	}
 
 }

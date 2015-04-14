@@ -241,10 +241,6 @@ var g_l={
 		we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_footer.js');
 	}
 
-	function getJSCmd(){
-		echo we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_cmd.js');
-	}
-
 	function getJSProperty(){
 		?>
 		<script type="text/javascript"><!--

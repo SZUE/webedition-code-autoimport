@@ -74,7 +74,6 @@ class we_customer_frames extends we_modules_frame{
 		$this->View->customer->clearSessionVars();
 		$this->View->settings->load(false);
 		$extraHead = $this->Tree->getJSTreeCode() .
-			we_html_element::jsElement($this->getJSStart()) .
 			$this->View->getJSTreeHeader();
 
 		$sid = we_base_request::_(we_base_request::RAW, 'sid', false);
@@ -390,7 +389,7 @@ top.content.hloaded = 1;'));
 						we_html_element::jsElement(
 							(we_base_request::_(we_base_request::STRING, 'error') ?
 								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
-							$this->Tree->getJSLoadTree($pid, we_customer_treeLoader::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
+							$this->Tree->getJSLoadTree($pid, we_customer_tree::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
 					)
 				)
 		);

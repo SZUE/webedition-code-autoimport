@@ -342,6 +342,8 @@ class we_users_user{
 				case 'Ping':
 					$slots[] = 'DATE_FORMAT(Ping,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS Ping';
 					break;
+				case 'clearpasswd':
+					break;
 				default:
 					$slots[] = $slot;
 			}

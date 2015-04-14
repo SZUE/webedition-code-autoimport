@@ -54,7 +54,7 @@ abstract class we_modules_frame{
 	}
 
 	function getJSStart(){
-		return 'function start(){startTree();}';
+		return 'startTree();';
 	}
 
 	public function getHTMLDocumentHeader($charset = ''){
@@ -72,7 +72,7 @@ abstract class we_modules_frame{
 			'</head>' . $body . '</html>';
 	}
 
-	function getTree_g_l(){
+	static function getTree_g_l(){
 		return 'var g_l = {
 	"tree_select_statustext":"' . g_l('tree', '[select_statustext]') . '",
 	"tree_edit_statustext":"' . g_l('tree', '[edit_statustext]') . '",
@@ -125,8 +125,8 @@ abstract class we_modules_frame{
 			we_main_headermenu::css() .
 			$extraHead;
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "start();"), we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php', $this->module)) .
-				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;','','',false) : '') .
+		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->getJSStart()), we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php', $this->module)) .
+				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) : '') .
 				$this->getHTMLResize($extraUrlParams) .
 				we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . $extraUrlParams)
 		);
@@ -153,7 +153,7 @@ abstract class we_modules_frame{
 			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onclick="top.content.toggleTree();">
 		';
 
-		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'width: ' . (weTree::HiddenWidth-1) . 'px;border-right:1px solid #767676;','id'=>'vtabs'), $_incDecTree) .
+		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'width: ' . (weTree::HiddenWidth - 1) . 'px;border-right:1px solid #767676;', 'id' => 'vtabs'), $_incDecTree) .
 					$this->getHTMLLeft()
 				) .
 				we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background-color: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), we_html_element::htmlIFrame('editor', $this->frameset . '?pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;', '', '', false)
@@ -180,9 +180,8 @@ abstract class we_modules_frame{
 	}
 
 	//TODO: we do not abandon the two tree types because trees will be re-implemented anyway
-	protected function getHTMLTree(){
+	protected function getHTMLTree($extraHead = ''){
 		if($this->useMainTree){
-			$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load'); //IMI: FOR MODULES WE NEED top.tree NOT top.left.tree!!!
 
 			return we_html_element::htmlDiv(array(
 					'id' => 'tree',
@@ -193,31 +192,26 @@ abstract class we_modules_frame{
 					'marginwidth' => 0,
 					'marginheight' => 4,
 					'leftmargin' => 0,
-					'topmargin' => 4), $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
+					'topmargin' => 4), $this->Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
 			);
 		}
 //FIXME make this a static document & use this at messaging_usel_browse_frameset.php as well
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'treetable')),
-				we_html_element::cssLink(CSS_DIR . 'tree.css') .
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'treetable')), we_html_element::cssLink(CSS_DIR . 'tree.css') .
 				we_html_tools::getJSErrorHandler() . we_html_element::jsElement('
 	clickCount=0;
 	wasdblclick=false;
-	tout=null;' . $this->getDoClick() . '
+	tout=null;
 function loadFinished(){
 	top.content.loaded=1;
-}'));
+}') . $extraHead);
 	}
 
-	protected function getDoClick(){//overwrite
-		return '';
-	}
-
-	protected function getHTMLTreeheader(){
+	protected function getHTMLTreeHeader(){
 		return '';
 		//to be overridden
 	}
 
-	protected function getHTMLTreefooter(){
+	protected function getHTMLTreeFooter(){
 		return '';
 		//to be overridden
 	}

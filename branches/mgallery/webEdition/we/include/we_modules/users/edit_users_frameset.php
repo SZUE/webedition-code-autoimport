@@ -29,6 +29,5 @@ $what = we_base_request::_(we_base_request::STRING, 'pnt', "frameset");
 
 $weFrame = new we_users_frames(WE_USERS_MODULE_DIR . 'edit_user_frameset.php');
 echo $weFrame->getHTMLDocumentHeader();
-$weFrame->View->processVariables();
-//$weFrame->View->processCommands();
+$weFrame->process();
 echo $weFrame->getHTML($what);

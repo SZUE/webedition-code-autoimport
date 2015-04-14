@@ -33,6 +33,7 @@ class we_shop_frames extends we_modules_frame{
 
 	function __construct($frameset){
 		parent::__construct(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
+//		$this->Tree = new we_shop_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_shop_view(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php', 'top.content');
 	}
 
@@ -40,35 +41,23 @@ class we_shop_frames extends we_modules_frame{
 		return $this->View->getJSTop_tmp();
 	}
 
-	protected function getDoClick(){
-		return "function doClick(id,ct,table){
-top.content.editor.location='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=editor&bid='+id;
-}
-function doFolderClick(id,ct,table){
-	top.content.editor.location='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=editor&mid='+id;
-}
-function doYearClick(yearView){
-	top.content.editor.location='" . WE_SHOP_MODULE_DIR . "edit_shop_frameset.php?pnt=editor&ViewYear='+yearView;
-}";
-	}
-
 	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 var table="' . SHOP_TABLE . '";
 var tree_icon_dir="' . TREE_ICON_DIR . '";
 var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";'
-						. parent::getTree_g_l() . '
+				. parent::getTree_g_l() . '
 var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
 var treeYear="' . g_l('modules_shop', '[treeYear]') . '";
 var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
-') . we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
-				we_html_element::jsScript(JS_DIR . 'shop_tree.js');
+') . we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
+			we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 		$menu = 'function loadData() {
 
-				menuDaten.clear();
-				menuDaten.add(new self.rootEntry(0, "root", "root"));';
+				treeData.clear();
+				treeData.add(new self.rootEntry(0, "root", "root"));';
 
 
 		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
@@ -89,7 +78,7 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 			}
 
 
-			$menu.= "  menuDaten.add(new urlEntry('" . we_base_ContentTypes::FILE_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
+			$menu.= "  treeData.add(new urlEntry('" . we_base_ContentTypes::FILE_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
 			if($this->db->f('DateShipping') <= 0){
 				if(isset(${'l' . $this->db->f('mdate')})){
 					${'l' . $this->db->f('mdate')} ++;
@@ -112,7 +101,7 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 		for($f = 12; $f > 0; $f--){
 			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
 			$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');
-			$menu.= "menuDaten.add(new dirEntry('" . we_base_ContentTypes::FOLDER_ICON . "',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
+			$menu.= "treeData.add(new dirEntry('" . we_base_ContentTypes::FOLDER_ICON . "',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
 		} //'".$this->db->f("mdate")."'
 		$menu.='top.yearshop = ' . $year . ';
 			}';
@@ -123,8 +112,7 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 		$extraHead = $this->getJSTreeCode();
 
 		if(($bid = we_base_request::_(we_base_request::INT, 'bid')) === -1){
-			$this->db->query("SELECT IntOrderID FROM " . SHOP_TABLE . " ORDER BY IntID DESC");
-			$bid = $this->db->next_record() ? $this->db->f("IntOrderID") : 0;
+			$bid = intval(f('SELECT IntOrderID FROM ' . SHOP_TABLE . ' ORDER BY IntID DESC', '', $this->db));
 		}
 
 		$extraUrlParams = $bid > 0 ? '&bid=' . $bid : '&top=1&home=1';
@@ -238,9 +226,9 @@ function we_cmd() {
 		}
 
 		return $this->getHTMLDocument(
-we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
-	)
+				we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) .
+					we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px; overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;')
+				)
 		);
 	}
 
@@ -280,7 +268,7 @@ we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px
 		}
 
 		$body = we_html_element::htmlIFrame('edheader', 'edit_shop_frameset.php?pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $bodyURL, 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;', '', '', true);
+			we_html_element::htmlIFrame('edbody', $bodyURL, 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;', '', '', true);
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
 	}
 
@@ -410,6 +398,10 @@ top.content.hloaded = 1;
 			default:
 				return parent::getHTML($what);
 		}
+	}
+
+	function getJSStart(){
+		return 'start();';
 	}
 
 }

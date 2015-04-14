@@ -45,6 +45,7 @@ class we_messaging_frames extends we_modules_frame{
 		$this->weTransaction = &$weTransaction;
 		$this->viewclass = $viewclass;
 		$this->View = new we_messaging_view(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php", "top.content", $this->transaction, $this->weTransaction);
+//		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 	}
 
 	function getHTML($what){
@@ -64,7 +65,6 @@ class we_messaging_frames extends we_modules_frame{
 	}
 
 	function getJSTreeCode(){ //TODO: move to new class weUsersTree (extends weModulesTree)
-		//TODO: title nach View->getJSTop()
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
@@ -95,7 +95,6 @@ var save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') .
 
 		$jsOut = '
 function cb_incstate() {
-	if (!loaded) {
 		loaded = true;
 		loadData();
 		' . (isset($f) ?
@@ -103,7 +102,6 @@ function cb_incstate() {
 we_cmd("show_folder_content", ' . $f['ID'] . ');' :
 				'drawEintraege();'
 			) . '
-	}
 }
 
 function translate(inp){
@@ -126,12 +124,12 @@ function translate(inp){
 }
 
 function loadData() {
-	menuDaten.clear();
+	treeData.clear();
 		';
 
 		$jsOut .= '
 	startloc=0;
-	menuDaten.add(new self.rootEntry("0","root","root"));
+	treeData.add(new self.rootEntry("0","root","root"));
 		';
 
 		foreach($this->messaging->available_folders as $folder){
@@ -157,7 +155,7 @@ function loadData() {
 					break;
 			}
 			$jsOut .= '
-	menuDaten.add(' .
+	treeData.add(' .
 				(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0 ?
 					'new dirEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"parent_Folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '")
 				' :
@@ -170,19 +168,47 @@ function loadData() {
 		';
 		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::jsElement($jsinit) .
-			we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
+			we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
 			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
 			we_html_element::jsElement($jsOut);
+
+		/* 		$rootjs = $this->Tree->topFrame . '.treeData.clear();' .
+		  $this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . 0 . '\',\'root\',\'root\'));';
+
+		  $hiddens = '';
+		  if(($param = we_base_request::_(we_base_request::INT, 'msg_param'))){
+		  switch($param){
+		  case self::TYPE_TODO:
+		  $f = $this->messaging->get_inbox_folder('we_todo');
+		  break;
+		  case self::TYPE_MESSAGE:
+		  $f = $this->messaging->get_inbox_folder('we_message');
+		  break;
+		  }
+		  }
+
+		  return $this->getHTMLDocument(
+		  we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+		  we_html_element::jsElement($rootjs .
+		  $this->Tree->getJSLoadTree(we_messaging_tree::getItems(0, 0, $this->Tree->default_segment, $this->messaging)).
+		  (isset($f) ?
+		  'r_tree_open(' . $f['ID'] . ');
+		  we_cmd("show_folder_content", ' . $f['ID'] . ');' :'')
+		  )
+		  )
+		  )
+		  );
+		 */
 	}
 
-	protected function getDoClick(){
-		return 'function doClick(id) {
-		top.content.we_cmd(top.content.mode,id);
-	}';
+	protected function getHTMLTree($extraHead = ''){
+		return parent::getHTMLTree(
+			we_html_element::jsScript(JS_DIR . 'tree.js').
+			we_html_element::jsScript(JS_DIR . 'messaging_tree.js'));
 	}
 
 	function getHTMLFrameset(){
-		$this->transaction = &$this->weTransaction;
+		$this->transaction = $this->weTransaction;
 
 		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);
 		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);

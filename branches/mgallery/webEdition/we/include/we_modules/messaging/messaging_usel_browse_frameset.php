@@ -47,21 +47,21 @@ var we_dir="' . WEBEDITION_DIR . '";'
 <script type="text/javascript"><!--
 	function loadData() {
 
-		menuDaten.clear();
+		treeData.clear();
 
 <?php
 $entries = array();
 $DB_WE->query('SELECT ID,ParentID,username,Permissions,Type FROM ' . USER_TABLE . ' ORDER BY username ASC');
 echo "startloc=0 ;
-menuDaten.add(new self.rootEntry('0','root','root'));";
+treeData.add(new self.rootEntry('0','root','root'));";
 while($DB_WE->next_record()){
 	if($DB_WE->f('Type') == 1){
-		echo "  menuDaten.add(new dirEntry('folder'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "',false,'user','" . USER_TABLE . "','" . $p[0] . "'));";
+		echo "  treeData.add(new dirEntry('folder'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "',false,'user','" . USER_TABLE . "','" . $p[0] . "'));";
 	} else {
 		$p = $DB_WE->f("Permissions");
 
 		echo "checked = (user_array_search(\"" . $DB_WE->f('ID') . "\", opener.current_sel, \"1\", 'we_message') != -1) ? 1 : 0;" .
-		"menuDaten.add(new urlEntry('user.gif'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "','user','" . USER_TABLE . "','" . $p[0] . "', checked));";
+		"treeData.add(new urlEntry('user.gif'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "','user','" . USER_TABLE . "','" . $p[0] . "', checked));";
 	}
 }
 ?>

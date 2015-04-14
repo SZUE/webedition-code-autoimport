@@ -24,10 +24,10 @@
  */
 class we_workflow_frames extends we_modules_frame{
 	public $module = "workflow";
-	protected $useMainTree = false;
 
 	function __construct(){
 		parent::__construct(WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php");
+		$this->Tree = new we_workflow_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_workflow_view();
 	}
 
@@ -49,53 +49,7 @@ class we_workflow_frames extends we_modules_frame{
 	}
 
 	function getHTMLFrameset(){
-		$extraHead = $this->getJSTreeCode() . $this->getJSCmdCode();
-		return parent::getHTMLFrameset($extraHead);
-	}
-
-	protected function getDoClick(){
-		return "function doClick(id,ct,table){
-	if(ct=='folder'){
-		top.content.we_cmd('workflow_edit',id,ct,table);
-	}else if(ct=='file'){
-		top.content.we_cmd('show_document',id,ct,table);
-	}
-}";
-	}
-
-	function getJSTreeCode(){
-		$out = '
-		function loadData(){
-			menuDaten.clear();';
-
-		$out.="startloc=0;";
-		$this->db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' ORDER BY Text ASC');
-		$ids = $this->db->getAll(true);
-		foreach($ids as $id){
-			$this->View->workflowDef = new we_workflow_workflow($id);
-			$out.="  menuDaten.add(new dirEntry('folder','" . $this->View->workflowDef->ID . "','0','" . oldHtmlspecialchars(addslashes($this->View->workflowDef->Text)) . "',false,'folder','workflowDef','" . $this->View->workflowDef->Status . "'));";
-
-			foreach($this->View->workflowDef->documents as $v){
-				$out.="  menuDaten.add(new urlEntry('" . $v["Icon"] . "','" . $v["ID"] . "','" . $this->View->workflowDef->ID . "','" . oldHtmlspecialchars(addslashes($v["Text"])) . "','file','" . FILE_TABLE . "',1));";
-			}
-		}
-
-		$out.='}';
-		echo
-		we_html_element::jsScript(JS_DIR . 'images.js') .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(JS_DIR . 'tree.js','self.focus();') .
-		we_html_element::cssLink(CSS_DIR . 'tree.css') .
-		// TODO: move shared code for (some of the) modules-tree (not based on weTree!!) to new weModulesTree.class
-		we_html_element::jsElement('
-var table="' . USER_TABLE . '";
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
-var we_dir="' . WEBEDITION_DIR . '";'
-			. parent::getTree_g_l()
-		) .
-		we_html_element::jsScript(JS_DIR . 'workflow_tree.js') .
-		we_html_element::jsElement($out);
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $this->getJSCmdCode());
 	}
 
 	function getJSCmdCode(){
@@ -197,12 +151,28 @@ function we_save() {
 	}
 
 	function getHTMLCmd(){
-		$form = we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
-			"wcmd"=> "",
-			"wopt"=> "")));
-		$body = we_html_element::htmlBody(array(), $form);
+		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
+			exit;
+		}
 
-		return $this->getHTMLDocument($body, $this->View->getCmdJS());
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
+
+		$rootjs = ($pid ? '' :
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
+
+		$hiddens = we_html_element::htmlHiddens(array(
+				"wcmd" => "",
+				"wopt" => ""));
+
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						$this->View->getCmdJS() . we_html_element::jsElement($rootjs .
+							$this->Tree->getJSLoadTree(we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
+						)
+					)
+				)
+		);
 	}
 
 	function getHTMLLogQuestion(){
