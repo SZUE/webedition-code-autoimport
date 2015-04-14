@@ -58,10 +58,10 @@ function we_tag_customer($attribs){
 
 		$we_doc = $GLOBALS['we_doc'];
 		$we_cid = intval(($we_doc->getElement($name, 'bdid') ?
-						$we_doc->getElement($name, 'bdid') :
-						($we_doc->getElement($name) ?
-								$we_doc->getElement($name) :
-								$we_cid)
+				$we_doc->getElement($name, 'bdid') :
+				($we_doc->getElement($name) ?
+					$we_doc->getElement($name) :
+					$we_cid)
 		));
 
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
@@ -91,12 +91,14 @@ function we_tag_customer($attribs){
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
 	}
 
-	$GLOBALS['lv'] = new we_customer_customertag($we_cid, $condition, $hidedirindex);
+	$GLOBALS['lv'] = new we_customer_listview('', 1, 0, "", 0, '(ID=' . intval($we_cid) . ')' . ($condition ? " AND $condition" : ""), "", 0, $hidedirindex);
+
+	$avail = $GLOBALS['lv']->next_record();
 	if(is_array($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
 	}
-	if($GLOBALS['lv']->avail){
+	if($avail){
 //implement seem
 	}
-	return $GLOBALS['lv']->avail;
+	return $avail;
 }

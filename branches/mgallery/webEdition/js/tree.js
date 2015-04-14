@@ -248,9 +248,8 @@ function clickHandler(cur) {
 								);
 				break;
 			case treeData.tree_states.select:
-				row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><img src=\"" + treeData.tree_image_dir + (cur.checked == 1 ? "check1.gif" : "check0.gif") + "\" alt=\"\" name=\"img_" + cur.id + "\"></a>" +
+				row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><img src=\"" + treeData.tree_image_dir + (cur.checked == 1 ? 'check1.gif' : 'check0.gif') + '" alt="" name="img_' + cur.id + '"></a>' +
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">&nbsp;" + cur.text + "</label>";
-
 				break;
 			default:
 				row += "<a ondragstart=\"treeStartDrag(event,('" + cur.contenttype + "' === 'folder' ? 'dragFolder' : 'dragItem'),'" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  onDblClick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onMouseOver=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onMouseOut=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">&nbsp;" + cur.text + "</label></a>";
@@ -272,7 +271,6 @@ function drawThreeDots(nf, ai) {
 					"<img src=\"" + treeData.tree_image_dir + nf[ai].icon + "\" style=\"width:100px;height:7px\" alt=\"\">" +
 					"</a>" +
 					"&nbsp;&nbsp;<br/>";
-
 }
 
 function drawGroup(nf, ai, zweigEintrag) {
@@ -406,7 +404,6 @@ function openClose(id) {
 	}
 
 	var eintragsIndex = indexOfEntry(id);
-	var status;
 
 	openstatus = (treeData[eintragsIndex].open == 0 ? 1 : 0);
 
@@ -440,33 +437,34 @@ function checkNode(imgName) {
 	var object_name = imgName.substring(4, imgName.length);
 	for (i = 1; i <= treeData.len; i++) {
 
-		if (treeData[i].id == object_name) {
-			if (treeData[i].checked == 1) {
-				treeData[i].checked = 0;
-				treeData[i].applylayout();
-				if (document.images) {
-					try {
-						eval("if(" + treeData.treeFrame + ".document.images[imgName]) " + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check0.gif\";");
-					} catch (e) {
-						self.Tree.setCheckNode(imgName);
-					}
-				}
-				break;
-			} else {
-				treeData[i].checked = 1;
-				treeData[i].applylayout();
-				if (document.images) {
-					try {
-						eval("if(" + treeData.treeFrame + ".document.images[imgName]){ " + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check1.gif\";}");
-					} catch (e) {
-						self.Tree.setUnCheckNode(imgName);
-					}
-				}
-				break;
-			}
+		if (treeData[i].id != object_name) {
+			continue;
 		}
-
+		if (treeData[i].checked == 1) {
+			treeData[i].checked = 0;
+			treeData[i].applylayout();
+			if (document.images) {
+				try {
+					eval("if(" + treeData.treeFrame + ".document.images[imgName]) " + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check0.gif\";");
+				} catch (e) {
+					self.Tree.setCheckNode(imgName);
+				}
+			}
+			break;
+		} else {
+			treeData[i].checked = 1;
+			treeData[i].applylayout();
+			if (document.images) {
+				try {
+					eval("if(" + treeData.treeFrame + ".document.images[imgName]){ " + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check1.gif\";}");
+				} catch (e) {
+					self.Tree.setUnCheckNode(imgName);
+				}
+			}
+			break;
+		}
 	}
+
 	if (!document.images) {
 		drawTree();
 	}
@@ -480,7 +478,6 @@ function setSegment(id) {
 	var node = frames.top.get(id);
 	node.showsegment();
 }
-
 
 function setScrollY() {
 	if (frames.top) {

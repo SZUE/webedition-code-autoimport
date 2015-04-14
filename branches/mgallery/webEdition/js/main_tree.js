@@ -138,6 +138,5 @@ function doClick(id) {
 		default:
 			top.weEditorFrameController.openDocument(table, id, ct);
 			break;
-
 	}
 }
