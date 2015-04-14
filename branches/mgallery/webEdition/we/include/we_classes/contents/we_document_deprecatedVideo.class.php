@@ -28,6 +28,7 @@ class we_document_deprecatedVideo extends we_document_video{
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML('weVideoProp', '100%', array(
 			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
+			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsProtected(), 'space' => 140),
 			array('icon' => 'default.gif', 'headline' => g_l('weClass', '[other]'), 'html' => $this->formOther(), 'space' => 140)), 20);
 	}
 

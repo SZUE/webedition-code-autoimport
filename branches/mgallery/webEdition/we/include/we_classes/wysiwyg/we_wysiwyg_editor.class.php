@@ -572,7 +572,7 @@ class we_wysiwyg_editor{
 
 	/*
 	 * this function is used to prepare textaea content for db
-	 * is returns an array of img/href-ids (for use in registerFileLinks)
+	 * is returns an array of img/href-ids (for use in registerMediaLinks)
 	 */
 
 	public static function reparseInternalLinks(&$content, $replace = false){

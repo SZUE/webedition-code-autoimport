@@ -654,16 +654,13 @@ class we_document extends we_root{
 		}
 	}
 
-	function registerFileLinks($temp = false, $linksReady = false){
+	function registerMediaLinks($temp = false, $linksReady = false){
 		if(!$linksReady){
 			switch($this->ContentType){
 				case we_base_ContentTypes::CSS:
 				case we_base_ContentTypes::JS:
-					if(!$filelinksReady){
-						$this->replaceWEIDs('', true);
-					}
-					$this->writeFileLinks(true);
-					return;
+					$this->replaceWEIDs('', true);
+					return parent::registerMediaLinks(true);
 				case we_base_ContentTypes::WEDOCUMENT:
 				case we_base_ContentTypes::OBJECT_FILE:
 					if(!$linksReady){//FIXME: maybe move this part do we_webEditionDocument
@@ -676,23 +673,33 @@ class we_document extends we_root{
 								case 'img':
 								case 'quicktime':
 								case 'video':
-									if(isset($v['bdid']) && $v['bdid']){
-										$this->FileLinks[] = $v['bdid'];
+									if(isset($v['bdid']) && $v['bdid'] && is_numeric($v['bdid'])){
+										$this->MediaLinks[] = $v['bdid'];
+									} elseif(isset($v['dat']) && $v['dat'] && is_numeric($v['dat'])){
+										$this->MediaLinks[] = $v['dat'];
 									}
 									break;
 								case 'link':
-									if(isset($v['dat']) && ($link = we_unserialize($v['dat']))){
+									/*
+									 * documents: when no link is set but there is a default id in template $v['dat'] is serialized twice:
+									 * we do not register such links, they belong to the template and are they are not stored in tblContent!!
+									 * 
+									 * objectfiles: here the default defined in class is stored in tblObject_X: 
+									 * it is no "dynamic" default and belongs to the object: so we register it as medialink of the object (and class)
+									 */
+									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], array('type' => '', 'id' => 0, 'img_id' => 0))) && 
+											is_array($link)){
 										if($link['type'] === 'int' && $link['id']){
-											$this->FileLinks[] = $link['id'];
+											$this->MediaLinks[] = $link['id'];
 										}
 										if($link['img_id']){
-											$this->FileLinks[] = $link['img_id'];
+											$this->MediaLinks[] = $link['img_id'];
 										}
 									}
 									break;
 								default:
 									if(isset($v['bdid']) && $v['bdid']){
-										$this->FileLinks[] = $v['bdid'];
+										$this->MediaLinks[] = $v['bdid'];
 									}
 							}
 						}
@@ -703,7 +710,7 @@ class we_document extends we_root{
 			}
 		}
 
-		$this->writeFileLinks($temp);
+		return parent::registerMediaLinks($temp);
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){

@@ -94,7 +94,7 @@ abstract class we_rebuild_base{
 							echo ('Rebulding Media-Links for: ' . $model->Text);
 							flush();
 						}
-						$model->registerFileLinks();
+						$model->registerMediaLinks();
 						break;
 					case 'we_temporaryDocument':
 						$content = we_unserialize(we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']));
@@ -108,7 +108,7 @@ abstract class we_rebuild_base{
 							flush();
 						}
 						$doc->parseTextareaFields('temp');
-						$doc->registerFileLinks(true);
+						$doc->registerMediaLinks(true);
 						unset($doc);
 						break;
 					default:
@@ -122,7 +122,7 @@ abstract class we_rebuild_base{
 							$doc->correctFields();
 							$doc->parseTextareaFields('main');
 						}
-						$doc->registerFileLinks();
+						$doc->registerMediaLinks();
 						unset($doc);
 				}
 				if($printIt){

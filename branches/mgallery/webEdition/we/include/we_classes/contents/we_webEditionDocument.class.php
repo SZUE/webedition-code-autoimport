@@ -611,9 +611,9 @@ class we_webEditionDocument extends we_textContentDocument{
 	
 	/*
 	 * this function is used to replace to prepare wysiwyg img sources for db
-	 * it also writes img sources and hrefs to $this->FileLinks
+	 * it also writes img sources and hrefs to $this->MediaLinks
 	 * 
-	 * when $isRebuildMediaLinks it only writes $this->FileLinks (img sources come from db and must not be vhanged)
+	 * when $isRebuildMediaLinks it only writes $this->MediaLinks (img sources come from db and must not be vhanged)
 	 */
 	function parseTextareaFields($rebuildMode = false){
 		if($rebuildMode === false){
@@ -621,7 +621,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			if(isset($allElements['textarea'])){
 				foreach($allElements['textarea'] as $name){
 					$value = $this->getElement($name);
-					$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($value, true)); //true: replace internal file paths
+					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($value, true)); //true: replace internal file paths
 					$this->setElement($name, $value);
 				}
 			}
@@ -633,13 +633,13 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($rebuildMode === 'main'){
 			foreach($this->elements as $name => $elem){
 				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="document:') !== false || strpos($elem['dat'], 'href="document:') !== false)){
-					$this->FileLinks = array_merge($this->FileLinks, we_document::parseInternalLinks($elem['dat'], 0, '', true));
+					$this->MediaLinks = array_merge($this->MediaLinks, we_document::parseInternalLinks($elem['dat'], 0, '', true));
 				}
 			}
 		} else {//rebuilding from tblTemporaryDoc
 			foreach($this->elements as $name => $elem){
 				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="') !== false || strpos($elem['dat'], 'href="document:') !== false)){
-					$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($elem['dat'], true));
+					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($elem['dat'], true));
 				}
 			}
 		}
@@ -658,8 +658,8 @@ class we_webEditionDocument extends we_textContentDocument{
 		$out = parent::we_save($resave, $skipHook);
 		if($out){
 			$this->parseTextareaFields();
-			$this->unregisterFileLinks(false, true);
-			$this->registerFileLinks(true);
+			$this->unregisterMediaLinks(false, true);
+			$out = $this->registerMediaLinks(true);
 		}
 
 		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
@@ -693,11 +693,11 @@ class we_webEditionDocument extends we_textContentDocument{
 				$this->parseTextareaFields('main');
 				// TODO: we should try to throw out obsolete elements from temporary! but this affects static docs only!
 				// TODO: when doing rebuild media link test all elements against template!
-				$this->unregisterFileLinks(true, false);
-				$this->registerFileLinks(); // last param: when rebuilding static docs do not delete temp entries!
+				$this->unregisterMediaLinks(true, false);
+				$out = $this->registerMediaLinks(); // last param: when rebuilding static docs do not delete temp entries!
 			} else {
-				$this->unregisterFileLinks();
-				$this->registerFileLinks(false, true);
+				$this->unregisterMediaLinks();
+				$out = $this->registerMediaLinks(false, true);
 			}
 		}
 
@@ -705,9 +705,16 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	public function we_unpublish($skipHook = 0){
-		$this->unregisterFileLinks(true);
+		$oldPublished = $this->Published;
+		$ret = ($this->ID ? parent::we_unpublish($skipHook) : false);
 
-		return ($this->ID ? parent::we_unpublish($skipHook) : false);
+		// if document was modified before unpublishing, the actual version is in tblTemporaryDoc: we unregister temp=0
+		// otherwise we have nothing to do
+		if($ret && $wasPublished && ($this->ModDate > $oldPublished)){
+			$this->unregisterMediaLinks(true, false);
+		}
+
+		return $ret;
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){

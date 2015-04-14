@@ -85,7 +85,7 @@ class we_textDocument extends we_document{
 		$matches = array();
 		if(preg_match_all('|#WE:(\d+)#|', $doc, $matches)){
 			$matches = array_unique($matches[1], SORT_NUMERIC);
-			$this->FileLinks = $matches;
+			$this->MediaLinks = $matches;
 			if(!$registerOnly){
 				if(!$matches){
 					return $doc;
@@ -121,7 +121,7 @@ class we_textDocument extends we_document{
 		}
 
 		if(($ret = parent::we_save($resave, $skipHook))){
-			$ret = $this->registerFileLinks(true, true);
+			$ret = $this->registerMediaLinks(true, true);
 		}
 
 		return $ret;

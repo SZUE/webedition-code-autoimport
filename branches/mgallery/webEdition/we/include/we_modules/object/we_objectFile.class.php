@@ -2197,7 +2197,7 @@ class we_objectFile extends we_document{
 	function parseTextareaFields(){
 		foreach($this->elements as $element){
 			if($element['type'] === 'text'){
-				$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($element['dat']));
+				$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($element['dat']));
 			}
 		}
 	}
@@ -2222,10 +2222,6 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-
-		$this->parseTextareaFields('temp');
-		$this->unregisterFileLinks(false);
-		$this->registerFileLinks(true);
 
 		if($this->canHaveVariants()){
 			we_shop_variants::correctModelFields($this);
@@ -2259,6 +2255,10 @@ class we_objectFile extends we_document{
 		$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		$this->wasUpdate = true;
 		$this->setUrl();
+
+		$this->parseTextareaFields('temp');
+		$this->unregisterMediaLinks(false);
+		$this->registerMediaLinks(true);
 
 		if(!$resave && $_resaveWeDocumentCustomerFilter){
 			$this->resaveWeDocumentCustomerFilter();
@@ -2298,7 +2298,7 @@ class we_objectFile extends we_document{
 		return $a;
 	}
 	
-	function registerFileLinks($temp = false, $linksReady = false) {
+	function registerMediaLinks($temp = false, $linksReady = false) {
 		//register media in fields type link
 		if(!$linksReady){
 			$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), "DefaultValues", $this->DB_WE));
@@ -2308,17 +2308,17 @@ class we_objectFile extends we_document{
 					$link = is_array($link) ? $link : we_unserialize($link, array());
 						if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){ //FIXME: $link should be an object so we can check class
 						if($link['type'] === 'int' && $link['id']){
-							$this->FileLinks[] = $link['id'];
+							$this->MediaLinks[] = $link['id'];
 						}
 						if($link['img_id']){
-							$this->FileLinks[] = $link['img_id'];
+							$this->MediaLinks[] = $link['img_id'];
 						}
 					}
 				}
 			}
 		}
 
-		parent::registerFileLinks($temp, $linksReady);
+		return parent::registerMediaLinks($temp, $linksReady);
 	}
 
 	function ModifyPathInformation($parentID){
@@ -2459,15 +2459,15 @@ class we_objectFile extends we_document{
 			$this->parseTextareaFields('main');
 			// TODO: we should try to throw out obsolete elements from temporary! but this affects static docs only!
 			// TODO: when doing rebuild media link test all elements against template!
-			$this->unregisterFileLinks(true, false);
-			$this->registerFileLinks(); // last param: when rebuilding static docs do not delete temp entries!
+			$this->unregisterMediaLinks(true, false);
+			$this->registerMediaLinks(); // last param: when rebuilding static docs do not delete temp entries!
 		} else {
 			if(!$this->markAsPublished()){
 				return false;
 			}
 
-			$this->unregisterFileLinks();
-			$this->registerFileLinks(false, true);
+			$this->unregisterMediaLinks();
+			$this->registerMediaLinks(false, true);
 		}
 		//hook
 		if(!$skipHook){
@@ -2491,6 +2491,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function we_unpublish($skipHook = 0){
+		$oldPublished = $this->Published;
 		if(!$this->ID || !$this->markAsUnPublished()){
 			return false;
 		}
@@ -2514,7 +2515,15 @@ class we_objectFile extends we_document{
 		//	weNavigationCache::clean(true);
 		$this->rewriteNavigation();
 
-		return $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID));
+		$ret = $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID));
+		
+		// if document was modified before unpublishing, the actual version is in tblTemporaryDoc: we unregister temp=0
+		// otherwise we have nothing to do
+		if($ret && $oldPublished && ($this->ModDate > $oldPublished)){
+			$this->unregisterMediaLinks(true, false);
+		}
+
+		return $ret;
 	}
 
 	public function we_republish($rebuildMain = true){

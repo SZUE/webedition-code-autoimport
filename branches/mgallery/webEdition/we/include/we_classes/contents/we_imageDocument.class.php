@@ -68,7 +68,8 @@ class we_imageDocument extends we_binaryDocument{
 		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
 		if(parent::we_save($resave)){
-			$this->registerFileLinks();
+			$this->unregisterMediaLinks();
+			$ret = $this->registerMediaLinks();
 			$thumbs = $this->getThumbs();
 			if($docChanged){
 				we_thumbnail::deleteByImageID($this->ID);
@@ -83,21 +84,21 @@ class we_imageDocument extends we_binaryDocument{
 				}
 			}
 
-			return true;
+			return $ret;
 		}
 
 		return false;
 	}
 
-	function registerFileLinks(){
+	function registerMediaLinks(){
 		if(($id = $this->getElement('LinkID', 'bdid'))){
-			$this->FileLinks[] = $id;
+			$this->MediaLinks[] = $id;
 		}
 		if(($id = $this->getElement('RollOverID', 'bdid'))){
-			$this->FileLinks[] = $id;
+			$this->MediaLinks[] = $id;
 		}
 
-		parent::registerFileLinks(true);
+		return parent::registerMediaLinks(false, true);
 	}
 
 	/**

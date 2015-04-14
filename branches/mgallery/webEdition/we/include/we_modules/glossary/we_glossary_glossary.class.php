@@ -274,7 +274,7 @@ class we_glossary_glossary extends weModelBase{
 		}
 
 		if($retVal){
-			$this->registerFileLinks();
+			$this->registerMediaLinks();
 		}
 
 		// unserialize all needed attributes
@@ -285,16 +285,16 @@ class we_glossary_glossary extends weModelBase{
 		return $retVal;
 	}
 
-	function registerFileLinks(){
+	function registerMediaLinks(){
+		$this->unregisterMediaLinks();
 		if($this->Type === 'link' && !intval($this->IsFolder)){
 			$attribs = is_array($this->Attributes) ? $this->Attributes : we_unserialize($this->Attributes);
 			if(!empty($attribs) && $attribs['mode'] === 'intern' && $attribs['InternLinkID']){
-				$this->FileLinks[] = $attribs['InternLinkID'];
+				$this->MediaLinks[] = $attribs['InternLinkID'];
 			}
 		}
 
-		$this->unregisterFileLinks();
-		$this->writeFileLinks();
+		parent::registerMediaLinks();
 	}
 
 	/**

@@ -433,7 +433,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$this->renameChildrenPath($catId);
 
 			$cat = new we_category($catId);
-			$cat->registerFileLinks();
+			$cat->registerMediaLinks();
 		}
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .

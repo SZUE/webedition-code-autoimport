@@ -294,7 +294,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 
 		if(($res = parent::save(false, true))){
-			$this->registerFileLinks();
+			$this->registerMediaLinks();
 		}
 
 		if($order && isset($_oldPid) && $_oldPid != $this->ParentID){
@@ -328,16 +328,16 @@ class we_navigation_navigation extends weModelBase{
 		}
 	}
 
-	function registerFileLinks(){
+	function registerMediaLinks(){
+		$this->unregisterMediaLinks();
 		if($this->IconID){
-			$this->FileLinks[] = $this->IconID;
+			$this->MediaLinks[] = $this->IconID;
 		}
 		if($this->SelectionType === 'docLink' && $this->LinkID){
-			$this->FileLinks[] = $this->LinkID;
+			$this->MediaLinks[] = $this->LinkID;
 		}
 
-		$this->unregisterFileLinks();
-		$this->writeFileLinks();
+		parent::registerMediaLinks();
 	}
 
 	function convertToPaths($ids, $table){
@@ -360,7 +360,7 @@ class we_navigation_navigation extends weModelBase{
 			$this->deleteChilds();
 		}
 		parent::delete();
-		$this->unregisterFileLinks();
+		$this->unregisterMediaLinks();
 
 		we_navigation_cache::delNavigationTree($this->ParentID);
 

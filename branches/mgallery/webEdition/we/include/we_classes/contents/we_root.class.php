@@ -88,7 +88,7 @@ abstract class we_root extends we_class{
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
 	protected $LockUser = 0;
-	protected $FileLinks = array();
+	protected $MediaLinks = array();
 
 	/* Constructor */
 
@@ -1226,34 +1226,30 @@ abstract class we_root extends we_class{
 
 	}
 
-	function writeFileLinks($temp = false){//FIXME: $filelinksReady is obsolete on this level
-																								//FIXME: make publish default (for all types other than webEDitionDocument and ObjectFile
-		// filter FileLinks by media contenttype
-		if(!empty($this->FileLinks)){
-			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
-			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
-			$this->FileLinks = array();
-			while($this->DB_WE->next_record()){
-				$this->FileLinks[] = $this->DB_WE->f('ID');
+	function registerMediaLinks($temp = false){
+		$c = count($this->MediaLinks);
+		for($i = 0; $i < $c; $i++){
+			if(!$this->MediaLinks[$i] || !is_numeric($this->MediaLinks[$i])){
+				unset($this->MediaLinks[$i]);
 			}
 		}
-/*
-		$isTemp = 0;
-		$where = $notDeleteTemp ? 'AND isTemp=0' : '';
-		if(!$publish){
-			$isTemp = 1;
-			$where = $notDeleteTemp ? 'AND 0' : 'AND isTemp=1';
+
+		// filter MediaLinks by media contenttype
+		if(!empty($this->MediaLinks)){
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->MediaLinks)) . ') ' . $whereType);
+			$this->MediaLinks = array();
+			while($this->DB_WE->next_record()){
+				$this->MediaLinks[] = $this->DB_WE->f('ID');
+			}
 		}
 
-		// FIXME: move to unregisterFileLinks on some level
-		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" ' . $where . ' AND type="media"');
-*/
-		if(empty($this->FileLinks)){
+		if(empty($this->MediaLinks)){
 			return true;
 		}
 
 		$ret = true;
-		foreach(array_unique($this->FileLinks) as $remObj){
+		foreach(array_unique($this->MediaLinks) as $remObj){
 			$ret &= $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->Table),
@@ -1268,7 +1264,7 @@ abstract class we_root extends we_class{
 		return $ret;
 	}
 
-	function unregisterFileLinks($delPublished = true, $delTemp = true){
+	function unregisterMediaLinks($delPublished = true, $delTemp = true){
 		if($delPublished){
 				$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND isTemp=0 AND type="media"');
 		}

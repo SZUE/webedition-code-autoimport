@@ -118,18 +118,18 @@ class we_customer_customer extends weModelBase{
 
 		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
 
-		return $hook->executeHook() && weModelBase::save() && $this->registerFileLinks();
+		return $hook->executeHook() && weModelBase::save() && $this->registerMediaLinks();
 	}
 
-	function registerFileLinks(){
+	function registerMediaLinks(){
+		$this->unregisterMediaLinks();
 		foreach(self::getImageFields() as $field){
 			if($this->$field){
-				$this->FileLinks[] = $this->$field;
+				$this->MediaLinks[] = $this->$field;
 			}
 		}
 
-		$this->unregisterFileLinks();
-		$this->writeFileLinks();
+		parent::registerMediaLinks();
 	}
 
 	/**

@@ -750,8 +750,8 @@ we_templateInit();?>';
 				unlink($tmplPathWithTmplExt);
 			}
 
-			$this->unregisterFileLinks();
-			$this->registerFileLinks();
+			$this->unregisterMediaLinks();
+			$_ret = $this->registerMediaLinks();
 		} else {
 			t_e('save template failed', $this->Path);
 		}
@@ -782,44 +782,56 @@ we_templateInit();?>';
 		}
 	}
 
-	function registerFileLinks() {
+	function registerMediaLinks() {
 		$tp = new we_tag_tagParser($this->getTemplateCode());
 		foreach($tp->getTagsWithAttributes() as $tag){
 			switch($tag['name']){
-				//case 'a': //id: sollte wedoc sein
 				case 'icon':
 				case 'img':
-				case 'linkToSeeMode':
-				case 'metadata':
 				case 'flash':
 				case 'quicktime':
 				case 'video':
 					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->FileLinks[] = intval($tag['attribs']['id']);
+						$this->MediaLinks[] = intval($tag['attribs']['id']);
 					}
 					break;
 				case 'url':
 					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' && 
 							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->FileLinks[] = intval($tag['attribs']['id']);
+						$this->MediaLinks[] = intval($tag['attribs']['id']);
+					}
+					break;
+				case 'link':
+					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						$this->MediaLinks[] = intval($tag['attribs']['id']);
+					}
+					if(isset($tag['attribs']['imageid']) && is_numeric($tag['attribs']['imageid'])){
+						$this->MediaLinks[] = intval($tag['attribs']['imageid']);
+					}
+					break;
+				case 'sessionfield':
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'img' && 
+							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						$this->MediaLinks[] = intval($tag['attribs']['id']);
+					}
+					break;
+
+				// the following cases are not meant to link media files: we check them anyway
+				case 'a': // selector: text/webEdition only
+				case 'linkToSeeMode':// selector: text/webEdition only
+				case 'metadata':// selector: text/webEdition only
+					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						$this->MediaLinks[] = intval($tag['attribs']['id']);
 					}
 					break;
 				case 'include': //nur type=document: id, path
 					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document'){
 						if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-							$this->FileLinks[] = intval($tag['attribs']['id']);
+							$this->MediaLinks[] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
 						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id_ct($tag['attribs']['path'], FILE_TABLE))){
-							$this->FileLinks[] = intval($tag['attribs']['id']);
+							$this->MediaLinks[] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
-					}
-					break;
-				case 'link': //id, imageid
-					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->FileLinks[] = intval($tag['attribs']['id']);
-					}
-					if(isset($tag['attribs']['imageid']) && is_numeric($tag['attribs']['imageid'])){
-						$this->FileLinks[] = intval($tag['attribs']['imageid']);
 					}
 					break;
 				case 'listview':
@@ -828,15 +840,9 @@ we_templateInit();?>';
 						foreach($ids as $id){
 							$id = trim($id);
 							if(is_numenric($id)){
-								$this->FileLinks[] = intval($id);
+								$this->MediaLinks[] = intval($id);
 							}
 						}
-					}
-					break;
-				case 'sessionfield': //nur type=img: id
-					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'img' && 
-							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
-						$this->FileLinks[] = intval($tag['attribs']['id']);
 					}
 					break;
 				default: 
@@ -844,17 +850,8 @@ we_templateInit();?>';
 			}
 		}
 
-		if(!empty($this->FileLinks)){
-			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
-			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->FileLinks)) . ') ' . $whereType);
-			$this->FileLinks = array();
-			while($this->DB_WE->next_record()){
-				$this->FileLinks[] = $this->DB_WE->f('ID');
-			}
-		}
-		
-		if(!empty($this->FileLinks)){
-			$this->writeFileLinks();
+		if(!empty($this->MediaLinks)){
+			return parent::registerMediaLinks(false, true);
 		}
 	}
 

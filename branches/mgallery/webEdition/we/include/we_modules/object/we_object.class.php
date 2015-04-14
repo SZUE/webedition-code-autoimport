@@ -2253,12 +2253,12 @@ class we_object extends we_document{
 			we_history::insertIntoHistory($this);
 		}
 		/* hook */
-		$this->registerFileLinks(true, false);
+		$ret = $this->registerMediaLinks(true, false);
 		if($skipHook){
 			return true;
 		}
 		$hook = new weHook('save', '', array($this, 'resave' => $resave));
-		$ret = $hook->executeHook();
+		$ret &= $hook->executeHook();
 		//check if doc should be saved
 		if($ret === false){
 			$this->errMsg = $hook->getErrorString();
@@ -2267,7 +2267,7 @@ class we_object extends we_document{
 		return true;
 	}
 
-	function registerFileLinks($publish = false, $filelinksReady = false, $notDeleteTemp = false){// FIXME: publish is obsolete for classes
+	function registerMediaLinks(){// FIXME: publish is obsolete for classes
 		$serializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
 		foreach($serializedArray as $k => $v){
 			if(($type = strstr($k, '_', true)) !== false){
@@ -2277,66 +2277,30 @@ class we_object extends we_document{
 					case 'img':
 					case 'quicktime':
 						if($v['default']){
-							$this->FileLinks[] = $v['default'];
+							$this->MediaLinks[] = $v['default'];
 						}
 						break;
 					case 'link':
 						$default = we_unserialize($v['default'], array('type' => 0, 'ctype' => 0));
 						if($default['type'] === 'int' && $default['id']){
-							$this->FileLinks[] = $default['id'];
+							$this->MediaLinks[] = $default['id'];
 						}
 						if($default['ctype'] === 'int' && $default['img_id']){
-							$this->FileLinks[] = $default['img_id'];
+							$this->MediaLinks[] = $default['img_id'];
 						}
 						break;
 					case 'text':
 						if($v['dhtmledit'] == 'on' || $v['dhtmledit'] === true ){//FIXME: make bool!
-							$this->FileLinks = array_merge($this->FileLinks, we_wysiwyg_editor::reparseInternalLinks($v['default']));
+							$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($v['default']));
 						}
 						break;
 					default:
 						//
 				}
 			}
-
-			//$this->writeFileLinks();
 		}
-		/*
-		if(!$filelinksReady){//FIXME: maybe move this part do we_webEditionDocument
-			foreach($this->elements as $k => $v){
-				switch(isset($v['type']) ? $v['type'] : ''){
-					case 'audio':
-					case 'binary':
-					case 'flashmovie':
-					case 'href':
-					case 'img':
-					case 'quicktime':
-					case 'video':
-						if(isset($v['bdid']) && $v['bdid']){
-							$this->FileLinks[] = $v['bdid'];
-						}
-						break;
-					case 'link':
-						if(isset($v['dat']) && ($link = we_unserialize($v['dat']))){
-							if($link['type'] === 'int' && $link['id']){
-								$this->FileLinks[] = $link['id'];
-							}
-							if($link['img_id']){
-								$this->FileLinks[] = $link['img_id'];
-							}
-						}
-						break;
-					default:
-						if(isset($v['bdid']) && $v['bdid']){
-							$this->FileLinks[] = $v['bdid'];
-						}
-				}
-			}
-		}
-		 *
-		 */
 
-		$this->writeFileLinks($publish, true, $notDeleteTemp);// IMPORTANT: not call parent but we_root!
+		return parent::registerMediaLinks(false, true);
 	}
 
 	/**
