@@ -280,7 +280,6 @@ function onInsertNode() {
 	var iOffsetTrue = oWidget.setOffsetLeftTop(this.node, true);
 	var iOffsetFalse = oWidget.setOffsetLeftTop(this.node, false);
 	oWidget.hide();
-	this.node.style.width = iOffsetW + 'px';
 	oNodeInsert.style.height = '1px';
 	// set height, if it is narrow
 	oNodeInsert.style.width = (iOffsetW <= 300 ? iOffsetW + "px" : "100%");

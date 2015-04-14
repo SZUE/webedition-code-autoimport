@@ -1225,7 +1225,7 @@ function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
 }
 
-function we_unserialize($string, $default = array()){
+function we_unserialize($string, $default = array(),$quiet=false){
 	if(!$string){
 		return $default;
 	}
@@ -1239,7 +1239,9 @@ function we_unserialize($string, $default = array()){
 	if(preg_match('|^[{\[].*[}\]]$|', $string)){
 		return json_decode($string, true);
 	}
-	t_e('unable to decode', $string);
+	if(!$quiet){
+		t_e('unable to decode', $string);
+	}
 	return $default;
 }
 
