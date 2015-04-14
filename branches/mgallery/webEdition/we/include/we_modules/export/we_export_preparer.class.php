@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_export_preparer extends we_exim_XMLExIm{
-
 	var $RefTable;
 	var $options;
 	var $PatternSearch;
@@ -102,8 +101,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 				foreach($match[2] as $value){
 					if(is_numeric($value)){
 						$_path = ($value ?
-										f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $_db) :
-										'');
+								f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $_db) :
+								'');
 
 						$this->addToDepArray($level, $value, 'weNavigation', NAVIGATION_TABLE);
 						$this->getNavigationRule($value, $level);
@@ -253,12 +252,12 @@ class we_export_preparer extends we_exim_XMLExIm{
 							$this->addToDepArray($level, $ev['dat']);
 						}
 					} else if(isset($ev["dat"])){
-						$dat = we_unserialize($ev["dat"]);
+						$dat = we_unserialize($ev["dat"], array(), true);
 						if(is_array($dat)){
 							$elarray = $this->getDepFromArray($dat);
 							foreach($elarray as $elk => $elv){
 								foreach($elv as $id){
-									if(!empty($id)){
+									if($id){
 										$this->addToDepArray($level, $id, ($elk === "docs" ? '' : "objectFile"));
 									}
 								}
@@ -406,10 +405,10 @@ class we_export_preparer extends we_exim_XMLExIm{
 		we_updater::fixInconsistentTables();
 
 		if($this->options['handle_def_templates'] || $this->options['handle_doctypes'] ||
-				$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
-				$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
-				$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
-				$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
+			$this->options['handle_categorys'] || $this->options['handle_def_classes'] ||
+			$this->options['handle_document_includes'] || $this->options['handle_document_linked'] ||
+			$this->options['handle_object_includes'] || $this->options['handle_object_embeds'] ||
+			$this->options['handle_class_defs'] || $this->options['handle_owners'] || $this->options['handle_navigation'] || $this->options['handle_thumbnails']
 		){
 
 			$this->makeExportList();

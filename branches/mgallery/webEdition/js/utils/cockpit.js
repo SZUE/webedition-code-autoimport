@@ -275,7 +275,7 @@ function onInsertNode() {
 	if (oWidget.Gecko) {
 		iOffsetH -= parseInt(oNodeInsert.style.borderTopWidth) * 2;
 	}
-	var iOffsetW = (gel(this.node.id + '_res').value === 0) ? 225 : 452;
+	var iOffsetW = (gel(this.node.id + '_res').value === 0 ? 225 : 452);
 	//var iOffsetW=this.node.offsetWidth;
 	var iOffsetTrue = oWidget.setOffsetLeftTop(this.node, true);
 	var iOffsetFalse = oWidget.setOffsetLeftTop(this.node, false);

@@ -44,9 +44,9 @@ if($_csv){
 		}
 		$_query = ($_where ?
 				'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0'/* . ($ct["image"] ?
-					'' :
-					' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"'
-				)*/ :
+				  '' :
+				  ' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"'
+				  ) */ :
 				false);
 	} else {
 		list($folderID, $folderPath) = explode(",", $_csv);
@@ -70,7 +70,7 @@ if($_csv){
 			$mdc .= '<tr><td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
 					array(
 						"src" => TREE_ICON_DIR . $DB_WE->f("Icon")
-				)) . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont">' . we_html_element::htmlA(
+				)) . '</td><td valign="middle" class="middlefont">' . we_html_element::htmlA(
 					array(
 					"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f('ID') . '\',\'' . $DB_WE->f('ContentType') . '\');',
 					"title" => $DB_WE->f("Path"),

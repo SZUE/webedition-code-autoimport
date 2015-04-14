@@ -25,7 +25,7 @@
  */
 
 function getLayout() {
-	if (this.typ === "threedots"){
+	if (this.typ === "threedots") {
 		return treeData.node_layouts["threedots"];
 	}
 	var layout_key = (this.typ === "group" && this.contenttype !== "text/weCollection" ? "group" : "item") +
@@ -127,15 +127,17 @@ function doClick(id) {
 	var table = node.table;
 	var id = node.we_id ? node.we_id : id;
 	setScrollY();
-	if (frames.top.wasdblclick && ct != "folder") {
-		switch (table) {
-			case top.table.FILE_TABLE:
+
+	switch (table) {
+		case top.tables.FILE_TABLE:
+			if (frames.top.wasdblclick && ct !== "folder") {
 				top.openBrowser(id);
 				setTimeout("wasdblclick=false;", 400);
 				break;
-			default:
-				top.weEditorFrameController.openDocument(table, id, ct);
-				break;
-		}
+			}
+		default:
+			top.weEditorFrameController.openDocument(table, id, ct);
+			break;
+
 	}
 }
