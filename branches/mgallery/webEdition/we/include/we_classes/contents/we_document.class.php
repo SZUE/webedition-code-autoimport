@@ -687,13 +687,14 @@ class we_document extends we_root{
 									 * objectfiles: here the default defined in class is stored in tblObject_X: 
 									 * it is no "dynamic" default and belongs to the object: so we register it as medialink of the object (and class)
 									 */
-									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], array('type' => '', 'id' => 0, 'img_id' => 0))) && 
-											is_array($link)){
-										if($link['type'] === 'int' && $link['id']){
-											$this->MediaLinks[] = $link['id'];
-										}
-										if($link['img_id']){
-											$this->MediaLinks[] = $link['img_id'];
+									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], array(), true)) && is_array($link)){
+										if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){
+											if($link['type'] === 'int' && $link['id']){
+												$this->MediaLinks[] = $link['id'];
+											}
+											if($link['img_id']){
+												$this->MediaLinks[] = $link['img_id'];
+											}
 										}
 									}
 									break;

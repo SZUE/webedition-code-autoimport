@@ -98,10 +98,15 @@ abstract class we_rebuild_base{
 						break;
 					case 'we_temporaryDocument':
 						$content = we_unserialize(we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']));
-						$doc = $data['tbl'] === 'tblFile' ? new we_webEditionDocument() : new we_objectFile;
+						if($data['tbl'] === 'tblFile'){
+							$doc = new we_webEditionDocument();
+							$doc->Table = FILE_TABLE;
+						} else {
+							$doc = new we_objectFile();
+							$doc->Table = OBJECT_FILES_TABLE;
+							$doc->TableID = $content[0]['TableID'];
+						}
 						$doc->elements = $content[0]['elements'];
-						$doc->Table = $data['tbl'] === 'tblFile' ? FILE_TABLE : OBJECT_FILES_TABLE;
-						$doc->TableID = $content[0]['TableID'];
 						$doc->ID = $data['id'];
 						if($printIt){
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
@@ -118,10 +123,8 @@ abstract class we_rebuild_base{
 							echo ('Rebulding Media-Links for: ' . $doc->Path);
 							flush();
 						}
-						if($data['cn'] !== 'we_template'){
-							$doc->correctFields();
-							$doc->parseTextareaFields('main');
-						}
+						$doc->correctFields();
+						$doc->parseTextareaFields('main');
 						$doc->registerMediaLinks();
 						unset($doc);
 				}
@@ -366,6 +369,7 @@ abstract class we_rebuild_base{
 		$tables = array(
 			array(TEMPLATES_TABLE, 'WHERE IsFolder = 0', 'we_template'),
 			array(OBJECT_TABLE, 'WHERE IsFolder = 0', 'we_object'),
+			array(VFILE_TABLE, 'WHERE IsFolder = 0', 'we_collection'),
 			array(BANNER_TABLE, '', 'we_banner_banner'),
 			array(CATEGORY_TABLE, 'WHERE Description != ""', 'we_category'),
 			array(GLOSSARY_TABLE, 'WHERE IsFolder = 0 AND type = "link"', 'we_glossary_glossary'),

@@ -742,30 +742,54 @@ class we_search_search extends we_search_base{
 			}
 
 			// get some more information about referencing objects
-			$paths = $isModified = $isUnpublished = array();
-			foreach($groups as $k => $v){
-				if(addTblPrefix($k) === CATEGORY_TABLE){
-					$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
-				} else {
-					$db->query('SELECT ID,Path,ModDate,Published FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
-					while($db->next_record()){
-						$paths[$k][$db->f('ID')] = $db->f('Path');
-						$isModified[$k][$db->f('ID')] = $db->f('Published') > 0 && $db->f('ModDate') > $db->f('Published');
-						$isUnpublished[$k][$db->f('ID')] = $db->f('Published') == 0;
-					}
+			$paths = $isModified = $isUnpublished = $ct = $onclick = array();
+			foreach($groups as $k => $v){// FIXME: ct is obslete?
+				switch(addTblPrefix($k)){
+					case FILE_TABLE:
+					case defined(OBJECT_FILES_TABLE) ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
+						$db->query('SELECT ID,Path,ModDate,Published,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
+						while($db->next_record()){
+							$paths[$k][$db->f('ID')] = $db->f('Path');
+							$isModified[$k][$db->f('ID')] = $db->f('Published') > 0 && $db->f('ModDate') > $db->f('Published');
+							$isUnpublished[$k][$db->f('ID')] = $db->f('Published') == 0;
+							$ct[$k][$db->f('ID')] = $db->f('ContentType');
+							$onclick[$k][$db->f('ID')] = 'CopenToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
+						}
+						break;
+					case TEMPLATES_TABLE:
+					case OBJECT_TABLE:
+						$db->query('SELECT ID,Path,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
+						while($db->next_record()){
+							$paths[$k][$db->f('ID')] = $db->f('Path');
+							$ct[$k][$db->f('ID')] = $db->f('ContentType');
+							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
+						}
+						break;
+					case VFILE_TABLE:
+						$db->query('SELECT ID,Path FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
+						while($db->next_record()){
+							$paths[$k][$db->f('ID')] = $db->f('Path');
+							$ct[$k][$db->f('ID')] = we_base_ContentTypes::COLLECTION;
+							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . we_base_ContentTypes::COLLECTION . '\')';
+						}
+					default:
+						$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
+						//$onclick[$k][$db->f('ID')] = 'alert(\'opening modules not implemented yet\')';
 				}
 			}
 
 			foreach($tmpMediaLinks as $m_id => $v){
-				foreach($v as $val){
+				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
 					if(!isset($this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
 						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
 							'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
 							'id' => $val[0],
 							'table' => addTblPrefix($val[1]),
+							'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
+							'onclick' => isset($onclick[$val[1]][$val[0]]) ? $onclick[$val[1]][$val[0]] : 'alert(\'opening modules not implemented yet: ' . $val[1] . '\')',
 							'path' => $paths[$val[1]][$val[0]],
-							'isModified' => addTblPrefix($val[1]) === CATEGORY_TABLE ? false : $isModified[$val[1]][$val[0]],
-							'isUnpublished' => addTblPrefix($val[1]) === CATEGORY_TABLE ? false : $isUnpublished[$val[1]][$val[0]]
+							'isModified' => addTblPrefix($val[1]) === isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
+							'isUnpublished' => addTblPrefix($val[1]) === isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
 						);
 					} else {
 						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]]['referencedIn'] = 'both';

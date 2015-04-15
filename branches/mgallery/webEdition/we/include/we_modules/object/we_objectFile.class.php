@@ -2194,7 +2194,7 @@ class we_objectFile extends we_document{
 		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/' || strpos($this->Path, $this->RootDirPath) !== 0;
 	}
 
-	function parseTextareaFields(){
+	function parseTextareaFields($rebuildMode = 'whocares'){
 		foreach($this->elements as $element){
 			if($element['type'] === 'text'){
 				$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($element['dat']));
@@ -2305,8 +2305,8 @@ class we_objectFile extends we_document{
 			foreach($dv as $k => $v){
 				if(strpos($k, 'link_') === 0){
 					$link = $this->getElement(str_replace('link_', '', $k));
-					$link = is_array($link) ? $link : we_unserialize($link, array());
-						if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){ //FIXME: $link should be an object so we can check class
+					$link = is_array($link) ? $link : we_unserialize($link, array(), true);
+					if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){ //FIXME: $link should be an object so we can check class
 						if($link['type'] === 'int' && $link['id']){
 							$this->MediaLinks[] = $link['id'];
 						}

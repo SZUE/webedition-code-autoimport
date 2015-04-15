@@ -438,8 +438,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		return $ret;
 	}
 
-	function registerMediaLinks($collection){
-		$this->MediaLinks = $collection;
+	function registerMediaLinks($collection = array()){
+		$this->MediaLinks = $collection ? : $this->getCollectionVerified();
 
 		parent::registerMediaLinks(false, true);
 	}

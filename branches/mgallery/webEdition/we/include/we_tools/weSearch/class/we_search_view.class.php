@@ -1796,7 +1796,7 @@ weSearch.g_l = {
 					}
 					$out .= '<tr><td style="padding-left:12px;">' .
 						($makeLink ? we_html_button::create_button('image:edit_edit', "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) .
-							'<a href="javascript:weSearch.openToEdit(\'' . $link['table'] . '\',\'' . $link["id"] . '\',\'\')" title="' . $link['path'] . '"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a>' :
+							'<a href="javascript:' . $link['onclick'] . '" title="' . $link['path'] . '"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a>' :
 							we_html_button::create_button('image:edit_edit', '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . // FIXME: G_L()
 							'<span style="color:' . $color . ';">' . $link['path'] . '</span>') .
 						'</td></tr>';
