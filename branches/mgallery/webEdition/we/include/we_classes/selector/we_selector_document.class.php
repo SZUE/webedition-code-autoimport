@@ -43,7 +43,7 @@ class we_selector_document extends we_selector_directory{
 
 	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $startID);
-		$this->fields.=',Filename,Extension,ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
+		$this->fields .= ($this->table === VFILE_TABLE ? '' : ',Filename,Extension') . ',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
 		$this->canSelectDir = $canSelectDir;
 
 		$this->title = g_l('fileselector', '[docSelector][title]');
@@ -169,10 +169,12 @@ function exit_open() {
 
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
-			$published = $this->table == FILE_TABLE ? $this->db->f("Published") : 1;
-			$ret.='top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $published . '","' . $title . '");';
+			$published = $this->table === FILE_TABLE ? $this->db->f("Published") : 1;
+			$filename = $this->table === VFILE_TABLE ? $this->db->f("Text") : $this->db->f("Filename");
+			$icon = $this->table === VFILE_TABLE ? we_base_ContentTypes::inst()->getIcon($this->db->f("IsFolder") ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION) : $this->db->f("Icon");
+			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $icon . '","' . $filename . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $published . '","' . $title . '");';
 		}
-		$ret.=' function startFrameset(){';
+		$ret .=' function startFrameset(){';
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
 			case we_base_ContentTypes::OBJECT:
