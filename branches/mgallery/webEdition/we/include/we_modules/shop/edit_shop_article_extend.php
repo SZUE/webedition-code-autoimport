@@ -136,7 +136,7 @@ if(!isset($varies)){
 	$varies = "";
 }
 if(isset($varies)){
-	$varies = "variant_" . WE_SHOP_VARIANTS_ELEMENT_NAME;
+	$varies = "variant_" . WE_VARIANTS_ELEMENT_NAME;
 }
 
 /* * ************ some config  ************** */

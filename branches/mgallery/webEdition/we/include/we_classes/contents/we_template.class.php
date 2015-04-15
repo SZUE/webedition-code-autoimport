@@ -361,11 +361,7 @@ we_templateInit();?>';
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		if(!defined('SHOP_TABLE')){
-			return false;
-		}
-		$fieldnames = $this->getVariantFieldNames();
-		return in_array(WE_SHOP_TITLE_FIELD_NAME, $fieldnames) && in_array(WE_SHOP_DESCRIPTION_FIELD_NAME, $fieldnames);
+		return true;
 	}
 
 	/**
@@ -394,9 +390,6 @@ we_templateInit();?>';
 	 * @param	none
 	 */
 	function getVariantFieldNames(){
-		if(!defined('SHOP_TABLE')){
-			return array();
-		}
 		$fields = $this->getAllVariantFields();
 		return (is_array($fields) ? array_keys($fields) : array());
 	}
@@ -737,9 +730,7 @@ we_templateInit();?>';
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		if($updateCode){
 			$this->_updateCompleteCode(true);
-			if(defined('SHOP_TABLE')){
-				$this->setElement('allVariants', serialize($this->readAllVariantFields($this->getElement('completeData'))), 'variants');
-			}
+			$this->setElement('allVariants', serialize($this->readAllVariantFields($this->getElement('completeData'))), 'variants');
 		} else {
 			$this->doUpdateCode = false;
 		}
@@ -756,9 +747,9 @@ we_templateInit();?>';
 		} else {
 			t_e('save template failed', $this->Path);
 		}
-		if(defined('SHOP_TABLE')){
-			$this->setElement('allVariants', we_unserialize($this->getElement('allVariants')), 'variants');
-		}
+		
+		$this->setElement('allVariants', we_unserialize($this->getElement('allVariants')), 'variants');
+
 		return $_ret;
 	}
 
@@ -774,7 +765,7 @@ we_templateInit();?>';
 		parent::we_load($from);
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		$this->_updateCompleteCode();
-		if(defined('SHOP_TABLE') && ($tmp = $this->getElement('allVariants'))){
+		if(($tmp = $this->getElement('allVariants')=){
 			$tmp = we_unserialize($tmp, '');
 			$this->setElement('allVariants', (is_array($tmp) ?
 					$tmp :

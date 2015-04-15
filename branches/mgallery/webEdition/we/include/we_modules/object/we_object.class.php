@@ -428,7 +428,7 @@ class we_object extends we_document{
 						'shopcatLimitChoice' => $this->getElement($cur . 'shopcatLimitChoice'),
 						'uniqueID' => md5(uniqid(__FILE__, true)),
 					);
-//					$arrt[$nam]['variant'] = (isset($this->getElement($cur.'variant')) && $this->getElement($cur.'variant')==1) ? $this->getElement($cur.'variant') : '';
+
 					if($this->isVariantField($cur) && $this->getElement($cur . 'variant') == 1){
 						$arrt[$nam]['variant'] = 1;
 					} else if($this->issetElement($cur . 'variant')){
@@ -474,22 +474,18 @@ class we_object extends we_document{
 
 			$this->DefaultValues = serialize($arrt);
 
-			if(defined('SHOP_TABLE')){
-				$variant_field = 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME;
-				$exists = false;
-				$this->DB_WE->query('SHOW COLUMNS FROM ' . $ctable . ' LIKE "' . $variant_field . '"');
-				if($this->DB_WE->next_record()){
-					$exists = true;
-				}
+			$variant_field = 'variant_' . WE_VARIANTS_ELEMENT_NAME;
+			
+			$this->DB_WE->query('SHOW COLUMNS FROM ' . $ctable . ' LIKE "' . $variant_field . '"');
+			$exists = ($this->DB_WE->next_record()) ? true : false;
 
-				if($this->hasVariantFields()){
-					if(!$exists){
-						$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ADD `' . $variant_field . '` TEXT NOT NULL');
-					}
-				} else {
-					if($exists){
-						$this->DB_WE->delCol($ctable, $variant_field);
-					}
+			if($this->hasVariantFields()){
+				if(!$exists){
+					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ADD `' . $variant_field . '` TEXT NOT NULL');
+				}
+			} else {
+				if($exists){
+					$this->DB_WE->delCol($ctable, $variant_field);
 				}
 			}
 
@@ -1236,7 +1232,7 @@ class we_object extends we_document{
 			//Pflichtfeld
 			$content .= '<tr valign="top"><td  width="100" class="defaultfont"></td><td width="170" class="defaultfont">' .
 				we_html_forms::checkbox(1, $this->getElement($name . "required", "dat"), "we_" . $this->Name . "_input[" . $name . "required1]", g_l('global', '[required_field]'), true, "defaultfont", "if(this.checked){document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=1;}else{ document.we_form.elements['" . "we_" . $this->Name . "_input[" . $name . "required]" . "'].value=0;}") .
-				(defined('SHOP_TABLE') && $this->canHaveVariants() && $this->isVariantField($name) ?
+				($this->canHaveVariants() && $this->isVariantField($name) ?
 					we_html_forms::checkboxWithHidden($this->getElement($name . "variant", "dat"), "we_" . $this->Name . "_variant[" . $name . "variant]", g_l('global', '[variant_field]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
 					'') .
 				'<input type=hidden name="' . "we_" . $this->Name . "_input[" . $name . "required]" . '" value="' . $this->getElement($name . "required", "dat") . '" />' .
@@ -2331,13 +2327,7 @@ class we_object extends we_document{
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		if(!defined('SHOP_TABLE')){
-			return false;
-		}
-		$fields = $this->getAllVariantFields();
-		$fieldnamesarr = array_keys($fields);
-		$fieldnames = implode(',', $fieldnamesarr) . ',';
-		return stristr($fieldnames, '_' . WE_SHOP_TITLE_FIELD_NAME . ',') && stristr($fieldnames, '_' . WE_SHOP_DESCRIPTION_FIELD_NAME . ',');
+		return true;
 	}
 
 	/**

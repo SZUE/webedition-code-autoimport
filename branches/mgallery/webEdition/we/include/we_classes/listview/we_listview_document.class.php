@@ -340,11 +340,11 @@ class we_listview_document extends we_listview_base{
 					$this->Record['wedoc_' . $key] = $val;
 				}
 
-				$this->Record['WE_SHOPVARIANTS'] = 0;
-				if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]) && $this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]){
-					$ShopVariants = is_string($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]) ? we_unserialize($this->Record[WE_SHOP_VARIANTS_ELEMENT_NAME]) : array();
-					if(is_array($ShopVariants) && count($ShopVariants) > 0){
-						$this->Record['WE_SHOPVARIANTS'] = count($ShopVariants);
+				$this->Record['WE_SHOPVARIANTS'] = 0; //check this for global variants
+				if(defined('WE_VARIANTS_ELEMENT_NAME') && isset($this->Record[WE_VARIANTS_ELEMENT_NAME]) && $this->Record[WE_VARIANTS_ELEMENT_NAME]){
+					$variants = is_string($this->Record[WE_VARIANTS_ELEMENT_NAME]) ? we_unserialize($this->Record[WE_VARIANTS_ELEMENT_NAME]) : array();
+					if(is_array($variants) && count($variants) > 0){
+						$this->Record['WE_SHOPVARIANTS'] = count($variants);
 					}
 				}
 

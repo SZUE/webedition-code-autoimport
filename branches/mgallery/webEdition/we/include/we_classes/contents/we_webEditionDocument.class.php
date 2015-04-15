@@ -42,9 +42,9 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function __construct(){
 		parent::__construct();
 		if(isWE()){
-			if(defined('SHOP_TABLE')){
+			//if(defined('SHOP_TABLE')){not needed for global variants
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_VARIANTS;
-			}
+			//}
 
 			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
@@ -774,18 +774,17 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	function i_areVariantNamesValid(){
-		if(defined('SHOP_TABLE')){
-			$variationFields = we_shop_variants::getAllVariationFields($this);
+		$variationFields = we_shop_variants::getAllVariationFields($this);
 
-			if(!empty($variationFields)){
-				$i = 0;
-				while($this->issetElement(WE_SHOP_VARIANTS_PREFIX . $i)){
-					if(!trim($this->getElement(WE_SHOP_VARIANTS_PREFIX . $i++))){
-						return false;
-					}
+		if(!empty($variationFields)){
+			$i = 0;
+			while($this->issetElement(WE_VARIANTS_PREFIX . $i)){
+				if(!trim($this->getElement(WE_VARIANTS_PREFIX . $i++))){
+					return false;
 				}
 			}
 		}
+			
 		return true;
 	}
 
@@ -807,14 +806,11 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($this->IsDynamic){
 			$data = array();
 
-			if(defined('SHOP_TABLE')){
-				we_shop_variants::setVariantDataForModel($this, true);
-			}
+			we_shop_variants::setVariantDataForModel($this, true);
+
 			$this->saveInSession($data);
 
-			if(defined('SHOP_TABLE')){
-				we_shop_variants::correctModelFields($this, true);
-			}
+			we_shop_variants::correctModelFields($this, true);
 
 			$data[0]['InWebEdition'] = false;
 //FIXME: check if we can remove pv_id, used by we:printversion
@@ -1013,11 +1009,11 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			return false;
 		}
 		parent::i_initSerializedDat($sessDat);
-		if(defined('SHOP_TABLE')){
-			if($this->canHaveVariants()){
-				$this->initVariantDataFromDb();
-			}
+
+		if($this->canHaveVariants()){
+			$this->initVariantDataFromDb();
 		}
+		
 		return true;
 	}
 
@@ -1027,10 +1023,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 */
 	protected function i_getContentData(){
 		parent::i_getContentData();
-		if(defined('SHOP_TABLE')){
-			if($this->canHaveVariants()){ // article variants
-				$this->initVariantDataFromDb();
-			}
+		if($this->canHaveVariants()){ // article variants
+			$this->initVariantDataFromDb();
 		}
 	}
 
@@ -1045,7 +1039,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		if(!defined('SHOP_TABLE') || ($this->TemplateID == 0)){
+		if(($this->TemplateID == 0)){
 			return false;
 		}
 
@@ -1056,9 +1050,9 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		if($this->InWebEdition){
 			return ($this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE)));
 		}
-		$tmp = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
+		$tmp = $this->getElement(WE_VARIANTS_ELEMENT_NAME);
 		if(is_array($tmp)){
-			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
+			$this->setElement(WE_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
 			return ($this->hasVariants = !empty($tmp));
 		}
 		$_vars = we_unserialize($tmp);
@@ -1072,12 +1066,11 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function initVariantDataFromDb(){
-		if(($tmp = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME))){
+		if(($tmp = $this->getElement(WE_VARIANTS_ELEMENT_NAME))){
 
 			// unserialize the variant data when loading the model
-			//if(!is_array($model->elements[WE_SHOP_VARIANTS_ELEMENT_NAME]['dat'])) {
-			$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, we_unserialize($tmp), 'variant');
-			//}
+			$this->setElement(WE_VARIANTS_ELEMENT_NAME, we_unserialize($tmp), 'variant');
+			
 			// now register variant fields in document
 			we_shop_variants::setVariantDataForModel($this);
 		}

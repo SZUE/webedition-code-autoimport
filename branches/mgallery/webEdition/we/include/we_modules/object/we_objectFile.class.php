@@ -513,15 +513,12 @@ class we_objectFile extends we_document{
 	}
 
 	function i_areVariantNamesValid(){
-		if(!defined('SHOP_TABLE')){
-			return true;
-		}
 		$variationFields = we_shop_variants::getAllVariationFields($this);
 
 		if(!empty($variationFields)){
 			$i = 0;
-			while($this->issetElement(WE_SHOP_VARIANTS_PREFIX . $i)){
-				if(!trim($this->getElement(WE_SHOP_VARIANTS_PREFIX . $i++))){
+			while($this->issetElement(WE_VARIANTS_PREFIX . $i)){
+				if(!trim($this->getElement(WE_VARIANTS_PREFIX . $i++))){
 					return false;
 				}
 			}
@@ -690,7 +687,7 @@ class we_objectFile extends we_document{
 				case we_object::QUERY_PREFIX:
 				case self::TYPE_MULTIOBJECT . '_':
 				case self::TYPE_META . '_':
-				case (defined('WE_SHOP_VARIANTS_ELEMENT_NAME') ? 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME : '-1'):
+				case (defined('WE_VARIANTS_ELEMENT_NAME') ? 'variant_' . WE_VARIANTS_ELEMENT_NAME : '-1'):
 					if($checkVariants){
 						$variantdata = $arr;
 					}
@@ -2693,17 +2690,15 @@ class we_objectFile extends we_document{
 				}
 			}
 // add variant data if available
-			if(defined('SHOP_TABLE')){
-				$fieldname = 'variant_' . WE_SHOP_VARIANTS_ELEMENT_NAME;
-				$elementName = WE_SHOP_VARIANTS_ELEMENT_NAME;
+			$fieldname = 'variant_' . WE_VARIANTS_ELEMENT_NAME;
+			$elementName = WE_VARIANTS_ELEMENT_NAME;
 
-				if($db->f($fieldname)){
-					$this->elements[$elementName] = array(
-						"dat" => $db->f($fieldname),
-						"type" => 'variant',
-						"len" => strlen($db->f($fieldname))
-					);
-				}
+			if($db->f($fieldname)){
+				$this->elements[$elementName] = array(
+					"dat" => $db->f($fieldname),
+					"type" => 'variant',
+					"len" => strlen($db->f($fieldname))
+				);
 			}
 		}
 	}
@@ -2964,7 +2959,7 @@ class we_objectFile extends we_document{
 	 * @return boolean
 	 */
 	function canHaveVariants($checkFields = false){
-		if(!defined('SHOP_TABLE') || $this->IsFolder){
+		if($this->IsFolder){
 			return false;
 		}
 		$object = new we_object();
@@ -2989,11 +2984,11 @@ class we_objectFile extends we_document{
 	}
 
 	function initVariantDataFromDb(){
-		if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && isset($this->elements[WE_SHOP_VARIANTS_ELEMENT_NAME])){
-			$dat = $this->getElement(WE_SHOP_VARIANTS_ELEMENT_NAME);
+		if(defined('WE_VARIANTS_ELEMENT_NAME') && isset($this->elements[WE_VARIANTS_ELEMENT_NAME])){
+			$dat = $this->getElement(WE_VARIANTS_ELEMENT_NAME);
 			if($dat && !is_array($dat)){
 // unserialize the variant data when loading the model
-				$this->setElement(WE_SHOP_VARIANTS_ELEMENT_NAME, we_unserialize($dat), 'variant');
+				$this->setElement(WE_VARIANTS_ELEMENT_NAME, we_unserialize($dat), 'variant');
 			}
 			we_shop_variants::setVariantDataForModel($this);
 		}

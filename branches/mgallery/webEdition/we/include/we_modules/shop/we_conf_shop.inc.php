@@ -29,10 +29,6 @@ define('WE_SHOP_VAT_TABLE', TBL_PREFIX . 'tblshopvats');
 define('WE_SHOP_MODULE_DIR', WE_MODULES_DIR . 'shop/');
 define('WE_SHOP_MODULE_PATH', WE_MODULES_PATH . 'shop/');
 
-define('WE_SHOP_VARIANTS_PREFIX', 'we__intern_variant___');
-define('WE_SHOP_VARIANTS_ELEMENT_NAME', 'weInternVariantElement');
-define('WE_SHOP_VARIANT_REQUEST', 'we_variant');
-
 // name of request array for shopping items
 define('WE_SHOP_ARTICLE_CUSTOM_FIELD', 'we_sacf');
 define('WE_SHOP_CART_CUSTOM_FIELD', 'we_sscf');

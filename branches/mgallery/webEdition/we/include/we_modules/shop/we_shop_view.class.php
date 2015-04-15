@@ -1017,7 +1017,7 @@ function submitForm() {
 						unset($fields);
 					}
 
-					$variant = strip_tags($_REQUEST[WE_SHOP_VARIANT_REQUEST]);
+					$variant = strip_tags($_REQUEST[WE_VARIANT_REQUEST]);
 					$serialDoc = we_shop_Basket::getserial($id, ($isObj ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT), $variant, $customFieldsTmp);
 
 					unset($customFieldsTmp);
@@ -1239,7 +1239,7 @@ function submitForm() {
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[variant]'),
 						'space' => 100,
-						'html' => we_class::htmlSelect(WE_SHOP_VARIANT_REQUEST, $variantOptions, 1, '', false, array(), 'value', 380),
+						'html' => we_class::htmlSelect(WE_VARIANT_REQUEST, $variantOptions, 1, '', false, array(), 'value', 380),
 						'noline' => 1
 					);
 

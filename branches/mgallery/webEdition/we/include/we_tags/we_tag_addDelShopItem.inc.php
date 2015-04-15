@@ -58,13 +58,13 @@ function we_tag_addDelShopItem($attribs){
 			}
 		} else if(($artID = we_base_request::_(we_base_request::INT, 'shop_artikelid')) && isset($_REQUEST['shop_anzahl']) && $_REQUEST['shop_anzahl'] != 0){
 			if(we_base_request::_(we_base_request::INT, 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0)){
-				$GLOBALS[$shopname]->Add_Item($artID, ($floatquantities ? $floatfilter->filter($_REQUEST['shop_anzahl']) : we_base_request::_(we_base_request::INT, 'shop_anzahl', 0)), filterXss($_REQUEST['type']), we_base_request::_(we_base_request::RAW, WE_SHOP_VARIANT_REQUEST, ''), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) : array()));
+				$GLOBALS[$shopname]->Add_Item($artID, ($floatquantities ? $floatfilter->filter($_REQUEST['shop_anzahl']) : we_base_request::_(we_base_request::INT, 'shop_anzahl', 0)), filterXss($_REQUEST['type']), we_base_request::_(we_base_request::RAW, WE_VARIANT_REQUEST, ''), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) : array()));
 				$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 				$_SESSION['tb'] = we_base_request::_(we_base_request::INT, 't');
 			}
 		} else if(($artID = we_base_request::_(we_base_request::INT, 'del_shop_artikelid'))){
 			if(we_base_request::_(we_base_request::INT, 't', 0) > (isset($_SESSION['tb']) ? $_SESSION['tb'] : 0 )){
-				$GLOBALS[$shopname]->Del_Item($artID, filterXss($_REQUEST['type']), (isset($_REQUEST[WE_SHOP_VARIANT_REQUEST]) ? filterXss($_REQUEST[WE_SHOP_VARIANT_REQUEST]) : ''), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) : array()));
+				$GLOBALS[$shopname]->Del_Item($artID, filterXss($_REQUEST['type']), (isset($_REQUEST[WE_VARIANT_REQUEST]) ? filterXss($_REQUEST[WE_VARIANT_REQUEST]) : ''), ( ( isset($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) ) ? filterXss($_REQUEST[WE_SHOP_ARTICLE_CUSTOM_FIELD]) : array()));
 				$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 				$_SESSION['tb'] = we_base_request::_(we_base_request::INT, 't');
 			}

@@ -227,7 +227,7 @@ class we_object_listview extends we_object_listviewBase{
 				$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
 				$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');
 				$this->DB_WE->Record['we_wedoc_Category'] = $this->DB_WE->f('OF_Category');
-				$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = 0;
+				$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = 0; //check this for global variants
 
 
 				$path_parts = pathinfo($this->Path);
@@ -246,10 +246,10 @@ class we_object_listview extends we_object_listviewBase{
 							$this->Path
 						) . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
 				}
-				if(defined('WE_SHOP_VARIANTS_ELEMENT_NAME') && ($dat = $this->f(WE_SHOP_VARIANTS_ELEMENT_NAME))){
-					$ShopVariants = we_unserialize($dat);
-					if(is_array($ShopVariants) && count($ShopVariants) > 0){
-						$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = count($ShopVariants);
+				if(defined('WE_VARIANTS_ELEMENT_NAME') && ($dat = $this->f(WE_VARIANTS_ELEMENT_NAME))){
+					$variants = we_unserialize($dat);
+					if(is_array($variants) && count($variants) > 0){
+						$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = count($variants);
 					}
 				}
 				// for seeMode #5317

@@ -858,8 +858,8 @@ class we_document extends we_root{
 				if(isset($GLOBALS['lv'])){
 					switch(get_class($GLOBALS['lv'])){
 						case 'we_shop_listviewShopVariants':
-							$altField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
-							$titleField = (WE_SHOP_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
+							$altField = (WE_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
+							$titleField = (WE_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 							break;
 						case 'we_listview_document':
 							$alt = $GLOBALS['lv']->f($altField) ? : '';
