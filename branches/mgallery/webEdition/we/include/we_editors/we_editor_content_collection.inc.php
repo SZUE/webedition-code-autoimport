@@ -44,8 +44,6 @@ weCollectionEdit.we_const = {
 	FILE_TABLE: "' . FILE_TABLE . '",
 	OBJECT_FILES_TABLE: "' . OBJECT_FILES_TABLE . '",
 };
-
-//weCollectionEdit.csv = ",' . implode(',', $GLOBALS['we_doc']->getCollection()) . ',";
 ');
 // FIXME: set weCollectionEdit.csv when first used in addItems()...
 

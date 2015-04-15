@@ -158,6 +158,9 @@ abstract class we_base_delete{
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=0 AND IsFolder=0 AND DID=' . intval($id));
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND LDID=' . intval($id));
 				break;
+			case (defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE'):
+				$DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($id) . ' DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive")');//FIXME: delete OR archive
+				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID>0 AND ID=' . intval($id));
 				$tableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND ID=' . intval($id), '', $DB_WE);
@@ -211,12 +214,13 @@ abstract class we_base_delete{
 		}
 	}
 
-	public static function deleteEntry($id, $table, $delR = true, $skipHook = false, we_database_base $DB_WE = null){
+	public static function deleteEntry($id, $table, $delR = true, $skipHook = false, we_database_base $DB_WE = null){t_e("delEntry", $id, $table, $delR);
 		switch($table){
 			case defined('FILE_TABLE') ? FILE_TABLE : 'FILE_TABLE':
-			case defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : TEMPLATES_TABLE:
-			case defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE:
-			case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : OBJECT_FILES_TABLE:
+			case defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 'TEMPLATES_TABLE':
+			case defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE':
+			case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
+			case defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE':
 				break;
 			default:
 				t_e('unable to delete files from this table', $table);
@@ -231,7 +235,13 @@ abstract class we_base_delete{
 		}
 
 		if($id){
-			$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+			$fields = $table === VFILE_TABLE ? 'Path,IsFolder' : 'Path,IsFolder,ContentType';
+			$row = getHash('SELECT ' . $fields . ' FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+
+			if($row && $table === VFILE_TABLE){ // FIXME: add field ContentType to tblVFile and throw this out!
+				$row['ContentType'] = $row['IsFolder'] ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION;
+			}
+
 			if(!$row){
 				$GLOBALS['deletedItems'][] = $id;
 				return;

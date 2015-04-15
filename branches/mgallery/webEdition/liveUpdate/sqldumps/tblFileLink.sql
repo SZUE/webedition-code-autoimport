@@ -1,7 +1,7 @@
 CREATE TABLE ###TBLPREFIX###tblFileLink (
   ID int unsigned NOT NULL,
 	DocumentTable enum('tblFile','tblObjectFiles','tblVFile','tblCategorys','tblTemplates','tblObject','tblnavigation','tblNewsletter','tblglossary','tblbanner') NOT NULL default 'tblFile',
-	type enum('media','document','object','master','archive') NOT NULL default 'media',
+	type enum('media','document','object','master','archive','collection') NOT NULL default 'media',
 	remObj int unsigned NOT NULL default '0',
 	remTable enum('tblFile','tblObjectFiles') NOT NULL default 'tblFile',
 	`position` int unsigned NOT NULL default '0',

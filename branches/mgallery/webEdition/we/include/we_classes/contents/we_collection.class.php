@@ -391,14 +391,12 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		}
 
 		$this->insertPrefs = strval($this->insertRecursive . $this->useEmpty . $this->doubleOk);
+		$collection = $this->getCollectionVerified();
+		$ret = parent::we_save($resave) && $this->writeCollectionToDB($collection) && !$this->errMsg;
 
-		if(!parent::we_save($resave)){
-			return false;
-		}
-
-		$ret = $this->i_writeFileLinks(); // FIXME: is there a standard function called by some parent to save non-persistent data?
-		if(!$ret || ($this->errMsg != '')){
-			return false;
+		if($ret){
+			$this->unregisterMediaLinks();
+			$this->registerMediaLinks($collection);
 		}
 
 		return $ret;
@@ -407,7 +405,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 	protected function i_getContentData(){
 		//!! parent::i_getContentData();
 
-		$this->DB_WE->query('SELECT remObj,remTable FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" ORDER BY position ASC');
+		$this->DB_WE->query('SELECT remObj,remTable FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive") ORDER BY position ASC');
 
 		$this->fileCollection = ',';
 		$this->objectCollection = ',';
@@ -422,15 +420,15 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$this->objectCollection .= '-1,';
 	}
 
-	function i_writeFileLinks(){
-		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '"');
+	function writeCollectionToDB($collection){// FIXME: is there a standard function called by some parent to save non-persistent data?
+		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive")');
 
 		$i = 0;
-		foreach($this->getCollectionVerified() as $remObj){
+		foreach($collection as $remObj){
 			$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix(VFILE_TABLE),
-					'type' => 'archive',
+					'type' => 'collection',
 					'remObj' => $remObj,
 					'remTable' => $this->remTable,
 					'position' => $i++,
@@ -438,6 +436,12 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		}
 
 		return $ret;
+	}
+
+	function registerMediaLinks($collection){
+		$this->MediaLinks = $collection;
+
+		parent::registerMediaLinks(false, true);
 	}
 
 	public function addItemsToCollection($items, $pos = -1){

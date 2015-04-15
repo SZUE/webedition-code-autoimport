@@ -101,6 +101,9 @@ function we_lcmd(par) {
 		case 'delete_templates':
 			top.we_cmd("del", 1, tables.TEMPLATES_TABLE);
 			return;
+		case 'delete_collections':
+			top.we_cmd("del", 1, tables.VFILE_TABLE);
+			return;
 		case 'move_documents':
 			top.we_cmd("mv", 1, tables.FILE_TABLE);
 			return;

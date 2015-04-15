@@ -295,6 +295,18 @@ $we_menu = array(
 		'perm' => 'DELETE_OBJECT',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL)
 	),
+	array(// separator
+		'parent' => 1080000,
+		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS',
+		'hide' => $seeMode
+	),
+	array(// File > Delete > Templates
+		'text' => g_l('global', '[vfile]'),
+		'parent' => 1080000,
+		'cmd' => 'delete_collections',
+		'perm' => '',//'DELETE_COLLECTION',
+		'hide' => $seeMode,
+	),
 	1090000 => array(// File > Move
 		'text' => g_l('javaMenu_global', '[move]'),
 		'parent' => 1000000,
