@@ -233,7 +233,7 @@ function enableNewFileBut() {
 		}
 	}
 
-	function _userCanMakeNewFile(){
+	protected function _userCanMakeNewFile(){
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			return true;
 		}
