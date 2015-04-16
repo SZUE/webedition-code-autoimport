@@ -69,6 +69,9 @@ $l_buttons_global=array(
 	'btn_add_cat'=>array(
 		'alt'=>'Lisää kategoria',
 	),
+	'btn_add_collection'=>array(
+		'alt'=>'Add collection',
+	),
 	'btn_add_field'=>array(
 		'alt'=>'Lisää kenttä',
 	),

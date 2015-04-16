@@ -69,6 +69,9 @@ $l_buttons_global=array(
 	'btn_add_cat'=>array(
 		'alt'=>'Kategorie hinzufügen',
 	),
+	'btn_add_collection'=>array(
+		'alt'=>'Sammlung hinzufügen',
+	),
 	'btn_add_field'=>array(
 		'alt'=>'Feld hinzufügen',
 	),
