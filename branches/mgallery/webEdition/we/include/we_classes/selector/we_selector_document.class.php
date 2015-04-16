@@ -43,7 +43,21 @@ class we_selector_document extends we_selector_directory{
 
 	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $startID);
-		$this->fields .= ($this->table === VFILE_TABLE ? ',UNIX_TIMESTAMP(ModDate) AS ModDate' : ',Filename,Extension,ModDate') . ',RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
+		$this->fields .= ',RestrictOwners,Owners,OwnersReadOnly,CreatorID';
+		switch($this->table){
+			case FILE_TABLE:
+				$this->fields .= ',Filename,Extension,ModDate,Published';
+				break;
+			case VFILE_TABLE:
+				$this->fields .= ',UNIX_TIMESTAMP(ModDate) AS ModDate,Text AS Filename,IF(IsFolder,"'.we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::FOLDER).'","'.we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::COLLECTION).'") AS Icon';
+				break;
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				$this->fields .= ',Filename,Extension,ModDate,Published';
+				break;
+			default:
+				$this->fields .= ',Filename,Extension,ModDate,1 AS Published';
+		}
+
 		$this->canSelectDir = $canSelectDir;
 
 		$this->title = g_l('fileselector', '[docSelector][title]');
@@ -169,10 +183,7 @@ function exit_open() {
 
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
-			$published = $this->table === FILE_TABLE ? $this->db->f("Published") : 1;
-			$filename = $this->table === VFILE_TABLE ? $this->db->f("Text") : $this->db->f("Filename");
-			$icon = $this->table === VFILE_TABLE ? we_base_ContentTypes::inst()->getIcon($this->db->f("IsFolder") ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION) : $this->db->f("Icon");
-			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $icon . '","' . $filename . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $published . '","' . $title . '");';
+			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $this->db->f("Published"). '","' . $title . '");';
 		}
 		$ret .=' function startFrameset(){';
 		switch($this->filter){
