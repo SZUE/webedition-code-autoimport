@@ -43,7 +43,7 @@ class we_selector_document extends we_selector_directory{
 
 	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $startID);
-		$this->fields .= ($this->table === VFILE_TABLE ? '' : ',Filename,Extension') . ',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
+		$this->fields .= ($this->table === VFILE_TABLE ? ',UNIX_TIMESTAMP(ModDate) AS ModDate' : ',Filename,Extension,ModDate') . ',RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
 		$this->canSelectDir = $canSelectDir;
 
 		$this->title = g_l('fileselector', '[docSelector][title]');
@@ -344,20 +344,20 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	}') . '
 </head>
 <body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb(\'' . $path . '\');">';
-		if(isset($result['ContentType']) && !empty($result['ContentType'])){
-			if($result['ContentType'] === we_base_ContentTypes::FOLDER){
-				$this->db->query('SELECT ID,Text,IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
-				$folderFolders = array();
-				$folderFiles = array();
-				while($this->db->next_record()){
-					if($this->db->f('IsFolder')){
-						$folderFolders[$this->db->f('ID')] = $this->db->f('Text');
-					} else {
-						$folderFiles[$this->db->f('ID')] = $this->db->f('Text');
-					}
-				}
+		if((isset($result['ContentType']) && !empty($result['ContentType'])) || ($this->table == VFILE_TABLE )){
+			if((isset($result['ContentType']) && $result['ContentType'] === we_base_ContentTypes::FOLDER) || ($this->table == VFILE_TABLE && $result['IsFolder'])){
+				$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->id));
+				$folderFolders = $this->db->getAllFirst(false);
+				$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=0 AND ParentID=' . intval($this->id));
+				$folderFiles = $this->db->getAllFirst(false);
 			} else {
 				switch($this->table){
+					case VFILE_TABLE:
+						$this->db->query('SELECT f.ID,f.Text FROM ' . FILELINK_TABLE . ' fl JOIN ' . FILE_TABLE . ' f ON (f.ID=fl.remObj AND fl.remTable="tblFile") WHERE fl.DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND fl.ID=' . intval($this->id));
+						$folderFiles = $this->db->getAllFirst(false);
+						$result['ContentType'] = we_base_ContentTypes::FOLDER;
+
+						break;
 					case FILE_TABLE:
 						$this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
 						$metainfos = $this->db->getAllFirst(false);
@@ -454,14 +454,14 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			if($result['CreationDate']){
 				$_previewFields["properies"]["data"][] = array(
 					"caption" => g_l('fileselector', '[created]'),
-					"content" => date(g_l('date', '[format][default]'), $result['CreationDate'])
+					"content" => is_int($result['CreationDate']) ? date(g_l('date', '[format][default]'), $result['CreationDate']) : $result['CreationDate']
 				);
 			}
 
 			if($result['ModDate']){
 				$_previewFields["properies"]["data"][] = array(
 					"caption" => g_l('fileselector', '[modified]'),
-					"content" => date(g_l('date', '[format][default]'), $result['ModDate'])
+					"content" => is_int($result['ModDate']) ? date(g_l('date', '[format][default]'), $result['ModDate']) : $result['ModDate']
 				);
 			}
 

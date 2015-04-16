@@ -237,6 +237,12 @@ $we_menu = array(
 		'perm' => 'CAN_SEE_OBJECTFILES',
 		'hide' => !defined('OBJECT_TABLE')
 	),
+	array(// File > Open > Document
+		'text' => g_l('javaMenu_global', '[collection]') . '&hellip;',
+		'parent' => 1030000,
+		'cmd' => 'open_collection',
+		'perm' => 'CAN_SEE_DOCUMENTS',
+	),
 	array(// separator
 		'parent' => 1030000,
 		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS',
@@ -304,7 +310,7 @@ $we_menu = array(
 		'text' => g_l('global', '[vfile]'),
 		'parent' => 1080000,
 		'cmd' => 'delete_collections',
-		'perm' => '',//'DELETE_COLLECTION',
+		'perm' => '', //'DELETE_COLLECTION',
 		'hide' => $seeMode,
 	),
 	1090000 => array(// File > Move
