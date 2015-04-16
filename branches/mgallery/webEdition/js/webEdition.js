@@ -1372,7 +1372,6 @@ function we_cmd_base(args, url) {
 				_visibleEditorFrame.reloadContent = false;
 			}
 
-
 			if (_currentEditorRootFrame) {
 
 				if (!we_sbmtFrm(_sendToFrame, url, _sendFromFrame)) {

@@ -21,48 +21,45 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//TODO: make read, save and process relations-data more concise
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();// FIXME: use perms
 $collection = new we_collection();
+$id = 0;
 
 if(we_base_request::_(we_base_request::BOOL, 'dosave')){
+	$collection->ContentType = we_base_ContentTypes::COLLECTION;
+	$collection->IsFolder = 0;
+	$collection->we_new();
+
 	$name = we_base_request::_(we_base_request::STRING, 'we_name');
 	$collection->Filename = $collection->Text = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_Filename');
 	$collection->ParentID = we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID');
-	$collection->ParentPath = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_ParentPath');
+	$collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
+	$collection->Path = ($collection->ParentID == 0 ? '' : $collection->ParentPath) . '/' . $collection->Filename;
 	$collection->remCT = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remCT');
+	$collection->remTable = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
 
-	$db = new DB_WE();
-	$exists = f('SELECT 1 FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1', '', $db);
 	$saveSuccess = false;
-	if(!$exists){
-		$collection->remTable = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
-		$collection->Path = ($collection->ParentID == 0 ? '' : $collection->ParentPath) . '/' . $collection->Filename;
-		$collection->IsFolder = 0;
-		$collection->Table = VFILE_TABLE;
-		$collection->CreatorID = $_SESSION['user']['ID'];
-
-		// FIXME: why does it not verify Filename/Text and existing Paths?!!
-		$collection->ID = 0;
-		$collection->fileExists = 0;
-
+	if($collection->i_pathNotValid()){
+		$jsMessage = "a) " . sprintf(g_l('weClass', '[notValidFolder]'), $collection->Path);
+		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+	} else if($collection->i_filenameNotValid()){
+		$jsMessage = "b) " . sprintf(g_l('weEditor', '[' . $collection->ContentType . '][we_filename_notValid]'), $collection->Path);
+		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+	} else if($collection->i_filenameDouble()){
+		$jsMessage = "c) " . sprintf(g_l('weEditor', '[' . $collection->ContentType . '][response_path_exists]'), $collection->Path);
+		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
+	} else {
 		$saveSuccess = $collection->we_save();
-
-		$jsMessage = $ret ? 'collection successfully saved' : 'failed saving collection';
 		if($saveSuccess){
 			$jsMessage = 'collection successfully saved';
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
+			$db = new DB_WE();
 			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1', 'ID', $db);
-
 		} else {
-			$jsMessage = 'failed saving collection';
+			$jsMessage = 'unknown error ';
 			$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 		}
-	} else {
-		$jsMessage = 'collection allready exists';
-		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 	}
 }
 

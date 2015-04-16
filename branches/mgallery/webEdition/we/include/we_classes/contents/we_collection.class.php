@@ -48,6 +48,7 @@ class we_collection extends we_root{
 	 */
 	function __construct(){
 		parent::__construct();
+		$this->Table = VFILE_TABLE;
 		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'insertPrefs', 'insertRecursive', 'useEmpty', 'doubleOk');
 
 		if(isWE()){
@@ -371,8 +372,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 				), $rowHtml);
 	}
 
-	function i_filenameDouble(){//
-		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->Text) . " AND Text='" . escape_sql_query($this->Filename) . "' AND ID != " . intval($this->ID), "", $this->DB_WE);
+	function i_filenameDouble(){
+		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Text='" . escape_sql_query($this->Text) . "' AND ID != " . intval($this->ID), "", $this->DB_WE);
 	}
 
 	public function we_load($from = we_class::LOAD_MAID_DB){

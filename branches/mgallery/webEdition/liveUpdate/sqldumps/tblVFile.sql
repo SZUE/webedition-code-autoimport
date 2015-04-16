@@ -14,7 +14,7 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   remTable enum('tblFile','tblObjectFiles') NOT NULL default 'tblFile',
   remCT varchar(255) NOT NULL default '',
   remClass TEXT NOT NULL default '',
-  PRIMARY KEY  (ID),
+  PRIMARY KEY (ID),
   KEY Path (Path(30),IsFolder),
   KEY ParentID(ParentID)
 ) ENGINE=MyISAM;
