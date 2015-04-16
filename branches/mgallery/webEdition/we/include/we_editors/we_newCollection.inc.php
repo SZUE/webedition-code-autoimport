@@ -24,6 +24,15 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();// FIXME: use perms
 $collection = new we_collection();
+
+if(we_base_request::_(we_base_request::INT, 'pid')){
+	$collection->ParentID = we_base_request::_(we_base_request::INT, 'pid');
+	$collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
+}
+$from = we_base_request::_(we_base_request::STRING, 'from');
+$isParentFixed = ($from === 'selector');
+
+
 $id = 0;
 
 if(we_base_request::_(we_base_request::BOOL, 'dosave')){
@@ -33,7 +42,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 
 	$name = we_base_request::_(we_base_request::STRING, 'we_name');
 	$collection->Filename = $collection->Text = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_Filename');
-	$collection->ParentID = we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID');
+	$collection->ParentID = we_base_request::_(we_base_request::INT, 'pid') ? : we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID');
 	$collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
 	$collection->Path = ($collection->ParentID == 0 ? '' : $collection->ParentPath) . '/' . $collection->Filename;
 	$collection->remCT = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remCT');
@@ -41,18 +50,18 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 
 	$saveSuccess = false;
 	if($collection->i_pathNotValid()){
-		$jsMessage = "a) " . sprintf(g_l('weClass', '[notValidFolder]'), $collection->Path);
+		$jsMessage = sprintf(g_l('weClass', '[notValidFolder]'), $collection->Path);
 		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 	} else if($collection->i_filenameNotValid()){
-		$jsMessage = "b) " . sprintf(g_l('weEditor', '[' . $collection->ContentType . '][we_filename_notValid]'), $collection->Path);
+		$jsMessage = sprintf(g_l('weEditor', '[' . $collection->ContentType . '][we_filename_notValid]'), $collection->Path);
 		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 	} else if($collection->i_filenameDouble()){
-		$jsMessage = "c) " . sprintf(g_l('weEditor', '[' . $collection->ContentType . '][response_path_exists]'), $collection->Path);
+		$jsMessage = sprintf(g_l('weEditor', '[' . $collection->ContentType . '][response_path_exists]'), $collection->Path);
 		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 	} else {
 		$saveSuccess = $collection->we_save();
 		if($saveSuccess){
-			$jsMessage = 'collection successfully saved';
+			$jsMessage = $from == 'selector' ? '' : 'collection successfully saved';
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 			$db = new DB_WE();
 			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1', 'ID', $db);
@@ -111,8 +120,13 @@ function we_cmd() {
 			}
 			break;
 		case "do_onSuccess":
-			//opener.top.we_cmd("load", "' . VFILE_TABLE . '");
-			opener.weEditorFrameController.openDocument("' . VFILE_TABLE . '", ' . ($id ? : 0) . ', "' . we_base_ContentTypes::COLLECTION . '");
+			' . ($from === 'selector' ? 'opener.top.reloadDir();
+			opener.top.unselectAllFiles();
+			opener.top.doClick(' . $id . ', 0);
+			setTimeout(function(){opener.top.selectFile(' . $id . ');}, 200);
+			//opene.opener.weEditorFrameController.openDocument("' . VFILE_TABLE . '", ' . ($id ? : 0) . ', "' . we_base_ContentTypes::COLLECTION . '");' :
+			'//opener.top.we_cmd("load", "' . VFILE_TABLE . '");
+			opener.weEditorFrameController.openDocument("' . VFILE_TABLE . '", ' . ($id ? : 0) . ', "' . we_base_ContentTypes::COLLECTION . '");') . '
 			window.close();
 			break;
 		default:
@@ -123,15 +137,18 @@ function we_cmd() {
 			opener.top.we_cmd.apply(this, args);
 	}
 }
-' . (isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '') : '')) .
+' . (isset($jsMessage) && $jsMessage ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')) . 
 '</head>';
 
-$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath(), 'space' => 0, 'noline' => 1);
+$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($isParentFixed), 'space' => 0, 'noline' => 1);
 $parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(), 'space' => 0, 'noline' => 1);
 
 $content = we_html_element::htmlHidden('dosave', 0) .
-	we_html_element::htmlHidden('we_cmd[0]', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)) .
-	we_html_element::htmlHidden('we_name', $collection->Name) .
+	we_html_element::htmlHiddens(array(
+		'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+		'we_name' => $collection->Name,
+		'from' => $from
+	)) .
 	we_html_multiIconBox::getHTML(
 		'weNewCollection', 500, $parts, 30, we_html_button::position_yes_no_cancel(
 			we_html_button::create_button('save', 'javascript:we_cmd(\'save_notclose\');'), 

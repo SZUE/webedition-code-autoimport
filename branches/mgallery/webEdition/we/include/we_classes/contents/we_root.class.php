@@ -227,7 +227,7 @@ abstract class we_root extends we_class{
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
-	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $showTitle = true){
+	function formDirChooser($width = 0, $rootDirID = 0, $table = '', $Pathname = 'ParentPath', $IDName = 'ParentID', $cmd = '', $showTitle = true, $disabled = false){
 		$yuiSuggest = &weSuggest::getInstance();
 
 		if(!$table){
@@ -237,6 +237,17 @@ abstract class we_root extends we_class{
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$path = $this->$Pathname;
 		$myid = $this->$IDName;
+		
+		if($disabled){
+			return we_html_tools::htmlFormElementTable(
+				array(
+				"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) . 
+					we_html_tools::hidden($textname, $path, array('id' => $textname)) .
+					we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width-6), 'disabled' => '1')),
+				"valign" => "top",
+				"style" => "height  : 10px"), g_l('weClass', '[dir]'), 'left', 'defaultfont'
+			);
+		}
 
 		if($Pathname === 'ParentPath'){
 			$_parentPathChanged = 'if(opener.pathOfDocumentChanged) { opener.pathOfDocumentChanged(); }';
@@ -438,7 +449,7 @@ abstract class we_root extends we_class{
 		return !we_users_util::isUserInUsers($_SESSION['user']['ID'], $readers);
 	}
 
-	public function formPath(){
+	public function formPath($disablePath = false){
 		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
 		if($this->ContentType === we_base_ContentTypes::HTACESS){
 			$vals = we_base_ContentTypes::inst()->getExtension($this->ContentType, true);
@@ -459,7 +470,7 @@ abstract class we_root extends we_class{
 		<td>' . we_html_tools::getPixel(20, 2) . '</td>
 		<td>' . we_html_tools::getPixel(100, 2) . '</td>
 	</tr>
-	<tr><td colspan="3">' . $this->formDirChooser(388) . '</td></tr>
+	<tr><td colspan="3">' . $this->formDirChooser(388, 0, '', 'ParentPath', 'ParentID', '', true, $disablePath) . '</td></tr>
 </table>';
 	}
 

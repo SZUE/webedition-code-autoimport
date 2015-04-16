@@ -31,7 +31,8 @@ class we_selector_document extends we_selector_directory{
 		we_base_ContentTypes::IMAGE => "NEW_GRAFIK",
 		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME",
 		we_base_ContentTypes::FLASH => "NEW_FLASH",
-		we_base_ContentTypes::VIDEO => "NEW_VIDEO"
+		we_base_ContentTypes::VIDEO => "NEW_VIDEO",
+		we_base_ContentTypes::COLLECTION => "NEW_COLLECTION"
 	);
 	protected $ctb = array(
 		"" => "btn_add_file",
@@ -39,6 +40,7 @@ class we_selector_document extends we_selector_directory{
 		we_base_ContentTypes::QUICKTIME => 'btn_add_quicktime',
 		we_base_ContentTypes::FLASH => 'btn_add_flash',
 		we_base_ContentTypes::VIDEO => 'btn_add_video',
+		we_base_ContentTypes::COLLECTION => 'btn_add_collection',
 	);
 
 	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0){
@@ -231,6 +233,19 @@ function enableNewFileBut() {
 	newFileState = 1;
 }';
 		}
+	}
+
+	protected function printHeaderTable($extra = ''){
+		if($this->table !== VFILE_TABLE){
+			return parent::printHeaderTable($extra);
+		}
+
+		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
+		return parent::printHeaderTable(
+				'<td>' .
+					we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+					we_html_button::create_button("image:" . $this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$newFileState, false) .
+				'</td>', true);
 	}
 
 	protected function _userCanMakeNewFile(){

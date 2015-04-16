@@ -148,6 +148,11 @@ function newFile() {
 	new jsWindow(url, "we_fsuploadFile", -1, -1, 450, 660, true, false, true);
 }
 
+function newCollection() {
+	url = "we_cmd.php?we_cmd[0]=editNewCollection&pid=" + top.currentDir + "&from=selector";
+	new jsWindow(url, "we_newICollection", -1, -1, 460, 560, true, false, true);
+}
+
 function writeBodyDocument(d) {
 	var body = (we_editDirID ?
 					'<input type="hidden" name="what" value="' + top.consts.DORENAMEFOLDER + '" />' +
