@@ -106,7 +106,7 @@ class we_shop_listviewShopVariants extends we_listview_base{
 			$ret['WE_VARIANT_NAME'] = $key;
 
 			if($key != $this->DefaultName){
-				$varUrl = WE_VARIANT_REQUEST . '=' . $key;
+				$varUrl = we_base_constants::WE_VARIANT_REQUEST . '=' . $key;
 				$ret['WE_VARIANT'] = $key;
 			} else {
 				$varUrl = $ret['WE_VARIANT'] = '';

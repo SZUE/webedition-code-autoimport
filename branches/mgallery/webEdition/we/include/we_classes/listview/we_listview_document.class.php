@@ -341,8 +341,8 @@ class we_listview_document extends we_listview_base{
 				}
 
 				$this->Record['WE_SHOPVARIANTS'] = 0; //check this for global variants
-				if(defined('WE_VARIANTS_ELEMENT_NAME') && isset($this->Record[WE_VARIANTS_ELEMENT_NAME]) && $this->Record[WE_VARIANTS_ELEMENT_NAME]){
-					$variants = is_string($this->Record[WE_VARIANTS_ELEMENT_NAME]) ? we_unserialize($this->Record[WE_VARIANTS_ELEMENT_NAME]) : array();
+				if(isset($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) && $this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]){
+					$variants = is_string($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) ? we_unserialize($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) : array();
 					if(is_array($variants) && count($variants) > 0){
 						$this->Record['WE_SHOPVARIANTS'] = count($variants);
 					}

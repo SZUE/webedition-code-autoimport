@@ -474,7 +474,7 @@ class we_object extends we_document{
 
 			$this->DefaultValues = serialize($arrt);
 
-			$variant_field = 'variant_' . WE_VARIANTS_ELEMENT_NAME;
+			$variant_field = 'variant_' . we_base_constants::WE_VARIANTS_ELEMENT_NAME;
 			
 			$this->DB_WE->query('SHOW COLUMNS FROM ' . $ctable . ' LIKE "' . $variant_field . '"');
 			$exists = ($this->DB_WE->next_record()) ? true : false;

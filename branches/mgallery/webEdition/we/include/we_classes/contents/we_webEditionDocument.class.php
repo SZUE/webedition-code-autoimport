@@ -778,8 +778,8 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		if(!empty($variationFields)){
 			$i = 0;
-			while($this->issetElement(WE_VARIANTS_PREFIX . $i)){
-				if(!trim($this->getElement(WE_VARIANTS_PREFIX . $i++))){
+			while($this->issetElement(we_base_constants::WE_VARIANTS_PREFIX . $i)){
+				if(!trim($this->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i++))){
 					return false;
 				}
 			}
@@ -1050,9 +1050,9 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		if($this->InWebEdition){
 			return ($this->hasVariants = (f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE DID=' . intval($this->TemplateID) . ' AND DocumentTable="tblTemplates" AND Name LIKE ("variant_%") LIMIT 1', '', $this->DB_WE)));
 		}
-		$tmp = $this->getElement(WE_VARIANTS_ELEMENT_NAME);
+		$tmp = $this->getElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME);
 		if(is_array($tmp)){
-			$this->setElement(WE_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
+			$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
 			return ($this->hasVariants = !empty($tmp));
 		}
 		$_vars = we_unserialize($tmp);
@@ -1066,10 +1066,10 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	function initVariantDataFromDb(){
-		if(($tmp = $this->getElement(WE_VARIANTS_ELEMENT_NAME))){
+		if(($tmp = $this->getElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME))){
 
 			// unserialize the variant data when loading the model
-			$this->setElement(WE_VARIANTS_ELEMENT_NAME, we_unserialize($tmp), 'variant');
+			$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, we_unserialize($tmp), 'variant');
 			
 			// now register variant fields in document
 			we_shop_variants::setVariantDataForModel($this);

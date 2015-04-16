@@ -118,10 +118,10 @@ function we_tag_a($attribs, $content){
 			// is it a shopVariant ????
 			$variant = // normal variant on document
 					(isset($GLOBALS['we_doc']->Variant) ? // normal listView or document
-							'&' . WE_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant :
+							'&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant :
 							// variant inside shoplistview!
 							(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_VARIANT') ?
-									'&' . WE_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f('WE_VARIANT') :
+									'&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f('WE_VARIANT') :
 									''));
 			$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 			//	preview mode in seem

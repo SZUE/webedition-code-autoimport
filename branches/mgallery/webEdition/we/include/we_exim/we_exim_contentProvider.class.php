@@ -233,7 +233,7 @@ class we_exim_contentProvider{
 			'we_objectFile' => array('DefArray', 'schedArr')
 		);
 
-		if($prop === 'Dat' && $classname === 'we_element' && defined('WE_VARIANTS_ELEMENT_NAME') && $object->Name == WE_VARIANTS_ELEMENT_NAME){
+		if($prop === 'Dat' && $classname === 'we_element' && $object->Name == we_base_constants::WE_VARIANTS_ELEMENT_NAME){
 			// exception for shop - handling arrays in the content
 			return true;
 		}

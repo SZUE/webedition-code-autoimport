@@ -82,10 +82,10 @@ abstract class we_shop_variants{
 		$variationElements = array();
 
 		foreach($elements as $element => $elemArr){
-			if(strpos($element, WE_VARIANTS_PREFIX) !== false){
+			if(strpos($element, we_base_constants::WE_VARIANTS_PREFIX) !== false){
 				//since delete might have deleted this instance, check if this id is still set
-				list($pos) = explode('_', substr($element, strlen(WE_VARIANTS_PREFIX), 2));
-				if(isset($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'][$pos])){
+				list($pos) = explode('_', substr($element, strlen(we_base_constants::WE_VARIANTS_PREFIX), 2));
+				if(isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$pos])){
 					//only add elements which are not deleted
 					$variationElements[$element] = $elemArr;
 				}
@@ -119,8 +119,8 @@ abstract class we_shop_variants{
 
 		// now create element for the model
 		// just overwrite new values ...
-		$model->elements[WE_VARIANTS_ELEMENT_NAME]['type'] = 'variant';
-		$model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'] = ($save ? serialize($variationElement) : $variationElement);
+		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['type'] = 'variant';
+		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] = ($save ? serialize($variationElement) : $variationElement);
 	}
 
 	/**
@@ -132,19 +132,19 @@ abstract class we_shop_variants{
 	public static function setVariantDataForModel(&$model, $unserialize = false){
 
 		// set variation data from array and
-		if(!isset($model->elements[WE_VARIANTS_ELEMENT_NAME])){
+		if(!isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
 			return;
 		}
 
 		if($unserialize){
-			$model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat']) ?
-				$model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'] :
-				we_unserialize($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat']);
+			$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] = is_array($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) ?
+				$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] :
+				we_unserialize($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']);
 		}
 
 		$elements = $model->elements;
 
-		$variations = isset($elements[WE_VARIANTS_ELEMENT_NAME]['dat']) ? $elements[WE_VARIANTS_ELEMENT_NAME]['dat'] : ''; //Fix #9349
+		$variations = isset($elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) ? $elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] : ''; //Fix #9349
 		if(!$variations || !is_array($variations)){
 			return;
 		}
@@ -152,13 +152,13 @@ abstract class we_shop_variants{
 			if(is_array($variation)){
 
 				foreach($variation as $name => $varArr){
-					$model->elements[WE_VARIANTS_PREFIX . $i] = array(
+					$model->elements[we_base_constants::WE_VARIANTS_PREFIX . $i] = array(
 						'type' => 'txt',
 						'dat' => $name
 					);
 
 					foreach($varArr as $name => $datArr){
-						$model->elements[WE_VARIANTS_PREFIX . $i . '_' . $name] = $datArr;
+						$model->elements[we_base_constants::WE_VARIANTS_PREFIX . $i . '_' . $name] = $datArr;
 					}
 				}
 			}
@@ -166,20 +166,20 @@ abstract class we_shop_variants{
 	}
 
 	private static function getNrFromElemName($elemName){
-		return preg_replace('/_(.*)/', '', substr($elemName, strlen(WE_VARIANTS_PREFIX)));
+		return preg_replace('/_(.*)/', '', substr($elemName, strlen(we_base_constants::WE_VARIANTS_PREFIX)));
 	}
 
 	private static function getFieldNameFromElemName($elemName){
 
-		$fieldNameTmp = substr($elemName, strlen(WE_VARIANTS_PREFIX));
+		$fieldNameTmp = substr($elemName, strlen(we_base_constants::WE_VARIANTS_PREFIX));
 		$fieldName = preg_replace('/(\d+_*)/', '', $fieldNameTmp, 1);
 
 		return ($fieldNameTmp == $fieldName ? '' : $fieldName);
 	}
 
 	public static function getNumberOfVariants(&$model){
-		return (isset($model->elements[WE_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat']) ?
-				count($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat']) :
+		return (isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) && is_array($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) ?
+				count($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) :
 				0);
 	}
 
@@ -188,13 +188,13 @@ abstract class we_shop_variants{
 
 		// init model->elements if neccessary
 
-		if(!isset($model->elements[WE_VARIANTS_ELEMENT_NAME]) || !isset($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat']) || !is_array($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'])){
-			$model->elements[WE_VARIANTS_ELEMENT_NAME] = array();
-			$model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'] = array();
+		if(!isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) || !isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) || !is_array($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'])){
+			$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME] = array();
+			$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] = array();
 		}
 
 		// add new element at end of array, move it when neccesary
-		$model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'][] = self::createNewVariantElement($model);
+		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][] = self::createNewVariantElement($model);
 
 		// now move element, it is actually at last position
 		if($amount > $position){ // move all elements
@@ -216,7 +216,7 @@ abstract class we_shop_variants{
 		$variationElements = array();
 
 		foreach($elements as $element => $elemArr){
-			if(strpos($element, WE_VARIANTS_PREFIX) !== false){
+			if(strpos($element, we_base_constants::WE_VARIANTS_PREFIX) !== false){
 				$variationElements[$element] = $elemArr;
 			}
 		}
@@ -245,9 +245,9 @@ abstract class we_shop_variants{
 	 */
 	private static function changeVariantPosition($pos1, $pos2, &$model){
 		// first move all fields in the $modell
-		$tmp = $model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'][$pos1];
-		$model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'][$pos1] = $model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'][$pos2];
-		$model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'][$pos2] = $tmp;
+		$tmp = $model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$pos1];
+		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$pos1] = $model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$pos2];
+		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$pos2] = $tmp;
 		// move elements for editmode
 		$variationElements_1 = we_shop_variants::getAllVariationFields($model, $pos1);
 		$variationElements_2 = we_shop_variants::getAllVariationFields($model, $pos2);
@@ -274,7 +274,7 @@ abstract class we_shop_variants{
 	}
 
 	private static function getNameForPosition($name, $pos){
-		return WE_VARIANTS_PREFIX . $pos .
+		return we_base_constants::WE_VARIANTS_PREFIX . $pos .
 			(($fieldName = self::getFieldNameFromElemName($name)) ? '_' . self::getFieldNameFromElemName($name) : '');
 	}
 
@@ -291,8 +291,8 @@ abstract class we_shop_variants{
 		foreach(array_keys($variationFields) as $name){
 			unset($model->elements[$name]);
 		}
-		if(is_array($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'][$delPos])){
-			unset($model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'][$delPos]);
+		if(is_array($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$delPos])){
+			unset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$delPos]);
 		}
 	}
 
@@ -315,7 +315,7 @@ abstract class we_shop_variants{
 		<td width="200"><span class="defaultfont"><b>Name</b></span></td>
 </tr>
 <tr>
-		<td>' . $model->getFieldHTML(WE_VARIANTS_PREFIX . $i, 'input', array(), true, true) . '</td>
+		<td>' . $model->getFieldHTML(we_base_constants::WE_VARIANTS_PREFIX . $i, 'input', array(), true, true) . '</td>
 		<td>
 			<table class="defaultgray" align="right" width="120">
 				<tr>
@@ -337,7 +337,7 @@ abstract class we_shop_variants{
 						$type = $regs[1];
 						$realname = $regs[2];
 					}
-					$name = WE_VARIANTS_PREFIX . $i . '_' . $realname;
+					$name = we_base_constants::WE_VARIANTS_PREFIX . $i . '_' . $realname;
 					//$name = ''; //#6924
 					$content .= '<tr>
 						<td><span class="defaultfont"><b>' . $realname . '</b></span><div class="objectDescription">' . (isset($model->DefArray[$type . '_' . $realname]['editdescription']) ? str_replace("\n", we_html_element::htmlBr(), $model->DefArray[$type . '_' . $realname]['editdescription']) : '') . '</div></td>
@@ -383,14 +383,14 @@ abstract class we_shop_variants{
 				$upbut = ($i == 0 ? we_html_button::create_button("image:btn_direction_up", '', true, 21, 22, '', '', true) : we_html_button::create_button("image:btn_direction_up", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
 				$downbut = ($i == ($count - 1) ? we_html_button::create_button("image:btn_direction_down", "", true, 21, 22, "", "", true) : we_html_button::create_button("image:btn_direction_down", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
 				$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
-				$previewBut = we_html_button::create_button("image:btn_function_view", "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(WE_VARIANTS_PREFIX . $i)) . "');", true, 30);
+				$previewBut = we_html_button::create_button("image:btn_function_view", "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i)) . "');", true, 30);
 
 				$content = '<table border="0" class="defaultgray" width="700">
 <tr>
 	<td width="200" class="defaultfont"><b>Name</b></td>
 </tr>
 <tr>
-	<td>' . $model->formTextInput('input', WE_VARIANTS_PREFIX . $i, '') . '</td>
+	<td>' . $model->formTextInput('input', we_base_constants::WE_VARIANTS_PREFIX . $i, '') . '</td>
 		<td>
 			<table class="defaultgray" align="right">
 				<tr>
@@ -407,7 +407,7 @@ abstract class we_shop_variants{
 
 				foreach($variationFields as $name => $fieldInformation){
 
-					$fieldInformation['attributes']['name'] = WE_VARIANTS_PREFIX . $i . '_' . $fieldInformation['attributes']['name'];
+					$fieldInformation['attributes']['name'] = we_base_constants::WE_VARIANTS_PREFIX . $i . '_' . $fieldInformation['attributes']['name'];
 					$content .= '
 	<tr>
 		<td class="defaultfont"><b>' . $name . '</b></td>
@@ -437,7 +437,7 @@ abstract class we_shop_variants{
 	}
 
 	public static function useVariant(&$model, $name){
-		$variantDatArray = $model->getElement(WE_VARIANTS_ELEMENT_NAME);
+		$variantDatArray = $model->getElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME);
 
 		$model->Variant = $name;
 		if(!is_array($variantDatArray)){
@@ -465,10 +465,10 @@ abstract class we_shop_variants{
 	 * @param string $name
 	 */
 	public static function useVariantForShop(&$record, $name){
-		if(!isset($record[WE_VARIANTS_ELEMENT_NAME])){
+		if(!isset($record[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
 			return;
 		}
-		$variantDatArray = we_unserialize($record[WE_VARIANTS_ELEMENT_NAME]);
+		$variantDatArray = we_unserialize($record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]);
 
 		foreach($variantDatArray as $variant){
 			foreach($variant as $variantName => $variantData){
@@ -490,10 +490,10 @@ abstract class we_shop_variants{
 	 * @param we_objectFile $model
 	 */
 	public static function useVariantForShopObject(&$record, $name, $model){
-		if(!isset($model->elements[WE_VARIANTS_ELEMENT_NAME])){
+		if(!isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
 			return;
 		}
-		$variantDatArray = $model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'];
+		$variantDatArray = $model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'];
 
 		if(!is_array($variantDatArray)){
 			return;
@@ -512,12 +512,12 @@ abstract class we_shop_variants{
 	}
 
 	public static function getVariantData($model, $defaultname){
-		if(!isset($model->elements[WE_VARIANTS_ELEMENT_NAME])){
+		if(!isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
 			return array();
 		}
 
 		// add default data to listview
-		$elements = $model->elements[WE_VARIANTS_ELEMENT_NAME]['dat'];
+		$elements = $model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'];
 		//this elemets contains only the variant fields, not the non-variant fields of the object
 		if(!is_array($elements) && $elements{0} == 'a'){
 			$elements = we_unserialize($elements);
@@ -548,9 +548,9 @@ abstract class we_shop_variants{
 		}
 		// attemot to add the other fields
 		$modelelemets = $model->elements; //get a copy of the non variant fields
-		unset($modelelemets[WE_VARIANTS_ELEMENT_NAME]); // get rid of some keys
+		unset($modelelemets[we_base_constants::WE_VARIANTS_ELEMENT_NAME]); // get rid of some keys
 		foreach(array_keys($modelelemets) as $key){
-			if(strpos($key, WE_VARIANTS_PREFIX) !== false && strpos($key, WE_VARIANTS_PREFIX) == 0){
+			if(strpos($key, we_base_constants::WE_VARIANTS_PREFIX) !== false && strpos($key, we_base_constants::WE_VARIANTS_PREFIX) == 0){
 				unset($modelelemets[$key]);
 			}
 		}

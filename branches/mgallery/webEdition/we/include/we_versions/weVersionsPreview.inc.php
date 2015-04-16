@@ -274,16 +274,16 @@ if(isset($oldDoc['documentElements'])){
 }
 if($newDocElements){
 	foreach($newDocElements as $k => $v){
-		$name = ($k != "") ? $k : we_html_tools::getPixel(1, 1);
+		$name = $k;
 		$oldVersion = true;
 		//skip this value - it is of no interest; everything is in data
-		if($isTempl && $name === 'completeData'){
+		if($isTempl && $k === 'completeData'){
 			continue;
 		}
 
-		$newVal = ($k == (defined('WE_VARIANTS_ELEMENT_NAME') ? WE_VARIANTS_ELEMENT_NAME : 'weInternVariantElement') ?
+		$newVal = ($k == we_base_constants::WE_VARIANTS_ELEMENT_NAME ?
 				we_versions_version::showValue($k, $newDocElements[$k]['dat']) :
-				(isset($v['dat']) && $v['dat'] != "" ? $v['dat'] : we_html_tools::getPixel(1, 1))
+				(isset($v['dat']) && $v['dat'] != "" ? $v['dat'] : '')
 			);
 
 		$mark = "border-bottom:1px solid #B8B8B7; ";
@@ -294,7 +294,7 @@ if($newDocElements){
 			} elseif(isset($oldDocElements[$k]['dat']) && $oldDocElements[$k]['dat'] != ""){
 				$oldVal = $oldDocElements[$k]['dat'];
 			} else {
-				$oldVal = we_html_tools::getPixel(1, 1);
+				$oldVal = '';
 			}
 
 			if($newVal != $oldVal){
@@ -339,13 +339,13 @@ if($newDocElements){
 
 			$contentDiff .= '<td colspan="2" style="' . $mark . '">' . $pre . $text . '</pre></td>';
 		} else {
-			if($newVal != we_html_tools::getPixel(1, 1) && $k != 'weInternVariantElement'){
+			if($newVal && $k != 'weInternVariantElement'){
 				$newVal = oldHtmlspecialchars($newVal);
 			}
 
 			$contentDiff .= '<td width="33%" style="' . $mark . '">' . $div . $pre . $newVal . ($pre ? '</pre>' : '') . ($div ? '</div>' : '') . '</td>';
 			if($oldVersion){
-				if($oldVal != we_html_tools::getPixel(1, 1) && $k != 'weInternVariantElement'){
+				if($oldVal && $k != 'weInternVariantElement'){
 					$oldVal = oldHtmlspecialchars($oldVal);
 				}
 				$contentDiff .= '<td width="33%" style="' . $mark . 'border-left:1px solid #B8B8B7;">' . $div . $pre . $oldVal . ($pre ? '</pre>' : '') . ($div ? '</div>' : '') . '</td>';
@@ -397,13 +397,13 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 
 		foreach($v as $key => $val){
 			$name = g_l('versions', '[' . $key . ']');
-			$newVal = we_html_tools::getPixel(1, 1);
+			$newVal = '';
 			if(!is_array($val)){
 				$oldVal = we_versions_version::showValue($key, $val, $oldDoc['documentTable']);
 			} else {
 				$oldVal = (is_array($val) ?
 						we_versions_version::showValue($key, $val, $oldDoc['documentTable']) :
-						we_html_tools::getPixel(1, 1));
+						'');
 			}
 
 
@@ -435,26 +435,26 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 				if(!empty($oldDocScheduler)){
 					$oldVal = (isset($oldDocScheduler[$k][$key]) && !is_array($oldDocScheduler[$k][$key]) ?
 							we_versions_version::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
-							we_html_tools::getPixel(1, 1));
+							'');
 
 					if($newVal != $oldVal){
 						$mark .= "background-color:#BFD5FF;";
 					}
 				} else {
-					$oldVal = we_html_tools::getPixel(1, 1);
+					$oldVal = '';
 				}
 			} else {
 				$newVal = we_versions_version::showValue($key, $val, $newDoc['documentTable']);
 				if(!empty($oldDocScheduler)){
 					$oldVal = (isset($oldDocScheduler[$k][$key]) && is_array($oldDocScheduler[$k][$key]) ?
 							we_versions_version::showValue($key, $oldDocScheduler[$k][$key], $oldDoc['documentTable']) :
-							we_html_tools::getPixel(1, 1));
+							'');
 
 					if($newVal != $oldVal){
 						$mark .= "background-color:#BFD5FF;";
 					}
 				} else {
-					$oldVal = we_html_tools::getPixel(1, 1);
+					$oldVal = '';
 				}
 			}
 
@@ -502,13 +502,13 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 	foreach($oldCustomFilter as $key => $val){
 
 		$name = g_l('versions', '[' . $key . ']');
-		$newVal = we_html_tools::getPixel(1, 1);
+		$newVal = '';
 		if(!is_array($val)){
 			$oldVal = we_versions_version::showValue($key, $val, $oldDoc['documentTable']);
 		} else {
 			$oldVal = (is_array($val) ?
 					we_versions_version::showValue($key, $val, $oldDoc['documentTable']) :
-					we_html_tools::getPixel(1, 1));
+					'');
 		}
 
 		$contentDiff .= '<tr>
@@ -529,26 +529,26 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 			if(!empty($oldCustomFilter)){
 				$oldVal = (!is_array($oldCustomFilter[$key]) ?
 						we_versions_version::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
-						we_html_tools::getPixel(1, 1));
+						'');
 
 				if($newVal != $oldVal){
 					$mark .= "background-color:#BFD5FF;";
 				}
 			} else {
-				$oldVal = we_html_tools::getPixel(1, 1);
+				$oldVal = '';
 			}
 		} else {
 			$newVal = we_versions_version::showValue($key, $val, $newDoc['documentTable']);
 			if(!empty($oldCustomFilter)){
 				$oldVal = (isset($oldCustomFilter[$key]) && is_array($oldCustomFilter[$key]) ?
 						we_versions_version::showValue($key, $oldCustomFilter[$key], $oldDoc['documentTable']) :
-						we_html_tools::getPixel(1, 1));
+						'');
 
 				if($newVal != $oldVal){
 					$mark .= "background-color:#BFD5FF;";
 				}
 			} else {
-				$oldVal = we_html_tools::getPixel(1, 1);
+				$oldVal = '';
 			}
 		}
 
