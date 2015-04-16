@@ -30,7 +30,7 @@ function doClick(id, ct) {
 			}, 400);
 		}
 	} else if (top.shiftpressed) {
-		var oldid = currentID;
+		var oldid = top.currentID;
 		var currendPos = getPositionByID(id);
 		var firstSelected = getFirstSelected();
 
@@ -41,7 +41,7 @@ function doClick(id, ct) {
 		} else {
 			selectFile(id);
 		}
-		currentID = oldid;
+		top.currentID = oldid;
 
 	} else if (!top.ctrlpressed) {
 		selectFile(id);
@@ -63,9 +63,9 @@ function setDir(id) {
 	if (id === 0) {
 		e.text = "";
 	}
-	currentID = id;
-	currentDir = id;
-	currentPath = e.path;
+	top.currentID = id;
+	top.currentDir = id;
+	top.currentPath = e.path;
 	top.document.getElementsByName("fname")[0].value = e.text;
 	if (id) {
 		top.enableDelBut();
@@ -87,17 +87,19 @@ function selectFile(id) {
 							(a.value + "," + e.text) :
 							e.text;
 		}
-		if (top.fsbody.document.getElementById("line_" + id))
+		if (top.fsbody.document.getElementById("line_" + id)){
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
-		currentPath = e.path;
-		currentID = id;
-		if (id)
+		}
+		top.currentPath = e.path;
+		top.currentID = id;
+		if (id){
 			top.enableDelBut();
-		we_editDelID = 0;
+			}
+		top.we_editDelID = 0;
 	} else {
 		a.value = "";
-		currentPath = "";
-		we_editDelID = 0;
+		top.currentPath = "";
+		top.we_editDelID = 0;
 	}
 }
 

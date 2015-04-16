@@ -325,13 +325,13 @@ function printFramesetSelectFileHTML(){
 
 					}
 					if (top.fsbody.document.getElementById("line_" + id)) top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
-									currentPath = e.path;
-									currentID = id;
-									we_editDirID = 0;
+									top.currentPath = e.path;
+									top.currentID = id;
+									top.we_editDirID = 0;
 					} else{
 					top.document.getElementsByName("fname")[0].value = "";
-									currentPath = "";
-									we_editDirID = 0;
+									top.currentPath = "";
+									top.we_editDirID = 0;
 					}
 					}
 -->

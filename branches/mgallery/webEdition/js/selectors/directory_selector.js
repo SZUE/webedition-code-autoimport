@@ -59,7 +59,7 @@ function doClick(id, ct) {
 		} else {
 			if (top.options.multiple) {
 				if (top.shiftpressed) {
-					var oldid = currentID;
+					var oldid = top.currentID;
 					var currendPos = getPositionByID(id);
 					var firstSelected = getFirstSelected();
 
@@ -70,7 +70,7 @@ function doClick(id, ct) {
 					} else {
 						selectFile(id);
 					}
-					currentID = oldid;
+					top.currentID = oldid;
 
 				} else if (!top.ctrlpressed) {
 					selectFile(id);
@@ -120,16 +120,16 @@ function selectFile(id) {
 							(a.value + "," + e.text) :
 							e.text;
 		}
-		if (top.fsbody.document.getElementById("line_" + id))
+		if (top.fsbody.document.getElementById("line_" + id)){
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
-		currentPath = e.path;
-		currentID = id;
-
-		we_editDirID = 0;
+		}
+		top.currentPath = e.path;
+		top.currentID = id;
+		top.we_editDirID = 0;
 	} else {
 		a.value = "";
-		currentPath = "";
-		we_editDirID = 0;
+		top.currentPath = "";
+		top.we_editDirID = 0;
 	}
 }
 
@@ -168,7 +168,7 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!wasdblclick){doClick(' + entries[i].ID + ',0);}else{wasdblclick=false;}\',300);return true"';
 		var ondblclick = ' onDblClick="wasdblclick=true;clearTimeout(tout);doClick(' + entries[i].ID + ',1);return true;"';
-		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="treeIcon"><img class="treeIcon" src="' + dirs.TREE_ICON_DIR + (entries[i].icon ? entries[i].icon : consts.FOLDER_ICON) + '"/></td>' +
 						(we_editDirID == entries[i].ID ?
 										'<td class="selector treeIcon"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :

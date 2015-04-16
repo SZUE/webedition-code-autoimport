@@ -123,10 +123,10 @@ class we_selector_document extends we_selector_directory{
 			'';
 		return we_html_element::jsElement('
 function exit_open() {
-	if(currentID) {' . ($this->JSIDName ?
-					'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";' : '') .
+	if(top.currentID) {' . ($this->JSIDName ?
+					'top.opener.' . $this->JSIDName . '= top.currentID ? top.currentID : "";' : '') .
 				($this->JSTextName ?
-					'top.opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+					'top.opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
 		if(!!top.opener.' . $frameRef . 'YAHOO && !!top.opener.' . $frameRef . 'YAHOO.autocoml) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 		' : '') .
 				($this->JSCommand ?
@@ -159,7 +159,7 @@ function exit_open() {
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"]."what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startID=" . $this->startID . "&filter=" . $this->filter . "&open_doc=" . $this->open_doc;
+		return $_SERVER["SCRIPT_NAME"] . "what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startID=" . $this->startID . "&filter=" . $this->filter . "&open_doc=" . $this->open_doc;
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -479,7 +479,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			}
 
 			switch($result['ContentType']){
-				case "folder":
+				case we_base_ContentTypes::FOLDER:
 				case we_base_ContentTypes::TEMPLATE:
 				case we_base_ContentTypes::OBJECT:
 				case we_base_ContentTypes::OBJECT_FILE:
@@ -523,13 +523,13 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 							"content" => oldHtmlspecialchars($Title)
 						);
 					}
-					if($name !== ""){
+					if($name){
 						$_previewFields["attributes"]["data"][] = array(
 							"caption" => g_l('weClass', '[name]'),
 							"content" => $name
 						);
 					}
-					if($alt !== ""){
+					if($alt){
 						$_previewFields["attributes"]["data"][] = array(
 							"caption" => g_l('weClass', '[alt]'),
 							"content" => oldHtmlspecialchars($alt)

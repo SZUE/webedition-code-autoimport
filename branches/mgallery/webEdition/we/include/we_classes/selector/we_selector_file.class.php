@@ -283,8 +283,8 @@ var g_l={
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
 		return we_html_element::jsElement('
 function exit_open(){' . ($this->JSIDName ? '
-	opener.' . $this->JSIDName . '=currentID;' : '') .
-				($this->JSTextName ? 'opener.' . $this->JSTextName . '= currentID ? currentPath : "";
+	opener.' . $this->JSIDName . '=top.currentID;' : '') .
+				($this->JSTextName ? 'opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
 	if((!!opener.parent) && (!!opener.parent.frames.editHeader) && (!!opener.parent.frames.editHeader.setPathGroup)) {
 			if(currentType!="")	{
 				switch(currentType){
@@ -292,9 +292,9 @@ function exit_open(){' . ($this->JSIDName ? '
 						setTabsCurPath = "@"+currentText;
 						break;
 					default:
-						setTabsCurPath = currentPath;
+						setTabsCurPath = top.currentPath;
 				}
-				if(getEntry(currentID).isFolder){
+				if(getEntry(top.currentID).isFolder){
 					opener.parent.frames.editHeader.setPathGroup(setTabsCurPath);
 				}else{
 					opener.parent.frames.editHeader.setPathName(setTabsCurPath);

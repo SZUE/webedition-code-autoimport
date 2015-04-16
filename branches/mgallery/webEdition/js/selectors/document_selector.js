@@ -35,7 +35,7 @@ function doClick(id, ct) {
 	} else if (getEntry(id).contentType != "folder" || (option.canSelectDir)) {
 		if (top.options.multiple) {
 			if (top.shiftpressed) {
-				var oldid = currentID;
+				var oldid = top.currentID;
 				var currendPos = getPositionByID(id);
 				var firstSelected = getFirstSelected();
 
@@ -46,7 +46,7 @@ function doClick(id, ct) {
 				} else {
 					selectFile(id);
 				}
-				currentID = oldid;
+				top.currentID = oldid;
 
 			} else if (!top.ctrlpressed) {
 				selectFile(id);
@@ -102,16 +102,15 @@ function selectFile(id) {
 		if (top.fsbody.document.getElementById("line_" + id)) {
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
 		}
-		currentPath = e.path;
-		currentID = id;
-		we_editDirID = 0;
-		currentType = e.contentType;
-
+		top.currentPath = e.path;
+		top.currentID = id;
+		top.we_editDirID = 0;
+		top.currentType = e.contentType;
 		showPreview(id);
 	} else {
 		fname[0].value = "";
-		currentPath = "";
-		we_editDirID = 0;
+		top.currentPath = "";
+		top.we_editDirID = 0;
 	}
 }
 

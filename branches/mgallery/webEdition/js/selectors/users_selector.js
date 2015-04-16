@@ -45,12 +45,12 @@ function selectFile(id) {
 								e.text;
 			}
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
-			currentPath = e.path;
-			currentID = id;
+			top.currentPath = e.path;
+			top.currentID = id;
 		}
 	} else {
 		a.value = "";
-		currentPath = "";
+		top.currentPath = "";
 	}
 }
 
