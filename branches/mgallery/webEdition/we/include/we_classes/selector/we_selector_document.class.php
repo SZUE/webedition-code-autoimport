@@ -364,10 +364,9 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			} else {
 				switch($this->table){
 					case VFILE_TABLE:
-						$this->db->query('SELECT f.ID,f.Text FROM ' . FILELINK_TABLE . ' fl JOIN ' . FILE_TABLE . ' f ON (f.ID=fl.remObj AND fl.remTable="tblFile") WHERE fl.DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND fl.ID=' . intval($this->id));
+						$this->db->query('SELECT f.ID,f.Text FROM ' . FILELINK_TABLE . ' fl JOIN ' . FILE_TABLE . ' f ON (f.ID=fl.remObj AND fl.remTable="tblFile") WHERE fl.DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND fl.type="collection" AND fl.ID=' . intval($this->id));
 						$folderFiles = $this->db->getAllFirst(false);
-						$result['ContentType'] = we_base_ContentTypes::FOLDER;
-
+						$result['ContentType'] = we_base_ContentTypes::COLLECTION;
 						break;
 					case FILE_TABLE:
 						$this->db->query('SELECT l.Name, c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
