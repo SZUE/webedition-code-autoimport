@@ -107,6 +107,8 @@ function findInclude($cmd){
 			return 'we_editors/we_preferences_frameset.inc.php';
 		case 'editThumbs':
 			return 'we_editors/we_thumbnails.inc.php';
+		case 'editNewCollection':
+			return 'we_editors/we_newCollection.inc.php';
 		case 'editMetadataFields':
 			return 'we_editors/edit_metadatafields.inc.php';
 		case 'show':

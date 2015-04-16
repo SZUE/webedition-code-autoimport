@@ -1287,7 +1287,10 @@ function we_cmd_base(args, url) {
 			url = "/webEdition/we_cmd.php?we_cmd[0]=openDocselector&we_cmd[2]=" + tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
-
+		case "edit_new_collection":
+			url = "/webEdition/we_cmd.php?we_cmd[0]=editNewCollection";
+			new jsWindow(url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
+			break;
 		case "help_documentation":
 			new jsWindow("http://documentation.webedition.org/wiki/" + docuLang + "/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
 			break;

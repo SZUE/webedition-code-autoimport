@@ -30,10 +30,10 @@ class we_collection extends we_root{
 	 * we have both collections for not immediately deleting existing collections when changing remTable without saving collection:
 	 * they exist in collection objects only: the remObjects of the matching one are written to tblFileLink when saving
 	 */
+	public $remTable;
+	public $remCT;
 	protected $fileCollection = '';
 	protected $objectCollection = '';
-	protected $remTable;
-	protected $remCT;
 	protected $remClass;
 	protected $jsFormCollection = '';
 	protected $insertPrefs;
