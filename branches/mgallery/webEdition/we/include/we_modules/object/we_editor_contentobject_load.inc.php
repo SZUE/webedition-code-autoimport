@@ -30,7 +30,7 @@ $cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0);
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 $id = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
-$jsGUI = new weOrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
+$jsGUI = new weOrderContainer('top._EditorFrame.getContentEditor()', 'classEntry');
 
 $we_doc = new we_object();
 
@@ -106,7 +106,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		echo $jsGUI->getResponse('reload', $uniqid, $content) .
 		we_html_element::jsElement('
-var target = _EditorFrame.getContentEditor(),
+var target = top._EditorFrame.getContentEditor(),
 	confName = "tinyMceConfObject__' . $wholename . 'default";
 
 /* if tinyMCE-field: re-write confObject on visible field and re-init editor
@@ -263,7 +263,7 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 				foreach(array_flip($sort) as $sortId){
 					$field = $we_doc->elements['wholename' . $sortId]['dat'];
 					$ret .= '
-var target = _EditorFrame.getContentEditor(),
+var target = top._EditorFrame.getContentEditor(),
 	confName = "tinyMceConfObject__' . $field . 'default";
 if(typeof target[confName] === \'object\'){
 		target.tinyMceInitialize(target[confName]);
@@ -286,7 +286,7 @@ if(typeof target[confName] === \'object\'){
 				foreach(array_flip($sort) as $sortId){
 					$field = $we_doc->elements['wholename' . $sortId]['dat'];
 					$ret .= '
-var target = _EditorFrame.getContentEditor(),
+var target = top._EditorFrame.getContentEditor(),
 	confName = "tinyMceConfObject__' . $field . 'default";
 if(typeof target[confName] === \'object\'){
 		target.tinyMceInitialize(target[confName]);

@@ -32,7 +32,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we
 
 $identifier = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
-$jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
+$jsGUI = new weOrderContainer("top._EditorFrame.getContentEditor()", "objectEntry");
 
 $we_doc = new we_objectFile();
 

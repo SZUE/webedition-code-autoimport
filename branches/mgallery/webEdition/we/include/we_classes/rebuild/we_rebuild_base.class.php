@@ -97,7 +97,7 @@ abstract class we_rebuild_base{
 						$model->registerMediaLinks();
 						break;
 					case 'we_temporaryDocument':
-						$content = we_unserialize(we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']));
+						$content = we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']);
 						if($data['tbl'] === 'tblFile'){
 							$doc = new we_webEditionDocument();
 							$doc->Table = FILE_TABLE;
@@ -375,7 +375,7 @@ abstract class we_rebuild_base{
 			array(GLOSSARY_TABLE, 'WHERE IsFolder = 0 AND type = "link"', 'we_glossary_glossary'),
 			array(NAVIGATION_TABLE, 'WHERE IconID != 0 OR (SelectionType = "docLink" AND LinkID != 0)', 'we_navigation_navigation'),
 			array(NEWSLETTER_TABLE, '', 'we_newsletter_newsletter'),
-			array(CUSTOMER_TABLE, 'WHERE IsFolder = 0', 'we_customer_customer'), 
+			array(CUSTOMER_TABLE, 'WHERE IsFolder = 0', 'we_customer_customer'),
 		);
 
 		foreach($tables as $table){

@@ -262,8 +262,8 @@ div.we_file_drag_binDoc{
 			$parentObj = 'top.weEditorFrameController';
 			$frame = 'top.weEditorFrameController.getVisibleEditorFrame()';
 		} else {
-			$parentObj = '_EditorFrame';
-			$frame = '_EditorFrame.getContentEditor()';
+			$parentObj = 'top._EditorFrame';
+			$frame = 'top._EditorFrame.getContentEditor()';
 		}
 
 		return "var fileupload; if(" . $parentObj . " !== undefined && (fileUpload = " . $frame . ".we_FileUpload) !== undefined && fileUpload.getType() === 'binDoc' && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";

@@ -1225,7 +1225,7 @@ function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
 }
 
-function we_unserialize($string, $default = array(),$quiet=false){
+function we_unserialize($string, $default = array(), $quiet = false){
 	if(!$string){
 		return $default;
 	}

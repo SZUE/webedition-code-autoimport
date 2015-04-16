@@ -330,7 +330,11 @@ class we_folder extends we_root{
 			$DocumentObject = we_unserialize($DB_WE->f('DocumentObject'));
 			$DocumentObject[0]['TriggerID'] = $this->TriggerID;
 
-			if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocumentObject="' . $DB_WE->escape(serialize($DocumentObject)) . '" WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1')){
+			if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' .
+					we_database_base::arraySetter(array(
+						'DocumentObject' => ($DocumentObject ? serialize($DocumentObject) : ''),
+					)) .
+					' WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1')){
 				return false;
 			}
 		}
@@ -479,9 +483,9 @@ class we_folder extends we_root{
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc3 = we_base_request::encCmd("var parents = '" . $ParentsCSV . "';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');}");
 		$but = we_html_button::create_button("select", ($this->ID ?
-								"javascript:we_cmd('openDirselector', " . $cmd1 . ", '" . $this->Table . "', '" . we_base_request::encCmd($cmd1) . "', '', '" . $wecmdenc3 . "')" :
-								"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
-						, true, 100, 22, "", "", !empty($_disabledNote));
+					"javascript:we_cmd('openDirselector', " . $cmd1 . ", '" . $this->Table . "', '" . we_base_request::encCmd($cmd1) . "', '', '" . $wecmdenc3 . "')" :
+					"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
+				, true, 100, 22, "", "", !empty($_disabledNote));
 
 		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
 			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
@@ -683,12 +687,12 @@ class we_folder extends we_root{
 		}
 
 		if($this->Table == FILE_TABLE && permissionhandler::hasPerm('CAN_COPY_FOLDERS') ||
-				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && permissionhandler::hasPerm("CAN_COPY_OBJECTS"))){
+			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && permissionhandler::hasPerm("CAN_COPY_OBJECTS"))){
 			$parts[] = array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), "space" => 140);
 		}
 
 		if($this->Table == FILE_TABLE ||
-				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
+			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
 			$parts[] = array("icon" => "user.gif", "headline" => g_l('weClass', '[owners]')
 				, "html" => $this->formCreatorOwners() . "<br/>", 'space' => 140, "noline" => 1);
 			if(permissionhandler::hasPerm("ADMINISTRATOR")){
@@ -699,6 +703,5 @@ class we_folder extends we_root{
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML('weDirProp', '100%', $parts, 20);
 	}
-
 
 }

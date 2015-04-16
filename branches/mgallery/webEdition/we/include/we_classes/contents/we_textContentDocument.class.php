@@ -206,7 +206,6 @@ abstract class we_textContentDocument extends we_textDocument{
 			case we_class::LOAD_TEMP_DB:
 				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
-					$sessDat = we_unserialize($sessDat);
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
 					$this->OldPath = $this->Path;
@@ -219,8 +218,8 @@ abstract class we_textContentDocument extends we_textDocument{
 				break;
 			case we_class::LOAD_SCHEDULE_DB:
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-					$sessDat = f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, 'SerializedData', $this->DB_WE);
-					if($sessDat && $this->i_initSerializedDat(we_unserialize($sessDat))){
+					$sessDat = we_unserialize(f('SELECT SerializedData FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '" AND Was=' . we_schedpro::SCHEDULE_FROM, '', $this->DB_WE));
+					if($sessDat && $this->i_initSerializedDat($sessDat)){
 						$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
 						$this->OldPath = $this->Path;
 

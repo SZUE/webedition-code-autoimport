@@ -746,7 +746,7 @@ function checkFooter(){
 		$makeSched = false;
 		foreach($object->schedArr as $s){
 			if($s['task'] == self::SCHEDULE_FROM && $s['active']){
-				$serializedDoc = we_temporaryDocument::load($object->ID, $object->Table, $db); // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743
+				$serializedDoc = serialize(we_temporaryDocument::load($object->ID, $object->Table, $db));
 				$makeSched = true;
 			} else {
 				$serializedDoc = '';

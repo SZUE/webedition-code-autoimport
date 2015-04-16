@@ -2373,7 +2373,7 @@ class we_objectFile extends we_document{
 				parent::we_load($from);
 				break;
 			case we_class::LOAD_TEMP_DB:
-				$sessDat = we_unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
+				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 //fixed: at least TableID must be fetched
 					$this->i_getPersistentSlotsFromDB();
@@ -2513,7 +2513,7 @@ class we_objectFile extends we_document{
 		$this->rewriteNavigation();
 
 		$ret = $this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID));
-		
+
 		// if document was modified before unpublishing, the actual version is in tblTemporaryDoc: we unregister temp=0
 		// otherwise we have nothing to do
 		if($ret && $oldPublished && ($this->ModDate > $oldPublished)){
