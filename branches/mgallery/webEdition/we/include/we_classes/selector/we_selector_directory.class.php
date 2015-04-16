@@ -118,7 +118,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"]."what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
+		return $_SERVER["SCRIPT_NAME"] . "what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&startID=" . $this->startID . "&order=" . $this->order . "&open_doc=" . $this->open_doc;
 	}
 
 	protected function getFramsetJSFile(){
@@ -512,21 +512,23 @@ top.selectFile(top.currentID);
 			'</head>
 <body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb(\'' . $path . '\');">';
 		if(isset($result['ContentType']) && $result['ContentType']){
-			if($this->table == FILE_TABLE){
-				if($result['ContentType'] == we_base_ContentTypes::FOLDER){
-					$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
-					$folderFolders = $folderFiles = array();
-					while($this->db->next_record()){
-						if($this->db->f('IsFolder')){
-							$folderFolders[$this->db->f('ID')] = $this->db->f('Text');
-						} else {
-							$folderFiles[$this->db->f('ID')] = $this->db->f('Text');
+			switch($this->table){
+				case FILE_TABLE:
+				case VFILE_TABLE:
+					if($result['ContentType'] == we_base_ContentTypes::FOLDER){
+						$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
+						$folderFolders = $folderFiles = array();
+						while($this->db->next_record()){
+							if($this->db->f('IsFolder')){
+								$folderFolders[$this->db->f('ID')] = $this->db->f('Text');
+							} else {
+								$folderFiles[$this->db->f('ID')] = $this->db->f('Text');
+							}
 						}
+					} else {
+						$query = $this->db->query('SELECT l.Name,c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
+						$metainfos = $this->db->getAllFirst(false);
 					}
-				} else {
-					$query = $this->db->query('SELECT l.Name,c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($this->id) . ' AND l.DocumentTable!="tblTemplates"');
-					$metainfos = $this->db->getAllFirst(false);
-				}
 			}
 
 			$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;

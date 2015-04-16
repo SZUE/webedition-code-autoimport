@@ -747,7 +747,7 @@ we_templateInit();?>';
 		} else {
 			t_e('save template failed', $this->Path);
 		}
-		
+
 		$this->setElement('allVariants', we_unserialize($this->getElement('allVariants')), 'variants');
 
 		return $_ret;
@@ -765,7 +765,7 @@ we_templateInit();?>';
 		parent::we_load($from);
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		$this->_updateCompleteCode();
-		if(($tmp = $this->getElement('allVariants')=){
+		if(($tmp = $this->getElement('allVariants'))){
 			$tmp = we_unserialize($tmp, '');
 			$this->setElement('allVariants', (is_array($tmp) ?
 					$tmp :
