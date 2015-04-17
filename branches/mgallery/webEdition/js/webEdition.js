@@ -1288,7 +1288,7 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "edit_new_collection":
-			url = "/webEdition/we_cmd.php?we_cmd[0]=editNewCollection";
+			url = "/webEdition/we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
 			new jsWindow(url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		case "help_documentation":

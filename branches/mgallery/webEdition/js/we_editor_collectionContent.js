@@ -220,12 +220,14 @@ weCollectionEdit = {
 
 		//set first item on drop row
 		if(items.length){
+			/*
 			this.dd.fillEmptyRows = document.we_form['check_we_' + this.we_doc.name + '_useEmpty'].checked;
 			this.dd.doubleOk = document.we_form['check_we_' + this.we_doc.name + '_doubleOk'].checked;
+			*/
 
 			while(!isFirstSet && items.length){
 				var item = items.shift();
-				if(this.dd.doubleOk || this.collectionCsv.search(',' + item.id + ',') === -1){
+				if(this.dd.doubleOk === 1 || this.collectionCsv.search(',' + item.id + ',') === -1){
 					document.getElementById('yuiAcInputItem_' + index).value = item.path;
 					document.getElementById('yuiAcResultItem_' + index).value = item.id;
 					itemsSet[0].push(item.id);
@@ -414,17 +416,17 @@ weCollectionEdit = {
 				postData += '&we_cmd[id]=' + encodeURIComponent(csvIDs);
 				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.ID);
 				postData += '&we_cmd[full]=' + encodeURIComponent(1);
-				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + this.we_doc.name + '_insertRecursive'].checked);
+				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.name + '_insertRecursive'].checked);
 
 				xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState === 4) {
 						if (xhr.status === 200) {
 							var respArr = JSON.parse(xhr.responseText);
-							if(respArr.length === 1){
-								document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
-								document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
-								weCollectionEdit.repaintAndRetrieveCsv();
+							if(respArr.length === -1){ // option deactivated: check doublettes for single insert too
+									document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
+									document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
+									weCollectionEdit.repaintAndRetrieveCsv();
 							} else {
 								var resp = weCollectionEdit.addItems(document.getElementById('drag_' + index), respArr);
 								if(message){

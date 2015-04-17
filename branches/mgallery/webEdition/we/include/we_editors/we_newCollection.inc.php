@@ -30,7 +30,8 @@ $name = we_base_request::_(we_base_request::STRING, 'we_name', '');
 $fixedPID = we_base_request::_(we_base_request::INT, 'fixedpid', -1);
 $fixedRemTable = we_base_request::_(we_base_request::STRING, 'fixedremtable', '');
 
-$collection->ParentID = $fixedPID !== -1 ? $fixedPID : we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID');
+
+$collection->ParentID = $fixedPID !== -1 ? $fixedPID : we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID', 0);
 $collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
 $collection->remTable = $fixedRemTable ? : we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
 
@@ -46,6 +47,10 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	$collection->Filename = $collection->Text = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_Filename');
 	$collection->Path = ($collection->ParentID == 0 ? '' : $collection->ParentPath) . '/' . $collection->Filename;
 	$collection->remCT = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remCT');
+	$collection->remClass = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remClass');
+	$collection->doubleOk = we_base_request::_(we_base_request::INT, 'we_' . $name . '_doubleOk', 0);
+	$collection->useEmpty = $collection->insertRecursive = 0;
+	
 
 	if($collection->i_pathNotValid()){
 		$jsMessage = sprintf(g_l('weClass', '[notValidFolder]'), $collection->Path);
@@ -63,6 +68,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 			$db = new DB_WE();
 			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1', 'ID', $db);
+			$writeBack = array(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));
 		} else {
 			$jsMessage = 'unknown error ';
 			$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
@@ -121,18 +127,10 @@ function we_cmd() {
 			' . ($caller === 'selector' ? 'opener.top.reloadDir();
 			opener.top.unselectAllFiles();
 			opener.top.doClick(' . $id . ', 0);
-			setTimeout(function(){opener.top.selectFile(' . $id . ');}, 200);
-			//opene.opener.weEditorFrameController.openDocument("' . VFILE_TABLE . '", ' . ($id ? : 0) . ', "' . we_base_ContentTypes::COLLECTION . '");' :
-			'//opener.top.we_cmd("load", "' . VFILE_TABLE . '");
-			opener.weEditorFrameController.openDocument("' . VFILE_TABLE . '", ' . ($id ? : 0) . ', "' . we_base_ContentTypes::COLLECTION . '");') . '
-			window.close();
+			setTimeout(function(){opener.top.selectFile(' . $id . ');}, 200);' :
+			($writeBack[0] ? 'opener.' . $writeBack[0] . ' = ' . $id . ';opener.' . $writeBack[1] . ' = "' . $collection->Path . '";' : '')) . '
+			//window.close();
 			break;
-		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-			opener.top.we_cmd.apply(this, args);
 	}
 }
 ' . (isset($jsMessage) && $jsMessage ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')) . 
@@ -144,6 +142,8 @@ $parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(true
 $content = we_html_element::htmlHidden('dosave', 0) .
 	we_html_element::htmlHiddens(array(
 		'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+		'we_cmd[1]' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1),
+		'we_cmd[2]' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2),
 		"fixedpid" => $fixedPID,
 		"fixedremtable" => $fixedRemTable,
 		'we_name' => $collection->Name,

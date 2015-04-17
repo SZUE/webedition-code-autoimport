@@ -43,7 +43,6 @@ $yuiSuggest = & weSuggest::getInstance();
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 
 if($cmd0 === 'do_addToCollection'){
-	$db = new DB_WE();
 	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target', 0)) === 0){
 		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
@@ -121,14 +120,15 @@ $yuiSuggest->setMayBeEmpty(false);
 $yuiSuggest->setResult($idname, $targetCollection);
 $yuiSuggest->setSelector(weSuggest::DocSelector);
 $yuiSuggest->setTable(VFILE_TABLE);
-$yuiSuggest->setWidth(250);
-$yuiSuggest->setContainerWidth(370);
+$yuiSuggest->setWidth(203);
+$yuiSuggest->setContainerWidth(300);
 $wecmdenc1 = we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $idname . '.value');
 $wecmdenc2 = we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $textname . '.value');
-$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:weAddToCollection.we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0)"), 10);
+$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:weAddToCollection.we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0)"), 6);
 //$yuiSuggest->setOpenButton(we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "'); return false}"));
-$weAcSelector = $yuiSuggest->getHTML();
 
+$yuiSuggest->setAdditionalButton(we_html_button::create_button("image:btn_add_collection", "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false), 0);
+$weAcSelector = $yuiSuggest->getHTML();
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button("quit_move", "javascript:weAddToCollection.we_cmd('exit_move','','" . $table . "')"), 10, "left");
 
 echo

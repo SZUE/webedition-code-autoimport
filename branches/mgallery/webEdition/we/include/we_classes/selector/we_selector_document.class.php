@@ -290,6 +290,16 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
+	function printNewDocumentHTML(){
+		echo '<script type="text/javascript"><!--
+top.clearEntries();
+top.makeNewDocument = true;' .
+		$this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() . '
+//-->
+</script>';
+	}
+
 	protected function printFooterTable($more = null){
 		$ret = '
 <table id="footer">';

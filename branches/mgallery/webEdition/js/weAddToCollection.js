@@ -67,7 +67,7 @@ weAddToCollection = {
 			_transaction,
 			_editor,
 			_contentEditor;
-
+top.console.debug(_collID, _usedEditors);
 		_collID = _collID ? _collID : 0;
 		for (_frameId in _usedEditors) {
 			_editor = _usedEditors[_frameId];
@@ -82,7 +82,7 @@ weAddToCollection = {
 				}
 			}
 		}
-
+top.console.debug(_collID, _isOpen, _isEditorCollActive, _transaction);
 		if(_isOpen){
 			if(_isEditorCollActive){
 
@@ -121,7 +121,7 @@ weAddToCollection = {
 		this.we_cmd('do_addToCollection', '', this.conf.table);
 	},
 
-	we_submitForm : function(target, url) {
+	we_submitForm : function(target, url) {top.console.debug(_collID, _isOpen, _isEditorCollActive, _transaction);
 		var f = self.document.we_form;
 		var sel = "";
 		for (var i = 1; i <= top.treeData.len; i++) {
@@ -148,7 +148,8 @@ weAddToCollection = {
 		{
 			args.push(arguments[i]);
 		}
-		parent.we_cmd.apply(this, args);
-
+		if(parent.we_cmd){
+			parent.we_cmd.apply(this, args);
+		}
 	}
 };
