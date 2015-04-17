@@ -504,36 +504,6 @@ function checkFooter(){
 		}
 	}
 
-	function check_and_convert_to_sched_pro(){
-		$DB_WE = NEW DB_WE();
-
-		$scheddy = array();
-
-		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Schedpro IS NULL OR Schedpro=""');
-		while($DB_WE->next_record()){
-			$s = array();
-
-			$s['did'] = $DB_WE->f('DID');
-			$s['task'] = $DB_WE->f('Was');
-			$s['type'] = 0;
-			$s['months'] = array();
-			$s['days'] = array();
-			$s['weekdays'] = array();
-			$s['time'] = $DB_WE->f('Wann');
-			$s['CategoryIDs'] = '';
-			$s['DoctypeID'] = 0;
-			$s['ParentID'] = 0;
-			$s['active'] = 1;
-			$s['doctypeAll'] = 0;
-
-			$scheddy[] = $s;
-		}
-
-		foreach($scheddy as $s){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="' . $DB_WE->escape(serialize($s)) . '", Active=1, SerializedData="" WHERE DID=' . intval($s["did"]) . ' AND Was=' . intval($s["task"]) . " AND Wann=" . intval($s["time"]));
-		}
-	}
-
 	function getNextTimestamp($s, $now = 0){
 		if(!$now){
 			$now = time();

@@ -43,42 +43,35 @@ abstract class we_updater{
 		}
 	}
 
-	public static function updateTables($DB_WE = null){ // update6360.php
-		$db2 = new DB_WE();
-		$tables = $db2->table_names(TBL_PREFIX . 'tblOwner');
-		$DB_WE = $DB_WE ? : new DB_WE(); //old code calls without object
+	public static function updateTables($db = null){
+		return;
+	}
 
-		if(!empty($tables)){
-			$DB_WE->query('SELECT * FROM ' . TBL_PREFIX . 'tblOwner');
-			while($DB_WE->next_record()){
-				$table = $DB_WE->f('DocumentTable');
-				if($table == TEMPLATES_TABLE || $table == FILE_TABLE){
-					$id = $DB_WE->f('fileID');
-					if($table && $id){
-						$Owners = ($DB_WE->f("OwnerID") && ($DB_WE->f("OwnerID") != $DB_WE->f("CreatorID"))) ? ("," . $DB_WE->f("OwnerID") . ",") : "";
-						$CreatorID = $DB_WE->f("CreatorID") ? : $_SESSION["user"]["ID"];
-						$ModifierID = $DB_WE->f("ModifierID") ? : $_SESSION["user"]["ID"];
-						$db2->query('UPDATE ' . $db2->escape($table) . " SET CreatorID=" . intval($CreatorID) . " , ModifierID=" . intval($ModifierID) . " , Owners='" . $db2->escape($Owners) . "' WHERE ID=" . intval($id));
-						$db2->query('DELETE FROM ' . TBL_PREFIX . ' WHERE fileID=' . intval($id));
-						update_time_limit(30);
-					}
-				}
+	private static function updateUnindexedCols($tab, $col){
+		$db = $GLOBALS['DB_WE'];
+		$db->query('SHOW COLUMNS FROM ' . $db->escape($tab) . " LIKE '" . $db->escape($col) . "'");
+		$query = array();
+		while($db->next_record()){
+			if(!$db->f('Key')){
+				$query[] = 'ADD INDEX (' . $db->f('Field') . ')';
 			}
-			$DB_WE->query('DROP TABLE ' . TBL_PREFIX . 'tblOwner');
 		}
+		if(!empty($query)){
+			$db->query('ALTER TABLE ' . $db->escape($tab) . ' ' . implode(', ', $query));
+		}
+	}
 
-		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
-		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
-
-		$DB_WE->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
+	public static function updateUsers($db = null){ //FIXME: remove after 6.5 from 6360/update6300.php
+		$db = $db? : new DB_WE();
+		$db->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', null, MYSQL_ASSOC)) > 3){
 			//make a backup
-			$DB_WE->query('CREATE TABLE ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
-			$DB_WE->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
+			$db->query('CREATE TABLE ' . PREFS_TABLE . '_old LIKE ' . PREFS_TABLE);
+			$db->query('INSERT INTO ' . PREFS_TABLE . '_old SELECT * FROM ' . PREFS_TABLE);
 
-			$DB_WE->query('DELETE FROM ' . PREFS_TABLE . ' WHERE userID=0');
-			$DB_WE->query('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1');
-			$queries = $DB_WE->getAll();
+			$db->query('DELETE FROM ' . PREFS_TABLE . ' WHERE userID=0');
+			$db->query('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1');
+			$queries = $db->getAll();
 			$keys = array_keys($queries[0]);
 			foreach($keys as $key){
 				switch($key){
@@ -91,68 +84,42 @@ abstract class we_updater{
 				}
 			}
 
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key`=""');
+			$db->query('DELETE FROM ' . PREFS_TABLE . ' WHERE `key`=""');
 			foreach($queries as $q){
-				we_users_user::writePrefs($q['userID'], $GLOBALS['DB_WE'], $q);
+				we_users_user::writePrefs($q['userID'], $db, $q);
 			}
 		}
-	}
 
-	private static function updateUnindexedCols($tab, $col){
-		global $DB_WE;
-		$DB_WE->query('SHOW COLUMNS FROM ' . $DB_WE->escape($tab) . " LIKE '" . $DB_WE->escape($col) . "'");
-		$query = array();
-		while($DB_WE->next_record()){
-			if(!$DB_WE->f('Key')){
-				$query[] = 'ADD INDEX (' . $DB_WE->f('Field') . ')';
-			}
-		}
-		if(!empty($query)){
-			$DB_WE->query('ALTER TABLE ' . $DB_WE->escape($tab) . ' ' . implode(', ', $query));
-		}
-	}
-
-	public static function updateUsers($DB_WE = null){ // from 6300/update6300.php
-		$DB_WE = $DB_WE? : new DB_WE();
-
-		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-		$users = $DB_WE->getAll(true);
+		$db->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value NOT LIKE "%_UTF-8%" OR value!="") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $db->getAll(true);
 		if($users){
-			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="ISO-8859-1" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+			$db->query('UPDATE ' . PREFS_TABLE . ' SET value="ISO-8859-1" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value LIKE "%_UTF-8%") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-		$users = $DB_WE->getAll(true);
+		$db->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND (value LIKE "%_UTF-8%") AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $db->getAll(true);
 		if($users){
-			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
-			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value=REPLACE(value,"_UTF-8","") WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+			$db->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+			$db->query('UPDATE ' . PREFS_TABLE . ' SET value=REPLACE(value,"_UTF-8","") WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 		}
-		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value="" AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
-		$users = $DB_WE->getAll(true);
+		$db->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value="" AND userID IN (SELECT userID FROM ' . PREFS_TABLE . ' WHERE `key`="BackendCharset" AND value="")');
+		$users = $db->getAll(true);
 		if($users){
-			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
-			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+			$db->query('UPDATE ' . PREFS_TABLE . ' SET value="UTF-8" WHERE `key`="BackendCharset" AND userID IN (' . implode(',', $users) . ')');
+			$db->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
 			//$_SESSION['prefs'] = we_user::readPrefs($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 		}
-		$DB_WE->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value=""');
-		$users = $DB_WE->getAll(true);
+		$db->query('SELECT DISTINCT userID FROM ' . PREFS_TABLE . ' WHERE `key`="Language" AND value=""');
+		$users = $db->getAll(true);
 		if($users){
-			$DB_WE->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+			$db->query('UPDATE ' . PREFS_TABLE . ' SET value="Deutsch" WHERE `key`="Language" AND userID IN (' . implode(',', $users) . ')');
+			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $db);
 		}
-		$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
 
-
-		return true;
-	}
-
-	private static function updateScheduler(){
-		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-			we_schedpro::check_and_convert_to_sched_pro();
-		}
 		return true;
 	}
 
 	private static function updateObjectFilesX(){
-	//FIXME: this takes long, so try to remove this
+		//FIXME: this takes long, so try to remove this
 		if(defined('OBJECT_X_TABLE')){
 			//this is from 6.3.9
 			$_db = new DB_WE();
@@ -165,99 +132,27 @@ abstract class we_updater{
 
 			//all files without a tableID can be deleted
 			$_db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
-
-//this is from WE 6.2/6.3.0
-			$_db->query('SHOW TABLES LIKE "' . str_replace('_', '', OBJECT_X_TABLE) . '\_%"'); //note: _% ignores _, so escaping _ with \_ does the job
-			$allTab = $_db->getAll(true);
-			foreach($allTab as $_table){
-				if($_table == OBJECT_FILES_TABLE){
-					continue;
-				}
-				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Url')){
-					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Url', 'VARCHAR(255) NOT NULL');
-				} else {
-					$GLOBALS['DB_WE']->addCol($_table, 'OF_Url', 'VARCHAR(255) NOT NULL', '  AFTER OF_Path  ');
-				}
-				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_TriggerID')){
-					$GLOBALS['DB_WE']->changeColType($_table, 'OF_TriggerID', 'BIGINT(20) NOT NULL DEFAULT 0');
-				} else {
-					$GLOBALS['DB_WE']->addCol($_table, 'OF_TriggerID', 'BIGINT(20) NOT NULL DEFAULT 0', '  AFTER OF_Url  ');
-				}
-				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_IsSearchable')){
-					$GLOBALS['DB_WE']->changeColType($_table, 'OF_IsSearchable', 'TINYINT(1) DEFAULT 1');
-				} else {
-					$GLOBALS['DB_WE']->addCol($_table, 'OF_IsSearchable', 'TINYINT(1) DEFAULT 1', ' AFTER OF_Published ');
-				}
-				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Charset')){
-					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Charset', 'VARCHAR(64) NOT NULL');
-				} else {
-					$GLOBALS['DB_WE']->addCol($_table, 'OF_Charset', 'VARCHAR(64) NOT NULL', ' AFTER OF_IsSearchable ');
-				}
-				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_WebUserID')){
-					$GLOBALS['DB_WE']->changeColType($_table, 'OF_WebUserID', 'BIGINT(20) NOT NULL');
-				} else {
-					$GLOBALS['DB_WE']->addCol($_table, 'OF_WebUserID', 'BIGINT(20) NOT NULL', ' AFTER OF_Charset ');
-				}
-				if($GLOBALS['DB_WE']->isColExist($_table, 'OF_Language')){
-					$GLOBALS['DB_WE']->changeColType($_table, 'OF_Language', 'VARCHAR(5) DEFAULT NULL');
-				} else {
-					$GLOBALS['DB_WE']->addCol($_table, 'OF_Language', 'VARCHAR(5) DEFAULT NULL', ' AFTER OF_WebUserID ');
-				}
-				//remove old indices from all objects
-				self::updateUnindexedCols($_table, we_object::QUERY_PREFIX . '%');
-				if($GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_WebUserID')){
-					$GLOBALS['DB_WE']->delKey($_table, 'OF_WebUserID');
-				}
-				if($GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'published')){
-					$GLOBALS['DB_WE']->delKey($_table, 'published');
-				}
-				if($GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_IsSearchable')){
-					$GLOBALS['DB_WE']->delKey($_table, 'OF_IsSearchable');
-				}
-
-				if($GLOBALS['DB_WE']->isColExist($_table, 'ID')){
-					$key = 'UNIQUE KEY OF_ID (OF_ID)';
-					if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
-						$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE OF_ID=0');
-						$GLOBALS['DB_WE']->addKey($_table, $key);
-						if(!$GLOBALS['DB_WE']->isKeyExistAtAll($_table, 'OF_ID')){
-							//we have duplicates in this table - we must clean up
-							//should we add an index first?
-							$GLOBALS['DB_WE']->query('SELECT DISTINCT o.ID FROM ' . $_table . ' o JOIN ' . $_table . ' oo ON o.OF_ID=oo.OF_ID WHERE o.ID<oo.ID');
-							$ids = $GLOBALS['DB_WE']->getAll(true);
-							$GLOBALS['DB_WE']->query('DELETE FROM ' . $_table . ' WHERE ID IN(' . implode(',', $ids) . ')');
-							//retry to add key
-							$GLOBALS['DB_WE']->addKey($_table, $key);
-						}
-						$GLOBALS['DB_WE']->query('REPLACE INTO ' . $_table . ' SET OF_ID=0');
-					}
-					//remove col id, set OF_ID=primary
-					$GLOBALS['DB_WE']->delCol($_table, 'ID');
-					$GLOBALS['DB_WE']->addKey($_table, 'PRIMARY KEY (OF_ID)');
-					//no need for this index
-					$GLOBALS['DB_WE']->delKey($_table, 'OF_ID');
-				}
-			}
 		}
 		return true;
 	}
 
-	private static function updateVoting(){
-		if(defined('VOTING_TABLE')){
-			//this looks weird but means just :\"question inside the table
-			$GLOBALS['DB_WE']->query('UPDATE ' . VOTING_TABLE . ' SET
-			QASet=REPLACE(QASet,\'\\\\"\',\'"\'),
-			QASetAdditions=REPLACE(QASetAdditions,\'\\\\"\',\'"\'),
-			Scores=REPLACE(Scores,\'\\\\"\',\'"\'),
-			Revote=REPLACE(Revote,\'\\\\"\',\'"\'),
-			RevoteUserAgent=REPLACE(RevoteUserAgent,\'\\\\"\',\'"\'),
-			LogData=REPLACE(LogData,\'\\\\"\',\'"\'),
-			BlackList=REPLACE(BlackList,\'\\\\"\',\'"\')
-			WHERE QASet LIKE \'%:\\\\\\\"question%\'');
-		}
-	}
+	/* private static function updateVoting(){
+	  if(defined('VOTING_TABLE')){
+	  //this looks weird but means just :\"question inside the table
+	  $GLOBALS['DB_WE']->query('UPDATE ' . VOTING_TABLE . ' SET
+	  QASet=REPLACE(QASet,\'\\\\"\',\'"\'),
+	  QASetAdditions=REPLACE(QASetAdditions,\'\\\\"\',\'"\'),
+	  Scores=REPLACE(Scores,\'\\\\"\',\'"\'),
+	  Revote=REPLACE(Revote,\'\\\\"\',\'"\'),
+	  RevoteUserAgent=REPLACE(RevoteUserAgent,\'\\\\"\',\'"\'),
+	  LogData=REPLACE(LogData,\'\\\\"\',\'"\'),
+	  BlackList=REPLACE(BlackList,\'\\\\"\',\'"\')
+	  WHERE QASet LIKE \'%:\\\\\\\"question%\'');
+	  }
+	  } */
 
 	private static function updateLangLink(){
+		//FIMXE: remove after 6.5
 		if((!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")) || (!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)"))){
 			//no unique def. found
 			$db = $GLOBALS['DB_WE'];
@@ -300,16 +195,17 @@ abstract class we_updater{
 		}
 	}
 
-	private static function convertTemporaryDoc(){
-		if($GLOBALS['DB_WE']->isColExist(TEMPORARY_DOC_TABLE, 'ID')){
-			$GLOBALS['DB_WE']->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE Active=0');
-			$GLOBALS['DB_WE']->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocTable="tblFile" WHERE DocTable  LIKE "%tblFile"');
-			$GLOBALS['DB_WE']->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocTable="tblObjectFiles" WHERE DocTable LIKE "%tblObjectFiles"');
-			$GLOBALS['DB_WE']->delCol(TEMPORARY_DOC_TABLE, 'ID');
-			$GLOBALS['DB_WE']->delKey(TEMPORARY_DOC_TABLE, 'PRIMARY');
-			$GLOBALS['DB_WE']->addKey(TEMPORARY_DOC_TABLE, 'PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
-		}
-	}
+	/*
+	  private static function convertTemporaryDoc(){
+	  if($GLOBALS['DB_WE']->isColExist(TEMPORARY_DOC_TABLE, 'ID')){
+	  $GLOBALS['DB_WE']->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE Active=0');
+	  $GLOBALS['DB_WE']->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocTable="tblFile" WHERE DocTable LIKE "%tblFile"');
+	  $GLOBALS['DB_WE']->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET DocTable="tblObjectFiles" WHERE DocTable LIKE "%tblObjectFiles"');
+	  $GLOBALS['DB_WE']->delCol(TEMPORARY_DOC_TABLE, 'ID');
+	  $GLOBALS['DB_WE']->delKey(TEMPORARY_DOC_TABLE, 'PRIMARY');
+	  $GLOBALS['DB_WE']->addKey(TEMPORARY_DOC_TABLE, 'PRIMARY KEY ( `DocumentID` , `DocTable` , `Active` )');
+	  }
+	  } */
 
 	public static function fixInconsistentTables(){//from backup
 		$db = $GLOBALS['DB_WE'];
@@ -347,6 +243,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 
 	private static function updateCats(){
 		$db = $GLOBALS['DB_WE'];
+		//FIXME the next 2 queries are old, remove them after 6.5
+		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
+		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
+
 		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
 			$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!="" AND Title="" AND Description=""');
 			$udb = new DB_WE();
@@ -401,7 +301,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 			return;
 		}
 		$now = microtime(true);
-		$times[] = $name . ': ' . round($now - $last,3);
+		$times[] = $name . ': ' . round($now - $last, 3);
 		$last = $now;
 	}
 
@@ -417,12 +317,12 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::meassure('updateUsers');
 		self::updateObjectFilesX();
 		self::meassure('updateObjectFilesX');
-		self::updateScheduler();
-		self::meassure('updateScheduler');
-		self::updateVoting();
-		self::meassure('updateVoting');
-		self::convertTemporaryDoc();
-		self::meassure('convertTemporaryDoc');
+		/*
+		  self::updateVoting();
+		  self::meassure('updateVoting');
+		  self::convertTemporaryDoc();
+		  self::meassure('convertTemporaryDoc');
+		 * */
 		self::updateLangLink();
 		self::meassure('updateLangLink');
 		self::fixInconsistentTables();
