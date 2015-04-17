@@ -43,23 +43,24 @@ abstract class we_updater{
 		}
 	}
 
+//FIXME: remove - only present due to calls of patches
 	public static function updateTables($db = null){
 		return;
 	}
 
-	private static function updateUnindexedCols($tab, $col){
-		$db = $GLOBALS['DB_WE'];
-		$db->query('SHOW COLUMNS FROM ' . $db->escape($tab) . " LIKE '" . $db->escape($col) . "'");
-		$query = array();
-		while($db->next_record()){
-			if(!$db->f('Key')){
-				$query[] = 'ADD INDEX (' . $db->f('Field') . ')';
-			}
-		}
-		if(!empty($query)){
-			$db->query('ALTER TABLE ' . $db->escape($tab) . ' ' . implode(', ', $query));
-		}
-	}
+	/* private static function updateUnindexedCols($tab, $col){
+	  $db = $GLOBALS['DB_WE'];
+	  $db->query('SHOW COLUMNS FROM ' . $db->escape($tab) . " LIKE '" . $db->escape($col) . "'");
+	  $query = array();
+	  while($db->next_record()){
+	  if(!$db->f('Key')){
+	  $query[] = 'ADD INDEX (' . $db->f('Field') . ')';
+	  }
+	  }
+	  if(!empty($query)){
+	  $db->query('ALTER TABLE ' . $db->escape($tab) . ' ' . implode(', ', $query));
+	  }
+	  } */
 
 	public static function updateUsers($db = null){ //FIXME: remove after 6.5 from 6360/update6300.php
 		$db = $db? : new DB_WE();
@@ -151,49 +152,7 @@ abstract class we_updater{
 	  }
 	  } */
 
-	private static function updateLangLink(){
-		//FIMXE: remove after 6.5
-		if((!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")) || (!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)"))){
-			//no unique def. found
-			$db = $GLOBALS['DB_WE'];
-			if($db->query('CREATE TEMPORARY TABLE tmpLangLink LIKE ' . LANGLINK_TABLE)){
 
-				// copy links from documents or document-folders to tmpLangLink only if DID and DLocale are consistent with Language in tblFile
-				$db->query("INSERT INTO tmpLangLink SELECT " . LANGLINK_TABLE . ".* FROM " . LANGLINK_TABLE . ", " . FILE_TABLE . " WHERE " . LANGLINK_TABLE . ".DID = " . FILE_TABLE . ".ID AND " . LANGLINK_TABLE . ".DLocale = " . FILE_TABLE . ".Language AND " . LANGLINK_TABLE . ".IsObject = 0 AND " . LANGLINK_TABLE . ".DocumentTable = 'tblFile'");
-
-				// copy links from objects or object-folders to tmpLangLink only if DID and DLocale are consistent with Language in tblObjectFiles
-				$db->query("INSERT INTO tmpLangLink SELECT " . LANGLINK_TABLE . ".* FROM " . LANGLINK_TABLE . ", " . OBJECT_FILES_TABLE . " WHERE " . LANGLINK_TABLE . ".DID = " . OBJECT_FILES_TABLE . ".ID AND " . LANGLINK_TABLE . ".DLocale = " . OBJECT_FILES_TABLE . ".Language AND " . LANGLINK_TABLE . ".IsObject = 1");
-
-				// copy links from doctypes to tmpLangLink only if DID and DLocale are consistent with Language in tblFile
-				$db->query('INSERT INTO tmpLangLink SELECT ' . LANGLINK_TABLE . ".* FROM " . LANGLINK_TABLE . ", " . DOC_TYPES_TABLE . " WHERE " . LANGLINK_TABLE . ".DID = " . DOC_TYPES_TABLE . ".ID AND " . LANGLINK_TABLE . ".DLocale = " . DOC_TYPES_TABLE . ".Language AND " . LANGLINK_TABLE . ".DocumentTable = 'tblDocTypes'");
-
-				$db->query('TRUNCATE ' . LANGLINK_TABLE);
-				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DID` (`DID`,`DLocale`,`IsObject`,`IsFolder`,`Locale`,`DocumentTable`)")){
-					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "DID")){
-						$GLOBALS['DB_WE']->delKey(LANGLINK_TABLE, 'DID');
-					}
-					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DID (DID,DLocale,IsObject,IsFolder,Locale,DocumentTable)');
-				}
-				if(!$GLOBALS['DB_WE']->isKeyExist(LANGLINK_TABLE, "UNIQUE KEY `DLocale` (`DLocale`,`IsFolder`,`IsObject`,`LDID`,`Locale`,`DocumentTable`)")){
-					if($GLOBALS['DB_WE']->isKeyExistAtAll(LANGLINK_TABLE, "DLocale")){
-						$GLOBALS['DB_WE']->delKey(LANGLINK_TABLE, 'DLocale');
-					}
-					$GLOBALS['DB_WE']->addKey(LANGLINK_TABLE, 'UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable)');
-				}
-
-				// copy links from documents, document-folders and object-folders (to documents) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
-				$db->query('INSERT IGNORE INTO ' . LANGLINK_TABLE . ' SELECT tmpLangLink.* FROM tmpLangLink, ' . FILE_TABLE . " WHERE tmpLangLink.LDID = " . FILE_TABLE . ".ID AND tmpLangLink.Locale = " . FILE_TABLE . ".Language AND tmpLangLink.IsObject=0 AND tmpLangLink.DocumentTable = 'tblFile' ORDER BY tmpLangLink.ID DESC");
-
-				// copy links from objects (to objects) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
-				$db->query('INSERT IGNORE INTO ' . LANGLINK_TABLE . " SELECT tmpLangLink.* FROM tmpLangLink, " . OBJECT_FILES_TABLE . " WHERE tmpLangLink.LDID = " . OBJECT_FILES_TABLE . ".ID AND tmpLangLink.Locale = " . OBJECT_FILES_TABLE . ".Language AND tmpLangLink.IsObject = 1 ORDER BY tmpLangLink.ID DESC");
-
-				// copy links from doctypes (to doctypes) back to tblLangLink only if LDID and Locale are consistent with Language in tblFile
-				$db->query('INSERT IGNORE INTO ' . LANGLINK_TABLE . " SELECT tmpLangLink.* FROM tmpLangLink, " . DOC_TYPES_TABLE . " WHERE tmpLangLink.LDID = " . DOC_TYPES_TABLE . ".ID AND tmpLangLink.Locale = " . DOC_TYPES_TABLE . ".Language AND tmpLangLink.DocumentTable = 'tblDocTypes' ORDER BY tmpLangLink.ID DESC");
-			} else {
-				t_e('no rights to create temp-table');
-			}
-		}
-	}
 
 	/*
 	  private static function convertTemporaryDoc(){
@@ -212,22 +171,26 @@ abstract class we_updater{
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
 UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')', true);
-		$del = $db->getAll(true);
 
-		if($del){
+		if(($del = $db->getAll(true))){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
 		}
 
 		$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 
-		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-			$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName != "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
+		//FIXME: this has to be integrated in we_delete code!
+		if(defined('SCHEDULE_TABLE')){
+			$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName!="we_objectFile" AND DID NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
 
 			if(defined('OBJECT_FILES_TABLE')){
-				$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName = "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
+				$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName="we_objectFile" AND DID NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
 			}
 		}
-		//FIXME: clean customerfilter
+		//clean customerfilter
+		if(defined('CUSTOMER_FILTER_TABLE')){
+			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblFile" AND modelId NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
+			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblObjectFiles" AND modelId NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
+		}
 		//FIXME: clean inconsistent objects
 	}
 
@@ -311,8 +274,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::replayUpdateDB();
 		self::meassure('replayUpdateDB');
 
-		self::updateTables($db);
-		self::meassure('updateTables');
 		self::updateUsers($db);
 		self::meassure('updateUsers');
 		self::updateObjectFilesX();
@@ -323,8 +284,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		  self::convertTemporaryDoc();
 		  self::meassure('convertTemporaryDoc');
 		 * */
-		self::updateLangLink();
-		self::meassure('updateLangLink');
 		self::fixInconsistentTables();
 		self::meassure('fixInconsistentTables');
 		self::updateGlossar();

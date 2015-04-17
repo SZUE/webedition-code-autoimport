@@ -318,24 +318,23 @@ if(!$wfchk){
 						}
 
 						$script .= '
-						// close all Editors with deleted documents
-						var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
+// close all Editors with deleted documents
+var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
 
-						// if a class is deleted, close all open objects of this class
-						var _delete_table = "' . $table . '";
-						var _delete_Ids = ",' . implode(",", $deletedItems) . ',";
-						var _delete_objects = ",' . implode(",", $deleted_objects) . ',";
+// if a class is deleted, close all open objects of this class
+var _delete_table = "' . $table . '";
+var _delete_Ids = ",' . implode(",", $deletedItems) . ',";
+var _delete_objects = ",' . implode(",", $deleted_objects) . ',";
 
-						for ( frameId in _usedEditors ) {
+for ( frameId in _usedEditors ) {
 
-							if ( _delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf( "," + _usedEditors[frameId].getEditorDocumentId() + "," ) != -1)
-								' . $class_condition . '
-								) {
-								_usedEditors[frameId].setEditorIsHot(false);
-								top.weEditorFrameController.closeDocument(frameId);
-							}
-						}
-					';
+	if ( _delete_table == _usedEditors[frameId].getEditorEditorTable() && (_delete_Ids.indexOf( "," + _usedEditors[frameId].getEditorDocumentId() + "," ) != -1)
+		' . $class_condition . '
+		) {
+		_usedEditors[frameId].setEditorIsHot(false);
+		top.weEditorFrameController.closeDocument(frameId);
+	}
+}';
 					}
 
 
@@ -420,7 +419,7 @@ if($wecmd0 != "delete_single_document"){ // no select mode in delete_single_docu
 			} elseif(permissionhandler::hasPerm("DELETE_DOCUMENT")){
 				echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
 			}
-			 * 
+			 *
 			 */
 			break;
 		default:

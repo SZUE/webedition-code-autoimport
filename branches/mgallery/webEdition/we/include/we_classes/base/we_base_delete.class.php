@@ -29,8 +29,8 @@ abstract class we_base_delete{
 			return true;
 		}
 		return (f('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE  ID=' . intval($id)) ?
-				self::checkDeleteFolder($id, $table) :
-				self::checkDeleteFile($id, $table));
+						self::checkDeleteFolder($id, $table) :
+						self::checkDeleteFile($id, $table));
 	}
 
 	private static function checkDeleteFolder($id, $table){
@@ -70,7 +70,7 @@ abstract class we_base_delete{
 		if(!$path){
 			return false;
 		}
-		
+
 		if($delR){ // recursive delete
 			$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
 			$toDeleteArray = array();
@@ -148,8 +148,11 @@ abstract class we_base_delete{
 				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id));
 
-				if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
+				if(defined('SCHEDULE_TABLE')){ //	Delete entries from schedule as well
 					$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName!="we_objectFile"');
+				}
+				if(defined('CUSTOMER_FILTER_TABLE')){
+					$DB_WE->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblFile" AND modelId=' . intval($id));
 				}
 
 				$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '" AND LinkID=' . intval($id));
@@ -159,7 +162,7 @@ abstract class we_base_delete{
 				$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND LDID=' . intval($id));
 				break;
 			case (defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE'):
-				$DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($id) . ' DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive")');//FIXME: delete OR archive
+				$DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($id) . ' DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive")'); //FIXME: delete OR archive
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID>0 AND ID=' . intval($id));
@@ -195,9 +198,13 @@ abstract class we_base_delete{
 					$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($id));
 					$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND LDID=' . intval($id));
 				}
-				if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
+				if(defined('SCHEDULE_TABLE')){ //	Delete entries from schedule as well
 					$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
 				}
+				if(defined('CUSTOMER_FILTER_TABLE')){
+					$DB_WE->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblObjectFiles" AND modelId=' . intval($id));
+				}
+
 				break;
 		}
 
@@ -214,7 +221,7 @@ abstract class we_base_delete{
 		}
 	}
 
-	public static function deleteEntry($id, $table, $delR = true, $skipHook = false, we_database_base $DB_WE = null){t_e("delEntry", $id, $table, $delR);
+	public static function deleteEntry($id, $table, $delR = true, $skipHook = false, we_database_base $DB_WE = null){
 		switch($table){
 			case defined('FILE_TABLE') ? FILE_TABLE : 'FILE_TABLE':
 			case defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 'TEMPLATES_TABLE':

@@ -36,9 +36,14 @@ $mode = we_base_request::_(we_base_request::INT,"mode",0);
 //FIXME: delete condition and else branch when new uploader is stable
 if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 	if($type && !(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode()) && ($step == 1 || $step == 2) && $what === 'wizbody'){
+		$acceptedMime = $acceptedExt = '';
 		switch($type){
 			case we_import_functions::TYPE_GENERIC_XML:
-				$fileNameTempGxml = array('prefix' => 'we_xml_', 'postfix' => '.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
+				$name = 'uploaded_xml_file';
+				$acceptedMime = 'text/xml';
+				$acceptedExt = 'xml';
+				$fileNameTemp = array('prefix' => 'we_xml_', 'postfix' => '.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
+				break;
 			case we_import_functions::TYPE_WE_XML:
 				$name = 'uploaded_xml_file';
 				$acceptedMime = 'text/xml';
@@ -47,8 +52,7 @@ if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 				break;
 			case we_import_functions::TYPE_CSV:
 				$name = 'uploaded_csv_file';
-				$acceptedMime = '';
-				$acceptedExt = 'csv';
+				$acceptedExt = 'csv,txt';
 				$fileNameTemp = array('prefix' => 'we_csv_', 'postfix' => '.csv', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
 				break;
 			default:
@@ -57,7 +61,7 @@ if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 
 		$wizard->fileUploader = new we_fileupload_include($name, 'wizbody', '', 'we_form', 'next_btn', true, 'top.wizbody.handle_eventNext()', "self.document.we_form.elements['v[rdofloc]'][1].checked=true;", 410, true, true, 200, $acceptedMime, $acceptedExt, '', '', array(), -1);
 		$wizard->fileUploader->setAction($wizard->path . '?pnt=wizbody&step=1&type=' . $type);
-		$wizard->fileUploader->setFileNameTemp($type == we_import_functions::TYPE_GENERIC_XML ? $fileNameTempGxml : $fileNameTemp);
+		$wizard->fileUploader->setFileNameTemp($fileNameTemp);
 		$wizard->fileUploader->setDimensions(array('marginTop' => 12));
 	}
 }
