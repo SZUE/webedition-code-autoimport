@@ -164,7 +164,7 @@ class we_collection extends we_root{
 			, 20);
 	}
 
-	function formContent(){
+	function formContent($fixedRemTable = false){
 		$valsRemTable = array(
 			'tblFile' => g_l('navigation', '[documents]')
 		);
@@ -252,7 +252,10 @@ class we_collection extends we_root{
 		))));
 		$classTable->setCol(0, 2, null, $classListTo);
 
-		$html = we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388) .
+		$selRemTable = $fixedRemTable && $this->remTable ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->remTable) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->remTable], 'width' => 382)) :
+				we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388);
+
+		$html = $selRemTable .
 			'<div id="mimetype" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . '; width:388px;margin-top:5px;">' .
 			'<br/>Erlaubte Dokumente auf folgende Typen einschränken:<br>' .
 			we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
@@ -268,10 +271,11 @@ class we_collection extends we_root{
 	}
 
 	function formCollection(){
+		/*
 		$checkboxes = we_html_forms::checkboxWithHidden($this->insertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_insertRecursive', 'Verzeichnisse rekursiv einfügen') .
 			we_html_forms::checkboxWithHidden($this->useEmpty, 'we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 'Leere Felder im Anschluss an die Einfügeposition auffüllen') .
 			we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $GLOBALS['we_doc']->Name . '_doubleOk', 'Dubletten zulassen');
-
+		*/
 		$items = $this->getCollectionVerified(false, true, true);
 		if($items[count($items) - 1]['id'] !== -1){
 			$items[] = array('id' => -1, 'path' => '', 'type' => '');

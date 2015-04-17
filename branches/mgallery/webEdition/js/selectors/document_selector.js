@@ -149,7 +149,7 @@ function newFile() {
 }
 
 function newCollection() {
-	url = "we_cmd.php?we_cmd[0]=editNewCollection&pid=" + top.currentDir + "&from=selector";
+	url = "we_cmd.php?we_cmd[0]=editNewCollection&fixedpid=" + top.currentDir + "&caller=selector";
 	new jsWindow(url, "we_newICollection", -1, -1, 460, 560, true, false, true);
 }
 

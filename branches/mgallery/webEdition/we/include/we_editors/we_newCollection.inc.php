@@ -24,31 +24,29 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();// FIXME: use perms
 $collection = new we_collection();
+$collection->we_new();
 
-if(we_base_request::_(we_base_request::INT, 'pid')){
-	$collection->ParentID = we_base_request::_(we_base_request::INT, 'pid');
-	$collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
-}
-$from = we_base_request::_(we_base_request::STRING, 'from');
-$isParentFixed = ($from === 'selector');
+$name = we_base_request::_(we_base_request::STRING, 'we_name', '');
+$fixedPID = we_base_request::_(we_base_request::INT, 'fixedpid', -1);
+$fixedRemTable = we_base_request::_(we_base_request::STRING, 'fixedremtable', '');
 
+$collection->ParentID = $fixedPID !== -1 ? $fixedPID : we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID');
+$collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
+$collection->remTable = $fixedRemTable ? : we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
+
+$caller = we_base_request::_(we_base_request::STRING, 'caller');
 
 $id = 0;
-
+$saveSuccess = false;
 if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	$collection->ContentType = we_base_ContentTypes::COLLECTION;
 	$collection->IsFolder = 0;
 	$collection->we_new();
 
-	$name = we_base_request::_(we_base_request::STRING, 'we_name');
 	$collection->Filename = $collection->Text = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_Filename');
-	$collection->ParentID = we_base_request::_(we_base_request::INT, 'pid') ? : we_base_request::_(we_base_request::INT, 'we_' . $name . '_ParentID');
-	$collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
 	$collection->Path = ($collection->ParentID == 0 ? '' : $collection->ParentPath) . '/' . $collection->Filename;
 	$collection->remCT = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remCT');
-	$collection->remTable = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
 
-	$saveSuccess = false;
 	if($collection->i_pathNotValid()){
 		$jsMessage = sprintf(g_l('weClass', '[notValidFolder]'), $collection->Path);
 		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
@@ -61,7 +59,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	} else {
 		$saveSuccess = $collection->we_save();
 		if($saveSuccess){
-			$jsMessage = $from == 'selector' ? '' : 'collection successfully saved';
+			$jsMessage = $caller == 'selector' ? '' : 'collection successfully saved';
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 			$db = new DB_WE();
 			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1', 'ID', $db);
@@ -120,7 +118,7 @@ function we_cmd() {
 			}
 			break;
 		case "do_onSuccess":
-			' . ($from === 'selector' ? 'opener.top.reloadDir();
+			' . ($caller === 'selector' ? 'opener.top.reloadDir();
 			opener.top.unselectAllFiles();
 			opener.top.doClick(' . $id . ', 0);
 			setTimeout(function(){opener.top.selectFile(' . $id . ');}, 200);
@@ -140,14 +138,16 @@ function we_cmd() {
 ' . (isset($jsMessage) && $jsMessage ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')) . 
 '</head>';
 
-$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($isParentFixed), 'space' => 0, 'noline' => 1);
-$parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(), 'space' => 0, 'noline' => 1);
+$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1), 'space' => 0, 'noline' => 1);
+$parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(true), 'space' => 0, 'noline' => 1);
 
 $content = we_html_element::htmlHidden('dosave', 0) .
 	we_html_element::htmlHiddens(array(
 		'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+		"fixedpid" => $fixedPID,
+		"fixedremtable" => $fixedRemTable,
 		'we_name' => $collection->Name,
-		'from' => $from
+		'from' => $caller
 	)) .
 	we_html_multiIconBox::getHTML(
 		'weNewCollection', 500, $parts, 30, we_html_button::position_yes_no_cancel(
