@@ -129,7 +129,7 @@ $yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript
 
 $yuiSuggest->setAdditionalButton(we_html_button::create_button("image:btn_add_collection", "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false), 0);
 $weAcSelector = $yuiSuggest->getHTML();
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button("quit_move", "javascript:weAddToCollection.we_cmd('exit_move','','" . $table . "')"), 10, "left");
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button("quit_move", "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 
 echo
 '</head><body class="weTreeHeaderMove">
@@ -137,7 +137,7 @@ echo
  we_html_element::htmlHiddens(array(
 	'we_targetTransaction' => '',
 	'we_targetInsertPos' => $insertPos,
-	'name' => 'sel')) . '
+	'sel' => '')) . '
 <div style="width:370px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
 	g_l('newFile', '[title_move]')) . '</h1>

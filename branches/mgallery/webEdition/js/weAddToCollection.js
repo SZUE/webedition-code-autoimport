@@ -67,7 +67,7 @@ weAddToCollection = {
 			_transaction,
 			_editor,
 			_contentEditor;
-top.console.debug(_collID, _usedEditors);
+
 		_collID = _collID ? _collID : 0;
 		for (_frameId in _usedEditors) {
 			_editor = _usedEditors[_frameId];
@@ -82,7 +82,7 @@ top.console.debug(_collID, _usedEditors);
 				}
 			}
 		}
-top.console.debug(_collID, _isOpen, _isEditorCollActive, _transaction);
+
 		if(_isOpen){
 			if(_isEditorCollActive){
 
@@ -102,8 +102,8 @@ top.console.debug(_collID, _isOpen, _isEditorCollActive, _transaction);
 				_contentEditor.weCollectionEdit.callForVerifiedItemsAndInsert(this.conf.targetInsertIndex, sel, true);
 				_editor.setEditorIsHot(true);
 
-				if(onInsertClose){top.console.debug("drin");
-					this.we_cmd('exit_move','','we65_tblFile');
+				if(onInsertClose){
+					this.we_cmd('exit_addToCollection','','we65_tblFile');
 				} else {
 					for (var i = 1; i <= top.treeData.len; i++) {
 						if(top.treeData[i].constructor.name === 'node' && top.treeData[i].checked){
@@ -115,13 +115,13 @@ top.console.debug(_collID, _isOpen, _isEditorCollActive, _transaction);
 				return;
 			}
 			document.we_form.we_targetTransaction.value = _transaction;
-			top.we_cmd('exit_move','','we65_tblFile');
+			top.we_cmd('exit_addToCollection','','we65_tblFile');
 		}
 
 		this.we_cmd('do_addToCollection', '', this.conf.table);
 	},
 
-	we_submitForm : function(target, url) {top.console.debug(_collID, _isOpen, _isEditorCollActive, _transaction);
+	we_submitForm: function(target, url) {
 		var f = self.document.we_form;
 		var sel = "";
 		for (var i = 1; i <= top.treeData.len; i++) {
@@ -153,3 +153,7 @@ top.console.debug(_collID, _isOpen, _isEditorCollActive, _transaction);
 		}
 	}
 };
+
+function we_submitForm(target, url) {
+	weAddToCollection.we_submitForm(target, url);
+}

@@ -424,9 +424,9 @@ weCollectionEdit = {
 						if (xhr.status === 200) {
 							var respArr = JSON.parse(xhr.responseText);
 							if(respArr.length === -1){ // option deactivated: check doublettes for single insert too
-									document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
-									document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
-									weCollectionEdit.repaintAndRetrieveCsv();
+								document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
+								document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
+								weCollectionEdit.repaintAndRetrieveCsv();
 							} else {
 								var resp = weCollectionEdit.addItems(document.getElementById('drag_' + index), respArr);
 								if(message){

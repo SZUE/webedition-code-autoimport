@@ -1127,6 +1127,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "exit_delete":
 		case "exit_move":
+		case "exit_addToCollection":
 			deleteMode = false;
 			if (SEEMODE) {
 			} else {
