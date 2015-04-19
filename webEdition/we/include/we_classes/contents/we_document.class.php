@@ -366,7 +366,7 @@ class we_document extends we_root{
 		$navis = $this->getNavigationItems();
 		if(in_array($path, $navis)){
 			$pos = array_search($path, $navis);
-			if($pos !== false || $pos == '0'){
+			if($pos !== false || $pos == 0){
 				$_id = path_to_id($path, NAVIGATION_TABLE);
 				$_naviItem = new we_navigation_navigation($_id);
 				if(!$_naviItem->hasAnyChilds()){
@@ -375,11 +375,9 @@ class we_document extends we_root{
 				}
 			}
 		}
-//$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	function delAllNavi(){
-//		$navis = makeArrayFromCSV($this->NavigationItems);
 		$navis = $this->getNavigationItems();
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
@@ -392,8 +390,6 @@ class we_document extends we_root{
 				}
 			}
 		}
-
-//	$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	/*
