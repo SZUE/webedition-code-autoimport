@@ -479,18 +479,24 @@ optgroup.lvl2{
 }
 
 .weTreeHeader,
-.weTreeHeaderMove{
+.weTreeHeaderMove,
+.weTreeHeaderAddToCollection{
 	background-color: #F0EFF0;
 	margin:0px;
 	padding: 10px 10px;
 	border-bottom: 1px solid black;
 }
+
 .weTreeHeader{
 	height:129px;
 }
 
 .weTreeHeaderMove {
 	height:139px;
+}
+
+.weTreeHeaderAddToCollection{
+	height:184px;
 }
 
 .weDefaultStyle{

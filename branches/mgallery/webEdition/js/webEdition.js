@@ -1214,7 +1214,7 @@ function we_cmd_base(args, url) {
 				}
 			}
 			break;
-		case "addToCollection":// FIXME: 100% redundant code in cases delete, move and addToCollection...
+		case "addToCollection":
 			if (SEEMODE) {
 				//
 			} else {
@@ -1225,20 +1225,17 @@ function we_cmd_base(args, url) {
 					treeData.setstate(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.document.getElementById("bm_treeheaderDiv").style.height = "160px";
-				self.document.getElementById("bm_mainDiv").style.top = "160px";
+				self.document.getElementById("bm_treeheaderDiv").style.height = "205px";
+				self.document.getElementById("bm_mainDiv").style.top = "205px";
 
 				var width = top.getTreeWidth();
-
 				widthBeforeDeleteMode = width;
-
 				if (width < size.tree.moveWidth) {
 					top.setTreeWidth(size.tree.moveWidth);
 				}
 				top.storeTreeWidth(widthBeforeDeleteMode);
 
 				var widthSidebar = top.getSidebarWidth();
-
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {

@@ -306,7 +306,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 			we_html_element::htmlHiddens(array(
 				'we_' . $this->Name . '_fileCollection'=> $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection'=> $this->objectCollection)) .
-			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Einfügen ganzer Verzeichnisse mit Drag and Drop:') .
+			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Inhalt der Sammlung') .
+			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)',  we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $recursive) .
 			we_html_element::htmlDiv(array('id' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows);
 	}
@@ -454,7 +455,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		parent::registerMediaLinks(false, true);
 	}
 
-	public function addItemsToCollection($items, $pos = -1){
+	public function addItemsToCollection($items, $pos = -1){ // FIXME: when pos=-1 do append at the end od collection not replacing last element!
 		$coll = $this->getCollection(true);
 		array_pop($coll); // FIXME: maybe abandon the ending -1 inserted on we_load()?
 

@@ -61,7 +61,7 @@ if($cmd0 === 'do_addToCollection'){
 			$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('wrong table for this collection', we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$collBefore = $collection->getCollection();
-			if(($items = $collection->getVerifiedRemObjectsFromIDs($sel, false))){
+			if(($items = $collection->getVerifiedRemObjectsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'insertRecursive', false)))){
 				$result = $collection->addItemsToCollection($items, $isSession ? $insertPos : -1);
 				if($isSession){
 					$collection->saveInSession($_SESSION['weS']['we_data'][$transaction]);
@@ -120,7 +120,7 @@ $yuiSuggest->setMayBeEmpty(false);
 $yuiSuggest->setResult($idname, $targetCollection);
 $yuiSuggest->setSelector(weSuggest::DocSelector);
 $yuiSuggest->setTable(VFILE_TABLE);
-$yuiSuggest->setWidth(203);
+$yuiSuggest->setWidth(273);
 $yuiSuggest->setContainerWidth(300);
 $wecmdenc1 = we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $idname . '.value');
 $wecmdenc2 = we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $textname . '.value');
@@ -131,18 +131,20 @@ $yuiSuggest->setAdditionalButton(we_html_button::create_button("image:btn_add_co
 $weAcSelector = $yuiSuggest->getHTML();
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button("quit_move", "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 
+$recursive = we_html_forms::checkboxWithHidden(1, 'insertRecursive', 'Verzeichnisse rekursiv einfügen');
+
 echo
-'</head><body class="weTreeHeaderMove">
+'</head><body class="weTreeHeaderAddToCollection">
 <form name="we_form" method="post" onsubmit="return false">' .
  we_html_element::htmlHiddens(array(
 	'we_targetTransaction' => '',
 	'we_targetInsertPos' => $insertPos,
 	'sel' => '')) . '
-<div style="width:370px;">
+<div style="width:440px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
-	g_l('newFile', '[title_move]')) . '</h1>
-<p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">addToCollectionText</span>
-			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
+	'Elemente einer Sammlung zufügen') . '</h1>
+<p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">Markieren Sie die Einträge, die Sie zufügen wollen, wählen Sie eine Sammlung und bestätigen Sie mit "OK". Einträgen die nicht den Einstellungen der Ziel-Sammlung entsprechen, werden automatisch abgewiesen.</span>
+			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . $recursive .'</p></p>
 <div>' . $_buttons . '</div></div>
  </form>' .
  $yuiSuggest->getYuiJs() .
