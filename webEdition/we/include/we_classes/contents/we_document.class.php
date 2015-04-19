@@ -329,43 +329,35 @@ class we_document extends we_root{
 	function addNavi($id, $text, $parentid, $ordn){
 		$text = urldecode($text); //Bug #3769
 		if($this->ID){
-
 			if(is_numeric($ordn)){
 				$ordn--;
 			}
-			$_ord = ($ordn === 'end' ? f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid)) : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
+			$_ord = ($ordn === 'end' ? -1 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
 			$_new_path = rtrim($_ppath, '/') . '/' . $text;
-
-			$rename = false;
-			if(empty($id)){
-				$id = path_to_id($_new_path, NAVIGATION_TABLE);
-				if($id){
-					$rename = true;
-				}
-			}
+			$id = $id? : path_to_id($_new_path, NAVIGATION_TABLE);
 
 			$_naviItem = new we_navigation_navigation($id);
 
-			$_naviItem->Ordn = $_ord;
+			$_naviItem->Ordn = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid));
 			$_naviItem->ParentID = $parentid;
 			$_naviItem->LinkID = $this->ID;
 			$_naviItem->Text = $text;
 			$_naviItem->Path = $_new_path;
-			if(NAVIGATION_ENTRIES_FROM_DOCUMENT == 0){
+			if(NAVIGATION_ENTRIES_FROM_DOCUMENT){
+				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
+				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
+			} else {
 				$_naviItem->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCTYPE;
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
 				$_naviItem->Charset = ($charset ? : (DEFAULT_CHARSET ? : $GLOBALS['WE_BACKENDCHARSET']));
-			} else {
-				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
-				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
 			}
 
 			$_naviItem->save();
-			$_naviItem->reorder($parentid);
+			$_naviItem->reorderAbs($_ord);
 		}
 	}
 
