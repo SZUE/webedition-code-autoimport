@@ -26,7 +26,7 @@
  * @desc    class for tag <we:listview type="shopVariants">
  *
  */
-class we_shop_listviewShopVariants extends we_listview_base{
+class we_listviewVariants extends we_listview_base{
 	var $Record = array();
 	var $ClassName = __CLASS__;
 	var $VariantData = array();
@@ -77,7 +77,7 @@ class we_shop_listviewShopVariants extends we_listview_base{
 
 		$this->DefaultName = $defaultname;
 
-		$variantData = we_shop_variants::getVariantData($this->Model, $this->DefaultName);
+		$variantData = we_base_variants::getVariantData($this->Model, $this->DefaultName);
 
 		$this->VariantData['Record'] = $variantData;
 

@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 9744 $
+ * $Author: andreaswitt $
+ * $Date: 2015-04-16 01:07:17 +0200 (Do, 16 Apr 2015) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -30,6 +30,6 @@
  *
  * @return	boolean
  */
-function we_tag_ifHasShopVariants(){
+function we_tag_ifHasVariants(){
 	return (we_base_variants::getNumberOfVariants($GLOBALS['we_doc']) > 0);
 }

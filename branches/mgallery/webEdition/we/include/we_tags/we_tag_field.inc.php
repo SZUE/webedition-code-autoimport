@@ -607,7 +607,7 @@ function we_tag_field($attribs){
 				$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f('wedoc_ID');
 			case '':
 			case 'we_listview_search':
-			case 'we_shop_listviewShopVariants':
+			case 'we_listviewVariants':
 			case 'we_shop_shop':
 			case 'we_customertag':
 			case 'we_customer_listview':

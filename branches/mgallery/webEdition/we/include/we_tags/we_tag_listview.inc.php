@@ -246,16 +246,17 @@ function we_tag_listview($attribs){
 			}
 			$GLOBALS['lv'] = new we_banner_listview($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
 			break;
-		case 'shopVariant':
+        case 'shopVariant': // TODO: Remove in webEdition 7 - for backwords compatibility since FR# 8556
 			if(!defined('SHOP_TABLE')){
 				echo modulFehltError('Shop', __FUNCTION__ . ' type="shopVariant"');
 				return;
 			}
+        case 'variant':
 			$defaultname = weTag_getAttribute('defaultname', $attribs, '', we_base_request::STRING);
 			$docId = weTag_getAttribute('documentid', $attribs, 0, we_base_request::INT);
 			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT)? : (is_object($GLOBALS['lv']) ? intval($GLOBALS['lv']->f('WE_ID')) : 0);
 
-			$GLOBALS['lv'] = new we_shop_listviewShopVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls, $triggerid);
+			$GLOBALS['lv'] = new we_listviewVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls, $triggerid);
 			break;
 		case 'category':
 			$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);

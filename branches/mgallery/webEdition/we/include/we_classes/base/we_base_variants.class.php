@@ -23,46 +23,46 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /*
-  data of variaiations have the following format in document
+  data of variations have the following format in document
 
-  we_doc->elements[WE_SHOP_VARIANTS_ELEMENT_NAME] = array(
-  [0] => array(
-  'VARIATIONNAME1' => array(
-  'fieldName1' => array(
-  'type' = 'txt',
-  'dat' = 'Text'
-  ),
-  'fieldName2' => array(
-  'type' = 'img',
-  'dat' = 152
-  )
-  ),
-  [1] => array(
-  'VARIATIONNAME2' => array(
-  'fieldName1' => array(
-  'type' = 'txt',
-  'dat' = 'CU'
-  ),
-  'fieldName2' => array(
-  'type' = 'img',
-  'dat' = 155
-  )
-  )
-  )
+  we_doc->elements[WE_VARIANTS_ELEMENT_NAME] = array(
+      [0] => array(
+        'VARIATIONNAME1' => array(
+        'fieldName1' => array(
+            'type' = 'txt',
+            'dat' = 'Text'
+        ),
+        'fieldName2' => array(
+            'type' = 'img',
+            'dat' = 152
+        )
+      ),
+      [1] => array(
+        'VARIATIONNAME2' => array(
+            'fieldName1' => array(
+                'type' = 'txt',
+                'dat' = 'CU'
+            ),
+            'fieldName2' => array(
+                'type' = 'img',
+                'dat' = 155
+            )
+        )
+      )
   )
   =====>>
 
   in editmode available in document
-  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME1');
-  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'Text');
-  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '0' . '_' . fieldName2] = array('type' = 'img', 'dat' = 152);
+  we_doc->elements[WE_VARIANTS_PREFIX . '0'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME1');
+  we_doc->elements[WE_VARIANTS_PREFIX . '0' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'Text');
+  we_doc->elements[WE_VARIANTS_PREFIX . '0' . '_' . fieldName2] = array('type' = 'img', 'dat' = 152);
 
-  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '1'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME2');
-  we_doc->elements[WE_SHOP_VARIANTS_PREFIX . '1' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'CU');
+  we_doc->elements[WE_VARIANTS_PREFIX . '1'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME2');
+  we_doc->elements[WE_VARIANTS_PREFIX . '1' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'CU');
   ...
  */
 
-abstract class we_shop_variants{
+abstract class we_variants{
 
 	/**
 	 * Searchs all elements of document/object
@@ -184,7 +184,7 @@ abstract class we_shop_variants{
 	}
 
 	private static function insertVariant(&$model, $position){
-		$amount = we_shop_variants::getNumberOfVariants($model);
+		$amount = we_base_variants::getNumberOfVariants($model);
 
 		// init model->elements if neccessary
 
@@ -249,8 +249,8 @@ abstract class we_shop_variants{
 		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$pos1] = $model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$pos2];
 		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'][$pos2] = $tmp;
 		// move elements for editmode
-		$variationElements_1 = we_shop_variants::getAllVariationFields($model, $pos1);
-		$variationElements_2 = we_shop_variants::getAllVariationFields($model, $pos2);
+		$variationElements_1 = we_base_variants::getAllVariationFields($model, $pos1);
+		$variationElements_2 = we_base_variants::getAllVariationFields($model, $pos2);
 
 		// backup pos 1
 		$tmp = array();
@@ -279,7 +279,7 @@ abstract class we_shop_variants{
 	}
 
 	private static function removeVariant(&$model, $delPos){
-		$total = we_shop_variants::getNumberOfVariants($model);
+		$total = we_base_variants::getNumberOfVariants($model);
 
 		$lastPos = $total - 1;
 		// move at last position, then remove it
@@ -287,7 +287,7 @@ abstract class we_shop_variants{
 			self::moveVariant($model, $delPos++, 'down');
 		}
 		// first remove all fields from doc
-		$variationFields = we_shop_variants::getAllVariationFields($model, $delPos);
+		$variationFields = we_base_variants::getAllVariationFields($model, $delPos);
 		foreach(array_keys($variationFields) as $name){
 			unset($model->elements[$name]);
 		}
@@ -299,7 +299,7 @@ abstract class we_shop_variants{
 	public static function getVariantsEditorMultiBoxArrayObjectFile($model){
 		$variantFields = $model->getVariantFields();
 
-		$count = we_shop_variants::getNumberOfVariants($model);
+		$count = we_base_variants::getNumberOfVariants($model);
 
 		$parts = $regs = array();
 
@@ -371,7 +371,7 @@ abstract class we_shop_variants{
 	public static function getVariantsEditorMultiBoxArray($model){
 		$variationFields = $model->getVariantFields();
 
-		$count = we_shop_variants::getNumberOfVariants($model);
+		$count = we_base_variants::getNumberOfVariants($model);
 
 		$i = 0;
 		$parts = array();

@@ -196,7 +196,7 @@ class we_shop_Basket{
 				$Record = $DB_WE->getAllFirst(false);
 
 				if($variant){
-					we_shop_variants::useVariantForShop($Record, $variant);
+					we_ariants::useVariantForShop($Record, $variant);
 				}
 
 				if(($hash = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $DB_WE, MYSQL_ASSOC))){
@@ -238,7 +238,7 @@ class we_shop_Basket{
 					$obj = new we_objectFile();
 					$obj->initByID($id, OBJECT_FILES_TABLE);
 
-					we_shop_variants::useVariantForShopObject($Record, $variant, $obj);
+					we_base_variants::useVariantForShopObject($Record, $variant, $obj);
 
 					// add variant to path ...
 					$Record['we_WE_PATH'] .= '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant;

@@ -597,7 +597,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 							}
 
 							if(($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE) && $we_doc->canHaveVariants(true)){
-								we_shop_variants::setVariantDataForModel($we_doc, true);
+								we_base_variants::setVariantDataForModel($we_doc, true);
 							}
 						} else {
 							$we_JavaScript = '';

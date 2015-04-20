@@ -1204,7 +1204,7 @@ function submitForm() {
 					$model = ($type == we_shop_shop::OBJECT ? new we_objectFile() : new we_webEditionDocument());
 
 					$model->initByID($id);
-					$variantData = we_shop_variants::getVariantData($model, '-');
+					$variantData = we_base_variants::getVariantData($model, '-');
 
 					if(count($variantData) > 1){
 						foreach($variantData as $cur){

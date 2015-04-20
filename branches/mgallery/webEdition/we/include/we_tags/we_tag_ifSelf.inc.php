@@ -40,7 +40,7 @@ function we_tag_ifSelf($attribs){
 				case 'we_object_listview':
 				case 'we_listview_search':
 					return in_array($GLOBALS['lv']->f('WE_ID'), $ids);
-				case 'we_shop_listviewShopVariants':
+				case 'we_listviewVariants':
 					reset($GLOBALS['lv']->Record);
 					$key = key($GLOBALS['lv']->Record);
 					if(isset($GLOBALS['we_doc']->Variant)){

@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 9750 $
+ * $Author: mokraemer $
+ * $Date: 2015-04-16 10:59:37 +0200 (Do, 16 Apr 2015) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -24,12 +24,14 @@
  */
 
 /**
- * This function returns if an article has variants
+ * This function inits a shop variant if available
  *
  * @param	$attribs array
  *
- * @return	boolean
+ * @return	void
  */
-function we_tag_ifHasShopVariants(){
-	return (we_base_variants::getNumberOfVariants($GLOBALS['we_doc']) > 0);
+function we_tag_useVariants(){
+	if(!$GLOBALS['we_doc']->InWebEdition && ($var = we_base_request::_(we_base_request::STRING, we_base_constants::WE_VARIANT_REQUEST)) !== false){
+		we_base_variants::useVariant($GLOBALS['we_doc'], $var);
+	}
 }

@@ -513,7 +513,7 @@ class we_objectFile extends we_document{
 	}
 
 	function i_areVariantNamesValid(){
-		$variationFields = we_shop_variants::getAllVariationFields($this);
+		$variationFields = we_base_variants::getAllVariationFields($this);
 
 		if(!empty($variationFields)){
 			$i = 0;
@@ -2221,7 +2221,7 @@ class we_objectFile extends we_document{
 		}
 
 		if($this->canHaveVariants()){
-			we_shop_variants::correctModelFields($this);
+			we_base_variants::correctModelFields($this);
 		}
 		if(!$this->TriggerID){
 			$this->TriggerID = f('SELECT TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE);
@@ -2990,7 +2990,7 @@ class we_objectFile extends we_document{
 // unserialize the variant data when loading the model
 				$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, we_unserialize($dat), 'variant');
 			}
-			we_shop_variants::setVariantDataForModel($this);
+			we_base_variants::setVariantDataForModel($this);
 		}
 	}
 
