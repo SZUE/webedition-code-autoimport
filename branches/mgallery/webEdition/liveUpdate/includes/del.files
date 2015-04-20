@@ -307,6 +307,8 @@ we/include/we_modules/shop/weShopVariants.inc.php
 we/include/we_modules/shop/we_ShopDirSelect.php
 we/include/we_modules/shop/we_shopDirSelector.php
 we/include/we_modules/shop/we_shopDirSelectorFrameset.php
+we/include/we_modules/shop/we_shop_variants.class.php
+we/include/we_modules/shop/we_shop_listviewShopVariants.class.php
 we/include/we_modules/shop/we_shop_dirSelector.class.php
 we/include/we_modules/shop/weShippingControl.class.php
 we/include/we_modules/shop/we_pager_class.inc.php
