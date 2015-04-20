@@ -857,7 +857,7 @@ class we_document extends we_root{
 
 				if(isset($GLOBALS['lv'])){
 					switch(get_class($GLOBALS['lv'])){
-						case 'we_listviewVariants':
+						case 'we_listview_variants':
 							$altField = (we_base_constants::WE_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $altField);
 							$titleField = (we_base_constants::WE_VARIANTS_PREFIX . $GLOBALS['lv']->Position . '_' . $titleField);
 							break;

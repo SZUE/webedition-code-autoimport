@@ -94,9 +94,9 @@ function we_tag_a($attribs, $content){
 				$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
 			} else {
 				//Zwei Faelle werden abgedeckt, bei denen die Objekt-ID nicht gefunden wird: (a) bei einer listview ueber shop-objekte, darin eine listview über shop-varianten, hierin der we:a-link und (b) Objekt wird ueber den objekt-tag geladen #3538
-				if((isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_listviewVariants) && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName === 'we_objectFile') || isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_object_tag)){
+				if((isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_listview_variants) && isset($GLOBALS['lv']->Model) && $GLOBALS['lv']->Model->ClassName === 'we_objectFile') || isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_object_tag)){
 					$type = we_shop_shop::OBJECT;
-					$idd = ($GLOBALS['lv'] instanceof we_listviewVariants ? $GLOBALS['lv']->Id : $GLOBALS['lv']->id);
+					$idd = ($GLOBALS['lv'] instanceof we_listview_variants ? $GLOBALS['lv']->Id : $GLOBALS['lv']->id);
 				} else {
 					$idd = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$foo])) && $GLOBALS['lv']->IDs[$foo] != '') ?
 							$GLOBALS['lv']->IDs[$foo] :

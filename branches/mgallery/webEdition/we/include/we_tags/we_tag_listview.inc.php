@@ -256,7 +256,7 @@ function we_tag_listview($attribs){
 			$docId = weTag_getAttribute('documentid', $attribs, 0, we_base_request::INT);
 			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT)? : (is_object($GLOBALS['lv']) ? intval($GLOBALS['lv']->f('WE_ID')) : 0);
 
-			$GLOBALS['lv'] = new we_listviewVariants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls, $triggerid);
+			$GLOBALS['lv'] = new we_listview_variants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls, $triggerid);
 			break;
 		case 'category':
 			$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
