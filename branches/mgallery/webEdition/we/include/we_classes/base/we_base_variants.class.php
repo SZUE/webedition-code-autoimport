@@ -62,7 +62,7 @@
   ...
  */
 
-abstract class we_variants{
+abstract class we_base_variants{
 
 	/**
 	 * Searchs all elements of document/object
