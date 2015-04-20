@@ -37,7 +37,7 @@ class we_wysiwyg_editor{
 	var $value = '';
 	var $restrictContextmenu = '';
 	private $tinyPlugins = array();
-	private $wePlugins = array('weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak', 'wespellchecker', 'welink', 'wefullscreen');
+	private $wePlugins = array('weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak', 'wespellchecker', 'welink', 'wefullscreen', 'wegallery');
 	private $createContextmenu = true;
 	private $filteredElements = array();
 	private $bgcol = '';
@@ -69,10 +69,11 @@ class we_wysiwyg_editor{
 	private $contentCss = '';
 	private $isInPopup = false;
 	private $imageStartID = 0;
+	private $galleryTemplates = '';
 
 	const CONDITIONAL = true;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $imageStartID = 0){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $imageStartID = 0, $galleryTemplates = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
@@ -165,6 +166,13 @@ class we_wysiwyg_editor{
 		$this->isInPopup = $isInPopup;
 		$this->imageStartID = $imageStartID;
 
+		foreach(explode(',', $galleryTemplates) as $id){
+			if($id && is_numeric(trim($id))){
+				$this->galleryTemplates .= $id . ',';
+			}
+		}
+		$this->galleryTemplates = trim($this->galleryTemplates, ',');
+
 		//FIXME: what to do with scripts??
 		/*
 		  if($inlineedit && $value){
@@ -197,7 +205,7 @@ class we_wysiwyg_editor{
 			'list' => array('insertunorderedlist', 'insertorderedlist', 'indent', 'outdent', 'blockquote'),
 			'link' => array('createlink', 'unlink', 'anchor'),
 			'table' => array('inserttable', 'deletetable', 'editcell', 'editrow', 'insertcolumnleft', 'insertcolumnright', 'deletecol', 'insertrowabove', 'insertrowbelow', 'deleterow', 'increasecolspan', 'decreasecolspan'),
-			'insert' => array('insertimage', 'hr', 'inserthorizontalrule', 'insertspecialchar', 'insertbreak', 'insertdate', 'inserttime'),
+			'insert' => array('insertimage', 'insertgallery', 'hr', 'inserthorizontalrule', 'insertspecialchar', 'insertbreak', 'insertdate', 'inserttime'),
 			'copypaste' => array(/* 'cut', 'copy', 'paste', */'pastetext', 'pasteword'),
 			'layer' => array('insertlayer', 'movebackward', 'moveforward', 'absolute'),
 			'essential' => array('undo', 'redo', 'spellcheck', 'selectall', 'search', 'replace', 'fullscreen', 'visibleborders'),
@@ -314,6 +322,7 @@ class we_wysiwyg_editor{
 			'unlink',
 			'anchor',
 			'insertimage',
+			'insertgallery',
 			'inserthorizontalrule',
 			'insertspecialchar',
 			'inserttable',
@@ -450,6 +459,7 @@ class we_wysiwyg_editor{
 				$sep,
 				//group: insert
 				new we_wysiwyg_ToolbarButton($this, "insertimage"),
+				new we_wysiwyg_ToolbarButton($this, "insertgallery"),
 				new we_wysiwyg_ToolbarButton($this, "hr"),
 				new we_wysiwyg_ToolbarButton($this, "inserthorizontalrule"),
 				$sepCon,
@@ -575,7 +585,7 @@ class we_wysiwyg_editor{
 	 * is returns an array of img/href-ids (for use in registerMediaLinks)
 	 */
 
-	public static function reparseInternalLinks(&$content, $replace = false){
+	public static function reparseInternalLinks(&$content, $replace = false){// FIXME: move to we_document?
 		$regs = $internalIDs = array();
 		if(preg_match_all('{src="/[^">]+\\?id=(\\d+)["|&]}i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
@@ -692,6 +702,7 @@ class we_wysiwyg_editor{
 			'insertbreak' => 'weinsertbreak',
 			'insertcolumnleft' => 'col_before',
 			'insertcolumnright' => 'col_after',
+			'insertgallery' => 'wegallery',
 			'inserthorizontalrule' => 'advhr',
 			'insertimage' => 'weimage',
 			'insertorderedlist' => 'numlist',
@@ -890,6 +901,7 @@ var tinyMceTranslationObject = {' . $editorLang . ':{
 		"tt_welang":"' . g_l('wysiwyg', '[language]') . '",
 		"tt_wespellchecker":"' . g_l('wysiwyg', '[spellcheck]') . '",
 		"tt_wevisualaid":"' . g_l('wysiwyg', '[visualaid]') . '",
+		"tt_wegallery":"not translated yet",
 		"cm_inserttable":"' . g_l('wysiwyg', '[insert_table]') . '",
 		"cm_table_props":"' . g_l('wysiwyg', '[edit_table]') . '"
 	}}};
@@ -922,9 +934,11 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		"tinyParams" : "' . urlencode($this->tinyParams) . '",
 		"contextmenu" : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
 		"templates" : "' . $this->templates . '",
-		"formats" : "' . $this->formats . '"
+		"formats" : "' . $this->formats . '",
+		"galleryTemplates" : "' . $this->galleryTemplates . '"
 	},
 	weImageStartID : ' . $this->imageStartID . ',
+	weGalleryTemplates : "' . $this->galleryTemplates . '",
 	weClassNames_urlEncoded : "' . urlencode($this->cssClasses) . '",
 	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
 	weWordCounter : 0,
@@ -971,6 +985,10 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	plugin_preview_height : "300",
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
+
+	extended_valid_elements : "wegallery[id|tmpl|class]",
+	custom_elements : "wegallery",
+
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
 	editor_css : "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",

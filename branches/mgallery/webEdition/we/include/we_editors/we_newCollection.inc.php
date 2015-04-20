@@ -64,7 +64,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	} else {
 		$saveSuccess = $collection->we_save();
 		if($saveSuccess){
-			$jsMessage = $caller == 'selector' ? '' : 'collection successfully saved';
+			$jsMessage = $caller == 'selector' ? '' : 'Die Sammlung wurde erfolgreich angelegt.'; // FIXME: G_L()
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 			$db = new DB_WE();
 			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1', 'ID', $db);
@@ -129,7 +129,7 @@ function we_cmd() {
 			opener.top.doClick(' . $id . ', 0);
 			setTimeout(function(){opener.top.selectFile(' . $id . ');}, 200);' :
 			($writeBack[0] ? 'opener.' . $writeBack[0] . ' = ' . $id . ';opener.' . $writeBack[1] . ' = "' . $collection->Path . '";' : '')) . '
-			//window.close();
+			window.close();
 			break;
 	}
 }
@@ -147,7 +147,7 @@ $content = we_html_element::htmlHidden('dosave', 0) .
 		"fixedpid" => $fixedPID,
 		"fixedremtable" => $fixedRemTable,
 		'we_name' => $collection->Name,
-		'from' => $caller
+		'caller' => $caller
 	)) .
 	we_html_multiIconBox::getHTML(
 		'weNewCollection', 500, $parts, 30, we_html_button::position_yes_no_cancel(

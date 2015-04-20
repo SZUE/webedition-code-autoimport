@@ -49,3 +49,11 @@ border: 1px dotted gray;
 span.mceItemWeLang{
 border: 1px dotted gray;
 }
+
+wegallery{
+background-image: url(/webEdition/images/wysiwyg/wegallery.gif);
+background-repeat: no-repeat;
+display: inline-block;
+width: 65px !important;
+height: 15px !important;
+}
