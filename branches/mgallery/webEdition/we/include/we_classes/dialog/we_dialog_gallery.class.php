@@ -76,6 +76,10 @@ top.close();
 		$yuiSuggest->setResult($idname, isset($this->args['collid']) ? $this->args['collid'] : 0);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(VFILE_TABLE);
+
+		$yuiSuggest->setCheckFieldValue(false);
+		$yuiSuggest->setNoAutoInit(true);
+
 		$yuiSuggest->setWidth(234);
 		$yuiSuggest->setContainerWidth(300);
 		$wecmdenc1 = we_base_request::encCmd('top.document.we_form.elements["' . $idname . '"].value');
