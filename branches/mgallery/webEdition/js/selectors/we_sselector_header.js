@@ -25,8 +25,8 @@ var type_ord = 0;
 var date_ord = 0;
 var size_ord = 0;
 
-function addOption(txt, id) {
-	var a = document.we_form.elements.lookin;
+function addOptionh(txt, id) {
+	var a = document.getElementById('lookin');
 	a.options[a.options.length] = new Option(txt, id);
 	a.selectedIndex = (a.options.length > 0 ? a.options.length - 1 : 0);
 }
@@ -82,7 +82,7 @@ function reorder(name) {
 function setLookin() {
 	var dirs = [];
 	var foo = [];
-	var a = document.we_form.elements.lookin;
+	var a = document.getElementById('lookin');
 	var c = 0;
 
 	a.options.length = 0;
@@ -101,13 +101,51 @@ function setLookin() {
 		}
 	}
 
-	addOption(root, "/");
+	addOptionh(root, "/");
 	for (i = 0; i < dirs.length; i++) {
 		if (a.options[i].value == "/") {
-			addOption(dirs[i], a.options[i].value + dirs[i]);
+			addOptionh(dirs[i], a.options[i].value + dirs[i]);
 		} else {
-			addOption(dirs[i], a.options[i].value + "/" + dirs[i]);
+			addOptionh(dirs[i], a.options[i].value + "/" + dirs[i]);
 		}
 	}
 
+}
+
+function closeOnEscape() {
+	return true;
+}
+
+
+function addOption(txt, id) {
+	var a = document.getElementsByName("filter")[0];
+	a.options[a.options.length] = new Option(txt, id);
+	a.selectedIndex = 0;
+}
+
+function editFile() {
+	if (!top.dirsel) {
+		var a = document.getElementsByName("fname")[0];
+		if ((top.currentID !== "") && (a.value !== "")) {
+			if (a.value != top.currentName) {
+				top.currentID = top.sitepath + top.rootDir + top.currentDir + "/" + a.value;
+			}
+			url = "we_sselector_editFile.php?id=" + top.currentID;
+			new jsWindow(url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
+		}
+		else {
+			top.we_showMessage(g_l.edit_file_nok, WE_MESSAGE_ERROR, window);
+		}
+	}
+	else {
+		top.we_showMessage(g_l.edit_file_is_folder, WE_MESSAGE_ERROR, window);
+	}
+}
+
+function doUnload() {
+	if (jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
 }

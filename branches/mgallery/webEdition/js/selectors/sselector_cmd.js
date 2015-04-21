@@ -41,7 +41,7 @@ function selectFile(fid) {
 	if (fid !== "/") {
 		top.currentID = top.sitepath + top.rootDir + top.currentDir + ((top.currentDir != "/") ? "/" : "") + fid;
 		top.currentName = fid;
-		top.fsfooter.document.we_form.elements.fname.value = fid;
+		top.document.getElementsByName("fname")[0].value = fid;
 		if (top.fsbody.document.getElementById(fid)) {
 			for (i = 0; i < top.allentries.length; i++) {
 				if (top.fsbody.document.getElementById(top.allentries[i]))
@@ -52,7 +52,7 @@ function selectFile(fid) {
 	} else {
 		top.currentID = top.sitepath;
 		top.currentName = fid;
-		top.fsfooter.document.we_form.elements.fname.value = fid;
+		top.document.getElementsByName("fname")[0].value = fid;
 		if (top.fsbody.document.getElementById(fid)) {
 			for (i = 0; i < top.allentries.length; i++) {
 				if (top.fsbody.document.getElementById(top.allentries[i]))
@@ -71,17 +71,17 @@ function reorderDir(dir, order) {
 function selectDir() {
 	if (arguments[0]) {
 		top.currentDir = top.currentDir + (top.currentDir === "/" ? "" : "/") + arguments[0];
-		top.fsheader.addOption(arguments[0], top.currentDir);
+		top.addOptionh(arguments[0], top.currentDir);
 	}
 
 	if (top.currentDir.substring(0, 12) === "/webEdition/" || top.currentDir === "/webEdition") {
-		top.fsheader.weButton.disable("btn_new_dir_ss");
-		top.fsheader.weButton.disable("btn_add_file_ss");
-		top.fsheader.weButton.disable("btn_function_trash_ss");
+		top.weButton.disable("btn_new_dir_ss");
+		top.weButton.disable("btn_add_file_ss");
+		top.weButton.disable("btn_function_trash_ss");
 	} else {
-		top.fsheader.weButton.enable("btn_new_dir_ss");
-		top.fsheader.weButton.enable("btn_add_file_ss");
-		top.fsheader.weButton.enable("btn_function_trash_ss");
+		top.weButton.enable("btn_new_dir_ss");
+		top.weButton.enable("btn_add_file_ss");
+		top.weButton.enable("btn_function_trash_ss");
 	}
 
 	drawDir(top.currentDir);

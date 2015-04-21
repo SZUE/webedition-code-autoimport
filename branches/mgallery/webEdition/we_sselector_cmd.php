@@ -91,7 +91,7 @@ if(!$cmd || $cmd != "save_last"){
 		}
 
 		function delFile() {
-			if ((top.currentID !== "") && (top.fsfooter.document.we_form.elements.fname.value !== "")) {
+			if ((top.currentID !== "") && (top.document.getElementsByName("fname")[0].value !== "")) {
 				top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + arguments[0];
 			} else {
 	<?php echo we_message_reporting::getShowMessageCall(g_l('fileselector', '[edit_file_nok]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -196,10 +196,10 @@ if(!$cmd || $cmd != "save_last"){
 			echo "drawDir(top.currentDir);selectFile(top.currentName);";
 			break;
 		case "delete_file":
-			if(($fid = we_base_request::_(we_base_request::FILE, "fid"))){
+			if(!($fid = we_base_request::_(we_base_request::FILE, "fid"))){
 				break;
 			}
-			$foo = f('SELECT ID FROM ' . FILE_TABLE . " WHERE Path='" . $DB_WE->escape($fid) . "'");
+			$foo = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($fid) . '"');
 			if(preg_match('|' . WEBEDITION_PATH . '|', $fid) || ($fid == rtrim(WEBEDITION_PATH, '/')) || strpos("..", $fid) || $foo || $fid == $_SERVER['DOCUMENT_ROOT'] || $fid . "/" == $_SERVER['DOCUMENT_ROOT']){
 				echo we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR);
 				break;

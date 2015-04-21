@@ -1071,7 +1071,7 @@ function we_templateHead($fullHeader = false){
 	we_html_element::jsElement('parent.openedWithWE = 1;');
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
-		echo '</head><body onunload="doUnload()">';
+		echo '</head><body onload="doScrollTo();" onunload="doUnload()">';
 		we_templatePreContent();
 		$GLOBALS['WE_HTML_HEAD_BODY'] = true;
 	}
@@ -1097,7 +1097,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		echo $yuiSuggest->getYuiJs() .
 		we_html_element::htmlHidden("we_complete_request", 1) .
 		'</form>' .
-		we_html_element::jsElement('setTimeout(doScrollTo,100);') . //FIXME: make this body onload
+	//	we_html_element::jsElement('setTimeout(doScrollTo,100);') . //FIXME: make this body onload
 		($fullPoster ? '</body></html>' : '');
 	}
 }

@@ -93,6 +93,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
  </div>' .
 		we_html_multiIconBox::_getBoxEnd('100%');
 
+		$js = '';
 		for($i = 0; $i <= $count && $sort; $i++){
 			$identifier = $we_doc->getSortIndex($i);
 			$uniqid = "entry_" . $identifier;
@@ -117,11 +118,13 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		</tr>
 		</table>
 		<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
-			'</div>' .
-			we_html_element::jsElement('classEntry.add(document, \'' . $uniqid . '\', null);') .
-			$jsGUI->getDisableButtonJS();
+			'</div>' ;
+			$js.='classEntry.add(document, \'' . $uniqid . '\', null);';
 		}
-		echo we_html_element::htmlHidden("we_complete_request", 1);
+		echo we_html_element::jsElement($js .
+			$jsGUI->getDisableButtonJS()
+		) .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body>

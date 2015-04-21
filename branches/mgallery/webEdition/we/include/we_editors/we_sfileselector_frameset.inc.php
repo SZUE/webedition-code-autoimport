@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,12 +22,74 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function printHeaderHTML($ret){
+	return '
+		<table class="selectorHeaderTable">
+			<tr valign="middle">
+				<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
+				<td class="lookin"><select name="lookin" id="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
+						<option value="/">/</option>
+					</select></td>
+				<td>' . we_html_button::create_button("root_dir", "javascript:top.fscmd.setDir('/');") . '</td>
+				<td>' . we_html_button::create_button("image:btn_fs_back", "javascript:top.fscmd.goUp();") . '</td>
+	' . ($ret ? '' : '
+					<td>' . we_html_button::create_button("image:btn_new_dir", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss") . '</td>
+					<td>' . we_html_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>
+					<td class="trash">' . we_html_button::create_button("image:btn_function_trash", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>') .
+		'</tr>
+		</table>
+		<table class="headerLines">
+			<tr>
+				<th class="selector treeIcon"></th>
+				<th class="selector filename"><a href="#" onclick="reorder(\'name\');">' . g_l('fileselector', '[filename]') . '</a></th>
+				<th class="selector filetype"><a href="#" onclick="reorder(\'type\');">' . g_l('fileselector', '[type]') . '</a></th>
+				<th class="selector moddate"><a href="#" onclick="reorder(\'date\');">' . g_l('fileselector', '[modified]') . '</a></th>
+				<th class="selector filesize"><a href="#" onclick="reorder(\'size\');">' . g_l('fileselector', '[filesize]') . '</a></th>
+				<th class="selector remain"></th>
+			</tr>
+		</table>
+		';
+}
+
+function printFooterTable($ret, $filter, $currentName){
+	if($ret){
+		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
+		$yes_button = we_html_button::create_button("ok", "javascript:top.exit_close();");
+	} else {
+		$cancel_button = we_html_button::create_button("close", "javascript:top.exit_close();");
+		$yes_button = we_html_button::create_button("edit", "javascript:editFile();");
+	}
+	if($filter === "all_Types"){
+		$options = '<option value="' . str_replace(' ', '%20', g_l('contentTypes', '[all_Types]')) . '">' . g_l('contentTypes', '[all_Types]') . '</option>';
+		$ct = we_base_ContentTypes::inst();
+		foreach($ct->getFiles() as $key){
+			$options.= '<option value="' . rawurlencode(g_l('contentTypes', '[' . $key . ']')) . '">' . g_l('contentTypes', '[' . $key . ']') . '</option>';
+		}
+	}
+	return '<table id="footer">' .
+		($filter === "all_Types" ? '
+				<tr>
+					<td class="defaultfont description">' . g_l('fileselector', '[type]') . '</td>
+					<td class="defaultfont">
+						<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(this.options[this.selectedIndex].value)" style="width:100%">
+							' . $options . '</select></td>
+				</tr>' : '') . '
+			<tr>
+				<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
+				<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, we_base_request::_(we_base_request::FILE, "currentName"), "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
+			</tr>
+		</table>
+		<div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>
+';
+}
+
 if(!$_SESSION['user']['Username']){
 	session_id;
 }
 
 we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 echo we_html_tools::getHtmlTop('', '', 'frameset');
+
 
 $docroot = str_replace('\\', '/', rtrim($_SERVER['DOCUMENT_ROOT'], '/'));
 $cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
@@ -35,11 +98,11 @@ $cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 $filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 'all_Types', 2);
 $url = we_base_request::_(we_base_request::URL, 'we_cmd', '', 3);
 $currentDir = str_replace('\\', '/', ( $url ?
-				($url === '/' ? '' :
-						( parse_url($url) === FALSE && is_dir($docroot . $url) ?
-								$url :
-								dirname($url))) :
-				''));
+		($url === '/' ? '' :
+			( parse_url($url) === FALSE && is_dir($docroot . $url) ?
+				$url :
+				dirname($url))) :
+		''));
 $currentName = ($filter != we_base_ContentTypes::FOLDER ? basename($url) : '');
 if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
@@ -66,7 +129,10 @@ $selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 	var dirsel = 1;
 	var scrollToVal = 0;
 	var allentries = [];
-
+	var g_l = {
+		"edit_file_nok": "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')); ?>",
+		"edit_file_is_folder": "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')); ?>"
+	};
 	function exit_close() {
 		if (!browseServer) {
 			var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
@@ -84,25 +150,29 @@ if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
 		close();
 	}
 
-	self.focus();
-
-	function closeOnEscape() {
-		return true;
-
-	}
-//-->
+	//-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . STYLESHEET;
+echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ STYLESHEET .
+ we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+ we_html_element::cssElement('
+#fsfooter{
+	 bottom:0px;
+}
+') .
+ we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_header.js');
 ?>
 </head>
-<body onload="top.fscmd.selectDir();">
-	<?php
-	$footerHeight = (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90);
-	echo we_html_element::htmlIFrame('fsheader', 'we_sselector_header.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentDir=' . $currentDir, 'position:absolute;top:0px;height:73px;left:0px;right:0px;', '', '', false) .
-	we_html_element::htmlIFrame('fsbody', 'about:blank', 'position:absolute;top:73px;bottom:' . $footerHeight . 'px;left:0px;right:0px;', '', '', true) .
-	we_html_element::htmlIFrame('fsfooter', 'we_sselector_footer.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName, 'position:absolute;bottom:0px;height:' . $footerHeight . 'px;left:0px;right:0px;', '', '', false) .
-	we_html_element::htmlIFrame('fscmd', 'we_sselector_cmd.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false);
-	?>
+<body onload="setLookin();
+		top.fscmd.selectDir();" onunload="doUnload();">
+			<?php
+				$footerHeight = (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90);
+				echo we_html_element::htmlDiv(array('id' => 'fsheader'), printHeaderHTML(($cmd1 ? 1 : 0))) .
+				we_html_element::htmlIFrame('fsbody', 'about:blank', 'position:absolute;top:73px;bottom:' . $footerHeight . 'px;left:0px;right:0px;', '', '', true) .
+				we_html_element::htmlDiv(array('id' => 'fsfooter'), printFooterTable(($cmd1 ? 1 : 0), $filter, $currentName)) .
+				we_html_element::htmlIFrame('fscmd', 'we_sselector_cmd.php?ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false);
+				?>
 </body>
 </html>

@@ -100,18 +100,18 @@ class weOrderContainer{
 		}
 
 		return ($string != "" ?
-						'<' . $this->containerType . ' id="' . $this->containerId . '" style="display: none;">'
+				'<' . $this->containerType . ' id="' . $this->containerId . '" style="display: none;">'
 				. $string
 				. '</' . $this->containerType . '>' : '') .
-			we_html_element::jsElement($cmd) .
-			$this->getDisableButtonJS();
+			we_html_element::jsElement($cmd .
+				$this->getDisableButtonJS());
 	}
 
 // end: getResponse
 
 	function getDisableButtonJS(){
 
-		return we_html_element::jsElement('
+		return '
 for(i=0; i < ' . $this->targetFrame . '.' . $this->containerId . '.position.length; i++) {
 	id = ' . $this->targetFrame . '.' . $this->containerId . '.position[i];
 	id = id.replace(/entry_/, "");
@@ -123,7 +123,7 @@ for(i=0; i < ' . $this->targetFrame . '.' . $this->containerId . '.position.leng
 		if(i+1 == ' . $this->targetFrame . '.' . $this->containerId . '.position.length) {
 			' . $this->targetFrame . '.weButton.disable("btn_direction_down_" + id);
 		}
-	}');
+	}';
 	}
 
 }

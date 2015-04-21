@@ -284,7 +284,7 @@ we_templateInit();?>';
 			//#### parse base href
 			$code = str_replace(array('?>', '=>'), array('__WE_?__WE__', '__WE_=__WE__'), $code);
 
-			$code = preg_replace('%(<body[^>]*)>%i', '${1}<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
+			$code = preg_replace('%(<body[^>]*)>%i', '${1}<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
 
 			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
 			$code = str_ireplace(array('<head>', '</body>'), array('<head><?php we_templateHead();?>', '<?php we_templatePostContent(true);?></body>'), $code);
