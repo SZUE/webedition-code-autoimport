@@ -33,7 +33,7 @@ $charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Cha
 echo we_html_tools::getHtmlTop('', $charset, 5);
 
 //	---> initialize some vars
-$jsGUI = new weOrderContainer('top._EditorFrame.getContentEditor()', 'classEntry');
+$jsGUI = new weOrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
 
 
 //	---> Loading the Stylesheets

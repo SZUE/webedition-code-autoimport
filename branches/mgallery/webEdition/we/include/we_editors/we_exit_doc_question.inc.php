@@ -96,7 +96,7 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . we_html_element::jsE
 	}
 
 	function pressed_yes() {
-		top._EditorFrame.getDocumentReference().frames.editFooter.we_save_document('" . str_replace("'", "\\'", "top.weEditorFrameController.closeDocument('" . $editorFrameId . "');" . ($nextCmd ? "top.setTimeout('" . $nextCmd . "', 1000);" : "" )) . "');
+		_EditorFrame.getDocumentReference().frames.editFooter.we_save_document('" . str_replace("'", "\\'", "top.weEditorFrameController.closeDocument('" . $editorFrameId . "');" . ($nextCmd ? "top.setTimeout('" . $nextCmd . "', 1000);" : "" )) . "');
 		window_closed();
 		self.close();
 	}

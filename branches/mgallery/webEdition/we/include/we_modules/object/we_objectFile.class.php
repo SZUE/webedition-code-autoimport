@@ -565,7 +565,7 @@ class we_objectFile extends we_document{
 		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
 			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . $this->EditPageNr . ',"' . $GLOBALS["we_transaction"] . '");';
 		}
-		$GLOBALS['we_JavaScript'] = "top._EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
+		$GLOBALS['we_JavaScript'] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
 
 	function unpublishFromInsideDocument(){
@@ -573,7 +573,7 @@ class we_objectFile extends we_document{
 		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
 			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . $this->EditPageNr . ',"' . $GLOBALS["we_transaction"] . '");';
 		}
-		$GLOBALS["we_JavaScript"] = "top._EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
+		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
 
 	public function formPath(){
@@ -1184,7 +1184,7 @@ class we_objectFile extends we_document{
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Path_elem_Name . "'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
 			$but = (($directory && $file) || $file ?
-					we_html_button::create_button('select', "javascript:we_cmd('" . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
+					we_html_button::create_button('select', "javascript:we_cmd('openDocselector'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
 					we_html_button::create_button('select', "javascript:we_cmd('openDirselector'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0);")
 				);
 		} else {

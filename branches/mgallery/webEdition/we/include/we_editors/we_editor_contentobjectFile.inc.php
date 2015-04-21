@@ -59,7 +59,7 @@ if($GLOBALS['we_doc']->CSS){
 
 $we_doc = $GLOBALS['we_doc'];
 
-$jsGUI = new weOrderContainer("top._EditorFrame.getContentEditor()", "objectEntry");
+$jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
 echo $jsGUI->getJS() .
  we_html_multiIconBox::getJs();
 
@@ -69,35 +69,35 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 ?>
 </head>
 
-<body class="weEditorBody" onunload="doUnload()">
+<body class="weEditorBody" onload="doScrollTo();" onunload="doUnload()">
 	<form name="we_form" method="post"><?php
 		echo we_class::hiddenTrans();
 
 		if($_editMode){
-
 			echo we_html_multiIconBox::_getBoxStart("100%", g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
 			$jsGUI->getContainer() .
 			we_html_multiIconBox::_getBoxEnd("100%");
-
+			$js = '';
 			foreach($parts as $idx => $part){
 
 				echo '<div id="' . $part['name'] . '">
-			<a name="f' . $part['name'] . '"></a>
-			<table cellpadding="0" cellspacing="0" border="0" width="100%">
-			<tr>
-				<td class="defaultfont" width="100%">
-					<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
-						<tr><td class="defaultfont">' . $part["html"] . '</td></tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td>
-			</tr>
+	<a name="f' . $part['name'] . '"></a>
+	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	<tr>
+		<td class="defaultfont" width="100%">
+			<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+				<tr><td class="defaultfont">' . $part["html"] . '</td></tr>
 			</table>
-			</div>' .
-				we_html_element::jsElement('objectEntry.add(document, \'' . $part['name'] . '\', null);');
+		</td>
+	</tr>
+	<tr>
+		<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td>
+	</tr>
+	</table>
+</div>' ;
+				$js.='objectEntry.add(document, \'' . $part['name'] . '\', null);';
 			}
+			echo we_html_element::jsElement($js);
 		} else {
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 				$_msg = '';
@@ -107,5 +107,5 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		echo we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
-</body><?php echo we_html_element::jsElement('setTimeout(doScrollTo,100);'); ?>
+</body>
 </html>

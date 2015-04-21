@@ -263,7 +263,7 @@ div.we_file_drag_binDoc{
 			$frame = 'top.weEditorFrameController.getVisibleEditorFrame()';
 		} else {
 			$parentObj = 'top._EditorFrame';
-			$frame = 'top._EditorFrame.getContentEditor()';
+			$frame = '_EditorFrame.getContentEditor()';
 		}
 
 		return "var fileupload; if(" . $parentObj . " !== undefined && (fileUpload = " . $frame . ".we_FileUpload) !== undefined && fileUpload.getType() === 'binDoc' && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
