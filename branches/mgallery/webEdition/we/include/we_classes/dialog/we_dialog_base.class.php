@@ -235,7 +235,7 @@ function doKeyDown() {
 	function getJs(){
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 var textareaFocus = false;
-var onEnterKey=' . ($this->pageNr == $this->numPages && $this->JsOnly) . ';
+var onEnterKey=' . intval($this->pageNr == $this->numPages && $this->JsOnly) . ';
 
 function weDoOk() {' .
 						($this->pageNr == $this->numPages && $this->JsOnly ? '
