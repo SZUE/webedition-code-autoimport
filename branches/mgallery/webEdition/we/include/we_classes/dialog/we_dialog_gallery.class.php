@@ -119,7 +119,7 @@ top.close();
 <tr><td>' . $tmpl . '</td></tr>
 	
 <tr><td>' . we_html_tools::getPixel(225, 24) . '</td></tr>
-<tr><td>' . $btnTrash . ' Sammlung entfernen</td></tr>
+<tr><td>' . $btnTrash . ' Gallerie entfernen</td></tr>
 </table>';
 
 		return $table;

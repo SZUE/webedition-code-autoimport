@@ -900,21 +900,23 @@ class we_search_search extends we_search_base{
 		$this->db->query('SELECT docID FROM SEARCH_TEMP_TABLE');
 		$IDs = implode(',', $this->db->getAll(true));
 
-		$this->db->query('SELECT l.DID FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.DID IN (' . $IDs . ') AND l.Name="title" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-		$titles = $this->db->getAll(true);
+		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.DID IN (' . $IDs . ') AND l.Name="title" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$titles = $this->db->getAll();
 		if(is_array($titles) && $titles){
 			foreach($titles as $k => $v){
-				if($v != ""){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `IsTitleSet`=1 WHERE docID=' . intval($k) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+				if($v['Dat'] != ""){
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_title`="' . $v['Dat'] . '" WHERE docID=' . intval($k['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
 				}
 			}
 		}
 
-		$this->db->query('SELECT l.DID FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.DID IN (' . $IDs . ') AND l.Name="alt" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-		$alts = $this->db->getAll(true);
+		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.DID IN (' . $IDs . ') AND l.Name="alt" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$alts = $this->db->getAll();t_e("alts", $alts);
 		if(is_array($alts) && $alts){
 			foreach($alts as $v){
-				$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `IsAltSet`=1 WHERE docID=' . intval($v) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+				if($v['Dat'] != ""){t_e("alt geschrieben");
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_alt`="' . $v['Dat'] . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+				}
 			}
 		}
 
@@ -950,8 +952,8 @@ Published INT( 11 ) NOT NULL ,
 Extension VARCHAR( 16 ) NOT NULL ,
 TableID INT( 11 ) NOT NULL,
 VersionID BIGINT( 20 ) NOT NULL,
-IsAltSet TINYINT( 1 ) NOT NULL ,
-IsTitleSet TINYINT( 1 ) NOT NULL ,
+media_alt VARCHAR( 255 ) NOT NULL ,
+media_title VARCHAR( 255 ) NOT NULL ,
 IsUsed TINYINT( 1 ) NOT NULL ,
 UNIQUE KEY k (docID,docTable)
 ) ENGINE = MEMORY' . we_database_base::getCharsetCollation());

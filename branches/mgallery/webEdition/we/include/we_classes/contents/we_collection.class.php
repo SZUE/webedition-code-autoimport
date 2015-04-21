@@ -333,7 +333,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$button = we_html_button::create_button("image:add_file", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 44, 0, '', '', false, false, '_' . $index);
 		$addFromTreeButton = we_html_button::create_button("image:import_files", "javascript:weCollectionEdit.doClickAddItems(this);", true, 44, 22);
 		$openbutton = we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . (addTblPrefix($this->remTable) === FILE_TABLE ? we_base_ContentTypes::TEMPLATE : we_base_ContentTypes::OBJECT_FILE) . "','" . addTblPrefix($this->remTable) . "'); }", true, 27, 22, '', '', $item['id'] === -1, false, '_' . $index);
-		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index . "');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22, '', '', $item['id'] === -1, false, '_' . $index);
+		//$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index . "');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22, '', '', $item['id'] === -1, false, '_' . $index);
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
 		$yuiSuggest->setContentType('folder,' . trim($this->remCT, ','));
 		$yuiSuggest->setCheckFieldValue(false);
@@ -345,7 +345,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setTrashButton($trashButton, 4);
+		//$yuiSuggest->setTrashButton($trashButton, 4);
 		$yuiSuggest->setSelectButton($button, 4);
 		$yuiSuggest->setAdditionalButton($addFromTreeButton, 6);
 		$yuiSuggest->setOpenButton($openbutton, 4);
@@ -363,14 +363,14 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		//FIXME: use we_html_table
 		$rowHtml = '<table cellspacing="0" draggable="false">
 				<tr style="background-color:#f5f5f5;cursor:move;" height="34px">
-					<td width="60px" style="padding:0 0 0 20px;" class="weMultiIconBoxHeadline">Nr. <span id="label_' . $index . '">' . $index . '</span></td>
-					<td width="200px" style="padding:4px 40px 0 0;">' . $yuiSuggest->getHTML() . '</td>
-					<td width="" style="padding:4px 40px 0 0;">' . $rowControlls . '</td>
+					<td width="70px" style="padding:0 0 0 20px;" class="weMultiIconBoxHeadline">Nr. <span id="label_' . $index . '">' . $index . '</span></td>
+					<td width="220px" style="padding:4px 40px 0 0;">' . $yuiSuggest->getHTML() . '</td>
+					<td width="" style="padding:4px 40px 0 20px;">' . $rowControlls . '</td>
 				</tr>
 			</table>';
 
 		return we_html_element::htmlDiv(array(
-				'style' => 'margin-top:4px;border:1px solid #006db8',
+				'style' => 'margin-top:4px;border:1px solid #006db8;background-color:#f5f5f5;cursor:move;',
 				'id' => 'drag_' . $index,
 				'class' => 'drop_reference',
 				'draggable' => 'true',

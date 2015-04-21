@@ -271,10 +271,10 @@ weCollectionEdit = {
 			val = parseInt(document.getElementById('yuiAcResultItem_' + index).value);
 			csv += (val !== 0 ? val : -1) + ',';
 			document.getElementById('label_' + index).innerHTML = i + 1;
-			btns[2].disabled = btns[3].disabled = (val === - 1);
-			btns[5].disabled = (i === 0);
-			btns[6].disabled = (i === (t.childNodes.length - 1));
-			btns[7].disabled = (t.childNodes.length === 1);
+			btns[2].disabled = (val === - 1);
+			btns[4].disabled = (i === 0);
+			btns[5].disabled = (i === (t.childNodes.length - 1));
+			btns[6].disabled = (t.childNodes.length === 1);
 		}
 		if(val !== -1){
 			this.addRow(t.lastChild, true);
@@ -389,8 +389,8 @@ weCollectionEdit = {
 	cancelDragRow: function(){
 		document.getElementById('content_table').removeChild(this.getSpacer());
 		this.dd.dragEl.style.borderColor = 'red';
-		this.repaintAndRetrieveCsv();
 		document.getElementById('content_table').insertBefore(this.dd.dragEl, this.dd.dragNextsibling);
+		this.repaintAndRetrieveCsv();
 		setTimeout(function(){
 			weCollectionEdit.dd.dragEl.style.borderColor = '#006db8';
 			weCollectionEdit.resetDdParams();
