@@ -299,14 +299,26 @@ weSearch = {
 		}
 	},
 
-	openToEdit: function(tab,id,contentType){
+	getMainWindow: function(){
 		if(top.opener && top.opener.top.weEditorFrameController) {
-			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
+			return top.opener.top;
 		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
+			return top.opener.top.opener.top;
 		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
+			return top.opener.top.opener.top.opener.top;
 		}
+	},
+
+	openToEdit: function(tab,id,contentType){
+		this.getMainWindow().weEditorFrameController.openDocument(tab,id,contentType);
+	},
+
+	openModule: function(mod,id){
+		this.getMainWindow().we_cmd(mod + '_edit_ifthere',id);
+	},
+
+	openCategory: function(id){
+		this.getMainWindow().we_cmd('editCat',id);
 	},
 
 	setOrder: function(order, whichSearch){

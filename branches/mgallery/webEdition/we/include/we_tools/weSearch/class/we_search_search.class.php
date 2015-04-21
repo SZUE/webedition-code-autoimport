@@ -734,6 +734,20 @@ class we_search_search extends we_search_base{
 				NAVIGATION_TABLE => g_l('javaMenu_moduleInformation', '[navigation][text]'),
 			);
 
+			$mediaArr = array(
+				$types[FILE_TABLE] => array(),
+				$types[OBJECT_FILES_TABLE] => array(),
+				$types[VFILE_TABLE] => array(),
+				$types[TEMPLATES_TABLE] => array(),
+				$types[OBJECT_TABLE] => array(),
+				$types[CATEGORY_TABLE] => array(),
+				$types[NAVIGATION_TABLE] => array(),
+				$types[CUSTOMER_TABLE] => array(),
+				$types[NEWSLETTER_TABLE] => array(),
+				$types[GLOSSARY_TABLE] => array(),
+				$types[BANNER_TABLE] => array(),
+			);
+
 			while($db->next_record()){
 				$rec = $db->getRecord();
 				$tmpMediaLinks[$rec['remObj']][] = array($rec['ID'], $rec['DocumentTable'], $rec['isTemp']);
@@ -746,14 +760,14 @@ class we_search_search extends we_search_base{
 			foreach($groups as $k => $v){// FIXME: ct is obslete?
 				switch(addTblPrefix($k)){
 					case FILE_TABLE:
-					case defined(OBJECT_FILES_TABLE) ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
+					case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE';
 						$db->query('SELECT ID,Path,ModDate,Published,ContentType FROM ' . addTblPrefix($k) . ' WHERE ID IN (' . implode(',', array_unique($v)) . ')');
 						while($db->next_record()){
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$isModified[$k][$db->f('ID')] = $db->f('Published') > 0 && $db->f('ModDate') > $db->f('Published');
 							$isUnpublished[$k][$db->f('ID')] = $db->f('Published') == 0;
 							$ct[$k][$db->f('ID')] = $db->f('ContentType');
-							$onclick[$k][$db->f('ID')] = 'CopenToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
+							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
 						}
 						break;
 					case TEMPLATES_TABLE:
@@ -772,13 +786,35 @@ class we_search_search extends we_search_base{
 							$ct[$k][$db->f('ID')] = we_base_ContentTypes::COLLECTION;
 							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . we_base_ContentTypes::COLLECTION . '\')';
 						}
-					default:
+						break;
+					case BANNER_TABLE:
+					case CUSTOMER_TABLE:
+					case GLOSSARY_TABLE:
+					case NAVIGATION_TABLE:
+					case NEWSLETTER_TABLE:
 						$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
-						//$onclick[$k][$db->f('ID')] = 'alert(\'opening modules not implemented yet\')';
+						$modules = array(
+							BANNER_TABLE => 'banner',
+							CUSTOMER_TABLE => 'customer',
+							GLOSSARY_TABLE => 'glossary',
+							NAVIGATION_TABLE => 'navigation',
+							NEWSLETTER_TABLE => 'newsletter'
+						);
+						foreach($paths[$k] as $key => $v){
+							$onclick[$k][$key] = 'weSearch.openModule(\'' . $modules[addTblPrefix($k)]. '\',' . $key . ')';
+						}
+						break;
+					case CATEGORY_TABLE:
+						$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
+						foreach($paths[$k] as $key => $v){
+							$onclick[$k][$key] = 'weSearch.openCategory(' . $key . ')';
+						}
+					
 				}
 			}
 
 			foreach($tmpMediaLinks as $m_id => $v){
+				$this->usedMediaLinks['mediaID_' . $m_id] = $mediaArr;
 				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
 					if(!isset($this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
 						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
@@ -786,13 +822,18 @@ class we_search_search extends we_search_base{
 							'id' => $val[0],
 							'table' => addTblPrefix($val[1]),
 							'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
-							'onclick' => isset($onclick[$val[1]][$val[0]]) ? $onclick[$val[1]][$val[0]] : 'alert(\'opening modules not implemented yet: ' . $val[1] . '\')',
+							'onclick' => isset($onclick[$val[1]][$val[0]]) ? $onclick[$val[1]][$val[0]] : 'alert(\'not implemented yet: ' . $val[1] . '\')',
 							'path' => $paths[$val[1]][$val[0]],
 							'isModified' => addTblPrefix($val[1]) === isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
 							'isUnpublished' => addTblPrefix($val[1]) === isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
 						);
 					} else {
 						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]]['referencedIn'] = 'both';
+					}
+				}
+				foreach($this->usedMediaLinks['mediaID_' . $m_id] as $k => $v){
+					if(empty($v)){
+						unset($this->usedMediaLinks['mediaID_' . $m_id][$k]);
 					}
 				}
 			}
@@ -911,10 +952,10 @@ class we_search_search extends we_search_base{
 		}
 
 		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.DID IN (' . $IDs . ') AND l.Name="alt" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-		$alts = $this->db->getAll();t_e("alts", $alts);
+		$alts = $this->db->getAll();
 		if(is_array($alts) && $alts){
 			foreach($alts as $v){
-				if($v['Dat'] != ""){t_e("alt geschrieben");
+				if($v['Dat'] != ""){
 					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_alt`="' . $v['Dat'] . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
 				}
 			}

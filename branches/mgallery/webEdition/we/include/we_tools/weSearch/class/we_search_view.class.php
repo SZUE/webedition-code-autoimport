@@ -1688,8 +1688,8 @@ weSearch.g_l = {
 											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $_result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $_result[$f]['ModDate']) : '-'),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button("image:edit_edit", "javascript:weSearch.openToEdit('" . FILE_TABLE . "'," . $_result[$f]["docID"] . ",'" . $_result[$f]["ContentType"] . "');", true, 27, 22)),
 										)),
-									array('elem' => 'row', 'attribs' => 'background-color:green', 'dat' => array(
-											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $_result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;' . $standardStyle . 'height:auto;overflow:visible;" colspan="5"', 'dat' => $this->makeAdditionalContentMedia($_result[$f])),
+									array('elem' => 'row', 'dat' => array(
+											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $_result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"', 'dat' => $this->makeAdditionalContentMedia($_result[$f])),
 										))
 								), 'colgroup' => '</colgroup>
 											<col style="text-align:left;"/>
@@ -1771,9 +1771,9 @@ weSearch.g_l = {
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
 
 		if(isset($usedMediaLinks['mediaID_' . $result['docID']]) && $usedMediaLinks['mediaID_' . $result['docID']]){
-			$out = '<table style="font-weight:normal"><tr><td>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</td></tr>'; // FIXME: G_L()
+			$out = '<table style="font-weight:normal; background-color:#fafafa;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</stong></td></tr>'; // FIXME: G_L()
 			foreach($usedMediaLinks['mediaID_' . $result['docID']] as $type => $links){
-				$out .= '<tr><td><em>' . $type . ':</em></td></tr>';
+				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $type . ':</em></td></tr>';
 				foreach($links as $link){
 					$color = 'black';
 					$makeLink = true;
@@ -1794,12 +1794,13 @@ weSearch.g_l = {
 								$color = 'red';
 							}
 					}
-					$out .= '<tr><td style="padding-left:12px;">' .
-						($makeLink ? we_html_button::create_button('image:edit_edit', "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) .
-							'<a href="javascript:' . $link['onclick'] . '" title="' . $link['path'] . '"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a>' :
-							we_html_button::create_button('image:edit_edit', '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . // FIXME: G_L()
-							'<span style="color:' . $color . ';">' . $link['path'] . '</span>') .
-						'</td></tr>';
+					$out .= '<tr>' .
+						($makeLink ? '
+							<td style="padding-left:26px;width:410px;"><a href="javascript:' . $link['onclick'] . '" title="' . $link['path'] . ' (' . $link["id"] . ')"><span style="color:' . $color . ';"><u>' . $link['path'] . '</u></span></a></td>
+							<td>' .we_html_button::create_button('image:edit_edit', "javascript:weSearch.openToEdit('" . $link['table'] . "'," . $link["id"] . ",'');", true, 27, 22) . '</td>' :
+							'<td style="padding-left:26px;width:410px;"><span style="color:' . $color . ';">' . $link['path'] . '</span></td>
+							<td>' .we_html_button::create_button('image:edit_edit', '', true, 27, 22, '', '', true, false, '', false, 'Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!') . '</td>') .
+						'</tr>';
 				}
 			}
 			$out .= '</table>';
