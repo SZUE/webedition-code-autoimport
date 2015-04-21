@@ -78,8 +78,6 @@ function we_tag_textarea($attribs, $content){
 	}
 
 	$splitVal = preg_split('/<wegallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/wegallery>/i', $fieldVal);
-
-
 	printElement(array_shift($splitVal));
 	for($i = 0; $i < count($splitVal); $i++){
 		if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){
@@ -87,6 +85,7 @@ function we_tag_textarea($attribs, $content){
 			if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs[$i]['tmpl']), '_parsed' => true)))){
 				include($we_inc);
 			}
+			unset($GLOBALS['WE_COLLECTION_ID']);
 		}
 		printElement($splitVal[$i]);
 	}
