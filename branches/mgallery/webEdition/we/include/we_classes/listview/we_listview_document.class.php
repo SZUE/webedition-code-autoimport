@@ -189,7 +189,7 @@ class we_listview_document extends we_listview_base{
 		$sql_tail .= $this->getIdQuery(FILE_TABLE . '.ID');
 
 		if($this->search){
-			if($this->workspaceID != ''){
+			if($this->workspaceID){
 				$workspaces = makeArrayFromCSV($this->workspaceID);
 				$cond = array();
 				foreach($workspaces as $wid){
@@ -325,7 +325,7 @@ class we_listview_document extends we_listview_base{
 		if($this->count < $this->anz){
 			$count = $this->count;
 			$fetch = false;
-			if($this->calendar_struct['calendar'] != ''){
+			if($this->calendar_struct['calendar']){
 				parent::next_record();
 				$count = $this->calendar_struct['count'];
 				$fetch = $this->calendar_struct['forceFetch'];
@@ -364,18 +364,17 @@ class we_listview_document extends we_listview_base{
 			}
 
 			return true;
-		} else {
-			$this->stop_next_row = $this->shouldPrintEndTR();
-			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->Record = array();
-				$this->DB_WE->Record = array(
-					'WE_PATH' => '',
-					'WE_TEXT' => '',
-					'WE_ID' => '',
-				);
-				$this->count++;
-				return true;
-			}
+		}
+		$this->stop_next_row = $this->shouldPrintEndTR();
+		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
+			$this->Record = array();
+			$this->DB_WE->Record = array(
+				'WE_PATH' => '',
+				'WE_TEXT' => '',
+				'WE_ID' => '',
+			);
+			$this->count++;
+			return true;
 		}
 		return false;
 	}

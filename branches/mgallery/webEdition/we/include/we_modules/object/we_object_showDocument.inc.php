@@ -204,7 +204,10 @@ if(!$tid){
 		$tid = $tids[0];
 	}
 }
-if(!$tid){
+
+$tmplPath = $tid ? preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid))) : '';
+
+if(!$tid || !$tmplPath || !is_readable(TEMPLATES_PATH . $tmplPath)){
 	we_html_tools::setHttpCode(404);
 
 	if(ERROR_DOCUMENT_NO_OBJECTFILE && ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE))){
@@ -217,7 +220,6 @@ if(!$tid){
 	exit;
 }
 
-$tmplPath = preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid)));
 
 if((!defined('WE_CONTENT_TYPE_SET')) && isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset){ //	send charset which might be determined in template
 	define('WE_CONTENT_TYPE_SET', 1);

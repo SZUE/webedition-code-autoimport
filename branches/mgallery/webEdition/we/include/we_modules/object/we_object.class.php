@@ -98,7 +98,7 @@ class we_object extends we_document{
 
 		$this->OldPath = $this->Path; // reset oldPath
 		if(!(isset($this->isInApp) && $this->isInApp)){// allows to save Classes from within WE-Apps
-			$GLOBALS['we_JavaScript'] = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
+			$GLOBALS['we_JavaScript'] = "top.we_cmd('reload_editpage');top._EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
 				$this->getUpdateTreeScript() .
 				we_main_headermenu::getMenuReloadCode('top.');
 		}
@@ -475,7 +475,7 @@ class we_object extends we_document{
 			$this->DefaultValues = serialize($arrt);
 
 			$variant_field = 'variant_' . we_base_constants::WE_VARIANTS_ELEMENT_NAME;
-			
+
 			$this->DB_WE->query('SHOW COLUMNS FROM ' . $ctable . ' LIKE "' . $variant_field . '"');
 			$exists = ($this->DB_WE->next_record()) ? true : false;
 

@@ -135,67 +135,17 @@ switch($_SESSION['weS']['we_mode']){
 		echo we_html_element::jsElement('var weTabs; function setFrameSize(){}');
 }
 
-$_js_we_setPath = "
-function we_setPath(path, text, id) {
-
-	// update document-tab
-	_EditorFrame.initEditorFrameData({\"EditorDocumentText\":text,\"EditorDocumentPath\":path});
-
-	path = path.replace(/</g,'&lt;');
-  path = path.replace(/>/g,'&gt;');
-	path = '<span style=\"font-weight:bold;color:#006699\">'+path+'</span>';
-	if(document.getElementById) {
-		var div = document.getElementById('h_path');
-		div.innerHTML = path;
-		if(id>0){
-			var div = document.getElementById('h_id');
-			div.innerHTML = id;
-		}
-	}else if(document.all) {
-		var div = document.all['h_path'];
-		div.innerHTML = path;
-		if(id>0){
-			var div = document.all['h_id'];
-			div.innerHTML = id;
-		}
-	}
-}";
-
-$_js_we_cmd = 'function we_cmd() {
-' . ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE = 1;' : '') . "
-
-	//FIXME: do we need url???
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-	for(var i = 0; i < arguments.length; i++){
-		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)){
-			url += '&';
-		}
-	}
-				var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-
-	switch ( arguments[0] ) {
-
-		case 'switch_edit_page':
-			_EditorFrame.setEditorEditPageNr(arguments[1]);
-			parent.we_cmd.apply(this, args);
-		break;
-	}
-
-}";
-
 echo STYLESHEET .
  we_html_element::jsElement(
 	'var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
-	$_js_we_setPath .
-	$_js_we_cmd);
+	($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE = 1;' : '')) .
+ we_html_element::jsScript(JS_DIR . 'editor_header.js');
+$_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
 ?>
 </head>
-<body id="eHeaderBody" onload="setFrameSize()" onresize="setFrameSize()">
+<body id="eHeaderBody" onload="setFrameSize();
+		we_setPath(<?php echo "'" . $we_doc->Path . "','" . $_text . "', " . intval($we_doc->ID); ?>);" onresize="setFrameSize()">
 	<div id="main" ><?php
 		echo '<div id="headrow">&nbsp;' . ($we_doc->ContentType ? we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) : '') . ': ' .
 		($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="' . WEBEDITION_DIR . 'openBrowser.php?url=' . $we_doc->ID . '" target="browser">' : '') .
@@ -217,6 +167,3 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 		?></div>
 </body>
 </html>
-<?php
-$_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
-echo we_html_element::jsElement('we_setPath("' . $we_doc->Path . '", "' . $_text . '", ' . intval($we_doc->ID) . ');');

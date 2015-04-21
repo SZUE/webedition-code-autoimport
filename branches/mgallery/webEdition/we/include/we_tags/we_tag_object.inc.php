@@ -76,7 +76,6 @@ function we_tag_object($attribs){
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
 		$textname = 'we_' . $we_doc->Name . '_object[' . $name . '_path]';
 		$idname = 'we_' . $we_doc->Name . '_object[' . $name . '#bdid]';
-		$table = OBJECT_FILES_TABLE;
 
 		if($GLOBALS['we_editmode']){
 			$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
@@ -86,7 +85,7 @@ function we_tag_object($attribs){
 			$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
 
 
-			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
+			$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 
 
 			$yuiSuggest = &weSuggest::getInstance();

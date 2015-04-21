@@ -34,16 +34,16 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $we_doc->From));
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 	} else if($we_doc->we_publish()){
-		$we_JavaScript = "_EditorFrame.setEditorDocumentId(" . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript();
+		$we_JavaScript = "top._EditorFrame.setEditorDocumentId(" . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript();
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
 			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
 			$we_JavaScript .= 'if(opener){
-opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
+opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();top._EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
 }else{
-top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
+top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();top._EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
 }' . $we_doc->getUpdateTreeScript();
 	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);

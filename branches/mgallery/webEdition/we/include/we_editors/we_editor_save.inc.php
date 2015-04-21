@@ -27,7 +27,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 
 <script type="text/javascript"><!--
 	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $we_transaction; ?>");
-	var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
+	var _EditorFrameDocumentRef = top._EditorFrame.getDocumentReference();
 
 <?php
 if($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR){

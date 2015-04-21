@@ -75,6 +75,7 @@ class we_selector_query{
 				$typeField = "ContentType";
 				$userExtraSQL = '';
 				break;
+			case VFILE_TABLE:
 			case CATEGORY_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
 				break;
@@ -140,6 +141,7 @@ class we_selector_query{
 				$typeField = "ContentType";
 				$userExtraSQL = '';
 				break;
+			case VFILE_TABLE:
 			case CATEGORY_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
 				break;
@@ -189,7 +191,6 @@ class we_selector_query{
 			$where.=we_navigation_navigation::getWSQuery();
 		}
 		//FIXME: what about other workspacequeries?!
-
 		$this->db->query('SELECT ' . implode(', ', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ORDER BY ' . ($isFolder ? 'isFolder DESC, Path' : 'Path') . ' ASC ' . ($limit ? ' LIMIT ' . $limit : ''));
 	}
 

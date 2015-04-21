@@ -1444,7 +1444,7 @@ var weFileUpload = (function () {
 					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 
 					window.we_cmd('update_file');
-					_EditorFrame.getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text);
+					top._EditorFrame.getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text);
 					this.fireCallback();
 				}
 			};
