@@ -71,6 +71,7 @@ function we_tag_collection($attribs){
 		return;
 		//FIXME: add sth. to the stack, we need an extra element in editmode
 	}
+p_r($intID);
 	$GLOBALS['lv'] = new we_listview_collection($intID);
 	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
 		$GLOBALS['we_lv_array'] = array();

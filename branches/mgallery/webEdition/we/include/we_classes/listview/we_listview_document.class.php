@@ -145,6 +145,14 @@ class we_listview_document extends we_listview_base{
 					$order[] = 'RANDOM';
 				case '':
 					break;
+				case 'VFILE'://FIXME: temporary Hack
+					$joins[] = ' JOIN ' . FILELINK_TABLE . ' fl ON ' . FILE_TABLE . '.ID=fl.remObj';
+					$order[] = 'fl.position';
+					$orderWhere[] = 'fl.ID=' . $id;
+					//reset id-queries
+					$this->id = 0;
+					$id = 0;
+					break;
 				default:
 					$cnt = count($order);
 					$joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
@@ -190,7 +198,7 @@ class we_listview_document extends we_listview_base{
 
 		if($this->search){
 			if($this->workspaceID){
-				$workspaces = makeArrayFromCSV($this->workspaceID);
+				$workspaces = explode(',', $this->workspaceID);
 				$cond = array();
 				foreach($workspaces as $wid){
 					$workspace = id_to_path($wid, FILE_TABLE, $this->DB_WE);

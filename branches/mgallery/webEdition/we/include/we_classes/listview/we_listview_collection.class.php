@@ -30,10 +30,8 @@
 class we_listview_collection extends we_listview_document{
 
 	public function __construct($ID/* $name, $rows, $offset, $order, $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, $searchable, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID */){
-		$db=$GLOBALS['DB_WE'];
-		 $db->query('SELECT remObj FROM ' . FILELINK_TABLE . ' WHERE ID=' . $ID);
-
-		parent::__construct('', 9999, 0, '$order', false, 0, 0, 0, 0, 0, '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, implode(',', $db->getAll(true)), '', '', '', '');
+$GLOBALS['DB_WE']->t_e_query(10);
+		parent::__construct('', 9999, 0, 'VFILE', false, 0, 0, 0, 0, 0, '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0,$ID, '', '', '', '');
 	}
 
 }
