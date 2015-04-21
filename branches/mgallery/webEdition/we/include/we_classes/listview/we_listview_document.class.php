@@ -148,7 +148,7 @@ class we_listview_document extends we_listview_base{
 				case 'VFILE'://FIXME: temporary Hack
 					$joins[] = ' JOIN ' . FILELINK_TABLE . ' fl ON ' . FILE_TABLE . '.ID=fl.remObj';
 					$order[] = 'fl.position';
-					$orderWhere[] = 'fl.ID=' . $id . ' AND fl.type="collection"';
+					$orderWhere[] = 'fl.ID=' . $id . ' AND fl.DocumentTable="tblVFile" AND fl.type="collection"';
 					//reset id-queries
 					$this->id = 0;
 					$id = 0;
