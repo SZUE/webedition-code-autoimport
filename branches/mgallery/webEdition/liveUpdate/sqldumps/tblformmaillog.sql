@@ -4,4 +4,4 @@ CREATE TABLE ###TBLPREFIX###tblformmaillog (
   unixTime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (id),
   KEY ipwhen (ip,unixTime)
-) ENGINE=MyISAM;
+)

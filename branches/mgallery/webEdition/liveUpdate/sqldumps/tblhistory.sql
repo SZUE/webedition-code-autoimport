@@ -10,7 +10,7 @@ CREATE TABLE ###TBLPREFIX###tblhistory (
 	UID int(11) unsigned NOT NULL default '0',
   PRIMARY KEY (DID,DocumentTable,UID),
 	KEY perUser (UID,DocumentTable,ModDate)
-) ENGINE=MyISAM;
+)
 
 /* query separator */
 ###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblhistory) TRUNCATE TABLE ###TBLPREFIX###tblhistory;###

@@ -46,7 +46,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	KEY urlMap (urlMap),
 	KEY TemplateID (TemplateID,IsDynamic),
 	KEY ParentID(ParentID,IsSearchable,Published)
-) ENGINE=MyISAM;
+)
 
 /* query separator */
 ###ONCOL(listview,###TBLPREFIX###tblFile) UPDATE ###TBLPREFIX###tblFile SET viewType="icons" WHERE listview=1;###

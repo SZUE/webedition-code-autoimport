@@ -39,4 +39,4 @@ CREATE TABLE ###TBLPREFIX###tblObject (
   PRIMARY KEY (ID),
   KEY Path (Path),
   KEY IsFolder (IsFolder)
-) ENGINE=MyISAM;
+)

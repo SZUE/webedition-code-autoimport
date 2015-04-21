@@ -18,4 +18,4 @@ CREATE TABLE ###TBLPREFIX###tblTODO (
   seenStatus tinyint(3) unsigned NOT NULL default '0',
   tag tinyint(3) unsigned default NULL,
   PRIMARY KEY  (ID)
-) ENGINE=MyISAM;
+)

@@ -11,7 +11,7 @@ CREATE TABLE ###TBLPREFIX###tblMsgFolders (
   Properties int(10) unsigned default NULL,
   tag tinyint(4) unsigned default NULL,
   PRIMARY KEY  (ID)
-) ENGINE=MyISAM;
+)
 /* query separator */
 INSERT IGNORE INTO ###TBLPREFIX###tblMsgFolders SET ID=1,ParentID=0,UserID=1,msg_type=1,obj_type=3,Name='Messages',Properties=1;
 /* query separator */

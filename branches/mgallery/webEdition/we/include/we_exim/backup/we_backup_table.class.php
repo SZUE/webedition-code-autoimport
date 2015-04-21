@@ -100,7 +100,7 @@ class we_backup_table{
 			}
 		}
 
-		if(!empty($cols)){
+		if($cols){
 			return $this->db->addTable($this->table, $cols, $keys);
 		}
 

@@ -8,4 +8,4 @@ CREATE TABLE ###TBLPREFIX###tblUpdateLog (
   error tinyint(1) unsigned NOT NULL default '0',
   step smallint(4) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID)
-) ENGINE=MyISAM;
+)

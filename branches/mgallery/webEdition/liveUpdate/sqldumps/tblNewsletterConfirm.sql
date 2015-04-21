@@ -11,4 +11,4 @@ CREATE TABLE ###TBLPREFIX###tblNewsletterConfirm (
   PRIMARY KEY (confirmID(30)),
   KEY expires (expires),
   KEY subscribe (subscribe_mail(50),confirmID(30))
-) ENGINE=MyISAM;
+)

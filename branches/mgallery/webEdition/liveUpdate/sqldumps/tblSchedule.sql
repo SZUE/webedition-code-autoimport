@@ -10,4 +10,4 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   Active tinyint(1) unsigned default NULL,
   PRIMARY KEY (DID,ClassName,Active,Wann,Was,`Type`),
   KEY Wann (Wann,`lockedUntil`,Active)
-) ENGINE=MyISAM;
+)

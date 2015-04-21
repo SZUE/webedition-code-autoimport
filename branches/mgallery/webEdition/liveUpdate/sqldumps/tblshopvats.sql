@@ -7,4 +7,4 @@ CREATE TABLE ###TBLPREFIX###tblshopvats (
   textProvince varchar(32) NOT NULL default '',
   categories varchar(255) NOT NULL default '',
   PRIMARY KEY  (id)
-) ENGINE=MyISAM;
+)

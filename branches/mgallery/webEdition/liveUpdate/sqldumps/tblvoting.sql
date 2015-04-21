@@ -33,4 +33,4 @@ CREATE TABLE ###TBLPREFIX###tblvoting (
   RestrictIP tinyint(1) unsigned NOT NULL default '0',
   BlackList longtext NOT NULL,
   PRIMARY KEY  (ID)
-) ENGINE=MyISAM;
+)

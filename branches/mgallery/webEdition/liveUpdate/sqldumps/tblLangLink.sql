@@ -11,7 +11,7 @@ CREATE TABLE ###TBLPREFIX###tblLangLink (
   UNIQUE KEY DID (DID,DLocale,IsObject,IsFolder,Locale,DocumentTable),
   UNIQUE KEY DLocale (DLocale,IsFolder,IsObject,LDID,Locale,DocumentTable),
   KEY LDID (LDID,DocumentTable,Locale)
-) ENGINE=MyISAM;
+)
 
 /* query separator */
 ###ONKEYFAILED(DID,###TBLPREFIX###tblLangLink)ALTER IGNORE TABLE ###TBLPREFIX###tblLangLink ADD UNIQUE KEY DID (DID,DLocale,IsObject,IsFolder,Locale,DocumentTable);###

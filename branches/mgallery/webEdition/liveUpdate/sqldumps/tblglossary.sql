@@ -18,6 +18,6 @@ CREATE TABLE ###TBLPREFIX###tblglossary (
   ModifierID INT(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY  (ID),
   KEY valid (Language,Published)
-) ENGINE=MyISAM;
+)
 /* query separator */
 UPDATE ###TBLPREFIX###tblglossary SET Language="de_DE" WHERE Language="";

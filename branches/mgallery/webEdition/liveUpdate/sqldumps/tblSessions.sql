@@ -6,4 +6,4 @@ CREATE TABLE ###TBLPREFIX###tblSessions (
   touch timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   session_data longblob NOT NULL,
   PRIMARY KEY (sessionName,session_id)
-) ENGINE=MyISAM;
+)

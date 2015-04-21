@@ -8,4 +8,4 @@ CREATE TABLE ###TBLPREFIX###tblbannerclicks (
   Page varchar(255) NOT NULL default '',
   PRIMARY KEY (`clickid`),
 	KEY ID (ID,Page,`Timestamp`)
-) ENGINE=MyISAM;
+)

@@ -10,4 +10,4 @@ CREATE TABLE ###TBLPREFIX###tblCategorys (
 	Description longtext NOT NULL,
   PRIMARY KEY  (ID),
   KEY Path (Path)
-) ENGINE=MyISAM;
+)

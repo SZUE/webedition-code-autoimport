@@ -7,4 +7,4 @@ CREATE TABLE ###TBLPREFIX###tblLock (
   PRIMARY KEY (ID,tbl),
   KEY UserID (UserID,sessionID),
   KEY lockTime (lockTime)
-) ENGINE=MyISAM;
+)

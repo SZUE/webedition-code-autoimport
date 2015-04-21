@@ -18,4 +18,4 @@ CREATE TABLE ###TBLPREFIX###tblLink (
   PRIMARY KEY (CID),
   KEY DID (DID,DocumentTable),
   KEY Name (Name(4))
-) ENGINE=MyISAM;
+)

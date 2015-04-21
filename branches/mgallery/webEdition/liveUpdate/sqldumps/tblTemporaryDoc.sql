@@ -13,4 +13,4 @@ CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
   UnixTimestamp int(10) unsigned NOT NULL default '0',
   Active tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY (`DocTable`,`DocumentID`,`Active`)
-) ENGINE=MyISAM;
+)

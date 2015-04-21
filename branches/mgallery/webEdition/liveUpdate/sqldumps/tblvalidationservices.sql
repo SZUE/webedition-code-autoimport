@@ -12,4 +12,4 @@ CREATE TABLE ###TBLPREFIX###tblvalidationservices (
   fileEndings varchar(255) NOT NULL default '',
   active tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (PK_tblvalidationservices)
-) ENGINE=MyISAM;
+)

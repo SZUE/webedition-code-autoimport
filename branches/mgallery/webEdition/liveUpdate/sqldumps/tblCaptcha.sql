@@ -8,4 +8,4 @@ CREATE TABLE ###TBLPREFIX###tblCaptcha (
   created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (IP,code),
 	KEY created (created)
-) ENGINE=MyISAM;
+)

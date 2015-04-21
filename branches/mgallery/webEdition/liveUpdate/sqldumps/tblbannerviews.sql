@@ -8,4 +8,4 @@ CREATE TABLE ###TBLPREFIX###tblbannerviews (
   Page varchar(255) NOT NULL default '',
   PRIMARY KEY (`viewid`),
 	KEY ID (ID,Page,`Timestamp`)
-) ENGINE=MyISAM;
+)

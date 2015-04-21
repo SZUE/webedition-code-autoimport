@@ -37,4 +37,4 @@ CREATE TABLE ###TBLPREFIX###tblbanner (
 	KEY run (StartOk,EndOk,StartDate,EndDate,maxShow,maxClicks,TagName),
 	KEY ParentID (ParentID),
 	KEY Path (Path)
-) ENGINE=MyISAM;
+)
