@@ -2215,7 +2215,7 @@ class we_objectFile extends we_document{
 		foreach($this->elements as $n => $elem){
 			if(isset($elem["type"]) && $elem["type"] == self::TYPE_TEXT){
 				if(isset($dv["text_$n"]["xml"]) && $dv["text_$n"]["xml"] === "on"){
-					$this->elements[$n] = $elem;//FIXME: what do we do here?
+					$this->elements[$n] = $elem; //FIXME: what do we do here?
 				}
 			}
 		}
@@ -2295,7 +2295,7 @@ class we_objectFile extends we_document{
 		return $a;
 	}
 
-	function registerMediaLinks($temp = false, $linksReady = false) {
+	function registerMediaLinks($temp = false, $linksReady = false){
 		//register media in fields type link
 		if(!$linksReady){
 			$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), "DefaultValues", $this->DB_WE));
@@ -2896,7 +2896,7 @@ class we_objectFile extends we_document{
 				$this->resetElements();
 				$multiobjects = array();
 				while((list($k, $v) = $this->nextElement(self::TYPE_MULTIOBJECT))){
-					$old = is_string($v['dat']) ? we_unserialize($v['dat'], '') : '';
+					$old = $v['dat']{0} == 'a' ? we_unserialize($v['dat'], '') : '';
 					if(is_array($old) && isset($old['class'])){
 						$multiobjects[$k] = array(
 							'class' => $old['class'],
