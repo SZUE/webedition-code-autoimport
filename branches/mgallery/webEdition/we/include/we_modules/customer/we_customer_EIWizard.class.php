@@ -1241,7 +1241,7 @@ function doNext(){
 
 		if(!$customers){
 //FIXME: add code to switch to previous page
-			t_e('noting to export', $customers, $_REQUEST);
+			t_e('noting to export', $customers);
 		}
 
 		$hiddens = we_html_element::htmlHiddens(array(

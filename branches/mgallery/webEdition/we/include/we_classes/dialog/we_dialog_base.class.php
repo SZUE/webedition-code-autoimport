@@ -259,16 +259,16 @@ function weDoOk() {' .
 		//FIXME: these values should be obtained from global settings
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[" . $name . "]", 15, (isset($this->args[$name]) ? $this->args[$name] : ""), "", '', "text", $width - 50);
 		$foo2 = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onchange="this.form.elements[\'we_dialog_args[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
-							<option value=""></option>
-							<option value="en">en</option>
-							<option value="de">de</option>
-							<option value="es">es</option>
-							<option value="fi">fi</option>
-							<option value="ru">ru</option>
-							<option value="fr">fr</option>
-							<option value="nl">nl</option>
-							<option value="pl">pl</option>
-						</select>';
+	<option value=""></option>
+	<option value="en">en</option>
+	<option value="de">de</option>
+	<option value="es">es</option>
+	<option value="fi">fi</option>
+	<option value="ru">ru</option>
+	<option value="fr">fr</option>
+	<option value="nl">nl</option>
+	<option value="pl">pl</option>
+</select>';
 		return we_html_tools::htmlFormElementTable($foo, $title, "left", "defaultfont", $foo2);
 	}
 

@@ -144,7 +144,7 @@ switch($class){
 		break;
 	case 'we_customer_selector':
 		if(($JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5))){
-			$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+			$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 			$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 			$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 			$rootDirID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
@@ -153,8 +153,9 @@ switch($class){
 			$JSIDName = $JSTextName = $JSCommand = '';
 			$rootDirID = we_base_request::_(we_base_request::INT, 'rootDirID', 0);
 			$multiple = we_base_request::_(we_base_request::BOOL, 'multiple');
+			$id = we_base_request::_(we_base_request::STRINGC, 'id', 0);
 		}
-		$fs = new we_customer_selector(we_base_request::_(we_base_request::STRINGC, 'id', 0), $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::RAW, 'order', ''), $rootDirID, '', $multiple);
+		$fs = new we_customer_selector($id, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::RAW, 'order', ''), $rootDirID, '', $multiple);
 
 		break;
 

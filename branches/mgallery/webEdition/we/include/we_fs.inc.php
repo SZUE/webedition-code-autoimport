@@ -21,6 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//append ?
+$_SERVER['SCRIPT_NAME'] .= strpos($_SERVER['SCRIPT_NAME'], '?') ? '' : '?';
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is a bit complicated due to elements inside documents
 	case 'openCatselector' :
@@ -59,7 +61,7 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 		$_REQUEST['canSelectDir'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 11);
 		if($cmd0 === 'openDocselector' && $_REQUEST['filter'] === we_base_ContentTypes::IMAGE){
 			$_REQUEST['we_cmd'][0] = $cmd0 = 'we_selector_image';
-			//t_e('notice', 'called incorrect selector');
+			t_e('notice', 'called incorrect selector');
 		}
 		break;
 }
@@ -74,7 +76,7 @@ switch($cmd0){
 	case 'openDocselector':
 		require_once (WEBEDITION_PATH . 'we_docSelect.php');
 		break;
-	case 'we_selector_image'://FIXME: obsolete
+	case 'we_selector_image'://FIXME: obsolete only for faulty docselectors
 		require_once (WE_INCLUDES_PATH . 'selectors.inc.php');
 		break;
 	case 'openCatselector':

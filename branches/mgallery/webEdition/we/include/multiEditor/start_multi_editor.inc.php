@@ -50,7 +50,7 @@ $jsCommand = '';
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_include'){ // Edit-Include-Mode
 // in multiEditorFrameset we_cmd[1] can be set to reach this
 	$directCmd = array();
-	for($i = 1;/* $i < count($_REQUEST['we_cmd']) && */ $i < 4; $i++){
+	for($i = 1; $i < 4; $i++){
 		$directCmd[] = we_base_request::_(we_base_request::STRING, 'we_cmd', '', $i);
 	}
 	$jsCommand = _buildJsCommand($directCmd);
@@ -130,4 +130,4 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 		}
 	}
 }
-echo 	we_html_element::jsElement($jsCommand);
+echo we_html_element::jsElement($jsCommand);

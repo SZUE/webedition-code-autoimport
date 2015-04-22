@@ -285,6 +285,14 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					window.setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
 				}
 			}
+			function we_save_document() {
+				top.opener._showGlossaryCheck = 0;
+				top.opener.we_save_document();
+				top.close();
+			}
+			function we_reloadEditPage() {
+				top.opener.top.we_cmd('switch_edit_page', <?php echo $we_doc->EditPageNr; ?>, '<?php echo $Transaction; ?>', 'save_document');
+			}
 			//-->
 		</script>
 		<style type="text/css">
@@ -298,27 +306,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 		<body style="margin:0px;padding:0px;">
 			<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post">
-
 				<?php
 				if(($cnt = count($_REQUEST['we_cmd'])) > 3){
 					for($i = 3; $i < $cnt; $i++){
 						echo we_html_element::htmlHidden('we_cmd[' . ($i - 3) . ']', we_base_request::_(we_base_request::RAW, 'we_cmd', '', $i));
 					}
 				}
-				?>
-
-				<script type="text/javascript"><!--
-			function we_save_document() {
-						top.opener._showGlossaryCheck = 0;
-						top.opener.we_save_document();
-						top.close();
-					}
-					function we_reloadEditPage() {
-						top.opener.top.we_cmd('switch_edit_page', <?php echo $we_doc->EditPageNr; ?>, '<?php echo $Transaction; ?>', 'save_document');
-					}
-					//-->
-				</script>
-				<?php
 				echo '<iframe id="glossarycheck" name="glossarycheck" frameborder="0" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=prepare&we_cmd[2]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2) . (($cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', false, 3)) !== false ? '&we_cmd[3]=' . $cmd3 : '' ) . '" width="730px" height="400px" style="overflow: hidden;"></iframe>' .
 				$AppletCode;
 
@@ -478,12 +471,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 						var td = document.createElement('td');
 						var html;
 
-						html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" disabled=\"disabled\" " />'
-										+ '<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">'
-										+ '<option value="' + word + '">' + word + '</option>'
-										+ '<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">'
-										+ '<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>'
-										+ '</optgroup>';
+						html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" disabled=\"disabled\" " />' +
+										'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">' +
+										'<option value="' + word + '">' + word + '</option>' +
+										'<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">' +
+										'<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>' +
+										'</optgroup>';
 						if (suggestions.length > 1) {
 							html += '<optgroup label="<?php echo g_l('modules_glossary', '[suggestions]'); ?>">';
 							for (i = 0; i < suggestions.length; i++) {
@@ -491,9 +484,9 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 									html += '<option value="' + suggestions[i] + '">' + suggestions[i] + '</option>';
 								}
 							}
-							html + '</optgroup>';
+							html += '</optgroup>';
 						}
-						html + '</select>';
+						html += '</select>';
 
 						td.innerHTML = html;
 
@@ -503,20 +496,19 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 					function getLanguageColumn(word, lang) {
 						var td = document.createElement('td');
-						td.innerHTML = '<select class="defaultfont" name="item[' + word + '][lang]" size="1" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">'
-										+ '<option value="' + lang + '">' + lang + '</option>'
-										+ '<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">'
-										+ '<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>'
-										+ '</optgroup>'
-										+ '<optgroup label="<?php echo g_l('modules_glossary', '[languages]'); ?>">'
-
+						td.innerHTML = '<select class="defaultfont" name="item[' + word + '][lang]" size="1" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">' +
+										'<option value="' + lang + '">' + lang + '</option>' +
+										'<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">' +
+										'<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>' +
+										'</optgroup>' +
+										'<optgroup label="<?php echo g_l('modules_glossary', '[languages]'); ?>">' +
 		<?php
 		foreach($Languages as $Key => $Value){
-			echo "		+	'<option value=\"" . $Key . "\">" . $Value . "</option>'";
+			echo "			'<option value=\"" . $Key . "\">" . $Value . "</option>'+";
 		}
 		?>
-						+ '</optgroup>'
-										+ '</select>';
+						'</optgroup>' +
+										'</select>';
 
 						return td;
 					}

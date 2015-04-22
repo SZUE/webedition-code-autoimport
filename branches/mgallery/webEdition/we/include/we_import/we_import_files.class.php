@@ -50,19 +50,20 @@ class we_import_files{
 	const CHUNK_SIZE = 256;
 
 	function __construct(){
-		if(($cats = we_base_request::_(we_base_request::STRING, 'categories'))){
-			$_catarray = makeArrayFromCSV($cats);
-			$_cats = array();
-			foreach($_catarray as $_cat){
+		if(($_catarray = we_base_request::_(we_base_request::STRING_LIST, 'categories'))){
+			$cats = array();
+			foreach($_catarray as $cat){
 				// bugfix Workarround #700
-				$_cats[] = (is_numeric($_cat) ?
-						$_cat :
-						path_to_id($_cat, CATEGORY_TABLE));
+				$cats[] = (is_numeric($cat) ?
+						$cat :
+						path_to_id($cat, CATEGORY_TABLE));
 			}
-			$_REQUEST['categories'] = implode(',', $_cats);
+			$_REQUEST['categories'] = implode(',', $cats);
+			$this->categories = $cats;
+		} else {
+			$this->categories = we_base_request::_(we_base_request::RAW, "categories", $this->categories);
 		}
 
-		$this->categories = we_base_request::_(we_base_request::RAW, "categories", $this->categories);
 		$this->importToID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
 		$this->sameName = we_base_request::_(we_base_request::STRING, "sameName", $this->sameName);
 		$this->importMetadata = we_base_request::_(we_base_request::INT, "importMetadata", $this->importMetadata);
