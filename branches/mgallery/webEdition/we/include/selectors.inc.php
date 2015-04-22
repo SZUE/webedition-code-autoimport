@@ -49,11 +49,11 @@ switch($class){
 		$fs = new we_banner_selector(we_base_request::_(we_base_request::INT, "id", 0), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, "order", ''));
 		break;
 	case 'we_newsletter_dirSelector':
-		if(($cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1)) !== false){
-			$id = $cmd1;
+		if(($cmd = we_base_request::_(we_base_request::CMD, 'we_cmd', false, 4)) !== false){
+			$id = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1);
 			$JSIDName = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));
 			$JSTextName = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3));
-			$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
+			$JSCommand = $cmd;
 			$sessionID = 0;
 			$rootDirID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
 			$filter = we_base_request::_(we_base_request::RAW, 'we_cmd', 7, '');
@@ -65,11 +65,11 @@ switch($class){
 		break;
 
 	case 'we_export_dirSelector':
-		if(($id = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1)) !== false){
-			$_REQUEST['id'] = $id;
+		if(($cmd = we_base_request::_(we_base_request::CMD, 'we_cmd', false, 4)) !== false){
+			$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 			$JSIDName = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));
 			$JSTextName = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3));
-			$JSCommand = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4));
+			$JSCommand = stripslashes($cmd);
 		}
 
 		$fs = new we_export_dirSelector(we_base_request::_(we_base_request::INT, "id", 0), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, "order", ''), we_base_request::_(we_base_request::INT, "we_editDirID", ''), we_base_request::_(we_base_request::STRING, "we_FolderText", ''));
@@ -92,9 +92,9 @@ switch($class){
 		$fs = new we_users_selector(we_base_request::_(we_base_request::INT, "id", 0), we_base_request::_(we_base_request::TABLE, 'table', USER_TABLE), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, "order", ""), we_base_request::_(we_base_request::INT, "rootDirID", 0), we_base_request::_(we_base_request::STRING, "filter", ""), we_base_request::_(we_base_request::BOOL, "multiple"));
 		break;
 	case 'we_voting_dirSelector':
-		if(($cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1)) !== false){
-			$_REQUEST['id'] = $cmd1;
-			$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2);
+		if(($cmd =we_base_request::_(we_base_request::CMD, 'we_cmd', false, 2)) !== false){
+			$_REQUEST['id'] =  we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+			$JSIDName = $cmd;
 			$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 			$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 		}
@@ -103,9 +103,9 @@ switch($class){
 		break;
 
 	case 'we_selector_image':
-		if(($cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1)) !== false){
-			$_REQUEST['id'] = $cmd1;
-			$_REQUEST['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+		if(($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2)) !== false){
+			$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+			$_REQUEST['table'] = $table;
 			$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 			$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 			$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
@@ -119,9 +119,9 @@ switch($class){
 		$fs = new we_selector_image(we_base_request::_(we_base_request::INT, 'id', 0), ($table = we_base_request::_(we_base_request::TABLE, 'table', (defined('FILE_TABLE') ? FILE_TABLE : 'FF'))), isset($JSIDName) ? $JSIDName : '', isset($JSTextName) ? $JSTextName : '', isset($JSCommand) ? $JSCommand : '', we_base_request::_(we_base_request::RAW, 'order', ''), 0, we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::RAW, 'we_FolderText', ''), we_base_request::_(we_base_request::INT, 'rootDirID', 0), we_base_request::_(we_base_request::BOOL, 'open_doc') ? ($table == (defined('FILE_TABLE') ? FILE_TABLE : 'FF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') : ($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') : false)) : false, we_base_request::_(we_base_request::BOOL, 'multiple'), we_base_request::_(we_base_request::BOOL, 'canSelectDir'), we_base_request::_(we_base_request::INT, 'startID'));
 		break;
 	case 'we_customer_selector':
-		if(($cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1)) !== false){
-			$_REQUEST['id'] = $cmd1;
-			$table = $_REQUEST['table'] = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+		if(($cmd = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2)) !== false){
+			$_REQUEST['id'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+			$table = $_REQUEST['table'] = $cmd;
 			$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 			$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 			$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
