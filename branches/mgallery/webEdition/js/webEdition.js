@@ -531,7 +531,7 @@ function we_openMediaReference(id){
 				top.we_cmd(ref.mod + '_edit_ifthere', ref.id);
 				break;
 			case 'cat':
-				top.we_cmd.we_cmd('editCat', ref.id);
+				top.we_cmd('editCat', ref.id);
 				break;
 			default:
 				if(ref.isTempPossible && ref.referencedIn == 'main' && ref.isModified){
