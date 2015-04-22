@@ -284,18 +284,17 @@ function we_cmd() {
 			top.content.we_cmd.apply(this, args);
 	}
 }
-' . $this->getJSSubmitFunction());
-	}
-
-		function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
-		return '
 function submitForm() {
 	var f = self.document.we_form;
-	f.target =  (arguments[0]?arguments[0]:"' . $def_target . '");
+	f.target =  (arguments[0]?arguments[0]:"edbody");
 	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
+	f.method = (arguments[2]?arguments[2]:"post");
 	f.submit();
-}';
+}');
+	}
+
+		function getJSSubmitFunction(){
+		return '';
 	}
 
 	public function processCommands(){

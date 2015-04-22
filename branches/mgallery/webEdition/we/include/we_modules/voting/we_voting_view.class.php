@@ -311,11 +311,6 @@ function we_cmd() {
 		');
 	}
 
-	/* use parent
-	  function getJSSubmitFunctionS($def_target = "edbody", $def_method = "post"){}
-	 *
-	 */
-
 	function processCommands(){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case "resetscores":

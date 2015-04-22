@@ -325,7 +325,33 @@ var copyNaviFolderAjaxCallback = {
 	}
 }
 
-' . $this->getJSSubmitFunction() . '
+function populateVars() {
+	if(window.categories_edit!==undefined && document.we_form.CategoriesCount!==undefined){
+		document.we_form.CategoriesCount.value = categories_edit.itemCount;
+	}
+	if(window.sort_edit!==undefined && document.we_form.SortCount!==undefined){
+		document.we_form.SortCount.value = sort_edit.itemCount;
+	}
+	if(window.specificCustomersEdit!==undefined && document.we_form.specificCustomersEditCount!==undefined){
+		document.we_form.specificCustomersEditCount.value = specificCustomersEdit.itemCount;
+	}
+	if(window.blackListEdit!==undefined && document.we_form.blackListEditCount!==undefined){
+		document.we_form.blackListEditCount.value = blackListEdit.itemCount;
+	}
+	if(window.whiteListEdit!==undefined && document.we_form.whiteListEditCount!==undefined){
+		document.we_form.whiteListEditCount.value = whiteListEdit.itemCount;
+	}
+}
+
+function submitForm() {
+	var f = self.document.we_form;
+	populateVars();
+
+	f.target =  (arguments[0]?arguments[0]:"edbody");
+	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
+	f.method = (arguments[2]?arguments[2]:"post");
+	f.submit();
+}
 
 var table = "' . FILE_TABLE . '";
 var log_counter=0;
@@ -491,8 +517,7 @@ function setFieldValue(fieldNameTo, fieldFrom){
 	if(document.we_form.SelectionType.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")){
 			eval("document.we_form."+fieldNameTo+".value=fieldFrom.value");
 			weInputRemoveClass(fieldFrom, "weMarkInputError");
-	} else {
-		if(weNavTitleField[fieldFrom.value] != undefined){
+	} else if(weNavTitleField[fieldFrom.value] != undefined){
 			eval("document.we_form."+fieldNameTo+".value=\'"+weNavTitleField[fieldFrom.value]+"\'");
 			weInputRemoveClass(fieldFrom, "weMarkInputError");
 		} else if(fieldFrom.value=="") {
@@ -501,7 +526,6 @@ function setFieldValue(fieldNameTo, fieldFrom){
 		} else {
 			weInputAppendClass(fieldFrom, "weMarkInputError");
 		}
-	}
 }
 
 function putTitleField(field){
@@ -525,15 +549,17 @@ function setFocus() {
 }
 
 function switch_button_state(element, button, state, type) {
-	if (state == "enabled") {
+	switch(state){
+	case "enabled":
 		weButton.enable(element);
 		return true;
-	} else if (state == "disabled") {
+	case "disabled":
 		weButton.disable(element);
 		return false;
-	}
+	default:
 
 	return false;
+	}
 }
 
 function setWorkspaces(value) {
@@ -621,35 +647,8 @@ var weNavTitleField = [];
 		return $out;
 	}
 
-	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
-		return '
-function populateVars() {
-	if(window.categories_edit!==undefined && document.we_form.CategoriesCount!==undefined){
-		document.we_form.CategoriesCount.value = categories_edit.itemCount;
-	}
-	if(window.sort_edit!==undefined && document.we_form.SortCount!==undefined){
-		document.we_form.SortCount.value = sort_edit.itemCount;
-	}
-	if(window.specificCustomersEdit!==undefined && document.we_form.specificCustomersEditCount!==undefined){
-		document.we_form.specificCustomersEditCount.value = specificCustomersEdit.itemCount;
-	}
-	if(window.blackListEdit!==undefined && document.we_form.blackListEditCount!==undefined){
-		document.we_form.blackListEditCount.value = blackListEdit.itemCount;
-	}
-	if(window.whiteListEdit!==undefined && document.we_form.whiteListEditCount!==undefined){
-		document.we_form.whiteListEditCount.value = whiteListEdit.itemCount;
-	}
-}
-
-function submitForm() {
-	var f = self.document.we_form;
-	populateVars();
-
-	f.target =  (arguments[0]?arguments[0]:"' . $def_target . '");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
-	f.submit();
-}';
+	function getJSSubmitFunction(){
+		return '';
 	}
 
 	function getEditNaviPosition(){

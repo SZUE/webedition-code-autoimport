@@ -298,23 +298,23 @@ function we_cmd() {
 			}
 			' . $this->topFrame . '.we_cmd.apply(this, args);
 	}
-}' .
-				$this->getJSSubmitFunction() . '
+}
+function submitForm() {
+	var f = self.document.we_form;
+	f.target =  (arguments[0]?arguments[0]:"edbody");
+	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
+	f.method = (arguments[2]?arguments[2]:"post");
+	f.submit();
+}
+
 function start() {
 	' . $selected . $opened . ( $this->export->IsFolder == 0 ? '
 	setHead(' . $this->editorBodyFrame . '.table);' : '') . '
 }');
 	}
 
-	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){
-		return '
-function submitForm() {
-	var f = self.document.we_form;
-	f.target =  (arguments[0]?arguments[0]:"' . $def_target . '");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"' . $def_method . '");
-	f.submit();
-}';
+	function getJSSubmitFunction(){
+		return '';
 	}
 
 	function processCommands(){
