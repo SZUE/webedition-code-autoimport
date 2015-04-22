@@ -26,6 +26,7 @@ var regular_logout = false;
 var widthBeforeDeleteMode = 0;
 var widthBeforeDeleteModeSidebar = 0;
 var cockpitFrame;
+var we_mediaReferences = {};
 
 
 /**
@@ -520,6 +521,27 @@ function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	}
 }
 
+function we_openMediaReference(id){
+	id = id ? id : 0;
+
+	if(window.we_mediaReferences && window.we_mediaReferences['id_' + id]){
+		var ref = window.we_mediaReferences['id_' + id];
+		switch(ref.type){
+			case 'module':
+				top.we_cmd(ref.mod + '_edit_ifthere', ref.id);
+				break;
+			case 'cat':
+				top.we_cmd.we_cmd('editCat', ref.id);
+				break;
+			default:
+				if(ref.isTempPossible && ref.referencedIn == 'main' && ref.isModified){
+					top.we_showMessage('Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!', WE_MESSAGE_ERROR, window);
+				} else {
+					top.weEditorFrameController.openDocument(ref.table, ref.id, ref.ct);
+				}
+		}
+	}
+}
 
 function we_cmd_base(args, url) {
 	switch (args[0]) {

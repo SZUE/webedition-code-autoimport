@@ -193,7 +193,9 @@ abstract class we_class{
 		foreach($values as $value => $text){
 			if($text == we_html_tools::OPTGROUP){
 				if($optgroup){
+					$optgroup = false;
 					$ret .= '</optgroup>';
+					continue;
 				}
 				$optgroup = true;
 				$ret .= '<optgroup label="' . oldHtmlspecialchars($value) . '">';

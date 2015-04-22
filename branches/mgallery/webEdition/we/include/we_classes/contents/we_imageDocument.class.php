@@ -1037,6 +1037,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		we_html_multiIconBox::getHTML("weImgProp", "100%", array(
 			array("icon" => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), "space" => 140),
 			array("icon" => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), "space" => 140),
+			array('icon' => 'references.gif', 'headline' => 'Verwendung', 'html' => $this->formReferences(), 'space' => 140),
 			array("icon" => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), "space" => 140),
 			array("icon" => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), "space" => 140),
 			array("icon" => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), "space" => 140),

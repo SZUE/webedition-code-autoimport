@@ -756,7 +756,7 @@ class we_search_search extends we_search_base{
 			}
 
 			// get some more information about referencing objects
-			$paths = $isModified = $isUnpublished = $ct = $onclick = array();
+			$paths = $isModified = $isUnpublished = $ct = $onclick = $type = $mod = $isTmpPossible = array(); // TODO: make these arrays elements of one array
 			foreach($groups as $k => $v){// FIXME: ct is obslete?
 				switch(addTblPrefix($k)){
 					case FILE_TABLE:
@@ -768,6 +768,9 @@ class we_search_search extends we_search_base{
 							$isUnpublished[$k][$db->f('ID')] = $db->f('Published') == 0;
 							$ct[$k][$db->f('ID')] = $db->f('ContentType');
 							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
+							$type[$k][$db->f('ID')] = 'we_doc';
+							$mod[$k][$db->f('ID')] = '';
+							$isTmpPossible[$k][$db->f('ID')] = true;
 						}
 						break;
 					case TEMPLATES_TABLE:
@@ -777,6 +780,9 @@ class we_search_search extends we_search_base{
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$ct[$k][$db->f('ID')] = $db->f('ContentType');
 							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
+							$type[$k][$db->f('ID')] = 'we_doc';
+							$mod[$k][$db->f('ID')] = '';
+							$isTmpPossible[$k][$db->f('ID')] = false;
 						}
 						break;
 					case VFILE_TABLE:
@@ -785,6 +791,9 @@ class we_search_search extends we_search_base{
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$ct[$k][$db->f('ID')] = we_base_ContentTypes::COLLECTION;
 							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . we_base_ContentTypes::COLLECTION . '\')';
+							$type[$k][$db->f('ID')] = 'we_doc';
+							$mod[$k][$db->f('ID')] = '';
+							$isTmpPossible[$k][$db->f('ID')] = false;
 						}
 						break;
 					case BANNER_TABLE:
@@ -802,12 +811,18 @@ class we_search_search extends we_search_base{
 						);
 						foreach($paths[$k] as $key => $v){
 							$onclick[$k][$key] = 'weSearch.openModule(\'' . $modules[addTblPrefix($k)]. '\',' . $key . ')';
+							$type[$k][$key] = 'module';
+							$mod[$k][$key] = $modules[addTblPrefix($k)];
+							$isTmpPossible[$k][$key] = false;
 						}
 						break;
 					case CATEGORY_TABLE:
 						$paths[$k] = id_to_path($v, addTblPrefix($k), null, false, true);
 						foreach($paths[$k] as $key => $v){
 							$onclick[$k][$key] = 'weSearch.openCategory(' . $key . ')';
+							$type[$k][$key] = 'cat';
+							$mod[$k][$key] = '';
+							$isTmpPossible[$k][$key] = false;
 						}
 					
 				}
@@ -819,13 +834,16 @@ class we_search_search extends we_search_base{
 					if(!isset($this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
 						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
 							'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
+							'isTempPossible' => $isTmpPossible[$val[1]][$val[0]], 
 							'id' => $val[0],
+							'type' => $type[$val[1]][$val[0]],
 							'table' => addTblPrefix($val[1]),
 							'ct' => isset($ct[$val[1]][$val[0]]) ? $ct[$val[1]][$val[0]] : '',
+							'mod' => $mod[$val[1]][$val[0]],
 							'onclick' => isset($onclick[$val[1]][$val[0]]) ? $onclick[$val[1]][$val[0]] : 'alert(\'not implemented yet: ' . $val[1] . '\')',
 							'path' => $paths[$val[1]][$val[0]],
-							'isModified' => addTblPrefix($val[1]) === isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
-							'isUnpublished' => addTblPrefix($val[1]) === isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
+							'isModified' => isset($isModified[$val[1]][$val[0]]) ? $isModified[$val[1]][$val[0]] : false,
+							'isUnpublished' => isset($isUnpublished[$val[1]][$val[0]]) ? $isUnpublished[$val[1]][$val[0]] : false
 						);
 					} else {
 						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]]['referencedIn'] = 'both';

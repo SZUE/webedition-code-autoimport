@@ -372,11 +372,39 @@ class we_binaryDocument extends we_document{
 		return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', g_l('weClass', '[IsProtected]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
+	function formReferences(){
+		$search = new we_search_search();
+		$search->searchMediaLinks(0, true, $this->ID);
+		$ml = $search->getUsedMediaLinks();
+		$references = $ml['mediaID_' . $this->ID];//IMPORTANT: we hava a nested structure: make optgroupa
+
+		if(empty($references)){
+			return 'Dieses Medien-Dokument wird nirgendwo referenziert.';//g_l('weClass', '[no_documents]');
+		}
+
+		$js = "";
+		$values = array();
+		$c = 0;
+		foreach($references as $groupname => $group){
+			$values[$groupname] = we_html_tools::OPTGROUP;
+			foreach($group as $k => $v){
+				$values[++$c] = $v['path'];
+				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},\n"; 
+			}
+			$values[$groupname . 'end'] = we_html_tools::OPTGROUP;
+		}
+		$js = "top.we_mediaReferences = {\n" . $js . "};";
+		$button = we_html_button::create_button('open', "javascript:top.we_openMediaReference(document.we_form.elements['MediaReferences'].value);");
+
+		return we_html_element::jsElement($js) . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
+	}
+
 	public function getPropertyPage(){
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML('weOtherDocProp', '100%', array(
 			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
 			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
+			array('icon' => 'references.gif', 'headline' => 'Verwendung', 'html' => $this->formReferences(), 'space' => 140),
 			array('icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => 140),
 			array('icon' => 'cat.gif', 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory(), 'space' => 140),
 			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
