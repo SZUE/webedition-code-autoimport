@@ -47,7 +47,7 @@ var WegalleryDialog = { // TODO: clean code by using more vars
 			tmplValue = elm.getAttribute('tmpl') ? elm.getAttribute('tmpl') : 0;
 		}
 
-		document.forms.we_form.elements['we_dialog_args[id]'].value = idValue;
+		document.forms.we_form.elements['we_dialog_args[collid]'].value = idValue;
 		document.forms.we_form.elements['we_dialog_args[tmpl]'].value = tmplValue;
 	},
 

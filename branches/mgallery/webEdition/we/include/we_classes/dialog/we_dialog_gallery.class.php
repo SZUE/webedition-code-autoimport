@@ -113,7 +113,7 @@ top.close();
 		 * 
 		 */
 
-		$table = '<table border="0" cellpadding="0" cellspacing="0">
+		$html = $yuiSuggest->getYuiJs() . '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>' . $collid . '</td><td>' . $trash . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(225, 10) . '</td></tr>
 <tr><td>' . $tmpl . '</td></tr>
@@ -122,7 +122,7 @@ top.close();
 <tr><td>' . $btnTrash . ' Gallerie entfernen</td></tr>
 </table>';
 
-		return $table;
+		return $html;
 	}
 
 	function getDialogButtons(){
