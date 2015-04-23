@@ -10,4 +10,4 @@ CREATE TABLE ###TBLPREFIX###tblMsgAccounts (
   update_interval smallint(5) unsigned NOT NULL default '0',
   ext varchar(255) default NULL,
   PRIMARY KEY  (ID)
-)
+) ENGINE=MyISAM;

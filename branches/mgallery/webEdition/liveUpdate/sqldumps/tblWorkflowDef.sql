@@ -15,4 +15,4 @@ CREATE TABLE ###TBLPREFIX###tblWorkflowDef (
   `EmailPath` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `LastStepAutoPublish` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (ID)
-)
+) ENGINE=MyISAM;

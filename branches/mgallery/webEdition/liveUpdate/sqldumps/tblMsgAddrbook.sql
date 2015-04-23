@@ -7,4 +7,4 @@ CREATE TABLE ###TBLPREFIX###tblMsgAddrbook (
   strFirstname varchar(255) default NULL,
   strSurname varchar(255) default NULL,
   PRIMARY KEY  (ID)
-)
+) ENGINE=MyISAM;

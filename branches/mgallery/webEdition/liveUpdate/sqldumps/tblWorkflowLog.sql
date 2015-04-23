@@ -7,4 +7,4 @@ CREATE TABLE ###TBLPREFIX###tblWorkflowLog (
   `Type` tinyint(4) unsigned NOT NULL default '0',
   Description tinytext NOT NULL,
   PRIMARY KEY  (ID)
-)
+) ENGINE=MyISAM;

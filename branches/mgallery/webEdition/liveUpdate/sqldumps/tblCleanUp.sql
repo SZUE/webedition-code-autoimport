@@ -6,7 +6,7 @@ CREATE TABLE ###TBLPREFIX###tblCleanUp (
   `Date` timestamp NOT NULL default CURRENT_TIMESTAMP,
   PRIMARY KEY  (Path),
   KEY `Date` (`Date`)
-)
+) ENGINE=MyISAM;
 
 /* query separator */
 ###UPDATEDROPKEY(Path,###TBLPREFIX###tblCleanUp)###

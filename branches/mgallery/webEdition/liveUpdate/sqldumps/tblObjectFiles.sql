@@ -38,7 +38,7 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   KEY WebUserID (WebUserID),
   KEY TableID (TableID),
   KEY Url (Url)
-)
+) ENGINE=MyISAM;
 
 /* query separator */
 ###UPDATEDROPCOL(OF_IsSearchable,###TBLPREFIX###tblObjectFiles)###

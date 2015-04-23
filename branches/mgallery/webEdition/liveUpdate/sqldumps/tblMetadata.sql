@@ -6,4 +6,4 @@ CREATE TABLE ###TBLPREFIX###tblMetadata (
   `importFrom` varchar(255) NOT NULL,
   `mode` enum('none','manual','auto') NOT NULL default 'none',
   PRIMARY KEY  (`tag`)
-) 
+) ENGINE=MyISAM;

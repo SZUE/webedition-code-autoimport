@@ -17,4 +17,4 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   PRIMARY KEY (ID),
   KEY Path (Path(30),IsFolder),
   KEY ParentID(ParentID)
-)
+) ENGINE=MyISAM;

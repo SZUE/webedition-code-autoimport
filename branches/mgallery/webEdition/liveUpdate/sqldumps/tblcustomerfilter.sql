@@ -20,4 +20,4 @@ CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   PRIMARY KEY  (`modelId`,`modelTable`),
   KEY modelType (modelType,accessControlOnTemplate),
 	KEY mode(mode)
-)
+) ENGINE=MyISAM;

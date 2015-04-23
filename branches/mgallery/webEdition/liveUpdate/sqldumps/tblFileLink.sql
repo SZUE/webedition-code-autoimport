@@ -8,4 +8,4 @@ CREATE TABLE ###TBLPREFIX###tblFileLink (
 	`isTemp` tinyint(1) unsigned NOT NULL default '0' COMMENT 'this is one if the referenced object is in temporary table',
 	PRIMARY KEY (ID,DocumentTable,`type`,remObj,`position`,isTemp),
 	KEY remObj (remTable,remObj)
-)
+) ENGINE=MyISAM;

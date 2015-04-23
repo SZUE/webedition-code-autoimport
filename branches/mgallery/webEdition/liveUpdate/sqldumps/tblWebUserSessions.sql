@@ -13,4 +13,4 @@ CREATE TABLE ###TBLPREFIX###tblWebUserSessions (
   PRIMARY KEY  (SessionID),
   KEY `WebUserID` (`WebUserID`),
   KEY `LastAccess` (`LastAccess`)
-)
+) ENGINE=MyISAM;

@@ -5,4 +5,4 @@ CREATE TABLE ###TBLPREFIX###tblformmailblock (
   PRIMARY KEY  (id),
   KEY ipblockeduntil (blockedUntil),
   UNIQUE KEY ip (ip)
-)
+) ENGINE=MyISAM;

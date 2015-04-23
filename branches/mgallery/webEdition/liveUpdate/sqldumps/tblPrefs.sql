@@ -6,5 +6,4 @@ CREATE TABLE ###TBLPREFIX###tblPrefs (
 	value text NOT NULL,
   PRIMARY KEY (`userID`,`key`),
 	KEY lookup (`key`)
-)
-
+) ENGINE=MyISAM;

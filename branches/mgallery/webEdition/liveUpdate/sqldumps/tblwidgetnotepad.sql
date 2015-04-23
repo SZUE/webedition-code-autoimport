@@ -10,6 +10,6 @@ CREATE TABLE ###TBLPREFIX###tblwidgetnotepad (
   `ValidFrom` date NOT NULL default '0000-00-00',
   `ValidUntil` date NOT NULL default '0000-00-00',
   PRIMARY KEY  (`ID`)
-)
+) ENGINE=MyISAM;
 /* query separator */
 ###INSTALLONLY###INSERT IGNORE INTO ###TBLPREFIX###tblwidgetnotepad VALUES (1, 'webEdition', 1, NOW(), 'Welcome to webEdition!', '', 'low', 'always', NOW(), "3000-01-01");

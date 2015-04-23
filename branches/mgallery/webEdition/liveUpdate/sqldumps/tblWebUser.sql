@@ -24,4 +24,4 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   PRIMARY KEY  (ID),
   UNIQUE KEY `Username` (`Username`),
   KEY Surname (Surname(3))
-)
+)  ENGINE=MyISAM;

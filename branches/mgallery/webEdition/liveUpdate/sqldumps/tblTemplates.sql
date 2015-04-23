@@ -26,7 +26,7 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   KEY ParentID (ParentID,Filename(3)),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
-)
+) ENGINE=MyISAM;
 
 /* query separator */
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblTemplates SET Icon="we_template.gif" WHERE IsFolder=0;

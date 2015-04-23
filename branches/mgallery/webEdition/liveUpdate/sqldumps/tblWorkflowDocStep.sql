@@ -6,4 +6,4 @@ CREATE TABLE ###TBLPREFIX###tblWorkflowDocStep (
   finishDate int(10) unsigned NOT NULL default '0',
   `Status` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID)
-)
+) ENGINE=MyISAM;

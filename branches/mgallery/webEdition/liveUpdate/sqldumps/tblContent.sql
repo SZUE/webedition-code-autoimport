@@ -13,4 +13,4 @@ CREATE TABLE ###TBLPREFIX###tblContent (
   AutoBR enum('on','off') NOT NULL default 'off',
   PRIMARY KEY (ID),
   KEY BDID (BDID)
-)
+) ENGINE=MyISAM;

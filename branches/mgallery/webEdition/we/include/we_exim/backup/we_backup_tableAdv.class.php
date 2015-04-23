@@ -70,7 +70,7 @@ class we_backup_tableAdv extends we_backup_table{
 
 		//FIXME: this is NOT Save for MySQL Updates!!!!
 		array_pop($myarray); //get rid of old Engine statement
-		$myarray[] = ' ) ' . we_database_base::getCharsetCollation() . '';
+		$myarray[] = ' ) ' . we_database_base::getCharsetCollation() . ' ENGINE=MyISAM;';
 
 		$query = implode(' ', $myarray);
 		return ($DB_WE->query($query));

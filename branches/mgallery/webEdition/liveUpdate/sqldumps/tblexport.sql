@@ -31,4 +31,4 @@ CREATE TABLE ###TBLPREFIX###tblexport (
   HandleNavigation tinyint(1) unsigned NOT NULL default '0',
   HandleThumbnails tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID)
-)
+) ENGINE=MyISAM;

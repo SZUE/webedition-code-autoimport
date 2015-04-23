@@ -41,7 +41,7 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
 	KEY search (ID,ClassID),
 	KEY wsp (Workspace),
 	FULLTEXT Text (Text)
-)
+) ENGINE=MyISAM;
 
 /* query separator */
 ###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###

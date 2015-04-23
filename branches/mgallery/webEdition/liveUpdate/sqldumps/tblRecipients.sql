@@ -3,4 +3,4 @@ CREATE TABLE ###TBLPREFIX###tblRecipients (
   Email varchar(255) NOT NULL default '',
   PRIMARY KEY  (ID),
   UNIQUE KEY Email (Email)
-)
+) ENGINE=MyISAM;

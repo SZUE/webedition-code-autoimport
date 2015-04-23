@@ -9,4 +9,4 @@ CREATE TABLE ###TBLPREFIX###tblnavigationrules (
   ClassID int(11) unsigned NOT NULL default '0',
   WorkspaceID int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID)
-)
+) ENGINE=MyISAM;

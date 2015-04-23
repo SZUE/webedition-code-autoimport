@@ -43,4 +43,4 @@ CREATE TABLE ###TBLPREFIX###tblOrders (
   PRIMARY KEY  (IntID),
 	KEY DateOrder (DateOrder),
 	KEY IntOrderID (IntOrderID)
-)
+) ENGINE=MyISAM;

@@ -6,4 +6,4 @@ CREATE TABLE ###TBLPREFIX###tblWorkflowDocTask (
   todoID int(11) unsigned NOT NULL default '0',
   `Status` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID)
-)
+) ENGINE=MyISAM;

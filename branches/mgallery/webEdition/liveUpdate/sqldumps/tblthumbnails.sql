@@ -13,4 +13,4 @@ CREATE TABLE ###TBLPREFIX###tblthumbnails (
   Utilize tinyint(1) unsigned NOT NULL default '0',
   `Quality` tinyint unsigned NOT NULL DEFAULT  '8',
   PRIMARY KEY  (ID)
-)
+) ENGINE=MyISAM;

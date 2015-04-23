@@ -52,4 +52,4 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   KEY ParentID (ParentID),
   KEY LinkID (LinkID),
   KEY Path (Path(30))
-)
+) ENGINE=MyISAM;

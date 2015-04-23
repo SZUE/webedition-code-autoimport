@@ -8,4 +8,4 @@ CREATE TABLE ###TBLPREFIX###tblNewsletterGroup (
   Extern longtext,
   PRIMARY KEY (ID),
   KEY NewsletterID (NewsletterID)
-)
+) ENGINE=MyISAM;

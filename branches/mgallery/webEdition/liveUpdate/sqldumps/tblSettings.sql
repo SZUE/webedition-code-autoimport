@@ -5,7 +5,7 @@ CREATE TABLE ###TBLPREFIX###tblSettings (
   pref_name VARCHAR(255) NOT NULL,
   pref_value text NOT NULL,
   PRIMARY KEY  (tool,pref_name)
-)
+) ENGINE=MyISAM;
 
 /* query separator */
 ###UPDATEONLY###DELETE FROM ###TBLPREFIX###tblSettings WHERE tool='shop' AND pref_name IN ('edit_shop_properties','shop_pref');

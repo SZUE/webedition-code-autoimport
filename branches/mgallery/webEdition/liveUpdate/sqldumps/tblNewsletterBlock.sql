@@ -10,4 +10,4 @@ CREATE TABLE ###TBLPREFIX###tblNewsletterBlock (
   Pack tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
   KEY NewsletterID (NewsletterID)
-)
+) ENGINE=MyISAM;

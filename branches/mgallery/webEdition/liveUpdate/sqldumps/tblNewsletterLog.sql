@@ -17,7 +17,7 @@ CREATE TABLE ###TBLPREFIX###tblNewsletterLog (
   Param varchar(255) NOT NULL default '',
   PRIMARY KEY (ID),
   KEY NewsletterID (NewsletterID,stamp)
-)
+) ENGINE=MyISAM;
 
 /* query separator */
 ###ONCOL(LogTime,###TBLPREFIX###tblNewsletterLog) UPDATE ###TBLPREFIX###tblNewsletterLog SET stamp=FROM_UNIXTIME(LogTime);###

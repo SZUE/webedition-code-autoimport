@@ -11,4 +11,4 @@ CREATE TABLE ###TBLPREFIX###tblFailedLogins (
   PRIMARY KEY (`ID`),
   KEY IP (LoginDate,UserTable,IP),
   KEY user (UserTable,Username,isValid,LoginDate)
-)
+) ENGINE=MyISAM;

@@ -7,4 +7,4 @@ CREATE TABLE `###TBLPREFIX###<?php echo $TABLENAMENOPREFIX?>` (
 `Text` VARCHAR( 255 ) NOT NULL,
  `Published` INT( 11 ) NOT NULL default '0',
  `Status` VARCHAR( 255 ) NOT NULL default ''
-)
+) ENGINE=MyISAM;
