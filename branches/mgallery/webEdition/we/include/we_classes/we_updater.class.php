@@ -210,16 +210,19 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
 		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
 
-		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
-			$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!="" AND Title="" AND Description=""');
-			$udb = new DB_WE();
-			while($db->next_record()){
-				$data = unserialize($db->f('Catfields'));
-				if($data){
-					$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		if($db->isColExist(CATEGORY_TABLE, 'Catfields')){
+			if(f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
+
+				$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!="" AND Title="" AND Description=""');
+				$udb = new DB_WE();
+				while($db->next_record()){
+					$data = unserialize($db->f('Catfields'));
+					if($data){
+						$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
 								'Title' => $data['default']['Title'],
 								'Description' => $data['default']['Description'],
 							)) . ' WHERE ID=' . $db->f('ID'));
+					}
 				}
 			}
 			$db->delCol(CATEGORY_TABLE, 'Catfields');

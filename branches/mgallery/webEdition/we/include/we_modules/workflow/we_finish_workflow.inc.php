@@ -29,7 +29,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"], "", true)){
+if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '', true)){
 	if($we_doc->i_publInScheduleTable()){
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $we_doc->From));
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
