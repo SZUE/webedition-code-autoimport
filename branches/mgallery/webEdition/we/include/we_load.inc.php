@@ -62,7 +62,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 
 		$DB_WE = new DB_WE();
 		if($table == VFILE_TABLE){// TODO: permision
-			$DB_WE->query('SELECT ID,remObj,remTable,position FROM ' . FILELINK_TABLE . ' WHERE DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" ORDER BY ID, position ASC');
+			$DB_WE->query('SELECT ID,remObj,remTable,position FROM ' . FILELINK_TABLE . ' WHERE DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" ORDER BY ID,position ASC');
 
 			$docCollections = $docCollectionIDs = $objCollections = $objCollectionIDs = array();
 			while($DB_WE->next_record()){

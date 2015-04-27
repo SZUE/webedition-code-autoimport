@@ -73,10 +73,7 @@ abstract class we_base_delete{
 
 		if($delR){ // recursive delete
 			$DB_WE->query('SELECT ID FROM ' . $DB_WE->escape($table) . ' WHERE ParentID=' . intval($id));
-			$toDeleteArray = array();
-			while($DB_WE->next_record()){
-				$toDeleteArray[] = $DB_WE->f('ID');
-			}
+			$toDeleteArray = $DB_WE->getAll(true);
 			foreach($toDeleteArray as $toDelete){
 				self::deleteEntry($toDelete, $table, true, 0, $DB_WE);
 			}
@@ -242,13 +239,7 @@ abstract class we_base_delete{
 		}
 
 		if($id){
-			$fields = $table === VFILE_TABLE ? 'Path,IsFolder' : 'Path,IsFolder,ContentType';
-			$row = getHash('SELECT ' . $fields . ' FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-
-			if($row && $table === VFILE_TABLE){ // FIXME: add field ContentType to tblVFile and throw this out!
-				$row['ContentType'] = $row['IsFolder'] ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION;
-			}
-
+			$row = getHash('SELECT Path,IsFolder,ContentType FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
 			if(!$row){
 				$GLOBALS['deletedItems'][] = $id;
 				return;

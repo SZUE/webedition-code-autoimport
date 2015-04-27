@@ -2,6 +2,7 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
+	ContentType enum('folder','text/weCollection') NOT NULL default 'text/weCollection',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   `Path` varchar(255) NOT NULL default '',
   CreatorID int(11) unsigned NOT NULL default '0',

@@ -65,7 +65,7 @@ function we_tag_textarea($attribs, $content){
 	}
 
 	/* we are in wysiwyg and have at least one wegallery */
-	$regs = array();
+	$galleryAttribs = $regs = array();
 	if(preg_match_all('/<wegallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/wegallery>/i', $fieldVal, $regs, PREG_SET_ORDER)){
 		for($i = 0; $i < count($regs); $i++){
 			array_shift($regs[$i]);
@@ -79,7 +79,7 @@ function we_tag_textarea($attribs, $content){
 
 	$splitVal = preg_split('/<wegallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/wegallery>/i', $fieldVal);
 	printElement(array_shift($splitVal));
-	for($i = 0; $i < count($splitVal); $i++){
+	foreach($splitVal as $i => $cur){
 		if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){
 			$GLOBALS['WE_COLLECTION_ID'] = $galleryAttribs[$i]['id'];
 			if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs[$i]['tmpl']), '_parsed' => true)))){
@@ -87,26 +87,26 @@ function we_tag_textarea($attribs, $content){
 			}
 			unset($GLOBALS['WE_COLLECTION_ID']);
 		}
-		printElement($splitVal[$i]);
+		printElement($cur);
 	}
 
 	return;
 
 	/*
-	$fieldVal = array_shift($splitVal);
-	for($i = 0; $i < count($splitVal); $i++){
-		if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){t_e("ga", $galleryAttribs[$i]['id'], $galleryAttribs[$i]['tmpl']);
-			$GLOBALS['WE_COLLECTION_ID'] = $galleryAttribs[$i]['id'];
-			ob_start();
-			if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs[$i]['tmpl']), '_parsed' => true)))){
-				include($we_inc);
-			}
-			$fieldVal .= ob_get_clean();
-		}
-		$fieldVal .= $splitVal[$i];
-	}
+	  $fieldVal = array_shift($splitVal);
+	  for($i = 0; $i < count($splitVal); $i++){
+	  if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){t_e("ga", $galleryAttribs[$i]['id'], $galleryAttribs[$i]['tmpl']);
+	  $GLOBALS['WE_COLLECTION_ID'] = $galleryAttribs[$i]['id'];
+	  ob_start();
+	  if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs[$i]['tmpl']), '_parsed' => true)))){
+	  include($we_inc);
+	  }
+	  $fieldVal .= ob_get_clean();
+	  }
+	  $fieldVal .= $splitVal[$i];
+	  }
 
-	return $fieldVal;
-	 * 
+	  return $fieldVal;
+	 *
 	 */
 }

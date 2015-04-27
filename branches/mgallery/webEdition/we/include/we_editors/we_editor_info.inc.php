@@ -25,7 +25,6 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
-
 ?>
 <script type="text/javascript"><!--
 	function revertToPublished() {
@@ -86,16 +85,16 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[changed_date]') . '</div>
 <div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->ModDate) . '</div>' .
 			($GLOBALS['we_doc']->ModifierID && ($name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->ModifierID))) ?
-			'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>
+				'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>
 <div style="margin-bottom:10px;">' . $name . '</div>' .
-			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT ?
-				'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
-				'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>' :
-				'') .
-			($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published ?
-				'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>' :
-				'') :
-			'');
+				($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT ?
+					'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
+					'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>' :
+					'') .
+				($GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published ?
+					'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>' :
+					'') :
+				'');
 
 
 		$parts[] = array(
@@ -105,38 +104,42 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			'icon' => 'cal.gif'
 		);
 
-		if($GLOBALS['we_doc']->Table !== TEMPLATES_TABLE && $GLOBALS['we_doc']->Table !== VFILE_TABLE){
-			$rp = $GLOBALS['we_doc']->getRealPath();
-			$http = $GLOBALS['we_doc']->getHttpPath();
+		switch($GLOBALS['we_doc']->Table){
+			case TEMPLATES_TABLE:
+			case VFILE_TABLE:
+				break;
+			default:
+				$rp = $GLOBALS['we_doc']->getRealPath();
+				$http = $GLOBALS['we_doc']->getHttpPath();
 
-			switch($GLOBALS['we_doc']->ContentType){
-				default:
-					$showlink = false;
-					break;
-				case we_base_ContentTypes::HTML:
-				case we_base_ContentTypes::WEDOCUMENT:
-				case we_base_ContentTypes::IMAGE:
-				case we_base_ContentTypes::FLASH:
-				case we_base_ContentTypes::QUICKTIME:
-				case we_base_ContentTypes::VIDEO:
-				case we_base_ContentTypes::AUDIO:
-					$showlink = true;
-			}
+				switch($GLOBALS['we_doc']->ContentType){
+					default:
+						$showlink = false;
+						break;
+					case we_base_ContentTypes::HTML:
+					case we_base_ContentTypes::WEDOCUMENT:
+					case we_base_ContentTypes::IMAGE:
+					case we_base_ContentTypes::FLASH:
+					case we_base_ContentTypes::QUICKTIME:
+					case we_base_ContentTypes::VIDEO:
+					case we_base_ContentTypes::AUDIO:
+						$showlink = true;
+				}
 
-			$published = !(($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT) && $GLOBALS['we_doc']->Published == 0);
+				$published = !(($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::HTML || $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT) && $GLOBALS['we_doc']->Published == 0);
 
-			$_html = '
+				$_html = '
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[local_path]') . '</div>
 <div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : '<span title="' . oldHtmlspecialchars($rp) . '">' . oldHtmlspecialchars(we_util_Strings::shortenPath($rp, 74)) . '</span>') . '</div>
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[http_path]') . '</div>
 <div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . oldHtmlspecialchars($http) . '">' : '') . we_util_Strings::shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
 
-			$parts[] = array(
-				'headline' => '',
-				'html' => $_html,
-				'space' => 140,
-				'icon' => 'path.gif'
-			);
+				$parts[] = array(
+					'headline' => '',
+					'html' => $_html,
+					'space' => 140,
+					'icon' => 'path.gif'
+				);
 		}
 
 		if(defined('WORKFLOW_TABLE') && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT){

@@ -49,7 +49,7 @@ class we_collection extends we_root{
 	function __construct(){
 		parent::__construct();
 		$this->Table = VFILE_TABLE;
-		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'insertPrefs', 'insertRecursive', 'useEmpty', 'doubleOk');
+		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'insertPrefs', 'insertRecursive', 'useEmpty', 'doubleOk', 'ContentType');
 
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
@@ -256,7 +256,7 @@ class we_collection extends we_root{
 		$classTable->setCol(0, 2, null, $classListTo);
 
 		$selRemTable = $fixedRemTable && $this->remTable ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->remTable) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->remTable], 'width' => 382)) :
-				we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388);
+			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388);
 
 
 		$dublettes = we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $this->Name . '_doubleOk', 'Dubletten sind erlaubt');
@@ -271,7 +271,7 @@ class we_collection extends we_root{
 			(defined('OBJECT_TABLE') ? '<br/>Erlaubte Objekte auf folgende Klassen einschränken:<br/>' .
 				we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
 				$classTable->getHTML() : '') .
-			'</div>' . 
+			'</div>' .
 			we_html_element::htmlDiv(array('style' => 'width:388px;margin:20px 0 10px 0;'), $dublettes);
 
 		return $html;
@@ -281,8 +281,8 @@ class we_collection extends we_root{
 		$recursive = we_html_forms::checkboxWithHidden($this->insertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_insertRecursive', 'Verzeichnisse rekursiv einfügen') .
 			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 1) .
 			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_doubleOk', $this->doubleOk);
-			//we_html_forms::checkboxWithHidden($this->useEmpty, 'we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 'Leere Felder im Anschluss an die Einfügeposition auffüllen') .
-			//we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $GLOBALS['we_doc']->Name . '_doubleOk', 'Dubletten zulassen');
+		//we_html_forms::checkboxWithHidden($this->useEmpty, 'we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 'Leere Felder im Anschluss an die Einfügeposition auffüllen') .
+		//we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $GLOBALS['we_doc']->Name . '_doubleOk', 'Dubletten zulassen');
 
 		$items = $this->getCollectionVerified(false, true, true);
 		if($items[count($items) - 1]['id'] !== -1){
@@ -304,10 +304,10 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 
 		return we_html_element::jsElement($this->jsFormCollection) .
 			we_html_element::htmlHiddens(array(
-				'we_' . $this->Name . '_fileCollection'=> $this->fileCollection,
-				'we_' . $this->Name . '_objectCollection'=> $this->objectCollection)) .
+				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
+				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Inhalt der Sammlung') .
-			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)',  we_html_tools::TYPE_INFO, 680)) .
+			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $recursive) .
 			we_html_element::htmlDiv(array('id' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows);
 	}
@@ -388,7 +388,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
-		$this->ContentType = $this->IsFolder ? 'folder' : we_base_ContentTypes::COLLECTION;
+		//FIXME: remove this switch after 6.6
+		$this->ContentType = $this->ContentType? : ($this->IsFolder ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION);
 		$this->Filename = $this->Text;
 		$this->insertRecursive = $this->insertPrefs[0];
 		$this->useEmpty = $this->insertPrefs[1];

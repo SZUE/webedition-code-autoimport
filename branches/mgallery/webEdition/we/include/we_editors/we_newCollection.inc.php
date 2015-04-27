@@ -50,7 +50,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	$collection->remClass = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remClass');
 	$collection->doubleOk = we_base_request::_(we_base_request::INT, 'we_' . $name . '_doubleOk', 0);
 	$collection->useEmpty = $collection->insertRecursive = 0;
-	
+
 
 	if($collection->i_pathNotValid()){
 		$jsMessage = sprintf(g_l('weClass', '[notValidFolder]'), $collection->Path);
@@ -66,8 +66,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 		if($saveSuccess){
 			$jsMessage = $caller == 'selector' ? '' : 'Die Sammlung wurde erfolgreich angelegt.'; // FIXME: G_L()
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
-			$db = new DB_WE();
-			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1', 'ID', $db);
+			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1');
 			$writeBack = array(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));
 		} else {
 			$jsMessage = 'unknown error ';
@@ -133,7 +132,7 @@ function we_cmd() {
 			break;
 	}
 }
-' . (isset($jsMessage) && $jsMessage ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')) . 
+' . (isset($jsMessage) && $jsMessage ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')) .
 '</head>';
 
 $parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1), 'space' => 0, 'noline' => 1);
@@ -151,8 +150,8 @@ $content = we_html_element::htmlHidden('dosave', 0) .
 	)) .
 	we_html_multiIconBox::getHTML(
 		'weNewCollection', 500, $parts, 30, we_html_button::position_yes_no_cancel(
-			we_html_button::create_button('save', 'javascript:we_cmd(\'save_notclose\');'), 
-			'', 
+			we_html_button::create_button('save', 'javascript:we_cmd(\'save_notclose\');'),
+			'',
 			we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, 'Neue Sammlung anlegen', '', '', 'scroll'
 	);

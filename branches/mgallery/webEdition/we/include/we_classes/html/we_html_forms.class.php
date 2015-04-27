@@ -200,12 +200,10 @@ abstract class we_html_forms{
 		if($wysiwyg){
 			$width = $width ? : (abs($cols) ? (abs($cols) * 5.5) : 520);
 			$height = $height ? : (abs($rows) ? (abs($rows) * 8) : 200);
-			if(!$showmenues){
-				$commands = str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds()));
-			}
-			if($hidestylemenu){
-				$commands = str_replace('applystyle,', '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds()));
-			}
+
+			$commands = ($showmenues ? $commands : str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())));
+			$commands = ($hidestylemenu ? str_replace('applystyle,', '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())) : $commands);
+
 
 			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition);
 

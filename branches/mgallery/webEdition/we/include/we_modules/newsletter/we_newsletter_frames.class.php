@@ -2143,7 +2143,7 @@ function postSelectorSelect(wePssCmd) {
 		we_html_tools::protect();
 
 		if(we_base_request::_(we_base_request::STRING, "ncmd") === "do_clear_log"){
-			$this->View->db->query("DELETE FROM " . NEWSLETTER_LOG_TABLE);
+			$this->View->db->query('TRUNCATE TABLE ' . NEWSLETTER_LOG_TABLE);
 			return
 				we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 				we_html_element::jsElement(
