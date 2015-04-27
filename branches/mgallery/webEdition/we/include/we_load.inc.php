@@ -119,7 +119,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			$tree_count++;
 			$ID = $DB_WE->f('ID');
 			$Path = $DB_WE->f('Path');
-			$ContentType = $table === VFILE_TABLE ? ($DB_WE->f('IsFolder') ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION) : $DB_WE->f("ContentType");
+			$ContentType = $DB_WE->f("ContentType");
 			$published = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
 					(($DB_WE->f('Published') != 0) && ($DB_WE->f('Published') < $DB_WE->f('ModDate')) ?
 						-1 :
@@ -136,7 +136,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 				"isclassfolder" => $DB_WE->f("IsClassFolder"),
 				"table" => $table,
 				"checked" => 0,
-				"typ" => $table === VFILE_TABLE ? 'group' : ($DB_WE->f("IsFolder") ? "group" : "item"),
+				"typ" => ($table === VFILE_TABLE || $DB_WE->f("IsFolder") ? "group" : "item"),
 				"open" => (in_array($ID, $openFolders) ? 1 : 0),
 				"published" => $published,
 				"disabled" => (in_array($Path, $parentpaths) ? 1 : 0),
