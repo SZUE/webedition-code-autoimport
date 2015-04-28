@@ -93,60 +93,60 @@ class we_objectFile extends we_document{
 		if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
 			$GLOBALS['we_object'] = array();
 		}
-		$GLOBALS['we_object'][$formname] = new we_objectFile();
+		$GLOBALS['we_object'][$formname] = $wof = new we_objectFile();
 		if((!$session) || (!isset($_SESSION['weS']['we_object_session_' . $formname])) || $wewrite){
 			if($session){
 				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
-			$GLOBALS['we_object'][$formname]->we_new();
+			$wof->we_new();
 			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
-				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
-				if(!$GLOBALS['we_object'][$formname]->TableID){
+				$wof->initByID($id, OBJECT_FILES_TABLE);
+				if(!$wof->TableID){
 					return false;
 				}
 			} else {
-				$GLOBALS['we_object'][$formname]->TableID = $classID;
-				$GLOBALS['we_object'][$formname]->setRootDirID(true);
-				$GLOBALS['we_object'][$formname]->resetParentID();
-				$GLOBALS['we_object'][$formname]->restoreDefaults();
+				$wof->TableID = $classID;
+				$wof->setRootDirID(true);
+				$wof->resetParentID();
+				$wof->restoreDefaults();
 				if(strlen($categories)){
 					$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-					$GLOBALS['we_object'][$formname]->Category = $categories;
+					$wof->Category = $categories;
 				}
 				if($parentid){
 					// check if parentid is in correct folder ...
 					$parentfolder = new we_class_folder();
 					$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
 
-					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) || strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
-						$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
-						$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
+					if(($wof->ParentPath == $parentfolder->Path) || strpos($parentfolder->Path . '/', $wof->ParentPath) === 0){
+						$wof->ParentID = $parentfolder->ID;
+						$wof->Path = $parentfolder->Path . '/' . $wof->Filename;
 					}
 				}
 			}
 
 			if($session){
-				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
+				$wof->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 			}
 		} else {
 			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
-				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
+				$wof->initByID($id, OBJECT_FILES_TABLE);
 			} elseif($session){
-				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
+				$wof->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}
-			if($classID && ($GLOBALS['we_object'][$formname]->TableID != $classID)){
-				$GLOBALS['we_object'][$formname]->TableID = $classID;
+			if($classID && ($wof->TableID != $classID)){
+				$wof->TableID = $classID;
 			}
 			if(strlen($categories)){
 				$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-				$GLOBALS['we_object'][$formname]->Category = $categories;
+				$wof->Category = $categories;
 			}
 		}
 
-		$GLOBALS['we_object'][$formname]->DefArray = $GLOBALS['we_object'][$formname]->DefArray ? : $GLOBALS['we_object'][$formname]->getDefaultValueArray(); //bug #7426
+		$wof->DefArray = $wof->DefArray ? : $wof->getDefaultValueArray(); //bug #7426
 
 		if(($ret = we_base_request::_(we_base_request::URL, 'we_returnpage'))){
-			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $ret);
+			$wof->setElement('we_returnpage', $ret);
 		}
 
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
@@ -154,24 +154,24 @@ class we_objectFile extends we_document{
 
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
 				$v = we_base_util::rmPhp($v);
-				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $n);
-				$GLOBALS['we_object'][$formname]->setElement($n, $v);
+				$wof->i_convertElemFromRequest('', $v, $n);
+				$wof->setElement($n, $v);
 			}
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
 			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::WEFILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
-			$GLOBALS['we_object'][$formname]->Category = $cats;
+			$wof->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
 			$_REQUEST['we_ui_' . $formname . '_Category'] = (is_array($_REQUEST['we_ui_' . $formname . '_Category']) ?
 					makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true) :
 					makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true));
 		}
-		foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
+		foreach($wof->persistent_slots as $slotname){
 			if($slotname != 'categories' && ($tmp = we_base_request::_(we_base_request::RAW, 'we_ui_' . $formname . '_' . $slotname)) !== false){
 				$v = we_base_util::rmPhp($tmp);
-				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $slotname);
-				$GLOBALS['we_object'][$formname]->{$slotname} = $v;
+				$wof->i_convertElemFromRequest('', $v, $slotname);
+				$wof->{$slotname} = $v;
 			}
 		}
 
@@ -181,9 +181,9 @@ class we_objectFile extends we_document{
 		we_otherDocument::checkAndPrepare($formname, 'we_object');
 
 		if($session){
-			$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
+			$wof->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 		}
-		return $GLOBALS['we_object'][$formname];
+		return $wof;
 	}
 
 	function makeSameNew(){
