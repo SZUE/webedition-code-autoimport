@@ -24,91 +24,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
-$jsCode = "
-var _oCsv_;
-var _sInitCsv_;
-var _sInitTitle;
-var _sInitBin;
-var _sPadInc='pad/pad';
-var _oSctDate;
-var _aRdo=['sort','display','date','prio'];
-var _lastPreviewCsv='';
-
-function init(){
-	_fo=document.forms[0];
-	_oCsv_=opener.gel(_sObjId+'_csv');
-	_sInitCsv_=_oCsv_.value;
-	var aCsv=_sInitCsv_.split(',');
-	_sInitTitle=opener.base64_decode(aCsv[0]);
-	_sInitBin=aCsv[1];
-	for(var i=0;i<_aRdo.length;i++){
-		_fo.elements['rdo_'+_aRdo[i]][_sInitBin.charAt(i)].checked=true;
-	}
-	_fo.elements.sct_valid.options[_sInitBin.charAt(4)].selected=true;
-	var oSctTitle=_fo.elements.sct_title;
-	for(var i=oSctTitle.length-1;i>=0;i--){
-		oSctTitle.options[i].selected=(oSctTitle.options[i].text==_sInitTitle)?true:false;
-	}
-	initPrefs();
-}
-
-function getRdoChecked(sType){
-	var oRdo=_fo.elements['rdo_'+sType];
-	var iRdoLen=oRdo.length;
-	for(var i=0;iRdoLen>i;i++){
-		if(oRdo[i].checked==true) return i;
-	}
-}
-
-function getBitString(){
-	var sBit='';
-	for(var i=0;i<_aRdo.length;i++){
-		var iCurr=getRdoChecked(_aRdo[i]);
-		sBit+=(iCurr!==undefined)?iCurr:'0';
-	}
-	sBit+=_fo.elements.sct_valid.selectedIndex;
-	return sBit;
-}
-
-function getTitle(){
-	var oSctTitle=_fo.elements.sct_title;
-	return oSctTitle[oSctTitle.selectedIndex].value;
-}
-
-function save(){
-	var oCsv_=opener.gel(_sObjId+'_csv');
-	var sTitleEnc=opener.base64_encode(getTitle());
-	var sBit=getBitString();
-	oCsv_.value=sTitleEnc.concat(','+sBit);
-	if((_lastPreviewCsv!=''&&sTitleEnc.concat(','+sBit)!=_lastPreviewCsv)||
-		(_lastPreviewCsv==''&&(_sInitTitle!=getTitle()||_sInitBin!=getBitString()))){
-		var sTitleEsc=escape(sTitleEnc);
-		opener.rpc(sTitleEsc.concat(','+sBit),'','','',sTitleEsc,_sObjId,_sPadInc);
-	}
-	opener.setPrefs(_sObjId,sBit,sTitleEnc);
-	" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-	opener.top.weNavigationHistory.navigateReload();
-	self.close();
-}
-
-function preview(){
-	var sTitleEnc=opener.base64_encode(getTitle());
-	var sTitleEsc=escape(sTitleEnc);
-	var sBit=getBitString();
-	opener.rpc(sTitleEsc.concat(','+sBit),'','','',sTitleEsc,_sObjId,_sPadInc);
-	previewPrefs();
-	_lastPreviewCsv=sTitleEnc.concat(','+sBit);
-}
-
-function exit_close(){
-	if(_lastPreviewCsv!=''&&(_sInitTitle!=getTitle()||_sInitBin!=getBitString())){
-		opener.rpc(_sInitCsv_,'','','',escape(opener.base64_encode(_sInitTitle)),_sObjId,_sPadInc);
-	}
-	exitPrefs();
-	self.close();
-}
-";
 
 $oRdoSort = array(
 	we_html_forms::radiobutton(0, 0, "rdo_sort", g_l('cockpit', '[by_pubdate]'), true, "defaultfont", "", false, "", 0, ""),
@@ -241,18 +156,21 @@ $cancel_button = we_html_button::create_button("close", "javascript:exit_close()
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) .
-			STYLESHEET .
-			we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-			we_html_element::jsScript(JS_DIR . "weCombobox.js") .
-			we_html_element::jsElement($jsPrefs . $jsCode)) .
-		we_html_element::htmlBody(
+	we_html_element::htmlHead(
+		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) .
+		STYLESHEET .
+		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+		we_html_element::jsScript(JS_DIR . "weCombobox.js") .
+		we_html_element::jsElement($jsPrefs . "
+	var g_l={
+		prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "'
+};") .
+		we_html_element::jsScript(JS_DIR . 'widgets/pad.js')) .
+	we_html_element::htmlBody(
+		array(
+		"class" => "weDialogBody", "onload" => "initDlg();"
+		), we_html_element::htmlForm(
 			array(
-			"class" => "weDialogBody", "onload" => "init();"
-			), we_html_element::htmlForm(
-				array(
-				"onsubmit" => "return false;"
-				), we_html_multiIconBox::getHTML(
-					"padProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))) . we_html_element::jsElement(
-			"ComboBox=new weCombobox();ComboBox.init('title');"));
+			"onsubmit" => "return false;"
+			), we_html_multiIconBox::getHTML(
+				"padProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));

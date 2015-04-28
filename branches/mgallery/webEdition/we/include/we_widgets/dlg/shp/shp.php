@@ -47,7 +47,7 @@ print we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			"marginheight" => 10,
 			"leftmargin" => 15,
 			"topmargin" => 10,
-			"onload" => "if(parent!=self)init();"
+			"onload" => "if(parent!=self){init();}"
 			), we_html_element::htmlDiv(array(
 				"id" => "shp"
 				), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)

@@ -247,9 +247,8 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 						YAHOO.autocoml.yuiAcFields = [$fildsObj];
 
 					YAHOO.util.Event.addListener(this, 'load', YAHOO.autocoml.init);
-					{$this->preCheck}
-					" . /* (we_base_browserDetect::isSafari() ? $safariEventListener : "") . */ "
-					");
+					{$this->preCheck}"
+		);
 	}
 
 	function getHTML(){

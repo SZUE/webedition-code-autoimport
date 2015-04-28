@@ -54,51 +54,6 @@ abstract class we_import_wizardBase{
 					we_html_element::htmlIFrame('wizcmd', $this->path . "?pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
-
-		$addJS = (defined('OBJECT_TABLE')) ?
-			"self.wizbody.document.we_form.elements['v[import_type]'][0].checked=true;" : '';
-
-		$ajaxJS = <<<HTS
-var ajaxUrl = "/webEdition/rpc/rpc.php";
-
-var weGetCategoriesHandleSuccess = function(o){
-	if(o.responseText !== undefined){
-		var json = eval('('+o.responseText+')');
-
-		for(var elemNr in json.elemsById){
-			for(var propNr in json.elemsById[elemNr].props){
-				var propval = json.elemsById[elemNr].props[propNr].val;
-				propval = propval.replace(/\\\'/g,"'");
-				propval = propval.replace(/'/g,"\\\'");
-				var eId = json.elemsById[elemNr].elemId;
-				eval("self.wizbody.document.getElementById(json.elemsById["+elemNr+"].elemId)."+json.elemsById[elemNr].props[propNr].prop+"='"+propval+"'");
-			}
-		}
-	}
-}
-
-var weGetCategoriesHandleFailure = function(o){
-	alert("failure");
-}
-
-var weGetCategoriesCallback = {
-	success: weGetCategoriesHandleSuccess,
-	failure: weGetCategoriesHandleFailure,
-	scope: self.frame,
-	timeout: 1500
-};
-
-function weGetCategories(obj,cats,part,target) {
-	ajaxData = 'protocol=json&cmd=GetCategory&obj='+obj+'&cats='+cats+'&part='+part+'&targetId=docCatTable&catfield=v['+obj+'Categories]';
-	_executeAjaxRequest('POST',ajaxUrl, weGetCategoriesCallback, ajaxData);
-}
-
-function _executeAjaxRequest(method, aUrl, callback, ajaxData){
-	return YAHOO.util.Connect.asyncRequest(method, aUrl, callback, ajaxData);
-}
-
-HTS;
-
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
 					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) .
@@ -109,96 +64,21 @@ HTS;
 					we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
 					we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 					we_html_element::jsElement("
-function wiz_next(frm, url) {
-	eval('window.'+frm+'.location.href=\"'+url+'\"');
-}
-function we_cmd() {
-	var args = '';
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
-	for(var i = 0; i < arguments.length; i++) {
-		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
-		if(i < (arguments.length - 1)) {
-			url += '&';
-		}
+var tables = {
+	OBJECT_TABLE: '" . (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE') . "'
+};
+var size = {
+	catSelect: {
+		width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
+	},
+	docSelect: {
+		width:<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
 	}
-	switch (arguments[0]) {
-		case 'we_selector_directory':
-		case 'we_selector_image':
-		case 'we_selector_document':
-			new jsWindow(url,'we_fileselector',-1,-1," . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ",true,true,true);
-			break;
-		case 'browse_server':
-			new jsWindow(url,'browse_server',-1,-1,840,400,true,false,true);
-			break;
-		case 'we_selector_category':
-			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true);
-			break;
-		case 'add_docCat':" . $addJS . "
-			if(self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(','+arguments[1]+',') == -1) {
-				var cats = arguments[1].split(/,/);
-				for(var i=0; i<cats.length; i++) {
-					if(cats[i] && (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(','+cats[i]+',') == -1)) {
-						if(self.wizbody.document.we_form.elements['v[docCategories]'].value) {
-							self.wizbody.document.we_form.elements['v[docCategories]'].value=self.wizbody.document.we_form.elements['v[docCategories]'].value+cats[i]+',';
-						} else {
-							self.wizbody.document.we_form.elements['v[docCategories]'].value=','+cats[i]+',';
-						}
-						setTimeout(function(){weGetCategories('doc',self.wizbody.document.we_form.elements['v[docCategories]'].value,'rows');},100);
-					}
-				}
-			}
-			break;
-		case 'delete_docCat':
-			if(self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(','+arguments[1]+',') != -1) {
-				if(self.wizbody.document.we_form.elements['v[docCategories]'].value) {
-					re = new RegExp(','+arguments[1]+',');
-					self.wizbody.document.we_form.elements['v[docCategories]'].value = self.wizbody.document.we_form.elements['v[docCategories]'].value.replace(re,',');
-					if(self.wizbody.document.we_form.elements['v[docCategories]'].value == ',') {
-						self.wizbody.document.we_form.elements['v[docCategories]'].value = '';
-					}
-				}
-				self.wizbody.we_submit_form(self.wizbody.document.we_form, 'wizbody', '" . $this->path . "');
-			}
-			break;
-		case 'add_objCat':
-			self.wizbody.document.we_form.elements['v[import_type]'][1].checked=true;
-			if(self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(','+arguments[1]+',') == -1) {
-				var cats = arguments[1].split(/,/);
-				for(var i=0; i<cats.length; i++) {
-					if(cats[i] && (self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(','+cats[i]+',') == -1)) {
-						if(self.wizbody.document.we_form.elements['v[objCategories]'].value) {
-							self.wizbody.document.we_form.elements['v[objCategories]'].value=self.wizbody.document.we_form.elements['v[objCategories]'].value+cats[i]+',';
-						} else {
-							self.wizbody.document.we_form.elements['v[objCategories]'].value=','+cats[i]+',';
-						}
-						setTimeout(function(){weGetCategories('obj',self.wizbody.document.we_form.elements['v[objCategories]'].value,'rows');},100);
-					}
-				}
-			}
-			break;
-		case 'delete_objCat':
-			if(self.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(','+arguments[1]+',') != -1) {
-				if(self.wizbody.document.we_form.elements['v[objCategories]'].value) {
-					re = new RegExp(','+arguments[1]+',');
-					self.wizbody.document.we_form.elements['v[objCategories]'].value = self.wizbody.document.we_form.elements['v[objCategories]'].value.replace(re,',');
-					if(self.wizbody.document.we_form.elements['v[objCategories]'].value == ',') {
-						self.wizbody.document.we_form.elements['v[objCategories]'].value = '';
-					}
-				}
-				self.wizbody.we_submit_form(self.wizbody.document.we_form, 'wizbody', '" . $this->path . "');
-			}
-			break;
-		case 'reload_editpage':
-			break;
-		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-			top.opener.top.we_cmd.apply(this, args);
-
-	}
-}" . $ajaxJS
+};
+var path='" . $this->path . "';" .
+						we_html_element::jsScript(JS_DIR . 'import_wizardBase.js')
 					) . STYLESHEET) .
 				$body
 		);
@@ -792,9 +672,8 @@ function we_import(mode, cid) {
 			default:
 				$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');
 							top.wizbusy.setProgress(100);
-							top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);" .
-					//. "top.opener.top.header.location.reload();\n"
-					"if(top.opener.top.top.weEditorFrameController.getActiveDocumentReference().quickstart && top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) top.opener.top.weEditorFrameController.getActiveDocumentReference().location.reload();
+							top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);
+							if(top.opener.top.top.weEditorFrameController.getActiveDocumentReference().quickstart && top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) top.opener.top.weEditorFrameController.getActiveDocumentReference().location.reload();
 							if(top.wizbusy && top.wizbusy.document.getElementById('progress')) {
 							progress = top.wizbusy.document.getElementById('progress');
 							if(progress!==undefined){

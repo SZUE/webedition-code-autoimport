@@ -43,12 +43,12 @@ echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
 
 </head>
 
-<body bgcolor="#F0EFF0" onload="loaded = 1;">
+<body bgcolor="#F0EFF0" onload="loaded = 1;var we_is_home = 1;">
 	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 	<div id="hintergrund"><img src="<?php echo IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php echo WE_INCLUDES_DIR . 'we_modules/navigation/layout/home.gif'; ?>" width="335" height="329" /></div>
 
-	<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : "") . we_html_element::jsElement('var we_is_home = 1;'); ?>
+	<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
 </body>
 
 </html>

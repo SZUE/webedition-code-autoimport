@@ -1,8 +1,7 @@
-<?php
-
 /**
  * webEdition CMS
  *
+ * webEdition CMS
  * $Rev$
  * $Author$
  * $Date$
@@ -19,19 +18,27 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-/**
- * This function inits a shop variant if available
- *
- * @param	$attribs array
- *
- * @return	void
- */
-function we_tag_useVariants(){
-	if(!$GLOBALS['we_doc']->InWebEdition && ($var = we_base_request::_(we_base_request::STRING, we_base_constants::WE_VARIANT_REQUEST)) !== false){
-		we_base_variants::useVariant($GLOBALS['we_doc'], $var);
-	}
+function init() {
+	_fo = document.forms[0];
+	initPrefs();
+}
+
+function save() {
+	previewPrefs();
+	top.we_showMessage(g_l.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	self.close();
+}
+
+function preview() {
+	previewPrefs();
+}
+
+function exit_close() {
+	previewPrefs();
+	exitPrefs();
+	self.close();
 }

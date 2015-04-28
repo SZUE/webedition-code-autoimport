@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,29 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 
 we_html_tools::protect();
-$jsCode = "
-function init(){
-	_fo=document.forms[0];
-	initPrefs();
-}
-
-function save(){
-	previewPrefs();
-	" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-	self.close();
-}
-
-function preview(){
-	previewPrefs();
-}
-
-function exit_close(){
-	previewPrefs();
-	exitPrefs();
-	self.close();
-}
-";
 
 $parts = array(
 	array(
@@ -64,10 +40,15 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("rssProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[messaging]'));
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[messaging]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-			we_html_element::jsElement(
-				$jsPrefs . $jsCode)) . we_html_element::htmlBody(
-			array(
-			"class" => "weDialogBody", "onload" => "init();"
-			), we_html_element::htmlForm("", $sTblWidget)));
+	we_html_element::htmlHead(
+		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[messaging]')) . STYLESHEET . we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+		we_html_element::jsElement($jsPrefs . "
+	var g_l={
+	prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "'
+};
+") .
+		we_html_element::jsScript(JS_DIR . 'widgets/msg.js')) .
+	we_html_element::htmlBody(
+		array(
+		"class" => "weDialogBody", "onload" => "init();"
+		), we_html_element::htmlForm("", $sTblWidget)));

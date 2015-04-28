@@ -588,26 +588,45 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 
 	function previewVersion(ID, newID) {
 		top.opener.top.we_cmd("versions_preview", ID, newID);
-		//new jsWindow("<?php echo WEBEDITION_DIR; ?>we/include/we_versions/weVersionsPreview.php?ID="+ID+"&newCompareID="+newID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
-
 	}
 //-->
 </script>
 <?php echo we_html_element::jsScript(JS_DIR . 'windows.js') . $js; ?>
 <style type="text/css" media="screen">
-	td {font-size:11px;vertical-align:top;	padding: 5px;}
-	#tab1 {position:absolute;overflow:auto; }
-	#topPrint {display: none;}
+	td {
+		font-size:11px;
+		vertical-align:top;
+		padding: 5px;
+	}
+	#tab1 {
+		position:absolute;
+		overflow:auto;
+	}
+	#topPrint {
+		display: none;
+	}
 </style>
 
 <style type="text/css" media="print">
-	td {font-size:9px;vertical-align:top;	padding: 5px;}
-	#tab1 {position:relative;overflow: visible;font-size:12px; }
-	#tab2 {display: none}
-	#tab3 {display: none}
-	#mytabs {display: none}
-	#top {display: none}
-	#topPrint {display: block}
+	td {
+		font-size:9px;
+		vertical-align:top;
+		padding: 5px;
+	}
+	#tab1 {
+		position:relative;
+		overflow: visible;
+		font-size:12px;
+	}
+	#tab2,
+	#tab3,
+	#mytabs,
+	#top {
+		display: none
+	}
+	#topPrint {
+		display: block
+	}
 </style>
 </head>
 

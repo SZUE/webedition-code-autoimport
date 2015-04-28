@@ -100,133 +100,36 @@ class we_import_files{
 
 	function _getJS($fileinput){
 		return we_html_element::jsElement("
-function makeArrayFromCSV(csv) {
-	if(csv.length && csv.substring(0,1)==\",\"){csv=csv.substring(1,csv.length);}
-	if(csv.length && csv.substring(csv.length-1,csv.length)==\",\"){csv=csv.substring(0,csv.length-1);}
-	if(csv.length==0){return [];}else{return csv.split(/,/);};
-}
+var dirs={
+	WEBEDITION_DIR:'" . WEBEDITION_DIR . "',
+	BUTTONS_DIR:'" . BUTTONS_DIR . "'
+};
+var tables={
+FILE_TABLE:'" . FILE_TABLE . "'
+};
 
-function inArray(needle,haystack){
-	for(var i=0;i<haystack.length;i++){
-		if(haystack[i] == needle){return true;}
+var size = {
+	catSelect: {
+		width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
+	},
+	windowDirSelect: {
+		width:<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
+		height:<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
 	}
-	return false;
-}
-
-function makeCSVFromArray(arr) {
-	if(arr.length == 0){return \"\";};
-	return \",\"+arr.join(\",\")+\",\";
-}
-
-function we_cmd(){
-	var args = '';
-	var url = '" . WEBEDITION_DIR . "we_cmd.php?'; for(var i = 0; i < arguments.length; i++){ url += 'we_cmd['+i+']='+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += '&'; }}
-
-	switch (arguments[0]){
-		case 'we_selector_directory':
-			new jsWindow(url,'we_fileselector',-1,-1," . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ",true,true,true,true);
-			break;
-		case 'we_selector_category':
-			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
-		break;
-	}
-}" . 'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
+};
+" .
+			'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
 			') . we_html_element::jsElement(!$this->isWeFileupload ? '
-
-function refreshTree() {
-	//FIXME: this won\'t work in current version
-	top.opener.top.we_cmd("load","' . FILE_TABLE . '");
-}
 
 function uploadFinished() {
 	refreshTree();
 	' . we_message_reporting::getShowMessageCall(
 						g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 }
-
-function checkFileinput(){
-	var prefix =  "trash_";
-	var imgs = document.getElementsByTagName("IMG");
-	if(document.forms[document.forms.length-1].name.substring(0,14) == "we_upload_form" && document.forms[document.forms.length-1].elements.we_File.value){
-		for(var i = 0; i<imgs.length; i++){
-			if(imgs[i].id.length > prefix.length && imgs[i].id.substring(0,prefix.length) == prefix){
-					imgs[i].style.display="";
-			}
-		}
-		//weAppendMultiboxRow(we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr()),\'' . g_l('importFiles', '[file]') . '\' + \' \' + (parseInt(weGetMultiboxLength())),80,1);
-		var fi = we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr());
-		fi = fi.replace(/WE_FORM_NUM/g,(document.forms.length));
-		weAppendMultiboxRow(fi,"",0,1);
-		window.scrollTo(0,1000000);
-	}
-}
-
-function we_trashButDown(but){
-	if(but.src.indexOf("disabled") == -1){
-		but.src = "' . BUTTONS_DIR . 'btn_function_trash_down.gif";
-	}
-}
-
-function we_trashButUp(but){
-	if(but.src.indexOf("disabled") == -1){
-		but.src = "' . BUTTONS_DIR . 'btn_function_trash.gif";
-	}
-}
-
-function wedelRow(nr,but){
-	if(but.src === undefined || but.src.indexOf("disabled") == -1){
-		var prefix =  "div_uploadFiles_";
-		var num = -1;
-		var z = 0;
-		weDelMultiboxRow(nr);
-		var divs = document.getElementsByTagName("DIV");
-		for(var i = 0; i<divs.length; i++){
-			if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
-				num = divs[i].id.substring(prefix.length,divs[i].id.length);
-				if(parseInt(num)){
-					var sp = document.getElementById("headline_uploadFiles_"+(num-1));
-					if(sp){
-						sp.innerHTML = z;
-					}
-				}
-				z++;
-			}
-		}
-	}
-}
-
-function checkButtons(){
-	try{
-		if(document.JUpload===undefined||(typeof(document.JUpload.isActive)!="function")||document.JUpload.isActive()==false){
-			checkFileinput();
-			window.setTimeout(function(){checkButtons()},1000);
-			//recheck
-		}else{
-			setApplet();
-		}
-	}catch(e){
-		checkFileinput();
-		window.setTimeout(function(){checkButtons()},1000);
-	}
-}
-
-function setApplet() {
-	var descDiv = document.getElementById("desc");
-	if(descDiv.style.display!="none"){
-		var descJUDiv = document.getElementById("descJupload");
-		var buttDiv = top.imgimportbuttons.document.getElementById("normButton");
-		var buttJUDiv = top.imgimportbuttons.document.getElementById("juButton");
-
-		descDiv.style.display="none";
-		buttDiv.style.display="none";
-		descJUDiv.style.display="block";
-		buttJUDiv.style.display="block";
-	}
-
-	//setTimeout(document.JUpload.jsRegisterUploaded("refreshTree"),3000);
-}
-		' : '') .
-			we_html_element::jsScript(JS_DIR . "windows.js");
+' : '') .
+			we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'import_files.js');
 	}
 
 	function _getContent(){

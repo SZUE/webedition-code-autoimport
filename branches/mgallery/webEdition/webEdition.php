@@ -208,45 +208,45 @@ var size = {
 	}
 };
 var tables = {
-	'FILE_TABLE': "<?php echo FILE_TABLE; ?>",
-	'TEMPLATES_TABLE': "<?php echo TEMPLATES_TABLE; ?>",
-	'OBJECT_FILES_TABLE': "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
-	'OBJECT_TABLE': "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
-	'CATEGORY_TABLE': "<?php echo CATEGORY_TABLE; ?>",
-	"VFILE_TABLE": "<?php echo (defined('VFILE_TABLE') ? VFILE_TABLE : 'v' ); ?>",
-	'table_to_load': "<?php echo $_table_to_load; ?>",
-	'TBL_PREFIX': '<?php echo TBL_PREFIX; ?>'
+	FILE_TABLE: "<?php echo FILE_TABLE; ?>",
+	TEMPLATES_TABLE: "<?php echo TEMPLATES_TABLE; ?>",
+	OBJECT_FILES_TABLE: "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
+	OBJECT_TABLE: "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
+	CATEGORY_TABLE: "<?php echo CATEGORY_TABLE; ?>",
+	VFILE_TABLE: "<?php echo (defined('VFILE_TABLE') ? VFILE_TABLE : 'v' ); ?>",
+	table_to_load: "<?php echo $_table_to_load; ?>",
+	TBL_PREFIX: '<?php echo TBL_PREFIX; ?>'
 };
 var dirs = {
-	"WE_SHOP_MODULE_DIR": "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
-	'WE_MODULES_DIR': "<?php echo WE_MODULES_DIR; ?>",
-	'WE_MESSAGING_MODULE_DIR': "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
-	'BUTTONS_DIR': "<?php echo BUTTONS_DIR; ?>"
+	WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
+	WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
+	WE_MESSAGING_MODULE_DIR: "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
+	BUTTONS_DIR: "<?php echo BUTTONS_DIR; ?>"
 };
 var contentTypes = {
-	'TEMPLATE': '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
-	'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
-	'OBJECT_FILE': '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
-	"IMAGE": "<?php echo we_base_ContentTypes::IMAGE; ?>",
-	"HTML": "<?php echo we_base_ContentTypes::HTML; ?>",
-	"FLASH": "<?php echo we_base_ContentTypes::FLASH; ?>",
-	"QUICKTIME": "<?php echo we_base_ContentTypes::QUICKTIME; ?>",
-	"VIDEO": "<?php echo we_base_ContentTypes::VIDEO; ?>",
-	"AUDIO": "<?php echo we_base_ContentTypes::AUDIO; ?>",
-	"JS": "<?php echo we_base_ContentTypes::JS; ?>",
-	"TEXT": "<?php echo we_base_ContentTypes::TEXT; ?>",
-	"XML": "<?php echo we_base_ContentTypes::XML; ?>",
-	"HTACESS": "<?php echo we_base_ContentTypes::HTACESS; ?>",
-	"CSS": "<?php echo we_base_ContentTypes::CSS; ?>",
-	"APPLICATION": "<?php echo we_base_ContentTypes::APPLICATION; ?>",
-	"COLLECTION": "<?php echo we_base_ContentTypes::COLLECTION; ?>"
+	TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
+	WEDOCUMENT: '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
+	OBJECT_FILE: '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
+	IMAGE: "<?php echo we_base_ContentTypes::IMAGE; ?>",
+	HTML: "<?php echo we_base_ContentTypes::HTML; ?>",
+	FLASH: "<?php echo we_base_ContentTypes::FLASH; ?>",
+	QUICKTIME: "<?php echo we_base_ContentTypes::QUICKTIME; ?>",
+	VIDEO: "<?php echo we_base_ContentTypes::VIDEO; ?>",
+	AUDIO: "<?php echo we_base_ContentTypes::AUDIO; ?>",
+	JS: "<?php echo we_base_ContentTypes::JS; ?>",
+	TEXT: "<?php echo we_base_ContentTypes::TEXT; ?>",
+	XML: "<?php echo we_base_ContentTypes::XML; ?>",
+	HTACESS: "<?php echo we_base_ContentTypes::HTACESS; ?>",
+	CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
+	APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
+	COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
 };
 var modules = {
-	'MESSAGING_SYSTEM':<?php echo intval(defined('MESSAGING_SYSTEM')); ?>
+	MESSAGING_SYSTEM:<?php echo intval(defined('MESSAGING_SYSTEM')); ?>
 };
 var constants = {
-	'WE_EDITPAGE_CONTENT':<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
-	'PING_TIME':<?php echo we_base_constants::PING_TIME * 1000; ?>
+	WE_EDITPAGE_CONTENT:<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
+	PING_TIME:<?php echo we_base_constants::PING_TIME * 1000; ?>
 }
 /*##################### messaging function #####################*/
 

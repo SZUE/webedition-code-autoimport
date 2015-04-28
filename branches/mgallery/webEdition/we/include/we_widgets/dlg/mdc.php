@@ -124,7 +124,6 @@ function getHTMLCategory(){
 				'style' => 'cursor: pointer; width: 27px;'
 	)));
 
-	$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
 	$variant_js = '
 		var categories_edit=new multi_edit("categories",document.we_form,0,"' . $del_but . '",390,false);
@@ -145,8 +144,6 @@ function getHTMLCategory(){
 	$variant_js .= '
 		categories_edit.showVariant(0);
 	';
-
-	$js .= we_html_element::jsElement($variant_js);
 
 	$table = new we_html_table(
 		array(
@@ -179,37 +176,8 @@ function getHTMLCategory(){
 				we_html_button::create_button('delete_all', 'javascript:removeAllCats()'), $addbut
 	)));
 
-	return $table->getHtml() . $js . we_html_element::jsElement(
-			"
-function removeAllCats(){
-	if(categories_edit.itemCount>0){
-		while(categories_edit.itemCount>0){
-			categories_edit.delItem(categories_edit.itemCount);
-		}
-	}
-}
-
-function addCat(paths){
-	var path=paths.split(',');
-	var found=false;
-	var j=0;
-	for(var i=0;i<path.length;i++){
-		if(path[i]!=''){
-			found=false;
-			for(j=0;j<categories_edit.itemCount;j++){
-				if(categories_edit.form.elements[categories_edit.name+'_variant0_'+categories_edit.name+'_item'+j].value==path[i]){
-					found=true;
-				}
-			}
-			if(!found){
-				categories_edit.addItem();
-				categories_edit.setItem(0,(categories_edit.itemCount-1),path[i]);
-			}
-		}
-	}
-	categories_edit.showVariant(0);
-}
-	");
+	return $table->getHtml() . we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+		we_html_element::jsElement($variant_js);
 }
 
 $jsCode = "
@@ -224,6 +192,9 @@ var _sInitTitle_='" . $sTitle . "';
 var _sMdcInc='mdc/mdc';
 
 var table='" . $_selTable . "';
+var g_l={
+	prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "'
+};
 
 function we_cmd(){
 	var args='';
@@ -251,7 +222,6 @@ function we_cmd(){
 	}
 }
 
-
 function init(){
 	_fo=document.forms[0];
 	initPrefs();
@@ -275,20 +245,7 @@ function init(){
 		}
 	}
 }
-
-function save(){
-	var sTitle=_fo.title.value;
-	var sSel=(_fo.Selection.selectedIndex)?'1':'0';
-	var sSwitch=(_fo.headerSwitch.selectedIndex)?'1':'0';
-	var sCsv=(parseInt(sSel))?getTreeSelected():getCsv(parseInt(sSwitch));
-	opener.rpc(sSel+sSwitch,sCsv,'','',sTitle,_sObjId,_sMdcInc);
-	_oCsv_.value=opener.base64_encode(sTitle)+';'+sSel+sSwitch+';'+sCsv;
-	" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-	self.close();
-}
 ";
-
 
 $_seltype = array(
 	'doctype' => g_l('cockpit', '[documents]')
@@ -352,7 +309,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . weSuggest::getYuiFiles() . STYLESHEET .
 		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
 		we_html_element::jsScript(JS_DIR . "windows.js") .
-		we_html_element::jsElement($jsPrefs . $jsCode)) .
+		we_html_element::jsElement($jsPrefs . $jsCode . $jsTree)) .
 	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js') .
 	we_html_element::htmlBody(
 		array(
@@ -362,7 +319,7 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				"table" => "",
 				"FolderID" => 0,
 				"CategoriesControl" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
-			)) . $sTblWidget . we_html_element::jsElement($jsTree))));
+			)) . $sTblWidget)));
 if($showAC){
 	echo $yuiSuggest->getYuiJs();
 }

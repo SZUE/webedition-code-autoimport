@@ -22,20 +22,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var _oCsv_;
+var _sInitCsv_;
+var _sInitTitle;
+var _sInitBin;
+var _sPadInc = 'pad/pad';
+var _oSctDate;
+var _aRdo = ['sort', 'display', 'date', 'prio'];
+var _lastPreviewCsv = '';
+
 function gel(id_) {
 	return document.getElementById ? document.getElementById(id_) : null;
-}
-
-function weEntity2char(weString) {
-	weString = weString.replace('&lt;', '<');
-	weString = weString.replace('&gt;', '>');
-	return weString;
-}
-
-function weChar2entity(weString) {
-	weString = weString.replace('<', '&lt;');
-	weString = weString.replace('>', '&gt;');
-	return weString;
 }
 
 function weEntity2char(weString) {
@@ -311,4 +308,81 @@ function saveNote() {
 	} else {
 		top.we_showMessage(g_l.title_empty, WE_MESSAGE_NOTICE, window);
 	}
+}
+
+function initDlg() {
+	_fo = document.forms[0];
+	_oCsv_ = opener.gel(_sObjId + '_csv');
+	_sInitCsv_ = _oCsv_.value;
+	var aCsv = _sInitCsv_.split(',');
+	_sInitTitle = opener.base64_decode(aCsv[0]);
+	_sInitBin = aCsv[1];
+	for (var i = 0; i < _aRdo.length; i++) {
+		_fo.elements['rdo_' + _aRdo[i]][_sInitBin.charAt(i)].checked = true;
+	}
+	_fo.elements.sct_valid.options[_sInitBin.charAt(4)].selected = true;
+	var oSctTitle = _fo.elements.sct_title;
+	for (var i = oSctTitle.length - 1; i >= 0; i--) {
+		oSctTitle.options[i].selected = (oSctTitle.options[i].text == _sInitTitle) ? true : false;
+	}
+	initPrefs();
+	ComboBox = new weCombobox();
+	ComboBox.init('title');
+}
+
+function getRdoChecked(sType) {
+	var oRdo = _fo.elements['rdo_' + sType];
+	var iRdoLen = oRdo.length;
+	for (var i = 0; iRdoLen > i; i++) {
+		if (oRdo[i].checked == true)
+			return i;
+	}
+}
+
+function getBitString() {
+	var sBit = '';
+	for (var i = 0; i < _aRdo.length; i++) {
+		var iCurr = getRdoChecked(_aRdo[i]);
+		sBit += (iCurr !== undefined) ? iCurr : '0';
+	}
+	sBit += _fo.elements.sct_valid.selectedIndex;
+	return sBit;
+}
+
+function getTitle() {
+	var oSctTitle = _fo.elements.sct_title;
+	return oSctTitle[oSctTitle.selectedIndex].value;
+}
+
+function save() {
+	var oCsv_ = opener.gel(_sObjId + '_csv');
+	var sTitleEnc = opener.base64_encode(getTitle());
+	var sBit = getBitString();
+	oCsv_.value = sTitleEnc.concat(',' + sBit);
+	if ((_lastPreviewCsv != '' && sTitleEnc.concat(',' + sBit) != _lastPreviewCsv) ||
+					(_lastPreviewCsv == '' && (_sInitTitle != getTitle() || _sInitBin != getBitString()))) {
+		var sTitleEsc = escape(sTitleEnc);
+		opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId, _sPadInc);
+	}
+	opener.setPrefs(_sObjId, sBit, sTitleEnc);
+	top.we_showMessage(g_l.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	opener.top.weNavigationHistory.navigateReload();
+	self.close();
+}
+
+function preview() {
+	var sTitleEnc = opener.base64_encode(getTitle());
+	var sTitleEsc = escape(sTitleEnc);
+	var sBit = getBitString();
+	opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId, _sPadInc);
+	previewPrefs();
+	_lastPreviewCsv = sTitleEnc.concat(',' + sBit);
+}
+
+function exit_close() {
+	if (_lastPreviewCsv != '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
+		opener.rpc(_sInitCsv_, '', '', '', escape(opener.base64_encode(_sInitTitle)), _sObjId, _sPadInc);
+	}
+	exitPrefs();
+	self.close();
 }

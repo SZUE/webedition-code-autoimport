@@ -28,134 +28,11 @@ we_html_tools::protect();
 list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(';', we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 1));
 
 $jsCode = "
-var _oCsv_;
-var _sInitCsv_;
 var _sUsers='" . $sUsers . "';
-var _sMfdInc='mfd/mfd';
-var _oSctDate;
-var _oSctNumEntries;
-var _bPrev=false;
-var _sLastPreviewCsv='';
-
-function init(){
-	_fo=document.forms[0];
-	_oCsv_=opener.gel(_sObjId+'_csv')
-	_sInitCsv_=_oCsv_.value;
-	_oSctDate=_fo.elements.sct_date;
-	_oSctNumEntries=_fo.elements.sct_amount_entries;
-	initPrefs();
-}
-
-function getBinary(postfix){
-	var sBinary='';
-	var oChbx=_fo.elements['chbx_'+postfix];
-	var iChbxLen=oChbx.length;
-	for(var i=0;i<iChbxLen;i++){
-		sBinary+=(oChbx[i].checked)?'1':'0';
-	}
-	return sBinary;
-}
-
-function addUserToField(){
-	var iNewUsrId=_fo.elements.UserIDTmp.value;
-	var aUsers=_sUsers.split(',');
-	var iUsersLen=aUsers.length;
-	var bUsrExists=false;
-	for(var i=0;i<iUsersLen;i++){
-		if(aUsers[i]==iNewUsrId){
-			bUsrExists=true;
-			break;
-		}
-	}
-	if(!bUsrExists){
-		_fo.action='" . WE_INCLUDES_DIR . "we_widgets/dlg/mfd.php?we_cmd[0]='+
-			_sObjId+'&we_cmd[1]='+getBinary('type')+';'+_oSctDate.selectedIndex+';'+
-				_oSctNumEntries.selectedIndex+';'+getBinary('display_opt')+';'+_sUsers+','+iNewUsrId;
-		_fo.method='post';
-		_fo.submit();
-	}
-}
-
-function delUser(iUsrId){
-	var sUsers='';
-	if(iUsrId!=-1){
-		var aUsers=_sUsers.split(',');
-		var iUsersLen=aUsers.length;
-		for(var i=0;i<iUsersLen;i++){
-			if(aUsers[i]==iUsrId){
-				aUsers.splice(i,1);
-				iUsersLen--;
-				break;
-			}
-		}
-		for(var i=0;i<iUsersLen;i++){
-			sUsers+=aUsers[i];
-			if(i!=iUsersLen-1) sUsers+=',';
-		}
-	}
-	_fo.action='" . WE_INCLUDES_DIR . "we_widgets/dlg/mfd.php?we_cmd[0]='+
-		_sObjId+'&we_cmd[1]='+getBinary('type')+';'+_oSctDate.selectedIndex+';'+_oSctNumEntries.selectedIndex+
-			';'+getBinary('display_opt')+';'+sUsers;
-	_fo.method='post';
-	_fo.submit();
-}
-
-function getCsv(){
-	return getBinary('type')+';'+_oSctDate.selectedIndex+';'+_oSctNumEntries.value+
-		';'+getBinary('display_opt')+';'+_sUsers;
-}
-
-function refresh(bRender){
-	if(bRender)_sLastPreviewCsv=getCsv();
-	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,_oSctNumEntries.selectedIndex,getBinary('display_opt'),_sUsers,_sObjId,_sMfdInc);
-}
-
-function save(){
-	if(isNoError()) {
-		var sCsv=getCsv();
-		_oCsv_.value=sCsv;
-		savePrefs();
-		opener.saveSettings();
-		if((!_bPrev&&sCsv!=_sInitCsv_)||(_bPrev&&sCsv!=_sLastPreviewCsv)){
-			refresh(false);
-		}
-		" . we_message_reporting::getShowMessageCall(g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
-		self.close();
-	} else {
-		" . we_message_reporting::getShowMessageCall(g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-	}
-}
-
-function isNoError(){
-	elem=document.getElementsByName('chbx_type');
-	for( var i = 0; i < elem.length; i++) {
-		if(elem[i].checked){
-			return true;
-		}
-	}
-	return false;
-}
-
-function preview(){
-	if(isNoError()) {
-		_bPrev=true;
-		previewPrefs();
-		refresh(true);
-	} else {
-		" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[no_type_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-	}
-}
-
-function exit_close(){
-	if(_bPrev&&_sInitCsv_!=_sLastPreviewCsv){
-		var aCsv=_sInitCsv_.split(';');
-		opener.rpc(aCsv[0],aCsv[1],aCsv[2],aCsv[3],aCsv[4],_sObjId,_sMfdInc);
-	}
-	exitPrefs();
-	self.close();
-}
-
+	var g_l={
+	prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "',
+	no_type_selected: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[no_type_selected]')) . "'
+};
 ";
 
 $textname = 'UserNameTmp';
@@ -285,7 +162,9 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) .
 		STYLESHEET .
 		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-		we_html_element::jsElement($jsPrefs . $jsCode)) .
+		we_html_element::jsElement($jsPrefs . $jsCode).
+		we_html_element::jsScript(JS_DIR . "widgets/mfd.js")
+		) .
 	we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();"

@@ -67,10 +67,6 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 ?>
 
 <script type="text/javascript"><!--
-
-	self.focus();
-
-
 	function checkForm(f) {
 		if (f.tagname.value == "") {
 <?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_tagname_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -113,7 +109,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 	//-->
 </script>
 </head>
-<body class="weDialogBody"<?php if($ok){ ?> onload="document.we_form.code.focus();
+<body class="weDialogBody"<?php if($ok){ ?> onload="self.focus();document.we_form.code.focus();
 			document.we_form.code.select();"<?php } ?>>
 	<form onsubmit="return checkForm(this);" name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php

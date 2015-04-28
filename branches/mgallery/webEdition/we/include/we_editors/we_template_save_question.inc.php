@@ -66,11 +66,10 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 		opener.top.toggleBusy(0);
 
 	}
-	self.focus();
 //-->
 </script>
 </head>
-<body class="weEditorBody" onblur="self.focus()">
+<body class="weEditorBody" onload="self.focus();" onblur="self.focus()">
 	<?php echo we_html_tools::htmlYesNoCancelDialog($alerttext, IMAGE_DIR . 'alert.gif', true, true, true, 'pressed_yes_button()', 'pressed_no_button()', 'pressed_cancel_button()'); ?>
 </body>
 

@@ -55,7 +55,12 @@ var nextCmd="$nextCmd";
 </script>
 EOFEOF;
 
-$content = '
+echo STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'we_exit_multi_doc_question.js');
+?>
+</head>
+<body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
+	<?php echo we_html_tools::htmlYesNoCancelDialog('
 <div>
 	' . g_l('alert', '[exit_multi_doc_question]') . '
 	<br />
@@ -65,13 +70,6 @@ $content = '
 
 		</ul>
 	</div>
-</div>';
-
-echo STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'we_exit_multi_doc_question.js');
-?>
-</head>
-<body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
-	<?php echo we_html_tools::htmlYesNoCancelDialog($content, IMAGE_DIR . "alert.gif", true, false, true, $yesCmd, "", $cancelCmd); ?>
+</div>', IMAGE_DIR . "alert.gif", true, false, true, $yesCmd, "", $cancelCmd); ?>
 </body>
 </html>

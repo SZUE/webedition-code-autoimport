@@ -2,9 +2,9 @@
  * webEdition SDK
  *
  * webEdition CMS
- * $Rev: 9735 $
- * $Author: mokraemer $
- * $Date: 2015-04-15 01:05:49 +0200 (Mi, 15. Apr 2015) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify

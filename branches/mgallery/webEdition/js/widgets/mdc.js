@@ -104,3 +104,44 @@ function we_submit() {
 	_fo.method = 'post';
 	_fo.submit();
 }
+
+
+function removeAllCats() {
+	if (categories_edit.itemCount > 0) {
+		while (categories_edit.itemCount > 0) {
+			categories_edit.delItem(categories_edit.itemCount);
+		}
+	}
+}
+
+function addCat(paths) {
+	var path = paths.split(',');
+	var found = false;
+	var j = 0;
+	for (var i = 0; i < path.length; i++) {
+		if (path[i] != '') {
+			found = false;
+			for (j = 0; j < categories_edit.itemCount; j++) {
+				if (categories_edit.form.elements[categories_edit.name + '_variant0_' + categories_edit.name + '_item' + j].value == path[i]) {
+					found = true;
+				}
+			}
+			if (!found) {
+				categories_edit.addItem();
+				categories_edit.setItem(0, (categories_edit.itemCount - 1), path[i]);
+			}
+		}
+	}
+	categories_edit.showVariant(0);
+}
+
+function save() {
+	var sTitle = _fo.title.value;
+	var sSel = (_fo.Selection.selectedIndex) ? '1' : '0';
+	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
+	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
+	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, _sObjId, _sMdcInc);
+	_oCsv_.value = opener.base64_encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
+	top.we_showMessage(g_l.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	self.close();
+}

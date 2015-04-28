@@ -1,5 +1,3 @@
-<?php
-
 /**
  * webEdition CMS
  *
@@ -19,19 +17,22 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_tinymce
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-/**
- * This function inits a shop variant if available
- *
- * @param	$attribs array
- *
- * @return	void
- */
-function we_tag_useVariants(){
-	if(!$GLOBALS['we_doc']->InWebEdition && ($var = we_base_request::_(we_base_request::STRING, we_base_constants::WE_VARIANT_REQUEST)) !== false){
-		we_base_variants::useVariant($GLOBALS['we_doc'], $var);
+var ajaxURL = "/webEdition/rpc/rpc.php";
+var ajaxCallback = {
+	success: function(o) {
+		if(o.responseText !== undefined && o.responseText != '') {
+			document.getElementById('tag_edit_area').value = o.responseText;
+		}
+	},
+	failure: function(o) {
+		alert("Failure");
 	}
+}
+
+function YUIdoAjax(value) {
+	YAHOO.util.Connect.asyncRequest('POST', ajaxURL, ajaxCallback, 'protocol=text&cmd=GetSnippetCode&we_cmd[1]=' + value);
 }
