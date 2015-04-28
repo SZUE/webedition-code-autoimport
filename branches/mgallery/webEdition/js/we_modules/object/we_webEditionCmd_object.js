@@ -114,12 +114,12 @@ function we_cmd_object(args,url) {
 			break;
 		case "open_object":
 			we_cmd("load", tables.OBJECT_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[2]=" + tables.OBJECT_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + tables.OBJECT_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true);
 			break;
 		case "open_objectFile":
 			we_cmd("load", tables.OBJECT_FILES_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=objectFile&we_cmd[2]=" + tables.OBJECT_FILES_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=objectFile&we_cmd[2]=" + tables.OBJECT_FILES_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true);
 			break;
 		default:

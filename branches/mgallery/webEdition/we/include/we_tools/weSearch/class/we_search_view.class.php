@@ -2072,7 +2072,7 @@ weSearch.g_l = {
 						$_rootDirID = 0;
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
-						$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
+						$_cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput('searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchAdvSearchParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
@@ -2087,7 +2087,7 @@ weSearch.g_l = {
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 
-						$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+						$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput(
@@ -2102,7 +2102,7 @@ weSearch.g_l = {
 						$_linkPath = $this->Model->searchAdvSearch[$i];
 						$_rootDirID = 0;
 
-						$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
+						$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput(
@@ -2262,7 +2262,7 @@ weSearch.g_l = {
 						$_rootDirID = 0;
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "[" . $i . "]'].value");
-						$_cmd = "javascript:we_cmd('openDirselector',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
+						$_cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput($searchWhichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($searchWhichSearch . 'ParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
@@ -2277,7 +2277,7 @@ weSearch.g_l = {
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $searchWhichSearch . "[" . $i . "]'].value");
 
-						$_cmd = "javascript:we_cmd('openDocselector',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+						$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput(
@@ -2292,7 +2292,7 @@ weSearch.g_l = {
 						$_linkPath = $this->Model->$searchWhichSearch[$i];
 						$_rootDirID = 0;
 
-						$_cmd = "javascript:we_cmd('openCatselector',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'" . $searchWhichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'" . $searchWhichSearch . "[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
+						$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['" . $searchWhichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'" . $searchWhichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'" . $searchWhichSearch . "[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
 						$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput(
@@ -2623,7 +2623,7 @@ weSearch.g_l = {
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $folderID . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $folderPath . "'].value");
 		$yuiSuggest->setSelectButton(
-			we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
+			we_html_button::create_button("select", "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $folderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
 
 		return
 			weSuggest::getYuiFiles() .
@@ -2668,16 +2668,16 @@ function we_cmd() {
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "we_selector_image":
-		case "openDocselector":
+		case "we_selector_document":
 			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
-		case "openSelector":
+		case "we_selector_file":
 			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
-		case "openCatselector":
+		case "we_selector_category":
 			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "open' . $this->toolName . 'Dirselector":

@@ -486,7 +486,7 @@ weSearch = {
 				var innerhtml= '<table border="0" cellpadding="0" cellspacing="0"><tbody><tr>'+
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>'+
 								 '<td><input value="" name="search" + this.conf.whichsearch + "ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>'+
-								 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.CATEGORY_TABLE).replace(/__we_selector__/, 'openCatselector') + '</td>'+
+								 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>'+
 							 '</tr></tbody></table>';
 
 				var cell = document.createElement('TD');
@@ -509,7 +509,7 @@ weSearch = {
 				var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"+
 						 '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>'+
 						 '<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>'+
-						 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.TEMPLATES_TABLE).replace(/__we_selector__/, 'openDocselector') + '</td>'+
+						 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>'+
 					 "</tr></tbody></table>";
 
 				cell = document.createElement("TD");
@@ -535,7 +535,7 @@ weSearch = {
 				var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"+
 						 '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>'+
 						 '<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>'+
-						 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'openDirselector') + '</td>'+
+						 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory') + '</td>'+
 					 "</tr></tbody></table>";
 
 				cell = document.createElement("TD");

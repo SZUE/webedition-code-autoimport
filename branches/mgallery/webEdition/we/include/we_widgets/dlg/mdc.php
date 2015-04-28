@@ -65,10 +65,10 @@ function getHTMLDirSelector($_selType){
 	$folderID = 0;
 	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
 	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
-	$_button_doc = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
+	$_button_doc = we_html_button::create_button("select", "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
 	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
-	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')") : '';
+	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button("select", "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')") : '';
 
 	$_buttons = '<div id="docFolder" style="display: ' . (!$_selType ? "inline" : "none") . '">' . $_button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($_selType ? "inline" : "none") . '">' . $_button_obj . "</div>";
 	$_path = id_to_path($folderID, (!$_selType ? FILE_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "")));
@@ -115,8 +115,7 @@ if($ac){
 }
 
 function getHTMLCategory(){
-	$addbut = we_html_button::create_button(
-			"add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+	$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 	$del_but = addslashes(
 		we_html_element::htmlImg(
 			array(
@@ -215,8 +214,8 @@ function addCat(paths){
 
 $jsCode = "
 	var dirs={
-	'WE_INCLUDES_DIR':'".WE_INCLUDES_DIR."',
-	'WEBEDITION_DIR':'".WE_INCLUDES_DIR."'
+	'WE_INCLUDES_DIR':'" . WE_INCLUDES_DIR . "',
+	'WEBEDITION_DIR':'" . WE_INCLUDES_DIR . "'
 	};
 var _oCsv_;
 var _sCsv;
@@ -236,10 +235,10 @@ function we_cmd(){
 		}
 	}
 	switch(arguments[0]){
-		case 'openDirselector':
+		case 'we_selector_directory':
 			new jsWindow(url,'we_fileselector',-1,-1," . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ",true,true,true,true);
 			break;
-		case 'openCatselector':
+		case 'we_selector_category':
 			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:

@@ -1014,7 +1014,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.imagestartid_default_text.value");
-			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::FOLDER . "', 1)");
+			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::FOLDER . "', 1)");
 			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[IMAGESTARTID_DEFAULT]\'].value = 0;document.forms[0].elements.imagestartid_default_text.value = \'\'');
 
 			$yuiSuggest->setAcId("doc2");
@@ -1868,7 +1868,7 @@ for(i=0;i<elements.length; ++i){
 			$_navigation_directoryindex_names = we_html_tools::htmlTextInput("newconf[NAVIGATION_DIRECTORYINDEX_NAMES]", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.error_document_no_objectfile_text.value");
-			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)");
+			$_acButton1 = we_html_button::create_button('select', "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)");
 			$_acButton2 = we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = \'\'');
 
 			$yuiSuggest->setAcId("doc2");
@@ -2067,7 +2067,7 @@ for(i=0;i<elements.length; ++i){
 			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? : 0));
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(250);
-			$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('openDocselector', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
+			$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
 			$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
@@ -2568,16 +2568,16 @@ case "browse_server":
 new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
 break;
 case "we_selector_image":
-case "openDocselector":
-new jsWindow(url,"openDocselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
+case "we_selector_document":
+new jsWindow(url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 break;
 case "show_formmail_log":
 url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
-new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
+new jsWindow(url,"we_selector_document",-1,-1,840,400,true,false,true);
 break;
 case "show_formmail_block_log":
 url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
-new jsWindow(url,"openDocselector",-1,-1,840,400,true,false,true);
+new jsWindow(url,"we_selector_document",-1,-1,840,400,true,false,true);
 break;
 case "openColorChooser":
 new jsWindow(url,"we_colorChooser",-1,-1,430,370,true,true,true);

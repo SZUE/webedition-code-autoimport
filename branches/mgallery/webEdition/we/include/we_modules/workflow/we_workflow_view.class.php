@@ -207,7 +207,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	function getFoldersHTML(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_folders');");
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
-		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('openDirselector','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
 
 		$dirs = new we_chooser_multiDir(495, $this->workflowDef->Folders, 'del_folder', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', FILE_TABLE, 'defaultfont', '', "top.content.setHot();");
 
@@ -216,7 +216,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 	function getCategoryHTML(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -225,7 +225,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 	function getObjCategoryHTML(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -244,9 +244,9 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 	function getObjectFileFoldersHTML(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:top.content.setHot();we_cmd('del_all_object_file_folders');");
-		//avascript:top.content.setHot();we_cmd('openDirselector','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.allIDs);','','','',true)
+		//avascript:top.content.setHot();we_cmd('we_selector_directory','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.allIDs);','','','',true)
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_object_file_folder',top.allIDs);");
-		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('openDirselector','','" . OBJECT_FILES_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
+		$addbut = we_html_button::create_button('add', "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . OBJECT_FILES_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
 
 		$dirs = new we_chooser_multiDir(495, $this->workflowDef->ObjectFileFolders, "del_object_file_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", OBJECT_FILES_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -441,7 +441,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onchange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 

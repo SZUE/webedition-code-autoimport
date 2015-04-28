@@ -680,14 +680,14 @@ function fsubmit(e) {
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.CreateTemplateInFolderID.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.foo.value");
 		$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.CreateTemplate.checked=true;");
-		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
+		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('we_selector_directory',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
 
 		return $yuiSuggest->getHTML();
 	}
 
 	function formCreateCategoryChooser(){
 
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(

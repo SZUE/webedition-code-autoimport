@@ -42,9 +42,6 @@ class we_base_menu{
 	public function getJS(){
 
 		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js').
-			/*we_html_element::jsElement('
-var openTable = "' . (isset($_SESSION["weS"]["seemForOpenDelSelector"]["Table"]) ? $_SESSION["weS"]["seemForOpenDelSelector"]["Table"] : FILE_TABLE) . '";
-') .*/
 			we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
 			we_html_element::jsElement('
 function menuaction(cmd,cmd1) {

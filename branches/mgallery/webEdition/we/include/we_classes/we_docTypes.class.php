@@ -135,7 +135,7 @@ class we_docTypes extends we_class{
 	}
 
 	private function formCategory(){
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", "Icon,Path", CATEGORY_TABLE);
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', '[category]'));
@@ -183,7 +183,7 @@ class we_docTypes extends we_class{
 
 	public function formDocTypeTemplates(){
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openDocselector', 0, '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', '" . we_base_ContentTypes::TEMPLATE . "', 1,1)");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_document', 0, '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', '" . we_base_ContentTypes::TEMPLATE . "', 1,1)");
 		$templ = new we_chooser_multiDir(521, $this->Templates, "delete_dt_template", $addbut, "", "Icon,Path", TEMPLATES_TABLE);
 		return $templ->get();
 	}
@@ -251,7 +251,7 @@ class we_docTypes extends we_class{
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '')");
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname, $this->ParentPath);

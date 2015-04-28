@@ -733,7 +733,7 @@ function closeAllType(){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button("select", "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -787,7 +787,7 @@ function closeAllType(){
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));
-		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->editorBodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
+		$addbut = we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->editorBodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
 
 		$cats = new we_chooser_multiDir($this->_width_size, $this->View->export->Categorys, "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 

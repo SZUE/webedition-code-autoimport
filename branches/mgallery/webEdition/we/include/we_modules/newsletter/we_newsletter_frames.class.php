@@ -778,7 +778,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		return we_html_element::htmlHiddens(array('copyid' => 0,
 				'copyid_text' => "")) .
-			we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_html_button::create_button('select', "javascript:we_cmd('we_selector_file',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
@@ -1019,7 +1019,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','','" . $open_doc . "')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','','" . $open_doc . "')");
 		if(is_object($acObject)){
 
 			$yuiSuggest = $acObject;
@@ -1043,7 +1043,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		$wecmd1 = "document.we_form.elements['" . $IDName . "'].value";
 
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector'," . $wecmd1 . ",'" . $table . "','" . we_base_request::encCmd($wecmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document'," . $wecmd1 . ",'" . $table . "','" . we_base_request::encCmd($wecmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId($IDName);

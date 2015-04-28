@@ -562,7 +562,7 @@ function we_cmd_base(args, url) {
 		case "openUnpublishedPages":
 			we_cmd("tool_weSearch_edit", "", "", 4, 3);
 			break;
-		case "openCatselector":
+		case "we_selector_category":
 			new jsWindow(url, "we_cateditor", -1, -1, size.catSelect.width, size.catSelect.height, true, true, true, true);
 			break;
 		case "openSidebar":
@@ -693,7 +693,7 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "preferences", -1, -1, 540, 670, true, true, true, true);
 			break;
 		case "editCat":
-			we_cmd("openCatselector", 0, tables.CATEGORY_TABLE, "", "", "", "", "", 1);
+			we_cmd("we_selector_category", 0, tables.CATEGORY_TABLE, "", "", "", "", "", 1);
 			break;
 		case "editThumbs":
 			new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);
@@ -783,14 +783,14 @@ function we_cmd_base(args, url) {
 			new jsWindow("http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "we_customer_selector":
-		case "openSelector":
+		case "we_selector_file":
 			new jsWindow(url, "we_fileselector", -1, -1, size.windowSelect.width, size.windowSelect.height, true, true, true, true);
 			break;
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url, "we_fileselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
-		case "openDocselector":
+		case "we_selector_document":
 			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "setTab":
@@ -990,7 +990,7 @@ function we_cmd_base(args, url) {
 
 			doSave(url, args[1], args[0]);
 			break;
-		case "openDelSelector":
+		case "we_selector_delete":
 			new jsWindow(url, "we_del_selector", -1, -1, size.windowDelSelect.width, size.windowDelSelect.height, true, true, true, true);
 			break;
 		case "browse":
@@ -1299,12 +1299,12 @@ function we_cmd_base(args, url) {
 			break;
 		case "open_document":
 			we_cmd("load", tables.FILE_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=openDocselector&we_cmd[2]=" + tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "open_collection":
 			we_cmd("load", tables.VFILE_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=openDocselector&we_cmd[2]=" + tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "edit_new_collection":
@@ -1327,7 +1327,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "open_template":
 			we_cmd("load", tables.TEMPLATES_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=" + contentTypes.TEMPLATE + "&we_cmd[2]=" + tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=" + contentTypes.TEMPLATE + "&we_cmd[2]=" + tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "switch_edit_page":

@@ -229,7 +229,7 @@ function we_cmd() {
 			document.we_form.tabnr.value=arguments[1];
 			submitForm();
 		break;
-		case "voting_openDirselector":
+		case "we_voting_dirSelector":
 			url="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_voting_dirSelector&";
 			for(var i = 1; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 			new jsWindow(url,"we_votingSelector",-1,-1,600,350,true,true,true);

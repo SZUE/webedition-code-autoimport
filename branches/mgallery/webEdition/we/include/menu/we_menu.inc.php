@@ -265,7 +265,7 @@ $we_menu = array(
 	1080000 => array(// File > Delete
 		'text' => g_l('javaMenu_global', '[delete]') . ($seeMode ? '&hellip;' : ''),
 		'parent' => 1000000,
-		'cmd' => $seeMode ? 'openDelSelector' : '',
+		'cmd' => $seeMode ? 'we_selector_delete' : '',
 		'perm' => $seeMode ? 'DELETE_DOCUMENT' : 'DELETE_DOCUMENT || DELETE_OBJECTFILE || DELETE_TEMPLATE || DELETE_OBJECT',
 	),
 	array(// File > Delete > Documents

@@ -419,10 +419,10 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$countCTs = count($contentTypesArray);
 		if($countCTs === 1 && $contentTypesArray[0] === we_base_ContentTypes::FOLDER){
 			$this->setSelector(weSuggest::DirSelector);
-			$selector = '"openDirselector"';
+			$selector = '"we_selector_directory"';
 		} else {
 			$this->setSelector(weSuggest::DocSelector);
-			$selector = '"openDocselector"';
+			$selector = '"we_selector_document"';
 		}
 
 		if($this->getAppName() !== ''){

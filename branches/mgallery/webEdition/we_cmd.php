@@ -35,7 +35,16 @@ function findInclude($cmd){
 	switch($cmd){
 		case ''://empty command
 			exit();
+		case 'we_selector_delete':
+			if(isset($_SESSION['weS']['seemForOpenDelSelector']['Table'])){
+				unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
+			}
+		//no break
+		case 'we_selector_file':
+		case 'we_selector_category':
+		case 'we_selector_document':
 		case 'we_selector_image':
+		case 'we_selector_directory':
 			return 'selectors.inc.php';
 		case 'backupLog':
 			return 'we_exim/backup/backuplog.inc.php';
@@ -64,15 +73,6 @@ function findInclude($cmd){
 			return 'we_siteimport.inc.php';
 		case 'loadTree':
 			return 'loadTree.inc.php';
-		case 'openDelSelector':
-			if(isset($_SESSION['weS']['seemForOpenDelSelector']['Table'])){
-				unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
-			}
-		case 'openSelector':
-		case 'openDirselector':
-		case 'openDocselector':
-		case 'openCatselector':
-			return 'we_fs.inc.php';
 		case 'open_tag_wizzard':
 			return 'weTagWizard/we_tag_wizzard.inc.php';
 		case 'change_passwd':

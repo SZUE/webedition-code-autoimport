@@ -144,17 +144,17 @@ function we_cmd(){
 			}
 		break;
 
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
-		case "openDocselector":
+		case "we_selector_document":
 		case "we_selector_image":
 			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
-		case "openSelector":
+		case "we_selector_file":
 			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
-		case "openCatselector":
+		case "we_selector_category":
 			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		case "we_users_selector":

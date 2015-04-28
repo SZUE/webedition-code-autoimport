@@ -202,7 +202,7 @@ function checkFooter(){
 				break;
 			case self::CATEGORY:
 				$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('schedule_delete_all_schedcats'," . $this->nr . ")");
-				$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'schedule_add_schedcat\\',top.currentID," . $this->nr . ");')");
+				$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'schedule_add_schedcat\\',top.currentID," . $this->nr . ");')");
 				$cats = new we_chooser_multiDir(450, $this->CategoryIDs, "schedule_delete_schedcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", $this->nr);
 				$cats->extraDelFn = 'setScrollTo();';
 				if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
@@ -229,7 +229,7 @@ function checkFooter(){
 				$wecmdenc1 = we_base_request::encCmd('document.we_form.elements[\'' . $idname . '\'].value');
 				$wecmdenc2 = we_base_request::encCmd('document.we_form.elements[\'' . $textname . '\'].value');
 				$wecmdenc3 = we_base_request::encCmd('top.opener._EditorFrame.setEditorIsHot(true);');
-				$button = we_html_button::create_button('select', 'javascript:we_cmd(\'openDirselector\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'\',\'' . $_rootDirID . '\')');
+				$button = we_html_button::create_button('select', 'javascript:we_cmd(\'we_selector_directory\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'\',\'' . $_rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId('WsDir');

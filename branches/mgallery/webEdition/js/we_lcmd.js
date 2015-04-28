@@ -122,10 +122,8 @@ function we_lcmd(par) {
 		case 'new_ClObjectFile':
 			top.we_cmd("new", tables.OBJECT_FILES_TABLE, "", contentTypes.OBJECT_FILE, arguments[1]);
 			return;
-		case 'openDelSelector':
-			//setTimeout(function () {
-			top.we_cmd('openDelSelector', '', -1, '', '', '', '', '', '', 1);
-			//}, 50);
+		case 'we_selector_delete':
+			top.we_cmd('we_selector_delete', '', -1, '', '', '', '', '', '', 1);
 			return;
 		default:
 			var args = [];

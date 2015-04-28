@@ -234,7 +234,7 @@ class we_document extends we_root{
 
 	function formCategory(){
 		$delallbut = we_html_button::create_button('delete_all', "javascript:we_cmd('delete_all_cats')", true, 0, 0, '', '', $this->Category ? false : true);
-		$addbut = we_html_button::create_button('add', "javascript:we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
 		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get();
@@ -671,8 +671,8 @@ class we_document extends we_root{
 									/*
 									 * documents: when no link is set but there is a default id in template $v['dat'] is serialized twice:
 									 * we do not register such links, they belong to the template and are they are not stored in tblContent!!
-									 * 
-									 * objectfiles: here the default defined in class is stored in tblObject_X: 
+									 *
+									 * objectfiles: here the default defined in class is stored in tblObject_X:
 									 * it is no "dynamic" default and belongs to the object: so we register it as medialink of the object (and class)
 									 */
 									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], array(), true)) && is_array($link)){

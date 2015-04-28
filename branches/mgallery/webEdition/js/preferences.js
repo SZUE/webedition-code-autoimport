@@ -523,7 +523,7 @@ function selectSidebarDoc() {
 			break;
 		}
 	}
-	parent.opener.top.we_cmd('openDocselector', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
+	parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
 }
 
 function select_seem_start() {
@@ -544,10 +544,10 @@ function select_seem_start() {
 	if (document.getElementById('seem_start_type').value == 'object') {
 //FIXME frames['content'] will probably not work here
 		if (tables.OBJECT_FILES_TABLE) {
-			parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_object')[0].value, tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
+			parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_object')[0].value, tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
 		}
 	} else {
-		parent.opener.top.we_cmd('openDocselector', document.getElementsByName('seem_start_document')[0].value, tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
+		parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_document')[0].value, tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
 	}
 }
 

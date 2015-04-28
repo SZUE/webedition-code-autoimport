@@ -258,7 +258,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');");
 
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$yuiSuggest->setAcId('Template');
 		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
 		$yuiSuggest->setInput($textname, $path);
@@ -602,17 +602,17 @@ class we_webEditionDocument extends we_textContentDocument{
 							// FIXME: make sure fixed types are written to tblFile too!
 							$this->elements[$k]['type'] = $types[$k];
 							break;
-						default: 
+						default:
 							$this->elements[$k]['type'] = 'txt';
 					}
 			}
 		}
 	}
-	
+
 	/*
 	 * this function is used to replace to prepare wysiwyg img sources for db
 	 * it also writes img sources and hrefs to $this->MediaLinks
-	 * 
+	 *
 	 * when $isRebuildMediaLinks it only writes $this->MediaLinks (img sources come from db and must not be vhanged)
 	 */
 	function parseTextareaFields($rebuildMode = false){
@@ -784,7 +784,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 			}
 		}
-			
+
 		return true;
 	}
 
@@ -1015,7 +1015,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($this->canHaveVariants()){
 			$this->initVariantDataFromDb();
 		}
-		
+
 		return true;
 	}
 
@@ -1072,7 +1072,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			// unserialize the variant data when loading the model
 			$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, we_unserialize($tmp), 'variant');
-			
+
 			// now register variant fields in document
 			we_base_variants::setVariantDataForModel($this);
 		}

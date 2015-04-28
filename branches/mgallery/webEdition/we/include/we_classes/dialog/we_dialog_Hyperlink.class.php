@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_Hyperlink extends we_dialog_base{
-
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
 		'type', 'extHref', 'fileID', 'href', 'fileHref', 'objID', 'objHref', 'mailHref', 'target', 'class',
@@ -45,8 +44,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
 			$okBut = $back && $next ?
-					we_html_button::create_button_table(array($back, $next)) :
-					($back ? : $next );
+				we_html_button::create_button_table(array($back, $next)) :
+				($back ? : $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
@@ -65,8 +64,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
 			if(($this->noInternals || (isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1)) && (
-					$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
-					)
+				$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
+				)
 			){
 				$this->args["href"] = $type = $ref = '';
 			}
@@ -109,12 +108,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				default:
 					$this->args['type'] = we_base_link::TYPE_EXT;
 					$this->args['extHref'] = preg_replace(
-							array(
+						array(
 						'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 						'|^' . WEBEDITION_DIR . '|',
 						'|^([^\?#]+).*$|'
-							), array('$1', '', '$1')
-							, $this->args["href"]);
+						), array('$1', '', '$1')
+						, $this->args["href"]);
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';
@@ -218,12 +217,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			return false;
 		}
 		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) === 'mailto') ? '' : '//') : '') .
-				($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
-				($parsed['host'] ? : '') .
-				($parsed['port'] ? ':' . $parsed['port'] : '') .
-				($parsed['path'] ? : '') .
-				($parsed['query'] ? '?' . $parsed['query'] : '') .
-				($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
+			($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
+			($parsed['host'] ? : '') .
+			($parsed['port'] ? ':' . $parsed['port'] : '') .
+			($parsed['path'] ? : '') .
+			($parsed['query'] ? '?' . $parsed['query'] : '') .
+			($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
 	}
 
 	function initByHttp(){
@@ -322,10 +321,10 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>' .
-					((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
-							'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
-							''
-					);
+				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
+					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
+					''
+				);
 
 			// EXTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
@@ -346,7 +345,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 			// INTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
-			$_internal_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$_internal_select_button = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
@@ -368,7 +367,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				$cmd1 = "document.we_form.elements['we_dialog_args[objID]'].value";
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
 				//$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-				$_object_select_button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
+				$_object_select_button = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
@@ -541,19 +540,30 @@ function weonsubmit() {
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);');
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);');
 	}
 
 	function getJs(){
 		return parent::getJs() . we_html_element::jsElement('
 var weAcCheckLoop = 0;
+var editname="' . (isset($this->args["editname"]) ? $this->args["editname"] : '') . '";
+var classNames = ' . (isset($this->args["cssClasses"]) && $this->args["cssClasses"] ? '"' . $this->args['cssClasses'] . '".split(/,/)' : 'top.opener.weclassNames_tinyMce;') . ';
 
-function weCheckAcFields(){
-	if(!!weFocusedField) weFocusedField.blur();
-	if(document.getElementById("weDialogType").value=="' . we_base_link::TYPE_INT . '"){
-		setTimeout(weDoCheckAcFields,100);
-	} else {
-		document.we_form.submit();
+var g_l={
+	anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
+	wysiwyg_none:"' . g_l('wysiwyg', '[none]') . '"
+};
+var consts={
+	TYPE_INT:"' . TYPE_INT . '"
+};
+var dirs = {
+	WEBEDITION_DIR:"' . WEBEDITION_DIR . '"
+};
+
+var size = {
+	docSelect: {
+		width:' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',
+		height:' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
 	}
 }
 
@@ -561,94 +571,24 @@ function weDoCheckAcFields(){
 	acStatus = YAHOO.autocoml.checkACFields();
 	acStatusType = typeof acStatus;
 	if (weAcCheckLoop > 10) {' .
-						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		weAcCheckLoop = 0;
 	} else if(acStatusType.toLowerCase() == "object") {
 		if(acStatus.running) {
 			weAcCheckLoop++;
 			setTimeout(weDoCheckAcFields,100);
 		} else if(!acStatus.valid) {' .
-						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			weAcCheckLoop=0;
 		} else {
 			weAcCheckLoop=0;
 			document.we_form.submit();
 		}
 	} else {' .
-						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	}
-}
-
-function checkAnchor(el){
-	if(el.value && !new RegExp(\'#?[a-z]+[a-z,0-9,_,:,.,-]*$\',\'i\').test(el.value)){
-		alert(\'' . g_l('linklistEdit', '[anchor_invalid]') . ' \');
-		setTimeout(function(){el.focus()}, 10);
-		return false;
-	}
-}
-
-function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	switch (arguments[0]) {
-		case "we_selector_image":
-		case "openDocselector":
-			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
-			break;
-
-		case "browse_server":
-			new jsWindow(url,"browse_server",-1,-1,800,400,true,false,true);
-			break;
-	}
-}
-
-function showclasss(name, val, onCh) {' .
-						(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ? '
-	var classCSV = "' . $this->args['cssClasses'] . '";
-	classNames = classCSV.split(/,/);' : ('classNames = top.opener.weclassNames_tinyMce;')) . '
-	document.writeln(\'<select class="defaultfont" style="width:300px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
-	document.writeln(\'<option value="">' . g_l('wysiwyg', '[none]') . '\');
-	if(classNames !== undefined){
-		for (var i = 0; i < classNames.length; i++) {
-			var foo = classNames[i].substring(0,1) == "." ?
-				classNames[i].substring(1,classNames[i].length) :
-				classNames[i];
-			document.writeln(\'<option value="\'+foo+\'"\'+((val==foo) ? \' selected\' : \'\')+\'>.\'+foo);
-		}
-	}
-	document.writeln(\'</select>\');
-}' .
-						(isset($this->args["editname"]) ? '
-
-function showanchors(name, val, onCh) {
-	var pageAnchors = top.opener.document.getElementsByTagName("A");
-	var objAnchors = top.opener.weWysiwygObject_' . $this->args["editname"] . '.eDocument.getElementsByTagName("A");
-	var allAnchors = [];
-
-	for(var i = 0; i < pageAnchors.length; i++) {
-		if (!pageAnchors[i].href && pageAnchors[i].name != "") {
-			allAnchors.push(pageAnchors[i].name);
-		}
-	}
-
-	for (var i = 0; i < objAnchors.length; i++) {
-		if(!objAnchors[i].href && objAnchors[i].name != "") {
-			allAnchors.push(objAnchors[i].name);
-		}
-	}
-	if(allAnchors.length){
-		document.writeln(\'<select class="defaultfont" style="width:100px" name="\'+name+\'" id="\'+name+\'" size="1"\'+(onCh ? \' onchange="\'+onCh+\'"\' : \'\')+\'>\');
-		document.writeln(\'<option value="">\');
-
-		for (var i = 0; i < allAnchors.length; i++) {
-			document.writeln(\'<option value="\'+allAnchors[i]+\'"\'+((val==allAnchors[i]) ? \' selected\' : \'\')+\'>\'+allAnchors[i]);
-		}
-
-		document.writeln(\'</select>\');
-	}
-}' : '')
-		);
+}'
+			) . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');
 	}
 
 	function cmdFunction(array $args){
@@ -664,7 +604,7 @@ function showanchors(name, val, onCh) {
 		}
 		// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
 		$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
-						(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
+				(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
 		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$query = array();
@@ -688,18 +628,18 @@ function showanchors(name, val, onCh) {
 		}
 
 		return we_dialog_base::getTinyMceJS() .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
-				'<form name="tiny_form">' . we_html_element::htmlHiddens(array(
-					"href" => $href,
-					"target" => $args["target"],
-					"class" => $args["cssclass"],
-					"lang" => $args["lang"],
-					"hreflang" => $args["hreflang"],
-					"title" => $args["title"],
-					"accesskey" => $args["accesskey"],
-					"tabindex" => $args["tabindex"],
-					"rel" => $args["rel"],
-					"rev" => $args["rev"])) . '</form>';
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
+			'<form name="tiny_form">' . we_html_element::htmlHiddens(array(
+				"href" => $href,
+				"target" => $args["target"],
+				"class" => $args["cssclass"],
+				"lang" => $args["lang"],
+				"hreflang" => $args["hreflang"],
+				"title" => $args["title"],
+				"accesskey" => $args["accesskey"],
+				"tabindex" => $args["tabindex"],
+				"rel" => $args["rel"],
+				"rev" => $args["rev"])) . '</form>';
 	}
 
 }

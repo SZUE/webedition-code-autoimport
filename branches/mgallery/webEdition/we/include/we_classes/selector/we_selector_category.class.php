@@ -372,7 +372,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 	}
 
 	protected function getFrameset(){
-		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'openCatselector' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
+		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'we_selector_category' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
 		return
 			STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
@@ -466,7 +466,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$title = $result ? $result['Title'] : '';
 			$description = $result ? $result["Description"] : '';
 
-			$dir_chooser = we_html_button::create_button('select', "javascript:we_cmd('openSelector', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'document.we_form.elements.FolderID.value', 'document.we_form.elements.FolderIDPath.value', '', '', '', '1', '', 'false', 1)");
+			$dir_chooser = we_html_button::create_button('select', "javascript:we_cmd('we_selector_file', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'document.we_form.elements.FolderID.value', 'document.we_form.elements.FolderIDPath.value', '', '', '', '1', '', 'false', 1)");
 
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId('Doc');
@@ -512,7 +512,7 @@ function we_cmd(){
 		for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]){
-		case "openSelector":
+		case "we_selector_file":
 			new jsWindow(url,"we_selector",-1,-1,' . self::WINDOW_SELECTOR_WIDTH . ',' . self::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		default:

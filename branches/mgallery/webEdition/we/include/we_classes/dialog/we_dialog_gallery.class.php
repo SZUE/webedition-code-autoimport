@@ -45,7 +45,7 @@ class we_dialog_gallery extends we_dialog_base{
 	}
 
 	public static function getTinyMceJS(){
-		return parent::getTinyMceJS() . 
+		return parent::getTinyMceJS() .
 			we_html_element::jsElement('
 var size = {
 	"docSelect": {
@@ -53,7 +53,7 @@ var size = {
 					"height":' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
 	}
 };'
-			) . we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js') . 
+			) . we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js') .
 				weSuggest::getYuiFiles();
 	}
 
@@ -84,7 +84,7 @@ top.close();
 		$yuiSuggest->setContainerWidth(300);
 		$wecmdenc1 = we_base_request::encCmd('top.document.we_form.elements["' . $idname . '"].value');
 		$wecmdenc2 = we_base_request::encCmd('top.document.we_form.elements["' . $textname . '"].value');
-		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0)"), 4);
+		$yuiSuggest->setSelectButton(we_html_button::create_button("select", "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0)"), 4);
 		$yuiSuggest->setOpenButton(we_html_button::create_button("image:edit_edit", "javascript:if(document.we_form.elements['" . $idname . "'].value){opener.top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "'); return false}"));
 		$yuiSuggest->setAdditionalButton(we_html_button::create_button("image:btn_add_collection", "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix(FILE_TABLE) . "', 'wegallery');", true, 0, 0, "", "", false, false), 4);
 
@@ -98,7 +98,7 @@ top.close();
 		}
 		$input = we_html_tools::htmlSelect('we_dialog_args[tmpl]', $templatesArr, 1, (isset($this->args['tmpl']) ? id_to_path($this->args['tmpl'], TEMPLATES_TABLE) : 0), false, array(), '', 430);
 		$tmpl = we_html_tools::htmlFormElementTable($input, 'Template');
-		
+
 		$btnTrash = we_html_button::create_button('image:btn_function_trash', "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
 		/*
 		$trash = '<table cellpadding="0" style="border-spacing: 0px;border-style:none">
@@ -110,14 +110,14 @@ top.close();
 			</td></tr>
 			</tbody>
 		</table>';
-		 * 
+		 *
 		 */
 
 		$html = $yuiSuggest->getYuiJs() . '<table border="0" cellpadding="0" cellspacing="0">
 <tr><td>' . $collid . '</td><td>' . $trash . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(225, 10) . '</td></tr>
 <tr><td>' . $tmpl . '</td></tr>
-	
+
 <tr><td>' . we_html_tools::getPixel(225, 24) . '</td></tr>
 <tr><td>' . $btnTrash . ' Gallerie entfernen</td></tr>
 </table>';

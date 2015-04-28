@@ -332,7 +332,7 @@ function we_cmd() {
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url, "we_fileselector", -1, -1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ', true, true, true, true);
 			break;
 
@@ -352,7 +352,7 @@ function we_cmd() {
 				}
 			}
 
-			top.opener.top.we_cmd("openDocselector", myWind.document.forms[0].elements.seem_start_file.value, "' . FILE_TABLE . '", myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", "' . we_base_ContentTypes::WEDOCUMENT . '", 1);
+			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, "' . FILE_TABLE . '", myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", "' . we_base_ContentTypes::WEDOCUMENT . '", 1);
 
 			break;
 		case "openNavigationDirselector":

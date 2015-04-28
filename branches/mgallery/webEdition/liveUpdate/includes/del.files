@@ -1,3 +1,8 @@
+we/include/we_fs.inc.php
+we_delSelect.php
+we_dirSelect.php 
+we_docSelect.php
+we_catSelect.php
 js/selectors/we_sselector_footer.js
 we_sselector_footer.php
 we_sselector_header.php

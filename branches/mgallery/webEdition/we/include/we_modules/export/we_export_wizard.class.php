@@ -381,7 +381,7 @@ function we_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
-		case "openCatselector":
+		case "we_selector_category":
 			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 		case "add_cat":
@@ -392,7 +392,7 @@ function we_cmd(){
 			document.we_form.step.value=2;
 			document.we_form.submit();
 		break;
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 		break;
 	}
@@ -1381,7 +1381,7 @@ if (top.footer.setProgress){
 					var args = "";
 					var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
 					switch (arguments[0]) {
-						case "openDirselector":
+						case "we_selector_directory":
 							new jsWindow(url,"dir_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,false,true true);
 						break;
 					}
@@ -1391,7 +1391,7 @@ if (top.footer.setProgress){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:formDirChooser('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button("select", "javascript:formDirChooser('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 
@@ -1493,7 +1493,7 @@ if (top.footer.setProgress){
 
 
 		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->exportVars["categories"]) ? false : true));
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
 		$cats = new we_chooser_multiDir(350, $this->exportVars["categories"], "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE);
 
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
@@ -1513,7 +1513,7 @@ if (top.footer.setProgress){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 
 		$yuiSuggest->setAcId("Dir");
 		$yuiSuggest->setContentType("folder");

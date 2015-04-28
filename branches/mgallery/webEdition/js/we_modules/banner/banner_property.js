@@ -40,17 +40,17 @@ function we_cmd() {
 		}
 	}
 	switch (arguments[0]) {
-		case "openSelector":
+		case "we_selector_file":
 			new jsWindow(url, "we_selector", -1, -1, size.windowSelect.width, size.windowSelect.height, true, true, true, true);
 			break;
-		case "openCatselector":
+		case "we_selector_category":
 			new jsWindow(url, "we_catselector", -1, -1, size.catSelect.width, size.catSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
-		case "openDocselector":
+		case "we_selector_document":
 			new jsWindow(url, "we_docselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url, "we_dirselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_banner_dirSelector":

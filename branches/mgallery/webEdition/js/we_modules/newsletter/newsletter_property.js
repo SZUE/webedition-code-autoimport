@@ -238,11 +238,11 @@ function we_cmd() {
 			break;
 
 		case "we_selector_image":
-		case "openDocselector":
+		case "we_selector_document":
 			new jsWindow(url, "we_docselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 
-		case "openSelector":
+		case "we_selector_file":
 			new jsWindow(url, "we_selector", -1, -1, size.windowSelect.width, size.windowSelect.height, true, true, true, true);
 			break;
 

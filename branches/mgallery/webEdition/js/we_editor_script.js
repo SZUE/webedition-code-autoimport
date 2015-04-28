@@ -257,16 +257,16 @@ function we_cmd() {
 			if (contentEditor.we_submitForm)
 				contentEditor.we_submitForm("we_colorChooser", url);
 			break;
-		case "openDirselector":
-		case "openDocselector":
+		case "we_selector_directory":
+		case "we_selector_document":
 		case "we_selector_image":
 			new jsWindow(url, "we_fileselector", -1, -1, winSelectSize.docSelect.width, winSelectSize.docSelect.height, true, true, true, true);
 			break;
 		case "we_customer_selector":
-		case "openSelector":
+		case "we_selector_file":
 			new jsWindow(url, "we_fileselector", -1, -1, 900, 685, true, true, true, true);
 			break;
-		case "openCatselector":
+		case "we_selector_category":
 			new jsWindow(url, "we_catselector", -1, -1, winSelectSize.catSelect.width, winSelectSize.catSelect.height, true, true, true, true);
 			break;
 		case "browse_server":

@@ -170,7 +170,7 @@ class we_voting_frames extends we_modules_frame{
 		$del_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top . content . setHot(); #####placeHolder#####', 'style' => 'cursor: pointer; width: 27px;')));
 		$del_but1 = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();', 'style' => 'cursor: pointer; width: 27px;')));
 
-		$_Imagecmd = addslashes("we_cmd('openDocselector',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
+		$_Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
 			(permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
 		$sel_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();', 'style' => 'cursor: pointer; width: 27px;')));
@@ -788,8 +788,7 @@ function refreshTexts(){
 		$path = id_to_path($this->View->voting->ParentID, VOTING_TABLE);
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.ParentID.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.ParentPath.value");
-		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_html_button::create_button('select', "javascript:top.content.setHot(); we_cmd('voting_openDirselector',document.we_form.elements.ParentID.value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','')");
+		$button = we_html_button::create_button('select', "javascript:top.content.setHot(); we_cmd('we_voting_dirSelector',document.we_form.elements.ParentID.value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','')");
 		$width = 416;
 
 		$yuiSuggest = & weSuggest::getInstance();

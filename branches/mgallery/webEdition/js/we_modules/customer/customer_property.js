@@ -110,7 +110,7 @@ function we_cmd() {
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "we_selector_image":
-		case "openDocselector":
+		case "we_selector_document":
 			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "switchPage":

@@ -474,7 +474,7 @@ if($ok && $cmd === "edit_link_at_class"){
 
 			switch (arguments[0]) {
 				case "we_selector_image":
-				case "openDocselector":
+				case "we_selector_document":
 					new jsWindow(url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 					break;
 
@@ -526,7 +526,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.id.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.href_int.value");
 
-		$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("Doc");
@@ -543,7 +543,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		if(defined('OBJECT_TABLE')){
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.obj_id.value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.href_obj.value");
-			$but = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
+			$but = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Obj");
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);

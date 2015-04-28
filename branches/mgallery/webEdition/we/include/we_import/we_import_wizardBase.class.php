@@ -122,15 +122,15 @@ function we_cmd() {
 		}
 	}
 	switch (arguments[0]) {
-		case 'openDirselector':
+		case 'we_selector_directory':
 		case 'we_selector_image':
-		case 'openDocselector':
+		case 'we_selector_document':
 			new jsWindow(url,'we_fileselector',-1,-1," . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ",true,true,true);
 			break;
 		case 'browse_server':
 			new jsWindow(url,'browse_server',-1,-1,840,400,true,false,true);
 			break;
-		case 'openCatselector':
+		case 'we_selector_category':
 			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true);
 			break;
 		case 'add_docCat':" . $addJS . "

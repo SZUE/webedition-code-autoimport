@@ -70,10 +70,10 @@ we_ui_controls_ACFileSelector.openSelector = function()
 		}
 	}
 	switch (arguments[0]) {
-		case "openDocselector":
+		case "we_selector_document":
 			new jsWindow(url, "we_docselector", -1, -1, 900, 685, true, true, true, true);
 			break;
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url, "we_selector", -1, -1, 900, 600, true, true, true, true);
 			break;
 		case "browse_server":

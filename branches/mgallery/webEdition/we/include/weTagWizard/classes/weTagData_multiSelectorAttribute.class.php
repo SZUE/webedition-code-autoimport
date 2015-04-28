@@ -58,13 +58,13 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 	 * @return string
 	 */
 	function getCodeForTagWizard(){
-		$we_cmd = 'openSelector';
+		$we_cmd = 'we_selector_file';
 		switch($this->Table){
 			case USER_TABLE :
 				$we_cmd = 'we_users_selector';
 				break;
 			case CATEGORY_TABLE :
-				$we_cmd = 'openCatselector';
+				$we_cmd = 'we_selector_category';
 				break;
 		}
 

@@ -29,16 +29,9 @@ class we_import_wizard extends we_import_wizardBase{
 		parent::__construct();
 	}
 
-	/* function formCategory($obj, $categories){
-	  $js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
-	  $addbut = we_html_button::create_button('add', "javascript:top.we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-	  $cats = new we_chooser_multiDir(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
-	  return $cats->get();
-	  } */
-
 	private function formCategory2($obj, $categories){
 		$js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
-		$addbut = we_html_button::create_button('add', "javascript:top.we_cmd('openCatselector',0,'" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button('add', "javascript:top.we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', $addbut, '', 'Icon,Path', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField("self.document.we_form.elements['v[" . $obj . "Categories]']");
@@ -527,7 +520,7 @@ function we_cmd() {
 				}
 				new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;' . "
-		case 'openSelector':
+		case 'we_selector_file':
 			new jsWindow(url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:
@@ -624,7 +617,7 @@ handle_event("previous");');
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[doc_dir_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[doc_dir]'].value");
 
-			$btnDocDir = we_html_button::create_button("select", "javascript:we_cmd('openDirselector',document.we_form.elements['v[doc_dir_id]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
+			$btnDocDir = we_html_button::create_button("select", "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[doc_dir_id]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 			$yuiSuggest = & weSuggest::getInstance();
 			$yuiSuggest->setAcId("DocPath");
 			$yuiSuggest->setContentType("folder");
@@ -660,7 +653,7 @@ handle_event("previous");');
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[tpl_dir_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
-			$btnDocDir = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[tpl_dir]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
+			$btnDocDir = we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[tpl_dir]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
 
 			$yuiSuggest->setAcId('TemplPath');
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -1182,7 +1175,7 @@ HTS;
 		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['noDocTypeTemplateId'].value");
 		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateName]'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('reload_editpage');");
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDocselector',document.we_form.elements.noDocTypeTemplateId.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('we_selector_document',document.we_form.elements.noDocTypeTemplateId.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		/*		 * ******************************************************************** */
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -1240,7 +1233,7 @@ HTS;
 		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
 		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_id]'].value");
 		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value");
-		$storeToButton = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')"
+		$storeToButton = we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')"
 		);
 
 		$yuiSuggest->setAcId('DirPath');
@@ -2203,7 +2196,7 @@ HTS;
 		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_id]'].value");
 		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value");
 
-		$storeToButton = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
+		$storeToButton = we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		$DTselect = new we_html_select(array(
 			'name' => 'v[docType]',
@@ -2238,7 +2231,7 @@ HTS;
 		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateID]'].value");
 		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[we_TemplateName]'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('reload_editpage');");
-		$button = we_html_button::create_button("select", "javascript:we_cmd('openDocselector',document.we_form.elements['v[we_TemplateID]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document',document.we_form.elements['v[we_TemplateID]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$yuiSuggest = & weSuggest::getInstance();
 
@@ -2350,7 +2343,7 @@ HTS;
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[obj_path]'].value");
 
-			$objStoreToButton = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_form.elements['v[obj_path]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',document.we_form.elements['v[classID]'].value.split('_')[1])");
+			$objStoreToButton = we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[obj_path]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',document.we_form.elements['v[classID]'].value.split('_')[1])");
 
 
 			$yuiSuggest->setAcId('ObjPath');
@@ -2738,7 +2731,7 @@ function handle_event(evt) {
 
 	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = (empty($Pathvalue) ? f('SELECT Path FROM ' . escape_sql_query($table) . ' WHERE ID=' . intval($IDValue), '', new DB_WE()) : $Pathvalue);
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openSelector',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','" . $cmd . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('we_selector_file',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','" . $cmd . "','','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
 	}
 

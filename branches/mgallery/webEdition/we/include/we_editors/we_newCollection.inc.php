@@ -104,10 +104,10 @@ function we_cmd() {
 		}
 	}
 	switch (arguments[0]) {
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url, "we_fileselector", -1, -1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ', true, true, true, true);
 			break;
-		case "openCatselector":
+		case "we_selector_category":
 			new jsWindow(url, "we_catselector", -1, -1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ', true, true, true, true);
 			break;
 		case "close":

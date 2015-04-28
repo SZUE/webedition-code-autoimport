@@ -44,14 +44,14 @@ function we_cmd() {
 		case "we_users_selector":
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
-		case "openDirselector":
+		case "we_selector_directory":
 			new jsWindow(url, "we_fileselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
 			break;
-		case "openCatselector":
+		case "we_selector_category":
 			new jsWindow(url, "we_catselector", -1, -1, size.catSelect.width, size.catSelect.height, true, true, true, true);
 			break;
 		case "openObjselector":
-			url = dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=openDocselector&we_cmd[8]=object&we_cmd[2]=" + tables.OBJECT_TABLE + "&we_cmd[5]=" + arguments[5] + "&we_cmd[9]=1";
+			url = dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + tables.OBJECT_TABLE + "&we_cmd[5]=" + arguments[5] + "&we_cmd[9]=1";
 			new jsWindow(url, "we_objectselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true);
 			break;
 		case "add_cat":

@@ -123,10 +123,10 @@ function we_cmd(){
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?'; for(var i = 0; i < arguments.length; i++){ url += 'we_cmd['+i+']='+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += '&'; }}
 
 	switch (arguments[0]){
-		case 'openDirselector':
+		case 'we_selector_directory':
 			new jsWindow(url,'we_fileselector',-1,-1," . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ",true,true,true,true);
 			break;
-		case 'openCatselector':
+		case 'we_selector_category':
 			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
 		break;
 	}
@@ -249,7 +249,7 @@ function setApplet() {
 		$path = id_to_path($store_id);
 		$wecmdenc1 = we_base_request::encCmd('document.we_startform.importToID.value');
 		$wecmdenc2 = we_base_request::encCmd('document.we_startform.egal.value');
-		$button = we_html_button::create_button('select', "javascript:we_cmd('openDirselector',document.we_startform.importToID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
+		$button = we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory',document.we_startform.importToID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
 		$yuiSuggest->setAcId('Dir');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -971,7 +971,7 @@ function next() {
 	function getHTMLCategory(){
 		$_width_size = 300;
 
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('openCatselector',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(
 			we_html_element::htmlImg(
 				array(
