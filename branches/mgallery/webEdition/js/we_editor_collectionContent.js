@@ -85,6 +85,7 @@ weCollectionEdit = {
 	blankRow: '',
 	collectionName: '',
 	csv: '',
+	view: 'list',
 
 	dd: {
 		dragID: 0,
@@ -127,7 +128,7 @@ weCollectionEdit = {
 
 	doClickAdd: function(elem){
 		var el = this.getRow(elem),
-			num = document.getElementById('numselect_' + el.id.substr(5)).value;
+			num = document.getElementById('numselect_' + el.id.substr(10)).value;
 
 		for(var i = 0; i < num; i++){
 			el = this.addRow(el, false);
@@ -137,7 +138,7 @@ weCollectionEdit = {
 
 	doClickAddItems: function(elem){
 		var el = this.getRow(elem),
-			index = el.id.substr(5),
+			index = el.id.substr(10),
 			pos = -1;
 
 		for(var i = 0; i < el.parentNode.childNodes.length; i++){
@@ -175,7 +176,7 @@ weCollectionEdit = {
 	},
 
 	getRow: function(elem){
-		while(elem.className !== 'drop_reference' && elem.className !== 'content_table'){
+		while(elem.className !== 'drop_reference' && elem.className !== 'content_table_' + this.view){
 			elem = elem.parentNode;
 		}
 
@@ -195,7 +196,7 @@ weCollectionEdit = {
 		div = document.createElement("div");
 		div.innerHTML = this.blankRow.replace(/XX/g, this.maxIndex).replace(/CMD1/, cmd1).replace(/CMD2/, cmd2);
 
-		newElem = document.getElementById('content_table').insertBefore(div.firstChild, el.nextSibling);
+		newElem = document.getElementById('content_table' + this.view).insertBefore(div.firstChild, el.nextSibling);
 		document.getElementById('yuiAcInputItem_' + this.maxIndex).value = path;
 		document.getElementById('yuiAcResultItem_' + this.maxIndex).value = id;
 
@@ -212,7 +213,7 @@ weCollectionEdit = {
 		}
 
 		var el = this.getRow(elem),
-			index = el.id.substr(5),
+			index = el.id.substr(10),
 			rowsFull = false,
 			isFirstSet = false,
 			itemsSet = [[],[]],
@@ -230,6 +231,9 @@ weCollectionEdit = {
 				if(this.dd.doubleOk === 1 || this.collectionCsv.search(',' + item.id + ',') === -1){
 					document.getElementById('yuiAcInputItem_' + index).value = item.path;
 					document.getElementById('yuiAcResultItem_' + index).value = item.id;
+
+					document.getElementById('grid_elem_' + index).style.backgroundImage = 'url(' + item.iconSrc.replace('%2F', '/') + ')';
+
 					itemsSet[0].push(item.id);
 					isFirstSet = true;
 				} else {
@@ -241,12 +245,14 @@ weCollectionEdit = {
 		for(var i = 0; i < items.length; i++){
 			if(this.dd.doubleOk || this.collectionCsv.search(',' + items[i].id + ',') === -1){
 				itemsSet[0].push(items[i].id);
-				if(this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 5) === 'drag_'){
-					index = el.nextSibling.id.substr(5);
+				if(this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 10) === this.view + '_elem_'){
+					index = el.nextSibling.id.substr(10);
 					id = document.getElementById('yuiAcResultItem_' + index).value;
 					if(id == -1 || id == 0){
 						document.getElementById('yuiAcInputItem_' + index).value = items[i].path;
 						document.getElementById('yuiAcResultItem_' + index).value = items[i].id;
+
+						//document.getElementById('grid_elem_' + index).style.background = 'url(' + items[i].iconSrc + ') no-repeat center center';
 						el = el.nextSibling;
 						continue;
 					} else {
@@ -263,11 +269,11 @@ weCollectionEdit = {
 	},
 
 	repaintAndRetrieveCsv: function(){
-		var t = document.getElementById('content_table'), row, index, csv = ',', val, btns;
+		var t = document.getElementById('content_table_' + 'list'), row, index, csv = ',', val, btns;
 		for(var i = 0; i < t.childNodes.length; i++){
 			row = t.childNodes[i];
 			btns = row.getElementsByTagName('BUTTON');
-			index = row.id.substr(5);
+			index = row.id.substr(10);
 			val = parseInt(document.getElementById('yuiAcResultItem_' + index).value);
 			csv += (val !== 0 ? val : -1) + ',';
 			document.getElementById('label_' + index).innerHTML = i + 1;
@@ -277,7 +283,7 @@ weCollectionEdit = {
 			btns[6].disabled = (t.childNodes.length === 1);
 		}
 		if(val !== -1){
-			this.addRow(t.lastChild, true);
+			//this.addRow(t.lastChild, true);
 		}
 
 		if(!this.collectionName){
@@ -292,9 +298,10 @@ weCollectionEdit = {
 		evt.preventDefault();
 	},
 
-	enterDrag: function(evt){
-		var el = this.getRow(evt.target),
+	enterDrag: function(type, view, evt, elem){
+		var el = this.getRow(elem),//this.getRow(evt.target),
 			data = evt.dataTransfer.getData("text").split(',');
+		this.view = view;
 
 		switch(data[0]){
 			case 'moveRow':
@@ -315,16 +322,56 @@ weCollectionEdit = {
 				break;
 			case 'dragItem':
 			case 'dragFolder':
-				var t = document.getElementById('content_table'), index;
-				for(var i = 0; i < t.childNodes.length; i++){
-					index = t.childNodes[i].id.substr(5);
-					document.getElementById('drag_' + index).style.border = '1px solid #006db8';
-				}
+				switch(type){
+					case 'item':
+						var t = document.getElementById('content_table_' + this.view), index;
+						for(var i = 0; i < t.childNodes.length; i++){
+							index = t.childNodes[i].id.substr(10);
+							//document.getElementById(this.view + '_elem_ + index).style.border = '1px solid #006db8';
+						}
 
-				if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-					el.style.border = '1px solid #00cc00';
-				} else {
-					el.style.border = '1px solid red';
+						if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+							el.style.border = '1px solid #00cc00';
+						} else {
+							el.style.border = '1px solid red';
+						}
+						break;
+					case 'inter':
+						if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+							elem.style.width = '36px';
+							elem.style.margin = '0 4px 0 4px';
+							elem.style.border = '1px dotted #00cc00';
+							elem.previousSibling.style.width = '224px';
+							elem.parentNode.nextSibling.firstChild.style.width = '224px';
+						} else {
+							//el.style.border = '1px solid red';
+						}
+						
+
+				}
+				break;
+			default:
+				return;
+		}
+	},
+			
+	leaveDrag: function(type, view, evt, elem){
+		var data = evt.dataTransfer.getData("text").split(',');
+
+		switch(data[0]){
+			case 'dragItem':
+			case 'dragFolder':
+				switch(type){
+					case 'item':
+						elem.style.border = '1px solid #006db8';
+						break;
+					case 'inter':
+						elem.style.width = '12px';
+						elem.style.border = '1px solid white';
+						elem.style.margin = '0';
+						elem.previousSibling.style.width = '240px';
+						elem.parentNode.nextSibling.firstChild.style.width = '240px';
+						break;
 				}
 				break;
 			default:
@@ -342,7 +389,8 @@ weCollectionEdit = {
 		evt.dataTransfer.setData('text', 'moveRow,' + evt.target.id);
 	},
 
-	dropOnRow: function(evt) {
+	dropOnRow: function(type, view, evt, elem) {
+		this.view = view;
 		evt.preventDefault();
 		var data = evt.dataTransfer.getData("text").split(','),
 			el, index;
@@ -360,8 +408,8 @@ weCollectionEdit = {
 				break;
 			case 'dragItem':
 			case 'dragFolder':
-				el = this.getRow(evt.target);
-				index = el.id.substr(5);
+				el = this.getRow(elem);
+				index = el.id.substr(10);
 				el.style.border = '1px solid #006db8';
 
 				if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
@@ -428,7 +476,7 @@ weCollectionEdit = {
 								document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
 								weCollectionEdit.repaintAndRetrieveCsv();
 							} else {
-								var resp = weCollectionEdit.addItems(document.getElementById('drag_' + index), respArr);
+								var resp = weCollectionEdit.addItems(document.getElementById(weCollectionEdit.view + '_elem_' + index), respArr);
 								if(message){
 									top.we_showMessage(weCollectionEdit.g_l.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
 								}

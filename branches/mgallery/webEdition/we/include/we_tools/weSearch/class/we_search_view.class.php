@@ -1813,29 +1813,32 @@ weSearch.g_l = {
 		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
-				$imageView = "<img src='" . (file_exists(WE_THUMB_PREVIEW_PATH . $file["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($file["Extension"])) ?
+				$url = (file_exists(WE_THUMB_PREVIEW_PATH . $file["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($file["Extension"])) ?
 						WE_THUMB_PREVIEW_DIR . $file["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($file["Extension"]) :
 						WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"]
-					) . "' border='0' /></a>";
+					);
+				$imageView = "<img src='" . $url . "' border='0' /></a>";
 
-				$imageViewPopup = "<img src='" . (file_exists(WE_THUMB_PREVIEW_PATH . $file["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($file["Extension"])) ?
+				$urlPopup = (file_exists(WE_THUMB_PREVIEW_PATH . $file["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($file["Extension"])) ?
 						WE_THUMB_PREVIEW_DIR . $file["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($file["Extension"]) :
 						WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"]
-					) . "' border='0' /></a>";
+					);
+				$imageViewPopup = "<img src='" . $urlPopup . "' border='0' /></a>";
 			} else {
 				$imagesize = array(0, 0);
-				$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
-				$imageView = "<img src='" . $thumbpath . "' border='0' />";
-				$imageViewPopup = "<img src='" . $thumbpath . "' border='0' />";
+				$url = $urlPopup = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
+				$imageView = "<img src='" . $url . "' border='0' />";
+				$imageViewPopup = "<img src='" . $url . "' border='0' />";
 			}
 		} else {
 			$Icon = we_base_ContentTypes::inst()->getIcon($file["ContentType"], we_base_ContentTypes::FILE_ICON, $file['Extension']);
 			$imagesize = array(0, 0);
-			$imageView = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
-			$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
+			$url = $urlPopup = ICON_DIR . 'doclist/' . $Icon;
+			$imageView = '<img src="' . ICON_DIR . 'doclist/' . $url . '" border="0" width="64" height="64" />';
+			$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $url . '" border="0" width="64" height="64" />';
 		}
 
-		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1]);
+		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup );
 	}
 
 	function getSearchParameterTop($foundItems, $whichSearch){

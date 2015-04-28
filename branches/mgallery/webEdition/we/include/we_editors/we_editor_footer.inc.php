@@ -180,7 +180,7 @@ if(inWorkflow($we_doc)){
 }
 ?>
 
-<body id="footerBody" onload="we_footerLoaded();">
+<body id="footerBody" onload="we_footerLoaded();" ondragenter="we_editor_footer.dragEnter()" ondragleave="we_editor_footer.dragLeave()">
 	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
 					<?php

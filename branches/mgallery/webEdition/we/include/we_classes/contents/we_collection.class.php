@@ -81,7 +81,7 @@ class we_collection extends we_root{
 	public function getCollectionVerified($skipEmpty = true, $full = false, $updateCollection = false){
 		if($this->remTable == stripTblPrefix(FILE_TABLE)){
 			$activeCollectionName = 'fileCollection';
-			$fields = 'ID,Path,ContentType';
+			$fields = 'ID,Path,ContentType,Extension';
 			$table = FILE_TABLE;
 			$prop = 'remCT';
 			$cField = 'ContentType';
@@ -99,6 +99,9 @@ class we_collection extends we_root{
 		while($this->DB_WE->next_record()){
 			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
 				$verifiedItems[$this->DB_WE->f('ID')] = $full ? array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'type' => $this->DB_WE->f($cField)) : $this->DB_WE->f('ID');
+				if($full && $this->remTable == stripTblPrefix(FILE_TABLE)){
+					$verifiedItems[$this->DB_WE->f('ID')]['ext'] = $this->DB_WE->f('Extension');
+				}
 			}
 		}
 
@@ -291,10 +294,11 @@ class we_collection extends we_root{
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$index = 0;
-		$rows = '';
+		$rows = $divs = '';
 		foreach($items as $item){
 			$index++;
 			$rows .= $this->getCollectionRow($item, $index, $yuiSuggest, count($items), true);
+			$divs .= $this->getGridItem($item, $index, count($items));
 		}
 
 		// write "blank" collection row to js var
@@ -309,7 +313,8 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Inhalt der Sammlung') .
 			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $recursive) .
-			we_html_element::htmlDiv(array('id' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows);
+			we_html_element::htmlDiv(array('id' => 'content_table_list', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows) .
+			we_html_element::htmlDiv(array('id' => 'content_table_grid', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px 0 0 20px;background-color:white;display:inline-block;min-height:200px'), $divs);
 	}
 
 	function getCollectionRow($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
@@ -340,7 +345,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
-		$yuiSuggest->setInput($textname, $item['path'], array("onmouseover" => "document.getElementById('drag_" . $index . "').draggable=false", "onmouseout" => "document.getElementById('drag_" . $index . "').draggable=true"));
+		$yuiSuggest->setInput($textname, $item['path'], array("onmouseover" => "document.getElementById('list_elem_" . $index . "').draggable=false", "onmouseout" => "document.getElementById('drag_" . $index . "').draggable=true"));
 		$yuiSuggest->setResult($idname, $item['id']);
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
@@ -371,15 +376,47 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 
 		return we_html_element::htmlDiv(array(
 				'style' => 'margin-top:4px;border:1px solid #006db8;background-color:#f5f5f5;cursor:move;',
-				'id' => 'drag_' . $index,
+				'id' => 'list_elem_' . $index,
 				'class' => 'drop_reference',
 				'draggable' => 'true',
 				'ondragstart' => 'weCollectionEdit.startDragRow(event)',
-				'ondrop' => 'weCollectionEdit.dropOnRow(event)',
+				'ondrop' => 'weCollectionEdit.dropOnRow(\'item\',\'list\',event, this)',
 				'ondragover' => 'weCollectionEdit.allowDrop(event)',
-				'ondragenter' => 'weCollectionEdit.enterDrag(event)',
+				'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'view\',event, this)',
 				'ondragend' => 'weCollectionEdit.dragEnd(event)'
 				), $rowHtml);
+	}
+
+	function getGridItem($item, $index, $itemsNum = 0){t_e($item);
+		$preview = '';
+		if($item['id'] !== -1){
+			$file = array('docID' => $item['id'], 'Path' => $item['path'], 'ContentType' => isset($item['type']) ? $item['type'] : 'text/*', 'Extension' => $item['ext']);
+			$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
+			$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
+			$iconHTML = we_search_view::getHtmlIconThmubnail($file, 200, 200);
+			//$preview = '<span style="width: 10px;height: 100%;display: inline-block;margin-left: -10px;vertical-align: middle;">' . $iconHTML['imageView'] . '</span>';
+		}
+
+		return we_html_element::htmlDiv(array('style' => 'width:auto;text-align:left;height:242px;float:left;dislpay:block;'), we_html_element::htmlDiv(array(
+				'style' => 'width:240px;height:230px;margin:0px 0px 0 0;text-align:center;border:1px solid #006db8;background-color:#f5f5f5;float:left;dislpay:block;background: url(' . $iconHTML['url'] . ') no-repeat center center;',
+				'id' => 'grid_elem_' . $index,
+				'class' => 'drop_reference',
+				'draggable' => 'true',
+				'ondragstart' => 'weCollectionEdit.startDragRow(event, true)',
+				'ondrop' => 'weCollectionEdit.dropOnRow(\'item\',\'grid\',event, this)',
+				'ondragover' => 'weCollectionEdit.allowDrop(event)',
+				'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'grid\',event, this)',
+				'ondragleave' => 'weCollectionEdit.leaveDrag(\'item\',\'grid\',event, this)',
+				'ondragend' => 'weCollectionEdit.dragEnd(event)'
+				), '') . we_html_element::htmlDiv(array(
+				'style' => 'width:12px;height:230px;margin:0px 0px 0 0;text-align:center;vertical-align:center;border:1px solid white;float:left;dislpay:block;',
+				'id' => 'preview_drag_inter_' . $index,
+				'class' => 'drop_reference',
+				'ondrop' => 'weCollectionEdit.dropOnRow(\'inter\',\'grid\',event, this)',
+				'ondragover' => 'weCollectionEdit.allowDrop(event)',
+				'ondragenter' => 'weCollectionEdit.enterDrag(\'inter\',\'grid\',event, this)',
+				'ondragleave' => 'weCollectionEdit.leaveDrag(\'inter\',\'grid\',event, this)'
+				), ''));
 	}
 
 	function i_filenameDouble(){
@@ -389,7 +426,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 	public function we_load($from = we_class::LOAD_MAID_DB){
 		parent::we_load($from);
 		//FIXME: remove this switch after 6.6
-		$this->ContentType = $this->ContentType? : ($this->IsFolder ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION);
+		$this->ContentType = $this->ContentType ? : ($this->IsFolder ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION);
 		$this->Filename = $this->Text;
 		$this->insertRecursive = $this->insertPrefs[0];
 		$this->useEmpty = $this->insertPrefs[1];
@@ -538,7 +575,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 			$classField = '';
 		}
 
-		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType' . $classField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
+		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
 		while($this->DB_WE->next_record()){
 			$data = $this->DB_WE->getRecord();
 			if(($recursive || $recursion === 0) && $data['ContentType'] === 'folder' && !isset($foldersDone[$data['ID']])){
@@ -547,8 +584,17 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 			}
 			if($data['ContentType'] !== 'folder'){
 				//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== 'folder'){
+				
+				//IMI:TEST
+				if($data['ID'] !== -1){
+					$file = array('docID' => $data['ID'], 'Path' => $data['Path'], 'ContentType' => isset($data[$typeField]) ? $data[$typeField] : 'text/*', 'Extension' => $data['Extension']);
+					$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
+					$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
+					$iconHTML = we_search_view::getHtmlIconThmubnail($file, 200, 200);
+				}
+				//END
 				if($data['ParentID'] == 0){
-					$resultRoot[$data['ID']] = $returnFull ? array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField]) : $data['ID'];
+					$resultRoot[$data['ID']] = $returnFull ? array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField], 'iconSrc' => $iconHTML['url']) : $data['ID'];
 				} else {
 					$result[$data['Path']] = array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField]);
 				}

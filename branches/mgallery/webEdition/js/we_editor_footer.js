@@ -194,3 +194,22 @@ function we_save_document() {
 		}
 	}
 }
+
+var we_editor_footer = {
+	scrolltimeout: null,
+
+	dragEnter: function(){
+		this.scrollDownEditorContent();
+	},
+
+	dragLeave: function(){
+		clearTimeout(this.scrolltimeout);
+	},
+
+	scrollDownEditorContent: function(){
+		_EditorFrame.getContentEditor().scrollBy(0,20);
+		//this.scrolltimeout = setTimeout(function(){we_editor_footer.scrollDownEditorContent();},500);
+	}
+	
+
+};
