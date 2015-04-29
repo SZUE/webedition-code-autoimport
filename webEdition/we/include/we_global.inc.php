@@ -1243,6 +1243,35 @@ function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
 }
 
+function we_unserialize($string, $default = array(), $quiet = false){
+	if(!$string){
+		return $default;
+	}
+	if($string[0] === 'x'){
+		$string = gzuncompress($string);
+	}
+	if(preg_match('|^[asO]:\d+:|', $string)){
+		$ret = unserialize($string);
+		return ($ret === false ? $default : $ret);
+	}
+	if(preg_match('|^[{\[].*[}\]]$|', $string)){
+		return json_decode($string, true);
+	}
+	if(!$quiet){
+		t_e('unable to decode', $string);
+	}
+	return $default;
+}
+
+function we_serialize(array $array, $target, $force = false){
+	switch($target){
+		//remove defined after php 5.3 support ends
+		case 'json':
+			return ($array || $force ? json_encode($array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0)) : '');
+		case 'serialize':
+			return ($array || $force ? serialize($array) : '');
+	}
+}
 if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4
 
 	function hex2bin($hex_string){
