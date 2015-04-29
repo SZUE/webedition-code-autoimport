@@ -44,6 +44,9 @@ class we_base_ContentTypes{
 	const AUDIO = 'audio/*';
 	const APPLICATION = 'application/*';
 	const FOLDER = 'folder';
+	const OBJECT = 'object';
+	const OBJECT_FILE = 'objectFile';
+	const COLLECTION = 'text/weCollection';
 
 	private $ct;
 
@@ -223,7 +226,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Icon' => self::FILE_ICON,
 			),
-			'object' => array(
+			self::OBJECT => array(
 				'Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
@@ -232,7 +235,7 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => false,
 				'Icon' => 'object.gif',
 			),
-			'objectFile' => array(
+			self::OBJECT_FILE => array(
 				'Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
