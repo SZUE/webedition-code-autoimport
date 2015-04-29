@@ -240,10 +240,10 @@ class we_wysiwyg_editor{
 		return $ret;
 	}
 
-	function getMaxGroupWidth(){
+	private function getMaxGroupWidth(){
 		$w = 0;
-		foreach($this->filteredElements as $i => $v){
-			if($v->classname === 'we_wysiwyg_ToolbarSeparator'){
+		foreach($this->filteredElements as $v){
+			if($v->isSeparator){
 				$this->maxGroupWidth = max($w, $this->maxGroupWidth);
 				$w = 0;
 			} else {
@@ -376,7 +376,7 @@ class we_wysiwyg_editor{
 		return $arr;
 	}
 
-	function setToolbarElements(){// TODO: declare setToolbarElements
+	private function setToolbarElements(){// TODO: declare setToolbarElements
 		$sep = new we_wysiwyg_ToolbarSeparator($this);
 		$sepCon = new we_wysiwyg_ToolbarSeparator($this, self::CONDITIONAL);
 
@@ -504,34 +504,26 @@ class we_wysiwyg_editor{
 		));
 	}
 
-	function getWidthOfElem($startPos, $end){//TODO: throw out if obsolete
-		$w = 0;
-		for($i = $startPos; $i <= $end; $i++){
-			$w += $this->filteredElements[$i]->width;
-		}
-		return $w;
-	}
-
-	function setFilteredElements(){
+	private function setFilteredElements(){
 		$lastSep = true;
 		foreach($this->elements as $elem){
 			if(is_object($elem) && $elem->showMe){
-				if((!$lastSep) || ($elem->classname != "we_wysiwyg_ToolbarSeparator")){
+				if((!$lastSep) || !($elem->isSeparator)){
 					$this->filteredElements[] = $elem;
 				}
-				$lastSep = ($elem->classname === "we_wysiwyg_ToolbarSeparator");
+				$lastSep = ($elem->isSeparator);
 			}
 		}
 		if($this->filteredElements){
-			if($this->filteredElements[count($this->filteredElements) - 1]->classname === 'we_wysiwyg_ToolbarSeparator'){
+			if($this->filteredElements[count($this->filteredElements) - 1]->isSeparator){
 				array_pop($this->filteredElements);
 			}
 		}
 	}
 
-	function hasSep($rowArr){
-		foreach($rowArr as $i => $elem){
-			if($elem->classname === "we_wysiwyg_ToolbarSeparator"){
+	private function hasSep($rowArr){
+		foreach($rowArr as $elem){
+			if($elem->isSeparator){
 				return true;
 			}
 		}
@@ -542,7 +534,7 @@ class we_wysiwyg_editor{
 		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML($value));
 	}
 
-	function getEditButtonHTML($value = ''){
+	private function getEditButtonHTML($value = ''){
 		list($tbwidth, $tbheight) = $this->getToolbarWidthAndHeight();
 		$fns = '';
 		foreach($this->fontnames as $fn){
@@ -608,7 +600,7 @@ class we_wysiwyg_editor{
 		return $internalIDs;
 	}
 
-	function getToolbarRows(){
+	private function getToolbarRows(){
 		$width = $this->width - 12;
 		$maxGroupWidth = $this->maxGroupWidth - 2;
 
@@ -617,35 +609,32 @@ class we_wysiwyg_editor{
 		$rownr = 0;
 		$rows[$rownr] = array();
 		$rowwidth = 0;
-		while(!empty($tmpElements)){
+		while($tmpElements){
 			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($width, $maxGroupWidth)){
 				//TinyMCE: There is a 5px border on the left, another 5px on the right looks nicer, and buttons/blocks of buttons have a 1 px border on the left and right = 12px
 				$rows[$rownr][] = array_shift($tmpElements);
 				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
-			} else {
-				if(!empty($rows[$rownr])){
-					if($rows[$rownr][count($rows[$rownr]) - 1]->classname === "we_wysiwyg_ToolbarSeparator"){
-						array_pop($rows[$rownr]);
-						$rownr++;
-						$rowwidth = 0;
-						$rows[$rownr] = array();
-					} else {
-						do{
-							array_unshift($tmpElements, array_pop($rows[$rownr]));
-						} while($tmpElements[0]->classname != "we_wysiwyg_ToolbarSeparator");
-						array_shift($tmpElements);
-						$rownr++;
-						$rowwidth = 0;
-						$rows[$rownr] = array();
-					}
+			} elseif($rows[$rownr]){
+				if($rows[$rownr][count($rows[$rownr]) - 1]->isSeparator){
+					array_pop($rows[$rownr]);
+					$rownr++;
+					$rowwidth = 0;
+					$rows[$rownr] = array();
+				} else {
+					do{
+						array_unshift($tmpElements, array_pop($rows[$rownr]));
+					} while(!($tmpElements[0]->isSeparator));
+					array_shift($tmpElements);
+					$rownr++;
+					$rowwidth = 0;
+					$rows[$rownr] = array();
 				}
 			}
 		}
 		return $rows;
 	}
 
-	function getToolbarWidthAndHeight(){
-
+	private function getToolbarWidthAndHeight(){
 		$rows = $this->getToolbarRows();
 		$toolbarheight = 0;
 		$min_w = 0;
@@ -666,17 +655,17 @@ class we_wysiwyg_editor{
 	}
 
 	function getContextmenuCommands(){
-		if(count($this->filteredElements) == 0){
+		if(!$this->filteredElements){
 			return '{}';
 		}
 		$ret = '';
 		foreach($this->filteredElements as $elem){
-			$ret .= $elem->classname === 'we_wysiwyg_ToolbarButton' && $elem->showMeInContextmenu && self::wysiwygCmdToTiny($elem->cmd) ? '"' . self::wysiwygCmdToTiny($elem->cmd) . '":true,' : '';
+			$ret .= $elem->showMeInContextmenu && self::wysiwygCmdToTiny($elem->cmd) ? '"' . self::wysiwygCmdToTiny($elem->cmd) . '":true,' : '';
 		}
 		return trim($ret, ',') !== '' ? '{' . trim($ret, ',') . '}' : 'false';
 	}
 
-	static function wysiwygCmdToTiny($cmd){
+	private static function wysiwygCmdToTiny($cmd){
 		$cmdMapping = array(
 			'abbr' => 'weabbr',
 			'acronym' => 'weacronym',
@@ -768,9 +757,14 @@ class we_wysiwyg_editor{
 		return $doSet;
 	}
 
-	function getTemplates(){
+	private function getTemplates(){
 		//FIXME: the ParentID query will only hold for depth 1 folders
-		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE (ID IN (' . implode(',', array_map('intval', explode(',', $this->templates))) . ') OR ParentID IN (' . implode(',', array_map('intval', explode(',', $this->templates))) . ') ) AND Published!=0 AND isFolder=0');
+		$templates = array_filter(array_map('intval', explode(',', $this->templates)));
+		if(!$templates){
+			return 'template_templates : [],';
+		}
+		$templates = implode(',', $templates);
+		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE (ID IN (' . $templates . ') OR ParentID IN (' . $templates . ') ) AND Published!=0 AND isFolder=0');
 		$tmplArr = $GLOBALS['DB_WE']->getAll(true);
 
 		$templates = array();
@@ -791,7 +785,7 @@ class we_wysiwyg_editor{
 		return 'template_templates : [' . implode(',', $templates) . '],';
 	}
 
-	function getInlineHTML(){
+	private function getInlineHTML(){
 		$rows = $this->getToolbarRows();
 		$editValue = $this->parseInternalImageSrc($this->value);
 
@@ -806,9 +800,9 @@ class we_wysiwyg_editor{
 			foreach($outer as $inner){
 				if(!$inner->cmd){
 					$tinyRows .= $inner->conditional ? '' : 'separator,';
-				} else if(self::wysiwygCmdToTiny($inner->cmd)){
-					$tinyRows .= self::wysiwygCmdToTiny($inner->cmd) . ',';
-					$allCommands[] .= self::wysiwygCmdToTiny($inner->cmd);
+				} else if(($cmd = self::wysiwygCmdToTiny($inner->cmd))){
+					$tinyRows .= $cmd . ',';
+					$allCommands[] .= $cmd;
 				}
 			}
 			$tinyRows = rtrim($tinyRows, ',') . '",';
@@ -857,6 +851,7 @@ WE_FIELDNAME of THIS instance is: "' . $this->fieldName . '"
 //copy the following function to your webEdition template and edit its content
 ' . ($this->fieldName_clean == $this->fieldName ? '' : '//ATTENTION: the field name in the following function name was changed due to javasript restrictions!') . '
 
+//FIXME: change this function name to a call on an array/object element, e.g. we_tinyMCE_init["' . $this->fieldName_clean . '"]
 function we_tinyMCE_' . $this->fieldName_clean . '_init(ed){
 	//you can adress this instance of tinyMCE using variable ed:
 	//var this_editor = ed;
@@ -880,62 +875,62 @@ and have a look at /webEdition/js/wysiwyg/tinymce/weTinyMceFunctions to see what
 
 ' : '') . '
 
-var weclassNames_tinyMce = new Array (' . $this->cssClassesJS . ');
+var weclassNames_tinyMce = [' . $this->cssClassesJS . '];
 
 var tinyMceTranslationObject = {' . $editorLang . ':{
 	we:{
-		"group_link":"' . g_l('wysiwyg', '[links]') . '",//(insert_hyperlink)
-		"group_copypaste":"' . g_l('wysiwyg', '[import_text]') . '",
-		"group_advanced":"' . g_l('wysiwyg', '[advanced]') . '",
-		"group_insert":"' . g_l('wysiwyg', '[insert]') . '",
-		"group_indent":"' . g_l('wysiwyg', '[indent]') . '",
-		//"group_view":"' . g_l('wysiwyg', '[view]') . '",
-		"group_table":"' . g_l('wysiwyg', '[table]') . '",
-		"group_edit":"' . g_l('wysiwyg', '[edit]') . '",
-		"group_layer":"' . g_l('wysiwyg', '[layer]') . '",
-		"group_xhtml":"' . g_l('wysiwyg', '[xhtml_extras]') . '",
-		"tt_weinsertbreak":"' . g_l('wysiwyg', '[insert_br]') . '",
-		"tt_welink":"' . g_l('wysiwyg', '[hyperlink]') . '",
-		"tt_weimage":"' . g_l('wysiwyg', '[insert_edit_image]') . '",
-		"tt_wefullscreen":"' . g_l('wysiwyg', '[fullscreen]') . '",
-		"tt_welang":"' . g_l('wysiwyg', '[language]') . '",
-		"tt_wespellchecker":"' . g_l('wysiwyg', '[spellcheck]') . '",
-		"tt_wevisualaid":"' . g_l('wysiwyg', '[visualaid]') . '",
-		"tt_wegallery":"not translated yet",
-		"cm_inserttable":"' . g_l('wysiwyg', '[insert_table]') . '",
-		"cm_table_props":"' . g_l('wysiwyg', '[edit_table]') . '"
+		group_link:"' . g_l('wysiwyg', '[links]') . '",//(insert_hyperlink)
+		group_copypaste:"' . g_l('wysiwyg', '[import_text]') . '",
+		group_advanced:"' . g_l('wysiwyg', '[advanced]') . '",
+		group_insert:"' . g_l('wysiwyg', '[insert]') . '",
+		group_indent:"' . g_l('wysiwyg', '[indent]') . '",
+		//group_view:"' . g_l('wysiwyg', '[view]') . '",
+		group_table:"' . g_l('wysiwyg', '[table]') . '",
+		group_edit:"' . g_l('wysiwyg', '[edit]') . '",
+		group_layer:"' . g_l('wysiwyg', '[layer]') . '",
+		group_xhtml:"' . g_l('wysiwyg', '[xhtml_extras]') . '",
+		tt_weinsertbreak:"' . g_l('wysiwyg', '[insert_br]') . '",
+		tt_welink:"' . g_l('wysiwyg', '[hyperlink]') . '",
+		tt_weimage:"' . g_l('wysiwyg', '[insert_edit_image]') . '",
+		tt_wefullscreen:"' . g_l('wysiwyg', '[fullscreen]') . '",
+		tt_welang:"' . g_l('wysiwyg', '[language]') . '",
+		tt_wespellchecker:"' . g_l('wysiwyg', '[spellcheck]') . '",
+		tt_wevisualaid:"' . g_l('wysiwyg', '[visualaid]') . '",
+		tt_wegallery:"not translated yet",
+		cm_inserttable:"' . g_l('wysiwyg', '[insert_table]') . '",
+		cm_table_props:"' . g_l('wysiwyg', '[edit_table]') . '"
 	}}};
 
-
+//FIXME: if possible change this to an array/object element!
 var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	wePluginClasses : {
-		"weadaptbold" : "' . $editorLangSuffix . 'weadaptbold",
-		"weadaptitalic" : "' . $editorLangSuffix . 'weadaptitalic",
-		"weabbr" : "' . $editorLangSuffix . 'weabbr",
-		"weacronym" : "' . $editorLangSuffix . 'weacronym"
+		weadaptbold : "' . $editorLangSuffix . 'weadaptbold",
+		weadaptitalic : "' . $editorLangSuffix . 'weadaptitalic",
+		weabbr : "' . $editorLangSuffix . 'weabbr",
+		weacronym : "' . $editorLangSuffix . 'weacronym"
 	},
 
 	weFullscrenParams : {
-		"outsideWE" : "' . $wefullscreenVars['outsideWE'] . '",
-		"xml" : "' . $wefullscreenVars['xml'] . '",
-		"removeFirstParagraph" : "' . $wefullscreenVars['removeFirstParagraph'] . '",
-		"baseHref" : "' . urlencode($this->baseHref) . '",
-		"charset" : "' . $this->charset . '",
-		"cssClasses" : "' . urlencode($this->cssClasses) . '",
-		"fontnames" : "' . urlencode($this->fontnamesCSV) . '",
-		"bgcolor" : "' . $this->bgcol . '",
-		"language" : "' . $this->Language . '",
-		"screenWidth" : screen.availWidth-10,
-		"screenHeight" : screen.availHeight - 70,
-		"className" : "' . $this->className . '",
-		"propString" : "' . urlencode($this->propstring) . '",
-		"contentCss" : "' . urlencode($this->contentCss) . '",
-		"origName" : "' . urlencode($this->origName) . '",
-		"tinyParams" : "' . urlencode($this->tinyParams) . '",
-		"contextmenu" : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
-		"templates" : "' . $this->templates . '",
-		"formats" : "' . $this->formats . '",
-		"galleryTemplates" : "' . $this->galleryTemplates . '"
+		outsideWE : "' . $wefullscreenVars['outsideWE'] . '",
+		xml : "' . $wefullscreenVars['xml'] . '",
+		removeFirstParagraph : "' . $wefullscreenVars['removeFirstParagraph'] . '",
+		baseHref : "' . urlencode($this->baseHref) . '",
+		charset : "' . $this->charset . '",
+		cssClasses : "' . urlencode($this->cssClasses) . '",
+		fontnames : "' . urlencode($this->fontnamesCSV) . '",
+		bgcolor : "' . $this->bgcol . '",
+		language : "' . $this->Language . '",
+		screenWidth : screen.availWidth-10,
+		screenHeight : screen.availHeight - 70,
+		className : "' . $this->className . '",
+		propString : "' . urlencode($this->propstring) . '",
+		contentCss : "' . urlencode($this->contentCss) . '",
+		origName : "' . urlencode($this->origName) . '",
+		tinyParams : "' . urlencode($this->tinyParams) . '",
+		contextmenu : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
+		templates : "' . $this->templates . '",
+		formats : "' . $this->formats . '",
+		galleryTemplates : "' . $this->galleryTemplates . '"
 	},
 	weImageStartID : ' . $this->imageStartID . ',
 	weGalleryTemplates : "' . $this->galleryTemplates . '",
@@ -1075,7 +1070,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			try{
 				hasOpener = opener ? true : false;
 			} catch(e){}
-
+			//FIXME: change this & every call to an object/array element call!
 			if(window.we_tinyMCE_' . $this->fieldName_clean . '_init !== undefined){
 				try{
 					we_tinyMCE_' . $this->fieldName_clean . '_init(ed);
@@ -1279,8 +1274,11 @@ tinyMCE.PluginManager.load = function(n, u, cb, s) {
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') .
-			'
-<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (max($this->width, $this->maxGroupWidth + 8)) . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
+			getHtmlTag('textarea', array(
+				'wrap' => "off",
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . (max($this->width, $this->maxGroupWidth + 8)) . 'px; height:' . $this->height . 'px;',
+				'id' => $this->name,
+				'name' => $this->name), strtr($editValue, array('\n' => '', '&' => '&amp;')));
 	}
 
 }

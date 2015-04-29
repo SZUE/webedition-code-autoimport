@@ -109,7 +109,7 @@ class we_customer_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorHeader(){
-		$extraJS = 'var aTabs=new Array;';
+		$extraJS = 'var aTabs=[];';
 
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));

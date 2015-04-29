@@ -1,11 +1,3 @@
-we/include/we_fs.inc.php
-we_delSelect.php
-we_dirSelect.php 
-we_docSelect.php
-we_catSelect.php
-js/selectors/we_sselector_footer.js
-we_sselector_footer.php
-we_sselector_header.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -29,6 +21,8 @@ wysiwyg
 we_vtabs.php
 we/versions/dummy
 we/templates/dummy
+we_sselector_header.php
+we_sselector_footer.php
 we_lcmd.php
 we/include/xhtml.inc.php
 we/include/we_widgets/mod/wePadFunctions.inc.php
@@ -312,11 +306,11 @@ we/include/we_modules/shop/weShopView.php
 we/include/we_modules/shop/weShopVats.class.php
 we/include/we_modules/shop/weShopVatRule.class.php
 we/include/we_modules/shop/weShopVariants.inc.php
+we/include/we_modules/shop/we_shop_variants.class.php
+we/include/we_modules/shop/we_shop_listviewShopVariants.class.php
 we/include/we_modules/shop/we_ShopDirSelect.php
 we/include/we_modules/shop/we_shopDirSelector.php
 we/include/we_modules/shop/we_shopDirSelectorFrameset.php
-we/include/we_modules/shop/we_shop_variants.class.php
-we/include/we_modules/shop/we_shop_listviewShopVariants.class.php
 we/include/we_modules/shop/we_shop_dirSelector.class.php
 we/include/we_modules/shop/weShippingControl.class.php
 we/include/we_modules/shop/we_pager_class.inc.php
@@ -2022,6 +2016,7 @@ we/include/we_import/we_import_CSVFix.class.php
 we/include/we_import/importFunctions.class.inc.php
 we/include/we_html_tools.inc.php
 we/include/we_hook/custom_hooks/dummy
+we/include/we_fs.inc.php
 we/include/we_export/weExportWizard.inc.php
 we/include/we_export/weExportTree.inc.php
 we/include/we_export/exportLoadTree.php
@@ -2369,7 +2364,11 @@ we/include/define_styles.inc.php
 we/include/db_mysql.inc.php
 we/include/clear_cache.inc.php
 we/include/accessibility/checkDocument.inc.php
+we_docSelect.php
+we_dirSelect.php 
+we_delSelect.php
 we_customerSelect.php
+we_catSelect.php
 we_backup/tmp/dummy
 we_backup/download/dummy
 we_backup/download/dummy
@@ -2538,6 +2537,7 @@ js/weJsStrings.php
 js/weJsStrings.inc.php
 js/weDOM_Safari.js
 js/we_colors.js
+js/selectors/we_sselector_footer.js
 js/seeMode.php
 js/messageConsoleImages.js
 js/menu/clickMenu_IE8.js
@@ -2597,6 +2597,7 @@ js/jscalendar/img.gif
 js/jscalendar/calendar-setup.js
 js/jscalendar/calendar.js
 js/jscalendar
+index.html
 images/wysiwyg/wysiwyg.gif
 images/wysiwyg/wysiwyg_dis.gif
 images/wysiwyg/visibleborders.gif

@@ -861,8 +861,8 @@ function setState(a) {
 
 				  function delOpenFolder(id){
 				  var of=top.openFolders[top.table];
-				  var arr=new Array();
-				  var arr1=new Array();
+				  var arr=[];
+				  var arr1=[];
 				  arr=of.split(",");
 				  for(i=0;i<arr.length;i++){
 				  if (arr[i]!=id) arr1.push(arr[i]);
@@ -877,7 +877,7 @@ function setState(a) {
 				  }
 
 				  function setTab(tab) {
-				  ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.treeData.table]=new Array();
+				  ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.treeData.table]=[];
 				  for(i=1;i<' . $this->topFrame . '.treeData.len;i++) {
 				  if (' . $this->topFrame . '.treeData[i].checked==1) {
 				  ' . $this->topFrame . '.SelectedItems[' . $this->topFrame . '.treeData.table].push(' . $this->topFrame . '.treeData[i].id);
@@ -912,7 +912,7 @@ function setState(a) {
 				  var winWidth  = getWindowWidth(window);
 				  var winHeight = getWindowHeight(window);
 
-				  var we_tabs = new Array();
+				  var we_tabs = [];
 				  ' . ($art === "docs" ? ('we_tabs.push(new We_Tab("#","' . g_l('export', '[documents]') . '",(' . $this->topFrame . '.table=="' . FILE_TABLE . '" ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . '),"self.setTab(0);"));') : '') . '
 				  ' . ($art === "objects" && defined('OBJECT_FILES_TABLE') ? ('we_tabs.push(new We_Tab("#","' . g_l('export', '[objects]') . '",(' . $this->topFrame . '.table=="' . OBJECT_FILES_TABLE . '" ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . '),"self.setTab(1);"));') : ''));
 
