@@ -68,3 +68,26 @@ function we_cmd() {
 	}
 
 }
+
+var we_editor_header = {
+	timeout: null,
+	evtCounter: 0,
+
+	dragEnter: function(){
+		++this.evtCounter;
+		this.scrollUpEditorContent();
+	},
+
+	dragLeave: function(){
+		if(--this.evtCounter === 0){
+			clearTimeout(this.timeout);
+		}
+	},
+
+	scrollUpEditorContent: function(){
+		_EditorFrame.getContentEditor().scrollBy(0,-10);
+		if(this.evtCounter){
+			this.timeout = setTimeout(function(){we_editor_header.scrollUpEditorContent();},66);
+		}
+	}
+};

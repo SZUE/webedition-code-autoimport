@@ -140,12 +140,13 @@ echo STYLESHEET .
 	'var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 	($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE = 1;' : '')) .
- we_html_element::jsScript(JS_DIR . 'editor_header.js');
+ we_html_element::jsScript(JS_DIR . 'we_editor_header.js');
 $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
 ?>
 </head>
 <body id="eHeaderBody" onload="setFrameSize();
-		we_setPath(<?php echo "'" . $we_doc->Path . "','" . $_text . "', " . intval($we_doc->ID); ?>);" onresize="setFrameSize()">
+		we_setPath(<?php echo "'" . $we_doc->Path . "','" . $_text . "', " . intval($we_doc->ID); ?>);" onresize="setFrameSize()"
+		<?php echo ($we_doc->ContentType === we_base_ContentTypes::COLLECTION ? ' ondragenter="we_editor_header.dragEnter()" ondragleave="we_editor_header.dragLeave()"' : '');?>>
 	<div id="main" ><?php
 		echo '<div id="headrow">&nbsp;' . ($we_doc->ContentType ? we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) : '') . ': ' .
 		($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="' . WEBEDITION_DIR . 'openBrowser.php?url=' . $we_doc->ID . '" target="browser">' : '') .
