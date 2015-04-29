@@ -754,6 +754,10 @@ function weWysiwygSetHiddenText(arg) {
 	}
 
 	function getTemplates(){
+		if(!$this->templates){
+			return '';
+		}
+
 		//FIXME: the ParentID query will only hold for depth 1 folders
 		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE (ID IN (' . implode(',', array_map('intval', explode(',', $this->templates))) . ') OR ParentID IN (' . implode(',', array_map('intval', explode(',', $this->templates))) . ') ) AND Published!=0 AND isFolder=0');
 		$tmplArr = $GLOBALS['DB_WE']->getAll(true);
@@ -972,7 +976,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	//fullscreen_new_window: true,
 	content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
 	popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.php",
-	' . (in_array('template', $allCommands) ? $this->getTemplates() : '') . '
+	' . (in_array('template', $allCommands && $this->templates) ? $this->getTemplates() : '') . '
 
 	// Skin options
 	skin : "o2k7",
