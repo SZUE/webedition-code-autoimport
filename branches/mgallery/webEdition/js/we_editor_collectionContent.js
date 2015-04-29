@@ -92,6 +92,7 @@ weCollectionEdit = {
 		dragEl: null,
 		dragNextsibling: null,
 		lastY: 0,
+		lastIndex: 0,
 		removed: false,
 		isDragRow: false,
 		fillEmptyRows: false,
@@ -164,13 +165,23 @@ weCollectionEdit = {
 		}
 
 		this.dd.spacer = document.createElement("div");
-		this.dd.spacer.style.height = '34px';
 		this.dd.spacer.style.backgroundColor = 'white';
 		this.dd.spacer.style.border = '1px solid #006db8';
-		this.dd.spacer.style.width = '804px';
-		this.dd.spacer.style.marginTop = '4px';
 		this.dd.spacer.setAttribute("ondrop","weCollectionEdit.dropOnRow(event)");
 		this.dd.spacer.setAttribute("ondragover","weCollectionEdit.allowDrop(event)");
+		if(this.view === 'grid'){
+			
+			this.dd.spacer.style.float = 'left';
+			this.dd.spacer.style.display = 'block';
+			this.dd.spacer.style.height = '240px';
+			this.dd.spacer.style.width = '242px';
+			this.dd.spacer.style.marginRight = '12px';
+		} else {
+			this.dd.spacer.style.height = '34px';
+			this.dd.spacer.style.width = '804px';
+			this.dd.spacer.style.marginTop = '4px';
+		}
+
 
 		return this.dd.spacer;
 	},
@@ -302,8 +313,25 @@ weCollectionEdit = {
 		var el = this.getRow(elem),//this.getRow(evt.target),
 			data = evt.dataTransfer.getData("text").split(',');
 		this.view = view;
-
+top.console.debug("enter", type, data[0], el.id, this.dd.dragID, this.dd.removed);
 		switch(data[0]){
+			case 'moveElement':
+				if(el.id !== this.dd.dragID && type === 'item'){
+					var index = el.id.substr(10);
+					el = this.dd.lastIndex < index ? el.parentNode.nextSibling : el.parentNode;
+
+					if(!this.dd.removed){
+						document.getElementById('content_table_' + this.view).removeChild(this.view === 'grid' ? this.dd.dragEl.parentNode : this.dd.dragEl);
+						this.dd.removed = true;
+					}
+
+					if(this.getSpacer().parentNode){
+						document.getElementById('content_table_' + this.view).removeChild(this.getSpacer());
+					}
+					document.getElementById('content_table_' + this.view).insertBefore(this.getSpacer(), el);
+					this.dd.lastIndex = index;
+				}
+				break;
 			case 'moveRow':
 				if(el.id !== this.dd.dragID){
 					el = this.dd.lastY < evt.clientY ? el.nextSibling : el;
@@ -388,17 +416,38 @@ weCollectionEdit = {
 		this.dd.removed = false;
 		evt.dataTransfer.setData('text', 'moveRow,' + evt.target.id);
 	},
+			
+	startDragCollectionElement: function(evt, view) {
+		this.view = view;
+		this.dd.isDragRow = true;
+		this.dd.lastY = evt.clientY;
+		this.dd.dragEl = evt.target;
+		this.dd.dragID = evt.target.id;
+		this.dd.dragNextsibling = evt.target.nextSibling;
+		this.dd.removed = false;
+		evt.dataTransfer.setData('text', 'moveElement,' + evt.target.id);
+	},
 
-	dropOnRow: function(type, view, evt, elem) {
+	dropOnRow: function(type, view, evt, elem) {return;
 		this.view = view;
 		evt.preventDefault();
 		var data = evt.dataTransfer.getData("text").split(','),
 			el, index;
-
+top.console.debug(data[0]);
 		switch(data[0]){
 			case 'moveRow':
 				this.dd.isDragRow = false;
 				document.getElementById('content_table').replaceChild(this.dd.dragEl, this.getSpacer());
+				this.repaintAndRetrieveCsv();
+				this.dd.dragEl.style.borderColor = 'green';
+				setTimeout(function(){
+					weCollectionEdit.dd.dragEl.style.borderColor = '#006db8';
+					weCollectionEdit.resetDdParams();
+				}, 200);
+				break;
+			case 'moveElement':
+				this.dd.isDragRow = false;
+				document.getElementById('content_table_' + this.view).replaceChild(this.dd.dragEl, this.getSpacer());
 				this.repaintAndRetrieveCsv();
 				this.dd.dragEl.style.borderColor = 'green';
 				setTimeout(function(){

@@ -138,6 +138,18 @@ class we_collection extends we_root{
 	public function getText(){
 		return $this->Filename;
 	}
+	
+	public function getEditorBodyAttributes($editor = 0){
+		switch($editor){
+			case self::EDITOR_HEADER:
+				return ' ondragenter="we_editor_header.dragEnter();" ondragleave="we_editor_header.dragLeave();"';
+			case self::EDITOR_FOOTER:
+				return ' ondragenter="we_editor_footer.dragEnter();" ondragleave="we_editor_footer.dragLeave();"';
+			default:
+				return '';
+		}
+		
+	}
 
 	public function initByID($ID){
 		parent::initByID($ID, VFILE_TABLE);
@@ -313,7 +325,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Inhalt der Sammlung') .
 			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $recursive) .
-			we_html_element::htmlDiv(array('id' => 'content_table_list', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows) .
+			we_html_element::htmlDiv(array('id' => 'content_table_list', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows) . "<div>kein drag and drop aktuell: ist sehr zerrüttet!</div>" . 
 			we_html_element::htmlDiv(array('id' => 'content_table_grid', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px 0 0 20px;background-color:white;display:inline-block;min-height:200px'), $divs);
 	}
 
@@ -402,7 +414,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 				'id' => 'grid_elem_' . $index,
 				'class' => 'drop_reference',
 				'draggable' => 'true',
-				'ondragstart' => 'weCollectionEdit.startDragRow(event, true)',
+				'ondragstart' => 'weCollectionEdit.startDragCollectionElement(event, \'grid\')',
 				'ondrop' => 'weCollectionEdit.dropOnRow(\'item\',\'grid\',event, this)',
 				'ondragover' => 'weCollectionEdit.allowDrop(event)',
 				'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'grid\',event, this)',

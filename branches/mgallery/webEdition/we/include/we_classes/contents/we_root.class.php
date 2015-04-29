@@ -29,6 +29,8 @@ abstract class we_root extends we_class{
 	const USER_NO_PERM = -2;
 	const USER_NO_SAVE = -4;
 	const FILE_NOT_IN_USER_WORKSPACE = -1;
+	const EDITOR_HEADER = 1;
+	const EDITOR_FOOTER = 2;
 
 	/* ParentID of the object (ID of the Parent-Folder of the Object) */
 	var $ParentID = 0;
@@ -709,6 +711,10 @@ abstract class we_root extends we_class{
 	/** returns the Path dynamically (use it, when the class-variable Text is not set)  */
 	function getText(){
 		return $this->Text;
+	}
+
+	public function getEditorBodyAttributes($editor = 0){
+		return '';
 	}
 
 	/** get the Path of the Parent-Object */

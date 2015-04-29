@@ -180,7 +180,7 @@ if(inWorkflow($we_doc)){
 }
 ?>
 
-<body id="footerBody" onload="we_footerLoaded();"<?php echo ($we_doc->ContentType === we_base_ContentTypes::COLLECTION ? ' ondragenter="we_editor_footer.dragEnter()" ondragleave="we_editor_footer.dragLeave()"' : '');?>>
+<body id="footerBody" onload="we_footerLoaded();"<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER);?>>
 	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
 					<?php
