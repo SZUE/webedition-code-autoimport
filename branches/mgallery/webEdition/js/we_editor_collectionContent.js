@@ -85,7 +85,7 @@ weCollectionEdit = {
 	blankRow: '',
 	collectionName: '',
 	csv: '',
-	view: 'list',
+	view: 'grid',
 
 	dd: {
 		dragID: 0,
@@ -166,28 +166,31 @@ weCollectionEdit = {
 
 		this.dd.spacer = document.createElement("div");
 		this.dd.spacer.style.backgroundColor = 'white';
-		this.dd.spacer.style.border = '1px solid #006db8';
-		this.dd.spacer.setAttribute("ondrop","weCollectionEdit.dropOnRow(event)");
 		this.dd.spacer.setAttribute("ondragover","weCollectionEdit.allowDrop(event)");
 		if(this.view === 'grid'){
-			
+			this.dd.spacer.setAttribute("ondrop","weCollectionEdit.dropOnCollectionItem(\'item\',\'grid\',event, this)");
 			this.dd.spacer.style.float = 'left';
 			this.dd.spacer.style.display = 'block';
-			this.dd.spacer.style.height = '240px';
-			this.dd.spacer.style.width = '242px';
-			this.dd.spacer.style.marginRight = '12px';
+			this.dd.spacer.style.height = '242px';
+			this.dd.spacer.style.width = '256px';
+			var inner = document.createElement("div");
+			inner.style.height = '230px';
+			inner.style.width = '240px';
+			inner.style.border = '1px dotted #006db8';
+			this.dd.spacer.appendChild(inner);
 		} else {
+			this.dd.spacer.setAttribute("ondrop","weCollectionEdit.dropOnRow(\'item\',\'grid\',event, this)");
+			this.dd.spacer.style.border = '1px solid #006db8';
 			this.dd.spacer.style.height = '34px';
 			this.dd.spacer.style.width = '804px';
 			this.dd.spacer.style.marginTop = '4px';
 		}
 
-
 		return this.dd.spacer;
 	},
 
 	getRow: function(elem){
-		while(elem.className !== 'drop_reference' && elem.className !== 'content_table_' + this.view){
+		while(elem.className !== 'drop_reference' && elem.className !== 'content_table'){
 			elem = elem.parentNode;
 		}
 
@@ -240,10 +243,12 @@ weCollectionEdit = {
 			while(!isFirstSet && items.length){
 				var item = items.shift();
 				if(this.dd.doubleOk === 1 || this.collectionCsv.search(',' + item.id + ',') === -1){
-					document.getElementById('yuiAcInputItem_' + index).value = item.path;
-					document.getElementById('yuiAcResultItem_' + index).value = item.id;
+					//document.getElementById('yuiAcInputItem_' + index).value = item.path;
+					//document.getElementById('yuiAcResultItem_' + index).value = item.id;
 
-					document.getElementById('grid_elem_' + index).style.backgroundImage = 'url(' + item.iconSrc.replace('%2F', '/') + ')';
+					document.getElementById('grid_elem_' + index).firstChild.style.backgroundImage = 'url(' + item.iconSrc.replace('%2F', '/') + ')';
+					//TODO: name id-fiels using index from item-id and rename when reordering...
+					document.getElementById('grid_elem_' + index).childNodes[2].value = item.id;
 
 					itemsSet[0].push(item.id);
 					isFirstSet = true;
@@ -260,10 +265,12 @@ weCollectionEdit = {
 					index = el.nextSibling.id.substr(10);
 					id = document.getElementById('yuiAcResultItem_' + index).value;
 					if(id == -1 || id == 0){
-						document.getElementById('yuiAcInputItem_' + index).value = items[i].path;
-						document.getElementById('yuiAcResultItem_' + index).value = items[i].id;
+						//document.getElementById('yuiAcInputItem_' + index).value = items[i].path;
+						//document.getElementById('yuiAcResultItem_' + index).value = items[i].id;
 
-						//document.getElementById('grid_elem_' + index).style.background = 'url(' + items[i].iconSrc + ') no-repeat center center';
+						document.getElementById('grid_elem_' + index).firstChild.style.backgroundImage = 'url(' + item.iconSrc.replace('%2F', '/') + ')';
+						//TODO: name id-fiels using index from item-id and rename when reordering...
+						document.getElementById('grid_elem_' + index).childNodes[2].value = item.id;
 						el = el.nextSibling;
 						continue;
 					} else {
@@ -275,23 +282,36 @@ weCollectionEdit = {
 				itemsSet[1].push(items[i].id);
 			}
 		}
-		this.repaintAndRetrieveCsv();
+		this.repaintAndRetrieveCsv(this.view);
 		return itemsSet;
 	},
 
-	repaintAndRetrieveCsv: function(){
-		var t = document.getElementById('content_table_' + 'list'), row, index, csv = ',', val, btns;
-		for(var i = 0; i < t.childNodes.length; i++){
-			row = t.childNodes[i];
-			btns = row.getElementsByTagName('BUTTON');
-			index = row.id.substr(10);
-			val = parseInt(document.getElementById('yuiAcResultItem_' + index).value);
-			csv += (val !== 0 ? val : -1) + ',';
-			document.getElementById('label_' + index).innerHTML = i + 1;
-			btns[2].disabled = (val === - 1);
-			btns[4].disabled = (i === 0);
-			btns[5].disabled = (i === (t.childNodes.length - 1));
-			btns[6].disabled = (t.childNodes.length === 1);
+	repaintAndRetrieveCsv: function(view){
+		var t = document.getElementById('content_table_' + view), row, item, index, csv = ',', val, btns;
+
+		switch(view){
+			case 'grid':
+				for(var i = 0; i < t.childNodes.length; i++){
+					item = t.childNodes[i];
+					item.id = 'grid_elem_' + (i+1);
+					val = parseInt(document.we_form.collectionItem_we_id[i].value);
+					csv += (val !== 0 ? val : -1) + ',';
+				}
+				break;
+			case 'list':
+				for(var i = 0; i < t.childNodes.length; i++){
+					row = t.childNodes[i];
+					btns = row.getElementsByTagName('BUTTON');
+					index = row.id.substr(10);
+					val = parseInt(document.getElementById('yuiAcResultItem_' + index).value);
+					csv += (val !== 0 ? val : -1) + ',';
+					document.getElementById('label_' + index).innerHTML = i + 1;
+					btns[2].disabled = (val === - 1);
+					btns[4].disabled = (i === 0);
+					btns[5].disabled = (i === (t.childNodes.length - 1));
+					btns[6].disabled = (t.childNodes.length === 1);
+				}
+				break;
 		}
 		if(val !== -1){
 			//this.addRow(t.lastChild, true);
@@ -313,23 +333,47 @@ weCollectionEdit = {
 		var el = this.getRow(elem),//this.getRow(evt.target),
 			data = evt.dataTransfer.getData("text").split(',');
 		this.view = view;
-top.console.debug("enter", type, data[0], el.id, this.dd.dragID, this.dd.removed);
+
 		switch(data[0]){
 			case 'moveElement':
 				if(el.id !== this.dd.dragID && type === 'item'){
-					var index = el.id.substr(10);
-					el = this.dd.lastIndex < index ? el.parentNode.nextSibling : el.parentNode;
+					var elIndex = el.id.substr(10),
+						diff = elIndex - this.dd.dragIndex,
+						tmpIndex = this.dd.dragIndex,
+						tmpID = this.dd.dragID;
 
 					if(!this.dd.removed){
-						document.getElementById('content_table_' + this.view).removeChild(this.view === 'grid' ? this.dd.dragEl.parentNode : this.dd.dragEl);
+						document.getElementById('content_table_' + this.view).removeChild(this.dd.dragEl);
 						this.dd.removed = true;
 					}
 
-					if(this.getSpacer().parentNode){
+					if(this.getSpacer(this.dd.dragID).parentNode){
 						document.getElementById('content_table_' + this.view).removeChild(this.getSpacer());
 					}
-					document.getElementById('content_table_' + this.view).insertBefore(this.getSpacer(), el);
-					this.dd.lastIndex = index;
+					document.getElementById('content_table_' + this.view).insertBefore(this.getSpacer(), (diff > 0 ? el.nextSibling : el));
+
+					//rewrite element ids (doing only the absolute neccessary) 
+					this.dd.dragID = el.id;
+					this.dd.dragIndex = elIndex;
+
+					switch(diff){
+						case 1:
+						case -1:
+							el.id = tmpID;
+							break;
+						default:
+							
+							if(diff > 1){
+								for(var i = 0; i < 3; i++){
+									document.getElementById('content_table_' + this.view).childNodes[tmpIndex-1].id = 'grid_elem_' + tmpIndex++;
+								}
+							} else {
+								for(var i = 0; i < 3; i++){
+									document.getElementById('content_table_' + this.view).childNodes[elIndex].id = 'grid_elem_' + ++elIndex;
+								}
+							}
+
+					}
 				}
 				break;
 			case 'moveRow':
@@ -350,32 +394,59 @@ top.console.debug("enter", type, data[0], el.id, this.dd.dragID, this.dd.removed
 				break;
 			case 'dragItem':
 			case 'dragFolder':
-				switch(type){
-					case 'item':
-						var t = document.getElementById('content_table_' + this.view), index;
-						for(var i = 0; i < t.childNodes.length; i++){
-							index = t.childNodes[i].id.substr(10);
-							//document.getElementById(this.view + '_elem_ + index).style.border = '1px solid #006db8';
-						}
+				if(this.view === 'grid'){
+					switch(type){
+						case 'item':
+							var t = document.getElementById('content_table_' + this.view), index;
+							for(var i = 0; i < t.childNodes.length; i++){
+								el.firstChild.style.border = '1px solid #006db8';
+							}
 
-						if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-							el.style.border = '1px solid #00cc00';
-						} else {
-							el.style.border = '1px solid red';
-						}
-						break;
-					case 'inter':
-						if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-							elem.style.width = '36px';
-							elem.style.margin = '0 4px 0 4px';
-							elem.style.border = '1px dotted #00cc00';
-							elem.previousSibling.style.width = '224px';
-							elem.parentNode.nextSibling.firstChild.style.width = '224px';
-						} else {
-							//el.style.border = '1px solid red';
-						}
-						
+							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+								el.firstChild.style.border = '1px solid #00cc00';
+							} else {
+								el.firstChild.style.border = '1px solid red';
+							}
+							break;
+						case 'inter':
+							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+								elem.style.width = '36px';
+								elem.style.margin = '0 4px 0 4px';
+								elem.style.border = '1px dotted #00cc00';
+								elem.previousSibling.style.width = '224px';
+								elem.parentNode.nextSibling.firstChild.style.width = '224px';
+							} else {
+								//el.style.border = '1px solid red';
+							}
+					}
+				} else {
+					/*
+					switch(type){
+						case 'item':
+							var t = document.getElementById('content_table_' + this.view), index;
+							for(var i = 0; i < t.childNodes.length; i++){
+								index = t.childNodes[i].id.substr(10);
+								//document.getElementById(this.view + '_elem_ + index).style.border = '1px solid #006db8';
+							}
 
+							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+								el.style.border = '1px solid #00cc00';
+							} else {
+								el.style.border = '1px solid red';
+							}
+							break;
+						case 'inter':
+							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+								elem.style.width = '36px';
+								elem.style.margin = '0 4px 0 4px';
+								elem.style.border = '1px dotted #00cc00';
+								elem.previousSibling.style.width = '224px';
+								elem.parentNode.nextSibling.firstChild.style.width = '224px';
+							} else {
+								//el.style.border = '1px solid red';
+							}
+					}
+					*/
 				}
 				break;
 			default:
@@ -418,22 +489,64 @@ top.console.debug("enter", type, data[0], el.id, this.dd.dragID, this.dd.removed
 	},
 			
 	startDragCollectionElement: function(evt, view) {
+		var el = this.getRow(evt.target);
 		this.view = view;
 		this.dd.isDragRow = true;
 		this.dd.lastY = evt.clientY;
-		this.dd.dragEl = evt.target;
-		this.dd.dragID = evt.target.id;
-		this.dd.dragNextsibling = evt.target.nextSibling;
+		this.dd.dragEl = el;
+		this.dd.dragID = el.id;
+		this.dd.dragIndex = el.id.substr(10);
+		this.dd.dragNextsibling = el.nextSibling;
 		this.dd.removed = false;
-		evt.dataTransfer.setData('text', 'moveElement,' + evt.target.id);
+		evt.dataTransfer.setData('text', 'moveElement,' + el.id);
+	},
+			
+	dropOnCollectionItem: function(type, view, evt, elem){
+		evt.preventDefault();
+
+		var data = evt.dataTransfer.getData("text").split(','),
+			el, index;
+
+		switch(data[0]){
+			case 'moveElement':
+				this.dd.isDragRow = false;
+				document.getElementById('content_table_' + this.view).replaceChild(this.dd.dragEl, this.getSpacer());
+				this.repaintAndRetrieveCsv(view);
+				this.dd.dragEl.firstChild.style.borderColor = 'green';
+				setTimeout(function(){
+					weCollectionEdit.dd.dragEl.firstChild.style.borderColor = '#006db8';
+					weCollectionEdit.resetDdParams();
+				}, 200);
+				break;
+			case 'dragItem':
+			case 'dragFolder':
+				el = this.getRow(elem);
+				index = el.id.substr(10);
+				el.firstChild.style.border = '1px solid #006db8';
+
+				if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
+					if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+						this.callForVerifiedItemsAndInsert(index, data[2]);
+					} else {
+						//alert("the item you try to drag from doesn't match your collection's content types");
+					}
+
+				} else {
+					alert("the tree you try to drag from doesn't match your collection's table property");
+				}
+				break;
+			default:
+				return;
+		}
+
 	},
 
-	dropOnRow: function(type, view, evt, elem) {return;
-		this.view = view;
+	dropOnRow: function(evt) {
+		//this.view = view;
 		evt.preventDefault();
 		var data = evt.dataTransfer.getData("text").split(','),
 			el, index;
-top.console.debug(data[0]);
+
 		switch(data[0]){
 			case 'moveRow':
 				this.dd.isDragRow = false;
@@ -523,7 +636,7 @@ top.console.debug(data[0]);
 							if(respArr.length === -1){ // option deactivated: check doublettes for single insert too
 								document.getElementById('yuiAcInputItem_' + index).value = respArr[0].path;
 								document.getElementById('yuiAcResultItem_' + index).value = respArr[0].id;
-								weCollectionEdit.repaintAndRetrieveCsv();
+								weCollectionEdit.repaintAndRetrieveCsv(this.view);
 							} else {
 								var resp = weCollectionEdit.addItems(document.getElementById(weCollectionEdit.view + '_elem_' + index), respArr);
 								if(message){

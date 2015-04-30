@@ -323,10 +323,11 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Inhalt der Sammlung') .
+			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;color:red;font-size:20px'), 'Hinweis: Die Sammlungen sind z.Zt. komplett unbenutzbar<br>(auch nicht zu Testzwecken)!') .
 			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $recursive) .
-			we_html_element::htmlDiv(array('id' => 'content_table_list', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows) . "<div>kein drag and drop aktuell: ist sehr zerrüttet!</div>" . 
-			we_html_element::htmlDiv(array('id' => 'content_table_grid', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px 0 0 20px;background-color:white;display:inline-block;min-height:200px'), $divs);
+			we_html_element::htmlDiv(array('id' => 'content_table_list', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px'), $rows) . 
+			we_html_element::htmlDiv(array('id' => 'content_table_grid', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px 0 0 20px;background-color:white;display:inline-block;min-height:200px'), $divs);
 	}
 
 	function getCollectionRow($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
@@ -399,7 +400,7 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 				), $rowHtml);
 	}
 
-	function getGridItem($item, $index, $itemsNum = 0){t_e($item);
+	function getGridItem($item, $index, $itemsNum = 0){
 		$preview = '';
 		if($item['id'] !== -1){
 			$file = array('docID' => $item['id'], 'Path' => $item['path'], 'ContentType' => isset($item['type']) ? $item['type'] : 'text/*', 'Extension' => $item['ext']);
@@ -409,26 +410,29 @@ weCollectionEdit.blankRow = '" . str_replace(array("'"), "\'", str_replace(array
 			//$preview = '<span style="width: 10px;height: 100%;display: inline-block;margin-left: -10px;vertical-align: middle;">' . $iconHTML['imageView'] . '</span>';
 		}
 
-		return we_html_element::htmlDiv(array('style' => 'width:auto;text-align:left;height:242px;float:left;dislpay:block;'), we_html_element::htmlDiv(array(
-				'style' => 'width:240px;height:230px;margin:0px 0px 0 0;text-align:center;border:1px solid #006db8;background-color:#f5f5f5;float:left;dislpay:block;background: url(' . $iconHTML['url'] . ') no-repeat center center;',
-				'id' => 'grid_elem_' . $index,
-				'class' => 'drop_reference',
-				'draggable' => 'true',
-				'ondragstart' => 'weCollectionEdit.startDragCollectionElement(event, \'grid\')',
-				'ondrop' => 'weCollectionEdit.dropOnRow(\'item\',\'grid\',event, this)',
-				'ondragover' => 'weCollectionEdit.allowDrop(event)',
-				'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'grid\',event, this)',
-				'ondragleave' => 'weCollectionEdit.leaveDrag(\'item\',\'grid\',event, this)',
-				'ondragend' => 'weCollectionEdit.dragEnd(event)'
+		return we_html_element::htmlDiv(array(
+			'style' => 'width:auto;text-align:left;height:242px;float:left;dislpay:block;',
+			'id' => 'grid_elem_' . $index,
+			'class' => 'drop_reference'
+			), we_html_element::htmlDiv(array(
+					'style' => 'width:240px;height:230px;margin:0;text-align:center;border:1px solid #006db8;background-color:#f5f5f5;float:left;dislpay:block;background: url(' . $iconHTML['url'] . ') no-repeat center center;',
+					'draggable' => 'true',
+					'ondragstart' => 'weCollectionEdit.startDragCollectionElement(event, \'grid\')',
+					'ondrop' => 'weCollectionEdit.dropOnCollectionItem(\'item\',\'grid\',event, this)',
+					'ondragover' => 'weCollectionEdit.allowDrop(event)',
+					'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'grid\',event, this)',
+					'ondragleave' => 'weCollectionEdit.leaveDrag(\'item\',\'grid\',event, this)',
+					'ondragend' => 'weCollectionEdit.dragEnd(event)'
 				), '') . we_html_element::htmlDiv(array(
-				'style' => 'width:12px;height:230px;margin:0px 0px 0 0;text-align:center;vertical-align:center;border:1px solid white;float:left;dislpay:block;',
-				'id' => 'preview_drag_inter_' . $index,
-				'class' => 'drop_reference',
-				'ondrop' => 'weCollectionEdit.dropOnRow(\'inter\',\'grid\',event, this)',
-				'ondragover' => 'weCollectionEdit.allowDrop(event)',
-				'ondragenter' => 'weCollectionEdit.enterDrag(\'inter\',\'grid\',event, this)',
-				'ondragleave' => 'weCollectionEdit.leaveDrag(\'inter\',\'grid\',event, this)'
-				), ''));
+					'style' => 'width:12px;height:230px;margin:0;text-align:center;vertical-align:center;border:1px solid white;float:left;dislpay:block;',
+					'id' => 'preview_drag_inter_' . $index,
+					'class' => 'drop_reference',
+					'ondrop' => 'weCollectionEdit.dropOnRow(\'inter\',\'grid\',event, this)',
+					'ondragover' => 'weCollectionEdit.allowDrop(event)',
+					'ondragenter' => 'weCollectionEdit.enterDrag(\'inter\',\'grid\',event, this)',
+					'ondragleave' => 'weCollectionEdit.leaveDrag(\'inter\',\'grid\',event, this)'
+				), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id'])
+			);
 	}
 
 	function i_filenameDouble(){
