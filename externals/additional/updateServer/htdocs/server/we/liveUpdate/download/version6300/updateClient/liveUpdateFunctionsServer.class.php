@@ -87,11 +87,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 
 		if(!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR)){
-
-			$content = str_replace('$_SERVER[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$_SERVER["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS[\'DOCUMENT_ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS["DOCUMENT_ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+return preg_replace('-\$(_SERVER|GLOBALS)\[[\\\"\']+DOCUMENT_ROOT[\\\"\']+\]-', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
 		}
 		return $content;
 	}

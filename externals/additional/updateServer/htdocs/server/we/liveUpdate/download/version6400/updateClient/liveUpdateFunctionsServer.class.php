@@ -3,7 +3,6 @@
 //version6400
 //code aus 6400
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
-
 	var $QueryLog = array(
 		'success' => array(),
 		'tableChanged' => array(),
@@ -30,7 +29,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		// insert notices first
 		if(isset($this->QueryLog[$type])){
-		$message = $premessage;
+			$message = $premessage;
 
 
 			foreach($this->QueryLog[$type] as $noticeMessage){
@@ -89,17 +88,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return string
 	 */
 	function checkReplaceDocRoot($content){
-		if($this->replaceDocRootNeeded()){
-			$content = str_replace(array(
-				'$_SERVER[\'DOCUMENT_ROOT\']',
-				"\$_SERVER[\"DOCUMENT_ROOT\"]",
-				'$GLOBALS[\'DOCUMENT_ROOT\']',
-				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-				), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-		}
-		return $content;
+		//replaces any count of escaped docroot-strings
+		return ($this->replaceDocRootNeeded() ?
+				preg_replace('-\$(_SERVER|GLOBALS)\[[\\\"\']+DOCUMENT_ROOT[\\\"\']+\]-', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content) :
+				$content);
 	}
-
 
 	/**
 	 * fills given array with all files in given dir
@@ -148,7 +141,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 					$_entry = $dir . '/' . $entry;
 					if(is_dir($_entry)){
 						$this->deleteDir($_entry);
-					} else{
+					} else {
 						$this->deleteFile($_entry);
 					}
 				}
@@ -156,7 +149,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			closedir($dh);
 			return rmdir($dir);
 		}
-			return true;
+		return true;
 	}
 
 	/**
@@ -214,14 +207,13 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		$filePath = LIVEUPDATE_SOFTWARE_DIR . $filePath;
 
 		if(file_exists($filePath) && !is_writable($filePath)){
-				if(!chmod($filePath, $mod)){
-					return false;
-				}
+			if(!chmod($filePath, $mod)){
+				return false;
+			}
 		}
 
 		return true;
 	}
-
 
 	/**
 	 * This function checks if given dir exists, if not tries to create it
@@ -237,7 +229,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		if(strpos($dirPath, $dir) === 0){
 			$preDir = $dir;
 			$dir = substr($dirPath, strlen($dir));
-		} else{
+		} else {
 			$preDir = '';
 			$dir = $dirPath;
 		}
@@ -329,7 +321,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				case 'gif':
 				case 'jpeg':
 				case 'sql':
-				return false;
+					return false;
 			}
 		}
 		return true;
@@ -358,8 +350,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			$newContent = ($needle ? preg_replace('/' . preg_quote($needle) . '/', $replace, $oldContent) : $replace );
 
 			return ($this->filePutContent($filePath, $newContent));
-			}
-			return false;
+		}
+		return false;
 	}
 
 	/*
@@ -393,7 +385,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		$db->query('DESCRIBE ' . $db->escape($tableName));
 
-		while($db->next_record()) {
+		while($db->next_record()){
 			$fieldsOfTable[$db->f('Field')] = array(
 				'Field' => $db->f('Field'),
 				'Type' => $db->f('Type'),
@@ -412,22 +404,22 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param string $tableName
 	 * @return array
 	 */
-	function getKeysFromTable($tableName,$lowerKeys=false){
+	function getKeysFromTable($tableName, $lowerKeys = false){
 		$db = new DB_WE();
 		$keysOfTable = array();
 		$db->query('SHOW INDEX FROM ' . $db->escape($tableName));
-		while($db->next_record()) {
+		while($db->next_record()){
 			if($db->f('Key_name') === 'PRIMARY'){
 				$indexType = 'PRIMARY';
 			} else if($db->f('Comment') === 'FULLTEXT' || $db->f('Index_type') === 'FULLTEXT'){// this also depends on mysqlVersion
 				$indexType = 'FULLTEXT';
 			} else if($db->f('Non_unique') == 0){
 				$indexType = 'UNIQUE';
-			} else{
+			} else {
 				$indexType = 'INDEX';
 			}
 
-			$key=$lowerKeys?strtolower($db->f('Key_name')):$db->f('Key_name');
+			$key = $lowerKeys ? strtolower($db->f('Key_name')) : $db->f('Key_name');
 
 			if(!isset($keysOfTable[$key]) || !in_array($indexType, $keysOfTable[$key])){
 				$keysOfTable[$key]['index'] = $indexType;
@@ -460,7 +452,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			if(($fieldInfo['Default']) != ""){
 				$default = 'DEFAULT ' . (($fieldInfo['Default']) === 'CURRENT_TIMESTAMP' ? 'CURRENT_TIMESTAMP' : '\'' . $fieldInfo['Default'] . '\'');
 			} elseif(strtoupper($fieldInfo['Null']) === "YES"){
-					$default = ' DEFAULT NULL';
+				$default = ' DEFAULT NULL';
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
 			//note: auto_increment cols must have an index!
@@ -482,7 +474,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			if($isNew){
 				//Bug #4431, siehe unten
 				$queries[] = "ALTER TABLE `$tableName` ADD `" . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
-			} else{
+			} else {
 				//Bug #4431
 				// das  mysql_real_escape_string bei $fieldInfo['Type'] f�hrt f�r enum dazu, das die ' escaped werden und ein Syntaxfehler entsteht (nicht abgeschlossene Zeichenkette
 				$queries[] = "ALTER TABLE `$tableName` CHANGE `" . $fieldInfo['Field'] . '` `' . $fieldInfo['Field'] . '` ' . $fieldInfo['Type'] . " $null $default $extra";
@@ -518,7 +510,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			foreach($indexes as $index){
 				if(strpos($index, '(') === false){
 					$myindexes[] = '`' . $index . '`';
-				} else{
+				} else {
 					$myindexes[] = '`' . str_replace('(', '`(', $index);
 				}
 			}
@@ -549,12 +541,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function executeQueriesInFiles($path){
 
 		$db = new DB_WE();
-			$content = $this->getFileContent($path);
-			$queries = explode("/* query separator */", $content);
-			$success = true;
-			foreach($queries as $query){
-				$success &= $this->executeUpdateQuery($query, $db);
-			}
+		$content = $this->getFileContent($path);
+		$queries = explode("/* query separator */", $content);
+		$success = true;
+		foreach($queries as $query){
+			$success &= $this->executeUpdateQuery($query, $db);
+		}
 		return $success;
 	}
 
@@ -588,7 +580,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		if(preg_match('/###ONKEYFAILED\(([^,]+),([^)]+)\)([^#]+)###/', $query, $matches)){
 			$keys = $this->getKeysFromTable($matches[2]);
 			$query = (!isset($keys[$matches[1]]) ? $matches[3] : '');
-			}
+		}
 		if(preg_match('/###UPDATEDROPKEY\(([^,]+),([^)]+)\)###/', $query, $matches)){
 			$db->query('SHOW KEYS FROM ' . $db->escape($matches[2]) . ' WHERE Key_name="' . $matches[1] . '"');
 			$query = ($db->num_rows() ? 'ALTER TABLE ' . $db->escape($matches[2]) . ' DROP KEY ' . $db->escape($matches[1]) : '');
@@ -597,7 +589,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			$query = ($db->isTabExist($matches[1]) ? $matches[2] : '');
 		}
 
-		
+
 
 		// second, we need to check if there is a collation
 		$Charset = we_database_base::getCharset();
@@ -627,165 +619,165 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			return true;
 		}
 
-			switch($db->Errno){
+		switch($db->Errno){
 
-				case 1050: // this table already exists
-					// the table already exists,
-					// make tmptable and check these tables
-					$namePattern = '/CREATE TABLE (\w+) \(/';
-					preg_match($namePattern, $query, $matches);
+			case 1050: // this table already exists
+				// the table already exists,
+				// make tmptable and check these tables
+				$namePattern = '/CREATE TABLE (\w+) \(/';
+				preg_match($namePattern, $query, $matches);
 
-					if($matches[1]){
+				if($matches[1]){
 
-						// get name of table and build name of temptable
-						// realname of the new table
-						$tableName = $matches[1];
+					// get name of table and build name of temptable
+					// realname of the new table
+					$tableName = $matches[1];
 
-						// tmpname - this table is to compare the incoming dump
-						// with existing table
-						$tmpName = '__we_delete_update_temp_table__';
-						$backupName = trim($tableName, '`') . '_backup';
+					// tmpname - this table is to compare the incoming dump
+					// with existing table
+					$tmpName = '__we_delete_update_temp_table__';
+					$backupName = trim($tableName, '`') . '_backup';
 
-						$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName)); // delete table if already exists
-						$db->query('DROP TABLE IF EXISTS ' . $db->escape($backupName)); // delete table if already exists
-						$db->query('SHOW CREATE TABLE ' . $db->escape($tableName));
-						list(, $orgTable) = ($db->next_record() ? $db->Record : array('', ''));
-						$orgTable = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($backupName) . ' (', $orgTable);
+					$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName)); // delete table if already exists
+					$db->query('DROP TABLE IF EXISTS ' . $db->escape($backupName)); // delete table if already exists
+					$db->query('SHOW CREATE TABLE ' . $db->escape($tableName));
+					list(, $orgTable) = ($db->next_record() ? $db->Record : array('', ''));
+					$orgTable = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($backupName) . ' (', $orgTable);
 
-						// create temptable
-						$tmpQuery = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($tmpName) . ' (', $query);
-						$db->query(trim($tmpQuery));
+					// create temptable
+					$tmpQuery = preg_replace($namePattern, 'CREATE TABLE ' . $db->escape($tmpName) . ' (', $query);
+					$db->query(trim($tmpQuery));
 
-						// get information from existing and new table
-						$origTable = $this->getFieldsOfTable($tableName, $db);
-						$newTable = $this->getFieldsOfTable($tmpName, $db);
+					// get information from existing and new table
+					$origTable = $this->getFieldsOfTable($tableName, $db);
+					$newTable = $this->getFieldsOfTable($tmpName, $db);
 
-						// get keys from existing and new table
-					$origTableKeys = $this->getKeysFromTable($tableName,true);
-						$newTableKeys = $this->getKeysFromTable($tmpName);
+					// get keys from existing and new table
+					$origTableKeys = $this->getKeysFromTable($tableName, true);
+					$newTableKeys = $this->getKeysFromTable($tmpName);
 
 
-						// determine changed and new fields.
-						$changeFields = array(); // array with changed fields
-						$addFields = array(); // array with new fields
+					// determine changed and new fields.
+					$changeFields = array(); // array with changed fields
+					$addFields = array(); // array with new fields
 
-						foreach($newTable as $fieldName => $newField){
-							if(isset($origTable[$fieldName])){ // field exists
-								if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'])){
-									$changeFields[$fieldName] = $newField;
-								}
-							} else { // field does not exist
-								$addFields[$fieldName] = $newField;
+					foreach($newTable as $fieldName => $newField){
+						if(isset($origTable[$fieldName])){ // field exists
+							if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'])){
+								$changeFields[$fieldName] = $newField;
 							}
+						} else { // field does not exist
+							$addFields[$fieldName] = $newField;
 						}
+					}
 
-						// determine new keys
-						// moved down after change and addfields
-						// get all queries to add/change fields, keys
-						$alterQueries = array();
+					// determine new keys
+					// moved down after change and addfields
+					// get all queries to add/change fields, keys
+					$alterQueries = array();
 
-						// get all queries to change existing fields
+					// get all queries to change existing fields
 					if($changeFields){
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
-						}
+						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
+					}
 					if($addFields){
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
-						}
+						$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
+					}
 
-						//new position to determine new keys
-						$addKeys = array();
-						$changedKeys = array();
-						foreach($newTableKeys as $keyName => $indexes){
+					//new position to determine new keys
+					$addKeys = array();
+					$changedKeys = array();
+					foreach($newTableKeys as $keyName => $indexes){
 
-						$lkeyName=  strtolower($keyName);
+						$lkeyName = strtolower($keyName);
 						if(isset($origTableKeys[$lkeyName])){
-								//index-type changed
+							//index-type changed
 							if($origTableKeys[$lkeyName]['index'] != $indexes['index']){
-									$changedKeys[$keyName] = $indexes;
-									continue;
-								}
+								$changedKeys[$keyName] = $indexes;
+								continue;
+							}
 
-								for($i = 1; $i < count($indexes); $i++){
+							for($i = 1; $i < count($indexes); $i++){
 								if(!in_array($indexes[$i], $origTableKeys[$lkeyName])){
-										$changedKeys[$keyName] = $indexes;
-										break;
-									}
+									$changedKeys[$keyName] = $indexes;
+									break;
 								}
-							} else {
-								$addKeys[$keyName] = $indexes;
-							}
-						}
-
-						// get all queries to change existing keys
-						if(!empty($addKeys)){
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
-						}
-
-						if(!empty($changedKeys)){
-							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
-						}
-
-						//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
-						if(isset($origTableKeys['_temp'])){
-							$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
-						}
-
-					if($alterQueries){
-							// execute all queries
-							$success = true;
-							$duplicate = false;
-							foreach($alterQueries as $_query){
-								if(!trim($_query)){
-									continue;
-								}
-								if($db->query(trim($_query))){
-									$this->QueryLog['success'][] = $_query;
-								} else {
-									//unknown why mysql don't show correct error
-									if($db->Errno == 1062 || $db->Errno == 0){
-										$duplicate = true;
-										$this->QueryLog['tableChanged'][] = $tableName;
-									} else {
-										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
-									}
-									$success = false;
-								}
-							}
-							if($success){
-								$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
-							} else if($duplicate){
-								if($db->query('RENAME TABLE ' . $db->escape($tableName) . ' TO ' . $db->escape($backupName))){
-									$db->query($orgTable);
-									$db->lock(array($tableName => 'write', $backupName => 'read'));
-									foreach($alterQueries as $_query){
-										if(trim($query) && !$db->query(trim($_query))){
-											$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
-										}
-									}
-									$db->query('INSERT IGNORE INTO ' . $db->escape($tableName) . ' SELECT * FROM ' . $db->escape($backupName));
-									$db->unlock();
-								}
-							}
-							$SearchTempTableKeys = $this->getKeysFromTable($tableName);
-							if(isset($SearchTempTableKeys['_temp'])){
-								$db->query(trim('ALTER TABLE ' . $db->escape($tableName) . ' DROP INDEX _temp'));
 							}
 						} else {
-							//$this->QueryLog['tableExists'][] = $tableName;
+							$addKeys[$keyName] = $indexes;
 						}
-
-						$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName));
 					}
-					break;
-				case 1062:
-					$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
-					return false;
-				case 1065:
-					return true;
-				default:
-					$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
-					return false;
-			}
+
+					// get all queries to change existing keys
+					if(!empty($addKeys)){
+						$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
+					}
+
+					if(!empty($changedKeys)){
+						$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($changedKeys, $tableName, false));
+					}
+
+					//clean-up, if there is still a temporary index - make sure this is the first statement, since new temp might be created
+					if(isset($origTableKeys['_temp'])){
+						$alterQueries = array_merge(array('ALTER TABLE `' . $tableName . '` DROP INDEX _temp'), $alterQueries);
+					}
+
+					if($alterQueries){
+						// execute all queries
+						$success = true;
+						$duplicate = false;
+						foreach($alterQueries as $_query){
+							if(!trim($_query)){
+								continue;
+							}
+							if($db->query(trim($_query))){
+								$this->QueryLog['success'][] = $_query;
+							} else {
+								//unknown why mysql don't show correct error
+								if($db->Errno == 1062 || $db->Errno == 0){
+									$duplicate = true;
+									$this->QueryLog['tableChanged'][] = $tableName;
+								} else {
+									$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
+								}
+								$success = false;
+							}
+						}
+						if($success){
+							$this->QueryLog['tableChanged'][] = $tableName . "\n<!-- $query -->";
+						} else if($duplicate){
+							if($db->query('RENAME TABLE ' . $db->escape($tableName) . ' TO ' . $db->escape($backupName))){
+								$db->query($orgTable);
+								$db->lock(array($tableName => 'write', $backupName => 'read'));
+								foreach($alterQueries as $_query){
+									if(trim($query) && !$db->query(trim($_query))){
+										$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $_query --";
+									}
+								}
+								$db->query('INSERT IGNORE INTO ' . $db->escape($tableName) . ' SELECT * FROM ' . $db->escape($backupName));
+								$db->unlock();
+							}
+						}
+						$SearchTempTableKeys = $this->getKeysFromTable($tableName);
+						if(isset($SearchTempTableKeys['_temp'])){
+							$db->query(trim('ALTER TABLE ' . $db->escape($tableName) . ' DROP INDEX _temp'));
+						}
+					} else {
+						//$this->QueryLog['tableExists'][] = $tableName;
+					}
+
+					$db->query('DROP TABLE IF EXISTS ' . $db->escape($tmpName));
+				}
+				break;
+			case 1062:
+				$this->QueryLog['entryExists'][] = $db->Errno . ' ' . $db->Error . "\n<!-- $query -->";
+				return false;
+			case 1065:
+				return true;
+			default:
+				$this->QueryLog['error'][] = $db->Errno . ' ' . $db->Error . "\n-- $query --";
+				return false;
+		}
 		return true;
 	}
 
@@ -804,8 +796,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 
 		foreach($this->QueryLog as &$cur){
 			$cur = array();
-	}
-
+		}
 	}
 
 	/**
@@ -822,7 +813,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		//	Look which languages are installed
 		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
 
-		while(false !== ($entry = $_language_directory->read())) {
+		while(false !== ($entry = $_language_directory->read())){
 			if($entry != '.' && $entry != '..'){
 				if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $entry)){
 					$_installedLanguages[] = $entry;
@@ -838,14 +829,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		if(is_file($path . 'del.files')){
 			$all = array();
 			if($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES)){
-				$delFiles=array();
+				$delFiles = array();
 				foreach($all as $cur){
 					if(file_exists(WEBEDITION_PATH . $cur)){
 						if(is_file(WEBEDITION_PATH . $cur)){
-							$delFiles[]=$cur;
+							$delFiles[] = $cur;
 							unlink(WEBEDITION_PATH . $cur);
 						} elseif(is_dir(WEBEDITION_PATH . $cur)){
-							$delFiles[]='Folder: '. $cur;
+							$delFiles[] = 'Folder: ' . $cur;
 							we_util_File::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
 						}
 					}
@@ -875,7 +866,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param integer $errline
 	 * @param string $errcontext
 	 */
-	  static function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
+	static function liveUpdateErrorHandler($errno, $errstr, $errfile, $errline, $errcontext){
 
 		$GLOBALS['liveUpdateError'] = array(
 			"errorNr" => $errno,
@@ -888,8 +879,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 				//don't handle mysql errors, they're handled by updatelog - since some of them are "wanted"
 				//log errors to system log, if we have one.
 				error_handler($errno, $errstr, $errfile, $errline, $errcontext);
-	  }
+			}
 		}
-}
+	}
 
 }

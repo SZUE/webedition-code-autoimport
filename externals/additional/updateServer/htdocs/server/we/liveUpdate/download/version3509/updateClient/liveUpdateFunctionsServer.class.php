@@ -1,7 +1,7 @@
-<?php 
+<?php
 
 class liveUpdateFunctionsServer extends liveUpdateFunctions {
-	
+
    /**
     * expects array from getFieldsOfTable and returns generated queries to
     * alter these fields
@@ -12,21 +12,21 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
     * @return unknown
     */
 	function getAlterTableForFields($fields, $tableName, $isNew=false) {
-	
+
 	   $queries = array();
-	
+
 	   foreach ($fields as $fieldName => $fieldInfo) {
-	
+
 	       $null = '';
 	       $extra = '';
 	       $default = '';
-	
+
 	       if (strtoupper($fieldInfo['Null']) == "YES") {
 	           $null = ' NULL';
 	       } else {
 	           $null = ' NOT NULL';
 	       }
-	
+
 	       if (($fieldInfo['Default']) != "") {
 	           $default = ' default \'' . $fieldInfo['Default'] . '\'';
 	       } else {
@@ -35,18 +35,18 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 	           }
 	       }
 	       $extra = strtoupper($fieldInfo['Extra']);
-	
+
 	       if ($isNew) {
-	
+
 	           $queries[] = "ALTER TABLE $tableName ADD " . $fieldInfo['Field'] . " " . $fieldInfo['Type'] . " $null $default $extra";
 	       } else {
-	
+
 	           $queries[] = "ALTER TABLE $tableName CHANGE " . $fieldInfo['Field'] . " " . $fieldInfo['Field'] . " " . $fieldInfo['Type'] . " $null $default $extra";
 	       }
 	   }
 	   return $queries;
 	}
-	
+
 	/**
 	 * returns array with queries to update keys of table
 	 *
@@ -62,7 +62,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 		foreach ($fields as $key => $indexes) {
 
 			for ($i=0; $i<sizeof($indexes); $i++) {
-				
+
 				$index = '';
 				switch ($indexes[$i]) {
 					case 'PRIMARY':
@@ -72,13 +72,13 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 						$index = strtoupper($indexes[$i]);
 					break;
 				}
-				
+
 				$queries[] = "ALTER TABLE $tableName ADD " . $index . " ($key)";
 			}
 		}
 		return $queries;
 	}
-	
+
 	/**
 	 * replaces extension of content
 	 *
@@ -88,11 +88,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 	 * @return unknown
 	 */
 	function replaceExtensionInContent($content, $needle, $replace) {
-		
+
 		$content = str_replace($needle, $replace, $content);
 		return $content;
 	}
-	
+
 	/**
 	 * prepares given php-code
 	 * - replaces doc_root
@@ -101,13 +101,13 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 	 * @return string
 	 */
 	function preparePhpCode($content, $needle, $replace) {
-		
+
 		$content = $this->replaceExtensionInContent($content, $needle, $replace);
 		$content = $this->checkReplaceDocRoot($content);
-		
+
 		return $content;
 	}
-	
+
 	/**
 	 * checks if document root exists, and replaces $_SERVER['DOCMENT_ROOT'] in
 	 * $content if needed
@@ -116,17 +116,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 	 * @return string
 	 */
 	function checkReplaceDocRoot($content) {
-		
-		if (!(isset($_SERVER['DOCUMENT_' . 'ROOT']) && $_SERVER['DOCUMENT_' . 'ROOT'] == LIVEUPDATE_SOFTWARE_DIR) ) {
-			
-			$content = str_replace('$_SERVER[\'DOCUMENT_' . 'ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$_SERVER["DOCUMENT_' . 'ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS[\'DOCUMENT_' . 'ROOT\']', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-			$content = str_replace('$GLOBALS["DOCUMENT_' . 'ROOT"]', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-		}
-		return $content;
+				//replaces any count of escaped docroot-strings
+		return (!(isset($_SERVER['DOCUMENT_' . 'ROOT']) && $_SERVER['DOCUMENT_' . 'ROOT'] == LIVEUPDATE_SOFTWARE_DIR)?
+				preg_replace('-\$(_SERVER|GLOBALS)\[[\\\"\']+DOCUMENT_ROOT[\\\"\']+\]-', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content) :
+				$content);
 	}
-	
+
 	/**
 	 * returns if selected file is a php file or not
 	 *
@@ -134,20 +129,20 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 	 * @return boolean
 	 */
 	function isPhpFile($path) {
-		
+
 		$pattern = "/\.([^\..]+)$/";
-		
+
 		if (preg_match($pattern, $path, $matches)) {
-			
+
 			$ext = strtolower($matches[1]);
-			
+
 			if ( ($ext == 'jpg' || $ext == 'gif' || $ext == 'jpeg' || $ext == 'sql') ) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	/**
 	 * This function checks if given dir exists, if not tries to create it
 	 *
@@ -155,7 +150,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 	 * @return boolean
 	 */
 	function checkMakeDir($dirPath, $mod=0755) {
-		
+
 		// open_base_dir - seperate document-root from rest
 		if (strpos($dirPath, LIVEUPDATE_SOFTWARE_DIR) === 0) {
 			$preDir = LIVEUPDATE_SOFTWARE_DIR;
@@ -164,37 +159,37 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 			$preDir = '';
 			$dir = $dirPath;
 		}
-		
+
 		$pathArray = explode('/', $dir);
 		$path = $preDir;
-		
+
 		for($i=0;$i<sizeof($pathArray); $i++){
-			
+
 			$path .= $pathArray[$i];
 			if($pathArray[$i] != "" && !is_dir($path)){
-				
+
 				if( !(file_exists($path) || mkdir($path, $mod)) ){
 					return false;
 				}
 			}
 			$path .= "/";
 		}
-		
+
 		return true;
 	}
-	
+
 	function insertUpdateLogEntry($action, $version, $errorCode) {
 
 		global $DB_WE;
-		
-		$query = 
+
+		$query =
 			"INSERT INTO " . UPDATE_LOG_TABLE . "
 			(datum, aktion, versionsnummer, error)
 			VALUES (NOW(), \"" . addslashes($action) . "\", \"$version\", $errorCode);";
-		
+
 		$DB_WE->query($query);
 	}
-	
+
 	/**
 	 * updates the database with given dump.
 	 *
@@ -310,12 +305,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 						if (sizeof($addFields)) {
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($addFields, $tableName, true));
 						}
-						
+
 						// get all queries to change existing keys
 						if (sizeof($addKeys)) {
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForKeys($addKeys, $tableName, true));
 						}
-						
+
 						if (sizeof($changeFields)) {
 							$alterQueries = array_merge($alterQueries, $this->getAlterTableForFields($changeFields, $tableName));
 						}
@@ -355,7 +350,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * returns array with key information of a table by tablename
 	 *
@@ -363,17 +358,17 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 	 * @return array
 	 */
 	function getKeysFromTable($tableName) {
-		
+
 		$db = new DB_WE();
-		
+
 		$keysOfTable = array();
-		
+
 		$db->query("SHOW INDEX FROM $tableName");
-		
+
 		while ($db->next_record()) {
-			
+
 			$indexType = '';
-			
+
 			if ($db->f('Key_name') == 'PRIMARY') {
 				$indexType = 'PRIMARY';
 			} else if ( $db->f('Comment') == 'FULLTEXT' || $db->f('Index_type') == 'FULLTEXT' ) {// this also depends from mysqlVersion
@@ -383,12 +378,12 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions {
 			} else {
 				$indexType = 'INDEX';
 			}
-			
+
 			if (!isset($keysOfTable[$db->f('Column_name')]) || !in_array($indexType, $keysOfTable[$db->f('Column_name')])) {
 				$keysOfTable[$db->f('Column_name')][] = $indexType;
 			}
 		}
-		
+
 		return $keysOfTable;
 	}
 }
