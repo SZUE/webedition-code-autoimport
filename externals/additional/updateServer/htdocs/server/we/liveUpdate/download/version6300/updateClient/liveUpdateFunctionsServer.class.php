@@ -3,7 +3,6 @@
 //version6300
 //code aus 6300
 class liveUpdateFunctionsServer extends liveUpdateFunctions{
-
 	var $QueryLog = array('success' => array(),
 		'tableChanged' => array(),
 		'error' => array(),
@@ -87,7 +86,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 
 		if(!(isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] == LIVEUPDATE_SOFTWARE_DIR)){
-return preg_replace('-\$(_SERVER|GLOBALS)\[[\\\"\']+DOCUMENT_ROOT[\\\"\']+\]-', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
+			return preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content);
 		}
 		return $content;
 	}
