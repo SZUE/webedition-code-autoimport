@@ -114,7 +114,7 @@ class liveUpdateFunctions {
 	function checkReplaceDocRoot($content) {
 
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[[\\\"\']+DOCUMENT_ROOT[\\\"\']+\]-', '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content) :
+				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2'. LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
 				$content);
 
 		}
