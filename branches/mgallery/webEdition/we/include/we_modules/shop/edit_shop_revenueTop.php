@@ -51,7 +51,7 @@ function getTitleLink($text, $orderKey){
 		'&actPage=' . $GLOBALS['actPage'] .
 		( ($GLOBALS['orderBy'] == $orderKey && !$desc) ? '&orderDesc=true' : '' );
 
-	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . ($desc ? 'desc' : 'asc') . '.gif" />' : '');
+	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-'.($desc ? 'desc' : 'asc').' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
 }
 
 function getPagerLink(){

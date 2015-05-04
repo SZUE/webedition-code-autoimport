@@ -824,7 +824,7 @@ class we_search_search extends we_search_base{
 							$mod[$k][$key] = '';
 							$isTmpPossible[$k][$key] = false;
 						}
-					
+
 				}
 			}
 
@@ -834,7 +834,7 @@ class we_search_search extends we_search_base{
 					if(!isset($this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
 						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
 							'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
-							'isTempPossible' => $isTmpPossible[$val[1]][$val[0]], 
+							'isTempPossible' => $isTmpPossible[$val[1]][$val[0]],
 							'id' => $val[0],
 							'type' => $type[$val[1]][$val[0]],
 							'table' => addTblPrefix($val[1]),
@@ -898,7 +898,7 @@ class we_search_search extends we_search_base{
 					$this->where .= ' AND Path LIKE "' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = ' AND DocumentID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
-				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE SELECT "",ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,"",CreationDate,CreatorID,ModDate,Published,Extension,"","","","","" FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
+				$this->db->query('INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ID,"' . FILE_TABLE . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` WHERE ' . $this->where);
 
 				//first check published documents
 				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.Name="Title" AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"');
@@ -923,7 +923,7 @@ class we_search_search extends we_search_base{
 
 			case VERSIONS_TABLE:
 				if($_SESSION['weS']['weSearch']['onlyDocs'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs']){
-					$query = "INSERT INTO  SEARCH_TEMP_TABLE SELECT '',v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,'','',v.TemplateID,v.ContentType,'',v.timestamp,v.modifierID,'','',v.Extension,v.TableID,v.ID,'','','' " .
+					$query = "INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,TemplateID,ContentType,CreationDate,CreatorID,Extension,TableID,VersionID) SELECT v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,v.TemplateID,v.ContentType,v.timestamp,v.modifierID,v.Extension,v.TableID,v.ID " .
 						'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . FILE_TABLE . ' f ON v.documentID=f.ID WHERE ' . $this->where . ' ' . $_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'];
 					if(stristr($query, "v.status='deleted'")){
 						$query = str_replace(FILE_TABLE . ".", "v.", $query);
@@ -931,7 +931,7 @@ class we_search_search extends we_search_base{
 					$this->db->query($query);
 				}
 				if(defined('OBJECT_FILES_TABLE') && ($_SESSION['weS']['weSearch']['onlyObjects'] || $_SESSION['weS']['weSearch']['ObjectsAndDocs'])){
-					$query = "INSERT INTO SEARCH_TEMP_TABLE SELECT '',v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,'','',v.TemplateID,v.ContentType,'',v.timestamp,v.modifierID,'','',v.Extension,v.TableID,v.ID,'','','' "
+					$query = "INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,TemplateID,ContentType,CreationDate,CreatorID,Extension,TableID,VersionID) SELECT v.documentID,v.documentTable,v.Text,v.Path,v.ParentID,v.TemplateID,v.ContentType,v.timestamp,v.modifierID,v.Extension,v.TableID,v.ID "
 						. 'FROM ' . VERSIONS_TABLE . ' v LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON v.documentID=f.ID WHERE ' . $this->where . " " . $_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'];
 					if(stristr($query, "v.status='deleted'")){
 						$query = str_replace(OBJECT_FILES_TABLE . ".", "v.", $query);
@@ -942,15 +942,15 @@ class we_search_search extends we_search_base{
 				break;
 
 			case TEMPLATES_TABLE:
-				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE  SELECT '',ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,Path,CreationDate,CreatorID,ModDate,'',Extension,'','','','','' FROM `" . TEMPLATES_TABLE . "` WHERE " . $this->where);
+				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,SiteTitle,CreationDate,CreatorID,ModDate,Extension) SELECT ID,'" . TEMPLATES_TABLE . "',Text,Path,ParentID,IsFolder,ContentType,Path,CreationDate,CreatorID,ModDate,Extension FROM `" . TEMPLATES_TABLE . "` WHERE " . $this->where);
 				break;
 
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,Published,'',TableID,'','','','' FROM `" . OBJECT_FILES_TABLE . "` WHERE " . $this->where);
+				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,Published,TableID) SELECT ID,'" . OBJECT_FILES_TABLE . "',Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate,Published,TableID FROM `" . OBJECT_FILES_TABLE . "` WHERE " . $this->where);
 				break;
 
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE SELECT '',ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,'','',ContentType,'',CreationDate,CreatorID,ModDate,'','','','','','','' FROM `" . OBJECT_TABLE . "` WHERE " . $this->where);
+				$this->db->query("INSERT INTO SEARCH_TEMP_TABLE (docID,docTable,Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate) SELECT ID,'" . OBJECT_TABLE . "',Text,Path,ParentID,IsFolder,ContentType,CreationDate,CreatorID,ModDate FROM `" . OBJECT_TABLE . "` WHERE " . $this->where);
 				break;
 		}
 	}
@@ -989,31 +989,30 @@ class we_search_search extends we_search_base{
 
 	function createTempTable(){
 		$this->db->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
-
 		if(self::checkRightTempTable() && self::checkRightDropTable()){
 			$this->db->query('CREATE TEMPORARY TABLE SEARCH_TEMP_TABLE (
-ID BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-docID BIGINT( 20 ) NOT NULL ,
-docTable VARCHAR( 32 ) NOT NULL ,
-Text VARCHAR( 255 ) NOT NULL ,
+ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+docID BIGINT NOT NULL ,
+docTable VARCHAR(32) NOT NULL ,
+Text VARCHAR(255) NOT NULL ,
 Path VARCHAR( 255 ) NOT NULL ,
 ParentID BIGINT( 20 ) NOT NULL ,
-IsFolder TINYINT( 1 ) NOT NULL ,
-IsProtected TINYINT( 1 ) NOT NULL ,
-temp_template_id INT( 11 ) NOT NULL ,
-TemplateID INT( 11 ) NOT NULL ,
-ContentType VARCHAR( 32 ) NOT NULL ,
-SiteTitle VARCHAR( 255 ) NOT NULL ,
-CreationDate INT( 11 ) NOT NULL ,
-CreatorID BIGINT( 20 ) NOT NULL ,
-ModDate INT( 11 ) NOT NULL ,
-Published INT( 11 ) NOT NULL ,
-Extension VARCHAR( 16 ) NOT NULL ,
-TableID INT( 11 ) NOT NULL,
-VersionID BIGINT( 20 ) NOT NULL,
-media_alt VARCHAR( 255 ) NOT NULL ,
-media_title VARCHAR( 255 ) NOT NULL ,
-IsUsed TINYINT( 1 ) NOT NULL ,
+IsFolder TINYINT NOT NULL ,
+IsProtected TINYINT NOT NULL ,
+temp_template_id INT NOT NULL ,
+TemplateID INT NOT NULL ,
+ContentType VARCHAR(32) NOT NULL ,
+SiteTitle VARCHAR(255) NOT NULL ,
+CreationDate INT(11) NOT NULL ,
+CreatorID BIGINT(20) NOT NULL ,
+ModDate INT NOT NULL ,
+Published INT NOT NULL ,
+Extension VARCHAR(16) NOT NULL ,
+TableID INT NOT NULL,
+VersionID BIGINT NOT NULL,
+media_alt VARCHAR(255) NOT NULL ,
+media_title VARCHAR(255) NOT NULL ,
+IsUsed TINYINT NOT NULL ,
 UNIQUE KEY k (docID,docTable)
 ) ENGINE = MEMORY' . we_database_base::getCharsetCollation());
 		}
@@ -1233,7 +1232,7 @@ UNIQUE KEY k (docID,docTable)
 	}
 
 	function getResultCount(){
-		return f('SELECT COUNT(1) AS Count FROM SEARCH_TEMP_TABLE', '', $this->db);
+		return f('SELECT COUNT(1) FROM SEARCH_TEMP_TABLE', '', $this->db);
 	}
 
 }

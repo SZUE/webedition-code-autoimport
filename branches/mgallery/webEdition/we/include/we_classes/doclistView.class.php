@@ -383,11 +383,11 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){
-				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
+				return '<i class="fa fa-sort-desc fa-lg"></i>';
 			}
-			return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
+			return '<i class="fa fa-sort-asc fa-lg"></i>';
 		}
-		return we_html_tools::getPixel(11, 8);
+		return '<i class="fa fa-sort fa-lg"></i>';
 	}
 
 	private function makeContent(we_database_base $DB_WE, $_result, $view){

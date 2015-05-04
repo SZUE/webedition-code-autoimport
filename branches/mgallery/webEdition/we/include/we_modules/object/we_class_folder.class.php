@@ -268,11 +268,11 @@ class we_class_folder extends we_folder{
 						"align" => "center",
 						"height" => 35,
 						'dat' => ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
-							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" />' :
-							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" />')),
+							'<i class="fa fa-circle" style="color:#006DB8;"></i>' :
+							'<i class="fa fa-circle" style="color:#E7E7E7;"></i>')),
 					array('dat' => ($this->searchclass->f("OF_IsSearchable") ?
-							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
-							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />')),
+							'<i class="fa fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '"></i>' :
+							'<i class="fa fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '"></i>')),
 					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
 					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
 					array('dat' => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("OF_Workspaces")), $we_wsLength)),
@@ -436,15 +436,15 @@ class we_class_folder extends we_folder{
 						)),
 					array(
 						"align" => "center",
-						'dat' => '<img src="' . IMAGE_DIR . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
-							'we_boebbel_blau.gif' :
-							'we_boebbel_grau.gif'
-						) . '" width="16" height="18" />'
+						'dat' => '<i class="fa fa-circle" style="color:#;"></i>' . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
+							'006DB8' ://blue
+							'E7E7E7'//grey
+						) . ';"></i>'
 					),
 					array(
 						'dat' => ($this->searchclass->f("OF_IsSearchable") ?
-							'<img src="' . IMAGE_DIR . 'we_boebbel_blau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '" />' :
-							'<img src="' . IMAGE_DIR . 'we_boebbel_grau.gif" width="16" height="18" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '" />'
+							'<i class="fa fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '"></i>' :
+							'<i class="fa fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '"></i>'
 						)),
 					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
 					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
@@ -650,9 +650,9 @@ class we_class_folder extends we_folder{
 	<tr>
 		<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
 		<td>' . we_html_tools::htmlSelect("Anzahl", $values, 1, $this->searchclass->anzahl, "", array('onchange' => 'this.form.elements.SearchStart.value=0;we_cmd(\'reload_editpage\');')) .
-		we_html_tools::hidden("Order", $this->searchclass->Order) .
-		we_html_tools::hidden("do", "") .
-		'</td>
+			we_html_tools::hidden("Order", $this->searchclass->Order) .
+			we_html_tools::hidden("do", "") .
+			'</td>
 		<td>&nbsp;</td>
 		<td>' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>
 	</tr>
@@ -673,7 +673,7 @@ class we_class_folder extends we_folder{
 		<td>' . we_html_tools::getPixel(460, 12) . '</td>
 	</tr>
 	</table>' .
-		we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
+			we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>' . we_html_tools::getPixel(175, 12) . '</td>
@@ -908,11 +908,11 @@ EOF;
 		$ord = we_base_request::_(we_base_request::STRING, 'Order', '');
 		if(strpos($ord, $for) === 0){
 			if(strpos($ord, 'DESC')){
-				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
+				return '<i class="fa fa-sort-desc fa-lg"></i>';
 			}
-			return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
+			return '<i class="fa fa-sort-asc fa-lg"></i>';
 		}
-		return we_html_tools::getPixel(11, 8);
+		return '<i class="fa fa-sort fa-lg"></i>';
 	}
 
 	function saveInSession(&$save){
@@ -1102,58 +1102,6 @@ weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 
 	function i_pathNotValid(){
 		return $this->IsClassFolder ? false : (parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/');
-	}
-
-	public function getPropertyPage(){
-		switch(we_base_request::_(we_base_request::STRING, 'do')){
-			case 'delete':
-				$javascript = $this->deleteObjects();
-				break;
-			case 'unpublish':
-				$javascript = $this->publishObjects(false);
-				break;
-			case 'publish':
-				$javascript = $this->publishObjects();
-				break;
-			case 'unsearchable':
-				$javascript = $this->searchableObjects(false);
-				break;
-			case 'searchable':
-				$javascript = $this->searchableObjects();
-				break;
-			case 'copychar':
-				$javascript = $this->copyCharsetfromClass();
-				break;
-			case 'copyws':
-				$javascript = $this->copyWSfromClass();
-				break;
-			case 'copytid':
-				$javascript = $this->copyTIDfromClass();
-				break;
-		}
-
-		we_html_tools::protect();
-
-		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		$this->getSearchJS() .
-		(isset($javascript) ? we_html_element::jsElement($javascript) : '');
-
-		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-
-		echo STYLESHEET .
-		'</head>
-<body class="weEditorBody" onunload="doUnload()">';
-
-
-		$_parts = array(
-			array('html' => $this->getSearchDialog()),
-			array('html' => $this->searchProperties())
-		);
-
-		echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, '', -1, '', '', false) . '
-</body>
-</html>';
 	}
 
 }

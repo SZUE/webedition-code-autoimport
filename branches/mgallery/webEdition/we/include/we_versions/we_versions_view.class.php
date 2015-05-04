@@ -407,10 +407,10 @@ function setOrder(order){
 
 	if(order+" DESC"==orderVal){
 		document.we_form.elements.order.value=order;
-		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_asc.gif\" />";
+		arrow.innerHTML = "<i class=\"fa fa-sort-asc fa-lg\"></i>";
 	}else{
 		document.we_form.elements.order.value=order+" DESC";
-		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"' . IMAGE_DIR . 'arrow_sort_desc.gif\" />";
+		arrow.innerHTML = "<i class=\"fa fa-sort-desc fa-lg\"></i>";
 	}
 	search(false);
 
@@ -997,12 +997,12 @@ function delRow(id) {
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){
-				return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
+				return '<i class="fa fa-sort-desc fa-lg"></i>';
 			}
-			return '<img border="0" width="11" height="8" src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
+			return '<i class="fa fa-sort-asc fa-lg"></i>';
 		}
 
-		return we_html_tools::getPixel(11, 8);
+		return '<i class="fa fa-sort fa-lg"></i>';
 	}
 
 	/**

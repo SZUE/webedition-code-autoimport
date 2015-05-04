@@ -61,11 +61,10 @@ class we_folder extends we_root{
 	function getPath(){
 		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
 			return we_root::getPath();
-		} else {
-			$ParentPath = $this->getParentPath();
-			$ParentPath .= ($ParentPath != '/') ? '/' : '';
-			return $ParentPath . $this->Text;
 		}
+		$ParentPath = $this->getParentPath();
+		$ParentPath .= ($ParentPath != '/') ? '/' : '';
+		return $ParentPath . $this->Text;
 	}
 
 	public function we_initSessDat($sessDat){

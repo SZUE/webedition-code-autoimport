@@ -148,7 +148,7 @@ function setFrameSize() {
 			nList[2].style.top = tabsHeight + "px";
 		}else if(parent.document.getElementById('updatetabsDiv')){
 			//no need to resize
-		} else if (parent.document.getElementsByTagName("FRAMESET")) {
+		} else if (parent.document.getElementsByTagName("FRAMESET").length) {
 			//FIXME: remove this if frames are obsolete
 			var fs = parent.document.getElementsByTagName("FRAMESET")[0];
 			//document.getElementById('main').style.overflow = "hidden";

@@ -98,7 +98,7 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') 
 				<nobr>
 					<span class="spacer">&nbsp;<img src="<?php echo IMAGE_DIR ?>pixel.gif" id="###loadId###" title="" class="status"/>&nbsp;</span>
 					<span id="###tabTextId###" class="text"></span>
-					<span class="spacer"><img id="###modId###" class="status modified"/>
+					<span class="spacer"><img id="###modId###" class="status modified"/><i class="fa fa-times-circle-o"></i>
 						<img src="<?php echo IMAGE_DIR ?>multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src = '<?php echo IMAGE_DIR ?>multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR ?>multiTabs/close.gif'" class="close" />&nbsp;</span>
 				</nobr>
 			</div>

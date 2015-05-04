@@ -261,10 +261,10 @@ function setOrder(order) {
 
 	if (order + " DESC" == foo) {
 		document.we_form.elements.order.value = order;
-		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"" + dirs.IMAGE_DIR + "arrow_sort_asc.gif\" />";
+		arrow.innerHTML = '<i class="fa fa-sort-asc fa-lg"></i>';
 	} else {
 		document.we_form.elements.order.value = order + " DESC";
-		arrow.innerHTML = "<img border=\"0\" width=\"11\" height=\"8\" src=\"" + dirs.IMAGE_DIR + "arrow_sort_desc.gif\" />";
+		arrow.innerHTML = '<i class="fa fa-sort-desc fa-lg"></i>';
 	}
 	search(false);
 }

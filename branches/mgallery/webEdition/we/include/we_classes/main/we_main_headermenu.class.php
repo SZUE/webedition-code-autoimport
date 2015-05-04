@@ -175,7 +175,7 @@ onunload=function() {
 				<?php
 				if($navigationButtons){
 					foreach($navigationButtons as $button){
-						echo '<div class="navigation" onclick="' . $button['onclick'] . '"><img src="' . IMAGE_DIR . $button['imagepath'] . '" alt="' . $button['text'] . '" title="' . $button['text'] . '"></div>';
+						echo '<div class="navigation" onclick="' . $button['onclick'] . '"><img src="' . IMAGE_DIR . $button['imagepath'] . '" alt="' . $button['text'] . '" title="' . $button['text'] . '"><i class="fa fa-refresh"></i></div>';
 					}
 				}
 				?></div>

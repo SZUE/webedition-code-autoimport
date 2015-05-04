@@ -47,7 +47,7 @@ function getTitleLinkObj($text, $orderKey){
 		'&actPage=' . $GLOBALS['actPage'] .
 		( ($GLOBALS['orderBy'] == $orderKey && !we_base_request::_(we_base_request::BOOL, 'orderDesc')) ? '&orderDesc=1' : '' );
 
-	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <img src="' . IMAGE_DIR . 'arrow_sort_' . (we_base_request::_(we_base_request::BOOL, 'orderDesc') ? 'desc' : 'asc') . '.gif" />' : '');
+	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . (we_base_request::_(we_base_request::BOOL, 'orderDesc') ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
 }
 
 function getPagerLinkObj(){
@@ -68,15 +68,14 @@ function getTitleLinkDoc($text, $orderKey){
 		'&actPage=' . $GLOBALS['actPage'] .
 		( ($GLOBALS['orderBy'] == $orderKey && !we_base_request::_(we_base_request::BOOL, 'orderDesc')) ? '&orderDesc=1' : '' );
 
-	$arrow = '';
+	$arrow = '<i class="fa fa-sort fa-lg"></i>';
 
 	if($GLOBALS['orderBy'] == $orderKey){
 
 		if(we_base_request::_(we_base_request::BOOL, 'orderDesc')){
-			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_desc.gif" />';
+			$arrow = ' <i class="fa fa-sort-desc fa-lg"></i>';
 		} else {
-			$arrow = ' &darr; ';
-			$arrow = ' <img src="' . IMAGE_DIR . 'arrow_sort_asc.gif" />';
+			$arrow = ' <i class="fa fa-sort-asc fa-lg"></i>';
 		}
 	}
 
@@ -104,7 +103,7 @@ echo we_html_tools::getHtmlTop() .
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
-	}') .'
+	}') . '
 </head>
 <body class="weEditorBody" onload="self.focus();" onunload="">
 <form>';
@@ -167,16 +166,16 @@ if(isset($daten)){
 
 		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
 
-		$menu = '<label for="' . $select_name . '">' . $label . '</label>'."\n";
-		$menu .= '<select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">'."\n";
+		$menu = '<label for="' . $select_name . '">' . $label . '</label>' . "\n";
+		$menu .= '<select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">' . "\n";
 
 		foreach($fe as $val){
 			if($val != ''){
-				$optionLabel = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID = '. intval($val), 'Text', $GLOBALS['DB_WE']);
-				$menu .= '<option value="' . $val . '"' .(($val == $selVal) ? ' selected="selected"' : '') . '>' . $optionLabel .'</option>'."\n";
+				$optionLabel = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID = ' . intval($val), 'Text', $GLOBALS['DB_WE']);
+				$menu .= '<option value="' . $val . '"' . (($val == $selVal) ? ' selected="selected"' : '') . '>' . $optionLabel . '</option>' . "\n";
 			}
 		}
-		$menu .= '</select>'."\n";
+		$menu .= '</select>' . "\n";
 		$menu .= '<input type="hidden" name="typ" value="object" />';
 
 		return $menu;

@@ -336,10 +336,10 @@ weSearch = {
 
 		if(order + ' DESC' === foo){
 			document.we_form.elements['Order' + whichSearch].value=order;
-			arrow.innerHTML = '<img border="0" width="11" height="8" src="' + this.we_const.IMAGE_DIR + 'arrow_sort_asc.gif" />';
+			arrow.innerHTML = '<i class="fa fa-sort-asc fa-lg"></i>';
 		}else{
 			document.we_form.elements['Order' + whichSearch].value=order + ' DESC';
-			arrow.innerHTML = '<img border="0" width="11" height="8" src="' + this.we_const.IMAGE_DIR + 'arrow_sort_desc.gif" />';
+			arrow.innerHTML = '<i class="fa fa-sort-desc fa-lg"></i>';
 		}
 		this.search(false);
 	},

@@ -1,3 +1,17 @@
+images/we_boebbel_blau.gif
+images/we_boebbel_blau_2.gif
+images/we_boebbel_blue.gif
+images/we_boebbel_grau.gif
+images/we_boebbel_grau_2.gif
+images/we_boebbel_green.gif
+images/we_boebbel_grey.gif
+images/we_boebbel_red.gif
+images/we_boebbel_yellow.gif
+images/gelb.gif
+images/black.gif
+images/foo.gif
+images/arrow_sort_desc.gif
+images/arrow_sort_asc.gif
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -347,7 +361,6 @@ we/include/we_modules/object/we_listview_object.class.php
 we/include/we_modules/object/we_listview_multiobject.class.php
 we/include/we_modules/object/we_editor_info_objectFile.inc.php
 we/include/we_modules/object/we_editor_contentobjectFile.inc.php
-we/include/we_modules/object/we_classFolder_properties.inc.php
 we/include/we_modules/object/we_class_folder.inc.php
 we/include/we_modules/newsletter/we_webEditionCmd_newsletter.inc.php
 we/include/we_modules/newsletter/weNewsletterView.php

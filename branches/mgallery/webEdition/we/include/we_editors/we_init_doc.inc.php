@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -35,7 +34,7 @@ if(!isset($we_ContentType)){
 	if(isset($we_dt) && is_array($we_dt) && isset($we_dt[0]['ContentType']) && $we_dt[0]['ContentType']){
 		$we_ContentType = $we_dt[0]['ContentType'];
 	} else if((!isset($we_dt) || !is_array($we_dt) || !isset($we_dt[0]['ClassName']) || !$we_dt[0]['ClassName']) && isset($we_ID) && $we_ID && isset($we_Table) && $we_Table){
-			$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID));
+		$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID));
 	}
 }
 
@@ -57,6 +56,10 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		$we_doc = new we_imageDocument();
 		break;
 	case we_base_ContentTypes::FOLDER:
+		if(isset($we_dt)){
+			$we_doc = new $we_dt[0]['ClassName'];
+			break;
+		}
 		$we_doc = new we_folder();
 		break;
 	case 'class_folder':
@@ -91,8 +94,8 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		break;
 	case '':
 		$we_doc = (isset($we_dt[0]['ClassName']) && $we_dt[0]['ClassName'] && ($classname = $we_dt[0]['ClassName']) ?
-						new $classname() :
-						new we_webEditionDocument());
+				new $classname() :
+				new we_webEditionDocument());
 		break;
 	default:
 		$classname = 'we_' . $we_ContentType;
