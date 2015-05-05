@@ -33,9 +33,8 @@ class we_collection extends we_root{
 	public $remTable;
 	public $remCT;
 	public $remClass;
-	public $useEmpty;
-	public $doubleOk;
-	public $insertRecursive;
+	public $IsDuplicates;
+	public $InsertRecursive;
 	protected $fileCollection = '';
 	protected $objectCollection = '';
 	protected $jsFormCollection = '';
@@ -49,7 +48,7 @@ class we_collection extends we_root{
 	function __construct(){
 		parent::__construct();
 		$this->Table = VFILE_TABLE;
-		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'insertPrefs', 'insertRecursive', 'useEmpty', 'doubleOk', 'ContentType');
+		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType');
 
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
@@ -110,7 +109,7 @@ class we_collection extends we_root{
 		$emptyItem = array('id' => -1, 'path' => '', 'type' => '');
 
 		$ac = explode(',', trim($this->$activeCollectionName, ','));
-		$ac = $this->doubleOk ? $ac : array_unique($ac);
+		$ac = $this->IsDuplicates ? $ac : array_unique($ac);
 		foreach($ac as $id){
 			$id = intval($id);
 			if(isset($verifiedItems[$id])){
@@ -274,7 +273,7 @@ class we_collection extends we_root{
 			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388);
 
 
-		$dublettes = we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $this->Name . '_doubleOk', 'Dubletten sind erlaubt');
+		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', 'Dubletten sind erlaubt');
 
 		$html = $selRemTable .
 			'<div id="mimetype" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . '; width:388px;margin-top:5px;">' .
@@ -293,11 +292,8 @@ class we_collection extends we_root{
 	}
 
 	function formCollection(){
-		$recursive = we_html_forms::checkboxWithHidden($this->insertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_insertRecursive', 'Verzeichnisse rekursiv einfügen') .
-			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 1) .
-			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_doubleOk', $this->doubleOk);
-		//we_html_forms::checkboxWithHidden($this->useEmpty, 'we_' . $GLOBALS['we_doc']->Name . '_useEmpty', 'Leere Felder im Anschluss an die Einfügeposition auffüllen') .
-		//we_html_forms::checkboxWithHidden($this->doubleOk, 'we_' . $GLOBALS['we_doc']->Name . '_doubleOk', 'Dubletten zulassen');
+		$recursive = we_html_forms::checkboxWithHidden($this->InsertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_InsertRecursive', 'Verzeichnisse rekursiv einfügen') .
+			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_IsDuplicates', $this->IsDuplicates);
 
 		$items = $this->getCollectionVerified(false, true, true);
 		if($items[count($items) - 1]['id'] !== -1){
@@ -313,7 +309,7 @@ class we_collection extends we_root{
 			$divs .= $this->getGridItem($item, $index, count($items));
 		}
 
-		// write "blank" collection row to js var
+		// write "blank" collection row to js
 		$this->jsFormCollection .= "
 weCollectionEdit.maxIndex = " . count($items) . ";
 weCollectionEdit.blankListItem = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->getListItem(array("id" => -1, "path" => '/'), 'XX', $yuiSuggest, 1, true, true))) . "';
@@ -410,7 +406,6 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		}
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:weCollectionEdit.deleteItem('grid', this);", true, 27, 22);
 
-		//TODO: add listeners dynamically onload
 		return we_html_element::htmlDiv(array(
 			'style' => 'width:auto;text-align:left;height:242px;float:left;dislpay:block;',
 			'id' => 'grid_item_' . $index,
@@ -418,26 +413,12 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 			), we_html_element::htmlDiv(array(
 					'style' => 'width:240px;height:230px;margin:0;text-align:center;border:1px solid #006db8;background-color:#f5f5f5;float:left;dislpay:block;' . ($iconHTML ? "background:url('" . $iconHTML['url'] . "') no-repeat center center;" : 'background-color:white'),
 					'draggable' => 'true',
-					'ondragstart' => 'weCollectionEdit.startDragCollectionItem(event, \'grid\')',
-					'ondrop' => 'weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)',
-					'ondragover' => 'weCollectionEdit.allowDrop(event)',
-					'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'grid\',event, this)',
-					'ondragleave' => 'weCollectionEdit.leaveDrag(\'item\',\'grid\',event, this)',
-					'ondragend' => 'weCollectionEdit.dragEnd(event)',
-					'onmouseover' => 'weCollectionEdit.overMouse(\'item\', \'grid\', this)',
-					'onmouseout' => 'weCollectionEdit.outMouse(\'item\', \'grid\', this)',
 				), we_html_element::htmlDiv(array(
 					'style' => 'width:auto;height:34px;margin:0;text-align:right;padding:6px 4px 0 0;position:relative;top:190px;background-color:#f5f5f5;opacity:0.6;display:none;',
-					'onmouseover' => 'weCollectionEdit.overMouse(\'btns\', \'grid\', this)',
-					'onmouseout' => 'weCollectionEdit.outMouse(\'btns\', \'grid\', this)',
 					), $trashButton)) .
 				we_html_element::htmlDiv(array(
 					'style' => 'width:12px;height:230px;margin:0;text-align:center;vertical-align:center;border:1px solid white;float:left;dislpay:block;',
-					'id' => 'preview_drag_space_' . $index,
-					'ondrop' => 'weCollectionEdit.dropOnItem(\'space\',\'grid\',event, this)',
-					'ondragover' => 'weCollectionEdit.allowDrop(event)',
-					'ondragenter' => 'weCollectionEdit.enterDrag(\'space\',\'grid\',event, this)',
-					'ondragleave' => 'weCollectionEdit.leaveDrag(\'space\',\'grid\',event, this)'
+					'id' => 'grid_space_' . $index,
 				), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id'])
 			);
 	}
@@ -451,9 +432,6 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		//FIXME: remove this switch after 6.6
 		$this->ContentType = $this->ContentType ? : ($this->IsFolder ? we_base_ContentTypes::FOLDER : we_base_ContentTypes::COLLECTION);
 		$this->Filename = $this->Text;
-		$this->insertRecursive = $this->insertPrefs[0];
-		$this->useEmpty = $this->insertPrefs[1];
-		$this->doubleOk = $this->insertPrefs[2];
 	}
 
 	public function we_save($resave = 0, $skipHook = 0){
@@ -462,7 +440,6 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		if(!$skipHook){// TODO: integrate hooks?
 		}
 
-		$this->insertPrefs = strval($this->insertRecursive . $this->useEmpty . $this->doubleOk);
 		$collection = $this->getCollectionVerified();
 		$ret = parent::we_save($resave) && $this->writeCollectionToDB($collection) && !$this->errMsg;
 
@@ -496,7 +473,7 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$ret = $this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" AND (type="collection" OR type="archive")');
 
 		$i = 0;
-		foreach(($this->doubleOk ? $collection : array_unique($collection)) as $remObj){
+		foreach(($this->IsDuplicates ? $collection : array_unique($collection)) as $remObj){
 			$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix(VFILE_TABLE),
@@ -520,9 +497,10 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$coll = $this->getCollection(true);
 		array_pop($coll); // FIXME: maybe abandon the ending -1 inserted on we_load()?
 
+		$useEmpty = true;
 		if($pos === -1){
 			$pos = count($coll);
-			if($this->useEmpty){
+			if($useEmpty){
 				// find last collection item not empty
 				for($i = 0; $i < count($coll); $i++){
 					if($coll[$i] != -1){
@@ -537,9 +515,9 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$result = [[], []];
 		$isFirstSet = false;
 		foreach($items as $item){
-			if($this->doubleOk || !in_array($item, $coll)){
+			if($this->IsDuplicates || !in_array($item, $coll)){
 				$newColl[] = $result[0][] = $item;
-				if(!$isFirstSet || ($this->useEmpty && isset($tmpColl[0]) && $tmpColl[0] == -1)){
+				if(!$isFirstSet || ($useEmpty && isset($tmpColl[0]) && $tmpColl[0] == -1)){
 					array_shift($tmpColl);
 					$isFirstSet = true;
 				}
@@ -561,7 +539,7 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 			return -2;
 		}
 
-		$recursive = $recursive === -1 ? $this->insertRecursive : $recursive;
+		$recursive = $recursive === -1 ? $this->InsertRecursive : $recursive;
 
 		if($checkWs && (empty($wspaces))){
 			if(($ws = get_ws($this->remTable))){

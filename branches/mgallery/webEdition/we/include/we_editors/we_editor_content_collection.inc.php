@@ -46,7 +46,7 @@ weCollectionEdit.we_const = {
 };
 
 // since these props are defined on Properties we can write them here
-weCollectionEdit.dd.doubleOk = ' . intval($GLOBALS['we_doc']->doubleOk) . ';
+weCollectionEdit.dd.IsDuplicates = ' . intval($GLOBALS['we_doc']->IsDuplicates) . ';
 weCollectionEdit.dd.fillEmptyRows = 1;
 ');
 // FIXME: set weCollectionEdit.csv when first used in addItems()...

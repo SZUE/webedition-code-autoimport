@@ -105,8 +105,39 @@ weCollectionEdit = {
 	},
 
 	init: function(){
+		var c = document.getElementById('content_table_grid');
+		for(var i = 0; i < c.childNodes.length; i++){
+			this.addListenersToItem('grid', c.childNodes[i], i+1);
+		}
+
 		this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
 		this.collectionCsv = document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value;
+	},
+	
+	addListenersToItem: function(view, elem, num){
+		var t = this, item, ctrls, space;
+	
+		if(view === 'grid'){
+			item = elem.firstChild;
+			item.addEventListener('drop', function(e){t.dropOnItem('item', view, e, item);}, false);
+			item.addEventListener('dragenter', function(e){t.enterDrag('item', view, e, item);}, false);
+			item.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
+			item.addEventListener('dragleave', function(e){t.leaveDrag('item', view, e, item);}, false);
+			item.addEventListener('dragstart', function(e){t.startMoveItem(e, view);}, false);
+			item.addEventListener('dragend', function(e){t.dragEnd(e);}, false);
+			item.addEventListener('mouseover', function(e){t.overMouse('item', view, item);}, false);
+			item.addEventListener('mouseout', function(e){t.outMouse('item', view, item);}, false);
+
+			ctrls = item.lastChild;
+			ctrls.addEventListener('mouseover', function(e){t.overMouse('btns', view, ctrls);}, false);
+			ctrls.addEventListener('mouseout', function(e){t.outMouse('btns', view, ctrls);}, false);
+
+			space = elem.childNodes[1]; //document.getElementById('grid_space_' + num);
+			space.addEventListener('drop', function(e){t.dropOnItem('space', view, e, space);}, false);
+			space.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
+			space.addEventListener('dragenter', function(e){t.enterDrag('space', view, e, space);}, false);
+			space.addEventListener('dragleave', function(e){t.leaveDrag('space', view, e, space);}, false);
+		}
 	},
 
 	doClickUp: function(elem){
@@ -231,6 +262,7 @@ weCollectionEdit = {
 
 		div = document.createElement("div");
 		div.innerHTML = this.blankGridItem.replace(/##INDEX##/g, '100').replace(/##ID##/, object.id).replace(/##URL##/g, object.iconSrc);
+		this.addListenersToItem('grid', div.firstChild);
 
 		newElem = document.getElementById('content_table_' + this.view).insertBefore(div.firstChild, el.nextSibling);
 		if(repaint){
@@ -255,12 +287,11 @@ weCollectionEdit = {
 		//set first item on drop row
 		if(items.length){
 			/*
-			this.dd.fillEmptyRows = document.we_form['check_we_' + this.we_doc.name + '_useEmpty'].checked;
-			this.dd.doubleOk = document.we_form['check_we_' + this.we_doc.name + '_doubleOk'].checked;
+			this.dd.IsDuplicates = document.we_form['check_we_' + this.we_doc.name + '_IsDuplicates'].checked;
 			*/
 			while(!isFirstSet && items.length){
 				var item = items.shift();
-				if(this.dd.doubleOk === 1 || this.collectionCsv.search(',' + item.id + ',') === -1){
+				if(this.dd.IsDuplicates === 1 || this.collectionCsv.search(',' + item.id + ',') === -1){
 					if(this.view === 'grid'){
 						document.getElementById('grid_item_' + index).firstChild.style.background = 'url(' + item.iconSrc.replace('%2F', '/') + ') no-repeat center center';
 						//TODO: name id-fiels using index from item-id and rename when reordering...
@@ -278,7 +309,7 @@ weCollectionEdit = {
 		}
 
 		for(var i = 0; i < items.length; i++){
-			if(this.dd.doubleOk || this.collectionCsv.search(',' + items[i].id + ',') === -1){
+			if(this.dd.IsDuplicates || this.collectionCsv.search(',' + items[i].id + ',') === -1){
 				itemsSet[0].push(items[i].id);
 				if(this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 10) === this.view + '_item_'){
 					index = el.nextSibling.id.substr(10);
@@ -381,7 +412,7 @@ weCollectionEdit = {
 		}
 
 		switch(data[0]){
-			case 'moveElement':
+			case 'moveItem':
 				if(el.id !== this.dd.dragID && type === 'item'){
 					var c = document.getElementById('content_table_' + this.view),
 						elIndex = el.id.substr(10),
@@ -558,7 +589,7 @@ weCollectionEdit = {
 		evt.dataTransfer.setData('text', 'moveRow,' + evt.target.id);
 	},
 			
-	startDragCollectionItem: function(evt, view) {
+	startMoveItem: function(evt, view) {
 		var el = this.getItem(evt.target);
 
 		if(this.view === 'grid'){
@@ -572,9 +603,9 @@ weCollectionEdit = {
 		this.dd.dragIndex = el.id.substr(10);
 		this.dd.dragNextsibling = el.nextSibling;
 		this.dd.removed = false;
-		evt.dataTransfer.setData('text', 'moveElement,' + el.id);
+		evt.dataTransfer.setData('text', 'moveItem,' + el.id);
 	},
-			
+
 	dropOnItem: function(type, view, evt, elem){
 		evt.preventDefault();
 
@@ -582,7 +613,7 @@ weCollectionEdit = {
 			el, index;
 
 		switch(data[0]){
-			case 'moveElement':
+			case 'moveItem':
 				this.dd.isDragRow = false;
 				document.getElementById('content_table_' + this.view).replaceChild(this.dd.dragEl, this.getPlaceholder());
 				this.repaintAndRetrieveCsv(view);
@@ -636,7 +667,7 @@ weCollectionEdit = {
 					weCollectionEdit.resetDdParams();
 				}, 200);
 				break;
-			case 'moveElement':
+			case 'moveItem':
 				this.dd.isDragRow = false;
 				document.getElementById('content_table_' + this.view).replaceChild(this.dd.dragEl, this.getPlaceholder());
 				this.repaintAndRetrieveCsv();
@@ -670,11 +701,11 @@ weCollectionEdit = {
 
 	dragEnd: function(evt){
 		if(this.dd.isDragRow){
-			this.cancelDragRow();
+			this.cancelMoveItem();
 		}
 	},
 
-	cancelDragRow: function(){
+	cancelMoveItem: function(){
 		document.getElementById('content_table').removeChild(this.getPlaceholder());
 		this.dd.dragEl.style.borderColor = 'red';
 		document.getElementById('content_table').insertBefore(this.dd.dragEl, this.dd.dragNextsibling);
@@ -705,7 +736,7 @@ weCollectionEdit = {
 				postData += '&we_cmd[id]=' + encodeURIComponent(csvIDs);
 				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.ID);
 				postData += '&we_cmd[full]=' + encodeURIComponent(1);
-				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.name + '_insertRecursive'].checked);
+				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.name + '_InsertRecursive'].checked);
 
 				xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function () {

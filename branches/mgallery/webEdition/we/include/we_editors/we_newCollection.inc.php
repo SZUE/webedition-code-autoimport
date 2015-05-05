@@ -48,8 +48,8 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	$collection->Path = ($collection->ParentID == 0 ? '' : $collection->ParentPath) . '/' . $collection->Filename;
 	$collection->remCT = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remCT');
 	$collection->remClass = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remClass');
-	$collection->doubleOk = we_base_request::_(we_base_request::INT, 'we_' . $name . '_doubleOk', 0);
-	$collection->useEmpty = $collection->insertRecursive = 0;
+	$collection->IsDuplicates = we_base_request::_(we_base_request::INT, 'we_' . $name . 'IsDuplicates', 1);
+	$collection->InsertRecursive = 1;
 
 
 	if($collection->i_pathNotValid()){

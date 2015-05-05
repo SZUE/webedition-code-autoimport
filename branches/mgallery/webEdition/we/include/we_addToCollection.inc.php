@@ -61,7 +61,7 @@ if($cmd0 === 'do_addToCollection'){
 			$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('wrong table for this collection', we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$collBefore = $collection->getCollection();
-			if(($items = $collection->getVerifiedRemObjectsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'insertRecursive', false)))){
+			if(($items = $collection->getVerifiedRemObjectsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'InsertRecursive', false)))){
 				$result = $collection->addItemsToCollection($items, $isSession ? $insertPos : -1);
 				if($isSession){
 					$collection->saveInSession($_SESSION['weS']['we_data'][$transaction]);
@@ -131,7 +131,7 @@ $yuiSuggest->setAdditionalButton(we_html_button::create_button("image:btn_add_co
 $weAcSelector = $yuiSuggest->getHTML();
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button("quit_move", "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 
-$recursive = we_html_forms::checkboxWithHidden(1, 'insertRecursive', 'Verzeichnisse rekursiv einfügen');
+$recursive = we_html_forms::checkboxWithHidden(1, 'InsertRecursive', 'Verzeichnisse rekursiv einfügen');
 
 echo
 '</head><body class="weTreeHeaderAddToCollection">
