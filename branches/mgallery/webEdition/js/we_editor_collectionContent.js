@@ -67,6 +67,19 @@ wePropertiesEdit = {
 };
 
 weCollectionEdit = {
+	maxIndex: 0,
+	blankGridItem: '',
+	blankListItem: '',
+	collectionName: '',
+	csv: '',
+	view: 'grid',
+	gridItemSize: 180,
+	ct: {
+		grid: null,
+		list: null
+	},
+	
+
 	we_const: {// FIXME: move such "constants" to webEdition.js ("global" namespace)
 		TBL_PREFIX: '',
 		FILE_TABLE: '',
@@ -81,25 +94,19 @@ weCollectionEdit = {
 		remClass: ''
 	},
 
-	maxIndex: 0,
-	blankGridItem: '',
-	blankListItem: '',
-	collectionName: '',
-	csv: '',
-	view: 'grid',
-
 	dd: {
-		dragID: 0,
-		dragEl: null,
-		dragNextsibling: null,
-		lastY: 0,
-		lastIndex: 0,
-		lastID: 0,
-		removed: false,
-		isDragRow: false,
-		fillEmptyRows: false,
+		fillEmptyRows: true,
 		placeholder: null,
-		mapping: [0]
+
+		isMoveItem: true,
+		moveItem: {
+			el: null,
+			id: 0,
+			index: 0,
+			next: null,
+			pos: 0,
+			removed: false
+		}
 	},
 
 	g_l: {
@@ -107,21 +114,20 @@ weCollectionEdit = {
 	},
 
 	init: function(){
-		var c = document.getElementById('content_table_grid');
+		this.ct.grid = document.getElementById('content_table_grid');
+		this.ct.list = document.getElementById('content_table_list');
 
-		for(var i = 0; i < c.childNodes.length; i++){
-			this.addListenersToItem('grid', c.childNodes[i], i+1);
-
-			this.dd.mapping.push(c.childNodes[i]);
+		for(var i = 0; i < this.ct.grid.children.length; i++){
+			this.addListenersToItem('grid', this.ct.grid.children[i], i+1);
 		}
 
 		this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
 		this.collectionCsv = document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value;
 	},
-	
+
 	addListenersToItem: function(view, elem, num){
 		var t = this, item, ctrls, space;
-	
+
 		if(view === 'grid'){
 			item = elem.firstChild;
 			item.addEventListener('drop', function(e){t.dropOnItem('item', view, e, item);}, false);
@@ -196,6 +202,13 @@ weCollectionEdit = {
 		this.repaintAndRetrieveCsv();
 	},
 
+	doZoomGrid: function(value){
+		this.gridItemSize = value;
+		for(var i = 0; i < this.ct['grid'].children.length; i++){
+			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = value + 'px';
+		}
+	},
+
 	getPlaceholder: function(){
 		if(this.dd.placeholder !== null){
 			return this.dd.placeholder;
@@ -208,15 +221,15 @@ weCollectionEdit = {
 			this.dd.placeholder.setAttribute("ondrop","weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
 			this.dd.placeholder.style.float = 'left';
 			this.dd.placeholder.style.display = 'block';
-			this.dd.placeholder.style.height = '242px';
-			this.dd.placeholder.style.width = '256px';
+			this.dd.placeholder.style.height = this.gridItemSize + 'px';
+			this.dd.placeholder.style.width = this.gridItemSize + 'px';
 			var inner = document.createElement("div");
-			inner.style.height = '230px';
-			inner.style.width = '240px';
+			inner.style.height = (this.gridItemSize - 14) + 'px';
+			inner.style.width = (this.gridItemSize - 18) + 'px';
 			inner.style.border = '1px dotted #006db8';
 			this.dd.placeholder.appendChild(inner);
 		} else {
-			this.dd.placeholder.setAttribute("ondrop","weCollectionEdit.dropOnRow(\'item\',\'grid\',event, this)");
+			this.dd.placeholder.setAttribute("ondrop","weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
 			this.dd.placeholder.style.border = '1px solid #006db8';
 			this.dd.placeholder.style.height = '34px';
 			this.dd.placeholder.style.width = '804px';
@@ -247,7 +260,7 @@ weCollectionEdit = {
 		div = document.createElement("div");
 		div.innerHTML = this.blankListItem.replace(/XX/g, this.maxIndex).replace(/CMD1/, cmd1).replace(/CMD2/, cmd2);
 
-		newElem = document.getElementById('content_table' + this.view).insertBefore(div.firstChild, el.nextSibling);
+		newElem = this.ct[this.view].insertBefore(div.firstChild, el.nextSibling);
 		document.getElementById('yuiAcInputItem_' + this.maxIndex).value = path;
 		document.getElementById('yuiAcResultItem_' + this.maxIndex).value = id;
 
@@ -267,9 +280,10 @@ weCollectionEdit = {
 
 		div = document.createElement("div");
 		div.innerHTML = this.blankGridItem.replace(/##INDEX##/g, '100').replace(/##ID##/, id).replace(/##URL##/g, object ? object.iconSrc : '');
+		div.firstChild.style.width = div.firstChild.style.height = this.gridItemSize + 'px';
 		this.addListenersToItem('grid', div.firstChild);
 
-		newElem = document.getElementById('content_table_' + this.view).insertBefore(div.firstChild, el.nextSibling);
+		newElem = this.ct[this.view].insertBefore(div.firstChild, el.nextSibling);
 		if(repaint){
 			this.repaintAndRetrieveCsv(this.view);
 		}
@@ -356,7 +370,8 @@ weCollectionEdit = {
 	},
 
 	repaintAndRetrieveCsv: function(view){
-		var ct = document.getElementById('content_table_' + view), row, item, index, csv = ',', val, btns;
+		var ct = this.ct[view], 
+			row, item, index, csv = ',', val, btns;
 
 		switch(view){
 			case 'grid':
@@ -400,11 +415,11 @@ weCollectionEdit = {
 
 	hideSpace: function(elem){
 		elem.style.width = '12px';
+		elem.style.right = '0px';
 		elem.style.border = '1px solid white';
 		elem.style.margin = '0';
-		elem.previousSibling.style.width = '240px';
-		elem.parentNode.nextSibling.firstChild.style.width = '240px';
-		
+		elem.previousSibling.style.right = '14px';
+		elem.parentNode.nextSibling.firstChild.style.left = '0px';
 	},
 
 	allowDrop: function(evt){
@@ -414,77 +429,29 @@ weCollectionEdit = {
 	enterDrag: function(type, view, evt, elem){
 		var el = this.getItem(elem),//this.getItem(evt.target),
 			data = evt.dataTransfer.getData("text").split(',');
+
 		this.view = view;
-		
 		if(this.view === 'grid' && type === 'item'){
 			this.outMouse(type, this.view, elem);
 		}
 
 		switch(data[0]){
 			case 'moveItem':
-				if(el.id !== this.dd.dragID && type === 'item'){
-					var c = document.getElementById('content_table_' + this.view),
-						elIndex = el.id.substr(10),
-						diff = elIndex - this.dd.dragIndex,
-						tmpIndex = this.dd.dragIndex,
-						tmpID = this.dd.dragID;
+				if(type === 'item'){
+					var c = this.ct[this.view],
+						newPos;
 
-					if(!this.dd.removed){
-						c.removeChild(this.dd.dragEl);
-						this.dd.removed = true;
+					if(!this.dd.moveItem.removed){
+						newPos = [].indexOf.call(c.children, el);
+						c.removeChild(this.dd.moveItem.el);
+						c.insertBefore(this.getPlaceholder(), c.childNodes[newPos + (newPos >= this.dd.moveItem.pos ? 0 : -1)]);
+						this.dd.moveItem.removed = true;
+						return;
 					}
 
-					if(this.getPlaceholder(this.dd.dragID).parentNode){
-						c.removeChild(this.getPlaceholder());
-					}
-					
-//top.console.debug('last: ', this.dd.lastIndex, ' / ', elIndex);
-//this.dd.lastIndex = elIndex;
-
-//top.console.debug('elindex:', elIndex);
-//top.console.debug('new', this.dd.mapping[elIndex]);
-
-					c.insertBefore(this.getPlaceholder(), (diff > 0 ? el.nextSibling : el));
-					//c.insertBefore(this.getPlaceholder(), this.dd.mapping[elIndex]);
-
-					//rewrite element ids (doing only the absolute neccessary) 
-					this.dd.dragID = el.id;
-					this.dd.dragIndex = elIndex;
-
-					switch(diff){
-						case 1:
-						case -1:
-							el.id = tmpID;
-							break;
-						default:
-							
-							if(diff > 1){
-								for(var i = 0; i < 3; i++){
-									c.childNodes[tmpIndex-1].id = 'grid_item_' + tmpIndex++;
-								}
-							} else {
-								for(var i = 0; i < 3; i++){
-									c.childNodes[elIndex].id = 'grid_item_' + ++elIndex;
-								}
-							}
-
-					}
-				}
-				break;
-			case 'moveRow':
-				if(el.id !== this.dd.dragID){
-					el = this.dd.lastY < evt.clientY ? el.nextSibling : el;
-
-					if(!this.dd.removed){
-						document.getElementById('content_table').removeChild(this.dd.dragEl);
-						this.dd.removed = true;
-					}
-
-					if(this.getPlaceholder().parentNode){
-						document.getElementById('content_table').removeChild(this.getPlaceholder());
-					}
-					document.getElementById('content_table').insertBefore(this.getPlaceholder(), el);
-					this.dd.lastY = evt.clientY + (this.dd.lastY < evt.clientY ? 20 : 20);
+					newPos = [].indexOf.call(c.children, el);
+					c.removeChild(this.getPlaceholder());
+					c.insertBefore(this.getPlaceholder(), c.childNodes[newPos]);
 				}
 				break;
 			case 'dragItem':
@@ -492,7 +459,7 @@ weCollectionEdit = {
 				if(this.view === 'grid'){
 					switch(type){
 						case 'item':
-							var c = document.getElementById('content_table_' + this.view), 
+							var c = this.ct[this.view], 
 									index;
 							for(var i = 0; i < c.childNodes.length; i++){
 								el.firstChild.style.border = '1px solid #006db8';
@@ -507,10 +474,11 @@ weCollectionEdit = {
 						case 'space':
 							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
 								elem.style.width = '36px';
+								elem.style.right = '-16px';
 								elem.style.margin = '0 4px 0 4px';
 								elem.style.border = '1px dotted #00cc00';
-								elem.previousSibling.style.width = '224px';
-								elem.parentNode.nextSibling.firstChild.style.width = '224px';
+								elem.previousSibling.style.right = '28px';
+								elem.parentNode.nextSibling.firstChild.style.left = '14px';
 							} else {
 								//el.style.border = '1px solid red';
 							}
@@ -519,7 +487,7 @@ weCollectionEdit = {
 					/*
 					switch(type){
 						case 'item':
-							var t = document.getElementById('content_table_' + this.view), index;
+							var t = this.ct[this.view], index;
 							for(var i = 0; i < t.childNodes.length; i++){
 								index = t.childNodes[i].id.substr(10);
 								//document.getElementById(this.view + '_elem_ + index).style.border = '1px solid #006db8';
@@ -596,33 +564,25 @@ weCollectionEdit = {
 		}
 	},
 
-	startDragRow: function(evt) {
-		this.dd.isDragRow = true;
-		this.dd.lastY = evt.clientY;
-		this.dd.dragEl = evt.target;
-		this.dd.dragID = evt.target.id;
-		this.dd.dragNextsibling = evt.target.nextSibling;
-		this.dd.removed = false;
-		evt.dataTransfer.setData('text', 'moveRow,' + evt.target.id);
-	},
-			
 	startMoveItem: function(evt, view) {
-		var el = this.getItem(evt.target);
+		var el = this.getItem(evt.target),
+			index = parseInt(el.id.substr(10)),
+
+		position = [].indexOf.call(this.ct[view].children, el);
 
 		this.view = view;
-		this.dd.isDragRow = true;
-		this.dd.lastY = evt.clientY;
-		this.dd.dragEl = el;
-		this.dd.dragID = el.id;
-		this.dd.dragIndex = parseInt(el.id.substr(10));
-		this.dd.lastIndex = this.dd.dragIndex;
-		this.dd.dragNextsibling = el.nextSibling;
-		this.dd.removed = false;
+		this.dd.isMoveItem = true;
+		this.dd.moveItem.el = el;
+		this.dd.moveItem.id = el.id;
+		this.dd.moveItem.index = index;
+		this.dd.moveItem.next = el.nextSibling;
+		this.dd.moveItem.pos = position;
+		this.dd.moveItem.removed = false;
+
 		evt.dataTransfer.setData('text', 'moveItem,' + el.id);
 
 		if(this.view === 'grid'){
 			this.outMouse('item', this.view, el.firstChild);
-			this.dd.mapping = this.dd.mapping.slice(0, this.dd.dragIndex).concat(this.dd.mapping.slice(this.dd.dragIndex + 1) );
 		}
 	},
 
@@ -633,14 +593,41 @@ weCollectionEdit = {
 			el, index;
 
 		switch(data[0]){
+			/*
+			case 'moveRow':
+				this.dd.isMoveItem = false;
+				document.getElementById('content_table').replaceChild(this.dd.moveItem.el, this.getPlaceholder());
+				this.repaintAndRetrieveCsv();
+				this.dd.moveItem.el.style.borderColor = 'green';
+				setTimeout(function(){
+					weCollectionEdit.dd.moveItem.el.style.borderColor = '#006db8';
+					weCollectionEdit.resetDdParams();
+				}, 200);
+				break;
+			*/
 			case 'moveItem':
-				this.dd.isDragRow = false;
-				if(this.dd.dragEl !== this.getItem(elem)){
-					document.getElementById('content_table_' + this.view).replaceChild(this.dd.dragEl, this.getPlaceholder());
+				this.dd.isMoveItem = false;
+				if(this.dd.moveItem.el !== this.getItem(elem)){
+					var indexNextToNewPos = this.getPlaceholder().nextSibling ? this.getPlaceholder().nextSibling.id.substr(10) : 0,
+						otherView = view === 'grid' ? 'list' : 'grid';
+
+					this.ct[this.view].replaceChild(this.dd.moveItem.el, this.getPlaceholder());
+					this.dd.moveItem.el.firstChild.style.borderColor = 'green';
+
+					// move item in second view!
+					if(indexNextToNewPos){
+						this.ct[otherView].insertBefore(this.ct[otherView].removeChild(document.getElementById(otherView + '_item_' + this.dd.moveItem.index)),
+								document.getElementById(otherView + '_item_' + indexNextToNewPos)
+							);
+					} else {
+						this.ct[otherView].replaceChild(this.ct[otherView].removeChild(document.getElementById(otherView + '_item_' + this.dd.moveItem.index)),
+								this.ct[otherView].lastChild
+							);
+					}
 					this.repaintAndRetrieveCsv(view);
-					this.dd.dragEl.firstChild.style.borderColor = 'green';
+
 					setTimeout(function(){
-						weCollectionEdit.dd.dragEl.firstChild.style.borderColor = '#006db8';
+						weCollectionEdit.dd.moveItem.el.firstChild.style.borderColor = '#006db8';
 						weCollectionEdit.resetDdParams();
 					}, 200);
 				}
@@ -672,81 +659,35 @@ weCollectionEdit = {
 
 	},
 
-	dropOnRow: function(evt) {
-		//this.view = view;
-		evt.preventDefault();
-		var data = evt.dataTransfer.getData("text").split(','),
-			el, index;
-
-		switch(data[0]){
-			case 'moveRow':
-				this.dd.isDragRow = false;
-				document.getElementById('content_table').replaceChild(this.dd.dragEl, this.getPlaceholder());
-				this.repaintAndRetrieveCsv();
-				this.dd.dragEl.style.borderColor = 'green';
-				setTimeout(function(){
-					weCollectionEdit.dd.dragEl.style.borderColor = '#006db8';
-					weCollectionEdit.resetDdParams();
-				}, 200);
-				break;
-			case 'moveItem':
-				this.dd.isDragRow = false;
-				document.getElementById('content_table_' + this.view).replaceChild(this.dd.dragEl, this.getPlaceholder());
-				this.repaintAndRetrieveCsv();
-				this.dd.dragEl.style.borderColor = 'green';
-				setTimeout(function(){
-					weCollectionEdit.dd.dragEl.style.borderColor = '#006db8';
-					weCollectionEdit.resetDdParams();
-				}, 200);
-				break;
-			case 'dragItem':
-			case 'dragFolder':
-				el = this.getItem(elem);
-				index = el.id.substr(10);
-				el.style.border = '1px solid #006db8';
-
-				if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
-					if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-						this.callForVerifiedItemsAndInsert(index, data[2]);
-					} else {
-						//alert("the item you try to drag from doesn't match your collection's content types");
-					}
-
-				} else {
-					alert("the tree you try to drag from doesn't match your collection's table property");
-				}
-				break;
-			default:
-				return;
-		}
-	},
-
 	dragEnd: function(evt){
-		if(this.dd.isDragRow){
+		if(this.dd.isMoveItem){
 			this.cancelMoveItem();
 		}
 	},
 
 	cancelMoveItem: function(){
-		document.getElementById('content_table').removeChild(this.getPlaceholder());
-		this.dd.dragEl.style.borderColor = 'red';
-		document.getElementById('content_table').insertBefore(this.dd.dragEl, this.dd.dragNextsibling);
-		this.repaintAndRetrieveCsv();
+		this.ct[this.view].removeChild(this.getPlaceholder());
+		this.dd.moveItem.el.style.borderColor = 'red';
+		this.ct[this.view].insertBefore(this.dd.moveItem.el, this.dd.moveItem.next);
+		this.repaintAndRetrieveCsv(this.view);
 		setTimeout(function(){
-			weCollectionEdit.dd.dragEl.style.borderColor = '#006db8';
+			weCollectionEdit.dd.moveItem.el.style.borderColor = '#006db8';
 			weCollectionEdit.resetDdParams();
 		}, 300);
 	},
 
 	resetDdParams: function(){
-		this.dd.dragID = 0;
-		this.dd.dragEl = null;
-		this.dd.dragNextsibling = null;
-		this.dd.lastY = 0;
-		this.dd.removed = false;
-		this.dd.isDragRow = false;
-		this.dd.fillEmptyRows = false;
 		this.dd.placeholder = null;
+
+		this.dd.isMoveItem = false;
+		this.dd.moveItem = {
+			el: null,
+			id: 0,
+			index: 0,
+			next: null,
+			pos: 0,
+			removed: false
+		};
 	},
 
 	callForVerifiedItemsAndInsert: function (index, csvIDs, message, notReplace) {

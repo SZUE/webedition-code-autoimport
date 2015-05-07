@@ -40,6 +40,7 @@ class we_collection extends we_root{
 	protected $jsFormCollection = '';
 	protected $insertPrefs;
 	private $tmpFoldersDone = array();
+	private $gridItemSize = 180;
 
 	/** Constructor
 	 * @return we_collection
@@ -311,6 +312,7 @@ class we_collection extends we_root{
 
 		// write "blank" collection row to js
 		$this->jsFormCollection .= "
+weCollectionEdit.gridItemSize = " . $this->gridItemSize . "; 
 weCollectionEdit.maxIndex = " . count($items) . ";
 weCollectionEdit.blankListItem = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->getListItem(array("id" => -1, "path" => '/'), 'XX', $yuiSuggest, 1, true, true))) . "';
 weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->getGridItem(array("id" => '##ID##', "path" => '/'), '##INDEX##'))) . "';";
@@ -323,7 +325,11 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;color:red;font-size:20px'), 'Hinweis: Die Sammlungen sind z.Zt. komplett unbenutzbar<br>(auch nicht zu Testzwecken)!') .
 			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $recursive) .
-			we_html_element::htmlDiv(array('id' => 'content_table_list', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px;display:none'), $rows) . 
+			we_html_element::htmlDiv(array('id' => 'content_table_list', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px;display:block'), $rows) . 
+
+			// TODO: make "header" width range and toggle view
+			we_html_element::htmlDiv(array('style' => 'padding:30px 0 0 30px;'), '<input type="range" style="width:120px;height:20px;" name="zoom" min="120" step="20" max="240" value="' . $this->gridItemSize . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/>') .
+
 			we_html_element::htmlDiv(array('id' => 'content_table_grid', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px 0 0 20px;background-color:white;display:inline-block;min-height:200px'), $divs);
 	}
 
@@ -355,7 +361,7 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
-		$yuiSuggest->setInput($textname, $item['path'], array("onmouseover" => "document.getElementById('list_item_" . $index . "').draggable=false", "onmouseout" => "document.getElementById('drag_" . $index . "').draggable=true"));
+		$yuiSuggest->setInput($textname, $item['path'], array("onmouseover" => "document.getElementById('list_item_" . $index . "').draggable=false", "onmouseout" => "document.getElementById('list_item_" . $index . "').draggable=true"));
 		$yuiSuggest->setResult($idname, $item['id']);
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
@@ -388,10 +394,10 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 				'id' => 'list_item_' . $index,
 				'class' => 'drop_reference',
 				'draggable' => 'true',
-				'ondragstart' => 'weCollectionEdit.startDragRow(event)',
-				'ondrop' => 'weCollectionEdit.dropOnRow(\'item\',\'list\',event, this)',
+				'ondragstart' => 'weCollectionEdit.startMoveItem(event, \'list\')',
+				'ondrop' => 'weCollectionEdit.dropOnItem(\'item\',\'list\',event, this)',
 				'ondragover' => 'weCollectionEdit.allowDrop(event)',
-				'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'view\',event, this)',
+				'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'list\',event, this)',
 				'ondragend' => 'weCollectionEdit.dragEnd(event)'
 				), $rowHtml);
 	}
@@ -407,17 +413,17 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$trashButton = we_html_button::create_button("image:btn_function_trash", "javascript:weCollectionEdit.deleteItem('grid', this);", true, 27, 22);
 
 		return we_html_element::htmlDiv(array(
-			'style' => 'width:auto;text-align:left;height:242px;float:left;dislpay:block;',
+			'style' => 'position:relative;width:' . $this->gridItemSize . 'px;height:' . $this->gridItemSize . 'px;float:left;dislpay:block;',
 			'id' => 'grid_item_' . $index,
 			'class' => 'drop_reference'
 			), we_html_element::htmlDiv(array(
-					'style' => 'width:240px;height:230px;margin:0;text-align:center;border:1px solid #006db8;background-color:#f5f5f5;float:left;dislpay:block;' . ($iconHTML ? "background:url('" . $iconHTML['url'] . "') no-repeat center center;" : 'background-color:white'),
+					'style' => 'position:absolute;left:0;top:0;bottom:14px;right:14px;border:1px solid #006db8;float:left;dislpay:block;' . ($iconHTML ? "background:url('" . $iconHTML['url'] . "') no-repeat center center;background-size:contain" : 'background-color:white'),
 					'draggable' => 'true',
 				), we_html_element::htmlDiv(array(
-					'style' => 'width:auto;height:34px;margin:0;text-align:right;padding:6px 4px 0 0;position:relative;top:190px;background-color:#f5f5f5;opacity:0.6;display:none;',
+					'style' => 'position:absolute;bottom:0;width:100%;height:30px;text-align:right;padding-top:6px;background-color:#f5f5f5;opacity:0.6;display:none;',
 					), $trashButton)) .
 				we_html_element::htmlDiv(array(
-					'style' => 'width:12px;height:230px;margin:0;text-align:center;vertical-align:center;border:1px solid white;float:left;dislpay:block;',
+					'style' => 'position:absolute;top:0;right:0;bottom:14px;width:12px;border:1px solid white;float:left;dislpay:block;',
 					'id' => 'grid_space_' . $index,
 				), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id'])
 			);
