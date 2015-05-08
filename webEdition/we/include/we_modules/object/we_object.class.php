@@ -2381,7 +2381,7 @@ class we_object extends we_document{
 	}
 
 	public function getDocumentCss(){
-		return array();
+		return id_to_path($this->CSS, FILE_TABLE, null, false, true);
 	}
 
 }

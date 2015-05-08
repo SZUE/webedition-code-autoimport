@@ -976,7 +976,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	//fullscreen_new_window: true,
 	content_css : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
 	popup_css_add : "' . WEBEDITION_DIR . 'editors/content/tinymce/we_tinymce/tinyDialogCss.php",
-	' . (in_array('template', $allCommands && $this->templates) ? $this->getTemplates() : '') . '
+	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options
 	skin : "o2k7",
