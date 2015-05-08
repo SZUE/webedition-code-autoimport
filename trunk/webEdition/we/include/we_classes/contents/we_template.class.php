@@ -438,10 +438,10 @@ we_templateInit();?>';
 						switch($foo['type']){
 							case 'list':
 							case 'block':
-								$name = we_webEditionDocument::makeBlockName($blockname, $name);
+								$name = self::makeBlockName($blockname, $name);
 								break;
 							case 'linklist':
-								$name = we_webEditionDocument::makeLinklistName($blockname, $name);
+								$name = self::makeLinklistName($blockname, $name);
 								break;
 						}
 					}
