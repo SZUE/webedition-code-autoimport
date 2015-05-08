@@ -1430,7 +1430,7 @@ class we_objectFile extends we_document{
 
 		$autobr = $this->getElement($name, "autobr") ? : (isset($attribs["autobr"]) ? $attribs["autobr"] : "");
 		$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
-		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", (isset($attribs["classes"]) && $attribs["classes"]) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
+		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", ((isset($attribs["classes"]) && $attribs["classes"]) || !empty($this->getDocumentCss())) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 		return ($variant ? '' :
 				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["text_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["text_" . $name]['editdescription']) && $this->DefArray["text_" . $name]['editdescription'] ? self::formatDescription($this->DefArray["text_" . $name]['editdescription']) : we_html_element::htmlBr())
@@ -3190,7 +3190,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function getDocumentCss(){
-		return array();
+		return id_to_path($this->CSS, FILE_TABLE, null, false, true);
 	}
 
 }
