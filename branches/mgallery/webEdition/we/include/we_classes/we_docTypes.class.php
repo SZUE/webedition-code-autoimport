@@ -238,8 +238,12 @@ class we_docTypes extends we_class{
 	}
 
 	private function formDocTypes3($headline, $langkey, $derDT = 0){
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
-		$vals = array_merge(array(0 => g_l('weClass', '[nodoctype]')), $this->DB_WE->getAllFirst(false));
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE Language="' . $langkey . '" AND ' . self::getDoctypeQuery($this->DB_WE, true));
+		$vals = array(0 => g_l('weClass', '[nodoctype]'));
+		foreach($this->DB_WE->getAllFirst(false) as $k => $v){
+			$vals[$k] = $v;
+		}
+
 		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, array(($langkey == $this->Language ? 'disabled' : null) => "disabled", 'width' => 328, 'onchange' => '')), $headline, "left", "defaultfont");
 	}
 
@@ -325,7 +329,7 @@ function switchExt(){
 	 *
 	 * @return         string
 	 */
-	public static function getDoctypeQuery(we_database_base $db = null){
+	public static function getDoctypeQuery(we_database_base $db = null, $omitWhere = false){
 		$db = $db ? : new DB_WE();
 
 		$paths = array();
@@ -349,7 +353,7 @@ function switchExt(){
 				}
 			}
 		}
-		return ($paths ? 'WHERE ParentPath IN (' . implode(',', $paths) . ',"")' : '') . ' ORDER BY DocType';
+		return (!$omitWhere ? 'WHERE ' : '') . ($paths ? 'ParentPath IN (' . implode(',', $paths) . ',"")' : '1') . ' ORDER BY DocType';
 	}
 
 }

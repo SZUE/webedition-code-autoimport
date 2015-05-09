@@ -24,7 +24,6 @@
  */
 function we_tag_ifEqual($attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
-		echo $foo;
 		return false;
 	}
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
@@ -33,10 +32,8 @@ function we_tag_ifEqual($attribs){
 
 	if(!$eqname){
 		if(($foo = attributFehltError($attribs, 'value', __FUNCTION__))){
-			echo $foo;
 			return false;
 		}
-		echo $GLOBALS['we_doc']->getElement($name);
 		return ($GLOBALS['we_doc']->getElement($name) == $value);
 	}
 

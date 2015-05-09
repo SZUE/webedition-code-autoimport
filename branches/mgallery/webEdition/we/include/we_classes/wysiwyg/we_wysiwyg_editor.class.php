@@ -80,7 +80,7 @@ class we_wysiwyg_editor{
 		$this->name = $name;
 		if(preg_match('|^.+\[.+\]$|i', $this->name)){
 			$this->fieldName = preg_replace('/^.+\[(.+)\]$/', '$1', $this->name);
-			$this->fieldName_clean = str_replace(array('-', '.', '#'), array('_minus_', '_dot_', '_sharp_'), $this->fieldName);
+			$this->fieldName_clean = str_replace(array('-', '.', '#', ' '), array('_minus_', '_dot_', '_sharp_', '_blank_'), $this->fieldName);
 		};
 		$this->origName = $origName;
 		$this->bgcol = $bgcol;
@@ -758,6 +758,10 @@ class we_wysiwyg_editor{
 	}
 
 	private function getTemplates(){
+		if(!$this->templates){
+			return '';
+		}
+
 		//FIXME: the ParentID query will only hold for depth 1 folders
 		$templates = array_filter(array_map('intval', explode(',', $this->templates)));
 		if(!$templates){
@@ -989,7 +993,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	editor_css : "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",
 	content_css : "' . CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . CSS_DIR . 'wysiwyg/tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
 	popup_css_add : "' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.php' : '') . '",
-	' . (in_array('template', $allCommands) ? $this->getTemplates() : '') . '
+	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options
 	skin : "o2k7",

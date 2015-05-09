@@ -47,7 +47,7 @@ div.imgDiv{
 	float: left;
 	width: 4em;
 	height:4em;
-	margin: 1px;
+	margin: 5px;
 	text-align: center;
 	cursor: pointer;
 	position: relative;
@@ -55,6 +55,8 @@ div.imgDiv{
 img.icon{
 	max-width:4em;
 	max-height:3em;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 img.treeIcon{
@@ -64,7 +66,6 @@ img.treeIcon{
 }
 
 div.imgText{
-	/*font-size: 16px;*/
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
