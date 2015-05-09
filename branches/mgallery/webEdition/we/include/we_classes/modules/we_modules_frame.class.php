@@ -151,7 +151,7 @@ abstract class we_modules_frame{
 		$_incDecTree = '<div id="baumArrows">
 	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '').' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
 	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '').' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
-	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-caret-'.($this->treeWidth <= 30 ? "right" : "left").'" ></i></div>
+	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-'.($this->treeWidth <= 30 ? "right" : "left").'" ></i></div>
 </div>
 </div>';
 

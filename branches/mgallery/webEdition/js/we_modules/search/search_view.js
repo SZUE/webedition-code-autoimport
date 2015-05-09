@@ -823,7 +823,7 @@ weSearch = {
 			top.we_showMessage(this.g_l.searchtool__notChecked, this.we_const.WE_MESSAGE_NOTICE, window);
 		}
 		else {
-			Check = confirm("you really wand to delete them?\n=> coming soon...");
+			Check = confirm("you really want to delete them?\n=> coming soon...");
 			if (Check == true) {
 				this.publishDocsAjax(whichSearch);
 			}
@@ -836,7 +836,7 @@ weSearch = {
 		if(elem){
 			elem.style.display = elem.style.display === 'block' ? 'none' : 'block';
 		}
-		btn.firstChild.src = this.we_const.IMAGE_DIR + 'button/icons/direction_' + (elem.style.display === 'block' ? 'down' : 'right') + '.gif';
+		btn.firstChild.src = this.we_const.IMAGE_DIR + 'button/btn_direction_' + (elem.style.display === 'block' ? 'down' : 'right') + '.gif';
 	},
 
 	ajaxCallbackPublishDocs: {

@@ -164,5 +164,5 @@ if(($tab = we_base_request::_(we_base_request::STRING, "table"))){
 <div id="baumArrows">
 <div class="baumArrow" id="incBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
 <div class="baumArrow" id="decBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
-<div class="baumArrow" onclick="toggleTree();"><i id="arrowImg" class="fa fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></div>
+<div class="baumArrow" onclick="toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></div>
 </div>
