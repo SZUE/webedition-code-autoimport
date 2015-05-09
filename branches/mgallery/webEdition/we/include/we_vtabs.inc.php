@@ -162,7 +162,7 @@ if(($tab = we_base_request::_(we_base_request::STRING, "table"))){
 	</script>
 </div>
 <div id="baumArrows">
-<img class="baumArrow" id="incBaum" src="<?php echo BUTTONS_DIR ?>icons/function_plus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();">
-<img class="baumArrow" id="decBaum" src="<?php echo BUTTONS_DIR ?>icons/function_minus.gif" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();">
-<img class="baumArrow" id="arrowImg" src="<?php echo BUTTONS_DIR ?>icons/direction_<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>.gif" onclick="toggleTree();">
+<div class="baumArrow" id="incBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
+<div class="baumArrow" id="decBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
+<div class="baumArrow" onclick="toggleTree();"><i id="arrowImg" class="fa fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></div>
 </div>

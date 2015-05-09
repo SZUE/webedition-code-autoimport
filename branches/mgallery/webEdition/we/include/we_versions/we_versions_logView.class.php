@@ -306,8 +306,8 @@ function back(id) {
 				<td style="border-top:1px solid #BBBAB9;padding:3px 5px 3px 3px;" align="right" colspan="6">
 				<span id="startNumber_' . $logId . '">' . ($start + 1) . '</span> - <span id="showNumber_' . $logId . '">' . $showNumber . '</span> <span>' . g_l('logging', '[of]') . '</span> <span style="margin-right:20px;">' . $anzGesamt . '</span>' .
 					(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_' . $logId . '" href="#" onclick="showAll(' . $logId . ');">' . g_l('logging', '[all]') . '</a></span>' : '') .
-					'<span style="margin-right:5px;"><a title="' . g_l('logging', '[back]') . '" href="#" onclick="back(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/back.gif\' id="back_' . $logId . '" style="display:none;border:2px solid #DDD;"  /></a></span>' .
-					(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><img src=\'' . IMAGE_DIR . 'navigation/next.gif\' id="next_' . $logId . '" style="border:2px solid #DDD;" /></a></span>' : '') .
+					'<span style="margin-right:5px;"><a title="' . g_l('logging', '[back]') . '" href="#" onclick="back(' . $logId . ');"><i class="fa fa-caret-left" id="back_' . $logId . '" style="display:none;border:2px solid #DDD;"/></a></span>' .
+					(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><i class="fa fa-caret-right" id="next_' . $logId . '" style="border:2px solid #DDD;"/></a></span>' : '') .
 					we_html_tools::hidden("start_" . $logId, $start) . '</td></tr>
 				</table>';
 				break;

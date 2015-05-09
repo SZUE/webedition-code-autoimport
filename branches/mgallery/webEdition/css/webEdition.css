@@ -141,14 +141,16 @@ body.radient{
 	position:absolute;
 	left:5px;
 	bottom: 13px;
+	font-size: 10px;
+	text-align: center;
 }
 
-img.baumArrow{
+.baumArrow{
 	margin-top: 5px;
-	width:9px;
-	height:12px;
+	width:2ex;
+	height:2ex;
 	border:1px solid grey;
-	padding:0 1px;
+	padding:1px;
 	cursor: pointer;
 }
 #treeFrameDiv{
@@ -436,19 +438,6 @@ a.notpublished,
 	font-size: 12px;
 }
 
-.navigation{
-	margin: 1px;
-}
-
-.navigation:hover{
-	margin: 0px;
-	border-bottom: black solid 1px;
-	border-right:	black solid 1px;
-	border-left:	#CCCCCC solid 1px;
-	border-top:		#CCCCCC solid 1px;
-	cursor:pointer;
-}
-
 optgroup{
 	font-weight: bold;
 	font-style: normal;
@@ -685,17 +674,26 @@ table.error td pre{
 	float:left;
 }
 
-#navigationHistory div{
+.navigation{
 	float:left;
-	margin-top:5px;
-}
-
-#navigationHistory img{
-	width:17px;
+	width:22px;
 	height:18px;
 	border:0px;
-	margin-left: 2px;
-	margin-right: 2px;
+	margin-top:5px;
+	margin-left: 1px;
+	margin-right: 1px;
+	text-align: center;
+}
+
+.navigation:hover{
+	margin-top:4px;
+	margin-left: 0px;
+	margin-right: 0px;
+	border-bottom: black solid 1px;
+	border-right:	black solid 1px;
+	border-left:	#CCCCCC solid 1px;
+	border-top:		#CCCCCC solid 1px;
+	cursor:pointer;
 }
 
 #messageConsole{

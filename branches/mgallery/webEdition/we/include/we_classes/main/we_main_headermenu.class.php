@@ -150,15 +150,15 @@ onunload=function() {
 //  no menu in this case !
 				$navigationButtons[] = array(
 					"onclick" => "top.we_cmd('dologout');",
-					"imagepath" => "/navigation/close.gif",
+					"i" => "close",
 					"text" => g_l('javaMenu_global', '[close]')
 				);
 			}
 			$navigationButtons = array_merge($navigationButtons, array(
-				array("onclick" => "top.we_cmd('start_multi_editor');", "imagepath" => "/navigation/home.gif", "text" => g_l('javaMenu_global', '[home]')),
-				array("onclick" => "top.weNavigationHistory.navigateReload();", "imagepath" => "/navigation/reload.gif", "text" => g_l('javaMenu_global', '[reload]')),
-				array("onclick" => "top.weNavigationHistory.navigateBack();", "imagepath" => "/navigation/back.gif", "text" => g_l('javaMenu_global', '[back]')),
-				array("onclick" => "top.weNavigationHistory.navigateNext();", "imagepath" => "/navigation/next.gif", "text" => g_l('javaMenu_global', '[next]')),
+				array("onclick" => "top.we_cmd('start_multi_editor');", 'i' => 'home', "text" => g_l('javaMenu_global', '[home]')),
+				array("onclick" => "top.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')),
+				array("onclick" => "top.weNavigationHistory.navigateBack();", "i" => "caret-left", "text" => g_l('javaMenu_global', '[back]')),
+				array("onclick" => "top.weNavigationHistory.navigateNext();", "i" => "caret-right", "text" => g_l('javaMenu_global', '[next]')),
 				)
 			);
 		}
@@ -175,7 +175,7 @@ onunload=function() {
 				<?php
 				if($navigationButtons){
 					foreach($navigationButtons as $button){
-						echo '<div class="navigation" onclick="' . $button['onclick'] . '"><img src="' . IMAGE_DIR . $button['imagepath'] . '" alt="' . $button['text'] . '" title="' . $button['text'] . '"><i class="fa fa-refresh"></i></div>';
+						echo '<div class="navigation" onclick="' . $button['onclick'] . '"><i class="fa fa-' . $button['i'] . '" title="' . $button['text'] . '"></i></div>';
 					}
 				}
 				?></div>

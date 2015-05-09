@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,15 +32,16 @@ echo we_html_tools::getHtmlTop() .
  we_modules_frame::getJSToggleTreeCode('messaging', 204);
 $_treewidth = isset($_COOKIE["treewidth_messaging"]) && ($_COOKIE["treewidth_messaging"] >= weTree::MinWidth) ? $_COOKIE["treewidth_users"] : 204;
 
-$incDecTree = '
-	<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.incTree();">
-	<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($_treewidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.decTree();">
-	<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($_treewidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onclick="top.content.toggleTree();">
-';
+$_incDecTree = '<div id="baumArrows">
+	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-caret-' . ($this->treeWidth <= 30 ? "right" : "left") . '" ></i></div>
+</div>
+</div>';
 
-echo we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $_treewidth . 'px;'), we_html_element::htmlDiv(array('id'=>'vtabs','style' => 'width: ' . weTree::HiddenWidth . 'px;'), $incDecTree) .
-								we_html_element::htmlIFrame('messaging_tree',  'about:blank', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px; border-top: 1px solid white;')
-						) .
-						we_html_element::htmlIFrame('right', WE_MESSAGING_MODULE_DIR . 'messaging_right.php?we_transaction=' . $transaction, 'position: absolute; top: 0px; bottom: 0px; left: ' . $_treewidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
-				)
+echo we_html_element::htmlBody(array('style' => 'background-color:#bfbfbf; background-repeat:repeat;'), we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $_treewidth . 'px;'), we_html_element::htmlDiv(array('id' => 'vtabs', 'style' => 'width: ' . weTree::HiddenWidth . 'px;'), $incDecTree) .
+			we_html_element::htmlIFrame('messaging_tree', 'about:blank', 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px; border-top: 1px solid white;')
+		) .
+		we_html_element::htmlIFrame('right', WE_MESSAGING_MODULE_DIR . 'messaging_right.php?we_transaction=' . $transaction, 'position: absolute; top: 0px; bottom: 0px; left: ' . $_treewidth . 'px; right: 0px; width:auto; border-left: 1px solid black; overflow: hidden;')
+	)
 );

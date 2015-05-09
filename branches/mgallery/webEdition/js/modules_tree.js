@@ -46,14 +46,17 @@ function toggleTree() {
 
 function setTreeArrow(direction) {
 	try {
-		self.document.getElementById("arrowImg").src = dirs.BUTTONS_DIR + "icons/direction_" + direction + ".gif";
+		var arrImg = self.document.getElementById("arrowImg");
 		if (direction == "right") {
+			arrImg.classList.remove("fa-caret-left");
 			self.document.getElementById("incBaum").style.backgroundColor = "gray";
 			self.document.getElementById("decBaum").style.backgroundColor = "gray";
 		} else {
+			arrImg.classList.remove("fa-caret-right");
 			self.document.getElementById("incBaum").style.backgroundColor = "";
 			self.document.getElementById("decBaum").style.backgroundColor = "";
 		}
+		arrImg.classList.add("fa-caret-" + direction);
 	} catch (e) {
 		// Nothing
 	}

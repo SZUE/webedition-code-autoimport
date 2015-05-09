@@ -148,10 +148,12 @@ abstract class we_modules_frame{
 	}
 
 	function getHTMLResize($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with extraUrlParams
-		$_incDecTree = '<img id="incBaum" src="' . BUTTONS_DIR . 'icons/function_plus.gif" width="9" height="12" style="position:absolute;bottom:53px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.incTree();">
-			<img id="decBaum" src="' . BUTTONS_DIR . 'icons/function_minus.gif" width="9" height="12" style="position:absolute;bottom:33px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer; ' . ($this->treeWidth <= 30 ? 'bgcolor:grey;' : '') . '" onclick="top.content.decTree();">
-			<img id="arrowImg" src="' . BUTTONS_DIR . 'icons/direction_' . ($this->treeWidth <= 30 ? 'right' : 'left') . '.gif" width="9" height="12" style="position:absolute;bottom:13px;left:5px;border:1px solid grey;padding:0 1px;cursor: pointer;" onclick="top.content.toggleTree();">
-		';
+		$_incDecTree = '<div id="baumArrows">
+	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '').' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '').' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-caret-'.($this->treeWidth <= 30 ? "right" : "left").'" ></i></div>
+</div>
+</div>';
 
 		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'width: ' . (weTree::HiddenWidth - 1) . 'px;border-right:1px solid #767676;', 'id' => 'vtabs'), $_incDecTree) .
 					$this->getHTMLLeft()
