@@ -43,7 +43,7 @@ if(!$urlLookingFor){
 
 /**
  * url without query string
- * we need this in some we_tag()
+ * we need this in some we_tag() and to avoid dublicate content
  */
 define('WE_REDIRECTED_SEO', $urlLookingFor);
 
@@ -66,8 +66,15 @@ $urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
 	);
  
 while($urlLookingFor){
-	if(($object = getHash('SELECT ID,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
-
+	if(($object = getHash('SELECT ID,TriggerID,Url FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
+		/**
+		* we check if the given URL and DB Url are identical
+		* if not we redirect to the DB url to avoid dublicate content
+		*/
+		if($object['Url'] !== $urlLookingFor){
+			header("Location: " . str_replace($urlLookingFor, $object['Url'], WE_REDIRECTED_SEO), true, 301);
+			exit;
+		}
 		//remove all cookies from Request String if set (if not, cookies are exposed on listviews etc & max interfer with given Cookies)
 		if(stristr('C', ini_get('request_order') ? : ini_get('variables_order'))){
 			//unset all cookies from request
@@ -102,16 +109,17 @@ while($urlLookingFor){
 }
 
 /**
- * noting found show errorDoc404
- * for seo it's better to make a redirect to errorDoc404 instead of include,
- * but for that we need en separate webedition config parameter
- *
- * header("Location: //" . $_SERVER['HTTP_HOST'] . $errorDoc404, true, (SUPPRESS404CODE ? 200 : 404));
+ * nothing found show errorDoc404
  */
-we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
-$errorDoc404 = ERROR_DOCUMENT_NO_OBJECTFILE ? id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE) : 0;
-if($errorDoc404){
-	include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $errorDoc404);
+
+if(ERROR_DOCUMENT_NO_OBJECTFILE){
+	we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
+	if(FORCE404REDIRECT){
+		header("Location: " . ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE)));
+		exit;
+	}else{
+		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE));
+	}
 }
 
 exit;

@@ -124,8 +124,9 @@ $GLOBALS['configs'] = array(
 //naviagtion stuff
 		'NAVIGATION_ENTRIES_FROM_DOCUMENT' => array('Flag if new NAV- entries added from Dokument should be items or folders', we_base_request::BOOL, false),
 		'NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH' => array('Flag if NAV- rules should be evaluated even after a first match', we_base_request::BOOL, false),
+//SEO stuff
 		'NAVIGATION_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Nav-output', we_base_request::BOOL, false),
-		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRINGC, 'index.php,index.html'),
+		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRINGC, 'index.php,index.html'),		
 		'WYSIWYGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Wysiwyg-editor output', we_base_request::BOOL, false),
 		'TAGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in tag output', we_base_request::BOOL, false),
 		'OBJECTSEOURLS_LOWERCASE' => array('Flag if object SEO-URLs save in lower or camelcase', we_base_request::BOOL, false),
@@ -134,8 +135,10 @@ $GLOBALS['configs'] = array(
 		'TAGLINKS_OBJECTSEOURLS' => array('Flag if we_objectID should be hidden from output of tags', we_base_request::BOOL, false),
 		'URLENCODE_OBJECTSEOURLS' => array('Flag if seo-urls should be urlencoded', we_base_request::BOOL, false),
 		'SUPPRESS404CODE' => array('Flag if 404 not found should be suppressd', we_base_request::BOOL, false),
+		'FORCE404REDIRECT' => array('Flag if redirect to 404 instead of include', we_base_request::BOOL, false),
 		'SEOINSIDE_HIDEINWEBEDITION' => array('Flag if should be displayed in webEdition ', we_base_request::BOOL, false),
 		'SEOINSIDE_HIDEINEDITMODE' => array('Flag if should be displayed in Editmode ', we_base_request::BOOL, false),
+//lang link stuff
 		'LANGLINK_SUPPORT' => array('Flag if automatic LanguageLinks should be supported ', we_base_request::BOOL, true),
 //default charset
 		'DEFAULT_CHARSET' => array('Default Charset', we_base_request::STRING, 'UTF-8'),
