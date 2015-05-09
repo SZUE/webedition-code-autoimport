@@ -281,7 +281,7 @@ class we_document extends we_root{
 		} else {
 			$delallbut = '';
 		}
-		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
+		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), 'module_navigation_edit_navi', 'Icon,Path', NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $_path){
@@ -543,19 +543,24 @@ class we_document extends we_root{
 	}
 
 	function changeLink($name){//FIXME: can we store info in bdid? add info on type, if it is object or file?
+		if(!isset($_SESSION['weS']['WE_LINK'])){
+			return;
+		}
 		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']), 'link');
 		unset($_SESSION['weS']['WE_LINK']);
 	}
 
 	function changeLinklist($name){
+		if(!isset($_SESSION['weS']['WE_LINKLIST'])){
+			return;
+		}
 		$this->setElement($name, $_SESSION['weS']['WE_LINKLIST'], 'linklist');
 		unset($_SESSION['weS']['WE_LINKLIST']);
 	}
 
 	function getNamesFromContent($content){
-		$result = array();
+		$arr = $result = array();
 		preg_match_all('/< ?we:[^>]+name="([^"]+)"[^>]*>/i', $content, $result, PREG_SET_ORDER);
-		$arr = array();
 		foreach($result as $val){
 			$arr[] = $val[1];
 		}
@@ -1145,7 +1150,7 @@ class we_document extends we_root{
 		switch($link['type']){
 			case we_base_link::TYPE_INT:
 				$id = $link['id'];
-				if(empty($id)){
+				if(!$id){
 					return '';
 				}
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db);
@@ -1582,8 +1587,7 @@ class we_document extends we_root{
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\d+),(\d+)"/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$imgID = $reg[1];
-				$thumbID = $reg[2];
+				list(, $imgID, $thumbID) = $reg;
 				$thumbObj = new we_thumbnail();
 				if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
 					$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"', 'src="' . $thumbObj->getOutputPath(false, true) . '"', $text);
