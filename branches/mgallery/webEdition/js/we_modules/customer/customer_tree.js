@@ -129,7 +129,7 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 					"&nbsp;&nbsp;<br/>";
 
 	if (nf[ai].open) {
-		newAst = newAst + "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\" />";
+		newAst += "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\" />";
 		row += draw(nf[ai].id, newAst);
 	}
 }

@@ -322,9 +322,9 @@ function zeichne(startEntry, zweigEintrag) {
 							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].open) {
 				if (ai == nf.len) {
-					newAst = newAst + "<img src=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
+					newAst += "<img src=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
 				} else {
-					newAst = newAst + "<img src=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
+					newAst += "<img src=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
 				}
 				ret += zeichne(nf[ai].id, newAst);
 			}
