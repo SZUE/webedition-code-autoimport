@@ -112,7 +112,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' WHERE ' . $where, 'total', $db);
+		$total = f('SELECT COUNT(1) FROM ' . $table . ' WHERE ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(

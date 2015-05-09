@@ -347,11 +347,11 @@ class we_messaging_proto extends we_class{
 	}
 
 	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus&' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE));
+		return intval(f('SELECT COUNT(1) FROM ' . $this->table . ' WHERE (seenStatus&' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), '', $this->DB_WE));
 	}
 
 	function get_count($folder_id){
-		return f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE);
+		return f('SELECT COUNT(1) FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($this->userid), '', $this->DB_WE);
 	}
 
 	static function arr_offset_arraysearch(&$needle, &$haystack){

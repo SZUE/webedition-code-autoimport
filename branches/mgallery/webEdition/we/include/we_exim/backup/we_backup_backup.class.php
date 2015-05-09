@@ -308,7 +308,7 @@ class we_backup_backup extends we_backup_base{
 						$this->backup_step = 0;
 						$this->table_end = 0;
 
-						$this->table_end = f('SELECT COUNT(1) AS Count FROM ' . $this->backup_db->escape($table), 'Count', $this->backup_db);
+						$this->table_end = f('SELECT COUNT(1) FROM ' . $this->backup_db->escape($table), '', $this->backup_db);
 					}
 
 					$this->current_description = (isset($this->description["export"][strtolower($table)]) ?

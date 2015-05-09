@@ -1704,7 +1704,7 @@ class we_versions_version{
 					}
 				}
 
-				$existsFile = f('SELECT COUNT(1) as Count FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . " AND Path= '" . $db->escape($resetDoc->Path) . "' ", '', $db);
+				$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . " AND Path= '" . $db->escape($resetDoc->Path) . "' LIMIT 1", '', $db);
 
 				$doPark = false;
 				if($existsFile){

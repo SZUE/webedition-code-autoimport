@@ -142,7 +142,7 @@ abstract class we_backup_export{
 			$row_count++;
 		}
 
-		$_table_end = f('SELECT COUNT(1) AS Count FROM ' . $_db->escape($_table), 'Count', $_db);
+		$_table_end = f('SELECT COUNT(1) FROM ' . $_db->escape($_table), '', $_db);
 		if($offset >= $_table_end){
 			$offset = 0;
 		}

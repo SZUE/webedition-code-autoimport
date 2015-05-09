@@ -508,19 +508,24 @@ class we_document extends we_root{
 	}
 
 	function changeLink($name){//FIXME: can we store info in bdid? add info on type, if it is object or file?
+		if(!isset($_SESSION['weS']['WE_LINK'])){
+			return;
+		}
 		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']), 'link');
 		unset($_SESSION['weS']['WE_LINK']);
 	}
 
 	function changeLinklist($name){
+		if(!isset($_SESSION['weS']['WE_LINKLIST'])){
+			return;
+		}
 		$this->setElement($name, $_SESSION['weS']['WE_LINKLIST'], 'linklist');
 		unset($_SESSION['weS']['WE_LINKLIST']);
 	}
 
 	function getNamesFromContent($content){
-		$result = array();
+		$arr = $result = array();
 		preg_match_all('/< ?we:[^>]+name="([^"]+)"[^>]*>/i', $content, $result, PREG_SET_ORDER);
-		$arr = array();
 		foreach($result as $val){
 			$arr[] = $val[1];
 		}
@@ -543,13 +548,14 @@ class we_document extends we_root{
 		if(is_array($this->Extensions) && $this->Extensions){
 			$this->Extension = $this->Extensions[0];
 		}
-		if(!isset($GLOBALS['WE_IS_DYN']) && ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE)){
-			if(($ws = get_ws($this->Table))){
-				$foo = makeArrayFromCSV($ws);
-				if($foo){
-					$this->setParentID(intval($foo[0]));
+		switch($this->Table){
+			case FILE_TABLE:
+			case TEMPLATES_TABLE:
+				if(!isset($GLOBALS['WE_IS_DYN'])){
+					if(($ws = get_ws($this->Table, false, true))){
+						$this->setParentID(intval($ws[0]));
+					}
 				}
-			}
 		}
 	}
 
@@ -695,7 +701,7 @@ class we_document extends we_root{
 					}
 					break;
 				default:
-					//
+				//
 			}
 		}
 

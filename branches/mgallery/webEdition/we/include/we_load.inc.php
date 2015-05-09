@@ -169,7 +169,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			}
 		}
 
-		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $DB_WE);
+		$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $DB_WE);
 		$nextoffset = $offset + $segment;
 		if($segment && $total > $nextoffset){
 			$treeItems[] = array(

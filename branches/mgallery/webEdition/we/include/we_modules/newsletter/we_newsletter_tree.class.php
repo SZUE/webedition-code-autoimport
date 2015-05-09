@@ -114,11 +114,11 @@ treeData.frames=frames;
 			$items[] = array_merge($fileds, $typ);
 		}
 
-		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $db);
+		$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				'icon' => 'arrowdown.gif',
+				'icon' => ' .gif',
 				'id' => 'next_' . $ParentID,
 				'parentid' => 0,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
