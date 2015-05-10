@@ -645,8 +645,8 @@ function next() {
 					forms[i].sameName.value = sameName;
 					forms[i].weFormNum.value = weFormNum + 1;
 					forms[i].weFormCount.value = forms.length - 2;
-					switch_button_state('back', 'back_enabled', 'disabled');
-					switch_button_state('next', 'next_enabled', 'disabled');
+					switch_button_state('back', 'disabled');
+					switch_button_state('next', 'disabled');
 					document.getElementById('progressbar').style.display = '';
 					forms[i].submit();
 					return;

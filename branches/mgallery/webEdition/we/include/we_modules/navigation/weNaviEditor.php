@@ -63,7 +63,7 @@ while($_db->next_record()){
 $_parts = array(
 	array(
 		'headline' => g_l('navigation', '[name]'),
-		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'save_enabled\', \'enabled\'); else switch_button_state(\'save\', \'save_disabled\', \'disabled\');"'),
+		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'enabled\'); else switch_button_state(\'save\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') switch_button_state(\'save\', \'enabled\'); else switch_button_state(\'save\', \'disabled\');"'),
 		'space' => $_space_size,
 		'noline' => 1
 	),

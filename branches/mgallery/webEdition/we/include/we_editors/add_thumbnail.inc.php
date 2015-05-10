@@ -51,9 +51,9 @@ function select_thumbnails(sel){
 
 	if(thumbs.length){
 		thumbs = "," + thumbs;
-		switch_button_state("add", "add_enabled", "enabled");
+		switch_button_state("add", "enabled");
 	}else{
-		switch_button_state("add", "add_enabled", "disabled");
+		switch_button_state("add", "disabled");
 	}
 
 	self.showthumbs.location = "' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+encodeURI(thumbs);

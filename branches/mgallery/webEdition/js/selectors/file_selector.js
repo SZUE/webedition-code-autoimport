@@ -21,6 +21,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var allIDs = "";
+var allPaths = "";
+var allTexts = "";
+var allIsFolder = "";
+var ctrlpressed = false;
+var shiftpressed = false;
+var wasdblclick = false;
+var inputklick = false;
+var tout = null;
+
 function applyOnEnter(evt) {
 	_elemName = "target";
 	if (evt.srcElement !== undefined) { // IE
@@ -199,7 +209,6 @@ function getFirstSelected() {
 	return -1;
 }
 
-
 function unselectFile(id) {
 	e = getEntry(id);
 	top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "white";
@@ -230,7 +239,6 @@ function selectFilesFrom(from, to) {
 	}
 }
 
-
 function getPositionByID(id) {
 	for (var i = 0; i < entries.length; i++) {
 		if (entries[i].ID == id) {
@@ -260,11 +268,6 @@ function queryString(what, id, o) {
 	}
 	return options.formtarget + 'what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
 }
-
-var allIDs = "";
-var allPaths = "";
-var allTexts = "";
-var allIsFolder = "";
 
 function fillIDs() {
 	allIDs = ",";
@@ -315,11 +318,6 @@ function we_makeTextFromPath(path) {
 	return "";
 }
 
-var ctrlpressed = false;
-var shiftpressed = false;
-var wasdblclick = false;
-var inputklick = false;
-var tout = null;
 function weonclick(e) {
 	if (document.all) {
 		if (e.ctrlKey || e.altKey) {
@@ -348,68 +346,61 @@ function weonclick(e) {
 function press_ok_button() {
 	if (top.document.getElementsByName("fname")[0].value === "") {
 		top.exit_close();
-	} else {
-		top.exit_open();
+		return;
 	}
+	top.exit_open();
 }
 
 function disableDelBut() {
-	switch_button_state("delete", "delete_enabled", "disabled");
+	switch_button_state("delete", "disabled");
+	switch_button_state("btn_function_trash", "disabled");
+	changeCatState = 0;
 }
 
 function enableDelBut() {
-	switch_button_state("delete", "delete_enabled", "enabled");
+	switch_button_state("delete", "enabled");
+	if (top.options.userCanEditCat) {
+		switch_button_state("btn_function_trash", "enabled");
+		changeCatState = 1;
+	}
 }
 
 function startFrameset() {
-
 }
 
 function disableRootDirButs() {
-	switch_button_state("root_dir", "root_dir_enabled", "disabled");
-	switch_button_state("btn_fs_back", "back_enabled", "disabled", "image");
+	switch_button_state("root_dir", "disabled");
+	switch_button_state("btn_fs_back", "disabled");
 	rootDirButsState = 0;
 }
 function enableRootDirButs() {
-	switch_button_state("root_dir", "root_dir_enabled", "enabled");
-	switch_button_state("btn_fs_back", "back_enabled", "enabled", "image");
+	switch_button_state("root_dir", "enabled");
+	switch_button_state("btn_fs_back", "enabled");
 	rootDirButsState = 1;
 }
 function disableNewFolderBut() {
-	switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
+	switch_button_state("btn_new_dir", "disabled");
 	makefolderState = 0;
 }
 function enableNewFolderBut() {
-	switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
+	switch_button_state("btn_new_dir", "enabled");
 	makefolderState = 1;
 }
 function disableNewBut() {
-	switch_button_state("btn_new_dir", "new_directory_enabled", "disabled", "image");
-	switch_button_state("btn_add_cat", "newCategorie_enabled", "disabled", "image");
-}
-
-function disableDelBut() {
-	switch_button_state("btn_function_trash", "btn_function_trash_enabled", "disabled", "image");
-	changeCatState = 0;
+	switch_button_state("btn_new_dir", "disabled");
+	switch_button_state("btn_add_cat", "disabled");
 }
 
 function enableNewBut() {
 	if (top.options.userCanEditCat) {
-		switch_button_state("btn_new_dir", "new_directory_enabled", "enabled", "image");
-		switch_button_state("btn_add_cat", "newCategorie_enabled", "enabled", "image");
-	}
-}
-
-function enableDelBut() {
-	if (top.options.userCanEditCat) {
-		switch_button_state("btn_function_trash", "btn_function_trash_enabled", "enabled", "image");
-		changeCatState = 1;
+		switch_button_state("btn_new_dir", "enabled");
+		switch_button_state("btn_add_cat", "enabled");
 	}
 }
 
 function clearOptions() {
 	var a = top.document.getElementById("lookin");
-	while(a.options.length){
+	while (a.options.length) {
 		a.options.remove(0);
 	}
 }

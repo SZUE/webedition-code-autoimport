@@ -325,24 +325,6 @@ var copyNaviFolderAjaxCallback = {
 	}
 }
 
-function populateVars() {
-	if(window.categories_edit!==undefined && document.we_form.CategoriesCount!==undefined){
-		document.we_form.CategoriesCount.value = categories_edit.itemCount;
-	}
-	if(window.sort_edit!==undefined && document.we_form.SortCount!==undefined){
-		document.we_form.SortCount.value = sort_edit.itemCount;
-	}
-	if(window.specificCustomersEdit!==undefined && document.we_form.specificCustomersEditCount!==undefined){
-		document.we_form.specificCustomersEditCount.value = specificCustomersEdit.itemCount;
-	}
-	if(window.blackListEdit!==undefined && document.we_form.blackListEditCount!==undefined){
-		document.we_form.blackListEditCount.value = blackListEdit.itemCount;
-	}
-	if(window.whiteListEdit!==undefined && document.we_form.whiteListEditCount!==undefined){
-		document.we_form.whiteListEditCount.value = whiteListEdit.itemCount;
-	}
-}
-
 function submitForm() {
 	var f = self.document.we_form;
 	populateVars();
@@ -356,34 +338,19 @@ function submitForm() {
 var table = "' . FILE_TABLE . '";
 var log_counter=0;
 
-function toggle(id){
-	var elem = document.getElementById(id);
-	if(elem){
-		if(elem.style.display == "none") elem.style.display = "block";
-		else elem.style.display = "none";
-	}
-}
-function setVisible(id,visible){
-	var elem = document.getElementById(id);
-	if(elem){
-		if(visible==true) elem.style.display = "block";
-		else elem.style.display = "none";
-	}
-}
-
 function clearFields(){
 	' . $this->topFrame . '.mark();
 	var st = document.we_form.SelectionType;
 	if(st.selectedIndex>-1){
 		removeAllCats();
-		' . $this->editorBodyFrame . '.switch_button_state("select_TitleField", "select_enabled", "enabled");
-		' . $this->editorBodyFrame . '.switch_button_state("select_SortField", "select_enabled", "enabled");
+		' . $this->editorBodyFrame . '.switch_button_state("select_TitleField", "enabled");
+		' . $this->editorBodyFrame . '.switch_button_state("select_SortField", "enabled");
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_CLASS . '" && document.we_form.ClassID.options.length<1){
-			' . $this->editorBodyFrame . '.switch_button_state("select_TitleField", "select_enabled", "disabled");
-			' . $this->editorBodyFrame . '.switch_button_state("select_XFolder", "select_enabled", "disabled");
+			' . $this->editorBodyFrame . '.switch_button_state("select_TitleField", "disabled");
+			' . $this->editorBodyFrame . '.switch_button_state("select_XFolder", "disabled");
 			document.getElementById("yuiAcInputFolderPath").disabled=true;
 		} else {
-			' . $this->editorBodyFrame . '.switch_button_state("select_XFolder", "select_enabled", "enabled");
+			' . $this->editorBodyFrame . '.switch_button_state("select_XFolder", "enabled");
 			document.getElementById("yuiAcInputFolderPath").disabled=false;
 		}
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_DOCTYPE . '"){
@@ -391,8 +358,8 @@ function clearFields(){
 			setVisible("objFolder",false);
 			setVisible("catFolder",false);
 			if(' . $this->editorBodyForm . '.DocTypeID.options[' . $this->editorBodyForm . '.DocTypeID.selectedIndex].value==0){
-				' . $this->editorBodyFrame . '.switch_button_state("select_TitleField", "select_enabled", "disabled");
-				' . $this->editorBodyFrame . '.switch_button_state("select_SortField", "select_enabled", "disabled");
+				' . $this->editorBodyFrame . '.switch_button_state("select_TitleField", "disabled");
+				' . $this->editorBodyFrame . '.switch_button_state("select_SortField", "disabled");
 			}
 		}
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_CLASS . '"){
@@ -430,9 +397,7 @@ function clearFields(){
 			setVisible("fieldChooser",true);
 			setVisible("catSort",true);
 		}
-
 	}
-
 }
 
 function setCustomerFilter(sel) {
@@ -513,21 +478,6 @@ function closeAllStats(){
 	document.we_form.LinkPath.value = "";
 }
 
-function setFieldValue(fieldNameTo, fieldFrom){
-	if(document.we_form.SelectionType.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")){
-			eval("document.we_form."+fieldNameTo+".value=fieldFrom.value");
-			weInputRemoveClass(fieldFrom, "weMarkInputError");
-	} else if(weNavTitleField[fieldFrom.value] != undefined){
-			eval("document.we_form."+fieldNameTo+".value=\'"+weNavTitleField[fieldFrom.value]+"\'");
-			weInputRemoveClass(fieldFrom, "weMarkInputError");
-		} else if(fieldFrom.value=="") {
-			eval("document.we_form."+fieldNameTo+".value=\'\'");
-			weInputRemoveClass(fieldFrom, "weMarkInputError");
-		} else {
-			weInputAppendClass(fieldFrom, "weMarkInputError");
-		}
-}
-
 function putTitleField(field){
 	' . $this->topFrame . '.mark();
 	document.we_form.TitleField.value=field;
@@ -545,20 +495,6 @@ function putSortField(field){
 function setFocus() {
 	if(document.we_form.Text!==undefined && ' . $this->topFrame . '.activ_tab==1){
 		document.we_form.Text.focus();
-	}
-}
-
-function switch_button_state(element, button, state, type) {
-	switch(state){
-	case "enabled":
-		weButton.enable(element);
-		return true;
-	case "disabled":
-		weButton.disable(element);
-		return false;
-	default:
-
-	return false;
 	}
 }
 
@@ -607,9 +543,7 @@ function setStaticSelection(value){
 			setVisible("LinkSelectionDiv",true);
 			setLinkSelection("' . we_navigation_navigation::LSELECTION_INTERN . '");
 		}
-
 	}
-
 }
 
 function setFolderSelection(value){
@@ -637,14 +571,11 @@ function setFolderSelection(value){
 			setVisible("objLinkFolderWorkspace",true);
 			setVisible("folderUrlDiv",false);
 		}
-
-
 }
 var weNavTitleField = [];
 ' . $_objFields;
 
-		$out.=we_html_element::jsElement($js);
-		return $out;
+		return $out . we_html_element::jsElement($js) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
 	}
 
 	function getJSSubmitFunction(){
@@ -855,13 +786,13 @@ var weNavTitleField = [];
 					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
-								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "enabled");
+								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "enabled");
 
 								if(' . $this->editorBodyForm . '.Ordn.value==0){
-									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "disabled");
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "disabled");
 								} else {
-									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
@@ -877,13 +808,13 @@ var weNavTitleField = [];
 					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
-								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+								' . $this->editorBodyFrame . '.switch_button_state("direction_down", "enabled");
+								' . $this->editorBodyFrame . '.switch_button_state("direction_up", "enabled");
 
 								if(' . $this->editorBodyForm . '.Ordn.value==1){
-									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "disabled");
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "disabled");
 								} else {
-									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
@@ -901,12 +832,12 @@ var weNavTitleField = [];
 					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-									' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
-									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "direction_up_enabled", "enabled");
+									' . $this->editorBodyFrame . '.switch_button_state("direction_down", "enabled");
+									' . $this->editorBodyFrame . '.switch_button_state("direction_up", "enabled");
 									if(' . $this->editorBodyForm . '.Ordn.value==' . ($_num + 1) . '){
-										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "disabled");
+										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "disabled");
 									} else {
-										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "direction_down_enabled", "enabled");
+										' . $this->editorBodyFrame . '.switch_button_state("direction_down", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);

@@ -1019,7 +1019,7 @@ var weFileUpload = (function () {
 			};
 
 			this.enableWeButton = function (btn, enabled) {
-				_.view.elems.footer[btn + '_enabled'] = _.view.elems.footer.switch_button_state(btn, btn + '_enabled', (enabled ? 'enabled' : 'disabled'));
+				_.view.elems.footer[btn + '_enabled'] = _.view.elems.footer.switch_button_state(btn, (enabled ? 'enabled' : 'disabled'));
 			};
 
 			this.setWeButtonText = function (btn, text) {

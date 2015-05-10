@@ -49,7 +49,7 @@ function handleButtonState() {
 	}
 	eval('var aDisable=[' + sImplodeArgs + ']');
 	for (i = 0; i < iArgsLen - 1; i++) {
-		switch_button_state(aDisable[i], aDisable[i] + '_enabled', (arguments[0]) ? 'enabled' : 'disabled');
+		switch_button_state(aDisable[i], (arguments[0]) ? 'enabled' : 'disabled');
 	}
 }
 

@@ -114,7 +114,7 @@ var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();';
 	if(isset($GLOBALS['we_doc']->Published) && $GLOBALS['we_doc']->Published){
 		echo 'try{
 	if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor && contentEditor.switch_button_state){
-		contentEditor.switch_button_state("add", "add_enabled", "enabled");
+		contentEditor.switch_button_state("add", "enabled");
 	}
 } catch(e) {}';
 	}

@@ -124,12 +124,13 @@ weButton.isEnabled = function (id) {
 	return !this.isDisabled(id);
 };
 
-function switch_button_state(element, button, state, type) {
-	if (state == "enabled") {
-		weButton.enable(element);
-		return true;
-	} else if (state == "disabled") {
-		weButton.disable(element);
+function switch_button_state(element, state) {
+	switch (state) {
+		case "enabled":
+			weButton.enable(element);
+			return true;
+		case "disabled":
+			weButton.disable(element);
 	}
 
 	return false;
