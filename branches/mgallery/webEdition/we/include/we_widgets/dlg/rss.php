@@ -40,22 +40,18 @@ function htmlClipElement($smalltext, $text, $content){
 			if(state_' . $unique . '==0){
 				oText.innerHTML=text_' . $unique . ';
 				oDiv.style.display="block";
-				oBtn.innerHTML=\'' . we_html_element::htmlA(
-				array(
-				"href" => "javascript:clip_" . $unique . "();"
-				), we_html_element::htmlImg(array(
-					"src" => BUTTONS_DIR . "btn_direction_down.gif", "border" => 0
-			))) . '\';
+				oBtn.innerHTML=\'<button class="weBtn" onclick="clip_' . $unique . '();">' .
+			we_html_element::htmlImg(array(
+				"src" => BUTTONS_DIR . "/icons/direction_down.gif", "border" => 0
+			)) . '</button>\';
 				state_' . $unique . '=1;
 			}else{
 				oText.innerHTML=textsmall_' . $unique . ';
 				oDiv.style.display="none";
-				oBtn.innerHTML=\'' . we_html_element::htmlA(
-				array(
-				"href" => "javascript:clip_" . $unique . "();"
-				), we_html_element::htmlImg(array(
-					"src" => BUTTONS_DIR . "btn_direction_right.gif", "border" => 0
-			))) . '\';
+				oBtn.innerHTML=\'<button class="weBtn" onclick="clip_' . $unique . '();">' .
+			we_html_element::htmlImg(array(
+				"src" => BUTTONS_DIR . "/icons/direction_right.gif", "border" => 0
+			)) . '</button>\';
 				state_' . $unique . '=0;
 			}
 		}
@@ -67,11 +63,10 @@ function htmlClipElement($smalltext, $text, $content){
 	$oClip->setCol(
 		0, 0, array(
 		"width" => 21, "valign" => "top", "align" => "right", "id" => "btn_" . $unique
-		), we_html_element::htmlA(array(
-			"href" => "javascript:clip_" . $unique . "();"
-			), we_html_element::htmlImg(array(
-				"src" => BUTTONS_DIR . "btn_direction_right.gif", "border" => 0
-	))));
+		), '<button class="weBtn" onclick="clip_' . $unique . '();">' .
+		we_html_element::htmlImg(array(
+			"src" => BUTTONS_DIR . "/icons/direction_right.gif", "border" => 0
+		)) . '</button>');
 	$oClip->setCol(0, 1, array(
 		"width" => 10, "nowrap" => "nowrap"
 		), we_html_tools::getPixel(10, 1));
@@ -247,8 +242,8 @@ echo we_html_element::htmlDocType() .
 		we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 		we_html_element::jsElement($jsPrefs . "
 var g_l={
-	'prefs_saved_successfully': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]'))."',
-	'invalid_url': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]'))."'
+	'prefs_saved_successfully': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "',
+	'invalid_url': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]')) . "'
 };") .
 		we_html_element::jsScript(JS_DIR . 'widgets/rss.js')
 	) .
