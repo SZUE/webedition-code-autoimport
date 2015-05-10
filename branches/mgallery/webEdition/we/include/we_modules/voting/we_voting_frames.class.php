@@ -167,13 +167,13 @@ class we_voting_frames extends we_modules_frame{
 
 	function getHTMLVariant(){
 		$prefix = '';
-		$del_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top . content . setHot(); #####placeHolder#####', 'style' => 'cursor: pointer; width: 27px;')));
-		$del_but1 = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();', 'style' => 'cursor: pointer; width: 27px;')));
+		$del_but = addslashes(we_html_button::create_button("image:btn_function_trash", 'javascript:top . content . setHot(); #####placeHolder#####'));
+		$del_but1 = addslashes(we_html_button::create_button("image:btn_function_trash", 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'));
 
 		$_Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
 			(permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
-		$sel_but = addslashes(we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'btn_function_trash.gif', 'onclick' => 'javascript:top.content.setHot();', 'style' => 'cursor: pointer; width: 27px;')));
+		$sel_but = addslashes(we_html_button::create_button("image:btn_function_trash",'javascript:top.content.setHot();'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js');

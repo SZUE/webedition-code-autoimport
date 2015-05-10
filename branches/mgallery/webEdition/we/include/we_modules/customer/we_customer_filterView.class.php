@@ -258,7 +258,7 @@ EOS;
 	 * @return string
 	 */
 	function getMultiEdit($name, $data, $headline = "", $isVisible = true){
-		$_delBut = addslashes('<img src="' . BUTTONS_DIR . 'btn_function_trash.gif" onclick="javascript:#####placeHolder#####;wecf_hot();" style="cursor: pointer; width: 27px;" />');
+		$_delBut = addslashes(we_html_button::create_button("image:btn_function_trash","javascript:#####placeHolder#####;wecf_hot();"));
 		$_script = <<<EO_SCRIPT
 
 var $name = new multi_edit("{$name}MultiEdit",document.we_form,0,"$_delBut",$this->_width,false);

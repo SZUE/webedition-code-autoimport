@@ -79,7 +79,7 @@ function getHTMLDirSelector($_selType){
 			), we_html_tools::htmlFormElementTable(
 				"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . $yuiSuggest->getErrorMarkPlaceHolder(
 					"yuiAcErrorMarkDoc") . we_html_tools::htmlTextInput(
-					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_tools::getPixel(300, 20), we_html_element::htmlHidden("FolderID", $folderID, "yuiAcIdDoc"
+					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden("FolderID", $folderID, "yuiAcIdDoc"
 				), we_html_tools::getPixel(20, 4), $_buttons));
 }
 
@@ -116,20 +116,12 @@ if($ac){
 
 function getHTMLCategory(){
 	$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-	$del_but = addslashes(
-		we_html_element::htmlImg(
-			array(
-				'src' => BUTTONS_DIR . 'btn_function_trash.gif',
-				'onclick' => 'javascript:#####placeHolder#####;top.mark();',
-				'style' => 'cursor: pointer; width: 27px;'
-	)));
-
+	$del_but = addslashes(we_html_button::create_button('image:btn_function_trash','javascript:#####placeHolder#####;top.mark();'));
 
 	$variant_js = '
 		var categories_edit=new multi_edit("categories",document.we_form,0,"' . $del_but . '",390,false);
 		categories_edit.addVariant();
 		document.we_form.CategoriesControl.value=categories_edit.name;
-
 	';
 	$Categories = '';
 	if(is_array($Categories)){
@@ -141,9 +133,7 @@ function getHTMLCategory(){
 		}
 	}
 
-	$variant_js .= '
-		categories_edit.showVariant(0);
-	';
+	$variant_js .= 'categories_edit.showVariant(0);';
 
 	$table = new we_html_table(
 		array(
@@ -183,7 +173,7 @@ function getHTMLCategory(){
 $jsCode = "
 	var dirs={
 	'WE_INCLUDES_DIR':'" . WE_INCLUDES_DIR . "',
-	'WEBEDITION_DIR':'" . WE_INCLUDES_DIR . "'
+	'WEBEDITION_DIR':'" . WEBEDITION_DIR . "'
 	};
 var _oCsv_;
 var _sCsv;

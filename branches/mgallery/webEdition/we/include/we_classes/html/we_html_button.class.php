@@ -54,25 +54,11 @@ abstract class we_html_button{
 	 * @static
 	 */
 	static function getButton($value, $id, $cmd = '', $width = self::WIDTH, $title = '', $disabled = false, $margin = '', $padding = '', $key = '', $float = '', $display = '', $important = true, $isFormButton = false){
-
-		$isTextButton = strpos($value, '<') === false;
-		return /* '<table  ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
-			  ' id="' . $id . '" class="weBtn' . ($disabled ? 'Disabled' : '') .
-			  '"' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
-			  ' onmouseout="weButton.out(this);" onmousedown="weButton.down(this);" onmouseup="if(weButton.up(this)){' . oldHtmlspecialchars($cmd) . ';}">' .
-			  '<tr><td class="weBtnLeft' . ($disabled ? 'Disabled' : '') . '" ></td>' .
-			  '<td class="weBtnMiddle' . ($disabled ? 'Disabled' : '') . '">' . $value . '</td>' .
-			  '<td class="weBtnRight' . ($disabled ? 'Disabled' : '') . '">' . ($isFormButton ? we_html_tools::getPixel(1, 1) : '') . '</td>' .
-			  '</tr></table>' . */
-
-			'<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
+		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
 			($disabled ? ' disabled="disabled"' : '') .
 			' id="' . $id . '" class="weBtn" ' . self::getInlineStyleByParam(($width ? : ($width == self::AUTO_WIDTH ? 0 : self::WIDTH)), '', $float, $margin, $padding, $display, '', $important) .
 			' onclick="' . oldHtmlspecialchars($cmd) . '"' .
-			'>' . $value . '</button>'
-
-
-		;
+			'>' . $value . '</button>';
 	}
 
 	/**
@@ -101,7 +87,6 @@ abstract class we_html_button{
 			$extrastyle . '"';
 	}
 
-
 	/**
 	 * This functions creates the button.
 	 *
@@ -127,28 +112,21 @@ abstract class we_html_button{
 		// Check height
 		$height = ($height ? : self::HEIGHT);
 
-		$isImg = strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) !== false;
 		/**
 		 * DEFINE THE NAME OF THE BUTTON
 		 */
 		// Check if the button is a text button or an image button
-		if($isImg){ // Button is an image
+		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) !== false){ // Button is an image
 			$name = substr($name, strlen(self::WE_IMAGE_BUTTON_IDENTIFY));
-		}
-
-		$_button_name = ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix;
-		/**
-		 * CHECK IF THE LANGUAGE FILE DEFINES ANOTHER WIDTH FOR THE BUTTON
-		 */
-		// Check if the button will a text button or a image button
-		if($isImg){ // Button will be an image
 			//set width for image button if given width has not default value
 			$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+			$value = we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage'));
 		} else {
 			$tmp = g_l('button', '[' . $name . '][width]', true);
-			if(!empty($tmp) && ($width == self::WIDTH)){
+			if($tmp && ($width == self::WIDTH)){
 				$width = $tmp;
 			}
+			$value = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 		}
 
 		// Check if the button will be used in a form or not
@@ -162,7 +140,7 @@ abstract class we_html_button{
 				// Render link
 				$cmd .= 'document.' . substr($href, strlen(self::WE_FORM_BUTTON_IDENTIFY)) . '.submit();return false;';
 			}
-		} elseif(strpos($href, self::WE_JS_BUTTON_IDENTIFY) !== false){ // Buttons target will  be a JavaScript
+		} elseif(strpos($href, self::WE_JS_BUTTON_IDENTIFY) !== false){ // Buttons target will be a JavaScript
 			// Get content of JavaScript
 			$_javascript_content = substr($href, strlen(self::WE_JS_BUTTON_IDENTIFY));
 
@@ -183,12 +161,7 @@ abstract class we_html_button{
 			$cmd .= $_button_link;
 		}
 
-		$value = $isImg ? we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage')) :
-			g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
-
-		$title = !$alt ? '' : ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : ''));
-
-		return self::getButton($value, $_button_name, $cmd, $width, $title, $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false));
+		return self::getButton($value, ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix, $cmd, $width, ($alt ? ($title ? : (($tmp = g_l('button', '[' . $name . '][alt]', true)) ? $tmp : '')) : ''), $disabled, '', '', '', '', '', true, (strpos($href, self::WE_FORM_BUTTON_IDENTIFY) !== false));
 	}
 
 	/**

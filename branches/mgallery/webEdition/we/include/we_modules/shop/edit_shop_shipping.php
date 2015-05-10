@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -60,10 +59,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 }
 
 echo we_html_element::jsElement(
-		(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
-				'document.addEventListener("keyup",doKeyDown,true);' :
-				'document.onkeydown = doKeyDown;'
-		) . '
+	(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
+		'document.addEventListener("keyup",doKeyDown,true);' :
+		'document.onkeydown = doKeyDown;'
+	) . '
 function doKeyDown(e) {
 	var key=e.keyCode===undefined?event.keyCode:e.keyCode;
 	switch (key) {
@@ -148,8 +147,9 @@ function addShippingCostTableRow() {
 	var cell4 = document.createElement("TD");
 	var cell5 = document.createElement("TD");
 
-	eval("cell5.innerHTML=\'<img onclick=\"we_cmd(\\\\\'deleteShippingCostTableRow\\\\\', \\\\\'weShippingId_" + entryId + "\\\\\');\" style=\"cursor: pointer;\" src=\"' . BUTTONS_DIR . 'btn_function_trash.gif\" />\';");
+	var tmp=\'' . addslashes(we_html_button::create_button("image:btn_function_trash", "we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")) . '\';
 
+cell5.innerHTML=tmp.replace("#####placeHolder#####",entryId);
 	theNewRow.appendChild(cell1);
 	theNewRow.appendChild(cell2);
 	theNewRow.appendChild(cell3);
@@ -178,10 +178,9 @@ function we_submitForm(url){
 
 	f.submit();
 }' .
-
-(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')
-	) .
-	'</head>
+	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')
+) .
+ '</head>
 <body class="weDialogBody" onload="window.focus();">
 <form name="we_form">
 <input type="hidden" id="we_cmd_field" name="we_cmd[0]" value="saveShipping" />';
@@ -191,18 +190,16 @@ function we_submitForm(url){
 // first show fields: country, vat, isNet?
 
 $customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
-$selectFieldsTbl = array();
+$selectFieldsCtl = $selectFieldsVat = $selectFieldsTbl = array();
 foreach($customerTableFields as $tblField){
 	$selectFieldsTbl[$tblField['name']] = $tblField['name'];
 }
 $shopVats = we_shop_vats::getAllShopVATs();
-$selectFieldsVat = array();
 foreach($shopVats as $id => $shopVat){ //Fix #9625 use shopVat->Id as key instead of the sorted array $id!
-	$selectFieldsVat[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory  . ')';
+	$selectFieldsVat[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 }
 // selectBox with all existing shippings
 // select menu with all available shipping costs
-$selectFieldsCtl = array();
 foreach($weShippingControl->shippings as $key => $shipping){
 	$selectFieldsCtl[$key] = $shipping->text;
 }
@@ -273,7 +270,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 				<td></td>
 				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return IsDigit(event);"') . '</td>
 				<td></td>
-				<td><img style="cursor: pointer;" src="' . BUTTONS_DIR . 'btn_function_trash.gif" onclick="we_cmd(\'deleteShippingCostTableRow\',\'' . $tblRowName . '\');" /></td>
+				<td>' . we_html_button::create_button("image:btn_function_trash", "we_cmd('deleteShippingCostTableRow','" . $tblRowName . "');") . '</td>
 			</tr>';
 		}
 	}
@@ -305,9 +302,9 @@ if(isset($weShipping)){ // show the shipping which must be edited
 }
 
 echo we_html_multiIconBox::getHTML(
-				'weShipping', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-						we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
-				), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
-		) . '
+	'weShipping', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+		we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
+	), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
+) . '
 </form>
 </body></html>';

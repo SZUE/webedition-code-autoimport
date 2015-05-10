@@ -232,11 +232,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	const kIconMessagesCreate = '/webEdition/images/button/icons/messages_create.gif';
 
 	/*
-	 * Path for messages cut Icon
-	 */
-	const kIconMessagesCut = '/webEdition/images/button/icons/messages_cut.gif';
-
-	/*
 	 * Path for messages paste Icon
 	 */
 	const kIconMessagesPaste = '/webEdition/images/button/icons/messages_paste.gif';

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_ruleFrames{
-
 	public $Frameset;
 	public $Controller;
 	public $db;
@@ -53,7 +52,7 @@ class we_navigation_ruleFrames{
 			we_html_element::htmlBody(array('class ' => 'weDialogBody')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('content', $this->Frameset . '?pnt=content', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-					we_html_element::htmlIFrame('cmdFrame',  "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					we_html_element::htmlIFrame('cmdFrame', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			)) .
 			'</html>';
 	}
@@ -346,13 +345,7 @@ function we_cmd(){
 
 		$addbut = we_html_button::create_button(
 				"add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
-		$del_but = addslashes(
-			we_html_element::htmlImg(
-				array(
-					'src' => BUTTONS_DIR . 'btn_function_trash.gif',
-					'onclick' => 'javascript:#####placeHolder#####;',
-					'style' => 'cursor: pointer; width: 27px;'
-		)));
+		$del_but = addslashes(we_html_button::create_button("image:btn_function_trash", 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
