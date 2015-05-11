@@ -57,7 +57,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 				$trash = null;
 
 				if($this->isEditable() && $this->cmd_edit){
-					$edit = we_html_button::create_button("image:btn_edit_edit", "javascript:if(window._EditorFrame!==undefined) _EditorFrame.setEditorIsHot(true);we_cmd('" . $this->cmd_edit . "','" . $id . "');");
+					$edit = we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:if(window._EditorFrame!==undefined) _EditorFrame.setEditorIsHot(true);we_cmd('" . $this->cmd_edit . "','" . $id . "');");
 				}
 
 				if(($this->isEditable() && $this->cmd_del) || $this->CanDelete){

@@ -1916,7 +1916,7 @@ self.focus();
 		foreach($emails as $k => $cols){
 			if($k >= $offset && $k < $endRow){
 
-				$edit = we_html_button::create_button("image:btn_edit_edit", "javascript:editEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "','" . $cols[1] . "','" . $cols[2] . "','" . $cols[3] . "','" . $cols[4] . "','" . $cols[5] . "')");
+				$edit = we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:editEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "','" . $cols[1] . "','" . $cols[2] . "','" . $cols[3] . "','" . $cols[4] . "','" . $cols[5] . "')");
 				$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "')");
 
 				$content[$counter] = array(

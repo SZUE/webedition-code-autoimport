@@ -543,7 +543,7 @@ class we_wysiwyg_editor{
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 
-		return we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
+		return we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
 			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
 			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}

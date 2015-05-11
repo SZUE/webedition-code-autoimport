@@ -326,7 +326,7 @@ function setScrollTo(){
 
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), $select->getHtml());
 		$table->setCol(0, 1, array("nowrap" => null, "class" => "small"), we_html_button::create_button("fa:btn_function_reload,fa-lg fa-refresh", "javascript:applySort();"));
-		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_html_button::create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
+		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:we_cmd('show_sort_admin')"));
 
 		return we_html_element::htmlForm(array("name" => "we_form_treeheader"), we_html_element::htmlHiddens(array(
 					"pnt" => "treeheader",
