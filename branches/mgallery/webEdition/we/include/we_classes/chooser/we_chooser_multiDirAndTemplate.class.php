@@ -59,7 +59,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 	<td><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
+						we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
 						"") . '</td>
 </tr>';
 			case 1:
@@ -75,7 +75,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 				if($this->create){
 					$but = we_html_button::create_button("image:btn_add_template", "javascript:we_cmd('object_create_tmpfromClass','0','" . $this->nr . "','" . $GLOBALS["we_transaction"] . "')");
 				} else {
-					$but = we_html_button::create_button("image:btn_function_view", "javascript:we_cmd('object_preview_objectFile','0','" . (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") . "','" . $GLOBALS["we_transaction"] . "')");
+					$but = we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:we_cmd('object_preview_objectFile','0','" . (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") . "','" . $GLOBALS["we_transaction"] . "')");
 				}
 				$path = id_to_path(isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", TEMPLATES_TABLE, $this->db);
 				if($this->isEditable()){

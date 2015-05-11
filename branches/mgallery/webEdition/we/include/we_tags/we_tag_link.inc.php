@@ -89,7 +89,7 @@ function we_tag_link($attribs, $content){
 		$startTag = $GLOBALS['we_doc']->getLinkStartTag($link, $attribs, $GLOBALS['WE_MAIN_DOC']->ParentID, $GLOBALS['WE_MAIN_DOC']->Path, $GLOBALS['DB_WE'], $img);
 
 		$editbut = we_html_button::create_button('image:btn_edit_link', "javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')", true);
-		$delbut = we_html_button::create_button('image:btn_function_trash', "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
+		$delbut = we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
 
 		return we_html_button::create_button_table(
 				array(

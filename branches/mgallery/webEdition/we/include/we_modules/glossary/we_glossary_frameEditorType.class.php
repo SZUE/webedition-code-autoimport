@@ -410,7 +410,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
-					<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button("image:btn_function_trash", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; SubmitForm(); }") . '</td>
+					<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; SubmitForm(); }") . '</td>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
 					<td class="small">&nbsp;' . g_l('modules_glossary', '[delete_selected_items]') : "") . '</td>
 				</tr>

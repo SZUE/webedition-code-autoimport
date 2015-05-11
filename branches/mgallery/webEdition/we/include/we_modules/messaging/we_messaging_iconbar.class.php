@@ -30,26 +30,26 @@ class we_messaging_iconbar{
 	private $weTransaction;
 	private $viewclass;
 	private $buttonsMsg = array(
-		array("fa:fa-2x fa-pencil,fa-2x fa-envelope-o", "javascript:new_message('new')", false),
-		array("fa:fa-2x fa-mail-reply", "javascript:new_message('re')", true),
-		array("fa:fa-2x fa-copy", "javascript:copy_messages()", false),
-		array("fa:fa-2x fa-scissors", "javascript:cut_messages()", false),
-		array("fa:fa-2x fa-paste", "javascript:paste_messages()", false),
-		array("fa:fa-2x fa-trash", "javascript:delete_messages()", false),
-		array("fa:fa-2x fa-refresh", "javascript:refresh()", false),
-		array("image:btn_messages_tasks", "javascript:launch_todo()", false)
+		array("fa:btn_messages_create,fa-lg fa-pencil", "javascript:new_message('new')", false),
+		array("fa:btn_messages_reply,fa-lg fa-mail-reply", "javascript:new_message('re')", true),
+		array("fa:btn_messages_copy,fa-lg fa-copy", "javascript:copy_messages()", false),
+		array("fa:btn_messages_cut,fa-lg fa-scissors", "javascript:cut_messages()", false),
+		array("fa:btn_messages_paste,fa-lg fa-paste", "javascript:paste_messages()", false),
+		array("fa:btn_messages_trash,fa-lg fa-trash-o", "javascript:delete_messages()", false),
+		array("fa:btn_messages_update,fa-lg fa-refresh", "javascript:refresh()", false),
+		array("fa:btn_messages_tasks,fa-lg fa-long-arrow-right,fa-lg fa-tasks", "javascript:launch_todo()", false)
 	);
 	private $buttonsTodo = array(
-		array("image:btn_task_create", "javascript:new_todo()", false),
-		array("image:btn_task_forward", "javascript:forward_todo()", false),
-		array("image:btn_task_reject", "javascript:reject_todo()", false),
-		array("image:btn_task_status", "javascript:update_todo()", true),
-		array("fa:fa-2x fa-copy", "javascript:copy_messages()", false),
-		array("fa:fa-2x fa-scissors", "javascript:cut_messages()", false),
-		array("fa:fa-2x fa-paste", "javascript:paste_messages()", false),
-		array("fa:fa-2x fa-trash", "javascript:delete_messages()", false),
-		array("fa:fa-2x fa-refresh", "javascript:refresh()", false),
-		array("image:btn_task_messages", "javascript:launch_msg()", false)
+		array("fa:btn_task_create,fa-lg fa-pencil", "javascript:new_todo()", false),
+		array("fa:btn_task_forward,fa-lg fa-mail-forward", "javascript:forward_todo()", false),
+		array("fa:btn_task_reject,fa-lg fa-mail-reply,fa-lg fa-tasks", "javascript:reject_todo()", false),
+		array("fa:btn_task_status,fa-lg fa-question,,fa-lg fa-tasks", "javascript:update_todo()", true),
+		array("fa:btn_task_copy,fa-lg fa-copy", "javascript:copy_messages()", false),
+		array("fa:btn_task_cut,fa-lg fa-scissors", "javascript:cut_messages()", false),
+		array("fa:btn_task_paste,fa-lg fa-paste", "javascript:paste_messages()", false),
+		array("fa:btn_task_trash,fa-lg fa-trash-o", "javascript:delete_messages()", false),
+		array("fa:btn_task_update,fa-lg fa-refresh", "javascript:refresh()", false),
+		array("fa:btn_task_messages,fa-lg fa-long-arrow-right,fa-lg fa-envelope-o", "javascript:launch_msg()", false)
 	);
 
 	public function __construct($parentFrameset){

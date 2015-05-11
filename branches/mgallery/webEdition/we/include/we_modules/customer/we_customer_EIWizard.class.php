@@ -1843,7 +1843,7 @@ document.we_form.filter_count.value="' . $count . '";');
 		$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
 		$plus = we_html_button::create_button("image:btn_function_plus", "javascript:filter_cmd('add_filter')");
-		$trash = we_html_button::create_button("image:btn_function_trash", "javascript:filter_cmd('del_filter')");
+		$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:filter_cmd('del_filter')");
 
 		$c++;
 		$table->addRow();

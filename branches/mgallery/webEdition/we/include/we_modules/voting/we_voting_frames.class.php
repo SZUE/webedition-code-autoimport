@@ -167,13 +167,13 @@ class we_voting_frames extends we_modules_frame{
 
 	function getHTMLVariant(){
 		$prefix = '';
-		$del_but = addslashes(we_html_button::create_button("image:btn_function_trash", 'javascript:top . content . setHot(); #####placeHolder#####'));
-		$del_but1 = addslashes(we_html_button::create_button("image:btn_function_trash", 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'));
+		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:top . content . setHot(); #####placeHolder#####'));
+		$del_but1 = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'));
 
 		$_Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
 			(permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
-		$sel_but = addslashes(we_html_button::create_button("image:btn_function_trash",'javascript:top.content.setHot();'));
+		$sel_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o",'javascript:top.content.setHot();'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js');
@@ -450,7 +450,7 @@ class we_voting_frames extends we_modules_frame{
 		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
 		$table->setColContent(0, 0, $select->getHtml());
 		$table->setColContent(0, 1, we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();question_edit.addVariant();answers_edit.addVariant();question_edit.showVariant(question_edit.variantCount-1);answers_edit.showVariant(answers_edit.variantCount-1);document.we_form.selectVar.options[document.we_form.selectVar.options.length] = new Option('" . g_l('modules_voting', '[variant]') . " '+question_edit.variantCount,question_edit.variantCount-1,false,true);"));
-		$table->setColContent(0, 2, we_html_button::create_button("image:btn_function_trash", "javascript:top.content.setHot();if(question_edit.variantCount>1){ question_edit.deleteVariant(document.we_form.selectVar.selectedIndex);answers_edit.deleteVariant(document.we_form.selectVar.selectedIndex);document.we_form.selectVar.options.length--;document.we_form.selectVar.selectedIndex=question_edit.currentVariant;refreshTexts();} else {" . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[variant_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . "}"));
+		$table->setColContent(0, 2, we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:top.content.setHot();if(question_edit.variantCount>1){ question_edit.deleteVariant(document.we_form.selectVar.selectedIndex);answers_edit.deleteVariant(document.we_form.selectVar.selectedIndex);document.we_form.selectVar.options.length--;document.we_form.selectVar.selectedIndex=question_edit.currentVariant;refreshTexts();} else {" . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[variant_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . "}"));
 		$table->setColAttributes(0, 1, array("style" => "padding:0 5px;"));
 		$selectCode = $table->getHtml();
 

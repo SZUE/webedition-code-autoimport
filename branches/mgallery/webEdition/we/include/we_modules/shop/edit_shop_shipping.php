@@ -147,7 +147,7 @@ function addShippingCostTableRow() {
 	var cell4 = document.createElement("TD");
 	var cell5 = document.createElement("TD");
 
-	var tmp=\'' . addslashes(we_html_button::create_button("image:btn_function_trash", "we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")) . '\';
+	var tmp=\'' . addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "we_cmd('deleteShippingCostTableRow', 'weShippingId_#####placeHolder#####');")) . '\';
 
 cell5.innerHTML=tmp.replace("#####placeHolder#####",entryId);
 	theNewRow.appendChild(cell1);
@@ -270,7 +270,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 				<td></td>
 				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return IsDigit(event);"') . '</td>
 				<td></td>
-				<td>' . we_html_button::create_button("image:btn_function_trash", "we_cmd('deleteShippingCostTableRow','" . $tblRowName . "');") . '</td>
+				<td>' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "we_cmd('deleteShippingCostTableRow','" . $tblRowName . "');") . '</td>
 			</tr>';
 		}
 	}

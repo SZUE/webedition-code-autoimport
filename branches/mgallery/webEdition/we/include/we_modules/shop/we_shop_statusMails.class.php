@@ -329,10 +329,10 @@ class we_shop_statusMails{
 
 		if(($m = we_base_request::_(we_base_request::STRING, "Mail" . $was)) && $m != $datetimeform){
 			$EMailhandler .= '<td class="defaultfont" width="150">' . $m . '</td>';
-			$but = we_html_button::create_button("image:/mail_resend", "javascript:check=confirm('" . g_l('modules_shop', '[statusmails][resent]') . "'); if (check){SendMail('" . $was . "');}");
+			$but = we_html_button::create_button("fa:mail_resend,fa-lg fa-envenlope,fa-lg fa-rotate-right", "javascript:check=confirm('" . g_l('modules_shop', '[statusmails][resent]') . "'); if (check){SendMail('" . $was . "');}");
 		} else {
 			$EMailhandler .= '<td class="defaultfont" width="150">&nbsp;</td>';
-			$but = we_html_button::create_button("image:/mail_send", "javascript:SendMail('" . $was . "')");
+			$but = we_html_button::create_button("fa:mail_send,fa-lg fa-envenlope,fa-lg fa-send-o", "javascript:SendMail('" . $was . "')");
 		}
 		$EMailhandler .= '<td class="defaultfont">' . ($dateSet != $dateform ? $but : we_html_tools::getPixel(30, 15)) . '</td></tr></table>';
 

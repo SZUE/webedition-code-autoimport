@@ -149,7 +149,6 @@ function findInclude($cmd){
 		case 'up_entry_at_list':
 		case 'down_link_at_list':
 		case 'up_link_at_list':
-		case 'edit_list':
 		case 'delete_list':
 		case 'add_entry_to_list':
 		case 'add_link_to_linklist':

@@ -1109,7 +1109,7 @@ class we_object extends we_document{
 
 					$plusAmount = $this->htmlSelect("amount_insert_meta_at_class_" . $name . $f, $addArray);
 					$plusbut = we_html_button::create_button("image:btn_add_listelement", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
-					$trashbut = we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
+					$trashbut = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')");
 
 					$content .= "</td><td>" .
 						we_html_button::create_button_table(array($plusAmount,
@@ -1311,7 +1311,7 @@ class we_object extends we_document{
 
 		$startTag = $this->getLinkStartTag($link, $attribs, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 		$editbut = we_html_button::create_button("edit", "javascript:we_cmd('edit_link_at_class','" . $n . "','','" . $i . "');");
-		$delbut = we_html_button::create_button("image:btn_function_trash", "javascript:setScrollTo();we_cmd('object_delete_link_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $n . "')");
+		$delbut = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:setScrollTo();we_cmd('object_delete_link_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $n . "')");
 		if(!$content){
 			$content = g_l('global', '[new_link]');
 		}
@@ -1341,7 +1341,7 @@ class we_object extends we_document{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
 		$button = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
-		$delbutton = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
+		$delbutton = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht. Der HTML-Cokde wird dynamisch erzeugt das
 		  $yuiSuggest =& weSuggest::getInstance();
@@ -1406,8 +1406,8 @@ class we_object extends we_document{
 					we_html_button::create_button("image:btn_direction_down", "#", true, 21, 22, "", "", true)
 				),
 				($count >= 1 ?
-					we_html_button::create_button("image:btn_function_trash", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22) :
-					we_html_button::create_button("image:btn_function_trash", "#", true, 27, 22, "", "", true)
+					we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_meta_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 27, 22) :
+					we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "#", true, 27, 22, "", "", true)
 				)
 				), 5
 			) .
@@ -1476,7 +1476,7 @@ class we_object extends we_document{
 		} else {
 			foreach($users as $user){
 				$foo = getHash('SELECT Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($user), $this->DB_WE);
-				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . TREE_ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' . we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $user . ",'" . $name . "');") . '</td></tr>';
+				$content .= '<tr><td>' . (empty($foo) ? '' : '<img src="' . TREE_ICON_DIR . $foo["Icon"] . '" width="16" height="18" />') . '</td><td class="defaultfont">' . (empty($foo) ? 'Unknown' : $foo["Path"]) . '</td><td>' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('object_del_user_from_field','" . $GLOBALS['we_transaction'] . "','" . $nr . "'," . $user . ",'" . $name . "');") . '</td></tr>';
 			}
 		}
 		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
@@ -1508,7 +1508,7 @@ class we_object extends we_document{
 						'<img src="' . TREE_IMAGE_DIR . ($usersReadOnly[$user] ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" />'
 					) . '</td><td class="defaultfont">' . g_l('weClass', '[readOnly]') . '</td><td>' .
 					($canChange ?
-						we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('users_del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") :
+						we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('users_del_user','" . $user . "');_EditorFrame.setEditorIsHot(true);") :
 						''
 					) . '</td></tr>';
 			}
@@ -1595,7 +1595,7 @@ class we_object extends we_document{
 		$content = '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
 				we_html_button::create_button("edit", "javascript:we_cmd('we_selector_image','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+				we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
 			'<br/>' . $img->getHtml();
@@ -1631,7 +1631,7 @@ class we_object extends we_document{
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
 				we_html_button::create_button("edit", "javascript:we_cmd('we_selector_document','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::FLASH . "')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+				we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
 			'<br/>' . $img->getHtml();
@@ -1653,7 +1653,7 @@ class we_object extends we_document{
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
 				we_html_button::create_button("edit", "javascript:we_cmd('we_selector_document','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::QUICKTIME . "')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
+				we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')")
 				)
 			) .
 			'<br/>' . $img->getHtml();
@@ -1670,7 +1670,7 @@ class we_object extends we_document{
 		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
 			we_html_button::create_button_table(array(
 				we_html_button::create_button("select", "javascript:we_cmd('we_selector_document','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::APPLICATION . "')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "');")
+				we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "');")
 				)
 			) .
 			'<br/>' . $other->getHtml();

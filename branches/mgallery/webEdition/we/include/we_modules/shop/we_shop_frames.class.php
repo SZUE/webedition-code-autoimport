@@ -185,7 +185,7 @@ function we_cmd() {
 		}
 
 		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_pref", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
-		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_payment_val", "javascript:top.opener.top.we_cmd('payment_val')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
+		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("fa:btn_payment_val,fa-lg fa-long-arrow-right,fa-lg fa-money", "javascript:top.opener.top.we_cmd('payment_val')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
 
 		if($headline){
 			$iconBarTable->addCol();

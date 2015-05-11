@@ -130,7 +130,7 @@ abstract class we_editor_footer{
 		$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 			$table->addCol(2);
-			$table->setCol(0, $_pos++, array('valign' => 'top'), we_html_button::create_button("image:btn_function_trash", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+			$table->setCol(0, $_pos++, array('valign' => 'top'), we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 			$table->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 	}

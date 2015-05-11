@@ -325,7 +325,7 @@ function uploadFinished() {
 	function getStep2Legacy(){
 		// create Second Screen ##############################################################################
 		$but = we_html_tools::getPixel(10, 22) .
-			we_html_button::create_button("image:btn_function_trash", "wedelRow(WEFORMNUM + 1,this)");
+			we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "wedelRow(WEFORMNUM + 1,this)");
 		$but = str_replace(array("\n", "\r"), " ", $but);
 		$maxsize = we_base_file::getHumanFileSize(getUploadMaxFilesize(false, $GLOBALS['DB_WE']), we_base_file::SZ_MB);
 
@@ -602,7 +602,7 @@ function next() {
 		forms = top.imgimportcontent.document.forms;
 		var z=0;
 		var sameName=top.imgimportcontent.document.we_startform.sameName.value;
-		
+
 		for(var i=0; i<forms.length;i++){
 			if(forms[i].name.substring(0,14) == 'we_upload_form') {
 				if(z == weFormNum && forms[i].we_File.value != ''){
@@ -853,7 +853,7 @@ function next() {
 		$_width_size = 300;
 
 		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
-		$del_but = addslashes(we_html_button::create_button("image:btn_function_trash", 'javascript:#####placeHolder#####;'));
+		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 

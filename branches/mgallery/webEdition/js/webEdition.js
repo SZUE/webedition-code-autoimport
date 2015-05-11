@@ -811,7 +811,6 @@ function we_cmd_base(args, url) {
 		case "update_file":
 		case "copyDocument":
 		case "insert_entry_at_list":
-		case "edit_list":
 		case "delete_list":
 		case "down_entry_at_list":
 		case "up_entry_at_list":

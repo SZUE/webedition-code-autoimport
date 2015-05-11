@@ -113,7 +113,7 @@ abstract class we_customer_add{
 				$sort_table->setCol($row_num, 1, array("class" => "defaultfont"), $field->getHtml());
 				$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), $function->getHtml());
 				$sort_table->setCol($row_num, 3, array("class" => "defaultfont"), $order->getHtml());
-				$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort_field','" . $k . "',$fcounter)", true, 30));
+				$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('del_sort_field','" . $k . "',$fcounter)", true, 30));
 
 				$fcounter++;
 			}
@@ -135,7 +135,7 @@ abstract class we_customer_add{
 
 			$_htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array("name" => "sort_" . $counter, "value" => $k, "size" => 40)), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
 				$sort_table->getHtml() .
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_sort','" . $k . "')");
+				we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('del_sort','" . $k . "')");
 
 			$_parts[] = array('html' => $_htmlCode, 'headline' => $k);
 
@@ -268,7 +268,7 @@ function setScrollTo(){
 		$advsearch->addRow();
 		$advsearch->setCol(++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
 				we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_search')"),
-				we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_search')")
+				we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('del_search')")
 				)
 			)
 		);
@@ -325,7 +325,7 @@ function setScrollTo(){
 		$table->setRow(0, array("valign" => "bottom"));
 
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), $select->getHtml());
-		$table->setCol(0, 1, array("nowrap" => null, "class" => "small"), we_html_button::create_button("image:btn_function_reload", "javascript:applySort();"));
+		$table->setCol(0, 1, array("nowrap" => null, "class" => "small"), we_html_button::create_button("fa:btn_function_reload,fa-lg fa-refresh", "javascript:applySort();"));
 		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_html_button::create_button("image:btn_edit_edit", "javascript:we_cmd('show_sort_admin')"));
 
 		return we_html_element::htmlForm(array("name" => "we_form_treeheader"), we_html_element::htmlHiddens(array(

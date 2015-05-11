@@ -116,7 +116,7 @@ if($ac){
 
 function getHTMLCategory(){
 	$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-	$del_but = addslashes(we_html_button::create_button('image:btn_function_trash','javascript:#####placeHolder#####;top.mark();'));
+	$del_but = addslashes(we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o','javascript:#####placeHolder#####;top.mark();'));
 
 	$variant_js = '
 		var categories_edit=new multi_edit("categories",document.we_form,0,"' . $del_but . '",390,false);

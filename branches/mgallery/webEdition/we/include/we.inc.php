@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -119,24 +118,24 @@ if(defined('WE_WEBUSER_LANGUAGE')){
 
 if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'])){
 	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
-					$_SESSION['prefs']['Language'] :
-					//  bugfix #4229
-					($_SESSION['prefs']['Language'] = WE_LANGUAGE));
+			$_SESSION['prefs']['Language'] :
+			//  bugfix #4229
+			($_SESSION['prefs']['Language'] = WE_LANGUAGE));
 } else {
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
 
 define('SCRIPT_BUTTONS_ONLY', we_html_element::jsScript(JS_DIR . 'weButton.js'));
-define('STYLESHEET_BUTTONS_ONLY', we_html_element::cssLink(CSS_DIR . 'we_button.css'));
+define('STYLESHEET_BUTTONS_ONLY', we_html_element::cssLink(CSS_DIR . 'we_button.css') . we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
 define('STYLESHEET_SCRIPT', we_html_element::cssLink(CSS_DIR . 'global.php') .
-		STYLESHEET_BUTTONS_ONLY .
-		we_html_element::cssLink(CSS_DIR . 'webEdition.css') .
-		we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
+	STYLESHEET_BUTTONS_ONLY .
+	we_html_element::cssLink(CSS_DIR . 'webEdition.css')
+);
 define('STYLESHEET', STYLESHEET_SCRIPT . SCRIPT_BUTTONS_ONLY);
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] ?
-					$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
+			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	//send header?
 	switch(isset($_REQUEST['we_cmd']) && !is_array($_REQUEST['we_cmd']) ? we_base_request::_(we_base_request::STRING, 'we_cmd', '__default__') : ''){
@@ -156,9 +155,9 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 		case 'load_editor':
 			$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', '__NO_TRANS__');
 			$header = (!(isset($_SESSION['weS']['we_data'][$trans]) &&
-					$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
-					$_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW
-					));
+				$_SESSION['weS']['we_data'][$trans][0]['Table'] == FILE_TABLE &&
+				$_SESSION['weS']['EditPageNr'] == we_base_constants::WE_EDITPAGE_PREVIEW
+				));
 			break;
 		case '__default__':
 			$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));

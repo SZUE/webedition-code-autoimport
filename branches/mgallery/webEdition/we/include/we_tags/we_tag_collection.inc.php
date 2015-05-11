@@ -38,8 +38,8 @@ function we_tag_collection($attribs){
 		$textname = 'we_' . $GLOBALS['we_doc']->Name . '_collection[' . $name . '_path]';
 		$idname = 'we_' . $GLOBALS['we_doc']->Name . '_collection[' . $name . '#bdid]';
 
-		$delbutton = we_html_button::create_button('image:btn_function_trash', "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
-		$open = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . ':function_view', "javascript:if(document.forms[0].elements['" . $idname . "'].value){top.weEditorFrameController.openDocument('" . VFILE_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
+		$delbutton = we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
+		$open = we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', "javascript:if(document.forms[0].elements['" . $idname . "'].value){top.weEditorFrameController.openDocument('" . VFILE_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");

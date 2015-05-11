@@ -66,7 +66,7 @@ top.close();
 
 	function getDialogButtons(){
 		$buttons = array(
-			we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.elements['we_dialog_args[lang]'].value='';weDoOk();")
+			we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:document.we_form.elements['we_dialog_args[lang]'].value='';weDoOk();")
 		);
 
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){

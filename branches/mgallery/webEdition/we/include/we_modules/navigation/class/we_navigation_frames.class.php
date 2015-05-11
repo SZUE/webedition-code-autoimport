@@ -390,11 +390,11 @@ function setTab(tab) {
 
 		$_button_doc = we_html_button::create_button_table(array(
 				we_html_button::create_button('select', $_cmd_doc, true, 0, 0, '', '', false),
-				we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . ':function_view', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false)
+				we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false)
 				), 2);
 		$_button_obj = we_html_button::create_button_table(array(
 				we_html_button::create_button('select', $_cmd_obj, true, 0, 0, '', '', false),
-				(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . ':function_view', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false) : '')
+				(defined('OBJECT_TABLE') ? we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false) : '')
 				), 2);
 
 		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
@@ -426,7 +426,7 @@ function setTab(tab) {
 		$yuiSuggest->setTable($this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
 		$yuiSuggest->setWidth($this->_width_size - 190);
 		$yuiSuggest->setSelectButton($_buttons);
-		$yuiSuggest->setTrashButton(we_html_button::create_button('image:btn_function_trash', 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', true, 27, 22));
+		$yuiSuggest->setTrashButton(we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', true, 27, 22));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -670,12 +670,12 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$_button_doc = we_html_button::create_button_table(array(
 				we_html_button::create_button('select', $_cmd_doc, true, 0, 0, '', '', $disabled),
-				we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . ':function_view', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc')
+				we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc')
 				), 2);
 
 		$_button_obj = we_html_button::create_button_table(array(
 				we_html_button::create_button('select', $_cmd_obj, true, 0, 0, '', '', $disabled),
-				(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . ':function_view', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '')
+				(defined('OBJECT_TABLE') ? we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '')
 				), 2);
 		$_button_cat = we_html_button::create_button('select', $_cmd_cat, true, 0, 0, '', '', $disabled);
 
@@ -1110,7 +1110,7 @@ function onSelectionClassChangeJS(value) {
 			$_button = we_html_button::create_button_table(
 					array(
 					we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled),
-					we_html_button::create_button('image:btn_function_trash', 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
+					we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
 					), 10);
 			$_width = 157;
 		} else {
@@ -1143,7 +1143,7 @@ function onSelectionClassChangeJS(value) {
 
 	function getHTMLCategory(){
 		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
-		$del_but = addslashes(we_html_button::create_button("image:btn_function_trash", 'javascript:#####placeHolder#####;' . $this->topFrame . '.mark();'));
+		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:#####placeHolder#####;' . $this->topFrame . '.mark();'));
 
 		$variant_js = '
 var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);

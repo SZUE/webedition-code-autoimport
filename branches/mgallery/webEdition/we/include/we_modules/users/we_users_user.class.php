@@ -1698,7 +1698,7 @@ function delElement(elvalues,elem) {
 
 				$content1.='
 <tr><td colspan="2">' . $weAcSelector . '</td>
-	<td><div style="position:relative; top:-1px">' . we_html_button::create_button("image:btn_function_trash", "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' .
+	<td><div style="position:relative; top:-1px">' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' .
 					($k == FILE_TABLE ?
 						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "[$key]", g_l('modules_users', '[make_def_ws]'), true, "defaultfont", 'top.content.setHot();') . '</td>' :
 						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') . '

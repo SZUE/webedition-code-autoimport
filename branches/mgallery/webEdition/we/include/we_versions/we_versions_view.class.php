@@ -462,7 +462,7 @@ function newinput() {
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_delButton["+rows+"]");
 			cell.innerHTML=\'' . we_html_button::create_button(
-					"image:btn_function_trash", "javascript:delRow('+rows+')") . '\';
+					"fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow('+rows+')") . '\';
 			newRow.appendChild(cell);
 
 		elem.appendChild(newRow);
@@ -509,7 +509,7 @@ function changeit(value, rowNr){
 
 		cell = document.createElement("TD");
 		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_html_button::create_button('image:btn_function_trash', "javascript:delRow('+rowNr+')") . '\';
+		cell.innerHTML=\'' . we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 		}else if(value=="timestamp") {
 		row.removeChild(locationTD);
@@ -547,7 +547,7 @@ function changeit(value, rowNr){
 
 	cell = document.createElement("TD");
 	cell.setAttribute("id", "td_delButton["+rowNr+"]");
-	cell.innerHTML = \'' . we_html_button::create_button('image:btn_function_trash', "javascript:delRow('+rowNr+')") . '\';
+	cell.innerHTML = \'' . we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}else if(value=="modifierID") {
 		if (locationTD!=null) {
@@ -570,7 +570,7 @@ function changeit(value, rowNr){
 
 		cell = document.createElement("TD");
 		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+		cell.innerHTML=\'' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}else if(value=="status") {
 		if (locationTD!=null) {
@@ -593,7 +593,7 @@ function changeit(value, rowNr){
 
 		cell = document.createElement("TD");
 		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_html_button::create_button("image:btn_function_trash", "javascript:delRow('+rowNr+')") . '\';
+		cell.innerHTML=\'' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}
 		}
@@ -676,7 +676,7 @@ function delRow(id) {
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
 
-			$button = we_html_button::create_button("image:btn_function_trash", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
+			$button = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
 
 			$search = we_html_tools::htmlSelect(
 					"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
@@ -949,7 +949,7 @@ function delRow(id) {
 			array("dat" => '<a href="javascript:setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span>'),
 			array("dat" => g_l('versions', '[modifications]')),
 			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_html_button::create_button(
-						"image:btn_function_trash", "javascript:deleteVers();") . '</div>' : '') .
+						"fa:btn_function_trash,fa-lg fa-trash-o", "javascript:deleteVers();") . '</div>' : '') .
 				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
 			array("dat" => we_html_tools::getPixel(1, 1)),
 			array("dat" => we_html_tools::getPixel(1, 1)),

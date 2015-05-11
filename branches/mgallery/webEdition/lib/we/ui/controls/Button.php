@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -33,7 +32,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	/*
 	 * Path for Add Category Icon
 	 */
-
 	const kIconAddCat = '/webEdition/images/button/icons/add_cat.gif';
 
 	/*
@@ -147,11 +145,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	const kIconEditLink = '/webEdition/images/button/icons/edit_link.gif';
 
 	/*
-	 * Path for edit list Icon
-	 */
-	const kIconEditList = '/webEdition/images/button/icons/edit_list.gif';
-
-	/*
 	 * Path for edit object Icon
 	 */
 	const kIconEditObject = '/webEdition/images/button/icons/edit_object.gif';
@@ -180,11 +173,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 * Path for publish Icon
 	 */
 	const kIconPublish = '/webEdition/images/button/icons/function_publish.gif';
-
-	/*
-	 * Path for reload Icon
-	 */
-	const kIconReload = '/webEdition/images/button/icons/function_reload.gif';
 
 	/*
 	 * Path for search Icon
@@ -825,10 +813,10 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			}
 			if(isset($this->$internalName) && $this->$internalName !== ''){
 				$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="' .
-						($internalName === "_onClick" ?
-								'if(we_ui_controls_Button.up(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}' :
-								oldHtmlspecialchars($this->$internalName)) .
-						'"';
+					($internalName === "_onClick" ?
+						'if(we_ui_controls_Button.up(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}' :
+						oldHtmlspecialchars($this->$internalName)) .
+					'"';
 			}
 		}
 		return $attribs;

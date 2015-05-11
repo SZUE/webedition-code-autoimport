@@ -365,12 +365,12 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 					<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>
 					<td><table cellpadding="0" cellspacing="0">
 						<tr><td>' . we_html_tools::getPixel(5, 3) . '</td></tr>
-						<tr><td>' . we_html_button::create_button_table(array(we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();addTask()", true, 30), we_html_button::create_button("image:btn_function_trash", "javascript:top.content.setHot();delTask()", true, 30))) . '</td>
+						<tr><td>' . we_html_button::create_button_table(array(we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();addTask()", true, 30), we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:top.content.setHot();delTask()", true, 30))) . '</td>
 						</tr>
 						</table></td>
 				</tr>
 				<tr valign="top">
-					<td colspan="2" nowrap>' . we_html_button::create_button_table(array(we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();addStep()", true, 30), we_html_button::create_button("image:btn_function_trash", "javascript:top.content.setHot();delStep()", true, 30))) . '</td></tr>
+					<td colspan="2" nowrap>' . we_html_button::create_button_table(array(we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();addStep()", true, 30), we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:top.content.setHot();delStep()", true, 30))) . '</td></tr>
 				</table>' .
 			$yuiSuggest->getYuiJs() .
 			we_html_element::htmlHiddens(array(

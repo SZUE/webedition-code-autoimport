@@ -127,10 +127,11 @@ abstract class we_html_button{
 				break;
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
 			case self::WE_FA_BUTTON_IDENTIFY:
-				$name = $names[1];
 				//set width for image button if given width has not default value
 				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
-				$fas = explode(',', $name);
+				//get name for title
+				list($name, $names) = explode(',', $names[1],2);
+				$fas = explode(',', $names);
 				$value = '';
 				foreach($fas as $cnt => $fa){
 					$value.='<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';

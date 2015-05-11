@@ -383,7 +383,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(1, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'), $allBlockedByBlacklist));
 			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
-			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.we_cmd('black_list');"))));
+			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:top.opener.top.we_cmd('black_list');"))));
 
 			/* process bar blocked by domain check */
 			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
@@ -400,7 +400,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(2, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'), $allBlockedByDomainCheck));
 			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
-			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.we_cmd('domain_check');"))));
+			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:top.opener.top.we_cmd('domain_check');"))));
 
 			/* process bar all clear recipients */
 			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
@@ -417,7 +417,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(3, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'), $allClearRecipients));
 			$table->setCol(3, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . (($allClearRecipients == $allRecipients) ? "icons/valid.gif" : "alert_tiny.gif"), "title" => (($allClearRecipients < $allRecipients) ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : ''))));
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
-			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::position_yes_no_cancel(we_html_button::create_button("image:btn_function_view", "javascript:top.opener.top.we_cmd('show_log')")));
+			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::position_yes_no_cancel(we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:top.opener.top.we_cmd('show_log')")));
 
 			/* total recipients */
 			$table->addRow();
@@ -688,7 +688,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			}
 		}
 
-		$deselect = we_html_button::create_button("image:btn_function_trash", "javascript:document.we_form.global_mailing_list.value=''");
+		$deselect = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:document.we_form.global_mailing_list.value=''");
 
 		$gml_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 538), 4, 2);
 		$gml_table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[global_mailing_list]'));
@@ -891,7 +891,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
 			$plus = we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_filter',$group)");
-			$trash = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('del_filter',$group)");
+			$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('del_filter',$group)");
 
 			$c++;
 			$table->addRow();
@@ -1170,7 +1170,7 @@ window.onload=extraInit;');
 			$buttons = we_html_tools::getPixel(440, 1);
 
 			$plus = we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('addBlock','" . $counter . "')");
-			$trash = we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('delBlock','" . $counter . "')");
+			$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('delBlock','" . $counter . "')");
 
 			$buttons.=(count($this->View->newsletter->blocks) > 1 ?
 					we_html_button::position_yes_no_cancel($plus, $trash) :
@@ -1203,7 +1203,7 @@ window.onload=extraInit;');
 
 
 			$plus = ($i == $count - 1 ? we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('addGroup')") : null);
-			$trash = ($count > 1 ? we_html_button::create_button("image:btn_function_trash", "javascript:we_cmd('delGroup'," . $i . ")") : null);
+			$trash = ($count > 1 ? we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('delGroup'," . $i . ")") : null);
 
 			$buttons = we_html_button::create_button_table(array($plus, $trash), 10, array("align" => "right"));
 
@@ -1917,7 +1917,7 @@ self.focus();
 			if($k >= $offset && $k < $endRow){
 
 				$edit = we_html_button::create_button("image:btn_edit_edit", "javascript:editEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "','" . $cols[1] . "','" . $cols[2] . "','" . $cols[3] . "','" . $cols[4] . "','" . $cols[5] . "')");
-				$trash = we_html_button::create_button("image:btn_function_trash", "javascript:delEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "')");
+				$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "')");
 
 				$content[$counter] = array(
 					array(

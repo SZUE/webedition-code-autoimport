@@ -218,6 +218,7 @@ var tables = {
 	TBL_PREFIX: '<?php echo TBL_PREFIX; ?>'
 };
 var dirs = {
+	WEBEDITION_DIR:"<?php echo WEBEDITION_DIR;?>",
 	WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
 	WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
 	WE_MESSAGING_MODULE_DIR: "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
