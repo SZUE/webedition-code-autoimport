@@ -44,11 +44,11 @@ class we_messaging_iconbar{
 		array("image:btn_task_forward", "javascript:forward_todo()", false),
 		array("image:btn_task_reject", "javascript:reject_todo()", false),
 		array("image:btn_task_status", "javascript:update_todo()", true),
-		array("image:btn_task_copy", "javascript:copy_messages()", false),
-		array("image:btn_task_cut", "javascript:cut_messages()", false),
-		array("image:btn_task_paste", "javascript:paste_messages()", false),
-		array("image:btn_task_trash", "javascript:delete_messages()", false),
-		array("image:btn_task_update", "javascript:refresh()", false),
+		array("fa:fa-2x fa-copy", "javascript:copy_messages()", false),
+		array("fa:fa-2x fa-scissors", "javascript:cut_messages()", false),
+		array("fa:fa-2x fa-paste", "javascript:paste_messages()", false),
+		array("fa:fa-2x fa-trash", "javascript:delete_messages()", false),
+		array("fa:fa-2x fa-refresh", "javascript:refresh()", false),
 		array("image:btn_task_messages", "javascript:launch_msg()", false)
 	);
 
