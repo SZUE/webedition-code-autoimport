@@ -129,19 +129,6 @@ function checkFileinput() {
 	}
 }
 
-function we_trashButDown(but) {
-	if (but.src.indexOf("disabled") == -1) {
-		but.src = dirs.BUTTONS_DIR + "btn_function_trash_down.gif";
-	}
-}
-
-function we_trashButUp(but) {
-	if (but.src.indexOf("disabled") == -1) {
-		but.src = dirs.BUTTONS_DIR + "btn_function_trash.gif";
-	}
-}
-
-
 function we_cmd() {
 	var url = dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
