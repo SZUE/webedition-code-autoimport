@@ -280,14 +280,25 @@ we_templateInit();?>';
 
 		if($this->hasStartAndEndTag('html', $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
 			$pre_code .= '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\']=true; ?>';
+			$repl = array(
+				'?>' => '__WE_?__WE__',
+				'=>' => '__WE_=__WE__',
+				'->' => '__WE_-__WE__'
+			);
 
+			$code = str_replace(array_keys($repl), $repl, $code);
 			//#### parse base href
-			$code = str_replace(array('?>', '=>'), array('__WE_?__WE__', '__WE_=__WE__'), $code);
+			$code = preg_replace(array(
+				'%(<body[^>]*)>%i',
+				'%(<head[^>]*>)%i',
+				'%(</body[^>]*>)%i',
+				), array(
+				'${1}<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>',
+				'${1}<?php we_templateHead();?>',
+				'<?php we_templatePostContent(true);?>${1}'
+				), $code);
 
-			$code = preg_replace('%(<body[^>]*)>%i', '${1}<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>', $code);
-
-			$code = str_replace(array('__WE_?__WE__', '__WE_=__WE__'), array('?>', '=>'), $code);
-			$code = str_ireplace(array('<head>', '</body>'), array('<head><?php we_templateHead();?>', '<?php we_templatePostContent(true);?></body>'), $code);
+			$code = str_replace($repl, array_keys($repl), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
 			$code = '<?php we_templateHead(true);?>' . $code . '<?php we_templatePostContent(false,true);?>';
 		} else {
