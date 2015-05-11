@@ -103,8 +103,8 @@ class we_fileupload_importFiles extends we_fileupload_base{
 	}
 
 	protected function _getHtmlFileRow(){
-		$butEdit = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'edit_edit', 'javascript:void(0)');
-		$butTrash = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . 'btn_function_trash', "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);");
+		$butEdit = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . ':edit_edit', 'javascript:void(0)');
+		$butTrash = we_html_button::create_button(we_html_button::WE_IMAGE_BUTTON_IDENTIFY . ':btn_function_trash', "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);");
 
 		return str_replace(array("\n\r", "\r\n", "\r", "\n"), "", '<table cellspacing="0" cellpadding="0" border="0" width="520"><tbody><tr height="28" width="520">
 			<td width="20" valign="bottom"></td>

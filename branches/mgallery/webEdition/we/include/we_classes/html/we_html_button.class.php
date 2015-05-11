@@ -31,7 +31,9 @@ abstract class we_html_button{
 	const HEIGHT = 22;
 	const WIDTH = 100;
 	const AUTO_WIDTH = -1;
-	const WE_IMAGE_BUTTON_IDENTIFY = 'image:';
+	const WE_IMAGE_BUTTON_IDENTIFY = 'image';
+	const WE_FA_BUTTON_IDENTIFY = 'fa';
+	const WE_FASTACK_BUTTON_IDENTIFY = 'fastack';
 	const WE_FORM_BUTTON_IDENTIFY = 'form:';
 	const WE_SUBMIT_BUTTON_IDENTIFY = 'submit:';
 	const WE_JS_BUTTON_IDENTIFY = 'javascript:';
@@ -111,22 +113,34 @@ abstract class we_html_button{
 
 		// Check height
 		$height = ($height ? : self::HEIGHT);
-
+		$names = explode(':', $name, 2);
 		/**
 		 * DEFINE THE NAME OF THE BUTTON
 		 */
 		// Check if the button is a text button or an image button
-		if(strpos($name, self::WE_IMAGE_BUTTON_IDENTIFY) !== false){ // Button is an image
-			$name = substr($name, strlen(self::WE_IMAGE_BUTTON_IDENTIFY));
-			//set width for image button if given width has not default value
-			$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
-			$value = we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage'));
-		} else {
-			$tmp = g_l('button', '[' . $name . '][width]', true);
-			if($tmp && ($width == self::WIDTH)){
-				$width = $tmp;
-			}
-			$value = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
+		switch($names[0]){
+			case self::WE_IMAGE_BUTTON_IDENTIFY:// Button is an image
+				$name = $names[1];
+				//set width for image button if given width has not default value
+				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				$value = we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage'));
+				break;
+			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
+			case self::WE_FA_BUTTON_IDENTIFY:
+				$name = $names[1];
+				//set width for image button if given width has not default value
+				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				$fas = explode(',', $name);
+				$value = '';
+				foreach($fas as $cnt => $fa){
+					$value.='<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';
+				}
+				break;
+			default:
+				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
+					$width = $tmp;
+				}
+				$value = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 		}
 
 		// Check if the button will be used in a form or not

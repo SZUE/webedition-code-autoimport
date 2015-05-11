@@ -30,13 +30,13 @@ class we_messaging_iconbar{
 	private $weTransaction;
 	private $viewclass;
 	private $buttonsMsg = array(
-		array("image:btn_messages_create", "javascript:new_message('new')", false),
-		array("image:btn_messages_reply", "javascript:new_message('re')", true),
-		array("image:btn_messages_copy", "javascript:copy_messages()", false),
-		array("image:btn_messages_cut", "javascript:cut_messages()", false),
-		array("image:btn_messages_paste", "javascript:paste_messages()", false),
-		array("image:btn_messages_trash", "javascript:delete_messages()", false),
-		array("image:btn_messages_update", "javascript:refresh()", false),
+		array("fa:fa-2x fa-pencil,fa-2x fa-envelope-o", "javascript:new_message('new')", false),
+		array("fa:fa-2x fa-mail-reply", "javascript:new_message('re')", true),
+		array("fa:fa-2x fa-copy", "javascript:copy_messages()", false),
+		array("fa:fa-2x fa-scissors", "javascript:cut_messages()", false),
+		array("fa:fa-2x fa-paste", "javascript:paste_messages()", false),
+		array("fa:fa-2x fa-trash", "javascript:delete_messages()", false),
+		array("fa:fa-2x fa-refresh", "javascript:refresh()", false),
 		array("image:btn_messages_tasks", "javascript:launch_todo()", false)
 	);
 	private $buttonsTodo = array(
@@ -83,10 +83,10 @@ var g_l={
 		$j = 0;
 		$table = new we_html_table(array('border' => 0, 'cellpadding' => 8, 'cellspacing' => 0), 1, count($buttons));
 		foreach($buttons as $button){
-			$table->setCol(0, $j++, array('width' => 36), we_html_button::create_button($button[0], $button[1], true));
+			$table->setCol(0, $j++, array(), we_html_button::create_button($button[0], $button[1], true));
 			if($button[2]){
 				$table->addCol();
-				$table->setCol(0, $j++, array('width' => 36), '');
+				$table->setCol(0, $j++, array(), '');
 			}
 		}
 

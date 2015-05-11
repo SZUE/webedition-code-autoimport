@@ -68,3 +68,7 @@ button.weBtn[disabled]{
 	color:grey !important;
 	background: linear-gradient(to bottom, #F4F4F4, #E9E9E9 50%, #DEDEDE 50%,#D9D9D9);
 }
+
+button i.fa-moreicon {
+	padding-left: 0.3em;
+}

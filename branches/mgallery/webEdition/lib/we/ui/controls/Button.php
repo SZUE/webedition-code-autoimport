@@ -221,30 +221,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 */
 	const kIconListview = '/webEdition/images/button/icons/listview.gif';
 
-	/*
-	 * Path for messages copy Icon
-	 */
-	const kIconMessagesCopy = '/webEdition/images/button/icons/messages_copy.gif';
-
-	/*
-	 * Path for messages create Icon
-	 */
-	const kIconMessagesCreate = '/webEdition/images/button/icons/messages_create.gif';
-
-	/*
-	 * Path for messages paste Icon
-	 */
-	const kIconMessagesPaste = '/webEdition/images/button/icons/messages_paste.gif';
-
-	/*
-	 * Path for messages reply Icon
-	 */
-	const kIconMessagesReply = '/webEdition/images/button/icons/messages_reply.gif';
-
-	/*
-	 * Path for messages tasks Icon
-	 */
-	const kIconMessagesTasks = '/webEdition/images/button/icons/messages_tasks.gif';
 
 	/*
 	 * Path for messages trash Icon
