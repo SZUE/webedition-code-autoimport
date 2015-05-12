@@ -831,11 +831,11 @@ function clip_' . $unique . '(){
 
 		if(state_' . $unique . '==0){
 			text.innerHTML = "' . addslashes($text) . '";
-			btn.innerHTML = \'<button class="weBtn" onclick="clip_' . $unique . '();"><img src="' . BUTTONS_DIR . '/icons/direction_down.gif" alt="down" border="0"></button>\';
+			btn.innerHTML = \'<button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-down"></i></button>\';
 			state_' . $unique . '=1;
 		}else {
 			text.innerHTML = "' . addslashes($smalltext) . '";
-			btn.innerHTML = \'<button class="weBtn" onclick="clip_' . $unique . '();"><img src="' . BUTTONS_DIR . '/icons/direction_right.gif" alt="right" border="0"></button>\';
+			btn.innerHTML = \'<button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button>\';
 			state_' . $unique . '=0;
 		}
 }');
@@ -851,7 +851,7 @@ function clip_' . $unique . '(){
 			}
 		}
 
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><img src="' . BUTTONS_DIR . '/icons/direction_right.gif" alt="right" border="0"></button><td>' : '') . '</tr></table></div>';
+		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
 	}
 
 	public static function setHttpCode($status){
@@ -900,7 +900,7 @@ function clip_' . $unique . '(){
 	 * @return html-code for calendar
 	 */
 	public static function getDateSelector($_name, $_btn, $value){
-		$btnDatePicker = we_html_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, $_btn);
+		$btnDatePicker = we_html_button::create_button("fa:date_picker,fa-lg fa-calendar", "javascript:", null, null, null, null, null, null, false, $_btn);
 		$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, $value, 10, 'id="' . $_name . '" class="wetextinput" readonly="1"', "text", 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");

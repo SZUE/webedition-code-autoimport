@@ -34,7 +34,7 @@ function printHeaderHTML($ret){
 				<td>' . we_html_button::create_button("fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder", "javascript:top.fscmd.goUp();") . '</td>
 	' . ($ret ? '' : '
 					<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss") . '</td>
-					<td>' . we_html_button::create_button("image:btn_add_file", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>
+					<td>' . we_html_button::create_button("fa:btn_add_file,fa-plus,fa-lg fa-file-o", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>
 					<td class="trash">' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>') .
 		'</tr>
 		</table>

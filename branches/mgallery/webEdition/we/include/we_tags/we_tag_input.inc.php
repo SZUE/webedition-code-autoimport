@@ -58,7 +58,7 @@ function we_tag_input($attribs, $content){
 				}
 
 				return we_html_element::htmlHidden('we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', $val) .
-						getHtmlTag('input', $attribs);
+					getHtmlTag('input', $attribs);
 
 			case 'country':
 				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
@@ -144,16 +144,16 @@ function we_tag_input($attribs, $content){
 					$vals = explode($seperator, $values);
 
 					$onChange = ($mode === 'add' ?
-									"this.form.elements['" . $tagname . "'].value += ((this.form.elements['" . $tagname . "'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
-									"this.form.elements['" . $tagname . "'].value = this.options[this.selectedIndex].text;") .
-							($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
+							"this.form.elements['" . $tagname . "'].value += ((this.form.elements['" . $tagname . "'].value ? ' ' : '')+this.options[this.selectedIndex].text);" :
+							"this.form.elements['" . $tagname . "'].value = this.options[this.selectedIndex].text;") .
+						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
 
 					$sel = getHtmlTag('select', array(
 						'class' => "defaultfont",
 						'name' => 'we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
 						'size' => 1,
 						'onchange' => $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);'
-							), ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
+						), ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
 				}
 
 				$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);';
@@ -176,16 +176,15 @@ function we_tag_input($attribs, $content){
 				$attribs['value'] = $val;
 				$input = getHtmlTag('input', removeAttribs($attribs, array('mode', 'values', '_name_orig')));
 				return (defined('SPELLCHECKER') && $spellcheck ?
-								'<table class="weEditTable padding0 spacing0 border0">
+						'<table class="weEditTable padding0 spacing0 border0">
 	<tr>
 			<td class="weEditmodeStyle">' . $input . '</td>
 			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
-			<td class="weEditmodeStyle">' . we_html_button::create_button(
-										'image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
+			<td class="weEditmodeStyle">' . we_html_button::create_button('image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
 </table>' :
-								$input
-						);
+						$input
+					);
 		}
 	} else {
 		//not-editmode

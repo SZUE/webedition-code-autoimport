@@ -203,8 +203,8 @@ function loadData() {
 
 	protected function getHTMLTree($extraHead = ''){
 		return parent::getHTMLTree(
-			we_html_element::jsScript(JS_DIR . 'tree.js').
-			we_html_element::jsScript(JS_DIR . 'messaging_tree.js'));
+				we_html_element::jsScript(JS_DIR . 'tree.js') .
+				we_html_element::jsScript(JS_DIR . 'messaging_tree.js'));
 	}
 
 	function getHTMLFrameset(){
@@ -342,7 +342,7 @@ function loadData() {
 		$table->setCol(0, 0, array('width' => 18), '');
 		for($i = 0; $i < count($colsArray); $i++){
 			$table->setCol(0, $i + 1, array('class' => 'tableHeader defaultfont', 'width' => $colsArray[$i][0]), '<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');">' . g_l('modules_messaging', $colsArray[$i][2]) .
-				'&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow("arrow_sortorder_" . we_base_request::_(we_base_request::STRING, 'so'), "") : we_html_tools::getPixel(1, 1)) . '</a>'
+				'&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow(we_base_request::_(we_base_request::STRING, 'so'), "") : we_html_tools::getPixel(1, 1)) . '</a>'
 			);
 		}
 
@@ -354,12 +354,12 @@ function loadData() {
 	}
 
 	//some utility functions
-	public static function sort_arrow($name, $href){
-		$_image_path = IMAGE_DIR . 'modules/messaging/' . $name . '.gif';
+	public static function sort_arrow($order, $href=''){
+		$dir = ($order == 'asc' ? 'up' : 'down');
 
 		// Check if we have to create a form or href
-		return $href ? '<a href="' . $href . '"><img src="' . $_image_path . '" border="0" alt="" /></a>' :
-			'<input type="image" src="' . $_image_path . '" border="0" alt="" />';
+		return $href ? '<a href="' . $href . '"><i class="fa fa-lg fa-' . $dir . '"></i></a>' :
+			'<i class="fa fa-lg fa-' . $dir . '"></i>';
 	}
 
 	function getJSStart(){

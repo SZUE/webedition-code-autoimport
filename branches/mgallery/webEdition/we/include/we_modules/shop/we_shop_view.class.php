@@ -546,7 +546,7 @@ function submitForm() {
 					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
 				</td>
 				<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-				<td width="102" valign="top" height="25">' . we_html_button::create_button("image:date_picker", "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
+				<td width="102" valign="top" height="25">' . we_html_button::create_button("fa:date_picker,fa-lg fa-calendar", "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
 				<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
 			</tr>';
 				}

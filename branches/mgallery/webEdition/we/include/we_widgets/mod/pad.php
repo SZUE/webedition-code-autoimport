@@ -36,7 +36,7 @@ function convertDate($date){
  * @return unknown
  */
 function getDateSelector($_label, $_name, $_btn){
-	$btnDatePicker = we_html_button::create_button('image:date_picker', 'javascript:', null, null, null, null, null, null, false, $_btn);
+	$btnDatePicker = we_html_button::create_button('fa:date_picker,fa-lg fa-calendar', 'javascript:', null, null, null, null, null, null, false, $_btn);
 	$oSelector = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0, 'id' => $_name . '_cell'), 1, 5);
 	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $_label);
 	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
@@ -321,7 +321,7 @@ $oTblBtnProps = new we_html_table(array(
 	), 1, 1);
 $oTblBtnProps->setCol(0, 0, array(
 	"align" => "right"
-	), we_html_button::create_button("image:btn_add_note", "javascript:displayNote();", false, 0, 0));
+	), we_html_button::create_button("fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o", "javascript:displayNote();", false, 0, 0));
 
 // Table with the note list
 $oPad = new we_html_table(

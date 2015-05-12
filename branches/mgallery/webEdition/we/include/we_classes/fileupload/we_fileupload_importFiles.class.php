@@ -99,7 +99,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 
 	//TODO: add param filetype
 	public static function getBtnImportFiles($importToID = 0){
-		return we_html_button::create_button("image:btn_import_files", "javascript:top.we_cmd('import_files','" . $importToID . "')", true, 50);
+		return we_html_button::create_button("fa:btn_import_files,fa-lg fa-upload", "javascript:top.we_cmd('import_files','" . $importToID . "')", true, 50);
 	}
 
 	protected function _getHtmlFileRow(){

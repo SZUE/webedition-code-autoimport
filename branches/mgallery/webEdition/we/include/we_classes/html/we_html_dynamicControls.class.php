@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //FIXME: remove this class, since only used in we_users
 
 /**
@@ -34,9 +32,6 @@ class we_html_dynamicControls{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
-	var $_arrow_image_closed;
-	var $_arrow_image_opened;
 	var $_arrow_hint_closed;
 	var $_arrow_hint_opened;
 
@@ -50,9 +45,6 @@ class we_html_dynamicControls{
 	 * @return     we_html_dynamicControls
 	 */
 	function __construct(){
-		// Set path to images for the groups arrows
-		$this->_arrow_image_closed = IMAGE_DIR . "modules/users/arrow_open.gif";
-		$this->_arrow_image_opened = IMAGE_DIR . "modules/users/arrow_close.gif";
 
 		// Set hint text for the groups arrows
 		$this->_arrow_hint_closed = g_l('dynamicControls', '[expand_group]');
@@ -302,17 +294,14 @@ class we_html_dynamicControls{
 
 				// Output the seperator
 				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $_seperator_color . '">
-						<td>' . we_html_tools::getPixel(10, 1) . '</td>
-						<td>' . we_html_tools::getPixel(15, 1) . '</td>
-						<td>' . we_html_tools::getPixel($width, 1) . '</td>
+					<tr>
+						<td colspan="3" style="border-bottom:10px solid ' . $_seperator_color . '"></td>
 					</tr>';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $bgcolor . '">
-						<td width="30" nowrap>
-							' . we_html_tools::getPixel(5, 24) . '
+					<tr valign="middle" bgcolor="' . $bgcolor . '" style="line-height:24px;">
+						<td width="30" nowrap style="padding-left:5px;">
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
@@ -325,19 +314,19 @@ class we_html_dynamicControls{
 
 				if($_show_open){
 					// Define various values for expanded groups
-					$_arrow_image = $this->_arrow_image_opened;
+					$_arrow_image = 'fa fa-lg fa-caret-down fa-fw';
 					$_arrow_hint = $this->_arrow_hint_opened;
 					$_style_display = "block";
 				} else {
 					// Define various values for folded groups
-					$_arrow_image = $this->_arrow_image_closed;
+					$_arrow_image = 'fa fa-lg fa-caret-right fa-fw';
 					$_arrow_hint = $this->_arrow_hint_closed;
 					$_style_display = "none";
 				}
 
 				// Build header for open group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-								<img src="' . $_arrow_image . '" width="19" height="18" border="0" alt="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '" /></a></td>
+								<i class="' . $_arrow_image . '" title="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></i></a></td>
 							<td class="defaultfont" colspan="3">
 								<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
 						</tr>
@@ -463,18 +452,12 @@ class we_html_dynamicControls{
 
 				// Output the seperator
 				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $_seperator_color . '">
-						<td>
-							' . we_html_tools::getPixel(10, 1) . '</td>
-						<td>
-							' . we_html_tools::getPixel($width, 1) . '</td>
-					</tr>';
+					<tr><td colspan="2" style="border-bottom:10px solid ' . $_seperator_color . ';"></td></tr>';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $bgcolor . '">
-						<td width="30" nowrap>
-							' . we_html_tools::getPixel(5, 24) . '
+					<tr valign="middle" bgcolor="' . $bgcolor . '" style="line-height:24px;">
+						<td width="30" nowrap style="padding-left:5px;">
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
 				// If a group is open display it unfolded
@@ -487,27 +470,24 @@ class we_html_dynamicControls{
 
 				if($_show_open){
 					// Define various values for expanded groups
-					$_arrow_image = $this->_arrow_image_opened;
+					$_arrow_image = 'fa fa-lg fa-caret-down fa-fw';
 					$_arrow_hint = $this->_arrow_hint_opened;
 					$_style_display = "block";
 				} else {
 					// Define various values for folded groups
-					$_arrow_image = $this->_arrow_image_closed;
+					$_arrow_image = 'fa fa-lg fa-caret-right fa-fw';
 					$_arrow_hint = $this->_arrow_hint_closed;
 					$_style_display = "none";
 				}
 
 				// Build header for open group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-								<img src="' . $_arrow_image . '" width="19" height="18" border="0" alt="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '" /></a></td>
+								<i class="' . $_arrow_image . '" title="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></i></a></td>
 							<td class="defaultfont" colspan="3">
 								<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
 						</tr>
-						<tr valign="middle" bgcolor="' . $bgcolor . '">
-							<td>
-								' . we_html_tools::getPixel(10, 1) . '</td>
-							<td>
-								' . we_html_tools::getPixel($width, 1) . '</td>
+						<tr>
+						<td colspan="2" style="border-bottom:10px solid ' . $bgcolor . '">
 						</tr>
 					</table>';
 

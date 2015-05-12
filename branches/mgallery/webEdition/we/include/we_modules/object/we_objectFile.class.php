@@ -875,8 +875,8 @@ class we_objectFile extends we_document{
 
 //	editObjectFile Button
 		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$editObjectButton = we_html_button::create_button('image:btn_edit_object', "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
-			$editObjectButtonDis = we_html_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
+			$editObjectButton = we_html_button::create_button('fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin', "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
+			$editObjectButtonDis = we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "", true, 44, 22, "", "", true);
 			$inputWidth = 443;
 
 			$uniq = md5(uniqid(__FUNCTION__, true));
@@ -973,8 +973,8 @@ class we_objectFile extends we_document{
 					$ob->DefArray = $ob->getDefaultValueArray();
 					$uniq = md5(uniqid(__FUNCTION__, true));
 
-					$editObjectButton = we_html_button::create_button("image:btn_edit_object", "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
-					$editObjectButtonDis = we_html_button::create_button("image:btn_edit_object", "", true, 44, 22, "", "", true);
+					$editObjectButton = we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
+					$editObjectButtonDis = we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "", true, 44, 22, "", "", true);
 
 					$inputWidth = 346;
 

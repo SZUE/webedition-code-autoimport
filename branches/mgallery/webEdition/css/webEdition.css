@@ -596,6 +596,7 @@ optgroup.lvl2{
 	bottom:0px;
 	right:5px;
 	width:60px;
+	font-size: 10pt;
 }
 
 #msgheadertable table{
@@ -610,6 +611,10 @@ optgroup.lvl2{
 
 #msgheadertable table tr {
 	height: 12px;
+}
+
+#msgheadertable i{
+	background-color:white;
 }
 
 #toolMenu,
