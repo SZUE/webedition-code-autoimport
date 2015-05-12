@@ -436,8 +436,8 @@ class we_class_folder extends we_folder{
 						)),
 					array(
 						"align" => "center",
-						'dat' => '<i class="fa fa-circle" style="color:#;"></i>' . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
-							'006DB8' ://blue
+						'dat' => '<i class="fa fa-circle" style="color:#' . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
+							'006DB8' : //blue
 							'E7E7E7'//grey
 						) . ';"></i>'
 					),
@@ -708,7 +708,7 @@ class we_class_folder extends we_folder{
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_publish", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "'))document.we_form.elements.do.value='publish';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_publish,fa-lg fa-sun-o", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "'))document.we_form.elements.do.value='publish';we_cmd('reload_editpage');") . '</td>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[veroeffentlichen]') : "") . '</td>
 			</tr>
@@ -724,7 +724,7 @@ class we_class_folder extends we_folder{
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_unpublish", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "'))document.we_form.elements.do.value='unpublish';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_unpublish,fa-lg fa-moon-o", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "'))document.we_form.elements.do.value='unpublish';we_cmd('reload_editpage');") . '</td>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[parken]') : "") . '</td>
 			</tr>
@@ -740,7 +740,7 @@ class we_class_folder extends we_folder{
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_searchable", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "'))document.we_form.elements.do.value='searchable';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_search,fa-lg fa-search", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "'))document.we_form.elements.do.value='searchable';we_cmd('reload_editpage');") . '</td>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[searchable]') : "") . '</td>
 			</tr>
@@ -756,7 +756,7 @@ class we_class_folder extends we_folder{
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_unsearchable", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "'))document.we_form.elements.do.value='unsearchable';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fas:btn_function_unsearchable,fa-ban,fa-search", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "'))document.we_form.elements.do.value='unsearchable';we_cmd('reload_editpage');") . '</td>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[unsearchable]') : "") . '</td>
 			</tr>
@@ -772,7 +772,7 @@ class we_class_folder extends we_folder{
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "'))document.we_form.elements.do.value='copychar';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "'))document.we_form.elements.do.value='copychar';we_cmd('reload_editpage');") . '</td>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copychar]') : "") . '</td>
 			</tr>
@@ -788,7 +788,7 @@ class we_class_folder extends we_folder{
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "'))document.we_form.elements.do.value='copyws';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "'))document.we_form.elements.do.value='copyws';we_cmd('reload_editpage');") . '</td>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copyws]') : "") . '</td>
 			</tr>
@@ -804,7 +804,7 @@ class we_class_folder extends we_folder{
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("image:btn_function_copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "'))document.we_form.elements.do.value='copytid';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "'))document.we_form.elements.do.value='copytid';we_cmd('reload_editpage');") . '</td>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copytid]') : "") . '</td>
 			</tr>

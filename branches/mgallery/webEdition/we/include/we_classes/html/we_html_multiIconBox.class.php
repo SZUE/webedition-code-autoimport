@@ -116,14 +116,16 @@ function weToggleBox(name,textDown,textRight){
 	if(t.style.display == "none"){
 		t.style.display = "";
 		s.innerHTML = textDown;
-		b.style.background="url(' . BUTTONS_DIR . 'btn_direction_down.gif)";
 		weSetCookieVariable("but_"+name,"down")
 	}else{
 		t.style.display = "none";
 		s.innerHTML = textRight;
-		b.style.background="url(' . BUTTONS_DIR . 'btn_direction_right.gif)";
 		weSetCookieVariable("but_"+name,"right")
 	}
+}
+
+function toggleButton(but,name){
+	but.getElementsByTagName("i")[0].className="fa fa-lg fa-caret-"+weGetCookieVariable("but_" + name);
 }
 
 function weGetCookieVariable(name){
@@ -303,9 +305,8 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 	}
 
 	static function _getButton($name, $cmd, $state = "right", $title = ""){
-		return we_html_element::jsElement('weSetCookieVariable("but_' . $name . '","' . $state . '");var btn_direction_' . $name . '_mouse_event = false;') .
-			//we_html_button::create_button("image:btn_direction_" . $state, "javascript:console.log(this)", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, $name) .
-			'<table cellpadding="0" style="border-spacing: 0px;border-style:none;cursor: pointer; width: 21px;" id="btn_direction_' . $name . '_table" onmouseover="window.status=\'\';return true;"  onmouseup="document.getElementById(\'btn_direction_' . $name . '_middle\').style.background = \'url(' . BUTTONS_DIR . 'btn_direction_\'+weGetCookieVariable(\'but_' . $name . '\')+\'.gif)\';btn_direction_' . $name . '_mouse_event = false;' . $cmd . ';"><tr title="' . $title . '" style="height: 22px;"><td align="center" id="btn_direction_' . $name . '_middle" style="background-image:url(' . BUTTONS_DIR . '/btn_direction_' . $state . '.gif);width: 21px;white-space:nowrap;">' . we_html_tools::getPixel(21, 22) . '</td></tr></table>';
+		return we_html_element::jsElement('weSetCookieVariable("but_' . $name . '","' . $state . '");') .
+			we_html_button::create_button('fa:btn_direction,fa-lg fa-caret-' . $state, "javascript:" . $cmd . ";toggleButton(this,'" . $name . "');", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, true, $name, false, $title);
 	}
 
 }

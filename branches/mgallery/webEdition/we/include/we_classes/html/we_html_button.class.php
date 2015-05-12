@@ -33,7 +33,7 @@ abstract class we_html_button{
 	const AUTO_WIDTH = -1;
 	const WE_IMAGE_BUTTON_IDENTIFY = 'image';
 	const WE_FA_BUTTON_IDENTIFY = 'fa';
-	const WE_FASTACK_BUTTON_IDENTIFY = 'fastack';
+	const WE_FASTACK_BUTTON_IDENTIFY = 'fas';
 	const WE_FORM_BUTTON_IDENTIFY = 'form:';
 	const WE_SUBMIT_BUTTON_IDENTIFY = 'submit:';
 	const WE_JS_BUTTON_IDENTIFY = 'javascript:';
@@ -126,11 +126,22 @@ abstract class we_html_button{
 				$value = we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage'));
 				break;
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
+				//set width for image button if given width has not default value
+				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				//get name for title
+				list($name, $names) = explode(',', $names[1], 2);
+				$fas = explode(',', $names);
+				$value = '<span class="fa-stack">';
+				foreach($fas as $cnt => $fa){
+					$value.='<i class="fa ' . ($cnt ==0 ? 'fa-stack-2x ' : 'fa-stack-1x ') . $fa . '"></i>';
+				}
+				$value.='</span>';
+				break;
 			case self::WE_FA_BUTTON_IDENTIFY:
 				//set width for image button if given width has not default value
 				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 				//get name for title
-				list($name, $names) = explode(',', $names[1],2);
+				list($name, $names) = explode(',', $names[1], 2);
 				$fas = explode(',', $names);
 				$value = '';
 				foreach($fas as $cnt => $fa){

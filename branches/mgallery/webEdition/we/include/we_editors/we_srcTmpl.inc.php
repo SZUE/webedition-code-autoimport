@@ -421,7 +421,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$tagselect .= '</select>';
 
 			// buttons
-			$editTagbut = we_html_button::create_button("image:btn_direction_right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
+			$editTagbut = we_html_button::create_button("fa:btn_direction_right,fa-lg fa-caret-right", "javascript:executeEditButton();", true, 100, 22, "", "", false, false, "_applyCode");
 			$selectallbut = we_html_button::create_button("selectAll", "javascript:document.getElementById(\"tag_edit_area\").focus(); document.getElementById(\"tag_edit_area\").select();");
 			$prependbut = we_html_button::create_button("prepend", 'javascript:insertAtStart(document.getElementById("tag_edit_area").value);');
 			$appendbut = we_html_button::create_button("append", 'javascript:insertAtEnd(document.getElementById("tag_edit_area").value);');

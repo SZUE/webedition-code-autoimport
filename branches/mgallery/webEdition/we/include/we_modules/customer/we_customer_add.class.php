@@ -208,7 +208,7 @@ function setScrollTo(){
 
 		$search_arr = array();
 
-		$search_but = we_html_button::create_button("image:btn_function_search", "javascript:we_cmd('search')");
+		$search_but = we_html_button::create_button("fa:btn_function_search,fa-lg fa-search", "javascript:we_cmd('search')");
 		$colspan = 4;
 
 		for($i = 0; $i < $count; $i++){
@@ -280,7 +280,7 @@ function setScrollTo(){
 		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . we_html_button::create_button_table(
 				array(
 					we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[simple_search]')),
-					we_html_button::create_button("image:btn_direction_left", "javascript:we_cmd('switchToSimple')"),
+					we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:we_cmd('switchToSimple')"),
 					$search_but
 				)
 			) . '</td><td>&nbsp;</td></tr></table>'

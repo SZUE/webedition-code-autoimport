@@ -98,7 +98,7 @@ $_buttons = we_html_button::position_yes_no_cancel(
 
 
 $_content = we_html_tools::htmlFormElementTable(
-		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_tools::getPixel(10, 1), we_html_button::create_button("image:btn_function_search", "javascript:document.we_form.submit();")
+		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_tools::getPixel(10, 1), we_html_button::create_button("fa:btn_function_search,fa-lg fa-search", "javascript:document.we_form.submit();")
 	) . '<div style="height:20px;"></div>' .
 	we_html_tools::htmlFormElementTable(
 		$_select, g_l('modules_users', '[search_result]')

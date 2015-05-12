@@ -86,7 +86,7 @@ class we_users_frames extends we_modules_frame{
 			we_html_button::create_button_table(
 				array(
 					we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px"),
-					we_html_button::create_button("image:btn_function_search", "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
+					we_html_button::create_button("fa:btn_function_search,fa-lg fa-search", "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
 				)
 			)
 		);

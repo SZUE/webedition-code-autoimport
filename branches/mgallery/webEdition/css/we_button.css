@@ -73,3 +73,7 @@ button.weBtn[disabled]{
 button.weBtn i.fa-moreicon {
 	padding-left: 0.3em;
 }
+
+i.fa-ban{
+	color:red;
+}

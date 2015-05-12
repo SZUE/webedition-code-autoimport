@@ -99,25 +99,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 */
 	const kIconDatePicker = '/webEdition/images/button/icons/date_picker.gif';
 
-	/*
-	 * Path for direction down Icon
-	 */
-	const kIconDirectionDown = '/webEdition/images/button/icons/direction_down.gif';
-
-	/*
-	 * Path for direction left Icon
-	 */
-	const kIconDirectionLeft = '/webEdition/images/button/icons/direction_left.gif';
-
-	/*
-	 * Path for direction right Icon
-	 */
-	const kIconDirectionRight = '/webEdition/images/button/icons/direction_right.gif';
-
-	/*
-	 * Path for direction up Icon
-	 */
-	const kIconDirectionUp = '/webEdition/images/button/icons/direction_up.gif';
 
 	/*
 	 * Path for edit Icon

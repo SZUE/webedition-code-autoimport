@@ -218,7 +218,7 @@ top.content.hloaded = 1;'));
 			we_html_button::create_button_table(
 				array(
 					we_html_tools::htmlTextInput("keyword", 10, '', '', '', "text", "150px"),
-					we_html_button::create_button("image:btn_function_search", "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
+					we_html_button::create_button("fa:btn_function_search,fa-lg fa-search", "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
 				)
 			)
 		);
@@ -245,9 +245,9 @@ top.content.hloaded = 1;'));
 		$buttons_table->setCol(3, 0, array(), we_html_tools::getPixel(1, 5));
 		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("delete", "javascript:we_cmd('delete_field')"));
 		$buttons_table->setCol(5, 0, array(), we_html_tools::getPixel(1, 15));
-		$buttons_table->setCol(6, 0, array(), we_html_button::create_button("image:btn_direction_up", "javascript:we_cmd('move_field_up')"));
+		$buttons_table->setCol(6, 0, array(), we_html_button::create_button("fa:btn_direction_up,fa-lg fa-caret-up", "javascript:we_cmd('move_field_up')"));
 		$buttons_table->setCol(7, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(8, 0, array(), we_html_button::create_button("image:btn_direction_down", "javascript:we_cmd('move_field_down')"));
+		$buttons_table->setCol(8, 0, array(), we_html_button::create_button("fa:btn_direction_down,fa-lg fa-caret-down", "javascript:we_cmd('move_field_down')"));
 		$buttons_table->setCol(9, 0, array("class" => "defaultgray"), g_l('modules_customer', '[sort_edit_fields_explain]'));
 		$buttons_table->setCol(10, 0, array(), we_html_tools::getPixel(1, 5));
 		$buttons_table->setCol(10, 0, array(), we_html_button::create_button("reset", "javascript:we_cmd('reset_edit_order')"));
@@ -406,7 +406,7 @@ top.content.hloaded = 1;'));
 				'search' => 1,
 				'mode' => $mode));
 
-		$search_but = we_html_button::create_button('image:btn_function_search', "javascript:we_cmd('search')");
+		$search_but = we_html_button::create_button('fa:btn_function_search,fa-lg fa-search', "javascript:we_cmd('search')");
 
 		$search = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 550, 'height' => 50), 4, 3);
 		$search->setRow(0, array('valign' => 'top'));
@@ -420,7 +420,7 @@ top.content.hloaded = 1;'));
 			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::STRINGC, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
 
-			$sw = we_html_button::create_button('image:btn_direction_right', "javascript:we_cmd('switchToAdvance')");
+			$sw = we_html_button::create_button('fa:btn_direction_right,fa-lg fa-caret-right', "javascript:we_cmd('switchToAdvance')");
 
 			$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 			$search->setCol(3, 0, array('align' => 'right', 'colspan' => $colspan), we_html_button::create_button_table(

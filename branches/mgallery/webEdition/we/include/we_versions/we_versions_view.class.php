@@ -634,7 +634,7 @@ function delRow(id) {
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button("image:btn_direction_right", "javascript:switchSearch(1)", false) . '</td>
+	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button("fa:btn_direction_right,fa-lg fa-caret-right", "javascript:switchSearch(1)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
@@ -642,7 +642,7 @@ function delRow(id) {
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button("image:btn_direction_down", "javascript:switchSearch(0)", false) . '</td>
+	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button("fa:btn_direction_down,fa-lg fa-caret-down", "javascript:switchSearch(0)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>

@@ -45,7 +45,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 				echo we_html_button::create_button_table(
 					array(
 						we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', '', 'search', '120px'),
-						we_html_button::create_button('image:btn_function_search', "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true, 40)
+						we_html_button::create_button('fa:btn_function_search,fa-lg fa-search', "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true, 40)
 					)
 				);
 				?>

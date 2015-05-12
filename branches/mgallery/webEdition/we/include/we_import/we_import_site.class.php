@@ -414,7 +414,7 @@ function doUnload() {
 				break;
 			}
 		}
-		$date_help_button = we_html_button::create_button("image:btn_help", "javascript:showDateHelp();", true, 0, 0);
+		$date_help_button = we_html_button::create_button("fa:btn_help,fa-question", "javascript:showDateHelp();", true, 0, 0);
 		$dateformatvals = array(
 			"unix" => g_l('import', '[uts]'),
 			"gmt" => g_l('import', '[gts]'),
