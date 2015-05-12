@@ -437,15 +437,16 @@ class we_class_folder extends we_folder{
 					array(
 						"align" => "center",
 						'dat' => '<i class="fa fa-circle" style="color:#' . ($this->searchclass->f("OF_Published") && (((in_workspace($this->WorkspaceID, $this->searchclass->f("OF_Workspaces")) && $this->searchclass->f("OF_Workspaces") != "") || (in_workspace($this->WorkspaceID, $this->searchclass->f("OF_ExtraWorkspacesSelected")) && $this->searchclass->f("OF_ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("OF_Workspaces") === "" && $ok)) ?
-							'006DB8' : //blue
-							'E7E7E7'//grey
-						) . ';"></i>'
+							'006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '"' : //blue
+							'E7E7E7;" title="' . g_l('searchtool', '[geparkt]') . '"'//grey
+						) . '></i>'//FIXME: add text as in others shown
 					),
 					array(
-						'dat' => ($this->searchclass->f("OF_IsSearchable") ?
-							'<i class="fa fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '"></i>' :
-							'<i class="fa fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '"></i>'
-						)),
+						'dat' => '<i class="fa fa-circle" style="color:#' . ($this->searchclass->f("OF_IsSearchable") ?
+							'006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') :
+							'E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]')) .
+						'"></i>'
+					),
 					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
 					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
 				);

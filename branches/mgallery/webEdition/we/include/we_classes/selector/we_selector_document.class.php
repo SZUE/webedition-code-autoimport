@@ -29,18 +29,18 @@ class we_selector_document extends we_selector_directory{
 	protected $startPath;
 	protected $ctp = array(//FIXME: add audio button
 		we_base_ContentTypes::IMAGE => "NEW_GRAFIK",
-		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME",
+		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME",//FIXME: remove quicktime
 		we_base_ContentTypes::FLASH => "NEW_FLASH",
 		we_base_ContentTypes::VIDEO => "NEW_VIDEO",
 		we_base_ContentTypes::COLLECTION => "NEW_COLLECTION"
 	);
 	protected $ctb = array(
 		"" => "btn_add_file",
-		we_base_ContentTypes::IMAGE => 'btn_add_image',
-		we_base_ContentTypes::QUICKTIME => 'btn_add_quicktime',
-		we_base_ContentTypes::FLASH => 'btn_add_flash',
-		we_base_ContentTypes::VIDEO => 'btn_add_video',
-		we_base_ContentTypes::COLLECTION => 'btn_add_collection',
+		we_base_ContentTypes::IMAGE => 'fa:btn_add_image,fa-plus,fa-lg fa-file-image-o',
+		we_base_ContentTypes::QUICKTIME => 'fa:btn_add_quicktime,fa-plus,fa-lg fa-fire',
+		we_base_ContentTypes::FLASH => 'fa:btn_add_flash,fa-plus,fa-lg fa-flash',
+		we_base_ContentTypes::VIDEO => 'fa:btn_add_video,fa-plus,fa-lg fa-file-video-o',
+		we_base_ContentTypes::COLLECTION => 'image:btn_add_collection',
 	);
 
 	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0){
@@ -244,7 +244,7 @@ function enableNewFileBut() {
 		return parent::printHeaderTable(
 				'<td>' .
 					we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-					we_html_button::create_button("image:" . $this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$newFileState, false) .
+					we_html_button::create_button($this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$newFileState, false) .
 				'</td>', true);
 	}
 

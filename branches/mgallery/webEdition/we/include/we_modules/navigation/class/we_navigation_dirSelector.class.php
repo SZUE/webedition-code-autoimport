@@ -62,7 +62,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 		$makefolderState = permissionhandler::hasPerm("EDIT_NAVIGATION");
 		return parent::printHeaderTable('<td>' .
 				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-				we_html_button::create_button("image:btn_new_dir", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+				we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
 				'</td>');
 	}
 

@@ -63,12 +63,12 @@ class we_selector_image extends we_selector_document{
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 
 		return parent::printHeaderTable(
-				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("image:iconview", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
+				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify-lg fa-align-justify", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
 				'<td>' .
 				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
 				($this->filter && isset($this->ctb[$this->filter]) ?
-					we_html_button::create_button("image:" . $this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
+					we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) :
 					(permissionhandler::hasPerm('NEW_GRAFIK') ? we_html_button::create_button("image:btn_add_file", "javascript:top.newFile();", true, 0, 0, "", "", !$newFileState, false) : '')
 				) .
 				'</td>', true);
