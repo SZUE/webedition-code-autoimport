@@ -785,7 +785,7 @@ we_templateInit();?>';
 		}
 	}
 
-	function registerMediaLinks() {
+	function registerMediaLinks(){
 		$tp = new we_tag_tagParser($this->getTemplateCode());
 		foreach($tp->getTagsWithAttributes() as $tag){
 			switch($tag['name']){
@@ -800,7 +800,7 @@ we_templateInit();?>';
 					break;
 				case 'url':
 					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' &&
-							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[] = intval($tag['attribs']['id']);
 					}
 					break;
@@ -814,7 +814,7 @@ we_templateInit();?>';
 					break;
 				case 'sessionfield':
 					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'img' &&
-							isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
+						isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[] = intval($tag['attribs']['id']);
 					}
 					break;
@@ -832,7 +832,7 @@ we_templateInit();?>';
 						if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 							$this->MediaLinks[] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
-						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id_ct($tag['attribs']['path'], FILE_TABLE))){
+						if(isset($tag['attribs']['path']) && $tag['attribs']['path'] && ($id = path_to_id($tag['attribs']['path'], FILE_TABLE, $this->db))){
 							$this->MediaLinks[] = intval($tag['attribs']['id']); // selector: text/webEdition only
 						}
 					}
@@ -849,7 +849,7 @@ we_templateInit();?>';
 					}
 					break;
 				default:
-					//
+				//
 			}
 		}
 
