@@ -101,7 +101,18 @@ class liveUpdateFunctions {
 	}
 
 	function replaceDocRootNeeded(){
-		return (!(isset($_SERVER['DOCUMENT' . '_ROOT']) && $_SERVER['DOCUMENT' . '_ROOT'] == LIVEUPDATE_SOFTWARE_DIR));
+		/* use this when constant WE_DOCUMENT_ROOT is implemented
+		if(isset($_SESSION['le_documentRoot'])){
+			return boolval($_SESSION['le_documentRoot']);
+		}
+
+		$_SESSION['le_documentRoot'] = isset($_SERVER['DOCUMENT' . '_ROOT']) && $_SERVER['DOCUMENT' . '_ROOT'] === dirname(dirname(dirname(dirname(__FILE__)))) ? false :
+				dirname(dirname(dirname(dirname(__FILE__))));
+
+		return boolval($_SESSION['le_documentRoot']);
+		*/
+
+		return isset($_SESSION['le_documentRoot']);
 	}
 
 	/**
@@ -113,11 +124,9 @@ class liveUpdateFunctions {
 	 */
 	function checkReplaceDocRoot($content) {
 
-		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2'. LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
-				$content);
-
-		}
+		return !$this->replaceDocRootNeeded() ? $content :
+				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2'. $_SESSION['le_documentRoot'] . '\3', $content);
+	}
 
 	/**
 	 * fills given array with all files in given dir
