@@ -964,7 +964,7 @@ class we_search_search extends we_search_base{
 		if(is_array($titles) && $titles){
 			foreach($titles as $k => $v){
 				if($v['Dat'] != ""){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_title`="' . $v['Dat'] . '" WHERE docID=' . intval($k['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_title`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($k['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
 				}
 			}
 		}
@@ -974,7 +974,7 @@ class we_search_search extends we_search_base{
 		if(is_array($alts) && $alts){
 			foreach($alts as $v){
 				if($v['Dat'] != ""){
-					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_alt`="' . $v['Dat'] . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
+					$this->db->query('UPDATE SEARCH_TEMP_TABLE SET `media_alt`="' . $this->db->escape($v['Dat']) . '" WHERE docID=' . intval($v['DID']) . ' AND DocTable="' . FILE_TABLE . '" LIMIT 1');
 				}
 			}
 		}
@@ -991,30 +991,30 @@ class we_search_search extends we_search_base{
 		$this->db->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 		if(self::checkRightTempTable() && self::checkRightDropTable()){
 			$this->db->query('CREATE TEMPORARY TABLE SEARCH_TEMP_TABLE (
-ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-docID BIGINT NOT NULL ,
-docTable VARCHAR(32) NOT NULL ,
-Text VARCHAR(255) NOT NULL ,
-Path VARCHAR( 255 ) NOT NULL ,
-ParentID BIGINT( 20 ) NOT NULL ,
-IsFolder TINYINT NOT NULL ,
-IsProtected TINYINT NOT NULL ,
-temp_template_id INT NOT NULL ,
-TemplateID INT NOT NULL ,
-ContentType VARCHAR(32) NOT NULL ,
-SiteTitle VARCHAR(255) NOT NULL ,
-CreationDate INT(11) NOT NULL ,
-CreatorID BIGINT(20) NOT NULL ,
-ModDate INT NOT NULL ,
-Published INT NOT NULL ,
-Extension VARCHAR(16) NOT NULL ,
-TableID INT NOT NULL,
-VersionID BIGINT NOT NULL,
-media_alt VARCHAR(255) NOT NULL ,
-media_title VARCHAR(255) NOT NULL ,
-IsUsed TINYINT NOT NULL ,
-UNIQUE KEY k (docID,docTable)
-) ENGINE = MEMORY' . we_database_base::getCharsetCollation());
+				ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+				docID BIGINT NOT NULL ,
+				docTable VARCHAR(32) NOT NULL ,
+				Text VARCHAR(255) NOT NULL ,
+				Path VARCHAR( 255 ) NOT NULL ,
+				ParentID BIGINT( 20 ) NOT NULL ,
+				IsFolder TINYINT NOT NULL ,
+				IsProtected TINYINT NOT NULL ,
+				temp_template_id INT NOT NULL ,
+				TemplateID INT NOT NULL ,
+				ContentType VARCHAR(32) NOT NULL ,
+				SiteTitle VARCHAR(255) NOT NULL ,
+				CreationDate INT(11) NOT NULL ,
+				CreatorID BIGINT(20) NOT NULL ,
+				ModDate INT NOT NULL ,
+				Published INT NOT NULL ,
+				Extension VARCHAR(16) NOT NULL ,
+				TableID INT NOT NULL,
+				VersionID BIGINT NOT NULL,
+				media_alt VARCHAR(255) NOT NULL ,
+				media_title VARCHAR(255) NOT NULL ,
+				IsUsed TINYINT NOT NULL ,
+				UNIQUE KEY k (docID,docTable)
+				) ENGINE = MEMORY' . we_database_base::getCharsetCollation());
 		}
 	}
 
