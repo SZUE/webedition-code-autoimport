@@ -2570,3 +2570,4 @@ apps/toolfactory/pattern/hook/custom_hooks/dummy
 apps/toolfactory/lang/no/default.xml
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
+
