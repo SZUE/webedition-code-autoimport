@@ -39,7 +39,8 @@
 	height:15px;
 	padding:0px;
 	margin-right:4px;
-	background-image:url(/webEdition/images/crop/size_wh.gif);background-repeat:no-repeat;}
+	background-image:url(/webEdition/images/crop/size_wh.gif);background-repeat:no-repeat;
+}
 #weSizeDiv input {
 	display:block;
 	width:24px;
@@ -128,15 +129,11 @@
 	height:18px;
 	background-repeat:no-repeat;
 }
-#cropButtonZoomIn {
-	background-image: url(/webEdition/images/crop/zoom_in1.gif);
-}
-#cropButtonZoomIn:hover {
-	background-image: url(/webEdition/images/crop/zoom_in2.gif);
-}
-#cropButtonZoomOut {
-	background-image: url(/webEdition/images/crop/zoom_out1.gif);
+#cropButtonZoomIn:hover i{
+	background-color: black;
+	color: white;
 }
 #cropButtonZoomOut:hover {
-	background-image: url(/webEdition/images/crop/zoom_out2.gif);
+	background-color: black;
+	color: white;
 }

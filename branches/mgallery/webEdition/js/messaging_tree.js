@@ -45,20 +45,17 @@ function check(img) {
 	for (i = 1; i <= treeData.len; i++) {
 		if (treeData[i].id == id) {
 			if (treeData[i].checked) {
-				if (left.document.images) {
-					if (left.document.images[img]) {
-						left.document.images[img].src = tree_img_dir + "check0.gif";
-					}
+				if (left.document.images && left.document.images[img]) {
+					left.document.images[img].src = tree_img_dir + "check0.gif";
 				}
 				treeData[i].checked = false;
 				unSelectMessage(img, "elem", "");
 				break;
 			}
 			else {
-				if (left.document.images) {
-					if (left.document.images[img]) {
-						left.document.images[img].src = tree_img_dir + "check1.gif";
-					}
+				if (left.document.images && left.document.images[img]) {
+					left.document.images[img].src = tree_img_dir + "check1.gif";
+
 				}
 				treeData[i].checked = true;
 				doSelectMessage(img, "elem", "");
@@ -314,7 +311,7 @@ function zeichne(startEntry, zweigEintrag) {
 				trg = "doClick(" + nf[ai].id + ");return true;";
 			}
 
-			ret += "<a id='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"" + trg + "\" BORDER=0>" +
+			ret += "<a id='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"" + trg + "\">" +
 							"<img src=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">" +
 							"</a>" +
 							"<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\">" +

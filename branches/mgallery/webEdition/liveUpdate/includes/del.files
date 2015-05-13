@@ -2677,6 +2677,7 @@ images/we_bg_mod1.gif
 images/v-tabs/background.gif
 images/v-tabs
 images/umr_h_small.gif
+images/tree/treeheaderback.gif
 images/tree/leer.gif
 images/tree/icons/audio.gif
 images/tree/headerBg.gif
@@ -2833,6 +2834,10 @@ images/frame_bg.gif
 images/foo.gif
 images/edit/editfooterback.gif
 images/edit
+images/crop/zoom_out2.gif
+images/crop/zoom_out1.gif
+images/crop/zoom_in2.gif
+images/crop/zoom_in1.gif
 images/button/icons/task_update.gif
 images/button/icons/task_trash.gif
 images/button/icons/task_status.gif
