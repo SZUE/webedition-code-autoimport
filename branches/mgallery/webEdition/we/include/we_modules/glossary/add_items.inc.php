@@ -714,7 +714,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			<body class="weDialogBody" onload="init();">
 
 				<div id="spinner">
-					<div id="statusImage"><img src="<?php echo IMAGE_DIR; ?>/spinner.gif"/></div>
+					<div id="statusImage"><i class="fa fa-2x fa-spinner fa-pulse"></i></div>
 					<div id="statusText" class="small" style="color: black;"><?php echo g_l('modules_glossary', '[download]'); ?></div>
 				</div>
 

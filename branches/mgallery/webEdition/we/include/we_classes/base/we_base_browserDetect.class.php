@@ -275,6 +275,9 @@ class we_base_browserDetect{
 
 	//todo: implement from we_browser_check
 	public static function isSupported(){
+		//don't check anymore
+		return true;
+		/*
 		if(self::isGecko()){
 			return true;
 		}
@@ -316,6 +319,8 @@ class we_base_browserDetect{
 				break;
 		}
 		return false;
+
+		 */
 	}
 
 }

@@ -2814,6 +2814,11 @@ images/info/top_right.gif
 images/info/top_left.gif
 images/info/top_left2.gif
 images/info/top.gif
+images/info/supported_browser_safari.gif
+images/info/supported_browser_opera.png
+images/info/supported_browser_mozilla.gif
+images/info/supported_browser_ie.gif
+images/info/supported_browser_firefox.gif
 images/info/right.gif
 images/info/partnerLogo.gif
 images/info/left2.gif
@@ -2832,6 +2837,7 @@ images/gruen.gif
 images/gelb.gif
 images/frame_bg.gif
 images/foo.gif
+images/fileUpload/balken_yellow.gif
 images/edit/editfooterback.gif
 images/edit
 images/crop/zoom_out2.gif

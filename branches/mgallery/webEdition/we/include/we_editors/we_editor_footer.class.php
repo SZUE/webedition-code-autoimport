@@ -149,7 +149,7 @@ abstract class we_editor_footer{
 			switch($we_doc->ContentType){
 				case we_base_ContentTypes::TEMPLATE:
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("make_new_document", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:make_new_document,fa-lg fa-file", "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');_EditorFrame.setEditorMakeNewDoc(false);"));
 					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 					break;
 				case we_base_ContentTypes::OBJECT:
@@ -193,8 +193,8 @@ abstract class we_editor_footer{
 				$_normalTable->addCol(2);
 				if(we_base_moduleInfo::isActive('editor')){
 					$_normalTable->setColContent(0, $_pos++, (stripos($we_doc->ContentType, 'text/') !== false ?
-							we_html_button::create_button("startEditor", "javascript:editSource();") :
-							we_html_button::create_button("startEditor", "javascript:editFile();"))
+							we_html_button::create_button("fat:startEditor,fa-lg fa-external-link", "javascript:editSource();") :
+							we_html_button::create_button("fat:startEditor,fa-lg fa-external-link", "javascript:editFile();"))
 					);
 
 					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
@@ -248,7 +248,7 @@ abstract class we_editor_footer{
 				if($showPubl){
 					$_ctrlElem = getControlElement('button', 'publish');
 					if(!$_ctrlElem || !$_ctrlElem['hide']){
-						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'fat:publish,fa-lg fa-sun-o';
+						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'fat:saveInScheduler,fa-lg fa-clock-o' : 'fat:publish,fa-lg fa-sun-o';
 						$_normalTable->addCol(2);
 						$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
 						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));

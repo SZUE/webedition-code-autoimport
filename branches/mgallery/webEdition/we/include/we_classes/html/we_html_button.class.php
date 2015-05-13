@@ -54,8 +54,8 @@ abstract class we_html_button{
 	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
 	const SELECT = 'fa:select,fa-lg fa-hand-o-right,fa-lg fa-file-o';
 	const SAVE = 'fat:save,fa-lg fa-save';
-	const NEXT = 'fa:next,fa-lg fa-forward';
-	const BACK = 'fa:back,fa-lg fa-backward';
+	const NEXT = 'fa:next,fa-lg fa-step-forward';
+	const BACK = 'fa:back,fa-lg fa-step-backward';
 	const REFRESH = 'fat:refresh,fa-lg fa-refresh';
 	const SEARCH = 'fa:btn_function_search,fa-lg fa-search';
 	const CLOSE = 'fat:close,fa-lg fa-close fa-cancel';

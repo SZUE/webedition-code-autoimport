@@ -38,7 +38,7 @@ var callBack=\'' . $_callback . '\';
 		we_html_element::jsScript(JS_DIR . 'weplugin.js')
 	) .
 	we_html_element::htmlBody(array("style" => "background-color:#ffffff;margin:20px;", "onload" => "initPlugin();"), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlCenter(
-				we_html_element::htmlImg(array("src" => IMAGE_DIR . "spinner.gif")) .
+				'<i class="fa fa-2x fa-spinner fa-pulse"></i>' .
 				we_html_element::htmlBr() .
 				we_html_element::htmlBr() .
 				we_html_element::htmlDiv(array("class" => "header_small"), g_l('eplugin', '[initialisation]'))
