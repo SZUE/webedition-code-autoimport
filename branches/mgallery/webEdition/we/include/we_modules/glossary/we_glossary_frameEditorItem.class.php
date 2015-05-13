@@ -393,7 +393,7 @@ function we_save() {
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkID]'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkPath]'].value");
 		$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][InternLinkID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "')";
-		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
+		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
 		if($weGlossaryFrames->View->Glossary->Type === "link" && $weGlossaryFrames->View->Glossary->getAttribute('mode') === "intern"){
 			//$_linkPath = $weGlossaryFrames->View->Glossary->getAttribute('InternLinkPath');
@@ -452,7 +452,7 @@ function we_save() {
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('populateWorkspaces');");
 		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
-		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
+		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
 		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][ObjectLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button);
 
@@ -505,7 +505,7 @@ function we_save() {
 		$wecmdenc3 = we_base_request::encCmd("opener.setHot();");
 
 		$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'" . CATEGORY_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "')";
-		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
+		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
 		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button
 		);
@@ -515,7 +515,7 @@ function we_save() {
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value");
 		$wecmdenc3 = '';
 		$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "')";
-		$_button = we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', false);
+		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
 		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $_internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryInternLinkID]', $_internLinkID), we_html_tools::getPixel(20, 4), $_button
 		);

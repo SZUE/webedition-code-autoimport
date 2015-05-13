@@ -157,7 +157,7 @@ $parts = array(
 		'noline' => 1
 	),
 	array(
-		'headline' => we_html_button::create_button('select', "javascript:we_submitDateform();"),
+		'headline' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_submitDateform();"),
 		'html' => '',
 		'space' => 150
 	)

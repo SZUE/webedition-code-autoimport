@@ -60,7 +60,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$selectorNoLoginText = "wecf_InputNoLoginText";
 		//$selectorNoLoginError = "wecf_ErrorMarkNoLoginText";
 		$cmd1 = "document.we_form.elements['" . $selectorNoLoginId . "'].value";
-		$selectorNoLoginButton = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoLoginText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript() . ";") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
+		$selectorNoLoginButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoLoginText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript() . ";") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
 		$yuiSuggest->setAcId("NoLogin");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
@@ -86,7 +86,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$selectorNoAccessText = "wecf_InputNoAccessText";
 		//$selectorNoAccessError = "wecf_ErrorMarkNoAccessText";
 		$cmd1 = "document.we_form.elements['" . $selectorNoAccessId . "'].value";
-		$selectorNoAccessButton = we_html_button::create_button("select", "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoAccessText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript()) . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
+		$selectorNoAccessButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoAccessText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript()) . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
 
 		$yuiSuggest->setAcId("NoAccess");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);

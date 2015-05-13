@@ -46,15 +46,15 @@ abstract class we_html_button{
 	const DELETE_ALL = 'fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o';
 	const DELETE = 'fa:delete,fa-lg fa-trash-o';
 	const ADD = 'fa:add,fa-lg fa-plus';
-	const EDIT = 'fa:edit,fa-lg fa-pencil';
+	const EDIT = 'fa:btn_edit,fa-lg fa-pencil';
 	const TRASH = 'fa:btn_function_trash,fa-lg fa-trash-o';
 	const PLUS = 'fa:btn_function_plus,fa-lg fa-plus';
 	const DIRUP = 'fa:btn_direction_up,fa-lg fa-caret-up';
 	const DIRDOWN = 'fa:btn_direction_up,fa-lg fa-caret-up';
 	const DIRRIGHT = 'fa:btn_direction_right,fa-lg fa-caret-right';
 	const VIEW = 'fa:btn_function_view,fa-lg fa-eye';
-	const EDIT = 'fa:btn_edit_edit,fa-lg fa-pencil';
 	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
+	const SELECT = 'select';
 
 	/**
 	 * Gets the HTML Code for the button.

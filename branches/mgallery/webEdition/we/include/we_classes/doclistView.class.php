@@ -155,7 +155,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 					$cmd1 = "document.we_form.elements['searchParentID[" . $i . "]'].value";
 					$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value") . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
-					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+					$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']',""), we_html_tools::getPixel(5, 4), $_button);
 
 					$searchInput = $selector;
@@ -166,7 +166,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 					$_rootDirID = 0;
 
 					$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
-					$_button = we_html_button::create_button('select', $_cmd, true, 70, 22, '', '', false);
+					$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
 					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
 
 					$searchInput = $selector;
