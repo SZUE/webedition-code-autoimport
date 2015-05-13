@@ -44,8 +44,10 @@ class we_shop_shippingControl{
 
 		if($data){
 			$shippingControl = unserialize(strtr($data, array('O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"', 'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"')));
+		if(is_object($shippingControl)){
 			$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
 			return $shippingControl;
+		}
 		}
 		return new self('', 1, 1, array());
 	}
