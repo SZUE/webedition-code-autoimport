@@ -75,7 +75,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 				if($this->create){
 					$but = we_html_button::create_button("fa:btn_add_template,fa-plus,fa-lg fa-file-code-o", "javascript:we_cmd('object_create_tmpfromClass','0','" . $this->nr . "','" . $GLOBALS["we_transaction"] . "')");
 				} else {
-					$but = we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:we_cmd('object_preview_objectFile','0','" . (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") . "','" . $GLOBALS["we_transaction"] . "')");
+					$but = we_html_button::create_button(we_html_button::VIEW, "javascript:we_cmd('object_preview_objectFile','0','" . (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "") . "','" . $GLOBALS["we_transaction"] . "')");
 				}
 				$path = id_to_path(isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", TEMPLATES_TABLE, $this->db);
 				if($this->isEditable()){

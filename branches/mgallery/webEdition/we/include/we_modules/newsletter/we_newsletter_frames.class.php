@@ -383,7 +383,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(1, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'), $allBlockedByBlacklist));
 			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByBlacklist == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
-			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:top.opener.top.we_cmd('black_list');"))));
+			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('black_list');"))));
 
 			/* process bar blocked by domain check */
 			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
@@ -400,7 +400,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(2, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'), $allBlockedByDomainCheck));
 			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "icons/" . (($allBlockedByDomainCheck == 0) ? "valid.gif" : "invalid.gif"))));
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
-			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:top.opener.top.we_cmd('domain_check');"))));
+			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('domain_check');"))));
 
 			/* process bar all clear recipients */
 			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
@@ -417,7 +417,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol(3, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'), $allClearRecipients));
 			$table->setCol(3, 3, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlImg(array("src" => IMAGE_DIR . (($allClearRecipients == $allRecipients) ? "icons/valid.gif" : "alert_tiny.gif"), "title" => (($allClearRecipients < $allRecipients) ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : ''))));
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
-			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::position_yes_no_cancel(we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:top.opener.top.we_cmd('show_log')")));
+			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('show_log')")));
 
 			/* total recipients */
 			$table->addRow();
@@ -1916,7 +1916,7 @@ self.focus();
 		foreach($emails as $k => $cols){
 			if($k >= $offset && $k < $endRow){
 
-				$edit = we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:editEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "','" . $cols[1] . "','" . $cols[2] . "','" . $cols[3] . "','" . $cols[4] . "','" . $cols[5] . "')");
+				$edit = we_html_button::create_button(we_html_button::EDIT, "javascript:editEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "','" . $cols[1] . "','" . $cols[2] . "','" . $cols[3] . "','" . $cols[4] . "','" . $cols[5] . "')");
 				$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:delEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "')");
 
 				$content[$counter] = array(
@@ -2076,7 +2076,7 @@ function postSelectorSelect(wePssCmd) {
 		$nextprev->setCol(0, 4, array(), $colcontent);
 
 		if(!empty($emails)){
-			$add = we_html_button::create_button("image:function_plus", "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
+			$add = we_html_button::create_button(we_html_button::PLUS, "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 			$end = $nextprev->getHtml();
 
 			$nextprev->addCol(6);
@@ -2112,7 +2112,7 @@ function postSelectorSelect(wePssCmd) {
 
 			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", "align" => "center"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2)
 				. '<br/><br/>' .
-				we_html_button::create_button("image:function_plus", "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
+				we_html_button::create_button(we_html_button::PLUS, "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 		}
 
 

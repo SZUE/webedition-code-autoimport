@@ -51,7 +51,10 @@ abstract class we_html_button{
 	const PLUS = 'fa:btn_function_plus,fa-lg fa-plus';
 	const DIRUP = 'fa:btn_direction_up,fa-lg fa-caret-up';
 	const DIRDOWN = 'fa:btn_direction_up,fa-lg fa-caret-up';
-	const DIRRIGHT='fa:btn_direction_right,fa-lg fa-caret-right';
+	const DIRRIGHT = 'fa:btn_direction_right,fa-lg fa-caret-right';
+	const VIEW = 'fa:btn_function_view,fa-lg fa-eye';
+	const EDIT = 'fa:btn_edit_edit,fa-lg fa-pencil';
+	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
 
 	/**
 	 * Gets the HTML Code for the button.

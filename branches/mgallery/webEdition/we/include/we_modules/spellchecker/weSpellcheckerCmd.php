@@ -198,7 +198,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 				$table->setCol($_i, 2, array('valign' => 'top', 'class' => 'defaultfont'), $_lanSelect->getHtml());
 
 				$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'center'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
-				$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'center'), '<div style="display: none;" id="updateIcon_' . $_name . '"><img src="' . IMAGE_DIR . 'spinner.gif"/></div><div style="display: block;" id="updateBut_' . $_name . '">' . we_html_button::create_button('fa:btn_function_reload,fa-lg fa-refresh', 'javascript: updateDict("' . $_name . '");') . '</div>');
+				$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'center'), '<div style="display: none;" id="updateIcon_' . $_name . '"><img src="' . IMAGE_DIR . 'spinner.gif"/></div><div style="display: block;" id="updateBut_' . $_name . '">' . we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");') . '</div>');
 				$table->setCol($_i, 5, array('valign' => 'top', 'align' => 'center'), we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
 			}
 		}

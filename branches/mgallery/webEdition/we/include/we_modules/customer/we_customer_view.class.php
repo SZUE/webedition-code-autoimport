@@ -1103,7 +1103,7 @@ self.close();');
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 					while($DB_WE->next_record()){
 						$objectStr.='<tr>
-	<td>' . we_html_button::create_button('fa:btn_edit_edit,fa-lg fa-pencil', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
+	<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
 	<td>' . $DB_WE->f('ID') . '</td>
 	<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>
 	<td class="' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changed defaultfont' : 'defaultfont') : 'npdefaultfont') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
@@ -1138,7 +1138,7 @@ self.close();');
 						'</tr>';
 					while($DB_WE->next_record()){
 						$documentStr.='<tr>' .
-							'<td>' . we_html_button::create_button('fa:btn_edit_edit,fa-lg fa-pencil', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
+							'<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
 							'<td>' . $DB_WE->f('ID') . '</td>' .
 							'<td title="' . $DB_WE->f('Path') . '">' . $DB_WE->f('Text') . '</td>' .
 							'<td class="' .

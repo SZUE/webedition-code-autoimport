@@ -137,7 +137,7 @@ function we_tag_href($attribs){
 		$but = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_directory', document.forms[0].elements['" . $intID_elem_Name . "'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','', '" . $rootdirid . "');");
 		$but2 = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'" . $ext_elem_Name . "\\'].value', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['" . $ext_elem_Name . "'].value, 'opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL ? " opener.document.we_form.elements[\'" . $int_elem_Name . "\'][1].checked = true;" : '') . "','" . $rootdir . "')") : '';
 	}
-	$open = we_html_button::create_button( 'fa:btn_function_view,fa-lg fa-eye', "javascript:if(document.forms[0].elements['" . $intID_elem_Name . "'].value){top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.forms[0].elements['" . $intID_elem_Name . "'].value,'');}");
+	$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(document.forms[0].elements['" . $intID_elem_Name . "'].value){top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.forms[0].elements['" . $intID_elem_Name . "'].value,'');}");
 	$trashbut2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);", true);
 	if($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT){
 		$yuiSuggest = &weSuggest::getInstance();

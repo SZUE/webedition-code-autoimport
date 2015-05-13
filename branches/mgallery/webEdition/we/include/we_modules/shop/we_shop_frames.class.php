@@ -178,10 +178,10 @@ function we_cmd() {
 
 		if($resultD){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
+			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('image:btn_shop_sum', "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true));
 		} elseif($resultO){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("image:btn_shop_sum", "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
+			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('image:btn_shop_sum', "javascript:top.content.editor.location=' edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
 		}
 
 		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));

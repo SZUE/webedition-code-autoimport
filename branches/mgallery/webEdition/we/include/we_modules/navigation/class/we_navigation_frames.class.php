@@ -268,8 +268,8 @@ function setTab(tab) {
 
 			$_table->setColContent(0, 2, we_html_button::create_button_table(
 					array(
-					we_html_button::create_button('image:direction_up', 'javascript:' . $this->topFrame . '.we_cmd("move_up");', true, 100, 22, '', '', (($this->Model->Ordn > 0) ? false : true), false),
-					we_html_button::create_button('image:direction_down', 'javascript:' . $this->topFrame . '.we_cmd("move_down");', true, 100, 22, '', '', (($this->Model->Ordn < ($_num - 1)) ? false : true), false)
+					we_html_button::create_button(we_html_button::DIRUP, 'javascript:' . $this->topFrame . '.we_cmd("move_up");', true, 100, 22, '', '', (($this->Model->Ordn > 0) ? false : true), false),
+					we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:' . $this->topFrame . '.we_cmd("move_down");', true, 100, 22, '', '', (($this->Model->Ordn < ($_num - 1)) ? false : true), false)
 					), 10, array(
 					'style' => 'margin-left: 15px'
 			)));
@@ -390,11 +390,11 @@ function setTab(tab) {
 
 		$_button_doc = we_html_button::create_button_table(array(
 				we_html_button::create_button('select', $_cmd_doc, true, 0, 0, '', '', false),
-				we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false)
+				we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false)
 				), 2);
 		$_button_obj = we_html_button::create_button_table(array(
 				we_html_button::create_button('select', $_cmd_obj, true, 0, 0, '', '', false),
-				(defined('OBJECT_TABLE') ? we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false) : '')
+				(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false) : '')
 				), 2);
 
 		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
@@ -670,12 +670,12 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$_button_doc = we_html_button::create_button_table(array(
 				we_html_button::create_button('select', $_cmd_doc, true, 0, 0, '', '', $disabled),
-				we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc')
+				we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc')
 				), 2);
 
 		$_button_obj = we_html_button::create_button_table(array(
 				we_html_button::create_button('select', $_cmd_obj, true, 0, 0, '', '', $disabled),
-				(defined('OBJECT_TABLE') ? we_html_button::create_button('fa:btn_function_view,fa-lg fa-eye', 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '')
+				(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '')
 				), 2);
 		$_button_cat = we_html_button::create_button('select', $_cmd_cat, true, 0, 0, '', '', $disabled);
 

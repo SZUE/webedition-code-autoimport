@@ -260,7 +260,7 @@ top.content.hloaded = 1;'));
 		$table->setCol(1, 1, array(), we_html_tools::getPixel(10, 10));
 		$table->setCol(1, 2, array(), $select->getHtml());
 		$table->setCol(1, 3, array(), we_html_tools::getPixel(10, 10));
-		$table->setCol(1, 4, array(), we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:we_cmd('open_edit_branch')"));
+		$table->setCol(1, 4, array(), we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_branch')"));
 
 		$table->setCol(2, 0, array(), we_html_tools::getPixel(10, 10));
 

@@ -383,7 +383,7 @@ abstract class we_base_variants{
 				$upbut = ($i == 0 ? we_html_button::create_button(we_html_button::DIRUP, '', true, 21, 22, '', '', true) : we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_up','" . ($i) . "');"));
 				$downbut = ($i == ($count - 1) ? we_html_button::create_button(we_html_button::DIRDOWN, "", true, 21, 22, "", "", true) : we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_move_variant_down','" . ($i) . "');"));
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('shop_remove_variant','" . ($i) . "');", true, 30);
-				$previewBut = we_html_button::create_button("fa:btn_function_view,fa-lg fa-eye", "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i)) . "');", true, 30);
+				$previewBut = we_html_button::create_button(we_html_button::VIEW, "javascript:we_cmd('shop_preview_variant','" . $GLOBALS['we_transaction'] . "','" . ($model->getElement(we_base_constants::WE_VARIANTS_PREFIX . $i)) . "');", true, 30);
 
 				$content = '<table border="0" class="defaultgray" width="700">
 <tr>

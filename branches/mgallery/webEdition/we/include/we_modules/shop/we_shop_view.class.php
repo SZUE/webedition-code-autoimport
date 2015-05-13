@@ -873,7 +873,7 @@ function submitForm() {
 						<td>' . $pixelImg . '</td>
 						<td class="defaultfont" valign="top">' . nl2br($value) . '</td>
 						<td>' . $pixelImg . '</td>
-						<td valign="top">' . we_html_button::create_button('fa:btn_edit_edit,fa-lg fa-pencil', "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
+						<td valign="top">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
 						<td>' . $pixelImg . '</td>
 						<td valign="top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
 					</tr>

@@ -297,10 +297,10 @@ function setScrollTo(){
 		$where = '';
 
 		for($i = 0; $i < $count; $i++){
-			if(isset($keywords["field_" . $i])){
-				$keywords["field_" . $i] = str_replace(g_l('modules_customer', '[common]') . '_', '', $keywords['field_' . $i]);
+			if(isset($keywords['field_' . $i])){
+				$keywords['field_' . $i] = str_replace(g_l('modules_customer', '[common]') . '_', '', $keywords['field_' . $i]);
 			}
-			if(isset($keywords["field_" . $i]) && isset($keywords["operator_" . $i]) && isset($keywords["value_" . $i])){
+			if(isset($keywords['field_' . $i]) && isset($keywords["operator_" . $i]) && isset($keywords["value_" . $i])){
 				$where.=
 					(isset($keywords['logic_' . $i]) ? ' ' . $keywords['logic_' . $i] . ' ' : '') .
 					$keywords['field_' . $i] . ' ' . self::$operators[$keywords['operator_' . $i]] . " '" .
@@ -325,8 +325,8 @@ function setScrollTo(){
 		$table->setRow(0, array("valign" => "bottom"));
 
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), $select->getHtml());
-		$table->setCol(0, 1, array("nowrap" => null, "class" => "small"), we_html_button::create_button("fa:btn_function_reload,fa-lg fa-refresh", "javascript:applySort();"));
-		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:we_cmd('show_sort_admin')"));
+		$table->setCol(0, 1, array("nowrap" => null, "class" => "small"), we_html_button::create_button(we_html_button::RELOAD, "javascript:applySort();"));
+		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('show_sort_admin')"));
 
 		return we_html_element::htmlForm(array("name" => "we_form_treeheader"), we_html_element::htmlHiddens(array(
 					"pnt" => "treeheader",
