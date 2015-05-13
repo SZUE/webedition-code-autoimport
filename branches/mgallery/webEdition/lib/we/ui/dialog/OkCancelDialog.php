@@ -110,7 +110,7 @@ class we_ui_dialog_OkCancelDialog extends we_ui_layout_Dialog{
 		$buttonTable->setCancelButton($buttonCancel);
 		$buttonTable->setStyle('margin-top:10px;margin-right:10px;margin-left:auto;');
 
-		$buttonsHTML = '<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%">' . $buttonTable->getHTML() . '</div>';
+		$buttonsHTML = '<div class="editfooter">' . $buttonTable->getHTML() . '</div>';
 		$this->addCSSFiles($buttonTable->getCSSFiles());
 		$this->addJSFiles($buttonTable->getJSFiles());
 		$this->addHTML($buttonsHTML);

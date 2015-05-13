@@ -2820,6 +2820,8 @@ images/gruen.gif
 images/gelb.gif
 images/frame_bg.gif
 images/foo.gif
+images/edit/editfooterback.gif
+images/edit
 images/button/icons/task_update.gif
 images/button/icons/task_trash.gif
 images/button/icons/task_status.gif
@@ -2830,7 +2832,9 @@ images/button/icons/task_forward.gif
 images/button/icons/task_cut.gif
 images/button/icons/task_create.gif
 images/button/icons/task_copy.gif
+images/button/icons/spellcheck.gif
 images/button/icons/shop_variants.gif
+images/button/icons/shop_sum.gif
 images/button/icons/shop_pref.gif
 images/button/icons/shop_extArt.gif
 images/button/icons/shop_delOrd.gif
@@ -2897,6 +2901,7 @@ images/button/icons/add_field.gif
 images/button/icons/add_doc.gif
 images/button/icons/add_collection.gif
 images/button/icons/add_cat.gif
+images/button/icons
 images/button/btn_normal_right.gif
 images/button/btn_normal_middle.gif
 images/button/btn_normal_left.gif
@@ -2912,7 +2917,15 @@ images/button/btn_diabled_middle.gif
 images/button/btn_clicked_right.gif
 images/button/btn_clicked_middle.gif
 images/button/btn_clicked_left.gif
+images/button
+images/box/shaddowBox3_r.gif
+images/box/shaddowBox3_l.gif
+images/box/linie.gif
+images/box/box_header_or2.gif
+images/box/box_header_ol2.gif
+images/box/box_header_bg2.gif
 images/box/bg.gif
+images/box
 images/black.gif
 images/balken_u.gif
 images/backgrounds/radient.gif

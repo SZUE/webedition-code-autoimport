@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -115,17 +114,17 @@ function we_tag_writeShopData($attribs){
 			$shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] = $shopCategory ? : 0;
 
 			if(!$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
-							we_database_base::arraySetter((array(
-								'IntArticleID' => intval($shoppingItem['id']),
-								'IntQuantity' => abs($shoppingItem['quantity']),
-								'Price' => $preis,
-								'IntOrderID' => $orderID,
-								'IntCustomerID' => intval($_SESSION['webuser']['ID']),
-								'DateOrder' => sql_function('NOW()'),
-								'DateShipping' => 0,
-								'Datepayment' => 0,
-								'strSerial' => serialize($shoppingItem['serial']),
-					))))){
+					we_database_base::arraySetter((array(
+						'IntArticleID' => intval($shoppingItem['id']),
+						'IntQuantity' => abs($shoppingItem['quantity']),
+						'Price' => $preis,
+						'IntOrderID' => $orderID,
+						'IntCustomerID' => intval($_SESSION['webuser']['ID']),
+						'DateOrder' => sql_function('NOW()'),
+						'DateShipping' => 0,
+						'Datepayment' => 0,
+						'strSerial' => serialize($shoppingItem['serial']),
+				))))){
 
 				echo 'Data Insert Failed';
 				return;
@@ -161,16 +160,16 @@ function we_tag_writeShopData($attribs){
 			WE_SHOP_CART_CUSTOMER_FIELD => $_customer, // add netprice flag to article
 			WE_SHOP_PRICENAME => $pricename,
 			WE_SHOP_SHIPPING => ($shipping === '' ?
-					array(
+				array(
 				'costs' => $weShippingControl->getShippingCostByOrderValue($totPrice, $_customer),
 				'isNet' => $weShippingControl->isNet,
 				'vatRate' => $weShippingControl->vatRate
-					) :
-					array(
+				) :
+				array(
 				'costs' => floatval(str_replace(',', '.', $shipping)),
 				'isNet' => $shippingIsNet,
 				'vatRate' => $shippingVatRate
-					)),
+				)),
 		);
 
 

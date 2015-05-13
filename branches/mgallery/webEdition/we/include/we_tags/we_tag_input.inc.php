@@ -180,7 +180,7 @@ function we_tag_input($attribs, $content){
 	<tr>
 			<td class="weEditmodeStyle">' . $input . '</td>
 			<td class="weEditmodeStyle">' . we_html_tools::getPixel(6, 4) . '</td>
-			<td class="weEditmodeStyle">' . we_html_button::create_button('image:spellcheck', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
+			<td class="weEditmodeStyle">' . we_html_button::create_button('fa:spellcheck,fa-lg fa-font,fa-lg fa-check fa-ok', 'javascript:we_cmd("spellcheck","we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']")') . '</td>
 	</tr>
 </table>' :
 						$input

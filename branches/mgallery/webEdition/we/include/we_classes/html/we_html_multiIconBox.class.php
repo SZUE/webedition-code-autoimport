@@ -103,7 +103,7 @@ abstract class we_html_multiIconBox{
 		return ($buttons ?
 				//ignore height, replace by bottom:
 				'<div style="overflow:' . $overflow . ';position:absolute;width:100%;' . ($height ? 'height:' . $height . 'px;' : 'bottom:40px;') . 'top:0px;left:0px;">' . $boxHTML . '</div>
-				<div style="left:0px;height:40px;background-image: url(' . IMAGE_DIR . 'edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div style="padding: 10px;">' . $buttons . '</div></div>' :
+				<div class="editfooter"><div style="padding: 10px;">' . $buttons . '</div></div>' :
 				$boxHTML);
 	}
 

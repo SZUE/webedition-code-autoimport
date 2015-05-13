@@ -467,7 +467,7 @@ class we_class_folder extends we_folder{
 							break;
 						case we_objectFile::TYPE_MULTIOBJECT:
 							$temp = we_unserialize($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
-							if(is_array($temp['objects']) && isset($temp['objects']) && $temp['objects']){
+							if($temp && isset($temp['objects']) && $temp['objects']){
 								$objects = $temp['objects'];
 								$class = $temp['class'];
 								$content[$f][$i + 5]['dat'] = '<ul>';
@@ -642,11 +642,8 @@ class we_class_folder extends we_folder{
 ' . we_class::hiddenTrans() . '
 <table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
+		<td class="defaultgray" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
 		<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "opener.we_cmd('reload_editpage');", false) . '</td>
-	</tr>
-	<tr>
-		<td colspan="4">' . we_html_tools::getPixel(18, 12) . '</td>
 	</tr>
 	<tr>
 		<td class="defaultgray">' . g_l('modules_objectClassfoldersearch', '[Ansicht]') . '</td>
@@ -666,30 +663,18 @@ class we_class_folder extends we_folder{
 	</table>
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="defaultgray">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
+		<td class="defaultgray" style="margin-bottom:12px;">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
 		<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
 	</tr>
 	</table>' .
 			we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(5, 1) . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("selectAllObjects", "javascript: " . $javascriptAll) : "") . '</td>
+		<td style="margin-bottom:12px;margin-top:12px;">' . we_html_tools::getPixel(5, 1) . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("selectAllObjects", "javascript: " . $javascriptAll) : "") . '</td>
 		<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">
+		<td colspan="2" style="margin-bottom:12px;">
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -701,11 +686,7 @@ class we_class_folder extends we_folder{
 		</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">
+		<td colspan="2" style="margin-bottom:12px;">
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -717,11 +698,7 @@ class we_class_folder extends we_folder{
 		</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">
+		<td colspan="2" style="margin-bottom:12px;">
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -733,11 +710,7 @@ class we_class_folder extends we_folder{
 		</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">
+		<td colspan="2" style="margin-bottom:12px;">
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -749,11 +722,7 @@ class we_class_folder extends we_folder{
 		</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">
+		<td colspan="2" style="margin-bottom:12px;">
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -765,11 +734,7 @@ class we_class_folder extends we_folder{
 		</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">
+		<td colspan="2" style="margin-bottom:12px;">
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -781,11 +746,7 @@ class we_class_folder extends we_folder{
 		</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">
+		<td colspan="2" style="margin-bottom:12px;">
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
@@ -795,10 +756,6 @@ class we_class_folder extends we_folder{
 			</tr>
 			</table>
 		</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(175, 12) . '</td>
-		<td>' . we_html_tools::getPixel(460, 12) . '</td>
 	</tr>
 	<tr>
 		<td colspan="2">
@@ -847,7 +804,6 @@ function del(pos){
 	document.we_form_search.position.value=pos;
 	document.we_form_search.submit();
 }
-
 
 function changeit(f){
 EOF;

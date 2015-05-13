@@ -224,7 +224,7 @@ echo $js .
 
 	</div>
 
-	<div style="left:0px;height:40px;background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);position:absolute;bottom:0px;width:100%"><div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
+	<div class="editfooter"><div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
 
 
 	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="<?php echo WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>

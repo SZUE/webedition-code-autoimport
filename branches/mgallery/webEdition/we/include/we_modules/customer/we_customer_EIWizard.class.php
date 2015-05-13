@@ -919,12 +919,13 @@ class we_customer_EIWizard{
 			foreach(array_keys($nodes) as $node){
 				$we_fields->addOption(oldHtmlspecialchars(str_replace(" ", "", $node)), oldHtmlspecialchars($node));
 				if(isset($field_mappings[$record])){
-					if($node == $field_mappings[$record])
+					if($node == $field_mappings[$record]){
 						$we_fields->selectOption($node);
-				}
-				else {
-					if($node == $record)
+					}
+				} else {
+					if($node == $record){
 						$we_fields->selectOption($node);
+					}
 				}
 			}
 			if($type == we_import_functions::TYPE_GENERIC_XML){

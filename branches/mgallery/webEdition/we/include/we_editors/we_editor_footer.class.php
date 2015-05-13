@@ -33,8 +33,7 @@ abstract class we_editor_footer{
 			"cellpadding" => 0,
 			"cellspacing" => 0), 2, 6);
 
-		$refreshButton = (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' :
-				we_html_button::create_button("refresh", "javascript:top.weNavigationHistory.navigateReload();"));
+		$refreshButton = (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();"));
 
 //	spaceholder
 		$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
@@ -167,7 +166,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("in_workflow", "javascript:put_in_workflow();"));
+				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow();"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 		}
@@ -178,7 +177,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
-				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("unpublish", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
+				$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:unpublish,fa-lg fa-moon-o", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
 				$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 		}
@@ -206,7 +205,7 @@ abstract class we_editor_footer{
 		$_ctrlElem = getControlElement('button', 'save'); //	look tag we:controlElement for details
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button('fat:save,fa-lg fa-save', "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 
@@ -234,7 +233,7 @@ abstract class we_editor_footer{
 			case we_base_ContentTypes::TEMPLATE:
 				if(defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL){
 					$_normalTable->addCol(2);
-					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("saveversion", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+					$_normalTable->setColContent(0, $_pos++, we_html_button::create_button("fat:saveversion,fa-lg fa-save", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 					$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 				}
 				if($hasPerm){
@@ -249,7 +248,7 @@ abstract class we_editor_footer{
 				if($showPubl){
 					$_ctrlElem = getControlElement('button', 'publish');
 					if(!$_ctrlElem || !$_ctrlElem['hide']){
-						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'publish';
+						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'saveInScheduler' : 'fat:publish,fa-lg fa-sun-o';
 						$_normalTable->addCol(2);
 						$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
 						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
@@ -305,7 +304,7 @@ abstract class we_editor_footer{
 		//	Always button preview
 		if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){ // first button is always - preview, when exists
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("fat:preview,fa-lg fa-eye", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 
@@ -353,7 +352,7 @@ abstract class we_editor_footer{
 		if(in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES) &&
 			we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("schedule_button", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("fat:schedule_button,fa-lg fa-clock-o", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 
@@ -365,7 +364,7 @@ abstract class we_editor_footer{
 
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("in_workflow", "javascript:put_in_workflow();"));
+				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("fat:in_workflow,fa-lg fa-gears", "javascript:put_in_workflow();"));
 				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 		}
@@ -380,7 +379,7 @@ abstract class we_editor_footer{
 			$_ctrlElem = getControlElement('button', 'unpublish'); //	look tag we:controlElement for details
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("unpublish", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
+				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("fat:unpublish,fa-lg fa-moon-o", "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
 				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 		}
@@ -392,7 +391,7 @@ abstract class we_editor_footer{
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button('fat:save,fa-lg fa-save', "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 
@@ -406,7 +405,7 @@ abstract class we_editor_footer{
 			if(!($_ctrlElem && $_ctrlElem['hide'])){
 
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("fat:publish,fa-lg fa-sun-o", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 		}

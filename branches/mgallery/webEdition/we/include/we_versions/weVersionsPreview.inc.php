@@ -646,7 +646,7 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 		</div>
 	</div>
 
-	<div style="left:0px;height:40px;background-image: url(<?php echo IMAGE_DIR; ?>edit/editfooterback.gif);position:fixed;bottom:0px;width:100%">
+	<div class="editfooter">
 		<div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div>
 	</div>
 </body>

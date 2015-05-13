@@ -42,7 +42,7 @@ $tree->setId('tree_toolfactory');
 
 $InfoField = new we_ui_layout_Div();
 $InfoField->setId('infoField');
-$InfoField->setStyle('position:absolute;bottom:0px;height:40px;background:url(' . IMAGE_DIR . 'edit/editfooterback.gif);left:0px;width:100%;margin:0px;');
+$InfoField->setClass('editfooter');
 
 $InfoFieldId = new we_ui_layout_Div();
 $InfoFieldId->setId('infoFieldId');

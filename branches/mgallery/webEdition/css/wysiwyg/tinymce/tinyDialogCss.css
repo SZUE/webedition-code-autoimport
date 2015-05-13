@@ -216,7 +216,8 @@ body[role=application] textarea{
 }
 
 body[role=application] .mceActionPanel{
-	background-image: url("/webEdition/images/edit/editfooterback.gif");
+	background-color:grey;/*for old browsers*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
 	height: 30px;
 	position:absolute;
 	bottom: 0px;
@@ -260,7 +261,8 @@ body.useWeFooter textarea{
 }
 
 body.useWeFooter .mceActionPanel{
-	background-image: url("/webEdition/images/edit/editfooterback.gif");
+	background-color:grey;/*for old browsers*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
 	height: 30px;
 	position:absolute;
 	bottom: 0px;

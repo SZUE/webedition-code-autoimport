@@ -58,8 +58,8 @@ h1 {
 
 #divButtons {
 	height: 40px;
-	background-image: url('/webEdition/images/edit/editfooterback.gif');
-	background-color: #C5C5C5;
+	background-color:grey;/*for old browsers*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
 }
 
 fieldset {

@@ -1610,8 +1610,9 @@ function handle_event(evt) {
 				}
 			}
 		}
-		if(empty($val_attrs))
+		if(empty($val_attrs)){
 			$val_attrs = array('@n:' => g_l('import', '[none]'));
+		}
 
 		$th = array(array('dat' => g_l('import', '[we_flds]')), array('dat' => g_l('import', '[rcd_flds]')), array('dat' => g_l('import', '[attributes]')));
 		$rows = array();
@@ -1636,8 +1637,9 @@ function handle_event(evt) {
 					if($value == $we_flds[$record]){
 						$sct_we_fields->selectOption($value);
 					}
-				} elseif($value == $record)
+				} elseif($value == $record){
 					$sct_we_fields->selectOption($value);
+				}
 			}
 			switch($record){
 				case 'Title':

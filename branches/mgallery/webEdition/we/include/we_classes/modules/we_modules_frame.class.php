@@ -176,7 +176,7 @@ abstract class we_modules_frame{
 		$content = we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . ($this->treeHeaderHeight > 1 ? $this->treeHeaderHeight - 6/* padding+border */ : 1) . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'padding: 5px 0 0 0 ; ' : 'background: #ffffff')), $this->getHTMLTreeheader()) .
 			($this->useMainTree ? $this->getHTMLTree() :
 				we_html_element::htmlIFrame('tree', $this->frameset . '?pnt=tree', 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%;')) .
-			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('id' => 'treefooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden; background: url(\'' . IMAGE_DIR . 'edit/editfooterback.gif\')'), $this->getHTMLTreefooter()));
+			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('id' => 'treefooter','class'=>'editfooter' ,'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'), $this->getHTMLTreefooter()));
 
 		return we_html_element::htmlDiv($attribs, $content);
 	}
