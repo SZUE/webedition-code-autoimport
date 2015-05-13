@@ -692,7 +692,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		// if document was modified before unpublishing, the actual version is in tblTemporaryDoc: we unregister temp=0
 		// otherwise we have nothing to do
-		if($ret && $wasPublished && ($this->ModDate > $oldPublished)){
+		if($ret && $oldPublished && ($this->ModDate > $oldPublished)){
 			$this->unregisterMediaLinks(true, false);
 		}
 
