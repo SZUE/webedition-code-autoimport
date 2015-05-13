@@ -831,6 +831,7 @@ class we_search_search extends we_search_base{
 			foreach($tmpMediaLinks as $m_id => $v){
 				$this->usedMediaLinks['mediaID_' . $m_id] = $mediaArr;
 				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
+					//FIXME: here we have unintialized data, line type
 					if(!isset($this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]])){
 						$this->usedMediaLinks['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0]] = array(
 							'referencedIn' => intval($val[2]) === 0 ? 'main' : 'temp',
