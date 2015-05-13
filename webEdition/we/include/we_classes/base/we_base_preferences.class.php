@@ -98,13 +98,13 @@ class we_base_preferences{
 				$content = we_base_file::load($file);
 				//leave settings in their current state
 				foreach($leave as $settingname){
-					if($settingname == 'DB_SET_CHARSET'){
+					//moved constants
+					if($settingname == 'DB_SET_CHARSET' && $conf === 'global'){
+						$content = self::changeSourceCode('define', $content, 'DB_SET_CHARSET', '', false);
 						continue;
 					}
 					$content = self::changeSourceCode('define', $content, $settingname, (defined($settingname) ? constant($settingname) : ''), true);
 				}
-				//moved constants
-				$content = self::changeSourceCode('define', $content, 'DB_SET_CHARSET', '', false);
 			} else {
 				$content = $GLOBALS['config_files']['conf_' . $conf][$dataField];
 			}
