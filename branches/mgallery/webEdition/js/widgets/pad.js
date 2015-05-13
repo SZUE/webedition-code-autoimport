@@ -133,7 +133,7 @@ function getCurrentQuery() {
 	var sValidFrom = fo.elements.f_ValidFrom.value;
 	var sValidUntil = fo.elements.f_ValidUntil.value;
 	return (asoc = {
-		'Validity': (validSel === 0) ? 'always' : ((validSel == 1) ? 'date' : 'period'),
+		'Validity': (validSel == 0) ? 'always' : ((validSel == 1) ? 'date' : 'period'),
 		'ValidFrom': convertDate(sValidFrom, '%Y-%m-%d'),
 		'ValidUntil': convertDate(sValidUntil, '%Y-%m-%d'),
 		'Priority': (oRdoPrio[0].checked) ? 'high' : (oRdoPrio[1].checked) ? 'medium' : 'low',
