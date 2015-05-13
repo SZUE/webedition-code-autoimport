@@ -248,15 +248,15 @@ $rdoPrio = array(
 );
 $oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
-$oTblPrio->setCol(0, 1, null, '<i class="fa fa-fa-dot-circle-o" style="color:red;margin-left:5px;"></i>');
+$oTblPrio->setCol(0, 1, null, '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;"></i>');
 $oTblPrio->setCol(0, 2, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 3, null, $rdoPrio[1]);
 $oTblPrio->setCol(
-	0, 4, null, '<i class="fa fa-fa-dot-circle-o" style="color:yellow;margin-left:5px;"></i>');
+	0, 4, null, '<i class="fa fa-dot-circle-o" style="color:yellow;margin-left:5px;"></i>');
 $oTblPrio->setCol(0, 5, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 6, null, $rdoPrio[2]);
 $oTblPrio->setCol(
-	0, 7, null, '<i class="fa fa-fa-dot-circle-o" style="color:green;margin-left:5px;"></i>');
+	0, 7, null, '<i class="fa fa-dot-circle-o" style="color:green;margin-left:5px;"></i>');
 
 // Edit note buttons
 $delete_button = we_html_button::create_button(we_html_button::DELETE, "javascript:deleteNote();", false, 0, 0, "", "", true, false);

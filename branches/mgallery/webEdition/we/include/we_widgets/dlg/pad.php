@@ -108,11 +108,11 @@ $prio->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 
 $prio->setCol(0, 2, array(
 	"width" => 20
-	), '<i class="fa fa-fa-dot-circle-o" style="color:red"></i>');
+	), '<i class="fa fa-dot-circle-o" style="color:red"></i>');
 $prio->setCol(1, 0, null, $oRdoPrio[1]);
-$prio->setCol(1, 2, null, '<i class="fa fa-fa-dot-circle-o" style="color:yellow"></i>');
+$prio->setCol(1, 2, null, '<i class="fa fa-dot-circle-o" style="color:yellow"></i>');
 $prio->setCol(2, 0, null, $oRdoPrio[2]);
-$prio->setCol(2, 2, null, '<i class="fa fa-fa-dot-circle-o" style="color:green"></i>');
+$prio->setCol(2, 2, null, '<i class="fa fa-dot-circle-o" style="color:green"></i>');
 
 $parts[] = array(
 	"headline" => g_l('cockpit', '[default_priority]'), "html" => $prio->getHTML(), "space" => 100
