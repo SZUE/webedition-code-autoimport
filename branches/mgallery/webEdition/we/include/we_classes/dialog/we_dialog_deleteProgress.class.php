@@ -31,7 +31,7 @@ abstract class we_dialog_deleteProgress{
 		$WE_PB->addText("", 0, "pb1");
 		$js = $WE_PB->getJSCode();
 
-		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close();");
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$pb = we_html_tools::htmlDialogLayout($WE_PB->getHTML(), g_l('delete', '[delete]'), $cancelButton);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(

@@ -408,8 +408,8 @@ top.selectIt();';
 	}
 
 	protected function printFooterTable(){
-		$cancel_button = we_html_button::create_button("cancel", "javascript:top.exit_close();");
-		$yes_button = we_html_button::create_button("ok", "javascript:press_ok_button();");
+		$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.exit_close();");
+		$yes_button = we_html_button::create_button(we_html_button::OK, "javascript:press_ok_button();");
 		return '
 <table id="footer">
 	<tr>

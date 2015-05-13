@@ -57,7 +57,7 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 	<form name="we_form" action="" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
 			false;">
 					<?php
-					$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", ($isA ? "javascript:setColor();" : "form:submit:we_form")), "", we_html_button::create_button("cancel", "javascript:window.close()"));
+					$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, ($isA ? "javascript:setColor();" : "form:submit:we_form")), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close()"));
 					echo we_html_tools::htmlDialogLayout('<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td><table class="colorTable" cellspacing="0" cellpadding="0">

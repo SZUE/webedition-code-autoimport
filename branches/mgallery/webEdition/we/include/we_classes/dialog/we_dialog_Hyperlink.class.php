@@ -38,7 +38,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
 			$back = $this->getBackBut();
-			$ok = we_html_button::create_button("ok", "javascript:weCheckAcFields()");
+			$ok = we_html_button::create_button(we_html_button::OK, "javascript:weCheckAcFields()");
 			$okBut = $back ? we_html_button::create_button_table(array($back, $ok)) : $ok;
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();
@@ -52,7 +52,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$okBut = $back && $ok ? we_html_button::create_button_table(array($back, $ok)) : ($back ? : $ok);
 		}
 
-		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button('cancel', 'javascript:top.close();'));
+		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();'));
 	}
 
 	function initByHref($href, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){

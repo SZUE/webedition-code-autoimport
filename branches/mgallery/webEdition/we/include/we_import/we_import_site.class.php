@@ -454,8 +454,8 @@ function doUnload() {
 				"we_cmd[0]" => "siteImportSaveWePageSettings",
 				"ok" => 1)) . we_html_multiIconBox::getJS();
 
-		$okbutton = we_html_button::create_button("ok", "javascript:if(checkForm()){document.we_form.submit();}");
-		$cancelbutton = we_html_button::create_button("cancel", "javascript:self.close()");
+		$okbutton = we_html_button::create_button(we_html_button::OK, "javascript:if(checkForm()){document.we_form.submit();}");
+		$cancelbutton = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()");
 		$buttons = we_html_button::position_yes_no_cancel($okbutton, null, $cancelbutton);
 		$bodyhtml .= we_html_multiIconBox::getHTML(
 				"", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', '[importSettingsWePages]'));
@@ -867,7 +867,7 @@ function doUnload() {
 			'style' => 'overflow:hidden;'
 		);
 
-		$cancelButton = we_html_button::create_button("cancel", "javascript:top.close()", true, 100, 22, "", "", false, false);
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()", true, 100, 22, "", "", false, false);
 
 		$js = we_html_element::jsElement("
 		function back() {

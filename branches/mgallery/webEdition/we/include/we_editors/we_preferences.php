@@ -1168,7 +1168,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_countries->addOptions($Countries);
 
 			// Button
-			$_add_button = we_html_button::create_button('add', 'javascript:addLocale()', true, 139);
+			$_add_button = we_html_button::create_button('fa:add,fa-lg fa-plus', 'javascript:addLocale()', true, 139);
 
 			// Build final HTML code
 			$_add_html = g_l('prefs', '[locale_languages]') . '<br />' .
@@ -1450,7 +1450,7 @@ for(i=0;i<elements.length; ++i){
 
 				$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtml());
 				$_editlist_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-				$_editlist_table->setCol(0, 2, array("valign" => "top"), we_html_button::create_button('add', "javascript:add_recipient();") . we_html_tools::getPixel(1, 10) . we_html_button::create_button("edit", "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . we_html_tools::getPixel(1, 10) . we_html_button::create_button("delete", "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
+				$_editlist_table->setCol(0, 2, array("valign" => "top"), we_html_button::create_button('fa:add,fa-lg fa-plus', "javascript:add_recipient();") . we_html_tools::getPixel(1, 10) . we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . we_html_tools::getPixel(1, 10) . we_html_button::create_button('fa:delete,fa-lg fa-trash', "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
 
 				// Build dialog if user has permission
 				$_settings[] = array("headline" => "", "html" => $_editlist_table->getHtml(), "space" => 0);

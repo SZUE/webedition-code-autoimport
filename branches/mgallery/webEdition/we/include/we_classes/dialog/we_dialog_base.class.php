@@ -139,11 +139,11 @@ function doKeyDown() {
 	}
 
 	protected function getOkBut(){
-		return we_html_button::create_button('ok', 'javascript:weDoOk();');
+		return we_html_button::create_button(we_html_button::OK, 'javascript:weDoOk();');
 	}
 
 	protected function getCancelBut(){
-		return we_html_button::create_button('cancel', 'javascript:top.close();');
+		return we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();');
 	}
 
 	protected function getbackBut(){
@@ -164,7 +164,7 @@ function doKeyDown() {
 	function getDialogButtons(){
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
 			$back = $this->getBackBut();
-			$ok = we_html_button::create_button('ok', 'form:we_form');
+			$ok = we_html_button::create_button(we_html_button::OK, 'form:we_form');
 			$okBut = $back ? we_html_button::create_button_table(array($back, $ok)) : $ok;
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();

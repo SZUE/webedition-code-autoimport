@@ -272,7 +272,7 @@ $oTblPrio->setCol(
 
 // Edit note buttons
 $delete_button = we_html_button::create_button("delete", "javascript:deleteNote();", false, 0, 0, "", "", true, false);
-$cancel_button = we_html_button::create_button("cancel", "javascript:cancelNote();", false, 0, 0);
+$cancel_button = we_html_button::create_button(we_html_button::CANCEL", "javascript:cancelNote();", false, 0, 0);
 $save_button = we_html_button::create_button("save", "javascript:saveNote();");
 $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 

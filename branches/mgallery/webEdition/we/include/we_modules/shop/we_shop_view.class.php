@@ -1070,7 +1070,7 @@ function CalendarChanged(calObject) {
 				$shopArticles = array();
 
 				$saveBut = '';
-				$cancelBut = we_html_button::create_button('cancel', 'javascript:window.close();');
+				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:window.close();');
 				$searchBut = we_html_button::create_button('search', 'javascript:searchArticles();');
 
 				// first get all shop documents
@@ -1323,7 +1323,7 @@ function CalendarChanged(calObject) {
 		<input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
 		<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />';
 				$saveBut = we_html_button::create_button('save', 'javascript:we_submit();');
-				$cancelBut = we_html_button::create_button('cancel', 'javascript:self.close();');
+				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 
 
 				$val = '';
@@ -1402,7 +1402,7 @@ function CalendarChanged(calObject) {
 				unset($shopVat);
 				unset($shopVats);
 				$saveBut = we_html_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
-				$cancelBut = we_html_button::create_button('cancel', 'javascript:self.close();');
+				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 
 				$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
@@ -1480,7 +1480,7 @@ function CalendarChanged(calObject) {
 
 			case 'edit_order_customer'; // edit data of the saved customer.
 				$saveBut = we_html_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
-				$cancelBut = we_html_button::create_button('cancel', 'javascript:self.close();');
+				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());
 				}

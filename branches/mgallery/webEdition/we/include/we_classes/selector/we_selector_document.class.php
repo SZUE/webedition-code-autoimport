@@ -323,7 +323,7 @@ top.makeNewDocument = true;' .
 		<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
 		<td class="defaultfont">' . we_html_tools::htmlTextInput("fname", 24, ($this->values["Text"] === '/' ? '' : $this->values["Text"]), "", 'style="width:100%" readonly="readonly"') . '</td>
 	</tr>
-</table><div id="footerButtons">' . we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:press_ok_button();"), we_html_button::create_button("cancel", "javascript:top.exit_close();"), $more) . '</div>';
+</table><div id="footerButtons">' . we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:press_ok_button();"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.exit_close();"), $more) . '</div>';
 		return $ret;
 	}
 

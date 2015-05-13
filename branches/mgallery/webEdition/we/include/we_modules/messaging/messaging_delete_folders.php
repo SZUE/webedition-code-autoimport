@@ -100,7 +100,7 @@ $form = '<form name="we_form" method="post">' .
 		we_html_tools::hidden('mcmd', 'delete_folders') .
 		'</form>';
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_delete()"), "", we_html_button::create_button("cancel", "javascript:top.content.we_cmd('messaging_start_view')")
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_delete()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.content.we_cmd('messaging_start_view')")
 );
 ?>
 </head>

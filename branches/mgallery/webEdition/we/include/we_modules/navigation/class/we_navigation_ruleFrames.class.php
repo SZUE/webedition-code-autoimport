@@ -381,7 +381,7 @@ function we_cmd(){
 			'colspan' => 2, 'align' => 'right'
 			), we_html_button::create_button_table(
 				array(
-					we_html_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
+					we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeAllCats()"), $addbut
 		)));
 
 		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_html_element::jsElement('

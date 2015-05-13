@@ -786,8 +786,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		if($this->View->newsletter->groups[$group]->SendAll == 0){
 
-			$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_customers'," . $group . ")");
-			$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs," . $group . ");','','','',1)");
+			$delallbut = we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:we_cmd('del_all_customers'," . $group . ")");
+			$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs," . $group . ");','','','',1)");
 
 			$cats = new we_chooser_multiDir(self::def_width, $this->View->newsletter->groups[$group]->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 			$cats->extraDelFn = "document.we_form.ngroup.value=$group";
@@ -800,9 +800,9 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 	}
 
 	function getHTMLExtern($group){
-		$delallbut = we_html_button::create_button("delete_all", "javascript:we_cmd('del_all_files'," . $group . ")");
+		$delallbut = we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:we_cmd('del_all_files'," . $group . ")");
 		$wecmdenc4 = we_base_request::encCmd("opener.we_cmd('add_file',top.currentID,$group);");
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','" . $wecmdenc4 . "','',1);");
+		$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','" . $wecmdenc4 . "','',1);");
 
 
 		$buttons = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
@@ -917,13 +917,13 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$arr = $this->View->newsletter->getEmailsFromList(oldHtmlspecialchars($this->View->newsletter->groups[$group]->Emails), 1);
 		// Buttons to handle the emails in  the email list
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
-		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("add", "javascript:we_cmd('add_email', " . $group . ");"));
+		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('add_email', " . $group . ");"));
 		$buttons_table->setCol(1, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("edit", "javascript:we_cmd('edit_email', " . $group . ");"));
+		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:we_cmd('edit_email', " . $group . ");"));
 		$buttons_table->setCol(3, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("delete", "javascript:deleteit(" . $group . ")"));
+		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("fa:delete,fa-lg fa-trash-o", "javascript:deleteit(" . $group . ")"));
 		$buttons_table->setCol(5, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(6, 0, array(), we_html_button::create_button("delete_all", "javascript:deleteall(" . $group . ")"));
+		$buttons_table->setCol(6, 0, array(), we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:deleteall(" . $group . ")"));
 
 		// Dialog table for the email block
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 6, 3);
@@ -947,8 +947,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		// Import dialog
 		if($this->View->getShowImportBox() == $group){
-			$ok = we_html_button::create_button("ok", "javascript:we_cmd('import_csv')");
-			$cancel = we_html_button::create_button("cancel", "javascript:we_cmd('reset_import');");
+			$ok = we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('import_csv')");
+			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('reset_import');");
 
 			$import_options = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 14, 3);
 
@@ -995,8 +995,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		// Export dialog
 		if($this->View->getShowExportBox() == $group){
-			$ok = we_html_button::create_button("ok", "javascript:we_cmd('export_csv')");
-			$cancel = we_html_button::create_button("cancel", "javascript:we_cmd('reset_import');");
+			$ok = we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('export_csv')");
+			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('reset_import');");
 
 			$export_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
 
@@ -1632,13 +1632,13 @@ self.focus();
 
 
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
-		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("add", "javascript:addBlack();"));
+		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:addBlack();"));
 		$buttons_table->setCol(1, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("edit", "javascript:editBlack();"));
+		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:editBlack();"));
 		$buttons_table->setCol(3, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("delete", "javascript:deleteBlack()"));
+		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("fa:delete,fa-lg fa-trash-o", "javascript:deleteBlack()"));
 		$buttons_table->setCol(5, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(6, 0, array(), we_html_button::create_button("delete_all", "javascript:deleteallBlack()"));
+		$buttons_table->setCol(6, 0, array(), we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:deleteallBlack()"));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 3);
 		$table->setCol(0, 0, array("valign" => "middle"), we_html_tools::htmlSelect("blacklist_sel", $arr, 10, "", false, array('style' => "width:388px"), "value", 600));
@@ -1656,8 +1656,8 @@ self.focus();
 		$seb = we_base_request::_(we_base_request::RAW, "seb", 0);
 
 		if($sib){
-			$ok = we_html_button::create_button("ok", "javascript:document.we_form.sib.value=0;we_cmd('import_black');");
-			$cancel = we_html_button::create_button("cancel", "javascript:set_import(0);");
+			$ok = we_html_button::create_button(we_html_button::OK, "javascript:document.we_form.sib.value=0;we_cmd('import_black');");
+			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:set_import(0);");
 
 			$import_options = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 2);
 
@@ -1683,8 +1683,8 @@ self.focus();
 				$import_box->getHtml()
 			);
 		} elseif($seb){
-			$ok = we_html_button::create_button("ok", "javascript:document.we_form.seb.value=0;we_cmd('export_black');");
-			$cancel = we_html_button::create_button("cancel", "javascript:set_export(0);");
+			$ok = we_html_button::create_button(we_html_button::OK, "javascript:document.we_form.seb.value=0;we_cmd('export_black');");
+			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:set_export(0);");
 			$export_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
 
 			$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
@@ -1698,7 +1698,7 @@ self.focus();
 		}
 
 
-		$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
+		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 		$save = we_html_button::create_button("save", "javascript:we_cmd('save_black')");
 
 
@@ -1721,7 +1721,7 @@ self.focus();
 		$weFileupload->setAction($this->frameset . '?' . ($what === 'upload_csv' ? 'pnt=upload_csv&grp=0&ncmd=do_upload_csv' :
 				($what === 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
 
-		$cancel = we_html_button::create_button("cancel", "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
+		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
 		$upload = we_html_button::create_button("upload", "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
 
 		$buttons = we_html_button::create_button_table(array($cancel, $upload));
@@ -1773,8 +1773,8 @@ self.focus();
 			$table->setCol(7, 0, array(), we_html_tools::getPixel(100, 10));
 			$table->setCol(8, 0, array("class" => "defaultfont"), we_html_element::htmlB(g_l('modules_newsletter', '[clearlog_note]')));
 			$table->setCol(9, 0, array(), we_html_tools::getPixel(100, 15));
-			$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
-			$ok = we_html_button::create_button("ok", "javascript:clearLog();");
+			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
+			$ok = we_html_button::create_button(we_html_button::OK, "javascript:clearLog();");
 		} else {
 			$close = we_html_button::create_button("close", "javascript:self.close();");
 		}

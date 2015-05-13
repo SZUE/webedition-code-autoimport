@@ -206,34 +206,16 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		return '
 <table style="border-spacing: 0px;border-style:none;" cellpadding="0">
-	<tr>
-		<td colspan="3" class="defaultfont" align="left">
-			' . $this->formDocType2(388, ($this->Published > 0)) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 4) . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3" class="defaultfont" align="left">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 4) . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td>' . we_html_tools::getPixel(100, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="3">
+	<tr><td colspan="3" class="defaultfont" align="left" style="padding-bottom:4px;">' . $this->formDocType2(388, ($this->Published > 0)) . '</td></tr>
+	<tr><td colspan="3" class="defaultfont" align="left" style="padding-bottom:4px;">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td></tr>
+	<tr><td colspan="3">
 			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
 				<tr>
 					<td>' . $this->formIsDynamic($disable) . '</td>
 					<td class="defaultfont">&nbsp;</td>
 					<td>' . $this->formIsSearchable() . '</td>
 				</tr>
-				<tr>
-					<td>' . $this->formInGlossar(100) . '</td>
-				</tr>
+				<tr><td>' . $this->formInGlossar(100) . '</td></tr>
 			</table></td>
 	</tr></table>';
 	}
@@ -297,7 +279,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					'<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
-					we_html_button::create_button('edit', 'javascript:goTemplate(' . $myid . ')') .
+					we_html_button::create_button('fa:edit,fa-lg fa-pencil', 'javascript:goTemplate(' . $myid . ')') .
 					'</td></tr></table>' :
 					$path);
 
@@ -338,7 +320,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$tlist = array_unique($temps);
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
-		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('edit', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
+		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('fa:edit,fa-lg fa-pencil', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
 		if($tlist){
 			$foo = array();

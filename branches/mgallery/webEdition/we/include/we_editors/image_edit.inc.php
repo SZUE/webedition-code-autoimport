@@ -242,8 +242,8 @@ function we_getImageResizeDialog(){
 
 	$_content = array();
 
-	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
+	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 
 	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
@@ -280,8 +280,8 @@ function we_getImageResizeDialog(){
 function we_getImageConvertDialog(){
 	$_content = array();
 
-	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
+	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
 	$_dialog = '<div class="defaultfont">' . g_l('weClass', '[quality]') . '</div>' . we_base_imageEdit::qualitySelect("quality");
 	$_content[] = array("headline" => "", "html" => $_dialog, "space" => 0);
@@ -293,8 +293,8 @@ function we_getImageConvertDialog(){
 function we_getImageRotateDialog(){
 	$_content = array();
 
-	$okbut = we_html_button::create_button("ok", "javascript:doOK();");
-	$cancelbut = we_html_button::create_button("cancel", "javascript:top.close();");
+	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
+	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 
 	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
 

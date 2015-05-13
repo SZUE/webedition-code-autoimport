@@ -142,7 +142,7 @@ abstract class we_customer_add{
 			$counter++;
 		}
 
-		$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
+		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 		$save = we_html_button::create_button("save", "javascript:we_cmd('save_sort')");
 
 		$_buttons = we_html_button::position_yes_no_cancel($save, null, $cancel);

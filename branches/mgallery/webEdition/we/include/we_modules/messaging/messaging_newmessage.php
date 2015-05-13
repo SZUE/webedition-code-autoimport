@@ -109,7 +109,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
       <tr><td colspan="2"><textarea cols="68" rows="15" name="mn_body" style="width:605px">' . $compose->get_msg_text() . '</textarea></td></tr>
     </table>';
 
-		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:do_send()"), "", we_html_button::create_button("cancel", "javascript:window.close()")
+		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_send()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close()")
 		);
 
 		echo we_html_tools::htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $_buttons, "100%", 24, "", "hidden");

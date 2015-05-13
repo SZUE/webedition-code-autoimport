@@ -87,7 +87,7 @@ self.focus();');
 	}
 
 	protected function getCancelBut(){
-		return we_html_button::create_button("cancel", "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');top.close();");
+		return we_html_button::create_button(we_html_button::CANCEL, "javascript:top.opener.tinyMCECallRegisterDialog({},'unregisterDialog');top.close();");
 	}
 
 }

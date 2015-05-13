@@ -53,11 +53,11 @@ function printHeaderHTML($ret){
 
 function printFooterTable($ret, $filter, $currentName){
 	if($ret){
-		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
-		$yes_button = we_html_button::create_button("ok", "javascript:top.exit_close();");
+		$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
+		$yes_button = we_html_button::create_button(we_html_button::OK, "javascript:top.exit_close();");
 	} else {
 		$cancel_button = we_html_button::create_button("close", "javascript:top.exit_close();");
-		$yes_button = we_html_button::create_button("edit", "javascript:editFile();");
+		$yes_button = we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:editFile();");
 	}
 	if($filter === "all_Types"){
 		$options = '<option value="' . str_replace(' ', '%20', g_l('contentTypes', '[all_Types]')) . '">' . g_l('contentTypes', '[all_Types]') . '</option>';

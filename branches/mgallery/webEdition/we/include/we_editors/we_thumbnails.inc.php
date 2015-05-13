@@ -252,7 +252,7 @@ function init() {
 
 			$_thumbnails_table->setCol(0, 0, null, we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
 			$_thumbnails_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-			$_thumbnails_table->setCol(0, 2, array('valign' => 'top'), we_html_button::create_button('add', 'javascript:add_thumbnail();') . we_html_tools::getPixel(1, 10) . we_html_button::create_button('delete', 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
+			$_thumbnails_table->setCol(0, 2, array('valign' => 'top'), we_html_button::create_button('fa:add,fa-lg fa-plus', 'javascript:add_thumbnail();') . we_html_tools::getPixel(1, 10) . we_html_button::create_button('delete', 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
 
 			// Build dialog
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);

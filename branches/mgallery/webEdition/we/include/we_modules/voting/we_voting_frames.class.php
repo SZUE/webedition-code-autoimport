@@ -285,7 +285,7 @@ class we_voting_frames extends we_modules_frame{
 		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_element::htmlHiddens(array(
 				$idname => '',
 				$textname => '')) .
-			we_html_button::create_button("add", "javascript:top.content.setHot(); we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "',''," . $cmd1 . ",'" . $wecmdenc5 . "','','',1);")
+			we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:top.content.setHot(); we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "',''," . $cmd1 . ",'" . $wecmdenc5 . "','','',1);")
 		);
 
 		$parts = array(
@@ -561,8 +561,8 @@ class we_voting_frames extends we_modules_frame{
 		$table->setColContent(0, 1, we_html_element::htmlDiv(array('id' => 'iptable', 'class' => 'blockWrapper', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;padding: 5px;')));
 
 		$table->setCol(1, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button_table(array(
-				we_html_button::create_button("delete_all", "javascript:top.content.setHot(); removeAll()"),
-				we_html_button::create_button("add", "javascript:top.content.setHot(); newIp()")
+				we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:top.content.setHot(); removeAll()"),
+				we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:top.content.setHot(); newIp()")
 				)
 			)
 		);

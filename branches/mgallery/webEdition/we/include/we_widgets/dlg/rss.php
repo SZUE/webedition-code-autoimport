@@ -96,7 +96,7 @@ $oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTML(), g_l('cock
 $oRemTopFeeds = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_edit_rem]'), we_html_tools::TYPE_INFO, 380);
 $oIptNewTitle = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('ipt_newTitle', 55, "", 255, "", "text", 380, 0), g_l('cockpit', '[title]'), "left", "defaultfont");
 $oIptNewUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('ipt_newUri', 55, "", 255, "", "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
-$btnAddTopRssFeed = we_html_button::create_button("add", "javascript:handleTopRssFeed('add');", false, 0, 0, "", "", false, false);
+$btnAddTopRssFeed = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:handleTopRssFeed('add');", false, 0, 0, "", "", false, false);
 $btnOverwriteTopRssFeed = we_html_button::create_button("overwrite", "javascript:handleTopRssFeed('overwrite');", false, 0, 0, "", "", false, false);
 $btnDeleteTopRssFeed = we_html_button::create_button("delete", "javascript:handleTopRssFeed('delete');", false, 0, 0, "", "", false, false);
 

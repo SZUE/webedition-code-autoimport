@@ -67,7 +67,7 @@ echo we_html_tools::getHtmlTop($heading) .
 							' . $res['msg'] . '</td>
 					</tr>
 				</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button("ok", "javascript:top.window.close()"), "100%", 30, "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, $heading, we_html_button::create_button(we_html_button::OK, "javascript:top.window.close()"), "100%", 30, "", "hidden");
 	?>
 </body>
 

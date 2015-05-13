@@ -210,7 +210,7 @@ $code = '<fieldset>
 	$defaultValueCode;
 
 $_buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button('ok', "javascript:we_cmd('saveTag');"), null, we_html_button::create_button('cancel', "javascript:self.close();")
+		we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('saveTag');"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 ?>
 <div id="divTagName">

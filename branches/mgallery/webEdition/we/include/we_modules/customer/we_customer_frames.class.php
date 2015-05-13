@@ -239,9 +239,9 @@ top.content.hloaded = 1;'));
 		//$hiddens = rray("name" => "field", "value" => ''));
 
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
-		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("add", "javascript:we_cmd('open_add_field')"));
+		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('open_add_field')"));
 		$buttons_table->setCol(1, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("edit", "javascript:we_cmd('open_edit_field')"));
+		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:we_cmd('open_edit_field')"));
 		$buttons_table->setCol(3, 0, array(), we_html_tools::getPixel(1, 5));
 		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("delete", "javascript:we_cmd('delete_field')"));
 		$buttons_table->setCol(5, 0, array(), we_html_tools::getPixel(1, 15));
@@ -292,7 +292,7 @@ top.content.hloaded = 1;'));
 				"art" => "$mode",
 				($type === "field" ? "field" : '') => "$field"));
 
-		$cancel = we_html_button::create_button("cancel", "javascript:self.close();");
+		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 
 		switch($type){
 			case "branch":

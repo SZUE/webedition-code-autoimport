@@ -54,7 +54,7 @@ $fields = array(
 	'formats' => '',
 	'imagestarid' => 0,
 	'galleryTemplates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 27),
-	
+
 );
 
 
@@ -156,8 +156,8 @@ top.close();');
 			);
 
 
-			$cancelBut = we_html_button::create_button('cancel', "javascript:top.close()");
-			$okBut = we_html_button::create_button('ok', "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
+			$cancelBut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
+			$okBut = we_html_button::create_button(we_html_button::OK, "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
 			echo we_wysiwyg_editor::getHeaderHTML() . $e->getHTML() .
 			'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);

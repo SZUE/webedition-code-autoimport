@@ -85,7 +85,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		$DefaultBannerID = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"');
 		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");
 		$yes_button = we_html_button::create_button("save", "javascript:we_save();");
-		$cancel_button = we_html_button::create_button("cancel", "javascript:top.close();");
+		$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 
 		echo we_html_tools::htmlDialogLayout($content, g_l('modules_banner', '[defaultbanner]'), $buttons, "100%", 30, 175);

@@ -235,7 +235,7 @@ $_htmlTable->setColContent($_row, 1, we_html_tools::getPixel(10, 5));
 
 $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(20, 25));
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[preferences][save_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '}else{document.we_form.submit();}'), '', we_html_button::create_button('cancel', 'javascript:self.close();'));
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:if(document.getElementById("categorymode").value == 1 && document.getElementById("shoplocation").value === ""){' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[preferences][save_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '}else{document.we_form.submit();}'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();'));
 
 echo '
 	</head>

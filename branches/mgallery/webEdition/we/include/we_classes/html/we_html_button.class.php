@@ -32,11 +32,17 @@ abstract class we_html_button{
 	const WIDTH = 100;
 	const AUTO_WIDTH = -1;
 	const WE_IMAGE_BUTTON_IDENTIFY = 'image';
+	//simple button with icon
 	const WE_FA_BUTTON_IDENTIFY = 'fa';
+	//button with an icon that is composed of more icons
 	const WE_FASTACK_BUTTON_IDENTIFY = 'fas';
+	//button with icon & text
+	const WE_FATEXT_BUTTON_IDENTIFY = 'fat';
 	const WE_FORM_BUTTON_IDENTIFY = 'form:';
 	const WE_SUBMIT_BUTTON_IDENTIFY = 'submit:';
 	const WE_JS_BUTTON_IDENTIFY = 'javascript:';
+	const CANCEL = 'fat:cancel,fa-lg fa-close fa-cancel';
+	const OK = 'fat:ok,fa-lg fa-check fa-ok';
 
 	/**
 	 * Gets the HTML Code for the button.
@@ -113,14 +119,17 @@ abstract class we_html_button{
 
 		// Check height
 		$height = ($height ? : self::HEIGHT);
-		$names = explode(':', $name, 2);
+
+		$all = explode(':', $name, 2);
+		list($type, $names) = count($all) == 1 ? array('', '') : $all;
 		/**
 		 * DEFINE THE NAME OF THE BUTTON
 		 */
 		// Check if the button is a text button or an image button
-		switch($names[0]){
+		$value = '';
+		switch($type){
 			case self::WE_IMAGE_BUTTON_IDENTIFY:// Button is an image
-				$name = $names[1];
+				$name = $names;
 				//set width for image button if given width has not default value
 				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 				$value = we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage'));
@@ -129,30 +138,37 @@ abstract class we_html_button{
 				//set width for image button if given width has not default value
 				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 				//get name for title
-				list($name, $names) = explode(',', $names[1], 2);
+				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
 				$value = '<span class="fa-stack">';
 				foreach($fas as $cnt => $fa){
-					$value.='<i class="fa ' . ($cnt ==0 ? 'fa-stack-2x ' : 'fa-stack-1x ') . $fa . '"></i>';
+					$value.='<i class="fa ' . ($cnt == 0 ? 'fa-stack-2x ' : 'fa-stack-1x ') . $fa . '"></i>';
 				}
 				$value.='</span>';
 				break;
+			case self::WE_FATEXT_BUTTON_IDENTIFY:
 			case self::WE_FA_BUTTON_IDENTIFY:
 				//set width for image button if given width has not default value
-				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				if($type == self::WE_FA_BUTTON_IDENTIFY){
+					$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
+				}
 				//get name for title
-				list($name, $names) = explode(',', $names[1], 2);
+				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
 				$value = '';
 				foreach($fas as $cnt => $fa){
 					$value.='<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';
 				}
-				break;
+				if($type == self::WE_FA_BUTTON_IDENTIFY){
+					break;
+				}
+				//add text, no break;
+				$value.=' ';
 			default:
 				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
 					$width = $tmp;
 				}
-				$value = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
+				$value .= g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 		}
 
 		// Check if the button will be used in a form or not

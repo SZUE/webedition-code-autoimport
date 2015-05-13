@@ -103,7 +103,7 @@ if($res['ok']){
 	}
 
 	$tbl .= '</table>';
-	echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[message_send]') . '...', we_html_button::create_button("ok", "javascript:window.close()"), "100%", 20, "", "hidden");
+	echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[message_send]') . '...', we_html_button::create_button(we_html_button::OK, "javascript:window.close()"), "100%", 20, "", "hidden");
 	?>
 </body>
 

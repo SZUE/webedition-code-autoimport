@@ -854,7 +854,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 					array(
 						we_html_button::create_button('preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
 						we_html_button::create_button('refresh', 'javascript:' . $this->topFrame . '.we_cmd("populate");'),
-						we_html_button::create_button('delete_all', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
+						we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
 				)),
 				'space' => $this->_space_size
 			),
@@ -1142,7 +1142,7 @@ function onSelectionClassChangeJS(value) {
 	}
 
 	function getHTMLCategory(){
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
+		$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_selector_category','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
 		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:#####placeHolder#####;' . $this->topFrame . '.mark();'));
 
 		$variant_js = '
@@ -1189,7 +1189,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 		$table->setCol(
 			4, 1, array('align' => 'right'), we_html_button::create_button_table(
-				array(we_html_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut)
+				array(we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeAllCats()"), $addbut)
 			)
 		);
 		$table->setCol(5, 0, array('colspan' => 2), we_html_tools::getPixel(3, 3));

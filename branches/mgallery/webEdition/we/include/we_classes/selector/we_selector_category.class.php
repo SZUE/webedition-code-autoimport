@@ -359,7 +359,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$this->values['Text'] = '';
 		}
 
-		$okBut = (!$this->noChoose ? we_html_button::create_button('ok', 'javascript:press_ok_button();') : '');
+		$okBut = (!$this->noChoose ? we_html_button::create_button(we_html_button::OK, 'javascript:press_ok_button();') : '');
 		$cancelbut = we_html_button::create_button('close', 'javascript:top.exit_close();');
 
 		return '

@@ -468,7 +468,7 @@ function uploadFinished() {
 			exit();
 		}
 
-		$cancelButton = we_html_button::create_button("cancel", "javascript:cancel()", true, 0, 0, '', '', false, false);
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancel()", true, 0, 0, '', '', false, false);
 		$closeButton = we_html_button::create_button("close", "javascript:cancel()");
 		$progressbar = '';
 
@@ -852,7 +852,7 @@ function next() {
 	function getHTMLCategory(){
 		$_width_size = 300;
 
-		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
@@ -897,7 +897,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 			'colspan' => 2, 'align' => 'right'
 			), we_html_button::create_button_table(
 				array(
-					we_html_button::create_button("delete_all", "javascript:removeAllCats()"), $addbut
+					we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeAllCats()"), $addbut
 		)));
 
 		return $table->getHtml() . $js . we_html_element::jsElement('

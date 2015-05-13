@@ -306,7 +306,7 @@ if($maxsel){
 	<td colspan="2">' . we_html_button::create_button("select_user", "javascript:browse_users_window();") . '<td>
       </tr>
     </table>';
-		echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[sel_rcpts]'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:ok()"), "", we_html_button::create_button("cancel", "javascript:window.close();")));
+		echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[sel_rcpts]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:ok()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close();")));
 		?>
 	</form>
 	<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">

@@ -277,10 +277,10 @@ EO_SCRIPT;
 
 		$_script .= $name . '.showVariant(0);';
 
-		$_addbut = we_html_button::create_button("add", "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
+		$_addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
 
 		$_buttonTable = we_html_button::create_button_table(array(
-					we_html_button::create_button("delete_all", "javascript:removeFromMultiEdit(" . $name . ")"),
+					we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeFromMultiEdit(" . $name . ")"),
 					$_addbut
 						)
 		);

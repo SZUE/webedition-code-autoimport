@@ -174,7 +174,7 @@ echo we_html_element::jsElement($jsFunction) .
 ' .
  we_html_multiIconBox::getHTML(
 	'weShopCountryVat', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-		we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button('cancel', 'javascript:we_cmd(\'close\');')
+		we_html_button::create_button('save', 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
 ) .
  '</form>

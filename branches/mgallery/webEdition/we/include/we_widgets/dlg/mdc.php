@@ -115,7 +115,7 @@ if($ac){
 }
 
 function getHTMLCategory(){
-	$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+	$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 	$del_but = addslashes(we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o','javascript:#####placeHolder#####;top.mark();'));
 
 	$variant_js = '
@@ -163,7 +163,7 @@ function getHTMLCategory(){
 		'colspan' => 2, 'align' => 'right'
 		), we_html_button::create_button_table(
 			array(
-				we_html_button::create_button('delete_all', 'javascript:removeAllCats()'), $addbut
+				we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', 'javascript:removeAllCats()'), $addbut
 	)));
 
 	return $table->getHtml() . we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .

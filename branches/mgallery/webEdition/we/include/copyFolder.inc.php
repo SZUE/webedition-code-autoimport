@@ -115,8 +115,8 @@ function incTemp(val) {
 	}
 }');
 
-	$yes_button = we_html_button::create_button("ok", "form:we_form");
-	$cancel_button = we_html_button::create_button("cancel", "javascript:self.close();");
+	$yes_button = we_html_button::create_button(we_html_button::OK, "form:we_form");
+	$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 
 	$pb = new we_progressBar(0);
 	$pb->setStudLen(270);

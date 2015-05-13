@@ -723,7 +723,7 @@ function delRow(id) {
 		<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
 	</tr>
 	<tr>
-		<td width="215">' . we_html_button::create_button("add", "javascript:newinput();") . '</td>
+		<td width="215">' . we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:newinput();") . '</td>
 		<td width="155"></td>
 		<td width="188" align="right">' . we_html_button::create_button("search", "javascript:search(true);") . '</td>
 		<td></td>

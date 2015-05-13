@@ -746,7 +746,7 @@ this.selectedIndex = 0;' .
 	 * @return string
 	 */
 	static function htmlYesNoCancelDialog($text = '', $img = '', $yes = '', $no = '', $cancel = '', $yesHandler = '', $noHandler = '', $cancelHandler = '', $script = ''){
-		$cancelButton = ($cancel ? we_html_button::create_button('cancel', 'javascript:' . $cancelHandler) : '');
+		$cancelButton = ($cancel ? we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $cancelHandler) : '');
 		$noButton = ($no ? we_html_button::create_button('no', 'javascript:' . $noHandler) : '');
 		$yesButton = ($yes ? we_html_button::create_button('yes', 'javascript:' . $yesHandler) : '');
 

@@ -57,7 +57,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	// image and progressbar
 	$content = $pb->getHTML();
 
-	$buttonBar = we_html_button::create_button("cancel", "javascript:top.close();");
+	$buttonBar = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 	$cmd3 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 3);
 
 	$_iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2) . ($cmd3 !== false ? "&we_cmd[3]=" . $cmd3 : "" ) . '&startCopy=1';

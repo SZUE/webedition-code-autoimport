@@ -87,7 +87,7 @@ function checkMetaFieldName(inpElem, nr) {
 END_OF_SCRIPT;
 
 	return we_html_element::jsElement($_javascript) .
-		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel(we_html_button::create_button("ok", "javascript:we_save();"), "", we_html_button::create_button("cancel", "javascript:" . "top.close()"), 10, '', '', 0));
+		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_save();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:" . "top.close()"), 10, '', '', 0));
 }
 
 /**

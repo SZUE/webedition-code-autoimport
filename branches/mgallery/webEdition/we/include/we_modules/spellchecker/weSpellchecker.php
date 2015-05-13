@@ -98,7 +98,7 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 	$_buttonsleft = array(
 		we_html_button::create_button("ignore", "javascript:findNext();", true, 100, 22, '', '', true, false),
 		we_html_button::create_button("change", "javascript:changeWord();", true, 100, 22, '', '', true, false),
-		we_html_button::create_button("add", "javascript:add();", true, 100, 22, '', '', true, false),
+		we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:add();", true, 100, 22, '', '', true, false),
 		we_html_button::create_button("check", "javascript:weButton.disable(\"check\");setTimeout(spellcheck,100);", true, 100, 22, '', '', true, false)
 	);
 
@@ -106,7 +106,7 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 
 	$_buttons = array(
 		we_html_button::create_button("apply", "javascript:apply();self.close();"),
-		we_html_button::create_button("cancel", "javascript:self.close();")
+		we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 	);
 	$_buttons_bottom = we_html_button::position_yes_no_cancel($_buttons[0], null, $_buttons[1]);
 

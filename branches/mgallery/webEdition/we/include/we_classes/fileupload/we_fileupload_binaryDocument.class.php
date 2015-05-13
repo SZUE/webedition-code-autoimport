@@ -150,7 +150,7 @@ div.we_file_drag_binDoc{
 		$btnBrowse = we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, $width['button'], we_html_button::HEIGHT, '', '', false, false, '_btn');
 		$btnUpload = we_html_button::create_button("upload", "javascript:" . $this->getJsBtnCmd('upload'), true, $width['button'], 22, "", "", true, false, "_btn", true);
 		$btnReset = we_html_button::create_button("reset", 'javascript:we_FileUpload.reset()', true, $width['button'], 22, "", "", true, false, "_btn", true);
-		$btnCancel = we_html_button::create_button("cancel", 'javascript:we_FileUpload.cancelUpload()', true, $width['button'], 22, "", "", false, false, "_btn", true);
+		$btnCancel = we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_FileUpload.cancelUpload()', true, $width['button'], 22, "", "", false, false, "_btn", true);
 		$fileInput = we_html_element::htmlInput(array(
 				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
 				'style' => 'width:' . $width['input'] . 'px;',

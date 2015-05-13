@@ -210,9 +210,9 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$content = array();
 		while($Search->next()){
-			$show = '<i class="fa fa-circle" style="color:#006DB8;"></i>';
+			$show = '<i class="fa fa-lg fa-circle" style="color:#006DB8;"></i>';
 			/* if($Search->getField('Published')) {
-			  $show = '<i class="fa fa-circle" style="color:#E7E7E7;"></i>';
+			  $show = '<i class="fa fa-lg fa-circle" style="color:#E7E7E7;"></i>';
 			  } */
 
 			$temp = array(
