@@ -70,8 +70,14 @@ span.text{
 	vertical-align:top;
 }
 span.spacer{
-	font-size: 4px;
-	vertical-align:top;
+	font-size: 9px;
+}
+span.close{
+	color:#a9a9a9;
+	margin:2px;
+}
+span.close:hover i.fa-close{
+	color:black;
 }
 img.close{
 	vertical-align:top;
@@ -94,8 +100,11 @@ img.status{
 	background-position:center;
 	background-size: 16px 16px;
 }
-img.modified{
-	width:5px;
+i.modified{
+	vertical-align:super;
+	font-size:xx-small;
+	visibility:hidden;
+	color:red;
 }
 .hidden{
 	display: none;

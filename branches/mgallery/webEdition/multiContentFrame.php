@@ -35,6 +35,7 @@ if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 }
 
 echo we_html_tools::getHtmlTop() .
+ STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css') .
  we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
@@ -98,8 +99,12 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') 
 				<nobr>
 					<span class="spacer">&nbsp;<img src="<?php echo IMAGE_DIR ?>pixel.gif" id="###loadId###" title="" class="status"/>&nbsp;</span>
 					<span id="###tabTextId###" class="text"></span>
-					<span class="spacer"><img id="###modId###" class="status modified"/><i class="fa fa-times-circle-o"></i>
-						<img src="<?php echo IMAGE_DIR ?>multiTabs/close.gif" id="###closeId###" border="0" vspace="0" hspace="0" onclick="top.weMultiTabs.onCloseTab(this)" onmouseover="this.src = '<?php echo IMAGE_DIR ?>multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR ?>multiTabs/close.gif'" class="close" />&nbsp;</span>
+					<span class="spacer">
+						<i class="fa fa-asterisk modified" id="###modId###"></i>
+						<span class="fa-stack close" id="###closeId###" onclick="top.weMultiTabs.onCloseTab(this)">
+							<i class="fa fa-circle-o fa-stack-2x"></i>
+							<i class="fa fa-close fa-stack-1x "></i>
+						</span>
 				</nobr>
 			</div>
 		</div>

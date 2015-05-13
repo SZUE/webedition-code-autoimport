@@ -66,6 +66,7 @@ abstract class we_html_button{
 	const UPLOAD = 'fat:upload,fa-lg fa-upload';
 	const PREVIEW = 'fat:preview,fa-lg fa-eye';
 	const CALENDAR = 'fa:date_picker,fa-lg fa-calendar';
+	const PUBLISH = 'fat:publish,fa-lg fa-sun-o';
 
 	/**
 	 * Gets the HTML Code for the button.

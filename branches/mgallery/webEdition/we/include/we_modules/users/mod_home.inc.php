@@ -22,9 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createUser = we_html_button::create_button("create_user", "javascript:top.opener.top.we_cmd('new_user');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER"));
+$createUser = we_html_button::create_button("fat:create_user,fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_user');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER"));
 $createAlias = $createGroup = "";
-$createGroup = we_html_button::create_button("create_group", "javascript:top.opener.top.we_cmd('new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP"));
+$createGroup = we_html_button::create_button("fat:create_group,fa-lg fa-users,fa-plus", "javascript:top.opener.top.we_cmd('new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP"));
 $createAlias = we_html_button::create_button("create_alias", "javascript:top.opener.top.we_cmd('new_alias');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
 $content = $createUser . we_html_tools::getPixel(2, 14) . $createGroup . we_html_tools::getPixel(2, 14) . $createAlias;
 $modimage = "user.gif";

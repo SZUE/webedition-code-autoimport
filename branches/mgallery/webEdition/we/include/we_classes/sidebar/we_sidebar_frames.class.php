@@ -51,7 +51,10 @@ class we_sidebar_frames{
 				<div id="Headline">
 					<?php echo g_l('sidebar', '[headline]'); ?>
 					<div id="CloseButton">
-						<img src="<?php echo IMAGE_DIR; ?>multiTabs/close.gif" onclick="top.weSidebar.close();" onmouseover="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/closeOver.gif'" onmouseout="this.src = '<?php echo IMAGE_DIR; ?>multiTabs/close.gif'" />
+						<span class="fa-stack close" id="###closeId###" onclick="top.weSidebar.close();">
+							<i class="fa fa-circle-o fa-stack-2x"></i>
+							<i class="fa fa-close fa-stack-1x "></i>
+						</span>
 					</div>
 				</div>
 			</div>

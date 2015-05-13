@@ -1924,9 +1924,9 @@ weSearch.g_l = {
 			case self::SEARCH_DOCS:
 				if(permissionhandler::hasPerm('PUBLISH')){
 					$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
-					$actionButton = we_html_button::create_button("publish", "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+					$actionButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 					$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllPubChecks('" . $whichSearch . "')");
-					$publishButton = we_html_button::create_button("publish", "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+					$publishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:weSearch.publishDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 					break;
 				}
 				$actionButton = $actionButtonCheckboxAll = $publishButton = $publishButtonCheckboxAll = "";

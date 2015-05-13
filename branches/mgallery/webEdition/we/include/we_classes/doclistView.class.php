@@ -573,7 +573,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			default:
 				if(permissionhandler::hasPerm('PUBLISH')){
 					$publishButtonCheckboxAll = we_html_forms::checkbox(1, 0, "publish_all", "", false, "middlefont", "checkAllPubChecks()");
-					$publishButton = we_html_button::create_button("publish", "javascript:publishDocs();", true, 100, 22, "", "");
+					$publishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:publishDocs();", true, 100, 22, "", "");
 				} else {
 					$publishButton = $publishButtonCheckboxAll = "";
 				}

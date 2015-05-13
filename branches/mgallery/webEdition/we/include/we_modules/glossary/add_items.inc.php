@@ -613,7 +613,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		<?php
 		if($cmd3 != "checkOnly"){
 			?>
-							document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_html_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
+							document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
 							weButton.enable('publish');
 			<?php
 		}
@@ -785,7 +785,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 						// glossary check and publishing
 					} else {
 						$CancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();", true, 120, 22, "", "", false, false);
-						$PublishButton = we_html_button::create_button("publish", "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
+						$PublishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
 					}
 					$ExecuteButton = we_html_button::create_button("execute", "javascript:checkForm();", true, 120, 22, "", "", true, false);
 

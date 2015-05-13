@@ -1289,7 +1289,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 		$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
-			$_publishbutton = we_html_button::create_button("publish", "javascript:workflow_finish();");
+			$_publishbutton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();");
 		} else {
 			$_footerTable->addCol(2);
 			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
@@ -1311,7 +1311,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::PUBLISH, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 			}
 		}
 
@@ -1340,7 +1340,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
-					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:workflow_finish();"));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();"));
 				} else {
 					$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"));
 				}
@@ -1365,7 +1365,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				$_footerTable->setColContent(0, $_col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
-						we_html_button::create_button("publish", "javascript:workflow_finish();") :
+						we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();") :
 						we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"))
 				);
 
@@ -1376,7 +1376,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 					if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
 						$_footerTable->addCol(2);
 						$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-						$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+						$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::PUBLISH, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 					}
 				}
 				break;
@@ -1397,7 +1397,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				$_footerTable->setColContent(0, $_col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
-						we_html_button::create_button("publish", "javascript:workflow_finish();") :
+						we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();") :
 						we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"))
 				);
 
@@ -1409,7 +1409,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 					if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
 						$_footerTable->addCol(2);
 						$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-						$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+						$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::PUBLISH, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 					}
 				}
 		}

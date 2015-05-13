@@ -248,7 +248,7 @@ abstract class we_editor_footer{
 				if($showPubl){
 					$_ctrlElem = getControlElement('button', 'publish');
 					if(!$_ctrlElem || !$_ctrlElem['hide']){
-						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'fat:saveInScheduler,fa-lg fa-clock-o' : 'fat:publish,fa-lg fa-sun-o';
+						$text = we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && we_schedpro::saveInScheduler($GLOBALS['we_doc']) ? 'fat:saveInScheduler,fa-lg fa-clock-o' : we_html_button::PUBLISH;
 						$_normalTable->addCol(2);
 						$_normalTable->setColAttributes(0, $_pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
 						$_normalTable->setColContent(0, $_pos++, we_html_button::create_button($text, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
@@ -405,7 +405,7 @@ abstract class we_editor_footer{
 			if(!($_ctrlElem && $_ctrlElem['hide'])){
 
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("fat:publish,fa-lg fa-sun-o", "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+				$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button(we_html_button::PUBLISH, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 				$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 			}
 		}
