@@ -5,7 +5,7 @@
  * $Rev$
  * $Author$
  * $Date$
- *
+ *  
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 /**
  * Klasse f�r Autocomleter
  *
- * $yuiSuggest =& weSuggest::getInstance();																											// Die Kalsse instanzieren.
+ * $yuiSuggest =& weSuggest::getInstance();																								// Die Kalsse instanzieren.
  * echo $yuiSuggest->getYuiFiles																										// Die notwendigen YUI-JS-Dateien werden an einer passenden Stelle eingebunden
  * echo $yuiSuggest->createAutocompleter(																								// GUI-Element mit Input-Feld und Auswahl-Button
  * 			"Doc", 																														// AC-Id
