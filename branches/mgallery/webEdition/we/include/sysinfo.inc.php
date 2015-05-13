@@ -274,7 +274,7 @@ $_types = array(
 );
 
 $buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("close", "javascript:self.close()"), '', ''
+		we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"), '', ''
 );
 
 

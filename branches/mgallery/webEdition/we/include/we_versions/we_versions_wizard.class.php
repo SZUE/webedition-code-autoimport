@@ -57,7 +57,7 @@ abstract class we_versions_wizard{
 			we_html_element::jsElement('function showRefreshButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'nextCell\');  refrBut = document.getElementById(\'refresh\');  prevBut.style.display = \'none\';  nextBut.style.display = \'none\';  refrBut.style.display = \'\';} function showPrevNextButton() {  prevBut = document.getElementById(\'prev\');  nextBut = document.getElementById(\'next\');  refrBut = document.getElementById(\'refresh\');  refrBut.style.display = \'none\';  prevBut.style.display = \'\';  nextBut.style.display = \'\';}');
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
-		$refreshButton = we_html_button::create_button("refresh", "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
+		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
 
 		$nextbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm(
 				"REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm(
@@ -69,8 +69,8 @@ abstract class we_versions_wizard{
 					), 10);
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', '[rebuild]'), $buttons);
 		} else {
-			$prevButton = we_html_button::create_button("back", "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
-			$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
+			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
+			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
 			$content2->setCol(0, 0, array(
@@ -369,7 +369,7 @@ set_button_state(false);';
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+encodeURI(document.getElementById("version_delete_' . $k . '").checked);';
 		}
 
-		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
+		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
 
 		$js = '
 window.onload = function(){
@@ -609,7 +609,7 @@ set_button_state(false);';
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+encodeURI(document.getElementById("version_reset_' . $k . '").checked);';
 		}
 
-		$nextButton = we_html_button::create_button("next", "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
+		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event(\"next\");", true, 0, 0, "", "", "", false);
 
 		$js = 'window.onload = function(){
 					top.focus();

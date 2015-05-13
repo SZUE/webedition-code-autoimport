@@ -76,7 +76,7 @@ if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
 }
 
 $_table = new we_html_table(array(
-	"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . 'info/' . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px;' . (isset($GLOBALS['loginpage']) ? 'margin-left: auto; margin-right: auto;text-align:left;box-shadow: 5px 5px 5px #555555;' : '')), 8, 3);
+	"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . 'info/' . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px;' . (isset($GLOBALS['loginpage']) ? 'margin-left: auto; margin-right: auto;text-align:left;box-shadow: 5px 5px 5px #555555;border-radius:10px;' : '')), 8, 3);
 $_actRow = 0;
 //	First row with background
 $_table->setCol($_actRow++, 0, array("colspan" => 3, "style" => 'width: ' . $_widthTotal . 'px;height:110px;',), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">' . we_html_tools::getPixel($_widthTotal, 110, 0) . '</a>');

@@ -245,8 +245,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 				"we_cmd[1]" => "",
 				"we_cmd[2]" => ""))
 		) .
-		we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), we_html_element::htmlImg(
-				array("src" => IMAGE_DIR . "pd/busy.gif",))
+		we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
 		) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
 		$oTblWidgets->getHtml() .
 		we_base_widget::getJs() .

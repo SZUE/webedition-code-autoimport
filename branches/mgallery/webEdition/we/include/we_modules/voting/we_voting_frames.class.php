@@ -146,7 +146,7 @@ class we_voting_frames extends we_modules_frame{
 		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(5, 5));
-		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button("save", "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING')))
+		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING')))
 		);
 
 
@@ -320,7 +320,7 @@ class we_voting_frames extends we_modules_frame{
 			$table = new we_html_table(array('id' => 'LogGroupData', 'cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 1, 2);
 			$table->setColContent(0, 0, we_html_tools::getPixel(10, 5));
 			$table->setColContent(0, 1, we_html_button::position_yes_no_cancel(
-					we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')'), we_html_button::create_button('delete', 'javascript:we_cmd(\'delete_log\')'), null
+					we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')'), we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'), null
 				)
 			);
 
@@ -517,7 +517,7 @@ class we_voting_frames extends we_modules_frame{
 		$table->setColContent(6, 1, we_html_forms::checkboxWithHidden($this->View->voting->UserAgent ? true : false, 'UserAgent', g_l('modules_voting', '[save_user_agent]'), false, "defaultfont", "top.content.setHot();"));
 
 		$table->setCol(7, 1, array('id' => 'delete_ip_data', 'style' => 'display: ' . ($datasize > 0 ? 'block' : 'none')), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('modules_voting', '[delete_ipdata_text]'), we_html_element::htmlSpan(array('id' => 'ip_mem_size'), $datasize)), we_html_tools::TYPE_INFO, ($this->_width_size - 20), false, 100) .
-			we_html_button::create_button('delete', 'javascript:we_cmd(\'reset_ipdata\')')
+			we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'reset_ipdata\')')
 		);
 		$table->setColContent(8, 0, we_html_tools::getPixel(10, 5));
 		$table->setCol(9, 0, array('colspan' => 2), we_html_forms::radiobutton(2, ($this->View->voting->RevoteControl == 2 ? true : false), 'RevoteControl', g_l('modules_voting', '[userid_method]'), true, "defaultfont", "top.content.setHot();"));
@@ -536,7 +536,7 @@ class we_voting_frames extends we_modules_frame{
 		$table = new we_html_table(array('id' => 'LogData', 'style' => 'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';', 'cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 1, 2);
 		$table->setColContent(0, 0, we_html_tools::getPixel(10, 5));
 		$table->setColContent(0, 1, we_html_button::position_yes_no_cancel(
-				we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')'), we_html_button::create_button('delete', 'javascript:we_cmd(\'delete_log\')'), null
+				we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')'), we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'), null
 			)
 		);
 
@@ -849,7 +849,7 @@ function refreshTexts(){
 		$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link), g_l('modules_voting', '[csv_download]')));
 		$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 10));
 
-		$close = we_html_button::create_button("close", "javascript:self.close();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(
 					array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", "") .
@@ -878,7 +878,7 @@ function refreshTexts(){
 		$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link), g_l('modules_voting', '[csv_download]')));
 		$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 10));
 
-		$close = we_html_button::create_button("close", "javascript:self.close();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", '') .
 					we_html_tools::htmlDialogLayout(
@@ -901,7 +901,7 @@ function refreshTexts(){
 	private function getHTMLResetIPData(){
 		$this->View->voting->resetIpData();
 
-		$close = we_html_button::create_button("close", "javascript:self.close();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout(
 					we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::position_yes_no_cancel(null, $close, null)
@@ -914,7 +914,7 @@ function refreshTexts(){
 	private function getHTMLDeleteLog(){
 		$this->View->voting->deleteLogData();
 
-		$close = we_html_button::create_button("close", "javascript:self.close();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout(
 					we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::position_yes_no_cancel(null, $close, null)
@@ -925,8 +925,8 @@ function refreshTexts(){
 	}
 
 	private function getHTMLShowLogOld(){
-		$close = we_html_button::create_button("close", "javascript:self.close();");
-		$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
+		$refresh = we_html_button::create_button(we_html_button::REFRESH, "javascript:location.reload();");
 
 		$voting = new we_voting_voting();
 		$voting->load($this->View->voting->ID);
@@ -999,15 +999,15 @@ function refreshTexts(){
 
 			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 				($start < $size ?
-					we_html_button::create_button("back", $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
-					we_html_button::create_button("back", "", false, 100, 22, "", "", true)
+					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) .
 				we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 				($next > 0 ?
-					we_html_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
-					we_html_button::create_button("next", "", "", 100, 22, "", "", true)
+					we_html_button::create_button(we_html_button::NEXT, $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
+					we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 				) .
 				"</td></tr></table>";
 
@@ -1039,8 +1039,8 @@ function refreshTexts(){
 	}
 
 	private function getHTMLShowLogNew(){
-		$close = we_html_button::create_button("close", "javascript:self.close();");
-		$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
+		$refresh = we_html_button::create_button(we_html_button::REFRESH, "javascript:location.reload();");
 
 		$voting = new we_voting_voting();
 		$voting->load($this->View->voting->ID);
@@ -1129,15 +1129,15 @@ function refreshTexts(){
 
 			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 				($start < $size ?
-					we_html_button::create_button("back", $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
-					we_html_button::create_button("back", "", false, 100, 22, "", "", true)
+					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) .
 				we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 				($next > 0 ?
-					we_html_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
-					we_html_button::create_button("next", "", "", 100, 22, "", "", true)
+					we_html_button::create_button(we_html_button::NEXT, $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
+					we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 				) .
 				"</td></tr></table>";
 
@@ -1169,8 +1169,8 @@ function refreshTexts(){
 	}
 
 	function getHTMLShowGroupLog(){//FIXME: unused??
-		$close = we_html_button::create_button("close", "javascript:self.close();");
-		$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
+		$refresh = we_html_button::create_button(we_html_button::REFRESH, "javascript:location.reload();");
 
 		$voting = new we_voting_voting();
 		$voting->load($this->View->voting->ID);
@@ -1243,15 +1243,15 @@ function refreshTexts(){
 
 			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 				($start < $size ?
-					we_html_button::create_button("back", $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
-					we_html_button::create_button("back", "", false, 100, 22, "", "", true)
+					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) .
 				we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 				($next > 0 ?
-					we_html_button::create_button("next", $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
-					we_html_button::create_button("next", "", "", 100, 22, "", "", true)
+					we_html_button::create_button(we_html_button::NEXT, $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
+					we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 				) .
 				'</td></tr></table>';
 
@@ -1285,7 +1285,7 @@ function refreshTexts(){
 	function getHTMLDeleteGroupLog(){
 		$this->View->voting->deleteGroupLogData();
 
-		$close = we_html_button::create_button("close", "javascript:self.close();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout(

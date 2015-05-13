@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -48,9 +47,9 @@ if(($maxRows = f('SELECT COUNT(DISTINCT f.Username) ' . $queryFailedLogins, '', 
 	$i = 1;
 	while($db->next_record()){
 		$webUserID = $db->f('UID');
-		$prio = (intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME) || !$webUserID ? 'prio_high.gif' : 'prio_low.gif';
+		$prio = (intval($db->f('numberFailedLogins')) >= SECURITY_LIMIT_CUSTOMER_NAME) || !$webUserID ? 'red' : 'green';
 		$failedLoginsTable->addRow();
-		$failedLoginsTable->setCol($i, 0, array("class" => "middlefont", "align" => "center"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/" . $prio . "", "width" => 13, "height" => 14)));
+		$failedLoginsTable->setCol($i, 0, array("class" => "middlefont", "align" => "center"), '<i class="fa fa-dot-circle-o" style="color:' . $prio . '"></i>');
 		$failedLoginsTable->setCol($i, 1, array("class" => "middlefont", "align" => "left"), $db->f('Username') . we_html_tools::getPixel(10, 1));
 		$failedLoginsTable->setCol($i, 2, array("class" => "middlefont", "align" => "left"), intval($db->f('numberFailedLogins')) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME . ' ' . sprintf(g_l('cockpit', '[kv_failedLogins][logins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . we_html_tools::getPixel(10, 1));
 
@@ -78,7 +77,7 @@ success: function(o) {
 			if ( weResponse ) {
 				if (weResponse["DataArray"]["data"] == "true") {
 					' . ( isset($newSCurrId) ? 'rpc("","","","","","' . $newSCurrId . '","fdl/fdl");' : '' ) .
-we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		we_message_reporting::getShowMessageCall(g_l('cockpit', '[kv_failedLogins][deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 					self.setTheme(_sObjId,_oSctCls[_oSctCls.selectedIndex].value);
 				}
 			}

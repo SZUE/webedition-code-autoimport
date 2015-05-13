@@ -852,8 +852,8 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				'headline' => '',
 				'html' => we_html_button::create_button_table(
 					array(
-						we_html_button::create_button('preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
-						we_html_button::create_button('refresh', 'javascript:' . $this->topFrame . '.we_cmd("populate");'),
+						we_html_button::create_button(we_html_button::PREVIEW, 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
+						we_html_button::create_button(we_html_button::REFRESH, 'javascript:' . $this->topFrame . '.we_cmd("populate");'),
 						we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
 				)),
 				'space' => $this->_space_size
@@ -889,7 +889,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		<tr>
 			<td align="right">' . we_html_button::create_button_table(
 				array(
-					we_html_button::create_button('refresh', 'javascript: showPreview();'),
+					we_html_button::create_button(we_html_button::REFRESH, 'javascript: showPreview();'),
 					we_html_button::create_button(
 						'reset', 'javascript: document.getElementById("previewCode").value = "' . str_replace(array("\r\n", "\n"), '\n', addslashes(we_navigation_navigation::defaultPreviewCode)) . '"; showPreview();')
 				)//,we_button::create_button('new_template', 'javascript: '.$this->topFrame.'.we_cmd("create_template");')
@@ -1292,9 +1292,9 @@ function selectItem() {
 				'space' => 0
 			)
 		);
-		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_html_button::create_button('close', 'javascript:self.close();'));
+		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
 
-		we_html_button::create_button_table(array(we_html_button::create_button('save', 'javascript:setFields();', true, 100, 22, '', '', true, false), we_html_button::create_button('close', 'javascript:self.close();')));
+		we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::SAVE, 'javascript:setFields();', true, 100, 22, '', '', true, false), we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')));
 
 		$_body = we_html_element::htmlBody(
 				array(
@@ -1715,7 +1715,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:400px;'), 1, 2);
 		$table2->setColContent(0, 0, we_html_button::create_button_table(
 				array(
-				we_html_button::create_button("save", "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
+				we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
 				), 10, array(
 				'style' => 'margin-left: 15px'
 		)));

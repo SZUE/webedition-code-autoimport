@@ -313,7 +313,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 	private static function getHTMLPreferences($Search, $Type, $Language){
 
-		$button = we_html_button::create_button("search", "javascript:SubmitForm();");
+		$button = we_html_button::create_button(we_html_button::SEARCH, "javascript:SubmitForm();");
 		$newButton = we_html_button::create_button("new_entry", "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", true, 100, 22, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
 		$_rows = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
@@ -363,12 +363,12 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$max = min($Search->Offset + $Search->Rows, $sum);
 
 		$prev = ($Search->Offset > 0 ?
-				we_html_button::create_button("back", "javascript:prev();") : //bt_back
-				we_html_button::create_button("back", "", true, 100, 22, "", "", true));
+				we_html_button::create_button(we_html_button::BACK, "javascript:prev();") : //bt_back
+				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true));
 
 		$next = ($Search->Offset + $Search->Rows >= $sum ?
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true) :
-				we_html_button::create_button("next", "javascript:next();")); //bt_next
+				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true) :
+				we_html_button::create_button(we_html_button::NEXT, "javascript:next();")); //bt_next
 
 
 		$pages = $Search->getPages();

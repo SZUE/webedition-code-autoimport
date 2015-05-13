@@ -617,7 +617,7 @@ if($ok && $cmd === "edit_link_at_class"){
 	<tr><td colspan="12" class="small">' . g_l('linklistEdit', '[title]') . '</td></tr>
 	<tr><td colspan="12">' . we_html_tools::htmlTextInput("img_title", 20, $img_title, "", '', "text", 300) . '</td></tr>
 </table>';
-		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.we_form.submit()"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit()"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
 		$_parts = array(
 			array('headline' => 'URL',

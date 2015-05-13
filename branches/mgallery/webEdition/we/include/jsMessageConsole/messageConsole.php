@@ -29,8 +29,8 @@ echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]')) .
  STYLESHEET;
 
 
-$deleteAllButton = we_html_button::create_button("delete", "javascript:messageConsoleWindow.removeMessages();");
-$closeButton = we_html_button::create_button("close", "javascript:window.close();");
+$deleteAllButton = we_html_button::create_button(we_html_button::DELETE, "javascript:messageConsoleWindow.removeMessages();");
+$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();");
 
 $_buttons = we_html_button::position_yes_no_cancel($deleteAllButton, null, $closeButton);
 

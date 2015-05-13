@@ -56,7 +56,7 @@ function printFooterTable($ret, $filter, $currentName){
 		$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$yes_button = we_html_button::create_button(we_html_button::OK, "javascript:top.exit_close();");
 	} else {
-		$cancel_button = we_html_button::create_button("close", "javascript:top.exit_close();");
+		$cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.exit_close();");
 		$yes_button = we_html_button::create_button(we_html_button::EDIT, "javascript:editFile();");
 	}
 	if($filter === "all_Types"){

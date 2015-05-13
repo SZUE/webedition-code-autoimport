@@ -265,7 +265,7 @@ function we_save() {
 			$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(15, 5));
 
 			$table2->setCol(0, 1, array("nowrap" => null), ((permissionhandler::hasPerm("NEW_NEWSLETTER") || permissionhandler::hasPerm("EDIT_NEWSLETTER")) ?
-					we_html_button::create_button("save", "javascript:we_save()") :
+					we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()") :
 					""
 				)
 			);
@@ -276,7 +276,7 @@ function we_save() {
 				$table2->setCol(0, 4, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 				$table2->setCol(0, 5, array("nowrap" => null), we_html_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=1; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=0; }"));
 				$table2->setCol(0, 6, array("nowrap" => null), we_html_tools::getPixel(5, 5));
-				$table2->setCol(0, 7, array("nowrap" => null), we_html_button::create_button("preview", "javascript:we_cmd('popPreview')"));
+				$table2->setCol(0, 7, array("nowrap" => null), we_html_button::create_button(we_html_button::PREVIEW, "javascript:we_cmd('popPreview')"));
 				$table2->setCol(0, 8, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 				$table2->setCol(0, 9, array("nowrap" => null), (permissionhandler::hasPerm("SEND_NEWSLETTER") ?
 						we_html_button::create_button("send", "javascript:we_cmd('popSend')") :
@@ -323,7 +323,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_tools::htmlDialogLayout(
 							we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 5)) .
 							we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $content) .
-							we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 15)), g_l('modules_newsletter', '[show_log]'), we_html_button::create_button("close", "javascript:self.close();")
+							we_html_element::htmlDiv(array(), we_html_tools::getPixel(10, 15)), g_l('modules_newsletter', '[show_log]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 						)
 					)
 				), we_html_element::jsElement("self.focus();"));
@@ -518,7 +518,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
 						we_html_element::htmlBr() .
 						we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
-						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button("close", "javascript:self.close();")
+						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 					)
 		)));
 		flush();
@@ -560,7 +560,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
 						we_html_element::htmlBr() .
 						we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
-						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button("close", "javascript:self.close();")
+						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 					)
 		)));
 		flush();
@@ -664,8 +664,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->setCol($c + 11, 0, array('colspan' => 3), we_html_tools::getPixel(5, 3));
 		}
 
-		$close = we_html_button::create_button('close', 'javascript:self.close();');
-		$save = we_html_button::create_button('save', "javascript:we_cmd('save_settings')");
+		$close = we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();');
+		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_settings')");
 
 		$radios_code = '';
 		foreach($radios as $radio){
@@ -984,7 +984,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$import_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
 			$import_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_file" . $group, "/", ""));
 			$import_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-			$import_box->setCol(3, 0, array(), we_html_button::create_button("upload", "javascript:we_cmd('upload_csv',$group)"));
+			$import_box->setCol(3, 0, array(), we_html_button::create_button(we_html_button::UPLOAD, "javascript:we_cmd('upload_csv',$group)"));
 			$import_box->setCol(4, 0, array(), we_html_tools::getPixel(5, 5));
 			$import_box->setCol(5, 0, array(), $import_options->getHtml());
 			$import_box->setCol(6, 0, array(), we_html_tools::getPixel(10, 10));
@@ -1438,8 +1438,8 @@ window.onload=extraInit;');
 
 		$table->setCol(11, 2, array(), we_html_tools::getPixel(2, 3));
 
-		$close = we_html_button::create_button("close", "javascript:self.close();");
-		$save = we_html_button::create_button("save", "javascript:save();");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
+		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "document.we_form.emailfield.select();document.we_form.emailfield.focus();"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "save();return false;"), we_html_element::htmlHidden("group", $group) .
 					($type ?
@@ -1673,7 +1673,7 @@ self.focus();
 			$import_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
 			$import_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_file", "/", ""));
 			$import_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-			$import_box->setCol(3, 0, array(), we_html_button::create_button("upload", "javascript:we_cmd('upload_black')"));
+			$import_box->setCol(3, 0, array(), we_html_button::create_button(we_html_button::UPLOAD, "javascript:we_cmd('upload_black')"));
 			$import_box->setCol(4, 0, array(), we_html_tools::getPixel(5, 5));
 			$import_box->setCol(5, 0, array(), $import_options->getHtml());
 			$import_box->setCol(6, 0, array(), we_html_tools::getPixel(10, 10));
@@ -1699,7 +1699,7 @@ self.focus();
 
 
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
-		$save = we_html_button::create_button("save", "javascript:we_cmd('save_black')");
+		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_black')");
 
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "save();return false;"), $this->View->getHiddens() .
@@ -1722,7 +1722,7 @@ self.focus();
 				($what === 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
 
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
-		$upload = we_html_button::create_button("upload", "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
+		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
 
 		$buttons = we_html_button::create_button_table(array($cancel, $upload));
 		$footerTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
@@ -1776,7 +1776,7 @@ self.focus();
 			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 			$ok = we_html_button::create_button(we_html_button::OK, "javascript:clearLog();");
 		} else {
-			$close = we_html_button::create_button("close", "javascript:self.close();");
+			$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 		}
 
 
@@ -2027,8 +2027,8 @@ function postSelectorSelect(wePssCmd) {
 ');
 
 
-		$close = we_html_button::create_button("close", "javascript:self.close()");
-		$edit = we_html_button::create_button("save", "javascript:listFile()");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()");
+		$edit = we_html_button::create_button(we_html_button::SAVE, "javascript:listFile()");
 
 
 		$chooser = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 1);
@@ -2042,8 +2042,8 @@ function postSelectorSelect(wePssCmd) {
 		$nextprev = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 5);
 
 		$colcontent = ($offset ?
-				we_html_button::create_button("back", "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');") :
-				we_html_button::create_button("back", "#", false, 100, 22, "", "", true));
+				we_html_button::create_button(we_html_button::BACK, "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');") :
+				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true));
 
 		$nextprev->setCol(0, 0, array(), $colcontent);
 
@@ -2069,8 +2069,8 @@ function postSelectorSelect(wePssCmd) {
 		$nextprev->setCol(0, 3, array(), we_html_tools::getPixel(10, 5));
 
 		$colcontent = (($offset + $numRows) < $anz ?
-				we_html_button::create_button("next", "javascript:document.we_form.offset.value=" . ($offset + $numRows) . ";submitForm('edit_file');") :
-				we_html_button::create_button("next", "#", false, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::NEXT, "javascript:document.we_form.offset.value=" . ($offset + $numRows) . ";submitForm('edit_file');") :
+				we_html_button::create_button(we_html_button::NEXT, "#", false, 100, 22, "", "", true)
 			);
 
 		$nextprev->setCol(0, 4, array(), $colcontent);
@@ -2254,7 +2254,7 @@ self.focus();
 
 		$_footer = '<table width="580" border="0" cellpadding="0" cellspacing="0"><tr><td align="left">' .
 			$pb->getHTML() . '</td><td align="right">' .
-			we_html_button::create_button("close", "javascript:top.close();") .
+			we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();") .
 			'</td></tr></table>';
 
 		return $this->getHTMLDocument(

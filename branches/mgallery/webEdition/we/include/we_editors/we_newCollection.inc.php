@@ -150,9 +150,9 @@ $content = we_html_element::htmlHidden('dosave', 0) .
 	)) .
 	we_html_multiIconBox::getHTML(
 		'weNewCollection', 500, $parts, 30, we_html_button::position_yes_no_cancel(
-			we_html_button::create_button('save', 'javascript:we_cmd(\'save_notclose\');'),
+			we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'),
 			'',
-			we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
+			we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, 'Neue Sammlung anlegen', '', '', 'scroll'
 	);
 

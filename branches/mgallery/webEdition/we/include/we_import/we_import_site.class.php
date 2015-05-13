@@ -906,8 +906,8 @@ function doUnload() {
 
 
 		$prevNextButtons = we_html_button::create_button_table(array(
-				we_html_button::create_button("back", "javascript:back();", true, 100, 22, "", "", false, false),
-				we_html_button::create_button("next", "javascript:next();", true, 100, 22, "", "", false, false)
+				we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 100, 22, "", "", false, false),
+				we_html_button::create_button(we_html_button::NEXT, "javascript:next();", true, 100, 22, "", "", false, false)
 		));
 
 		$pb = new we_progressBar(0);

@@ -95,7 +95,7 @@ top.close();');
 		if($this->values["Text"] === "/"){
 			$this->values["Text"] = "";
 		}
-		$okBut = we_html_button::create_button("delete", "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true, 100, 22, "", "", true, false);
+		$okBut = we_html_button::create_button(we_html_button::DELETE, "javascript:if(document.we_form.fname.value==''){top.exit_close();}else{top.deleteEntry();}", true, 100, 22, "", "", true, false);
 
 		$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.exit_close();");
 

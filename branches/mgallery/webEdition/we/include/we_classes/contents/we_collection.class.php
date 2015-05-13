@@ -148,7 +148,6 @@ class we_collection extends we_root{
 			default:
 				return '';
 		}
-
 	}
 
 	public function initByID($ID){
@@ -217,15 +216,11 @@ class we_collection extends we_root{
 			), we_html_element::htmlA(array(
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('mimeListFrom'),document.getElementById('mimeListTo'),true, 'document');return false;"
-				), we_html_element::htmlImg(array(
-					"src" => IMAGE_DIR . "pd/arrow_right.gif", "border" => 0
-			))) . we_html_element::htmlBr() . we_html_element::htmlBr() .
+				), '<i class="fa fa-lg fa-caret-right"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
 			we_html_element::htmlA(array(
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('mimeListTo'),document.getElementById('mimeListFrom'),true, 'document');return false;"
-				), we_html_element::htmlImg(array(
-					"src" => IMAGE_DIR . "pd/arrow_left.gif", "border" => 0
-		))));
+				), '<i class="fa fa-lg fa-caret-left"></i>'));
 		$mimeTable->setCol(0, 2, null, $mimeListTo);
 
 		$selectedClasses = array();
@@ -259,15 +254,11 @@ class we_collection extends we_root{
 			), we_html_element::htmlA(array(
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('classListFrom'),document.getElementById('classListTo'),true, 'object');return false;"
-				), we_html_element::htmlImg(array(
-					"src" => IMAGE_DIR . "pd/arrow_right.gif", "border" => 0
-			))) . we_html_element::htmlBr() . we_html_element::htmlBr() .
+				), '<i class="fa fa-lg fa-caret-right"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
 			we_html_element::htmlA(array(
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('classListTo'),document.getElementById('classListFrom'),true, 'object');return false;"
-				), we_html_element::htmlImg(array(
-					"src" => IMAGE_DIR . "pd/arrow_left.gif", "border" => 0
-		))));
+				), '<i class="fa fa-lg fa-caret-left"></i>'));
 		$classTable->setCol(0, 2, null, $classListTo);
 
 		$selRemTable = $fixedRemTable && $this->remTable ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->remTable) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->remTable], 'width' => 382)) :
@@ -326,10 +317,8 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $recursive) .
 			we_html_element::htmlDiv(array('id' => 'content_table_list', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px;display:block'), $rows) .
-
 			// TODO: make "header" width range and toggle view
 			we_html_element::htmlDiv(array('style' => 'padding:30px 0 0 30px;'), '<input type="range" style="width:120px;height:20px;" name="zoom" min="120" step="20" max="240" value="' . $this->gridItemSize . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/>') .
-
 			we_html_element::htmlDiv(array('id' => 'content_table_grid', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px 0 0 20px;background-color:white;display:inline-block;min-height:200px'), $divs);
 	}
 
@@ -413,20 +402,20 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:weCollectionEdit.deleteItem('grid', this);", true, 27, 22);
 
 		return we_html_element::htmlDiv(array(
-			'style' => 'position:relative;width:' . $this->gridItemSize . 'px;height:' . $this->gridItemSize . 'px;float:left;dislpay:block;',
-			'id' => 'grid_item_' . $index,
-			'class' => 'drop_reference'
-			), we_html_element::htmlDiv(array(
+				'style' => 'position:relative;width:' . $this->gridItemSize . 'px;height:' . $this->gridItemSize . 'px;float:left;dislpay:block;',
+				'id' => 'grid_item_' . $index,
+				'class' => 'drop_reference'
+				), we_html_element::htmlDiv(array(
 					'style' => 'position:absolute;left:0;top:0;bottom:14px;right:14px;border:1px solid #006db8;float:left;dislpay:block;' . ($iconHTML ? "background:url('" . $iconHTML['url'] . "') no-repeat center center;background-size:contain" : 'background-color:white'),
 					'draggable' => 'true',
-				), we_html_element::htmlDiv(array(
-					'style' => 'position:absolute;bottom:0;width:100%;height:30px;text-align:right;padding-top:6px;background-color:#f5f5f5;opacity:0.6;display:none;',
-					), $trashButton)) .
+					), we_html_element::htmlDiv(array(
+						'style' => 'position:absolute;bottom:0;width:100%;height:30px;text-align:right;padding-top:6px;background-color:#f5f5f5;opacity:0.6;display:none;',
+						), $trashButton)) .
 				we_html_element::htmlDiv(array(
 					'style' => 'position:absolute;top:0;right:0;bottom:14px;width:12px;border:1px solid white;float:left;dislpay:block;',
 					'id' => 'grid_space_' . $index,
-				), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id'])
-			);
+					), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id'])
+		);
 	}
 
 	function i_filenameDouble(){
@@ -591,7 +580,6 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 			}
 			if($data['ContentType'] !== 'folder'){
 				//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== 'folder'){
-
 				//IMI:TEST
 				if($data['ID'] !== -1){
 					$file = array('docID' => $data['ID'], 'Path' => $data['Path'], 'ContentType' => isset($data[$typeField]) ? $data[$typeField] : 'text/*', 'Extension' => $data['Extension']);

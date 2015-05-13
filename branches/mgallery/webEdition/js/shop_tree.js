@@ -95,7 +95,11 @@ function zeichne(startEntry, zweigEintrag) {
 											"</a>" : "") +
 							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].open) {
-				newAst += "<img src=\"" + tree_img_dir + (ai === nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\">";
+				if (ai === nf.len) {
+					newAst += "<span class=\"treeKreuz\"></span>";
+				} else {
+					newAst += "<img src=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
+				}
 				ret += zeichne(nf[ai].name, newAst);
 			}
 		}

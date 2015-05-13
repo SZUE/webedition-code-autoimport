@@ -108,17 +108,11 @@ $prio->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 
 $prio->setCol(0, 2, array(
 	"width" => 20
-	), we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/prio_high.gif", "width" => 13, "height" => 14
-)));
+	), '<i class="fa fa-fa-dot-circle-o" style="color:red"></i>');
 $prio->setCol(1, 0, null, $oRdoPrio[1]);
-$prio->setCol(1, 2, null, we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/prio_medium.gif", "width" => 13, "height" => 14
-)));
+$prio->setCol(1, 2, null, '<i class="fa fa-fa-dot-circle-o" style="color:yellow"></i>');
 $prio->setCol(2, 0, null, $oRdoPrio[2]);
-$prio->setCol(2, 2, null, we_html_element::htmlImg(array(
-		"src" => IMAGE_DIR . "pd/prio_low.gif", "width" => 13, "height" => 14
-)));
+$prio->setCol(2, 2, null, '<i class="fa fa-fa-dot-circle-o" style="color:green"></i>');
 
 $parts[] = array(
 	"headline" => g_l('cockpit', '[default_priority]'), "html" => $prio->getHTML(), "space" => 100
@@ -150,9 +144,9 @@ $parts[] = array(
 	"headline" => g_l('cockpit', '[bg_color]'), "html" => $oSctCls->getHTML(), "space" => 100
 );
 
-$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
-$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
-$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
+$cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(

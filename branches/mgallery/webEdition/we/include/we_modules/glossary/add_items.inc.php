@@ -779,7 +779,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 					// Only glossary check
 					if($cmd3 === "checkOnly"){
-						$CancelButton = we_html_button::create_button("close", "javascript:top.close();", true, 120, 22, "", "", false, false);
+						$CancelButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();", true, 120, 22, "", "", false, false);
 						$PublishButton = "";
 
 						// glossary check and publishing

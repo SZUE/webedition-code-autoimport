@@ -744,8 +744,8 @@ this.selectedIndex = 0;' .
 	 */
 	static function htmlYesNoCancelDialog($text = '', $img = '', $yes = '', $no = '', $cancel = '', $yesHandler = '', $noHandler = '', $cancelHandler = '', $script = ''){
 		$cancelButton = ($cancel ? we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $cancelHandler) : '');
-		$noButton = ($no ? we_html_button::create_button('no', 'javascript:' . $noHandler) : '');
-		$yesButton = ($yes ? we_html_button::create_button('yes', 'javascript:' . $yesHandler) : '');
+		$noButton = ($no ? we_html_button::create_button(we_html_button::NO, 'javascript:' . $noHandler) : '');
+		$yesButton = ($yes ? we_html_button::create_button(we_html_button::YES, 'javascript:' . $yesHandler) : '');
 
 
 		$content = new we_html_table(array(
@@ -897,7 +897,7 @@ function clip_' . $unique . '(){
 	 * @return html-code for calendar
 	 */
 	public static function getDateSelector($_name, $_btn, $value){
-		$btnDatePicker = we_html_button::create_button("fa:date_picker,fa-lg fa-calendar", "javascript:", null, null, null, null, null, null, false, $_btn);
+		$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, $_btn);
 		$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, $value, 10, 'id="' . $_name . '" class="wetextinput" readonly="1"', "text", 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");

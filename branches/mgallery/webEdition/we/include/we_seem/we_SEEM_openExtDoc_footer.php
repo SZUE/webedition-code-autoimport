@@ -30,7 +30,7 @@ we_html_tools::protect();
 
 
 $_table = new we_html_table(array("border" => 0), 1, 2);
-$_table->setColContent(0, 1, we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
+$_table->setColContent(0, 1, we_html_button::create_button(we_html_button::BACK, "javascript:top.weNavigationHistory.navigateBack();"));
 
 
 

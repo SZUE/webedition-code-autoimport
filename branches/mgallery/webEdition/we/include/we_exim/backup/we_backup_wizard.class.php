@@ -567,7 +567,7 @@ extra_files_desc=[];';
 		$parts[] = array("headline" => "", "html" => we_html_forms::checkbox(1, true, "rebuild", g_l('backup', '[rebuild]'), false), "space" => 0);
 
 		$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[delold_notice]'), we_html_tools::TYPE_QUESTION, 600, false), "space" => 0, "noline" => 1);
-		$parts[] = array("headline" => "", "html" => we_html_button::create_button("delete", "javascript:delOldFiles();", true, 100, 22, '', '', false, false), "space" => 0);
+		$parts[] = array("headline" => "", "html" => we_html_button::create_button(we_html_button::DELETE, "javascript:delOldFiles();", true, 100, 22, '', '', false, false), "space" => 0);
 
 		$form_properties = array(
 			10 => 'handle_core',
@@ -1175,13 +1175,13 @@ function doExport() {
 						break;
 					case 3:
 						if(we_base_request::_(we_base_request::BOOL, "do_import_after_backup")){
-							$body = we_html_button::create_button("next", "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
+							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
 						} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
-							$body = we_html_button::create_button("next", "javascript:top.opener.weiter();top.close();");
+							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.opener.weiter();top.close();");
 							unset($_SESSION['weS']['inbackup']);
 						} else {
 							$head.=we_html_element::jsElement("top.opener.top.afterBackup=true;");
-							$body = we_html_button::create_button("close", "javascript:top.close();");
+							$body = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();");
 						}
 						$table->setCol(0, 2, null, we_html_tools::getPixel(495, 5));
 						$table->setCol(0, 3, null, $body);
@@ -1216,7 +1216,7 @@ function press_yes() {
 
 }");
 						$buttons = we_html_button::position_yes_no_cancel(
-								we_html_button::create_button("yes", "javascript:press_yes();"), we_html_button::create_button("no", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+								we_html_button::create_button(we_html_button::YES, "javascript:press_yes();"), we_html_button::create_button(we_html_button::NO, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 						);
 						$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
 						$table->setCol(0, 3, null, $buttons);
@@ -1224,8 +1224,8 @@ function press_yes() {
 					case 2:
 
 						$nextbuts = we_html_button::create_button_table(array(
-								we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=1'", true),
-								we_html_button::create_button("next", "javascript:top.body.we_submitForm('body','" . $this->frameset . "');")));
+								we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=1'", true),
+								we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.we_submitForm('body','" . $this->frameset . "');")));
 
 						$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 
@@ -1264,7 +1264,7 @@ function press_yes() {
 						}
 
 						$nextprevbuts = we_html_button::create_button_table(array(
-								we_html_button::create_button("back", "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"),
+								we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"),
 								$nextbut));
 						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $cancelCall));
 
@@ -1277,7 +1277,7 @@ function press_yes() {
 						break;
 					case 5:
 						$table->setCol(0, 2, null, we_html_tools::getPixel(490, 5));
-						$table->setCol(0, 3, null, we_html_button::create_button("close", "javascript:top.close();"));
+						$table->setCol(0, 3, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();"));
 						break;
 					default:
 				}

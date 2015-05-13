@@ -152,8 +152,8 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 		$content .= '</table>' . (($ok) ? "" : '<p class="defaultfont">*' . g_l('modules_banner', '[required]')) . '</p>';
 		$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$ok_button = we_html_button::create_button(we_html_button::OK, "form:submit:we_form");
-		$back_button = we_html_button::create_button("back", "javascript:history.back();");
-		$close_button = we_html_button::create_button("close", "javascript:top.close();");
+		$back_button = we_html_button::create_button(we_html_button::BACK, "javascript:history.back();");
+		$close_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();");
 
 		$buttons = $ok ? we_html_button::position_yes_no_cancel($close_button, null, $back_button) : we_html_button::position_yes_no_cancel($ok_button, null, $cancel_button);
 

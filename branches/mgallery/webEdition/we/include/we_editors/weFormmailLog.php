@@ -30,8 +30,8 @@ if(permissionhandler::hasPerm('administrator')){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_LOG_TABLE);
 	}
 
-	$close = we_html_button::create_button("close", "javascript:self.close();");
-	$refresh = we_html_button::create_button("refresh", "javascript:location.reload();");
+	$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
+	$refresh = we_html_button::create_button(we_html_button::REFRESH, "javascript:location.reload();");
 	$deleteLogBut = we_html_button::create_button("clear_log", "javascript:clearLog()");
 
 
@@ -63,15 +63,15 @@ if(permissionhandler::hasPerm('administrator')){
 
 		$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
 			($start > 0 ?
-				we_html_button::create_button("back", $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
-				we_html_button::create_button("back", "", false, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
+				we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 			) .
 			we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
 			min($num_all, $start + $count) .
 			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 			($next < $num_all ?
-				we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
-				we_html_button::create_button("next", "", "", 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
+				we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 			) .
 			"</td></tr></table>";
 

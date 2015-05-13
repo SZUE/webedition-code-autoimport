@@ -55,7 +55,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 			), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(10, 20));
-		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button("save", "javascript:top.opener.top.we_cmd('save_dictionary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
+		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_dictionary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
 
 		$form = we_html_element::htmlForm(array(), $table2->getHtml());
 

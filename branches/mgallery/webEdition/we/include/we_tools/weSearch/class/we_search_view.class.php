@@ -510,8 +510,8 @@ weSearch.g_l = {
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
 			($searchstart ?
-				we_html_button::create_button("back", "javascript:weSearch.back(" . $anzahl . ");") :
-				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::BACK, "javascript:weSearch.back(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
 			) .
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ?
@@ -521,8 +521,8 @@ weSearch.g_l = {
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
 				//bt_back
-				we_html_button::create_button("next", "javascript:weSearch.next(" . $anzahl . ");") :
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::NEXT, "javascript:weSearch.next(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)
 			) .
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
@@ -585,12 +585,12 @@ weSearch.g_l = {
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
 				$_table->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForMetaMediaSearch ? true : false, "searchForMetaMediaSearch", 'In Metadaten', false, 'defaultfont', '')); //FIXME: G_L()
-				//$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
+				//$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 				return $_table->getHtml();
 		}
 		$_table->setCol(4, 0, array('style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
-		$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
+		$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -664,7 +664,7 @@ weSearch.g_l = {
 		}
 		$_table->setCol(5, 0, array('colspan' => 4), $this->getSearchDialogOptFields($whichSearch));
 		$_table->setCol(6, 0, array('colspan' => 3, 'style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
-		$_table->setCol(6, 3, array(), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
+		$_table->setCol(6, 3, array(), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -829,7 +829,7 @@ weSearch.g_l = {
 
 		$_table->setCol(2, 2, array(
 			'align' => 'right'
-			), we_html_button::create_button("search", "javascript:weSearch.search(true);"));
+			), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -947,7 +947,7 @@ weSearch.g_l = {
 </tr>
 <tr>
  <td style="padding-right:20px;">' . $searchInput . '</td>
- <td>' . we_html_button::create_button("search", "javascript:weSearch.search(true);") . '</td>
+ <td>' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
  <td>' . we_html_tools::hidden($locationName, 'CONTAIN') . '</td>
  <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
  <td></td>
@@ -1581,7 +1581,7 @@ weSearch.g_l = {
 
 						list($ID, $timestamp, $version, $active) = getHash('SELECT ID,timestamp,version,active FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($k), $DB_WE, MYSQL_NUM)? : array(0, 0, 0, 0);
 
-						$previewButton = we_html_button::create_button("preview", "javascript:weSearch.previewVersion('" . $ID . "');");
+						$previewButton = we_html_button::create_button(we_html_button::PREVIEW, "javascript:weSearch.previewVersion('" . $ID . "');");
 
 						$fileExists = f('SELECT 1 FROM ' . escape_sql_query($_result[$f]["docTable"]) . ' WHERE ID=' . intval($_result[$f]["docID"]), '', $DB_WE);
 
@@ -1933,7 +1933,7 @@ weSearch.g_l = {
 				break;
 			case self::SEARCH_MEDIA:
 				$actionButtonCheckboxAll = we_html_forms::checkbox(1, 0, "action_all_" . $whichSearch, "", false, "middlefont", "weSearch.checkAllActionChecks('" . $whichSearch . "')");
-				$actionButton = we_html_button::create_button("delete", "javascript:weSearch.deleteDocs('" . $whichSearch . "');", true, 100, 22, "", "");
+				$actionButton = we_html_button::create_button(we_html_button::DELETE, "javascript:weSearch.deleteDocs('" . $whichSearch . "');", true, 100, 22, "", "");
 				$publishButton = $publishButtonCheckboxAll = "";
 				break;
 			default:

@@ -322,7 +322,7 @@ function zeichne(startEntry, zweigEintrag) {
 							"&nbsp;&nbsp;<br/>";
 			if (nf[ai].open) {
 				if (ai == nf.len) {
-					newAst += "<img src=\"" + tree_img_dir + "leer.gif\" class=\"treeKreuz\">";
+					newAst += "<span class=\"treeKreuz\"></span>";
 				} else {
 					newAst += "<img src=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
 				}

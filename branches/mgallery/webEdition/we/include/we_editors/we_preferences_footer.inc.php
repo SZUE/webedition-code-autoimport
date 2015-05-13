@@ -63,8 +63,8 @@ END_OF_SCRIPT;
  * *************************************************************************** */
 
 function getPreferencesFooter(){
-	$okbut = we_html_button::create_button('save', 'javascript:we_save();');
-	$cancelbut = we_html_button::create_button('close', 'javascript:top.close()');
+	$okbut = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();');
+	$cancelbut = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.close()');
 
 	return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut, 10, '', '', 0));
 }

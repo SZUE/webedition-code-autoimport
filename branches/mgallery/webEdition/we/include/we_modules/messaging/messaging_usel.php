@@ -294,9 +294,9 @@ if($maxsel){
 	<td valign="top">' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:add_addr2sel()") . '</td>
       </tr>
       <tr>
-	<td>' . we_html_button::create_button("delete", "javascript:rm_addrbook_entry();") . '</td>
+	<td>' . we_html_button::create_button(we_html_button::DELETE, "javascript:rm_addrbook_entry();") . '</td>
 	<td></td>
-	<td>' . we_html_button::create_button("delete", "javascript:rm_sel_user();") . '</td>
+	<td>' . we_html_button::create_button(we_html_button::DELETE, "javascript:rm_sel_user();") . '</td>
       </tr>
       <tr>
 	<td colspan="3">' . we_html_tools::getPixel(1, 15) . '<td>

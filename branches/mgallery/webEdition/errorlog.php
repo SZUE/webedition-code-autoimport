@@ -71,19 +71,19 @@ function getNavButtons($size, $pos, $id){
 
 	return '<table style="margin-top: 10px;border-style:none;width:100%;" cellpadding="0" cellspacing="0"><tr><td>' .
 		we_html_button::create_button_table(array(
-			we_html_button::create_button("first", $_SERVER['SCRIPT_NAME'] . '?function=first', true, 0, 0, '', '', ($pos == 1)),
-			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=prevX&ID=' . $id . '&step=' . $div . "';", 0, '', ($pos - $div < 1)),
-			we_html_button::create_button("back", $_SERVER['SCRIPT_NAME'] . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1)),
+			we_html_button::create_button("fa:first,fa-lg fa-fast-backward", $_SERVER['SCRIPT_NAME'] . '?function=first', true, 0, 0, '', '', ($pos == 1)),
+			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)),
+			we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1)),
 			), 10) .
 		'</td><td align="center">' .
 		we_html_button::create_button_table(array(
 			we_html_button::create_button("export", $_SERVER['SCRIPT_NAME'] . '?function=export&ID=' . $id, true, 0, 0),
-			we_html_button::create_button("delete", $_SERVER['SCRIPT_NAME'] . '?function=delete&ID=' . $id, true, 0, 0),
+			we_html_button::create_button(we_html_button::DELETE, $_SERVER['SCRIPT_NAME'] . '?function=delete&ID=' . $id, true, 0, 0),
 			), 10) . '</td><td align="right">' .
 		we_html_button::create_button_table(array(
-			we_html_button::create_button("next", $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)),
-			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", 0, '', ($pos + $div > $size)),
-			we_html_button::create_button("last", $_SERVER['SCRIPT_NAME'] . '?function=last', true),
+			we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)),
+			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)),
+			we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $_SERVER['SCRIPT_NAME'] . '?function=last', true),
 			), 10) .
 		'</td></tr><tr><td colspan="3" align="center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
 		'</td></table>';
@@ -127,7 +127,7 @@ foreach(array_keys($GLOBALS['trans']) as $key){
 }
 $buttons = g_l('searchtool', '[anzeigen]') . ': <select onchange="document.getElementById(this.value).scrollIntoView();">' . $options . '</select>' .
 	we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("delete_all", $_SERVER['SCRIPT_NAME'] . '?deleteAll=1'), we_html_button::create_button('refresh', $_SERVER['SCRIPT_NAME']), we_html_button::create_button("close", "javascript:self.close()")
+		we_html_button::create_button(we_html_button::DELETE_ALL, $_SERVER['SCRIPT_NAME'] . '?deleteAll=1'), we_html_button::create_button(we_html_button::REFRESH, $_SERVER['SCRIPT_NAME']), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()")
 );
 
 

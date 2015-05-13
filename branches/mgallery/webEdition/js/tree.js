@@ -285,7 +285,11 @@ function drawGroup(nf, ai, zweigEintrag) {
 	row += clickHandler(nf[ai]);
 
 	if (nf[ai].open == 1) {
-		newAst += "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\"/>";
+		if (ai == nf.len) {
+			newAst += "<span class=\"treeKreuz\"></span>";
+		} else {
+			newAst += "<img src=\"" + treeData.tree_image_dir + "strich2.gif\" class=\"treeKreuz\"/>";
+		}
 		row += draw(nf[ai].id, newAst);
 	}
 	return row;

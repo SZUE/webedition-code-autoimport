@@ -725,7 +725,7 @@ function delRow(id) {
 	<tr>
 		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 		<td width="155"></td>
-		<td width="188" align="right">' . we_html_button::create_button("search", "javascript:search(true);") . '</td>
+		<td width="188" align="right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:search(true);") . '</td>
 		<td></td>
 	</tr>
 	</table>
@@ -818,8 +818,8 @@ function delRow(id) {
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td id="zurueck">' .
 			($searchstart ?
-				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-				we_html_button::create_button("back", "", true, 100, 22, "", "", true)) .
+				we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)) .
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
 				<td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ?
@@ -827,8 +827,8 @@ function delRow(id) {
 				$searchstart + $anzahl) .
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td id="weiter">' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
-				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") : //bt_back
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)) .
+				we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") : //bt_back
+				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 
 		$pages = array();
@@ -926,7 +926,7 @@ function delRow(id) {
 					($resetFromVersion ? : '')),
 				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
-				array("dat" => "<span class='printShow'>" . we_html_button::create_button("preview", "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
+				array("dat" => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
 				array("dat" => "<span class='printShow'>" .
 					(($_versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $_versions[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
 						we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :

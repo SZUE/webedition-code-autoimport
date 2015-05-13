@@ -36,7 +36,7 @@ function convertDate($date){
  * @return unknown
  */
 function getDateSelector($_label, $_name, $_btn){
-	$btnDatePicker = we_html_button::create_button('fa:date_picker,fa-lg fa-calendar', 'javascript:', null, null, null, null, null, null, false, $_btn);
+	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $_btn);
 	$oSelector = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0, 'id' => $_name . '_cell'), 1, 5);
 	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $_label);
 	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
@@ -105,14 +105,20 @@ function getNoteList($_sql, $bDate, $bDisplay){
 			}
 		}
 		$showTitle = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $DB_WE->f("Title"));
+		switch($DB_WE->f("Priority")){
+			case 'high':
+				$color = 'red';
+				break;
+			case 'medium':
+				$color = 'yellow';
+				break;
+			case 'low':
+				$color = 'green';
+				break;
+		}
 		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
-		<td width="15" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
-				array(
-					"src" => IMAGE_DIR . "pd/prio_" . $DB_WE->f("Priority") . ".gif",
-					"width" => 13,
-					"height" => 14
-			)) . '</td>
+		<td width="15" height="20" valign="middle" nowrap><i class="fa fa-dot-circle-o" style="color:' . $color . '"></i></td>
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
 		<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>
 		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
@@ -242,38 +248,20 @@ $rdoPrio = array(
 );
 $oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
-$oTblPrio->setCol(0, 1, null, we_html_element::htmlImg(
-		array(
-			"src" => IMAGE_DIR . "pd/prio_high.gif",
-			"width" => 13,
-			"height" => 14,
-			"style" => "margin-left:5px"
-)));
+$oTblPrio->setCol(0, 1, null, '<i class="fa fa-fa-dot-circle-o" style="color:red;margin-left:5px;"></i>');
 $oTblPrio->setCol(0, 2, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 3, null, $rdoPrio[1]);
 $oTblPrio->setCol(
-	0, 4, null, we_html_element::htmlImg(
-		array(
-			"src" => IMAGE_DIR . "pd/prio_medium.gif",
-			"width" => 13,
-			"height" => 14,
-			"style" => "margin-left:5px"
-)));
+	0, 4, null, '<i class="fa fa-fa-dot-circle-o" style="color:yellow;margin-left:5px;"></i>');
 $oTblPrio->setCol(0, 5, null, we_html_tools::getPixel(15, 1));
 $oTblPrio->setCol(0, 6, null, $rdoPrio[2]);
 $oTblPrio->setCol(
-	0, 7, null, we_html_element::htmlImg(
-		array(
-			"src" => IMAGE_DIR . "pd/prio_low.gif",
-			"width" => 13,
-			"height" => 14,
-			"style" => "margin-left:5px"
-)));
+	0, 7, null, '<i class="fa fa-fa-dot-circle-o" style="color:green;margin-left:5px;"></i>');
 
 // Edit note buttons
-$delete_button = we_html_button::create_button("delete", "javascript:deleteNote();", false, 0, 0, "", "", true, false);
+$delete_button = we_html_button::create_button(we_html_button::DELETE, "javascript:deleteNote();", false, 0, 0, "", "", true, false);
 $cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancelNote();", false, 0, 0);
-$save_button = we_html_button::create_button("save", "javascript:saveNote();");
+$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:saveNote();");
 $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 
 // Edit note dialog
@@ -360,10 +348,10 @@ var _sTb='" . $title . "';
 var _sInitProps='" . $_sInitProps . "';") . "
 var _ttlB64Esc='';
 var g_l={
-	'until_befor_from': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]'))."',
-	'note_not_modified': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]'))."',
-	'title_empty': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]'))."',
-	'date_empty': '".we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]'))."',
+	'until_befor_from': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]')) . "',
+	'note_not_modified': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]')) . "',
+	'title_empty': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]')) . "',
+	'date_empty': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]')) . "',
 };
 if(typeof parent.base64_encode=='function'){
 _ttlB64Esc=escape(parent.base64_encode(_sTb));

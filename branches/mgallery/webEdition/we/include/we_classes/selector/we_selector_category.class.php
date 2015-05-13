@@ -360,7 +360,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 		}
 
 		$okBut = (!$this->noChoose ? we_html_button::create_button(we_html_button::OK, 'javascript:press_ok_button();') : '');
-		$cancelbut = we_html_button::create_button('close', 'javascript:top.exit_close();');
+		$cancelbut = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.exit_close();');
 
 		return '
 <table id="footer">
@@ -496,7 +496,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
 
 			$ta = we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("catDescription", $description, array("bgcolor" => "white", "inlineedit" => "true", "wysiwyg" => "true", "width" => 450, "height" => 130), true, 'autobr', true, "", true, true, true, false, ""), "<b>" . g_l('global', '[description]') . "</b>", "left", "defaultfont", "", "", "", "", "", 0);
-			$saveBut = we_html_button::create_button("save", "javascript:weWysiwygSetHiddenText();we_checkName();");
+			$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:weWysiwygSetHiddenText();we_checkName();");
 		}
 
 		we_html_tools::protect();

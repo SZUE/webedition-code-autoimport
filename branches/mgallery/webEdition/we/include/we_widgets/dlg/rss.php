@@ -98,7 +98,7 @@ $oIptNewTitle = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput
 $oIptNewUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('ipt_newUri', 55, "", 255, "", "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
 $btnAddTopRssFeed = we_html_button::create_button(we_html_button::ADD, "javascript:handleTopRssFeed('add');", false, 0, 0, "", "", false, false);
 $btnOverwriteTopRssFeed = we_html_button::create_button("overwrite", "javascript:handleTopRssFeed('overwrite');", false, 0, 0, "", "", false, false);
-$btnDeleteTopRssFeed = we_html_button::create_button("delete", "javascript:handleTopRssFeed('delete');", false, 0, 0, "", "", false, false);
+$btnDeleteTopRssFeed = we_html_button::create_button(we_html_button::DELETE, "javascript:handleTopRssFeed('delete');", false, 0, 0, "", "", false, false);
 
 $oBtnNewFeed = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 5);
 $oBtnNewFeed->setCol(0, 0, null, $btnAddTopRssFeed);
@@ -227,9 +227,9 @@ $parts = array(
 	)
 );
 
-$save_button = we_html_button::create_button('save', 'javascript:save();', false, 0, 0);
-$preview_button = we_html_button::create_button('preview', 'javascript:preview();', false, 0, 0);
-$cancel_button = we_html_button::create_button('close', 'javascript:exit_close();');
+$save_button = we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', false, 0, 0);
+$preview_button = we_html_button::create_button(we_html_button::PREVIEW, 'javascript:preview();', false, 0, 0);
+$cancel_button = we_html_button::create_button(we_html_button::CLOSE, 'javascript:exit_close();');
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_html_multiIconBox::getHTML('rssProps', '100%', $parts, 30, $buttons, -1, '', '', '', g_l('cockpit', '[rss_feed]'), '', 439);

@@ -699,7 +699,7 @@ var g_l={
 		}
 
 		$table = we_html_tools::htmlDialogBorder3(650, 0, $rows, $headline, $class);
-		$delbut = we_html_button::create_button("delete", "javascript:top.content.setHot();we_cmd('delete_stat')");
+		$delbut = we_html_button::create_button(we_html_button::DELETE, "javascript:top.content.setHot();we_cmd('delete_stat')");
 
 		return $content . we_html_tools::getPixel(2, 10) . $table . we_html_tools::getPixel(2, 10) . "<br/>" . $delbut;
 	}

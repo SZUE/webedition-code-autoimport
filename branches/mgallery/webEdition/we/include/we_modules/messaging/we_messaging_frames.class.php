@@ -287,7 +287,7 @@ function loadData() {
 		);
 
 		$buttons = we_html_button::create_button_table(array(
-				we_html_button::create_button("search", "javascript:doSearch();"),
+				we_html_button::create_button(we_html_button::SEARCH, "javascript:doSearch();"),
 				we_html_button::create_button("advanced", "javascript:launchAdvanced()", true),
 				we_html_button::create_button("reset_search", "javascript:clearSearch();")), 10);
 

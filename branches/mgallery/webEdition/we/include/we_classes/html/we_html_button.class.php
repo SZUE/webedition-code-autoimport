@@ -41,8 +41,6 @@ abstract class we_html_button{
 	const WE_FORM_BUTTON_IDENTIFY = 'form:';
 	const WE_SUBMIT_BUTTON_IDENTIFY = 'submit:';
 	const WE_JS_BUTTON_IDENTIFY = 'javascript:';
-	const CANCEL = 'fat:cancel,fa-lg fa-close fa-cancel';
-	const OK = 'fat:ok,fa-lg fa-check fa-ok';
 	const DELETE_ALL = 'fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o';
 	const DELETE = 'fa:delete,fa-lg fa-trash-o';
 	const ADD = 'fa:add,fa-lg fa-plus';
@@ -55,6 +53,19 @@ abstract class we_html_button{
 	const VIEW = 'fa:btn_function_view,fa-lg fa-eye';
 	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
 	const SELECT = 'fa:select,fa-lg fa-hand-o-right,fa-lg fa-file-o';
+	const SAVE = 'fat:save,fa-lg fa-save';
+	const NEXT = 'fa:next,fa-lg fa-forward';
+	const BACK = 'fa:back,fa-lg fa-backward';
+	const REFRESH = 'fat:refresh,fa-lg fa-refresh';
+	const SEARCH = 'fa:btn_function_search,fa-lg fa-search';
+	const CLOSE = 'fat:close,fa-lg fa-close fa-cancel';
+	const CANCEL = 'fat:cancel,fa-lg fa-ban fa-cancel';
+	const NO = 'fat:no,fa-lg fa-close fa-cancel';
+	const YES = 'fat:yes,fa-lg fa-check fa-ok';
+	const OK = 'fat:ok,fa-lg fa-check fa-ok';
+	const UPLOAD = 'fat:upload,fa-lg fa-upload';
+	const PREVIEW = 'fat:preview,fa-lg fa-eye';
+	const CALENDAR = 'fa:date_picker,fa-lg fa-calendar';
 
 	/**
 	 * Gets the HTML Code for the button.

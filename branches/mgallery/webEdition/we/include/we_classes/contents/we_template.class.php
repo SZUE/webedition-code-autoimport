@@ -550,7 +550,7 @@ we_templateInit();?>';
 			return g_l('weClass', '[no_documents]');
 		}
 
-		$button = we_html_button::create_button('open', "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');");
+		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');");
 		return we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
 	}
 

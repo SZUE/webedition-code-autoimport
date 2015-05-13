@@ -66,7 +66,7 @@ class we_users_online{
 					'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . $DB_WE->f("username") . '</td>';
 			if(defined('MESSAGES_TABLE')){
 				$_row .= '<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f("username") . '\');">' .
-						'<img src="' . IMAGE_DIR . 'pd/usr/user_mail.gif" border="0" width="24" height="20" alt="" /></a><td>';
+						'<i style="color:#9fbcd5;" class="fa fa-2x fa-envelope"></i></a><td>';
 			}
 			$_row .= '</tr>';
 		}

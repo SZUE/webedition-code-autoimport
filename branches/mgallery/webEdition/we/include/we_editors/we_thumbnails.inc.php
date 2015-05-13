@@ -252,7 +252,7 @@ function init() {
 
 			$_thumbnails_table->setCol(0, 0, null, we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
 			$_thumbnails_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-			$_thumbnails_table->setCol(0, 2, array('valign' => 'top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . we_html_tools::getPixel(1, 10) . we_html_button::create_button('delete', 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
+			$_thumbnails_table->setCol(0, 2, array('valign' => 'top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . we_html_tools::getPixel(1, 10) . we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
 
 			// Build dialog
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);
@@ -376,7 +376,7 @@ function we_save() {
 	$close = we_base_request::_(we_base_request::JS, "closecmd");
 
 	return $_javascript .
-		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%'), we_html_button::position_yes_no_cancel(we_html_button::create_button('save', 'javascript:we_save();'), '', we_html_button::create_button("close", "javascript:" . ($close ? $close . ';' : '') . 'top.close()'), 10, '', '', 0));
+		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();'), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:" . ($close ? $close . ';' : '') . 'top.close()'), 10, '', '', 0));
 }
 
 function getMainDialog(){

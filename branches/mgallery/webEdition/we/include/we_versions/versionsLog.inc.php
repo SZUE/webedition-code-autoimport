@@ -45,7 +45,7 @@ echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]')) .
 		?></div>
 	<div class="dialogButtonDiv">
 		<div style="position:absolute;top:10px;right:20px;">
-			<?php echo we_html_button::create_button("close", "javascript:window.close();"); ?>
+			<?php echo we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();"); ?>
 		</div>
 	</div>
 </body>

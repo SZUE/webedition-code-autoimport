@@ -106,13 +106,13 @@ if($this->Data['allEntries']){ // entries exist
 		 */
 
 		$buttons = we_html_button::create_button_table(array(
-				we_html_button::create_button("delete", "javascript:confirmDelete();"),
+				we_html_button::create_button(we_html_button::DELETE, "javascript:confirmDelete();"),
 				($start > 0 ? //	backbutton
-					we_html_button::create_button("back", "javascript:lastEntries();") :
-					we_html_button::create_button("back", "#", true, 100, 22, "", "", true)),
+					we_html_button::create_button(we_html_button::BACK, "javascript:lastEntries();") :
+					we_html_button::create_button(we_html_button::BACK, "#", true, 100, 22, "", "", true)),
 				($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
-					we_html_button::create_button("next", "#", true, 100, 22, "", "", true) :
-					we_html_button::create_button("next", "javascript:nextEntries();"))
+					we_html_button::create_button(we_html_button::NEXT, "#", true, 100, 22, "", "", true) :
+					we_html_button::create_button(we_html_button::NEXT, "javascript:nextEntries();"))
 		));
 
 		$content .= '

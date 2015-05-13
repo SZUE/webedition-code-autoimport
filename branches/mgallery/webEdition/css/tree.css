@@ -47,7 +47,8 @@
 }
 
 .treetable img,
-.tree img {
+.tree img,
+span.treeKreuz{
 	width: 16px;
 	height: 18px;
 	vertical-align: middle;
@@ -55,6 +56,9 @@
 
 img.treeKreuz{
 	width:19px;
+}
+span.treeKreuz{
+	display:inline-block;
 }
 
 .item,

@@ -363,7 +363,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 	    <tr>
 <td align="left" class="defaultfont">' .
 				(substr($_SESSION['prefs']['editorMode'], 0, 10) === 'codemirror' ? '
-<input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button("search", 'javascript:cmSearch(null);') . '</div>
+<input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button(we_html_button::SEARCH, 'javascript:cmSearch(null);') . '</div>
 <input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button("replace", 'javascript:cmReplace(null);') . '</div>' .
 						we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
 						'</div>' : ''

@@ -469,7 +469,7 @@ function uploadFinished() {
 		}
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancel()", true, 0, 0, '', '', false, false);
-		$closeButton = we_html_button::create_button("close", "javascript:cancel()");
+		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:cancel()");
 		$progressbar = '';
 
 		$js = we_html_element::jsElement('
@@ -529,9 +529,9 @@ function next() {
 		//$js .= $we_uploader->getJs(true, false, true);
 
 
-		$prevButton = we_html_button::create_button("back", "javascript:back();", true, 0, 0, "", "", false);
-		$prevButton2 = we_html_button::create_button("back", "javascript:back();", true, 0, 0, "", "", false, false);
-		$nextButton = we_html_button::create_button("next", "javascript:next();", true, 0, 0, "", "", $this->step > 0, false);
+		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 0, 0, "", "", false);
+		$prevButton2 = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 0, 0, "", "", false, false);
+		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:next();", true, 0, 0, "", "", $this->step > 0, false);
 
 		$prog = ($formcount === 0) ? 0 : (($this->step == 0) ? 0 : ((int) ((100 / $formcount) * ($formnum + 1))));
 		$pb = new we_progressBar($prog);

@@ -62,7 +62,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		);
 
 		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
-				we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, 278, we_html_button::HEIGHT, '', '', false, false, '_btn'));
+				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 278, we_html_button::HEIGHT, '', '', false, false, '_btn'));
 		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 		$fileselect = '
 		<div style="float:left;">

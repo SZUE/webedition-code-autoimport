@@ -40,7 +40,7 @@ if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_
 	$_table->setColContent(2, 0, we_html_tools::getPixel(20, 6));
 
 	//	there must be a navigation-history - so use it
-	$_table->setColContent(3, 1, we_html_button::create_button("back", "javascript:top.weNavigationHistory.navigateBack();"));
+	$_table->setColContent(3, 1, we_html_button::create_button(we_html_button::BACK, "javascript:top.weNavigationHistory.navigateBack();"));
 
 	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_element::htmlHead(STYLESHEET .

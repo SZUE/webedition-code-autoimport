@@ -144,7 +144,7 @@ function queryEntries(id) {
 	ajaxObj.startRequest(id);
 }';
 $buttonsBottom = '<div style="float:right">' . we_html_button::position_yes_no_cancel(
-				we_html_button::create_button('save', 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button('close', 'javascript:self.close();')) . '</div>';
+				we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
 
 $_body = we_html_element::htmlBody(
 				array(

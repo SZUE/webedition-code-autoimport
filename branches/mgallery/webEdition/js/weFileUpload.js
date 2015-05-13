@@ -264,14 +264,14 @@ var weFileUpload = (function () {
 			this.currentWeightTag = 0;//FIXME: find better name
 			this.isAutostartPermitted = false;
 			this.transformAll = {
-					doTrans : false,
-					width : 0,
-					height : 0,
-					widthSelect : 'pixel',
-					heightSelect : 'pixel',
-					keepRatio : true,
-					quality : 0.8,
-					degrees : 0
+				doTrans: false,
+				width: 0,
+				height: 0,
+				widthSelect: 'pixel',
+				heightSelect: 'pixel',
+				keepRatio: true,
+				quality: 0.8,
+				degrees: 0
 			};
 			this.resetParams = function () {
 			};
@@ -282,12 +282,12 @@ var weFileUpload = (function () {
 
 
 			//new client side image editing
-			this.transformAndSendFile = function(cur){
+			this.transformAndSendFile = function (cur) {
 				var reader = new FileReader();
-				reader.onloadend = function() {
+				reader.onloadend = function () {
 					var tempImg = new Image();
 					tempImg.src = reader.result;
-					tempImg.onload = function() {
+					tempImg.onload = function () {
 						var MAX_WIDTH = 600;
 						var MAX_HEIGHT = 600;
 						var tempW = tempImg.width;
@@ -305,13 +305,13 @@ var weFileUpload = (function () {
 						}
 
 						var canvas = document.createElement('canvas'),
-							ctx = canvas.getContext("2d"),
-							deg = 0,
-							x = 0, y = 0;
+										ctx = canvas.getContext("2d"),
+										deg = 0,
+										x = 0, y = 0;
 
 						canvas.width = tempW;
 						canvas.height = tempH;
-						switch(deg){
+						switch (deg) {
 							case 90:
 								canvas.width = tempH;
 								canvas.height = tempW;
@@ -328,13 +328,13 @@ var weFileUpload = (function () {
 								break;
 							default:
 						}
-						ctx.rotate(-Math.PI*deg/180);
-						ctx.drawImage(tempImg, x, y,  tempW, tempH);
+						ctx.rotate(-Math.PI * deg / 180);
+						ctx.drawImage(tempImg, x, y, tempW, tempH);
 
-						canvas.toBlob(function(blob){
+						canvas.toBlob(function (blob) {
 							var arrayBufferNew = null;
 							var fr = new FileReader();
-							fr.onload  = function(e) {
+							fr.onload = function (e) {
 								arrayBufferNew = this.result;
 								cur.dataArray = new Uint8Array(arrayBufferNew);
 								_.sender.sendNextChunk(true);
@@ -345,8 +345,8 @@ var weFileUpload = (function () {
 							cur.totalParts = Math.ceil(blob.size / _.sender.chunkSize);
 							cur.lastChunkSize = blob.size % _.sender.chunkSize;
 							fr.readAsArrayBuffer(blob);
-							},"image/jpeg",0.8
-						);
+						}, "image/jpeg", 0.8
+										);
 
 					};
 				};
@@ -355,7 +355,7 @@ var weFileUpload = (function () {
 
 			this.sendNextFile = function () {
 				var cur, fr = null, cnt,
-				that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+								that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
 
 				if (this.uploadFiles.length > 0) {
 					this.currentFile = cur = this.uploadFiles.shift();
@@ -373,11 +373,11 @@ var weFileUpload = (function () {
 							var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
 
 							//clientside editing diabled!
-							if(false && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1){//TODO: && !cur.doTrans!!)
+							if (false && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1) {//TODO: && !cur.doTrans!!)
 								_.sender.transformAndSendFile(cur);
 							} else {
 								fr = new FileReader();
-								fr.onload = function(e) {
+								fr.onload = function (e) {
 									cnt = e.target.result;
 									cur.dataArray = new Uint8Array(cnt);
 									//from inside FileReader we must reference sender by that (or _.sender)
@@ -397,9 +397,9 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.sendNextChunk = function(split) {
+			this.sendNextChunk = function (split) {
 				var resp, oldPos, blob,
-				cur = this.currentFile;
+								cur = this.currentFile;
 
 				if (this.isCancelled) {
 					this.isCancelled = false;
@@ -414,15 +414,15 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-							blob,
-							cur.file.name,
-							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-							cur.partNum,
-							cur.totalParts,
-							cur.fileNameTemp,
-							cur.size
-						);
+										blob,
+										cur.file.name,
+										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+										cur.partNum,
+										cur.totalParts,
+										cur.fileNameTemp,
+										cur.size
+										);
 					}
 				} else {
 					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
@@ -976,13 +976,13 @@ var weFileUpload = (function () {
 
 			//init transformAll object
 			var sf = document.we_startform,
-				t = _.sender.transformAll;
+							t = _.sender.transformAll;
 
 			t.width = sf.width.value ? parseInt(sf.width.value) : t.width;
 			t.height = sf.height.value ? parseInt(sf.height.value) : t.height;
 			t.degrees = sf.degrees.value ? parseInt(sf.degrees.value) : t.degrees;
 			t.doTrans = t.degrees || t.width || t.height ? true : false;
-			if(t.doTrans){
+			if (t.doTrans) {
 				t.widthSelect = sf.widthSelect.value ? sf.widthSelect.value : t.widthSelect;
 				t.heightSelect = sf.heightSelect.value ? sf.heightSelect.value : t.heightSelect;
 				t.keepRatio = sf.keepRatio.value ? true : t.keepRatio;
@@ -1000,9 +1000,9 @@ var weFileUpload = (function () {
 				if (files[0] instanceof File && !_.utils.contains(_.sender.preparedFiles, files[0])) {
 					f = _.controller.prepareFile(files[0]);
 					var inputId = 'fileInput_uploadFiles_',
-						index = e.target.id.substring(inputId.length),
-						nameField = document.getElementById('name_uploadFiles_' + index),
-						sizeField = document.getElementById('size_uploadFiles_' + index);
+									index = e.target.id.substring(inputId.length),
+									nameField = document.getElementById('name_uploadFiles_' + index),
+									sizeField = document.getElementById('size_uploadFiles_' + index);
 
 					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
 					nameField.value = f.file.name;
@@ -1090,7 +1090,7 @@ var weFileUpload = (function () {
 
 			this.appendMoreData = function (fd) {
 				var sf = document.we_startform,
-				cur = this.currentFile;
+								cur = this.currentFile;
 
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
@@ -1116,7 +1116,7 @@ var weFileUpload = (function () {
 					fd.append('keepRatio', sf.keepRatio.value);
 					fd.append('quality', sf.quality.value);
 
-					if(this.isGdOk){
+					if (this.isGdOk) {
 						fd.append('thumbs', sf.thumbs.value);
 						fd.append('width', sf.width.value);
 						fd.append('height', sf.height.value);
@@ -1246,14 +1246,14 @@ var weFileUpload = (function () {
 			};
 
 			this.reloadOpener = function () {
-				try{
+				try {
 					var activeFrame = top.opener.top.weEditorFrameController.getActiveEditorFrame();
 
-					if(document.we_startform.importToID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16){
-						top.opener.top.we_cmd('switch_edit_page',16, activeFrame.EditorTransaction);
+					if (document.we_startform.importToID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
+						top.opener.top.we_cmd('switch_edit_page', 16, activeFrame.EditorTransaction);
 					}
 					top.opener.top.we_cmd('load', 'tblFile');
-				} catch(e){
+				} catch (e) {
 					//
 				}
 			};
@@ -1414,8 +1414,8 @@ var weFileUpload = (function () {
 			v.elems.divProgressBar = document.getElementById('div_fileupload_progressBar');
 			v.elems.divButtons = document.getElementById('div_fileupload_buttons');
 
-			v.spinner = new Image();
-			v.spinner.src = '/webEdition/images/pd/busy.gif';
+			v.spinner = document.createElement("i");
+			v.spinner.className = "fa fa-2x fa-spinner fa-pulse";
 
 			if (_.isLegacyMode) {
 				_.utils.makeLegacy();
@@ -1564,8 +1564,8 @@ var weFileUpload = (function () {
 
 					reader.onload = function (e) {
 						var maxSize = 100,
-						mode = 'resize',
-						image = new Image();
+										mode = 'resize',
+										image = new Image();
 
 						image.onload = function () {
 							if (mode !== 'resize') {
@@ -1579,8 +1579,8 @@ var weFileUpload = (function () {
 								_.view.elems.dragInnerRight.appendChild(_.view.preview);
 							} else {
 								var width = image.width,
-								height = image.height,
-								cv = document.createElement('canvas');
+												height = image.height,
+												cv = document.createElement('canvas');
 
 								if (width > height) {
 									if (width > maxSize) {

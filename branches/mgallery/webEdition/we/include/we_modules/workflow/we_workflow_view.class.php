@@ -25,6 +25,8 @@
 class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	const PAGE_PROPERTIES = 0;
 	const PAGE_OVERVIEW = 1;
+	const BUTTON_DECLINE='fat:decline,fa-lg fa-close fa-cancel';
+	const BUTTON_FORWARD='fat:forward:fa-lg fa-mail-forward';
 
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
@@ -1210,24 +1212,24 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 
 		$nextprev = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
 			($offset ?
-				we_html_button::create_button('back', WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)) :
-				we_html_button::create_button('back', '', false, 100, 22, '', '', true)
+				we_html_button::create_button(we_html_button::BACK, WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)) :
+				we_html_button::create_button(we_html_button::BACK, '', false, 100, 22, '', '', true)
 			) .
 			we_html_tools::getPixel(23, 1) . "</td><td class='defaultfont' style=\"padding: 0 10px 0 10px;\"><b>" . (($anz) ? $offset + 1 : 0) . "-" .
 			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) .
 			we_html_tools::getPixel(5, 1) . ' ' . g_l('global', '[from]') . ' ' . we_html_tools::getPixel(5, 1) . $anz . '</b></td><td>' . we_html_tools::getPixel(23, 1) .
 			((($offset + $numRows) < $anz) ?
-				we_html_button::create_button('next', WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows)/* . "&order=$order" */) :
-				we_html_button::create_button('next', '', '', 100, 22, '', '', true)
+				we_html_button::create_button(we_html_button::NEXT, WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset + $numRows)/* . "&order=$order" */) :
+				we_html_button::create_button(we_html_button::NEXT, '', '', 100, 22, '', '', true)
 			) .
 			'</td><td></tr></table>';
 
-		$buttonsTable = '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>' . $nextprev . '</td><td align="right">' . we_html_button::create_button("close", "javascript:self.close();") . '</td></tr></table>';
+		$buttonsTable = '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>' . $nextprev . '</td><td align="right">' . we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();") . '</td></tr></table>';
 
 
 		return ($logs ?
 				we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, 300, $content, $headlines), '', $buttonsTable) :
-				we_html_tools::htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center"><center>-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</center></div>', '', we_html_button::create_button("close", "javascript:self.close();")));
+				we_html_tools::htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center"><center>-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</center></div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
 	}
 
 	function getLogQuestion(){
@@ -1284,20 +1286,20 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 		//	decline
 		$_footerTable->addCol(2);
 		$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-		$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
+		$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
 			$_publishbutton = we_html_button::create_button("publish", "javascript:workflow_finish();");
 		} else {
 			$_footerTable->addCol(2);
 			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"));
 		}
 
 		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 			$_footerTable->addCol(2);
 			$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-			$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 		}
 
 		if($_publishbutton){
@@ -1333,14 +1335,14 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				//	Decline Workflow
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
 					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("publish", "javascript:workflow_finish();"));
 				} else {
-					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("forward", "javascript:pass_workflow();"));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"));
 				}
 				break;
 			case we_base_constants::WE_EDITPAGE_CONTENT:
@@ -1348,7 +1350,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				//	Preview Button
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::PREVIEW, "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				//	Propertie-button
 				$_footerTable->addCol(2);
@@ -1358,19 +1360,19 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				//	Decline Workflow
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				$_footerTable->setColContent(0, $_col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
 						we_html_button::create_button("publish", "javascript:workflow_finish();") :
-						we_html_button::create_button("forward", "javascript:pass_workflow();"))
+						we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"))
 				);
 
 				if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 					$_footerTable->addCol(2);
 					$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 					if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
 						$_footerTable->addCol(2);
 						$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
@@ -1382,27 +1384,27 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::PREVIEW, "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("preview", "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::PREVIEW, "javascript:parent.editHeader.we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button("decline", "javascript:decline_workflow();"));
+				$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 				$_footerTable->addCol(2);
 				$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
 				$_footerTable->setColContent(0, $_col++, (we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH")) ?
 						we_html_button::create_button("publish", "javascript:workflow_finish();") :
-						we_html_button::create_button("forward", "javascript:pass_workflow();"))
+						we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"))
 				);
 
 				if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 					$_footerTable->addCol(2);
 					$_footerTable->setColContent(0, $_col++, we_html_tools::getPixel($_gap, 2));
-					$_footerTable->setColContent(0, $_col++, we_html_button::create_button("save", "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+					$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 
 					if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
 						$_footerTable->addCol(2);

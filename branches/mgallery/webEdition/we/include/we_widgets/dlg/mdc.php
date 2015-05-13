@@ -66,8 +66,6 @@ function getHTMLDirSelector($_selType){
 	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
 	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
 	$_button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
-	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
-	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
 	$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')") : '';
 
 	$_buttons = '<div id="docFolder" style="display: ' . (!$_selType ? "inline" : "none") . '">' . $_button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($_selType ? "inline" : "none") . '">' . $_button_obj . "</div>";
@@ -287,9 +285,9 @@ $parts = array(
 	)
 );
 
-$save_button = we_html_button::create_button("save", "javascript:save();", false, 0, 0);
-$preview_button = we_html_button::create_button("preview", "javascript:preview();", false, 0, 0);
-$cancel_button = we_html_button::create_button("close", "javascript:exit_close();");
+$save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
+$preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
+$cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_html_multiIconBox::getHTML("mdcProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));

@@ -223,8 +223,8 @@ class we_search_base{
 <tr>
 	<td>' .
 			($this->searchstart ?
-				we_html_button::create_button('back', 'javascript:back();') : //bt_back
-				we_html_button::create_button('back', '', true, 100, 22, '', '', true)
+				we_html_button::create_button(we_html_button::BACK, 'javascript:back();') : //bt_back
+				we_html_button::create_button(we_html_button::BACK, '', true, 100, 22, '', '', true)
 			) . '
 	</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -236,9 +236,9 @@ class we_search_base{
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>' .
 			(($this->searchstart + $this->anzahl) < $we_search_anzahl ?
-				we_html_button::create_button("next", "javascript:next();") : //bt_back
+				we_html_button::create_button(we_html_button::NEXT, "javascript:next();") : //bt_back
 
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)) .
+				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
 			'</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>';

@@ -205,7 +205,7 @@ abstract class we_editor_footer{
 		$_ctrlElem = getControlElement('button', 'save'); //	look tag we:controlElement for details
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 			$_normalTable->addCol(2);
-			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button('fat:save,fa-lg fa-save', "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$_normalTable->setColContent(0, $_pos++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 			$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 

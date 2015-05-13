@@ -109,7 +109,11 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 									"</a>") +
 					"&nbsp;&nbsp;<br/>";
 	if (cur.open) {
-		newAst += "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\"/>";
+		if (ai == nf.len) {
+			newAst += "<span class=\"treeKreuz\"></span>";
+		} else {
+			newAst += "<img src=\"" + treeData.tree_image_dir + "strich2.gif\" class=\"treeKreuz\"/>";
+		}
 		row += draw(cur.id, newAst);
 	}
 	return row;
@@ -129,7 +133,11 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 					"&nbsp;&nbsp;<br/>";
 
 	if (nf[ai].open) {
-		newAst += "<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "leer.gif" : "strich2.gif") + "\" class=\"treeKreuz\" />";
+		if (ai == nf.len) {
+			newAst += "<span class=\"treeKreuz\"></span>";
+		} else {
+			newAst += "<img src=\"" + treeData.tree_image_dir + "strich2.gif\" class=\"treeKreuz\" />";
+		}
 		row += draw(nf[ai].id, newAst);
 	}
 }

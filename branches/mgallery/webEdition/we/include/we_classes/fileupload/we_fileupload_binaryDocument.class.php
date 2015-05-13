@@ -147,8 +147,8 @@ div.we_file_drag_binDoc{
 		$width = $isIE10 ? array('input' => 84, 'button' => 168) : array('input' => 170, 'button' => 170);
 		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
-		$btnBrowse = we_html_button::create_button('browse_harddisk', 'javascript:void(0)', true, $width['button'], we_html_button::HEIGHT, '', '', false, false, '_btn');
-		$btnUpload = we_html_button::create_button("upload", "javascript:" . $this->getJsBtnCmd('upload'), true, $width['button'], 22, "", "", true, false, "_btn", true);
+		$btnBrowse = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width['button'], we_html_button::HEIGHT, '', '', false, false, '_btn');
+		$btnUpload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $this->getJsBtnCmd('upload'), true, $width['button'], 22, "", "", true, false, "_btn", true);
 		$btnReset = we_html_button::create_button("reset", 'javascript:we_FileUpload.reset()', true, $width['button'], 22, "", "", true, false, "_btn", true);
 		$btnCancel = we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_FileUpload.cancelUpload()', true, $width['button'], 22, "", "", false, false, "_btn", true);
 		$fileInput = we_html_element::htmlInput(array(
@@ -186,7 +186,7 @@ div.we_file_drag_binDoc{
 				$divBtnCancel
 		);
 
-		$btnUploadLegacy = we_html_button::create_button("upload", "javascript:we_cmd('editor_uploadFile', 'legacy')", true, 150, 22, "", "", false, false, "_legacy_btn", true);
+		$btnUploadLegacy = we_html_button::create_button(we_html_button::UPLOAD, "javascript:we_cmd('editor_uploadFile', 'legacy')", true, 150, 22, "", "", false, false, "_legacy_btn", true);
 		$divBtnUploadLegacy = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUploadLegacy', 'style' => 'margin:0px 0 16px 0;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . ';'), $btnUploadLegacy);
 
 		$leftMarginTop = we_base_browserDetect::isIE() ? 4 : (we_base_browserDetect::isChrome() ? 3 : 0);

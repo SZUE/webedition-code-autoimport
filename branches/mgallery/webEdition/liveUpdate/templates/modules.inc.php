@@ -28,7 +28,7 @@
  *
  */
 
-$nextButton = we_html_button::create_button('next', $_SERVER['SCRIPT_NAME'] . '?section=modules&update_cmd=modules&detail=selectModules');
+$nextButton = we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . '?section=modules&update_cmd=modules&detail=selectModules');
 
 if(!empty($GLOBALS['LU_Variables']['clientInstalledModules'])){
 	$moduleString = "<ul>";

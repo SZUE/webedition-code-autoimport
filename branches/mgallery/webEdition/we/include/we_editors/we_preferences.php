@@ -1112,7 +1112,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Buttons
 			$default = we_html_button::create_button('default', 'javascript:defaultLocale()', true, 100, 22, '', '', !$_enabled_buttons);
-			$delete = we_html_button::create_button('delete', 'javascript:deleteLocale()', true, 100);
+			$delete = we_html_button::create_button(we_html_button::DELETE, 'javascript:deleteLocale()', true, 100);
 
 			$_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
 			$_html->setCol(0, 0, array('class' => 'defaultfont'), $default);

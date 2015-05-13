@@ -103,7 +103,7 @@ while(false !== ($entry = $_dir->read())){
 }
 $_dir->close();
 
-$_button = we_html_button::create_button("close", "javascript:self.close();");
+$_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 $tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('if(!activ_tab) activ_tab = 1; document.getElementById("tab_"+activ_tab).className="tabActive";');
 
 $_tab_1 = we_html_tools::htmlDialogLayout('
@@ -115,14 +115,14 @@ $_tab_1 = we_html_tools::htmlDialogLayout('
 		<div id="dictSelector" style="display: none; width: 400px; height: 220px;background-color: silver;">
 			<div id="appletPanel"></div>
 		</div>
-		<div id="addButt">' . we_html_button::create_button_table(array(we_html_button::create_button("save", "javascript:document.we_form.submit()"), we_html_button::create_button(we_html_button::ADD, "javascript:showDictSelector();"))) . '</div>
+		<div id="addButt">' . we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit()"), we_html_button::create_button(we_html_button::ADD, "javascript:showDictSelector();"))) . '</div>
 	</div>
 	 ', '', '');
 
 
 $_tab_2 = we_html_tools::htmlDialogLayout('
 					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') > 0) ? we_base_file::load(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') : '') : '') . '</textarea>
-					<div>' . we_html_button::create_button("save", "javascript:document.we_form.submit()") . '</div>
+					<div>' . we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit()") . '</div>
 	</form>
 	 ', '', '');
 

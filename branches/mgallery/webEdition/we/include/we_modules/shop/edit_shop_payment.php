@@ -199,7 +199,7 @@ $_htmlTable->setCol($_row++, 0, array('colspan' => 4), we_html_tools::getPixel(2
 
 $Parts[] = array("html" => $_htmlTable->getHtml());
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button("save", "javascript:document.we_form.submit();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 
 echo '

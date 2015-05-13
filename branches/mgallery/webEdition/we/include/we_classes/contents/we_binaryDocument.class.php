@@ -391,12 +391,12 @@ class we_binaryDocument extends we_document{
 			$values[$groupname] = we_html_tools::OPTGROUP;
 			foreach($group as $k => $v){
 				$values[++$c] = $v['path'];
-				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},\n"; 
+				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},\n";
 			}
 			$values[$groupname . 'end'] = we_html_tools::OPTGROUP;
 		}
 		$js = "top.we_mediaReferences = {\n" . $js . "};";
-		$button = we_html_button::create_button('open', "javascript:top.we_openMediaReference(document.we_form.elements['MediaReferences'].value);");
+		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.we_form.elements['MediaReferences'].value);");
 
 		return we_html_element::jsElement($js) . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
 	}

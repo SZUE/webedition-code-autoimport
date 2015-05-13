@@ -218,7 +218,7 @@ top.content.hloaded = 1;'));
 			we_html_button::create_button_table(
 				array(
 					we_html_tools::htmlTextInput("keyword", 10, '', '', '', "text", "150px"),
-					we_html_button::create_button("fa:btn_function_search,fa-lg fa-search", "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
+					we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
 				)
 			)
 		);
@@ -275,7 +275,7 @@ top.content.hloaded = 1;'));
 					we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
 							"cmd" => "switchBranch",
 							"pnt" => "customer_admin")) .
-						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_html_button::create_button("close", "javascript:self.close()"))
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"))
 					)
 				)
 		);
@@ -301,7 +301,7 @@ top.content.hloaded = 1;'));
 				$edit->setCol(0, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer', '[field_name]'));
 				$edit->setCol(0, 1, array("valign" => "middle", "class" => "defaultfont"), we_html_tools::htmlTextInput("name", 26, $branch, '', ''));
 
-				$save = we_html_button::create_button("save", "javascript:we_cmd('save_branch')");
+				$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_branch')");
 				break;
 			default:
 				$hiddens.=we_html_element::htmlHidden("pnt", "field_editor");
@@ -341,7 +341,7 @@ top.content.hloaded = 1;'));
 				$edit->setCol(4, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer', '[encryptField]'));
 				$edit->setCol(4, 1, array("valign" => "middle", "class" => "defaultfont"), $enc->getHtml());
 
-				$save = we_html_button::create_button("save", "javascript:we_cmd('save_field')");
+				$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_field')");
 		}
 
 		return
@@ -406,7 +406,7 @@ top.content.hloaded = 1;'));
 				'search' => 1,
 				'mode' => $mode));
 
-		$search_but = we_html_button::create_button('fa:btn_function_search,fa-lg fa-search', "javascript:we_cmd('search')");
+		$search_but = we_html_button::create_button(we_html_button::SEARCH, "javascript:we_cmd('search')");
 
 		$search = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 550, 'height' => 50), 4, 3);
 		$search->setRow(0, array('valign' => 'top'));
@@ -464,7 +464,7 @@ var fieldDate = new weDate(date_format_dateonly);
 					we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_functions.js') .
 					we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 						we_html_tools::htmlDialogLayout(
-							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button("close", "javascript:self.close();")), "100%", 30, 558
+							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")), "100%", 30, 558
 						)
 					) .
 					(we_base_request::_(we_base_request::BOOL, 'mode') ? we_html_element::jsElement("setTimeout(lookForDateFields, 1);") : '')
@@ -520,8 +520,8 @@ var fieldDate = new weDate(date_format_dateonly);
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));
 		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
-		$close = we_html_button::create_button("close", "javascript:self.close();");
-		$save = we_html_button::create_button("save", "javascript:we_cmd('save_settings')");
+		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
+		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_settings')");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlDialogLayout(
 						we_html_element::htmlHiddens(array(

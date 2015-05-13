@@ -143,7 +143,7 @@ abstract class we_customer_add{
 		}
 
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
-		$save = we_html_button::create_button("save", "javascript:we_cmd('save_sort')");
+		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_sort')");
 
 		$_buttons = we_html_button::position_yes_no_cancel($save, null, $cancel);
 
@@ -208,7 +208,7 @@ function setScrollTo(){
 
 		$search_arr = array();
 
-		$search_but = we_html_button::create_button("fa:btn_function_search,fa-lg fa-search", "javascript:we_cmd('search')");
+		$search_but = we_html_button::create_button(we_html_button::SEARCH, "javascript:we_cmd('search')");
 		$colspan = 4;
 
 		for($i = 0; $i < $count; $i++){
@@ -253,7 +253,7 @@ function setScrollTo(){
 			}
 			$value_i = we_html_tools::htmlTextInput("value_" . $i, 20, (isset($search_arr["value_" . $i]) ? $search_arr["value_" . $i] : ""), "", "id='value_$i'", "text", 185);
 			$value_date_i = we_html_tools::htmlTextInput("value_date_$i", 20, "", "", "id='value_date_$i' style='display:none; width:150' readonly", "text", ""); // empty field to display the timestemp in date formate - handeld on the client in js
-			$btnDatePicker = we_html_button::create_button("fa:date_picker,fa-lg fa-calendar", "javascript:", null, null, null, null, null, null, false, "_$i");
+			$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, "_$i");
 			$advsearch->addRow();
 			$advsearch->setCol($c, 0, array(), $branch->getHtml());
 			$advsearch->setCol($c, 1, array(), $field->getHtml());

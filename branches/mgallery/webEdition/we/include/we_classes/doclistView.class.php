@@ -191,7 +191,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	<tr>
 		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 		<td width="155"></td>
-		<td width="188" align="right">' . we_html_button::create_button("search", "javascript:search(true);") . '</td>
+		<td width="188" align="right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:search(true);") . '</td>
 		<td></td>
 	</tr>
 </table>' .
@@ -606,16 +606,16 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
 			($searchstart ?
-				we_html_button::create_button("back", "javascript:back(" . $anzahl . ");") :
-				we_html_button::create_button("back", "", true, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
 			) .
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
         <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
-				we_html_button::create_button("next", "javascript:next(" . $anzahl . ");") :
-				we_html_button::create_button("next", "", true, 100, 22, "", "", true)
+				we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)
 			) .
 			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
 

@@ -135,7 +135,7 @@ function doKeyDown() {
 	}
 
 	protected function getNextBut(){
-		return we_html_button::create_button('next', "javascript:document.forms['0'].submit();");
+		return we_html_button::create_button(we_html_button::NEXT, "javascript:document.forms['0'].submit();");
 	}
 
 	protected function getOkBut(){
@@ -147,7 +147,7 @@ function doKeyDown() {
 	}
 
 	protected function getbackBut(){
-		return ($this->pageNr > 1) ? we_html_button::create_button('back', 'javascript:history.back();') . we_html_tools::getPixel(10, 2) : '';
+		return ($this->pageNr > 1) ? we_html_button::create_button(we_html_button::BACK, 'javascript:history.back();') . we_html_tools::getPixel(10, 2) : '';
 	}
 
 	function getDialogHTML(){

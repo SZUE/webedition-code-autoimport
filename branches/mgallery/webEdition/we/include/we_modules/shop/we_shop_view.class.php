@@ -546,7 +546,7 @@ function submitForm() {
 					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
 				</td>
 				<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
-				<td width="102" valign="top" height="25">' . we_html_button::create_button("fa:date_picker,fa-lg fa-calendar", "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
+				<td width="102" valign="top" height="25">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
 				<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
 			</tr>';
 				}
@@ -1071,7 +1071,7 @@ function CalendarChanged(calObject) {
 
 				$saveBut = '';
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:window.close();');
-				$searchBut = we_html_button::create_button('search', 'javascript:searchArticles();');
+				$searchBut = we_html_button::create_button(we_html_button::SEARCH, 'javascript:searchArticles();');
 
 				// first get all shop documents
 				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
@@ -1118,12 +1118,12 @@ function CalendarChanged(calObject) {
 				$end_entry = (($page * $MAX_PER_PAGE + $MAX_PER_PAGE < $AMOUNT_ARTICLES) ? ($page * $MAX_PER_PAGE + $MAX_PER_PAGE) : $AMOUNT_ARTICLES );
 
 				$backBut = ($start_entry - $MAX_PER_PAGE > 0 ?
-						we_html_button::create_button('back', 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
-						we_html_button::create_button('back', '#', true, 100, 22, '', '', true));
+						we_html_button::create_button(we_html_button::BACK, 'javascript:switchEntriesPage(' . ($page - 1) . ');') :
+						we_html_button::create_button(we_html_button::BACK, '#', true, 100, 22, '', '', true));
 
 				$nextBut = (($end_entry) < $AMOUNT_ARTICLES ?
-						we_html_button::create_button('next', 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
-						we_html_button::create_button('next', '#', true, 100, 22, '', '', true));
+						we_html_button::create_button(we_html_button::NEXT, 'javascript:switchEntriesPage(' . ($page + 1) . ');') :
+						we_html_button::create_button(we_html_button::NEXT, '#', true, 100, 22, '', '', true));
 
 
 				$shopArticlesSelect = $shopArticlesParts[$page];
@@ -1193,7 +1193,7 @@ function CalendarChanged(calObject) {
 				}
 
 				if(isset($_REQUEST['add_article']) && $_REQUEST['add_article'] != '0'){
-					$saveBut = we_html_button::create_button('save', "javascript:document.we_form.submit();window.close();");
+					$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit();window.close();");
 					list($id, $type) = explode('_', $_REQUEST['add_article']);
 
 					$variantOptions = array(
@@ -1322,7 +1322,7 @@ function CalendarChanged(calObject) {
 		<form name="we_form">
 		<input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
 		<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />';
-				$saveBut = we_html_button::create_button('save', 'javascript:we_submit();');
+				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_submit();');
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 
 
@@ -1401,7 +1401,7 @@ function CalendarChanged(calObject) {
 
 				unset($shopVat);
 				unset($shopVats);
-				$saveBut = we_html_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
+				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 
 				$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
@@ -1479,7 +1479,7 @@ function CalendarChanged(calObject) {
 				break;
 
 			case 'edit_order_customer'; // edit data of the saved customer.
-				$saveBut = we_html_button::create_button('save', 'javascript:document.we_form.submit();self.close();');
+				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 				if(!Zend_Locale::hasCache()){
 					Zend_Locale::setCache(getWEZendCache());

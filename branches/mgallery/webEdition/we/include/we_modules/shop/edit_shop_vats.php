@@ -296,7 +296,7 @@ $formVat = '
 </tr>
 <tr>
 	<td width="100">&nbsp;</td>
-	<td>' . we_html_button::create_button('save', 'javascript:we_cmd(\'save_notclose\');') . '</td>
+	<td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');') . '</td>
 </tr>
 </table>
 </form>';
@@ -324,7 +324,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsEleme
 <body class=\"weDialogBody\" onload='window.focus();addListeners();'>" .
  we_html_multiIconBox::getHTML(
 	'weShopVates', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
-		'', '', we_html_button::create_button('close', 'javascript:we_cmd(\'close\');')
+		'', '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 ) . '
 </body></html>';
