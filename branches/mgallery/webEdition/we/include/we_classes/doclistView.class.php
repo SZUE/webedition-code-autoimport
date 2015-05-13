@@ -61,7 +61,7 @@ var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htm
 var locationDateFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
 
 var searchFields = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
-var trashButton=\'' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow(__we_new_id__)") . '\';
+var trashButton=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_new_id__)") . '\';
 var searchClassFolder = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
 var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
@@ -79,7 +79,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . '' . we_html_button::create_button("fa:btn_direction_right,fa-lg fa-caret-right", "javascript:switchSearch(1)", false) . '</td>
+	<td>' . we_html_tools::getPixel(40, 2) . '' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:switchSearch(1)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
@@ -87,7 +87,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . '' . we_html_button::create_button("fa:btn_direction_down,fa-lg fa-caret-down", "javascript:switchSearch(0)", false) . '</td>
+	<td>' . we_html_tools::getPixel(40, 2) . '' . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
@@ -119,7 +119,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		$GLOBALS['we_doc']->searchclassFolder->location = $r3;
 
 		for($i = 0; $i < $GLOBALS['we_doc']->searchclassFolder->height; $i++){
-			$button = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
+			$button = we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
 
 			$handle = "";
 
@@ -189,7 +189,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
 	</tr>
 	<tr>
-		<td width="215">' . we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:newinput();") . '</td>
+		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 		<td width="155"></td>
 		<td width="188" align="right">' . we_html_button::create_button("search", "javascript:search(true);") . '</td>
 		<td></td>

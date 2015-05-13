@@ -59,7 +59,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 	<td><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
+						we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
 						"") . '</td>
 </tr>';
 			case 1:

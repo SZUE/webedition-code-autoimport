@@ -239,15 +239,15 @@ top.content.hloaded = 1;'));
 		//$hiddens = rray("name" => "field", "value" => ''));
 
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
-		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('open_add_field')"));
+		$buttons_table->setCol(0, 0, array(), we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('open_add_field')"));
 		$buttons_table->setCol(1, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:we_cmd('open_edit_field')"));
+		$buttons_table->setCol(2, 0, array(), we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_field')"));
 		$buttons_table->setCol(3, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("delete", "javascript:we_cmd('delete_field')"));
+		$buttons_table->setCol(4, 0, array(), we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_field')"));
 		$buttons_table->setCol(5, 0, array(), we_html_tools::getPixel(1, 15));
-		$buttons_table->setCol(6, 0, array(), we_html_button::create_button("fa:btn_direction_up,fa-lg fa-caret-up", "javascript:we_cmd('move_field_up')"));
+		$buttons_table->setCol(6, 0, array(), we_html_button::create_button(we_html_button::DIRUP, "javascript:we_cmd('move_field_up')"));
 		$buttons_table->setCol(7, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(8, 0, array(), we_html_button::create_button("fa:btn_direction_down,fa-lg fa-caret-down", "javascript:we_cmd('move_field_down')"));
+		$buttons_table->setCol(8, 0, array(), we_html_button::create_button(we_html_button::DIRDOWN, "javascript:we_cmd('move_field_down')"));
 		$buttons_table->setCol(9, 0, array("class" => "defaultgray"), g_l('modules_customer', '[sort_edit_fields_explain]'));
 		$buttons_table->setCol(10, 0, array(), we_html_tools::getPixel(1, 5));
 		$buttons_table->setCol(10, 0, array(), we_html_button::create_button("reset", "javascript:we_cmd('reset_edit_order')"));
@@ -420,7 +420,7 @@ top.content.hloaded = 1;'));
 			$search->setCol(1, 0, array(), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::STRINGC, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
 
-			$sw = we_html_button::create_button('fa:btn_direction_right,fa-lg fa-caret-right', "javascript:we_cmd('switchToAdvance')");
+			$sw = we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:we_cmd('switchToAdvance')");
 
 			$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
 			$search->setCol(3, 0, array('align' => 'right', 'colspan' => $colspan), we_html_button::create_button_table(

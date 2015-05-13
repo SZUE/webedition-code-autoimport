@@ -98,7 +98,7 @@ while(false !== ($entry = $_dir->read())){
 		$table->setCol($_i, 1, array('valign' => 'top', 'class' => 'defaultfont'), $_name);
 		$table->setCol($_i, 2, array('valign' => 'top', 'align' => 'right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
 		$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button('fa:btn_function_reload,fa-lg fa-refresh', 'javascript: updateDict("' . $_name . '");'));
-		$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript: deleteDict("' . $_name . '");'));
+		$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
 	}
 }
 $_dir->close();
@@ -115,7 +115,7 @@ $_tab_1 = we_html_tools::htmlDialogLayout('
 		<div id="dictSelector" style="display: none; width: 400px; height: 220px;background-color: silver;">
 			<div id="appletPanel"></div>
 		</div>
-		<div id="addButt">' . we_html_button::create_button_table(array(we_html_button::create_button("save", "javascript:document.we_form.submit()"), we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:showDictSelector();"))) . '</div>
+		<div id="addButt">' . we_html_button::create_button_table(array(we_html_button::create_button("save", "javascript:document.we_form.submit()"), we_html_button::create_button(we_html_button::ADD, "javascript:showDictSelector();"))) . '</div>
 	</div>
 	 ', '', '');
 

@@ -258,7 +258,7 @@ EOS;
 	 * @return string
 	 */
 	function getMultiEdit($name, $data, $headline = "", $isVisible = true){
-		$_delBut = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o","javascript:#####placeHolder#####;wecf_hot();"));
+		$_delBut = addslashes(we_html_button::create_button(we_html_button::TRASH,"javascript:#####placeHolder#####;wecf_hot();"));
 		$_script = <<<EO_SCRIPT
 
 var $name = new multi_edit("{$name}MultiEdit",document.we_form,0,"$_delBut",$this->_width,false);
@@ -277,10 +277,10 @@ EO_SCRIPT;
 
 		$_script .= $name . '.showVariant(0);';
 
-		$_addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
+		$_addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
 
 		$_buttonTable = we_html_button::create_button_table(array(
-					we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeFromMultiEdit(" . $name . ")"),
+					we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")"),
 					$_addbut
 						)
 		);
@@ -366,11 +366,11 @@ EO_SCRIPT;
 					'</td>
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-					we_html_button::create_button("image:btn_function_plus", "javascript:addRow(" . ($_i + 1) . ")", true, 25) .
+					we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(" . ($_i + 1) . ")", true, 25) .
 					'</td>
 					<td style="padding-left:5px;padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-					(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow($_i)", true, 25)) .
+					(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_html_button::create_button(we_html_button::TRASH, "javascript:delRow($_i)", true, 25)) .
 					'</td>
 				</tr>';
 			$_i++;
@@ -398,13 +398,13 @@ var filter={
 	"op":\'' . $_filter_op_str . '\'
 };
 var buttons={
-	"add":\'' . we_html_button::create_button("image:btn_function_plus", "javascript:addRow(__CNT__)", true, 25) . '\',
-	"trash":\'' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow(__CNT__)", true, 25) . '\'
+	"add":\'' . we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(__CNT__)", true, 25) . '\',
+	"trash":\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__CNT__)", true, 25) . '\'
 };') .
 				we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_filter.js') .
 				$_filterTable .
 				'<div style="height:5px;"></div>' .
-				we_html_button::create_button("image:btn_function_plus", "javascript:addRow()");
+				we_html_button::create_button(we_html_button::PLUS, "javascript:addRow()");
 
 	}
 

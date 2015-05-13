@@ -687,8 +687,8 @@ function fsubmit(e) {
 
 	function formCreateCategoryChooser(){
 
-		$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
-		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o",'javascript:#####placeHolder#####;'));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH,'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
@@ -717,7 +717,7 @@ function fsubmit(e) {
 		)));
 
 		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
-		$table->setCol(4, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button_table(array(we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeAllCats()"), $addbut)));
+		$table->setCol(4, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()"), $addbut)));
 
 		return $table->getHtml() . $js;
 	}

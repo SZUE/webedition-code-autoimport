@@ -291,7 +291,7 @@ if($maxsel){
 	<td>' . we_html_tools::getPixel(22, 1) . '</td>
       </tr>
       <tr>
-	<td valign="top">' . we_html_button::create_button("fa:btn_direction_right,fa-lg fa-caret-right", "javascript:add_addr2sel()") . '</td>
+	<td valign="top">' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:add_addr2sel()") . '</td>
       </tr>
       <tr>
 	<td>' . we_html_button::create_button("delete", "javascript:rm_addrbook_entry();") . '</td>

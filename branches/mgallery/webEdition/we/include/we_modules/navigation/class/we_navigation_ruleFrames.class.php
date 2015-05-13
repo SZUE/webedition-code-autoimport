@@ -154,7 +154,7 @@ class we_navigation_ruleFrames{
 			we_html_button::create_button(
 				'select', "javascript:we_cmd('we_selector_directory', document.we_form.elements.FolderID.value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "')"), 10);
 		$yuiSuggest->setTrashButton(
-			we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
+			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -345,7 +345,7 @@ function we_cmd(){
 
 		$addbut = we_html_button::create_button(
 				"add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
-		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:#####placeHolder#####;'));
+		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
@@ -381,7 +381,7 @@ function we_cmd(){
 			'colspan' => 2, 'align' => 'right'
 			), we_html_button::create_button_table(
 				array(
-					we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeAllCats()"), $addbut
+					we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()"), $addbut
 		)));
 
 		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_html_element::jsElement('

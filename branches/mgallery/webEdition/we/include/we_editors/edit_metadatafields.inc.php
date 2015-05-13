@@ -208,7 +208,7 @@ function build_dialog($selected_setting = 'ui'){
 <tr id="metadataRow_' . $key . '">
 	<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
 	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "onchange" => "toggleType(this, " . $key . ")")) . '</td>
-	<td align="right" width="30">' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow(" . $_i . ")") . '</td>
+	<td align="right" width="30">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $_i . ")") . '</td>
 </tr>
 <tr id="metadataRow2_' . $key . '">
 	<td style="padding-bottom:6px;padding-right:5px;">
@@ -235,19 +235,19 @@ function build_dialog($selected_setting = 'ui'){
 					$_adv_row .= '<tr>
 						<td width="15%"></td>
 						<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][' . $i++ . ']', 24, $proposal, 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
-						<td width="25">' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delProposition(this)") . '</td>
+						<td width="25">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
 					</tr>';
 				}
 			} else {
 				$_adv_row .= '<tr>
 					<td width="15%"></td>
 					<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, '', 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
-					<td width="25">' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delProposition(this)") . '</td>
+					<td width="25">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
 				</tr>';
 			}
 			$_adv_row .= '<tr>
 				<td align="right" width="15%"></td>
-				<td align="left" style="">' . we_html_button::create_button('image:btn_function_plus', 'javascript:addProposition(this, ' . $key . ')') . '</td>
+				<td align="left" style="">' . we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, ' . $key . ')') . '</td>
 				<td width="25"></td>
 			</tr>
 		</table>
@@ -288,7 +288,7 @@ function build_dialog($selected_setting = 'ui'){
 		var typeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, 'textfield', false, array('class' => 'defaultfont', 'onchange' => 'toggleType(this, __we_new_id__)')))) . '";
 		var fieldSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, '', false, array('class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)')))) . '";
 		var modeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $_metadata_modes, 1, 'none', false, array('class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)')))) . '";
-		var addPropositionBtn = "' . str_replace("\n", "\\n", addslashes(we_html_button::create_button('image:btn_function_plus', 'javascript:addProposition(this, __we_new_id__)'))) . '";
+		var addPropositionBtn = "' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, __we_new_id__)'))) . '";
 
 		var elem = document.getElementById("metadataTable");
 		newID = (elem.rows.length) / 5;
@@ -320,7 +320,7 @@ function build_dialog($selected_setting = 'ui'){
 				cell = document.createElement("TD");
 				cell.width="30";
 				cell.align="right"
-				cell.innerHTML=\'' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delRow(' + newID + ')") . '\';
+				cell.innerHTML=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(' + newID + ')") . '\';
 			newRow.appendChild(cell);
 			elem.appendChild(newRow);
 
@@ -408,7 +408,7 @@ function build_dialog($selected_setting = 'ui'){
 
 	function getPropositionRow(indexMeta, indexProp){
 		var proposalInp = "' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '";
-		var delPropositionBtn = "' . str_replace("\n", "\\n", addslashes(we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript:delProposition(this)'))) . '";
+		var delPropositionBtn = "' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:delProposition(this)'))) . '";
 
 		var row = document.createElement("TR");
 		var cell = document.createElement("TD");
@@ -445,7 +445,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_metadata = new we_html_table(array('border' => 1, 'cellpadding' => 0, 'cellspacing' => 2, 'width' => 440, 'height' => 50), 4, 3);
 
-			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_html_button::create_button('image:btn_function_plus', 'javascript:addRow()');
+			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_html_button::create_button(we_html_button::PLUS, 'javascript:addRow()');
 
 			$_contentFinal = array(
 				array('headline' => '', 'html' => $_content, 'space' => 0)

@@ -354,7 +354,7 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$button = we_html_button::create_button("fa:btn_add_file,fa-plus,fa-lg fa-file-o", "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 44, 0, '', '', false, false, '_' . $index);
 		$addFromTreeButton = we_html_button::create_button("fa:btn_import_files,fa-lg fa-upload", "javascript:weCollectionEdit.doClickAddItems(this);", true, 44, 22);
 		$openbutton = we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . (addTblPrefix($this->remTable) === FILE_TABLE ? we_base_ContentTypes::TEMPLATE : we_base_ContentTypes::OBJECT_FILE) . "','" . addTblPrefix($this->remTable) . "'); }", true, 27, 22, '', '', $item['id'] === -1, false, '_' . $index);
-		//$trashButton = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index . "');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22, '', '', $item['id'] === -1, false, '_' . $index);
+		//$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputItem_" . $index . "');_EditorFrame.setEditorIsHot(true);weCollectionEdit.repaintAndRetrieveCsv();", true, 27, 22, '', '', $item['id'] === -1, false, '_' . $index);
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
 		$yuiSuggest->setContentType('folder,' . trim($this->remCT, ','));
 		$yuiSuggest->setCheckFieldValue(false);
@@ -374,9 +374,9 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$rowControllsArr = array();
 		$rowControllsArr[] = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);//top.we_cmd('switch_edit_page',1,we_transaction);", true, 100, 22);
 		$rowControllsArr[] = we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index));
-		$rowControllsArr[] = we_html_button::create_button('fa:btn_direction_up,fa-lg fa-caret-up', 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
-		$rowControllsArr[] = we_html_button::create_button('fa:btn_direction_down,fa-lg fa-caret-down', 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-		$rowControllsArr[] = we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
+		$rowControllsArr[] = we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
+		$rowControllsArr[] = we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
+		$rowControllsArr[] = we_html_button::create_button(we_html_button::TRASH, 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
 
 		$rowControlls = we_html_button::create_button_table($rowControllsArr, 5);
 
@@ -410,7 +410,7 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 			$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
 			$iconHTML = we_search_view::getHtmlIconThmubnail($file, 200, 200);
 		}
-		$trashButton = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:weCollectionEdit.deleteItem('grid', this);", true, 27, 22);
+		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:weCollectionEdit.deleteItem('grid', this);", true, 27, 22);
 
 		return we_html_element::htmlDiv(array(
 			'style' => 'position:relative;width:' . $this->gridItemSize . 'px;height:' . $this->gridItemSize . 'px;float:left;dislpay:block;',

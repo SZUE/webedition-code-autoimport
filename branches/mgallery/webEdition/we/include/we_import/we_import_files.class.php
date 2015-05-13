@@ -325,7 +325,7 @@ function uploadFinished() {
 	function getStep2Legacy(){
 		// create Second Screen ##############################################################################
 		$but = we_html_tools::getPixel(10, 22) .
-			we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "wedelRow(WEFORMNUM + 1,this)");
+			we_html_button::create_button(we_html_button::TRASH, "wedelRow(WEFORMNUM + 1,this)");
 		$but = str_replace(array("\n", "\r"), " ", $but);
 		$maxsize = we_base_file::getHumanFileSize(getUploadMaxFilesize(false, $GLOBALS['DB_WE']), we_base_file::SZ_MB);
 
@@ -852,8 +852,8 @@ function next() {
 	function getHTMLCategory(){
 		$_width_size = 300;
 
-		$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
-		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:#####placeHolder#####;'));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 
@@ -897,7 +897,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 			'colspan' => 2, 'align' => 'right'
 			), we_html_button::create_button_table(
 				array(
-					we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeAllCats()"), $addbut
+					we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()"), $addbut
 		)));
 
 		return $table->getHtml() . $js . we_html_element::jsElement('

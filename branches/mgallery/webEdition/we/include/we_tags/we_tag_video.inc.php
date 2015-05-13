@@ -53,7 +53,7 @@ function we_tag_video($attribs){
 		$button = we_html_button::create_button('fa:btn_edit_video,fa-lg fa-pencil,fa-lg fa-file-video-o', "javascript:we_cmd('we_selector_document','" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ", '" . we_base_ContentTypes::VIDEO . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
 
 		// Create "Delete/Clear" button
-		$clear_button = we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', "javascript:we_cmd('remove_image', '" . $name . "')", true);
+		$clear_button = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('remove_image', '" . $name . "')", true);
 
 		return '
 <table class="weEditTable spacing2 padding0">

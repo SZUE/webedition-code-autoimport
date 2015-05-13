@@ -279,7 +279,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					'<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
-					we_html_button::create_button('fa:edit,fa-lg fa-pencil', 'javascript:goTemplate(' . $myid . ')') .
+					we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(' . $myid . ')') .
 					'</td></tr></table>' :
 					$path);
 
@@ -320,7 +320,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$tlist = array_unique($temps);
 
 		$fieldname = 'we_' . $this->Name . '_TemplateID';
-		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button('fa:edit,fa-lg fa-pencil', 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
+		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
 		if($tlist){
 			$foo = array();

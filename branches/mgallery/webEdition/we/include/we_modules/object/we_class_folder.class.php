@@ -532,7 +532,7 @@ class we_class_folder extends we_folder{
 
 			$button = ($i == 0 ?
 					we_html_tools::getPixel(26, 10) :
-					we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:del(" . $i . ");", true, 26, 22, "", "", false)
+					we_html_button::create_button(we_html_button::TRASH, "javascript:del(" . $i . ");", true, 26, 22, "", "", false)
 				);
 
 
@@ -622,7 +622,7 @@ class we_class_folder extends we_folder{
 </tr>
 <tr>
 	<td colspan="2"></td>
-	<td colspan="3">' . we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:newinput();") . '</td>
+	<td colspan="3">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 	<td colspan="4" align="right">' . we_html_button::create_button("search", "javascript:sub();") . '</td>
 </tr>
 </form>
@@ -693,7 +693,7 @@ class we_class_folder extends we_folder{
 			<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") . '</td>
+				<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") . '</td>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[loesch]') : "") . '</td>
 			</tr>

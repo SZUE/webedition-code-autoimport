@@ -92,7 +92,7 @@ if($DB_WE->num_rows()){
 }
 
 $_buttons = we_html_button::position_yes_no_cancel(
-		we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:top.opener.top.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+		we_html_button::create_button(we_html_button::EDIT, "javascript:top.opener.top.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 
 

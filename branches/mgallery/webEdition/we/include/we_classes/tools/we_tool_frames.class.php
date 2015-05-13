@@ -386,7 +386,7 @@ function we_save() {
 		if($showtrash){
 			$_button = we_html_button::create_button_table(array(
 					we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled),
-					we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
+					we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
 					), 10);
 			$_width = 157;
 		} else {

@@ -1328,7 +1328,7 @@ _multiEditorreload = true;";
 			}
 		}
 
-		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br/>' . we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, 0, 0, "", "", true, false);
+		$content.='</select><br/>' . we_html_tools::getPixel(5, 10) . '<br/>' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('display_user',document.we_form." . $this->Name . "_Users.value)", true, 0, 0, "", "", true, false);
 
 		$parts = array(
 			array(
@@ -1698,7 +1698,7 @@ function delElement(elvalues,elem) {
 
 				$content1.='
 <tr><td colspan="2">' . $weAcSelector . '</td>
-	<td><div style="position:relative; top:-1px">' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' .
+	<td><div style="position:relative; top:-1px">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' .
 					($k == FILE_TABLE ?
 						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "[$key]", g_l('modules_users', '[make_def_ws]'), true, "defaultfont", 'top.content.setHot();') . '</td>' :
 						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') . '
@@ -1712,7 +1712,7 @@ function delElement(elvalues,elem) {
 		<td>' . we_html_tools::getPixel(40, 3) . '</td>
 		<td>' . we_html_tools::getPixel(90, 3) . '</td>
 	</tr>
-	<tr><td colspan="4">' . we_html_button::create_button("image:btn_function_plus", "javascript:top.content.setHot();addElement(document.we_form." . $obj_values . ");", true) . '</td></tr>
+	<tr><td colspan="4">' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addElement(document.we_form." . $obj_values . ");", true) . '</td></tr>
 </table>';
 
 			if($parentWsp[$k]){

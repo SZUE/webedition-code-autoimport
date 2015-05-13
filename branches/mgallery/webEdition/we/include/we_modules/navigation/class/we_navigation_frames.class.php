@@ -426,7 +426,7 @@ function setTab(tab) {
 		$yuiSuggest->setTable($this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
 		$yuiSuggest->setWidth($this->_width_size - 190);
 		$yuiSuggest->setSelectButton($_buttons);
-		$yuiSuggest->setTrashButton(we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', true, 27, 22));
+		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', true, 27, 22));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -854,7 +854,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 					array(
 						we_html_button::create_button('preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
 						we_html_button::create_button('refresh', 'javascript:' . $this->topFrame . '.we_cmd("populate");'),
-						we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
+						we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
 				)),
 				'space' => $this->_space_size
 			),
@@ -1110,7 +1110,7 @@ function onSelectionClassChangeJS(value) {
 			$_button = we_html_button::create_button_table(
 					array(
 					we_html_button::create_button('select', $_cmd, true, 100, 22, '', '', $disabled),
-					we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
+					we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
 					), 10);
 			$_width = 157;
 		} else {
@@ -1142,8 +1142,8 @@ function onSelectionClassChangeJS(value) {
 	}
 
 	function getHTMLCategory(){
-		$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_selector_category','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
-		$del_but = addslashes(we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:#####placeHolder#####;' . $this->topFrame . '.mark();'));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener." . $this->topFrame . ".mark();')");
+		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;' . $this->topFrame . '.mark();'));
 
 		$variant_js = '
 var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
@@ -1189,7 +1189,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 		$table->setCol(
 			4, 1, array('align' => 'right'), we_html_button::create_button_table(
-				array(we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:removeAllCats()"), $addbut)
+				array(we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()"), $addbut)
 			)
 		);
 		$table->setCol(5, 0, array('colspan' => 2), we_html_tools::getPixel(3, 3));

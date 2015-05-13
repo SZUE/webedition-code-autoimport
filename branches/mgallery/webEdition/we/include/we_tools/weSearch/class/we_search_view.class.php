@@ -452,7 +452,7 @@ weSearch.conf = {
 	checkRightDropTable: ' . (we_search_search::checkRightDropTable() ? 1 : 0) . '
 };
 weSearch.elems = {
-	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', "javascript:weSearch.delRow(__we_new_id__)")) . '\',
+	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)")) . '\',
 	btnSelector: \'' . str_replace("'", "\'", we_html_button::create_button('select', "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value');")) . '\',
 	fieldSearch: \'' . str_replace("'", "\'", we_html_tools::htmlTextInput('search' . $whichSearch . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . $whichSearch . '[__we_new_id__]"', 'text', 170)) . '\',
 	selStatus: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
@@ -1679,7 +1679,7 @@ weSearch.g_l = {
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'font-weight:bold;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . ' (ID: ' . $_result[$f]['docID'] . ')"><u>' . $_result[$f]["Text"] . '</u></a>'),
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => ($_result[$f]['IsUsed'] ? we_html_button::create_button("fa:btn_direction_right,fa-lg fa-caret-right", "javascript:weSearch.toggleAdditionalContent(this, " . $_result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $_result[$f]['docID'], false, 'Verwendet in:') : '')),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => ($_result[$f]['IsUsed'] ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $_result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $_result[$f]['docID'], false, 'Verwendet in:') : '')),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $_result[$f]['fileSize']),
 											array('elem' => 'td', 'attribs' => ($_result[$f]['IsUsed'] ? 'title="Dokument wird benutzt." onclick="weSearch.showAdditional(' . $_result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($_result[$f]['IsUsed'] ? 'green' : 'yellow') . ';"></i>'),
 											array('elem' => 'td', 'attribs' => 'title="' . ($_result[$f]['media_alt'] ? : 'Alt-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($_result[$f]['media_alt'] ? 'green' : 'red') . ';"></i>'),
@@ -2027,7 +2027,7 @@ weSearch.g_l = {
 			array();
 
 		for($i = 0; $i < $this->searchclass->height; $i++){
-			$button = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
+			$button = we_html_button::create_button(we_html_button::TRASH, 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
 
 			$locationDisabled = $handle = '';
 
@@ -2131,7 +2131,7 @@ weSearch.g_l = {
 		$out .= '</tbody></table>' .
 			'<table>
 <tr>
-<td>' . we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:weSearch.newinputAdvSearch();") . '</td>
+<td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinputAdvSearch();") . '</td>
 <td>' . we_html_tools::getPixel(10, 10) . '</td>
 <td colspan="7" align="right"></td>
 </tr>
@@ -2217,7 +2217,7 @@ weSearch.g_l = {
 			array();
 
 		for($i = ($whichSearch === self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : 0); $i < $this->searchclass->height; $i++){
-			$button = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
+			$button = we_html_button::create_button(we_html_button::TRASH, 'javascript:weSearch.delRow(' . $i . ');', true, '', '', '', '', false);
 
 			$locationDisabled = $handle = '';
 
@@ -2321,7 +2321,7 @@ weSearch.g_l = {
 		$out .= '</tbody></table>' .
 			'<table>
 <tr>
- <td>' . we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:weSearch.newinputAdvSearch();") . '</td>
+ <td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinputAdvSearch();") . '</td>
  <td>' . we_html_tools::getPixel(10, 10) . '</td>
  <td colspan="7" align="right"></td>
 </tr>

@@ -130,7 +130,7 @@ abstract class we_editor_footer{
 		$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 			$table->addCol(2);
-			$table->setCol(0, $_pos++, array('valign' => 'top'), we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+			$table->setCol(0, $_pos++, array('valign' => 'top'), we_html_button::create_button(we_html_button::TRASH, "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 			$table->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 	}
@@ -328,7 +328,7 @@ abstract class we_editor_footer{
 		//	Button edit !!!
 		if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_CONTENT && in_array(we_base_constants::WE_EDITPAGE_CONTENT, $GLOBALS['we_doc']->EditPageNrs)){ // then button "edit"
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array("valign" => "top"), we_html_button::create_button(we_html_button::EDIT, "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
 			$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 		}
 		//	Button properties

@@ -90,7 +90,7 @@ function formWebuser($canChange, $width = 388){
 
 	$button = we_html_button::create_button("select", "javascript:we_cmd('we_customer_selector',document.we_form.elements['" . $idname . "'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value')");
 
-	$_trashBut = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);");
+	$_trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);");
 	/*
 	  $out = we_html_tools::htmlFormElementTable($inputFeld,
 	  g_l('modules_customer','[connected_with_customer]'),

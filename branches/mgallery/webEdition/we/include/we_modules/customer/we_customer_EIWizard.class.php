@@ -1738,8 +1738,8 @@ function selector_cmd(){
 				"cus" => we_base_request::_(we_base_request::INTLIST, "cus", "")));
 
 
-		$delallbut = we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
-		$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:selector_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:selector_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
 		$custs = new we_chooser_multiDir(400, ($customers ? : array()), "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 
 		$custs->isEditable = permissionhandler::hasPerm("EDIT_CUSTOMER");
@@ -1842,8 +1842,8 @@ document.we_form.filter_count.value="' . $count . '";');
 		$table->addRow();
 		$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
-		$plus = we_html_button::create_button("image:btn_function_plus", "javascript:filter_cmd('add_filter')");
-		$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:filter_cmd('del_filter')");
+		$plus = we_html_button::create_button(we_html_button::PLUS, "javascript:filter_cmd('add_filter')");
+		$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:filter_cmd('del_filter')");
 
 		$c++;
 		$table->addRow();

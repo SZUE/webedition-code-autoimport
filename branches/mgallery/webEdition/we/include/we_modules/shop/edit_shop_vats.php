@@ -234,7 +234,7 @@ if($allVats){
 			<td>' . $_weShopVat->territory . '</td>
 			<td>' . g_l('global', ($_weShopVat->standard ? '[yes]' : '[no]')) . '</td>
 			<td>' . we_html_button::create_button('fa:btn_edit_edit,fa-lg fa-pencil', 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
-			<td>' . we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
+			<td>' . we_html_button::create_button(we_html_button::TRASH, 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
 		</tr>';
 		unset($_weShopVat);
 	}
@@ -245,7 +245,7 @@ if($allVats){
 	$vatTable = '';
 }
 
-$plusBut = we_html_button::create_button('image:btn_function_plus', 'javascript:we_cmd(\'addVat\')');
+$plusBut = we_html_button::create_button(we_html_button::PLUS, 'javascript:we_cmd(\'addVat\')');
 
 // formular to edit the vats
 $selPredefinedNames = we_html_tools::htmlSelect(

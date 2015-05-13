@@ -118,7 +118,7 @@ $parts = array(
 		$_select .
 		$_hiddens .
 		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
-		we_html_button::create_button('fa:edit,fa-lg fa-pencil', 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !permissionhandler::hasPerm("CAN_EDIT_VALIDATION"))
+		we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !permissionhandler::hasPerm("CAN_EDIT_VALIDATION"))
 		. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
 		we_html_button::create_button(we_html_button::OK, 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
 		. '</td></tr></table>'

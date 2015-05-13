@@ -688,7 +688,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			}
 		}
 
-		$deselect = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:document.we_form.global_mailing_list.value=''");
+		$deselect = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.global_mailing_list.value=''");
 
 		$gml_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 538), 4, 2);
 		$gml_table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[global_mailing_list]'));
@@ -786,8 +786,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		if($this->View->newsletter->groups[$group]->SendAll == 0){
 
-			$delallbut = we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:we_cmd('del_all_customers'," . $group . ")");
-			$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs," . $group . ");','','','',1)");
+			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_customers'," . $group . ")");
+			$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs," . $group . ");','','','',1)");
 
 			$cats = new we_chooser_multiDir(self::def_width, $this->View->newsletter->groups[$group]->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CUSTOMER_TABLE);
 			$cats->extraDelFn = "document.we_form.ngroup.value=$group";
@@ -800,9 +800,9 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 	}
 
 	function getHTMLExtern($group){
-		$delallbut = we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:we_cmd('del_all_files'," . $group . ")");
+		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_files'," . $group . ")");
 		$wecmdenc4 = we_base_request::encCmd("opener.we_cmd('add_file',top.currentID,$group);");
-		$addbut = we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','" . $wecmdenc4 . "','',1);");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','" . $wecmdenc4 . "','',1);");
 
 
 		$buttons = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
@@ -890,8 +890,8 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table->addRow();
 			$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
-			$plus = we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('add_filter',$group)");
-			$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('del_filter',$group)");
+			$plus = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_filter',$group)");
+			$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_filter',$group)");
 
 			$c++;
 			$table->addRow();
@@ -917,13 +917,13 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$arr = $this->View->newsletter->getEmailsFromList(oldHtmlspecialchars($this->View->newsletter->groups[$group]->Emails), 1);
 		// Buttons to handle the emails in  the email list
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
-		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:we_cmd('add_email', " . $group . ");"));
+		$buttons_table->setCol(0, 0, array(), we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('add_email', " . $group . ");"));
 		$buttons_table->setCol(1, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:we_cmd('edit_email', " . $group . ");"));
+		$buttons_table->setCol(2, 0, array(), we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_email', " . $group . ");"));
 		$buttons_table->setCol(3, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("fa:delete,fa-lg fa-trash-o", "javascript:deleteit(" . $group . ")"));
+		$buttons_table->setCol(4, 0, array(), we_html_button::create_button(we_html_button::DELETE, "javascript:deleteit(" . $group . ")"));
 		$buttons_table->setCol(5, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(6, 0, array(), we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:deleteall(" . $group . ")"));
+		$buttons_table->setCol(6, 0, array(), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:deleteall(" . $group . ")"));
 
 		// Dialog table for the email block
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 6, 3);
@@ -1169,8 +1169,8 @@ window.onload=extraInit;');
 
 			$buttons = we_html_tools::getPixel(440, 1);
 
-			$plus = we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('addBlock','" . $counter . "')");
-			$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('delBlock','" . $counter . "')");
+			$plus = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addBlock','" . $counter . "')");
+			$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delBlock','" . $counter . "')");
 
 			$buttons.=(count($this->View->newsletter->blocks) > 1 ?
 					we_html_button::position_yes_no_cancel($plus, $trash) :
@@ -1202,8 +1202,8 @@ window.onload=extraInit;');
 			$parts[] = array("headline" => g_l('modules_newsletter', '[emails]'), "html" => $this->getHTMLEmails($i), "space" => 140);
 
 
-			$plus = ($i == $count - 1 ? we_html_button::create_button("image:btn_function_plus", "javascript:we_cmd('addGroup')") : null);
-			$trash = ($count > 1 ? we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:we_cmd('delGroup'," . $i . ")") : null);
+			$plus = ($i == $count - 1 ? we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addGroup')") : null);
+			$trash = ($count > 1 ? we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delGroup'," . $i . ")") : null);
 
 			$buttons = we_html_button::create_button_table(array($plus, $trash), 10, array("align" => "right"));
 
@@ -1632,13 +1632,13 @@ self.focus();
 
 
 		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
-		$buttons_table->setCol(0, 0, array(), we_html_button::create_button("fa:add,fa-lg fa-plus", "javascript:addBlack();"));
+		$buttons_table->setCol(0, 0, array(), we_html_button::create_button(we_html_button::ADD, "javascript:addBlack();"));
 		$buttons_table->setCol(1, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(2, 0, array(), we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:editBlack();"));
+		$buttons_table->setCol(2, 0, array(), we_html_button::create_button(we_html_button::EDIT, "javascript:editBlack();"));
 		$buttons_table->setCol(3, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(4, 0, array(), we_html_button::create_button("fa:delete,fa-lg fa-trash-o", "javascript:deleteBlack()"));
+		$buttons_table->setCol(4, 0, array(), we_html_button::create_button(we_html_button::DELETE, "javascript:deleteBlack()"));
 		$buttons_table->setCol(5, 0, array(), we_html_tools::getPixel(1, 5));
-		$buttons_table->setCol(6, 0, array(), we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:deleteallBlack()"));
+		$buttons_table->setCol(6, 0, array(), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:deleteallBlack()"));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 3);
 		$table->setCol(0, 0, array("valign" => "middle"), we_html_tools::htmlSelect("blacklist_sel", $arr, 10, "", false, array('style' => "width:388px"), "value", 600));
@@ -1917,7 +1917,7 @@ self.focus();
 			if($k >= $offset && $k < $endRow){
 
 				$edit = we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:editEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "','" . $cols[1] . "','" . $cols[2] . "','" . $cols[3] . "','" . $cols[4] . "','" . $cols[5] . "')");
-				$trash = we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "')");
+				$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:delEmailFile(" . $emailkey[$k] . ",'" . $cols[0] . "')");
 
 				$content[$counter] = array(
 					array(

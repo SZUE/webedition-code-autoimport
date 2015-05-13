@@ -50,7 +50,7 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 	$db = new DB_WE();
 	foreach($users as $user){
 		$foo = getHash('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($user), $db);
-		$content .= '<tr><td><img src="' . TREE_ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:delUser('" . $user . "');") . '</td></tr>';
+		$content .= '<tr><td><img src="' . TREE_ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:delUser('" . $user . "');") . '</td></tr>';
 	}
 } else {
 	$content .= '<tr><td><img src="' . TREE_ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? g_l('cockpit', '[all_users]') : $_SESSION['user']['Username']) . '</td><td></td><td></td></tr>';
@@ -63,8 +63,8 @@ $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><t
 		"UserIDTmp" => ""
 	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
 			array(
-				we_html_button::create_button('fa:delete_all,fa-lg fa-database,fa-lg fa-trash-o', "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true),
-				we_html_button::create_button('fa:add,fa-lg fa-plus', "javascript:opener.getUser('we_users_selector','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements[\"UserIDTmp\"].value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
+				we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true),
+				we_html_button::create_button(we_html_button::ADD, "javascript:opener.getUser('we_users_selector','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements[\"UserIDTmp\"].value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
 		)) . '</td></tr>' : '') . '</table>';
 
 $oShowUser = we_html_tools::htmlFormElementTable($sUsrContent, g_l('cockpit', '[following_users]'), "left", "defaultfont");

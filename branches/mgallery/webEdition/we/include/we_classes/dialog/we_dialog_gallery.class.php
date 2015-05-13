@@ -88,7 +88,7 @@ top.close();
 		$yuiSuggest->setOpenButton(we_html_button::create_button("fa:btn_edit_edit,fa-lg fa-pencil", "javascript:if(document.we_form.elements['" . $idname . "'].value){opener.top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "'); return false}"));
 		$yuiSuggest->setAdditionalButton(we_html_button::create_button("fa:btn_add_collection,fa-plus,fa-lg fa-suitcase", "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix(FILE_TABLE) . "', 'wegallery');", true, 0, 0, "", "", false, false), 4);
 
-		$btnTrash = we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
+		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
 
 		$collid = we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), 'Sammlung');
 		$tempArr = id_to_path(isset($this->args['templateIDs']) ? $this->args['templateIDs'] : '', TEMPLATES_TABLE, null, false, true);
@@ -99,7 +99,7 @@ top.close();
 		$input = we_html_tools::htmlSelect('we_dialog_args[tmpl]', $templatesArr, 1, (isset($this->args['tmpl']) ? id_to_path($this->args['tmpl'], TEMPLATES_TABLE) : 0), false, array(), '', 430);
 		$tmpl = we_html_tools::htmlFormElementTable($input, 'Template');
 
-		$btnTrash = we_html_button::create_button('fa:btn_function_trash,fa-lg fa-trash-o', "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
+		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
 		/*
 		$trash = '<table cellpadding="0" style="border-spacing: 0px;border-style:none">
 			<tbody>

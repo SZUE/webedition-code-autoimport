@@ -35,7 +35,7 @@ function printHeaderHTML($ret){
 	' . ($ret ? '' : '
 					<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss") . '</td>
 					<td>' . we_html_button::create_button("fa:btn_add_file,fa-plus,fa-lg fa-file-o", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>
-					<td class="trash">' . we_html_button::create_button("fa:btn_function_trash,fa-lg fa-trash-o", "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>') .
+					<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>') .
 		'</tr>
 		</table>
 		<table class="headerLines">
@@ -57,7 +57,7 @@ function printFooterTable($ret, $filter, $currentName){
 		$yes_button = we_html_button::create_button(we_html_button::OK, "javascript:top.exit_close();");
 	} else {
 		$cancel_button = we_html_button::create_button("close", "javascript:top.exit_close();");
-		$yes_button = we_html_button::create_button("fa:edit,fa-lg fa-pencil", "javascript:editFile();");
+		$yes_button = we_html_button::create_button(we_html_button::EDIT, "javascript:editFile();");
 	}
 	if($filter === "all_Types"){
 		$options = '<option value="' . str_replace(' ', '%20', g_l('contentTypes', '[all_Types]')) . '">' . g_l('contentTypes', '[all_Types]') . '</option>';
