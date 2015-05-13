@@ -70,7 +70,6 @@ var size={
         	  	<div id="console" style="display:none;">
         		  <div id="weSizeDiv">
          	 		  <input type="text" name="CropWidth" id="CropWidth" value="0" onchange="CropTool.setCropWidth(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
-								<span style="float:left">x</span>
 								<input type="text" name="CropHeight" id="CropHeight" value="0" onchange="CropTool.setCropHeight(this.value);" onkeydown="return CropTool.catchKeystroke(event,this);" />
               </div>
               <a id="cropButtonZoomIn" title="' . g_l('crop', '[enlarge_crop_area]') . '" onmousedown="CropTool.zoom(1);"><i class="fa fa-expand"></i></a>
