@@ -727,7 +727,6 @@ table.error td pre{
 #messageConsole{
 	position:relative;
 	float:left;
-	margin-top: 5px;
 }
 
 .messageConsoleMessage{/*message*/
@@ -738,32 +737,11 @@ table.error td pre{
 	margin: 3px 10px 0px 0px;
 }
 
-#messageConsoleImageDiv div{
-	border: none;
-	padding: 1px;
-	width: 16px;
-	height: 16px;
+#messageConsole i{
+	color:#cbcbcb;
 }
-
-.imgNotice{
-	background-image: url(/webEdition/images/messageConsole/notice.gif);
-}
-.imgNoticeActive{
-	background-image: url(/webEdition/images/messageConsole/noticeActive.gif);
-}
-.imgWarning{
-	background-image: url(/webEdition/images/messageConsole/warning.gif);
-}
-
-.imgWarningActive{
-	background-image: url(/webEdition/images/messageConsole/warningActive.gif);
-}
-
-.imgError{
-	background-image: url(/webEdition/images/messageConsole/error.gif);
-}
-.imgErrorActive{
-	background-image: url(/webEdition/images/messageConsole/errorActive.gif);
+#messageConsole i.active{
+	color:#5f97cc;
 }
 
 /*color chooser*/

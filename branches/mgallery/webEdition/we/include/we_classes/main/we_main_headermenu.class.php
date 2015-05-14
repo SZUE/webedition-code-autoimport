@@ -52,7 +52,7 @@ onunload=function() {
 	<div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div>
 		</td>
 		<td>
-	<div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><div id="messageConsoleImage' . $consoleName . '" class="imgNotice"></div></div>
+	<div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-comment"></i></div>
 </td>
 	</tr>
 	</table>

@@ -12,7 +12,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * any later version.
- * 
+ *
  * The GNU General Public License can be found at
  * http://www.gnu.org/copyleft/gpl.html.
  * A copy is found in the textfile
@@ -41,7 +41,7 @@ class we_base_menu{
 
 	public function getJS(){
 
-		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js').
+		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 			we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
 			we_html_element::jsElement('
 function menuaction(cmd,cmd1) {
@@ -54,8 +54,7 @@ we_lcmd(cmd,cmd1);
 	}
 
 	public function getHTML(){
-		$out = '<span class="preload1"></span><span class="preload2"></span><span class="preload3"></span><span class="preload4"></span>' .
-			'<ul id="nav">';
+		$out = '<ul id="nav">';
 		$menus = array();
 		foreach($this->entries as $id => $e){
 			if($e['parent'] == 0){
@@ -127,7 +126,7 @@ we_lcmd(cmd,cmd1);
 				} else {
 					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
 						if($e['enabled'] == 1){
-							$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>';
+							$opt .= '<li><a class="fly" href="#void">' . $mtext . '<i class="fa fa-caret-right"></i></a><ul>';
 							$this->h_pCODE($men, $opt, $id, $newAst);
 							$opt .= '</ul></li>';
 						}

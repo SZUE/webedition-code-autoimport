@@ -44,25 +44,31 @@ function messageConsoleWindow(win) {
 	};
 
 	this.addMessage = function (msg) {
-		var _className;
+		var _className,className;
 
 		switch (msg.prio) {
 			default:
 				_className = "imgNoticeActive";
+				className="comment";
 				break;
 
 			case 2:
 				_className = "imgWarningActive";
+				className="thumbs-down";
 				break;
 			case 4:
 				_className = "imgErrorActive";
+				className="exclamation-triangle";
 				break;
 
 		}
 
 		var _li = this.doc.createElement("li");
 		_li.className = "defaultfont " + _className;
+		var i= this.doc.createElement("i");
+		i.className="fa-li fa fa-lg active fa-"+className;
 		_txt = this.doc.createTextNode(msg.message);
+		_li.appendChild(i);
 		_li.appendChild(_txt);
 
 		var _pElem = this.doc.getElementById("jsMessageUl");

@@ -88,17 +88,17 @@ function messageConsoleView(conName, win) {
 
 		var _img;
 		switch (prio) {
-			case 2:
-				_img = "imgWarning";
+			case 2://warning
+				_img = "thumbs-down";
 				break;
-			case 4:
-				_img = "imgError";
+			case 4://error
+				_img = "exclamation-triangle";
 				break;
-			default:
-				_img = "imgNotice";
+			default://notice
+				_img = "comment";
 				break;
 		}
-		this.win.document.getElementById("messageConsoleImage" + this.name).className = _img + (active ? "Active" : "");
+		this.win.document.getElementById("messageConsoleImage" + this.name).className = "fa fa-lg fa-" + _img + (active ? " active" : "");
 	};
 
 	/**

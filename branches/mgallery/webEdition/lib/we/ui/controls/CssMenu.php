@@ -65,16 +65,13 @@ function menuaction(cmd) {
 }');
 	}
 
-	//remove cmdTarget in 6.4 after Java Menu is removed
-	function getHTMLMenu($old = true, $cmdTarget = ''){
-
+	function getHTMLMenu($old = true){
 		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
 
-			$out = '<span class="preload1"></span><span class="preload2"></span><span class="preload3"></span><span class="preload4"></span>' .
-				'<ul id="nav">';
-			$menus = array();
+		$out = '<ul id="nav">';
+		$menus = array();
 
-			foreach($this->entries as $id => $e){
+		foreach($this->entries as $id => $e){
 			if($e['parent'] == 0){
 				if(isset($e['perm']) ? we_base_menu::isEnabled($e['perm']) : 1){
 					if(is_array($e["text"])){
@@ -88,16 +85,16 @@ function menuaction(cmd) {
 					);
 				}
 			}
-			}
-			foreach($menus as $menu){
-				$foo = $menu['code'];
-				$this->h_pCODE($this->entries, $foo, $menu['id'], '');
-				$foo .= '</ul></div></li>';
-				$out .= $foo;
-			}
+		}
+		foreach($menus as $menu){
+			$foo = $menu['code'];
+			$this->h_pCODE($this->entries, $foo, $menu['id'], '');
+			$foo .= '</ul></div></li>';
+			$out .= $foo;
+		}
 
-			$out .= '</ul>';
-			return $out;
+		$out .= '</ul>';
+		return $out;
 	}
 
 	function h_search($men, $p){
@@ -125,9 +122,9 @@ function menuaction(cmd) {
 				} else {
 					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
 						if($e['enabled'] == 1){
-							$opt .= '<li><a class="fly" href="#void">' . $mtext . '</a><ul>' . "\n";
+							$opt .= '<li><a class="fly" href="#void">' . $mtext . '<i class="fa fa-caret-right"></i></a><ul>';
 							$this->h_pCODE($men, $opt, $id, $newAst);
-							$opt .= '</ul></li>' . "\n";
+							$opt .= '</ul></li>';
 						}
 					} else if($mtext){
 						if($e['enabled'] == 1){

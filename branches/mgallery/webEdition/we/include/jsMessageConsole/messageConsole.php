@@ -48,7 +48,7 @@ we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 		</div>
 	</div>
 	<div id="messageDiv">
-		<ul id="jsMessageUl"></ul>
+		<ul id="jsMessageUl" class="fa-ul"></ul>
 	</div>
 	<div class="dialogButtonDiv">
 		<div style="padding: 10px 10px 0px 0px;">
