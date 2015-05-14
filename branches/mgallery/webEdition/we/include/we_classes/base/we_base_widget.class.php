@@ -59,13 +59,33 @@ abstract class we_base_widget{
 		$oDrag->setCol(0, 0, array("width" => $w_icon), $show_seizer ? we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_seizer.gif")) : we_html_tools::getPixel('100%', 16));
 
 		$oIco_prc = new we_html_table(array(), 1, 3);
-		$oIco_prc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
-		$oIco_prc->setCol(0, 1, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_resize", "href" => "#", "onclick" => "resizeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("id" => $iId . "_icon_resize", "src" => IMAGE_DIR . "pd/tb_resize.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]'))))));
-		$oIco_prc->setCol(0, 2, array("width" => $w_i0, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_remove", "href" => "#", "onclick" => "removeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_close.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[close]')))));
-
+		$oIco_prc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-right:5px;'),
+			'<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',gel(\'' . $iId . '_csv\').value);this.blur();">
+		  <i class="fa fa-square-o fa-stack-2x"></i>
+		  <i class="fa fa-align-justify fa-stack-1x"></i>
+		  </span>'
+			);
+		$oIco_prc->setCol(0, 1, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-right:5px;'),
+						'<span id="'.$iId . '_icon_resize" class="fa-stack" title="'.g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]')).'" onclick="resizeWidget(\'' . $iId . '\');this.blur();">
+		  <i class="fa fa-square-o fa-stack-2x"></i>
+		  <i class="fa fa-expand fa-stack-1x"></i>
+		  </span>'
+);
+		$oIco_prc->setCol(0, 2, array("width" => $w_i0, "valign" => "middle"),
+			'<span class="fa-stack" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		  <i class="fa fa-square-o fa-stack-2x"></i>
+		  <i class="fa fa-close fa-stack-1x"></i>
+		  </span>');
 		$oIco_pc = new we_html_table(array(), 1, 2);
-		$oIco_pc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-left:15px;padding-right:5px;'), we_html_element::htmlA(array("id" => $iId . "_props", "href" => "#", "onclick" => "propsWidget('" . $sType . "','" . $iId . "',gel('" . $iId . "_csv').value);this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_props.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[properties]')))));
-		$oIco_pc->setCol(0, 1, array("width" => $w_i0, "valign" => "middle"), we_html_element::htmlA(array("id" => $iId . "_remove", "href" => "#", "onclick" => "removeWidget('" . $iId . "');this.blur();"), we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_close.gif", "width" => $w_i0, "height" => $h_i0, "border" => 0, "title" => g_l('cockpit', '[close]')))));
+		$oIco_pc->setCol(0, 0, array("width" => $w_i0, "valign" => "middle", 'style' => 'padding-left:15px;padding-right:5px;'),
+			'<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',gel(\'' . $iId . '_csv\').value);this.blur();">
+		  <i class="fa fa-square-o fa-stack-2x"></i>
+		  <i class="fa fa-align-justify fa-stack-1x"></i>
+		  </span>');
+		$oIco_pc->setCol(0, 1, array("width" => $w_i0, "valign" => "middle"), '<span class="fa-stack" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		  <i class="fa fa-square-o fa-stack-2x"></i>
+		  <i class="fa fa-close fa-stack-1x"></i>
+		  </span>');
 
 		$ico_obj = ($resize ? 'oIco_prc' : 'oIco_pc');
 		$sIco = ($sType != "_reCloneType_") ? $$ico_obj->getHtml() :

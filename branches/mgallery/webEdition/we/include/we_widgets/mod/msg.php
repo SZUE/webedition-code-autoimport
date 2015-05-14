@@ -44,6 +44,6 @@ if(defined('MESSAGING_SYSTEM')){
 
 	$msg_cmd = "javascript:top.we_cmd('messaging_start'," . we_messaging_frames::TYPE_MESSAGE . ");";
 	$todo_cmd = "javascript:top.we_cmd('messaging_start'," . we_messaging_frames::TYPE_TODO . ");";
-	$msg_button = we_html_element::htmlA(array("href" => $msg_cmd), we_html_element::htmlImg(array("src" => IMAGE_DIR . 'pd/msg/message.gif', "width" => 34, "height" => 34, "border" => 0)));
-	$todo_button = we_html_element::htmlA(array("href" => $todo_cmd), we_html_element::htmlImg(array("src" => IMAGE_DIR . 'pd/msg/todo.gif', "width" => 34, "height" => 34, "border" => 0)));
+	$msg_button = we_html_element::htmlA(array("href" => $msg_cmd), '<i class="fa fa-3x fa-envelope-o"></i>');
+	$todo_button = we_html_element::htmlA(array("href" => $todo_cmd), '<i class="fa fa-3x fa-paperclip"></i>');
 }

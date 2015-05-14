@@ -48,14 +48,13 @@ class we_sidebar_frames{
 		</head>
 		<body>
 			<div id="weSidebarHeader" name="weSidebarHeader">
-				<div id="Headline">
-					<?php echo g_l('sidebar', '[headline]'); ?>
-					<div id="CloseButton">
-						<span class="fa-stack close" id="###closeId###" onclick="top.weSidebar.close();">
-							<i class="fa fa-circle-o fa-stack-2x"></i>
-							<i class="fa fa-close fa-stack-1x "></i>
-						</span>
-					</div>
+				<div id="Headline"><?php echo g_l('sidebar', '[headline]'); ?></div>
+				<div id="CloseButton">
+					<span class="fa-stack close" id="###closeId###" onclick="top.weSidebar.close();">
+						<i class="fa fa-circle-o fa-stack-2x"></i>
+						<i class="fa fa-close fa-stack-1x "></i>
+					</span>
+
 				</div>
 			</div>
 			<div id="weSidebarContentDiv">

@@ -100,8 +100,6 @@ div.le_widget:first-child{
 	border-bottom: 2px solid white;
 	height:32px;
 	line-height: 32px;
-	position: relative;
-	top: -14px;
 }
 .bgc_white{
 	background-color:#FFFFFF;
@@ -159,13 +157,9 @@ div.le_widget:first-child{
 	background-color: #CBCB5D;
 }
 
-.widget,
-.widget_controls{
+.widget{
 	border-radius: 10px;
 	width:100%;
-}
-
-.widget{
 	border: 1px solid #B7B7B7;
 }
 
@@ -174,12 +168,26 @@ div.le_widget:first-child{
 	vertical-align: top;
 }
 
+.widget_controls table{
+	border-spacing: 0px;
+}
 .widget_controls{
+	border-spacing: 0px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	width:100%;
 	background-color:lightgrey;/*for old browsers*/
 	background: linear-gradient(white, #E1E1E1 50%);/*edit/editfooterback.gif*/
-	height: 30px;
+	height: 16px;
 	border-bottom: 1px solid #B7B7B7;
+	font-size: 9px;
+	color: #ababab;
+	padding-right: 3px;
 }
+.widget_controls i.fa-stack-1x:hover{
+	color:black;
+}
+
 div.content{
 	text-align:left;
 	vertical-align:top;
