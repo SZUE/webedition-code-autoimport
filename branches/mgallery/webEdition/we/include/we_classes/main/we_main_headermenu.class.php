@@ -52,7 +52,7 @@ onunload=function() {
 	<div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div>
 		</td>
 		<td>
-	<div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-comment"></i></div>
+	<div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-info"></i></div>
 </td>
 	</tr>
 	</table>
@@ -98,7 +98,6 @@ onunload=function() {
 		echo we_html_element::jsScript(JS_DIR . 'images.js') .
 		($jmenu ? $jmenu->getJS() : '');
 		we_html_element::jsElement('
-	preload("busy_icon","' . IMAGE_DIR . 'logo-busy.gif");
 	preload("empty_icon","' . IMAGE_DIR . 'pixel.gif");
 	function toggleBusy(foo){
 		if(!document.images["busy"]){

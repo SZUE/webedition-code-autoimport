@@ -214,7 +214,7 @@ function makeAjaxRequestDoclist() {
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
 	var scroll = document.getElementById("scrollContent_doclist");
-	scroll.innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><img src="' + dirs.IMAGE_DIR + 'logo-busy.gif"/><div id="scrollActive"></div></td></tr></table>';
+	scroll.innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=doclist&cmd=GetSearchResult&classname=we_folder&id=" + docID + "&table=" + docTable + "&we_transaction=" + transaction + args + "");
 }
 
@@ -302,7 +302,7 @@ function publishDocsAjax() {
 	}
 	args += "&we_cmd[0]=" + encodeURI(check);
 	var scroll = document.getElementById("resetBusy");
-	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=\"" + dirs.IMAGE_DIR + "logo-busy.gif\" /></td></tr></table>";
+	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
 }

@@ -27,8 +27,8 @@ echo (!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmlto
 
 
 $_row = 0;
-$_starttable = new we_html_table(array("border" => 0,	"cellpadding" => 7,	"cellspacing" => 0,	"width" => 228), 3, 1);
-$_starttable->setCol($_row++, 0, array("class" => "defaultfont",	"colspan" => 3,	"align" => "center"), "<strong>" . g_l('navigation', '[navigation]') . "</strong>");
+$_starttable = new we_html_table(array("border" => 0,	"cellpadding" => 7,	"cellspacing" => 0), 3, 1);
+$_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline",	"colspan" => 3), g_l('navigation', '[navigation]'));
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont",	"colspan" => 3), "");
 
 $createNavigation = we_html_button::create_button('new_item', "javascript:we_cmd('module_navigation_new');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
@@ -45,7 +45,6 @@ echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
 
 <body bgcolor="#F0EFF0" onload="loaded = 1;var we_is_home = 1;">
 	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
-	<div id="hintergrund"><img src="<?php echo IMAGE_DIR . "startscreen/we_startbox_modul.gif" ?>" width="251" height="220" /></div>
 	<div id="modimage"><img src="<?php echo WE_INCLUDES_DIR . 'we_modules/navigation/layout/home.gif'; ?>" width="335" height="329" /></div>
 
 	<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>

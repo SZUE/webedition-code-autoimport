@@ -49,12 +49,12 @@ function messageConsoleWindow(win) {
 		switch (msg.prio) {
 			default:
 				_className = "imgNoticeActive";
-				className="comment";
+				className="info";
 				break;
 
 			case 2:
 				_className = "imgWarningActive";
-				className="thumbs-down";
+				className="lightbulb-o";
 				break;
 			case 4:
 				_className = "imgErrorActive";

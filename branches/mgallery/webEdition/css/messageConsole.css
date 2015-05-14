@@ -36,6 +36,7 @@
 }
 #jsMessageUl li .fa-li.fa-lg{
 	left:0px;
+	top: auto;
 }
 
 #headlineDiv {

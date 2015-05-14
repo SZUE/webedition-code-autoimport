@@ -52,7 +52,7 @@ var ajaxCallbackDetails = {
 function openDetails(id) {
 	currentId = id;
 	var dataContent = document.getElementById("dataContent_"+id+"");
-	dataContent.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
+	dataContent.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 	var otherdataContents = document.getElementsByName("dataContent");
 	for(var i=0;i<otherdataContents.length;i++) {
 		if(otherdataContents[i].id != "dataContent_"+id+""){

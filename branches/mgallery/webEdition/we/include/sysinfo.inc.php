@@ -148,7 +148,7 @@ function getInfo($message, $value){
 }
 
 function getOK($message = '', $value = ''){
-	return '<div style="min-height:20px; min-width: 20px; cursor:pointer; padding-right:20px; padding-left:0px; background:url(' . IMAGE_DIR . 'valid.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
+	return '<div style="min-height:20px; min-width: 20px; cursor:pointer; padding-right:20px; padding-left:0px; position:relative;" title="' . $message . '">' . $value . '<i class="fa fa-lg fa-check fa-ok" style="position:absolute;right:0px;"></i></div>';
 }
 
 $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;

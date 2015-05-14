@@ -89,13 +89,13 @@ function messageConsoleView(conName, win) {
 		var _img;
 		switch (prio) {
 			case 2://warning
-				_img = "thumbs-down";
+				_img = "lightbulb-o";
 				break;
 			case 4://error
 				_img = "exclamation-triangle";
 				break;
 			default://notice
-				_img = "comment";
+				_img = "info";
 				break;
 		}
 		this.win.document.getElementById("messageConsoleImage" + this.name).className = "fa fa-lg fa-" + _img + (active ? " active" : "");

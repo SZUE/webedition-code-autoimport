@@ -54,8 +54,8 @@ abstract class we_html_button{
 	const RELOAD = 'fa:btn_function_reload,fa-lg fa-refresh';
 	const SELECT = 'fa:select,fa-lg fa-hand-o-right,fa-lg fa-file-o';
 	const SAVE = 'fat:save,fa-lg fa-save';
-	const NEXT = 'fa:next,fa-lg fa-step-forward';
-	const BACK = 'fa:back,fa-lg fa-step-backward';
+	const NEXT = 'fat:next,fa-lg fa-step-forward';
+	const BACK = 'fat:back,fa-lg fa-step-backward';
 	const REFRESH = 'fat:refresh,fa-lg fa-refresh';
 	const SEARCH = 'fa:btn_function_search,fa-lg fa-search';
 	const CLOSE = 'fat:close,fa-lg fa-close fa-cancel';
@@ -152,6 +152,7 @@ abstract class we_html_button{
 		// Check if the button is a text button or an image button
 		$value = '';
 		switch($type){
+			//FIXME: remove image buttons - we don't have any
 			case self::WE_IMAGE_BUTTON_IDENTIFY:// Button is an image
 				$name = $names;
 				//set width for image button if given width has not default value
@@ -192,7 +193,8 @@ abstract class we_html_button{
 				if(($width == self::WIDTH) && ($tmp = g_l('button', '[' . $name . '][width]', true))){
 					$width = $tmp;
 				}
-				$value .= g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
+				$text = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
+				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
 		}
 
 		// Check if the button will be used in a form or not

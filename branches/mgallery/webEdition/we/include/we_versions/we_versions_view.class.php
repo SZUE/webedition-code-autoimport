@@ -155,7 +155,7 @@ function makeAjaxRequestDoclist() {
 		args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(document.we_form.elements[i].value);
 	}
 	var scroll = document.getElementById("scrollContent");
-	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
+	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=versionlist&cmd=GetSearchResult&classname=' . $GLOBALS['we_doc']->ClassName . '&id=' . $GLOBALS['we_doc']->ID . '&table=' . $GLOBALS['we_doc']->Table . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
 
 }
@@ -204,7 +204,7 @@ function deleteVersionAjax() {
 	}
 	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(check);
 	var scroll = document.getElementById("scrollContent");
-	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=' . IMAGE_DIR . 'logo-busy.gif /></td></tr></table>";
+	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDeleteVersion, "protocol=json&cns=versionlist&cmd=DeleteVersion&"+args+"");
 

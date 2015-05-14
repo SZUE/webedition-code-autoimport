@@ -1,3 +1,6 @@
+images/icons/invalid.gif
+images/icons/valid.gif
+images/valid.gif
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2491,6 +2494,7 @@ js/weJsStrings.php
 js/weJsStrings.inc.php
 js/weDOM_Safari.js
 js/we_colors.js
+js/utils/progressBar.js
 js/selectors/we_sselector_footer.js
 js/seeMode.php
 js/messageConsoleImages.js
@@ -2676,6 +2680,11 @@ images/we_boebbel_blau_2.gif
 images/we_bg_mod1.gif
 images/v-tabs/background.gif
 images/v-tabs
+images/update/reload.gif
+images/update/missing.gif
+images/update/hint.gif
+images/update/alert.gif
+images/update
 images/umr_h_small.gif
 images/tree/treeheaderback.gif
 images/tree/leer.gif
@@ -2699,6 +2708,7 @@ images/tabs/tab_left_modules_hover.gif
 images/tabs/tab_left_hover.gif
 images/tabs/tab_left_disabled.gif
 images/tabs
+images/startscreen/we_startbox_modul.gif
 images/shaddow_u.gif
 images/shaddow_ru.gif
 images/shaddow_ro.gif
@@ -2778,6 +2788,8 @@ images/multiTabs/closeOver.gif
 images/multiTabs/close.gif
 images/multiTabs
 images/msg_white_bg.gif
+images/msg_menuapp_bg1.gif
+images/msg_fv_bg.gif
 images/modules/users/arrow_open.gif
 images/modules/users/arrow_close.gif
 images/modules/users
@@ -2802,6 +2814,7 @@ images/menu/arr_mac_over.gif
 images/menu/arr_mac.gif
 images/menu/arr.gif
 images/menu
+images/logo-busy.gif
 images/login/top_r.jpg
 images/login/right.jpg
 images/login/left.jpg
@@ -2976,6 +2989,8 @@ images/box/box_header_bg2.gif
 images/box/bg.gif
 images/box
 images/black.gif
+images/bg_dialogTop_r.gif
+images/bg_dialogTop.gif
 images/balken_u.gif
 images/backgrounds/radient.gif
 images/backgrounds/multitabBG.gif
