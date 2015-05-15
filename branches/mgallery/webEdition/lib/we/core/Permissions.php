@@ -45,7 +45,8 @@ abstract class we_core_Permissions{
 	 */
 	//FIXME: remove in 6.6
 	static function protect(){
-		t_e('deprecated', 'this will be removed in 6.6');
+		//FIXME: t_e is not available here
+		//t_e('deprecated', 'this will be removed in 6.6');
 
 		//correct some settings
 		if(!isset($GLOBALS['TOOLNAME']) && isset($GLOBALS['controller'])){
