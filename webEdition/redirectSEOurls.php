@@ -48,7 +48,7 @@ if(NAVIGATION_DIRECTORYINDEX_NAMES && ( NAVIGATION_DIRECTORYINDEX_HIDE || WYSIWY
 	$dirindexarray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
 	$hiddendirindex = true;
 }
-$prefix = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE urlMap="' . $DB_WE->escape($_SERVER["HTTP_HOST"]) . '"');
+$prefix = (isset($_SERVER["HTTP_HOST"]) && $_SERVER["HTTP_HOST"]) ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE urlMap="' . $DB_WE->escape($_SERVER["HTTP_HOST"]) . '"') : '';
 
 $path_parts = array();
 if(isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != ''){
