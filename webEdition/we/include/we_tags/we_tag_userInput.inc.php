@@ -754,7 +754,7 @@ function open_wysiwyg_win(){
 			));
 			return (!$isset ?
 							we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
-							we_getInputRadioField($fieldname, $content, $orgVal, $atts));
+							we_getInputRadioField($fieldname, $orgVal, $value, $atts));
 
 		case 'hidden':
 			return getHtmlTag('input', array(
