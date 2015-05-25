@@ -60,6 +60,7 @@ function we_tag_write($attribs){
 	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0, we_base_request::INT);
 	$doworkflow = ($workflowname != '' && $workflowuserid != 0);
 	$searchable = weTag_getAttribute('searchable', $attribs, true, we_base_request::BOOL);
+	
 	if(we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
 
 		switch($type){
@@ -212,6 +213,14 @@ function we_tag_write($attribs){
 					}
 				}
 				$GLOBALS['we_object_write_ID'] = $GLOBALS['we_doc']->ID;
+				
+				/**
+				* Fix #9818
+				* now we have to set the new document/object ID as request value to avoid
+				* createing more documents/objects by reload the webform (<we:form type="object | document">) by an user
+				*/
+				$requestVarName = 'we_edit' . ucfirst($type) . '_ID';
+				$_REQUEST[$requestVarName] = $GLOBALS['we_doc']->ID;
 			}
 
 			unset($GLOBALS['we_doc']);

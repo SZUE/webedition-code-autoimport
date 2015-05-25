@@ -96,23 +96,25 @@ function we_tag_saveRegisteredUser($attribs){
 		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($weUsername) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 			$userexists = $userexists ? : g_l('modules_customer', '[username_exists]');
 			echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf($userexists, $weUsername), we_message_reporting::WE_MESSAGE_FRONTEND));
-		} elseif(isset($_REQUEST['s'])){
-			// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
+		}elseif(isset($_REQUEST['s'])){// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
+			if(strlen($password) == 0){//empty password is not allowed
+				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+			}else{
+				$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
+				$ret = $hook->executeHook();
 
-			$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
-			$ret = $hook->executeHook();
-
-			we_saveCustomerImages();
-			$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
-			$password = we_base_request::_(we_base_request::RAW, 's', false, 'Password');
-			if($password != we_customer_customer::NOPWD_CHANGE && !we_customer_customer::comparePassword(f('SELECT Password FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID']), $password)){//bei Passwordaenderungen muessen die Autologins des Users geloescht werden
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']));
-			}
-			if($set_a){
-				$set_a['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
-				$set_a['ModifiedBy'] = 'frontend';
-				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_SESSION['webuser']['ID']));
-				$GLOBALS['we_customer_written'] = true;
+				we_saveCustomerImages();
+				$set_a = we_tag_saveRegisteredUser_processRequest($protected, $allowed);
+				$password = we_base_request::_(we_base_request::RAW, 's', false, 'Password');
+				if($password != we_customer_customer::NOPWD_CHANGE && !we_customer_customer::comparePassword(f('SELECT Password FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $_SESSION['webuser']['ID']), $password)){//bei Passwordaenderungen muessen die Autologins des Users geloescht werden
+					$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']));
+				}
+				if($set_a){
+					$set_a['ModifyDate'] = sql_function('UNIX_TIMESTAMP()');
+					$set_a['ModifiedBy'] = 'frontend';
+					$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set_a) . ' WHERE ID=' . intval($_SESSION['webuser']['ID']));
+					$GLOBALS['we_customer_written'] = true;
+				}
 			}
 		}
 	}
