@@ -268,7 +268,6 @@ class we_folder extends we_root{
 
 	function changeLanguageRecursive(){
 		$DB_WE = new DB_WE();
-		$DB_WE2 = new DB_WE();
 
 		$language = $this->Language;
 		$documentTable = ($this->Table == FILE_TABLE) ? 'tblFile' : 'tblObjectFile';
