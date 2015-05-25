@@ -51,6 +51,9 @@ if(file_exists($filename)){
 			default:
 				header('Content-Type: ' . $mimetype . (($charset = we_base_request::_(we_base_request::STRING, 'charset')) ? '; charset=' . $charset : ''));
 		}
+	} else {
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="' . basename($filename, '.gz') . '"');
 	}
 
 	if($isCompressed){
