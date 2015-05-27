@@ -60,13 +60,13 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return boolean
 	 * @param boolean $resave
 	 */
-	public function we_save($resave = 0){
+	public function we_save($resave = 0, $skipHook = false){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
 		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
-		if(parent::we_save($resave)){
+		if(parent::we_save($resave, $skipHook)){
 			$thumbs = $this->getThumbs();
 			if($docChanged){
 				we_thumbnail::deleteByImageID($this->ID);
