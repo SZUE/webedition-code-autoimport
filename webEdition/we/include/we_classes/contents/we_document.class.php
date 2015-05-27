@@ -629,7 +629,7 @@ class we_document extends we_root{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$this->errMsg = '';
 		$this->i_setText();
 

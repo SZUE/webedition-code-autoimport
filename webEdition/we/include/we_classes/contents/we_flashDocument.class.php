@@ -323,7 +323,7 @@ class we_flashDocument extends we_document_video{
 	 * @return boolean
 	 * @param boolean $resave
 	 */
-	public function we_save($resave = 0){
+	public function we_save($resave = 0, $skipHook = false){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$origw = $this->getElement('origwidth');
@@ -338,7 +338,7 @@ class we_flashDocument extends we_document_video{
 		}
 
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
-		if(parent::we_save($resave)){
+		if(parent::we_save($resave, $skipHook)){
 			if($docChanged){
 				$this->DocChanged = true;
 			}
