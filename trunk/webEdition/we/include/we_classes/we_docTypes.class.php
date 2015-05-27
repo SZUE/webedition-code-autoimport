@@ -332,19 +332,18 @@ function switchExt(){
 		$db = $db ? : new DB_WE();
 
 		$paths = array();
-		$ws = get_ws(FILE_TABLE);
+		$ws = get_ws(FILE_TABLE, false, true);
 		if(!$ws){
 			return (!$omitWhere ? 'WHERE ' : '') . '1 ORDER BY DocType';
 		}
-		$b = makeArrayFromCSV($ws);
 		if(!WE_DOCTYPE_WORKSPACE_BEHAVIOR){
-			$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $b) . ')');
+			$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ws) . ')');
 			while($db->next_record()){
 				$paths[] = '(ParentPath="' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
 			}
 			return ($paths ? 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="")' : '') . ' ORDER BY DocType';
 		}
-		$_tmp_paths = id_to_path($b, FILE_TABLE, $db, false, true);
+		$_tmp_paths = id_to_path($ws, FILE_TABLE, $db, false, true);
 		foreach($_tmp_paths as $_tmp_path){
 			while($_tmp_path && $_tmp_path != '/'){
 				$paths[] = '"' . $db->escape($_tmp_path) . '"';
