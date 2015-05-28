@@ -81,7 +81,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$treeItems[] = array(
-				'icon' => 'arrowup.gif',
+				'icon' => 'caret-up',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -173,7 +173,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$nextoffset = $offset + $segment;
 		if($segment && $total > $nextoffset){
 			$treeItems[] = array(
-				"icon" => "arrowdown.gif",
+				"icon" => "caret-down",
 				"id" => "next_" . $ParentID,
 				"parentid" => $ParentID,
 				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",

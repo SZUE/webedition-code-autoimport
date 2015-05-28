@@ -466,7 +466,7 @@ top.makeNewDocument = true;' .
 							"caption" => g_l('fileselector', '[name]'),
 							"content" => (
 							$showPreview ?
-								"<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] . "' target='_blank' style='color:black'><img src='" . TREE_ICON_DIR . "browser.gif' border='0' vspace='0' hspace='0'></a></div>" :
+								"<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] . "' target='_blank' style='color:black'><i class='fa fa-external-link fa-lg'></i></a></div>" :
 								""
 							) . "<div style='margin-right:14px'>" .
 							($showPreview ?
@@ -478,7 +478,7 @@ top.makeNewDocument = true;' .
 							"caption" => "ID",
 							"content" => "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 					<div style='float:left; vertical-align:baseline; margin-right:4px;'>
-					<img src='" . TREE_ICON_DIR . "bearbeiten.gif' border='0' vspace='0' hspace='0'>
+					<i class='fa fa-edit fa-lg'></i>
 					</div></a>
 					<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 						<div>" . $this->id . "</div>

@@ -43,29 +43,30 @@ function check(img) {
 	var tarr = img.split("_");
 	var id = tarr[1];
 	for (i = 1; i <= treeData.len; i++) {
-		if (treeData[i].id == id) {
-			if (treeData[i].checked) {
-				if (left.document.images && left.document.images[img]) {
-					left.document.images[img].src = tree_img_dir + "check0.gif";
-				}
-				treeData[i].checked = false;
-				unSelectMessage(img, "elem", "");
-				break;
+		if (treeData[i].id != id) {
+			continue;
+		}
+		if (treeData[i].checked) {
+			if (left.document.images && left.document.images[img]) {
+				left.document.images[img].src = tree_img_dir + "check0.gif";
 			}
-			else {
-				if (left.document.images && left.document.images[img]) {
-					left.document.images[img].src = tree_img_dir + "check1.gif";
+			treeData[i].checked = false;
+			unSelectMessage(img, "elem", "");
+			break;
+		} else {
+			if (left.document.images && left.document.images[img]) {
+				left.document.images[img].src = tree_img_dir + "check1.gif";
 
-				}
-				treeData[i].checked = true;
-				doSelectMessage(img, "elem", "");
-				break;
 			}
+			treeData[i].checked = true;
+			doSelectMessage(img, "elem", "");
+			break;
 		}
 	}
-	if (!left.document.images) {
-		drawEintraege();
-	}
+}
+if (!left.document.images) {
+	drawEintraege();
+
 }
 
 
@@ -92,11 +93,10 @@ function update_messaging() {
 
 function update_icon(fid) {
 	var s = 0;
-	var ai = 1;
 	if (fid == open_folder) {
 		return 1;
 	}
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if (treeData[ai].id == fid) {
 			treeData[ai].icon = treeData[ai].iconbasename + "_open.gif";
 			if (++s == 2) {
@@ -109,7 +109,6 @@ function update_icon(fid) {
 				break;
 			}
 		}
-		ai++;
 	}
 	open_folder = fid;
 	drawEintraege();
@@ -333,20 +332,20 @@ function zeichne(startEntry, zweigEintrag) {
 
 function updateEntry(id, pid, text, pub, redraw) {
 	var ai = 1;
-	while (ai <= treeData.len) {
-		if ((treeData[ai].typ == "parent_Folder") || (treeData[ai].typ == "leaf_Folder")) {
-			if (treeData[ai].id == id) {
-				if (pid != -1) {
-					treeData[ai].parentid = pid;
-				}
-				treeData[ai].text = text;
-				if (pub != -1) {
-					treeData[ai].published = pub;
-				}
-				break;
-			}
+	for (ai = 1; ai <= treeData.len; ai++) {
+		if (treeData[ai].id != id) {
+			continue;
 		}
-		ai++;
+		if ((treeData[ai].typ == "parent_Folder") || (treeData[ai].typ == "leaf_Folder")) {
+			if (pid != -1) {
+				treeData[ai].parentid = pid;
+			}
+			treeData[ai].text = text;
+			if (pub != -1) {
+				treeData[ai].published = pub;
+			}
+			break;
+		}
 	}
 	if (redraw == 1) {
 		drawEintraege();
@@ -354,16 +353,15 @@ function updateEntry(id, pid, text, pub, redraw) {
 }
 
 function deleteEntry(id) {
-	var ai = 1;
 	var ind = 0;
-	while (ai <= treeData.len) {
-		if ((treeData[ai].typ == "parent_Folder") || (treeData[ai].typ == "leaf_Folder")) {
-			if (treeData[ai].id == id) {
-				ind = ai;
-				break;
-			}
+	for (var ai = 1; ai <= treeData.len; ai++) {
+		if (treeData[ai].id != id) {
+			continue;
 		}
-		ai++;
+		if ((treeData[ai].typ == "parent_Folder") || (treeData[ai].typ == "leaf_Folder")) {
+			ind = ai;
+			break;
+		}
 	}
 	updateTreeAfterDel(ind);
 }
@@ -375,28 +373,24 @@ function openClose(id, status) {
 }
 
 function indexOfEntry(id) {
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ == "root") || (treeData[ai].typ == "parent_Folder")) {
 			if (treeData[ai].id == id) {
 				return ai;
 			}
 		}
-		ai++;
 	}
 	return -1;
 }
 
 function search(eintrag) {
 	var nf = new container();
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ == "parent_Folder") || (treeData[ai].typ == "leaf_Folder")) {
 			if (treeData[ai].parentid == eintrag) {
 				nf.add(treeData[ai]);
 			}
 		}
-		ai++;
 	}
 	return nf;
 }

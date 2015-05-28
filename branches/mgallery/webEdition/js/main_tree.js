@@ -72,20 +72,19 @@ function info(text) {
 }
 function updateEntry(id, text, pid, tab) {
 	if ((treeData.table == tab) && (treeData[indexOfEntry(pid)])) {
-		var ai = 1;
-		while (ai <= treeData.len) {
-			if (treeData[ai].id == id) {
-				if (text) {
-					treeData[ai].text = text;
-				}
-				if (pid) {
-					treeData[ai].parentid = pid;
-				}
-				if (tab) {
-					treeData[ai].table = tab;
-				}
+		for (var ai = 1; ai <= treeData.len; ai++) {
+			if (treeData[ai].id != id) {
+				continue;
 			}
-			ai++;
+			if (text) {
+				treeData[ai].text = text;
+			}
+			if (pid) {
+				treeData[ai].parentid = pid;
+			}
+			if (tab) {
+				treeData[ai].table = tab;
+			}
 		}
 		drawTree();
 	}

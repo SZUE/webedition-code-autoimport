@@ -44,7 +44,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$this->treeItems[] = array(
-				'icon' => 'arrowup.gif',
+				'icon' => 'caret-up',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -103,7 +103,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$this->treeItems[] = array(
-				'icon' => 'arrowdown.gif',
+				'icon' => 'caret-down',
 				'id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',

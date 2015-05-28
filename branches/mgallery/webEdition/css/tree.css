@@ -165,3 +165,10 @@ div.tree i.fa-folder-open,
 div.tree i.fa-folder{
 	color: #ADC5E3;
 }
+
+span.threedots{
+	display:inline-block;
+	background-color:lightgrey;
+	width:80%;
+	text-align:center;
+}

@@ -25,7 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-
 $title = 'webEdition ';
 $tool = we_base_request::_(we_base_request::STRING, 'tool');
 switch($tool){
@@ -44,24 +43,6 @@ switch($tool){
 		break;
 }
 
-echo we_html_tools::getHtmlTop($title, '', 'frameset') .
- we_html_element::jsElement('
-	top.weToolWindow = true;
-
-	function toggleBusy(){
-	}
-	var makeNewEntryCheck = 0;
-	var publishWhenSave = 0;
-
-
-	function we_cmd() {
-				var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-			top.content.we_cmd.apply(this, args);
-	}
-');
 
 if($tool === "weSearch"){
 	if(($cmd1 = we_base_request::_(we_base_request::STRINGC, 'we_cmd', false, 1))){
@@ -95,7 +76,9 @@ if($tool === "weSearch"){
 	$tab = $modelid = false;
 }
 
-echo we_html_element::jsScript(JS_DIR . "keyListener.js") .
+echo we_html_tools::getHtmlTop($title, '', 'frameset') .
+ we_html_element::jsScript(JS_DIR . 'toolframe.js') .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
