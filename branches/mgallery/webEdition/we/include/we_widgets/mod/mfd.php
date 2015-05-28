@@ -34,9 +34,9 @@ $bTypeDoc = permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinar
 $pos++;
 $bTypeTpl = permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
-$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
-$bTypeCls = permissionhandler::hasPerm('CAN_SEE_CLASSES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeCls = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
 
 $iDate = intval($aCols[1]);

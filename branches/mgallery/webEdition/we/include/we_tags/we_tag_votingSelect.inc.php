@@ -26,8 +26,9 @@ function we_tag_votingSelect($attribs){
 	global $DB_WE;
 
 	if($GLOBALS['we_editmode'] && isset($GLOBALS['_we_voting']) && isset($GLOBALS['_we_voting_namespace'])){
+		$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL);
 		$firstentry = weTag_getAttribute('firstentry', $attribs, '', we_base_request::RAW);
-		$reload = weTag_getAttribute('reload', $attribs, weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL), we_base_request::BOOL);
+		$reload = weTag_getAttribute('reload', $attribs, $submitonchange, we_base_request::BOOL);
 		$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 
 		$select_name = $GLOBALS['_we_voting_namespace'];

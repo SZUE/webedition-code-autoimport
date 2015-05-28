@@ -366,7 +366,7 @@ class we_objectFile extends we_document{
 	}
 
 	function setRootDirID($doit = false){
-		if($this->InWebEdition || $doit){
+		if($this->TableID && ($this->InWebEdition || $doit)){
 			$hash = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON o.ID=of.TableID WHERE o.Path=of.Path AND of.IsClassFolder=1 AND o.ID=' . intval($this->TableID), $this->DB_WE);
 			$this->RootDirPath = $hash['Path'];
 			$this->rootDirID = $hash['ID'];
@@ -1526,8 +1526,7 @@ class we_objectFile extends we_document{
 		if($this->TableID){
 			return we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 		}
-		t_e('error no tableID!', $this);
-		t_e('error', 'error no tableID!');
+		return array();
 	}
 
 	public function canMakeNew(){

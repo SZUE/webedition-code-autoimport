@@ -95,7 +95,7 @@ class we_binaryDocument extends we_document{
 		}
 	}
 
-	public function we_save($resave = 0){
+	public function we_save($resave = false, $skipHook = false){
 		if(!$this->issetElement('data')){
 			$this->i_getContentData();
 		}
@@ -103,7 +103,7 @@ class we_binaryDocument extends we_document{
 			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR));
 			return false;
 		}
-		if(parent::we_save($resave)){
+		if(parent::we_save($resave, $skipHook)){
 			$this->DocChanged = false;
 			$this->setElement('data', $this->getSitePath());
 			$this->i_writeMetaValues();
