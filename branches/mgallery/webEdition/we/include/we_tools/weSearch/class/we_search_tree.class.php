@@ -31,7 +31,6 @@ class we_search_tree extends weTree{
 			'.selected_item {background-color: #D4DBFA;}',
 			'.selected_group {background-color: #D4DBFA;}',
 		);
-		$this->tree_icon_dir = WE_INCLUDES_DIR . 'we_tools/weSearch/layout/icons/';
 	}
 
 	function getJSTreeCode(){

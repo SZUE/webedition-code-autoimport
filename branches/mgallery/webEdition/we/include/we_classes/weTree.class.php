@@ -56,16 +56,12 @@ class weTree{
 		'item' => 'tree',
 		'group' => 'group'
 	);
-	var $tree_image_dir;
-	var $tree_icon_dir;
 	var $default_segment = 30;
 
 //Initialization
 
 	public function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
 		$this->db = new DB_WE();
-		$this->tree_image_dir = TREE_IMAGE_DIR;
-		$this->tree_icon_dir = TREE_ICON_DIR;
 		if($frameset != '' && $topFrame != '' && $treeFrame != '' && $cmdFrame != ''){
 			$this->init($frameset, $topFrame, $treeFrame, $cmdFrame);
 		}
@@ -156,8 +152,8 @@ function container(){
 	this.setstate=setTreeState;
 	this.getlayout=getTreeLayout;
 
-	this.tree_image_dir="' . $this->tree_image_dir . '";
-	this.tree_icon_dir="' . $this->tree_icon_dir . '";
+	this.tree_image_dir="' . TREE_IMAGE_DIR . '";
+	this.tree_icon_dir="' . TREE_ICON_DIR . '";
 	this.topFrame="' . $this->topFrame . '";
 	this.treeFrame="' . $this->treeFrame . '";
 	this.frameset="' . $this->frameset . '";

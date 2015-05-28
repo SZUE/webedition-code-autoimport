@@ -27,7 +27,7 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsElement('
 	function toggleBusy(){
 	}
-	var makeNewEntry = 0;
+	var makeNewEntryCheck = 0;
 	var publishWhenSave = 0;
 	var weModuleWindow = true;
 

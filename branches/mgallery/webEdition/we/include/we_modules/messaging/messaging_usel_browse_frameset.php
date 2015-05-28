@@ -56,7 +56,7 @@ echo "startloc=0 ;
 treeData.add(new self.rootEntry('0','root','root'));";
 while($DB_WE->next_record()){
 	if($DB_WE->f('Type') == 1){
-		echo "  treeData.add(new dirEntry('folder'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "',false,'user','" . USER_TABLE . "','" . $p[0] . "'));";
+		echo "  treeData.add(new dirEntry('usergroup'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "',false,'user','" . USER_TABLE . "','" . $p[0] . "'));";
 	} else {
 		$p = $DB_WE->f("Permissions");
 

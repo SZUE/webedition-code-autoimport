@@ -1658,14 +1658,15 @@ function CalendarChanged(calObject) {
 				$tt = addslashes($tt ? : $this->raw->Text);
 				$js = ($newone ?
 						'
-var attribs = [];
-attribs["icon"]="' . $this->raw->Icon . '";
-attribs["id"]="' . $this->raw->ID . '";
-attribs["typ"]="item";
-attribs["parentid"]="0";
-attribs["text"]="' . $tt . '";
-attribs["disable"]=0;
-attribs["tooltip"]="";' .
+var attribs = {
+ icon:"' . $this->raw->Icon . '",
+ id:"' . $this->raw->ID . '",
+ typ:"item",
+ parentid:"0",
+ text:"' . $tt . '",
+ disable:0,
+ tooltip:""
+};' .
 						$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
 						$this->topFrame . '.drawTree();' :
 						$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'

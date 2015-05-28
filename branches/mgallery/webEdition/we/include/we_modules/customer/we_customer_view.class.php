@@ -222,13 +222,13 @@ function we_cmd(){
 					$tt = addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db));
 					$js = ($newone ? '
 var attribs = {;
-	"icon":"' . $this->customer->Icon . '",
-	"id":"' . $this->customer->ID . '",
-	"typ":"item",
-	"parentid":"0",
-	"text":"' . $tt . '",
-	"disable":"0",
-	"tooltip":"' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '"
+	icon:"' . $this->customer->Icon . '",
+	id:"' . $this->customer->ID . '",
+	typ:"item",
+	parentid:"0",
+	text:"' . $tt . '",
+	disable:"0",
+	tooltip:"' . (($this->customer->Forename != "" || $this->customer->Surname != "") ? $this->customer->Forename . "&nbsp;" . $this->customer->Surname : "") . '"
 }' .
 							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
 							$this->topFrame . '.applySort();' :

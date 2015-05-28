@@ -1,3 +1,9 @@
+we/include/we_tools/weSearch/layout/icons
+we/include/we_tools/weSearch/layout/icons/Suche.gif
+we/include/we_tools/weSearch/layout/icons/folder.gif
+we/include/we_tools/weSearch/layout/icons/folder_disabled.gif
+we/include/we_tools/weSearch/layout/icons/folderopen.gif
+we/include/we_tools/weSearch/layout/icons/folderopen_disabled.gif
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js

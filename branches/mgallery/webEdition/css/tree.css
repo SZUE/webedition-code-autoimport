@@ -155,3 +155,13 @@ span.treeKreuz{
 .red{
 	color:red;
 }
+/*change fa sizes in tree*/
+div.tree fa-stack{
+	height: 1em;
+	line-height: 1em;
+	width: 1em;
+}
+div.tree i.fa-folder-open,
+div.tree i.fa-folder{
+	color: #ADC5E3;
+}

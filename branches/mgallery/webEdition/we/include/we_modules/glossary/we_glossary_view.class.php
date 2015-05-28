@@ -215,7 +215,7 @@ function we_cmd() {
 			if (' . $this->topFrame . '.editor.edbody.loaded) {
 				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
 				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-				if(top.makeNewEntry==1) {
+				if(top.makeNewEntryCheck==1) {
 					' . $this->topFrame . '.editor.edbody.submitForm("cmd");
 				} else {
 					' . $this->topFrame . '.editor.edbody.submitForm();
@@ -479,7 +479,7 @@ function submitForm() {
 					echo we_html_element::jsElement(
 							$js .
 							we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_NOTICE) . '
-							if(top.makeNewEntry==1) {
+							if(top.makeNewEntryCheck==1) {
 								' . $this->topFrame . '.we_cmd("new_glossary_' . $this->Glossary->Type . '", "' . $this->Glossary->Language . '");
 							} else {
 								' . $this->EditorHeaderFrame . '.location.reload();

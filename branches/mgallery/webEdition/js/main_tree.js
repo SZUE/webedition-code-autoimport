@@ -57,36 +57,6 @@ function openClose(id) {
 	}
 }
 
-function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
-	if (treeData.table == tab) {
-		if (treeData[indexOfEntry(pid)]) {
-			if (treeData[indexOfEntry(pid)].loaded) {
-
-				var attribs = {
-					"id": id,
-					"icon": icon,
-					"text": txt,
-					"parentid": pid,
-					"open": open,
-					"typ": (ct == "folder" ? "group" : "item"),
-					"table": tab,
-					"tooltip": id,
-					"contenttype": ct,
-					"disabled": 0,
-					"selected": 0
-				};
-				if (attribs["typ"] == "item") {
-					attribs["published"] = 0;
-				}
-
-				treeData.addSort(new node(attribs));
-
-				drawTree();
-			}
-		}
-	}
-}
-
 function info(text) {
 	t = TreeInfo.window.document.getElementById("infoField");
 	s = TreeInfo.window.document.getElementById("search");

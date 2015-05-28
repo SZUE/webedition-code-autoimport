@@ -50,7 +50,7 @@ echo we_html_tools::getHtmlTop($title, '', 'frameset') .
 
 	function toggleBusy(){
 	}
-	var makeNewEntry = 0;
+	var makeNewEntryCheck = 0;
 	var publishWhenSave = 0;
 
 

@@ -238,29 +238,28 @@ var dirs={
 };
 
 var options={
-  "rootDirID":' . $this->rootDirID . ',
-	"table":"' . $this->table . '",
-	"formtarget":"' . $_SERVER["SCRIPT_NAME"] . '",
-	"type":"' . get_class($this) . '",
-	"rootDirID":' . $this->rootDirID . ',
-	"multiple":' . intval($this->multiple) . ',
-	"needIEEscape":' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',
-	"open_doc":"' . $this->open_doc . '"
+  rootDirID:' . $this->rootDirID . ',
+	table:"' . $this->table . '",
+	formtarget:"' . $_SERVER["SCRIPT_NAME"] . '",
+	type:"' . get_class($this) . '",
+	rootDirID:' . $this->rootDirID . ',
+	multiple:' . intval($this->multiple) . ',
+	needIEEscape:' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',
+	open_doc:"' . $this->open_doc . '"
 };
 
 var consts={
-	"FOLDER_ICON":"' . we_base_ContentTypes::FOLDER_ICON . '",
-	"DORENAMEFOLDER":"' . self::DORENAMEFOLDER . '",
-	"CREATEFOLDER":"' . self::CREATEFOLDER . '"
+	FOLDER_ICON:"' . we_base_ContentTypes::FOLDER_ICON . '",
+	DORENAMEFOLDER:"' . self::DORENAMEFOLDER . '",
+	CREATEFOLDER:"' . self::CREATEFOLDER . '"
 };
 
 var g_l={
-	"deleteQuestion":\'' . g_l('fileselector', '[deleteQuestion]') . '\',
-	"new_folder_name":"' . g_l('fileselector', '[new_folder_name]') . '",
-	"date_format":"' . date(g_l('date', '[format][default]')) . '",
-	"folder":"' . g_l('contentTypes', '[folder]') . '"
+	deleteQuestion:\'' . g_l('fileselector', '[deleteQuestion]') . '\',
+	new_folder_name:"' . g_l('fileselector', '[new_folder_name]') . '",
+	date_format:"' . date(g_l('date', '[format][default]')) . '",
+	folder:"' . g_l('contentTypes', '[folder]') . '"
 };
-
 ');
 	}
 

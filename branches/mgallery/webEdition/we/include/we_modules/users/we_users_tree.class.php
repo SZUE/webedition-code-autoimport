@@ -66,10 +66,10 @@ treeData.startloc=' . $startloc . ';
 			$db->query('SELECT ID,ParentID,Text,Type,Permissions,LoginDenied FROM ' . USER_TABLE . ' WHERE Path LIKE "' . $db->escape($parent_path) . '%" AND ParentID=' . $ParentId . ' ORDER BY Text ASC');
 
 			while($db->next_record()){
-				switch($db->f('Type')){
+				switch(($type = $db->f('Type'))){
 					case we_users_user::TYPE_USER_GROUP:
 						$items[] = array(
-							'icon' => 'folder.gif',
+							'icon' => 'usergroup.gif',
 							'id' => $db->f('ID'),
 							'parentid' => $db->f("ParentID"),
 							'text' => addslashes($db->f("Text")),
@@ -85,7 +85,7 @@ treeData.startloc=' . $startloc . ';
 						$p = we_unserialize($db->f("Permissions"));
 
 						$items[] = array(
-							'icon' => ($db->f('Type') == we_users_user::TYPE_ALIAS ? 'user_alias.gif' : 'user.gif'),
+							'icon' => ($type == we_users_user::TYPE_ALIAS ? 'user_alias.gif' : 'user.gif'),
 							'id' => $db->f('ID'),
 							'parentid' => $db->f("ParentID"),
 							'text' => addslashes($db->f("Text")),
