@@ -47,15 +47,15 @@ function check(img) {
 			continue;
 		}
 		if (treeData[i].checked) {
-			if (left.document.images && left.document.images[img]) {
-				left.document.images[img].src = tree_img_dir + "check0.gif";
+			if (document.images && document.images[img]) {
+				document.images[img].src = tree_img_dir + "check0.gif";
 			}
 			treeData[i].checked = false;
 			unSelectMessage(img, "elem", "");
 			break;
 		} else {
-			if (left.document.images && left.document.images[img]) {
-				left.document.images[img].src = tree_img_dir + "check1.gif";
+			if (document.images && document.images[img]) {
+				document.images[img].src = tree_img_dir + "check1.gif";
 
 			}
 			treeData[i].checked = true;
@@ -64,7 +64,7 @@ function check(img) {
 		}
 	}
 }
-if (!left.document.images) {
+if (!document.images) {
 	drawEintraege();
 
 }

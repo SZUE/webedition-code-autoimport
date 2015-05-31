@@ -1207,11 +1207,8 @@ function goTo(where){
 //
 //						YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersionsWizard, "protocol=json&publish=' . $publish . '&we_transaction=' . $we_transaction . '&cns=versionlist&cmd=ResetVersionsWizard");
 //
-	}
-	else {
+	}	else {
 		parent.wizbusy.document.getElementById("progr").style.display = "block";
-		//parent.wizbusy.document.getElementById("progr").innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><img src=\'' . IMAGE_DIR . 'busy2.gif\' /></td></tr></table>";
-
 		YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDeleteVersionsWizard, "protocol=json&cns=versionlist&cmd=DeleteVersionsWizard");
 	}
 }

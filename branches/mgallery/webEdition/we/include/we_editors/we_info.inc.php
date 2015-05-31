@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,6 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$isInfoScreen = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "info";
+
 //	build table for login screen.
 $_widthTotal = 432;
 $_space = 15;
@@ -32,61 +33,58 @@ $_logoPart = 140;
 $_leftPart = $_middlePart - $_logoPart;
 
 $_credits = '<br /><span style="line-height:160%">' .
-		g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
-		g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
+	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
+	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
 
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
 	$we_version .= ((defined('WE_VERSION_NAME') && WE_VERSION_NAME != '') ? WE_VERSION_NAME : WE_VERSION) . ' (' . WE_VERSION .
-			((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')' .
-			((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-			((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
+		((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')' .
+		((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+		((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
 }
 
 if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
-	$_logo = 'info.jpg';
+
 } else {
 	switch(strtolower(WE_VERSION_SUPP)){
 		case "rc":
-			$_logo = "info_rc.jpg";
+			$extra = "RC";
 			break;
 		case "alpha":
-			$_logo = "info_alpha.jpg";
+			$extra = "ALPHA";
 			break;
 		case "beta":
-			$_logo = "info_beta.jpg";
+			$extra = "BETA";
 			break;
 		case "nightly":
 		case "weekly":
 		case "nightly-build":
-			$_logo = "info_nightly.jpg";
+			$extra = "NIGHTLY";
 			break;
 		case "preview":
 		case "dp":
-			$_logo = "info_preview.jpg";
+			$extra = "PREVIEW";
 			break;
 		case "trunk":
 		case "svn":
-			$_logo = "info_svn.jpg";
-			break;
-		default:
-			$_logo = "info.jpg";
+			$extra = "SVN";
 			break;
 	}
 }
 
 $_table = new we_html_table(array(
-	"style" => "border-style:none; padding:0px;border-spacing:0px;background-image:url(" . IMAGE_DIR . 'info/' . $_logo . ");background-repeat: no-repeat;background-color:#EBEBEB;width:" . $_widthTotal . 'px;' . (isset($GLOBALS['loginpage']) ? 'margin-left: auto; margin-right: auto;text-align:left;box-shadow: 5px 5px 5px #555555;border-radius:10px;' : '')), 8, 3);
+	"style" => "border-style:none; padding:0px;border-spacing:0px;background-color:#EBEBEB;width:" . $_widthTotal . 'px;' . (isset($GLOBALS['loginpage']) ? 'margin-left: auto; margin-right: auto;text-align:left;box-shadow: 5px 5px 5px #555555;border-radius:10px;' : '')), 8, 3);
 $_actRow = 0;
 //	First row with background
-$_table->setCol($_actRow++, 0, array("colspan" => 3, "style" => 'width: ' . $_widthTotal . 'px;height:110px;',), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org">' . we_html_tools::getPixel($_widthTotal, 110, 0) . '</a>');
+$_table->setCol($_actRow++, 0, array("colspan" => 3, "style" => 'width: ' . $_widthTotal . 'px;height:100px;',), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><p style="text-align:center;height:100px;width:' . $_widthTotal . 'px"><img src="' . IMAGE_DIR . 'webedition.svg"/></p></a>' . (isset($extra) ? '<div style="position:relative;top:-60px;left:300px;text-align:left;font-weight:bolder;color:red;transform: rotate(-45deg);transform-origin: 0% 0%;">' . $extra . '</div>' : ''));
 
 $_table->addRow(2);
+if($we_version){
 //	spaceholder
-$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 25));
+	$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 5));
 
 //	3rd Version
-if($we_version){
 	$_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 	$_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "small"), "Version: " . $we_version);
 	$_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
@@ -101,8 +99,6 @@ $_table->setCol($_actRow, 0, array("width" => $_space), we_html_tools::getPixel(
 $_table->setCol($_actRow, 1, array("width" => $_middlePart, "class" => "defaultfont small"), $_credits);
 $_table->setCol($_actRow++, 2, array("width" => $_space), we_html_tools::getPixel($_space, 1));
 
-//	6th row
-$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 10));
 
 //	7th agency
 if(is_readable($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php')){
@@ -114,8 +110,7 @@ if(is_readable($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php')){
 }
 
 //	8th row
-$_table->setCol($_actRow++, 0, array("width" => $_widthTotal,
-	"colspan" => 3), we_html_tools::getPixel($_widthTotal, 10));
+$_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 10));
 
 
 if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
@@ -123,8 +118,8 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$loginRow = 0;
 
 	$_loginTable = new we_html_table(
-			array("style" => "border-style:none; padding:0px;border-spacing:0px;"
-			), 7, 2
+		array("style" => "border-style:none; padding:0px;border-spacing:0px;"
+		), 7, 2
 	);
 
 	$_loginTable->setCol($loginRow++, 0, array("width" => $_leftPart, "class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
@@ -173,11 +168,11 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		// if button is between these radio boces, they can not be reachable with <tab>
 		$_modetable->setCol(0, 0, array(), '<table style="border:0px;padding:0px;" cellspacing="0">
 		<tr><td>' . $we_login_type . '</td></tr>' .
-				'<tr><td>' .
-				we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
-				'</td></tr>
+			'<tr><td>' .
+			we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
+			'</td></tr>
 		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', '[start_mode_seem_acronym]') . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
-				'</td></tr>
+			'</td></tr>
 		</table>');
 		$_modetable->setCol(0, 1, array(
 			'align' => 'right',
@@ -202,12 +197,11 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$_content = g_l('global', '[loginok]');
 
 	$_loginTable = new we_html_table(
-			array("style" => 'border-style:none; padding:0px;border-spacing:0px;',
-			), 2, 2
+		array("style" => 'border-style:none; padding:0px;border-spacing:0px;',
+		), 2, 2
 	);
 
 	$_loginTable->setCol($loginRow, 0, array("width" => $_leftPart, "class" => "small"), $_content);
-//	$_loginTable->setCol($loginRow++, 1, array('width' => $_logoPart, 'rowspan' => 5, 'height' => 60), '<img src="' . IMAGE_DIR . 'info/partnerLogo.gif" width="140" height="60" />');
 
 	$_table->addRow(4);
 
@@ -230,7 +224,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 	$_table->setCol($_actRow++, 0, array("colspan" => 3), we_html_tools::getPixel(2, 50));
 }
 
-if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "info"){
+if($isInfoScreen){
 	echo $_table->getHtml();
 } else {
 	$_loginTable = $_table->getHtml();

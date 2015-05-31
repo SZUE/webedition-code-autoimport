@@ -182,7 +182,7 @@ onunload=function() {
 				echo self::createMessageConsole('mainWindow');
 				?>
 				<img src="<?php echo IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19"/>
-				<img src="<?php echo IMAGE_DIR ?>webedition.gif" alt="" id="weHeaderLogo"/>
+				<img src="<?php echo IMAGE_DIR ?>/webedition.svg" alt="" id="weHeaderLogo"/>
 			</div>
 		</div>
 		<?php
