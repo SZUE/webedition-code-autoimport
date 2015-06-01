@@ -461,7 +461,7 @@ abstract class we_SEEM{
 			return $destCode;
 		}
 		//	This is Code, to have the same effect like pressing a vertical tab
-		for($i = 0; $i < count($linkArray[0]); $i++){
+		foreach($linkArray[0] as $i => $curLink){
 
 			if($linkArray[6][$i] != -1){ //  The target of the Link is a webEdition - Document.
 				$javascriptCode = ' onclick="' . self::getClassVars('vtabSrcObjs');
@@ -500,7 +500,7 @@ abstract class we_SEEM{
 							" onclick=\"if(confirm('" . g_l('SEEM', '[ext_doc_selected]') . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\"");
 				}
 			}
-			$destCode = str_replace($linkArray[0][$i], '<a href="javascript://" ' . $javascriptCode . ' onmouseout="top.info(\' \')">', $destCode);
+			$destCode = str_replace($curLink, '<a href="javascript://" ' . $javascriptCode . ' onmouseout="top.info(\' \')">', $destCode);
 		}
 		return $destCode;
 	}
