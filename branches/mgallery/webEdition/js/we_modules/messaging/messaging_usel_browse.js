@@ -98,9 +98,9 @@ function zeichne(startEntry, zweigEintrag) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == 'user') {
 			if (ai == nf.len) {
-				ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" class=\"treeKreuz\">";
+				ret += "<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" class=\"treeKreuz\">";
 			} else {
-				ret += "&nbsp;&nbsp;<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" class=\"treeKreuz\">";
+				ret += "<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" class=\"treeKreuz\">";
 			}
 			if (nf[ai].name != -1) {
 				ret += "<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">";
@@ -114,9 +114,9 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz = (ai == nf.len) ? "end" : "";
 			var zusatz2 = "";
 			if (nf[ai].open === 0) {
-				ret += "&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
+				ret += "<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
 			} else {
-				ret += "&nbsp;&nbsp;<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_close_statustext + "\"></A>";
+				ret += "<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_close_statustext + "\"></A>";
 				zusatz2 = "open";
 			}
 			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +

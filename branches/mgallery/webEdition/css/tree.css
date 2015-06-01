@@ -29,6 +29,7 @@
 	margin: 0px;
 	background-color: #F3F7FF;
 	padding: 0px;
+	padding-left:1ex;
 }
 
 .tree {
@@ -36,6 +37,7 @@
 	border-width: 0px;
 	border-collapse: collapse;
 	padding: 0px;
+	padding-left:1ex;
 }
 
 #treetable table,

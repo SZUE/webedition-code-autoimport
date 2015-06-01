@@ -248,31 +248,29 @@ function clickHandler(cur) {
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">&nbsp;" + cur.text + "</label>";
 				break;
 			default:
-				row += "<a ondragstart=\"treeStartDrag(event,('" + cur.contenttype + "' === 'folder' ? 'dragFolder' : 'dragItem'),'" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">&nbsp;" + cur.text + "</label></a>";
+				row += "<a ondragstart=\"treeStartDrag(event," + (cur.contenttype === 'folder' ? '"dragFolder"' : '"dragItem"') + ",'" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">&nbsp;" + cur.text + "</label></a>";
 		}
 	} else {
 		row += "<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">&nbsp;" + cur.text + "</label>";
 	}
-	row += "&nbsp;&nbsp;<br/>";
+	row += "<br/>";
 	return row;
 }
 
 function drawItem(nf, ai) {
-	return "&nbsp;&nbsp;<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "kreuzungend.gif" : "kreuzung.gif") + "\" class=\"treeKreuz\" >" + clickHandler(nf[ai]);
+	return '<img src="' + treeData.tree_image_dir + (ai == nf.len ? "kreuzungend.gif" : "kreuzung.gif") + '" class="treeKreuz" >' + clickHandler(nf[ai]);
 }
 
 function drawThreeDots(nf, ai) {
-	return "&nbsp;&nbsp;<img src=\"" + treeData.tree_image_dir + (ai == nf.len ? "kreuzungend.gif" : "kreuzung.gif") + "\" class=\"treeKreuz\" >" +
+	return '<img src="' + treeData.tree_image_dir + (ai == nf.len ? "kreuzungend.gif" : "kreuzung.gif") + '" class="treeKreuz" >' +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\"  onclick=\"" + treeData.topFrame + ".setSegment('" + nf[ai].id + "');return true;\">" +
-					'<span class="threedots"><i class="fa fa-' + nf[ai].icon + '"></i></span>' +
-					"</a>" +
-					"&nbsp;&nbsp;<br/>";
+					'<span class="threedots"><i class="fa fa-' + nf[ai].icon + '"></i></span></a><br/>' ;
 }
 
 function drawGroup(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 
-	row = "&nbsp;&nbsp;<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><img src=" + treeData.tree_image_dir + (nf[ai].open === 0 ? "auf" : "zu") + (ai == nf.len ? "end" : "") + ".gif class=\"treeKreuz\" alt=\"\"></a>";
+	row = "<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><img src=" + treeData.tree_image_dir + (nf[ai].open === 0 ? "auf" : "zu") + (ai == nf.len ? "end" : "") + ".gif class=\"treeKreuz\" alt=\"\"></a>";
 
 	if (nf[ai].contenttype !== 'text/weCollection') {
 		nf[ai].icon = "folder" + (nf[ai].open == 1 ? "open" : "") + (nf[ai].disabled == 1 ? "_disabled" : "") + ".gif";

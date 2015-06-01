@@ -263,7 +263,7 @@ function zeichne(startEntry, zweigEintrag) {
 	while (ai <= nf.len) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == "leaf_Folder") {
-			ret += '&nbsp;&nbsp;<img src="' + tree_img_dir +
+			ret += '<img src="' + tree_img_dir +
 							(ai == nf.len ?
 											'kreuzungend.gif' :
 											'kreuzung.gif'
@@ -291,9 +291,9 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz = (ai == nf.len) ? "end" : "";
 			var zusatz2 = "";
 			if (nf[ai].open === 0) {
-				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].id + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
+				ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].id + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
 			} else {
-				ret += "&nbsp;&nbsp;<a href=\"javascript:top.content.openClose('" + nf[ai].id + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"alt=\"" + g_l.tree_close_statustext + "\"></A>";
+				ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].id + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"alt=\"" + g_l.tree_close_statustext + "\"></A>";
 				zusatz2 = "open";
 			}
 			if (deleteMode) {

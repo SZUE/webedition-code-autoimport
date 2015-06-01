@@ -92,7 +92,7 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 	var cur = nf[ai];
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + cur.id + "')\"";
-	row = "&nbsp;&nbsp;<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (cur.open ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>";
+	row = "<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (cur.open ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>";
 
 	cur.icon = "folder" + (cur.open ? "open" : "") + (cur.disabled ? "_disabled" : "") + ".gif";
 
@@ -123,7 +123,7 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".openClose('" + nf[ai].id + "')\"";
 
-	row += "&nbsp;&nbsp;<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (nf[ai].open ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>" +
+	row += "<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (nf[ai].open ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\" border=0>" +
 					"<img src=\"" + treeData.tree_image_dir + "icons/" + nf[ai].icon + "\" alt=\"\">" +
 					"</a>" +
