@@ -188,7 +188,7 @@ span.threedots{
 	border-left-width: 1px;
 }
 
-.tree span.kreuzung::after{
+.tree span.kreuzung::before{
 	content:" ";
 	display:inline-block;
 	position: absolute;
@@ -206,7 +206,8 @@ span.threedots{
 	margin-bottom: 8px;
 }
 
-.tree span.kreuzung i::before{
+.tree span.kreuzung i::before,
+.tree span.kreuzungend i::before{
 	position: absolute;
 	top:0px;
 	left:-5px;
