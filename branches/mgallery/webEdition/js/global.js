@@ -33,74 +33,76 @@
  * @returns icon to be drawn as html-code
  */
 function getTreeIcon(contentType, open, extension) {
+	pre = '<span class="fa-stack fa-lg fileicon"><i class="fa fa-square fa-stack-2x fa-fw"></i>';
+	post = '</span>';
 	switch (contentType) {
 		case 'cockpit':
-		return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-cubes fa-stack-2x we-color"></i></span>';
+			return pre + '<i class="fa fa-cubes fa-stack-2x we-color"></i>' + post;
 		case 'class_folder'://FIXME: this contenttype is not set
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-folder' + (open ? '-open' : '') + ' we-color fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i><span class="we-classification"><i class="fa fa-stack-1x">C</i></span></span>';
+			return pre + '<i class="fa fa-folder' + (open ? '-open' : '') + ' fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i><span class="we-classification"><i class="fa fa-stack-1x">C</i></span>' + post;
 		case 'folder':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-folder' + (open ? '-open' : '') + ' we-color fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i></span>';
+			return pre + '<i class="fa fa-folder' + (open ? '-open' : '') + ' fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i>' + post;
 		case  'image/*':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-image-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+			return pre + '<i class="fa fa-file-image-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'text/js':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">js</i></span></span>';
+			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">js</i></span>' + post;
 		case 'text/css':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">css</i></span></span>';
+			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">css</i></span>' + post;
 		case 'text/htaccess':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">ht</i></span></span>';
+			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">ht</i></span>' + post;
 		case 'text/weTmpl':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">T</i></span></span>';
+			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">T</i></span>' + post;
 		case 'text/webedition':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-text-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span></span>';
+			return pre + '<i class="fa fa-file-text-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span>' + post;
 		case 'text/xml':
 		case 'text/html':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-code-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+			return pre + '<i class="fa fa-file-code-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'application/x-shockwave-flash':
 		case 'video/quicktime':
 		case 'video/*':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-video-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+			return pre + '<i class="fa fa-file-video-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'audio/*':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-sound-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+			return pre + '<i class="fa fa-file-sound-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'text/plain':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-text-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+			return pre + '<i class="fa fa-file-text-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'application/*':
 			switch (extension) {
 				case '.pdf':
-					return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-pdf-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+					return pre + '<i class="fa fa-file-pdf-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 				case '.zip' :
 				case '.sit' :
 				case '.hqx' :
 				case '.bin' :
-					return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-archive-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+					return pre + '<i class="fa fa-file-archive-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 				case '.odg':
 				case '.otg':
 				case '.odt':
 				case '.ott':
 				case '.dot' :
 				case '.doc' :
-					return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-word-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+					return pre + '<i class="fa fa-file-word-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 				case '.ods':
 				case '.ots':
 				case '.xlt' :
 				case '.xls' :
-					return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-table fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+					return pre + '<i class="fa fa-table fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 				case '.odp':
 				case '.otp':
 				case '.ppt' :
-					return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-line-chart fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i></span>';
+					return pre + '<i class="fa fa-line-chart fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 				default:
-					return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-o fa-stack-2x"></i></span>';
+					return pre + '<i class="fa fa-file-o fa-stack-2x"></i>' + post;
 			}
 		case 'object':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">C</i></span></span>';
+			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">C</i></span>' + post;
 		case 'objectFile':
-			return '<span class="fa-stack fa-lg fileicon"><i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">O</i></span></span>';
+			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">O</i></span>' + post;
 		case 'text/weCollection':
 //Banner module
 		case 'banner':
 		case 'bannerFolder':
 		default:
-			return '<span class="fa-stack fa-lg fileicon ' + contentType + '"><i class="fa fa-file-o fa-stack-2x"></i></span>';
+			return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
 			//FIXME: add support for file exension apllication pdf/word/excel/...
 	}
 }
