@@ -96,6 +96,7 @@ frames={
 
 	function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'images.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
 			we_html_element::jsElement('
 var frames={
@@ -298,8 +299,6 @@ top.drawTree();
 }
 	g_l.tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
 	g_l.tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
-	g_l.tree_open_statustext="' . g_l('tree', '[open_statustext]') . '";
-	g_l.tree_close_statustext="' . g_l('tree', '[close_statustext]') . '";
 ';
 	}
 

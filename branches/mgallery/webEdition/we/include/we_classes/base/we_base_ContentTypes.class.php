@@ -169,7 +169,7 @@ class we_base_ContentTypes{
 				'Icon' => self::FILE_ICON,
 				'Table' => array(FILE_TABLE),
 			),
-			'folder' => array(
+			self::FOLDER => array(
 				'Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',

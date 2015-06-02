@@ -88,19 +88,11 @@ img.close{
 }
 span.status{
 	vertical-align:top;
-	padding:0px;
+	padding: 0px 1ex;
 	width:16px;
 	height:16px;
 	margin:2px;
-}
-img.status{
-	vertical-align:top;
-	padding:0px;
-	margin:2px;
-	width: 16px;
-	height: 16px;
-	background-position:center;
-	background-size: 16px 16px;
+	display:inline-block;
 }
 i.modified{
 	vertical-align:super;

@@ -820,3 +820,39 @@ table.revenueTable td {
 .markValid {
 	background: #FFFFFF;
 }
+
+span.fileicon{
+	font-size:8px;
+}
+span.fileicon .we-icon{
+	bottom: 0px;
+	color: #164F94;
+	line-height: 1;
+	left: auto;
+}
+span.fileicon .we-icon i{
+	bottom:0px;
+	vertical-align:bottom;
+	left: auto;
+	right:-.5em;
+
+}
+span.fileicon .we-color{
+	color: #164F94;
+}
+
+span.fileicon> .we-otherfiles i{
+	bottom:.3em;
+	color:#164F94;
+	margin-left:.2em;
+	vertical-align: bottom;
+	line-height:1;
+}
+
+span.fileicon .we-classification i{
+	top:-.3em;
+	vertical-align:top;
+	left: -.3em;
+	color:red;
+	font-weight:bolder;
+}

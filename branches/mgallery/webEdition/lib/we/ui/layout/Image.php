@@ -357,7 +357,7 @@ abstract class we_ui_layout_Image{
 				return "we_document";
 			case we_base_ContentTypes::HTML:
 				return "text_html";
-			case "folder" :
+			case we_base_ContentTypes::FOLDER:
 				return "folder";
 			case "folderOpen" :
 				return "folderOpen";

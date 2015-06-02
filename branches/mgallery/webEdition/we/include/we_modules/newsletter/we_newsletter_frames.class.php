@@ -2187,8 +2187,7 @@ function clearLog(){
 							"pnt" => "send_frameset",
 							'nid' => $nid,
 							'test' => $test)) .
-						we_html_element::htmlCenter(
-							we_html_element::htmlImg(array('src' => IMAGE_DIR . 'spinner.gif')) .
+						we_html_element::htmlCenter('<i class="fa fa-2x fa-spinner fa-pulse"></i>'.
 							we_html_element::htmlBr() .
 							we_html_element::htmlBr() .
 							we_html_element::htmlDiv(array('class' => 'header_small'), g_l('modules_newsletter', '[prepare_newsletter]'))

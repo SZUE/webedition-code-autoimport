@@ -29,7 +29,7 @@
 	margin: 0px;
 	background-color: #F3F7FF;
 	padding: 0px;
-	padding-left:1ex;
+	/*padding-left:1ex;*/
 }
 
 .tree {
@@ -37,7 +37,7 @@
 	border-width: 0px;
 	border-collapse: collapse;
 	padding: 0px;
-	padding-left:1ex;
+	/*padding-left:1ex;*/
 }
 
 #treetable table,
@@ -48,19 +48,19 @@
 	border-collapse: collapse;
 }
 
-.treetable img,
-.tree img,
+.tree label,
+.treetable label{
+	padding-left:1ex;
+}
+
 span.treeKreuz{
 	width: 16px;
 	height: 18px;
 	vertical-align: middle;
-}
-
-img.treeKreuz{
-	width:19px;
-}
-span.treeKreuz{
+	position: relative;
 	display:inline-block;
+	/*for lines*/
+	border: 0px solid darkgray;
 }
 
 .item,
@@ -173,4 +173,45 @@ span.threedots{
 	background-color:lightgrey;
 	width:80%;
 	text-align:center;
+}
+
+.tree span.strich{
+	width:10px;
+	margin-left:8px;
+	border-left-width: 1px;
+}
+
+
+.tree span.kreuzung{
+	width:10px;
+	margin-left:8px;
+	border-left-width: 1px;
+}
+
+.tree span.kreuzung::after{
+	content:" ";
+	display:inline-block;
+	position: absolute;
+	top: 9px;
+	width:10px;
+	border-bottom:1px solid darkgrey;
+}
+
+.tree span.kreuzungend{
+	width:10px;
+	margin-left:8px;
+	border-left: 1px solid darkgrey;
+	height:9px;
+	border-bottom-width: 1px;
+	margin-bottom: 8px;
+}
+
+.tree span.kreuzung i::before{
+	position: absolute;
+	top:0px;
+	left:-5px;
+}
+
+.tree .treeKreuz i.fa-square{
+	color:white;
 }

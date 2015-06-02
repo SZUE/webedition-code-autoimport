@@ -92,7 +92,7 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 	var cur = nf[ai];
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + cur.id + "')\"";
-	row = "<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (cur.open ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>";
+	row = "<a href=\"javascript:" + oc_js + " border=0><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>";
 
 	cur.icon = "folder" + (cur.open ? "open" : "") + (cur.disabled ? "_disabled" : "") + ".gif";
 
@@ -103,16 +103,16 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 					(cur.disabled ?
 									"" :
 									"</a><a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
-					"<label id=\"lab_" + cur.id + "\" class=\"" + cur.getlayout() + "\">&nbsp;" + cur.text + "</label>" +
+					"<label id=\"lab_" + cur.id + "\" class=\"" + cur.getlayout() + "\">" + cur.text + "</label>" +
 					(cur.disabled ?
 									"" :
 									"</a>") +
-					"&nbsp;&nbsp;<br/>";
+					"<br/>";
 	if (cur.open) {
 		if (ai == nf.len) {
 			newAst += "<span class=\"treeKreuz\"></span>";
 		} else {
-			newAst += "<img src=\"" + treeData.tree_image_dir + "strich2.gif\" class=\"treeKreuz\"/>";
+			newAst += '<span class="strich treeKreuz "></span>';
 		}
 		row += draw(cur.id, newAst);
 	}
@@ -123,20 +123,20 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".openClose('" + nf[ai].id + "')\"";
 
-	row += "<a href=\"javascript:" + oc_js + " border=0><img src=\"" + treeData.tree_image_dir + (nf[ai].open ? "zu" : "auf") + (ai == nf.len ? "end" : "") + ".gif\" class=\"treeKreuz\" alt=\"\"></a>" +
+	row += "<a href=\"javascript:" + oc_js + "><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\" border=0>" +
 					"<img src=\"" + treeData.tree_image_dir + "icons/" + nf[ai].icon + "\" alt=\"\">" +
 					"</a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\">" +
-					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + treeData.node_layout[nf[ai].state] + "\">&nbsp;" + nf[ai].text + "</label>" +
+					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + treeData.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +
 					"</a>" +
-					"&nbsp;&nbsp;<br/>";
+					"<br/>";
 
 	if (nf[ai].open) {
 		if (ai == nf.len) {
 			newAst += "<span class=\"treeKreuz\"></span>";
 		} else {
-			newAst += "<img src=\"" + treeData.tree_image_dir + "strich2.gif\" class=\"treeKreuz\" />";
+			newAst += '<span class="strich treeKreuz "></span>';
 		}
 		row += draw(nf[ai].id, newAst);
 	}

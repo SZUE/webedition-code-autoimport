@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_delete extends we_fragment_base{
-
 	private $db;
 
 	function __construct($name, $taskPerFragment, $pause = 0){
@@ -46,7 +45,7 @@ class we_backup_delete extends we_fragment_base{
 
 			if(empty($this->alldata)){
 				echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING)
+					we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING)
 				);
 				$this->finish();
 			}
@@ -54,10 +53,13 @@ class we_backup_delete extends we_fragment_base{
 	}
 
 	function doTask(){
-		$item = makeArrayFromCSV($this->data);
+		$item = explode(',', $this->data);
 		if(!we_base_file::delete($item[0])){
 			if(file_exists($item[0])){
-				$_SESSION['weS']['delete_files_nok'][] = array("icon" => (isset($item[1]) ? $item[1] : ""), "path" => $item[0]);
+				$_SESSION['weS']['delete_files_nok'][] = array(
+					"icon" => (isset($item[1]) ? $item[1] : ""),
+					"path" => $item[0]
+				);
 			}
 		}
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
@@ -74,7 +76,7 @@ class we_backup_delete extends we_fragment_base{
 	function finish(){
 		if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok']) && count($_SESSION['weS']['delete_files_nok'])){
 			echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 					new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,600,550,true,true,true);
 			');
 		}

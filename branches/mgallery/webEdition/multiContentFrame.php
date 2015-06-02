@@ -39,14 +39,6 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css') .
  we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 
-// generate ContentType JS-String
-$_contentTypes = array();
-$_contentTypes[] = '"cockpit": "icon_cockpit.gif"';
-$ct = we_base_ContentTypes::inst();
-foreach($ct->getContentTypes() as $ctype){
-	$_contentTypes[] = '"' . $ctype . '":"' . $ct->getIcon($ctype) . '"';
-}
-
 /* FIXME: check if browser dependencies are really needed anymore!
  * Browser dependencies
  */
@@ -81,11 +73,11 @@ switch($browser->getBrowser()){
 					};
 					var contentTypeApp = "<?php echo we_base_ContentTypes::APPLICATION; ?>";
 					var heightPlus =<?php echo $heightPlus; ?>;
-					var _Contentypes = {<?php echo implode(',', $_contentTypes); ?>};
 //-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') .
+echo we_html_element::jsScript(JS_DIR . 'global.js') .
+ we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') .
  we_html_element::jsScript(JS_DIR . 'multiEditor/multiTabs.js');
 ?>
 </head>
@@ -97,7 +89,7 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') 
 			</div>
 			<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)">
 				<nobr>
-					<span class="spacer">&nbsp;<img src="<?php echo IMAGE_DIR ?>pixel.gif" id="###loadId###" title="" class="status"/>&nbsp;</span>
+					<span class="spacer status" id="###loadId###" title="" ></span>
 					<span id="###tabTextId###" class="text"></span>
 					<span class="spacer">
 						<i class="fa fa-asterisk modified" id="###modId###"></i>
@@ -110,13 +102,13 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') 
 		</div>
 	</div>
 	<div id="multiEditorEditorFramesetsDiv"><?php
-		$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
+$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
 
-		for($i = 0; $i < $count; $i++){
-			//'overflow:hidden;' removed to fix bug #6540
-			echo '<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
-		}
-		?>
+for($i = 0; $i < $count; $i++){
+	//'overflow:hidden;' removed to fix bug #6540
+	echo '<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
+}
+?>
 	</div>
 </body>
 </html>

@@ -22,44 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function _getIcon(contentType, extension) {
-	if (contentType === contentTypeApp) {
-		switch (extension.toLowerCase()) {
-			case '.pdf' :
-				return 'pdf.gif';
-			case '.zip' :
-			case '.sit' :
-			case '.hqx' :
-			case '.bin' :
-				return 'zip.gif';
-			case '.odt':
-			case '.ott':
-			case '.dot' :
-			case '.doc' :
-				return 'word.gif';
-			case '.ods':
-			case '.ots':
-			case '.xlt' :
-			case '.xls' :
-				return 'excel.gif';
-			case '.odp':
-			case '.otp':
-			case '.ppt' :
-				return 'powerpoint.gif';
-			case '.odg':
-			case '.otg':
-				return 'odg.gif';
-		}
-		return "prog.gif";
-	} else {
-		tmp = _Contentypes[contentType];
-		if (tmp === undefined) {
-			return "prog.gif";
-		}
-		return _Contentypes[contentType];
-	}
-}
-
 // fits the frame height on resize, add or remove tabs if the tabs wrap
 function setFrameSize() {
 	tabsHeight = (document.getElementById('tabContainer').clientHeight ? (document.getElementById('tabContainer').clientHeight + heightPlus) : (document.body.clientHeight + heightPlus));
@@ -197,15 +159,12 @@ TabView.prototype = {
 	 */
 	setLoading: function (frameId, loading) {
 		if (loading) {
-			this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(/webEdition/images/spinner.gif)";
-		} else if (_Contentypes[this.contentType[frameId]]) {
+			this.myDoc.getElementById('load_' + frameId).innerHTML = '<i class="fa fa-2x fa-spinner fa-pulse"></i>';
+		} else{
 			var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
 			var _ext = _text ? _text.replace(/^.*\./, ".") : "";
-			this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(/webEdition/images/tree/icons/" + _getIcon(this.contentType[frameId], _ext) + ")";
-		} else {
-			this.myDoc.getElementById('load_' + frameId).style.backgroundImage = "url(/webEdition/images/pixel.gif)";
-		}
-
+			this.myDoc.getElementById('load_' + frameId).innerHTML = getTreeIcon(this.contentType[frameId], false, _ext);
+		} 
 	},
 	/**
 	 * displays the content type icon

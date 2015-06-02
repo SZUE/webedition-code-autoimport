@@ -45,12 +45,7 @@ function zeichne(startEntry, zweigEintrag) {
 	while (ai <= nf.len) {
 		ret += zweigEintrag;
 		if (nf[ai].typ === 'shop') {
-			ret += "<img src=\"" + tree_img_dir +
-							(ai === nf.len ?
-											"kreuzungend.gif" :
-											"kreuzung.gif"
-											) +
-							"\" class=\"treeKreuz\"/>";
+			ret += '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
 			if (perm_EDIT_SHOP_ORDER) { // make  in tree clickable
 				if (nf[ai].name !== -1) {
 					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
@@ -60,7 +55,6 @@ function zeichne(startEntry, zweigEintrag) {
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" :
 											"") +
-							"&nbsp;" +
 							(perm_EDIT_SHOP_ORDER ? // make orders in tree clickable
 											"<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 											"") +
@@ -69,18 +63,11 @@ function zeichne(startEntry, zweigEintrag) {
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" : ""
 											) +
-							"&nbsp;&nbsp;<br/>";
+							"<br/>";
 		} else {
 			var newAst = zweigEintrag;
-			var zusatz = (ai === nf.len) ? "end" : "";
-			var zusatz2 = "";
 
-			if (nf[ai].open === 0) {
-				ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><img src=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + g_l.tree_open_statustext + "\"></a>";
-			} else {
-				ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',0)\"><img src=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" title=\"" + g_l.tree_close_statustext + "\"></a>";
-				zusatz2 = "open";
-			}
+			ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>";
 			ret += (perm_EDIT_SHOP_ORDER ?
 							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 							"") +
@@ -90,15 +77,15 @@ function zeichne(startEntry, zweigEintrag) {
 											// make the month in tree clickable
 											"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 											"") +
-							"&nbsp;" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
+							(parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" : "") +
-							"&nbsp;&nbsp;<br/>";
+							"<br/>";
 			if (nf[ai].open) {
 				if (ai === nf.len) {
 					newAst += "<span class=\"treeKreuz\"></span>";
 				} else {
-					newAst += "<img src=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
+					newAst += '<span class="strich treeKreuz "></span>';
 				}
 				ret += zeichne(nf[ai].name, newAst);
 			}

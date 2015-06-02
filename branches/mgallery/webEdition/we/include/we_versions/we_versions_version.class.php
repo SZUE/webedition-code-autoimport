@@ -831,7 +831,7 @@ class we_versions_version{
 		if(is_object($obj) && $obj->ID && in_array($obj->ContentType, self::getContentTypesVersioning())){
 			$_SESSION['weS']['versions']['versionToCompare'][$obj->Table][$obj->ID] = self::getHashValue(self::removeUnneededCompareFields(self::objectToArray($obj)));
 
-			if(!$this->versionsExist($obj->ID, $obj->ContentType)){
+			if(!self::versionsExist($obj->ID, $obj->ContentType)){
 				$_SESSION['weS']['versions']['initialVersions'] = true;
 				$this->save($obj);
 			}
@@ -839,17 +839,10 @@ class we_versions_version{
 	}
 
 	/**
-	 * @abstract count versions
-	 */
-	public function countVersions($id, $contentType){
-		return f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType = '" . escape_sql_query($contentType) . "'", '', new DB_WE());
-	}
-
-	/**
 	 * @abstract looks if versions exist for the document
 	 */
-	public static function versionsExist($id, $contentType){
-		return (self::countVersions($id, $contentType) > 0);
+	private static function versionsExist($id, $contentType){
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType = '" . escape_sql_query($contentType) . "' LIMIT 1", '', new DB_WE()) == 1;
 	}
 
 	/**
@@ -1127,7 +1120,7 @@ class we_versions_version{
 			switch($status){
 				case 'published':
 				case 'saved':
-					if(isset($lastEntry['status']) && $status == $lastEntry['status'] && !$diffExists && $this->versionsExist($document['ID'], $document['ContentType'])){
+					if(isset($lastEntry['status']) && $status == $lastEntry['status'] && !$diffExists && self::versionsExist($document['ID'], $document['ContentType'])){
 						return;
 					}
 			}
@@ -1718,7 +1711,7 @@ class we_versions_version{
 				}
 			}
 
-				$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . " AND Path= '" . $db->escape($resetDoc->Path) . "' LIMIT 1", '', $db);
+			$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . " AND Path= '" . $db->escape($resetDoc->Path) . "' LIMIT 1", '', $db);
 
 			$doPark = false;
 			if($existsFile){
@@ -1747,23 +1740,23 @@ class we_versions_version{
 			$resetDoc->ModDate = time();
 			$resetDoc->Published = $resetArray["timestamp"];
 
-				$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
-				$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
-				$publishedDocExists = true;
-				if($resetArray['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
-					$publishedDocExists = file_exists($publishedDoc);
-				}
-				if($doPark || !$wasPublished || !$publishedDocExists){
-					$resetDoc->Published = 0;
-				}
-				if($publish){
-					$_SESSION['weS']['versions']['doPublish'] = true;
-				}
-				$resetDoc->we_save();
-				if($publish){
-					unset($_SESSION['weS']['versions']['doPublish']);
-					$resetDoc->we_publish();
-				}
+			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
+			$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
+			$publishedDocExists = true;
+			if($resetArray['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
+				$publishedDocExists = file_exists($publishedDoc);
+			}
+			if($doPark || !$wasPublished || !$publishedDocExists){
+				$resetDoc->Published = 0;
+			}
+			if($publish){
+				$_SESSION['weS']['versions']['doPublish'] = true;
+			}
+			$resetDoc->we_save();
+			if($publish){
+				unset($_SESSION['weS']['versions']['doPublish']);
+				$resetDoc->we_publish();
+			}
 
 			if(defined('WORKFLOW_TABLE') && $resetDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 				if(we_workflow_utility::inWorkflow($resetDoc->ID, $resetDoc->Table)){

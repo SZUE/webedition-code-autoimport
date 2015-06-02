@@ -163,7 +163,7 @@ function we_cmd(){
 			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
 			break;
 		case "payment_val":
-			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.inc.php","shoppref",-1,-1,520,720,true,false,true,false);
+			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.php","shoppref",-1,-1,520,720,true,false,true,false);
 			break;
 
 		case "edit_shop_categories":

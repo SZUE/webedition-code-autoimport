@@ -345,7 +345,11 @@ for ( frameId in _usedEditors ) {
 							$_SESSION['weS']['delete_files_nok'] = array();
 							$_SESSION['weS']['delete_files_info'] = str_replace('\n', '', sprintf(g_l('alert', '[folder_not_empty]'), ''));
 							foreach($GLOBALS["we_folder_not_del"] as $datafile){
-								$_SESSION['weS']['delete_files_nok'][] = array('icon' => we_base_ContentTypes::FOLDER_ICON, "path" => $datafile);
+								$_SESSION['weS']['delete_files_nok'][] = array(
+									'icon' => we_base_ContentTypes::FOLDER_ICON,
+									'ct'=>'folder',
+									"path" => $datafile
+								);
 							}
 							$script .= 'new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);';
 						} else {
@@ -414,11 +418,11 @@ if($wecmd0 != "delete_single_document"){ // no select mode in delete_single_docu
 		case VFILE_TABLE:
 			// FIXME: implement prefs for collections
 			//if(permissionhandler::hasPerm("DELETE_DOC_FOLDER") && permissionhandler::hasPerm("DELETE_DOCUMENT")){
-				echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
+			echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
 			/*
-			} elseif(permissionhandler::hasPerm("DELETE_DOCUMENT")){
-				echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
-			}
+			  } elseif(permissionhandler::hasPerm("DELETE_DOCUMENT")){
+			  echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+			  }
 			 *
 			 */
 			break;
