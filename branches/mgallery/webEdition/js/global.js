@@ -98,6 +98,7 @@ function getTreeIcon(contentType, open, extension) {
 		case 'objectFile':
 			return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">O</i></span>' + post;
 		case 'text/weCollection':
+			return pre + '<i class="fa fa-archive fa-stack-2x we-color"></i>' + post;
 //Banner module
 		case 'banner':
 		case 'bannerFolder':
