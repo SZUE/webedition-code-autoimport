@@ -38,7 +38,7 @@ var simplepre = '<span class="fa-stack fa-lg fileicon">';
 				post = '</span>';
 				switch (contentType) {
 case 'cockpit':
-				return simplepre + '<i class="fa fa-cubes fa-stack-2x we-color"></i>' + post;
+				return simplepre + '<i class="fa fa-th-large fa-stack-2x we-color"></i>' + post;
 				case 'class_folder'://FIXME: this contenttype is not set
 				case 'we/bannerFolder':
 				case 'folder':
