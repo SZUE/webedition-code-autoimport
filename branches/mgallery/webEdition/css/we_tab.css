@@ -44,7 +44,6 @@ div.tabNormal {
 	float:left;
 	display: inline-block;
 	line-height:21px;
-	font-size:17px;
 	cursor:pointer;
 	border-right:1px solid #888888;
 }
@@ -59,7 +58,8 @@ div.tabActive {
 }
 
 span.text{
-	margin:0px; padding:0px;
+	margin:0px 1em;
+	padding:0px;
 	font-size: 10px;
 	vertical-align:top;
 }

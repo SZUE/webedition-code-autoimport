@@ -144,6 +144,7 @@ abstract class we_html_button{
 		// Check height
 		$height = ($height ? : self::HEIGHT);
 
+		restart:
 		$all = explode(':', $name, 2);
 		list($type, $names) = count($all) == 1 ? array('', '') : $all;
 		/**
@@ -151,9 +152,18 @@ abstract class we_html_button{
 		 */
 		// Check if the button is a text button or an image button
 		$value = '';
+
+
 		switch($type){
 			//FIXME: remove image buttons - we don't have any
 			case self::WE_IMAGE_BUTTON_IDENTIFY:// Button is an image
+				//fixes for Update
+				switch($name){
+					case 'reload':
+					case 'btn_reload':
+						$name = self::REFRESH;
+						goto restart;
+				}
 				$name = $names;
 				//set width for image button if given width has not default value
 				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);

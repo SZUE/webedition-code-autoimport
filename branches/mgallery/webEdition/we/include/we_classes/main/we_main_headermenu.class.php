@@ -98,7 +98,6 @@ onunload=function() {
 		echo we_html_element::jsScript(JS_DIR . 'images.js') .
 		($jmenu ? $jmenu->getJS() : '');
 		we_html_element::jsElement('
-	preload("empty_icon","' . IMAGE_DIR . 'pixel.gif");
 	function toggleBusy(foo){
 		if(!document.images["busy"]){
 			setTimeout("toggleBusy("+foo+")",200);

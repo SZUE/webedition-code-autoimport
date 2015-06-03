@@ -130,12 +130,6 @@ function we_tab(href, normSrc, activeSrc, disabledSrc, width, height, state, js,
 	this.setState = we_tab_setState;
 	this.setState(state, true);
 
-	if (!this.svg) {
-		preload(this.nameNorm, this.normSrc);
-		preload(this.nameActive, this.activeSrc);
-		preload(this.nameDisabled, this.disabledSrc);
-	}
-
 	this.write = we_tab_write;
 	this.getTabStateImg = we_getTabStateImg;
 }

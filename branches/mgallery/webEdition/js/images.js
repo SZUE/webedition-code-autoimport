@@ -6,13 +6,7 @@
 // Distributed under the terms of the GNU Library General Public License
 // Available at http://www.dansteinman.com/dynapi/
 
-function preload(imgObj, imgSrc) {
-	if (document.images) {
-		eval(imgObj + ' = new Image()');
-		eval(imgObj + '.src = "' + imgSrc + '"');
-	}
-}
-
+//FIXME: remove this function/file
 function changeImage(layer, imgName, imgObj) {
 	if (document.images) {
 		if (document.layers && layer !== null) {
