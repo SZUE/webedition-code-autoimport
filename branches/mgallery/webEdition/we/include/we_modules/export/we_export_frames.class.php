@@ -272,7 +272,7 @@ function closeAllType(){
 		$docTypes = $this->db->getAllFirst(false);
 
 		if(defined('OBJECT_TABLE')){
-			$this->db->query('SELECT ID,Text FROM ' . OBJECT_TABLE);
+			$this->db->query('SELECT ID,Text FROM ' . OBJECT_TABLE.' ORDER BY Text');
 			$classNames = $this->db->getAllFirst(false);
 		}
 
@@ -564,15 +564,15 @@ function closeAllType(){
 						$proceed = false;
 						break;
 					case 'doctype':
-						$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), 'DocType', $this->db);
+						$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 					case 'weNavigationRule':
-						$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), 'NavigationName', $this->db);
+						$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 					case 'weThumbnail':
-						$_path = f('SELECT Name FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), 'Name', $this->db);
+						$_path = f('SELECT Name FROM ' . $table . ' WHERE ID = ' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 

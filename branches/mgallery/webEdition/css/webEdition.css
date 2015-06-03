@@ -861,6 +861,7 @@ span.fileicon i.fa-folder-open,
 span.fileicon i.fa-folder{
 	color: #ADC5E3;
 }
-span.fileicon i.fa-square{
+span.fileicon i.fa-square,
+span.treeKreuz i.fa-square{
 	color:white;
 }

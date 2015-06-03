@@ -69,7 +69,7 @@ treeData.frames=frames;
 
 		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere;
 
-		$db->query('SELECT ' . $elem . ' FROM ' . $table . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text' . ($segment ? " LIMIT $offset,$segment" : '' ));
+		$db->query('SELECT ' . $elem . ' FROM ' . $table . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,abs(text),Text' . ($segment ? " LIMIT $offset,$segment" : '' ));
 
 		while($db->next_record()){
 
