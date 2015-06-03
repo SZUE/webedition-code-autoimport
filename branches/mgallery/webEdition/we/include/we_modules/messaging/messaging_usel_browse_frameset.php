@@ -56,12 +56,31 @@ echo "startloc=0 ;
 treeData.add(new self.rootEntry('0','root','root'));";
 while($DB_WE->next_record()){
 	if($DB_WE->f('Type') == 1){
-		echo "  treeData.add(new dirEntry('usergroup'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "',false,'user','" . USER_TABLE . "','" . $p[0] . "'));";
+		echo "  treeData.add({
+name : " . $DB_WE->f("ID") . ",
+parentid : " . $DB_WE->f("ParentID") . ",
+text : '" . $DB_WE->f("username") . "',
+typ : 'folder',
+open : 0,
+contentType : 'user',
+table : '" . USER_TABLE . "',
+loaded : 0,
+checked : false
+			});";
 	} else {
 		$p = $DB_WE->f("Permissions");
 
 		echo "checked = (user_array_search(\"" . $DB_WE->f('ID') . "\", opener.current_sel, \"1\", 'we_message') != -1) ? 1 : 0;" .
-		"treeData.add(new urlEntry('user.gif'," . $DB_WE->f("ID") . "," . $DB_WE->f("ParentID") . ",'" . $DB_WE->f("username") . "','user','" . USER_TABLE . "','" . $p[0] . "', checked));";
+		"treeData.add({
+name : " . $DB_WE->f("ID") . ",
+parentid : " . $DB_WE->f("ParentID") . ",
+text : '" . $DB_WE->f("username") . "',
+typ : 'user',
+contentType : 'user',
+table : '" . USER_TABLE . "',
+published : '" . $p[0] . "',
+checked : checked
+	});";
 	}
 }
 ?>
@@ -114,7 +133,7 @@ while($DB_WE->next_record()){
 echo we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'start();')
 	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'usel.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
-		we_html_element::htmlDiv(array('style' => 'height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;','class'=>'editfooter'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_selupdate();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:close();")
+		we_html_element::htmlDiv(array('style' => 'height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;', 'class' => 'editfooter'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_selupdate();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:close();")
 		))
 ));
 ?>

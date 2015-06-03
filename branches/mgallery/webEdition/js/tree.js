@@ -222,7 +222,7 @@ function clickHandler(cur) {
 			row += "<a name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){ " + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
 		}
 	}
-	row += getTreeIcon(cur.contenttype, cur.open) +
+	row += getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
 					(cur.disabled != 1 ?
 									"</a>" :
 									""

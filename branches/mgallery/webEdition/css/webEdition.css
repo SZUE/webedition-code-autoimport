@@ -856,3 +856,11 @@ span.fileicon .we-classification i{
 	color:red;
 	font-weight:bolder;
 }
+
+span.fileicon i.fa-folder-open,
+span.fileicon i.fa-folder{
+	color: #ADC5E3;
+}
+span.fileicon i.fa-square{
+	color:white;
+}

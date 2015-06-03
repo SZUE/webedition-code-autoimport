@@ -96,7 +96,17 @@ function zeichne(startEntry, zweigEintrag) {
 function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
 	if (table === tab && treeData[indexOfEntry(pid)]) {
 		if (ct === "folder") {
-			treeData.addSort(new dirEntry(icon, id, pid, txt, open, ct, tab));
+			treeData.addSort({
+				name: id,
+				parentid: pid,
+				text: txt,
+				typ: 'folder',
+				open: (open ? 1 : 0),
+				contentType: ct,
+				table: tab,
+				loaded: (open ? 1 : 0),
+				checked: false
+			});
 		} else {
 			treeData.addSort({
 				name: id,

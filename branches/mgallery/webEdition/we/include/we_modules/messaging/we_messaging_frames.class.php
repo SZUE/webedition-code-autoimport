@@ -157,9 +157,9 @@ function loadData() {
 			$jsOut .= '
 	treeData.add(' .
 				(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0 ?
-					'new dirEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '")
+					'new dirEntry("",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '")
 				' :
-					'new urlEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')","folder","' . MESSAGES_TABLE . '", "' . $iconbasename . '", "' . $folder['view_class'] . '")
+					'new urlEntry("",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')","folder","' . MESSAGES_TABLE . '", "' . $iconbasename . '", "' . $folder['view_class'] . '")
 				') . ');';
 		}
 		$jsOut .= '

@@ -253,7 +253,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank";';
 						$type = we_base_request::_(we_base_request::STRING, 'type');
 						$out .= we_html_element::jsElement('
 top.content.folder_added(' . $parent . ');
-top.content.treeData.add(new top.content.urlEntry("' . ($type === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif", "' . $id . '", "' . $parent . '", "' . we_base_request::_(we_base_request::STRING, 'name') . ' - (0)", "leaf_Folder", "' . MESSAGES_TABLE . '", "' . ($type === 'we_todo' ? 'todo_folder' : 'msg_folder') . '"));' .
+top.content.treeData.add(new top.content.urlEntry("", "' . $id . '", "' . $parent . '", "' . we_base_request::_(we_base_request::STRING, 'name') . ' - (0)", "leaf_Folder", "' . MESSAGES_TABLE . '", "' . ($type === 'we_todo' ? 'todo_folder' : 'msg_folder') . '"));' .
 								we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 top.content.drawEintraege();
 						');
@@ -267,7 +267,7 @@ top.content.treeData.add(new top.content.self.rootEntry(0,"root","root"));';
 							if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0){
 								$js_out .= 'top.content.treeData.add(
 	new top.content.dirEntry(
-		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
+		"",
 		"' . $folder['ID'] . '","' . $folder['ParentID'] . '",
 		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
 		false,
@@ -280,7 +280,7 @@ top.content.treeData.add(new top.content.self.rootEntry(0,"root","root"));';
 							} else {
 								$js_out .= 'top.content.treeData.add(
 	new top.content.urlEntry(
-		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
+		"",
 		"' . $folder['ID'] . '",
 		"' . $folder['ParentID'] . '",
 		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",

@@ -166,12 +166,8 @@ if($queries){
 				true);
 
 		if($show){
-			if(!$icon = (isset($file['Icon']) && $file['Icon'] ? $file['Icon'] : '')){
-				$icon = (isset($file['ContentType']) && $file['ContentType']) ? we_base_ContentTypes::inst()->getIcon($file['ContentType']) : we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::TEXT);
-			}
-
 			$isOpen = $hist['isOpen'];
-			$lastModified .= '<tr><td style="width:20px;height:20px;padding-right:4px;" nowrap><img style="max-width:20px;max-height:20px" src="' . TREE_ICON_DIR . $icon . '" />' . '</td>' .
+			$lastModified .= '<tr><td style="width:20px;height:20px;padding-right:4px;" nowrap>' . we_html_element::jsElement('document.write(getTreeIcon("' . $file['ContentType'] . '",false));') . '</td>' .
 				'<td style="vertical-align: middle;" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
 				($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
 				$file['Path'] . ($isOpen ? '' : '</a>') .

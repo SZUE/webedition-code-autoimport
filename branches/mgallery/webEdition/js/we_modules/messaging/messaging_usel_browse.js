@@ -144,9 +144,28 @@ function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
 	if (table == tab) {
 		if (treeData[indexOfEntry(pid)]) {
 			if (ct === "folder") {
-				treeData.addSort(new dirEntry(icon, id, pid, txt, open, ct, tab));
+				treeData.addSort({
+					name: id,
+					parentid: pid,
+					text: txt,
+					typ: 'folder',
+					open: (open ? 1 : 0),
+					contentType: ct,
+					table: tab,
+					loaded: 0,
+					checked: false,
+				});
 			} else {
-				treeData.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
+				treeData.addSort({
+					name: id,
+					parentid: pid,
+					text: txt,
+					typ: 'user',
+					contentType: ct,
+					table: tab,
+					published: pub,
+					checked: false,
+				});
 			}
 			drawEintraege();
 		}
@@ -227,9 +246,9 @@ function search(eintrag) {
 
 function container() {
 	this.len = 0;
-	this.clear = function (){
-	this.len = 0;
-};
+	this.clear = function () {
+		this.len = 0;
+	};
 	this.add = add;
 	this.addSort = addSort;
 	return this;
@@ -258,33 +277,6 @@ function rootEntry(name, text, rootstat) {
 	this.loaded = true;
 	this.typ = 'root';
 	this.rootstat = rootstat;
-	return this;
-}
-
-function dirEntry(icon, name, parentid, text, open, contentType, table) {
-	this.icon = icon;
-	this.name = name;
-	this.parentid = parentid;
-	this.text = text;
-	this.typ = 'folder';
-	this.open = (open ? 1 : 0);
-	this.contentType = contentType;
-	this.table = table;
-	this.loaded = (open ? 1 : 0);
-	this.checked = false;
-	return this;
-}
-
-function urlEntry(icon, name, parentid, text, contentType, table, published, checked) {
-	this.icon = icon;
-	this.name = name;
-	this.parentid = parentid;
-	this.text = text;
-	this.typ = 'user';
-	this.contentType = contentType;
-	this.table = table;
-	this.published = published;
-	this.checked = checked;
 	return this;
 }
 
