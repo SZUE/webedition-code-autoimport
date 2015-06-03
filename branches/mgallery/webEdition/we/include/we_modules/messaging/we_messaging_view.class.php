@@ -271,7 +271,7 @@ top.content.treeData.add(new top.content.self.rootEntry(0,"root","root"));';
 		"' . $folder['ID'] . '","' . $folder['ParentID'] . '",
 		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
 		false,
-		"parent_Folder",
+		"folder",
 		"' . MESSAGES_TABLE . '",
 		' . $sf_cnt . ',
 		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '"
@@ -284,7 +284,7 @@ top.content.treeData.add(new top.content.self.rootEntry(0,"root","root"));';
 		"' . $folder['ID'] . '",
 		"' . $folder['ParentID'] . '",
 		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
-			"leaf_Folder",
+			"folder",
 		"' . MESSAGES_TABLE . '",
 		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '"
 	)

@@ -40,6 +40,7 @@ function getTreeIcon(contentType, open, extension) {
 			return pre + '<i class="fa fa-cubes fa-stack-2x we-color"></i>' + post;
 		case 'class_folder'://FIXME: this contenttype is not set
 			return pre + '<i class="fa fa-folder' + (open ? '-open' : '') + ' fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i><span class="we-classification"><i class="fa fa-stack-1x">C</i></span>' + post;
+		case 'we/bannerFolder':
 		case 'folder':
 			return pre + '<i class="fa fa-folder' + (open ? '-open' : '') + ' fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i>' + post;
 		case  'image/*':
@@ -100,8 +101,32 @@ function getTreeIcon(contentType, open, extension) {
 		case 'text/weCollection':
 			return pre + '<i class="fa fa-archive fa-stack-2x we-color"></i>' + post;
 //Banner module
-		case 'banner':
-		case 'bannerFolder':
+		case 'we/banner':
+			return pre + '<i class="fa fa-flag-checkered fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+		case 'we/costumer':
+			return pre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
+		case 'we/costumerGroup':
+			return pre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
+		case 'we/userGroup':
+			return pre + '<i class="fa fa-users fa-stack-2x we-color"></i>' + post;
+		case 'we/alias':
+			return pre + '<i class="fa fa-user fa-stack-2x" style="color:grey"></i>' + post;
+		case 'we/customer':
+		case 'we/user':
+			return pre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
+		case 'we/export':
+		case 'we/glossar':
+			return pre + '<i class="fa fa-file-text-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+		case 'we/newsletter':
+			return pre + '<i class="fa fa-newspaper-o fa-stack-2x we-color"></i>' + post;
+		case 'we/voting':
+			return pre + '<i class="fa fa-thumbs-up fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+		case 'we/navigation':
+			return pre + '<i class="fa fa-compass fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+		case 'we/search':
+			return pre + '<i class="fa fa-search fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+		case 'we/shop':
+			return pre + '<i class="fa fa-shopping-cart fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		default:
 			return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
 			//FIXME: add support for file exension apllication pdf/word/excel/...

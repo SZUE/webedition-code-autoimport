@@ -94,12 +94,10 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 	var oc_js = treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + cur.id + "')\"";
 	row = "<a href=\"javascript:" + oc_js + " border=0><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>";
 
-	cur.icon = "folder" + (cur.open ? "open" : "") + (cur.disabled ? "_disabled" : "") + ".gif";
-
 	row += (cur.disabled ?
 					"" :
 					"<a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
-					"<img src=\"" + treeData.tree_image_dir + "icons/" + cur.icon + "\" alt=\"\">" +
+					getTreeIcon(cur.contenttype, cur.open) +
 					(cur.disabled ?
 									"" :
 									"</a><a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
@@ -109,11 +107,10 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 									"</a>") +
 					"<br/>";
 	if (cur.open) {
-		if (ai == nf.len) {
-			newAst += "<span class=\"treeKreuz\"></span>";
-		} else {
-			newAst += '<span class="strich treeKreuz "></span>';
-		}
+		newAst += (ai == nf.len ?
+						'<span class="treeKreuz"></span>' :
+						'<span class="strich treeKreuz"></span>');
+
 		row += draw(cur.id, newAst);
 	}
 	return row;
@@ -125,7 +122,7 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 
 	row += "<a href=\"javascript:" + oc_js + "><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\" border=0>" +
-					"<img src=\"" + treeData.tree_image_dir + "icons/" + nf[ai].icon + "\" alt=\"\">" +
+					getTreeIcon(nf[ai].contenttype, nf[ai].open) +
 					"</a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\">" +
 					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + treeData.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +

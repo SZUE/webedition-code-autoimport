@@ -55,14 +55,13 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 ') . we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
 			we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 		$menu = 'function loadData() {
-
 				treeData.clear();
 				treeData.add(new self.rootEntry(0, "root", "root"));';
 
 
 		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		while($this->db->next_record()){
-			//added for #6786
+//added for #6786
 			$style = 'color:black;font-weight:bold;';
 
 			if($this->db->f('DateCustomA') != '' || $this->db->f('DateCustomB') != '' || $this->db->f('DateCustomC') != '' || $this->db->f('DateCustomD') != '' || $this->db->f('DateCustomE') != '' || $this->db->f('DateCustomF') != '' || $this->db->f('DateCustomG') != '' || $this->db->f('DateCustomH') != '' || $this->db->f('DateCustomI') != '' || $this->db->f('DateCustomJ') != '' || $this->db->f('DateConfirmation') != '' || ($this->db->f('DateShipping') != '0000-00-00 00:00:00' && $this->db->f('DateShipping') != '')){
@@ -76,9 +75,18 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 			if($this->db->f('DateCancellation') != '' || $this->db->f('DateFinished') != ''){
 				$style = 'color:black;';
 			}
+			$menu.= "  treeData.add({
+name:'" . $this->db->f("IntOrderID") . "',
+	parentid:" . $this->db->f("mdate") . ",
+	text:'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "',
+	typ:'shop',
+	checked:false,
+	contentType:'shop',
+	table:'" . SHOP_TABLE . "',
+	published:" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . ",
+	st:'" . $style . "'
+});";
 
-
-			$menu.= "  treeData.add(new urlEntry('" . we_base_ContentTypes::FILE_ICON . "'," . $this->db->f("IntOrderID") . "," . $this->db->f("mdate") . ",'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "','shop','" . SHOP_TABLE . "','" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . "','" . $style . "'));\n";
 			if($this->db->f('DateShipping') <= 0){
 				if(isset(${'l' . $this->db->f('mdate')})){
 					${'l' . $this->db->f('mdate')} ++;
@@ -88,7 +96,7 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 			}
 
 
-			//FIXME: remove eval
+//FIXME: remove eval
 			if(isset(${'v' . $this->db->f('mdate')})){
 				${'v' . $this->db->f('mdate')} ++;
 			} else {
@@ -101,8 +109,19 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 		for($f = 12; $f > 0; $f--){
 			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
 			$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');
-			$menu.= "treeData.add(new dirEntry('" . we_base_ContentTypes::FOLDER_ICON . "',$f+''+$year,0, '" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',0,'',''," . (($k > 0) ? 1 : 0) . "));";
-		} //'".$this->db->f("mdate")."'
+			$menu.= "treeData.add({
+	name:'" . $f . $year . "',
+	parentid:0,
+	text:'" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',
+	typ:'folder',
+	open:0,
+	contentType:'we/shop',
+	table:'',
+	loaded: 0,
+	checked: false,
+	published:" . (($k > 0) ? 1 : 0) . "
+});";
+		}
 		$menu.='top.yearshop = ' . $year . ';
 			}';
 		return $ret . we_html_element::jsElement($menu);
@@ -147,13 +166,13 @@ function we_cmd() {
 
 		');
 
-		//	$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
-		//	$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
+//	$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
+//	$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
 		$data = getHash("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $this->db);
 
 		$headline = $data ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $data["IntOrderID"] . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $data["IntOrderID"], $data["orddate"]) . '</a>' : '';
 
-		/// config
+/// config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
@@ -167,7 +186,7 @@ function we_cmd() {
 
 		$resultO = array_shift($fe);
 
-		// wether the resultset ist empty?
+// wether the resultset ist empty?
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
 		$c = 0;
@@ -206,7 +225,7 @@ function we_cmd() {
 			return $this->getHTMLEditorTop();
 		}
 
-		//do what have been done in edit_shop_editorFrameset before
+//do what have been done in edit_shop_editorFrameset before
 
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 		$mid = we_base_request::_(we_base_request::STRING, 'mid', 0);
@@ -239,7 +258,7 @@ function we_cmd() {
 		$mid = we_base_request::_(we_base_request::INT, "mid", 0);
 		$bid = we_base_request::_(we_base_request::INT, "bid", 0);
 
-		// config
+// config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $DB_WE));
 		for($i = 0; $i <= 3; $i++){
 			$feldnamen[$i] = isset($feldnamen[$i]) ? $feldnamen[$i] : '';
@@ -251,13 +270,13 @@ function we_cmd() {
 
 		$resultO = array_shift($fe);
 
-		// wether the resultset ist empty?
+// wether the resultset ist empty?
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '" LIMIT 1', '', $DB_WE);
 
 		if($home){
 			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop'; //same as in getHTMLRight()
 		} elseif($mid){
-			// TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
+// TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_overviewTop.php?mid=' . $mid;
 		} elseif($resultD && !$resultO){ // docs but no objects
 			$bodyURL = 'edit_shop_article_extend.php?typ=document';
@@ -328,23 +347,23 @@ top.content.hloaded = 1;
 	}
 
 	function getHTMLEditorHeaderTop(){
-		//$yid = we_base_request::_(we_base_request::INT, "ViewYear", date("Y"));
-		//$bid = we_base_request::_(we_base_request::INT, "bid", 0);
-		//$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
+//$yid = we_base_request::_(we_base_request::INT, "ViewYear", date("Y"));
+//$bid = we_base_request::_(we_base_request::INT, "bid", 0);
+//$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
 		$data = getHash("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $this->db);
 		$headline = ($data ? sprintf(g_l('modules_shop', '[lastOrder]'), $data["IntOrderID"], $data["orddate"]) : '');
 
-		/// config
+/// config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
 		$fe = isset($feldnamen[3]) ? explode(",", $feldnamen[3]) : array(0);
 
 		$classid = $fe[0];
 		$resultO = array_shift($fe);
 
-		// wether the resultset ist empty?
+// wether the resultset ist empty?
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
-		// grep the last element from the year-set, wich is the current year
+// grep the last element from the year-set, wich is the current year
 		$yearTrans = f('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd DESC LIMIT 1', 'DateOrd', $this->db);
 
 

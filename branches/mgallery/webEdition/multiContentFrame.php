@@ -54,35 +54,34 @@ switch($browser->getBrowser()){
 ?>
 <script type="text/javascript"><!--
 	function we_cmd() {
-	var args = [];
-					for (var i = 0; i < arguments.length; i++) {
-	args.push(arguments[i]);
-	}
-	parent.we_cmd.apply(this, args);
+		var args = [];
+		for (var i = 0; i < arguments.length; i++) {
+			args.push(arguments[i]);
+		}
+		parent.we_cmd.apply(this, args);
 	}
 
 	function startMultiEditor() {
-	we_cmd('start_multi_editor'<?php echo $_cmd_string; ?>);
+		we_cmd('start_multi_editor'<?php echo $_cmd_string; ?>);
 	}
 
 	var isChrome =<?php echo intval(we_base_browserDetect::isChrome()); ?>;
-					var curUserID =<?php echo intval($_SESSION["user"]["ID"]); ?>;
-					var g_l = {
-					eplugin_exit_doc: "<?php echo g_l('multiEditor', '[eplugin_exit_doc]'); ?>",
-									no_editor_left: "<?php echo we_message_reporting::prepareMsgForJS(g_l('multiEditor', '[no_editor_left]')); ?>"
-					};
-					var contentTypeApp = "<?php echo we_base_ContentTypes::APPLICATION; ?>";
-					var heightPlus =<?php echo $heightPlus; ?>;
+	var curUserID =<?php echo intval($_SESSION["user"]["ID"]); ?>;
+	var g_l = {
+		eplugin_exit_doc: "<?php echo g_l('multiEditor', '[eplugin_exit_doc]'); ?>",
+		no_editor_left: "<?php echo we_message_reporting::prepareMsgForJS(g_l('multiEditor', '[no_editor_left]')); ?>"
+	};
+	var contentTypeApp = "<?php echo we_base_ContentTypes::APPLICATION; ?>";
+	var heightPlus =<?php echo $heightPlus; ?>;
 //-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'global.js') .
- we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') .
+echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') .
  we_html_element::jsScript(JS_DIR . 'multiEditor/multiTabs.js');
 ?>
 </head>
 <body onresize="setFrameSize()" onload="init();
-									startMultiEditor();" style="overflow: hidden;">
+		startMultiEditor();" style="overflow: hidden;">
 	<div id="multiEditorDocumentTabsFrameDiv">
 		<div id="weMultiTabs">
 			<div id="tabContainer" name="tabContainer">
@@ -102,13 +101,13 @@ echo we_html_element::jsScript(JS_DIR . 'global.js') .
 		</div>
 	</div>
 	<div id="multiEditorEditorFramesetsDiv"><?php
-$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
+		$count = (isset($_SESSION) && isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE) ? 1 : 32;
 
-for($i = 0; $i < $count; $i++){
-	//'overflow:hidden;' removed to fix bug #6540
-	echo '<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
-}
-?>
+		for($i = 0; $i < $count; $i++){
+			//'overflow:hidden;' removed to fix bug #6540
+			echo '<iframe style="' . ($i == 0 ? '' : (we_base_browserDetect::isChrome() ? 'display:none;' : 'width:0px;height:0px;')) . '" src="' . HTML_DIR . 'blank_editor.html" name="multiEditFrame_' . $i . '" id="multiEditFrame_' . $i . '"  noresize ></iframe>';
+		}
+		?>
 	</div>
 </body>
 </html>

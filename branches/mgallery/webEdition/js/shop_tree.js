@@ -51,7 +51,7 @@ function zeichne(startEntry, zweigEintrag) {
 					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
 				}
 			}
-			ret += "<img src=\"" + tree_img_dir + "icons/" + nf[ai].icon + "\" title=\"" + g_l.tree_edit_statustext + "\">" +
+			ret += getTreeIcon('we/shop') +
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" :
 											"") +
@@ -71,7 +71,7 @@ function zeichne(startEntry, zweigEintrag) {
 			ret += (perm_EDIT_SHOP_ORDER ?
 							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 							"") +
-							"<img src=\"" + tree_img_dir + "icons/folder" + zusatz2 + ".gif\" title=\"" + g_l.tree_edit_statustext + "\">" +
+							getTreeIcon('folder', nf[ai].open) +
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" +
 											// make the month in tree clickable
@@ -82,11 +82,9 @@ function zeichne(startEntry, zweigEintrag) {
 											"</a>" : "") +
 							"<br/>";
 			if (nf[ai].open) {
-				if (ai === nf.len) {
-					newAst += "<span class=\"treeKreuz\"></span>";
-				} else {
-					newAst += '<span class="strich treeKreuz "></span>';
-				}
+				newAst += (ai === nf.len ?
+								'<span class="treeKreuz"></span>' :
+								'<span class="strich treeKreuz "></span>');
 				ret += zeichne(nf[ai].name, newAst);
 			}
 		}
@@ -100,7 +98,17 @@ function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
 		if (ct === "folder") {
 			treeData.addSort(new dirEntry(icon, id, pid, txt, open, ct, tab));
 		} else {
-			treeData.addSort(new urlEntry(icon, id, pid, txt, ct, tab, pub));
+			treeData.addSort({
+				name: id,
+				parentid: pid,
+				text: txt,
+				typ: 'shop',
+				checked: false,
+				contentType: ct,
+				table: tab,
+				published: pub,
+			}
+			);
 		}
 		drawEintraege();
 	}
@@ -191,21 +199,6 @@ function rootEntry(name, text, rootstat) {
 	this.loaded = true;
 	this.typ = 'root';
 	this.rootstat = rootstat;
-	return this;
-}
-
-//changed for #6786
-function urlEntry(icon, name, parentid, text, contentType, table, published, style) {
-	this.icon = icon;
-	this.name = name;
-	this.parentid = parentid;
-	this.text = text;
-	this.typ = 'shop';
-	this.checked = false;
-	this.contentType = contentType;
-	this.table = table;
-	this.published = published;
-	this.st = style;
 	return this;
 }
 

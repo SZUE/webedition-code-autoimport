@@ -49,7 +49,7 @@ treeData.frames=frames;
 		return ($out ? substr($out, 0, strlen($out) - 3) : '');
 	}
 
-	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = NEWSLETTER_TABLE;
 		$wsQuery = '';
@@ -71,7 +71,6 @@ treeData.frames=frames;
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
-				'icon' => 'caret-up',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -101,6 +100,7 @@ treeData.frames=frames;
 				'text' => $db->f('Text'),
 				'path' => $db->f('Path'),
 				'published' => 1,
+				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
 			);
 
 			$fileds = array();
@@ -118,7 +118,6 @@ treeData.frames=frames;
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				'icon' => ' .gif',
 				'id' => 'next_' . $ParentID,
 				'parentid' => 0,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',

@@ -63,7 +63,6 @@ function startTree(){
 
 			foreach($workflowDef->documents as $v){
 				$items[] = array(
-					'icon' => $v["Icon"],
 					'id' => $v["ID"],
 					'parentid' => $workflowDef->ID,
 					'text' => oldHtmlspecialchars(addslashes($v["Text"])),

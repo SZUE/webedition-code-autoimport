@@ -264,13 +264,13 @@ function drawItem(nf, ai) {
 function drawThreeDots(nf, ai) {
 	return '<span class="treeKreuz kreuzungend"></span>' +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\"  onclick=\"" + treeData.topFrame + ".setSegment('" + nf[ai].id + "');return true;\">" +
-					'<span class="threedots"><i class="fa fa-' + nf[ai].icon + '"></i></span></a><br/>';
+					'<span class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span></a><br/>';
 }
 
 function drawGroup(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 
-	row = "<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-"+(nf[ai].open === 0 ? "plus" : "minus")+"-square-o fa-stack-1x'></i></span></a>";
+	row = "<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>";
 
 	row += clickHandler(nf[ai]);
 

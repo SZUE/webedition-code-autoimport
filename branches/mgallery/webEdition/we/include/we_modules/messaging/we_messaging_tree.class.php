@@ -95,14 +95,12 @@ function translate(inp){
 
 			$items[] = (($sf_cnt = $messaging->get_subfolder_count($folder['ID'])) ?
 					array(
-					'icon' => $iconbasename . '.gif',
 					'id' => $folder['ID'],
-					'iconbasename' => $iconbasename,
 					'parentid' => $folder['ParentID'],
 					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID'], '') . ')',
 					'typ' => 'group',
 					'open' => 0,
-					'contentType' => 'parent_Folder',
+					'contentType' => 'folder',
 					'table' => MESSAGES_TABLE,
 					'loaded' => 0,
 					'checked' => false,
@@ -110,14 +108,12 @@ function translate(inp){
 					'viewclass' => $folder['view_class']
 					) :
 					array(
-					'icon' => $iconbasename . '.gif',
-					'iconbasename' => $iconbasename,
 					'id' => $folder['ID'],
 					'parentid' => $folder['ParentID'],
 					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID'], '') . ')',
 					'typ' => 'item',
 					'open' => 0,
-					'contentType' => 'leaf_Folder',
+					'contentType' => 'folder',
 					'table' => MESSAGES_TABLE,
 					'viewclass' => $folder['view_class']
 					)

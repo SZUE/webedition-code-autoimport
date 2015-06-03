@@ -81,6 +81,7 @@ treeData.frames=frames;
 				'offset' => 0,
 				'published' => 1,
 				'cmd' => "glossary_view_folder",
+				'contentType'=>'folder'
 			);
 		}
 
@@ -126,7 +127,7 @@ treeData.frames=frames;
 				'offset' => 0,
 				'published' => 1,
 				'cmd' => 'glossary_view_exception',
-				'Icon' => 'prog.gif'
+				'contentType' => 'we/glossar'
 			);
 		}
 
@@ -134,13 +135,8 @@ treeData.frames=frames;
 	}
 
 	private static function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500){
-
 		$Db = new DB_WE();
-
 		$Items = array();
-
-		$Where = " WHERE Language='" . $Db->escape($Language) . "' AND Type='" . $Db->escape($Type) . "'";
-
 		$PrevOffset = max(0, $Offset - $Segment);
 
 		if($Offset && $Segment){
@@ -151,7 +147,6 @@ treeData.frames=frames;
 				"contenttype" => "arrowup",
 				"table" => GLOSSARY_TABLE,
 				"typ" => "threedots",
-				"icon" => "caret-up",
 				"open" => 0,
 				"disabled" => 0,
 				"tooltip" => "",
@@ -160,12 +155,12 @@ treeData.frames=frames;
 			$Items[] = $Item;
 		}
 
-		$Db->query('SELECT ID,Type,Language,Text,Icon,Published FROM ' . GLOSSARY_TABLE . ' ' .
-			$Where . ' ORDER BY (Text REGEXP "^[0-9]") DESC,abs(Text),Text' .
+		$Db->query('SELECT ID,Type,Language,Text,Published,IsFolder FROM ' . GLOSSARY_TABLE . ' ' .
+			" WHERE Language='" . $Db->escape($Language) . "' AND Type='" . $Db->escape($Type) . "'" .
+			' ORDER BY (Text REGEXP "^[0-9]") DESC,abs(Text),Text' .
 			($Segment ? ' LIMIT ' . intval($Offset) . ',' . intval($Segment) : ''));
 
 		while($Db->next_record(MYSQL_ASSOC)){
-
 			$Item = array(
 				'id' => $Db->f('ID'),
 				'parentid' => $Language . '_' . $Type,
@@ -176,11 +171,10 @@ treeData.frames=frames;
 				'tooltip' => $Db->f('ID'),
 				'offset' => $Offset,
 				'published' => ($Db->f('Published') > 0 ? true : false),
-				'icon' => $Db->f('Icon'),
+				'contentType' => ($Db->f('IsFolder') ? 'folder' : 'we/glossar'),
 			);
 
 			switch($Type){
-
 				case we_glossary_glossary::TYPE_ABBREVATION:
 					$Item['cmd'] = "glossary_edit_abbreviation";
 					break;
@@ -216,7 +210,6 @@ treeData.frames=frames;
 				"contenttype" => "arrowdown",
 				"table" => GLOSSARY_TABLE,
 				"typ" => "threedots",
-				"icon" => "caret-down",
 				"open" => 0,
 				"disabled" => 0,
 				"tooltip" => "",

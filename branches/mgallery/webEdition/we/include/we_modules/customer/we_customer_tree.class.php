@@ -112,13 +112,12 @@ function startTree(){
 				self::getSortFromDB($pid, $sort, $offset, $segment));
 	}
 
-	private static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder,Forename,Surname', $addWhere = "", $addOrderBy = ""){
+	private static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder,Forename,Surname', $addWhere = "", $addOrderBy = ""){
 		$db = new DB_WE();
 
 		$prevoffset = max(0, $offset - $segment);
 		$items = ($offset && $segment ?
 				array(array(
-					"icon" => "caret-up",
 					"id" => "prev_" . $ParentID,
 					"parentid" => $ParentID,
 					"text" => "display (" . $prevoffset . "-" . $offset . ")",
@@ -144,9 +143,9 @@ function startTree(){
 		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, ' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		while($db->next_record(MYSQL_ASSOC)){
-
 			$typ = array(
 				'typ' => ($db->f("IsFolder") == 1 ? "group" : "item"),
+				'contenttype' => ($db->f("IsFolder") == 1 ? "folder" : "we/costumer"),
 				'disabled' => 0,
 				'published' => $db->f('LoginDenied'),
 				'tooltip' => $db->f("ID"),
@@ -168,7 +167,6 @@ function startTree(){
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				"icon" => "caret-down",
 				"id" => "next_" . $ParentID,
 				"parentid" => 0,
 				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
@@ -238,7 +236,7 @@ function startTree(){
 
 		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
 
-		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,Icon,IsFolder,LoginDenied,Forename,Surname' .
+		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,ParentID,Path,Text,IsFolder,LoginDenied,Forename,Surname' .
 			($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
 			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
 			' GROUP BY ' . $grp . (count($grouparr) ? ($level ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
@@ -261,7 +259,7 @@ function startTree(){
 					'parentid' => $old,
 					'path' => '',
 					'text' => $gname,
-					'icon' => we_base_ContentTypes::FOLDER_ICON,
+					'contentType' => 'folder',
 					'isfolder' => 1,
 					'typ' => 'group',
 					'disabled' => 0,
@@ -282,7 +280,7 @@ function startTree(){
 								'parentid' => $old,
 								'path' => '',
 								'text' => ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')),
-								'icon' => we_base_ContentTypes::FOLDER_ICON,
+								'contentType' => 'folder',
 								'isfolder' => 1,
 								'typ' => 'group',
 								'disabled' => 0,
@@ -300,7 +298,6 @@ function startTree(){
 						$prevoffset = max(0, $offset - $segment);
 						if($offset && $segment){
 							$items[] = array(
-								'icon' => "caret-up",
 								'id' => "prev_" . $gname,
 								'parentid' => $gname,
 								'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -321,7 +318,7 @@ function startTree(){
 						'parentid' => str_replace("\'", "*****quot*****", $gname),
 						'path' => '',
 						'text' => oldHtmlspecialchars($tt),
-						'icon' => $db->f("Icon"),
+						'contentType' => 'we/customer',
 						'isfolder' => $db->f("IsFolder"),
 						'typ' => "item",
 						'disabled' => 0,
@@ -338,7 +335,6 @@ function startTree(){
 			$nextoffset = $offset + $segment;
 			if($segment && ($total > $nextoffset)){
 				$items[] = array(
-					'icon' => "caret-down",
 					'id' => "next_" . str_replace("\'", "*****quot*****", $old),
 					'parentid' => str_replace("\'", "*****quot*****", $old),
 					'text' => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",

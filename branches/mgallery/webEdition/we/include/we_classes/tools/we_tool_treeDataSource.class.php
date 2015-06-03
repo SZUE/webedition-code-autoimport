@@ -55,7 +55,7 @@ class we_tool_treeDataSource{
 		return implode(' OR ', $out);
 	}
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 
 		$db = new DB_WE();
 		$table = $this->SourceName;
@@ -81,7 +81,6 @@ class we_tool_treeDataSource{
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
-				'icon' => 'caret-up',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -104,14 +103,14 @@ class we_tool_treeDataSource{
 
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
-				'icon' => $db->f('Icon'),
 				'open' => 0,
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,
 				'order' => $db->f('Ordn'),
 				'published' => 1,
-				'disabled' => 0
+				'disabled' => 0,
+				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'item'),
 			);
 
 			$fileds = array();
@@ -129,7 +128,6 @@ class we_tool_treeDataSource{
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				'icon' => 'caret-down',
 				'id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
@@ -147,11 +145,10 @@ class we_tool_treeDataSource{
 		return $items;
 	}
 
-	function getItemsFromFile($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromFile($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 
 		return array(
 			array(
-				'icon' => we_base_ContentTypes::FILE_ICON,
 				'id' => 1,
 				'parentid' => 0,
 				'text' => 'Test 1',
@@ -165,10 +162,9 @@ class we_tool_treeDataSource{
 		));
 	}
 
-	function getCustomItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getCustomItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 		return array(
 			array(
-				'icon' => 'folder.gif',
 				'id' => 1,
 				'parentid' => 0,
 				'text' => 'Custom Group',

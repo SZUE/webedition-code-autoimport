@@ -148,7 +148,7 @@ var openFolders= {
 		}
 
 		$DB_WE = $DB_WE? : new DB_WE();
-		$elem = 'ID,ParentID,Path,Text,Icon,IsFolder,ModDate,ContentType';
+		$elem = 'ID,ParentID,Path,Text,IsFolder,ModDate,ContentType';
 
 		switch($table){
 			case FILE_TABLE :
@@ -181,7 +181,6 @@ var openFolders= {
 			$OpenCloseStatus = in_array($ID, $openFolders);
 
 			$treeItems[] = array(
-				"icon" => $entry["Icon"],
 				"id" => $ID,
 				"parentid" => $entry["ParentID"],
 				"text" => $entry["Text"],

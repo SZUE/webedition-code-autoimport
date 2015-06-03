@@ -275,8 +275,8 @@ function zeichne(startEntry, zweigEintrag) {
 
 				}
 			} else {
-				ret += '<a id="_' + nf[ai].id + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ");return true;\" BORDER=0>" +
-								"<img src=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">" +
+				ret += '<a id="_' + nf[ai].id + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ");return true;\">" +
+								getTreeIcon(nf[ai].contenttype, nf[ai].open) +
 								"</a>";
 				trg = "doClick(" + nf[ai].id + ");return true;";
 			}
@@ -299,7 +299,7 @@ function zeichne(startEntry, zweigEintrag) {
 			}
 
 			ret += "<a id='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"" + trg + "\">" +
-							"<img src=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\">" +
+							getTreeIcon(nf[ai].contenttype, nf[ai].open) +
 							"</a>" +
 							"<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\">" +
 							"" + translate(nf[ai].text) + "</a>" +
@@ -472,14 +472,12 @@ function rootEntry(id, text, rootstat) {
 }
 
 function dirEntry(icon, id, parentid, text, open, contentType, table, leaf_count, iconbasename, viewclass) {
-	this.icon = icon;
-	this.iconbasename = iconbasename;
 	this.id = id;
 	this.parentid = parentid;
 	this.text = text;
 	this.typ = "parent_Folder";
 	this.open = (open ? 1 : 0);
-	this.contentType = contentType;
+	this.contenttype = contentType;
 	this.leaf_count = leaf_count;
 	this.table = table;
 	this.loaded = (open ? 1 : 0);
@@ -489,14 +487,12 @@ function dirEntry(icon, id, parentid, text, open, contentType, table, leaf_count
 }
 
 function urlEntry(icon, id, parentid, text, contentType, table, iconbasename, viewclass) {
-	this.icon = icon;
-	this.iconbasename = iconbasename;
 	this.id = id;
 	this.parentid = parentid;
 	this.text = text;
 	this.typ = "leaf_Folder";
 	this.checked = false;
-	this.contentType = contentType;
+	this.contenttype = contentType;
 	this.table = table;
 	this.viewclass = viewclass;
 	return this;

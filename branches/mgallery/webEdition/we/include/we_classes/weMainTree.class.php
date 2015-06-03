@@ -127,7 +127,6 @@ if(weWindow.treeData){
 							++ai;
 						}
 			}else{
-				attribs["icon"]=\'' . $doc->Icon . '\';
 				attribs["contenttype"]=\'' . $doc->ContentType . '\';
 				attribs["isclassfolder"]=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';
 				attribs["checked"]=\'0\';

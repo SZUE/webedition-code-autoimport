@@ -75,7 +75,7 @@ treeData.startloc=' . $startloc . ';
 							'text' => addslashes($db->f("Text")),
 							'typ' => 'group',
 							'open' => 0,
-							'contentType' => 'group',
+							'contentType' => 'we/userGroup',
 							'table' => USER_TABLE,
 							'loaded' => 0,
 							'checked' => false,
@@ -91,7 +91,7 @@ treeData.startloc=' . $startloc . ';
 							'text' => addslashes($db->f("Text")),
 							'typ' => 'item',
 							'open' => 0,
-							'contentType' => ($db->f("Type") == we_users_user::TYPE_ALIAS ? 'alias' : 'user'),
+							'contentType' => ($db->f("Type") == we_users_user::TYPE_ALIAS ? 'we/alias' : 'we/user'),
 							'table' => USER_TABLE,
 							'class' => (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"] ? 'bold ' : '') . ($db->f("LoginDenied") ? 'red' : '')
 						);

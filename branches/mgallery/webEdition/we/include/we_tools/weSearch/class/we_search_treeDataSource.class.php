@@ -25,7 +25,7 @@
 class we_search_treeDataSource extends we_tool_treeDataSource{
 	var $treeItems = array();
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = $this->SourceName;
 		$openFolders = array();
@@ -44,7 +44,6 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$this->treeItems[] = array(
-				'icon' => 'caret-up',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -75,7 +74,7 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 
 				$typ = array(
 					'typ' => ($db->f('IsFolder') ? 'group' : 'item'),
-					'icon' => $db->f('Icon'),
+					'contentType' => ($db->f('IsFolder') ? 'folder' : 'we/search'),
 					'open' => $OpenCloseStatus,
 					'disabled' => 0,
 					'tooltip' => $db->f('ID'),
@@ -103,7 +102,6 @@ class we_search_treeDataSource extends we_tool_treeDataSource{
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$this->treeItems[] = array(
-				'icon' => 'caret-down',
 				'id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',

@@ -43,36 +43,29 @@ function startTree(){
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
 		$items = array();
 		$db = new DB_WE();
-		$db->query('SELECT ID,ParentID,Path,Text,Icon,IsFolder FROM ' . BANNER_TABLE . ' WHERE ParentID=' . $ParentId . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');
+		$db->query('SELECT ID,ParentID,IsFolder FROM ' . BANNER_TABLE . ' WHERE ParentID=' . $ParentId . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');
 		while($db->next_record()){
-			$ID = $db->f("ID");
-			$ParentID = $db->f("ParentID");
-			$Path = $db->f("Path");
-			$Text = addslashes($db->f("Text"));
-			$Icon = $db->f("Icon");
 			$IsFolder = $db->f("IsFolder");
 			$items[] = ($IsFolder ? array(
-					'icon' => $db->f("Icon"),
 					'id' => $db->f('ID'),
 					'name' => $db->f('ID'),
 					'parentid' => $db->f("ParentID"),
 					'text' => addslashes($db->f("Text")),
 					'typ' => 'group',
 					'open' => 0,
-					'contentType' => 'folder',
+					'contentType' => 'we/bannerFolder',
 					'table' => BANNER_TABLE,
 					'loaded' => 0,
 					'checked' => false,
 					) :
 					array(
-					'icon' => $db->f("Icon"),
 					'id' => $db->f('ID'),
 					'name' => $db->f('ID'),
 					'parentid' => $db->f("ParentID"),
 					'text' => addslashes($db->f("Text")),
 					'typ' => 'item',
 					'open' => 0,
-					'contentType' => 'file',
+					'contentType' => 'we/banner',
 					'table' => BANNER_TABLE,
 					)
 				);

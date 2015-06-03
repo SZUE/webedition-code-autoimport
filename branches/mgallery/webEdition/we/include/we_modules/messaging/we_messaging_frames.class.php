@@ -157,9 +157,9 @@ function loadData() {
 			$jsOut .= '
 	treeData.add(' .
 				(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0 ?
-					'new dirEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"parent_Folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '")
+					'new dirEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '")
 				' :
-					'new urlEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')","leaf_Folder","' . MESSAGES_TABLE . '", "' . $iconbasename . '", "' . $folder['view_class'] . '")
+					'new urlEntry("' . $iconbasename . '.gif",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')","folder","' . MESSAGES_TABLE . '", "' . $iconbasename . '", "' . $folder['view_class'] . '")
 				') . ');';
 		}
 		$jsOut .= '
@@ -171,34 +171,6 @@ function loadData() {
 			we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
 			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
 			we_html_element::jsElement($jsOut);
-
-		/* 		$rootjs = $this->Tree->topFrame . '.treeData.clear();' .
-		  $this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . 0 . '\',\'root\',\'root\'));';
-
-		  $hiddens = '';
-		  if(($param = we_base_request::_(we_base_request::INT, 'msg_param'))){
-		  switch($param){
-		  case self::TYPE_TODO:
-		  $f = $this->messaging->get_inbox_folder('we_todo');
-		  break;
-		  case self::TYPE_MESSAGE:
-		  $f = $this->messaging->get_inbox_folder('we_message');
-		  break;
-		  }
-		  }
-
-		  return $this->getHTMLDocument(
-		  we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-		  we_html_element::jsElement($rootjs .
-		  $this->Tree->getJSLoadTree(we_messaging_tree::getItems(0, 0, $this->Tree->default_segment, $this->messaging)).
-		  (isset($f) ?
-		  'r_tree_open(' . $f['ID'] . ');
-		  we_cmd("show_folder_content", ' . $f['ID'] . ');' :'')
-		  )
-		  )
-		  )
-		  );
-		 */
 	}
 
 	protected function getHTMLTree($extraHead = ''){

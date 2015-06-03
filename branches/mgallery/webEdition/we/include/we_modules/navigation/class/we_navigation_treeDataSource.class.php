@@ -28,7 +28,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 		parent::__construct($ds);
 	}
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder,Ordn,Depended,Charset', $addWhere = '', $addOrderBy = ''){
+	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder,Ordn,Depended,Charset', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = $this->SourceName;
 
@@ -48,7 +48,6 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
-				'icon' => 'caret-up',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -59,7 +58,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 				'published' => 0,
 				'disabled' => 0,
 				'tooltip' => '',
-				'offset' => $prevoffset
+				'offset' => $prevoffset,
 			);
 		}
 
@@ -78,6 +77,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 				'order' => $db->f('Ordn'),
 				'published' => $db->f('Depended') ? 0 : 1,
 				'disabled' => in_array($db->f('Path'), $parentpaths) ? 1 : 0,
+				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
 			);
 
 			$fileds = array();
@@ -116,7 +116,6 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				'icon' => 'caret-down',
 				'id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',

@@ -44,7 +44,7 @@ treeData.frames=frames;
 			}';
 	}
 
-	static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,Icon,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
+	static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
 		$db = new DB_WE();
 		$table = VOTING_TABLE;
 
@@ -55,7 +55,6 @@ treeData.frames=frames;
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
-				"icon" => "caret-up",
 				"id" => "prev_" . $ParentID,
 				"parentid" => $ParentID,
 				"text" => "display (" . $prevoffset . "-" . $offset . ")",
@@ -82,6 +81,7 @@ treeData.frames=frames;
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,
+				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/voting'),
 			);
 
 			if($db->f('IsFolder') == 0){
@@ -102,7 +102,6 @@ treeData.frames=frames;
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				"icon" => "caret-down",
 				"id" => "next_" . $ParentID,
 				"parentid" => 0,
 				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",

@@ -44,7 +44,7 @@ treeData.frames=frames;
 			}';
 	}
 
-	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,Icon,IsFolder', $addWhere = '', $addOrderBy = ''){
+	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 		$db = new DB_WE();
 		$table = EXPORT_TABLE;
 
@@ -53,7 +53,6 @@ treeData.frames=frames;
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
 			$items[] = array(
-				'icon' => 'caret-up',
 				'id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
@@ -77,6 +76,7 @@ treeData.frames=frames;
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
+				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/export'),
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,
@@ -99,7 +99,6 @@ treeData.frames=frames;
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
 			$items[] = array(
-				'icon' => 'caret-down',
 				'id' => 'next_' . $ParentID,
 				'parentid' => 0,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
