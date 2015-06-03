@@ -776,9 +776,15 @@ table.colorTable td{
 
 /*messaging*/
 .quote_lvl_0 {}
-.quote_lvl_1 {color:#ff0000}
-.quote_lvl_2 {color:#00ff00}
-.quote_lvl_3 {color:#0000ff}
+.quote_lvl_1 {
+	color:#ff0000
+}
+.quote_lvl_2 {
+	color:#00ff00
+}
+.quote_lvl_3 {
+	color:#0000ff
+}
 
 /*shop*/
 table.revenueTable {
@@ -825,13 +831,12 @@ span.fileicon{
 	font-size:7px;
 }
 span.fileicon .we-icon{
-	bottom: 0px;
 	color: #164F94;
 	line-height: 1;
 	left: auto;
 }
 span.fileicon .we-icon i{
-	bottom:0px;
+	bottom:.1ex;
 	vertical-align:bottom;
 	left: auto;
 	right:-.5em;
@@ -842,7 +847,7 @@ span.fileicon .we-color{
 }
 
 span.fileicon> .we-otherfiles i{
-	bottom:.3em;
+	bottom:.4em;
 	color:#164F94;
 	margin-left:.2em;
 	vertical-align: bottom;

@@ -72,7 +72,7 @@ span.text{
 	vertical-align:top;
 }
 span.spacer{
-	font-size: 8px;
+	font-size: 9px;
 }
 span.close{
 	color:#a9a9a9;
@@ -91,7 +91,7 @@ span.status{
 	padding: 0px 1ex;
 	width:16px;
 	height:16px;
-	margin:2px;
+	margin:3px 2px;
 	display:inline-block;
 }
 i.modified{
