@@ -350,36 +350,6 @@ function addSort(object) {
 	}
 }
 
-/*FIXME:deprecated*/
-function dirEntry(icon, name, parentid, text, open, contentType, table, published) {
-	this.icon = icon;
-	this.name = name;
-	this.parentid = parentid;
-	this.text = text;
-	this.typ = 'folder';
-	this.open = (open ? 1 : 0);
-	this.contentType = contentType;
-	this.table = table;
-	this.loaded = (open ? 1 : 0);
-	this.checked = false;
-	this.published = published;
-	return this;
-}
-
-/*FIXME:deprecated*/
-function urlEntry(icon, name, parentid, text, contentType, table, published) {
-	this.icon = icon;
-	this.name = name;
-	this.parentid = parentid;
-	this.text = text;
-	this.typ = 'file';
-	this.checked = false;
-	this.contentType = contentType;
-	this.table = table;
-	this.published = published;
-	return this;
-}
-
 function getLayout() {
 	var layout_key = (this.typ == "group" ? "group" : "item");
 	return treeData.node_layouts[layout_key];

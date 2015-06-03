@@ -157,10 +157,28 @@ function loadData() {
 			$jsOut .= '
 	treeData.add(' .
 				(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0 ?
-					'new dirEntry("",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",false,"folder","' . MESSAGES_TABLE . '", ' . $sf_cnt . ', "' . $iconbasename . '", "' . $folder['view_class'] . '")
-				' :
-					'new urlEntry("",' . $folder['ID'] . ',' . $folder['ParentID'] . ',"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')","folder","' . MESSAGES_TABLE . '", "' . $iconbasename . '", "' . $folder['view_class'] . '")
-				') . ');';
+					'{
+	id : ' . $folder['ID'] . ',
+	parentid : ' . $folder['ParentID'] . ',
+	text : "' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
+	typ : "parent_Folder",
+	open : 0,
+	contenttype : "folder",
+	leaf_count : ' . $sf_cnt . ',
+	table : "' . MESSAGES_TABLE . '",
+	loaded : 0,
+	checked : false,
+	viewclass : "' . $folder['view_class'] . '",
+}' : '{
+	id : ' . $folder['ID'] . ',
+	parentid : ' . $folder['ParentID'] . ',
+	text : "' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
+	typ : "leaf_Folder",
+	checked : false,
+	contenttype : "folder",
+	table : "' . MESSAGES_TABLE . '",
+	viewclass : "' . $folder['view_class'] . '"
+}') . ');';
 		}
 		$jsOut .= '
 }
@@ -326,7 +344,7 @@ function loadData() {
 	}
 
 	//some utility functions
-	public static function sort_arrow($order, $href=''){
+	public static function sort_arrow($order, $href = ''){
 		$dir = ($order == 'asc' ? 'up' : 'down');
 
 		// Check if we have to create a form or href

@@ -27,6 +27,19 @@ var TAB_NORMAL = 1;
 var TAB_ACTIVE = 2;
 var we_name_z = 0;
 
+function changeImage(layer, imgName, imgObj) {
+	if (document.images) {
+		if (document.layers && layer !== null) {
+			eval('if(document.' + layer + '.document.images["' + imgName + '"]!=null){ document.' + layer + '.document.images["' + imgName + '"].src = ' + imgObj + '.src;}');
+		} else {
+			if (document.images[imgName]) {
+				document.images[imgName].src = eval(imgObj + ".src");
+
+			}
+		}
+	}
+}
+
 function we_tab_write() {
 	if (this.svg) {
 		document.write(

@@ -471,33 +471,6 @@ function rootEntry(id, text, rootstat) {
 	return this;
 }
 
-function dirEntry(icon, id, parentid, text, open, contentType, table, leaf_count, iconbasename, viewclass) {
-	this.id = id;
-	this.parentid = parentid;
-	this.text = text;
-	this.typ = "parent_Folder";
-	this.open = (open ? 1 : 0);
-	this.contenttype = contentType;
-	this.leaf_count = leaf_count;
-	this.table = table;
-	this.loaded = (open ? 1 : 0);
-	this.checked = false;
-	this.viewclass = viewclass;
-	return this;
-}
-
-function urlEntry(icon, id, parentid, text, contentType, table, iconbasename, viewclass) {
-	this.id = id;
-	this.parentid = parentid;
-	this.text = text;
-	this.typ = "leaf_Folder";
-	this.checked = false;
-	this.contenttype = contentType;
-	this.table = table;
-	this.viewclass = viewclass;
-	return this;
-}
-
 function msg_start() {
 	loadData();
 	drawEintraege();
