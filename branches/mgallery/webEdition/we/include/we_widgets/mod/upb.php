@@ -107,7 +107,7 @@ foreach($tbls as $table){
 	$content = array();
 
 	while($db->next_record()){
-		$_cont[$db->f("ModDate")] = $path = '<tr><td width="20" height="20" valign="middle" nowrap>' . we_html_element::jsElement('document.write(getTreeIcon("' . $db->f('ContentType') . '",false));') . we_html_tools::getPixel(4, 1) . '</td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '" style="color:' . ($db->f("Published") != '-' ? "#3366CC" : "#FF0000") . ';text-decoration:none;">' . $db->f("Path") . '</a></nobr></td></tr>';
+		$_cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" valign="middle" nowrap data-contenttype="' . $db->f('ContentType') . '"></td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '" style="color:' . ($db->f("Published") != '-' ? "#3366CC" : "#FF0000") . ';text-decoration:none;">' . $db->f("Path") . '</a></nobr></td></tr>';
 		$row = array(
 			array("dat" => $path),
 			/* array("dat" => $db->f("Creator") ? : '-'),

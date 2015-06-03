@@ -200,3 +200,10 @@ div.content{
 	padding-left:11px;
 	padding-right:11px;
 }
+
+td.mfdIcon,
+td.upbIcon{
+	width:20px;
+	height:20px;
+	padding-right:4px;
+}

@@ -167,7 +167,7 @@ if($queries){
 
 		if($show){
 			$isOpen = $hist['isOpen'];
-			$lastModified .= '<tr><td style="width:20px;height:20px;padding-right:4px;" nowrap>' . we_html_element::jsElement('document.write(getTreeIcon("' . $file['ContentType'] . '",false));') . '</td>' .
+			$lastModified .= '<tr><td class="mfdIcon" nowrap data-contenttype="' . $file['ContentType'] . '"></td>' .
 				'<td style="vertical-align: middle;" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
 				($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
 				$file['Path'] . ($isOpen ? '' : '</a>') .

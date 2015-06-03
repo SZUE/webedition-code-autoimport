@@ -47,8 +47,8 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 			"marginheight" => 10,
 			"leftmargin" => 15,
 			"topmargin" => 10,
-			"onload" => "if(parent!=self)init();"
+			"onload" => 'if(parent!=self)init();setIconOfDocClass("mfdIcon");'
 			), we_html_element::htmlDiv(array(
-				"id" => "mfd"
+				'id' => 'mfd'
 				), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
 )));

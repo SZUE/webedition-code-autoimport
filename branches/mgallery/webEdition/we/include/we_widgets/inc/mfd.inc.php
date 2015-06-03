@@ -28,7 +28,8 @@ $oTblCont->setCol(
 	0, 0, null, we_html_element::htmlDiv(
 		array(
 		'id' => 'm_' . $iCurrId . '_inline',
-		"style" => 'width:100%;height:' . ($aPrefs[$aProps[0]]["height"]) . 'px;overflow:auto;'
+		"style" => 'width:100%;height:' . ($aPrefs[$aProps[0]]["height"]) . 'px;overflow:auto;',
+		'onload' => 'setIconOfDocClass("mfdIcon");'
 		), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
 ));
 $aLang = array(

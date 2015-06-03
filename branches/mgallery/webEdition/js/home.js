@@ -713,6 +713,7 @@ function setUsersListOnline(users) {
 function setMfdData(data) {
 	if (gel('mfd_data')) {
 		gel('mfd_data').innerHTML = data;
+		setIconOfDocClass("mfdIcon");
 	}
 }
 
