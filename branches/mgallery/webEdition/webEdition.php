@@ -1,7 +1,7 @@
 <?php
 /**
  * webEdition CMS
- *
+ * 
  * $Rev$
  * $Author$
  * $Date$
