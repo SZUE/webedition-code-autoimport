@@ -378,7 +378,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					}
 
 					$path = isset($GLOBALS['WE_MAIN_DOC']) ? $GLOBALS['WE_MAIN_DOC']->Path : '';
-					$href = we_objectFile::getObjectHref($this->getElement('ObjID'), $pid, $path, $this->DB_WE);
+					$href = we_objectFile::getObjectHref($this->getElement('ObjID'), $pid, $path, $this->DB_WE, TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS); //FR #7711
 					if(isset($GLOBALS['we_link_not_published'])){
 						unset($GLOBALS['we_link_not_published']);
 					}
