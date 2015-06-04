@@ -76,7 +76,7 @@ function writeBody(d) {
 					'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
 					(makeNewFolder ?
 									'<tr style="background-color:#DFE9F5;">' +
-									'<td align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + top.consts.FOLDER_ICON + '"/></td>' +
+									'<td align="center">' + getTreeIcon('folder', false) + '</td>' +
 									'<td><input type="hidden" name="we_FolderText" value="' + g_l.newFolder + '" />' +
 									'<input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.newFolder + '"  class="wetextinput" style="width:100%" /></td>' +
 									'</tr>' :

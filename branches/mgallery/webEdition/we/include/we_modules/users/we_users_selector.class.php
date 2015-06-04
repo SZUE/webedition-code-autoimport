@@ -105,9 +105,8 @@ class we_users_selector extends we_selector_file{
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
 		} else {
-			$rootID = f('SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), 'ParentID', $this->db);
-			$rootPath = f('SELECT Path FROM ' . $this->table . ' WHERE ID=' . intval($rootID), 'Path', $this->db);
-			$go = (f('SELECT 1 FROM ' . $this->table . ' WHERE ID=' . intval($this->dir) . ' AND Path LIKE "' . $rootPath . '%"', '', $this->db));
+			$rootPath = f('SELECT Path FROM ' . $this->table . ' WHERE ID=(SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($_SESSION["user"]["ID"]) . ')', '', $this->db);
+			$go = (f('SELECT 1 FROM ' . $this->table . ' WHERE ID=' . intval($this->dir) . ' AND Path LIKE "' . $rootPath . '%" LIMIT 1', '', $this->db));
 		}
 		if($go){
 			if($this->id == 0){
@@ -134,6 +133,5 @@ top.parentID = "' . $this->values["ParentID"] . '";';
 	</tr>
 </table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
-
 
 }

@@ -96,7 +96,7 @@ class we_selector_file{
 			case TEMPLATES_TABLE:
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				$this->fields.= ',Icon';
+				$this->fields.= ',Icon,ContentType';
 				break;
 			default:
 		}
@@ -159,7 +159,7 @@ class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder = "' . $this->db->escape($this->filter) . '" ' : 'AND ContentType = "' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder="' . $this->db->escape($this->filter) . '" ' : 'AND ContentType="' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
@@ -249,7 +249,6 @@ var options={
 };
 
 var consts={
-	FOLDER_ICON:"' . we_base_ContentTypes::FOLDER_ICON . '",
 	DORENAMEFOLDER:"' . self::DORENAMEFOLDER . '",
 	CREATEFOLDER:"' . self::CREATEFOLDER . '"
 };
@@ -379,7 +378,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$ret = '';
 		$this->query();
 		while($this->db->next_record()){
-			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Text")), '"') . '",' . $this->db->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Path")), '"') . '");';
+			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Text")), '"') . '",' . $this->db->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Path")), '"') . '","'.$this->db->f("ContentType").'");';
 		}
 		return $ret;
 	}

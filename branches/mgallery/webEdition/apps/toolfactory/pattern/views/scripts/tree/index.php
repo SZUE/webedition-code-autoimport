@@ -7,7 +7,6 @@ $page = we_ui_layout_HTMLPage::getInstance();
 
 $page->addJSFile(JS_DIR.'windows.js');
 $page->addJSFile(JS_DIR.'we_showMessage.js');
-$page->addJSFile(JS_DIR.'images.js');
 
 
 $nodes = array();

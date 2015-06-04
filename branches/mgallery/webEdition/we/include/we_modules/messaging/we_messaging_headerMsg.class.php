@@ -43,21 +43,15 @@ class we_messaging_headerMsg{
 
 	static function pbody(){
 		//start with 0 to get popup with new count
-		$msg_cmd = "we_cmd('messaging_start', " . we_messaging_frames::TYPE_MESSAGE . ");";
-		$todo_cmd = "we_cmd('messaging_start', " . we_messaging_frames::TYPE_TODO . ");";
 		?>
 		<table>
 			<tr>
-				<?php echo '
-	<td id="msgCount" align="right" class="middlefont"><div onclick="' . $msg_cmd . '">0</div></td>
-	<td>' . we_html_tools::getPixel(5, 1) . '</td>
-	<td valign="bottom"><i class="fa fa-envelope-o" onclick="' . $msg_cmd . '"/></td>
-</tr>
-<tr>
-	<td id="todoCount" align="right" class="middlefont"><div onclick="' . $todo_cmd . '">0</div></td>
-	<td>' . we_html_tools::getPixel(5, 1) . '</td>
-	<td valign="bottom"><i class="fa fa-tasks" alt="" onclick="' . $todo_cmd . '"/></td>'
-				?>
+				<td id="msgCount" align="right" class="middlefont"><div onclick="we_cmd('messaging_start', <?php echo we_messaging_frames::TYPE_MESSAGE; ?>);">0</div></td>
+				<td style="vertical-align: bottom;padding-left:1ex;"><i class="fa fa-envelope-o" onclick="we_cmd('messaging_start', <?php echo we_messaging_frames::TYPE_MESSAGE; ?>);"/></td>
+			</tr>
+			<tr>
+				<td id="todoCount" align="right" class="middlefont"><div onclick="we_cmd('messaging_start', <?php echo we_messaging_frames::TYPE_TODO; ?>);">0</div></td>
+				<td style="vertical-align: bottom;padding-left:1ex;"><i class="fa fa-tasks" alt="" onclick="we_cmd('messaging_start', <?php echo we_messaging_frames::TYPE_TODO; ?>);"/></td>
 			</tr>
 		</table>
 		<?php

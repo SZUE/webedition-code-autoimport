@@ -120,7 +120,7 @@ function selectFile(id) {
 							(a.value + "," + e.text) :
 							e.text;
 		}
-		if (top.fsbody.document.getElementById("line_" + id)){
+		if (top.fsbody.document.getElementById("line_" + id)) {
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
 		}
 		top.currentPath = e.path;
@@ -134,14 +134,15 @@ function selectFile(id) {
 }
 
 
-function addEntry(ID, icon, text, isFolder, path, modDate) {
+function addEntry(ID, icon, text, isFolder, path, modDate, ct) {
 	entries.push({
-		"ID": ID,
-		"icon": icon,
-		"text": text,
-		"isFolder": isFolder,
-		"path": path,
-		"modDate": modDate
+		ID: ID,
+		icon: icon,
+		text: text,
+		isFolder: isFolder,
+		path: path,
+		modDate: modDate,
+		contentType: ct
 	});
 }
 
@@ -159,7 +160,7 @@ function writeBody(d) {
 					'<table class="selector">' +
 					(makeNewFolder ?
 									'<tr style="background-color:#DFE9F5;">' +
-									'<td align="center"><img class="treeIcon" src="' + dirs.TREE_ICON_DIR + consts.FOLDER_ICON + '"/></td>' +
+									'<td align="center">' + getTreeIcon('folder', false) + '</td>' +
 									'<td><input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
 									'<td class="selector moddate">' + g_l.date_format + '</td>' +
 									'</tr>' :
@@ -169,7 +170,7 @@ function writeBody(d) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!wasdblclick){doClick(' + entries[i].ID + ',0);}else{wasdblclick=false;}\',300);return true"';
 		var ondblclick = ' onDblClick="wasdblclick=true;clearTimeout(tout);doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-						'<td class="treeIcon"><img class="treeIcon" src="' + dirs.TREE_ICON_DIR + (entries[i].icon ? entries[i].icon : consts.FOLDER_ICON) + '"/></td>' +
+						'<td class="treeIcon"><img class="treeIcon" src="' + dirs.TREE_ICON_DIR + (entries[i].icon ? entries[i].icon : '') + '"/></td>' +
 						(we_editDirID == entries[i].ID ?
 										'<td class="selector treeIcon"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector cutText directory" style="" title="' + entries[i].text + '">' + entries[i].text

@@ -202,7 +202,8 @@ div.content{
 }
 
 td.mfdIcon,
-td.upbIcon{
+td.upbIcon,
+td.mdcIcon{
 	width:20px;
 	height:20px;
 	padding-right:4px;

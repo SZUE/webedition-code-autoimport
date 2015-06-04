@@ -43,7 +43,7 @@ if($_csv){
 			$_where[] = 'Path LIKE "' . $_path . '%" ';
 		}
 		$_query = ($_where ?
-				'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0'/* . ($ct["image"] ?
+				'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0'/* . ($ct["image"] ?
 				  '' :
 				  ' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"'
 				  ) */ :
@@ -60,17 +60,14 @@ if($_csv){
 				$_categories[] = 'Category LIKE ",' . intval($_id) . ',"';
 			}
 		}
-		$_query = 'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
+		$_query = 'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
 				$_categories)) ? ' AND (' . implode(' OR ', $_categories) . ')' : '') . ' AND IsFolder=0;';
 	}
 
 	if($_query && $DB_WE->query($_query)){
 		$mdc .= '<table cellspacing="0" cellpadding="0" border="0">';
 		while($DB_WE->next_record()){
-			$mdc .= '<tr><td width="20" height="20" valign="middle" nowrap>' . we_html_element::htmlImg(
-					array(
-						"src" => TREE_ICON_DIR . $DB_WE->f("Icon")
-				)) . '</td><td valign="middle" class="middlefont">' . we_html_element::htmlA(
+			$mdc .= '<tr><td class="mdcIcon" nowrap data-contenttype="' . $DB_WE->f('ContentType') . '"></td><td valign="middle" class="middlefont">' . we_html_element::htmlA(
 					array(
 					"href" => 'javascript:top.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f('ID') . '\',\'' . $DB_WE->f('ContentType') . '\');',
 					"title" => $DB_WE->f("Path"),

@@ -89,7 +89,7 @@ foreach($tbls as $table){
 
 
 	$s = 'SELECT ' . ($wfDocsCSV ? "(t.ID IN($wfDocsCSV)) AS wforder," : '') . ' ' . ($myWfDocsCSV ? "(t.ID IN($myWfDocsCSV)) AS mywforder," : '') . ' '
-		. 't.ContentType,t.ID,t.Text,t.ParentID,t.Path,t.Icon,t.ModDate,'
+		. 't.ContentType,t.ID,t.Text,t.ParentID,t.Path,t.ModDate,'
 		. 'IF(t.Published>0,FROM_UNIXTIME(t.Published,"' . $sqld . '"),"-") AS Published,'
 		. 'IF(t.ModDate>0,FROM_UNIXTIME(t.ModDate,"' . $sqld . '"),"-") AS Modified,'
 		. 'IF(t.CreationDate>0,FROM_UNIXTIME(t.CreationDate,"' . $sqld . '"),"-") AS CreationDate,'
@@ -107,7 +107,7 @@ foreach($tbls as $table){
 	$content = array();
 
 	while($db->next_record()){
-		$_cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" valign="middle" nowrap data-contenttype="' . $db->f('ContentType') . '"></td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '" style="color:' . ($db->f("Published") != '-' ? "#3366CC" : "#FF0000") . ';text-decoration:none;">' . $db->f("Path") . '</a></nobr></td></tr>';
+		$_cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" nowrap data-contenttype="' . $db->f('ContentType') . '"></td><td valign="middle" class="middlefont"><nobr><a href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '" style="color:' . ($db->f("Published") != '-' ? "#3366CC" : "#FF0000") . ';text-decoration:none;">' . $db->f("Path") . '</a></nobr></td></tr>';
 		$row = array(
 			array("dat" => $path),
 			/* array("dat" => $db->f("Creator") ? : '-'),

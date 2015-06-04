@@ -29,7 +29,7 @@ class we_selector_document extends we_selector_directory{
 	protected $startPath;
 	protected $ctp = array(//FIXME: add audio button
 		we_base_ContentTypes::IMAGE => "NEW_GRAFIK",
-		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME",//FIXME: remove quicktime
+		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME", //FIXME: remove quicktime
 		we_base_ContentTypes::FLASH => "NEW_FLASH",
 		we_base_ContentTypes::VIDEO => "NEW_VIDEO",
 		we_base_ContentTypes::COLLECTION => "NEW_COLLECTION"
@@ -48,16 +48,16 @@ class we_selector_document extends we_selector_directory{
 		$this->fields .= ',RestrictOwners,Owners,OwnersReadOnly,CreatorID';
 		switch($this->table){
 			case FILE_TABLE:
-				$this->fields .= ',Filename,Extension,ModDate,Published';
+				$this->fields .= ',Filename,Extension,ModDate,Published,ContentType';
 				break;
 			case VFILE_TABLE:
-				$this->fields .= ',UNIX_TIMESTAMP(ModDate) AS ModDate,Text AS Filename,IF(IsFolder,"'.we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::FOLDER).'","'.we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::COLLECTION).'") AS Icon';
+				$this->fields .= ',UNIX_TIMESTAMP(ModDate) AS ModDate,Text AS Filename,ContentType,IF(IsFolder,"' . we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::FOLDER) . '","' . we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::COLLECTION) . '") AS Icon';
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$this->fields .= ',Text AS Filename,ModDate,Published';
+				$this->fields .= ',Text AS Filename,ModDate,Published,ContentType';
 				break;
 			default:
-				$this->fields .= ',Filename,Extension,ModDate,1 AS Published';
+				$this->fields .= ',Filename,Extension,ModDate,1 AS Published,ContentType';
 		}
 
 		$this->canSelectDir = $canSelectDir;
@@ -185,7 +185,7 @@ function exit_open() {
 
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
-			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $this->db->f("Published"). '","' . $title . '");';
+			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $this->db->f("Published") . '","' . $title . '");';
 		}
 		$ret .=' function startFrameset(){';
 		switch($this->filter){
@@ -243,8 +243,8 @@ function enableNewFileBut() {
 		$newFileState = $this->userCanMakeNewFile ? 1 : 0;
 		return parent::printHeaderTable(
 				'<td>' .
-					we_html_element::jsElement('newFileState=' . $newFileState . ';') .
-					we_html_button::create_button($this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$newFileState, false) .
+				we_html_element::jsElement('newFileState=' . $newFileState . ';') .
+				we_html_button::create_button($this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$newFileState, false) .
 				'</td>', true);
 	}
 

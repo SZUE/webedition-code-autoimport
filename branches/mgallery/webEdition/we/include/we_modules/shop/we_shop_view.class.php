@@ -182,7 +182,7 @@ function we_cmd(){
 }
 		';
 
-		return we_html_element::jsScript(JS_DIR . 'images.js') . we_html_element::jsScript(JS_DIR . 'windows.js') .
+		return we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsElement($out);
 	}
 
@@ -899,7 +899,6 @@ function submitForm() {
 		echo we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
 			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-			we_html_element::jsScript(JS_DIR . 'images.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
 			we_html_element::jsElement('

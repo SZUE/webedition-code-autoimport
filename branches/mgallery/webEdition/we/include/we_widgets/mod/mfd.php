@@ -145,7 +145,7 @@ foreach($tables as $ctable => $ids){
 	$paths = ((!permissionhandler::hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
 			$workspace[$table] : '');
 
-	$queries[] = '(SELECT ID,Path,ContentType,' . ($table !== VFILE_TABLE ? 'Icon,' : '') . 'Text,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
+	$queries[] = '(SELECT ID,Path,ContentType,Text,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
 }
 
 $lastModified = '<table style="width:100%">';

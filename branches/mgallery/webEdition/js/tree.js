@@ -400,7 +400,6 @@ function updateEntry(attribs) {
 function checkNode(imgName) {
 	var object_name = imgName.substring(4, imgName.length);
 	for (i = 1; i <= treeData.len; i++) {
-
 		if (treeData[i].id != object_name) {
 			continue;
 		}
@@ -408,7 +407,7 @@ function checkNode(imgName) {
 			treeData[i].checked = 0;
 			treeData[i].applylayout();
 			try {
-				eval("if(" + treeData.treeFrame + ".document.images[imgName]) " + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check0.gif\";");
+				eval("if(" + treeData.treeFrame + ".document.images[imgName]){" + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check0.gif\";}");
 			} catch (e) {
 				self.Tree.setCheckNode(imgName);
 			}

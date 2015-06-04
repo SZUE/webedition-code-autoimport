@@ -63,7 +63,7 @@ echo we_html_element::htmlDocType() .
 			"marginheight" => 10,
 			"leftmargin" => 15,
 			"topmargin" => 10,
-			"onload" => "if(parent!=self)init();"
+			"onload" => 'if(parent!=self)init();setIconOfDocClass("mdcIcon");'
 				), we_html_element::htmlDiv(array(
 					"id" => "mdc"
 						), $mdc)));

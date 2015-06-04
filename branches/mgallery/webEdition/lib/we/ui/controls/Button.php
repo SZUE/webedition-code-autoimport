@@ -689,7 +689,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 				<input id="input_' . $this->getId() . '" ' . $this->_getBooleanAttribs('disabled') . ' ' . $this->_getNonBooleanAttribs('onMouseDown,onMouseOut') . '
 				style="position:absolute;z-index:2;width:' . $this->getWidth() . 'px;
 				height:' . $this->getHeight() . 'px;"
-				type="image" src="' . IMAGE_DIR . 'pixel.gif" title="' . $this->getTitle() . '">';
+				type="image" title="' . $this->getTitle() . '">';
 		}
 
 		return "";

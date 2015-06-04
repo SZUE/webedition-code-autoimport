@@ -105,7 +105,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			(($table === FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE)) ? ',Published' : '') .
 			((defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE) ? ',IsClassFolder' : '') .
 			($table === FILE_TABLE || $table === TEMPLATES_TABLE ? ',Extension' : '') .
-			($table === FILE_TABLE || $table === TEMPLATES_TABLE || (defined('OBJECT_TABLE') && $table === OBJECT_TABLE) || (defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE) ? ',Icon' : '') .
 			($table === VFILE_TABLE ? ',remTable' : '');
 
 		$where = $collectionIDs ? ' WHERE ID IN(' . implode(',', $collectionIDs) . ') AND IsFolder=0 AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')' :

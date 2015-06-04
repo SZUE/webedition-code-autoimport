@@ -95,8 +95,7 @@ frames={
 	 */
 
 	function getJSTreeCode(){
-		return we_html_element::jsScript(JS_DIR . 'images.js') .
-			we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
+		return we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
 			we_html_element::jsElement('
 var frames={
 	"top":' . $this->topFrame . ',
@@ -261,8 +260,8 @@ function draw(startEntry,zweigEintrag){
 				. "attribs={";
 			foreach($item as $k => $v){
 				$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
-						intval($v):
-					'\'' . addslashes($v) . '\'') . ',';
+						intval($v) :
+						'\'' . addslashes($v) . '\'') . ',';
 			}
 			$js.='};' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
 			}';

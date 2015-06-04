@@ -32,7 +32,7 @@ function doClick(id, ct) {
 				wasdblclick = false;
 			}, 400);
 		}
-	} else if (getEntry(id).contentType != "folder" || (option.canSelectDir)) {
+	} else if (getEntry(id).contentType != "folder" || (options.canSelectDir)) {
 		if (top.options.multiple) {
 			if (top.shiftpressed) {
 				var oldid = top.currentID;
@@ -125,7 +125,7 @@ function addEntry(ID, icon, text, extension, isFolder, path, modDate, contentTyp
 		"modDate": modDate,
 		"contentType": contentType,
 		"published": published,
-		"title": title
+		"title": title,
 	});
 }
 
@@ -166,7 +166,7 @@ function writeBodyDocument(d) {
 					'<table class="selector">' +
 					(makeNewFolder ?
 									'<tr>' +
-									'<td class="treeIcon"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + top.consts.FOLDER_ICON + '"></td>' +
+									'<td class="treeIcon">' + getTreeIcon('folder', false) + '</td>' +
 									'<td class="filename"><input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
 									'<td class="selector title">' + g_l.folder + '</td>' +
 									'<td class="selector moddate">' + g_l.date_format + '</td>' +
@@ -176,7 +176,7 @@ function writeBodyDocument(d) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : "") + ' id="line_' + entries[i].ID + '" style="cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-						'<td class="selector treeIcon" align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '" /></td>' +
+						'<td class="selector treeIcon" align="center">' + getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"' + (entries[i].published === 0 && entries[i].isFolder === 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
 						(we_editDirID == entries[i].ID ?
 										'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :

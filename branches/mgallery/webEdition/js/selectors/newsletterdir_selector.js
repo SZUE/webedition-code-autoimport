@@ -44,7 +44,7 @@ function writeBody(d) {
 					'<table class="selector">' +
 					(makeNewFolder ?
 									'<tr style="background-color:#DFE9F5;">' +
-									'<td align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + top.consts.FOLDER_ICON + '"/></td>' +
+									'<td align="center">' + getTreeIcon('folder', false) + '</td>' +
 									'<td><input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '"  class="wetextinput" style="width:100%" /></td>' +
 									'</tr>' :
 									'');

@@ -173,8 +173,8 @@ switch($class){
 		$fs = new we_selector_category($id, CATEGORY_TABLE, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::RAW, "order", ""), we_base_request::_(we_base_request::INT, "we_editCatID", 0), we_base_request::_(we_base_request::RAW, "we_EntryText", ""), $rootDirID, $noChoose);
 		break;
 	case 'we_selector_document':
-		if(($id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1))){
-			$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+		if(($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2))){
+			$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 			$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 			$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
 			$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);

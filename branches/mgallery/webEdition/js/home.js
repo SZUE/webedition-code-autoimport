@@ -718,7 +718,7 @@ function setMfdData(data) {
 }
 
 function getUser() {
-	var url = dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	var url = top.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
 		url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {

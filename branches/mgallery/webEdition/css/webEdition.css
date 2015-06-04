@@ -695,6 +695,14 @@ table.error td pre{
 	padding-top:3px;
 }
 
+#weMsgHeaderLogo{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	right:10px;
+	border:0px;
+}
+
 #navigationHistory{
 	position:relative;
 	bottom:0px;

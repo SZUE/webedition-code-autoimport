@@ -46,16 +46,10 @@ onunload=function() {
 }
 ') . '
 <div id="messageConsole">
-<table>
-	<tr>
-		<td valign="middle">
-	<div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div>
-		</td>
-		<td>
-	<div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-info"></i></div>
-</td>
-	</tr>
-	</table>
+<table><tr>
+	<td valign="middle"><div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div></td>
+	<td><div onclick="_console_' . $consoleName . '.openMessageConsole();" class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-info"></i></div></td>
+	</tr></table>
 </div>';
 	}
 
@@ -95,17 +89,7 @@ onunload=function() {
 	static function pJS(){
 		$jmenu = self::getMenu();
 
-		echo we_html_element::jsScript(JS_DIR . 'images.js') .
-		($jmenu ? $jmenu->getJS() : '');
-		we_html_element::jsElement('
-	function toggleBusy(foo){
-		if(!document.images["busy"]){
-			setTimeout("toggleBusy("+foo+")",200);
-		}else{
-			changeImage(null,"busy",(foo ? "busy_icon" : "empty_icon"));
-		}
-	}
-');
+		echo ($jmenu ? $jmenu->getJS() : '');
 	}
 
 	static function getMenuReloadCode($location = 'top.opener.'){
@@ -161,8 +145,8 @@ onunload=function() {
 			);
 		}
 		?>
-		<div style="position:absolute;top:0px;left:0px;right:0px;bottom:0px;border:0px;">
-			<div style="position:relative;border:0px;float:left;" >
+		<div>
+			<div style="float:left;" >
 				<?php
 				if($jmenu){
 					echo $jmenu->getCode();
@@ -177,10 +161,10 @@ onunload=function() {
 					}
 				}
 				?></div>
-			<div style="position:absolute;top:0px;bottom:0px;right:10px;border:0px;" ><?php
+			<div id="weMsgHeaderLogo"><?php
 				echo self::createMessageConsole('mainWindow');
+				//<!--span name="busy" width="20" height="19"-->
 				?>
-				<img src="<?php echo IMAGE_DIR ?>pixel.gif" alt="" name="busy" width="20" height="19"/>
 				<img src="<?php echo IMAGE_DIR ?>/webedition.svg" alt="" id="weHeaderLogo"/>
 			</div>
 		</div>

@@ -82,7 +82,7 @@ function unselectAllFiles() {
 function selectFile(id) {
 	if (id) {
 		e = getEntry(id);
-		var a=top.document.getElementsByName("fname")[0];
+		var a = top.document.getElementsByName("fname")[0];
 		if (a.value != e.text &&
 						a.value.indexOf(e.text + ",") == -1 &&
 						a.value.indexOf("," + e.text + ",") == -1 &&
@@ -92,7 +92,7 @@ function selectFile(id) {
 							(a.value + "," + e.text) :
 							e.text;
 		}
-		if (top.fsbody.document.getElementById("line_" + id)){
+		if (top.fsbody.document.getElementById("line_" + id)) {
 			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
 		}
 		top.currentPath = e.path;
@@ -247,12 +247,12 @@ function writeBody(d) {
 					'<table class="selector">' +
 					(makeNewFolder ?
 									'<tr style="background-color:#DFE9F5;">' +
-									'<td align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + top.consts.FOLDER_ICON + '"/></td>' +
+									'<td align="center">' + getTreeIcon('folder', false) + '</td>' +
 									'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
 									'</tr>' :
 									(makeNewCat ?
 													'<tr style="background-color:#DFE9F5;">' +
-													'<td align="center"><img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + 'cat.gif"/></td>' +
+													'<td align="center">' + getTreeIcon('we/category') + '</td>' +
 													'<td><input type="hidden" name="we_EntryText" value="' + g_l.new_cat_name + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + g_l.new_cat_name + '" class="wetextinput" style="width:35%" /></td>' +
 													'</tr>' :
 													'')
@@ -262,8 +262,7 @@ function writeBody(d) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true;"';
 		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
-						'<td class="selector" width="25" align="center">' +
-						'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/></td>' +
+						'<td class="selector" width="25" align="center">' + getTreeIcon(entries[i].isFolder ? 'folder' : 'we/category') + '</td>' +
 						(we_editCatID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector filename"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'

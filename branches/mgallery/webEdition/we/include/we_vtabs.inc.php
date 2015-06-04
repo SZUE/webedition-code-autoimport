@@ -54,7 +54,7 @@ $vtab = array(
 		'desc' => g_l('global', '[documents]'),
 	),
 	'TEMPLATES_TABLE' => array(
-	//	'file' => 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/v-tabs/templates',
+		//	'file' => 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/v-tabs/templates',
 		'show' => permissionhandler::hasPerm('CAN_SEE_TEMPLATES'),
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[templates]'),
@@ -71,29 +71,29 @@ $vtab = array(
 		'size' => array(19, 83),
 		'desc' => g_l('javaMenu_object', '[classes]'),
 	),
-		'VFILE_TABLE' => array(
+	'VFILE_TABLE' => array(
 		//'file' => 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/v-tabs/classes',
-		'show' => /*permissionhandler::hasPerm("CAN_SEE_OBJECTS")*/true,
+		'show' => /* permissionhandler::hasPerm("CAN_SEE_OBJECTS") */true,
 		'size' => array(19, 83),
 		'desc' => g_l('global', '[vfile]'),
 	)
-
 );
-/*foreach($vtab as &$val){
-	if(file_exists(WE_INCLUDES_PATH . $val['file'] . '_normal.gif')){
-		$val['size'] = getimagesize(WE_INCLUDES_PATH . $val['file'] . '_normal.gif');
-	}
-}
-unset($val);
-*/
-echo we_html_element::jsScript(JS_DIR . 'images.js') .
- we_html_element::jsScript(JS_DIR . 'we_vtabs.js');
+/* foreach($vtab as &$val){
+  if(file_exists(WE_INCLUDES_PATH . $val['file'] . '_normal.gif')){
+  $val['size'] = getimagesize(WE_INCLUDES_PATH . $val['file'] . '_normal.gif');
+  }
+  }
+  unset($val);
+ */
+echo we_html_element::jsScript(JS_DIR . 'we_vtabs.js');
 ?>
 <script type="text/javascript"><!--
 
 	function setTab(table) {
 		if (we_tabs === null) {
-			setTimeout(function(){setTab(table);}, 500);
+			setTimeout(function () {
+				setTab(table);
+			}, 500);
 			return;
 		}
 		switch (table) {
@@ -162,7 +162,7 @@ if(($tab = we_base_request::_(we_base_request::STRING, "table"))){
 	</script>
 </div>
 <div id="baumArrows">
-<div class="baumArrow" id="incBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
-<div class="baumArrow" id="decBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
-<div class="baumArrow" onclick="toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></div>
+	<div class="baumArrow" id="incBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" onclick="toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></div>
 </div>

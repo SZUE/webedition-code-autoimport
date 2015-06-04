@@ -43,12 +43,8 @@ class we_main_header{
 			?>
 		</div>
 		<?php if($msg){ ?>
-			<div id="msgheadertable">
-				<?php we_messaging_headerMsg::pbody();
-				?>
-			</div>
-		<?php } ?>
-		<?php
+			<div id="msgheadertable"><?php we_messaging_headerMsg::pbody();?></div>
+		<?php }
 	}
 
 }

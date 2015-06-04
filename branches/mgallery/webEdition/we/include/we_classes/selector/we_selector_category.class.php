@@ -35,7 +35,6 @@ class we_selector_category extends we_selector_file{
 		$this->EntryText = $EntryText;
 		$this->noChoose = $noChoose;
 		$this->multiple = true;
-		$this->fields.= ',IF(IsFolder,"folder.gif","cat.gif") AS Icon';
 	}
 
 	function printHTML($what = we_selector_file::FRAMESET){
@@ -144,7 +143,6 @@ options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 					'Text' => $txt,
 					'Path' => $Path,
 					'IsFolder' => intval($what),
-					'Icon' => (($what == 1) ? we_base_ContentTypes::FOLDER_ICON : 'cat.gif'),
 			)));
 			$folderID = $this->db->getInsertId();
 			$js.='top.currentPath = "' . $Path . '";
