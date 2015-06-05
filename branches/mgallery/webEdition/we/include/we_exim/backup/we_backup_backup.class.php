@@ -473,7 +473,6 @@ class we_backup_backup extends we_backup_base{
 			switch($entry){
 				case '.':
 				case '..':
-				case 'CVS':
 				case 'sql_dumps':
 				case '.project':
 				case '.trustudio.dbg.php':

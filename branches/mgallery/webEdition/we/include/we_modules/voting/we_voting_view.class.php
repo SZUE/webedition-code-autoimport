@@ -29,14 +29,10 @@ class we_voting_view extends we_modules_view{
 	var $editorBodyForm;
 	var $editorHeaderFrame;
 	var $icon_pattern = "";
-	var $item_pattern = "";
-	var $group_pattern = "";
 
 	function __construct($frameset = "", $topframe = "top.content"){
 		parent::__construct($frameset, $topframe);
 		$this->voting = new we_voting_voting();
-		$this->item_pattern = addslashes('<img style="vertical-align: bottom" src="' . TREE_ICON_DIR . 'user.gif" />&nbsp;');
-		$this->group_pattern = addslashes('<img style="vertical-align: bottom" src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" />&nbsp;');
 	}
 
 	function setTopFrame($frame){
@@ -249,7 +245,7 @@ function we_cmd() {
 			for(var i=0;i<own_arr.length;i++){
 				if(own_arr[i]!=""){
 					owners_label.addItem();
-					owners_label.setItem(0,(owners_label.itemCount-1),(isfolders_arr[i]==1 ? "' . $this->group_pattern . '" : "' . $this->item_pattern . '")+own_arr[i]);
+					owners_label.setItem(0,(owners_label.itemCount-1),getTreeIcon(isfolders_arr[i]==1 ? "folder" : "we/user")+" "+own_arr[i]);
 					owners_label.showVariant(0);
 				}
 			}
@@ -454,7 +450,7 @@ function we_cmd() {
 					}
 
 					$js = ($newone ?
-							$this->topFrame . '.makeNewEntry(\'' . $this->voting->Icon . '\',\'' . $this->voting->ID . '\',\'' . $this->voting->ParentID . '\',\'' . $this->voting->Text . '\',0,\'' . ($this->voting->IsFolder ? 'folder' : 'item') . '\',\'' . VOTING_TABLE . '\',' . ($this->voting->isActive() ? 1 : 0) . ');' . $this->topFrame . '.drawTree();' :
+							$this->topFrame . '.makeNewEntry(\'' . $this->voting->ID . '\',\'' . $this->voting->ParentID . '\',\'' . $this->voting->Text . '\',0,\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',\'' . VOTING_TABLE . '\',' . ($this->voting->isActive() ? 1 : 0) . ');' . $this->topFrame . '.drawTree();' :
 							$this->topFrame . '.updateEntry(' . $this->voting->ID . ',"' . $this->voting->Text . '","' . $this->voting->ParentID . '",' . ($this->voting->isActive() ? 1 : 0) . ');'
 						);
 					echo we_html_element::jsElement($js .

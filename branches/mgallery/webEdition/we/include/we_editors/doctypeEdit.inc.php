@@ -320,8 +320,8 @@ function in_array(haystack, needle) {
 	return false;
 }
 
-function makeNewEntry(icon, id, pid, txt, offen, ct, tab) {
-	opener.top.makeNewEntry(icon, id, pid, txt, offen, ct, tab);
+function makeNewEntry(id, pid, txt, offen, ct, tab) {
+	opener.top.makeNewEntry(id, pid, txt, offen, ct, tab);
 }
 
 function updateEntry(id, text, pid, tab) {

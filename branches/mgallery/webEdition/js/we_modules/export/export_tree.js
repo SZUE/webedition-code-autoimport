@@ -60,7 +60,7 @@ function checkNode(imgName) {
 			frames.tree.populate(treeData[i].id, treeData.table);
 			if (treeData[i].checked == 1) {
 				if (document.images) {
-					eval("if(" + treeData.treeFrame + ".document.images[imgName]) " + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check0.gif\";");
+					eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
 				}
 				treeData[i].checked = 0;
 				if (frames.top.SelectedItems[frames.top.table].length > 1) {
@@ -82,7 +82,7 @@ function checkNode(imgName) {
 				break;
 			} else {
 				if (document.images) {
-					eval("if(" + treeData.treeFrame + ".document.images[imgName]) " + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check1.gif\";");
+					eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){ var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0]; tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
 				}
 				treeData[i].checked = 1;
 				frames.top.SelectedItems[frames.top.table].push(treeData[i].id);

@@ -173,7 +173,7 @@ class we_voting_frames extends we_modules_frame{
 		$_Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
 			(permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
-		$sel_but = addslashes(we_html_button::create_button(we_html_button::TRASH,'javascript:top.content.setHot();'));
+		$sel_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js');
@@ -247,7 +247,7 @@ class we_voting_frames extends we_modules_frame{
 
 				$variant_js .=
 					'owners_label.addItem();
-					owners_label.setItem(0,(owners_label.itemCount-1),"' . ($foo ? $this->View->group_pattern : $this->View->item_pattern) . id_to_path($owner, USER_TABLE) . '");';
+					owners_label.setItem(0,(owners_label.itemCount-1),getTreeIcon("' . ($foo ? 'folder' : 'we/user') . '")+" ' . id_to_path($owner, USER_TABLE) . '");';
 			}
 		}
 		$variant_js .=

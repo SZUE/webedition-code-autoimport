@@ -80,8 +80,6 @@ class we_messaging_frames extends we_modules_frame{
 		}
 
 		$jsinit = '
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";
 var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
 

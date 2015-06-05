@@ -151,8 +151,6 @@ function container(){
 	this.setstate=setTreeState;
 	this.getlayout=getTreeLayout;
 
-	this.tree_image_dir="' . TREE_IMAGE_DIR . '";
-	this.tree_icon_dir="' . TREE_ICON_DIR . '";
 	this.topFrame="' . $this->topFrame . '";
 	this.treeFrame="' . $this->treeFrame . '";
 	this.frameset="' . $this->frameset . '";
@@ -295,8 +293,6 @@ top.drawTree();
 		return 'if(g_l===undefined){
 	var g_l={};
 }
-	g_l.tree_select_statustext="' . g_l('tree', '[select_statustext]') . '";
-	g_l.tree_edit_statustext="' . g_l('tree', '[edit_statustext]') . '";
 ';
 	}
 

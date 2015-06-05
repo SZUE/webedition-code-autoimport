@@ -34,8 +34,6 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
  we_html_element::jsElement('
 var table="' . USER_TABLE . '";
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";'
 	. we_modules_frame::getTree_g_l()
 ) .
@@ -45,7 +43,6 @@ var we_dir="' . WEBEDITION_DIR . '";'
 ?>
 <script type="text/javascript"><!--
 	function loadData() {
-
 		treeData.clear();
 
 <?php

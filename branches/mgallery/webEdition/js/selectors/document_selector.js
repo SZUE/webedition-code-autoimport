@@ -114,10 +114,9 @@ function selectFile(id) {
 	}
 }
 
-function addEntry(ID, icon, text, extension, isFolder, path, modDate, contentType, published, title) {
+function addEntry(ID, text, extension, isFolder, path, modDate, contentType, published, title) {
 	entries.push({
 		"ID": ID,
-		"icon": icon,
 		"text": text,
 		"extension": extension,
 		"isFolder": isFolder,

@@ -66,6 +66,7 @@ function getTreeIcon(contentType, open, extension) {
 			return pre + '<i class="fa fa-file-sound-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'text/plain':
 			return pre + '<i class="fa fa-file-text-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+		case 'file':
 		case 'application/*':
 			switch (extension) {
 				case '.pdf':
@@ -129,6 +130,8 @@ function getTreeIcon(contentType, open, extension) {
 			return pre + '<i class="fa fa-shopping-cart fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'we/category':
 			return pre + '<i class="fa fa-tag fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+		case 'symlink':
+			return pre + '<i class="fa fa-link fa-stack-2x we-color"></i>' + post;
 		default:
 			return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
 			//FIXME: add support for file exension apllication pdf/word/excel/...

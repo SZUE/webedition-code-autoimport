@@ -152,13 +152,13 @@ protected function printFramesetJSFunctionEntry(){
 <?php echo '?>'; ?>
 <script type="text/javascript">
 <!--
-	function addEntry(ID, icon, text, isFolder, path) {
+	function addEntry(id, icon, txt, folder, pth) {
 	entries.push({
-	"ID": ID,
-					"icon": icon,
-					"text": text,
-					"isFolder": isFolder,
-					"path": path
+	ID: id,
+					text: txt,
+					isFolder: folder,
+					path: pth,
+					contentType:(folder?'folder':'application/*')
 	});
 					}
 
@@ -211,7 +211,7 @@ print we_html_element('<script type="text/javascript">
 	$folder - > we_save();
 					print 'var ref = top.opener.top.content;
 					if (ref.makeNewEntry){
-	ref.makeNewEntry("'.we_base_ContentTypes::FOLDER_ICON.'", '.$folder->ID.', "'.$folder->ParentID.'", "'.$txt.'", 1, "folder", "'.$this->table.'", 0, 0);
+	ref.makeNewEntry('.$folder->ID.', "'.$folder->ParentID.'", "'.$txt.'", 1, "folder", "'.$this->table.'", 0, 0);
 	}
 	';
 					if ($this - > canSelectDir){

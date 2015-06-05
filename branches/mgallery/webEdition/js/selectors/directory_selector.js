@@ -134,14 +134,13 @@ function selectFile(id) {
 }
 
 
-function addEntry(ID, icon, text, isFolder, path, modDate, ct) {
+function addEntry(id, txt, folder, pth, moddte, ct) {
 	entries.push({
-		ID: ID,
-		icon: icon,
-		text: text,
-		isFolder: isFolder,
-		path: path,
-		modDate: modDate,
+		ID: id,
+		text: txt,
+		isFolder: folder,
+		path: pth,
+		modDate: moddte,
 		contentType: ct
 	});
 }
@@ -170,7 +169,7 @@ function writeBody(d) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!wasdblclick){doClick(' + entries[i].ID + ',0);}else{wasdblclick=false;}\',300);return true"';
 		var ondblclick = ' onDblClick="wasdblclick=true;clearTimeout(tout);doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-						'<td class="treeIcon"><img class="treeIcon" src="' + dirs.TREE_ICON_DIR + (entries[i].icon ? entries[i].icon : '') + '"/></td>' +
+						'<td class="treeIcon">' + getTreeIcon(entries[i].contentType, false) + '</td>' +
 						(we_editDirID == entries[i].ID ?
 										'<td class="selector treeIcon"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector cutText directory" style="" title="' + entries[i].text + '">' + entries[i].text

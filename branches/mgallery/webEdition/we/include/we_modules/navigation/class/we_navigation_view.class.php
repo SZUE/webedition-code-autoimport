@@ -31,16 +31,12 @@ class we_navigation_view extends we_modules_view{
 	var $editorHeaderFrame;
 	var $editorFooterFrame;
 	var $icon_pattern = '';
-	var $item_pattern = '';
-	var $group_pattern = '';
 	var $page = 1;
 	var $Model;
 
 	public function __construct($frameset = '', $topframe = 'top'){
 		parent::__construct($frameset, $topframe);
 		$this->Model = new we_navigation_navigation();
-		$this->item_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . 'navigation.gif\" />&nbsp;';
-		$this->group_pattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 	}
 
 	function setTopFrame($frame){
@@ -700,7 +696,7 @@ var weNavTitleField = [];
 					}
 				}
 				$js = ($newone ?
-						$this->topFrame . '.makeNewEntry(\'' . $this->Model->Icon . '\',\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? we_base_ContentTypes::FOLDER : 'item') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');' :
+						$this->topFrame . '.makeNewEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');' :
 						$this->topFrame . '.updateEntry(\'' . $this->Model->ID . '\',\'' . addslashes($this->Model->Text) . '\',\'' . $this->Model->ParentID . '\',\'' . $this->Model->Depended . '\',0,\'' . ($this->Model->IsFolder ? we_base_ContentTypes::FOLDER : 'item') . '\',\'' . NAVIGATION_TABLE . '\',' . $this->Model->Depended . ',' . $this->Model->Ordn . ');');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
@@ -713,7 +709,7 @@ var weNavTitleField = [];
 					}
 					$_items = $this->Model->populateGroup($_old_items);
 					foreach($_items as $_k => $_item){
-						$js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::FILE_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+						$js .= $this->topFrame . '.makeNewEntry(\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'we/navigation\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
@@ -848,7 +844,7 @@ var weNavTitleField = [];
 				$_js = '';
 				foreach($_items as $_k => $_item){
 					$_js .= $this->topFrame . '.deleteEntry(' . $_item['id'] . ');';
-					$_js .= $this->topFrame . '.makeNewEntry(\'' . we_base_ContentTypes::FILE_ICON . '\',\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'item\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+					$_js .= $this->topFrame . '.makeNewEntry(\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'we/navigation\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
 				}
 				echo we_html_element::jsElement(
 					$_js .

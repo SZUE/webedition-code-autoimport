@@ -476,7 +476,6 @@ extra_files_desc=[];';
 					switch($entry){
 						case '.':
 						case '..':
-						case 'CVS':
 						case 'download':
 						case 'tmp':
 						case 'lastlog.php':
@@ -691,19 +690,18 @@ function startImport(isFileReady) {
 		top.body.delete_enabled = top.body.switch_button_state("delete", "disabled");
 		document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
 		document.we_form.submit();
-	}else
+	}else{
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_selected]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-	') : ('
+	}') : ('
 	if(document.we_form.backup_select.value) {
 		startBusy();
 		top.body.delete_backup_enabled = top.body.switch_button_state("delete_backup", "disabled");
 		top.body.delete_enabled = top.body.switch_button_state("delete", "disabled");
 		document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
 		document.we_form.submit();
-	}
-	else
+	}else{
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_selected_fromlist]'), we_message_reporting::WE_MESSAGE_WARNING) . '
-	')) . '
+	}')) . '
 }
 
 function showAll() {

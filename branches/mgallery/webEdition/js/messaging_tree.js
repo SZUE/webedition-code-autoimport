@@ -271,7 +271,7 @@ function zeichne(startEntry, zweigEintrag) {
 			if (deleteMode) {
 				if (nf[ai].id != -1) {
 					trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
-					ret += '<a href="' + trg + '"><img src="' + tree_img_dir + (nf[ai].checked ? "check1.gif" : "check0.gif") + '" alt="' + g_l.tree_select_statustext + '" id="img_' + nf[ai].id + '"></a>';
+					ret += '<a href="' + trg + '"><img src="' + tree_img_dir + (nf[ai].checked ? "check1.gif" : "check0.gif") + '" id="img_' + nf[ai].id + '"></a>';
 
 				}
 			} else {
@@ -292,7 +292,7 @@ function zeichne(startEntry, zweigEintrag) {
 													"check1.gif" :
 													"check0.gif"
 													) +
-									"\" alt=\"" + tree_select_statustext + "\" id='img_" + nf[ai].id + "'></a>";
+									"\" id='img_" + nf[ai].id + "'></a>";
 				}
 			} else {
 				trg = "doClick(" + nf[ai].id + ");return true;";

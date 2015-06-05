@@ -232,7 +232,6 @@ var queryType={
 };
 
 var dirs={
-	"TREE_ICON_DIR":"' . TREE_ICON_DIR . '",
 	"WEBEDITION_DIR":"' . WEBEDITION_DIR . '",
 	"ICON_DIR":"' . ICON_DIR . '"
 };
@@ -378,7 +377,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$ret = '';
 		$this->query();
 		while($this->db->next_record()){
-			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Icon") . '","' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Text")), '"') . '",' . $this->db->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Path")), '"') . '","'.$this->db->f("ContentType").'");';
+			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Text")), '"') . '",' . $this->db->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Path")), '"') . '","'.$this->db->f("ContentType").'");';
 		}
 		return $ret;
 	}

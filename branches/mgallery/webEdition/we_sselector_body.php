@@ -39,7 +39,6 @@ if(file_exists($supportDebuggingFile)){
 echo we_html_tools::getHtmlTop() . STYLESHEET;
 $nf = we_base_request::_(we_base_request::RAW, 'nf');
 $sid = we_base_request::_(we_base_request::RAW, "sid");
-
 ?>
 <script type="text/javascript"><!--
 	function setScrollTo() {
@@ -159,7 +158,7 @@ var i = 0;';
 			if($nf === 'new_folder'){
 				?>
 				<tr style="background-color:#DFE9F5;">
-					<td class="selector treeIcon"><img class="treeIcon" src="<?php echo TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON; ?>"></td>
+					<td class="selector treeIcon"><?php echo we_html_element::jsElement('document.write(getTreeIcon("folder"));') ?></td>
 					<td class="selector filename"><?php echo we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
 					<td class="selector filetype"><?php echo g_l('fileselector', '[folder]') ?></td>
 					<td class="selector moddate"><?php echo date("d.m.Y H:i:s") ?></td>
@@ -171,16 +170,16 @@ var i = 0;';
 			$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
 			foreach($final as $key => $entry){
 				$name = str_replace('//', '/', $org . '/' . $entry);
-				$DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($name) . '"');
+
 
 				$islink = is_link($dir . '/' . $entry);
 				$isfolder = is_dir($dir . '/' . $entry) && !$islink;
 
 				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
 
-				$indb = $DB_WE->next_record();
+				$indb = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($name) . '"');
 				if($entry === 'webEdition' || ((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download" || $entry === 'tmp')) || $entry === WE_THUMBNAIL_DIRECTORY || $entry === $thumbFold){
-					$indb = true;
+					$indb = 'folder';
 				}
 				if($supportDebugging){
 					$indb = false;
@@ -245,13 +244,12 @@ var i = 0;';
 
 				if($show){
 					echo '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $_cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
-	<td class="selector treeIcon"><img class="treeIcon" src="' . TREE_ICON_DIR . $icon . '"></td>
+	<td class="selector treeIcon">' . we_html_element::jsElement('document.write(getTreeIcon("' . ($indb? : ($islink ? 'symlink' : ($isfolder ? 'folder' : 'application/*'))) . '"));') . '</td>
 	<td class="selector filename">' . $_text_to_show . '</td>
 	<td class="selector filetype">' . $_type . '</td>
 	<td class="selector moddate">' . $_date . '</td>
 	<td class="selector filesize">' . $_size . '</td>
  </tr>';
-
 				}
 			}
 			?>

@@ -878,3 +878,11 @@ span.fileicon i.fa-square,
 span.treeKreuz i.fa-square{
 	color:white;
 }
+
+.wecheckIcon{
+	font-size:14px;
+	width: .8em;
+}
+i.disabled{
+	color:grey;
+}

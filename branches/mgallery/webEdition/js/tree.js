@@ -232,19 +232,19 @@ function clickHandler(cur) {
 			case treeData.tree_states.selectitem:
 				row += (cur.typ == "group" ?
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label>" :
-								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><img src=\"" + treeData.tree_image_dir + (cur.checked == 1 ? "check1.gif" : "check0.gif") + "\" alt=\"\" name=\"img_" + cur.id + "\"></a>" +
+								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><i class=\"fa fa-" + (cur.checked == 1 ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i></a>' +
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" + cur.text + "</label>"
 								);
 				break;
 			case treeData.tree_states.selectgroup:
 				row += (cur.typ == "item" ?
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label>" :
-								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><img src=\"" + treeData.tree_image_dir + (cur.checked == 1 ? "check1.gif" : "check0.gif") + "\" alt=\"\" name=\"img_" + cur.id + "\"></a>" +
+								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><i class=\"fa fa-" + (cur.checked == 1 ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i></a>' +
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" + cur.text + "</label>"
 								);
 				break;
 			case treeData.tree_states.select:
-				row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><img src=\"" + treeData.tree_image_dir + (cur.checked == 1 ? 'check1.gif' : 'check0.gif') + '" alt="" name="img_' + cur.id + '"></a>' +
+				row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><i class=\"fa fa-" + (cur.checked == 1 ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i></a>' +
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" + cur.text + "</label>";
 				break;
 			default:
@@ -407,7 +407,7 @@ function checkNode(imgName) {
 			treeData[i].checked = 0;
 			treeData[i].applylayout();
 			try {
-				eval("if(" + treeData.treeFrame + ".document.images[imgName]){" + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check0.gif\";}");
+				eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
 			} catch (e) {
 				self.Tree.setCheckNode(imgName);
 			}
@@ -416,7 +416,7 @@ function checkNode(imgName) {
 			treeData[i].checked = 1;
 			treeData[i].applylayout();
 			try {
-				eval("if(" + treeData.treeFrame + ".document.images[imgName]){ " + treeData.treeFrame + ".document.images[imgName].src=treeData.tree_image_dir+\"check1.gif\";}");
+				eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
 			} catch (e) {
 				self.Tree.setUnCheckNode(imgName);
 			}

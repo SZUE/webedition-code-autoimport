@@ -29,7 +29,7 @@ switch($we_ContentType){
 	case we_base_ContentTypes::IMAGE;
 	case we_base_ContentTypes::VIDEO:
 	case we_base_ContentTypes::AUDIO:
-		$allowedContentTypes = implode(',',we_base_ContentTypes::inst()->getRealContentTypes($we_ContentType));
+		$allowedContentTypes = implode(',', we_base_ContentTypes::inst()->getRealContentTypes($we_ContentType));
 		break;
 	case we_base_ContentTypes::APPLICATION;
 		$allowedContentTypes = '';
@@ -192,23 +192,25 @@ if($weFileupload->processFileRequest()){
 				?>
 				var ref;
 				if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top;
+					ref = opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top.opener.top;
+					ref = opener.top.opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top.opener.top.opener.top;
+					ref = opener.top.opener.top.opener.top.opener.top;
 				}
 				if (ref.makeNewEntry) {
-				ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
+					ref.makeNewEntry("' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
 				}
 				<?php
 			}
 			?>
 			opener.top.reloadDir();
 			opener.top.unselectAllFiles();
-			opener.top.addEntry(<?php echo '"' . $we_doc->ID . '", "' . $we_doc->Icon . '", "' . $we_doc->Text . '", "' . $we_doc->IsFolder . '", "' . $we_doc->Path . '"'; ?>);
+			opener.top.addEntry(<?php echo '"' . $we_doc->ID . '", "' . $we_doc->Text . '", "' . $we_doc->IsFolder . '", "' . $we_doc->Path . '"'; ?>);
 			opener.top.doClick(<?php echo $we_doc->ID; ?>, 0);
-			setTimeout(function(){opener.top.selectFile(<?php echo $we_doc->ID; ?>);}, 200);
+			setTimeout(function () {
+				opener.top.selectFile(<?php echo $we_doc->ID; ?>);
+			}, 200);
 		<?php } ?>
 		setTimeout(self.close, 250);
 	<?php } ?>
@@ -220,7 +222,7 @@ if($weFileupload->processFileRequest()){
 				<input type="hidden" name="table" value="<?php echo we_base_request::_(we_base_request::TABLE, 'tab'); ?>" />
 				<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
 				<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
-				<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', '[import_File_from_hd_title]'), "", 620); ?>
+	<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', '[import_File_from_hd_title]'), "", 620); ?>
 			</form></center>
 	</body>
 	</html>

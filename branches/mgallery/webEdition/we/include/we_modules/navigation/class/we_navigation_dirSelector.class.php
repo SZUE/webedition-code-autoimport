@@ -75,7 +75,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 			if(function_exists('mb_convert_encoding') && $_charset){
 				$_text = mb_convert_encoding($this->db->f('Text'), 'HTML-ENTITIES', $_charset);
 			}
-			$ret.='top.addEntry(' . $this->db->f('ID') . ',"' . ( $this->db->f('IsFolder') ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON) . '","' . $_text . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f('Path') . '");';
+			$ret.='top.addEntry(' . $this->db->f('ID') . ',"' . $_text . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f('Path') . '");';
 		}
 		return $ret;
 	}
@@ -109,7 +109,7 @@ top.clearEntries();';
 				echo 'var ref;
 if(top.opener.top.makeNewEntry){
 	ref = top.opener.top;
-	ref.makeNewEntry("' . we_base_ContentTypes::FOLDER_ICON . '",' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",0,0);
+	ref.makeNewEntry(' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",0,0);
 }
 ';
 				if($this->canSelectDir){

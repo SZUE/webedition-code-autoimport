@@ -174,13 +174,12 @@ function selectFile(id) {
 	}
 }
 
-function addEntry(ID, icon, text, isFolder, path, ct) {
+function addEntry(id, txt, folder, pth, ct) {
 	entries.push({
-		ID: ID,
-		icon: icon,
-		text: text,
-		isFolder: isFolder,
-		path: path,
+		ID: id,
+		text: txt,
+		isFolder: folder,
+		path: pth,
 		contentType: ct
 	});
 }
@@ -191,11 +190,7 @@ function writeBody(d) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true;"';
 		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_' + entries[i].ID + '" style="cursor:pointer;"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
-						'<td class="selector" width="25" align="center">' +
-						(entries[i].contentType ?
-										getTreeIcon(entries[i].contentType, false) :
-										'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/>') +
-						'</td>' +
+						'<td class="selector" width="25" align="center">' + getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
 						'</tr>';
 	}

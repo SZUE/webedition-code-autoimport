@@ -59,12 +59,6 @@ img.icon{
 	margin-right:auto;
 }
 
-img.treeIcon{
-	width: 16px;
-	height:18px;
-	border: none;
-}
-
 div.imgText{
 	text-overflow: ellipsis;
 	overflow: hidden;

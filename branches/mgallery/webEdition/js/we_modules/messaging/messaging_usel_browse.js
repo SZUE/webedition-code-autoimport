@@ -105,7 +105,7 @@ function zeichne(startEntry, zweigEintrag) {
 			if (nf[ai].name != -1) {
 				ret += "<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">";
 			}
-			ret += "<IMG SRC=\"" + tree_icon_dir + nf[ai].icon + "\" alt=\"" + g_l.tree_edit_statustext + "\"></a>" +
+			ret += getTreeIcon(nf[ai].contentType) + "</a>" +
 							"<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"" + tree_img_dir + (nf[ai].checked ? "check1.gif" : "check0.gif") + "\" \" alt=\"\" name=\"img_" + nf[ai].name + "\" /></a>" +
 							"&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A><br/>"
 		} else {
@@ -114,14 +114,13 @@ function zeichne(startEntry, zweigEintrag) {
 			var zusatz = (ai == nf.len) ? "end" : "";
 			var zusatz2 = "";
 			if (nf[ai].open === 0) {
-				ret += "<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_open_statustext + "\"></A>";
+				ret += "<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
 			} else {
-				ret += "<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\" alt=\"" + g_l.tree_close_statustext + "\"></A>";
+				ret += "<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
 				zusatz2 = "open";
 			}
-			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
-							"<IMG SRC=\"" + tree_icon_dir + "usergroup" + zusatz2 + ".gif\" alt=\"" + g_l.tree_edit_statustext + "\"></a>" +
-							"<A name='_" + nf[ai].name + "' HREF=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
+			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + getTreeIcon('we/userGroup') + "</a>" +
+							"<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
 							"&nbsp;<b>" + nf[ai].text + "</b></a>" +
 							"<br/>";
 			if (nf[ai].open) {
@@ -174,8 +173,7 @@ function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
 
 
 function updateEntry(id, pid, text, pub) {
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'user')) {
 			if (treeData[ai].name == id) {
 				treeData[ai].parentid = pid;
@@ -183,7 +181,6 @@ function updateEntry(id, pid, text, pub) {
 				treeData[ai].published = pub;
 			}
 		}
-		ai++;
 	}
 	drawEintraege();
 }
@@ -281,7 +278,7 @@ function rootEntry(name, text, rootstat) {
 }
 
 function drawEintraege() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
-	messaging_usel_main.window.document.body.innerHTML = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\"><NOBR>" +
+	messaging_usel_main.window.document.body.innerHTML = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\"><nobr>" +
 					zeichne(top.startloc, "") +
 					"</nobr></td></tr></table>";
 

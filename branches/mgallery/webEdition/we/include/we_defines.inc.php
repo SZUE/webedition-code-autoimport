@@ -48,8 +48,7 @@ define('WE_THUMB_PREVIEW_DIR', WEBEDITION_DIR . 'preview/');
 define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/tinymce/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 
-define('TREE_IMAGE_DIR', IMAGE_DIR . 'tree/');
-define('TREE_ICON_DIR', TREE_IMAGE_DIR . 'icons/');
+define('TREE_ICON_DIR', IMAGE_DIR . 'tree/icons/');
 define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
 define('BUTTONS_DIR', IMAGE_DIR . 'button/');
 

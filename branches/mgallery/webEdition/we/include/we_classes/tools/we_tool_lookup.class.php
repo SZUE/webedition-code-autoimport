@@ -408,7 +408,7 @@ abstract class we_tool_lookup{
 						$allFiles[] = $_entry;
 					}
 
-					if(is_dir($_entry) && strtolower(strtolower($entry) != 'cvs')){
+					if(is_dir($_entry)){
 						self::getFilesOfDir($allFiles, $_entry);
 					}
 				}
@@ -424,7 +424,7 @@ abstract class we_tool_lookup{
 			$dh = opendir($baseDir);
 			while(($entry = readdir($dh))){
 
-				if($entry != '' && $entry != '.' && $entry != '..' && strtolower($entry != 'cvs')){
+				if($entry != '' && $entry != '.' && $entry != '..'){
 
 					$_entry = $baseDir . '/' . $entry;
 

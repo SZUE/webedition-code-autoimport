@@ -263,7 +263,7 @@ class we_class_folder extends we_folder{
 						"align" => "center",
 						'dat' => ((permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE")) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("OF_ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
 							'<input type="checkbox" name="weg[' . $this->searchclass->f("OF_ID") . ']" />' :
-							'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />')),
+							'<i class="fa fa-square-o wecheckIcon disabled"></i>')),
 					array(
 						"align" => "center",
 						"height" => 35,
@@ -432,7 +432,7 @@ class we_class_folder extends we_folder{
 						"align" => "center",
 						'dat' => (permissionhandler::hasPerm("DELETE_OBJECTFILE") ?
 							'<input type="checkbox" name="weg[' . $this->searchclass->f("OF_ID") . ']" />' :
-							'<img src="' . TREE_IMAGE_DIR . 'check0_disabled.gif" />'
+							'<i class="fa fa-square-o wecheckIcon disabled"></i>'
 						)),
 					array(
 						"align" => "center",

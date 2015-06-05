@@ -45,8 +45,6 @@ class we_shop_frames extends we_modules_frame{
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::jsElement('
 var table="' . SHOP_TABLE . '";
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";'
 				. parent::getTree_g_l() . '
 var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";

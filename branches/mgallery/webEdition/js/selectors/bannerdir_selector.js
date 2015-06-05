@@ -21,13 +21,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function addEntry(ID, icon, text, isFolder, path) {
+function addEntry(id, txt, folder, pth) {
 	entries.push({
-		"ID": ID,
-		"icon": icon,
-		"text": text,
-		"isFolder": isFolder,
-		"path": path
+		ID: id,
+		text: txt,
+		isFolder: folder,
+		path: pth,
+		contentType: ct,
 	});
 }
 
@@ -52,9 +52,7 @@ function writeBody(d) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + '>' +
-						'<td class="selector" width="25" align="center">' +
-						'<img class="treeIcon" src="' + top.dirs.TREE_ICON_DIR + entries[i].icon + '"/>' +
-						'</td>' +
+						'<td class="selector" width="25" align="center">' + getTreeIcon((entries[i].isFolder ? 'folder' : 'we/banner'), false) + '</td>' +
 						(we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector filename" style="" ><div class="cutText">' + entries[i].text + '</div>'

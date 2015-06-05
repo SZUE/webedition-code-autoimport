@@ -50,7 +50,7 @@ function pWebEdition_Tree(){
 			break;
 		case we_base_constants::MODE_SEE:
 			echo we_html_element::jsElement('
-function makeNewEntry(icon,id,pid,txt,open,typ,tab){
+function makeNewEntry(id,pid,txt,open,typ,tab){
 }
 function drawTree(){
 }

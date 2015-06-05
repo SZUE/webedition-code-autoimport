@@ -447,7 +447,7 @@ abstract class we_backup_base{
 		$d = @dir($rootdir);
 		while(false !== ($entry = $d->read())){
 			$count++;
-			if($entry != "." && $entry != ".." && $entry != "CVS" && $entry != "webEdition" && $this->backup_step < $count){
+			if($entry != "." && $entry != ".." && $entry != "webEdition" && $this->backup_step < $count){
 				if(is_dir($rootdir . $entry)){
 					if(!$this->putDirInDB($rootdir . $entry)){
 						return -1;
@@ -1101,7 +1101,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 		$co = -1;
 		$limit = time() - 86400;
 		while(false !== ($entry = $d->read())){
-			if($entry != "." && $entry != ".." && $entry != "CVS" && !@is_dir($entry)){
+			if($entry != "." && $entry != ".." && !@is_dir($entry)){
 				if(filemtime($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry) < $limit){
 					unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry);
 				}

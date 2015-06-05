@@ -31,8 +31,6 @@ class we_messaging_tree extends weTree{
 	function getJSStartTree(){
 		return parent::getTree_g_l() . '
 var save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
-var tree_icon_dir="' . TREE_ICON_DIR . '";
-var tree_img_dir="' . TREE_IMAGE_DIR . '";
 var we_dir="' . WEBEDITION_DIR . '";
 var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
 
