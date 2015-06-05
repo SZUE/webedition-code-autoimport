@@ -1097,7 +1097,6 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 		echo $yuiSuggest->getYuiJs() .
 		we_html_element::htmlHidden("we_complete_request", 1) .
 		'</form>' .
-	//	we_html_element::jsElement('setTimeout(doScrollTo,100);') . //FIXME: make this body onload
 		($fullPoster ? '</body></html>' : '');
 	}
 }

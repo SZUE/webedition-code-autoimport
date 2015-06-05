@@ -2408,8 +2408,6 @@ function render_dialog(){
 		$ret .= we_html_element::htmlDiv(array('id' => 'setting_' . $tab, 'style' => ($GLOBALS['tabname'] === 'setting_' . $tab ? '' : 'display: none;')), build_dialog($tab));
 	}
 	return $ret;
-	// Hide preload screen
-	//we_html_element::jsElement("setTimeout(\"top.we_cmd('show_tabs');\", 50);");
 }
 
 function getYesNoSelect($setting){

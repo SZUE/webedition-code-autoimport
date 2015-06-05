@@ -1388,7 +1388,7 @@ function setLocation(loc){
 	location.href=loc;
 }
 top.opener.top.openWindow("' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '","rebuildwin",-1,-1,600,130,0,true);
-setTimeout(top.close,300);'
+top.close();'
 				);
 				break;
 			case "import":

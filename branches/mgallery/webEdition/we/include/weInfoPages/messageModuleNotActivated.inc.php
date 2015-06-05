@@ -26,7 +26,7 @@ echo we_html_tools::getHtmlTop() .
 ?>
 </head>
 
-<body class="weDialogBody" onload="self.focus();" onblur="setTimeout(self.close, 500);">
+<body class="weDialogBody" onload="self.focus();" onblur="self.close();">
 	<?php
 	echo '
 <table border="0" cellpadding="7" width="100%" class="defaultfont">

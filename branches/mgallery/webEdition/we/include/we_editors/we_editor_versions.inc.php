@@ -46,7 +46,7 @@ echo we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()" onkeypress="javascript:if (event.keyCode == 13 || event.keyCode == 3)
-			search(true);" onload="setTimeout(init, 200)" onresize="sizeScrollContent();">
+			search(true);" onload="init();" onresize="sizeScrollContent();">
 	<form name="we_form" action="" onsubmit="return false;" style="padding:0px;margin:0px;">
 		<?php
 		echo $_view->getHTMLforVersions(array(

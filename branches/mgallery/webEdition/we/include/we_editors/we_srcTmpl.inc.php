@@ -62,18 +62,18 @@ echo we_html_multiIconBox::getJS();
 echo we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js');
 switch($_SESSION['prefs']['editorMode']){
 	case 'codemirror2':
-		$initEditor = 'initCM';
+		$initEditor = 'initCM();';
 		break;
 	case 'java':
-		$initEditor = 'initJava';
+		$initEditor = 'initJava();';
 		break;
 	default:
-		$initEditor = 'initDefaultEdior';
+		$initEditor = 'initDefaultEdior();';
 		break;
 }
 ?>
 </head>
-<body class="weEditorBody" style="overflow:hidden;" onload="setTimeout(<?php echo $initEditor; ?>, 200);" onunload="doUnload();
+<body class="weEditorBody" style="overflow:hidden;" onload="<?php echo $initEditor; ?>" onunload="doUnload();
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();">
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php

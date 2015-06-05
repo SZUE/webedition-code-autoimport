@@ -502,6 +502,7 @@ top.selectFile(top.currentID);
 	}
 	var weCountWriteBC = 0;
 	function weWriteBreadCrumb(BreadCrumb){
+	//FIXME: this function should not need a timeout - check
 		if(top.document.getElementById("fspath")){
 			top.document.getElementById("fspath").innerHTML = BreadCrumb;
 		}else if(weCountWriteBC<10){
@@ -510,7 +511,7 @@ top.selectFile(top.currentID);
 		weCountWriteBC++;
 	}') .
 			'</head>
-<body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb(\'' . $path . '\');">';
+<body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
 		if(isset($result['ContentType']) && $result['ContentType']){
 			switch($this->table){
 				case FILE_TABLE:

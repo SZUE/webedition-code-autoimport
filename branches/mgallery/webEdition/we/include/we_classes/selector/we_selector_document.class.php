@@ -371,6 +371,7 @@ top.makeNewDocument = true;' .
 	}
 	var weCountWriteBC = 0;
 	function weWriteBreadCrumb(BreadCrumb){
+		//FIXME: this function should not need a timeout - check
 		if(top.document.getElementById("fspath")){
 			top.document.getElementById("fspath").innerHTML = BreadCrumb;
 		}else if(weCountWriteBC<10){
@@ -379,7 +380,7 @@ top.makeNewDocument = true;' .
 		weCountWriteBC++;
 	}') . '
 </head>
-<body class="defaultfont" onresize="setInfoSize()" onload="setTimeout(\'setInfoSize()\',50);weWriteBreadCrumb(\'' . $path . '\');">';
+<body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
 		if((isset($result['ContentType']) && !empty($result['ContentType'])) || ($this->table == VFILE_TABLE )){//FIXME: this check should be obsolete, remove in 6.6
 			if((isset($result['ContentType']) && $result['ContentType'] === we_base_ContentTypes::FOLDER) || ($this->table == VFILE_TABLE && $result['IsFolder'])){
 				$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->id));
