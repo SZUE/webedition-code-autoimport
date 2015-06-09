@@ -351,7 +351,7 @@ function switchExt(){
 		while($db->next_record()){
 			$paths[] = '(ParentPath="' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
 		}
-		return ($paths ? 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="")' : '') . ' ORDER BY DocType';
+		return ($paths ? ' (' . implode(' OR ', $paths) . ' OR ParentPath="")' : '') . ' ORDER BY DocType';
 	}
 
 }
