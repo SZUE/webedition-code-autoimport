@@ -95,7 +95,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 				$del = true;
 			}
 			if($del){
-				if(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType LIMIT 1'))){
+				if(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType LIMIT 1'))){
 					$we_doc->initByID($id, DOC_TYPES_TABLE);
 				}
 			} else {
@@ -247,7 +247,7 @@ function we_cmd() {
 			break;
 		case "newDocType":
 <?php
-$GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
+$GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(dt.DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 $dtNames = implode(',', $GLOBALS['DB_WE']->getAll(true));
 echo 'var docTypeNames = new Array(' . $dtNames . ');';
 ?>
