@@ -30,7 +30,7 @@ class we_collection extends we_root{
 	 * we have both collections for not immediately deleting existing collections when changing remTable without saving collection:
 	 * they exist in collection objects only: the remObjects of the matching one are written to tblFileLink when saving
 	 */
-	public $remTable;
+	public $remTable;//TODO: set getters for all public props
 	public $remCT;
 	public $remClass;
 	public $IsDuplicates;
@@ -286,6 +286,18 @@ class we_collection extends we_root{
 	function formCollection(){
 		$recursive = we_html_forms::checkboxWithHidden($this->InsertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_InsertRecursive', 'Verzeichnisse rekursiv einfügen') .
 			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_IsDuplicates', $this->IsDuplicates);
+		$slider = '<input type="range" style="width:120px;height:20px;" name="zoom" min="120" step="20" max="240" value="' . $this->gridItemSize . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/>';
+		$btnIconview = we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weCollectionEdit.setview('grid');", true, 40, "", "", "", false);
+		$btnListview = we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weCollectionEdit.setview('list');", true, 40, "", "", "", false);
+		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2);
+		
+		$head = new we_html_table(array("style" => "border: 0px solid gray;width:100%;height:32px"), 1, 6);
+		$head->setCol(0, 0, array('width' => '*'), $recursive);
+		$head->setCol(0, 1, array('width' => '160px'), $slider);
+		$head->setCol(0, 2, array('width' => '42px'), $btnIconview);
+		$head->setCol(0, 3, array('width' => '42px'), $btnListview);
+		//$head->setCol(0, 4, array('width' => '10px'), '');
+		$head->setCol(0, 5, array('width' => '52px'), $btnImport);
 
 		$items = $this->getCollectionVerified(false, true, true);
 		if($items[count($items) - 1]['id'] !== -1){
@@ -315,10 +327,8 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Inhalt der Sammlung') .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;color:red;font-size:20px'), 'Hinweis: Die Sammlungen sind z.Zt. komplett unbenutzbar<br>(auch nicht zu Testzwecken)!') .
 			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
-			we_html_element::htmlDiv(array('style' => 'width:806px;padding:10px 0 0 20px;margin-left:20px;'), $recursive) .
-			we_html_element::htmlDiv(array('id' => 'content_table_list', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px;display:block'), $rows) .
-			// TODO: make "header" width range and toggle view
-			we_html_element::htmlDiv(array('style' => 'padding:30px 0 0 30px;'), '<input type="range" style="width:120px;height:20px;" name="zoom" min="120" step="20" max="240" value="' . $this->gridItemSize . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/>') .
+			we_html_element::htmlDiv(array('style' => 'width:850px;padding:10px 0 0 20px;margin:12px 0 0 0;'), $head->getHtml()) .
+			we_html_element::htmlDiv(array('id' => 'content_table_list', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px;display:none;'), $rows) .
 			we_html_element::htmlDiv(array('id' => 'content_table_grid', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px 0 0 20px;background-color:white;display:inline-block;min-height:200px'), $divs);
 	}
 

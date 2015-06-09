@@ -125,6 +125,12 @@ weCollectionEdit = {
 		this.collectionCsv = document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value;
 	},
 
+	setview: function(view){
+		this.view = view;
+		this.ct.grid.style.display = this.view === 'grid' ? 'inline-block' : 'none';
+		this.ct.list.style.display = this.view === 'list' ? 'block' : 'none';
+	},
+
 	addListenersToItem: function(view, elem, num){
 		var t = this, item, ctrls, space;
 
