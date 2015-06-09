@@ -223,7 +223,7 @@ class we_docTypes extends we_class{
 	 */
 	private function formDocTypes2($arrHide = array()){
 		$vals = array();
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . self::getDoctypeQuery($this->DB_WE));
 
 		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f('ID');
@@ -237,7 +237,7 @@ class we_docTypes extends we_class{
 	}
 
 	private function formDocTypes3($headline, $langkey, $derDT = 0){
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE Language="' . $langkey . '" AND ' . self::getDoctypeQuery($this->DB_WE, true));
+		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE Language="' . $langkey . '" AND ' . self::getDoctypeQuery($this->DB_WE));
 		$vals = array(0 => g_l('weClass', '[nodoctype]'));
 		foreach($this->DB_WE->getAllFirst(false) as $k => $v){
 			$vals[$k] = $v;
@@ -328,30 +328,30 @@ function switchExt(){
 	 *
 	 * @return         string
 	 */
-	public static function getDoctypeQuery(we_database_base $db = null, $omitWhere = false){
+	public static function getDoctypeQuery(we_database_base $db = null){
 		$db = $db ? : new DB_WE();
 
 		$paths = array();
 		$ws = get_ws(FILE_TABLE, false, true);
 		if(!$ws){
-			return (!$omitWhere ? 'WHERE ' : '') . '1 ORDER BY DocType';
+			return  '1 ORDER BY DocType';
 		}
-		if(!WE_DOCTYPE_WORKSPACE_BEHAVIOR){
-			$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ws) . ')');
-			while($db->next_record()){
-				$paths[] = '(ParentPath="' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
+		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR){
+			$_tmp_paths = id_to_path($ws, FILE_TABLE, $db, false, true);
+			foreach($_tmp_paths as $_tmp_path){
+				while($_tmp_path && $_tmp_path != '/'){
+					$paths[] = '"' . $db->escape($_tmp_path) . '"';
+					$_tmp_path = dirname($_tmp_path);
+				}
 			}
-			return ($paths ? 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="")' : '') . ' ORDER BY DocType';
-		}
-		$_tmp_paths = id_to_path($ws, FILE_TABLE, $db, false, true);
-		foreach($_tmp_paths as $_tmp_path){
-			while($_tmp_path && $_tmp_path != '/'){
-				$paths[] = '"' . $db->escape($_tmp_path) . '"';
-				$_tmp_path = dirname($_tmp_path);
-			}
+			return ($paths ? 'ParentPath IN (' . implode(',', $paths) . ',"")' : '1') . ' ORDER BY DocType';
 		}
 
-		return (!$omitWhere ? 'WHERE ' : '') . ($paths ? 'ParentPath IN (' . implode(',', $paths) . ',"")' : '1') . ' ORDER BY DocType';
+		$db->query('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ws) . ')');
+		while($db->next_record()){
+			$paths[] = '(ParentPath="' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
+		}
+		return ($paths ? 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="")' : '') . ' ORDER BY DocType';
 	}
 
 }

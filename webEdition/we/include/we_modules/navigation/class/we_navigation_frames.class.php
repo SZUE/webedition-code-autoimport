@@ -579,7 +579,7 @@ function setTab(tab) {
 	}
 
 	function getHTMLDynamic(){
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($this->db));
 		$docTypes = array_merge(array(g_l('navigation', '[no_entry]')), $this->db->getAllFirst(false));
 
 		$classID2Name = $classID2Dir = $classDirs = $classDirsJS = $classHasSubDirsJS = $classPathsJS = array();

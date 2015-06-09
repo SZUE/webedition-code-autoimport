@@ -144,7 +144,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 	default:
 		$id = (($tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) ?
 				$tmp :
-				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
+				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
 
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);

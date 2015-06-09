@@ -727,7 +727,7 @@ $we_menu = array(
 );
 
 
-$GLOBALS['DB_WE']->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']));
+$GLOBALS['DB_WE']->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']));
 if($GLOBALS['DB_WE']->num_rows() && permissionhandler::hasPerm('NO_DOCTYPE')){
 	$we_menu[1010102] = array('parent' => 1010100); // separator
 }

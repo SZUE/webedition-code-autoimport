@@ -190,8 +190,7 @@ function checkFooter(){
 		switch($this->task){
 			case self::DOCTYPE:
 				$db = new DB_WE();
-				$q = we_docTypes::getDoctypeQuery($db);
-				$db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
+				$db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($db));
 				$doctypepop = '<select class="weSelect" name="we_schedule_doctype_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true)">';
 				while($db->next_record()){
 					$doctypepop .= '<option value="' . $db->f("ID") . '"' . (($this->DoctypeID == $db->f("ID")) ? ' selected="selected"' : '') . '>' . $db->f("DocType") . '</option>';

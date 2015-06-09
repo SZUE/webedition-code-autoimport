@@ -136,7 +136,7 @@ class we_navigation_ruleFrames{
 		$docTypes = array(
 			0 => g_l('navigation', '[no_entry]')
 		);
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($this->db));
 		while($this->db->next_record()){
 			$docTypes[$this->db->f('ID')] = $this->db->f('DocType');
 		}

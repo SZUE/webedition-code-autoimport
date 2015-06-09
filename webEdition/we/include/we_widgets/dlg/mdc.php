@@ -86,7 +86,7 @@ function getHTMLDirSelector($_selType){
 
 $docTypes = array(0 => g_l('cockpit', '[no_entry]'));
 
-$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($DB_WE));
+$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($DB_WE));
 while($DB_WE->next_record()){
 	$docTypes[$DB_WE->f("ID")] = $DB_WE->f("DocType");
 }
