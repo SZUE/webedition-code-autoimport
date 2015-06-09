@@ -112,7 +112,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			if($ref){
 				$object->DocType = $ref->ID;
 			} else if(isset($object->OldDocTypeName) && $object->OldDocTypeName){
-				$object->DocType = intval(f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($object->OldDocTypeName) . '"'));
+				$object->DocType = intval(f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($object->OldDocTypeName) . '"'));
 			}
 		}
 

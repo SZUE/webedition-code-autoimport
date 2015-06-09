@@ -46,7 +46,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			$we_JavaScript = "";
 			$we_show_response = 1;
-		} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '" LIMIT 1')) && ($we_doc->ID != $id)){
+		} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '" LIMIT 1')) && ($we_doc->ID != $id)){
 			$we_responseText = sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType);
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			$we_JavaScript = "";
@@ -76,7 +76,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			break;
 		}
 		$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
+		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . $id);
 		$del = false;
 		if($name){
 			if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' LIMIT 1')){
@@ -84,7 +84,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 				$we_responseText = sprintf(g_l('weClass', '[doctype_delete_nok]'), $name);
 			} else {
-				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
+				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . $id);
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND (DID=' . $id . ' OR LDID=' . $id . ')');

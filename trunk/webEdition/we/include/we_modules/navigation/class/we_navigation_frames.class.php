@@ -1301,7 +1301,7 @@ function selectItem() {
 
 			$_db = new DB_WE();
 			$_fields = array();
-			$_templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection), 'Templates', $_db);
+			$_templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection), '', $_db);
 			$_ids = makeArrayFromCSV($_templates);
 
 			foreach($_ids as $_templateID){

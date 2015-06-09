@@ -129,10 +129,10 @@ abstract class we_textContentDocument extends we_textDocument{
 			if($dt){
 				$this->DocType = $dt;
 			}
-			if($this->DocType && ($rec = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), new DB_WE()))){
+			if($this->DocType && ($rec = getHash('SELECT dt.*,dtf.Path FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID WHERE dt.ID=' . intval($this->DocType), new DB_WE()))){
 				$this->Extension = $rec['Extension'];
-				if($rec['ParentPath'] != ''){
-					$this->ParentPath = $rec['ParentPath'];
+				if($rec['Path'] != ''){
+					$this->ParentPath = $rec['Path'];
 					$this->ParentID = $rec['ParentID'];
 				}
 				if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
