@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//FIXME: remove old backup format reader
 class we_backup_sqlFileReader{
 
 	function readLine($filename, &$data, &$offset, $lines = 1, $size = 0, $iscompressed = 0, &$create, &$insert){

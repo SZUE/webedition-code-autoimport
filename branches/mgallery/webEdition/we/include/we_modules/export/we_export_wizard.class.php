@@ -205,6 +205,7 @@ SelectedItems["' . FILE_TABLE . '"]=[];' .
 	SelectedItems["' . OBJECT_TABLE . '"]=[];
 	') : '') . '
 
+
 SelectedItems["' . TEMPLATES_TABLE . '"]=[];
 
 var openFolders= [];
@@ -214,7 +215,6 @@ openFolders["' . OBJECT_FILES_TABLE . '"]="";
 openFolders["' . OBJECT_TABLE . '"]="";
 ') : '') . '
 openFolders["' . TEMPLATES_TABLE . '"]="";
-
 		');
 
 		$head = we_html_tools::getHtmlInnerHead(g_l('export', '[title]')) . STYLESHEET . $js;
@@ -301,6 +301,7 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 						we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))
 					)
 				)
+
 		);
 	}
 
@@ -894,7 +895,6 @@ function setState(a) {
 				  break;') : '') . '
 				  }
 
-
 				  document.we_form.openFolders.value=' . $this->topFrame . '.openFolders[top.table];
 				  document.we_form.tab.value=' . $this->topFrame . '.table;
 				  ' . $this->topFrame . '.activetab=tab;
@@ -1395,7 +1395,8 @@ if (top.footer.setProgress){
 	}
 
 	private function getHTMLDocType($width = 350){
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
+		$dtq = we_docTypes::getDoctypeQuery($this->db);
+		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onchange" => ""));
 		$first = "";
 		while($this->db->next_record()){

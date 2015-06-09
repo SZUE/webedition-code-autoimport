@@ -280,7 +280,7 @@ abstract class we_backup_base{
 	 *
 	 * @return     bool
 	 */
-	function isPathExist($path){
+	protected function isPathExist($path){
 		return
 			f('SELECT 1  FROM ' . FILE_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'  LIMIT 1", '', $this->backup_db) == '1' ||
 			f('SELECT 1 FROM ' . TEMPLATES_TABLE . " WHERE Path='" . $this->backup_db->escape($path) . "'  LIMIT 1", '', $this->backup_db) == '1';
@@ -295,7 +295,7 @@ abstract class we_backup_base{
 	 *
 	 * @return     bool
 	 */
-	function putFileInDB($file){
+	private function putFileInDB($file){
 		$nl = "\n";
 		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/');
 		$path = substr($file, strlen($rootdir), strlen($file) - strlen($rootdir));
@@ -334,7 +334,7 @@ abstract class we_backup_base{
 	 *
 	 * @return     bool
 	 */
-	function putDirInDB($dir){
+	private function putDirInDB($dir){
 		$nl = "\n";
 		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/');
 		$path = substr($dir, strlen($rootdir), strlen($dir) - strlen($rootdir));
@@ -370,59 +370,6 @@ abstract class we_backup_base{
 		return true;
 	}
 
-	/**
-	 * This function returns the definition (paramaters) of a
-	 * given table.
-	 *
-	 * @param      $table                                  string
-	 * @param      $nl                                     string
-	 *
-	 * @return     string
-	 */
-	function tableDefinition($table, $nl, $noprefix){
-		$foo = 'DROP TABLE IF EXISTS ' . $this->backup_db->escape($noprefix) . ";$nl" .
-			'CREATE TABLE ' . $this->backup_db->escape($noprefix) . " ($nl";
-		$this->backup_db->query('SHOW FIELDS FROM ' . $this->backup_db->escape($table));
-		while($this->backup_db->next_record()){
-			$row = $this->backup_db->Record;
-			$foo .= ' ' . $row['Field'] . ' ' . $row['Type'];
-			if(isset($row["Default"]) && (($row["Default"]) || $row["Default"] == '0')){
-				$foo .= ' DEFAULT "' . $row['Default'] . '"';
-			}
-			if($row["Null"] != "YES"){
-				$foo .= " NOT NULL";
-			}
-			if($row["Extra"] != ""){
-				$foo .= " $row[Extra]";
-			}
-			$foo .= ",$nl";
-		}
-		$foo = preg_replace('/,' . $nl . '$/', '', $foo);
-		$this->backup_db->query("SHOW KEYS FROM " . $this->backup_db->escape($table));
-		while($this->backup_db->next_record()){
-			$row = $this->backup_db->Record;
-			$key = $row['Key_name'];
-			if(($key != "PRIMARY") && ($row['Non_unique'] == 0)){
-				$key = "UNIQUE|$key";
-			}
-			if(!isset($index[$key])){
-				$index[$key] = array();
-			}
-			$index[$key][] = $row['Column_name'];
-		}
-		while((list($k, $v) = @each($index))){
-			$foo .= ",$nl";
-			if($k === "PRIMARY"){
-				$foo .= "   PRIMARY KEY (" . implode($v, ", ") . ")";
-			} else if(substr($k, 0, 6) === "UNIQUE"){
-				$foo .= "   UNIQUE " . substr($k, 7) . " (" . implode($v, ", ") . ")";
-			} else {
-				$foo .= "   KEY $k (" . implode($v, ", ") . ")";
-			}
-		}
-		$foo .= "$nl) ENGINE = MYISAM";
-		return stripslashes($foo);
-	}
 
 	/**
 	 * Function: makeBackup
@@ -431,42 +378,6 @@ abstract class we_backup_base{
 	 */
 	abstract function makeBackup();
 
-	/**
-	 * Function: buildBackupTable
-	 *
-	 * Description: This function builds the table if the users chooses to
-	 * backup external files.
-	 */
-	function buildBackupTable(){
-		$this->current_description = g_l('backup', '[external_backup]');
-		$rootdir = rtrim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/') . '/';
-		$count = 0;
-		$done = 0;
-		$len = 0;
-		$finish = 0;
-		$d = @dir($rootdir);
-		while(false !== ($entry = $d->read())){
-			$count++;
-			if($entry != "." && $entry != ".." && $entry != "webEdition" && $this->backup_step < $count){
-				if(is_dir($rootdir . $entry)){
-					if(!$this->putDirInDB($rootdir . $entry)){
-						return -1;
-					}
-				} elseif(!$this->putFileInDB($rootdir . $entry)){
-					return -1;
-				}
-				$len = $len + filesize($rootdir . $entry);
-				$done++;
-				if(($done == $this->backup_steps) || ($len > $this->default_backup_len)){
-					$finish = 1;
-					break;
-				}
-			}
-		}
-		$d->close();
-		$this->backup_step = $count;
-		return $finish;
-	}
 
 	/**
 	 * Function: exportTables
@@ -509,22 +420,6 @@ abstract class we_backup_base{
 		return true;
 	}
 
-	/**
-	 * Function: setTmpFilename
-	 *
-	 * Description: This function sets the output filename of the backup if the
-	 * user chose to save it on the server.
-	 */
-	function setTmpFilename($filename){
-		if($this->isFileInTmpDir($filename)){
-			if(is_file(TEMP_PATH . $filename)){
-				$this->tempfilename = $filename;
-				$this->dumpfilename = TEMP_PATH . $filename;
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * Function: isFileInTmpDir
@@ -532,7 +427,7 @@ abstract class we_backup_base{
 	 * Description: This function checks if a file is in the temporary
 	 * directory used for backups.
 	 */
-	function isFileInTmpDir($file_name){
+	private function isFileInTmpDir($file_name){
 		$dir = TEMP_PATH;
 		$d = @dir($dir);
 		$ret = false;
@@ -555,20 +450,6 @@ abstract class we_backup_base{
 	 */
 	function getTmpFilename(){
 		return $this->tempfilename;
-	}
-
-	/**
-	 * Function: removeDumpFile
-	 *
-	 * Description: This function deletes a database dump.
-	 */
-	function removeDumpFile(){
-		if(is_file($this->dumpfilename)){
-			@unlink($this->dumpfilename);
-		}
-
-		$this->dumpfilename = '';
-		$this->tempfilename = '';
 	}
 
 	/**
@@ -695,6 +576,7 @@ abstract class we_backup_base{
 	 *
 	 * Description: This function restores a backup.
 	 */
+	//FIXME: remove old backup format reader
 	function restoreFromBackup($filename, $restore_extra = 0){
 		$buff = "";
 		$fh = fopen("$filename", "rb");
@@ -787,26 +669,6 @@ abstract class we_backup_base{
 	}
 
 	/**
-	 * Function: removeBackup
-	 *
-	 * Description: This function removes a backup from the database.
-	 */
-	function removeBackup(){
-		$this->backup_db->query('DROP TABLE IF EXISTS ' . BACKUP_TABLE);
-
-		//import dummys
-		if(is_array($this->dummy)){
-			foreach($this->dummy as $query){
-				$this->backup_db->query($query);
-			}
-		}
-		we_updater::doUpdate();
-		if(!$this->handle_options['temporary']){
-			$this->backup_db->query('TRUNCATE TABLE ' . TEMPORARY_DOC_TABLE);
-		}
-	}
-
-	/**
 	 * Function: getDiff
 	 *
 	 * Description: This function checks for differences between the table
@@ -865,7 +727,7 @@ abstract class we_backup_base{
 	 * Description: This function returns whether the given query is a "CREATE"
 	 * query or not.
 	 */
-	function isCreateQuery($q){
+	private function isCreateQuery($q){
 		$m = array();
 		return (preg_match("/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_+-]+)/", $q, $m) ?
 				$m[1] : '');
@@ -965,7 +827,7 @@ abstract class we_backup_base{
 	 * Description: This function returns whether the given query is a "INSERT"
 	 * query or not.
 	 */
-	function isInsertQuery($q){
+	private function isInsertQuery($q){
 		$m = array();
 		return (preg_match("/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_+-]+)/", $q, $m) ? $m[1] : '');
 	}
@@ -1006,6 +868,7 @@ abstract class we_backup_base{
 		return $this->warnings;
 	}
 
+	//FIMXE: remove this function
 	/**
 	 * Function: arrayintersect
 	 *
@@ -1021,9 +884,9 @@ abstract class we_backup_base{
 		return $ret;
 	}
 
+	//FIMXE: remove this function
 	/**
 	 * Function: arraydiff
-	 *
 	 * Description:
 	 */
 	function arraydiff($array1, $array2){
@@ -1076,22 +939,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 		return 0;
 	}
 
-	/**
-	 * Function: getDownloadFile
-	 *
-	 * Description: This function copies a backup file to the download directory
-	 * and returns its filename plus location.
-	 */
-	function getDownloadFile(){
-		$download_filename = "weBackup_" . $_SESSION["user"]["Username"] . ".sql";
-		if(copy($this->dumpfilename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename)){
-			we_base_file::insertIntoCleanUp($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "download/" . $download_filename,0);
-			return $download_filename;
-		}
-		return '';
-	}
-
-	function clearOldTmp(){
+	private function clearOldTmp(){
 		if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
 			$this->setError(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR));
 			return -1;

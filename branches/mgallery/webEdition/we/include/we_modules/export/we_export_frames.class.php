@@ -114,6 +114,7 @@ top.content.hloaded = 1;');
 					$we_tabs->getHTML()
 				) .
 				we_html_element::jsElement($extraJS)
+
 		);
 
 
@@ -268,7 +269,8 @@ function closeAllType(){
 	elem.style.display = "none";' : '') . '
 }');
 
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
+		$dtq = we_docTypes::getDoctypeQuery($this->db);
+		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		$docTypes = $this->db->getAllFirst(false);
 
 		if(defined('OBJECT_TABLE')){

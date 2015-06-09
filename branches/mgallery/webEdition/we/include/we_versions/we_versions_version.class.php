@@ -895,7 +895,6 @@ class we_versions_version{
 	 */
 	public function save($docObj, $status = "saved"){
 		$_SESSION['weS']['versions']['fromImport'] = 0;
-
 		$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)? : we_base_request::_(we_base_request::STRING, 'cmd');
 //import
 		if(we_base_request::_(we_base_request::BOOL, "jupl")){
@@ -1025,7 +1024,7 @@ class we_versions_version{
 		}
 		$prefAnzahl = intval($docTable == TEMPLATES_TABLE ? VERSIONS_ANZAHL_TMPL : VERSIONS_ANZAHL);
 
-		$anzahl = f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . " WHERE documentId=" . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "'", "", $db);
+		$anzahl = f('SELECT COUNT(1) FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '"', "", $db);
 
 		if($anzahl > $prefAnzahl && $prefAnzahl != ""){
 			$toDelete = $anzahl - $prefAnzahl;
@@ -1071,7 +1070,7 @@ class we_versions_version{
 			case we_base_ContentTypes::HTML:
 				break;
 			case we_base_ContentTypes::TEMPLATE:
-				if(VERSIONS_CREATE_TMPL){
+				if(VERSIONS_CREATE_TMPL){//true if save version button is active
 					break;
 				}
 			default:
@@ -1098,7 +1097,7 @@ class we_versions_version{
 					}
 					break;
 				}
-				return;
+				break;
 			case we_base_ContentTypes::OBJECT_FILE:
 			case we_base_ContentTypes::WEDOCUMENT:
 			case we_base_ContentTypes::HTML:
@@ -1106,13 +1105,13 @@ class we_versions_version{
 					return;
 				}
 		}
+		$docHash = self::getHashValue(self::removeUnneededCompareFields(self::objectToArray($document)));
 
 //look if there were made changes
-		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && $_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document['ID']] != ''){
-			$lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document['Table']][$document['ID']];
+		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && ($lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document['Table']][$document['ID']]) != ''){
 
 			$diffExists = (is_array($document) && $lastEntry ?
-					(self::getHashValue(self::removeUnneededCompareFields($document)) != $lastEntry) :
+					($docHash != $lastEntry) :
 					false);
 
 			$lastEntry = self::getLastEntry($document['ID'], $document['Table'], $db);
@@ -1126,7 +1125,7 @@ class we_versions_version{
 			}
 		}
 
-		$mods = true;
+
 		$tblversionsFields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
 		$set = array();
@@ -1141,12 +1140,13 @@ class we_versions_version{
 		}
 
 
-		if($set && $mods){
+		if($set){
 			$db->query('INSERT INTO ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter($set));
 			$vers = (isset($document["version"]) ? $document["version"] : $this->version);
 			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET active=0 WHERE documentID=' . intval($document['ID']) . ' AND documentTable="' . $db->escape($document["Table"]) . '" AND version!=' . intval($vers));
-			$_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]] = self::getHashValue(self::removeUnneededCompareFields($document));
 		}
+		$_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]] = $docHash;
+		$_SESSION['weS']['versions']['versionToComparex'][$document['Table']][$document['ID']] = $document;
 		$this->CheckPreferencesTime($document['ID'], $document['Table']);
 	}
 
@@ -2123,7 +2123,9 @@ class we_versions_version{
 	}
 
 	private static function removeUnneededCompareFields(&$doc){
-		unset($doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['Filehash'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves']);
+		unset(
+			$doc['Published'], $doc['ModDate'], $doc['RebuildDate'], $doc['EditPageNr'], $doc['DocStream'], $doc['DB_WE'], $doc['Filehash'], $doc['usedElementNames'], $doc['hasVariants'], $doc['editorSaves'], $doc['Name'], $doc['wasUpdate'], $doc['InWebEdition'], $doc['PublWhenSave'], $doc['IsTextContentDoc'], $doc['fileExists'], $doc['elements']['allVariants'], $doc['persistent_slots']
+		);
 		return $doc;
 	}
 

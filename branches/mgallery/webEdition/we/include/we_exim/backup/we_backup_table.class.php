@@ -37,7 +37,7 @@ class we_backup_table{
 	var $persistent_slots = array();
 	var $attribute_slots = array();
 
-	function __construct($table, $force_columns = false){
+	public function __construct($table, $force_columns = false){
 		$this->db = new DB_WE();
 		$this->table = $table;
 		$this->elements = array();

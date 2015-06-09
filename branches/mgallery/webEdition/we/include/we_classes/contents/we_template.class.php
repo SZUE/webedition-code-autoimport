@@ -285,7 +285,6 @@ we_templateInit();?>';
 				'=>' => '__WE_=__WE__',
 				'->' => '__WE_-__WE__'
 			);
-
 			$code = str_replace(array_keys($repl), $repl, $code);
 			//#### parse base href
 			$code = preg_replace(array(
@@ -299,6 +298,7 @@ we_templateInit();?>';
 				), $code);
 
 			$code = str_replace($repl, array_keys($repl), $code);
+
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
 			$code = '<?php we_templateHead(true);?>' . $code . '<?php we_templatePostContent(false,true);?>';
 		} else {

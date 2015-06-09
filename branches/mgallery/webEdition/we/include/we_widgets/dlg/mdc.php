@@ -83,7 +83,8 @@ function getHTMLDirSelector($_selType){
 
 $docTypes = array(0 => g_l('cockpit', '[no_entry]'));
 
-$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($DB_WE));
+$dtq = we_docTypes::getDoctypeQuery($DB_WE);
+$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 while($DB_WE->next_record()){
 	$docTypes[$DB_WE->f("ID")] = $DB_WE->f("DocType");
 }

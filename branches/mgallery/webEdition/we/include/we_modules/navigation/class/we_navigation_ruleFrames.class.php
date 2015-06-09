@@ -135,7 +135,8 @@ class we_navigation_ruleFrames{
 		$docTypes = array(
 			0 => g_l('navigation', '[no_entry]')
 		);
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
+		$dtq = we_docTypes::getDoctypeQuery($this->db);
+		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		while($this->db->next_record()){
 			$docTypes[$this->db->f('ID')] = $this->db->f('DocType');
 		}

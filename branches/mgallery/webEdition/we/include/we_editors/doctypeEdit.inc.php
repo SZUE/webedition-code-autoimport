@@ -142,9 +142,11 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		}
 		break;
 	default:
-		$id = (($tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) ?
-				$tmp :
-				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
+		$id = (we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : 0);
+		if(!$id){
+			$dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
+			$id = f('SELECT dt.ID FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'] . ' LIMIT 1');
+		}
 
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);

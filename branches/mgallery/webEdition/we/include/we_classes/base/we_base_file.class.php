@@ -317,12 +317,15 @@ abstract class we_base_file{
 		}
 
 		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
+		$umask = umask(0);
 
 // check for directories: create it if we could no write into it:
 		if(!mkdir($path, $mod, $recursive)){
 			t_e('warning', "Could not create local Folder at 'we_util_File/checkAndMakeFolder()': '" . $path . "'");
+			umask($umask);
 			return false;
 		}
+		umask($umask);
 		return true;
 	}
 
@@ -345,15 +348,16 @@ abstract class we_base_file{
 			$cf[] = $parent;
 			$parent = str_replace('\\', '/', dirname($parent));
 		}
+		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
+		$umask = umask(0);
 
 		for($i = (count($cf) - 1); $i >= 0; $i--){
-			$mod = octdec(intval(WE_NEW_FOLDER_MOD));
-
-			if(!@mkdir($cf[$i], $mod)){
+			if(!mkdir($cf[$i], $mod)){
 				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
 				$returnValue = false;
 			}
 		}
+		umask($umask);
 
 		return $returnValue;
 	}
