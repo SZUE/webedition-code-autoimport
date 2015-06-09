@@ -1809,7 +1809,7 @@ class we_versions_version{
 			case 'IsSearchable':
 				return g_l('versions', ($v == 1) ? '[activ]' : '[notactiv]');
 			case 'DocType':
-				return f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v), 'DocType', $db);
+				return f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v), '', $db);
 			case 'RestrictOwners':
 				return g_l('versions', ($v == 1) ? '[activ]' : '[notactiv]');
 			case 'Language':
@@ -2005,7 +2005,7 @@ class we_versions_version{
 			case 'doctypeAll':
 				return ($v == 1) ? g_l('versions', '[yes]') : '';
 			case 'DoctypeID':
-				return f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v), 'DocType', $db);
+				return f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v), '', $db);
 			case 'CategoryIDs':
 				$fieldValueText = "";
 				$v = makeArrayFromCSV($v);

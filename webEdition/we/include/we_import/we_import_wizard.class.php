@@ -1192,7 +1192,7 @@ HTS;
 		if($v['docType'] != -1 && count($TPLselect->childs)){
 			$displayDocType = 'display:block';
 			$displayNoDocType = 'display:none';
-			$foo = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($v['docType']), $DB_WE);
+			$foo = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v['docType']), $DB_WE);
 			$ids_arr = makeArrayFromCSV($foo['Templates']);
 			$paths_arr = id_to_path($foo['Templates'], TEMPLATES_TABLE, null, false, true);
 
@@ -2016,7 +2016,7 @@ function handle_event(evt) {
 		}
 
 		if(isset($v['docType']) && $v['docType'] != -1 && we_base_request::_(we_base_request::BOOL, 'doctypeChanged')){
-			$values = getHash('SELECT ParentID,Extension,IsDynamic,Category FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($v['docType']));
+			$values = getHash('SELECT ParentID,Extension,IsDynamic,Category FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v['docType']));
 			$v['store_to_id'] = $values['ParentID'];
 
 			$v['store_to_path'] = id_to_path($v['store_to_id']);
@@ -2202,7 +2202,7 @@ HTS;
 		$DTselect->insertOption($optid, -1, g_l('import', '[none]'));
 
 		$v['docType'] = isset($v['docType']) ? $v['docType'] : -1;
-		$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' ORDER BY dt.DocType');
+		$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 		while($DB_WE->next_record()){
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f('ID'), $DB_WE->f('DocType'));
@@ -2236,7 +2236,7 @@ HTS;
 		);
 
 		if($v["docType"] != -1){
-			$foo = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . " WHERE ID =" . intval($v["docType"]), 'Templates', $DB_WE);
+			$foo = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v["docType"]), '', $DB_WE);
 			$ids_arr = makeArrayFromCSV($foo);
 			$paths_arr = id_to_path($foo, TEMPLATES_TABLE, null, false, true);
 

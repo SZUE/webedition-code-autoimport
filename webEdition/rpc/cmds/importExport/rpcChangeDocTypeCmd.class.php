@@ -29,7 +29,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 		$categories = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
 		if(($dt = we_base_request::_(we_base_request::INT, 'docType')) !== false){
 			if($dt >= 0){
-				$values = getHash('SELECT * FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $dt);
+				$values = getHash('SELECT dt.*,dtf.Path FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID WHERE dt.ID=' . $dt);
 
 				$ids_arr = makeArrayFromCSV($values['Templates']);
 
@@ -64,7 +64,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 				}
 				$resp->setData('elements', array(
 					"self.document.forms['we_form'].elements['v[store_to_id]']" => array("value" => $values["ParentID"] | 0),
-					"self.document.forms['we_form'].elements['v[store_to_path]']" => array("value" => $values["ParentPath"] | "/"),
+					"self.document.forms['we_form'].elements['v[store_to_path]']" => array("value" => $values["Path"] | "/"),
 					"self.document.forms['we_form'].elements['v[we_TemplateID]']" => array("value" => $values["TemplateID"] | 0),
 					"self.document.forms['we_form'].elements['v[we_TemplateName]']" => array("value" => $_templateName | ""),
 					"self.document.forms['we_form'].elements['v[we_Extension]']" => array("value" => $values["Extension"] | ""),
