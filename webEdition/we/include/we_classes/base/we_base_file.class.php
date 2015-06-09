@@ -351,9 +351,9 @@ abstract class we_base_file{
 		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
 		$umask = umask(0);
 
-		for($i = (count($cf) - 1); $i >= 0; $i--){
-			if(!mkdir($cf[$i], $mod)){
-				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
+		foreach(array_reverse($cf) as $dir){
+			if(!mkdir($dir, $mod, true)){
+				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $dir . "'");
 				$returnValue = false;
 			}
 		}
