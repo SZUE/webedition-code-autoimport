@@ -86,7 +86,8 @@ function getHTMLDirSelector($_selType){
 
 $docTypes = array(0 => g_l('cockpit', '[no_entry]'));
 
-$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($DB_WE));
+$dtq = we_docTypes::getDoctypeQuery($DB_WE);
+$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 while($DB_WE->next_record()){
 	$docTypes[$DB_WE->f("ID")] = $DB_WE->f("DocType");
 }
@@ -379,7 +380,7 @@ $divStatic = we_html_element::htmlDiv(
 		"id" => "static", "style" => ($_selection ? "display:block;" : "display:none;")
 		), we_html_element::htmlDiv(array(
 			"id" => "treeContainer"
-			), $tree->getHTMLMultiExplorer(420, 180,false)) . "<iframe name=\"cmd\" src=\"about:blank\" style=\"visibility:hidden; width: 0px; height: 0px;\"></iframe>");
+			), $tree->getHTMLMultiExplorer(420, 180, false)) . "<iframe name=\"cmd\" src=\"about:blank\" style=\"visibility:hidden; width: 0px; height: 0px;\"></iframe>");
 
 $captions = array();
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
@@ -440,6 +441,6 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 					"value" => we_base_request::_(we_base_request::INT, 'CategoriesCount', 0)
 			)) . $sTblWidget . we_html_element::jsElement($jsTree))));
 if($showAC){
-	echo $yuiSuggest->getYuiCss().
-			$yuiSuggest->getYuiJs();
+	echo $yuiSuggest->getYuiCss() .
+	$yuiSuggest->getYuiJs();
 }

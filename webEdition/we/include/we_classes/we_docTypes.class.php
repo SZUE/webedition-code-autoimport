@@ -32,11 +32,6 @@ class we_docTypes extends we_class{
 	var $ContentTable = '';
 	var $IsDynamic = false;
 	var $IsSearchable = false;
-	var $JavaScript = '';
-	var $Notify = '';
-	var $NotifyTemplateID = '';
-	var $NotifySubject = '';
-	var $NotifyOnChange = '';
 	var $Templates = '';
 	var $SubDir = self::SUB_DIR_NO;
 	var $Category = '';
@@ -44,7 +39,7 @@ class we_docTypes extends we_class{
 
 	public function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Category', 'DocType', 'Extension', 'ParentID', 'ParentPath', 'TemplateID', 'ContentTable', 'IsDynamic', 'IsSearchable', 'Notify', 'NotifyTemplateID', 'NotifySubject', 'NotifyOnChange', 'SubDir', 'Templates', 'Language');
+		array_push($this->persistent_slots, 'Category', 'DocType', 'Extension', 'ParentID', 'ParentPath', 'TemplateID', 'ContentTable', 'IsDynamic', 'IsSearchable', 'SubDir', 'Templates', 'Language');
 		$this->Table = DOC_TYPES_TABLE;
 	}
 
@@ -223,7 +218,8 @@ class we_docTypes extends we_class{
 	 */
 	private function formDocTypes2($arrHide = array()){
 		$vals = array();
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . self::getDoctypeQuery($this->DB_WE));
+		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
+		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 
 		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f('ID');
@@ -237,7 +233,8 @@ class we_docTypes extends we_class{
 	}
 
 	private function formDocTypes3($headline, $langkey, $derDT = 0){
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE Language="' . $langkey . '" AND ' . self::getDoctypeQuery($this->DB_WE));
+		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
+		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID '.$dtq['join'].' WHERE dt.Language="' . $langkey . '" AND ' . $dtq['where']);
 		$vals = array(0 => g_l('weClass', '[nodoctype]'));
 		foreach($this->DB_WE->getAllFirst(false) as $k => $v){
 			$vals[$k] = $v;
@@ -284,7 +281,7 @@ class we_docTypes extends we_class{
 			$tlist = array_merge($tlist, explode(',', $this->Templates));
 		}
 		$tlist = array_filter(array_unique($tlist));
-		$sqlTeil = 'WHERE IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
+		$sqlTeil = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
 		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, '', array(), 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
 	}
 
@@ -334,24 +331,30 @@ function switchExt(){
 		$paths = array();
 		$ws = get_ws(FILE_TABLE, false, true);
 		if(!$ws){
-			return  '1 ORDER BY DocType';
+			return array(
+				'join' => '',
+				'where' => '1 ORDER BY DocType'
+			);
 		}
 		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR){
-			$_tmp_paths = id_to_path($ws, FILE_TABLE, $db, false, true);
-			foreach($_tmp_paths as $_tmp_path){
-				while($_tmp_path && $_tmp_path != '/'){
-					$paths[] = '"' . $db->escape($_tmp_path) . '"';
-					$_tmp_path = dirname($_tmp_path);
-				}
-			}
-			return ($paths ? 'ParentPath IN (' . implode(',', $paths) . ',"")' : '1') . ' ORDER BY DocType';
+			return array(
+				'join' => 'LEFT JOIN ' . FILE_TABLE . ' f ON CONCAT(f.Path,"/") LIKE CONCAT(dtf.Path,"/%")',
+				'where' => 'f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1'
+			);
 		}
 
 		$db->query('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ws) . ')');
 		while($db->next_record()){
-			$paths[] = '(ParentPath="' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
+			$paths[] = 'dtf.Path LIKE "' . $db->escape($db->f('Path')) . '/%"';
 		}
-		return ($paths ? ' (' . implode(' OR ', $paths) . ' OR ParentPath="")' : '') . ' ORDER BY DocType';
+		return ($paths ?
+				array(
+				'join' => '',
+				'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY DocType'
+				) : array(
+				'join' => '',
+				'where' => '1 ORDER BY DocType'
+		));
 	}
 
 }

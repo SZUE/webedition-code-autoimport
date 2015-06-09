@@ -410,7 +410,8 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 	function getDocTypeHTML($width = 498){
 		$vals = array();
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($this->db));
+		$dtq = we_docTypes::getDoctypeQuery($this->db);
+		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		while($this->db->next_record()){
 			$v = $this->db->f('ID');
 			$t = $this->db->f('DocType');
