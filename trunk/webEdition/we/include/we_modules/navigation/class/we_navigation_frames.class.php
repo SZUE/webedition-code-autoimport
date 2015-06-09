@@ -799,7 +799,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				), g_l('navigation', '[documents]'));
 
 			if(!empty($this->Model->DocTypeID)){
-				$_dt = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->Model->DocTypeID), 'DocType', new DB_WE());
+				$_dt = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->Model->DocTypeID), '', new DB_WE());
 				$_table->setCol(1, 0, array(
 					'style' => 'font-weight: bold;'
 					), g_l('navigation', '[doctype]') . ':');
