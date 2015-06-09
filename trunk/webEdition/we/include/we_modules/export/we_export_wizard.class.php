@@ -1356,7 +1356,7 @@ if (top.footer.setProgress){
 	}
 
 	private function getHTMLDocType($width = 350){
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($this->db));
 		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onchange" => ""));
 		$first = "";
 		while($this->db->next_record()){

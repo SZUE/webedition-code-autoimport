@@ -239,7 +239,7 @@ class we_search_search extends we_search_base{
 	function getDoctypes(){
 		$_db = new DB_WE();
 
-		$_db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($_db));
+		$_db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($_db));
 		return $_db->getAllFirst(false);
 	}
 

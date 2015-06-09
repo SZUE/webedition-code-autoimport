@@ -410,7 +410,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 	function getDocTypeHTML($width = 498){
 		$vals = array();
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($this->db));
 		while($this->db->next_record()){
 			$v = $this->db->f('ID');
 			$t = $this->db->f('DocType');

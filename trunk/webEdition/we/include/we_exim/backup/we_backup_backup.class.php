@@ -201,7 +201,7 @@ class we_backup_backup extends we_backup_base{
 
 		if($object->ID && $this->backup_binary){
 			$object->save(true);
-		} else if($this->handle_options["settings"] && $object->Path == WE_INCLUDES_DIR . "conf/we_conf_global.inc.php"){
+		} else if($this->handle_options["settings"] && $object->Path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){
 			we_backup_backup::recoverPrefs($object);
 		} else if(!$object->ID && $this->backup_extern){
 			$object->save(true);
@@ -222,18 +222,18 @@ class we_backup_backup extends we_backup_base{
 		}
 
 		$xmlBrowser = new we_xml_browser($chunk_file);
-		$xmlBrowser->mode = "backup";
+		$xmlBrowser->mode = 'backup';
 
 		foreach($xmlBrowser->nodes as $key => $val){
 			$name = $xmlBrowser->nodeName($key);
 			switch($name){
-				case "we:table":
+				case 'we:table':
 					self::recoverTable($key, $xmlBrowser);
 					break;
-				case "we:tableitem":
+				case 'we:tableitem':
 					self::recoverTableItem($key, $xmlBrowser);
 					break;
-				case "we:binary":
+				case 'we:binary':
 					self::recoverBinary($key, $xmlBrowser);
 					break;
 			}

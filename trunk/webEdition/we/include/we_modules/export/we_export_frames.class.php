@@ -284,7 +284,7 @@ function closeAllType(){
 	elem.style.display = "none";' : '') . '
 }');
 
-		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($this->db));
+		$this->db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ' . we_docTypes::getDoctypeQuery($this->db));
 		$docTypes = $this->db->getAllFirst(false);
 
 		if(defined('OBJECT_TABLE')){
