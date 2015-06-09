@@ -1143,7 +1143,7 @@ HTS;
 		$importLocs->setCol($_tblRow++, 0, array(), we_html_tools::getPixel(1, 2));
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 
-		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ORDER By DocType');
+		$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 		$DTselect = new we_html_select(array(
 			'name' => 'v[docType]',
 			'size' => 1,
@@ -2202,7 +2202,7 @@ HTS;
 		$DTselect->insertOption($optid, -1, g_l('import', '[none]'));
 
 		$v['docType'] = isset($v['docType']) ? $v['docType'] : -1;
-		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ORDER By DocType');
+		$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' ORDER BY dt.DocType');
 		while($DB_WE->next_record()){
 			$optid++;
 			$DTselect->insertOption($optid, $DB_WE->f('ID'), $DB_WE->f('DocType'));

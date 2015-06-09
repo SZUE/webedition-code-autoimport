@@ -333,13 +333,13 @@ function switchExt(){
 		if(!$ws){
 			return array(
 				'join' => '',
-				'where' => '1 ORDER BY DocType'
+				'where' => '1 ORDER BY dt.DocType'
 			);
 		}
 		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR){
 			return array(
 				'join' => 'LEFT JOIN ' . FILE_TABLE . ' f ON CONCAT(f.Path,"/") LIKE CONCAT(dtf.Path,"/%")',
-				'where' => 'f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1'
+				'where' => 'ISNULL(dtf.ID) OR (f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1) ORDER BY dt.DocType'
 			);
 		}
 
@@ -350,10 +350,10 @@ function switchExt(){
 		return ($paths ?
 				array(
 				'join' => '',
-				'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY DocType'
+				'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY dt.DocType'
 				) : array(
 				'join' => '',
-				'where' => '1 ORDER BY DocType'
+				'where' => '1 ORDER BY dt.DocType'
 		));
 	}
 
