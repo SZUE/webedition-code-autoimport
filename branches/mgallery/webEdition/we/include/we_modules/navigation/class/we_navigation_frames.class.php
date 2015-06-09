@@ -781,7 +781,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				$_table->setCol(0, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[documents]'));
 
 				if(!empty($this->Model->DocTypeID)){
-					$_dt = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->Model->DocTypeID), 'DocType', new DB_WE());
+					$_dt = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($this->Model->DocTypeID), 'DocType', new DB_WE());
 					$_table->setCol(1, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[doctype]') . ':');
 					$_table->setColContent(1, 1, $_dt);
 				}
@@ -794,6 +794,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				$_cn = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->Model->ClassID), 'Text', new DB_WE());
 				$_table->setCol(1, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[class]') . ':');
 				$_table->setColContent(1, 1, $_cn);
+
 
 				$_table->setCol(2, 0, array('style' => 'font-weight: bold;'), g_l('navigation', '[workspace]') . ':');
 				$_table->setColContent(2, 1, id_to_path($this->Model->WorkspaceID));
@@ -1260,7 +1261,7 @@ function selectItem() {
 
 			$_db = new DB_WE();
 			$_fields = array();
-			$_templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection), 'Templates', $_db);
+			$_templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection), '', $_db);
 			$_ids = makeArrayFromCSV($_templates);
 
 			foreach($_ids as $_templateID){

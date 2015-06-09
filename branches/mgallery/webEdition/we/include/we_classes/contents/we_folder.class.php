@@ -522,6 +522,7 @@ class we_folder extends we_root{
 		@ignore_user_abort(true);
 		$DB_WE = new DB_WE();
 		// Update Paths also in Doctype Table
+		//TODO: remove ParentPath
 		$DB_WE->query('UPDATE ' . DOC_TYPES_TABLE . ' SET ParentPath="' . $DB_WE->escape($this->Path) . '" WHERE ParentID=' . intval($this->ID));
 		$DB_WE->query('SELECT ID,ClassName FROM ' . $DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ID));
 		while($DB_WE->next_record()){

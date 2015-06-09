@@ -314,14 +314,14 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			}
 			switch($object->ClassName){
 				case "we_docTypes":
-					$newid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . " WHERE DocType='" . escape_sql_query($newname) . "'", "", new DB_WE());
+					$newid = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . escape_sql_query($newname) . '"', '', new DB_WE());
 					break;
 				case 'weNavigationRule':
-					$newid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . " WHERE NavigationName='" . escape_sql_query($newname) . "'", "", new DB_WE());
+					$newid = f('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' nr WHERE nr.NavigationName="' . escape_sql_query($newname) . '"', '', new DB_WE());
 					break;
 				case 'we_thumbnail':
 				case 'we_thumbnailEx':
-					$newid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . " WHERE Name='" . escape_sql_query($newname) . "'", "", new DB_WE());
+					$newid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' t WHERE t.Name="' . escape_sql_query($newname) . '"', '', new DB_WE());
 					break;
 				default:
 					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . "/" . $newname), $object->Table);

@@ -30,25 +30,12 @@ if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 	if(permissionhandler::hasPerm("NO_DOCTYPE")){
 		$_disableNew = false;
 	} else {
-		$q = 'ORDER BY DocType';
-		$paths = array();
-		$ws = get_ws(FILE_TABLE);
-		if($ws){
-			$b = makeArrayFromCSV($ws);
-			foreach($b as $k => $v){
-				$DB_WE->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
-				while($DB_WE->next_record()){
-					$paths[] = "(ParentPath = '" . $DB_WE->escape($DB_WE->f("Path")) . "' || ParentPath LIKE '" . $DB_WE->escape($DB_WE->f("Path")) . "/%')";
-				}
-			}
-		}
-		if(is_array($paths) && count($paths) > 0){
-			$q = 'WHERE (' . implode(" OR ", $paths) . ") OR ParentPath='' ORDER BY DocType";
-		}
-		$DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
-		if($DB_WE->next_record()){
+		$dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
+		$id = f('SELECT dt.ID FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'] . ' LIMIT 1');
+
+		if($id){
 			$_disableNew = false;
-			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $DB_WE->f("ID") . "')";
+			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $id . "')";
 		} else {
 			$_disableNew = true;
 		}
