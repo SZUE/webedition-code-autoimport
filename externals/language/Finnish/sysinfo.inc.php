@@ -3,6 +3,7 @@
 $l_sysinfo=array(
 	'available'=>'saatavilla',
 	'back'=>'paluu',
+	'class_missing'=>'class not found',
 	'connection_types'=>'Päivitä yhteystyypit',
 	'crypt'=>'Encryption',
 	'crypt_warning'=>'The encryption algorithm Blowfish of the module mcrypt is not available.',

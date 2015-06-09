@@ -3,6 +3,7 @@
 $l_sysinfo=array(
 	'available'=>'verfügbar',
 	'back'=>'zurück',
+	'class_missing'=>'Klasse nicht gefunden',
 	'connection_types'=>'Update-Verbindungstypen',
 	'crypt'=>'Verschlüsselung',
 	'crypt_warning'=>'Die Verschlüsselung Blowfish aus dem mcrypt-Modul steht nicht zur Verfügung.',

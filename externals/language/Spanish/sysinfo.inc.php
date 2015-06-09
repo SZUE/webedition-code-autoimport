@@ -3,6 +3,7 @@
 $l_sysinfo=array(
 	'available'=>'available',
 	'back'=>'back',
+	'class_missing'=>'class not found',
 	'connection_types'=>'Update connection types',
 	'crypt'=>'Encryption',
 	'crypt_warning'=>'The encryption algorithm Blowfish of the module mcrypt is not available.',
