@@ -263,36 +263,6 @@ class we_objectFile extends we_document{
 		return $this->htmlHidden($idname, $this->CopyID) . $but;
 	}
 
-	function formLanguage(){
-		we_loadLanguageConfig();
-		$value = (isset($this->Language) ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
-		$inputName = 'we_' . $this->Name . '_Language';
-		$_languages = getWeFrontendLanguagesForBackend();
-		$this->setRootDirID(true);
-		$langkeys = array();
-
-		if(LANGLINK_SUPPORT){
-			$htmlzw = we_html_element::htmlBr();
-			foreach($_languages as $langkey => $lang){
-				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
-				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
-				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID, $this->Table, $this->rootDirID) . '</div>';
-				$langkeys[] = $langkey;
-			}
-		} else {
-			$htmlzw = '';
-		}
-
-		return '<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>' .
-			(LANGLINK_SUPPORT ?
-				'<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-					<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>' :
-				'') .
-			'</table>' . $htmlzw;
-	}
-
 	function copyDoc($id){
 		if(!$id){
 			return;
@@ -2290,12 +2260,13 @@ class we_objectFile extends we_document{
 			$version = new we_versions_version();
 			$version->save($this);
 		}
-		if(LANGLINK_SUPPORT && ($docid = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
-			$this->setLanguageLink($docid, 'tblObjectFile', false, true);
+		if(LANGLINK_SUPPORT){
+			$this->setLanguageLink($this->LangLinks, 'tblObjectFile', false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
+
 // hook
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
@@ -2672,6 +2643,10 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
+	}
+
+	protected function i_getLangLinks(){
+		parent::i_getLangLinks(false, true);
 	}
 
 	protected function i_setText(){

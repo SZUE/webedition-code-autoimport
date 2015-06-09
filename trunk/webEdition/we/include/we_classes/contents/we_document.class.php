@@ -113,7 +113,7 @@ class we_document extends we_root{
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
-				$this->Language = self::getDefaultLanguage();
+				$this->Language = parent::getDefaultLanguage();
 				if(empty($this->Language)){
 					$this->Language = 'de_DE';
 				}
@@ -129,66 +129,9 @@ class we_document extends we_root{
 		}
 	}
 
-	function getDefaultLanguage(){
-// get interface language of user
-		list($_userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
-
-// trying to get locale string out of interface language
-		$_key = array_search($_userLanguage, getWELangs());
-
-		$_defLang = $GLOBALS['weDefaultFrontendLanguage'];
-
-// if default language is not equal with frontend language
-		if(substr($_defLang, 0, strlen($_key)) !== $_key){
-// get first language that fits
-			foreach(getWeFrontendLanguagesForBackend() as $_k => $_v){
-				$_parts = explode('_', $_k);
-				if($_parts[0] === $_key){
-					$_defLang = $_k;
-				}
-			}
-		}
-		return $_defLang;
-	}
-
 	/*
 	 * Form Functions
 	 */
-
-	function formLanguage($withHeadline = true){
-		we_loadLanguageConfig();
-		$_defLang = self::getDefaultLanguage();
-		$value = ($this->Language ? : $_defLang);
-		$inputName = 'we_' . $this->Name . '_Language';
-		$_languages = getWeFrontendLanguagesForBackend();
-		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
-
-		if(LANGLINK_SUPPORT){
-			$htmlzw = '';
-			foreach($_languages as $langkey => $lang){
-				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND DID=" . $this->ID . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
-				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
-				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID) . '</div>';
-				$langkeys[] = $langkey;
-			}
-			return '
-<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	' . $_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-	<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
-</table>
-<br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
-		} else {
-			return '
-<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	' . $_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-</table>';
-		}
-	}
 
 	function formInGlossar(){
 		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') === 'glossary' ?

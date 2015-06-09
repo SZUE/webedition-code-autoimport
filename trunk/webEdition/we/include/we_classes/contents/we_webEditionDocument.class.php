@@ -396,7 +396,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>' .
 			$this->getCharsetSelect() .
-			$this->formLanguage(true) .
+			$this->formLangLinks(true) .
 			'</table>';
 	}
 
@@ -636,8 +636,9 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
-		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
-			$this->setLanguageLink($docID, 'tblFile', false, false); // response deactivated
+
+		if(LANGLINK_SUPPORT){
+			$this->setLanguageLink($this->LangLinks, 'tblFile', false, false); // response deactivated
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);

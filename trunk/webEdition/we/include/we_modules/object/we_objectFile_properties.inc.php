@@ -59,7 +59,7 @@ if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_WORKSPACE){
 
 	$parts[] = array(
 		"headline" => g_l('weClass', '[language]'),
-		"html" => $GLOBALS['we_doc']->formLanguage(),
+		"html" => $GLOBALS['we_doc']->formLangLinks(),
 		"space" => 140,
 		"icon" => "lang.gif"
 	);

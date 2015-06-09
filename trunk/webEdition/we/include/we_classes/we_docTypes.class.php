@@ -108,7 +108,7 @@ class we_docTypes extends we_class{
 		}
 	}
 
-	private function formLanguage(){
+	private function formLangLinks(){
 		we_loadLanguageConfig();
 
 		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
@@ -204,7 +204,7 @@ class we_docTypes extends we_class{
 		<td>' . $this->formIsSearchable() . '</td>
 	</tr>
 	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-	<tr><td colspan="3">' . $this->formLanguage(521) . '</td></tr>
+	<tr><td colspan="3">' . $this->formLangLinks(521) . '</td></tr>
 	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
 	<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
 </table>';
