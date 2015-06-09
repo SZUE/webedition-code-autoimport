@@ -206,7 +206,7 @@ class we_folder extends we_root{
 
 	/* saves the folder */
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$this->i_setText();
 		$objFolder = (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE);
 		if($objFolder){
@@ -243,7 +243,7 @@ class we_folder extends we_root{
 		}
 		$this->resaveWeDocumentCustomerFilter();
 
-		if($resave == 0 && $update){
+		if(!$resave && $update){
 			//FIXME:improve!
 			we_navigation_cache::clean(true);
 		}
@@ -256,9 +256,8 @@ class we_folder extends we_root{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -627,10 +626,7 @@ class we_folder extends we_root{
 	 * Beseitigt #Bug 3705: sorgt daf�r, das auch leere Dokumentenordner bei einem REbuild angelegt werden
 	 */
 	public function we_rewrite(){
-		if(parent::we_rewrite()){
-			return ($this->Table == FILE_TABLE ? $this->we_save(1) : true);
-		}
-		return false;
+		return (parent::we_rewrite() ? ($this->Table == FILE_TABLE ? $this->we_save(true) : true) : false);
 	}
 
 	/**

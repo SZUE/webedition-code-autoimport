@@ -635,9 +635,8 @@ class we_document extends we_root{
 
 		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -652,7 +651,7 @@ class we_document extends we_root{
 		}
 		$this->OldPath = $this->Path;
 
-		if($resave == 0){ // NO rebuild!!!
+		if(!$resave){ // NO rebuild!!!
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
@@ -664,9 +663,8 @@ class we_document extends we_root{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}

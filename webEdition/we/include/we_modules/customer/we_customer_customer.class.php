@@ -118,8 +118,7 @@ class we_customer_customer extends weModelBase{
 		}
 
 		$hook = new weHook('customer_preSave', '', array('customer' => $this, 'from' => 'management', 'type' => ($this->ID ? 'existing' : 'new')));
-		$ret = $hook->executeHook();
-		if($ret === true){
+		if($hook->executeHook() === true){
 			return weModelBase::save();
 		}
 		return false;
