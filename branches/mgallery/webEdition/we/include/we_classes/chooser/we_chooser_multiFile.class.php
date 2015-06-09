@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_chooser_multiFile extends we_chooser_multiDir{
-
 	private $disabledDelItems = array();
 	private $disabledDelReason = '';
 
@@ -67,30 +66,29 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 						if(in_array($id, $DisArr)){
 							$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined)_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $id . "');", true, 100, 22, "", "", true);
 
-							$table->setCol($c, 0, array("title" => $this->disabledDelReason), we_html_element::htmlImg(array("src" => TREE_ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
+							$table->setCol($c, 0, array("title" => $this->disabledDelReason, 'class' => 'chooserFileIcon', 'data-contenttype' => (@is_dir($id) ? "folder" : "application/*")), '');
 							$table->setCol($c, 1, array("class" => $this->css, "title" => $this->disabledDelReason), $id);
 						} else {
 							$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined)_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $id . "');");
 
-							$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => TREE_ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
+							$table->setCol($c, 0, array('class' => 'chooserFileIcon', 'data-contenttype' => (@is_dir($id) ? "folder" : "application/*")), '');
 							$table->setCol($c, 1, array("class" => $this->css), $id);
 						}
 					} else {
 						$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined)_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $id . "');");
 
-						$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => TREE_ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
+						$table->setCol($c, 0, array('class' => 'chooserFileIcon', 'data-contenttype' => (@is_dir($id) ? "folder" : "application/*")), '');
 						$table->setCol($c, 1, array("class" => $this->css), $id);
 					}
 				} else {
 					$trash = '';
 
-					$table->setCol($c, 0, array(), we_html_element::htmlImg(array("src" => TREE_ICON_DIR . (@is_dir($id) ? "folder" : "link") . ".gif", "width" => 16, "height" => 18)));
+					$table->setCol($c, 0, array('class' => 'chooserFileIcon', 'data-contenttype' => (@is_dir($id) ? "folder" : "application/*")), '');
 					$table->setCol($c, 1, array("class" => $this->css), $id);
 				}
 
 
-				$table->setCol($c, 2, array('align' => 'right'), we_html_button::create_button_table(array($edit, $trash))
-				);
+				$table->setCol($c, 2, array('align' => 'right'), we_html_button::create_button_table(array($edit, $trash)));
 
 				$c++;
 
@@ -118,7 +116,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 			$table2->setCol(2, 0, array("align" => "right"), $this->addbut);
 		}
 
-		return $table2->getHtml();
+		return $table2->getHtml() . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
 	}
 
 }

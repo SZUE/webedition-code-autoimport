@@ -25,8 +25,8 @@
 class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	const PAGE_PROPERTIES = 0;
 	const PAGE_OVERVIEW = 1;
-	const BUTTON_DECLINE='fat:decline,fa-lg fa-close fa-cancel';
-	const BUTTON_FORWARD='fat:forward:fa-lg fa-mail-forward';
+	const BUTTON_DECLINE = 'fat:decline,fa-lg fa-close fa-cancel';
+	const BUTTON_FORWARD = 'fat:forward:fa-lg fa-mail-forward';
 
 	// workflow array; format workflow[workflowID]=workflow_name
 	var $workflows = array();
@@ -211,7 +211,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
 
-		$dirs = new we_chooser_multiDir(495, $this->workflowDef->Folders, 'del_folder', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'Icon,Path', FILE_TABLE, 'defaultfont', '', "top.content.setHot();");
+		$dirs = new we_chooser_multiDir(495, $this->workflowDef->Folders, 'del_folder', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'ContentType', FILE_TABLE, 'defaultfont', '', "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($dirs->get(), g_l('modules_workflow', '[dirs]'));
 	}
@@ -220,7 +220,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
+		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', we_html_button::create_button_table(array($delallbut, $addbut)), "", 'IF(IsFolder,"folder","we/category")', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[categories]'));
 	}
@@ -229,7 +229,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
+		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", 'IF(IsFolder,"folder","we/category")', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[categories]'));
 	}
@@ -239,7 +239,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('add_object',top.currentID);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','" . $wecmdenc3 . "')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(495, $this->workflowDef->Objects, "del_object", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");
+		$cats = new we_chooser_multiDir(495, $this->workflowDef->Objects, "del_object", we_html_button::create_button_table(array($delallbut, $addbut)), "", "ContentType", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[classes]'));
 	}
@@ -250,7 +250,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_object_file_folder',top.allIDs);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . OBJECT_FILES_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
 
-		$dirs = new we_chooser_multiDir(495, $this->workflowDef->ObjectFileFolders, "del_object_file_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "Icon,Path", OBJECT_FILES_TABLE, "defaultfont", "", "top.content.setHot();");
+		$dirs = new we_chooser_multiDir(495, $this->workflowDef->ObjectFileFolders, "del_object_file_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "ContentType", OBJECT_FILES_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($dirs->get(), g_l('modules_workflow', '[dirs]'));
 	}
@@ -433,7 +433,6 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		return we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect($this->uid . '_DocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onchange' => "top.content.setHot();"), "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
 	}
-
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 

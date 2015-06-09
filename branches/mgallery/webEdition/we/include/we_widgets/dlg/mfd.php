@@ -37,7 +37,7 @@ var _sUsers='" . $sUsers . "';
 
 $textname = 'UserNameTmp';
 $idname = 'UserIDTmp';
-$users = makeArrayFromCSV($sUsers);
+$users = array_filter(explode(',', trim($sUsers, ',')));
 
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements.UserNameTmp.value");
@@ -48,12 +48,12 @@ $content = '<table border="0" cellpadding="0" cellspacing="0" width="300">
 
 if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 	$db = new DB_WE();
-	foreach($users as $user){
-		$foo = getHash('SELECT ID,Path,Icon FROM ' . USER_TABLE . ' WHERE ID=' . intval($user), $db);
-		$content .= '<tr><td><img src="' . TREE_ICON_DIR . $foo["Icon"] . '" width="16" height="18" /></td><td class="defaultfont">' . $foo["Path"] . '</td><td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:delUser('" . $user . "');") . '</td></tr>';
+	$db->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN (' . implode(',', $users) . ')');
+	while($db->next_record(MYSQL_ASSOC)){
+		$content .= '<tr><td class="mfdUIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="defaultfont">' . $db->f("Path") . '</td><td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:delUser('" . $db->f('ID') . "');") . '</td></tr>';
 	}
 } else {
-	$content .= '<tr><td><img src="' . TREE_ICON_DIR . "user.gif" . '" width="16" height="18" /></td><td class="defaultfont">' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? g_l('cockpit', '[all_users]') : $_SESSION['user']['Username']) . '</td><td></td><td></td></tr>';
+	$content .= '<tr><td class="mfdUIcon" data-contenttype="we/userGroup"></td><td class="defaultfont">' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? g_l('cockpit', '[all_users]') : $_SESSION['user']['Username']) . '</td><td></td><td></td></tr>';
 }
 $content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
@@ -63,7 +63,7 @@ $sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><t
 		"UserIDTmp" => ""
 	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
 			array(
-				we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", (count($users)) ? false : true),
+				we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", ($users ? false : true)),
 				we_html_button::create_button(we_html_button::ADD, "javascript:opener.getUser('we_users_selector','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements[\"UserIDTmp\"].value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
 		)) . '</td></tr>' : '') . '</table>';
 
@@ -82,7 +82,7 @@ $oChbxDocs = (permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ?
 		'<input type="hidden" name="chbx_type" value="0"/>');
 $oChbxTmpl = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
 		we_html_forms::checkbox(1, $sType{1}, "chbx_type", g_l('cockpit', '[templates]'), true, "defaultfont", "", !(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')), "", 0, 0) :
-		'<input type="hidden" name="chbx_type" value="0"/>');//FIXME: this is needed for getBinary!
+		'<input type="hidden" name="chbx_type" value="0"/>'); //FIXME: this is needed for getBinary!
 $oChbxObjs = (permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') ?
 		we_html_forms::checkbox(1, $sType{2}, "chbx_type", g_l('cockpit', '[objects]'), true, "defaultfont", "", !(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')), "", 0, 0) :
 		'<input type="hidden" name="chbx_type" value="0"/>');
@@ -162,10 +162,11 @@ echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) .
 		STYLESHEET .
 		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-		we_html_element::jsElement($jsPrefs . $jsCode).
+		we_html_element::jsScript(JS_DIR . "global.js") .
+		we_html_element::jsElement($jsPrefs . $jsCode) .
 		we_html_element::jsScript(JS_DIR . "widgets/mfd.js")
-		) .
+	) .
 	we_html_element::htmlBody(
 		array(
-		"class" => "weDialogBody", "onload" => "init();"
+		"class" => "weDialogBody", "onload" => "init();setIconOfDocClass('mfdUIcon');"
 		), we_html_element::htmlForm("", $sTblWidget)));

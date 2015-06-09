@@ -107,8 +107,9 @@ class we_class_folder extends we_folder{
 				$p[] = array_shift($spl);
 				$pa = $this->DB_WE->escape(implode('/', $p));
 				if($pa){
-					$pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $pa . '"', '', $this->DB_WE);
-					if(!$pid){
+					if(($pid = f('SELECT ID FROM ' . $this->DB_WE->escape($tblName) . ' WHERE Path="' . $pa . '"', '', $this->DB_WE))){
+						$last_pid = $pid;
+					} else {
 						$folder = new self();
 						$folder->init();
 						$folder->Table = $tblName;
@@ -121,8 +122,6 @@ class we_class_folder extends we_folder{
 						$folder->Path = $pa;
 						$folder->save($skipHook);
 						$last_pid = $folder->ID;
-					} else {
-						$last_pid = $pid;
 					}
 				}
 			}

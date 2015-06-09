@@ -1651,7 +1651,7 @@ weSearch.g_l = {
 				$content[] = $whichSearch !== self::SEARCH_MEDIA ?
 					array(
 					array("dat" => we_html_tools::getPixel(20, 1) . $actionCheckbox),
-					array("dat" => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
+					array("dat" => we_html_element::jsElement('getTreeIcon("' . $_result[$f]["ContentType"] . '")')),
 					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
 					array("dat" => ($whichSearch === 'TmplSearch' ? str_replace('/' . $_result[$f]["Text"], '', $_result[$f]["Path"]) : $_result[$f]["SiteTitle"])),
 					array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]['VersionID'] ? "-" : ($_result[$f]["CreationDate"] ? date(
@@ -1730,8 +1730,8 @@ weSearch.g_l = {
 					$_tagName = $_defined_fields[$i]["tag"];
 
 					if(we_exim_contentProvider::isBinary($_result[$f]["docID"])){
-						$DB_WE->query("SELECT a.ID,c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . escape_sql_query($_tagName) . "' AND b.DocumentTable='" . stripTblPrefix(FILE_TABLE) . "'");
-						$metafields[$_tagName] = "";
+						$DB_WE->query('SELECT a.ID,c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . ' AND b.Name="' . escape_sql_query($_tagName) . '" AND b.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+						$metafields[$_tagName] = '';
 						while($DB_WE->next_record()){
 							$metafields[$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
 						}

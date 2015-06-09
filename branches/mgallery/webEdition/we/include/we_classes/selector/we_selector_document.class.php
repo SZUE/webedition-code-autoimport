@@ -51,7 +51,7 @@ class we_selector_document extends we_selector_directory{
 				$this->fields .= ',Filename,Extension,ModDate,Published,ContentType';
 				break;
 			case VFILE_TABLE:
-				$this->fields .= ',UNIX_TIMESTAMP(ModDate) AS ModDate,Text AS Filename,ContentType,IF(IsFolder,"' . we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::FOLDER) . '","' . we_base_ContentTypes::inst()->getIcon(we_base_ContentTypes::COLLECTION) . '") AS Icon';
+				$this->fields .= ',UNIX_TIMESTAMP(ModDate) AS ModDate,Text AS Filename,ContentType';
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$this->fields .= ',Text AS Filename,ModDate,Published,ContentType';

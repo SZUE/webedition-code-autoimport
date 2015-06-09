@@ -23,12 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_chooser_multiDirExtended extends we_chooser_multiDir{
-
 	var $rowPrefix = '';
 	var $catField = '';
 
-	public function __construct($width = '', $ids = '', $cmd_del = '', $addbut = '', $ws = '', $fields = 'Icon,Path', $table = FILE_TABLE, $css = 'defaultfont', $thirdDelPar = '', $extraDelFn = ''){
-		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css, $thirdDelPar, $extraDelFn);
+	public function __construct($width = '', $ids = '', $cmd_del = '', $addbut = '', $ws = '', $ct = 'ContentType', $table = FILE_TABLE, $css = 'defaultfont', $thirdDelPar = '', $extraDelFn = ''){
+		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $ct, $table, $css, $thirdDelPar, $extraDelFn);
 	}
 
 	function getLine($lineNr){
@@ -40,8 +39,8 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 		switch($lineNr){
 			case 0:
 				return '<tr id="' . $this->rowPrefix . 'Cat' . $this->Record["ID"] . '">
-	<td><img src="' . TREE_ICON_DIR . $this->Record[$this->fieldsArr[0]] . '" width="16" height="18" /></td>
-	<td class="' . $this->css . '">' . $this->Record[$this->fieldsArr[1]] . '</td>
+	<td class="chooserFileIcon" data-contenttype="'.$this->Record['ContentType'].'"></td>
+	<td class="' . $this->css . '">' . $this->Record['Path'] . '</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . "; " . $_catFieldJS, true, 26) :
 						"") . '</td>
@@ -54,7 +53,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
+	<td class="chooserFileIcon" data-contenttype="folder"></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
@@ -70,7 +69,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 		$idArr = makeArrayFromCSV($this->ids);
 
 		foreach($idArr as $id){
-			$this->Record = getHash('SELECT ID,' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id), $this->db);
+			$this->Record = getHash('SELECT ID,Path,' . $this->ct . ' AS ContentType FROM ' . $this->db->escape($this->table) . ' WHERE ID =' . intval($id), $this->db);
 			if(!empty($this->Record)){
 				for($i = 0; $i < $this->lines; $i++){
 					$out .= $this->getLine($i);
@@ -94,7 +93,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 		return '<table border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '">
 <tr><td><div style="background-color:white;" class="multichooser">' . $out . '</div></td></tr>
 ' . ($this->addbut ? ('<tr><td>' . we_html_tools::getPixel(2, 5) . '</td></tr>
-<tr><td align="right">' . $this->addbut . '</td></tr>') : '') . '</table>' . "\n";
+<tr><td align="right">' . $this->addbut . '</td></tr>') : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
 	}
 
 	function setRowPrefix($val){

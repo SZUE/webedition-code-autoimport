@@ -28,7 +28,7 @@ class we_users_selector extends we_selector_file{
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
-		$this->fields.= ',Icon';
+		$this->fields.= ',(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType';
 
 		//FIXME: fix userSelector String
 		//$GLOBALS["l_fileselector"]["filename"] = ($this->filter == "group") ? g_l('fileselector',"[groupname]") : g_l('fileselector',"[username]");
@@ -85,7 +85,7 @@ class we_users_selector extends we_selector_file{
 		//}else{
 		$upath = '';
 		//}
-		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' .
 			$this->db->escape($this->table) .
 			' WHERE ParentID=' . intval($this->dir) .
 			($upath ? ' AND Path LIKE "' . $this->db->escape($upath) . '%" ' : '') .

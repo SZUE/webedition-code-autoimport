@@ -48,17 +48,6 @@ class we_glossary_view extends we_modules_view{
 	 */
 	var $EditorHeaderFrame;
 
-	/**
-	 * RegExp-Pattern of the item Icon
-	 * @var string
-	 */
-	var $ItemPattern = "";
-
-	/**
-	 * RegExp-Pattern of the folder Icon
-	 * @var string
-	 */
-	var $GroupPattern = "";
 	private $page = 0;
 
 	/**
@@ -69,8 +58,6 @@ class we_glossary_view extends we_modules_view{
 		parent::__construct($frameset, $topframe);
 		$this->Glossary = new we_glossary_glossary();
 
-		$this->ItemPattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . 'prog.gif\" />&nbsp;';
-		$this->GroupPattern = '<img style=\"vertical-align: bottom\" src=\"' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '\" />&nbsp;';
 	}
 
 	//-----------------Init -------------------------------

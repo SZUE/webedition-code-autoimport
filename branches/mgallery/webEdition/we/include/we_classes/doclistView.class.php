@@ -156,7 +156,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 					$cmd1 = "document.we_form.elements['searchParentID[" . $i . "]'].value";
 					$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value") . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']',""), we_html_tools::getPixel(5, 4), $_button);
+					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
 
 					$searchInput = $selector;
 				}
@@ -345,28 +345,26 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			}
 		}
 
-		if($_SESSION['weS']['weSearch']['foundItems']){
-			$DB_WE->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
+		if(!$_SESSION['weS']['weSearch']['foundItems']){
+			return array();
+		}
+		$DB_WE->query('DROP TABLE IF EXISTS SEARCH_TEMP_TABLE');
 
-			foreach($_result as $k => $v){
-				$_result[$k]["Description"] = "";
-				if($_result[$k]["Table"] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-					$_result[$k]["Description"] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"', '', $DB_WE);
-				} else {
-					if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
-						$tempDoc = we_unserialize($obj);
-						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat']){
-							$_result[$k]['Description'] = $tempDoc[0]['elements']['Description']['dat'];
-						}
+		foreach($_result as $k => $v){
+			$_result[$k]["Description"] = "";
+			if($_result[$k]["Table"] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
+				$_result[$k]["Description"] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE a.ID=' . intval($_result[$k]["ID"]) . ' AND b.Name="Description" AND b.DocumentTable="' . FILE_TABLE . '"', '', $DB_WE);
+			} else {
+				if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["ID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
+					$tempDoc = we_unserialize($obj);
+					if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat']){
+						$_result[$k]['Description'] = $tempDoc[0]['elements']['Description']['dat'];
 					}
 				}
 			}
-
-
-			$content = self::makeContent($DB_WE, $_result, $_view);
 		}
 
-		return $content;
+		return self::makeContent($DB_WE, $_result, $_view);
 	}
 
 	public static function makeHeadLines($table){
@@ -429,7 +427,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 				$content[$f] = array(
 					array('dat' => $publishCheckbox),
-					array('dat' => '<img src="' . TREE_ICON_DIR . $Icon . '" border="0" width="16" height="18" />'),
+					array('dat' => we_html_element::jsElement('getTreeIcon("' . $_result[$f]["ContentType"] . '")')),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]['docID'] . '\',\'' . $_result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]['Text'] . '"><u>' . we_util_Strings::shortenPath($_result[$f]['Text'], $we_PathLength)),
 					//array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
 					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
@@ -558,8 +556,8 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		<td>' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>
 		<td>' . we_html_tools::getPixel(10, 12) . '</td>' .
-		($id && $table === FILE_TABLE ? we_html_baseElement::getHtmlCode(new we_html_baseElement('td', true, array('style' => 'width:50px;'), we_fileupload_importFiles::getBtnImportFiles($id))) : '') .
-		'<td style="width:50px;">' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 50, "", "", "", false) . '</td>
+			($id && $table === FILE_TABLE ? we_html_baseElement::getHtmlCode(new we_html_baseElement('td', true, array('style' => 'width:50px;'), we_fileupload_importFiles::getBtnImportFiles($id))) : '') .
+			'<td style="width:50px;">' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 50, "", "", "", false) . '</td>
 	</tr>
 	<tr><td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td></tr>
 </table>';

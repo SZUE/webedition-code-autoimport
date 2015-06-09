@@ -56,7 +56,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td><img src="' . TREE_ICON_DIR . we_base_ContentTypes::FOLDER_ICON . '" width="16" height="18" /></td>
+	<td class="chooserFileIcon" data-contenttype="folder"></td>
 	<td class="' . $this->css . '">/</td>
 	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
@@ -70,7 +70,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 	function getLine($lineNr){
 		switch($lineNr){
 			case 0:
-				return we_chooser_multiDir::getLine($lineNr);
+				return parent::getLine($lineNr);
 			case 1:
 				if($this->create){
 					$but = we_html_button::create_button("fa:btn_add_template,fa-plus,fa-lg fa-file-code-o", "javascript:we_cmd('object_create_tmpfromClass','0','" . $this->nr . "','" . $GLOBALS["we_transaction"] . "')");
