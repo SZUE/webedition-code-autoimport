@@ -749,7 +749,7 @@ abstract class we_root extends we_class{
 		$this->OldPath = $this->Path;
 	}
 
-	public function we_save($resave = 0){
+	public function we_save($resave = false){
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();
@@ -1172,7 +1172,7 @@ abstract class we_root extends we_class{
 
 	function we_resaveMainTable(){
 		$this->wasUpdate = true;
-		return we_root::we_save(1, 1);
+		return we_root::we_save(true, true);
 	}
 
 	public function we_rewrite(){

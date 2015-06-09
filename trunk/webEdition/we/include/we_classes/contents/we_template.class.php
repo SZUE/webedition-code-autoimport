@@ -744,7 +744,7 @@ we_templateInit();?>';
 		--$cnt;
 	}
 
-	public function we_save($resave = 0, $updateCode = 1){
+	public function we_save($resave = false, $updateCode = true){
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		if($updateCode){
 			$this->_updateCompleteCode(true);

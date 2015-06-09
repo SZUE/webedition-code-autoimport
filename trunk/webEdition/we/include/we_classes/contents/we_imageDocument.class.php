@@ -60,7 +60,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return boolean
 	 * @param boolean $resave
 	 */
-	public function we_save($resave = 0, $skipHook = false){
+	public function we_save($resave = false, $skipHook = false){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');

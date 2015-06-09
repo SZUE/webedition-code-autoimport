@@ -241,23 +241,22 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$this->errMsg = '';
 		$this->i_setText();
 		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
 
-		if(!$this->ID && !we_root::we_save(0)){ // when no ID, then allways save before in main table
+		if(!$this->ID && !we_root::we_save(false)){ // when no ID, then allways save before in main table
 			return false;
 		}
-		if($resave == 0){
+		if(!$resave){
 			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 			$this->ModDate = time();
 			$this->wasUpdate = true;
@@ -279,9 +278,8 @@ abstract class we_textContentDocument extends we_textDocument{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -290,19 +288,18 @@ abstract class we_textContentDocument extends we_textDocument{
 		return $ret;
 	}
 
-	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		if(!$skipHook){
 			$hook = new weHook('prePublish', '', array($this));
-			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
-		if($saveinMainDB && !we_root::we_save(1)){
+		if($saveinMainDB && !we_root::we_save(true)){
 			return false; // calls the root function, so the document will be saved in main-db but it will not be written!
 		}
 
@@ -333,9 +330,8 @@ abstract class we_textContentDocument extends we_textDocument{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('publish', '', array($this, 'prePublishTime' => $oldPublished));
-			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -365,9 +361,8 @@ abstract class we_textContentDocument extends we_textDocument{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('unpublish', '', array($this));
-			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}

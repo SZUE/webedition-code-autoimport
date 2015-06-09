@@ -2174,7 +2174,7 @@ class we_objectFile extends we_document{
 
 	function we_ImportSave(){
 		$this->Icon = 'objectFile.gif';
-		if(!parent::we_save(1)){
+		if(!parent::we_save(true)){
 			return false;
 		}
 		$this->wasUpdate = true;
@@ -2220,7 +2220,7 @@ class we_objectFile extends we_document{
 		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/' || strpos($this->Path, $this->RootDirPath) !== 0;
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		if(intval($this->TableID) == 0 || $this->IsFolder){
 			return false;
 		}
@@ -2254,9 +2254,8 @@ class we_objectFile extends we_document{
 
 		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2264,7 +2263,7 @@ class we_objectFile extends we_document{
 
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
-			if((!parent::we_save($resave, 1)) || ($resave) || (!$this->we_republish())){
+			if((!parent::we_save($resave, true)) || ($resave) || (!$this->we_republish())){
 				return false;
 			}
 		}
@@ -2278,7 +2277,7 @@ class we_objectFile extends we_document{
 		}
 
 		if(!$this->Published){
-			if(!we_root::we_save(1)){
+			if(!we_root::we_save(true)){
 				return false;
 			}
 			if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
@@ -2300,9 +2299,8 @@ class we_objectFile extends we_document{
 // hook
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2427,19 +2425,16 @@ class we_objectFile extends we_document{
 		return '';
 	}
 
-	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		if(!$skipHook){
 			$hook = new weHook('prePublish', '', array($this));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
 		$old = $this->Published;
-		$oldUrl = f('SELECT Url FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
-		$wasPublished = $this->Published > 0;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
 		if($saveinMainDB && !we_root::we_save()){
@@ -2453,9 +2448,8 @@ class we_objectFile extends we_document{
 		//hook
 		if(!$skipHook){
 			$hook = new weHook('publish', '', array($this, 'prePublishTime' => $old));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2484,9 +2478,8 @@ class we_objectFile extends we_document{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('unpublish', '', array($this));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}

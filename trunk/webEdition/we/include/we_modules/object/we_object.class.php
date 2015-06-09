@@ -93,7 +93,7 @@ class we_object extends we_document{
 			$cf->Filename = $this->Text;
 			$cf->setParentID($pID);
 			$cf->Path = $cf->getPath();
-			$cf->we_save(1);
+			$cf->we_save(true);
 			$cf->modifyChildrenPath();
 		}
 
@@ -2235,17 +2235,16 @@ class we_object extends we_document{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$this->save();
-		if($resave == 0){
+		if(!$resave){
 			we_history::insertIntoHistory($this);
 		}
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}

@@ -626,7 +626,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		// First off correct corupted fields
 		$this->correctFields();
 //FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
@@ -643,7 +643,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$this->checkRemoteLanguage($this->Table, false);
 		}
 
-		if($resave == 0){
+		if(!$resave){
 			$hy = unserialize(we_base_preferences::getUserPref('History'));
 			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
 			we_base_preferences::setUserPref('History', serialize($hy));
@@ -656,7 +656,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return parent::i_writeDocument();
 	}
 
-	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_category = $this->Category;
 		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);
