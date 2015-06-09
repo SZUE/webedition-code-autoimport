@@ -33,7 +33,7 @@ class we_backup_tableItem extends weModelBase{
 	var $Pseudo = __CLASS__;
 	var $attribute_slots = array();
 
-	function __construct($table){
+	public function __construct($table){
 		if($GLOBALS['DB_WE']->isTabExist($table)){
 			parent::__construct($table);
 		} else {

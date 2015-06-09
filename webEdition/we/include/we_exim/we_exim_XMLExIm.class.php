@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLExIm{
-
 	var $destination = array();
 	var $RefTable;
 	var $chunk_count;
@@ -216,21 +215,15 @@ class we_exim_XMLExIm{
 		$encoding = ($encoding ? : $GLOBALS['WE_BACKENDCHARSET']);
 
 		return '<?xml version="1.0" encoding="' . $encoding . '" standalone="yes"?>' . "\n" .
-				we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
+			we_backup_backup::weXmlExImHead . ' version="' . WE_VERSION . '" type="' . $type . '" xmlns:we="we-namespace">' . "\n";
 	}
 
 	static function getFooter(){
 		return we_backup_backup::weXmlExImFooter;
 	}
 
-	function isCompressed($file){
-		$part = we_base_file::loadPart($file, 0, 512);
-		return (stripos($part, "<?xml version=") === false);
-	}
-
 	function getIDs($selIDs, $table, $with_dirs = false){
-		$ret = array();
-		$tmp = array();
+		$ret = $tmp = array();
 		$db = new DB_WE();
 		$allow = $this->queryForAllowed($table);
 		foreach($selIDs as $v){
@@ -258,7 +251,7 @@ class we_exim_XMLExIm{
 			$out[] = 'Path="' . $path . '"';
 			$path = dirname($path);
 		}
-		return (empty($out) ? '' : implode(' OR ', $out));
+		return $out ? implode(' OR ', $out) : '';
 	}
 
 	function queryForAllowed($table){
