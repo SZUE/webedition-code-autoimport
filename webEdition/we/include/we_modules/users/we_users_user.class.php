@@ -76,7 +76,7 @@ class we_users_user{
 		'ModifyDate' => we_base_request::INT,
 		'Ping' => we_base_request::INT,
 		'workSpace' => we_base_request::INTLIST,
-		'workSpaceDef' => we_base_request::INTLIST,
+		//'workSpaceDef' => we_base_request::INTLIST,
 		'workSpaceTmp' => we_base_request::INTLIST,
 		'workSpaceNav' => we_base_request::INTLIST,
 		'workSpaceNwl' => we_base_request::INTLIST,
@@ -161,8 +161,9 @@ class we_users_user{
 	var $Ping = 0;
 	// Documents workspaces
 	var $workSpace = '';
-	// Default documents workspaces
+	/*// Default documents workspaces
 	var $workSpaceDef = '';
+	 */
 	// Templates workspaces
 	var $workSpaceTmp = '';
 	// Navigation workspaces
@@ -199,11 +200,11 @@ class we_users_user{
 		NAVIGATION_TABLE => array(),
 	);
 	// Workspace array
-	var $workspaces_defaults = array(
+/*	var $workspaces_defaults = array(
 		FILE_TABLE => array(),
 		TEMPLATES_TABLE => array(),
 		NAVIGATION_TABLE => array(),
-	);
+	);*/
 	// Permissions headers array
 	var $permissions_main_titles = array();
 	// Permissions values array
@@ -223,7 +224,7 @@ class we_users_user{
 		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
 
 		$this->DB_WE = new DB_WE();
-
+/*
 		if(defined('OBJECT_TABLE')){
 			$this->workspaces[OBJECT_FILES_TABLE] = $this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
 		}
@@ -233,7 +234,7 @@ class we_users_user{
 
 		if(defined('CUSTOMER_TABLE')){
 			$this->workspaces[CUSTOMER_TABLE] = $this->workspaces_defaults[CUSTOMER_TABLE] = array();
-		}
+		}*/
 
 		foreach($this->preference_slots as $val){
 			$this->Preferences[$val] = null;
@@ -564,9 +565,9 @@ class we_users_user{
 			$this->workspaces[CUSTOMER_TABLE] = $this->workSpaceCust ? unserialize($this->workSpaceCust) : array();
 		}
 
-		if($this->workSpaceDef){
+		/*if($this->workSpaceDef){
 			$this->workspaces_defaults[FILE_TABLE] = makeArrayFromCSV($this->workSpaceDef);
-		}
+		}*/
 	}
 
 	function saveWorkspaces(){
@@ -597,7 +598,7 @@ class we_users_user{
 			$this->workSpaceCust = $this->workspaces[CUSTOMER_TABLE] ? serialize($this->workspaces[CUSTOMER_TABLE]) : '';
 		}
 
-		foreach($this->workspaces_defaults as $k => $v){
+		/*foreach($this->workspaces_defaults as $k => $v){
 			$new_array = array();
 			foreach($v as $key => $val){
 				if($val != 0){
@@ -606,8 +607,8 @@ class we_users_user{
 			}
 			$this->workspaces_defaults[$k] = $new_array;
 		}
-		$this->workSpaceDef = ($this->workspaces[FILE_TABLE] ? makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ',') : '');
-
+		//$this->workSpaceDef = ($this->workspaces[FILE_TABLE] ? makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ',') : '');
+*/
 		// if no workspaces are set, take workspaces from creator
 		if(empty($this->workSpace)){
 			$_uws = get_ws(FILE_TABLE, true);
@@ -1049,7 +1050,7 @@ _multiEditorreload = true;";
 							unset($this->workspaces[$k][$val]);
 						}
 					}
-					if(isset($_POST[$obj]['id'])){
+					/*if(isset($_POST[$obj]['id'])){
 						$obj = $this->Name . '_defWorkspace_' . $k;
 						$this->workspaces_defaults[$k] = array();
 						if(isset($_POST[$obj])){
@@ -1059,7 +1060,7 @@ _multiEditorreload = true;";
 								}
 							}
 						}
-					}
+					}*/
 				}
 				if(defined('CUSTOMER_TABLE')){
 					$this->workspaces[CUSTOMER_TABLE] = we_customer_abstractFilter::getFilterFromRequest();
@@ -1644,7 +1645,7 @@ function delElement(elvalues,elem) {
 			}
 			$obj_values = $this->Name . '_Workspace_' . $k . '_AddDel';
 			$obj_names = $this->Name . '_Workspace_' . $k;
-			$obj_def_names = $this->Name . '_defWorkspace_' . $k;
+			//$obj_def_names = $this->Name . '_defWorkspace_' . $k;
 
 			//$content .= '<p>';
 
@@ -1658,12 +1659,12 @@ function delElement(elvalues,elem) {
 					$value = (count($fooA) ? $fooA[0] : 0);
 					$path = id_to_path($value);
 				}
-				$default = false;
+				/*$default = false;
 				foreach($this->workspaces_defaults[$k] as $v1){
 					if($v1 == $val && $v1 != 0){
 						$default = true;
 					}
-				}
+				}*/
 
 				$wecmdenc1 = we_base_request::encCmd("document.getElementsByName('" . $obj_names . '[id][' . $key . "]')[0].value");
 				$wecmdenc2 = we_base_request::encCmd("document.getElementsByName('" . $obj_names . '[Text][' . $key . "]')[0].value");
@@ -1699,9 +1700,9 @@ function delElement(elvalues,elem) {
 				$content1.='
 <tr><td colspan="2">' . $weAcSelector . '</td>
 	<td><div style="position:relative; top:-1px">' . we_html_button::create_button("image:btn_function_trash", "javascript:delElement(document.we_form." . $obj_values . "," . $key . ");switchPage(" . self::TAB_WORKSPACES . ");", true) . '</td></div>' .
-					($k == FILE_TABLE ?
+					/*($k == FILE_TABLE ?
 						'<td class="defaultfont">' . we_html_forms::checkbox(1, $default, $obj_def_names . "[$key]", g_l('modules_users', '[make_def_ws]'), true, "defaultfont", 'top.content.setHot();') . '</td>' :
-						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') . '
+						'<td>' . we_html_tools::getPixel(5, 5) . '</td>') .*/ '
 </tr>';
 			}
 
