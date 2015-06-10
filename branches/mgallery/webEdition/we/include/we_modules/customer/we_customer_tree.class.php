@@ -204,6 +204,8 @@ function startTree(){
 		}
 
 		$select = $grouparr = $orderarr = array();
+		
+		$total = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE );
 
 		foreach($sort_defs as $c => $sortdef){
 			if(isset($sortdef['function']) && $sortdef['function']){
@@ -254,11 +256,15 @@ function startTree(){
 				$gname = $db->f($grouparr[0]) ? : g_l('modules_customer', '[no_value]');
 				$gid = '{' . $gname . '}';
 
+				$groupTotal = f('SELECT COUNT(ID) FROM ' . CUSTOMER_TABLE . ' WHERE ' . $grp . '="' . $db->escape($gname) . '"' .
+					(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+					(count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
+
 				$items[] = array(
 					'id' => str_replace("\'", '*****quot*****', $gid),
 					'parentid' => $old,
 					'path' => '',
-					'text' => $gname,
+					'text' => $gname . ' ('. $groupTotal . '/' . '<abbr title="' . g_l('modules_customer', '[all]') . ' ' . g_l('modules_customer', '[customer_data]') . '">' . $total . '</abbr>)',
 					'contentType' => 'folder',
 					'isfolder' => 1,
 					'typ' => 'group',
