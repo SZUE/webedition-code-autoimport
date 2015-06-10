@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,14 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("PROGRESS_H_IMAGE", IMAGE_DIR . 'balken.gif');
-define("PROGRESS_H_IMAGE_BG", IMAGE_DIR . 'balken_bg.gif');
-
 class we_progressBar{
 	var $progress = 0;
 	var $texts = array();
-	var $progress_image = PROGRESS_H_IMAGE;
-	var $progress_image_bg = PROGRESS_H_IMAGE_BG;
 	var $stud_width = 10;
 	var $stud_len = 100;
 	var $showProgressText = true;
@@ -70,8 +66,8 @@ function setProgressText' . $this->name . '(name,text){
 
 function setProgress' . $this->name . '(progress){
 	var koef=' . ($this->stud_len / 100) . ';' .
-				$frame . 'document.images["progress_image' . $this->name . '"].width=koef*progress;' .
-				$frame . 'document.images["progress_image_bg' . $this->name . '"].width=(koef*100)-(koef*progress);' .
+				$frame . 'document.getElementById("progress_image' . $this->name . '").style.width=koef*progress+"px";' .
+				$frame . 'document.getElementById("progress_image_bg' . $this->name . '").style.width=(koef*100)-(koef*progress)+"px";' .
 				($this->showProgressText ?
 					'setProgressText' . $this->name . '("progress_text' . $this->name . '",progress+"%");' :
 					'') .
@@ -159,17 +155,15 @@ function setProgress' . $this->name . '(progress){
 		$progress_len = ($this->stud_len / 100) * $this->progress;
 		$rest_len = $this->stud_len - $progress_len;
 
-		return
-			($top ?
+		return ($top ?
 				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $top . '</tr></table>' :
 				'') .
 			'<table style="border-spacing: 0px;border-style:none;" cellpadding="0" >
 			<tr>' . ($left ? $left . '<td>' . we_html_tools::getPixel(5, 1) . '</td>' : '') .
-			'<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' .
-			'<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' .
+			'<td><div id="progress_image' . $this->name . '" class="progress_image" style="width:' . $progress_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div><div id="progress_image_bg' . $this->name . '" class="progress_image_bg" style="width:' . $rest_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div></td>' .
 			($right ?
-				"<td>" . we_html_tools::getPixel(5, 1) . "</td>" . $right :
-				""
+				'<td>' . we_html_tools::getPixel(5, 1) . "</td>" . $right :
+				''
 			) .
 			'</tr></table>' .
 			($bottom ?

@@ -550,8 +550,8 @@ var weFileUpload = (function () {
 								i = typeof index !== 'undefined' || index === false ? index : false,
 								p = i === false ? '' : '_' + i;
 
-				document.images[_.fieldName + '_progress_image' + p].width = coef * progress;
-				document.images[_.fieldName + '_progress_image_bg' + p].width = (coef * 100) - (coef * progress);
+				document.getElementById(_.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
+				document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = (coef * 100) - (coef * progress) + "px";
 				this.setInternalProgressText('progress_text', progress + '%', index);
 			};
 
@@ -562,9 +562,9 @@ var weFileUpload = (function () {
 
 				if (s) {
 					this.setInternalProgress(100, i);
-					document.images[_.fieldName + '_progress_image'].src = '/webEdition/images/fileUpload/balken_gr.gif';
+					getElementById(_.fieldName + '_progress_image').className = 'progress_finished';
 				} else {
-					document.images[_.fieldName + '_progress_image' + p].src = '/webEdition/images/fileUpload/balken_red.gif';
+					document.getElementById(_.fieldName + '_progress_image' + p).className = 'progress_failed';
 				}
 			};
 
@@ -873,7 +873,7 @@ var weFileUpload = (function () {
 					case 'startSendFile' :
 						if (this.elems.progress) {
 							this.elems.message.style.display = 'none';
-							document.images[_.fieldName + '_progress_image'].src = '/webEdition/images/balken.gif';
+							document.getElementById(_.fieldName + '_progress_image').className = "progress_image";
 							this.elems.progress.style.display = '';
 							this.elems.progressMoreText.style.display = '';
 							this.elems.progressMoreText.innerHTML = ' / ' + _.utils.computeSize(_.sender.currentFile.size);
@@ -1338,13 +1338,13 @@ var weFileUpload = (function () {
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				if (success) {
 					this.setInternalProgress(100, index);
-					document.images[_.fieldName + '_progress_image_' + index].src = '/webEdition/images/fileUpload/balken_gr.gif';
+					document.getElementById(_.fieldName + '_progress_image_' + index).className = 'progress_finished';
 				} else {
 					if (typeof document.images['alert_img_' + index] !== 'undefined') {
 						document.images['alert_img_' + index].style.visibility = 'visible';
 						document.images['alert_img_' + index].title = txt;
 					}
-					document.images[_.fieldName + '_progress_image_' + index].src = '/webEdition/images/fileUpload/balken_red.gif';
+					document.getElementById(_.fieldName + '_progress_image_' + index).className = 'progress_failed';
 				}
 			};
 		}
@@ -1727,8 +1727,8 @@ var weFileUpload = (function () {
 				var coef = this.intProgress.width / 100,
 								mt = typeof _.sender.currentFile === 'object' ? ' / ' + _.utils.computeSize(_.sender.currentFile.size) : '';
 
-				document.images.progress_image_fileupload.width = coef * progress;
-				document.images.progress_image_bg_fileupload.width = (coef * 100) - (coef * progress);
+				document.getElementById('progress_image_fileupload').style.width = coef * progress + "px";
+				document.getElementById('progress_image_bg_fileupload').style.width = (coef * 100) - (coef * progress) + "px";
 				document.getElementById('progress_text_fileupload').innerHTML = progress + '%' + mt;
 			};
 

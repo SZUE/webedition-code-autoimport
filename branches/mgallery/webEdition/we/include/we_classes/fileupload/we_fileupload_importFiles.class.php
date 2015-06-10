@@ -132,8 +132,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 				<div style="display: none" id="div_rowProgress_WEFORMNUM">
 					<table cellpadding="0" style="border-spacing: 0px;border-style:none;"><tbody><tr>
 						<td valign="bottom" width="2"></td>
-						<td valign="middle"><img width="0" height="10" src="/webEdition/images/balken.gif" name="' . $this->name . '_progress_image_WEFORMNUM" valign="top"></td>
-						<td valign="middle"><img width="90" height="10" src="/webEdition/images/balken_bg.gif" name="' . $this->name . '_progress_image_bg_WEFORMNUM" valign="top"></td>
+						<td valign="middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" valign="top"></div><div class="progress_image_bg" style="width:90px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" valign="top"></div></td>
 						<td valign="bottom" width="8"></td>
 						<td width="34" class="small" style="color:#006699;font-weight:bold"><span id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</span></td>
 						<td width="14" valign="bottom"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/fileUpload/alert.gif" id="alert_img_WEFORMNUM" title=""></td>

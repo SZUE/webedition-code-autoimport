@@ -911,3 +911,31 @@ span.treeKreuz i.fa-square{
 i.disabled{
 	color:grey;
 }
+
+div.progress_image_bg{
+	display:inline-block;
+	border-top: 1px solid #b5b5b5;
+	border-bottom:1px solid #dedede;
+	background: linear-gradient(#e7e7e7, #dedede 50%,white);
+}
+
+div.progress_image{
+	display:inline-block;
+	border-top: 1px solid #395ABD;
+	border-bottom:1px solid #73BDFF;
+	background: linear-gradient(#84ade7, #3984E7 50%,#73c6ff);
+}
+
+div.progress_finished{
+	display:inline-block;
+	border-top: 1px solid #31bd55;
+	border-bottom:1px solid #6bff72;
+	background: linear-gradient(#7bd683, #4aef5b 50%,#73ff76);
+}
+
+div.progress_failed{
+	display:inline-block;
+	border-top: 1px solid #bd3431;
+	border-bottom:1px solid #fe7c8b;
+	background: linear-gradient(#fe7c8b, #de3a3a 50%,#ff8da3);
+}

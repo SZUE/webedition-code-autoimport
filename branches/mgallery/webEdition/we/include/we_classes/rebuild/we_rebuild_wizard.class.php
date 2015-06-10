@@ -89,8 +89,8 @@ abstract class we_rebuild_wizard{
 			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;", "align" => "right"), $refreshButton);
 			$content2->setCol(0, 3, array("id" => "cancel", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $cancelButton);
 
-			$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
-			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none", "align" => "left"), $pb);
+			$content = new we_html_table(array("width" => "100%"), 1, 2);
+			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none;padding-left:1em;", "align" => "left"), $pb);
 			$content->setCol(0, 1, array("align" => "right"), $content2->getHtml());
 		}
 
