@@ -838,6 +838,8 @@ table.revenueTable td {
 span.fileicon{
 	font-size:7px;
 	color:black;
+	vertical-align: text-top;
+	margin-left: -0.5ex;
 }
 span.fileicon .we-icon{
 	color: #164F94;
