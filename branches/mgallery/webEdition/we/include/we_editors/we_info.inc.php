@@ -77,7 +77,7 @@ $_table = new we_html_table(array(
 	"style" => "border-style:none; padding:0px;border-spacing:0px;background-color:#EBEBEB;width:" . $_widthTotal . 'px;' . (isset($GLOBALS['loginpage']) ? 'margin-left: auto; margin-right: auto;text-align:left;box-shadow: 5px 5px 5px #555555;border-radius:10px;' : '')), 8, 3);
 $_actRow = 0;
 //	First row with background
-$_table->setCol($_actRow++, 0, array("colspan" => 3, "style" => 'width: ' . $_widthTotal . 'px;height:100px;',), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><p style="text-align:center;height:100px;width:' . $_widthTotal . 'px"><img src="' . IMAGE_DIR . 'webedition.svg"/></p></a>' . (isset($extra) ? '<div style="position:relative;top:-60px;left:300px;text-align:left;font-weight:bolder;color:red;transform: rotate(-45deg);transform-origin: 0% 0%;">' . $extra . '</div>' : ''));
+$_table->setCol($_actRow++, 0, array("colspan" => 3, "style" => 'width: ' . $_widthTotal . 'px;height:100px;',), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><p style="text-align:center;height:100px;width:' . $_widthTotal . 'px"><img src="' . IMAGE_DIR . 'webedition.svg"/></p></a>' . (isset($extra) ? '<div style="font-family: monospace;font-size:22pt;position:relative;top:-60px;left:200px;text-align:left;font-weight:bolder;color:red;transform: rotate(-35deg);transform-origin: 0% 0%;">' . $extra . '</div>' : ''));
 
 $_table->addRow(2);
 if($we_version){
