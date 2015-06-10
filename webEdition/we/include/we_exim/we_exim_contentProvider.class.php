@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_contentProvider{
-
 	const CODING_ENCODE = 'encode';
 	const CODING_SERIALIZE = 'serial';
 	const CODING_ATTRIBUTE = 'coding';
@@ -126,7 +125,7 @@ class we_exim_contentProvider{
 		}
 
 		foreach($content as $k => $v){
-			$object->$k = $v;
+				$object->$k = $v;
 		}
 		if(isset($object->persistent_slots) && empty($object->persistent_slots)){
 			$object->persistent_slots = array_keys($content);
@@ -252,8 +251,8 @@ class we_exim_contentProvider{
 
 		$noexport = array(); //future use
 		return (isset($noexport[$classname]) ?
-						!in_array($prop, $noexport[$classname]) :
-						true);
+				!in_array($prop, $noexport[$classname]) :
+				true);
 	}
 
 	static function binary2file(&$object, $file, $fwrite = 'fwrite'){
@@ -285,9 +284,9 @@ class we_exim_contentProvider{
 				$data = we_base_file::loadPart($path, $offset, $rsize);
 				if($data){
 					$fwrite($file, '<we:binary>' . $attribs .
-							we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
-							we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-							'</we:binary>' . we_backup_backup::backupMarker . "\n");
+						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
+						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
+						'</we:binary>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -295,7 +294,7 @@ class we_exim_contentProvider{
 				/* if(filesize($path)<$offset){
 				  $data = null;
 				  } */
-			}while($data);
+			} while($data);
 		}
 	}
 
@@ -330,9 +329,9 @@ class we_exim_contentProvider{
 
 				if(!empty($data)){
 					$fwrite($file, '<we:version>' . $attribs .
-							we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
-							we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
-							'</we:version>' . we_backup_backup::backupMarker . "\n");
+						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
+						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
+						'</we:version>' . we_backup_backup::backupMarker . "\n");
 					$offset+=$rsize;
 					$object->SeqN++;
 				}
@@ -340,7 +339,7 @@ class we_exim_contentProvider{
 				/* if(filesize($path)<$offset){
 				  $data = null;
 				  } */
-			}while($data);
+			} while($data);
 		}
 	}
 
@@ -432,7 +431,6 @@ class we_exim_contentProvider{
 						$contentObj = new we_element(false, $object->elements[$ck]);
 						break;
 					case 'we_backup_tableAdv':
-						//array_unshift($object->elements[$ck], ' '); //don't know why this line was active, sicne it creates an element <0></0> which is invalid, deacativated
 						$contentObj = new we_element(false, $object->elements[$ck]);
 						foreach($object->elements[$ck] as $okey => $ov){
 							$contentObj->$okey = trim($ov);
@@ -533,4 +531,3 @@ class we_exim_contentProvider{
 	}
 
 }
-
