@@ -26,11 +26,10 @@ class we_tab{
 
 	const ACTIVE = 'TAB_ACTIVE';
 	const NORMAL = 'TAB_NORMAL';
-	const DISABLED = 'TAB_DISABLED';
 
 	private $tab;
 
-	function __construct($href, $text, $status = self::NORMAL, $jscmd = '', $attribs = array()){
+	function __construct($text, $status = self::NORMAL, $jscmd = '', $attribs = array()){
 		$class = ($status == self::ACTIVE ? 'tabActive' : 'tabNormal');
 		$att = '';
 		if(isset($attribs) && is_array($attribs)){

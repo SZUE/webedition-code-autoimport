@@ -312,10 +312,10 @@ function we_cmd() {
 		$we_tabs = new we_tabs();
 
 		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00'){
-			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][overview]'), we_tab::ACTIVE, 0));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::ACTIVE, 0));
 		} else {
-			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][orderdata]'), we_tab::ACTIVE, "setTab(0);"));
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][orderlist]'), we_tab::NORMAL, "setTab(1);"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][orderdata]'), we_tab::ACTIVE, "setTab(0);"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][orderlist]'), we_tab::NORMAL, "setTab(1);"));
 		}
 
 		$textPre = g_l('modules_shop', $bid > 0 ? '[orderList][order]' : '[order_view]');
@@ -367,16 +367,16 @@ top.content.hloaded = 1;
 
 		$we_tabs = new we_tabs();
 		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][overview]'), we_tab::ACTIVE, "//"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::ACTIVE, "//"));
 		} else {
 			switch(true){
 				default:
 				case ($resultD):
-					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_1]'), we_tab::ACTIVE, "setTab(0);"));
+					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_1]'), we_tab::ACTIVE, "setTab(0);"));
 				case ($resultO):
-					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_2]'), ($resultD ? we_tab::NORMAL : we_tab::ACTIVE), "setTab(1);"));
+					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_2]'), ($resultD ? we_tab::NORMAL : we_tab::ACTIVE), "setTab(1);"));
 				case (isset($yearTrans) && $yearTrans != 0):
-					$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][admin_3]'), we_tab::NORMAL, "setTab(2);"));
+					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_3]'), we_tab::NORMAL, "setTab(2);"));
 					break;
 			}
 		}

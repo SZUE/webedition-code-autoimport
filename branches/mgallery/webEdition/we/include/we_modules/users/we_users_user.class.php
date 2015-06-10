@@ -2330,7 +2330,7 @@ function show_seem_chooser(val) {
 
 		$we_tabs = new we_tabs();
 		foreach($tabs as $key => $val){
-			$we_tabs->addTab(new we_tab('#', g_l('tabs', '[module][' . $val . ']'), ($tab == $key ? we_tab::ACTIVE : we_tab::NORMAL), 'self.setTab(' . $key . ');'));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][' . $val . ']'), ($tab == $key ? we_tab::ACTIVE : we_tab::NORMAL), 'self.setTab(' . $key . ');'));
 		}
 
 		$tab_header = $we_tabs->getHeader();

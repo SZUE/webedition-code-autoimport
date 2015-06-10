@@ -38,7 +38,7 @@ foreach($_menuItems as $_menuItem){
 	if($_menuItem["name"] === 'weSearch'){
 		$text = g_l('searchtool', '[weSearch]');
 		if(permissionhandler::hasPerm($_menuItem['startpermission'])){
-			$we_tabs->addTab(new we_tab("#", $text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+			$we_tabs->addTab(new we_tab($text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 		}
 	}
 }
@@ -47,7 +47,7 @@ foreach($_menuItems as $_menuItem){
 	$text = $_menuItem["text"];
 	if($_menuItem["name"] === 'toolfactory'){
 		if(permissionhandler::hasPerm($_menuItem['startpermission'])){
-			$we_tabs->addTab(new we_tab("#", $text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+			$we_tabs->addTab(new we_tab($text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 		}
 	}
 }
@@ -63,7 +63,7 @@ foreach($_menuItems as $_menuItem){
 		default:
 			$text = $_menuItem["text"];
 			if(permissionhandler::hasPerm($_menuItem['startpermission'])){
-				$we_tabs->addTab(new we_tab("#", $text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+				$we_tabs->addTab(new we_tab($text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 			}
 	}
 }

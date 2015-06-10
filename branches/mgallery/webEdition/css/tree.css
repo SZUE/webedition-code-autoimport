@@ -37,7 +37,7 @@
 	border-width: 0px;
 	border-collapse: collapse;
 	padding: 0px;
-	/*padding-left:1ex;*/
+	padding-left:1ex;
 }
 
 #treetable table,
@@ -55,7 +55,7 @@
 
 span.treeKreuz{
 	width: 16px;
-	height: 18px;
+	height: 2em;
 	vertical-align: middle;
 	position: relative;
 	display:inline-block;
@@ -176,34 +176,34 @@ span.threedots{
 }
 
 .tree span.strich{
-	width:10px;
-	margin-left:8px;
+	width:1ex;
+	margin-left:1ex;
 	border-left-width: 1px;
 }
 
 
 .tree span.kreuzung{
-	width:10px;
-	margin-left:8px;
+	width: 1ex;
+	margin-left:1ex;
 	border-left-width: 1px;
 }
 
-.tree span.kreuzung::before{
+.tree span.kreuzung::before,
+.tree span.kreuzungend::before{
 	content:" ";
 	display:inline-block;
 	position: absolute;
-	top: 9px;
-	width:10px;
+	top: 1.6ex;
+	width:1em;
 	border-bottom:1px solid darkgrey;
 }
 
 .tree span.kreuzungend{
-	width:10px;
-	margin-left:8px;
+	width:1ex;
+	margin-left:1ex;
 	border-left: 1px solid darkgrey;
-	height:9px;
-	border-bottom-width: 1px;
-	margin-bottom: 8px;
+	height:1em;
+	margin-bottom: 1em;
 }
 
 .tree span.kreuzung i::before,

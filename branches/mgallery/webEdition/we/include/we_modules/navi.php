@@ -40,7 +40,7 @@ foreach($mods as $_menuItem){
 	if((isset($_menuItem["inModuleMenu"]) && $_menuItem["inModuleMenu"]) || (isset($_menuItem["inModuleWindow"]) && $_menuItem["inModuleWindow"])){
 		if(we_base_moduleInfo::isActive($_menuItem["name"])){ //	MODULE INSTALLED
 			if(we_users_util::canEditModule($_menuItem["name"])){
-				$we_tabs->addTab(new we_tab("#", $_menuItem["text"], ( $mod == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openModule('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+				$we_tabs->addTab(new we_tab($_menuItem["text"], ( $mod == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openModule('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
 			}
 		}
 	}

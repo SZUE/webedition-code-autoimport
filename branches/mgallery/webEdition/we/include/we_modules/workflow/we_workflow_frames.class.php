@@ -67,10 +67,10 @@ class we_workflow_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($mode == 0){
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][properties]'), we_tab::NORMAL, "setTab(0);", array("id" => "tab_0")));
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[module][overview]'), we_tab::NORMAL, "setTab(1);", array("id" => "tab_1")));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), we_tab::NORMAL, "setTab(0);", array("id" => "tab_0")));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::NORMAL, "setTab(1);", array("id" => "tab_1")));
 		} else {
-			$we_tabs->addTab(new we_tab("#", g_l('tabs', '[editor][information]'), we_tab::ACTIVE, "//", array("id" => "tab_0")));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[editor][information]'), we_tab::ACTIVE, "//", array("id" => "tab_0")));
 		}
 
 		$tab_header = $we_tabs->getHeader();
