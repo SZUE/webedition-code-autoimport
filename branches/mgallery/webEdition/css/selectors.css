@@ -92,8 +92,8 @@ th.selector{
 }
 
 .treeIcon{
-	min-width: 16px;
-	padding-right: 5px;
+	padding-right: 3px;
+	padding-left: 3px;
 }
 
 .filename,
