@@ -27,27 +27,13 @@ if(strpos($filename, WE_INCLUDES_PATH) !== false){
 }
 if(file_exists($filename)){
 	$isCompressed = we_base_file::isCompressed($filename);
-	if(function_exists('finfo_open')){
-		$finfo = finfo_open(FILEINFO_MIME_TYPE);
-		$mimetype = finfo_buffer($finfo, we_base_file::loadPart($filename, 0, 8192, $isCompressed));
-	} else {
-		$mimetype = '';
-		if(function_exists('getimagesizefromstring')){
-			$mysize = getimagesizefromstring(we_base_file::load($filename, 0, 8192, $isCompressed));
-			if(isset($mysize['mime'])){
-				$mimetype = $mysize['mime'];
-			}
-		}
-	}
-	if($mimetype){
+	$allfile = explode('.', $filename);
+
+	if(($mimetype = we_base_util::getMimeType(end($allfile), $filename, we_base_util::MIME_BY_HEAD_THEN_EXTENSION, true))){
 		switch($mimetype){
 			case 'text/plain': //let the browser decide
 			case 'application/x-empty':
 				break;
-			/* 			case 'image/svg+xml':
-			  case 'image/svg-xml':
-			  header_remove('Cache-Control');
-			  header_remove('Pragma'); */
 			default:
 				header('Content-Type: ' . $mimetype . (($charset = we_base_request::_(we_base_request::STRING, 'charset')) ? '; charset=' . $charset : ''));
 		}
