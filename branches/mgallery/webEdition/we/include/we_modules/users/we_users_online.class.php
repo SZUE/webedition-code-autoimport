@@ -53,7 +53,6 @@ class we_users_online{
 			'seagreen'
 		); //FIXME:add usefull colors
 		$i = -1;
-		$img = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . IMAGE_DIR . 'pd/usr/user.svg');
 		$DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . ' WHERE Ping>(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
 		$colorCount = count($colors);
 		while($DB_WE->next_record()){
@@ -62,7 +61,7 @@ class we_users_online{
 			if($i >= 0){
 				$_row .= '<tr><td height="8">' . we_html_tools::getPixel(1, 8) . '</td></tr>';
 			}
-			$_row .= '<tr><td width="30">' . str_replace('black', $colors[( ++$i) % $colorCount], $img) . '</td>' .
+			$_row .= '<tr><td width="30" style="color:'.$colors[( ++$i) % $colorCount].'"><i class="fa fa-user fa-2x"></i></td>' .
 					'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . $DB_WE->f("username") . '</td>';
 			if(defined('MESSAGES_TABLE')){
 				$_row .= '<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f("username") . '\');">' .

@@ -805,13 +805,13 @@ this.selectedIndex = 0;' .
 	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
 		switch($type){
 			case self::TYPE_ALERT:
-				$icon = 'alert';
+				$icon = '<img src="' . IMAGE_DIR . $icon . 'alert_small.gif" width="20" height="22" />';
 				break;
 			case self::TYPE_INFO:
-				$icon = 'info';
+				$icon = '<span class="fa-stack fa-lg" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>';
 				break;
 			case self::TYPE_QUESTION:
-				$icon = 'question';
+				$icon = '<span class="fa-stack fa-lg" style="font-size: 14px;color:yellow;"><i class="fa fa-circle fa-stack-2x" ></i><i style="color:black" class="fa fa-question fa-stack-1x"></i></span>';
 				break;
 			default :
 				$icon = '';
@@ -850,7 +850,7 @@ function clip_' . $unique . '(){
 			}
 		}
 
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top"><img src="' . IMAGE_DIR . $icon . '_small.gif" width="20" height="22" /></td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
+		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top">'.$icon.'</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
 	}
 
 	public static function setHttpCode($status){

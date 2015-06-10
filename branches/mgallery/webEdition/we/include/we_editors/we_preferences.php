@@ -653,7 +653,7 @@ function build_dialog($selected_setting = 'ui'){
 <tbody>
 <tr>
 <td style="padding-right: 10px;" valign="top">
-  <img src="' . IMAGE_DIR . 'info_small.gif" height="22" width="20" />
+	<span class="fa-stack fa-lg" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>
 </td>
 <td class="middlefont">' . g_l('prefs', '[language_notice]') . '
 </td>

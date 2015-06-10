@@ -48,11 +48,10 @@ abstract class we_base_widget{
 	 */
 	static function create($iId, $sType, $oContent, $aLabel = array("", ""), $sCls = "white", $iRes = 0, $sCsv = "", $w = 0, $h = 0, $resize = true){
 		$w_icon = 40;
-		$show_seizer = false;
 		$w+=22;
 
 		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:100%"), 1, 1);
-		$oDrag->setCol(0, 0, array("width" => $w_icon), $show_seizer ? we_html_element::htmlImg(array("src" => IMAGE_DIR . "pd/tb_seizer.gif")) : we_html_tools::getPixel('100%', 16));
+		$oDrag->setCol(0, 0, array("width" => $w_icon), we_html_tools::getPixel('100%', 16));
 
 		$oIco_prc = new we_html_table(array(), 1, 3);
 		$oIco_prc->setCol(0, 0, array(),

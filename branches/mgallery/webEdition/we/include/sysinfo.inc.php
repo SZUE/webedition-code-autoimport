@@ -140,15 +140,18 @@ function getConnectionTypes(){
 }
 
 function getWarning($message, $value){
-	return '<div style="min-height:20px; min-width: 20px;cursor:pointer; padding-right:20px; padding-left:8px; background:url(' . IMAGE_DIR . 'alert_tiny.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
+	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative; background:url(' . IMAGE_DIR . 'alert_tiny.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
 }
 
 function getInfo($message, $value){
-	return '<div style="min-height:20px; min-width: 20px;cursor:pointer; padding-right:20px; padding-left:8px; background:url(' . IMAGE_DIR . 'info_tiny.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
+	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative;" title="' . $message . '">' . $value 		. '<span class="fa-stack fa-lg" style="font-size: 10px;color:#007de3;position: absolute;right:.5ex;">
+  <i class="fa fa-circle fa-stack-2x" ></i>
+  <i class="fa fa-info fa-stack-1x fa-inverse"></i>
+</span></div>';
 }
 
 function getOK($message = '', $value = ''){
-	return '<div style="min-height:20px; min-width: 20px; cursor:pointer; padding-right:20px; padding-left:0px; position:relative;" title="' . $message . '">' . $value . '<i class="fa fa-lg fa-check fa-ok" style="position:absolute;right:0px;"></i></div>';
+	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px; position:relative;" title="' . $message . '">' . $value . '<i class="fa fa-lg fa-check fa-ok" style="position:absolute;right:0px;"></i></div>';
 }
 
 $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
@@ -232,7 +235,7 @@ $_info = array(
 		'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning(g_l('sysinfo', '[short_open_tag warning]'), ini_get('short_open_tag')) : ini_get_message('short_open_tag'),
 		'allow_url_fopen' => ini_get_message('allow_url_fopen'),
 		'open_basedir' => ini_get_message('open_basedir'),
-		'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo(g_l('sysinfo', '[safe_mode warning]'), ini_get('safe_mode')) : getOK('', ini_get_message('safe_mode')),
+		'safe_mode' =>  (ini_get_bool('safe_mode')) ? getInfo(g_l('sysinfo', '[safe_mode warning]'), ini_get('safe_mode')) : getOK('', ini_get_message('safe_mode')),
 		'safe_mode_exec_dir' => ini_get_message('safe_mode_exec_dir'),
 		'safe_mode_gid' => ini_get_message('safe_mode_gid'),
 		'safe_mode_include_dir' => ini_get_message('safe_mode_include_dir'),
