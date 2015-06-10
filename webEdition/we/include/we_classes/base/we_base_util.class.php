@@ -375,12 +375,21 @@ abstract class we_base_util{
 		}
 	}
 
-	public static function getMimeType($ext, $filepath = '', $method = self::MIME_BY_HEAD_THEN_EXTENSION){
+	/**
+	 * get the mime type of a given file
+	 * @param string $ext the extension of the file
+	 * @param string $filepath path of the file
+	 * @param enum $method the method how to determine the type
+	 * @param booö $handleCompressed if true compressed data type is not returned as "application/compressed", so the real type should be determined
+	 * @return boolean
+	 */
+	public static function getMimeType($ext, $filepath = '', $method = self::MIME_BY_HEAD_THEN_EXTENSION, $handleCompressed = false){
+		$isCompressed = ($filepath && $handleCompressed ? we_base_file::isCompressed($filepath) : false);
 		switch($filepath ? $method : self::MIME_BY_EXTENSION){
 			case self::MIME_BY_DATA:
 				if(function_exists('finfo_open')){
 					$finfo = finfo_open(FILEINFO_MIME_TYPE);
-					$mime = finfo_buffer($finfo, $filepath);
+					$mime = finfo_buffer($finfo, we_base_file::loadPart($filepath, 0, 8192, $isCompressed));
 					finfo_close($finfo);
 					if($mime){
 						return $mime;
@@ -391,13 +400,13 @@ abstract class we_base_util{
 			case self::MIME_BY_HEAD_THEN_EXTENSION:
 				if(function_exists('finfo_open')){
 					$finfo = finfo_open(FILEINFO_MIME_TYPE);
-					$mime = finfo_file($finfo, $filepath);
+					$mime = finfo_buffer($finfo, we_base_file::loadPart($filepath, 0, 8192, $isCompressed));
 					finfo_close($finfo);
 					if($mime || $method == self::MIME_BY_HEAD){
 						return $mime ? : false;
 					}
 				}
-				if(function_exists('mime_content_type')){
+				if(!($handleCompressed && $isCompressed) && function_exists('mime_content_type')){
 					$mime = mime_content_type($filepath);
 					if($mime || $method == self::MIME_BY_HEAD){
 						return $mime ? : false;
