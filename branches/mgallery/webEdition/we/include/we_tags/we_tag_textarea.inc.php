@@ -60,7 +60,7 @@ function we_tag_textarea($attribs, $content){
 	}
 
 	$fieldVal = $GLOBALS['we_doc']->getField($attribs);
-	if(!$attribs['wysiwyg'] || strpos($fieldVal, '</wegallery>') === false){
+	if(!weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL) || strpos($fieldVal, '</wegallery>') === false){
 		return $fieldVal;
 	}
 

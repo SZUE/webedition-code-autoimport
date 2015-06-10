@@ -805,7 +805,7 @@ this.selectedIndex = 0;' .
 	static function htmlAlertAttentionBox($text, $type = self::TYPE_NONE, $width = 0, $useHtmlSpecialChars = true, $clip = 0){
 		switch($type){
 			case self::TYPE_ALERT:
-				$icon = '<img src="' . IMAGE_DIR . $icon . 'alert_small.gif" width="20" height="22" />';
+				$icon = '<img src="' . IMAGE_DIR . 'alert_small.gif" width="20" height="22" />';
 				break;
 			case self::TYPE_INFO:
 				$icon = '<span class="fa-stack fa-lg" style="font-size: 14px;color:#007de3;"><i class="fa fa-circle fa-stack-2x" ></i><i class="fa fa-info fa-stack-1x fa-inverse"></i></span>';
