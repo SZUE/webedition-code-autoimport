@@ -24,27 +24,21 @@
 define("PROGRESS_H_IMAGE", IMAGE_DIR . 'balken.gif');
 define("PROGRESS_H_IMAGE_BG", IMAGE_DIR . 'balken_bg.gif');
 
-define("PROGRESS_V_IMAGE", IMAGE_DIR . 'balken_v.gif');
-define("PROGRESS_V_IMAGE_BG", IMAGE_DIR . 'balken_bg_v.gif');
-
 class we_progressBar{
 	var $progress = 0;
 	var $texts = array();
-	var $orientation = 0;
 	var $progress_image = PROGRESS_H_IMAGE;
 	var $progress_image_bg = PROGRESS_H_IMAGE_BG;
 	var $stud_width = 10;
 	var $stud_len = 100;
 	var $showProgressText = true;
 	var $progressTextPlace = 1;
-	var $showBack = true;
 	var $callback_code = "";
 	var $callback_timeout = "";
 	var $name = "";
 
-	public function __construct($progress = 0, $orientation = 0, $showProgressText = true){
+	public function __construct($progress = 0, $showProgressText = true){
 		$this->setProgress($progress);
-		$this->setOrientation($orientation);
 		$this->showProgressText = $showProgressText;
 	}
 
@@ -76,11 +70,8 @@ function setProgressText' . $this->name . '(name,text){
 
 function setProgress' . $this->name . '(progress){
 	var koef=' . ($this->stud_len / 100) . ';' .
-				$frame . 'document.images["progress_image' . $this->name . '"].' . ($this->orientation ? 'height' : 'width') . '=koef*progress;' .
-				($this->showBack ?
-					$frame . 'document.images["progress_image_bg' . $this->name . '"].' . ($this->orientation ? 'height' : 'width') . '=(koef*100)-(koef*progress);' :
-					''
-				) .
+				$frame . 'document.images["progress_image' . $this->name . '"].width=koef*progress;' .
+				$frame . 'document.images["progress_image_bg' . $this->name . '"].width=(koef*100)-(koef*progress);' .
 				($this->showProgressText ?
 					'setProgressText' . $this->name . '("progress_text' . $this->name . '",progress+"%");' :
 					'') .
@@ -107,20 +98,6 @@ function setProgress' . $this->name . '(progress){
 		$this->name = $name;
 	}
 
-	private function setOrientation($ort = 0){
-		$this->orientation = $ort;
-		$this->setProgresImages(($ort ? PROGRESS_V_IMAGE : PROGRESS_H_IMAGE), ($ort ? PROGRESS_V_IMAGE_BG : PROGRESS_H_IMAGE_BG));
-	}
-
-	private function setProgresImages($image = "", $image_bg = ""){
-		if($image){
-			$this->progress_image = $image;
-		}
-		if($image_bg){
-			$this->progress_image_bg = $image_bg;
-		}
-	}
-
 	public function setCallback($code, $timeout){
 		$this->callback_code = $code;
 		$this->callback_timeout = $code;
@@ -142,10 +119,6 @@ function setProgress' . $this->name . '(progress){
 
 	public function setProgressLen($len = 100){
 		$this->stud_len = $len;
-	}
-
-	function setBackVisible($visible = true){
-		$this->showBack = $visible;
 	}
 
 	function setProgressTextVisible($visible = true){
@@ -192,14 +165,8 @@ function setProgress' . $this->name . '(progress){
 				'') .
 			'<table style="border-spacing: 0px;border-style:none;" cellpadding="0" >
 			<tr>' . ($left ? $left . '<td>' . we_html_tools::getPixel(5, 1) . '</td>' : '') .
-			($this->orientation ?
-				'<td><table border="0" cellpadding="0" cellspacing="0">' . ($this->showBack ? '<tr><td><img name="progress_image_bg" src="' . $this->progress_image_bg . '" height="' . $rest_len . '" width="' . $this->stud_width . '" /></td></tr>' : "") . '<tr><td><img  name="progress_image" src="' . $this->progress_image . '" height="' . $progress_len . '" width="' . $this->stud_width . '" /></td></tr></table></td>' :
-				'<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' .
-				($this->showBack ?
-					'<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' :
-					""
-				)
-			) .
+			'<td><img name="progress_image' . $this->name . '" src="' . $this->progress_image . '" width="' . $progress_len . '" height="' . $this->stud_width . '" /></td>' .
+			'<td><img  name="progress_image_bg' . $this->name . '" src="' . $this->progress_image_bg . '" width="' . $rest_len . '" height="' . $this->stud_width . '" /></td>' .
 			($right ?
 				"<td>" . we_html_tools::getPixel(5, 1) . "</td>" . $right :
 				""

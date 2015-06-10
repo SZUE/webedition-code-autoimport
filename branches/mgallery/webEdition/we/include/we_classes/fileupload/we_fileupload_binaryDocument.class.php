@@ -173,7 +173,7 @@ div.we_file_drag_binDoc{
 		$divBtnUpload = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'), $btnUpload);
 		$divBtnCancel = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top:16px;display:none;'), $btnCancel);
 
-		$progress = new we_progressBar(20, 0, true);
+		$progress = new we_progressBar(20, true);
 		$progress->setStudLen(170);
 		$progress->setProgressTextPlace(0);
 		$progress->setName('_fileupload');

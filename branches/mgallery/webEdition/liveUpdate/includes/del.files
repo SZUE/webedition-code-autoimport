@@ -3092,6 +3092,7 @@ images/button/btn_clicked_right.gif
 images/button/btn_clicked_middle.gif
 images/button/btn_clicked_left.gif
 images/button
+images/busy.gif
 images/busy2.gif
 images/box/shaddowBox3_r.gif
 images/box/shaddowBox3_l.gif
@@ -3104,7 +3105,9 @@ images/box
 images/black.gif
 images/bg_dialogTop_r.gif
 images/bg_dialogTop.gif
+images/balken_v.gif
 images/balken_u.gif
+images/balken_bg_v.gif
 images/backgrounds/radient.gif
 images/backgrounds/multitabBG.gif
 images/backgrounds/iconbarBack.gif

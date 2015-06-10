@@ -127,7 +127,6 @@ var Tree = null;
 var Vtabs = null;
 var TreeInfo = null;
 var busy = 0;
-var balken = null;
 var firstLoad = false;
 var hot = 0;
 var last = 0;
