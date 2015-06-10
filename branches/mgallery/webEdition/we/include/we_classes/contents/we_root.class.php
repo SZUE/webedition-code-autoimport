@@ -91,6 +91,7 @@ abstract class we_root extends we_class{
 	var $RestrictOwners = 0;
 	protected $LockUser = 0;
 	protected $MediaLinks = array();
+	protected $LangLinks = array();
 
 	/* Constructor */
 
@@ -98,7 +99,7 @@ abstract class we_root extends we_class{
 		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser');
+		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser', 'LangLinks');
 	}
 
 	public function makeSameNew(){
@@ -566,16 +567,20 @@ abstract class we_root extends we_class{
 		return $yuiSuggest->getHTML();
 	}
 
-	function formLanguageDocument($headline, $langkey, $LDID = 0, $table = FILE_TABLE, $rootDirID = 0){
+	protected function formInputLangLink($headline, $langkey, $LDID = 0, $path = ''){
 		$yuiSuggest = & weSuggest::getInstance();
 		$textname = 'we_' . $this->Name . '_LanguageDocName[' . $langkey . ']';
 		$idname = 'we_' . $this->Name . '_LanguageDocID[' . $langkey . ']';
 		$ackeyshort = 'LanguageDoc' . str_replace('_', '', $langkey);
 		$myid = $LDID ? : '';
-		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
+		$table = $this->IsFolder ? FILE_TABLE : $this->Table;
+		$path = $path ? : ($LDID ? f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
+
+		$rootDirID = $table === OBJECT_FILES_TABLE ? $this->rootDirID : 0;
 		if($rootDirID && !$path){
 			$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($rootDirID), '', $this->DB_WE);
 		}
+
 		$yuiSuggest->setAcId($ackeyshort, $path);
 		if($table == FILE_TABLE){
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT);
@@ -616,6 +621,43 @@ abstract class we_root extends we_class{
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
 		return $yuiSuggest->getHTML();
+	}
+
+	function formLangLinks($withHeadline = true){
+		we_loadLanguageConfig();
+		$_defLang = self::getDefaultLanguage();
+		$value = ($this->Language ? : $_defLang);
+		$inputName = 'we_' . $this->Name . '_Language';
+		$_languages = getWeFrontendLanguagesForBackend();
+		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
+
+		if(LANGLINK_SUPPORT){
+			$htmlzw = '';
+			foreach($_languages as $langkey => $lang){
+				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
+				$LDID = isset($this->LangLinks[$langkey]['id']) && $this->LangLinks[$langkey]['id'] && $this->LangLinks[$langkey]['id'] !== -1 ? $this->LangLinks[$langkey]['id'] : 0;
+				$path = $LDID ? $this->LangLinks[$langkey]['ipath'] : '';
+
+				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formInputLangLink($lang, $langkey, $LDID, $path) . '</div>';
+				$langkeys[] = $langkey;
+			}
+			return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	' . $_headline . '
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
+	<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+	<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
+</table>
+<br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
+		} else {
+			return '
+<table border="0" cellpadding="0" cellspacing="0">
+	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	' . $_headline . '
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
+</table>';
+		}
 	}
 
 	#################### Function for getting and setting the $elements Array #########################################################################
@@ -767,6 +809,28 @@ abstract class we_root extends we_class{
 		return $http;
 	}
 
+	protected static function getDefaultLanguage(){
+// get interface language of user
+		list($_userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
+
+// trying to get locale string out of interface language
+		$_key = array_search($_userLanguage, getWELangs());
+
+		$_defLang = $GLOBALS['weDefaultFrontendLanguage'];
+
+// if default language is not equal with frontend language
+		if(substr($_defLang, 0, strlen($_key)) !== $_key){
+// get first language that fits
+			foreach(getWeFrontendLanguagesForBackend() as $_k => $_v){
+				$_parts = explode('_', $_k);
+				if($_parts[0] === $_key){
+					$_defLang = $_k;
+				}
+			}
+		}
+		return $_defLang;
+	}
+
 	function editor(){
 
 	}
@@ -798,10 +862,11 @@ abstract class we_root extends we_class{
 		parent::we_load($from);
 
 		$this->i_getContentData();
+		$this->i_getLangLinks();
 		$this->OldPath = $this->Path;
 	}
 
-	public function we_save($resave = 0){
+	public function we_save($resave = false){
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();
@@ -942,7 +1007,7 @@ abstract class we_root extends we_class{
 							switch($type){
 								case 'LanguageDocName':
 								case 'LanguageDocID':
-									//Bug #8950
+									$this->LangLinks[$name][$type === 'LanguageDocName' ? 'path' : 'id'] = $v2;
 									break;
 								case 'date':
 									preg_match('|(.*)_(.*)|', $name, $regs);
@@ -999,6 +1064,27 @@ abstract class we_root extends we_class{
 					}
 				}
 				$this->elements[$Name]['table'] = CONTENT_TABLE;
+			}
+		}
+	}
+
+	protected function i_getLangLinks($isFolder = false, $isObject = false){
+		we_loadLanguageConfig();
+		$_languages = getWeFrontendLanguagesForBackend();
+
+		if(LANGLINK_SUPPORT){
+			$documentTable = $isObject && !$isFolder ? tblObjectFile : stripTblPrefix(FILE_TABLE);
+			foreach($_languages as $langkey => $lang){
+				$tmpIDs[$langkey] = intval(f("SELECT LDID FROM " . LANGLINK_TABLE . " WHERE DocumentTable='" . $documentTable . "' AND IsObject=" . intval($isObject) . " AND DID=" . intval($this->ID) . " AND Locale='" . $this->DB_WE->escape($langkey) . "'", 'LDID', $this->DB_WE));
+			}
+
+			$tmpPaths = id_to_path($tmpIDs, $this->Table, null, false, true);
+			foreach($_languages as $langkey => $lang){
+				$this->LangLinks[$langkey] = array('id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]);
+			}
+		} else {
+			foreach($_languages as $langkey => $lang){
+				$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
 			}
 		}
 	}

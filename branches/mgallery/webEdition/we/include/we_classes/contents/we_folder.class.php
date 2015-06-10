@@ -205,7 +205,7 @@ class we_folder extends we_root{
 
 	/* saves the folder */
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$this->i_setText();
 		$objFolder = (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE);
 		if($objFolder){
@@ -242,12 +242,13 @@ class we_folder extends we_root{
 		}
 		$this->resaveWeDocumentCustomerFilter();
 
-		if($resave == 0 && $update){
+		if(!$resave && $update){
 			//FIXME:improve!
 			we_navigation_cache::clean(true);
 		}
-		if(LANGLINK_SUPPORT && ($langid = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_LanguageDocID'))){
-			$this->setLanguageLink($langid, 'tblFile', true, ($this instanceof we_class_folder));
+
+		if(LANGLINK_SUPPORT && in_array($this->Table, array(FILE_TABLE, OBJECT_FILES_TABLE))){
+			$this->setLanguageLink($this->LangLinks, 'tblFile', true, ($this instanceof we_class_folder));
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, true); //if language changed, we
@@ -255,9 +256,8 @@ class we_folder extends we_root{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 			//check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -353,6 +353,10 @@ class we_folder extends we_root{
 		$this->Text = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 	}
 
+	protected function i_getLangLinks(){
+		parent::i_getLangLinks(true, (defined('OBJECT_FILES_TABLE') && ($this->Table == OBJECT_FILES_TABLE) ? true : false));
+	}
+
 	function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($this->Path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->DB_WE);
 	}
@@ -418,42 +422,6 @@ class we_folder extends we_root{
 	<tr><td class="defaultfont">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
 ' : '')) .
 			'</table>';
-	}
-
-	function formLanguage(){
-		we_loadLanguageConfig();
-
-		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
-
-		$inputName = 'we_' . $this->Name . '_Language';
-
-		$_languages = getWeFrontendLanguagesForBackend();
-		if(LANGLINK_SUPPORT){
-			$htmlzw = '';
-			$isobject = (defined('OBJECT_FILES_TABLE') && ($this->Table == OBJECT_FILES_TABLE) ? 1 : 0);
-			foreach($_languages as $langkey => $lang){
-				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblFile" AND IsObject=' . intval($isobject) . ' AND DID=' . intval($this->ID) . ' AND Locale="' . $this->DB_WE->escape($langkey) . '"', 'LDID', $this->DB_WE);
-				if(!$LDID){
-					$LDID = 0;
-				}
-				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
-				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID) . '</div>';
-				$langkeys[] = $langkey;
-			}
-
-			return
-				'<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-				<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-				<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinksDir]') . '</td></tr>
-			</table>' . we_html_element::htmlBr() . $htmlzw;
-		} else {
-
-			return '<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 388) . '</td></tr>
-			</table>';
-		}
 	}
 
 	function formChangeOwners(){
@@ -620,10 +588,7 @@ class we_folder extends we_root{
 	 * Beseitigt #Bug 3705: sorgt daf�r, das auch leere Dokumentenordner bei einem REbuild angelegt werden
 	 */
 	public function we_rewrite(){
-		if(parent::we_rewrite()){
-			return ($this->Table == FILE_TABLE ? $this->we_save(1) : true);
-		}
-		return false;
+		return (parent::we_rewrite() ? ($this->Table == FILE_TABLE ? $this->we_save(true) : true) : false);
 	}
 
 	/**
@@ -678,10 +643,10 @@ class we_folder extends we_root{
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
-				$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLanguage(), "space" => 140, "noline" => 1);
+				$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), "space" => 140, "noline" => 1);
 				$parts[] = array("headline" => g_l('weClass', '[grant_language]'), "html" => $this->formChangeLanguage(), "space" => 140, "forceRightHeadline" => 1);
 			} else if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
-				$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLanguage(), "space" => 140);
+				$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), "space" => 140);
 			}
 		}
 

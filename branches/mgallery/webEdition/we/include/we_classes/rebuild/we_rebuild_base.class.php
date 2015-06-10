@@ -177,7 +177,7 @@ abstract class we_rebuild_base{
 
 					$ret = ($table == TEMPLATES_TABLE ?
 							// templates has to be treated differently
-							$GLOBALS['we_doc']->we_save(1) :
+							$GLOBALS['we_doc']->we_save(true) :
 							$GLOBALS['we_doc']->we_resaveMainTable());
 					if(!$ret){
 						t_e('error writing ' . $GLOBALS['we_doc']->Path);

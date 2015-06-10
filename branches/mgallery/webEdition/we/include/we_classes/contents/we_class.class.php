@@ -450,14 +450,23 @@ abstract class we_class{
 	 * Before writing LangLinks to the db, we must check the Document-Locale: if it has changed, we must update or clear
 	 * existing LangLinks from and to this document.
 	 */
-	protected function setLanguageLink($LangLinkArray, $type, $isfolder = false, $isobject = false){
+	protected function setLanguageLink($LinkArray, $type, $isfolder = false, $isobject = false){
 		if(!(LANGLINK_SUPPORT)){
 			return true;
 		}
-		$newLang = we_base_request::_(we_base_request::STRING, 'we_' . $this->Name . '_Language');
+		$newLang = $this->Language;
 		if(!$newLang){
 			return false;
 		}
+
+		if($type !== 'tblDocTypes'){
+			foreach($LinkArray as $lang => $link){
+				$LangLinkArray[$lang] = $link['id'];
+			}
+		} else {
+			$LangLinkArray = $LinkArray;
+		}
+
 		$db = new DB_WE();
 		$documentTable = ($type === 'tblObjectFile') ? 'tblObjectFiles' : $type;
 		$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);

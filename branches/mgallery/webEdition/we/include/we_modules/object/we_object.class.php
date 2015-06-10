@@ -41,8 +41,16 @@ class we_object extends we_document{
 	var $WorkspaceFlag = 1;
 	var $Templates = '';
 	var $SerializedArray = array(); // #3931
+	protected static $urlFields = array(
+		'urlfield1' => 64,
+		'urlfield2' => 64,
+		'urlfield3' => 64,
+	);
+	protected static $urlUnique = array(
+		'urlunique' => 16,
+	);
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct();
 		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'strOrder', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
 		if(isWE()){
@@ -92,7 +100,7 @@ class we_object extends we_document{
 			$cf->Filename = $this->Text;
 			$cf->setParentID($pID);
 			$cf->Path = $cf->getPath();
-			$cf->we_save(1);
+			$cf->we_save(true);
 			$cf->modifyChildrenPath();
 		}
 
@@ -114,42 +122,36 @@ class we_object extends we_document{
 
 		$this->wasUpdate = $this->ID > 0;
 
-		if(($def = $this->getElement('Defaultanzahl')) !== ''){
+		if(($def = $this->getElement('Defaultanzahl'))){
 			$this->DefaultText = '';
 
 			for($i = 0; $i <= $def; $i++){
 				$was = 'DefaultText_' . $i;
-				if(($dat = $this->getElement($was)) != ''){ //&& in_array($this->getElement($was),$var_flip)
-					if(stristr($dat, 'unique')){
-						$unique = $this->getElement('unique_' . $i);
-						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 16) . '%';
-						$this->setElement($was, $dat, 'defaultText');
+				if(($dat = $this->getElement($was))){
+					foreach(self::$urlUnique as $key => $len){
+						if(stristr($dat, $key)){
+							$unique = $this->getElement($key . '_' . $i);
+							$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : $len) . '%';
+							$this->setElement($was, $dat, 'defaultText');
+						}
+						$this->DefaultText .= $dat;
 					}
-					$this->DefaultText .= $dat;
 				}
 			}
 		}
-		if(($def = $this->getElement('DefaultanzahlUrl')) !== ''){
+		if(($def = $this->getElement('DefaultanzahlUrl'))){
+			//FIXME: make this json - this format is totally nonsense
 			$this->DefaultUrl = '';
-
+			$allFields = array_merge(self::$urlUnique, self::$urlFields);
 			for($i = 0; $i <= $def; $i++){
 				$was = 'DefaultUrl_' . $i;
-				if(($dat = $this->getElement($was)) != ''){
-					if(stristr($dat, 'urlunique')){
-						$unique = $this->getElement('urlunique_' . $i);
-						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 16) . '%';
-					}
-					if(stristr($dat, 'urlfield1')){
-						$unique = $this->getElement('urlfield1_' . $i);
-						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 64) . '%';
-					}
-					if(stristr($dat, 'urlfield2')){
-						$unique = $this->getElement('urlfield2_' . $i);
-						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 64) . '%';
-					}
-					if(stristr($dat, 'urlfield3')){
-						$unique = $this->getElement('urlfield3_' . $i);
-						$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : 64) . '%';
+
+				if(($dat = $this->getElement($was))){
+					foreach($allFields as $key => $len){
+						if(stristr($dat, $key)){
+							$unique = $this->getElement($key . '_' . $i);
+							$dat = '%' . str_replace('%', '', $dat) . (($unique > 0) ? $unique : $len) . '%';
+						}
 					}
 					$this->setElement($was, $dat);
 					$this->DefaultUrl .= $dat;
@@ -267,7 +269,7 @@ class we_object extends we_document{
 
 
 			$this->DefaultUrlfield0 = ($tmp = $this->getElement('urlfield0')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
-			$this->DefaultUrlfield1 = ($tmp = $this->getElement('urlfield1')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($this->getElement('urlfield1'), 'dat') : '_';
+			$this->DefaultUrlfield1 = ($tmp = $this->getElement('urlfield1')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($this->getElement('urlfield1')) : '_';
 			$this->DefaultUrlfield2 = ($tmp = $this->getElement('urlfield2')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
 			$this->DefaultUrlfield3 = ($tmp = $this->getElement('urlfield3')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '_';
 			$this->DefaultTriggerID = ($tmp = $this->getElement('triggerid')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '0';
@@ -477,9 +479,9 @@ class we_object extends we_document{
 			$variant_field = 'variant_' . we_base_constants::WE_VARIANTS_ELEMENT_NAME;
 
 			$this->DB_WE->query('SHOW COLUMNS FROM ' . $ctable . ' LIKE "' . $variant_field . '"');
-			$exists = ($this->DB_WE->next_record()) ? true : false;
+				$exists = ($this->DB_WE->next_record()) ? true : false;
 
-			if($this->hasVariantFields()){
+				if($this->hasVariantFields()){
 				if(!$exists){
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ADD `' . $variant_field . '` TEXT NOT NULL');
 				}
@@ -1219,9 +1221,9 @@ class we_object extends we_document{
 				if($type == we_objectFile::TYPE_DATE){
 					$content .= we_html_forms::radiobutton($name, ($this->getElement("urlfield0", "dat") == $name), "we_" . $this->Name . "_input[urlfield0]", g_l('weClass', '[urlfield0]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield0]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
 				} else {
-					$content .= we_html_forms::radiobutton($name, ($this->getElement("urlfield1", "dat") == $name), "we_" . $this->Name . "_input[urlfield1]", g_l('weClass', '[urlfield1]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield1]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-						we_html_forms::radiobutton($name, ($this->getElement("urlfield2", "dat") == $name), "we_" . $this->Name . "_input[urlfield2]", g_l('weClass', '[urlfield2]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield2]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}") .
-						we_html_forms::radiobutton($name, ($this->getElement("urlfield3", "dat") == $name), "we_" . $this->Name . "_input[urlfield3]", g_l('weClass', '[urlfield3]'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[urlfield3]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
+					foreach(array_keys(self::$urlFields) as $key){
+						$content .= we_html_forms::radiobutton($name, ($this->getElement($key) == $name), "we_" . $this->Name . "_input[" . $key . "]", g_l('weClass', '[' . $key . ']'), true, "defaultfont", "if(this.waschecked){document.getElementById('empty_" . $this->Name . "_input[" . $key . "]').checked=true;this.waschecked=false;}_EditorFrame.setEditorIsHot(true);", false, "", 0, 0, "if(this.checked){this.waschecked=true}");
+					}
 				}
 				$content .= '</td></tr>';
 				break;
@@ -1737,25 +1739,21 @@ class we_object extends we_document{
 		//$var_flip = array_flip(g_l('modules_object', '[url]'));
 
 		$select2 = "";
-		if($this->issetElement("DefaultanzahlUrl")){
+		if(($anz = $this->getElement("DefaultanzahlUrl"))){
+
+			$allFields = array_merge(self::$urlUnique, self::$urlFields);
 			$this->DefaultUrl = "";
 
-			for($i = 0; $i <= $this->getElement("DefaultanzahlUrl"); $i++){
+			for($i = 0; $i <= $anz; $i++){
 				$was = "DefaultUrl_" . $i;
-				if($this->elements[$was]["dat"] != ""){
-					if(stristr($this->elements[$was]["dat"], 'urlunique')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlunique_" . $i]["dat"]) && $this->elements["urlunique_" . $i]["dat"] > 0 ) ? $this->elements["urlunique_" . $i]["dat"] : 16) . "%";
+				if(($curDat = $this->getElement($was))){
+					foreach($allFields as $key => $len){
+						if(stristr($curDat, $key)){
+							$curDat = "%" . str_replace("%", "", $curDat) . ($this->getElement($key . '_' . $i) ? : $len) . "%";
+						}
 					}
-					if(stristr($this->elements[$was]["dat"], 'urlfield1')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield1_" . $i]["dat"]) && $this->elements["urlfield1_" . $i]["dat"] > 0 ) ? $this->elements["urlfield1_" . $i]["dat"] : 64) . "%";
-					}
-					if(stristr($this->elements[$was]["dat"], 'urlfield2')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield2_" . $i]["dat"]) && $this->elements["urlfield2_" . $i]["dat"] > 0 ) ? $this->elements["urlfield2_" . $i]["dat"] : 64) . "%";
-					}
-					if(stristr($this->elements[$was]["dat"], 'urlfield3')){
-						$this->elements[$was]["dat"] = "%" . str_replace("%", "", $this->elements[$was]["dat"]) . (( isset($this->elements["urlfield3_" . $i]["dat"]) && $this->elements["urlfield3_" . $i]["dat"] > 0 ) ? $this->elements["urlfield3_" . $i]["dat"] : 64) . "%";
-					}
-					$this->DefaultUrl .= $this->elements[$was]["dat"];
+					$this->setElement($was, $curDat);
+					$this->DefaultUrl .= $curDat;
 				}
 			}
 		}
@@ -1767,33 +1765,38 @@ class we_object extends we_document{
 		while($all){
 			if(preg_match('/^%([^%]+)%/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]) + 2);
-				$key = $regs[1];
-				if(preg_match('/urlunique([^%]*)/', $key, $regs)){
-					$anz = (!$regs[1] ? 16 : abs($regs[1]));
-					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
-					$text = preg_replace('/%urlunique[^%]*%/', $unique, (isset($text) ? $text : ""));
-					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlunique%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-						$this->htmlTextInput("we_" . $this->Name . "_input[urlunique_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
-				} elseif(preg_match('/urlfield1([^%]*)/', $key, $regs)){
-					$anz = (!$regs[1] ? 64 : abs($regs[1]));
-					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield1%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-						$this->htmlTextInput("we_" . $this->Name . "_input[urlfield1_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
-				} elseif(preg_match('/urlfield2([^%]*)/', $key, $regs)){
-					$anz = (!$regs[1] ? 64 : abs($regs[1]));
-					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield2%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-						$this->htmlTextInput("we_" . $this->Name . "_input[urlfield2_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
-				} elseif(preg_match('/urlfield3([^%]*)/', $key, $regs)){
-					$anz = (!$regs[1] ? 64 : abs($regs[1]));
-					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%urlfield3%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-						$this->htmlTextInput("we_" . $this->Name . "_input[urlfield3_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
-				} else {
-					$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
+				$data = $regs[1];
+				$found = false;
+				foreach(self::$urlUnique as $key => $len){
+					if(preg_match('/' . $key . '([^%]*)/', $data, $regs)){
+						$anz = (!$regs[1] ? $len : abs($regs[1]));
+						$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
+						$text = preg_replace('/%' . $key . '[^%]*%/', $unique, (isset($text) ? $text : ""));
+						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+							$this->htmlTextInput("we_" . $this->Name . "_input[" . $key . "_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+						$found = true;
+						break;
+					}
+				}
+				if(!$found){
+					foreach(self::$urlFields as $key => $len){
+						if(preg_match('/' . $key . '([^%]*)/', $data, $regs)){
+							$anz = (!$regs[1] ? $len : abs($regs[1]));
+							$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $key . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
+								$this->htmlTextInput("we_" . $this->Name . "_input[" . $key . "_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+							$found = true;
+							break;
+						}
+					}
+					if(!$found){
+						$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "%" . $data . "%", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;";
+					}
 				}
 			} else if(preg_match('/^([^%]+)/', $all, $regs)){
 				$all = substr($all, strlen($regs[1]));
-				$key = $regs[1];
+				$data = $regs[1];
 				$select2 .= $this->htmlSelect("textwert_" . $zahl, g_l('modules_object', '[url]'), 1, "Text", "", array('onchange' => '_EditorFrame.setEditorIsHot(true); document.we_form.elements[\'we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']\'].value = this.options[this.selectedIndex].value; we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
-					$this->htmlTextInput("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", 40, $key, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
+					$this->htmlTextInput("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", 40, $data, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
 			}
 
 			$select2 .= we_html_element::htmlBr();
@@ -2095,6 +2098,10 @@ class we_object extends we_document{
 		$this->setElement("Sortgesamt", ($f - 1));
 	}
 
+	protected function i_getLangLinks(){
+		parent::i_getLangLinks(false, true);
+	}
+
 	protected function i_set_PersistentSlot($name, $value){
 		if(in_array($name, $this->persistent_slots)){
 			$this->$name = $value;
@@ -2251,9 +2258,9 @@ class we_object extends we_document{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$this->save();
-		if($resave == 0){
+		if(!$resave){
 			we_history::insertIntoHistory($this);
 		}
 		/* hook */
@@ -2262,9 +2269,8 @@ class we_object extends we_document{
 			return true;
 		}
 		$hook = new weHook('save', '', array($this, 'resave' => $resave));
-		$ret &= $hook->executeHook();
 		//check if doc should be saved
-		if($ret === false){
+			if($hook->executeHook() === false){
 			$this->errMsg = $hook->getErrorString();
 			return false;
 		}

@@ -378,7 +378,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>' .
 			$this->getCharsetSelect() .
-			$this->formLanguage(true) .
+			$this->formLangLinks(true) .
 			'</table>';
 	}
 
@@ -627,7 +627,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		// First off correct corupted fields
 		$this->correctFields();
 
@@ -644,14 +644,14 @@ class we_webEditionDocument extends we_textContentDocument{
 			$out = $this->registerMediaLinks(true);
 		}
 
-		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
-			$this->setLanguageLink($docID, 'tblFile', false, false); // response deactivated
+		if(LANGLINK_SUPPORT){
+			$this->setLanguageLink($this->LangLinks, 'tblFile', false, false); // response deactivated
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
 
-		if($resave == 0){
+		if(!$resave){
 			$hy = we_unserialize(we_base_preferences::getUserPref('History'));
 			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
 			we_base_preferences::setUserPref('History', serialize($hy));
@@ -664,7 +664,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return parent::i_writeDocument();
 	}
 
-	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_category = $this->Category;
 		$out = parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);

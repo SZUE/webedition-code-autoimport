@@ -100,7 +100,7 @@ class we_textDocument extends we_document{
 		return $doc;
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		if($this->ContentType === we_base_ContentTypes::HTACESS && $this->ParentID == 0){
 			//pretest new htaccess file
 			$doc = parent::i_getDocumentToSave();

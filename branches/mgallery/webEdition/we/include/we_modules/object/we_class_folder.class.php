@@ -55,7 +55,7 @@ class we_class_folder extends we_folder{
 
 	public function we_rewrite(){
 		$this->ClassName = __CLASS__;
-		return $this->we_save(0, 1);
+		return $this->we_save(false, true);
 	}
 
 	function we_initSessDat($sessDat){
@@ -84,7 +84,7 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$sp = explode('/', $this->Path);
 		if(isset($sp[2]) && $sp[2] != ''){
 			$this->IsClassFolder = 0;
@@ -937,9 +937,9 @@ for ( frameId in _usedEditors ) {
 				$obj->ExtraWorkspaces = "";
 				$obj->ExtraWorkspacesSelected = "";
 				$oldModDate = $obj->ModDate;
-				$obj->we_save(0, 1);
+				$obj->we_save(false, true);
 				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(0, 1, 1);
+					$obj->we_publish(false, true, true);
 				}
 			}
 		}
@@ -960,9 +960,9 @@ for ( frameId in _usedEditors ) {
 				$obj->getContentDataFromTemporaryDocs($ofid);
 				$obj->Charset = $Charset;
 				$oldModDate = $obj->ModDate;
-				$obj->we_save(0, 1);
+				$obj->we_save(false, true);
 				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(0, 1, 1);
+					$obj->we_publish(false, true, true);
 				}
 			}
 		}
@@ -981,9 +981,9 @@ for ( frameId in _usedEditors ) {
 				$obj->getContentDataFromTemporaryDocs($ofid);
 				$obj->TriggerID = $DefaultTriggerID;
 				$oldModDate = $obj->ModDate;
-				$obj->we_save(0, 1);
+				$obj->we_save(false, true);
 				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(0, 1, 1);
+					$obj->we_publish(false, true, true);
 				}
 			}
 		}
@@ -1002,9 +1002,9 @@ for ( frameId in _usedEditors ) {
 				$obj->getContentDataFromTemporaryDocs($ofid);
 				$obj->IsSearchable = ($searchable != true ? 0 : 1);
 				$oldModDate = $obj->ModDate;
-				$obj->we_save(0, 1);
+				$obj->we_save(false, true);
 				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(0, 1, 1);
+					$obj->we_publish(false, true, true);
 				}
 			}
 		}
@@ -1018,16 +1018,23 @@ for ( frameId in _usedEditors ) {
 		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
 
 		foreach(array_keys($weg) as $ofid){//FIXME: this is not save
-			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-				if($publish != true){
+			if(!permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				continue;
+			}
+			$obj = new we_objectFile();
+			$obj->initByID($ofid, OBJECT_FILES_TABLE);
 
-					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
+			if($publish){
+				$obj->getContentDataFromTemporaryDocs($ofid);
+				$update = $obj->we_publish();
+			} else {
+				$update = $obj->we_unpublish();
+			}
 
-					if($obj->we_unpublish()){
-						$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
-							//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-							$obj->getUpdateTreeScript(false) . "
+			if($update){
+				$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
+					//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
+					$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	 top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
@@ -1048,8 +1055,6 @@ if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
 weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
-					}
-				}
 			}
 		}
 

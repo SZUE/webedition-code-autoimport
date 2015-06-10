@@ -43,7 +43,7 @@ class we_docTypes extends we_class{
 		$this->Table = DOC_TYPES_TABLE;
 	}
 
-	public function we_save($resave = 0){
+	public function we_save($resave = false){
 		$idArr = makeArrayFromCSV($this->Templates);
 		$newIdArr = array();
 		foreach($idArr as $id){
@@ -67,7 +67,7 @@ class we_docTypes extends we_class{
 	}
 
 	public function we_save_exim(){
-		return parent::we_save(0);
+		return parent::we_save(false);
 	}
 
 	function saveInSession(&$save){
@@ -108,7 +108,7 @@ class we_docTypes extends we_class{
 		}
 	}
 
-	private function formLanguage(){
+	private function formLangLinks(){
 		we_loadLanguageConfig();
 
 		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
@@ -204,7 +204,7 @@ class we_docTypes extends we_class{
 		<td>' . $this->formIsSearchable() . '</td>
 	</tr>
 	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-	<tr><td colspan="3">' . $this->formLanguage(521) . '</td></tr>
+	<tr><td colspan="3">' . $this->formLangLinks(521) . '</td></tr>
 	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
 	<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
 </table>';
@@ -234,7 +234,7 @@ class we_docTypes extends we_class{
 
 	private function formDocTypes3($headline, $langkey, $derDT = 0){
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
-		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID '.$dtq['join'].' WHERE dt.Language="' . $langkey . '" AND ' . $dtq['where']);
+		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE dt.Language="' . $langkey . '" AND ' . $dtq['where']);
 		$vals = array(0 => g_l('weClass', '[nodoctype]'));
 		foreach($this->DB_WE->getAllFirst(false) as $k => $v){
 			$vals[$k] = $v;

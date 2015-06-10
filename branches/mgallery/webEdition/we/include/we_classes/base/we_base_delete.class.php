@@ -183,9 +183,9 @@ abstract class we_base_delete{
 								$obj->getContentDataFromTemporaryDocs($affectedobjectsID);
 								$oldModDate = $obj->ModDate;
 								$obj->setElement('we_object_' . $tableID, 0);
-								$obj->we_save(0, 1);
+								$obj->we_save(false, true);
 								if($obj->Published != 0 && $obj->Published == $oldModDate){
-									$obj->we_publish(0, 1, 1);
+									$obj->we_publish(false, true, true);
 								}
 							}
 							$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($testclassID) . ' SET ' . we_object::QUERY_PREFIX . $tableID . '=0 WHERE ' . we_object::QUERY_PREFIX . $tableID . '=' . intval($id));

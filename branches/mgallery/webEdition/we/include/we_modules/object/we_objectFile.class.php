@@ -263,36 +263,6 @@ class we_objectFile extends we_document{
 		return we_html_element::htmlHidden($idname, $this->CopyID) . $but;
 	}
 
-	function formLanguage(){
-		we_loadLanguageConfig();
-		$value = (isset($this->Language) ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
-		$inputName = 'we_' . $this->Name . '_Language';
-		$_languages = getWeFrontendLanguagesForBackend();
-		$this->setRootDirID(true);
-		$langkeys = array();
-
-		if(LANGLINK_SUPPORT){
-			$htmlzw = we_html_element::htmlBr();
-			foreach($_languages as $langkey => $lang){
-				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
-				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
-				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID, $this->Table, $this->rootDirID) . '</div>';
-				$langkeys[] = $langkey;
-			}
-		} else {
-			$htmlzw = '';
-		}
-
-		return '<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>' .
-			(LANGLINK_SUPPORT ?
-				'<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-					<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>' :
-				'') .
-			'</table>' . $htmlzw;
-	}
-
 	function copyDoc($id){
 		if(!$id){
 			return;
@@ -2144,7 +2114,7 @@ class we_objectFile extends we_document{
 
 	function we_ImportSave(){
 		$this->Icon = 'objectFile.gif';
-		if(!parent::we_save(1)){
+		if(!parent::we_save(true)){
 			return false;
 		}
 		$this->wasUpdate = true;
@@ -2198,7 +2168,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		if(intval($this->TableID) == 0 || $this->IsFolder){
 			return false;
 		}
@@ -2233,9 +2203,8 @@ class we_objectFile extends we_document{
 
 		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2243,7 +2212,7 @@ class we_objectFile extends we_document{
 
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
-			if((!parent::we_save($resave, 1)) || ($resave) || (!$this->we_republish())){
+			if((!parent::we_save($resave, true)) || ($resave) || (!$this->we_republish())){
 				return false;
 			}
 		}
@@ -2261,7 +2230,7 @@ class we_objectFile extends we_document{
 		}
 
 		if(!$this->Published){
-			if(!we_root::we_save(1)){
+			if(!we_root::we_save(true)){
 				return false;
 			}
 			if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
@@ -2274,18 +2243,18 @@ class we_objectFile extends we_document{
 			$version = new we_versions_version();
 			$version->save($this);
 		}
-		if(LANGLINK_SUPPORT && ($docid = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
-			$this->setLanguageLink($docid, 'tblObjectFile', false, true);
+		if(LANGLINK_SUPPORT){
+			$this->setLanguageLink($this->LangLinks, 'tblObjectFile', false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
+
 // hook
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2433,19 +2402,16 @@ class we_objectFile extends we_document{
 		return '';
 	}
 
-	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		if(!$skipHook){
 			$hook = new weHook('prePublish', '', array($this));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
 		$old = $this->Published;
-		$oldUrl = f('SELECT Url FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
-		$wasPublished = $this->Published > 0;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
 		if($saveinMainDB && !we_root::we_save()){
@@ -2468,9 +2434,8 @@ class we_objectFile extends we_document{
 		//hook
 		if(!$skipHook){
 			$hook = new weHook('publish', '', array($this, 'prePublishTime' => $old));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2500,9 +2465,8 @@ class we_objectFile extends we_document{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('unpublish', '', array($this));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2700,6 +2664,10 @@ class we_objectFile extends we_document{
 				);
 			}
 		}
+	}
+
+	protected function i_getLangLinks(){
+		parent::i_getLangLinks(false, true);
 	}
 
 	protected function i_setText(){
@@ -3251,7 +3219,7 @@ class we_objectFile extends we_document{
 
 			$parts[] = array(
 				"headline" => g_l('weClass', '[language]'),
-				"html" => $this->formLanguage(),
+				"html" => $this->formLangLinks(),
 				"space" => 140,
 				"icon" => "lang.gif"
 			);

@@ -528,30 +528,25 @@ if(
 
 							if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5)){
 								if($we_doc->i_publInScheduleTable()){
-									$foo = $we_doc->getNextPublishDate();
-									if($foo){
+									if(($foo = $we_doc->getNextPublishDate())){
 										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $foo));
 										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
 									}
-								} else {
-									if($we_doc->we_publish() == true){
-										if(defined('WORKFLOW_TABLE')){
-											if(we_workflow_utility::inWorkflow($we_doc->ID, $we_doc->Table)){
-												we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '');
-											}
-										}
-										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
-										$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
-// SEEM, here a doc is published
-										$GLOBALS['publish_doc'] = true;
-										if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW) && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
-											$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
-_EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // reload the footer with the buttons
-										}
-									} else {
-										$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
-										$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+								} elseif($we_doc->we_publish()){
+									if(defined('WORKFLOW_TABLE') && (we_workflow_utility::inWorkflow($we_doc->ID, $we_doc->Table))){
+											we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '');
 									}
+									$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
+									$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+// SEEM, here a doc is published
+									$GLOBALS['publish_doc'] = true;
+									if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW) && (!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4))){
+										$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");
+_EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // reload the footer with the buttons
+									}
+								} else {
+									$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);
+									$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 								}
 							} else {
 								$tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
