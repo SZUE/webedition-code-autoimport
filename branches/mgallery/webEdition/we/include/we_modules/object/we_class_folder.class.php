@@ -1039,22 +1039,22 @@ if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	 top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
 weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
-					}
-				} else {
+			} else {
 
-					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
+				$obj = new we_objectFile();
+				$obj->initByID($ofid, OBJECT_FILES_TABLE);
 
-					$obj->getContentDataFromTemporaryDocs($ofid);
+				$obj->getContentDataFromTemporaryDocs($ofid);
 
-					if($obj->we_publish()){
-						$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
-							//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-							$obj->getUpdateTreeScript(false) . "
+				if($obj->we_publish()){
+					$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
+						//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
+						$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
 weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
+				}
 			}
 		}
 
