@@ -527,7 +527,6 @@ function getNumOfDocs(){
 	return ' . $this->workflowDef->loadDocuments() . count($this->workflowDef->documents) . ';
 }
 ' : '')) .
-			we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
 			we_html_element::jsScript(WE_JS_WORKFLOW_MODULE_DIR . 'workflow_property.js');
 	}
 

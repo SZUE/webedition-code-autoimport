@@ -328,7 +328,6 @@ function setScrollTo() {
 function getStatusContol() {
 	return document.we_form.' . (isset($this->uid) ? $this->uid : "") . '_Status.value;
 }') .
-			we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
 			we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_property.js', $load);
 	}
 

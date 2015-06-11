@@ -116,8 +116,7 @@ class we_banner_frames extends we_modules_frame{
 		echo we_html_tools::getHtmlTop() .
 		STYLESHEET;
 
-		$extraHead = we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
-			$this->View->getJSFooterCode();
+		$extraHead = $this->View->getJSFooterCode();
 
 		return parent::getHTMLEditorFooter('save_banner', $extraHead);
 	}

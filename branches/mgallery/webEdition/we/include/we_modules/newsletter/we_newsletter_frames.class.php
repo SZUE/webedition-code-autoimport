@@ -216,7 +216,6 @@ top.content.hloaded = 1;
 		$group = we_base_request::_(we_base_request::INT, "group", 0);
 
 		$js = $this->View->getJSFooterCode() .
-			we_html_element::jsScript(JS_DIR . 'utils/lib.js') .
 			we_html_element::jsElement('
 function addGroup(text, val) {
 	 ' . ($group ? '' : 'document.we_form.gview[document.we_form.gview.length] = new Option(text,val);' ) . '
