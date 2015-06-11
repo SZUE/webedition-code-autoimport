@@ -78,28 +78,6 @@ function initDefaultEdior() {
 	window.setTimeout(scrollToPosition, 50);
 }
 
-function initJava() {
-	countJEditorInitAttempts++;
-	// imi: console.log("init: " + countJEditorInitAttempts);
-	if (countJEditorInitAttempts < 10) {
-		if (document.weEditorApplet && top.weEditorWasLoaded && document.weEditorApplet.setCode !== undefined && document.weEditorApplet.initUndoManager !== undefined) {
-			try {
-				sizeEditor();
-				document.getElementById("weEditorApplet").style.left = "0";
-				javaEditorSetCode();
-				checkAndSetHot();
-			} catch (err) {
-				setTimeout(initJava, 500);
-			}
-		} else {
-			setTimeout(initJava, 500);
-		}
-	} else {
-		top.opener.we_showMessage(g_l.no_java, WE_MESSAGE_ERROR, window);
-	}
-}
-
-
 function sizeEditor() { // to be fixed (on 12.12.11)
 	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
