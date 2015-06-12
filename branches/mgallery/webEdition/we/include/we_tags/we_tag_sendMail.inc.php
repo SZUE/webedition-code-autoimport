@@ -110,48 +110,43 @@ function we_tag_sendMail($attribs, $content){
 				}
 			}
 		}
-		}
-		if($_blocked){
-			$headline = "Fehler / Error";
-			$content = g_l('global', '[formmailerror]') . getHtmlTag("br") . "&#8226; " . "Email dispatch blocked / Email Versand blockiert!";
+	}
+	if($_blocked){
+		$headline = "Fehler / Error";
+		$content = g_l('global', '[formmailerror]') . getHtmlTag("br") . "&#8226; " . "Email dispatch blocked / Email Versand blockiert!";
 
-			echo we_html_tools::getHtmlTop() .
-			STYLESHEET .
-			'</head>' .
-			getHtmlTag("body", array("class" => "weEditorBody"), we_html_tools::htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content), $headline)) .
-			'</html>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, getHtmlTag("body", array("class" => "weEditorBody"), we_html_tools::htmlDialogLayout(getHtmlTag("div", array("class" => "defaultgray"), $content), $headline)));
 
 		exit;
 	}
-		if(!isset($_SESSION)){
-			new we_base_sessionHandler();
-		}
-		$_SESSION['WE_SendMail'] = true;
-		$codes = we_base_file::isWeFile($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id, '', $GLOBALS['DB_WE']) : '';
-		unset($_SESSION['WE_SendMail']);
-		if(!$codes){
-			t_e('Document to send via we:sendMail is empty ID: ' . $id);
-		}
-		$phpmail = new we_util_Mailer($we_recipient, $subject, $from, $reply, $includeimages);
-		if(isset($includeimages)){
-			$phpmail->setIsEmbedImages($includeimages);
-		}
-		if(($we_recipientCC)){
-			$phpmail->setCC($we_recipientCC);
-		}
-		if(($we_recipientBCC)){
-			$phpmail->setBCC($we_recipientBCC);
-		}
-		if(isset($useBaseHref)){
-			$phpmail->setIsUseBaseHref($useBaseHref);
-		}
-		$phpmail->setCharSet($charset);
-		if($mimetype != 'text/html'){
-			$phpmail->setTextPartOutOfHTML($codes);
-			} else {
-				$phpmail->addHTMLPart($codes);
-		}
-		$phpmail->buildMessage();
-		$phpmail->Send();
-
+	if(!isset($_SESSION)){
+		new we_base_sessionHandler();
 	}
+	$_SESSION['WE_SendMail'] = true;
+	$codes = we_base_file::isWeFile($id, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($id, '', $GLOBALS['DB_WE']) : '';
+	unset($_SESSION['WE_SendMail']);
+	if(!$codes){
+		t_e('Document to send via we:sendMail is empty ID: ' . $id);
+	}
+	$phpmail = new we_util_Mailer($we_recipient, $subject, $from, $reply, $includeimages);
+	if(isset($includeimages)){
+		$phpmail->setIsEmbedImages($includeimages);
+	}
+	if(($we_recipientCC)){
+		$phpmail->setCC($we_recipientCC);
+	}
+	if(($we_recipientBCC)){
+		$phpmail->setBCC($we_recipientBCC);
+	}
+	if(isset($useBaseHref)){
+		$phpmail->setIsUseBaseHref($useBaseHref);
+	}
+	$phpmail->setCharSet($charset);
+	if($mimetype != 'text/html'){
+		$phpmail->setTextPartOutOfHTML($codes);
+	} else {
+		$phpmail->addHTMLPart($codes);
+	}
+	$phpmail->buildMessage();
+	$phpmail->Send();
+}

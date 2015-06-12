@@ -676,26 +676,25 @@ this.selectedIndex = 0;' .
 		echo self::getHtmlTop($title, $charset, $doctype);
 	}
 
-	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $expand = false, $closeHtml = false, $closeHead = false){
+	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $extraHead = '', $body = ''){
 		return we_html_element::htmlDocType($doctype) .
-			we_html_element::htmlhtml(we_html_element::htmlHead(
-					self::getHtmlInnerHead($title, $charset, $expand), $closeHead)
-				, $closeHtml);
+			we_html_element::htmlhtml(
+				we_html_element::htmlHead(
+					self::getHtmlInnerHead($title, $charset) . $extraHead, ($extraHead || $body ? true : false)
+				) .
+				$body, ($body ? true : false)
+		);
 	}
 
 	public static function getJSErrorHandler(){
 		return we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js');
 	}
 
-	public static function getHtmlInnerHead($title = 'webEdition', $charset = '', $expand = false){
-		if(!$expand){
-			self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
-		}
+	public static function getHtmlInnerHead($title = 'webEdition', $charset = ''){
+		self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		return
-			($expand ?
-				str_replace(array('script', '"'), array('scr"+"ipt', '\''), we_html_tools::getJSErrorHandler()) :
-				self::getJSErrorHandler()
-			) . //load this as early as possible
+			//load this as early as possible
+			self::getJSErrorHandler() .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width; height=device-height; maximum-scale=1.0; initial-scale=1.0; user-scalable=yes')) .
 			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
@@ -705,15 +704,9 @@ this.selectedIndex = 0;' .
 			we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
 			we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
-			($expand ?
-				we_html_element::jsElement(we_base_file::load(JS_PATH . 'we_showMessage.js')) .
-				we_html_element::jsElement(we_base_file::load(JS_PATH . 'attachKeyListener.js')).
-				we_html_element::jsElement(we_base_file::load(JS_PATH . 'global.js')):
-				we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js').
-				we_html_element::jsScript(JS_DIR . 'global.js')
-
-			);
+			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+			we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js');
 	}
 
 	static function htmlMetaCtCharset($content, $charset){
@@ -850,7 +843,7 @@ function clip_' . $unique . '(){
 			}
 		}
 
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top">'.$icon.'</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
+		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
 	}
 
 	public static function setHttpCode($status){

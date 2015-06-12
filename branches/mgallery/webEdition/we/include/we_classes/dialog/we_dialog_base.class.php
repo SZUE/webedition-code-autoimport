@@ -217,7 +217,7 @@ function doKeyDown() {
 
 	function getHeaderHTML($printJS_Style = false){
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . ($printJS_Style ? STYLESHEET : '') . static::getTinyMceJS() .
-			($printJS_Style ? $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
+			($printJS_Style ? we_html_element::jsScript(JS_DIR . 'windows.js') . $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
 			'</head>';
 	}
 
@@ -232,16 +232,16 @@ function doKeyDown() {
 	}
 
 	function getJs(){
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return we_html_element::jsElement('
 var textareaFocus = false;
 var onEnterKey=' . intval($this->pageNr == $this->numPages && $this->JsOnly) . ';
 
 function weDoOk() {' .
 				($this->pageNr == $this->numPages && $this->JsOnly ? '
-			if (!textareaFocus) {
-				' . $this->getOkJs() . '
-			}' : '') .
-				'
+	if (!textareaFocus) {
+		' . $this->getOkJs() . '
+	}' :
+					'') . '
 }') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
 	}

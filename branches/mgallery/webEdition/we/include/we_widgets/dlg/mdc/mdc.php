@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -51,21 +50,16 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }";
 
-echo we_html_element::htmlDocType() .
- we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-				we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) .
-				STYLESHEET .
-				we_html_element::jsElement($js)
-		) . we_html_element::htmlBody(
-				array(
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10,
-			"onload" => 'if(parent!=self)init();setIconOfDocClass("mdcIcon");'
-				), we_html_element::htmlDiv(array(
-					"id" => "mdc"
-						), $mdc)));
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', STYLESHEET .
+	we_html_element::jsElement($js), we_html_element::htmlBody(
+		array(
+		"marginwidth" => 15,
+		"marginheight" => 10,
+		"leftmargin" => 15,
+		"topmargin" => 10,
+		"onload" => 'if(parent!=self)init();setIconOfDocClass("mdcIcon");'
+		), we_html_element::htmlDiv(array(
+			"id" => "mdc"
+			), $mdc)));
 
 

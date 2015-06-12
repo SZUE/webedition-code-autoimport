@@ -89,7 +89,7 @@ weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 }
 // additional javascript for the individual tags - end
 // print html header of page
-echo we_html_tools::getHtmlTop() .
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',
  STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
@@ -169,8 +169,7 @@ function we_cmd(){
 
 			break;
 	 }
-}') . '
-</head>
+}')) . '
 <body onload="window.focus();" class="defaultfont">
 <form name="we_form" onsubmit="we_cmd(\'saveTag\'); return false;">';
 // start building the content of the page

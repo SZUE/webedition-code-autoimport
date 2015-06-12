@@ -110,12 +110,9 @@ function print_error($errortext){
 	$headline = 'Fehler / Error';
 	$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . $errortext;
 
-	echo we_html_tools::getHtmlTop() .
-	STYLESHEET .
-	'</head>' .
-	getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
-	we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline) .
-	'</body></html>';
+	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, getHtmlTag('body', array('class' => 'weEditorBody'), '', false, true) .
+		we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultgray'), $content), $headline) .
+		'</body>');
 
 	exit();
 }

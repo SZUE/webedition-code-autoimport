@@ -121,7 +121,7 @@ abstract class we_tool_frames extends we_modules_frame{
 	}
 
 	function getJSCmdCode(){
-		return $this->View->getJSTop() ;
+		return $this->View->getJSTop();
 	}
 
 	/**
@@ -356,26 +356,16 @@ function we_save() {
 			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
 			$_cancel = 'self.close();';
 
-			return we_html_tools::getHtmlTop() .
-				STYLESHEET .
-				'</head>
-
-			<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-				we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
-				'</body>
-			</html>';
+			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
+					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
+					'</body>');
 		}
 	}
 
 	function getHTMLDocument($body, $head = ''){
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead() .
-					STYLESHEET .
-					we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-					$head
-				) .
-				$body
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+				$head, $body
 		);
 	}
 

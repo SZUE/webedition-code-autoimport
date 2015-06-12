@@ -429,10 +429,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				(isset($_internal_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_INT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100"> ' . g_l('weClass', '[document]') . '</td>
-		<td valign="top"> ' . $_internal_link . we_html_element::jsElement('document.we_form.onsubmit = weonsubmit;
-function weonsubmit() {
-	return false;
-}') . '</td>
+		<td valign="top"> ' . $_internal_link . we_html_element::jsElement('document.we_form.onsubmit = function() {return false;}') . '</td>
 	</tr>' : '') . '
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', '[emaillink]') . '</td>

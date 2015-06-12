@@ -21,9 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop() .
- STYLESHEET .
- '</head><body>';
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET) .
+ '<body>';
 
 //Bug 6119: Keine Unterstützung für curl in der XML_RSS Klasse
 //daher Umstellung den Inhalt des Feeds selbst zu holen

@@ -54,13 +54,8 @@ treeData.frames=frames;
 	}
 
 	function getHTMLContruct(){
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead() .
-					STYLESHEET .
-					$this->getStyles()
-				) .
-				we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+				$this->getStyles(), we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
 		);
 	}
 

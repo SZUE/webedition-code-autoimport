@@ -317,9 +317,8 @@ function uploadFinished() {
 
 		$uploader = new we_fileupload_importFiles('we_File');
 		$body = $uploader->getHTML($this->_getHiddens());
-		$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . $uploader->getCss() . $uploader->getJs() . we_html_multiIconBox::getDynJS("uploadFiles", 30);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . $uploader->getCss() . $uploader->getJs() . we_html_multiIconBox::getDynJS("uploadFiles", 30), $body);
 	}
 
 	function getStep2Legacy(){
@@ -844,9 +843,7 @@ function next() {
 	}
 
 	function _getHtmlPage($body, $js = ""){
-		//$yuiSuggest = & weSuggest::getInstance();
-		$head = we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) . STYLESHEET . weSuggest::getYuiFiles() . $js;
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($head) . $body);
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . weSuggest::getYuiFiles() . $js, $body);
 	}
 
 	function getHTMLCategory(){

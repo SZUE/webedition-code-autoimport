@@ -215,8 +215,7 @@ class we_fragment_base{
 	 *
 	 */
 	function printHeader(){
-		echo we_html_tools::getHtmlTop() .
-		'</head>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',' ');
 	}
 
 	/**

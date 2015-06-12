@@ -72,13 +72,13 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
 		echo we_html_element::jsElement(
-			'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(
-				g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');
+			'top.opener.top.we_cmd("load","' . FILE_TABLE . '");' .
+			we_message_reporting::getShowMessageCall(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+			'top.close();');
 	}
 
 	function printHeader(){
-		echo we_html_tools::getHtmlTop(g_l('copyFolder', '[headline]')) .
-		STYLESHEET;
+		echo we_html_tools::getHtmlTop(g_l('copyFolder', '[headline]'), STYLESHEET);
 	}
 
 }

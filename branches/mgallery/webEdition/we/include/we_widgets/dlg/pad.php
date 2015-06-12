@@ -149,18 +149,13 @@ $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javasc
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	we_html_element::htmlHead(
-		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) .
-		STYLESHEET .
-		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-		we_html_element::jsScript(JS_DIR . "weCombobox.js") .
-		we_html_element::jsElement($jsPrefs . "
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
+	we_html_element::jsScript(JS_DIR . "weCombobox.js") .
+	we_html_element::jsElement($jsPrefs . "
 	var g_l={
 		prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "'
 };") .
-		we_html_element::jsScript(JS_DIR . 'widgets/pad.js')) .
-	we_html_element::htmlBody(
+	we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "initDlg();"
 		), we_html_element::htmlForm(

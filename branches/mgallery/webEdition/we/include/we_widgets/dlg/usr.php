@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -36,7 +35,7 @@ function save(){
 	previewPrefs();
 	opener.saveSettings();
 	" . we_message_reporting::getShowMessageCall(
-				g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 	self.close();
 }
 
@@ -65,14 +64,10 @@ $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascrip
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
 $sTblWidget = we_html_multiIconBox::getHTML(
-				"usrProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[users_online]'));
+		"usrProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[users_online]'));
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[users_online]')) .
-			STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-			we_html_element::jsElement(
-				$jsPrefs . $jsCode)) . we_html_element::htmlBody(
-			array("class" => "weDialogBody", "onload" => "init();"
-			), we_html_element::htmlForm("", $sTblWidget)));
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[users_online]'), '', '', STYLESHEET .
+	we_html_element::jsElement(
+		$jsPrefs . $jsCode), we_html_element::htmlBody(
+		array("class" => "weDialogBody", "onload" => "init();"
+		), we_html_element::htmlForm("", $sTblWidget)));

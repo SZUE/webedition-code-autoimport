@@ -23,9 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . "/webEdition/we/include/we.inc.php");
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop();
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',' ');
 ?>
-</head>
 <body>
 	<?php
 	// build url from REQUEST ...

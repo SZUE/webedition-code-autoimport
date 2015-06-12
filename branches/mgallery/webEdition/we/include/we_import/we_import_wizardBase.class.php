@@ -54,16 +54,12 @@ abstract class we_import_wizardBase{
 					we_html_element::htmlIFrame('wizcmd', $this->path . "?pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead(g_l('import', '[title]')) .
-					we_html_element::jsScript(JS_DIR . 'windows.js') .
-					we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-					we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-					we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-					we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
-					we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
-					we_html_element::jsElement("
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+				we_html_element::jsElement("
 var tables = {
 	OBJECT_TABLE: '" . (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE') . "'
 };
@@ -78,9 +74,8 @@ var size = {
 	}
 };
 var path='" . $this->path . "';") .
-					we_html_element::jsScript(JS_DIR . 'import_wizardBase.js') .
-					STYLESHEET) .
-				$body
+				we_html_element::jsScript(JS_DIR . 'import_wizardBase.js') .
+				STYLESHEET, $body
 		);
 	}
 

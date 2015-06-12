@@ -157,16 +157,10 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 $sTblWidget = we_html_multiIconBox::getHTML('mfdProps', '100%', $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'), "", 390);
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	we_html_element::htmlHead(
-		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) .
-		STYLESHEET .
-		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-		we_html_element::jsScript(JS_DIR . "global.js") .
-		we_html_element::jsElement($jsPrefs . $jsCode) .
-		we_html_element::jsScript(JS_DIR . "widgets/mfd.js")
-	) .
-	we_html_element::htmlBody(
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLESHEET .
+	we_html_element::jsScript(JS_DIR . "global.js") .
+	we_html_element::jsElement($jsPrefs . $jsCode) .
+	we_html_element::jsScript(JS_DIR . "widgets/mfd.js"), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();setIconOfDocClass('mfdUIcon');"
 		), we_html_element::htmlForm("", $sTblWidget)));

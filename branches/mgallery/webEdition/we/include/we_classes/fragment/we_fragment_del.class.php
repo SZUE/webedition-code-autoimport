@@ -22,9 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 class we_fragment_del extends we_fragment_base{
-
 	private $db;
 	private $table;
 
@@ -76,7 +74,7 @@ class we_fragment_del extends we_fragment_base{
 
 	function printHeader(){
 		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop() . "</head>";
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 }

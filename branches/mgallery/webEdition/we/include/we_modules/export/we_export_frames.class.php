@@ -609,13 +609,9 @@ function closeAllType(){
 				"all" => $all,
 				"cmd" => "do_export"));
 
-		$head = //FIXME: missing title
-			we_html_tools::getHtmlInnerHead() . STYLESHEET;
 
 		if($all > $exports){
-			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-					we_html_element::htmlHead($head) .
-					we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
+			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
 					)
 			);
 		}

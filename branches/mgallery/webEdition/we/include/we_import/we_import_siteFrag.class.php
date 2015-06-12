@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_siteFrag extends we_fragment_base{
-
 	var $_obj = null;
 
 	function __construct($obj){
@@ -61,14 +60,12 @@ top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldH
 
 	function finish(){
 		echo we_html_element::jsElement(
-				"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
-					g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
+			"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
+				g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
 	}
 
 	function printHeader(){
-		echo we_html_element::htmlDocType() . we_html_element::htmlhtml(we_html_element::htmlHead(//FIXME: missing title
-					we_html_tools::getHtmlInnerHead() .
-					STYLESHEET), false);
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
 	}
 
 }

@@ -151,7 +151,7 @@ $oPool->setCol(
 		"href" => "#",
 		"onclick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
 		), '<i class="fa fa-lg fa-caret-down"></i>'
-		));
+));
 $oPool->setCol(0, 2, null, $oSctList21->getHTML());
 $oPool->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
 $oPool->setCol(2, 0, array(
@@ -177,22 +177,15 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 $sTblWidget = we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML("sctProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[shortcuts]'));
 
-echo we_html_element::htmlDocType() .
- we_html_element::htmlHtml(
-	we_html_element::htmlHead(
-		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) .
-		STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-		we_html_element::jsElement($jsPrefs . "
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', STYLESHEET .
+	we_html_element::jsElement($jsPrefs . "
 _aLang={" . implode(',', $jsLang) . "};
 var g_l={
 all_selected:'" . g_l('cockpit', '[all_selected]') . "',
 	prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "'
 };
 ") .
-		we_html_element::jsScript(JS_DIR . 'widgets/sct.js')
-	) .
-	we_html_element::htmlBody(
+	we_html_element::jsScript(JS_DIR . 'widgets/sct.js'), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();"
 		), we_html_element::htmlForm("", $sTblWidget)));

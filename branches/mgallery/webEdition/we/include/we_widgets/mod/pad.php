@@ -328,16 +328,14 @@ $_notepad = $oPad->getHTML() .
 	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .
 	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps->getHTML());
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	we_html_element::htmlHead(
-		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[notepad]')) . STYLESHEET .
-		we_html_element::cssLink(CSS_DIR . 'pad.css') .
-		we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
-		we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar.js") .
-		we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-		we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar-setup.js") .
-		we_html_element::jsElement(
-			(($type === "pad/pad") ? "
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
+	we_html_element::cssLink(CSS_DIR . 'pad.css') .
+	we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
+	we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar.js") .
+	we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+	we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar-setup.js") .
+	we_html_element::jsElement(
+		(($type === "pad/pad") ? "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
 var _sCls_=parent.gel(_sObjId+'_cls').value;
 var _sType='pad';
@@ -357,7 +355,7 @@ if(typeof parent.base64_encode=='function'){
 _ttlB64Esc=escape(parent.base64_encode(_sTb));
 }
 
-") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js')) . we_html_element::htmlBody(
+") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		array(
 		"marginwidth" => 0,
 		"marginheight" => 0,

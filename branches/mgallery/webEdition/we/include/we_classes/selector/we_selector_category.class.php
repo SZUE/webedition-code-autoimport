@@ -71,7 +71,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"]. "what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&noChoose=" . $this->noChoose;
+		return $_SERVER["SCRIPT_NAME"] . "what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&noChoose=" . $this->noChoose;
 	}
 
 	protected function printHeaderTable(){
@@ -122,7 +122,6 @@ options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 	}
 
 	function printCreateEntryHTML($what = 0){
-		echo we_html_tools::getHtmlTop();
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = trim($this->EntryText);
 		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db)) . '/' . $txt : '');
@@ -155,13 +154,12 @@ if(top.currentID){
 }';
 		}
 
-		echo we_html_element::jsElement(
-			$js .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = false;
-top.selectFile(top.currentID);') .
-		'</head><body></body></html>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
+				$js .
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.makeNewFolder = false;
+top.selectFile(top.currentID);'), we_html_element::htmlBody());
 	}
 
 	function printHeaderHeadlines(){
@@ -180,7 +178,6 @@ top.selectFile(top.currentID);') .
 
 	function printDoRenameEntryHTML(){
 		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop();
 		$what = f('SELECT IsFolder FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db);
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = trim($this->EntryText);
@@ -216,13 +213,12 @@ if(top.currentID){
 }';
 		}
 
-		echo we_html_element::jsElement(
-			$js .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.document.getElementsByName("fname")[0].value = "";
-top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;') .
-		'</head><body></body></html>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
+				$js .
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.document.getElementsByName("fname")[0].value = "";
+top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_element::htmlBody());
 	}
 
 	protected function printCmdHTML(){
@@ -434,11 +430,9 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$cat->registerMediaLinks();
 		}
 		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement($js . 'top.setDir(top.document.getElementById("lookin").value);' .
-			($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
-		) .
-		'</head><body></body></html>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js . 'top.setDir(top.document.getElementById("lookin").value);' .
+				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
+			), we_html_element::htmlBody());
 	}
 
 	function printPropertiesHTML(){
@@ -499,11 +493,10 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 
 		we_html_tools::protect();
 
-		echo we_html_tools::getHtmlTop() .
-		STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement('
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+			we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
@@ -525,19 +518,19 @@ function we_cmd(){
 function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
 	if(regExp.test(document.getElementById("category").value)) {' .
-			we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
 	} else {
 		document.we_form.submit();
 	}
 }') .
-		weSuggest::getYuiFiles() .
-		'</head><body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
+			weSuggest::getYuiFiles(), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
 	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() . "<br/>" . $ta . "<br/>" . $saveBut . '
 	</div>' : '' ) .
-		(isset($yuiSuggest) ?
-			$yuiSuggest->getYuiJs() : '') .
-		'</body></html>';
+			(isset($yuiSuggest) ?
+				$yuiSuggest->getYuiJs() : '') .
+			'</body>');
 	}
+
 }

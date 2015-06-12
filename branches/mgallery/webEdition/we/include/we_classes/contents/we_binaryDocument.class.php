@@ -395,10 +395,9 @@ class we_binaryDocument extends we_document{
 			}
 			$values[$groupname . 'end'] = we_html_tools::OPTGROUP;
 		}
-		$js = "top.we_mediaReferences = {\n" . $js . "};";
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.we_form.elements['MediaReferences'].value);");
 
-		return we_html_element::jsElement($js) . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
+		return we_html_element::jsElement("top.we_mediaReferences = {\n" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
 	}
 
 	public function getPropertyPage(){

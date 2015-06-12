@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -64,7 +63,7 @@ if(!empty($notDeletedLngs)){
 }
 
 if($jsAlert){
-	$jsAlert = we_html_element::jsElement("alert(\"$jsAlert\")");
+	$jsAlert = we_html_element::jsElement('alert("' . $jsAlert . '")');
 }
 
 $content = '

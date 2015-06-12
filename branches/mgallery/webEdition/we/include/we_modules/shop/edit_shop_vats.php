@@ -67,8 +67,11 @@ if(!isset($weShopVat)){
 }
 $jsFunction = '
 var hot = 0;
-
-' . (we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ? 'document.addEventListener("keyup",doKeyDown,true);' : 'document.onkeydown = doKeyDown;') . '
+if (window.addEventListener) {
+	document.addEventListener("keyup",doKeyDown,true);
+}else{
+	document.onkeydown = doKeyDown;
+}
 
 function addListeners(){
 	for(var i = 1; i < document.we_form.elements.length; i++){

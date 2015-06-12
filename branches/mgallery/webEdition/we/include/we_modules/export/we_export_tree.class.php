@@ -252,20 +252,16 @@ var openFolders= {
 
 		self::getItems($table, $parentFolder, $treeItems, $openFolders);
 
-		echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() .
-				we_html_element::jsElement('
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('
 if(!' . $this->topFrame . '.treeData) {' .
-					we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
 }' .
-					($parentFolder ? '' :
-						$this->topFrame . '.treeData.clear();' .
-						$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
-					) .
-					$this->getJSLoadTree($treeItems)
-				)
-			) .
-			we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
+				($parentFolder ? '' :
+					$this->topFrame . '.treeData.clear();' .
+					$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
+				) .
+				$this->getJSLoadTree($treeItems)
+			), we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
 		);
 	}
 

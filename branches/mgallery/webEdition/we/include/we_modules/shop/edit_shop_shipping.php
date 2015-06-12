@@ -58,11 +58,13 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 }
 
-echo we_html_element::jsElement(
-	(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera() ?
-		'document.addEventListener("keyup",doKeyDown,true);' :
-		'document.onkeydown = doKeyDown;'
-	) . '
+echo we_html_element::jsElement('
+if (window.addEventListener) {
+	document.addEventListener("keyup",doKeyDown,true);
+}else{
+	document.onkeydown = doKeyDown;
+}
+
 function doKeyDown(e) {
 	var key=e.keyCode===undefined?event.keyCode:e.keyCode;
 	switch (key) {

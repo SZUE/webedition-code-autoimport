@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,11 +24,8 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop() .
- we_html_element::jsElement(
-	"function init() {
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
+		"function init() {
 	parent.executeAjaxRequest('" . implode("', '", we_base_request::_(we_base_request::STRING, 'we_cmd')) . "');
 
-}") .
- we_html_element::htmlBody(array('onload' => 'init()')) .
- '</html>';
+}"), we_html_element::htmlBody(array('onload' => 'init()')));

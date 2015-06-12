@@ -171,13 +171,8 @@ function container(){
 	// Function which control how tree contenet will be displayed
 	function getHTMLContruct($onresize = ''){
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead() .
-					STYLESHEET .
-					$this->getStyles()
-				) .
-				we_html_element::htmlBody(array(
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+				$this->getStyles(), we_html_element::htmlBody(array(
 					'id' => 'treetable',
 					'onresize' => $onresize
 					), ''

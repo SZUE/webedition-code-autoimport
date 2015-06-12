@@ -95,12 +95,8 @@ abstract class we_rebuild_wizard{
 		}
 
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
-					STYLESHEET .
-					$js) .
-				we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', STYLESHEET .
+				$js, we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}
@@ -798,10 +794,7 @@ abstract class we_rebuild_wizard{
 			));
 		}
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) . STYLESHEET
-				) . $body);
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', STYLESHEET, $body);
 	}
 
 	/**
@@ -987,14 +980,10 @@ abstract class we_rebuild_wizard{
 		if(!$contents){
 			return '';
 		}
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
-					STYLESHEET .
-					($contents[0] ?
-						we_html_element::jsScript(JS_DIR . 'windows.js') .
-						we_html_element::jsElement($contents[0]) : '')) .
-				we_html_element::htmlBody(array(
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', STYLESHEET .
+				($contents[0] ?
+					we_html_element::jsScript(JS_DIR . 'windows.js') .
+					we_html_element::jsElement($contents[0]) : ''), we_html_element::htmlBody(array(
 					"class" => "weDialogBody"
 					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])
 				)

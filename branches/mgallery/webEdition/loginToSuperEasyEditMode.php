@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,12 +21,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 echo '<h1>Sorry, this feature is currently unsupported</h1>';
 exit();
 /*
 
-  */
+ */
 // Activate the webEdition error handler
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_error_handler.inc.php');
 we_error_handler(false);
@@ -56,14 +54,11 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 			"open_selected" => true, //	This var is only temporary
 		);
 		//	now start webEdition
-		echo we_html_tools::getHtmlTop() .
-		'
-</head>
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '
 <body>
 <form name="startSuperEasyEditMode" method="post" action="/webEdition/webEdition.php">
 </form>' . we_html_element::jsElement('document.forms[\'startSuperEasyEditMode\'].submit();') .
-		'</body>
-</html>';
+			'</body>');
 	} else {
 
 		echo "Ein Fehler trat auf. - 1";

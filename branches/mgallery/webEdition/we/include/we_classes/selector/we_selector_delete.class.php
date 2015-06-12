@@ -81,14 +81,14 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 
 	function printDoDelEntryHTML(){
 		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop();
+		$js = '';
 		if(($del = we_base_request::_(we_base_request::RAW, "todel"))){
 			$_SESSION['weS']['todel'] = $del;
-			echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+			$js = we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 top.opener.top.we_cmd("del_frag", "' . $del . '");
 top.close();');
 		}
-		echo '</head><body></body></html>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $js, we_html_element::htmlBody());
 	}
 
 	protected function printFooterTable(){

@@ -225,13 +225,12 @@ class we_navigation_ruleFrames{
 var allFields = ["FolderID", "DoctypeID", "ClassID", "WorkspaceID"];
 var resetFields = ["NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID"];
 
-var dependencies = [];
-dependencies["' . we_navigation_navigation::STPYE_CLASS . '"] = ["ClassID", "WorkspaceID", "Categories"];
-dependencies["' . we_navigation_navigation::STPYE_DOCTYPE . '"] = ["FolderID", "DoctypeID", "Categories"];
-
+var dependencies = {;
+"' . we_navigation_navigation::STPYE_CLASS . '":["ClassID", "WorkspaceID", "Categories"],
+"' . we_navigation_navigation::STPYE_DOCTYPE . '": ["FolderID", "DoctypeID", "Categories"]
+};
 
 function switchType(value) {
-
 	// 1st hide all
 	for (i=0; i<allFields.length;i++) {
 		if (elem = document.getElementById("tr" + allFields[i])) {
@@ -251,7 +250,6 @@ function switchType(value) {
 }
 
 function clearNavigationForm() {
-
 	for (i=0;i<resetFields.length;i++) {
 		if (document.we_form[resetFields[i]]) {
 			document.we_form[resetFields[i]].value = "";

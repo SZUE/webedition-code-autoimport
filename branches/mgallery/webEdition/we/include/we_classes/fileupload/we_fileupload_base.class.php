@@ -188,29 +188,29 @@ abstract class we_fileupload_base{
 
 		return self::isFallback() || self::isLegacyMode() ? '' : (we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
 			we_html_element::jsElement('
-			we_FileUpload = new weFileUpload("' . $this->type . '");
-			we_FileUpload.init({
-				fieldName : "' . $this->name . '",
-				form : ' . json_encode($this->form) . ',
-				footerName : "' . $this->footerName . '",
-				uploadBtnName : "' . $this->uploadBtnName . '",
-				maxUploadSize : ' . $this->maxUploadSizeBytes . ',
-				typeCondition : ' . str_replace(array("\n\r", "\r\n", "\r", "\n"), "", json_encode($this->typeCondition)) . ',
-				isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
-				isLegacyMode : false,
-				callback : function(){' . $this->callback . '},
-				fileselectOnclick : function(){' . $this->fileselectOnclick . '},
-				chunkSize : ' . self::CHUNK_SIZE . ',
-				intProgress : ' . json_encode($this->internalProgress) . ',
-				extProgress : ' . json_encode($this->externalProgress) . ',
-				gl: ' . $this->_getJsGl() . ',
-				isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
-				htmlFileRow : \'' . $this->_getHtmlFileRow() . '\',
-				fileTable : "' . $this->fileTable . '",
-				binDocProperties : ' . json_encode($this->binDocProperties) . ',
-				disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . '
-			});
-		') . ($this->externalProgress['create'] ? $progressbar->getJS('', true) : ''));
+we_FileUpload = new weFileUpload("' . $this->type . '");
+we_FileUpload.init({
+	fieldName : "' . $this->name . '",
+	form : ' . json_encode($this->form) . ',
+	footerName : "' . $this->footerName . '",
+	uploadBtnName : "' . $this->uploadBtnName . '",
+	maxUploadSize : ' . $this->maxUploadSizeBytes . ',
+	typeCondition : ' . str_replace(array("\n\r", "\r\n", "\r", "\n"), "", json_encode($this->typeCondition)) . ',
+	isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
+	isLegacyMode : false,
+	callback : function(){' . $this->callback . '},
+	fileselectOnclick : function(){' . $this->fileselectOnclick . '},
+	chunkSize : ' . self::CHUNK_SIZE . ',
+	intProgress : ' . json_encode($this->internalProgress) . ',
+	extProgress : ' . json_encode($this->externalProgress) . ',
+	gl: ' . $this->_getJsGl() . ',
+	isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
+	htmlFileRow : \'' . $this->_getHtmlFileRow() . '\',
+	fileTable : "' . $this->fileTable . '",
+	binDocProperties : ' . json_encode($this->binDocProperties) . ',
+	disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . '
+});
+') . ($this->externalProgress['create'] ? $progressbar->getJS('', true) : ''));
 	}
 
 	protected function _getJsGl(){

@@ -234,19 +234,12 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 $sTblWidget = we_html_multiIconBox::getHTML('rssProps', '100%', $parts, 30, $buttons, -1, '', '', '', g_l('cockpit', '[rss_feed]'), '', 439);
 
-echo we_html_element::htmlDocType() .
- we_html_element::htmlHtml(
-	we_html_element::htmlHead(
-		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[rss_feed]')) .
-		STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-		we_html_element::jsElement($jsPrefs . "
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[rss_feed]'), '', '', STYLESHEET .
+	we_html_element::jsElement($jsPrefs . "
 var g_l={
 	'prefs_saved_successfully': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "',
 	'invalid_url': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]')) . "'
 };") .
-		we_html_element::jsScript(JS_DIR . 'widgets/rss.js')
-	) .
-	we_html_element::htmlBody(
+	we_html_element::jsScript(JS_DIR . 'widgets/rss.js'), we_html_element::htmlBody(
 		array('class' => 'weDialogBody', 'onload' => 'init();'), we_html_element::htmlForm("", $sTblWidget)
 ));

@@ -157,7 +157,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$content .='</form>';
 		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
 
-		return we_html_tools::getHtmlTop() . STYLESHEET . $this->getPropertyJS() . '</head>' . $body . '</html>';
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . $this->getPropertyJS(), $body);
 	}
 
 	/**

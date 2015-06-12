@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
-we_html_tools::protect();
 
 $browser = we_base_browserDetect::inst();
 $transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');

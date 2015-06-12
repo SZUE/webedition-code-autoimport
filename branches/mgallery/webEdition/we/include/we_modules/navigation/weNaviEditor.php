@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -82,11 +81,11 @@ $_parts = array(
 	array(
 		'headline' => g_l('navigation', '[order]'),
 		'html' => we_html_tools::hidden('Ordn', $_navi->Ordn) . we_html_tools::htmlTextInput(
-				'OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) . we_html_tools::getPixel(6, 5) .
+			'OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) . we_html_tools::getPixel(6, 5) .
 		we_html_tools::htmlSelect(
-				'OrdnSelect', array(
+			'OrdnSelect', array(
 			'begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')
-				), 1, '', false, array('onchange' => "document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"), "value", 317),
+			), 1, '', false, array('onchange' => "document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"), "value", 317),
 		'space' => $_space_size,
 		'noline' => 1
 	)
@@ -144,22 +143,19 @@ function queryEntries(id) {
 	ajaxObj.startRequest(id);
 }';
 $buttonsBottom = '<div style="float:right">' . we_html_button::position_yes_no_cancel(
-				we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
+		we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
 
 $_body = we_html_element::htmlBody(
-				array(
-			"class" => "weDialogBody", "onload" => 'loaded=1;queryEntries(' . $_def . ')'
-				), we_html_element::htmlForm(
-						array(
-					"name" => "we_form", "onsubmit" => "return false"
-						), we_html_multiIconBox::getHTML(
-								'', '100%', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
+		array(
+		"class" => "weDialogBody", "onload" => 'loaded=1;queryEntries(' . $_def . ')'
+		), we_html_element::htmlForm(
+			array(
+			"name" => "we_form", "onsubmit" => "return false"
+			), we_html_multiIconBox::getHTML(
+				'', '100%', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
 
-$_head = //FIXME: missing title
-		we_html_tools::getHtmlInnerHead() . STYLESHEET .
-		we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-		we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
-		we_html_element::jsElement($_js);
-
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($_head) . $_body);
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+	we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+	we_html_element::jsElement($_js), $_body);

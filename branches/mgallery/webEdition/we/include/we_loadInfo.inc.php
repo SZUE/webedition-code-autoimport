@@ -21,10 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
 ?>
-</head>
 <body>
 	<span class="defaultfont">
 		<?php

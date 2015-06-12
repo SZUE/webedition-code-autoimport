@@ -23,15 +23,12 @@
  */
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET .
- we_html_element::jsElement('
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+	we_html_element::jsElement('
 	top.toggleBusy(0);
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
-	_EditorFrame.setEditorIsLoading(false);');
+	_EditorFrame.setEditorIsLoading(false);'));
 ?>
-</head>
-
 <body class="weDialogBody">
 	<?php
 	echo we_html_tools::htmlDialogLayout('<p class="defaultfont">' . g_l('alert', '[noResource]') . '</p>', g_l('alert', '[noResourceTitle]'));

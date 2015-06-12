@@ -169,9 +169,7 @@ $_selectWorkspace";
 				return;
 		}
 
-		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement($js) .
-		'</head><body>' . $html . '</body></html>';
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js), '<body>' . $html . '</body>');
 		exit();
 	}
 

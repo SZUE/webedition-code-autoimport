@@ -653,9 +653,10 @@ class we_fragment_copyFolder extends we_fragment_base{
 		}
 	}
 
+	//FIXME: this function is called statically!
 	function printHeader(){
 		//FIXME: missing title
-		echo we_html_element::htmlHead(we_html_tools::getHtmlInnerHead() . STYLESHEET . weSuggest::getYuiFiles() .
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles() .
 			we_html_element::jsElement('
 function fsubmit(e) {
 	return false;
@@ -688,7 +689,7 @@ function fsubmit(e) {
 	function formCreateCategoryChooser(){
 
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
-		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH,'javascript:#####placeHolder#####;'));
+		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('

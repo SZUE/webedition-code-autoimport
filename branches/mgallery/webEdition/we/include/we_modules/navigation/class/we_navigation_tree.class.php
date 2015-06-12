@@ -57,14 +57,8 @@ frames={
 	}
 
 	function getHTMLContruct(){
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(//FIXME: missing title
-					we_html_tools::getHtmlInnerHead() .
-					STYLESHEET .
-					$this->getStyles()
-				) .
-				we_html_element::htmlBody(array('id' => 'treetable',), '<div id="treetable"></div>'
-				)
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+				$this->getStyles(), we_html_element::htmlBody(array('id' => 'treetable',), '<div id="treetable"></div>')
 		);
 	}
 

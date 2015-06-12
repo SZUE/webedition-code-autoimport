@@ -115,7 +115,7 @@ if($ac){
 
 function getHTMLCategory(){
 	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-	$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH,'javascript:#####placeHolder#####;top.mark();'));
+	$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.mark();'));
 
 	$variant_js = '
 		var categories_edit=new multi_edit("categories",document.we_form,0,"' . $del_but . '",390,false);
@@ -293,14 +293,10 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 $sTblWidget = we_html_multiIconBox::getHTML("mdcProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	we_html_element::htmlHead(
-		we_html_tools::getHtmlInnerHead(g_l('cockpit', '[my_documents]')) . weSuggest::getYuiFiles() . STYLESHEET .
-		we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-		we_html_element::jsScript(JS_DIR . "windows.js") .
-		we_html_element::jsElement($jsPrefs . $jsCode . $jsTree)) .
-	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js') .
-	we_html_element::htmlBody(
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', weSuggest::getYuiFiles() . STYLESHEET .
+	we_html_element::jsScript(JS_DIR . "windows.js") .
+	we_html_element::jsElement($jsPrefs . $jsCode . $jsTree) .
+	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js'), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();startInit();"
 		), we_html_element::htmlForm(

@@ -340,9 +340,9 @@ abstract class we_root extends we_class{
 		$content = '<table style="border-spacing: 0px;border-style:none;width:370px;" cellpadding="0">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if($owners){
-						$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $owners) . ')');
+			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $owners) . ')');
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
-				$owner=$this->DB_WE->f('ID');
+				$owner = $this->DB_WE->f('ID');
 				$content .= '<tr><td class="userIcon" data-contenttype="' . $this->DB_WE->f('ContentType') . '"></td><td class="defaultfont">' . $this->DB_WE->f('Path') . '</td><td>' .
 					we_html_forms::checkboxWithHidden(isset($ownersReadOnly[$owner]) ? $ownersReadOnly[$owner] : '', 'we_owners_read_only[' . $owner . ']', g_l('weClass', '[readOnly]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);', !$canChange) .
 					'</td><td>' . ($canChange ? we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('users_del_owner','" . $owner . "');") : '') . '</td></tr>';
@@ -1514,13 +1514,11 @@ abstract class we_root extends we_class{
 	}
 
 	public function showLockedWarning($userID){
-		echo we_html_tools::getHtmlTop() . STYLESHEET .
-		'</head>' . we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'top.toggleBusy(0);'), we_html_tools::htmlDialogLayout('<p class="defaultfont">' . sprintf(g_l('alert', '[temporaere_no_access_text]'), $this->Text, f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID))) . '</p>', g_l('alert', '[temporaere_no_access]')) .
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'top.toggleBusy(0);'), we_html_tools::htmlDialogLayout('<p class="defaultfont">' . sprintf(g_l('alert', '[temporaere_no_access_text]'), $this->Text, f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID))) . '</p>', g_l('alert', '[temporaere_no_access]')) .
 //	For SEEM-Mode
-			($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-				'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</a>' : '')
-		) .
-		'</html>';
+				($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
+					'<a href="javascript://" style="text-decoration:none" onclick="top.weNavigationHistory.navigateReload()" >' . g_l('SEEM', '[try_doc_again]') . '</a>' : '')
+		));
 		exit();
 	}
 

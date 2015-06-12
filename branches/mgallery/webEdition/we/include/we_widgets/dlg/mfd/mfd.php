@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -38,17 +37,15 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }";
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[last_modified]')) . STYLESHEET . we_html_element::jsElement(
-				$sJsCode)) . we_html_element::htmlBody(
-			array(
-			"marginwidth" => 15,
-			"marginheight" => 10,
-			"leftmargin" => 15,
-			"topmargin" => 10,
-			"onload" => 'if(parent!=self)init();setIconOfDocClass("mfdIcon");'
-			), we_html_element::htmlDiv(array(
-				'id' => 'mfd'
-				), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLESHEET . we_html_element::jsElement(
+		$sJsCode), we_html_element::htmlBody(
+		array(
+		"marginwidth" => 15,
+		"marginheight" => 10,
+		"leftmargin" => 15,
+		"topmargin" => 10,
+		"onload" => 'if(parent!=self)init();setIconOfDocClass("mfdIcon");'
+		), we_html_element::htmlDiv(array(
+			'id' => 'mfd'
+			), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
 )));

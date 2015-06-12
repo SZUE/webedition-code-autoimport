@@ -142,9 +142,9 @@ abstract class we_modules_frame{
 
 	function getHTMLResize($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with extraUrlParams
 		$_incDecTree = '<div id="baumArrows">
-	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '').' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
-	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '').' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
-	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-'.($this->treeWidth <= 30 ? "right" : "left").'" ></i></div>
+	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-' . ($this->treeWidth <= 30 ? "right" : "left") . '" ></i></div>
 </div>
 </div>';
 
@@ -169,7 +169,7 @@ abstract class we_modules_frame{
 		$content = we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . ($this->treeHeaderHeight > 1 ? $this->treeHeaderHeight - 6/* padding+border */ : 1) . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'padding: 5px 0 0 0 ; ' : 'background: #ffffff')), $this->getHTMLTreeheader()) .
 			($this->useMainTree ? $this->getHTMLTree() :
 				we_html_element::htmlIFrame('tree', $this->frameset . '?pnt=tree', 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%;')) .
-			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('id' => 'treefooter','class'=>'editfooter' ,'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'), $this->getHTMLTreefooter()));
+			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('id' => 'treefooter', 'class' => 'editfooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'), $this->getHTMLTreefooter()));
 
 		return we_html_element::htmlDiv($attribs, $content);
 	}
@@ -290,13 +290,9 @@ function we_save() {
 			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
 			$_cancel = 'self.close();';
 
-			return we_html_tools::getHtmlTop() .
-				STYLESHEET .
-				'</head>
-			<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-				we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
-				'</body>
-			</html>';
+			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
+					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
+					'</body>');
 		}
 	}
 

@@ -138,12 +138,7 @@ if(!isset($aProps)){
 		parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 	}";
 
-	echo we_html_element::htmlDocType() .
-	we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_tools::getHtmlInnerHead(g_l('cockpit', '[shortcuts]')) .
-			STYLESHEET . we_html_element::jsElement($sJsCode)) .
-		we_html_element::htmlBody(
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', STYLESHEET . we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
 			array(
 			"marginwidth" => 15,
 			"marginheight" => 10,

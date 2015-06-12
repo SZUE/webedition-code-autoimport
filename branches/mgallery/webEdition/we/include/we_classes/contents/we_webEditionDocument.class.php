@@ -43,7 +43,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		parent::__construct();
 		if(isWE()){
 			//if(defined('SHOP_TABLE')){not needed for global variants
-				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_VARIANTS;
+			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_VARIANTS;
 			//}
 
 			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
@@ -184,15 +184,16 @@ class we_webEditionDocument extends we_textContentDocument{
 	private function formIsDynamic($disabled = false){
 		$v = $this->IsDynamic;
 		if(!$disabled){
-			$n = "we_" . $this->Name . "_IsDynamic";
+			$n = 'we_' . $this->Name . '_IsDynamic';
 			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsDynamic]'), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
 					'function switchExt() {' .
-					(!$this->Published ?
+					($this->Published ?
+						'' :
 						'var a=document.we_form.elements;' .
 						($this->ID ? 'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') . '
-					if(a["we_' . $this->Name . '_IsDynamic"].value==1){ var changeto="' . DEFAULT_DYNAMIC_EXT . '"; }else{ var changeto="' . DEFAULT_STATIC_EXT . '";}
-					a["we_' . $this->Name . '_Extension"].value=changeto;' .
-						($this->ID ? '}' : '') : '') .
+					a["we_' . $this->Name . '_Extension"].value=(a["we_' . $this->Name . '_IsDynamic"].value==1?"' . DEFAULT_DYNAMIC_EXT . '":"' . DEFAULT_STATIC_EXT . '");' .
+						($this->ID ? '}' : '')
+					) .
 					'}'
 			);
 		}
@@ -597,6 +598,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 *
 	 * when $isRebuildMediaLinks it only writes $this->MediaLinks (img sources come from db and must not be vhanged)
 	 */
+
 	function parseTextareaFields($rebuildMode = false){
 		if($rebuildMode === false){
 			$allElements = $this->getUsedElements();
