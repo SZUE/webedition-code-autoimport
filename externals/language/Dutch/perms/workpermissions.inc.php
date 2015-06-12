@@ -5,6 +5,7 @@ $l_perms_workpermissions=array(
 	'CAN_COPY_FOLDERS'=>'De gebruiker is bevoegd om directories te kopiëren.',
 	'CAN_EDIT_VALIDATION'=>'De gebruiker is bevoegd om de validatie diensten te wijzigen.',
 	'CAN_SEE_ACCESSIBLE_PARAMETERS'=>'De gebruiker is bevoegd om de "accessible"-parameters van een koppelings dialoog te wijzigen.',
+	'CAN_SEE_COLLECTIONS'=>'',
 	'CAN_SEE_DOCUMENTS'=>'De gebruiker is bevoegd om documenten te bekijken.',
 	'CAN_SEE_INFO'=>'De gebruiker is bevoegd om document informatie te bekijken.',
 	'CAN_SEE_PROPERTIES'=>'De gebruiker is bevoegd om document eigenschappen te bekijken.',

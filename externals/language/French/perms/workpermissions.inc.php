@@ -5,6 +5,7 @@ $l_perms_workpermissions=array(
 	'CAN_COPY_FOLDERS'=>'L`utilisateur a le droit de copier des répertoires entiers',
 	'CAN_EDIT_VALIDATION'=>'L`utilisateur a le droit d`éditer le service de validation.',
 	'CAN_SEE_ACCESSIBLE_PARAMETERS'=>'L`utilisateur peut voir les paramètre-"accessible" du dialogue-lien.',
+	'CAN_SEE_COLLECTIONS'=>'',
 	'CAN_SEE_DOCUMENTS'=>'L`utilisateur peut voir des documents',
 	'CAN_SEE_INFO'=>'L`utilisateur peut voir les informations-de-document',
 	'CAN_SEE_PROPERTIES'=>'L`utilisateur peut voir les propriétés-de-document',

@@ -5,6 +5,7 @@ $l_perms_workpermissions=array(
 	'CAN_COPY_FOLDERS'=>'Право на копирование директорий',
 	'CAN_EDIT_VALIDATION'=>'Право редактирования служб проверки.',
 	'CAN_SEE_ACCESSIBLE_PARAMETERS'=>'Право редактирования параметров доступности в диалоговом окне создания ссылки.',
+	'CAN_SEE_COLLECTIONS'=>'',
 	'CAN_SEE_DOCUMENTS'=>'Право на просмотр документов',
 	'CAN_SEE_INFO'=>'Право на просмотр справки о документе',
 	'CAN_SEE_PROPERTIES'=>'Право на просмотр свойств документа',

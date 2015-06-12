@@ -5,6 +5,7 @@ $l_perms_workpermissions=array(
 	'CAN_COPY_FOLDERS'=>'Użytkownik może kopiować całe katalogi',
 	'CAN_EDIT_VALIDATION'=>'Użytkownik może edytować usługi walidacji',
 	'CAN_SEE_ACCESSIBLE_PARAMETERS'=>'Użytkownik może obejrzeć parametry okna dialogowego odnośnika "bez barier"',
+	'CAN_SEE_COLLECTIONS'=>'',
 	'CAN_SEE_DOCUMENTS'=>'Użytkownik może oglądać dokumenty',
 	'CAN_SEE_INFO'=>'Użytkownik może oglądać informacje o dokumencie',
 	'CAN_SEE_PROPERTIES'=>'Użytkownik może oglądać właściwości dokumentu',

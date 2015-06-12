@@ -5,6 +5,7 @@ $l_perms_workpermissions=array(
 	'CAN_COPY_FOLDERS'=>'Käyttäjä voi kopioida hakemistoja.',
 	'CAN_EDIT_VALIDATION'=>'Käyttäjä voi muokata validointisivun palveluja.',
 	'CAN_SEE_ACCESSIBLE_PARAMETERS'=>'Käyttäjä voi muokata "käytettävyys"-parametreja linkin dialogissa.',
+	'CAN_SEE_COLLECTIONS'=>'',
 	'CAN_SEE_DOCUMENTS'=>'Käyttäjä voi nähdä dokumentteja.',
 	'CAN_SEE_INFO'=>'Käyttäjä voi nähdä dokumenttien tiedot.',
 	'CAN_SEE_PROPERTIES'=>'Käyttäjä voi nähdä dokumenttien ominaisuudet.',
