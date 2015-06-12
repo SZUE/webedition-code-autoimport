@@ -3,6 +3,7 @@
 
 $this->NeedsEndTag = true;
 $this->Groups[] = 'input_tags';
+$this->Module = 'collection';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Attributes = array(

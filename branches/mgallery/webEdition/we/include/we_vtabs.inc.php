@@ -41,7 +41,7 @@ $vtab = array(
 		'desc' => g_l('javaMenu_object', '[classes]'),
 	),
 	'VFILE_TABLE' => array(
-		'show' => /* permissionhandler::hasPerm("CAN_SEE_OBJECTS") */true,
+		'show' => we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) /* && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") */,
 		'desc' => g_l('global', '[vfile]'),
 	)
 );
