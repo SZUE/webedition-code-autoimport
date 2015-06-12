@@ -178,8 +178,15 @@ var i = 0;';
 				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
 
 				$indb = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($name) . '"');
-				if($entry === 'webEdition' || ((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download" || $entry === 'tmp')) || $entry === WE_THUMBNAIL_DIRECTORY || $entry === $thumbFold){
-					$indb = 'folder';
+				switch($entry){
+					case 'webEdition':
+					case WE_THUMBNAIL_DIRECTORY:
+					case $thumbFold:
+						$indb = 'folder';
+					default:
+						if((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download" || $entry === 'tmp')){
+							$indb = 'folder';
+						}
 				}
 				if($supportDebugging){
 					$indb = false;

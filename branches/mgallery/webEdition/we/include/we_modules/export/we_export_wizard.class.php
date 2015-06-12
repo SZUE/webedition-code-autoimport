@@ -301,7 +301,6 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 						we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))
 					)
 				)
-
 		);
 	}
 
@@ -768,7 +767,7 @@ function setState(a) {
 
 		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', '[backup_finished]') . "<br/><br/>" .
 				g_l('export', '[download_starting]') .
-				we_html_element::htmlA(array("href" => $this->frameset . "?pnt=body&step=50&exportfile=" . $filename), g_l('export', '[download]')));
+				we_html_element::htmlA(array("href" => $this->frameset . "?pnt=body&step=50&exportfile=" . $filename, 'download' => basename($filename)), g_l('export', '[download]')));
 
 		unset($_SESSION['weS']['exportVars_session']);
 
@@ -1125,8 +1124,7 @@ function setState(a) {
 				if($start_export){
 					$hiddens .= we_html_element::htmlHidden("cmd", "do_export");
 
-					$out =
-						we_html_element::jsElement('
+					$out = we_html_element::jsElement('
 if (top.footer.setProgressText){
 	top.footer.setProgressText("current_description","Exportiere ...");
 }
@@ -1256,7 +1254,7 @@ if (top.footer.setProgress){
 
 					$ids = array();
 					foreach($finalDocs as $k => $v){
-						$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $v , "", $this->db);
+						$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $v, "", $this->db);
 						$ids[] = array(
 							"ID" => $v,
 							"ContentType" => $ct,

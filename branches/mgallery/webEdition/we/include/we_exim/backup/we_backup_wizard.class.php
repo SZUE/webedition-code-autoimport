@@ -1018,7 +1018,7 @@ function setLocation(loc){
 				$_link = getServerUrl(true) . str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down);
 
 				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
-					we_html_element::htmlA(array('href' => $_link), g_l('backup', '[download_file]'))
+					we_html_element::htmlA(array('href' => $_link, 'download' => basename($down)), g_l('backup', '[download_file]'))
 				);
 			} else {
 				$table->setCol(2, 0, null, g_l('backup', '[download_failed]'));

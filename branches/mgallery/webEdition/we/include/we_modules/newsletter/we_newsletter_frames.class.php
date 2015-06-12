@@ -1764,7 +1764,7 @@ self.focus();
 		$table->setCol(2, 0, array(), we_html_tools::getPixel(5, 10));
 		$table->setCol(3, 0, array("class" => "defaultfont"), we_backup_wizard::getDownloadLinkText());
 		$table->setCol(4, 0, array(), we_html_tools::getPixel(5, 10));
-		$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link), g_l('modules_newsletter', '[csv_download]')));
+		$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link, 'download' => basename($link)), g_l('modules_newsletter', '[csv_download]')));
 		$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 5));
 
 		if($allowClear){
@@ -2186,7 +2186,7 @@ function clearLog(){
 							"pnt" => "send_frameset",
 							'nid' => $nid,
 							'test' => $test)) .
-						we_html_element::htmlCenter('<i class="fa fa-2x fa-spinner fa-pulse"></i>'.
+						we_html_element::htmlCenter('<i class="fa fa-2x fa-spinner fa-pulse"></i>' .
 							we_html_element::htmlBr() .
 							we_html_element::htmlBr() .
 							we_html_element::htmlDiv(array('class' => 'header_small'), g_l('modules_newsletter', '[prepare_newsletter]'))

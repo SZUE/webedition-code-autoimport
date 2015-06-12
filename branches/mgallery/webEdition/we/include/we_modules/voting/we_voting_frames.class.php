@@ -846,7 +846,7 @@ function refreshTexts(){
 		$table->setCol(2, 0, array(), we_html_tools::getPixel(5, 10));
 		$table->setCol(3, 0, array("class" => "defaultfont"), we_backup_wizard::getDownloadLinkText());
 		$table->setCol(4, 0, array(), we_html_tools::getPixel(5, 10));
-		$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link), g_l('modules_voting', '[csv_download]')));
+		$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link, 'download' => basename($link)), g_l('modules_voting', '[csv_download]')));
 		$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 10));
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");

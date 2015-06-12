@@ -114,7 +114,6 @@ top.content.hloaded = 1;');
 					$we_tabs->getHTML()
 				) .
 				we_html_element::jsElement($extraJS)
-
 		);
 
 
@@ -274,7 +273,7 @@ function closeAllType(){
 		$docTypes = $this->db->getAllFirst(false);
 
 		if(defined('OBJECT_TABLE')){
-			$this->db->query('SELECT ID,Text FROM ' . OBJECT_TABLE.' ORDER BY Text');
+			$this->db->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ORDER BY Text');
 			$classNames = $this->db->getAllFirst(false);
 		}
 
@@ -633,7 +632,7 @@ function closeAllType(){
 					we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1) . g_l('export', '[backup_finished]')) . "<br/>" .
 						addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', '[download_starting2]') . "<br/><br/>" .
 						addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', '[download_starting3]') . "<br/>" .
-						addslashes(we_html_tools::getPixel(10, 1)) . we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename)), g_l('export', '[download]'))) . "<br/><br/>"
+						addslashes(we_html_tools::getPixel(10, 1)) . we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
 					) .
 					'\');') :
 				''
