@@ -36,8 +36,7 @@ if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
- we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css') .
- we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+ we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css');
 
 /* FIXME: check if browser dependencies are really needed anymore!
  * Browser dependencies

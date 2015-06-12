@@ -46,8 +46,7 @@ abstract class we_dialog_deleteProgress{
 	}
 
 	public static function frameset($table, $currentID){
-		return we_html_tools::getHtmlTop(g_l('delete', '[delete]'), '', '', we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
-				STYLESHEET, we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';")
+		return we_html_tools::getHtmlTop(g_l('delete', '[delete]'), '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';")
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 						, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 						we_html_element::htmlIFrame('delcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')

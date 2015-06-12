@@ -31,9 +31,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 		case 'saveService':
 			$_service = new validationService(we_base_request::_(we_base_request::INT, 'id'), 'custom', we_base_request::_(we_base_request::STRING, 'category'), we_base_request::_(we_base_request::STRING, 'name'), we_base_request::_(we_base_request::STRING, 'host'), we_base_request::_(we_base_request::FILE, 'path'), we_base_request::_(we_base_request::STRING, 's_method'), we_base_request::_(we_base_request::STRING, 'varname'), we_base_request::_(we_base_request::STRING, 'checkvia'), we_base_request::_(we_base_request::STRING, 'ctype'), we_base_request::_(we_base_request::STRING, 'additionalVars'), we_base_request::_(we_base_request::STRING, 'fileEndings'), we_base_request::_(we_base_request::BOOL, 'active'));
 			if(($selectedService = validation::saveService($_service))){
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			} else {
 				$selectedService = $_service;
 				echo we_html_element::jsElement(
@@ -44,13 +42,9 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 		case 'deleteService':
 			$_service = new validationService(we_base_request::_(we_base_request::INT, 'id'), 'custom', we_base_request::_(we_base_request::STRING, 'category'), we_base_request::_(we_base_request::STRING, 'name'), we_base_request::_(we_base_request::STRING, 'host'), we_base_request::_(we_base_request::FILE, 'path'), we_base_request::_(we_base_request::STRING, 's_method'), we_base_request::_(we_base_request::STRING, 'varname'), we_base_request::_(we_base_request::STRING, 'checkvia'), we_base_request::_(we_base_request::STRING, 'ctype'), we_base_request::_(we_base_request::STRING, 'additionalVars'), we_base_request::_(we_base_request::STRING, 'fileEndings'), we_base_request::_(we_base_request::BOOL, 'active'));
 			if(validation::deleteService($_service)){
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			} else {
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR
-					)
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR)
 				);
 			}
 			break;

@@ -48,12 +48,6 @@ consts.DEL=' . self::DEL . ';
 		unset($_SESSION['weS']['seemForOpenDelSelector']['ID']);
 	}
 
-	protected function printFramesetJSFunctions(){
-
-		return we_html_element::jsElement('
-');
-	}
-
 	protected function printCmdHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();' .

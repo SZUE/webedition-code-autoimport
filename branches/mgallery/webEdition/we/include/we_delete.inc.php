@@ -383,11 +383,11 @@ for ( frameId in _usedEditors ) {
 
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement(
-				($retVal ? //	document deleted -> go to seeMode startPage
-					we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
-					we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
-	)));
+	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
+			($retVal ? //	document deleted -> go to seeMode startPage
+				we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
+				we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
+		), we_html_element::htmlBody());
 	exit();
 }
 ?>

@@ -75,11 +75,10 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	}
 }
 
-echo we_html_tools::getHtmlTop('Neue Sammlung') .
+echo we_html_tools::getHtmlTop('Neue Sammlung'/* FIXME: missing title */, '', '',
 		STYLESHEET .
 		we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
 		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
 		we_html_element::jsElement('
 var name = "' . $collection->Name . '";
 var _EditorFrame = {};
@@ -132,8 +131,7 @@ function we_cmd() {
 			break;
 	}
 }
-' . (isset($jsMessage) && $jsMessage ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')) .
-'</head>';
+' . (isset($jsMessage) && $jsMessage ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')));
 
 $parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1), 'space' => 0, 'noline' => 1);
 $parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(true), 'space' => 0, 'noline' => 1);

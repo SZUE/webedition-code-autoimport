@@ -44,11 +44,6 @@ $_table->setColContent(1, 2, we_html_tools::getPixel(9, 1));
 $_table->setCol(1, 3, array("class" => "middlefontred"), $_errormsg);
 
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-	we_html_element::htmlHead(STYLESHEET .
-		we_html_tools::getJSErrorHandler() .
-		we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
-		we_html_element::jsScript(JS_DIR . 'attachKeyListener.js')
-	) .
-	we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js'), we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())
 );

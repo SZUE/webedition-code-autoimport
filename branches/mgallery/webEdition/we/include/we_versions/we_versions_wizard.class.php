@@ -1098,7 +1098,7 @@ set_button_state(false);';
 			));
 		}
 
-		return we_html_tools::getHtmlTop(g_l('versions', '[versions_wizard]'), '', '', we_html_element::jsScript(JS_DIR . "we_showMessage.js") . STYLESHEET, $body);
+		return we_html_tools::getHtmlTop(g_l('versions', '[versions_wizard]'), '', '', STYLESHEET, $body);
 	}
 
 	/**

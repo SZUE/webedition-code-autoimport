@@ -37,7 +37,7 @@ if(!($we_doc instanceof we_imageDocument)){
 }
 
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'we_showMessage.js') . we_html_element::jsElement('
+ we_html_element::jsElement('
 document.onkeyup = function(e) {
 	var e = (event != undefined) ? event : e;
 	if (e.keyCode == 13) {
