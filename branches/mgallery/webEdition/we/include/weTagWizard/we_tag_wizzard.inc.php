@@ -70,12 +70,12 @@ var typeAttributeRequires = {};';
 			}
 
 			$_reqAttribs = $option->getRequiredAttributes($_attributes);
-			if(empty($_reqAttribs)){
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = [];";
-			} else {
-				$typeAttributeJs .= "typeAttributeRequires[\"" . $option->getName() . "\"] = [\"" .
+			if($_reqAttribs){
+				$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = ["' .
 					implode('","', $_reqAttribs) .
-					"\"];";
+					'"];';
+			} else {
+				$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = [];';
 			}
 		}
 

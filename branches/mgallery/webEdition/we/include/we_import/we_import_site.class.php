@@ -395,7 +395,7 @@ function doUnload() {
 	 * @return	string
 	 */
 	private function _getCreateWePageSettingsHTML(){
-		$data = (isset($_SESSION["prefs"]["siteImportPrefs"]))  ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : array();
+		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : array();
 
 		$_valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
 		$_valueTemplateId = isset($data["valueTemplateId"]) ? $data["valueTemplateId"] : 0;
@@ -680,7 +680,7 @@ function doUnload() {
 			"0" => g_l('siteimport', '[nolimit]'), "0.5" => "0.5"
 		);
 		for($i = 1; $i <= $maxallowed; $i++){
-			$maxarray[ $i] = $i;
+			$maxarray[$i] = $i;
 		}
 
 		// maxSize
@@ -750,7 +750,7 @@ function doUnload() {
 
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
-				'headline' => g_l('importFiles', '[metadata]') . '',
+				'headline' => g_l('importFiles', '[metadata]'),
 				'html' => we_html_forms::checkboxWithHidden($this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
 				'space' => 120
 			);

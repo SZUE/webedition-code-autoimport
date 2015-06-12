@@ -151,7 +151,7 @@ function we_tag_sessionField($attribs, $content){
 
 		case 'choice':
 			$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'maxlength', 'rows', 'cols', 'wysiwyg'));
-			return we_html_tools::htmlInputChoiceField('s_' . $name . '', $orgVal, $values, $newAtts, weTag_getAttribute('mode', $attribs, '', we_base_request::STRING));
+			return we_html_tools::htmlInputChoiceField('s_' . $name, $orgVal, $values, $newAtts, weTag_getAttribute('mode', $attribs, '', we_base_request::STRING));
 
 		case 'textinput':
 			$choice = weTag_getAttribute('choice', $attribs, false, we_base_request::BOOL);

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_Checkbox extends we_ui_abstract_AbstractInputElement{
-
 	/**
 	 * checked attribute
 	 *
@@ -146,7 +144,7 @@ class we_ui_controls_Checkbox extends we_ui_abstract_AbstractInputElement{
 		$checkBoxId = "_" . $this->getId();
 
 		if($this->getLabel() !== ''){
-			$label = new we_ui_controls_Label(array('text' => '' . $this->getLabel() . '', 'for' => '' . $checkBoxId . '', 'id' => 'label_' . $this->getId() . '', 'disabled' => $this->getDisabled(), 'title' => $this->getTitle()));
+			$label = new we_ui_controls_Label(array('text' => $this->getLabel(), 'for' => $checkBoxId, 'id' => 'label_' . $this->getId(), 'disabled' => $this->getDisabled(), 'title' => $this->getTitle()));
 			$labelHTML = $label->getHTML();
 		}
 

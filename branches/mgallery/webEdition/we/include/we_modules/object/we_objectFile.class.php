@@ -877,8 +877,7 @@ class we_objectFile extends we_document{
 					)
 				) .
 				'<div id="table_' . $uniq . '" style="display:block; padding: 10px 0px 20px 30px;">' .
-				$myid ? $ob->getFieldsHTML(false, true) : '' .
-				'</div>';
+				$myid ? $ob->getFieldsHTML(false, true) : '</div>';
 		}
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");

@@ -97,12 +97,10 @@ class we_search_model extends we_tool_model{
 	var $searchForTextMediaSearch = 1;
 	var $searchForTitleMediaSearch = 0;
 	var $searchForMetaMediaSearch = 0;
-
 	public $searchForImageMediaSearch = 1;
 	public $searchForVideoMediaSearch = 0;
 	public $searchForAudioMediaSearch = 0;
 	public $searchForPdfMediaSearch = 1;
-
 	public $search_contentTypes_mediaSearch = array();
 
 	/**

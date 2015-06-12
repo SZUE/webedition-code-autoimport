@@ -719,16 +719,14 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				</div>
 
 
-				<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck">
-					<input type="hidden" name="ItemsToPublish" id="ItemsToPublish" value="" />
-					<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
-					<input type="hidden" name="we_cmd[1]" value="finish" />
-					<input type="hidden" name="we_cmd[2]" value="<?php echo $Transaction; ?>" />
-					<?php
-					if($cmd3){
-						echo "	<input type=\"hidden\" name=\"we_cmd[3]\" value=\"" . $cmd3 . "\" />";
-					}
-
+				<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck"><?php
+					echo we_html_element::htmlHiddens(array(
+						'ItemsToPublish' => '',
+						'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+						'we_cmd[1]' => 'finish',
+						'we_cmd[2]' => $Transaction,
+						($cmd3 ? 'we_cmd[3]' : '') => $cmd3
+					));
 
 					$Content = '
 	<table width="650" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
@@ -896,8 +894,8 @@ top.add();' .
 					</head>
 					<body class="weDialogBody">
 						<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-					}
-					?>
+	}
+			?>
 				</form>
 				</center>
 			</body>

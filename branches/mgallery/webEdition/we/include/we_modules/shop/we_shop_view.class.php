@@ -1676,7 +1676,7 @@ var attribs = {
 				);
 				break;
 			case 'delete_raw':
-				$js = '' . $this->topFrame . '.deleteEntry(' . $this->raw->ID . ');';
+				$js = $this->topFrame . '.deleteEntry(' . $this->raw->ID . ');';
 
 				$this->raw->delete();
 				$this->raw = new weShop();

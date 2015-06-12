@@ -512,7 +512,7 @@ class we_search_search extends we_search_base{
 			}
 		}
 
-		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="' . $searchField . '" ' . ($reverse ? '' : 'AND c.Dat ' . $searching . '') . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="' . $searchField . '" ' . ($reverse ? '' : 'AND c.Dat ' . $searching) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$IDs = $_db->getAll(true);
 
 		return $IDs ? 'AND ID ' . ($reverse ? 'NOT' : '') . ' IN (' . implode(',', $IDs) . ')' : 'AND 0';
@@ -811,7 +811,7 @@ class we_search_search extends we_search_base{
 							NEWSLETTER_TABLE => 'newsletter'
 						);
 						foreach($paths[$k] as $key => $v){
-							$onclick[$k][$key] = 'weSearch.openModule(\'' . $modules[addTblPrefix($k)]. '\',' . $key . ')';
+							$onclick[$k][$key] = 'weSearch.openModule(\'' . $modules[addTblPrefix($k)] . '\',' . $key . ')';
 							$type[$k][$key] = 'module';
 							$mod[$k][$key] = $modules[addTblPrefix($k)];
 							$isTmpPossible[$k][$key] = false;
@@ -825,7 +825,6 @@ class we_search_search extends we_search_base{
 							$mod[$k][$key] = '';
 							$isTmpPossible[$k][$key] = false;
 						}
-
 				}
 			}
 
@@ -960,7 +959,9 @@ class we_search_search extends we_search_base{
 	function insertMediaAttribsToTempTable(){
 		$this->db->query('SELECT docID FROM SEARCH_TEMP_TABLE');
 		$IDs = implode(',', $this->db->getAll(true));
-
+		if(!$IDs){
+			return;
+		}
 		$this->db->query('SELECT l.DID, c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.DID IN (' . $IDs . ') AND l.Name="title" AND l.Type="attrib" AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 		$titles = $this->db->getAll();
 		if(is_array($titles) && $titles){

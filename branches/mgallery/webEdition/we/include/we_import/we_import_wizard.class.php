@@ -1889,9 +1889,9 @@ function handle_event(evt) {
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
 			$inputLLocal = $this->fileUploader ? $this->fileUploader->getHTML() :
-				we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, "accept=\"text/csv\" onclick=\"" . "self.document.we_form.elements['v[rdofloc]'][1].checked=true;\"" . "\"", "file");
+				we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, 'accept="text/csv" onclick="self.document.we_form.elements[\'v[rdofloc]\'][1].checked=true;"', 'file');
 		} else {
-			$inputLLocal = we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, "accept=\"text/csv\" onclick=\"" . "self.document.we_form.elements['v[rdofloc]'][1].checked=true;\"" . "\"", "file");
+			$inputLLocal = we_html_tools::htmlTextInput('uploaded_csv_file', 30, '', 255, 'accept="text/csv" onclick="self.document.we_form.elements[\'v[rdofloc]\'][1].checked=true;"', 'file');
 		}
 
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), "", "", "", "", 0);

@@ -193,7 +193,7 @@ function uploadFinished() {
 		if(permissionhandler::hasPerm("EDIT_KATEGORIE")){
 
 			$parts[] = array(
-				'headline' => g_l('global', '[categorys]') . '',
+				'headline' => g_l('global', '[categorys]'),
 				'html' => $this->getHTMLCategory(),
 				'space' => 150
 			);
@@ -201,14 +201,14 @@ function uploadFinished() {
 
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
-				'headline' => g_l('importFiles', '[metadata]') . '',
+				'headline' => g_l('importFiles', '[metadata]'),
 				'html' => we_html_forms::checkboxWithHidden(
 					$this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
 				'space' => 150
 			);
 
 			$parts[] = array(
-				'headline' => g_l('importFiles', '[imgsSearchable]') . '',
+				'headline' => g_l('importFiles', '[imgsSearchable]'),
 				'html' => we_html_forms::checkboxWithHidden(
 					$this->imgsSearchable == true, 'imgsSearchable', g_l('importFiles', '[imgsSearchable_label]')),
 				'space' => 150

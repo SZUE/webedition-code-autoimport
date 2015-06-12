@@ -66,17 +66,17 @@ checked : false
 	} else {
 		$p = $DB_WE->f("Permissions");
 
-		echo "checked = (user_array_search(\"" . $DB_WE->f('ID') . "\", opener.current_sel, \"1\", 'we_message') != -1) ? 1 : 0;" .
-		"treeData.add({
-name : " . $DB_WE->f("ID") . ",
-parentid : " . $DB_WE->f("ParentID") . ",
-text : '" . $DB_WE->f("username") . "',
-typ : 'user',
-contentType : 'user',
-table : '" . USER_TABLE . "',
-published : '" . $p[0] . "',
+		echo 'checked = (user_array_search("' . $DB_WE->f('ID') . '", opener.current_sel, "1", "we_message") != -1) ? 1 : 0;' .
+		'treeData.add({
+name : ' . $DB_WE->f("ID") . ',
+parentid : ' . $DB_WE->f("ParentID") . ',
+text : "' . $DB_WE->f("username") . '",
+typ : "user",
+contentType : "user",
+table : "' . USER_TABLE . '",
+published : "' . $p[0] . '",
 checked : checked
-	});";
+	});';
 	}
 }
 ?>

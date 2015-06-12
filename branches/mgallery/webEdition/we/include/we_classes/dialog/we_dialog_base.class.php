@@ -26,7 +26,6 @@ class we_dialog_base{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
 	var $db = '';
 	var $what = '';
 	var $args = array();
@@ -87,7 +86,7 @@ class we_dialog_base{
 				return $this->getCmdHTML();
 			default:
 				return $this->getHeaderHTML(true) .
-						$this->getFramesetHTML() . '</html>';
+					$this->getFramesetHTML() . '</html>';
 		}
 	}
 
@@ -112,7 +111,7 @@ class we_dialog_base{
 
 	function getFramesetHTML(){
 		return we_html_element::jsElement(
-						((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ? 'document.onkeydown = doKeyDown;' : '') . '
+				((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ? 'document.onkeydown = doKeyDown;' : '') . '
 
 function doKeyDown() {
 	var key = event.keyCode;
@@ -127,10 +126,10 @@ function doKeyDown() {
 			break;
 	}
 }') .
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
-						, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-								, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
-								we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+			we_html_element::htmlBody(array('class' => 'weDialogBody', 'style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onunload' => 'doUnload()')
+				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+					, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+					we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		));
 	}
 
@@ -154,11 +153,11 @@ function doKeyDown() {
 		$dc = $this->getDialogContentHTML();
 
 		$dialogContent = (is_array($dc) ?
-						we_html_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
-						we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
+				we_html_multiIconBox::getHTML('', '100%', $dc, 30, $this->getDialogButtons(), -1, '', '', false, $this->dialogTitle) :
+				we_html_tools::htmlDialogLayout($dc, $this->dialogTitle, $this->getDialogButtons()));
 
 		return $this->getFormHTML() . $dialogContent .
-				we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
+			we_html_element::htmlHidden("we_what", "cmd") . $this->getHiddenArgs() . '</form>';
 	}
 
 	function getDialogButtons(){
@@ -183,7 +182,7 @@ function doKeyDown() {
 		if(($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd'))){
 			foreach($cmd as $k => $v){
 				//TODO: why should we loop this commands through?
-				$hiddens .= "<input type=\"hidden\" name=\"we_cmd[$k]\" value=\"" . rawurlencode($v) . "\" />";
+				$hiddens .= '<input type="hidden" name="we_cmd[' . $k . ']" value="' . rawurlencode($v) . '"/>';
 			}
 		}
 
@@ -218,18 +217,18 @@ function doKeyDown() {
 
 	function getHeaderHTML($printJS_Style = false){
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . ($printJS_Style ? STYLESHEET : '') . static::getTinyMceJS() .
-				($printJS_Style ? $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
-				'</head>';
+			($printJS_Style ? $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') .
+			'</head>';
 	}
 
 	public static function getTinyMceJS(){
 		return
-				we_html_element::jsElement('var isWeDialog = true;') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
-				we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
+			we_html_element::jsElement('var isWeDialog = true;') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce_popup.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
+			we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
 	}
 
 	function getJs(){
@@ -238,13 +237,13 @@ var textareaFocus = false;
 var onEnterKey=' . intval($this->pageNr == $this->numPages && $this->JsOnly) . ';
 
 function weDoOk() {' .
-						($this->pageNr == $this->numPages && $this->JsOnly ? '
+				($this->pageNr == $this->numPages && $this->JsOnly ? '
 			if (!textareaFocus) {
 				' . $this->getOkJs() . '
 			}' : '') .
-						'
+				'
 }') .
-				we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
 	}
 
 	function formColor($size, $name, $value, $width = ""){

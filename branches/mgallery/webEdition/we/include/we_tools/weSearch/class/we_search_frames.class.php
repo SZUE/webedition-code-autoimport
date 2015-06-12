@@ -68,8 +68,7 @@ class we_search_frames extends we_tool_frames{
 						$rootjs . $this->Tree->getJSLoadTree($_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))));
 
 		if(isset($_SESSION['weS']['weSearch']['modelidForTree'])){
-			$out .= we_html_element::jsElement(
-					'' . $this->topFrame . '.treeData.selectnode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
+			$out .= we_html_element::jsElement($this->topFrame . '.treeData.selectnode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
 			unset($_SESSION['weS']['weSearch']['modelidForTree']);
 		}
 
@@ -279,10 +278,10 @@ function setTab(tab) {
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
-		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
+		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch];
 
 		$_searchResult_block = '<div>
-		<div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
+		<div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_' . $innerSearch . '">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
 		return array(
@@ -353,7 +352,7 @@ function setTab(tab) {
 
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
-		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
+		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch];
 
 		$_searchResult_block = '<div>
 		<div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
@@ -396,7 +395,7 @@ function setTab(tab) {
 		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxesAdvSearch() . '</div>';
 		$content = $this->View->searchProperties($innerSearch);
 		$headline = $this->View->makeHeadLines($innerSearch);
-		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch . ''];
+		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch];
 
 		$_searchResult_block = '<div>
       <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop(

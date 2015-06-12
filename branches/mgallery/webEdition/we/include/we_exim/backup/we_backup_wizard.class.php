@@ -1063,7 +1063,7 @@ function startStep(){
 				header("Expires: 0");
 				header("Cache-control: private, max-age=0, must-revalidate");
 				header('Content-Type: application/octet-stream');
-				header("Content-Disposition: attachment; filename=\"" . trim(htmlentities(basename($_filename))) . "\"");
+				header('Content-Disposition: attachment; filename="' . trim(htmlentities(basename($_filename))) . '"');
 				header("Content-Description: " . trim(htmlentities(basename($_filename))));
 				header("Content-Length: " . $_size);
 

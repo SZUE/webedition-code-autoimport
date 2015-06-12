@@ -185,7 +185,7 @@ function toggle(group_id, display_style, use_form, form_name, form_group_name) {
 
 			// Now build string representing the array of all groups if this group is visible
 			if($_show_group){
-				$_groups_array .= "_all_groups[" . $i . "] = \"" . $_groups_key . "\";\n";
+				$_groups_array .= '_all_groups[' . $i . '] = "' . $_groups_key . '";';
 
 				// Increase counter
 				$i++;

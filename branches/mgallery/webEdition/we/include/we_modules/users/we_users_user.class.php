@@ -871,14 +871,14 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['editorFont'] = 1;
 					}
 
-					$save_javascript .= "
+					$save_javascript .= '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
+			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || ' . (defined('OBJECT_TABLE') ? ' _usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" || ' : '') . ' _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
+				_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 					_usedEditors[frameId].setEditorReloadNeeded(true);
@@ -889,7 +889,7 @@ if ( !_multiEditorreload ) {
 			}
 		}
 }
-_multiEditorreload = true;";
+_multiEditorreload = true;';
 					break;
 
 				case 'editorFontname':
@@ -916,14 +916,14 @@ _multiEditorreload = true;";
 					if(!$GLOBALS['editor_reloaded']){
 						$GLOBALS['editor_reloaded'] = true;
 
-						$save_javascript .= "
+						$save_javascript .= '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
+			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || ' . (defined('OBJECT_TABLE') ? ' _usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" || ' : '') . ' _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
+				_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 					_usedEditors[frameId].setEditorReloadNeeded(true);
@@ -934,7 +934,7 @@ if ( !_multiEditorreload ) {
 			}
 		}
 }
-_multiEditorreload = true;";
+_multiEditorreload = true;';
 					}
 					break;
 
@@ -978,14 +978,14 @@ _multiEditorreload = true;";
 					$_SESSION['prefs']['editorFontsize'] = -1;
 					$_SESSION['prefs']['editorFont'] = 0;
 
-					$save_javascript .= "
+					$save_javascript .= '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  top.opener.top.weEditorFrameController.getEditorsInUse();
 
 		for (frameId in _usedEditors) {
 
-			if ( (_usedEditors[frameId].getEditorEditorTable() == \"" . TEMPLATES_TABLE . "\" || " . (defined('OBJECT_TABLE') ? " _usedEditors[frameId].getEditorEditorTable() == \"" . OBJECT_FILES_TABLE . "\" || " : "") . " _usedEditors[frameId].getEditorEditorTable() == \"" . FILE_TABLE . "\") &&
-				_usedEditors[frameId].getEditorEditPageNr() == " . we_base_constants::WE_EDITPAGE_CONTENT . " ) {
+			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || ' . (defined('OBJECT_TABLE') ? ' _usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" || ' : '') . ' _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
+				_usedEditors[frameId].getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor
 					_usedEditors[frameId].setEditorReloadNeeded(true);
@@ -996,7 +996,7 @@ if ( !_multiEditorreload ) {
 			}
 		}
 }
-_multiEditorreload = true;";
+_multiEditorreload = true;';
 					break;
 
 				case 'force_glossary_check':

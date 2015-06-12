@@ -127,7 +127,8 @@ class we_search_view{
 
 	function processCommands(){
 		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
-		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd'))){
+		t_e('x');
+		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
 			case 'tool_weSearch_new' :
 			case 'tool_weSearch_new_forDocuments' :
 			case 'tool_weSearch_new_forTemplates' :
@@ -147,11 +148,8 @@ class we_search_view{
 
 			case 'tool_weSearch_edit' :
 				$this->Model = new we_search_model($cmdid);
-
 				if(!$this->Model->isAllowedForUser()){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(
-							g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					$this->Model = new we_search_model();
 					$_REQUEST['home'] = true;
 					break;
@@ -645,13 +643,13 @@ weSearch.g_l = {
 				$_table->setCol(3, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsUsed',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
-					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(0 => 'alle', 1 => 'nur benutzte Medien', 2 => 'nur unbenutzte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
+					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(0 => 'alle', 1 => 'nur benutzte Medien', 2 => 'nur unbenutzte Medien'), 1, isset($this->Model->searchMediaSearch[$n++]) ? $this->Model->searchMediaSearch[$n++] : '', false, array(), 'value', 220));
 
 				$_table->setCol(4, 0, array(), 'Schutz: ');
 				$_table->setCol(4, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsProtected',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
-					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(0 => 'alle', 1 => 'nur geschützte Medien', 2 => 'nur ungeschützte Medien'), 1, $this->Model->searchMediaSearch[$n++], false, array(), 'value', 220));
+					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(0 => 'alle', 1 => 'nur geschützte Medien', 2 => 'nur ungeschützte Medien'), 1, isset($this->Model->searchMediaSearch[$n++]) ? $this->Model->searchMediaSearch[$n++] : '', false, array(), 'value', 220));
 
 				$this->searchMediaOptFieldIndex = $n;
 				break;
@@ -852,12 +850,12 @@ weSearch.g_l = {
 				if($this->Model->searchForContentDocSearch){
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 1){
-					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
+				if((isset($_SESSION['weS']['weSearch']['keyword']) && $_SESSION['weS']['weSearch']['keyword']) && we_base_request::_(we_base_request::INT, 'tab') == 1){
+					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']['keyword']);
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
 					}
-					unset($_SESSION['weS']['weSearch']["keyword"]);
+					unset($_SESSION['weS']['weSearch']['keyword']);
 				}
 				if(!is_array($this->Model->searchDocSearch)){
 					$this->Model->searchDocSearch = we_unserialize($this->Model->searchDocSearch);
@@ -880,7 +878,7 @@ weSearch.g_l = {
 				if($this->Model->searchForContentTmplSearch){
 					$this->Model->searchFieldsTmplSearch[] = "Content";
 				}
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 2){
+				if((isset($_SESSION['weS']['weSearch']['keyword']) && $_SESSION['weS']['weSearch']['keyword'] != '') && we_base_request::_(we_base_request::INT, "tab") == 2){
 					$this->Model->searchTmplSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchTmplSearch[0] = utf8_encode($this->Model->searchTmplSearch[0]);
@@ -894,9 +892,9 @@ weSearch.g_l = {
 				break;
 
 			case self::SEARCH_MEDIA :
-				$this->Model->locationMediaSearch = (($op = we_base_request::_(we_base_request::STRING, "locationMediaSearch")) ?
+				$this->Model->locationMediaSearch = (($op = we_base_request::_(we_base_request::STRING, 'locationMediaSearch')) ?
 						$op :
-						array("CONTAIN"));
+						array('CONTAIN'));
 
 				$this->Model->searchFieldsMediaSearch = array();
 				$locationName = "locationMediaSearch[0]";
@@ -2146,8 +2144,8 @@ weSearch.g_l = {
 		$searchFieldsWhichSearch = $whichSearch === self::SEARCH_ADV ? "searchFieldsAdvSearch" : "searchFieldsMediaSearch";
 		$locationWhichSearch = $whichSearch === self::SEARCH_ADV ? "locationAdvSearch" : "locationMediaSearch";
 
-		if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (we_base_request::_(we_base_request::INT, "tab") === ($whichSearch === self::SEARCH_ADV ? 3 : (self::SEARCH_MEDIA ? 5 : -1)))){
-			$this->Model->$searchWhichSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
+		if((isset($_SESSION['weS']['weSearch']['keyword']) && $_SESSION['weS']['weSearch']['keyword'] != "") && (we_base_request::_(we_base_request::INT, 'tab') === ($whichSearch === self::SEARCH_ADV ? 3 : (self::SEARCH_MEDIA ? 5 : -1)))){
+			$this->Model->$searchWhichSearch[0] = $_SESSION['weS']['weSearch']['keyword'];
 			if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 				$this->Model->$searchWhichSearch[0] = utf8_encode($this->Model->$searchWhichSearch[0]);
 			}

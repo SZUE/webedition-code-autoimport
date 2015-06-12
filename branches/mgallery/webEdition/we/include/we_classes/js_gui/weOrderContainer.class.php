@@ -46,9 +46,9 @@ class weOrderContainer{
 
 	function getContainer($attribs = array()){
 
-		$attrib = "";
+		$attrib = '';
 		foreach($attribs as $name => $value){
-			$attrib .= " " . $name . "=\"" . $value . "\"";
+			$attrib .= ' ' . $name . "=\"" . $value . "\"";
 		}
 
 		$src = '<' . $this->containerType . ' id="' . $this->containerId . '"' . $attrib . '>'

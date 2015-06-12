@@ -460,7 +460,7 @@ setTimeout(function(){we_import(1," . $v['numFiles'] . ");},15);";
 										$_status = g_l('import', '[skip]');
 									}
 
-									$_counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2) . '';
+									$_counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2);
 
 									$JScript = "
 top.wizbusy.setProgressText('pb1','" . $_status . " - " . $_counter_text . "');

@@ -46,9 +46,9 @@ echo we_html_tools::getHtmlTop('sideBar') .
 						if(stripos($text['link'], 'javascript:') === 0){
 							$text['link'] = str_replace("\"", "'", $text['link']); #6625
 							$text['link'] = str_replace("`", "'", $text['link']); #6625
-							$link = "<a href=\"" . $text['link'] . "\">%s</a>";
+							$link = '<a href="' . $text['link'] . '">%s</a>';
 						} else {
-							$link = "<a href=\"" . $text['link'] . "\" target=\"_blank\">%s</a>";
+							$link = '<a href="' . $text['link'] . '" target="_blank">%s</a>';
 						}
 					}
 

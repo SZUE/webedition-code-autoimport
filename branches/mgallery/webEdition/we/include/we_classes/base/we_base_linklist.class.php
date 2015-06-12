@@ -457,8 +457,7 @@ class we_base_linklist{
 			$plusbut = we_html_button::create_button("fa:btn_add_link,fa-plus,fa-lg fa-link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
 			if($ret === false){
 				if(isset($GLOBALS["we_list_inserted"]) && isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs["name"])){
-					echo we_html_element::jsElement('we_cmd(\'edit_linklist\',\'' . $this->attribs["name"] . '\',\'' . ((isset(
-							$GLOBALS["we_list_insertedNr"]) && $GLOBALS["we_list_insertedNr"] ) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '\');');
+					echo we_html_element::jsElement('we_cmd("edit_linklist","' . $this->attribs["name"] . '","' . ((isset($GLOBALS["we_list_insertedNr"]) && $GLOBALS["we_list_insertedNr"] ) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '");');
 				}
 				if($this->show == -1 || ($this->show > $this->length())){
 					echo "<br/>" . we_html_button::create_button("fa:btn_add_link,fa-plus,fa-lg fa-link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled) .
