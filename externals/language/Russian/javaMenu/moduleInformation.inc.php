@@ -5,6 +5,10 @@ $l_javaMenu_moduleInformation=array(
 		'text'=>'Баннер/статистика',
 		'text_short'=>'Баннер',
 	),
+	'collection'=>array(
+		'text'=>'Collections',
+		'text_short'=>'Collections',
+	),
 	'customer'=>array(
 		'text'=>'Управление клиентами',
 		'text_short'=>'Клиент',
