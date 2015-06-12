@@ -50,9 +50,9 @@ function setTreeState() {
 }
 
 function applyLayout() {
-	eval("if(" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\"))" + treeData.treeFrame + ".document.getElementById(\"lab_" + this.id + "\").className =\"" +
+	eval('if(' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '"))' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '").className ="' +
 					(arguments[0] ? arguments[0] : this.getlayout()) +
-					"\";");
+					'";');
 }
 
 function rootEntry(id, text, rootstat, offset) {
@@ -167,44 +167,31 @@ function parentChecked(start) {
 	return false;
 }
 
-function setCheckNode(imgName) {
-	if (document.images[imgName]) {
-		document.images[imgName].src = "/webEdition/images/tree/check0.gif";
-	}
-}
-
-function setUnCheckNode(imgName) {
-	if (document.images[imgName]) {
-		document.images[imgName].src = "/webEdition/images/tree/check1.gif";
-	}
-}
-
 function clearItems() {
 	var ai = 1;
 	var deleted = 0;
 
 	while (ai <= treeData.len) {
-		if (treeData[ai].parentid == this.id) {
-			if (treeData[ai].contenttype == "group") {
-				deleted += treeData[ai].clear();
-			} else {
-				ind = ai;
-				while (ind <= treeData.len - 1) {
-					treeData[ind] = treeData[ind + 1];
-					ind++;
-				}
-				treeData.len[treeData.len] = null;
-				treeData.len--;
-			}
-			deleted++;
-		} else {
+		if (treeData[ai].parentid != this.id) {
 			ai++;
+			continue;
 		}
+		if (treeData[ai].contenttype == "group") {
+			deleted += treeData[ai].clear();
+		} else {
+			ind = ai;
+			while (ind <= treeData.len - 1) {
+				treeData[ind] = treeData[ind + 1];
+				ind++;
+			}
+			treeData.len[treeData.len] = null;
+			treeData.len--;
+		}
+		deleted++;
 	}
 	drawTree();
 	return deleted;
 }
-
 
 function clickHandler(cur) {
 	var row = "";
@@ -213,13 +200,13 @@ function clickHandler(cur) {
 	}
 	if (cur.disabled != 1) {
 		if (treeData.state == treeData.tree_states.select) {
-			row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
+			row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
 		} else if (treeData.state == treeData.tree_states.selectitem && cur.typ == "item") {
-			row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
+			row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
 		} else if (treeData.state == treeData.tree_states.selectgroup && cur.typ == "group") {
-			row += "<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
+			row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
 		} else {
-			row += "<a name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){ " + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
+			row += '<a name="_' + cur.id + '" href="javascript://"  ondblclick="' + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){ " + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
 		}
 	}
 	row += getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
@@ -263,7 +250,7 @@ function drawItem(nf, ai) {
 
 function drawThreeDots(nf, ai) {
 	return '<span class="treeKreuz kreuzungend"></span>' +
-					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\"  onclick=\"" + treeData.topFrame + ".setSegment('" + nf[ai].id + "');return true;\">" +
+					'<a name="_' + nf[ai].id + '" href="javascript://"  onclick="' + treeData.topFrame + ".setSegment('" + nf[ai].id + '\');return true;">' +
 					'<span class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span></a><br/>';
 }
 
@@ -409,7 +396,7 @@ function checkNode(imgName) {
 			try {
 				eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
 			} catch (e) {
-				self.Tree.setCheckNode(imgName);
+
 			}
 			break;
 		} else {
@@ -418,7 +405,7 @@ function checkNode(imgName) {
 			try {
 				eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
 			} catch (e) {
-				self.Tree.setUnCheckNode(imgName);
+
 			}
 			break;
 		}

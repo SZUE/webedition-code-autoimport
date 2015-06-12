@@ -811,13 +811,16 @@ class we_versions_version{
 	 */
 	public static function getContentTypesVersioning(){
 
-		$contentTypes = array();
-		$contentTypes[] = 'all';
+		$contentTypes = array('all');
 		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $k){
-//if($k != "object" && $k != "text/weTmpl" && $k != "folder") { vor #4120
-			if($k != "object" && $k != "folder" && $k != "class_folder"){
-				$contentTypes[] = $k;
+			switch($k){
+				case "object":
+				case "folder":
+				case "class_folder":
+					break;
+				default:
+					$contentTypes[] = $k;
 			}
 		}
 		return $contentTypes;
@@ -842,7 +845,7 @@ class we_versions_version{
 	 * @abstract looks if versions exist for the document
 	 */
 	private static function versionsExist($id, $contentType){
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType = '" . escape_sql_query($contentType) . "' LIMIT 1", '', new DB_WE()) == 1;
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentId=' . intval($id) . " AND ContentType='" . escape_sql_query($contentType) . "' LIMIT 1", '', new DB_WE()) == 1;
 	}
 
 	/**
@@ -944,7 +947,7 @@ class we_versions_version{
 	/**
 	 * @abstract apply preferences
 	 */
-	function CheckPreferencesCtypes($ct){
+	public static function CheckPreferencesCtypes($ct){
 
 //if folder was saved don' make versions (if path was changed of folder)
 		if(isset($GLOBALS['we_doc']->ClassName)){
@@ -986,9 +989,9 @@ class we_versions_version{
 				return VERSIONING_TEXT_XML;
 			case we_base_ContentTypes::OBJECT_FILE:
 				return VERSIONING_OBJECT;
+			default:
+				return true;
 		}
-
-		return true;
 	}
 
 	function CheckPreferencesTime($docID, $docTable){
@@ -1055,7 +1058,7 @@ class we_versions_version{
 		}
 
 //preferences
-		if(!$this->CheckPreferencesCtypes($document["ContentType"])){
+		if(!self::CheckPreferencesCtypes($document["ContentType"])){
 			return;
 		}
 
@@ -1527,7 +1530,7 @@ class we_versions_version{
 		unset($lastEntry['ID']);
 
 		//preferences
-		$doDelete = $this->CheckPreferencesCtypes($ct);
+		$doDelete = self::CheckPreferencesCtypes($ct);
 
 		// always write delete versions, if enabled, so ignore VERSIONS_CREATE
 		if($lastEntry && $doDelete){

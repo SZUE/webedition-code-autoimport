@@ -60,6 +60,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 			// check if item could be moved to the target directory
 			$check = checkMoveItem($db, $targetDirectroy, $selectedItem, $table, $items2move);
 			switch($check){
+				default :
 				case 1 :
 					break;
 				case -1 :
@@ -74,8 +75,6 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 					$message = g_l('alert', '[move_onlysametype]');
 					$retVal = 0;
 					break;
-				default :
-					break;
 			}
 			if(!$check){
 				break;
@@ -87,22 +86,19 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 				we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif($retVal){ //	move files !
 			$notMovedItems = array();
-			foreach($selectedItems as $selectedItem){
-				moveItem($targetDirectroy, $selectedItem, $table, $notMovedItems);
-			}
+			moveItems($targetDirectroy, $selectedItems, $table, $notMovedItems);
 
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
 				$script .= moveTreeEntries($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'));
 			}
 
-			$script .= "top.toggleBusy(0);";
+			$script .= 'top.toggleBusy(0);';
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode
-				if(!empty($notMovedItems)){
+				if($notMovedItems){
 					$_SESSION['weS']['move_files_nok'] = array();
-					$_SESSION['weS']["move_files_info"] = str_replace("\\n", '', sprintf(g_l('alert', '[move_of_files_failed]'), ""));
 					foreach($notMovedItems as $item){
 						$_SESSION['weS']['move_files_nok'][] = array(
-							"icon" => $item['Icon'],
+							"ContentType" => $item['ContentType'],
 							"path" => $item['Path']
 						);
 					}
@@ -121,7 +117,6 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 	}
 	$script = we_html_element::jsScript(JS_DIR . 'windows.js') .
 		we_html_element::jsElement($script);
-	//exit;
 }
 
 //	in seeMode return to startDocument ...
@@ -136,12 +131,24 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	exit();
 }
 
+switch($table){
+	case TEMPLATES_TABLE:
+		$_type = g_l('global', '[templates]');
+		break;
+	case defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
+		$_type = g_l('global', '[objects]');
+		break;
+	default:
+		$_type = g_l('global', '[documents]');
+		break;
+}
+
 echo we_html_tools::getHtmlTop() . STYLESHEET .
  $script .
  weSuggest::getYuiFiles();
 ?>
 <script type="text/javascript"><!--
-	top.treeData.setstate(top.treeData.tree_states["selectitem"]);
+	top.treeData.setstate(top.treeData.tree_states["select"]);
 	if (top.treeData.table != "<?php echo $table; ?>") {
 		top.treeData.table = "<?php echo $table; ?>";
 		we_cmd("load", "<?php echo $table; ?>");
@@ -172,7 +179,8 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 			if (acStatus.running) {
 				setTimeout(press_ok_move, 100);
 				return;
-			} else if (!acStatus.valid) {
+			}
+			if (!acStatus.valid) {
 <?php echo we_message_reporting::getShowMessageCall(g_l('weClass', '[notValidFolder]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
 				return;
 			}
@@ -204,19 +212,6 @@ echo $table;
 				_openDocs_Str += "- " + _open_move_editors[i].getEditorDocumentPath() + "\n";
 
 			}
-<?php
-switch($table){
-	case TEMPLATES_TABLE:
-		$_type = g_l('global', '[templates]');
-		break;
-	case defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
-		$_type = g_l('global', '[objects]');
-		break;
-	default:
-		$_type = g_l('global', '[documents]');
-		break;
-}
-?>
 			if (confirm("<?php
 printf(g_l('alert', '[move_exit_open_docs_question]'), $_type, $_type);
 ?>" + _openDocs_Str + "\n<?php
@@ -275,21 +270,14 @@ echo $table;
 //-->
 </script>
 <?php
-if($cmd0 === "do_move"){
-	echo "</head><body></body></html>";
+if($cmd0 === 'do_move'){
+	echo '</head><body></body></html>';
 	exit();
 }
 
 
-$ws_Id = get_def_ws($table);
-
-if($ws_Id){
-	$ws_path = id_to_path($ws_Id, $table);
-} else {
-	$ws_Id = 0;
-	$ws_path = '/';
-}
-
+$ws_Id = get_def_ws($table)? : 0;
+$ws_path = ($ws_Id ? id_to_path($ws_Id, $table) : '/');
 $textname = 'we_targetname';
 $idname = 'we_target';
 
@@ -303,13 +291,12 @@ $yuiSuggest->setSelector(weSuggest::DirSelector);
 $yuiSuggest->setTable($table);
 $yuiSuggest->setWidth(250);
 $yuiSuggest->setContainerWidth(360);
-$wecmdenc1 = we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $idname . '.value');
-$wecmdenc2 = we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $textname . '.value');
-$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0)"), 10);
+$cmd1 = 'top.treeheader.document.we_form.elements.' . $idname . '.value';
+$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $textname . '.value') . "','','',0)"), 10);
 
 $weAcSelector = $yuiSuggest->getHTML();
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:press_ok_move();"), "", we_html_button::create_button("quit_move", "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, 'javascript:press_ok_move();'), '', we_html_button::create_button('quit_move', "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
 
 echo
 '</head><body class="weTreeHeaderMove">

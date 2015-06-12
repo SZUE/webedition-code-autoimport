@@ -300,10 +300,6 @@ function we_sbmtFrm(target, url, source) {
 
 }
 
-function we_sbmtFrmC(target, url) {
-	return submit_we_form(top.weEditorFrameController.getActiveDocumentReference(), target, url);
-}
-
 function we_setEditorWasLoaded(flag) {
 	// imi: console.log("we_setEditorWasLoaded: " + flag);
 	//flag = true; //uncomment to keep first weEditorWasLoaded=true for the rest of the session
@@ -619,7 +615,6 @@ function we_cmd_base(args, url) {
 		case "do_delete":
 			toggleBusy(1);
 			submit_we_form(self.treeheader, self.load, url);
-			//we_sbmtFrmC(self.load,url);
 			break;
 		case "move_single_document":
 			toggleBusy(1);
@@ -628,12 +623,10 @@ function we_cmd_base(args, url) {
 		case "do_move":
 			toggleBusy(1);
 			submit_we_form(self.treeheader, self.load, url);
-			//we_sbmtFrmC(self.load,url);
 			break;
 		case "do_addToCollection":
 			toggleBusy(1);
 			submit_we_form(self.treeheader, self.load, url);
-			//we_sbmtFrmC(self.load,url);
 			break;
 		case "change_passwd":
 			new jsWindow(url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);

@@ -40,8 +40,10 @@ class we_html_table extends we_html_baseCollection{
 	 */
 	function __construct(array $attribs = array(), $rows_num = 0, $cols_num = 0, array $content = null){
 		parent::__construct('table', true, $attribs);
-		$this->addRow($rows_num);
-		$this->addCol($cols_num);
+		if($rows_num){
+			$this->addRow($rows_num);
+			$this->addCol($cols_num);
+		}
 		$this->setTableContent($content);
 	}
 
@@ -207,7 +209,7 @@ class we_html_table extends we_html_baseCollection{
 				} else {
 					$col = $row->getChild($j);
 					if(in_array('colspan', array_keys($col->attribs))){
-						$colspan = $col->getAttribute('colspan')-1;
+						$colspan = $col->getAttribute('colspan') - 1;
 					}
 				}
 			}
