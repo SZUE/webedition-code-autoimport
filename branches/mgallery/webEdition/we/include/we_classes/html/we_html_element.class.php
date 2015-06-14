@@ -322,11 +322,11 @@ abstract class we_html_element{
 	 */
 	public static function htmlDocType($version = '4Trans'){
 		switch($version){
+			default:
 			case 5:
 			case '5':
 				return '<!DOCTYPE html>';
 			case '4Trans':
-			default:
 				return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
 		}
 	}
