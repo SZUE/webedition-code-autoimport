@@ -87,7 +87,7 @@ abstract class we_html_tools{
 				$colspan++;
 			}
 		}
-		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">' .
+		return '<table class="default">' .
 			($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
 			($abstand ? ('<tr style="height:' . $abstand . 'px"><td colspan="' . $colspan . '"></td></tr>') : '') .
 			'<tr>' . $elemOut . '</tr></table>';
@@ -123,7 +123,7 @@ this.selectedIndex = 0;' .
 		));
 
 		$_table = new we_html_table(array(
-			'cellpadding' => 0, 'cellspacing' => 0, 'border' => 0
+			'class' => 'default'
 			), 1, 3);
 
 		if($width){
@@ -179,7 +179,7 @@ this.selectedIndex = 0;' .
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$anz = count($headline);
-		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ' style="border-spacing: 0px;border-style:none;width:' . $w . 'px;' . $style . '" cellpadding="0">
+		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ' style="width:' . $w . 'px;' . $style . '" class="default">
 		<tr>
 		<td width="8" class="boxHeader">' . self::getPixel(8, 21) . '</td>';
 		// HEADLINE
@@ -196,7 +196,7 @@ this.selectedIndex = 0;' .
 		$out .= '</table>';
 
 		if($buttons){
-			$_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 3, 1, array(
+			$_table = new we_html_table(array('class' => 'default'), 3, 1, array(
 				array(array('colspan' => 2), $out),
 				array(null, self::getPixel($w, 5)), // row for gap between buttons and dialogborder
 				array(array('align' => 'right'), $buttons),
@@ -223,7 +223,7 @@ this.selectedIndex = 0;' .
 	}
 
 	static function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
-		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . 'style="border-spacing: 0px;border-style:none;width:' . $w . 'px;' . $style . '" cellpadding="0">
+		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . 'style="width:' . $w . 'px;' . $style . '" class="default">
 		<tr><td width="8" class="boxHeader">' . self::getPixel(8, 21) . '</td>';
 		// HEADLINE
 		foreach($headline as $h){
@@ -238,7 +238,7 @@ this.selectedIndex = 0;' .
 		$out .= '</table>';
 
 		if($buttons){
-			$_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 3, 1, array(
+			$_table = new we_html_table(array("class" => 'default'), 3, 1, array(
 				array(array("colspan" => 2), $out),
 				array(null, self::getPixel($w, 5)), // row for gap between buttons and dialogborder
 				array(array("align" => "right"), $buttons)
@@ -383,7 +383,7 @@ this.selectedIndex = 0;' .
 		$atts['name'] = 'tmp_' . $name;
 		//$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
 		$selectMenue = getHtmlTag('select', removeAttribs($atts, array('size')), $opts, true); //  remove size for choice
-		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
+		return '<table class="default"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
 	}
 
 	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
@@ -410,7 +410,7 @@ this.selectedIndex = 0;' .
 			} else {
 				$disabled = '';
 			}
-			$out = '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' .
+			$out = '<table class="default"><tr><td>' .
 				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
 				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="if(typeof(_EditorFrame) != \'undefined\'){_EditorFrame.setEditorIsHot(true);}if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
@@ -663,7 +663,7 @@ this.selectedIndex = 0;' .
 		ksort($_datePosArray);
 		ksort($_timePosArray);
 
-		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td>' .
+		return '<table class="default"><tr><td>' .
 			implode('', $_datePosArray) .
 			($_showHour || $_showMinute ? '</td></tr><tr><td>' : '') .
 			implode('', $_timePosArray) .
@@ -743,9 +743,7 @@ this.selectedIndex = 0;' .
 		$yesButton = ($yes ? we_html_button::create_button(we_html_button::YES, 'javascript:' . $yesHandler) : '');
 
 
-		$content = new we_html_table(array(
-			'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0
-			), 1, ($img ? 2 : 1));
+		$content = new we_html_table(array('cellpadding' => 10, 'cellspacing' => 0, 'border' => 0), 1, ($img ? 2 : 1));
 
 		if(!empty($img) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
@@ -893,7 +891,7 @@ function clip_' . $unique . '(){
 	 */
 	public static function getDateSelector($_name, $_btn, $value){
 		$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, $_btn);
-		$oSelector = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => $_name . "_cell"), 1, 5);
+		$oSelector = new we_html_table(array("class" => 'default', "id" => $_name . "_cell"), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, $value, 10, 'id="' . $_name . '" class="wetextinput" readonly="1"', "text", 100));
 		$oSelector->setCol(0, 3, null, "&nbsp;");
 		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));

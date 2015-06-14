@@ -92,7 +92,7 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 		var set = document.createElement("div");
 		set.setAttribute("id", this.name + "_item" + this.itemCount);
 
-		set.innerHTML = "<table style=\"margin-bottom:5px;\" cellpadding=0 cellspacing=0 border=0><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\">" +
+		set.innerHTML = "<table style=\"margin-bottom:5px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\">" +
 						(this.editable === true ?
 										"<input name=\"" + this.name + "_item" + this.itemCount + "\" id=\"" + this.name + "_item_input_" + this.itemCount + "\" type=\"text\" style=\"width:" + this.defWidth + "px\" onkeyup=\"" + this.name + ".updateHidden(\'item" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td>" :
 										"<label id=\"" + this.name + "_item_label_" + this.itemCount + "\" class=\"defaultfont\"></td>"

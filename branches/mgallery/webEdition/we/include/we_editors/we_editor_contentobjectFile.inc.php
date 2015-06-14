@@ -82,10 +82,10 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 
 				echo '<div id="' . $part['name'] . '">
 	<a name="f' . $part['name'] . '"></a>
-	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	<table class="default" width="100%">
 	<tr>
 		<td class="defaultfont" width="100%">
-			<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+			<table style="margin-left:30px;" class="default">
 				<tr><td class="defaultfont">' . $part["html"] . '</td></tr>
 			</table>
 		</td>

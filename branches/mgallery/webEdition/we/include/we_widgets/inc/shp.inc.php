@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,9 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$oTblCont = new we_html_table(array(
-	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 1, 1);
+$oTblCont = new we_html_table(array('class' => 'default'), 1, 1);
 $oTblCont->setCol(
 	0, 0, null, we_html_element::htmlDiv(
 		array(

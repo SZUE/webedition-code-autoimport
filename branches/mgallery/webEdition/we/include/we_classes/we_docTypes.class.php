@@ -162,7 +162,7 @@ class we_docTypes extends we_class{
 
 	public function formDocTypeHeader(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr valign="top">
 		<td>' . $this->formDocTypes2() . '</td>
 		<td>' . we_html_tools::getPixel(20, 2) . '</td>
@@ -184,7 +184,7 @@ class we_docTypes extends we_class{
 
 	public function formDocTypeDefaults(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr><td colspan="3">' . $this->formDirChooser(we_base_browserDetect::isIE() ? 403 : 409) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(300, 5) . '</td>
 		<td>' . we_html_tools::getPixel(20, 5) . '</td>

@@ -54,7 +54,7 @@ top.close();
 	}
 
 	function getDialogContentHTML(){
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table class="default">
 <tr><td>' . $this->getLangField("lang", g_l('wysiwyg', '[language]'), 260) . '</td></tr>
 </table>' .
 				(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?

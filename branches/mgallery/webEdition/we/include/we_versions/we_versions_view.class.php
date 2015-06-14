@@ -526,7 +526,7 @@ function changeit(value, rowNr){
 
 		row.removeChild(searchTD);
 
-		var innerhtml= "<table id=\"search["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>\n"
+		var innerhtml= "<table id=\"search["+rowNr+"]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>\n"
 		+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />"
 		+ "</td><td>&nbsp;</td><td><a href=\"#\">"
 		+ "<button id=\"date_picker_from"+rowNr+"\" class=\"weBtn\">"
@@ -630,7 +630,7 @@ function delRow(id) {
 	 */
 	public function getBodyTop(){
 
-		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'none' : 'block') . ';">
+		$out = '<table class="default" id="defSearch" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'none' : 'block') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -638,7 +638,7 @@ function delRow(id) {
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
-<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
+<table class="default" id="advSearch" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -718,7 +718,7 @@ function delRow(id) {
 		}
 
 		$out .= '</tbody></table>
-<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
+<table class="default" id="advSearch3" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 	<tr>
 		<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
 	</tr>
@@ -758,7 +758,7 @@ function delRow(id) {
 			we_html_tools::hidden("order", $order) .
 			we_html_tools::hidden("mode", $mode) .
 			we_html_tools::hidden("height", $height) .
-			'<table border="0" cellpadding="0" cellspacing="0">
+			'<table class="default">
 <tr>
 	<td>' . we_html_tools::getPixel(1, 20) . '</td>
 </tr>
@@ -792,7 +792,7 @@ function delRow(id) {
 	 * @return string html-Code
 	 */
 	public function getParameterBottom($foundItems){
-		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+		return '<table class="default" style="margin-top:20px;">
 <tr id="paging_bottom">
  <td>' . we_html_tools::getPixel(19, 12) . '</td>
  <td style="font-size:12px;width:130px;">' . we_html_tools::getPixel(30, 12) . '</td>
@@ -816,7 +816,7 @@ function delRow(id) {
 			$searchstart = $this->searchclass->searchstart;
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td id="zurueck">' .
+		$out = '<table class="default"><tr><td id="zurueck">' .
 			($searchstart ?
 				we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
 				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)) .
@@ -1065,7 +1065,7 @@ function delRow(id) {
 	public function getHTMLforVersions($content){
 		$uniqname = md5(uniqid(__FUNCTION__, true));
 
-		$out = '<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		$out = '<table width="100%" class="default">
 				<tr>
 				<td class="defaultfont">';
 

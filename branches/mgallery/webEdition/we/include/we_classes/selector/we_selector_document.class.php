@@ -623,7 +623,7 @@ top.makeNewDocument = true;' .
 					break;
 			}
 
-			$out .= '<table cellpadding="0" cellspacing="0" width="100%">';
+			$out .= '<table class="default" width="100%">';
 			if(isset($_imagepreview) && $_imagepreview){
 				$out .= "<tr><td colspan='2' valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'>" . $_imagepreview . "</td></tr>";
 			}

@@ -137,7 +137,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		$jmenu = new we_base_menu($$lang_arr, $this->topFrame . '.cmd');
 		$menu = $jmenu->getCode();
 
-		$table = new we_html_table(array("width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
+		$table = new we_html_table(array("width" => "100%", "class" => 'default'), 1, 2);
 		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
 		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), we_main_headermenu::createMessageConsole('toolFrame'));
 
@@ -189,7 +189,7 @@ function setTab(tab) {
 
 ' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;'));
 
-		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("width" => '100%', "class" => 'default'), 3, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 

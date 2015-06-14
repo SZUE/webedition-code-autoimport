@@ -73,7 +73,7 @@ class we_schedpro{
 	}
 
 	function getMonthsHTML(){
-		$months = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
+		$months = '<table class="default"><tr>';
 
 		for($i = 1; $i <= 12; $i++){
 			$months .= '<td>' . we_html_forms::checkbox(1, $this->months[$i - 1], "check_we_schedule_month" . $i . "_" . $this->nr, g_l('date', '[month][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_month" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
@@ -85,7 +85,7 @@ class we_schedpro{
 	}
 
 	function getDaysHTML(){
-		$days = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
+		$days = '<table class="default"><tr>';
 
 		for($i = 1; $i <= 36; $i++){
 			if($i <= 31){
@@ -107,7 +107,7 @@ class we_schedpro{
 	}
 
 	function getWeekdaysHTML(){
-		$wd = '<table cellpadding="0" cellspacing="0" border="0"><tr>';
+		$wd = '<table class="default"><tr>';
 
 		for($i = 1; $i <= 7; $i++){
 			$wd .= '<td>' . we_html_forms::checkbox(1, $this->weekdays[$i - 1], "check_we_schedule_wday'.$i.'_'.$this->nr.'", g_l('date', '[day][short][' . ($i - 1) . ']'), false, "defaultfont", "this.form.elements['we_schedule_wday" . $i . "_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true)") .
@@ -195,7 +195,7 @@ function checkFooter(){
 				}
 				$doctypepop .= '</select>';
 				$checknname = md5(uniqid(__FUNCTION__, true));
-				$extracont = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', '[doctypeAll]')
+				$extracont = '<table class="default"><tr><td>' . $doctypepop . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->doctypeAll, $checknname, g_l('modules_schedule', '[doctypeAll]')
 						, false, "defaultfont", "this.form.elements['we_schedule_doctypeAll_" . $this->nr . "'].value=this.checked?1:0;") .
 					'<input type="hidden" name="we_schedule_doctypeAll_' . $this->nr . '" value="' . $this->doctypeAll . '" /></td></tr></table>';
 				$extraheadl = g_l('modules_schedule', '[doctype]');
@@ -258,10 +258,10 @@ function checkFooter(){
 
 
 		$checknname = md5(uniqid(__FUNCTION__, true));
-		$table = '<table cellpadding="0" cellspacing="0" border="0">
+		$table = '<table class="default">
 	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', '[task][headline]') . ':</td>
-		<td class="defaultfont"><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
+		<td class="defaultfont"><table class="default"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('schedule_del','" . $this->nr . "')") . '</td>

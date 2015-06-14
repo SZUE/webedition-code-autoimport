@@ -70,7 +70,7 @@ if(permissionhandler::hasPerm("administrator")){
 
 		$next = $start + $count;
 
-		$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+		$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 			($start > 0 ?
 				we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
 				we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)) .

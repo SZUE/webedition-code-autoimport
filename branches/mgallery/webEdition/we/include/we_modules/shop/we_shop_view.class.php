@@ -530,7 +530,7 @@ function submitForm() {
 			}
 
 			$orderDataTable = '
-		<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont">';
+		<table width="99%" class="default defaultfont">';
 			foreach(we_shop_statusMails::$StatusFields as $field){
 				if(!$weShopStatusMails->FieldsHidden[$field]){
 					$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field, 4), $_REQUEST[$field]);
@@ -594,7 +594,7 @@ function submitForm() {
 			// headline here - these fields are fix.
 			$pixelImg = we_html_tools::getPixel(14, 15);
 			$orderTable = '
-		<table border="0" cellpadding="0" cellspacing="0" width="99%" class="defaultfont">
+		<table width="99%" class="default defaultfont">
 			<tr>
 				<th class="defaultgray" height="25">' . g_l('modules_shop', '[anzahl]') . '</th>
 				<td>' . $pixelImg . '</td>
@@ -859,7 +859,7 @@ function submitForm() {
 			// at last add custom shopping fields to order
 			// table with orders ends here
 
-			$customCartFieldsTable = '<table cellpadding="0" cellspacing="0" border="0" width="99%">
+			$customCartFieldsTable = '<table class="default" width="99%">
 					<tr>
 						<th colspan="3" class="defaultgray" height="30">' . g_l('modules_shop', '[order_comments]') . '</th>
 					</tr>
@@ -1156,7 +1156,7 @@ function CalendarChanged(calObject) {
 						'space' => 100,
 						'html' => '
 		<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden('we_cmd[]', 'add_new_article') . '
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange" => "selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
 			<td>' . we_html_tools::getPixel(10, 1) . '</td>
@@ -1181,7 +1181,7 @@ function CalendarChanged(calObject) {
 						'headline' => g_l('global', '[search]'),
 						'space' => 100,
 						'html' => '
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, we_base_request::_(we_base_request::RAW, 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
 					<td>' . we_html_tools::getPixel(10, 1) . '</td>
 					<td>' . $searchBut . '</td>

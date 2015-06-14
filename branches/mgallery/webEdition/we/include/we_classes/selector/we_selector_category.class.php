@@ -473,7 +473,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$yuiSuggest->setSelectButton($dir_chooser, 10);
 			$yuiSuggest->setContainerWidth(350);
 
-			$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 3);
+			$table = new we_html_table(array("class" => 'default'), 4, 3);
 
 			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', '[category]') . '</b>');
 			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));

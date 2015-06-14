@@ -43,26 +43,6 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 */
 	protected $_cellAttributes = array();
 
-	/**
-	 * border attribute of the table
-	 *
-	 * @var integer
-	 */
-	protected $_border = 0;
-
-	/**
-	 * cellpadding attribute of the table
-	 *
-	 * @var integer
-	 */
-	protected $_cellPadding = 0;
-
-	/**
-	 * cellspacing attribute of the table
-	 *
-	 * @var integer
-	 */
-	protected $_cellSpacing = 0;
 
 	/**
 	 * Pointer to the current row
@@ -261,7 +241,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @return string
 	 */
 	public function _renderHTML(){
-		$html = '<table border="' . oldHtmlspecialchars($this->_border) . '" cellpadding="' . oldHtmlspecialchars($this->_cellPadding) . '" cellspacing="' . oldHtmlspecialchars($this->_cellSpacing) . '"' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib() . '>';
+		$html = '<table class="default" ' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib() . '>';
 
 		$maxRowIndex = -1;
 		$maxColIndex = -1;
@@ -312,16 +292,11 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @return integer
 	 */
 	public function getBorder(){
-		return $this->_border;
+		return 0;
 	}
 
-	/**
-	 * Retrieve cellpadding attribute
-	 *
-	 * @return integer
-	 */
 	public function getCellPadding(){
-		return $this->_cellPadding;
+		return 0;
 	}
 
 	/**
@@ -330,7 +305,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @return integer
 	 */
 	public function getCellSpacing(){
-		return $this->_cellSpacing;
+		return 0;
 	}
 
 	/**
@@ -340,17 +315,9 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @return void
 	 */
 	public function setBorder($border){
-		$this->_border = $border;
 	}
 
-	/**
-	 * Sets the cellpadding attribute
-	 *
-	 * @param integer $cellPadding
-	 * @return void
-	 */
 	public function setCellPadding($cellPadding){
-		$this->_cellPadding = $cellPadding;
 	}
 
 	/**
@@ -360,7 +327,6 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @return void
 	 */
 	public function setCellSpacing($cellSpacing){
-		$this->_cellSpacing = $cellSpacing;
 	}
 
 }

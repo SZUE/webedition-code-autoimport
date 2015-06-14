@@ -138,7 +138,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				self::getHTMLPrevNext($Search) .
 				self::getHTMLSearchResult($weGlossaryFrames, $Search, $Type) .
 				self::getHTMLPrevNext($Search, true) :
-				'<table border="0" cellpadding="0" cellspacing="0">
+				'<table class="default">
 		<tr>
 			<td>' . we_html_tools::getPixel(5, 1) . '</td>
 			<td>' . we_html_tools::getPixel(632, 12) . '</td>
@@ -326,7 +326,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				"selectAll" => 0,
 				"do" => ""
 			)) . '
-		<table width="637" border="0" cellpadding="0" cellspacing="0">
+		<table width="637" class="default">
 		<tr>
 			<td width="80"></td>
 			<td width="157"></td>
@@ -376,7 +376,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array("onchange" => "jump(this.value);"));
 
 		return '
-		<table border="0" cellpadding="0" cellspacing="0">
+		<table class="default">
 		<tr>
 			<td>' . we_html_tools::getPixel(5, 1) . '</td>
 			<td>' . we_html_tools::getPixel(195, 12) . '</td>
@@ -385,7 +385,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<tr>
 			<td>' . we_html_tools::getPixel(5, 1) . '</td>
 			<td>' . ($extended && (permissionhandler::hasPerm("DELETE_GLOSSARY") || permissionhandler::hasPerm("NEW_GLOSSARY")) ? we_html_button::create_button("selectAll", "javascript: AllItems();") : "") . '</td>
-			<td align="right"><table cellpadding="0" cellspacing="0" border="0">
+			<td align="right"><table class="default">
 				<tr>
 					<td></td>
 					<td>' . $prev . '</td>
@@ -407,7 +407,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			($extended ?
 				'<tr>
 			<td colspan="3">
-				<table border="0" cellpadding="0" cellspacing="0">
+				<table class="default">
 				<tr>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
 					<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; SubmitForm(); }") . '</td>
@@ -424,7 +424,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		</tr>
 		<tr>
 			<td colspan="3">
-				<table border="0" cellpadding="0" cellspacing="0">
+				<table class="default">
 				<tr>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
 					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button("fa:btn_function_publish,fa-lg fa-sun-o", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; SubmitForm(); }") . '</td>
@@ -441,7 +441,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		</tr>
 		<tr>
 			<td colspan="3">
-				<table border="0" cellpadding="0" cellspacing="0">
+				<table class="default">
 				<tr>
 					<td>' . we_html_tools::getPixel(5, 1) . '</td>
 					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button("fa:btn_function_unpublish,fa-lg fa-moon-o", "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; SubmitForm(); }") . '</td>

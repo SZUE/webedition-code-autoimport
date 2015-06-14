@@ -208,7 +208,7 @@ class we_collection extends we_root{
 		$mimeListTo = we_html_tools::htmlSelect(
 				'mimeListTo', $selectedMime, 13, '', true, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"), 'value', 184
 		);
-		$mimeTable = new we_html_table(array("border" => 0, "width" => 388, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:10px"), 1, 3);
+		$mimeTable = new we_html_table(array('class'=>'default',"width" => 388, "style" => "margin-top:10px"), 1, 3);
 		$mimeTable->setCol(0, 0, null, $mimeListFrom);
 		$mimeTable->setCol(
 			0, 1, array(
@@ -246,7 +246,7 @@ class we_collection extends we_root{
 				'classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array("id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');"), 'value', 184
 		);
 
-		$classTable = new we_html_table(array("border" => 0, "width" => 388, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:10px"), 1, 3);
+		$classTable = new we_html_table(array("class" => 'default', "width" => 388, "style" => "margin-top:10px"), 1, 3);
 		$classTable->setCol(0, 0, null, $classListFrom);
 		$classTable->setCol(
 			0, 1, array(
@@ -290,7 +290,7 @@ class we_collection extends we_root{
 		$btnIconview = we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weCollectionEdit.setview('grid');", true, 40, "", "", "", false);
 		$btnListview = we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weCollectionEdit.setview('list');", true, 40, "", "", "", false);
 		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2);
-		
+
 		$head = new we_html_table(array("style" => "border: 0px solid gray;width:100%;height:32px"), 1, 6);
 		$head->setCol(0, 0, array('width' => '*'), $recursive);
 		$head->setCol(0, 1, array('width' => '160px'), $slider);

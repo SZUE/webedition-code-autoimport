@@ -92,7 +92,7 @@ echo STYLESHEET;
 				$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
 				$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 
-				$content = '<table border="0" cellpadding="0" cellspacing="0">';
+				$content = '<table class="default">';
 
 				if(permissionhandler::hasPerm("PUBLISH")){
 					$wf_textarea = '<textarea name="wf_text" rows="5" cols="50" style="left:10px;right:10px;height:150px;"></textarea>';

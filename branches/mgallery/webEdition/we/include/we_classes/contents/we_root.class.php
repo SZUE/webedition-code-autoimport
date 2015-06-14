@@ -330,14 +330,14 @@ abstract class we_root extends we_class{
 			$v = $this->RestrictOwners ? true : false;
 			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		}
-		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><i class="fa fa-' . ($this->RestrictOwners ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
+		return '<table class="default"><tr><td><i class="fa fa-' . ($this->RestrictOwners ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 	}
 
 	function formOwners($canChange = true){
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
 
-		$content = '<table style="border-spacing: 0px;border-style:none;width:370px;" cellpadding="0">' .
+		$content = '<table class="default" style="width:370px;">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if($owners){
 			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $owners) . ')');
@@ -360,7 +360,7 @@ abstract class we_root extends we_class{
 		$addbut = $canChange ?
 			we_html_element::htmlHiddens(array($idname => '', $textname => '')) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
 
-		$content = '<table style="border-spacing: 0px;border-style:none;width:500px;" cellpadding="0">
+		$content = '<table class="default" style="width:500px;">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
 ' . ($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>' . we_html_element::jsElement('setIconOfDocClass(\'userIcon\');');
 
@@ -370,7 +370,7 @@ abstract class we_root extends we_class{
 	function formCreatorOwners(){
 		$canChange = ((!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID));
 
-		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
+		return '<table class="default">
 <tr><td class="defaultfont">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
@@ -461,7 +461,7 @@ abstract class we_root extends we_class{
 			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, 'onchange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
 		}
 		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr>
 		<td>' . $filenameinput . '</td>
 		<td></td>
@@ -642,7 +642,7 @@ abstract class we_root extends we_class{
 				$langkeys[] = $langkey;
 			}
 			return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	' . $_headline . '
 	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
@@ -652,7 +652,7 @@ abstract class we_root extends we_class{
 <br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
 		} else {
 			return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	' . $_headline . '
 	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>

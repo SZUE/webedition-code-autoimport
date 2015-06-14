@@ -156,9 +156,9 @@ function setProgress' . $this->name . '(progress){
 		$rest_len = $this->stud_len - $progress_len;
 
 		return ($top ?
-				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $top . '</tr></table>' :
+				'<table class="default"><tr>' . $top . '</tr></table>' :
 				'') .
-			'<table style="border-spacing: 0px;border-style:none;" cellpadding="0" >
+			'<table class="default">
 			<tr>' . ($left ? $left . '<td>' . we_html_tools::getPixel(5, 1) . '</td>' : '') .
 			'<td><div id="progress_image' . $this->name . '" class="progress_image" style="width:' . $progress_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div><div id="progress_image_bg' . $this->name . '" class="progress_image_bg" style="width:' . $rest_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div></td>' .
 			($right ?
@@ -167,7 +167,7 @@ function setProgress' . $this->name . '(progress){
 			) .
 			'</tr></table>' .
 			($bottom ?
-				'<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr>' . $bottom . '</tr></table>' :
+				'<table class="default"><tr>' . $bottom . '</tr></table>' :
 				''
 			);
 	}

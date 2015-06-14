@@ -37,7 +37,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 	}
 
 	function get(){
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => abs($this->width - 20)), 1, 4);
+		$table = new we_html_table(array("class" => 'default',"width" => abs($this->width - 20)), 1, 4);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(20, 3));
 		$table->setCol(0, 1, array(), we_html_tools::getPixel(abs($this->width - 101), 3));
@@ -106,7 +106,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 		}
 
 
-		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => $this->width), 1, 1);
+		$table2 = new we_html_table(array("class" => 'default', "width" => $this->width), 1, 1);
 
 		$table2->setCol(0, 0, array(), we_html_element::htmlDiv(array("style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"), $table->getHtml()));
 

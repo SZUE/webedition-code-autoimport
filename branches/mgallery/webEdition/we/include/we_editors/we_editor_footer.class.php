@@ -28,10 +28,7 @@ abstract class we_editor_footer{
 //	user
 		$_username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->isLockedByUser()));
 
-		$_messageTbl = new we_html_table(array(
-			"border" => 0,
-			"cellpadding" => 0,
-			"cellspacing" => 0), 2, 6);
+		$_messageTbl = new we_html_table(array("class" => 'default'), 2, 6);
 
 		$refreshButton = (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();"));
 
@@ -52,7 +49,7 @@ abstract class we_editor_footer{
 	}
 
 	static function fileInWorkspace(){
-		$_messageTbl = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 4);
+		$_messageTbl = new we_html_table(array("class" => 'default'), 2, 4);
 //	spaceholder
 		$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
 		$_messageTbl->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
@@ -68,9 +65,7 @@ abstract class we_editor_footer{
 	}
 
 	static function fileNoSave(){
-		$_messageTbl = new we_html_table(array("border" => 0,
-			"cellpadding" => 0,
-			"cellspacing" => 0), 2, 4);
+		$_messageTbl = new we_html_table(array("class" => 'default'), 2, 4);
 //	spaceholder
 		$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
 		$_messageTbl->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
@@ -85,9 +80,7 @@ abstract class we_editor_footer{
 	}
 
 	static function fileIsRestricted($we_doc){
-		$_messageTbl = new we_html_table(array("border" => 0,
-			"cellpadding" => 0,
-			"cellspacing" => 0), 2, 4);
+		$_messageTbl = new we_html_table(array("class" => 'default'), 2, 4);
 //	spaceholder
 		$_messageTbl->setColContent(0, 0, we_html_tools::getPixel(20, 7));
 		$_messageTbl->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
@@ -114,7 +107,7 @@ abstract class we_editor_footer{
 			echo we_html_element::htmlBody(array('id' => 'footerBody'), $_we_form);
 		} else {
 
-			$_table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 4);
+			$_table = new we_html_table(array("class" => 'default'), 1, 4);
 			$_table->setColContent(0, 0, we_html_tools::getPixel(16, 2));
 			$_table->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));
 			$_table->setColContent(0, 2, we_html_tools::getPixel(16, 2));
@@ -139,9 +132,7 @@ abstract class we_editor_footer{
 	 * @desc Prints the footer for the normal mode
 	 */
 	static function normalMode($we_doc, $we_transaction, $haspermNew, $showPubl){
-		$_normalTable = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0), 1, 1);
+		$_normalTable = new we_html_table(array("class" => 'default'), 1, 1);
 		$_pos = 0;
 		$_normalTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 
@@ -294,9 +285,7 @@ abstract class we_editor_footer{
 	 * @desc prints the footer for the See-Mode
 	 */
 	static function SEEMode($we_doc, $we_transaction, $haspermNew, $showPubl){
-		$_seeModeTable = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0), 1, 1);
+		$_seeModeTable = new we_html_table(array("class" => 'default'), 1, 1);
 		$_pos = 0;
 		$_seeModeTable->setColContent(0, $_pos++, we_html_tools::getPixel(10, 20));
 

@@ -77,7 +77,7 @@ top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.locat
 			$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 
 
-			$content = '<table border="0" cellpadding="0" cellspacing="0">';
+			$content = '<table class="default">';
 			$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
 			$content .= '<tr>
 <td class="defaultfont">' . g_l('modules_workflow', '[message]') . '</td>

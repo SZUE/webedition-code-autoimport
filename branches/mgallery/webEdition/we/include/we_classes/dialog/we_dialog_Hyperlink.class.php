@@ -418,7 +418,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			array(
 				'html' =>
 				// Create table output
-				'<div style="position:relative; top:15px"><table cellpadding="0" cellspacing="0" border="0" height="65">
+				'<div style="position:relative; top:15px"><table class="default" height="65">
 	<tr>
 		<td class="defaultgray" valign="top" width="100" height="20">' . g_l('weClass', '[linkType]') . '</td>
 		<td valign="top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $_select_type . '</select></td>
@@ -446,7 +446,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				weSuggest::getYuiFiles() .
 				$yuiSuggest->getYuiJs()
 			),
-			array('html' => '<table cellpadding="0" cellspacing="0" border="0">
+			array('html' => '<table class="default">
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', '[anchor]') . '</td>
 		<td>' . $_anchor . '</td>
@@ -480,12 +480,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		<td>' . $classSelect . '</td>
 	</tr>
 </table>'),
-			array('html' => '<table cellpadding="0" cellspacing="0" border="0">
+			array('html' => '<table class="default">
 	<tr' . $show_accessible_class . '>
 		<td class="defaultgray" valign="top" width="100">
 			' . g_l('wysiwyg', '[language]') . '</td>
 		<td>
-			<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_lang . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_hreflang . '</td></tr></table></td>
+			<table class="default"><tr><td>' . $_lang . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_hreflang . '</td></tr></table></td>
 	</tr>
 	<tr' . $show_accessible_class . '>
 		<td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td>
@@ -499,14 +499,14 @@ class we_dialog_Hyperlink extends we_dialog_base{
 	</tr>
 	<tr' . $show_accessible_class . '>
 		<td class="defaultgray" valign="top">' . g_l('wysiwyg', '[keyboard]') . '</td>
-		<td><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_accesskey . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_tabindex . '</td></tr></table></td>
+		<td><table class="default"><tr><td>' . $_accesskey . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_tabindex . '</td></tr></table></td>
 	</tr>
 	<tr' . $show_accessible_class . '>
 		<td colspan="2">' . we_html_tools::getPixel(110, 5) . '</td>
 	</tr>
 	<tr' . $show_accessible_class . '>
 		<td class="defaultgray" valign="top">' . g_l('wysiwyg', '[relation]') . '</td>
-		<td><table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_rel . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_rev . '</td></tr></table></td>
+		<td><table class="default"><tr><td>' . $_rel . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_rev . '</td></tr></table></td>
 	</tr>
 	<tr><td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td></tr>
 </table>'

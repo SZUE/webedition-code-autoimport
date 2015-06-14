@@ -203,9 +203,7 @@ if(inWorkflow($we_doc)){
 						}
 					} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
-						$_noPermTable = new we_html_table(array("cellpadding" => 0,
-							"cellspacing" => 0,
-							"border" => 0), 1, 4);
+						$_noPermTable = new we_html_table(array("class" => 'default'), 1, 4);
 
 						$_noPermTable->setColContent(0, 0, we_html_tools::getPixel(20, 2));
 						$_noPermTable->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif")));

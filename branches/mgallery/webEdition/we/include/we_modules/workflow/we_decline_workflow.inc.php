@@ -71,7 +71,7 @@ echo STYLESHEET;
 			<?php
 			$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
 			$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
-			$content = '<table border="0" cellpadding="0" cellspacing="0">';
+			$content = '<table class="default">';
 			$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
 			$content .= '
 						<tr>

@@ -56,7 +56,7 @@ abstract class we_html_multiIconBox{
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="' . ($delegate ? : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 					) .
-					'<br/><table id="table_' . $uniqname . '" width="100%" cellpadding="0" style="border-spacing: 0px;border-style:none;' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
+					'<br/><table id="table_' . $uniqname . '" width="100%" class="default" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
 			}
 
 			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
@@ -269,7 +269,7 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 	}
 
 	static function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft = 0, $overflow = "auto"){
-		return '<table cellpadding="0" style="border-spacing: 0px;border-style:none;margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '">
+		return '<table class="default" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '">
 	<tr>
 		<td style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</td>
 	</tr>
@@ -286,7 +286,7 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 		} else {
 			$wp = $w;
 		}
-		return '<table cellpadding="0" style="border-spacing: 0px;border-style:none;margin-top:10px;width:' . $wp . ';">
+		return '<table class="default" style="margin-top:10px;width:' . $wp . ';">
 	<tr>
 		<td class="defaultfont"><b>' . we_html_tools::getPixel($w, 2) . '</b></td>
 	</tr>

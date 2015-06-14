@@ -382,7 +382,7 @@ EO_SCRIPT;
 		$_filter_op_str = we_html_tools::htmlSelect('', $_filter_op);
 
 		$_filterTable = '
-		<table border="0" cellpadding="0" cellspacing="0" width="' . $this->_width . ' height="50">
+		<table class="default" width="' . $this->_width . ' height="50">
 			<tbody id="filterTable">
 				' . $_adv_row . '
 			</tbody>

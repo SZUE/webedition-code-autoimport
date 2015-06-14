@@ -170,7 +170,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	}
 
 	function formProperties(){
-		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+		return '<table class="default">
 	<tr valign="top">
 		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>
@@ -229,7 +229,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	}
 
 	function formOther(){
-		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+		return '<table class="default">
 	<tr valign="top">
 		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>

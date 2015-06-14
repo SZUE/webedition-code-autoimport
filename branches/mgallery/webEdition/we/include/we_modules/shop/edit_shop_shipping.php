@@ -227,7 +227,7 @@ $parts = array(
 	array(
 		'headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
 		'space' => 200,
-		'html' => '<table border="0" cellpadding="0" cellpsacing="0" class="defaultfont">
+		'html' => '<table class="default defaultfont">
 	<tr>
 		<td>' . we_class::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 280) . '</td>
 		<td width="10"></td>
@@ -281,7 +281,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 		'headline' => g_l('modules_shop', '[shipping][costs]'),
 		'space' => 200,
 		'html' =>
-		'<table border="0" cellpadding="0" cellspacing="0" width="100%" class="defaultfont" id="shippingCostTable">
+		'<table width="100%" class="default defaultfont" id="shippingCostTable">
 		<tr>
 			<td><b>' . g_l('modules_shop', '[shipping][order_value]') . '</b></td>
 			<td width="10"></td>

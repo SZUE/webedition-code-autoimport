@@ -48,7 +48,7 @@ abstract class we_html_forms{
 
 		// Create HTML tags
 		return '
-			<table cellpadding="0" style="border-spacing: 0px;border-style:none;' . $style . '">
+			<table class="default" style="' . $style . '">
 				<tr>
 					<td' . ($description ? ' valign="top"' : '') . '>
 						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer; outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' /></td>
@@ -92,7 +92,7 @@ abstract class we_html_forms{
 
 		// Create HTML tags
 		return '
-			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+			<table class="default">
 				<tr>
 					<td class="weEditmodeStyle"' . ($description ? ' valign="top"' : '') . '><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="cursor: pointer;outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onMouseUp ? ' onmouseup="' . $onMouseUp . '"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : "") . ($disabled ? ' disabled="disabled"' : '') . ' /></td>
 					<td class="weEditmodeStyle">' . we_html_tools::getPixel(4, 2) . '</td>

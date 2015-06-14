@@ -206,11 +206,11 @@ class we_webEditionDocument extends we_textContentDocument{
 				true);
 
 		return '
-<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
+<table class="default">
 	<tr><td colspan="3" class="defaultfont" align="left" style="padding-bottom:4px;">' . $this->formDocType2(388, ($this->Published > 0)) . '</td></tr>
 	<tr><td colspan="3" class="defaultfont" align="left" style="padding-bottom:4px;">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td></tr>
 	<tr><td colspan="3">
-			<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+			<table class="default">
 				<tr>
 					<td>' . $this->formIsDynamic($disable) . '</td>
 					<td class="defaultfont">&nbsp;</td>
@@ -279,7 +279,7 @@ class we_webEditionDocument extends we_textContentDocument{
 					);
 			}
 			$pop = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
-					'<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
+					'<table class="default"><tr><td>' . $path . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' .
 					we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(' . $myid . ')') .
 					'</td></tr></table>' :
 					$path);
@@ -362,7 +362,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
-<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+<table class="default">
 	<tr>
 		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
@@ -428,7 +428,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		//getCharsets
 		return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
 <tr><td>
-	<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+	<table class="default">
 		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', '[Charset]') . '</td>
 		<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>
 	</table>

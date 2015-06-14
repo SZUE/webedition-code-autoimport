@@ -69,7 +69,7 @@ function getNavButtons($size, $pos, $id){
 	$div = max(intval($size / 10), 1);
 
 
-	return '<table style="margin-top: 10px;border-style:none;width:100%;" cellpadding="0" cellspacing="0"><tr><td>' .
+	return '<table style="margin-top: 10px;width:100%;" class="default"><tr><td>' .
 		we_html_button::create_button_table(array(
 			we_html_button::create_button("fa:first,fa-lg fa-fast-backward", $_SERVER['SCRIPT_NAME'] . '?function=first', true, 0, 0, '', '', ($pos == 1)),
 			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)),

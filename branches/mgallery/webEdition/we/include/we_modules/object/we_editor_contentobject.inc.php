@@ -78,7 +78,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		echo $we_doc->getEmptyDefaultFields() . we_html_multiIconBox::_getBoxStart("100%", $uniquename) .
 		$jsGUI->getContainer(array()) .
 		'<div id="' . $uniquename . '_div">
- <table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+ <table style="margin-left:30px;" class="default">
  <tr>
  <td valign="top"></td>
  <td class="defaultfont">' .
@@ -100,7 +100,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 			echo '<div id="' . $uniqid . '">
 <a name="f' . $uniqid . '"></a>
-<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+<table style="margin-left:30px;" class="default">
 <tr>
 <td class="defaultfont" width="600">
 <table cellpadding="6" cellspacing="0" border="0">' .

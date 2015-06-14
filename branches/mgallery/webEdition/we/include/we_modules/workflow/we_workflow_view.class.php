@@ -301,7 +301,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 					'align' => '',
 				),
 				array(
-					'dat' => '<table cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, "", 'onchange="top.content.setHot();"') . '</td></tr>' .
+					'dat' => '<table class="default"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, "", 'onchange="top.content.setHot();"') . '</td></tr>' .
 					'<tr valign="middle"><td>' . we_html_tools::getPixel(5, $_spacer_1_height) . '</td><tr>' .
 					'<tr valign="top">' .
 					'<td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td>' .
@@ -334,11 +334,11 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 				$yuiSuggest->setSelectButton($button, 6);
 
 				$content[$counter][$counter1 + 3] = array(
-					'dat' => '<table cellpadding="0" cellspacing="0">
+					'dat' => '<table class="default">
 						<tr valign="middle"><td colspan="4">' . we_html_tools::getPixel(5, $_spacer_2_height) . '</td><tr>
 						<tr valign="middle"><td>' . $yuiSuggest->getHTML() . '</td>
 						</tr></table>
-						<table cellpadding="0" cellspacing="0">
+						<table class="default">
 						<tr valign="middle"><td colspan="3">' . we_html_tools::getPixel(5, 0) . '</td><tr>
 						<tr valign="top">
 						<td class="middlefont" align="right">' . we_html_forms::checkboxWithHidden($tv->Mail, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Mail", g_l('modules_workflow', '[send_mail]'), false, "middlefont", "top.content.setHot();") . '</td>
@@ -365,7 +365,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 			'	<table style="margin-right:30px;">
 				<tr valign="top">
 					<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>
-					<td><table cellpadding="0" cellspacing="0">
+					<td><table class="default">
 						<tr><td>' . we_html_tools::getPixel(5, 3) . '</td></tr>
 						<tr><td>' . we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()", true, 30), we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()", true, 30))) . '</td>
 						</tr>
@@ -382,7 +382,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	}
 
 	function getTypeTableHTML($head, $values, $ident = 0, $textalign = "left", $textclass = "defaultfont"){
-		$out = '<table cellpadding="0" cellspacing="0" border="0">' . ($head ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="2">' . $head . '</td></tr>' : '');
+		$out = '<table class="default">' . ($head ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="2">' . $head . '</td></tr>' : '');
 		foreach($values as $val){
 			$out.='<tr><td>' . we_html_tools::getPixel($ident, 5) . '</td><td class="' . trim($textclass) . '">' . $val . '</td></tr>';
 		}
@@ -393,7 +393,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	function getBoxHTML($w, $h, $content, $headline = "", $width = 120){
 		$headline = str_replace(' ', '&nbsp;', $headline);
 		if($headline){
-			return '<table cellpadding="0" cellspacing="0" border="0">
+			return '<table class="default">
 			<tr>' . we_html_tools::getPixel(24, 15) . '</td>
 				<td>' . we_html_tools::getPixel($width, 15) . '</td>
 				<td></td>
@@ -409,7 +409,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 				<td></td>
 			</tr></table>';
 		} else {
-			return '<table cellpadding="0" cellspacing="0" border="0">
+			return '<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(24, 15) . '</td><td></td>
 			</tr>
@@ -1150,7 +1150,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 		}
 
 		$wfType = f('SELECT ' . WORKFLOW_TABLE . '.Type as Type FROM ' . WORKFLOW_TABLE . ',' . WORKFLOW_DOC_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_DOC_TABLE . '.ID=' . intval($workflowDocument->ID), 'Type', $db);
-		return '<table cellpadding="0" cellspacing="0" border="0">
+		return '<table class="default">
 		<tr>
 			<td></td><td>' . we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . '</td><td>' . we_html_tools::getPixel(15, 10) . '</td>
 		</tr>
@@ -1209,7 +1209,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			++$counter;
 		}
 
-		$nextprev = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+		$nextprev = '<table class="default"><tr><td>' .
 			($offset ?
 				we_html_button::create_button(we_html_button::BACK, WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=$art&type=$type&offset=" . ($offset - $numRows)) :
 				we_html_button::create_button(we_html_button::BACK, '', false, 100, 22, '', '', true)
@@ -1223,7 +1223,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			) .
 			'</td><td></tr></table>';
 
-		$buttonsTable = '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td>' . $nextprev . '</td><td align="right">' . we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();") . '</td></tr></table>';
+		$buttonsTable = '<table width="100%" class="default"><tr><td>' . $nextprev . '</td><td align="right">' . we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();") . '</td></tr></table>';
 
 
 		return ($logs ?
@@ -1277,9 +1277,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 		$_gap = 16;
 		$_col = 0;
 
-		$_footerTable = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0), 1, 0);
+		$_footerTable = new we_html_table(array('class' => 'default'), 1, 0);
 
 		$_publishbutton = '';
 		//	decline
@@ -1320,9 +1318,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 	static function showFooterForSEEMMode($we_doc, $showPubl){
 		$_col = 0;
 		$_gap = 16;
-		$_footerTable = new we_html_table(array("cellpadding" => 0,
-			"cellspacing" => 0,
-			"border" => 0), 1, 0);
+		$_footerTable = new we_html_table(array('class' => 'default'), 1, 0);
 
 		switch($we_doc->EditPageNr){
 			case we_base_constants::WE_EDITPAGE_PREVIEW:

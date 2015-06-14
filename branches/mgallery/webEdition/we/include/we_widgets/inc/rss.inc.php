@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -69,7 +68,5 @@ if ( window.addEventListener ) { // moz
 	);
 }") . '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
 
-$oTblCont = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 1);
+$oTblCont = new we_html_table(array('class' => 'default'), 1, 1);
 $oTblCont->setCol(0, 0, null, $_iFrmRss);

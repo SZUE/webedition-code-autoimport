@@ -165,7 +165,7 @@ class we_document extends we_root{
 
 	function formMetaInfos(){
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr><td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	<tr><td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
@@ -1449,7 +1449,7 @@ class we_document extends we_root{
 		$inputName = 'we_' . $this->Name . "_txt[$name]";
 
 
-		return '<table border="0" cellpadding="0" cellspacing="0">' .
+		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
 			'<tr><td>' . $this->htmlTextInput($inputName, 24, $value) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
 			'</table>';

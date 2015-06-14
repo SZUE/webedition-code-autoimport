@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -71,9 +70,7 @@ $oSctCls->insertOption(4, "orange", g_l('cockpit', '[orange]'));
 $oSctCls->insertOption(5, "yellow", g_l('cockpit', '[yellow]'));
 $oSctCls->insertOption(6, "red", g_l('cockpit', '[red]'));
 
-$oSelCls = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 2);
+$oSelCls = new we_html_table(array('class' => 'default'), 1, 2);
 $oSelCls->setCol(0, 0, array(
 	"width" => 130, "class" => "defaultfont"
 	), g_l('cockpit', '[bgcolor]'));

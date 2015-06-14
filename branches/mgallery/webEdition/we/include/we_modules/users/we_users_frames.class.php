@@ -80,7 +80,7 @@ class we_users_frames extends we_modules_frame{
 				"pnt" => "cmd",
 				"cmd" => "show_search"));
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:100%;margin-top:10px;'), 1, 1);
+		$table = new we_html_table(array('class' => 'default', "style" => 'width:100%;margin-top:10px;'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
 			we_html_button::create_button_table(

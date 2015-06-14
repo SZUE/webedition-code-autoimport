@@ -64,7 +64,7 @@ var size={
         </div>
       </div>
       <div id="weControl" style="display:none;height:24px;background:#CECECE;border-top:solid 1px #fff;padding:3px;">
-        <table border="0" width="100%" cellpadding="0" cellspacing="0">
+        <table width="100%" class="default">
           <tr>
         	  <td style="width:100px;padding-top:4px;">
         	  	<div id="console" style="display:none;">

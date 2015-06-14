@@ -110,7 +110,7 @@ class we_customer_EIWizard{
 	function getHTMLExportStep1(){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
-		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$generic = new we_html_table(array('class' => 'default'), 3, 1);
 		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
 		$generic->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
 		$generic->setCol(2, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
@@ -138,12 +138,12 @@ class we_customer_EIWizard{
 	function getHTMLExportStep2(){
 		$selection = we_base_request::_(we_base_request::STRING, "selection", self::SELECTION_FILTER);
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
+		$table = new we_html_table(array('class' => 'default'), 1, 2);
 		$table->setColContent(0, 0, we_html_tools::getPixel(25, 5));
 		$table->setColContent(0, 1, $this->getHTMLCustomerFilter()
 		);
 
-		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 8, 1);
+		$generic = new we_html_table(array('class' => 'default'), 8, 1);
 		$generic->setColContent(0, 0, we_html_tools::getPixel(5, 10));
 		$generic->setColContent(1, 0, we_html_forms::radiobutton(self::SELECTION_FILTER, ($selection == self::SELECTION_FILTER), "selection", g_l('modules_customer', '[filter_selection]'), true, "defaultfont", "if(document.we_form.selection[0].checked) " . $this->topFrame . ".selection='" . self::SELECTION_FILTER . "';"));
 		$generic->setColContent(2, 0, we_html_tools::getPixel(5, 10));
@@ -254,7 +254,7 @@ class we_customer_EIWizard{
 			switch($type){
 				case we_import_functions::TYPE_GENERIC_XML:
 
-					$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+					$table = new we_html_table(array('class' => 'default'), 3, 1);
 
 					$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
 					$table->setColContent(0, 0, we_html_forms::radiobutton(1, $cdata, "cdata", g_l('modules_customer', '[export_xml_cdata]'), true, "defaultfont", ""));
@@ -284,7 +284,7 @@ class we_customer_EIWizard{
 
 			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", "space" => 0, "noline" => 1);
 
-			$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 2);
+			$table = new we_html_table(array('class' => 'default'), 1, 2);
 			$table->setColContent(0, 0, we_html_tools::getPixel(20, 2));
 			$table->setColContent(0, 1, we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", $this->topFrame . ".export_to='" . self::EXPORT_SERVER . "'"));
 			$parts[] = array("space" => $_space, "noline" => 1,
@@ -567,7 +567,7 @@ class we_customer_EIWizard{
 	function getHTMLImportStep1(){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
-		$generic = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$generic = new we_html_table(array('class' => 'default'), 3, 1);
 		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
 		$generic->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
 		$generic->setCol(2, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
@@ -615,11 +615,11 @@ class we_customer_EIWizard{
 				') . $fileUploader->getJs();
 		$css = STYLESHEET . $fileUploader->getCss();
 
-		$tmptable = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 4, 1);
+		$tmptable = new we_html_table(array('class' => 'default'), 4, 1);
 		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
 		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 2);
+		$table = new we_html_table(array('class' => 'default'), 4, 2);
 		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_SERVER, ($import_from == self::EXPORT_SERVER), "import_from", g_l('modules_customer', '[server_import]'), true, "defaultfont", "switchImportFrom(this);"));
 		$table->setColContent(1, 0, we_html_tools::getPixel(25, 5));
 		$table->setColContent(2, 1, $tmptable->getHtml());
@@ -640,7 +640,7 @@ class we_customer_EIWizard{
 		$tmptable->setCol(2, 0, array("valign" => "middle"), $fileUploader->getHTML());
 		$tmptable->setCol(3, 0, array(), we_html_tools::getPixel(2, 5));
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 2);
+		$table = new we_html_table(array('class' => 'default'), 3, 2);
 		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont", "switchImportFrom(this)"));
 		$table->setColContent(1, 0, we_html_tools::getPixel(25, 5));
 		$table->setColContent(2, 1, $tmptable->getHtml());
@@ -745,7 +745,7 @@ class we_customer_EIWizard{
 					//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 					$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
 					$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
-					$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
+					$import_Charset = '<table class="default"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
 
 					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
@@ -920,7 +920,7 @@ class we_customer_EIWizard{
 			$i++;
 		}
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 4, 1);
+		$table = new we_html_table(array('class' => 'default'), 4, 1);
 		$table->setColContent(0, 0, we_html_forms::radiobutton("rename", ($same === "rename"), "same", g_l('modules_customer', '[same_rename]'), true, "defaultfont", ""));
 		$table->setColContent(1, 0, we_html_forms::radiobutton("overwrite", ($same === "overwrite"), "same", g_l('modules_customer', '[same_overwrite]'), true, "defaultfont", ""));
 		$table->setColContent(2, 0, we_html_forms::radiobutton("skip", ($same === "skip"), "same", g_l('modules_customer', '[same_skip]'), true, "defaultfont", ""));
@@ -991,7 +991,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportFooter($step = 1){
-		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 575, "align" => "right"), 1, 2);
+		$content = new we_html_table(array('class' => 'default', "width" => 575, "align" => "right"), 1, 2);
 
 		if($step == 1){
 			$buttons = we_html_button::position_yes_no_cancel(
@@ -1043,7 +1043,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportFooter($step = 1){
-		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 575, "align" => "right"), 1, 2);
+		$content = new we_html_table(array('class' => 'default', "width" => 575, "align" => "right"), 1, 2);
 
 		switch($step){
 			case "1":
@@ -1689,10 +1689,10 @@ function selector_cmd(){
 
 		$select = new we_html_select(array("name" => $name . "_select", 'onchange' => "document.we_form." . $name . ".value=this.options[this.selectedIndex].value;this.selectedIndex=0", "style" => "width:200px;"));
 		$select->addOption("", "");
-		foreach($values as $k => $v)
+		foreach($values as $k => $v){
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
-
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 250), 1, 3);
+		}
+		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 3);
 
 		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
 		$table->setColContent(0, 1, we_html_tools::getPixel(10, 10));
@@ -1746,7 +1746,7 @@ document.we_form.filter_count.value="' . $count . '";');
 		$operators = array("=", "<>", "<", "<=", ">", ">=", "LIKE");
 		$logic = array("AND" => "AND", "OR" => "OR");
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
+		$table = new we_html_table(array('class' => 'default'), 1, 3);
 		$colspan = "3";
 
 		$c = 0;

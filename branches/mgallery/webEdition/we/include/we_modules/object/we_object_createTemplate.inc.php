@@ -180,7 +180,7 @@ if($_SESSION['weS']['we_data'][$cmd3][0]["ID"]){
 	$content .= '</table></p>
 			</we:repeat>
 			<we:ifFound>
-				<p><table border="0" cellpadding="0" cellspacing="0" width="400">
+				<p><table class="default" width="400">
 					<tr>
 						<we:ifBack>
 							<td><we:back>back</we:back></td>

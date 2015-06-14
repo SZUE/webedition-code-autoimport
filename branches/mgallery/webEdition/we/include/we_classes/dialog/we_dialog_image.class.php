@@ -354,7 +354,7 @@ class we_dialog_image extends we_dialog_base{
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[name]", 30, (isset($this->args["name"]) ? $this->args["name"] : ""), "", '', "text", 200);
 		$name = we_html_tools::htmlFormElementTable($foo, "Name");
 
-		$srctable = '<table cellpadding="0" cellspacing="0" border="0">
+		$srctable = '<table class="default">
 	<tr><td class="defaultgray" valign="top">' . g_l('wysiwyg', '[image_url]') . '</td><td>' . $extSrc . '</td></tr>';
 		if($intSrc){
 			$srctable .= '	<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
@@ -373,10 +373,10 @@ class we_dialog_image extends we_dialog_base{
 
 		return array(
 			array("html" => $srctable),
-			array("html" => '<table cellpadding="0" cellspacing="0" border="0" width="400"><tr><td>' . $width . '</td><td>' . $height . '</td><td>' . $ratio . '</td></tr></table>'),
-			array("html" => '<table cellpadding="0" cellspacing="0" border="0" width="560"><tr><td>' . $hspace . '</td><td>' . $vspace . '</td><td>' . $border . '</td><td>' . $align . '</td></tr></table><div></div>'),
+			array("html" => '<table class="default" width="400"><tr><td>' . $width . '</td><td>' . $height . '</td><td>' . $ratio . '</td></tr></table>'),
+			array("html" => '<table class="default" width="560"><tr><td>' . $hspace . '</td><td>' . $vspace . '</td><td>' . $border . '</td><td>' . $align . '</td></tr></table><div></div>'),
 			array("html" =>
-				'<div style="height:240px"><table cellpadding="0" cellspacing="0" border="0" width="380">
+				'<div style="height:240px"><table class="default" width="380">
 <tr><td colspan="2">' . $name . '</td><td colspan="2">' . $alt . '</td></tr>
 <tr><td colspan="4">' . we_html_tools::getPixel(150, 15) . '</td></tr>
 <tr><td colspan="2">' . $classSelect . '</td><td colspan="2">' . $title . '</td></tr>

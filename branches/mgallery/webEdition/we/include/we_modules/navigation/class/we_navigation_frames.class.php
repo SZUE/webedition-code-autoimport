@@ -189,7 +189,7 @@ function setTab(tab) {
 		);
 
 
-		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px;', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 1);
+		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px;', 'class' => 'default'), 1, 1);
 
 		$table->setCol(0, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
@@ -240,10 +240,7 @@ function setTab(tab) {
 
 	function getHTMLGeneral(){
 		$_table = new we_html_table(
-			array(
-			'border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
+			array('class' => 'default',
 			'width' => 300,
 			'style' => 'margin-top: 5px;'
 			), 1, 3);
@@ -529,10 +526,7 @@ function setTab(tab) {
 		$_table = new we_html_table(
 			array(
 			'width' => $this->_width_size,
-			'cellpadding' => 0,
-			'cellspacing' => 2,
-			'border' => 0,
-			'class' => 'defaultfont'
+			'class' => 'default defaultfont'
 			), 5, 2);
 
 		$_table->setColContent(0, 0, g_l('navigation', '[stat_selection]'));
@@ -769,10 +763,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		$_table = new we_html_table(
 			array(
 			'width' => $this->_width_size,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			'border' => 0,
-			'class' => 'defaultfont'
+			'class' => 'default defaultfont'
 			), 9, 2);
 
 		switch($this->Model->SelectionType){
@@ -870,7 +861,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 	function getHTMLEditorPreview(){
 		// build the page
-		$out = '<table border="0" class="defaultfont" cellpadding="0" cellspacing="0">
+		$out = '<table border="0" class="defaultfont" class="default">
 		<tr>
 			<td><iframe name="preview" style="background: white; border: 1px solid black; width: 640px; height: 150px" src="edit_navigation_frameset.php?pnt=previewIframe"></iframe></td>
 		</tr>
@@ -1169,9 +1160,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 			array(
 			'id' => 'CategoriesBlock',
 			'style' => 'display: block;',
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			'border' => 0
+			'class' => 'default'
 			), 6, 2
 		);
 
@@ -1504,9 +1493,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		asort($charsets);
 		reset($charsets);
 
-		$table = new we_html_table(array(
-			"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-			), 1, 3);
+		$table = new we_html_table(array('class' => 'default'), 1, 3);
 		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
 		$table->setCol(0, 1, null, we_html_tools::getPixel(2, 10, 0));
 		$table->setCol(0, 2, null, we_html_tools::htmlSelect("CharsetSelect", $charsets, 1, $value, false, array('onblur' => 'document.forms[0].elements.Charset.value=this.options[this.selectedIndex].value;', 'onchange' => 'document.forms[0].elements.Charset.value=this.options[this.selectedIndex].value;document.we_form.submit();'), 'value', ($this->_width_size - 122), "defaultfont", false));
@@ -1714,7 +1701,7 @@ function ' . $prefix . 'setLinkSelection(value){
 						), ""));
 		}
 
-		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => 'width:400px;'), 1, 2);
+		$table2 = new we_html_table(array('class' => 'default', "style" => 'width:400px;'), 1, 2);
 		$table2->setColContent(0, 0, we_html_button::create_button_table(
 				array(
 				we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))

@@ -176,7 +176,7 @@ if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')){
 	}
 }
 
-$shopDashboardTable = new we_html_table(array('border' => '0', 'cellpadding' => '0', 'cellspacing' => '0'), 1, 3);
+$shopDashboardTable = new we_html_table(array('class' => 'default'), 1, 3);
 $i = 0;
 if($bOrders){
 	//1. row

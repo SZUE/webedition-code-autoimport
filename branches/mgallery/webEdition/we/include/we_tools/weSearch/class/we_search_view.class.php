@@ -502,7 +502,7 @@ weSearch.g_l = {
 			}
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+		$out = '<table class="default"><tr><td>' .
 			($searchstart ?
 				we_html_button::create_button(we_html_button::BACK, "javascript:weSearch.back(" . $anzahl . ");") :
 				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
@@ -930,7 +930,7 @@ weSearch.g_l = {
 				break;
 		}
 
-		return '<div id="mouseOverDivs_' . $whichSearch . '"></div><table cellpadding="0" cellspacing="0" border="0">
+		return '<div id="mouseOverDivs_' . $whichSearch . '"></div><table class="default">
 <tbody>
 <tr>
  <td></td>
@@ -1892,7 +1892,7 @@ weSearch.g_l = {
 				$order => $_order,
 				"do" => ''
 			)) . '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 <tr>
  <td>' . we_html_tools::getPixel(30, 12) . '</td>
  <td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
@@ -1935,7 +1935,7 @@ weSearch.g_l = {
 		}
 
 
-		return '<table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+		return '<table class="default" style="margin-top:10px;">
 <tr>
 	 <td>' . $actionButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:140px;">' . $actionButton . '</td>
@@ -2415,7 +2415,7 @@ weSearch.g_l = {
 				}
 				return $out . '</tbody></table>';
 			case self::VIEW_ICONS:
-				$out = '<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center">';
+				$out = '<table class="default" width="100%"><tr><td align="center">';
 
 				for($m = 0; $m < $x; $m++){
 					$out .= $whichSearch !== self::SEARCH_MEDIA ? ('<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
@@ -2463,7 +2463,7 @@ weSearch.g_l = {
 
 				<div style="padding:0px 0px 6px 15px;width:360px;">';
 			if($content[$n][11]["dat"]){
-				$outDivs .= '<table cellpadding="0" cellspacing="0" border="0" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
+				$outDivs .= '<table class="default" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
 						15, 5) . '</td><td>' .
 					we_util_Strings::shortenPath($content[$n][11]["dat"], 150) .
 					'</td></tr></table>';
@@ -2553,7 +2553,7 @@ weSearch.g_l = {
 	}
 
 	private static function tblListRowIconView($content, $class, $i, $whichSearch){
-		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '">
+		return '<table width="100%" class="default ' . $class . '">
 <tr>
 	<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
@@ -2564,7 +2564,7 @@ weSearch.g_l = {
 	}
 
 	private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
-		return '<table border="0" width="100%" cellpadding="0" cellspacing="0" class="' . $class . '">
+		return '<table width="100%" class="default ' . $class . '">
 <tr>
 	<td width="100%" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((isset($content[5]["dat"]) && $content[5]["dat"]) ? $content[5]["dat"] : "&nbsp;") .

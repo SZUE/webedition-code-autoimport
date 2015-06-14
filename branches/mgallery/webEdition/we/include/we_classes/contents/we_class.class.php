@@ -132,7 +132,7 @@ abstract class we_class{
 		}
 		$formname = 'we_' . $this->Name . '_' . $type . '[' . $name . ']';
 		$out = we_html_element::htmlHidden($formname, $this->getElement($name)) .
-			'<table cellpadding="0" cellspacing="0" border="1"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
+			'<table class="default" style="border:1px solid black"><tr><td' . ($value ? (' bgcolor="' . $value . '"') : '') . '><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);">' . we_html_tools::getPixel($width, $height) . '</a></td></tr></table>';
 		return g_l('weClass', '[' . $name . ']', true) !== false ? we_html_tools::htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
 	}
 
@@ -260,7 +260,7 @@ abstract class we_class{
 				), $attribs), 'value', $width);
 
 		if($precode || $postcode){
-			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
+			$pop = '<table class="default"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}
 		return ($multiple ? we_html_element::htmlHidden($myname, $selectedIndex) : '') . we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
@@ -280,7 +280,7 @@ abstract class we_class{
 
 		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, array_merge(array('onchange' => $onChange), $attribs), 'value', $width);
 		if($precode || $postcode){
-			$pop = '<table border="0" cellpadding="0" cellspacing="0"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
+			$pop = '<table class="default"><tr>' . ($precode ? ('<td>' . $precode . '</td><td>' . we_html_tools::getPixel($gap, 2) . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . we_html_tools::getPixel($gap, 2) . '</td><td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}
 		return we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}

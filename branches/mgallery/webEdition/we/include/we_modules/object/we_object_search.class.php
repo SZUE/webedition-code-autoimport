@@ -143,7 +143,7 @@ function toggleShowVisible(c) {
 			return "-";
 		}
 		$isAdmin = permissionhandler::hasPerm("ADMINISTRATOR");
-		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		$out = '<table class="default">';
 		for($i = 0; $i < count($exws); $i++){
 			if($exws[$i] != ""){
 
@@ -169,7 +169,7 @@ function toggleShowVisible(c) {
 		if(!$foo){
 			return '-';
 		}
-		$out = '<table border="0" cellpadding="0" cellspacing="0">';
+		$out = '<table class="default">';
 		foreach($foo as $cur){
 			if($cur != ""){
 				$p = id_to_path($cur);

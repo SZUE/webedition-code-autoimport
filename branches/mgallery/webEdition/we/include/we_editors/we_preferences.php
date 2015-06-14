@@ -61,7 +61,7 @@ function create_dialog($name, array $content, $expand = -1, $show_text = '', $hi
 }
 
 function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
-	return we_html_tools::hidden($name, $value) . '<table cellpadding="0" cellspacing="0" style="border:1px solid grey;margin:2px 0;"><tr><td' .
+	return we_html_tools::hidden($name, $value) . '<table class="default" style="border:1px solid grey;margin:2px 0px;"><tr><td' .
 		($disabled ? ' class="disabled"' : '') .
 		' id="color_' . $name . '" ' .
 		($value ? (' style="background-color:' . $value . ';"') : '') .
@@ -688,7 +688,7 @@ function build_dialog($selected_setting = 'ui'){
 				$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');
 				$_defaultCharset = we_html_tools::htmlTextInput('newconf[DEFAULT_CHARSET]', 8, $GLOBALS['weDefaultCharset'], 255, '', 'text', 100);
 				$_defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $_charsets, 1, $GLOBALS['weDefaultCharset'], false, array("onchange" => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;"), "value", 100, "defaultfont", false);
-				$DEFAULT_CHARSET = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
+				$DEFAULT_CHARSET = '<table class="default"><tr><td>' . $_defaultCharset . '</td><td>' . $_defaultCharsetChooser . '</td></tr></table>';
 
 				$_settings[] = array(
 					'headline' => g_l('prefs', '[default_charset]'),
@@ -845,7 +845,7 @@ function build_dialog($selected_setting = 'ui'){
 					} else {
 						$_seem_start_type = $permitedStartTypes[0];
 					}
-					$_seem_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 1);
+					$_seem_html = new we_html_table(array('class' => 'default'), 2, 1);
 					$_seem_html->setCol(0, 0, array('class' => 'defaultfont'), $_start_type->getHtml());
 					$_seem_html->setCol(1, 0, array('style' => 'padding-top:5px;'), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
 					$_settings[] = array('headline' => g_l('prefs', '[seem_startdocument]'), 'html' => $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'), "space" => 200);
@@ -894,12 +894,12 @@ function build_dialog($selected_setting = 'ui'){
 				$yuiSuggest->setContainerWidth(259);
 
 				// build html
-				$_sidebar_html1 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 1);
+				$_sidebar_html1 = new we_html_table(array('class' => 'default'), 1, 1);
 
 				$_sidebar_html1->setCol(0, 0, null, $_sidebar_disabler);
 
 				// build html
-				$_sidebar_html2 = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'sidebar_options', 'style' => 'display:' . $_sidebar_show), 8, 3);
+				$_sidebar_html2 = new we_html_table(array('class' => 'default', 'id' => 'sidebar_options', 'style' => 'display:' . $_sidebar_show), 8, 3);
 
 				$_sidebar_html2->setCol(0, 0, array('colspan' => 3, 'height' => 10), '');
 				$_sidebar_html2->setCol(1, 0, array('colspan' => 3, 'height' => 10), $_sidebar_show_on_startup);
@@ -958,7 +958,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_specify_code = we_html_forms::radiobutton(1, !(get_value('sizeOpt') == 0), 'newconf[sizeOpt]', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;");
 
 			// Create specify window dimension input
-			$_window_specify_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 4, 4);
+			$_window_specify_table = new we_html_table(array('class' => 'default'), 4, 4);
 
 			$_window_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_specify_table->setCol(1, 0, null, we_html_tools::getPixel(50, 1));
@@ -975,13 +975,13 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_specify_table->setCol(3, 3, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? "disabled=\"disabled\"" : ""), "number", 60));
 
 			// Build apply current window dimension
-			$_window_current_dimension_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
+			$_window_current_dimension_table = new we_html_table(array('class' => 'default'), 1, 2);
 
 			$_window_current_dimension_table->setCol(0, 0, null, we_html_tools::getPixel(50, 1));
 			$_window_current_dimension_table->setCol(0, 1, null, we_html_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('newconf[weHeight]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true));
 
 			// Build final HTML code
-			$_window_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 5, 1);
+			$_window_html = new we_html_table(array('class' => 'default'), 5, 1);
 			$_window_html->setCol(0, 0, null, $_window_max_code);
 			$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtml());
@@ -1107,13 +1107,13 @@ function build_dialog($selected_setting = 'ui'){
 
 
 			// Create edit list
-			$_editlist_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 3);
+			$_editlist_table = new we_html_table(array('class' => 'default'), 2, 3);
 
 			// Buttons
 			$default = we_html_button::create_button('default', 'javascript:defaultLocale()', true, 100, 22, '', '', !$_enabled_buttons);
 			$delete = we_html_button::create_button(we_html_button::DELETE, 'javascript:deleteLocale()', true, 100);
 
-			$_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
+			$_html = new we_html_table(array('class' => 'default'), 1, 3);
 			$_html->setCol(0, 0, array('class' => 'defaultfont'), $default);
 			$_html->setCol(0, 1, null, we_html_tools::getPixel(25, 2));
 			$_html->setCol(0, 2, array('class' => 'defaultfont'), $delete);
@@ -1273,16 +1273,16 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_font_specify ? 'enabled' : 'disabled') => ($_template_editor_font_specify ? 'enabled' : 'disabled')));
 
-/*			$_colorsDisabled = true;
+			/* 			$_colorsDisabled = true;
 
-			$_template_editor_fontcolor_selector = getColorInput('newconf[editorFontcolor]', get_value('editorFontcolor'), $_colorsDisabled);
-			$_template_editor_we_tag_fontcolor_selector = getColorInput('newconf[editorWeTagFontcolor]', get_value('editorWeTagFontcolor'), $_colorsDisabled);
-			$_template_editor_we_attribute_fontcolor_selector = getColorInput('newconf[editorWeAttributeFontcolor]', get_value('editorWeAttributeFontcolor'), $_colorsDisabled);
-			$_template_editor_html_tag_fontcolor_selector = getColorInput('newconf[editorHTMLTagFontcolor]', get_value('editorHTMLTagFontcolor'), $_colorsDisabled);
-			$_template_editor_html_attribute_fontcolor_selector = getColorInput('newconf[editorHTMLAttributeFontcolor]', get_value('editorHTMLAttributeFontcolor'), $_colorsDisabled);
-			$_template_editor_pi_tag_fontcolor_selector = getColorInput('newconf[editorPiTagFontcolor]', get_value('editorPiTagFontcolor'), $_colorsDisabled);
-			$_template_editor_comment_fontcolor_selector = getColorInput('newconf[editorCommentFontcolor]', get_value('editorCommentFontcolor'), $_colorsDisabled);
-*/
+			  $_template_editor_fontcolor_selector = getColorInput('newconf[editorFontcolor]', get_value('editorFontcolor'), $_colorsDisabled);
+			  $_template_editor_we_tag_fontcolor_selector = getColorInput('newconf[editorWeTagFontcolor]', get_value('editorWeTagFontcolor'), $_colorsDisabled);
+			  $_template_editor_we_attribute_fontcolor_selector = getColorInput('newconf[editorWeAttributeFontcolor]', get_value('editorWeAttributeFontcolor'), $_colorsDisabled);
+			  $_template_editor_html_tag_fontcolor_selector = getColorInput('newconf[editorHTMLTagFontcolor]', get_value('editorHTMLTagFontcolor'), $_colorsDisabled);
+			  $_template_editor_html_attribute_fontcolor_selector = getColorInput('newconf[editorHTMLAttributeFontcolor]', get_value('editorHTMLAttributeFontcolor'), $_colorsDisabled);
+			  $_template_editor_pi_tag_fontcolor_selector = getColorInput('newconf[editorPiTagFontcolor]', get_value('editorPiTagFontcolor'), $_colorsDisabled);
+			  $_template_editor_comment_fontcolor_selector = getColorInput('newconf[editorCommentFontcolor]', get_value('editorCommentFontcolor'), $_colorsDisabled);
+			 */
 			foreach($_template_fonts as $font){
 				$_template_editor_font_select_box->addOption($font, $font);
 			}
@@ -1297,23 +1297,23 @@ function build_dialog($selected_setting = 'ui'){
 			$_template_editor_font_sizes_select_box->selectOption(get_value('editorFontsize'));
 
 
-			$_template_editor_font_specify_table = '<table style="margin:0px 0px 20px 50px;" border="0" cellpadding="0" cellspacing="0">
+			$_template_editor_font_specify_table = '<table style="margin:0px 0px 20px 50px;" class="default">
 	<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontname]') . '</td><td>' . $_template_editor_font_select_box->getHtml() . '</td></tr>
 	<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontsize]') . '</td><td>' . $_template_editor_font_sizes_select_box->getHtml() . '</td></tr>
 </table>';
-/*
-			$_template_editor_font_color_checkbox = we_html_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);");
-			$attr = ($_colorsDisabled ? $_attr_dis : $_attr);
-			$_template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0px 0px 50px;" border="0" cellpadding="0" cellspacing="0">
-	<tr><td id="label_editorFontcolor" ' . $attr . '>' . g_l('prefs', '[editor_normal_font_color]') . '</td><td>' . $_template_editor_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorWeTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_tag_font_color]') . '</td><td>' . $_template_editor_we_tag_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorWeAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_attribute_font_color]') . '</td><td>' . $_template_editor_we_attribute_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorHTMLTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_tag_font_color]') . '</td><td>' . $_template_editor_html_tag_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorHTMLAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_attribute_font_color]') . '</td><td>' . $_template_editor_html_attribute_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorPiTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_pi_tag_font_color]') . '</td><td>' . $_template_editor_pi_tag_fontcolor_selector . '</td></tr>
-	<tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $_template_editor_comment_fontcolor_selector . '</td></tr>
-</table>';
-*/
+			/*
+			  $_template_editor_font_color_checkbox = we_html_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);");
+			  $attr = ($_colorsDisabled ? $_attr_dis : $_attr);
+			  $_template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0px 0px 50px;" class="default">
+			  <tr><td id="label_editorFontcolor" ' . $attr . '>' . g_l('prefs', '[editor_normal_font_color]') . '</td><td>' . $_template_editor_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorWeTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_tag_font_color]') . '</td><td>' . $_template_editor_we_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorWeAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_attribute_font_color]') . '</td><td>' . $_template_editor_we_attribute_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorHTMLTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_tag_font_color]') . '</td><td>' . $_template_editor_html_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorHTMLAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_attribute_font_color]') . '</td><td>' . $_template_editor_html_attribute_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorPiTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_pi_tag_font_color]') . '</td><td>' . $_template_editor_pi_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $_template_editor_comment_fontcolor_selector . '</td></tr>
+			  </table>';
+			 */
 			$_template_editor_theme = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTheme]', 'size' => 1));
 			foreach(glob(WE_LIB_PATH . 'additional/CodeMirror/theme/*.css') as $filename){
 				$theme = str_replace(array('.css', WE_LIB_PATH . 'additional/CodeMirror/theme/'), '', $filename);
@@ -1344,7 +1344,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_template_editor_tabstop_code = we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
 				we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
-				'<table border="0" cellpadding="0" cellspacing="0">
+				'<table class="default">
 				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), 2, "", "number", 135) . '</td></tr>
 			</table>';
 
@@ -1376,7 +1376,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_template_editor_tooltip_font_sizes_select_box->addOption($sz, $sz);
 			}
 			$_template_editor_tooltip_font_sizes_select_box->selectOption($_template_editor_tooltip_font_specify ? get_value("editor_tooltip_font_size") : 11);
-			$_template_editor_tooltip_font_specify_table = '<table style="margin:0px 0px 20px 50px;" border="0" cellpadding="0" cellspacing="0">
+			$_template_editor_tooltip_font_specify_table = '<table style="margin:0px 0px 20px 50px;" class="default">
 				<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontname]') . '</td><td>' . $_template_editor_tooltip_font_select_box->getHtml() . '</td></tr>
 				<tr><td' . $_attr . '>' . g_l('prefs', '[editor_fontsize]') . '</td><td>' . $_template_editor_tooltip_font_sizes_select_box->getHtml() . '</td></tr>
 			</table>';
@@ -1445,7 +1445,7 @@ for(i=0;i<elements.length; ++i){
 						"newconf[formmail_deleted]" => ""));
 
 				// Create edit list
-				$_editlist_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 3);
+				$_editlist_table = new we_html_table(array('class' => 'default'), 2, 3);
 
 				$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtml());
 				$_editlist_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
@@ -1531,7 +1531,7 @@ for(i=0;i<elements.length; ++i){
 				$_isDisabled = $_isDisabled || (get_value("FORMMAIL_BLOCK") == 0);
 
 				// table is IE fix. Without table IE has a gap on the left of the input
-				$_formmail_trials = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+				$_formmail_trials = '<table class="default"><tr><td>' .
 					we_html_tools::htmlTextInput("newconf[FORMMAIL_TRIALS]", 24, get_value("FORMMAIL_TRIALS"), "", "", "text", 88, 0, "", $_isDisabled) .
 					'</td></tr></table>';
 
@@ -1674,7 +1674,7 @@ for(i=0;i<elements.length; ++i){
 			  $_settings[] = array("headline" => "Editor für textareas im Frontend", "html" => $WYSIWYG_TYPE_FRONTEND->getHtml(), "space" => 200);
 			 */
 			$_we_doctype_workspace_behavior = get_value("WE_DOCTYPE_WORKSPACE_BEHAVIOR");
-			$_we_doctype_workspace_behavior_table = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$_we_doctype_workspace_behavior_table = '<table class="default"><tr><td>' .
 				we_html_forms::radiobutton(0, (!$_we_doctype_workspace_behavior), "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_0]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint0]'), 0, 430) .
 				'</td></tr><tr><td style="padding-top:10px;">' .
 				we_html_forms::radiobutton(1, $_we_doctype_workspace_behavior, "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_1]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint1]'), 0, 430) .
@@ -1729,7 +1729,7 @@ for(i=0;i<elements.length; ++i){
 				break;
 			}
 
-			$_we_max_upload_size = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$_we_max_upload_size = '<table class="default"><tr><td>' .
 				we_html_tools::htmlTextInput("newconf[FILE_UPLOAD_MAX_UPLOAD_SIZE]", 22, get_value("FILE_UPLOAD_MAX_UPLOAD_SIZE"), "", ' onkeypress="return IsDigit(event);"', "number", 60) . ' MB</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[upload][we_max_size_hint]') .
 				'</td></tr></table>';
@@ -1737,7 +1737,7 @@ for(i=0;i<elements.length; ++i){
 			// FILE UPLOAD
 			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
 
-			$_we_new_folder_mod = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$_we_new_folder_mod = '<table class="default"><tr><td>' .
 				we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, get_value("WE_NEW_FOLDER_MOD"), 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[we_new_folder_mod_hint]') .
 				'</td></tr></table>';
@@ -1824,7 +1824,7 @@ for(i=0;i<elements.length; ++i){
 			$useSession->addOption(1, g_l('prefs', '[yes]'));
 			$useSession->selectOption(get_value("SYSTEM_WE_SESSION") ? 1 : 0);
 
-			$sessionTime = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$sessionTime = '<table class="default"><tr><td>' .
 				we_html_tools::htmlTextInput("newconf[SYSTEM_WE_SESSION_TIME]", 22, abs(get_value("SYSTEM_WE_SESSION_TIME")), "", ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">s</td></tr></table>';
 
 			$cryptSession = new we_html_select(array("name" => 'newconf[SYSTEM_WE_SESSION_CRYPT]', 'class' => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');'));
@@ -1919,7 +1919,7 @@ for(i=0;i<elements.length; ++i){
 			$_foldAt = 4;
 
 			// Create checkboxes
-			$_template_error_handling_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 8, 1);
+			$_template_error_handling_table = new we_html_table(array('class' => 'default'), 8, 1);
 			$_template_error_handling_table->setCol(0, 0, null, we_html_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
 				we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
 
@@ -1928,7 +1928,7 @@ for(i=0;i<elements.length; ++i){
 
 			// Error types
 			// Create checkboxes
-			$_error_handling_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 8, 1);
+			$_error_handling_table = new we_html_table(array('class' => 'default'), 8, 1);
 
 			$_error_handling_table->setCol(0, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_ERRORS'), 'newconf[WE_ERROR_ERRORS]', g_l('prefs', '[error_errors]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
 			$_error_handling_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
@@ -1940,7 +1940,7 @@ for(i=0;i<elements.length; ++i){
 			$_error_handling_table->setCol(7, 0, null, we_html_tools::getPixel(1, 5));
 
 			// Create checkboxes
-			$_error_display_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 8, 1);
+			$_error_display_table = new we_html_table(array('class' => 'default'), 8, 1);
 			$_error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), we_html_tools::TYPE_ALERT, 260));
 
 			$_error_display_table->setCol(1, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_SHOW'), 'newconf[WE_ERROR_SHOW]', g_l('prefs', '[error_display]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
@@ -1950,7 +1950,7 @@ for(i=0;i<elements.length; ++i){
 			$_error_display_table->setCol(5, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_MAIL'), 'newconf[WE_ERROR_MAIL]', g_l('prefs', '[error_mail]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
 
 			// Create specify mail address input
-			$_error_mail_specify_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 4);
+			$_error_mail_specify_table = new we_html_table(array('class' => 'default'), 1, 4);
 
 			$_error_mail_specify_table->setCol(0, 0, null, we_html_tools::getPixel(25, 1));
 			$_error_mail_specify_table->setCol(0, 1, array('class' => 'defaultfont'), g_l('prefs', '[error_mail_address]') . ':');
@@ -2038,24 +2038,24 @@ for(i=0;i<elements.length; ++i){
 				return;
 			}
 			$row = 0;
-			$customer_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'customer_table'), 9, 10);
+			$customer_table = new we_html_table(array('class' => 'default', 'id' => 'customer_table'), 9, 10);
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -2073,11 +2073,11 @@ for(i=0;i<elements.length; ++i){
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array(), 's');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
@@ -2122,7 +2122,7 @@ for(i=0;i<elements.length; ++i){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$_emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array("onchange" => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
 
-				$_smtp_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 9, 3);
+				$_smtp_table = new we_html_table(array('class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 9, 3);
 				$_smtp_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_server]'));
 				$_smtp_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 5));
 				$_smtp_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
@@ -2138,7 +2138,7 @@ for(i=0;i<elements.length; ++i){
 				$_smtp_table->setCol(4, 2, array('align' => 'left'), $_encryptSelect);
 
 
-				$_auth_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 4, 3);
+				$_auth_table = new we_html_table(array('class' => 'default', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 4, 3);
 				$_auth_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_username]'));
 				$_auth_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_tools::getPixel(10, 10));
 				$_auth_table->setCol(0, 2, array('align' => 'right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, '', 'text', 105));

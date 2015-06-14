@@ -483,7 +483,7 @@ weSearch = {
 				}
 				row.removeChild(searchTD);
 
-				var innerhtml= '<table border="0" cellpadding="0" cellspacing="0"><tbody><tr>'+
+				var innerhtml= '<table class="default"><tbody><tr>'+
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>'+
 								 '<td><input value="" name="search" + this.conf.whichsearch + "ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>'+
 								 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>'+
@@ -506,7 +506,7 @@ weSearch = {
 				}
 				row.removeChild(searchTD);
 
-				var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"+
+				var innerhtml= "<table class=\"default\"><tbody><tr>"+
 						 '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>'+
 						 '<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>'+
 						 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>'+
@@ -532,7 +532,7 @@ weSearch = {
 
 				var table = value === 'ParentIDDoc' ? this.we_const.FILE_TABLE : (value === 'ParentIDObj' ? this.we_const.OBJECT_FILES_TABLE : this.we_const.TEMPLATES_TABLE);
 
-				var innerhtml= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"+
+				var innerhtml= "<table class=\"default\"><tbody><tr>"+
 						 '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>'+
 						 '<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>'+
 						 '<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, table).replace(/__we_selector__/, 'we_selector_directory') + '</td>'+
@@ -589,7 +589,7 @@ weSearch = {
 				row.removeChild(searchTD);
 
 				// FIXME: move datepicker-button to search_view
-				var innerhtml= "<table id=\"search" + this.conf.whichsearch + "["+rowNr+"]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"+
+				var innerhtml= "<table id=\"search" + this.conf.whichsearch + "["+rowNr+"]_cell\" class=\"default\"><tbody><tr>"+
 						 "<td></td>"+
 						 "<td></td>"+
 						 '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ').replace('width: 170px', 'width: 100px') + '</td>'+

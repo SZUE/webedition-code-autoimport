@@ -243,7 +243,7 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 					$hiddenStyle = 'style="display:none;"';
 				}
 				$out .= '<div ' . $hiddenStyle . ' title="' . $this->getTabAttribute($v, 'title') . '" id="Tabs_' . $id . '" onclick="' . $onClick . '" ' . $this->_getComputedClassAttrib($class) . '>' .
-					'<table border="0" height="100%" cellspacing="0" cellpadding="0"><tr><td>' .
+					'<table class="default" height="100%"><tr><td>' .
 					($this->getTabAttribute($v, 'icon') ? '<img style="width:16px;height:16px;padding-right:5px;" src="' . $this->getTabAttribute($v, 'icon') . '" border="0" /></td><td>' : '') .
 					$this->getTabAttribute($v, 'text') .
 					'</td>' .

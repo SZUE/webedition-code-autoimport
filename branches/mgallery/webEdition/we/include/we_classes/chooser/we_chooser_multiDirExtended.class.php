@@ -86,11 +86,11 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 	}
 
 	function get(){
-		$out = '<table border="0" cellpadding="0" height="18" cellspacing="0" width="' . abs($this->width - 10) . '" id="' . $this->rowPrefix . 'CatTable">' .
+		$out = '<table class="default" height="18" width="' . abs($this->width - 10) . '" id="' . $this->rowPrefix . 'CatTable">' .
 			$this->getTableRows() .
 			'</table>';
 
-		return '<table border="0" cellpadding="0" cellspacing="0" width="' . $this->width . '">
+		return '<table class="default" width="' . $this->width . '">
 <tr><td><div style="background-color:white;" class="multichooser">' . $out . '</div></td></tr>
 ' . ($this->addbut ? ('<tr><td>' . we_html_tools::getPixel(2, 5) . '</td></tr>
 <tr><td align="right">' . $this->addbut . '</td></tr>') : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');

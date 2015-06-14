@@ -202,7 +202,7 @@ class we_class_folder extends we_folder{
 		$wecmdenc3 = we_base_request::encCmd("var parents = '" . $ParentsCSV . "';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');};");
 		$but = we_html_button::create_button(we_html_button::SELECT, $this->ID ? "javascript:we_cmd('we_selector_directory', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $wecmdenc1 . "', '', '" . $wecmdenc3 . "',''," . $this->RootfolderID . ");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR), true, 100, 22, "", "", $_disabled);
 
-		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		return '<table class="default"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
 			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
 	}
@@ -377,10 +377,10 @@ class we_class_folder extends we_folder{
 		$javascriptAll = "";
 		$headline = array(
 			array('dat' => ""),
-			array('dat' => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
+			array('dat' => '<table class="default defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
 			array('dat' => ''),
-			array('dat' => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>'),
-			array('dat' => '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>'),
+			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'OF_ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('OF_ID') . '</td></tr></table>'),
+			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'OF_Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('OF_Path') . '</td></tr></table>'),
 		);
 
 		if($foundItems){
@@ -400,19 +400,19 @@ class we_class_folder extends we_folder{
 							switch($regs[1]){
 								case "object":
 									$object[$i + 5] = $regs[2];
-									$headline[$i + 5]['dat'] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . f("SELECT Text FROM " . OBJECT_TABLE . " WHERE ID='" . $regs[2] . "'", "Text", $this->DB_WE) . '</td><td></td></tr></table>';
+									$headline[$i + 5]['dat'] = '<table class="default defaultfont"><tr><td>' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($regs[2]), "Text", $this->DB_WE) . '</td><td></td></tr></table>';
 									$type[$i + 5] = $regs[1];
 									$i++;
 									break;
 								case we_objectFile::TYPE_MULTIOBJECT:
-									$headline[$i + 5]['dat'] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td>' . $regs[2] . '</td><td></td></tr></table>';
+									$headline[$i + 5]['dat'] = '<table class="default defaultfont"><tr><td>' . $regs[2] . '</td><td></td></tr></table>';
 									$head[$i + 5]['dat'] = $regs[2];
 									$type[$i + 5] = $regs[1];
 									$i++;
 									break;
 								default:
 									if($regs[1] != "OF"){
-										$headline[$i + 5]['dat'] = '<table border="0" cellpadding="0" cellspacing="0" class="defaultfont"><tr><td><a href="javascript:setOrder(\'' . $key . '\');">' . $regs[2] . '</a></td><td> ' . $this->getSortImage($key) . '</td></tr></table>';
+										$headline[$i + 5]['dat'] = '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'' . $key . '\');">' . $regs[2] . '</a></td><td> ' . $this->getSortImage($key) . '</td></tr></table>';
 										$head[$i + 5]['dat'] = $regs[2];
 										$type[$i + 5] = $regs[1];
 										$i++;
@@ -639,7 +639,7 @@ class we_class_folder extends we_folder{
 		return $this->searchclass->getJSinWEsearchobj($this->Name) . '
 <form name="we_form" method="post">
 ' . we_class::hiddenTrans() . '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr>
 		<td class="defaultgray" style="margin-bottom:12px;">' . g_l('modules_objectClassfoldersearch', '[Verzeichnis]') . '</td>
 		<td colspan="3">' . $this->formDirChooser(388, 0, FILE_TABLE, "WorkspacePath", "WorkspaceID", "opener.we_cmd('reload_editpage');", false) . '</td>
@@ -660,21 +660,21 @@ class we_class_folder extends we_folder{
 		<td>' . we_html_tools::getPixel(350, 15) . '</td>
 	</tr>
 	</table>
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table class="default">
 	<tr>
 		<td class="defaultgray" style="margin-bottom:12px;">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
 		<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	</table>' .
 			we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table class="default">
 	<tr>
 		<td style="margin-bottom:12px;margin-top:12px;">' . we_html_tools::getPixel(5, 1) . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("selectAllObjects", "javascript: " . $javascriptAll) : "") . '</td>
 		<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") . '</td>
@@ -686,7 +686,7 @@ class we_class_folder extends we_folder{
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_publish,fa-lg fa-sun-o", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "'))document.we_form.elements.do.value='publish';we_cmd('reload_editpage');") . '</td>
@@ -698,7 +698,7 @@ class we_class_folder extends we_folder{
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_unpublish,fa-lg fa-moon-o", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "'))document.we_form.elements.do.value='unpublish';we_cmd('reload_editpage');") . '</td>
@@ -710,7 +710,7 @@ class we_class_folder extends we_folder{
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::SEARCH, "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "'))document.we_form.elements.do.value='searchable';we_cmd('reload_editpage');") . '</td>
@@ -722,7 +722,7 @@ class we_class_folder extends we_folder{
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fas:btn_function_unsearchable,fa-ban,fa-search", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "'))document.we_form.elements.do.value='unsearchable';we_cmd('reload_editpage');") . '</td>
@@ -734,7 +734,7 @@ class we_class_folder extends we_folder{
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "'))document.we_form.elements.do.value='copychar';we_cmd('reload_editpage');") . '</td>
@@ -746,7 +746,7 @@ class we_class_folder extends we_folder{
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "'))document.we_form.elements.do.value='copyws';we_cmd('reload_editpage');") . '</td>
@@ -758,7 +758,7 @@ class we_class_folder extends we_folder{
 	</tr>
 	<tr>
 		<td colspan="2">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 			<tr>
 				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "'))document.we_form.elements.do.value='copytid';we_cmd('reload_editpage');") . '</td>

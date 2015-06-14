@@ -161,7 +161,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 
 		$prevNextButtons = $prevButton ? we_html_button::create_button_table(array($prevButton, $nextButton)) : null;
 
-		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
+		$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, $pb);
 		$content->setCol(0, 1, array("align" => "right"), '
 <div id="standardDiv">' . we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", array(), 10) . '</div>

@@ -97,7 +97,7 @@ class we_voting_frames extends we_modules_frame{
 		);
 
 
-		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("width" => '100%', 'class' => 'default'), 3, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 
@@ -143,7 +143,7 @@ class we_voting_frames extends we_modules_frame{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
-		$table2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 300), 1, 2);
+		$table2 = new we_html_table(array('class' => 'default', "width" => 300), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING')))
@@ -334,7 +334,7 @@ class we_voting_frames extends we_modules_frame{
 
 			$ok = we_html_button::create_button("export", "javascript:we_cmd('exportGroup_csv')");
 
-			$export_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
+			$export_box = new we_html_table(array('class' => 'default'), 12, 1);
 
 			$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
 			$export_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'csv_dir', '/', '', we_base_ContentTypes::FOLDER), g_l('export', '[dir]')));
@@ -351,7 +351,7 @@ class we_voting_frames extends we_modules_frame{
 //$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 			$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
 			$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 325, "defaultfont", false);
-			$import_Charset = '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
+			$import_Charset = '<table class="default"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
 
 
@@ -416,7 +416,7 @@ class we_voting_frames extends we_modules_frame{
 
 	function getHTMLTab2(){
 
-		$successor_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 2, 1);
+		$successor_box = new we_html_table(array('class' => 'default'), 2, 1);
 
 		$successor_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
 		$successor_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'Successor', '/', '', ''), g_l('modules_voting', '[voting-successor]')));
@@ -447,14 +447,14 @@ class we_voting_frames extends we_modules_frame{
 		}
 		$select->selectOption(we_base_request::_(we_base_request::INT, 'vernr', 0));
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 3);
+		$table = new we_html_table(array('class' => 'default'), 1, 3);
 		$table->setColContent(0, 0, $select->getHtml());
 		$table->setColContent(0, 1, we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();question_edit.addVariant();answers_edit.addVariant();question_edit.showVariant(question_edit.variantCount-1);answers_edit.showVariant(answers_edit.variantCount-1);document.we_form.selectVar.options[document.we_form.selectVar.options.length] = new Option('" . g_l('modules_voting', '[variant]') . " '+question_edit.variantCount,question_edit.variantCount-1,false,true);"));
 		$table->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();if(question_edit.variantCount>1){ question_edit.deleteVariant(document.we_form.selectVar.selectedIndex);answers_edit.deleteVariant(document.we_form.selectVar.selectedIndex);document.we_form.selectVar.options.length--;document.we_form.selectVar.selectedIndex=question_edit.currentVariant;refreshTexts();} else {" . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[variant_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . "}"));
 		$table->setColAttributes(0, 1, array("style" => "padding:0 5px;"));
 		$selectCode = $table->getHtml();
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 5, 1);
+		$table = new we_html_table(array('class' => 'default'), 5, 1);
 
 		$table->setColContent(0, 0, $selectCode);
 		$table->setColContent(1, 0, we_html_tools::getPixel(10, 7));
@@ -708,7 +708,7 @@ function refreshTexts(){
 
 		$ok = we_html_button::create_button("export", "javascript:we_cmd('export_csv')");
 
-		$export_box = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 10, 1);
+		$export_box = new we_html_table(array('class' => 'default'), 10, 1);
 
 		$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
 		$export_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'csv_dir', '/', '', we_base_ContentTypes::FOLDER), g_l('export', '[dir]')));
@@ -839,7 +839,7 @@ function refreshTexts(){
 			return;
 		}
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
+		$table = new we_html_table(array('class' => 'default'), 7, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(5, 5));
 		$table->setCol(1, 0, array("class" => "defaultfont"), sprintf(g_l('modules_voting', '[csv_export]'), $link));
@@ -868,7 +868,7 @@ function refreshTexts(){
 		if($link === false){
 			return;
 		}
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 7, 1);
+		$table = new we_html_table(array('class' => 'default'), 7, 1);
 
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(5, 5));
 		$table->setCol(1, 0, array("class" => "defaultfont"), sprintf(g_l('modules_voting', '[csv_export]'), $link));
@@ -997,7 +997,7 @@ function refreshTexts(){
 				);
 			}
 
-			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 				($start < $size ?
 					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
@@ -1127,7 +1127,7 @@ function refreshTexts(){
 				);
 			}
 
-			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 				($start < $size ?
 					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
@@ -1241,7 +1241,7 @@ function refreshTexts(){
 				);
 			}
 
-			$nextprev = '<table style="margin-top: 10px;" border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 				($start < $size ?
 					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)

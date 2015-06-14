@@ -278,7 +278,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement{
 	 */
 	protected function _getHeader(){
 
-		$tableTag = '<table' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib(array('margin-top' => '10px')) . ' border="0" cellspacing="0" cellpadding="0">';
+		$tableTag = '<table' . $this->_getNonBooleanAttribs('id') . $this->_getComputedStyleAttrib(array('margin-top' => '10px')) . ' class="default">';
 
 		if($this->getTitle() !== ''){
 

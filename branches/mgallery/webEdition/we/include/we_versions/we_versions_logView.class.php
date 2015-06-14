@@ -198,7 +198,7 @@ function back(id) {
 		$out = '';
 		$anz = count($content);
 		if($anz){
-			$out .= '<div align="center" width="100%"><table border="0" width="100%" cellpadding="0" cellspacing="0" class="middlefont">';
+			$out .= '<div align="center" width="100%"><table width="100%" class="default middlefont">';
 //		$out .= '<thead>';
 //		$out .= '<tr>';
 //		$out .= '<th style="width:150px;">';

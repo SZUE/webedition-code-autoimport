@@ -73,7 +73,7 @@ function writeBody(d) {
 					'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
 					'<input type="hidden" name="table" value="' + top.options.table + '" />' +
 					'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-					'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
+					'<table class="default" width="100%">' +
 					(makeNewFolder ?
 									'<tr style="background-color:#DFE9F5;">' +
 									'<td align="center">' + getTreeIcon('folder', false) + '</td>' +

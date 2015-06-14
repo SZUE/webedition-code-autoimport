@@ -248,7 +248,7 @@ function init() {
 			}
 
 			// Create thumbnails list
-			$_thumbnails_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 2, 3);
+			$_thumbnails_table = new we_html_table(array('class' => 'default'), 2, 3);
 
 			$_thumbnails_table->setCol(0, 0, null, we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
 			$_thumbnails_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
@@ -274,7 +274,7 @@ function init() {
 			$_thumbnail_height = ($id != -1) ? $allData['Height'] : -1;
 			$_thumbnail_quality = ($id != -1) ? $allData['Quality'] : -1;
 
-			$_thumbnail_specify_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 5, 3);
+			$_thumbnail_specify_table = new we_html_table(array('class' => 'default'), 5, 3);
 
 			$_thumbnail_specify_table->setCol(1, 0, array('width' => 60), we_html_tools::getPixel(1, 5));
 			$_thumbnail_specify_table->setCol(3, 0, array('colspan' => 3), we_html_tools::getPixel(1, 5));
@@ -297,7 +297,7 @@ function init() {
 			$_thumbnail_interlace = ($id != -1) ? $allData['Interlace'] : -1;
 			$_thumbnail_fitinside = ($id != -1) ? $allData['Fitinside'] : -1;
 
-			$_thumbnail_option_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 7, 1);
+			$_thumbnail_option_table = new we_html_table(array('class' => 'default'), 7, 1);
 
 			$_thumbnail_option_table->setCol(0, 0, null, we_html_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '', ($_thumbnail_ratio == -1)));
 			$_thumbnail_option_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
@@ -308,7 +308,7 @@ function init() {
 			$_thumbnail_option_table->setCol(6, 0, null, we_html_forms::checkbox(1, (($_thumbnail_fitinside == -1 || $_thumbnail_fitinside == 0) ? false : true), 'Fitinside', 'Fit inside', false, 'defaultfont', '', ($_thumbnail_fitinside == -1)));
 
 			// Build final HTML code
-			$_window_html = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 3, 1);
+			$_window_html = new we_html_table(array('class' => 'default'), 3, 1);
 			$_window_html->setCol(0, 0, null, $_thumbnail_specify_table->getHtml());
 			$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_html->setCol(2, 0, null, $_thumbnail_option_table->getHtml());

@@ -484,7 +484,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		$ctarget = we_html_tools::targetBox('target', 30, 300, '', $target);
 		$cattribs = we_html_tools::htmlTextInput('attribs', 30, $attribs, '', '', 'text', 300);
 		$jsWinProps = '
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<table class="default" style="width:100%">
 	<tr>
 		<td class="small">' . g_l('global', '[posx]') . '</td>
 		<td></td>
@@ -533,7 +533,7 @@ if($ok && $cmd === "edit_link_at_class"){
 	</tr>
 </table>';
 		$foo = '
-<table border="0" cellspacing="0" cellpadding="0">
+<table class="default">
 	<tr>
 		<td>' . we_html_forms::checkbox(1, $jswin, "jswin", g_l('global', '[open]')) . '</td>
 		<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -572,7 +572,7 @@ if($ok && $cmd === "edit_link_at_class"){
 
 		$intImg = $yuiSuggest->getHTML();
 		$imgProps = '
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<table class="default" style="width:100%">
 	<tr>
 		<td class="small">' . g_l('global', '[width]') . '</td>
 		<td></td>
@@ -622,7 +622,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		$_parts = array(
 			array('headline' => 'URL',
 				'html' => '
-<table cellpadding="0" cellspacing="0" border="0">
+<table class="default">
 	<tr>
 		<td>' . $_select_type . '</td>
 	</tr>
@@ -645,7 +645,7 @@ if($ok && $cmd === "edit_link_at_class"){
 				'noline' => 1),
 			array('headline' => g_l('global', '[content]'),
 				'html' => '
-<table cellpadding="0" cellspacing="0" border="0">
+<table class="default">
 	<tr>
 		<td>' . $_content_select . '</td>
 	</tr>
@@ -681,7 +681,7 @@ if($ok && $cmd === "edit_link_at_class"){
 			//   start of accessible parameters
 			$_parts[] = array('headline' => g_l('linklistEdit', '[language]'),
 				'html' => '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr>
 		<td>' . $lang . '</td>
 		<td>' . we_html_tools::getPixel(20, 5) . '</td>
@@ -698,7 +698,7 @@ if($ok && $cmd === "edit_link_at_class"){
 
 			$_parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
 				'html' => '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr>
 		<td class="small">' . g_l('linklistEdit', '[accesskey]') . '</td>
 		<td>' . we_html_tools::getPixel(20, 5) . '</td>
@@ -714,7 +714,7 @@ if($ok && $cmd === "edit_link_at_class"){
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('wysiwyg', '[relation]'),
-				'html' => '<table border="0" cellpadding="0" cellspacing="0">
+				'html' => '<table class="default">
                             <tr>
                                 <td>' . $relfield . '</td>
                                 <td>' . we_html_tools::getPixel(20, 5) . '</td>

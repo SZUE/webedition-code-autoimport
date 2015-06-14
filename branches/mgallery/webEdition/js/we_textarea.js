@@ -63,9 +63,9 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 					autobrName +
 					'" value="' +
 					(this.autobr ? 'on' : 'off') +
-					'"><table border="0" cellpadding="0" cellspacing="0" class="" style="background-color: #F5F5F5;">';
+					'"><table class="default" style="background-color: #F5F5F5;">';
 	if (showAutobr) {
-		out += '<tr><td><table border="0" cellpadding="0" cellspacing="0">' +
+		out += '<tr><td><table class="default">' +
 						'<td><input type="checkbox" name="check' +
 						name +
 						'" id="check' +

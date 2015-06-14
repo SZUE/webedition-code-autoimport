@@ -470,7 +470,7 @@ function changeit(value, rowNr) {
 			}
 			row.removeChild(searchTD);
 
-			innerhtml = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>" +
+			innerhtml = "<table class=\"default\"><tbody><tr><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
 							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
 							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'we_selector_category\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.CATEGORY_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\">" +
@@ -498,7 +498,7 @@ function changeit(value, rowNr) {
 			}
 			row.removeChild(searchTD);
 
-			innerhtml = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td>" +
+			innerhtml = "<table class=\"default\"><tbody><tr><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
 							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
 							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'we_selector_document\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.TEMPLATES_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\" >" +
@@ -571,7 +571,7 @@ function changeit(value, rowNr) {
 
 			row.removeChild(searchTD);
 
-			innerhtml = "<table id=\"search[" + rowNr + "]_cell\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td></td><td></td><td>" +
+			innerhtml = "<table id=\"search[" + rowNr + "]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />" +
 							"</td><td>&nbsp;</td><td><a href=\"#\">" +
 							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\">" +

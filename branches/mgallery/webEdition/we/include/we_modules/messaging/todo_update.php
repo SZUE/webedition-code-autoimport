@@ -61,7 +61,7 @@ echo we_html_tools::getHtmlTop($heading) .
 
 <body class="weDialogBody">
 	<?php
-	$tbl = '<table align="center" cellpadding="0" cellspacing="0" width="100%">
+	$tbl = '<table align="center" class="default" width="100%">
 					<tr>
 						<td class="defaultfont" align="center">
 							' . $res['msg'] . '</td>

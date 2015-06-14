@@ -346,7 +346,7 @@ class we_shop_pager{
 	public static function getStandardPagerHTML($url, $actPage, $nrOfPage, $anz){
 		$offset = $actPage * $nrOfPage;
 
-		return '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+		return '<table class="default"><tr><td>' .
 			($actPage > 0 ?
 				we_html_button::create_button(we_html_button::BACK, $url . '&actPage=' . ($actPage - 1)) :
 				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true)) .

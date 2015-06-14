@@ -127,9 +127,7 @@ $oSctList21 = new we_html_select(
 $oBtnDelete = we_html_button::create_button(we_html_button::DELETE, "javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);", false, -1, -1, "", "", false, false);
 $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'), we_html_tools::TYPE_INFO, 420);
 
-$oPool = new we_html_table(array(
-	"border" => 0, "width" => 420, "cellpadding" => 0, "cellspacing" => 0
-	), 3, 3);
+$oPool = new we_html_table(array("width" => 420, 'class' => 'default'), 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
 $oPool->setCol(
 	0, 1, array(

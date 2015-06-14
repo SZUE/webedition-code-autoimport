@@ -122,9 +122,9 @@ switch($cmd){
 		$content = '
 <div id="' . $identifier . '">
 	<a name="f' . $identifier . '"></a>
-	<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	<table class="default" width="100%">
 	<tr><td class="defaultfont" width="100%">
-			<table style="margin-left:30px;" cellpadding="0" cellspacing="0" border="0">
+			<table style="margin-left:30px;" class="default">
 			<tr><td class="defaultfont">' . $we_doc->getFieldHTML($name, $type, array()) . '</td></tr>
 			</table>
 	</td></tr>

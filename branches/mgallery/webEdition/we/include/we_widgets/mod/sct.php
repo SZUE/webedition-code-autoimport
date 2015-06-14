@@ -95,7 +95,7 @@ $sSctOut = '';
 $_col = 0;
 
 foreach($shortcuts as $sctCol){
-	$sSctOut .= '<div class="sct_row" style="display: block; width: 100%; float: left;"><table border="0" cellpadding="0" cellspacing="0" width="100%">';
+	$sSctOut .= '<div class="sct_row" style="display: block; width: 100%; float: left;"><table class="default" width="100%">';
 	$iCurrSctRow = 0;
 	foreach($sctCol as $_label){
 		if(isset($js[$_label])){
@@ -124,7 +124,7 @@ foreach($shortcuts as $sctCol){
 	$_col++;
 }
 
-$sc = new we_html_table(array("width" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 1);
+$sc = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
 $sc->setCol(0, 0, array("align" => "center", "valign" => "top"), $sSctOut);
 
 if(!isset($aProps)){

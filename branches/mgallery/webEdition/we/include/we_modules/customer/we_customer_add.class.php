@@ -258,7 +258,7 @@ function setScrollTo(){
 			$advsearch->setCol($c, 0, array(), $branch->getHtml());
 			$advsearch->setCol($c, 1, array(), $field->getHtml());
 			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, array(), "value", 60));
-			$advsearch->setCol($c, 3, array("width" => 190), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . $value_i . $value_date_i . "</td><td>" . we_html_tools::getPixel(3, 1) . "</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
+			$advsearch->setCol($c, 3, array("width" => 190), "<table class='default'><tr><td>" . $value_i . $value_date_i . "</td><td>" . we_html_tools::getPixel(3, 1) . "</td><td id='dpzell_$i' style='display:none' align='right'>$btnDatePicker</td></tr></table>");
 			++$c;
 		}
 
@@ -277,7 +277,7 @@ function setScrollTo(){
 			$advsearch->getHtml()
 		);
 		$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan), "<table border='0' cellpadding='0' cellspacing='0'><tr><td>" . we_html_button::create_button_table(
+		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan), "<table class='default'><tr><td>" . we_html_button::create_button_table(
 				array(
 					we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[simple_search]')),
 					we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:we_cmd('switchToSimple')"),
@@ -318,7 +318,7 @@ function setScrollTo(){
 		$select->setAttributes(array('onchange' => 'applySort();', 'style' => 'width:150px'));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
-		$table1 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
+		$table1 = new we_html_table(array('class' => 'default', "width" => '100%'), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_tools::getPixel(300, 1));
 
 		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 3);

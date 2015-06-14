@@ -973,7 +973,7 @@ function setLocation(loc){
 	function getHTMLBackupStep2(){
 		$content = '';
 
-		$table = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont'), 4, 1);
+		$table = new we_html_table(array('class' => 'default defaultfont'), 4, 1);
 
 		$table->setCol(0, 0, null, g_l('backup', '[finish]'));
 		$table->setCol(1, 0, null, we_html_tools::getPixel(5, 20));
@@ -1061,7 +1061,7 @@ function startStep(){
 	}
 
 	function build_error_message(){
-		$_error_message = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 1, 1);
+		$_error_message = new we_html_table(array("class" => "default defaultfont"), 1, 1);
 		$_error_message->setCol(0, 0, null, g_l('backup', '[download_failed]'));
 
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',STYLESHEET,'<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($_error_message->getHtml(), g_l('backup', '[export_step2]')));
@@ -1085,7 +1085,7 @@ function startStep(){
 		$head = STYLESHEET;
 		$body = '';
 
-		$table = new we_html_table(array("border" => 0, "align" => "right", "cellpadding" => 0, "cellspacing" => 0), 2, 4);
+		$table = new we_html_table(array('class' => 'default', "align" => "right"), 2, 4);
 		$table->setCol(0, 0, null, we_html_tools::getPixel(15, 5));
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
@@ -1563,7 +1563,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 			$text.=g_l('backup', '[unspecified_error]');
 		}
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 3, 1);
+		$table = new we_html_table(array("class" => "default defaultfont"), 3, 1);
 		$table->setCol(0, 0, null, g_l('backup', '[finish_error]'));
 		$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => 45, "rows" => 7), $text));
 		$table->setCol(2, 0, null, we_html_tools::getPixel(400, 5));
@@ -1585,7 +1585,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 				$text .= g_l('backup', '[warning]') . ' [' . ++$k . ']: ' . $v . "\n";
 			}
 
-			$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "class" => "defaultfont"), 3, 1);
+			$table = new we_html_table(array("class" => "default defaultfont"), 3, 1);
 			$table->setCol(0, 0, null, g_l('backup', '[finish_warning]'));
 			$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => 45, "rows" => 7), $text));
 			$table->setCol(2, 0, null, we_html_tools::getPixel(400, 5));

@@ -145,7 +145,7 @@ class we_customer_frames extends we_modules_frame{
 		$extraJS .= "aTabs['" . g_l('modules_customer', '[documentTab]') . "']='documentTab';";
 
 
-		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("width" => '100%', 'class' => 'default'), 3, 1);
 		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
 		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
 			we_html_element::htmlB(
@@ -212,7 +212,7 @@ top.content.hloaded = 1;'));
 				"pnt" => "cmd",
 				"cmd" => "show_search"));
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => '100%'), 1, 1);
+		$table = new we_html_table(array('class' => 'default', "width" => '100%'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
 			we_html_button::create_button_table(
@@ -238,7 +238,7 @@ top.content.hloaded = 1;'));
 		$fields->setAttributes(array("name" => "fields_select", "size" => 15, "onchange" => '', "style" => "width:350px;height:250px;"));
 		//$hiddens = rray("name" => "field", "value" => ''));
 
-		$buttons_table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 12, 1);
+		$buttons_table = new we_html_table(array('class' => 'default'), 12, 1);
 		$buttons_table->setCol(0, 0, array(), we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('open_add_field')"));
 		$buttons_table->setCol(1, 0, array(), we_html_tools::getPixel(1, 5));
 		$buttons_table->setCol(2, 0, array(), we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_field')"));
@@ -251,7 +251,7 @@ top.content.hloaded = 1;'));
 		$buttons_table->setCol(9, 0, array("class" => "defaultgray"), g_l('modules_customer', '[sort_edit_fields_explain]'));
 		$buttons_table->setCol(10, 0, array(), we_html_tools::getPixel(1, 5));
 		$buttons_table->setCol(10, 0, array(), we_html_button::create_button("reset", "javascript:we_cmd('reset_edit_order')"));
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 500), 5, 5);
+		$table = new we_html_table(array('class' => 'default', "width" => 500), 5, 5);
 
 		$table->setCol(0, 0, array("class" => "defaultgray"), g_l('modules_customer', '[branch]'));
 		$table->setCol(0, 1, array(), we_html_tools::getPixel(10, 10));
@@ -408,7 +408,7 @@ top.content.hloaded = 1;'));
 
 		$search_but = we_html_button::create_button(we_html_button::SEARCH, "javascript:we_cmd('search')");
 
-		$search = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0, 'width' => 550, 'height' => 50), 4, 3);
+		$search = new we_html_table(array('class' => 'default', 'width' => 550, 'height' => 50), 4, 3);
 		$search->setRow(0, array('valign' => 'top'));
 		$search->setCol(0, 0, array('class' => 'defaultfont', 'colspan' => 3, 'style' => 'padding-bottom: 3px;'), g_l('modules_customer', '[search_for]'));
 
@@ -484,7 +484,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		$default_sort_view_select->setAttributes(array("name" => "default_sort_view", "style", "width:200px;"));
 		$default_sort_view_select->selectOption($this->View->settings->getSettings('default_sort_view'));
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 5, 3);
+		$table = new we_html_table(array('class' => 'default'), 5, 3);
 		$cur = 0;
 		$table->setCol($cur, 0, array("class" => "defaultfont"), g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
 		$table->setCol($cur, 1, array(), we_html_tools::getPixel(5, 30));

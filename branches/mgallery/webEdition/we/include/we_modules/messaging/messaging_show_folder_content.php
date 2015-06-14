@@ -49,7 +49,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	$messaging->init($_SESSION['weS']['we_data'][$transaction]);
-	?><table width="99%" cellpadding="0" cellspacing="0" border="0"><?php
+	?><table width="99%" class="default"><?php
 		$passed_dls = array();
 		foreach($messaging->selected_set as $key => $val){
 			echo '<tr onclick="check(\'' . $val['ID'] . '\')" style="cursor:pointer">

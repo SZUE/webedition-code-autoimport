@@ -939,3 +939,13 @@ div.progress_failed{
 	border-bottom:1px solid #fe7c8b;
 	background: linear-gradient(#fe7c8b, #de3a3a 50%,#ff8da3);
 }
+
+table.default{
+	border:none;
+	border-spacing:0px;
+}
+
+table.default td,
+table.default th{
+	padding:0xp;
+}

@@ -83,7 +83,7 @@ abstract class we_rebuild_wizard{
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
+			$content2 = new we_html_table(array("class" => 'default'), 1, 4);
 			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $prevButton);
 			$content2->setCol(0, 1, array("id" => "next", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $nextButton);
 			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;", "align" => "right"), $refreshButton);
@@ -437,7 +437,7 @@ abstract class we_rebuild_wizard{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:document.we_form.btype[2].checked=true;we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22);
 		$butTable = we_html_button::create_button_table(array($delallbut, $addbut));
-		$upperTable = '<table border="0" cellpadding="0" cellspacing="0" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
+		$upperTable = '<table class="default" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
 
 		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', 'IF(IsFolder,"folder","we/category")', CATEGORY_TABLE);
 		return g_l('global', '[categorys]') . '<br/>' . we_html_tools::getPixel(1, 3) . '<br/>' . $cats->get();

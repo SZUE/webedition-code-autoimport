@@ -48,11 +48,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 	}
 
 	function Footer($weGlossaryFrames){
-		$table2 = new we_html_table(array(
-			'border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			), 1, 2);
+		$table2 = new we_html_table(array('class' => 'default'), 1, 2);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(10, 20));
 		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_dictionary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
@@ -65,7 +61,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 	function getHTMLTabProperties($weGlossaryFrames){
 		$language = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
+		$content = '<table class="default">
 					<tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_dictionary]'), we_html_tools::TYPE_INFO, 520, true, 0) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 					<tr><td>' . we_html_element::htmlTextarea(array('name' => 'Dictionary', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("\n", we_glossary_glossary::getDictionary($language))) . '</td></tr>

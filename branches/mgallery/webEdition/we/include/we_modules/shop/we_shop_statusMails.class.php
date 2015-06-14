@@ -325,7 +325,7 @@ class we_shop_statusMails{
 		}
 		$datetimeform = "00.00.0000 00:00";
 		$dateform = "00.00.0000";
-		$EMailhandler = '<table cellpadding="0" cellspacing="0" border="0" width="99%" class="defaultfont"><tr><td class="defaultfont">' . g_l('modules_shop', '[statusmails][EMail]') . ': </td>';
+		$EMailhandler = '<table width="99%" class="default defaultfont"><tr><td class="defaultfont">' . g_l('modules_shop', '[statusmails][EMail]') . ': </td>';
 
 		if(($m = we_base_request::_(we_base_request::STRING, "Mail" . $was)) && $m != $datetimeform){
 			$EMailhandler .= '<td class="defaultfont" width="150">' . $m . '</td>';

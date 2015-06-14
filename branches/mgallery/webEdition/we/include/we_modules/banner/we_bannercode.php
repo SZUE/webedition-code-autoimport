@@ -118,7 +118,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 <option' . (($type === "iframe") ? " selected" : "") . '>iframe</option>
 </select>';
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
+		$content = '<table class="default">
 ';
 		if(!$ok){
 			$content.= '	<tr><td class="defaultfont">' . g_l('modules_banner', '[type]') . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . $typeselect . '</td></tr>

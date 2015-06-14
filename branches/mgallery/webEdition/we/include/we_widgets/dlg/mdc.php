@@ -138,9 +138,7 @@ function getHTMLCategory(){
 		array(
 		'id' => 'CategoriesBlock',
 		'style' => 'display: block;',
-		'cellpadding' => 0,
-		'cellspacing' => 0,
-		'border' => 0
+		'class' => 'default'
 		), 5, 1);
 
 	$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));

@@ -112,12 +112,7 @@ if($strFelder !== ''){
 
 
 //	generate html-output table
-$_htmlTable = new we_html_table(array(
-	'border' => 0,
-	'cellpadding' => 0,
-	'cellspacing' => 0,
-	'width' => 410
-	), 35, 3);
+$_htmlTable = new we_html_table(array('class' => 'default', 'width' => 410), 35, 3);
 
 
 //	NumberFormat - currency and taxes

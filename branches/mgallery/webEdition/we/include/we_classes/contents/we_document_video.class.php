@@ -43,7 +43,7 @@ class we_document_video extends we_binaryDocument{
 
 	function formProperties(){
 		$yuiSuggest = & weSuggest::getInstance();
-		return '<table style="border-spacing: 0px;border-style:none" cellpadding="0">
+		return '<table class="default">
 	<tr valign="top">
 		<td>' . $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origwidth') . '</td>
 		<td>' . we_html_tools::getPixel(18, 2) . '</td>

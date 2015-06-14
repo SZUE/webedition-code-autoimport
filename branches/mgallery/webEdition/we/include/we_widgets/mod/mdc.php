@@ -65,7 +65,7 @@ if($_csv){
 	}
 
 	if($_query && $DB_WE->query($_query)){
-		$mdc .= '<table cellspacing="0" cellpadding="0" border="0">';
+		$mdc .= '<table class="default">';
 		while($DB_WE->next_record()){
 			$mdc .= '<tr><td class="mdcIcon" nowrap data-contenttype="' . $DB_WE->f('ContentType') . '"></td><td valign="middle" class="middlefont">' . we_html_element::htmlA(
 					array(

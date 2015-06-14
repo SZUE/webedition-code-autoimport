@@ -1296,7 +1296,7 @@ class we_object extends we_document{
 				$out = we_objectFile::hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, true, $int) .
 					we_objectFile::hrefRow('', '', $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int);
 		}
-		return '<table border="0" cellpadding="0" cellspacing="0">' . $out . '</table>';
+		return '<table class="default">' . $out . '</table>';
 	}
 
 	private function htmlLinkInput($n, $i){
@@ -1318,7 +1318,7 @@ class we_object extends we_document{
 		if(!$content){
 			$content = g_l('global', '[new_link]');
 		}
-		return "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">
+		return "<table class=\"default\">
 					<tr><td class=\"defaultfont\">" . ($startTag ? : '') . $content . "</a></td>
 						<td width=\"5\"></td><td>" . we_html_button::create_button_table(array($editbut, $delbut), 5) . "</td>
 					</tr>
@@ -1472,7 +1472,7 @@ class we_object extends we_document{
 
 	function formUsers1($name, $nr = 0){
 		$users = $this->getElement($name . "users") ? explode(",", $this->getElement($name . "users")) : array();
-		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
+		$content = '<table class="default" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(324, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if($users){
 			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN (' . implode(',', $users) . ')');
@@ -1496,7 +1496,7 @@ class we_object extends we_document{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('object_del_all_users','" . $GLOBALS['we_transaction'] . "','" . $nr . "','" . $name . "')", true, 0, 0, "", "", ($users ? false : true));
 		$addbut = we_html_element::htmlHiddens(array($idname => 0, $textname => "")) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value','',document.we_form.elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'object_add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs,\\'" . $name . "\\')','','',1)");
 
-		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' .
+		return '<table class="default"><tr><td>' .
 			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td align="right">' . we_html_tools::getPixel(2, 4) . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr></table>' . we_html_element::jsElement('setIconOfDocClass(\'userIcon\');');
 	}
 
@@ -1504,7 +1504,7 @@ class we_object extends we_document{
 		$users = makeArrayFromCSV($this->Users);
 		$usersReadOnly = we_unserialize($this->UsersReadOnly);
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0" width="388">' .
+		$content = '<table class="default" width="388">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(333, 2) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(80, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 
 		if($users){
@@ -1536,7 +1536,7 @@ class we_object extends we_document{
 		$addbut = $canChange ?
 			we_html_element::htmlHiddens(array($idname => "", $textname => "")) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements['" . $idname . "'].value','" . $wecmdenc2 . "','',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1)") : '';
 
-		$content = '<table border="0" cellpadding="0" cellspacing="0">
+		$content = '<table class="default">
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .
 			($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 6) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>';
 
@@ -1806,7 +1806,7 @@ class we_object extends we_document{
 		$select2 .= $this->htmlSelect("we_" . $this->Name . "_input[DefaultUrl_" . $zahl . "]", g_l('modules_object', '[url]'), 1, "", "", array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'), "value", 140) . "&nbsp;" .
 			'<input type = "hidden" name="we_' . $this->Name . '_input[DefaultanzahlUrl]" value="' . $zahl . '" />';
 
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table class="default">
 	<tr><td colspan="2" class="defaultfont" valign=top>' . g_l('modules_object', '[name]') . '</td><td>' . we_html_tools::getPixel(20, 20) . '</td></tr>
 	<tr><td colspan="3" >' . $select . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 16) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
@@ -1834,11 +1834,11 @@ class we_object extends we_document{
 			$check = we_html_forms::checkbox(1, $this->RestrictUsers ? true : false, $tmpname, g_l('weClass', '[limitedAccess]'), true, "defaultfont", "_EditorFrame.setEditorIsHot(true);this.form.elements['" . $hiddenname . "'].value=(this.checked ? '1' : '0');we_cmd('reload_editpage');");
 			return $hidden . $check;
 		}
-		return '<table cellpadding="0" cellspacing="0" border="0"><tr><td><i class="fa fa-' . ($this->RestrictUsers ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
+		return '<table class="default"><tr><td><i class="fa fa-' . ($this->RestrictUsers ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 	}
 
 	public function formPath(){
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table class="default">
 	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 508, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
 </table>';
 	}

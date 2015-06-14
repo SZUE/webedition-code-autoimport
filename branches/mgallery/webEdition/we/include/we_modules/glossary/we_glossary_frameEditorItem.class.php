@@ -201,11 +201,7 @@ function submitForm() {
 		$ShowUnpublish = $weGlossaryFrames->View->Glossary->ID == 0 ? true : ($weGlossaryFrames->View->Glossary->Published > 0 ? true : false);
 
 		$col = 0;
-		$table2 = new we_html_table(array(
-			'border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			), 1, 6);
+		$table2 = new we_html_table(array('class' => 'default'), 1, 6);
 		$table2->setRow(0, array("valign" => "middle"));
 		if($ShowUnpublish){
 			$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(10, 20));
@@ -251,7 +247,7 @@ function we_save() {
 
 		$language = ($weGlossaryFrames->View->Glossary->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
 
-		$content = $hidden . '<table border="0" cellpadding="0" cellspacing="0">
+		$content = $hidden . '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
 	<tr><td>' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array("onchange" => "top.content.setHot();"), "value", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -292,7 +288,7 @@ function we_save() {
 
 
 		return '<div id="type_abbreviation" style="display: block;">'
-			. '<table border="0" cellpadding="0" cellspacing="0">
+			. '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[abbreviation]') . '</td></tr>
 	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -314,7 +310,7 @@ function we_save() {
 		}
 
 		return '<div id="type_acronym" style="display: none;">
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[acronym]') . '</td></tr>
 	<tr><td>' . we_html_tools::htmlTextInput("acronym[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -334,7 +330,7 @@ function we_save() {
 			$_text = $_language = "";
 		}
 
-		return '<div id="type_foreignword" style="display: none;"><table border="0" cellpadding="0" cellspacing="0">
+		return '<div id="type_foreignword" style="display: none;"><table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[foreignword]') . '</td></tr>
 	<tr><td>' . we_html_tools::htmlTextInput("foreignword[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -350,7 +346,7 @@ function we_save() {
 			$_title = $_text = "";
 		}
 
-		return '<div id="type_textreplacement" style="display: none;"><table border="0" cellpadding="0" cellspacing="0">
+		return '<div id="type_textreplacement" style="display: none;"><table class="default">
 <tr><td class="defaultfont">' . g_l('modules_glossary', '[textreplacement]') . '</td></tr>
 <tr><td>' . we_html_tools::htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -369,7 +365,7 @@ function we_save() {
 
 		return
 			'<div id="type_link" style="display: none;">
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[link]') . '</td></tr>
 	<tr><td>' . we_html_tools::htmlTextInput("link[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -408,7 +404,7 @@ function we_save() {
 		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][InternLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button);
 
 		return '<div id="mode_intern" style="display: none;">'
-			. '<table border="0" cellpadding="0" cellspacing="0">
+			. '<table class="default">
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	<tr><td>' . $selector . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -427,7 +423,7 @@ function we_save() {
 		}
 
 		return '<div id="mode_extern" style="display: none;">
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table class="default">
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -459,18 +455,18 @@ function we_save() {
 		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
 		return '<div id="mode_object" style="display: none;">
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table class="default">
 			<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 			<tr><td>' . $selector . '</td></tr>
 			<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	</table>
 	<div id="ObjectWorkspaceID" style="display: block;">
-		<table border="0" cellpadding="0" cellspacing="0">
+		<table class="default">
 			<tr><td class="defaultfont">' . g_l('modules_glossary', '[workspace]') . '</td></tr>
 			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $_wsid, 0, $_workspaceID, false, array('style' => "width:520px; border: #AAAAAA solid 1px;", 'onchange' => "setHot();"), 'value') . '</td></tr>
 		</table>
 	</div>
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table class="default">
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
@@ -521,7 +517,7 @@ function we_save() {
 		);
 
 		return '<div id="mode_category" style="display: none;">
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 		<tr><td>' . $selector1 . '</td></tr>
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
@@ -533,16 +529,16 @@ function we_save() {
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	</table>
 	<div id="mode_category_intern" style="display: none;">
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table class="default">
 		<tr><td>' . $selector2 . '</td></tr>
 	</table>
 	</div>
 	<div id="mode_category_extern" style="display: none;">
-		<table border="0" cellpadding="0" cellspacing="0">
+		<table class="default">
 			<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
 		</table>
 	</div>
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table class="default">
 		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter_name]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryCatParameter]', 58, $_catParameter, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>

@@ -257,7 +257,7 @@ function build_dialog($selected_setting = 'ui'){
 			}
 
 			$_metadataTable = '
-<table border="0" cellpadding="0" cellspacing="0" width="440">
+<table class="default" width="440">
 	<tbody id="metadataTable">
 		' . $_adv_row . '
 	</tbody>

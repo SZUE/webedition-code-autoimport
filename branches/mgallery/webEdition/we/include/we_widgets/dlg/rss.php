@@ -57,9 +57,7 @@ function htmlClipElement($smalltext, $text, $content){
 		}
 	');
 
-	$oClip = new we_html_table(array(
-		"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-		), 1, 3);
+	$oClip = new we_html_table(array('class' => 'default'), 1, 3);
 	$oClip->setCol(
 		0, 0, array(
 		"width" => 21, "valign" => "top", "align" => "right", "id" => "btn_" . $unique
@@ -100,16 +98,14 @@ $btnAddTopRssFeed = we_html_button::create_button(we_html_button::ADD, "javascri
 $btnOverwriteTopRssFeed = we_html_button::create_button("overwrite", "javascript:handleTopRssFeed('overwrite');", false, 0, 0, "", "", false, false);
 $btnDeleteTopRssFeed = we_html_button::create_button(we_html_button::DELETE, "javascript:handleTopRssFeed('delete');", false, 0, 0, "", "", false, false);
 
-$oBtnNewFeed = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 5);
+$oBtnNewFeed = new we_html_table(array('class' => 'default'), 1, 5);
 $oBtnNewFeed->setCol(0, 0, null, $btnAddTopRssFeed);
 $oBtnNewFeed->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oBtnNewFeed->setCol(0, 2, null, $btnOverwriteTopRssFeed);
 $oBtnNewFeed->setCol(0, 3, null, we_html_tools::getPixel(10, 1));
 $oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 
-$oNewFeed = new we_html_table(array(
-	"width" => 390, "border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 3, 1);
+$oNewFeed = new we_html_table(array("width" => 390, 'class' => 'default'), 3, 1);
 $oNewFeed->setCol(
 	0, 0, null, $oRemTopFeeds . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oIptNewTitle . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oIptNewUri);
 $oNewFeed->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
@@ -137,9 +133,7 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 	}
 }
 
-$oRssContR = new we_html_table(array(
-	"height" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 2, 3);
+$oRssContR = new we_html_table(array("height" => "100%", 'class' => 'default'), 2, 3);
 $oRssContR->setCol(0, 0, array(
 	"valign" => "middle", "class" => "defaultfont"
 	), g_l('cockpit', '[limit_entries]'));
@@ -151,9 +145,7 @@ $oRssContR->setCol(1, 0, array(
 	"colspan" => 3, "valign" => "bottom"
 	), $oChbxContPubDate . $oChbxContCategory);
 
-$oSelectRssCont = new we_html_table(array(
-	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 1, 2);
+$oSelectRssCont = new we_html_table(array('class' => 'default'), 1, 2);
 $oSelectRssCont->setCol(0, 0, array(
 	"width" => 165
 	), $oChbxContTitle . $oChbxContLink . $oChbxContDesc . $oChbxContEnc);
@@ -174,9 +166,7 @@ $oChbxTb[5] = we_html_forms::checkbox($value = "", $checked = 0, $name = "chbx_t
 $oRdoTitle[0] = we_html_forms::radiobutton($value = 1, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[original_of_rssfeed]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 $oRdoTitle[1] = we_html_forms::radiobutton($value = 0, $checked = 0, $name = "rdo_title", $text = g_l('cockpit', '[personalized]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = false, $description = "", $type = 0, $onMouseUp = "");
 
-$oTitleTb = new we_html_table(array(
-	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 2, 1);
+$oTitleTb = new we_html_table(array('class' => 'default'), 2, 1);
 $oTitleTb->setCol(0, 0, array(
 	"width" => 165
 	), $oRdoTitle[0]);
@@ -184,12 +174,8 @@ $oTitleTb->setCol(1, 0, array(
 	"width" => 165
 	), $oRdoTitle[1]);
 
-$oEditTb = new we_html_table(array(
-	"border" => 0, "cellpadding" => 0, "cellspacing" => 0
-	), 6, 2);
-$oEditTb->setCol(0, 0, array(
-	"width" => 165
-	), $oChbxTb[0]);
+$oEditTb = new we_html_table(array('class' => 'default'), 6, 2);
+$oEditTb->setCol(0, 0, array("width" => 165), $oChbxTb[0]);
 $oEditTb->setCol(1, 0, array(
 	"width" => 165, "valign" => "top"
 	), $oChbxTb[1]);

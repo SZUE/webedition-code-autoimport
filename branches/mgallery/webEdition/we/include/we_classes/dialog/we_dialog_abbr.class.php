@@ -65,7 +65,7 @@ top.close();
 
 		$lang = $this->getLangField("lang", g_l('wysiwyg', '[language]'), 350);
 
-		$table = '<table border="0" cellpadding="0" cellspacing="0">
+		$table = '<table class="default">
 <tr><td>' . $title . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(225, 10) . '</td></tr>
 <tr><td>' . $lang . '</td></tr>

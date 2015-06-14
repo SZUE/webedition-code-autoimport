@@ -70,7 +70,7 @@ class we_users_online{
 			$_row .= '</tr>';
 		}
 
-		$this->users = $_u . '<div style="height:187px;overflow:auto;"><table width="100%" cellpadding="0" cellspacing="0" border="0">' . $_row . '</table></div>';
+		$this->users = $_u . '<div style="height:187px;overflow:auto;"><table width="100%" class="default">' . $_row . '</table></div>';
 	}
 
 	function getNumUsers(){

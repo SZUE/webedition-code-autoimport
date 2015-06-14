@@ -53,7 +53,7 @@ echo we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
 </head>
 <body style="background-color:white" LINK="#000000" ALINK="#000000" VLINK="#000000" onload="doScrollTo();">
 	<form name="we_form" target="fscmd" action="we_sselector_cmd.php" method="post" onsubmit="return false;">
-		<table border="0" cellpadding="0" cellspacing="0"><?php
+		<table class="default"><?php
 
 			function getDataType($dat){
 				$ct = getContentTypeFromFile($dat);

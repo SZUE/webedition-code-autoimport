@@ -37,7 +37,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$pb->addText("&nbsp;", 0, "pbar1");
 	$pbHTML = $pb->getHTML() . $pb->getJSCode();
 
-	$buttons = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td align="left" id="pbTd" style="display:none;">' . $pbHTML . '</td><td align="right">' .
+	$buttons = '<table class="default" width="300"><tr><td align="left" id="pbTd" style="display:none;">' . $pbHTML . '</td><td align="right">' .
 		we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 		'</td></tr></table>';
 
@@ -58,7 +58,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 			we_html_forms::radiobutton("nothing", 1, "OverwriteObjects", g_l('copyFolder', '[sameName_nothing]')) .
 			$hidden;
 	} else {
-		$content = '<table border="0" cellpadding="0" cellspacing="0" width="500"><tr><td>' . we_html_forms::checkbox(
+		$content = '<table class="default" width="500"><tr><td>' . we_html_forms::checkbox(
 				1, 0, 'CreateTemplate', g_l('copyFolder', '[create_new_templates]'), false, "defaultfont", "toggleButton(); incTemp(this.checked)") .
 			'<div id="imTemp" style="display:block">' .
 			we_html_forms::checkbox(1, 0, 'CreateMasterTemplate', g_l('copyFolder', '[create_new_masterTemplates]'), false, "defaultfont", "", 1) .

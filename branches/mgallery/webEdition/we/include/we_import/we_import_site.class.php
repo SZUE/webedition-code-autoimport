@@ -420,7 +420,7 @@ function doUnload() {
 			"gmt" => g_l('import', '[gts]'),
 			"own" => g_l('import', '[fts]')
 		);
-		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
+		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 				g_l('siteimport', '[dateFormat]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
 				"dateFormat", $dateformatvals, 1, $_valueDateFormat, false, array('onchange' => "dateFormatChanged(this);")) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
 				"dateformatField", 20, $_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
@@ -435,7 +435,7 @@ function doUnload() {
 			"specify" => oldHtmlspecialchars(g_l('siteimport', '[useSpecifiedTemplate]'), ENT_QUOTES)
 		);
 
-		$_html = '<table style="margin-bottom:10px" border="0" cellpadding="0" cellspacing="0"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
+		$_html = '<table style="margin-bottom:10px" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 				g_l('siteimport', '[importKind]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
 				"createType", $vals, 1, $_valueCreateType, false, array('onchange' => "createTypeChanged(this);")) . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
 				g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
@@ -693,7 +693,7 @@ function doUnload() {
 		$_thumbs = we_html_tools::htmlFormElementTable($_select, g_l('importFiles', '[thumbnails]'));
 
 		/* Create Main Table */
-		$_attr = array("border" => 0, "cellpadding" => 0, "cellspacing" => 0);
+		$_attr = array('class' => 'default');
 		$_tableObj = new we_html_table($_attr, 6, 3);
 		$_tableObj->setCol(0, 0, array("colspan" => 2), $_images);
 		$_tableObj->setCol(1, 0, array("colspan" => 2), $_flashmovies);
@@ -915,12 +915,7 @@ function doUnload() {
 		$pb->addText("&nbsp;", 0, "progressTxt");
 		$js.=$pb->getJS('', true);
 
-		$table = new we_html_table(array(
-			"border" => 0,
-			"cellpadding" => 0,
-			"cellspacing" => 0,
-			"width" => "100%"
-			), 1, 2);
+		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
 		$table->setCol(0, 1, array(
 			"align" => "right"
@@ -1053,7 +1048,7 @@ function doUnload() {
 		 */
 
 		return '
-<table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+<table class="default" style="margin-top:10px;">
 	<tr>
 		<td>' . we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput("templateName", 30, $templateName, 255, "", "text", 320), g_l('siteimport', '[nameOfTemplate]')) . '</td>

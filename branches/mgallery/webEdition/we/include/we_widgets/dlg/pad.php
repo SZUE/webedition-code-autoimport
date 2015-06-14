@@ -33,12 +33,8 @@ $oRdoSort = array(
 	we_html_forms::radiobutton(4, 1, "rdo_sort", g_l('cockpit', '[alphabetic]'), true, "defaultfont", "", false, "", 0, "")
 );
 
-$sort = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 3, 3);
-$sort->setCol(0, 0, array(
-	"width" => 145
-	), $oRdoSort[0]);
+$sort = new we_html_table(array('class' => 'default'), 3, 3);
+$sort->setCol(0, 0, array("width" => 145), $oRdoSort[0]);
 $sort->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $sort->setCol(0, 2, array(
 	"width" => 145
@@ -58,9 +54,7 @@ $oRdoDisplay = array(
 	we_html_forms::radiobutton(1, 0, "rdo_display", g_l('cockpit', '[only_valid]'), true, "defaultfont", "", false, "", 0, ""),
 );
 
-$display = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 3);
+$display = new we_html_table(array('class' => 'default'), 1, 3);
 $display->setCol(0, 0, array(
 	"width" => 145
 	), $oRdoDisplay[0]);
@@ -79,9 +73,7 @@ $oRdoDate = array(
 	we_html_forms::radiobutton(2, 0, "rdo_date", g_l('cockpit', '[by_valid_until]'), true, "defaultfont", "", false, "", 0, "")
 );
 
-$date = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 3, 1);
+$date = new we_html_table(array('class' => 'default'), 3, 1);
 $date->setCol(0, 0, array(
 	"width" => 145
 	), $oRdoDate[0]);
@@ -98,9 +90,7 @@ $oRdoPrio = array(
 	we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "defaultfont", "", false, "", 0, "")
 );
 
-$prio = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 3, 3);
+$prio = new we_html_table(array('class' => 'default'), 3, 3);
 $prio->setCol(0, 0, array(
 	"width" => 70
 	), $oRdoPrio[0]);

@@ -322,9 +322,7 @@ function loadData() {
 
 		$table = new we_html_table(array(
 			'style' => 'margin: 5px 0 0 0px',
-			'border' => 0,
-			'cellpadding' => 0,
-			'cellspacing' => 0,
+			'class' => 'default',
 			'width' => '100%'), 1, count($colsArray) + 1);
 
 		$table->setCol(0, 0, array('width' => 18), '');

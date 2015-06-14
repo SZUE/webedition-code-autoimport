@@ -72,7 +72,7 @@ abstract class we_versions_wizard{
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 4);
+			$content2 = new we_html_table(array('class' => 'default'), 1, 4);
 			$content2->setCol(0, 0, array(
 				"id" => "prev",
 				"style" => "display:table-cell; padding-left:10px;",
@@ -92,7 +92,7 @@ abstract class we_versions_wizard{
 				"align" => "right"
 				), $cancelButton);
 
-			$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
+			$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 			$content->setCol(0, 0, array(
 				"id" => "progr", "style" => "display:none", "align" => "left"
 				), $pb);

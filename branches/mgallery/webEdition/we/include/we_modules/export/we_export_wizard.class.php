@@ -522,7 +522,7 @@ function we_submit(){
 	document.we_form.submit();
 }');
 
-		$header = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 2, 9);
+		$header = new we_html_table(array('class' => 'default'), 2, 9);
 		$parts = array(
 			array(
 				"headline" => "",
@@ -710,7 +710,7 @@ function setState(a) {
 				break;
 
 			case we_import_functions::TYPE_GENERIC_XML:
-				$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+				$table = new we_html_table(array('class' => 'default'), 3, 1);
 
 				$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
 				$table->setColContent(0, 0, we_html_forms::radiobutton("true", ($cdata === "true"), "cdata", g_l('export', '[export_xml_cdata]'), true, "defaultfont", $this->topFrame . ".cdata='true'"));
@@ -720,7 +720,7 @@ function setState(a) {
 				break;
 		}
 
-		$table = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array('class' => 'default'), 3, 1);
 
 		$table->setColContent(0, 0, we_html_forms::radiobutton("local", ($export_to === "local" ? true : false), "export_to", g_l('export', '[export_to_local]'), true, "defaultfont", $this->topFrame . ".export_to='local'"));
 		$table->setColContent(1, 0, we_html_tools::getPixel(20, 20));
@@ -821,7 +821,7 @@ function setState(a) {
 		$art = $this->exportVars["art"];
 //$selection = $this->exportVars["selection"];
 
-		$table = new we_html_table(array("width" => '100%', "cellpadding" => 0, "cellspacing" => 0, "border" => 0), 3, 1);
+		$table = new we_html_table(array("width" => '100%', 'class' => 'default'), 3, 1);
 //print $step;
 
 		switch($step){
@@ -1001,7 +1001,7 @@ function setState(a) {
 			$progressbar->addText($text, 0, "current_description");
 		}
 
-		$content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"), 1, 2);
+		$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
 
@@ -1363,10 +1363,10 @@ if (top.footer.setProgress){
 
 		$select->selectOption($doctype);
 
-		$path = $dir ? f("SELECT Path FROM " . FILE_TABLE . " WHERE ID=" . intval($dir), "Path", $this->db) : "/";
+		$path = $dir ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($dir), '', $this->db) : "/";
 		$dir = we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, $width, 0, "dir", $dir, "Path", $path), g_l('export', '[dir]'));
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 3, 2);
+		$table = new we_html_table(array('class' => 'default'), 3, 2);
 		$table->setColContent(0, 1, $select->getHtml());
 		$table->setColContent(1, 0, we_html_tools::getPixel(defined('OBJECT_FILES_TABLE') ? 25 : 0, 5));
 		$table->setColContent(2, 1, $dir);
@@ -1450,7 +1450,7 @@ if (top.footer.setProgress){
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
 		}
-		return '<table border="0"  cellpadding="0" cellspacing="0"><tr><td>' . (defined('OBJECT_FILES_TABLE') ? we_html_tools::getPixel(25, 2) : "") . '</td><td>' .
+		return '<table class="default"><tr><td>' . (defined('OBJECT_FILES_TABLE') ? we_html_tools::getPixel(25, 2) : "") . '</td><td>' .
 			$hiddens . we_html_tools::htmlFormElementTable($cats->get(), g_l('export', '[categories]'), "left", "defaultfont") .
 			'</td></tr></table>';
 	}
@@ -1488,7 +1488,7 @@ if (top.footer.setProgress){
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
 		}
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => 250), 1, 3);
+		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 3);
 
 		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
 		$table->setColContent(0, 1, we_html_tools::getPixel(10, 10));

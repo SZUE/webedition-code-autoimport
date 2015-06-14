@@ -278,7 +278,7 @@ function rootEntry(name, text, rootstat) {
 }
 
 function drawEintraege() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
-	messaging_usel_main.window.document.body.innerHTML = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td class=\"tree\"><nobr>" +
+	messaging_usel_main.window.document.body.innerHTML = "<table class=\"default\" style=\"width:100%\"><tr><td class=\"tree\"><nobr>" +
 					zeichne(top.startloc, "") +
 					"</nobr></td></tr></table>";
 

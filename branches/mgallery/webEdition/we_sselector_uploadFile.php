@@ -84,11 +84,11 @@ if($weFileupload->processFileRequest()){
 	$yes_button = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn');
 	$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmdStatic('cancel'));
 	$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
-	$buttonsTable = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'style' => 'border-width:0px;width:100%;'), 1, 2);
-	$buttonsTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
-	$buttonsTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
+	$buttonsTable = new we_html_table(array('class' => 'default','style' => 'width:100%;'), 1, 2);
+	$buttonsTable->setCol(0, 0, array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
+	$buttonsTable->setCol(0, 1, array('align' => 'right'), $buttons);
 
-	$content = '<table border="0" cellpadding="0" cellspacing="0">' .
+	$content = '<table class="default">' .
 			($maxsize ? ('<tr><td>' . $weFileupload->getHtmlAlertBoxes() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
 				<tr><td>' . $weFileupload->getHTML() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
 				<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .

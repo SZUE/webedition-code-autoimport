@@ -219,7 +219,7 @@ class we_search_base{
 	}
 
 	function getNextPrev($we_search_anzahl){
-		$out = '<table cellpadding="0" cellspacing="0" border="0">
+		$out = '<table class="default">
 <tr>
 	<td>' .
 			($this->searchstart ?

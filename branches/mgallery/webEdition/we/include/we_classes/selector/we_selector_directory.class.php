@@ -539,7 +539,7 @@ top.selectFile(top.currentID);
 			$previewDefauts = "
 <tr><td class='info' width='100%'>
 	<div style='overflow:auto; height:100%' id='info'>
-	<table cellpadding='0' cellspacing='0' width='100%'>
+	<table class='default' width='100%'>
 		<tr><td colspan='2' class='headline'>" . g_l('weClass', '[tab_properties]') . "</td></tr>
 		<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', '[name]') . ": </td><td>
 			<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>
@@ -555,7 +555,7 @@ top.selectFile(top.currentID);
 			}
 			$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[type]') . ": </td><td>" . (g_l('contentTypes', '[' . $result['ContentType'] . ']', true) !== false ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType']) . "</td></tr>";
 
-			$out .= '<table cellpadding="0" cellspacing="0" height="100%" width="100%">';
+			$out .= '<table class="default" height="100%" width="100%">';
 			switch($result['ContentType']){
 				case we_base_ContentTypes::IMAGE:
 					if(file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){

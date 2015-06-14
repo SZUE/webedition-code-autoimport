@@ -37,7 +37,7 @@ function convertDate($date){
  */
 function getDateSelector($_label, $_name, $_btn){
 	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $_btn);
-	$oSelector = new we_html_table(array('cellpadding' => 0, 'cellspacing' => 0, 'border' => 0, 'id' => $_name . '_cell'), 1, 5);
+	$oSelector = new we_html_table(array('class' => 'default', 'id' => $_name . '_cell'), 1, 5);
 	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $_label);
 	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, '', 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
@@ -56,7 +56,7 @@ function getDateSelector($_label, $_name, $_btn){
 function getNoteList($_sql, $bDate, $bDisplay){
 	global $DB_WE;
 	$DB_WE->query($_sql);
-	$_notes = '<table width="100%" cellspacing="0" cellpadding="0" border="0">';
+	$_notes = '<table width="100%" class="default">';
 	$_rcd = 0;
 	$_fields = array(
 		'ID',
@@ -224,15 +224,11 @@ $_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
 		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onchange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
-$oTblValidity = new we_html_table(array(
-	"cellpadding" => 0, "cellspacing" => 0, "border" => 0, "id" => "oTblValidity"
-	), 1, 3);
+$oTblValidity = new we_html_table(array('class' => 'default', "id" => "oTblValidity"), 1, 3);
 $oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from"));
 $oTblValidity->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until"));
-$oTblPeriod = new we_html_table(array(
-	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 2);
+$oTblPeriod = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 2);
 $oTblPeriod->setCol(0, 0, array(
 	"class" => "middlefont"
 	), $sctValid);
@@ -246,7 +242,7 @@ $rdoPrio = array(
 	we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "middlefont", "", false, "", 0, ""),
 	we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "middlefont", "", false, "", 0, "")
 );
-$oTblPrio = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0), 1, 8);
+$oTblPrio = new we_html_table(array('class' => 'default'), 1, 8);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(0, 1, null, '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;"></i>');
 $oTblPrio->setCol(0, 2, null, we_html_tools::getPixel(15, 1));
@@ -265,9 +261,7 @@ $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:s
 $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 
 // Edit note dialog
-$oTblProps = new we_html_table(array(
-	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 9, 2);
+$oTblProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 9, 2);
 $oTblProps->setCol(0, 0, array(
 	"class" => "middlefont"
 	), g_l('cockpit', '[valid]') . '&nbsp;');
@@ -304,9 +298,7 @@ $oTblProps->setCol(8, 0, array(
 	), $buttons);
 
 // Button: add note
-$oTblBtnProps = new we_html_table(array(
-	"width" => "100%", "cellpadding" => 0, "cellspacing" => 0, "border" => 0
-	), 1, 1);
+$oTblBtnProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
 $oTblBtnProps->setCol(0, 0, array(
 	"align" => "right"
 	), we_html_button::create_button("fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o", "javascript:displayNote();", false, 0, 0));
@@ -315,9 +307,7 @@ $oTblBtnProps->setCol(0, 0, array(
 $oPad = new we_html_table(
 	array(
 	"style" => "table-layout:fixed;width:100%;padding-top:6px;padding-bottom:6px;background-color:white;",
-	"cellpadding" => 0,
-	"cellspacing" => 0,
-	"border" => 0,
+	'class' => 'default'
 	), 1, 1);
 
 $oPad->setCol(0, 0, array("colspan" => 3, "class" => "cl_notes"), we_html_element::htmlDiv(array(

@@ -403,8 +403,8 @@ class we_folder extends we_root{
 		if($this->ID != 0 && $this->ParentID == 0 && $this->ParentPath === '/' && defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE){
 			$userCanChange = false;
 		}
-		return (!$userCanChange ? '<table border="0" cellpadding="0" cellspacing="0"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
-				'<table border="0" cellpadding="0" cellspacing="0">
+		return (!$userCanChange ? '<table class="default"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
+				'<table class="default">
 	<tr><td class="defaultfont">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(388) . '</td></tr>' .
@@ -413,7 +413,7 @@ class we_folder extends we_root{
 		<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 		<tr><td colspan="3" class="defaultfont">' . $this->formTriggerDocument() . '</td></tr>
 			<tr><td colspan="3">
-		<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		<table class="default"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
 					we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table></td></tr>' :
 					'') .
@@ -427,7 +427,7 @@ class we_folder extends we_root{
 	function formChangeOwners(){
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		return '<table class="default"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
 			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
 	}
@@ -435,7 +435,7 @@ class we_folder extends we_root{
 	function formChangeLanguage(){
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		return '<table class="default"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
 			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
 	}
@@ -453,7 +453,7 @@ class we_folder extends we_root{
 					"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
 				, true, 100, 22, "", "", !empty($_disabledNote));
 
-		return '<table border="0" cellpadding="0" cellspacing="0"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		return '<table class="default"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
 			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
 					<tr><td>' . we_html_tools::getPixel(409, 2) . '</td><td></td></tr></table>';
 	}

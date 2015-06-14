@@ -155,7 +155,7 @@ class we_fileupload_include extends we_fileupload_base{
 	//FIXME: base intarnal progress on we_progress
 	private function _getProgressHTML(){
 		return '
-<table cellpadding="0" style="border-spacing: 0px;border-style:none;"><tbody><tr>
+<table class="default"><tbody><tr>
 	<td valign="bottom" width="2"></td>
 	<td valign="middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image" valign="top"></div>div class="progress_image_bg" style="width:' . $this->internalProgress['width'] . 'px;height:10px;" id="' . $this->name . '_progress_image_bg" valign="top"></div></td>
 	<td valign="bottom" width="8"></td>

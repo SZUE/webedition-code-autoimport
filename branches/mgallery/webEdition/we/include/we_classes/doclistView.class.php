@@ -75,7 +75,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 * @return html for search dialog box
 	 */
 	public static function getSearchDialog(){
-		$out = '<table cellpadding="0" cellspacing="0" id="defSearch" border="0" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
+		$out = '<table class="default" id="defSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -83,7 +83,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
-<table cellpadding="0" cellspacing="0" border="0" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+<table class="default" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -184,7 +184,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		}
 
 		$out .= '</tbody></table>
-<table cellpadding="0" cellspacing="0" id="advSearch3" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+<table class="default" id="advSearch3" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
 	<tr>
 		<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
 	</tr>
@@ -546,7 +546,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			we_html_tools::hidden("todo", "") .
 			we_html_tools::hidden("mode", $mode) .
 			we_html_tools::hidden("setView", $setView) .
-			'<table border="0" cellpadding="0" cellspacing="0">
+			'<table class="default">
 	<tr>
 		<td>' . we_html_tools::getPixel(19, 12) . '</td>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
@@ -578,7 +578,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		}
 
 		return
-			'<table border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+			'<table class="default" style="margin-top:20px;">
 	<tr>
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
@@ -602,7 +602,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			$searchstart = $obj->searchclassFolder->searchstart;
 		}
 
-		$out = '<table cellpadding="0" cellspacing="0" border="0"><tr><td>' .
+		$out = '<table class="default"><tr><td>' .
 			($searchstart ?
 				we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
 				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
@@ -645,7 +645,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 */
 	public static function getHTMLforDoclist($content){
 
-		$out = '<table width="100%" border="0" cellspacing="0" cellpadding="0" style="width:100%;">
+		$out = '<table class="default" style="width:100%;">
 <tr><td class="defaultfont">';
 
 		foreach($content as $i => $c){

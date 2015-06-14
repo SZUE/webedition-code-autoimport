@@ -553,18 +553,18 @@ class we_objectFile extends we_document{
 			$this->ParentPath = id_to_path($rootDirId, OBJECT_FILES_TABLE);
 		}
 		$this->setUrl();
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table class="default">
 	<tr><td>' . $this->formInputField("", "Text", g_l('modules_object', '[objectname]'), 30, 388, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3">' . $this->formDirChooser(388, $rootDirId) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 				<tr><td>' . $this->formIsSearchable() . '</td><td class="defaultfont">&nbsp;</td><td>&nbsp;</td></tr>
 			</table></td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
 	<tr><td colspan="3">
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 				<tr><td class="defaultfont">' . g_l('modules_object', '[seourl]') . ':</td><td class="defaultfont">&nbsp;</td><td class="defaultfont">&nbsp;' . $this->Url . '</td></tr>
 			</table></td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 4) . '</td><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td></tr>
@@ -596,7 +596,7 @@ class we_objectFile extends we_document{
 
 		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '');
 		return '
-			<table border="0" cellpadding="0" cellspacing="0">
+			<table class="default">
 				' . $_headline . '
 				<tr><td>' . $this->htmlTextInput($inputName, 24, $this->Charset) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
 			</table>';
@@ -1141,7 +1141,7 @@ class we_objectFile extends we_document{
 					self::hrefRow('', 0, $ext_elem_Name, $extPath, $attr, $int_elem_Name, true, $int, '', $file, $directory);
 		}
 		return ($variant ? '' : '<span class="weObjectPreviewHeadline"><b>' . $n . ($this->DefArray['href_' . $n]['required'] ? '*' : '') . '</b></span>' . (isset($this->DefArray["href_" . $n]['editdescription']) && $this->DefArray["href_" . $n]['editdescription'] ? self::formatDescription($this->DefArray["href_" . $n]['editdescription']) : we_html_element::htmlBr() )) .
-			'<table cellpadding="0" cellspacing="0" class="weEditTable">' . $out . '</table>';
+			'<table class="default weEditTable">' . $out . '</table>';
 	}
 
 	public static function hrefRow($intID_elem_Name, $intID, $Path_elem_Name, $path, $attr, $int_elem_Name, $showRadio = false, $int = true, $extraCmd = '', $file = true, $directory = false){

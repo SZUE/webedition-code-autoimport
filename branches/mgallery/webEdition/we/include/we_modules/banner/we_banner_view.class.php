@@ -594,7 +594,7 @@ var g_l={
 		}
 		sort($tagnames);
 
-		$code = '<table border="0" cellpadding="0" cellspacing="0"><tr><td class="defaultfont">' .
+		$code = '<table class="default"><tr><td class="defaultfont">' .
 			we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="top.content.setHot();"') .
 			'</td>
 <td class="defaultfont">' . we_html_tools::getPixel(10, 2) . '</td>
@@ -655,11 +655,11 @@ var g_l={
 		$datefilter2 = we_html_tools::getDateInput2("dateFilter2%s", ($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
 
 		$content = '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr><td colspan="2">' . $datefilterCheck . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' . we_html_tools::getPixel(500, 2) . '</td></tr>
 	<tr><td colspan="2">
-	<table border="0" cellpadding="0" cellspacing="0">
+	<table class="default">
 	<tr>
 		<td class="defaultfont">' . g_l('global', '[from]') . ':&nbsp;</td>
 		<td>' . $datefilter . '</td>
@@ -706,7 +706,7 @@ var g_l={
 
 	function formBanner($leftsize = 120){
 		return '
-<table border="0" cellpadding="0" cellspacing="0">
+<table class="default">
 	<tr><td>' . $this->formBannerChooser(388, $this->uid . "_bannerID", $this->banner->bannerID, g_l('modules_banner', '[imagepath]'), "opener.we_cmd(\\'switchPage\\',\\'" . $this->page . "\\')") . '</td></tr>
 ' . ($this->banner->bannerID ?
 				'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
@@ -727,7 +727,7 @@ var g_l={
 		$checkStart = we_html_forms::checkboxWithHidden($this->banner->StartOk, $this->uid . '_StartOk', g_l('modules_banner', '[from]'), false, "defaultfont", "top.content.setHot();");
 		$checkEnd = we_html_forms::checkboxWithHidden($this->banner->EndOk, $this->uid . '_EndOk', g_l('modules_banner', '[to]'), false, "defaultfont", "top.content.setHot();");
 
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table class="default">
 	<tr>
 		<td>' . $checkStart . '</td>
 		<td></td>
@@ -754,7 +754,7 @@ var g_l={
 	}
 
 	function formPath($leftsize = 120){
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table class="default">
 	<tr><td>' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_Text", 37, $this->banner->Text, "", 'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'), g_l('modules_banner', '[name]')) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
 	<tr><td>' . $this->formDirChooser(388, BANNER_TABLE, $this->banner->ParentID, $this->uid . "_ParentID", g_l('modules_banner', '[group]'), "", "PathGroup") . '</td></tr>
@@ -827,7 +827,7 @@ var g_l={
 		$maxClicks = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_maxClicks", 10, $this->banner->maxClicks, "", "onchange=\"top.content.setHot();\"", "text", 100, 0), g_l('modules_banner', '[max_clicks]'), "left", "defaultfont");
 		$weight = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect($this->uid . "_weight", array("8" => "1 (" . g_l('modules_banner', '[infrequent]') . ")", "7" => 2, "6" => 3, "5" => 4, "4" => "5 (" . g_l('modules_banner', '[normal]') . ")", "3" => 6, "2" => 7, "1" => 8, "0" => "9 (" . g_l('modules_banner', '[frequent]') . ")"), 1, $this->banner->weight), g_l('modules_banner', '[weight]'), "left", "defaultfont");
 
-		return '<table border="0" cellpadding="0" cellspacing="0">
+		return '<table class="default">
 	<tr>
 		<td>' . $activeCheckbox . '</td>
 		<td>' . we_html_tools::getPixel(40, 2) . '</td>
@@ -853,14 +853,14 @@ var g_l={
 		//$onkeydown2 = "self.document.we_form.elements['" . $this->uid . "_IntHref'][1].checked=true; document.getElementById('" . $this->uid . "_bannerUrl" . "').value='';";
 		$width = 388;
 
-		$title1 = '<table border="0" cellpadding="0" cellspacing="0">
+		$title1 = '<table class="default">
 	<tr>
 		<td><input type="radio" name="' . $this->uid . '_IntHref" id="' . $this->uid . '_IntHref0" value="0"' . ($this->banner->IntHref ? "" : " checked") . ' /></td>
 		<td class="defaultfont">&nbsp;<label for="' . $this->uid . '_IntHref0">' . g_l('modules_banner', '[ext_url]') . '</label></td>
 	</tr>
 </table>';
 
-		$title2 = '<table border="0" cellpadding="0" cellspacing="0">
+		$title2 = '<table class="default">
 	<tr>
 		<td><input type="radio" name="' . $this->uid . '_IntHref" id="' . $this->uid . '_IntHref1" value="1"' . ($this->banner->IntHref ? " checked" : "") . ' /></td>
 		<td class="defaultfont">&nbsp;<label for="' . $this->uid . '_IntHref1">' . g_l('modules_banner', '[int_url]') . '</label></td>

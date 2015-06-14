@@ -226,7 +226,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
-	$oTblWidgets = new we_html_table(array("cellpadding" => 0, "cellspacing" => 0, "border" => 0, "height" => "98%"), 1, 1);
+	$oTblWidgets = new we_html_table(array("class" => 'default',"height" => "98%"), 1, 1);
 	$oTblWidgets->setCol(0, 0, array("valign" => "top", "width" => "100%", "align" => "left"), we_html_element::htmlDiv(
 			array("id" => "modules"), '<table id="le_tblWidgets" cellspacing="0" border="0"><tr id="rowWidgets">' . $s1 . '</tr></table>')
 	);

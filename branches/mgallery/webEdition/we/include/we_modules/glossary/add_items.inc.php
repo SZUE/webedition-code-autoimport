@@ -729,7 +729,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					));
 
 					$Content = '
-	<table width="650" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
+	<table width="650" class="default defaultfont">
 	<tr>
 		<td>' . we_html_tools::getPixel(150, 1) . '</td>
 		<td>' . we_html_tools::getPixel(20, 1) . '</td>
@@ -760,7 +760,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 	</tr>
 	</table>
 	<div style="height: 248px; width: 675px; overflow: auto;">
-	<table width="650" border="0" cellpadding="0" cellspacing="0" class="defaultfont">
+	<table width="650" class="default defaultfont">
 	<tbody id="unknown">
 	<tr>
 		<td>' . we_html_tools::getPixel(150, 1) . '</td>

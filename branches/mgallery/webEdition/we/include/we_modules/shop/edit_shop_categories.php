@@ -154,8 +154,8 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 			if(!count($allVats)){
 				$table->setCol($i, 3, array('class' => 'defaultfont', 'nowrap' => 'nowrap', 'width' => 140), g_l('modules_shop', '[shopcats][warning_noVatsDefined]'));
 			} else {
-				$holderCountryTable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 2);
-				$countriesTable = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), max((count($allVats) - 1), 1), 2);
+				$holderCountryTable = new we_html_table(array('class' => 'default'), 1, 2);
+				$countriesTable = new we_html_table(array('class' => 'default'), max((count($allVats) - 1), 1), 2);
 
 				$c = -1;
 				foreach($vatGroups as $k => $v){

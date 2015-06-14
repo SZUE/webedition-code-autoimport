@@ -101,7 +101,7 @@ top.close();
 
 		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
 		/*
-		$trash = '<table cellpadding="0" style="border-spacing: 0px;border-style:none">
+		$trash = '<table class="default">
 			<tbody>
 			<tr><td class="defaultfont" align="left" colspan="1"></td></tr>
 			<tr style="height:1px"><td colspan="1">&nbsp;</td></tr>
@@ -113,7 +113,7 @@ top.close();
 		 *
 		 */
 
-		$html = $yuiSuggest->getYuiJs() . '<table border="0" cellpadding="0" cellspacing="0">
+		$html = $yuiSuggest->getYuiJs() . '<table class="default">
 <tr><td>' . $collid . '</td><td>' . $trash . '</td></tr>
 <tr><td>' . we_html_tools::getPixel(225, 10) . '</td></tr>
 <tr><td>' . $tmpl . '</td></tr>

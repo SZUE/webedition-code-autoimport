@@ -541,9 +541,7 @@ function next() {
 
 		$prevNextButtons = $prevButton ? we_html_button::create_button_table(array($prevButton, $nextButton)) : null;
 
-		$table = new we_html_table(array(
-			"border" => 0, "cellpadding" => 0, "cellspacing" => 0, "width" => "100%"
-			), 1, 2);
+		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
 		$table->setCol(0, 1, array(
 			"align" => "right"
@@ -875,9 +873,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 			array(
 			'id' => 'CategoriesBlock',
 			'style' => 'display: block;',
-			'cellpadding' => 0,
-			'cellspacing' => 0,
-			'border' => 0
+			'class' => 'default'
 			), 4, 1);
 
 		$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));

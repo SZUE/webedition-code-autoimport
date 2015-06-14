@@ -606,7 +606,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	 */
 	function formProperties(){
 		// Create table
-		$_content = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 12, 5);
+		$_content = new we_html_table(array('class' => 'default'), 12, 5);
 
 		// Row 1
 		$_content->setCol(0, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
@@ -842,7 +842,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 
 		// Create table
-		$_content = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), (defined('OBJECT_TABLE') ? 11 : 9), 2);
+		$_content = new we_html_table(array('class' => 'default'), (defined('OBJECT_TABLE') ? 11 : 9), 2);
 
 		// No link
 		$_content->setCol(0, 0, array('valign' => 'top'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
@@ -853,7 +853,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$_content->setCol(1, 1, null, we_html_tools::getPixel(400, 10));
 
 		// External link
-		$_ext_link_table = new we_html_table(array('border' => 0, 'cellpadding' => 0, 'cellspacing' => 0), 1, 3);
+		$_ext_link_table = new we_html_table(array('class' => 'default'), 1, 3);
 
 		$_ext_link_table->setCol(0, 0, null, $this->htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
 		$_ext_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
@@ -950,7 +950,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	}
 
 	function formMetaInfos(){
-		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0">
+		return '<table class="default">
 	<tr><td colspan="2">' . $this->formInputField('txt', 'Title', g_l('weClass', '[Title]'), 40, 508, '', "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	<tr><td colspan="2">' . $this->formInputField('txt', 'Description', g_l('weClass', '[Description]'), 40, 508, '', "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>

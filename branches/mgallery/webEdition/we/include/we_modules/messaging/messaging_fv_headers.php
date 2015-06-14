@@ -52,7 +52,7 @@ $so = we_base_request::_(we_base_request::STRING, 'so');
 </style>
 </head>
 <body id="eHeaderBody">
-	<table cellpadding="0" cellspacing="0">
+	<table class="default">
 		<tr>
 			<?php if(we_base_request::_(we_base_request::STRING, "viewclass") != "todo"){ ?>
 				<td width="18"><?php echo we_html_tools::getPixel(18, 1) ?></td>

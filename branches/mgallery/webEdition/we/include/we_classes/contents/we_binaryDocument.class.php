@@ -120,7 +120,7 @@ class we_binaryDocument extends we_document{
 				$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'tag' => $meta['tag'],
 						'value' => $this->getElement($meta['tag'])
-					)));
+				)));
 			}
 		}
 	}
@@ -274,7 +274,7 @@ class we_binaryDocument extends we_document{
 		// the elements of this imageDocument as values:
 		$_fieldcount = count($_defined_fields);
 		$_fieldcounter = 0; // needed for numbering the table rows
-		$_content = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0, "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
+		$_content = new we_html_table(array("class" => 'default', "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
 		$_mdcontent = '';
 		for($i = 0; $i < $_fieldcount; $i++){
 			$_tagName = $_defined_fields[$i]["tag"];
@@ -297,7 +297,7 @@ class we_binaryDocument extends we_document{
 					default:
 						$_inp = $_mode === 'none' || !isset($_defined_values[$_tagName]) || !is_array($_defined_values[$_tagName]) ?
 							$this->formInput2(508, $_tagName, 23, "txt", ' onchange="_EditorFrame.setEditorIsHot(true);"') :
-								$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
+							$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
 				}
 
 				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), $_inp);
@@ -378,10 +378,10 @@ class we_binaryDocument extends we_document{
 		$search = new we_search_search();
 		$search->searchMediaLinks(0, true, $this->ID);
 		$ml = $search->getUsedMediaLinks();
-		$references = $ml['mediaID_' . $this->ID];//IMPORTANT: we hava a nested structure: make optgroupa
+		$references = $ml['mediaID_' . $this->ID]; //IMPORTANT: we hava a nested structure: make optgroupa
 
 		if(empty($references)){
-			return 'Dieses Medien-Dokument wird nirgendwo referenziert.';//g_l('weClass', '[no_documents]');
+			return 'Dieses Medien-Dokument wird nirgendwo referenziert.'; //g_l('weClass', '[no_documents]');
 		}
 
 		$js = "";

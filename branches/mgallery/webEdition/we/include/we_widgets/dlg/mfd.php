@@ -43,7 +43,7 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements.UserNameTmp.value");
 $wecmdenc5 = we_base_request::encCmd("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].addUserToField();");
 
-$content = '<table border="0" cellpadding="0" cellspacing="0" width="300">
+$content = '<table class="default" width="300">
 <tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 
 if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
@@ -57,7 +57,7 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 }
 $content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
 
-$sUsrContent = '<table border="0" cellpadding="0" cellspacing="0" width="300"><tr><td>' . we_html_element::htmlDiv(
+$sUsrContent = '<table class="default" width="300"><tr><td>' . we_html_element::htmlDiv(
 		array("class" => "multichooser"), $content) . we_html_element::htmlHiddens(array(
 		"UserNameTmp" => "",
 		"UserIDTmp" => ""
@@ -90,7 +90,7 @@ $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['
 		we_html_forms::checkbox(1, $sType{3}, "chbx_type", g_l('cockpit', '[classes]'), true, "defaultfont", "", !(defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS')), "", 0, 0) :
 		'<input type="hidden" name="chbx_type" value="0"/>');
 
-$oDbTableType = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
+$oDbTableType = new we_html_table(array('class' => 'default'), 1, 3);
 $oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
 $oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
@@ -120,7 +120,7 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 }
 $oSctNumEntries->selectOption($iAmountEntries);
 
-$oSelMaxEntries = new we_html_table(array("height" => "100%", "border" => 0, "cellpadding" => 0, "cellspacing" => 0), 1, 3);
+$oSelMaxEntries = new we_html_table(array("height" => "100%", 'class' => 'default'), 1, 3);
 $oSelMaxEntries->setCol(0, 0, array("valign" => "middle", "class" => "defaultfont"), g_l('cockpit', '[max_amount_entries]'));
 $oSelMaxEntries->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 $oSelMaxEntries->setCol(0, 2, array("valign" => "middle"), $oSctNumEntries->getHTML());

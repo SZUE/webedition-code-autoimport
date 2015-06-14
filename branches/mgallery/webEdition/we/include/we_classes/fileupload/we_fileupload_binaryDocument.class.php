@@ -211,7 +211,7 @@ div.we_file_drag_binDoc{
 			($this->isDragAndDrop ? '<div style="position:absolute;top:11px;background:none;" class="we_file_drag" id="div_we_File_fileDrag"></div>' : '')) : '';
 
 		return (self::isFallback() || self::isLegacyMode() ? '' : $this->getJs() . $this->getCss()) . '
-			<table id="table_form_upload" cellpadding="0" cellspacing="0" border="0" width="500">
+			<table id="table_form_upload" class="default" width="500">
 			<tr style="vertical-align:top;">
 				<td class="defaultfont" width="200px">' .
 			$divBtnUploadLegacy .

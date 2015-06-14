@@ -130,4 +130,4 @@ foreach($tbls as $table){
 }
 
 asort($_cont);
-$ct = '<table cellspacing="0" cellpadding="0" border="0">' . implode('', $_cont) . '</table>';
+$ct = '<table class="default">' . implode('', $_cont) . '</table>';

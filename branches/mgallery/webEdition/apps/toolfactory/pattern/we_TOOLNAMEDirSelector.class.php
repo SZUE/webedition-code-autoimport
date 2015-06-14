@@ -38,7 +38,7 @@ $this->userCanMakeNewFolder = true;
 }
 
 function printHeaderHeadlines(){
-return '			<table style="border-spacing: 0px;border-style:none;width:550px;" cellpadding="0">
+return '<table class="default" style="width:550px;">
 	<tr>
 		<td>'.we_html_tools::getPixel(25,14).'</td>
 		<td class="selector"colspan="2"><b><a href="#" onclick="javascript:top.orderIt(\'Text\');">'.g_l('tools','[name]').'</a></b></td>
@@ -101,7 +101,7 @@ ob_start();
 									'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
 									'<input type="hidden" name="table" value="' + top.options.table + '" />' +
 									'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
-									'<table border="0" cellpadding="0" cellspacing="0" width="100%">' +
+									'<table class="default" width="100%">' +
 									(makeNewFolder?
 													'<tr style="background-color:#DFE9F5;">' +
 													'<td align="center"><img class="treeIcon" src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/folder.gif" ></td>' +

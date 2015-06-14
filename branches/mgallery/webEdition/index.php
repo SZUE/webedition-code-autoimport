@@ -267,7 +267,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
   elseif(!$ignore_browser && !we_base_browserDetect::isSupported()){
   $supportedBrowserCnt = (we_base_browserDetect::isMAC() ? 3 : (we_base_browserDetect::isUNIX() ? 2 : 4));
 
-  $_browser_table = new we_html_table(array('cellspacing' => 0, 'cellpadding' => 0, 'border' => 0, 'width' => '100%'), 12, $supportedBrowserCnt);
+  $_browser_table = new we_html_table(array('width' => '100%'), 12, $supportedBrowserCnt);
 
   $_browser_table->setCol(1, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_html_element::htmlB(g_l('start', '[browser_not_supported]')));
   $_browser_table->setCol(3, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), g_l('start', '[browser_supported]'));

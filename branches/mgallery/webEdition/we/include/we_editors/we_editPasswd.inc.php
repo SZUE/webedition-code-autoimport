@@ -29,7 +29,7 @@ function getContent(){
 	return '
 		<form action="' . $_SERVER['REQUEST_URI'] . '" method="post">' .
 			we_html_tools::htmlDialogLayout('
-						<table border="0" cellpadding="0" cellspacing="0">
+						<table class="default">
 							<tr><td class="defaultfont">' . g_l('global', '[oldPass]') . '</td></tr>
 							<tr><td>' . we_html_tools::htmlTextInput('oldpasswd', 20, '', 32, '', 'password', 200) . '</td></tr>
 							<tr><td>' . we_html_tools::getPixel(2, 5) . '</td></tr>

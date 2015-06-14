@@ -285,7 +285,7 @@ function toggle_all() {
 				//	the different permission-groups shall be sorted alphabetically
 				//	therefore the content is first saved in an array.
 				// Build header of group
-				$_contentTable[$main_titles[$_groups_key]] = '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '">';
+				$_contentTable[$main_titles[$_groups_key]] = '<table class="default" width="' . $width . '">';
 
 				$_seperator_color = $seperator_color;
 
@@ -334,7 +334,7 @@ function toggle_all() {
 </table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
 
 				// first of all order all the entries
 				$_groups = array();
@@ -440,7 +440,7 @@ function toggle_all() {
 				//	therefore the content is first saved in an array.
 				// Build header of group
 				$_contentTable[$main_titles[$_groups_key]] = '
-					<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '">';
+					<table class="default" width="' . $width . '">';
 
 				$_seperator_color = $seperator_color;
 
@@ -486,7 +486,7 @@ function toggle_all() {
 </table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table cellpadding="0" cellspacing="0" border="0" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '"><tr><td>' . we_html_tools::getPixel(30, 10) . '</td><td colspan="2">' . we_html_tools::getPixel($width, 10) . '</td></tr>';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '"><tr><td>' . we_html_tools::getPixel(30, 10) . '</td><td colspan="2">' . we_html_tools::getPixel($width, 10) . '</td></tr>';
 
 				// Go through all items of the group
 				foreach($multiboxes[$_groups_key] as $i => $c){

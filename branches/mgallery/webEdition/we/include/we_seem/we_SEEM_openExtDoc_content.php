@@ -32,9 +32,7 @@ $path = we_base_request::_(we_base_request::URL, "filepath");
 if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_base_request::RAW, "paras", '')))) !== false){
 	echo we_SEEM::parseDocument($content);
 } else {
-	$_table = new we_html_table(array("cellpadding" => 0,
-		"cellspacing" => 0,
-		"border" => 0), 4, 2);
+	$_table = new we_html_table(array('class' => 'default'), 4, 2);
 	$_table->setColContent(0, 0, we_html_tools::getPixel(20, 20));
 	$_table->setCol(1, 1, array("class" => "defaultfont"), sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path) . "<br/>");
 	$_table->setColContent(2, 0, we_html_tools::getPixel(20, 6));
