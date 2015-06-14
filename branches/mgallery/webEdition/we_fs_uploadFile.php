@@ -217,13 +217,13 @@ if($weFileupload->processFileRequest()){
 	//-->
 	</script>
 	</head>
-	<body class="weDialogBody" onload="self.focus();" ><center>
+	<body class="weDialogBody" onload="self.focus();" ><div style="text-align:center">
 			<form method="post" enctype="multipart/form-data">
 				<input type="hidden" name="table" value="<?php echo we_base_request::_(we_base_request::TABLE, 'tab'); ?>" />
 				<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
 				<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
 	<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', '[import_File_from_hd_title]'), "", 620); ?>
-			</form></center>
+			</form></div>
 	</body>
 	</html>
 <?php } ?>

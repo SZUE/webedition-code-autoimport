@@ -2366,7 +2366,7 @@ self.focus();');
 			echo we_html_element::jsElement('
 				top.send_control.location="about:blank";
 				top.send_body.setProgress(100);
-				top.send_body.setProgressText("title","<font color=\"#006699\"><b>' . g_l('modules_newsletter', '[finished]') . '</b></font>",2);
+				top.send_body.setProgressText("title","<span style=\"color:#006699;text-weight:bold;\">' . g_l('modules_newsletter', '[finished]') . '",2);
 				updateText("' . g_l('modules_newsletter', '[campaign_ends]') . '");
 			');
 			$this->View->db->query("UPDATE " . NEWSLETTER_TABLE . " SET Step=0,Offset=0 WHERE ID=" . $this->View->newsletter->ID);

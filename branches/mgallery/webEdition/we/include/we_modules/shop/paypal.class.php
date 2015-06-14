@@ -143,10 +143,10 @@ class paypal_class{
 
 			echo "</form>\n";
 		} else {
-			echo "<html>\n";
-			echo "<body onload=\"document.forms['paypal_form'].submit();\">\n";
-			echo "<body>\n";
-			echo "<center><h2>" . $messageAuto . "</h2></center>\n";
+			echo "<html>";
+			echo "<body onload=\"document.forms['paypal_form'].submit();\">";
+			echo "<body>";
+			echo "<div style='text-align:center'><h2>" . $messageAuto . "</h2></center>\n";
 			echo "<form method=\"post\" name=\"paypal_form\" ";
 			echo "action=\"" . $this->paypal_url . "\">\n";
 
@@ -154,7 +154,7 @@ class paypal_class{
 				echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 			}
 
-			echo "<center><br/><br/>" . $messageMan . "<br/><br/>\n";
+			echo "</div><br/><br/>" . $messageMan . "<br/><br/>\n";
 			echo "<input type=\"submit\" value=\"PayPal\" /></center>\n";
 
 			echo "</form>\n";
@@ -254,8 +254,8 @@ class paypal_class{
 		echo "<h3>paypal_class->dump_fields() Output:</h3>";
 		echo "<table width=\"95%\" border=\"1\" cellpadding=\"2\" cellspacing=\"0\">
             <tr>
-               <td bgcolor=\"black\"><b><font color=\"white\">Field Name</font></b></td>
-               <td bgcolor=\"black\"><b><font color=\"white\">Value</font></b></td>
+               <td style=\"background-color:black;text-weight:bold;color:white;\">Field Name</td>
+               <td style=\"background-color:black;text-weight:bold;color:white;\">Value</td>
             </tr>";
 
 		ksort($this->fields);

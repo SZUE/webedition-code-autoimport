@@ -110,12 +110,12 @@ if($weFileupload->processFileRequest()){
 	//-->
 	</script>
 	</head>
-	<body class="weDialogBody" onload="self.focus();"><center>
+	<body class="weDialogBody" onload="self.focus();"><div style="text-align:center">
 		<input type="hidden" name="pat" value="<?php echo $path; ?>" />
 		<form method="post" enctype="multipart/form-data" name="we_form">
 			<?php echo $content; ?>
 		</form>
-	</center>
+	</div>
 	</body>
 	</html>
 <?php } ?>

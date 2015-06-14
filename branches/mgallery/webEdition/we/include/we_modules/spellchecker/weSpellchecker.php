@@ -145,13 +145,11 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 	);
 
 
-	echo '<div id="spinner">
-		<center>
+	echo '<div id="spinner" style="text-align:center">
 			<div style="padding-top: 30%;">
 				<i class="fa fa-2x fa-spinner fa-pulse"></i><br />
 				<div id="statusText" class="small" style="color: black;">' . g_l('modules_spellchecker', '[download]') . '</div>
 			</div>
-		</center>
 	</div>
 
 	<form name="we_form" action="' . WE_SPELLCHECKER_MODULE_DIR . '/weSpellchecker.php" method="post" target="_self">

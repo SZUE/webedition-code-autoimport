@@ -68,10 +68,10 @@ if(isset($we_alerttext)){
 //-->
 </script>
 </head>
-<body class="weDialogBody" onresize="setSize()" style="width:100%; height:100%"><center>
+<body class="weDialogBody" onresize="setSize()" style="width:100%; height:100%"><div style="text-align:center">
 		<form method="post">
 			<input type="hidden" name="cmd" value="save" />
 			<?php echo we_html_tools::htmlDialogLayout($content, g_l('global', '[edit_file]') . ": <span class=\"weMultiIconBoxHeadline\">" . str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), $buttons, 1) . "</span>"; ?>
-		</form></center>
+		</form></div>
 </body>
 </html>

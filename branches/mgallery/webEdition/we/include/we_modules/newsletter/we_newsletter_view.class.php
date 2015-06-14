@@ -1054,7 +1054,7 @@ self.close();');
 			include($path);
 		} else {
 			echo STYLESHEET .
-			'<div class="defaultgray"><center>' . g_l('modules_newsletter', '[cannot_preview]') . '</center></div>';
+			'<div class="defaultgray" style="text-align:center">' . g_l('modules_newsletter', '[cannot_preview]') . '</div>';
 		}
 	}
 

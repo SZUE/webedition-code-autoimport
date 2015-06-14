@@ -71,7 +71,7 @@ echo STYLESHEET;
 </head>
 
 <body class="weDialogBody">
-<center>
+<div style="text-align:center">
 	<?php
 	if($cmd != 'ok'){
 		$all = array();
@@ -137,7 +137,7 @@ echo STYLESHEET;
 		}
 	}
 	?>
-</center>
+</div>
 </body>
 
 </html>

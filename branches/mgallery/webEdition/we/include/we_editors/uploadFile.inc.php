@@ -166,13 +166,13 @@ if($weFileupload->processFileRequest()){
 	</head>
 
 	<body class="weDialogBody" onload="self.focus();">
-	<center>
+	<div style="text-align:center">
 		<form method="post" enctype="multipart/form-data">
 			<?php echo we_html_element::htmlHidden("we_transaction", $we_transaction) .
 			we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $_buttons);
 			?>
 		</form>
-	</center>
+	</div>
 	</body>
 
 	</html>

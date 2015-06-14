@@ -67,7 +67,7 @@ top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.locat
 }
 ?>
 </head>
-<body class="weDialogBody"><center>
+<body class="weDialogBody"><div style="text-align:center">
 	<?php
 	if($cmd !== "ok"){
 		?>
@@ -96,6 +96,6 @@ top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.locat
 			?>
 		</form>
 	<?php } ?>
-</center>
+</div>
 </body>
 </html>

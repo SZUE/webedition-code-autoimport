@@ -65,7 +65,7 @@ echo STYLESHEET;
 </head>
 
 <body class="weDialogBody">
-<center>
+<div style="text-align:center">
 	<?php if($cmd != 'ok'){ ?>
 		<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post">
 			<?php
@@ -93,7 +93,7 @@ echo STYLESHEET;
 			?>
 		</form>
 	<?php } ?>
-</center>
+</div>
 
 </body>
 
