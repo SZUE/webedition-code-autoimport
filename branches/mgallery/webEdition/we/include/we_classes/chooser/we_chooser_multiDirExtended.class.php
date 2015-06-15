@@ -41,7 +41,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 				return '<tr id="' . $this->rowPrefix . 'Cat' . $this->Record["ID"] . '">
 	<td class="chooserFileIcon" data-contenttype="'.$this->Record['ContentType'].'"></td>
 	<td class="' . $this->css . '">' . $this->Record['Path'] . '</td>
-	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
+	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . "; " . $_catFieldJS, true, 26) :
 						"") . '</td>
 </tr>';
@@ -55,7 +55,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 				return '<tr>
 	<td class="chooserFileIcon" data-contenttype="folder"></td>
 	<td class="' . $this->css . '">/</td>
-	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
+	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');", true, 26) :
 						'') . '</td>
 </tr>';
@@ -64,7 +64,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 	}
 
 	function getTableRows(){
-		$out = '	<tr><td width="20">' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(50, 2) . '</td><td width="26">' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+		$out = '';
 		$this->nr = 0;
 		$idArr = makeArrayFromCSV($this->ids);
 
@@ -81,7 +81,6 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 			}
 			$this->nr++;
 		}
-		$out .= '	<tr><td width="20">' . we_html_tools::getPixel(20, count($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel(50, 2) . '</td><td width="26">' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		return $out;
 	}
 

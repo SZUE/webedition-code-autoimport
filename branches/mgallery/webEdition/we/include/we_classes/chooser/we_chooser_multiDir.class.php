@@ -66,7 +66,7 @@ class we_chooser_multiDir{
 				return '<tr>
 	<td class="chooserFileIcon" data-contenttype="'.$this->Record['ContentType'].'"></td>
 	<td class="' . $this->css . '">' . $this->Record['Path'] . '</td>
-	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
+	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
 						'') . '</td>
 </tr>';
@@ -79,7 +79,7 @@ class we_chooser_multiDir{
 				return '<tr>
 	<td class="chooserFileIcon" data-contenttype="folder"></td>
 	<td class="' . $this->css . '">/</td>
-	<td>' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
+	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
 						'') . '</td>
 </tr>';
@@ -101,8 +101,7 @@ class we_chooser_multiDir{
 	}
 
 	function get(){
-		$out = '<table class="default" width="' . abs($this->width - 20) . '">
-	<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(abs($this->width - 66), 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+		$out = '<table class="default" width="' . abs($this->width - 20) . '">';
 
 		$this->nr = 0;
 		$idArr = is_array($this->ids) ? $this->ids : ($this->ids === '' ? array() : explode(',', trim($this->ids, ',')));
@@ -120,14 +119,13 @@ class we_chooser_multiDir{
 			}
 			$this->nr++;
 		}
-		$out .= '<tr><td>' . we_html_tools::getPixel(20, count($idArr) ? 2 : 12) . '</td><td>' . we_html_tools::getPixel($this->width - 66, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>
+		$out .= '
 </table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
 
 
 		return '<table class="default" width="' . $this->width . '">
-<tr><td><div style="background-color:white;" class="multichooser">' . $out . '</div></td></tr>
-' . ($this->addbut ? ('<tr><td>' . we_html_tools::getPixel(2, 5) . '</td></tr>
-<tr><td align="right">' . $this->addbut . '</td></tr>') : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
+<tr><td><div class="multichooser">' . $out . '</div></td></tr>
+' . ($this->addbut ? '<tr><td align="right" style="padding-top:5px;">' . $this->addbut . '</td></tr>' : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
 	}
 
 }

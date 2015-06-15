@@ -53,6 +53,9 @@ class we_selector_document extends we_selector_directory{
 			case VFILE_TABLE:
 				$this->fields .= ',UNIX_TIMESTAMP(ModDate) AS ModDate,Text AS Filename,ContentType';
 				break;
+			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
+				$this->fields .= ',Text AS Filename,ModDate,ContentType';
+				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$this->fields .= ',Text AS Filename,ModDate,Published,ContentType';
 				break;

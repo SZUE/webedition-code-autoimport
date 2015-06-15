@@ -1308,9 +1308,9 @@ window.onload=extraInit;');
 			return $out;
 		}
 
-		$js = $this->View->getJSProperty(array('onload' => 'setFocus();')) .
+		$js = $this->View->getJSProperty('setFocus();') .
 			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
+			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/calendar.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
 
 		$css = we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css");

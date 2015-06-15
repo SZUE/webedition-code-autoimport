@@ -88,11 +88,8 @@ img.close{
 	margin:2px;
 }
 span.status{
-	vertical-align:top;
+	vertical-align:middle;
 	padding: 0px 1ex;
-	width:16px;
-	height:16px;
-	margin:3px 2px;
 	display:inline-block;
 }
 i.modified{

@@ -278,7 +278,7 @@ $code = ($we_doc instanceof we_htmlDocument ?
 		$we_doc->getElement('data')
 	);
 
-$maineditor = '<div id="editorDiv">' .
+$maineditor = '<div id="editorDiv" style="margin-left: 20px;margin-right: 20px;">' .
 	'<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFont"] == 1) ? ' font-family: ' . $_SESSION['prefs']['editorFontname'] . '; font-size: ' . $_SESSION['prefs']['editorFontsize'] . 'px;' : '') .
 	'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
 	'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' .

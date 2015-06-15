@@ -98,7 +98,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 				'woffolder' => '0',
 				'wobject' => '0',
 				'wsteps' => $counter,
-				'wtasks', $counter1
+				'wtasks' => $counter1
 		));
 
 		return $out;
@@ -107,7 +107,8 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	function workflowHiddens(){
 		$out = '';
 		foreach($this->hiddens as $val){
-			$out.=we_html_element::htmlHidden($this->uid . '_' . $val, (isset($this->workflowDef->persistents[$val]) ? $this->workflowDef->$val : $this->$val));
+			$dat = isset($this->workflowDef->persistents[$val]) ? $this->workflowDef->$val : $this->$val;
+			$out.=we_html_element::htmlHidden($this->uid . '_' . $val, (is_array($dat) ? implode(',', $dat) : $dat));
 		}
 		return $out;
 	}
@@ -178,32 +179,20 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	}
 
 	function getWorkflowTypeHTML(){
-		$vals = array(
-			we_html_tools::getPixel(2, 10),
-			$this->getFoldersHTML(),
-		);
-		$out = $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::FOLDER, ($this->workflowDef->Type == we_workflow_workflow::FOLDER ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
-		$vals = array(
-			we_html_tools::getPixel(2, 10),
-			$this->getDocTypeHTML(),
-			we_html_tools::getPixel(2, 10),
-			$this->getCategoryHTML(),
-		);
-		$out .= $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, ($this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
-
-		if(defined('OBJECT_TABLE')){
-			$vals = array(
-				we_html_tools::getPixel(2, 10),
-				$this->getObjectHTML(),
-				we_html_tools::getPixel(2, 10),
-				$this->getObjCategoryHTML(),
-				we_html_tools::getPixel(2, 10),
-				$this->getObjectFileFoldersHTML(),
-			);
-			$out .= $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, ($this->workflowDef->Type == we_workflow_workflow::OBJECT ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), $vals, 25);
-		}
-
-		return $out;
+		return $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::FOLDER, ($this->workflowDef->Type == we_workflow_workflow::FOLDER ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
+				$this->getFoldersHTML(),
+				), 25) .
+			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, ($this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
+				$this->getDocTypeHTML(),
+				$this->getCategoryHTML(),
+				), 25) .
+			(defined('OBJECT_TABLE') ?
+				$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, ($this->workflowDef->Type == we_workflow_workflow::OBJECT ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
+					$this->getObjectHTML(),
+					$this->getObjCategoryHTML(),
+					$this->getObjectFileFoldersHTML(),
+					), 25) :
+				'');
 	}
 
 	function getFoldersHTML(){
@@ -301,7 +290,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 					'align' => '',
 				),
 				array(
-					'dat' => '<table class="default"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, "", 'onchange="top.content.setHot();"') . '</td></tr>' .
+					'dat' => '<table class="default"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, '', 'min="0" step="0.016" onchange="top.content.setHot();"','number') . '</td></tr>' .
 					'<tr valign="middle"><td>' . we_html_tools::getPixel(5, $_spacer_1_height) . '</td><tr>' .
 					'<tr valign="top">' .
 					'<td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td>' .
@@ -319,7 +308,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
-				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value','" . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
+				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . "_task_" . $counter . '_' . $counter1 . '_userid.value','' . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);

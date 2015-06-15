@@ -39,12 +39,6 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 	function get(){
 		$table = new we_html_table(array("class" => 'default',"width" => abs($this->width - 20)), 1, 4);
 
-		$table->setCol(0, 0, array(), we_html_tools::getPixel(20, 3));
-		$table->setCol(0, 1, array(), we_html_tools::getPixel(abs($this->width - 101), 3));
-		$table->setCol(0, 2, array(), we_html_tools::getPixel(66, 3));
-		$table->setCol(0, 2, array(), we_html_tools::getPixel(15, 3));
-
-
 		$this->nr = 0;
 		$idArr = (is_array($this->ids) ? $this->ids : array_filter(explode(',', trim($this->ids, ','))));
 		$c = 1;
@@ -92,13 +86,6 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 
 				$c++;
 
-				$table->addRow();
-				$table->setCol($c, 0, array(), we_html_tools::getPixel(20, 3));
-				$table->setCol($c, 1, array(), we_html_tools::getPixel(abs($this->width - 101), 3));
-				$table->setCol($c, 2, array(), we_html_tools::getPixel(66, 3));
-				$table->setCol($c, 3, array(), we_html_tools::getPixel(15, 3));
-
-				$c++;
 			}
 		} else {
 			$table->addRow();
