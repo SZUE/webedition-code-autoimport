@@ -38,18 +38,6 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css');
 
-/* FIXME: check if browser dependencies are really needed anymore!
- * Browser dependencies
- */
-
-$browser = we_base_browserDetect::inst();
-switch($browser->getBrowser()){
-	case we_base_browserDetect::SAFARI:
-		$heightPlus = 0;
-		break;
-	default:
-		$heightPlus = 1;
-}
 ?>
 <script type="text/javascript"><!--
 	function we_cmd() {
@@ -71,7 +59,6 @@ switch($browser->getBrowser()){
 		no_editor_left: "<?php echo we_message_reporting::prepareMsgForJS(g_l('multiEditor', '[no_editor_left]')); ?>"
 	};
 	var contentTypeApp = "<?php echo we_base_ContentTypes::APPLICATION; ?>";
-	var heightPlus =<?php echo $heightPlus; ?>;
 //-->
 </script>
 <?php

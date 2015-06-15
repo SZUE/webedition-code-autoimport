@@ -328,7 +328,6 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 						<tr valign="middle"><td>' . $yuiSuggest->getHTML() . '</td>
 						</tr></table>
 						<table class="default">
-						<tr valign="middle"><td colspan="3">' . we_html_tools::getPixel(5, 0) . '</td><tr>
 						<tr valign="top">
 						<td class="middlefont" align="right">' . we_html_forms::checkboxWithHidden($tv->Mail, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Mail", g_l('modules_workflow', '[send_mail]'), false, "middlefont", "top.content.setHot();") . '</td>
 						<td>' . we_html_tools::getPixel(20, 1) . '</td>

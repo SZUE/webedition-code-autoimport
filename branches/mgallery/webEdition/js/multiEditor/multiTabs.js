@@ -24,7 +24,7 @@
 
 // fits the frame height on resize, add or remove tabs if the tabs wrap
 function setFrameSize() {
-	tabsHeight = (document.getElementById('tabContainer').clientHeight ? (document.getElementById('tabContainer').clientHeight + heightPlus) : (document.body.clientHeight + heightPlus));
+	tabsHeight = (document.getElementById('tabContainer').clientHeight ? (document.getElementById('tabContainer').clientHeight) : (document.body.clientHeight));
 	tabsHeight = tabsHeight < 22 ? 22 : tabsHeight;
 	document.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight + "px";
 	document.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight + "px";

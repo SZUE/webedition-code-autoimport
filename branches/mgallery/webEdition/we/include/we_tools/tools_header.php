@@ -67,11 +67,6 @@ foreach($_menuItems as $_menuItem){
 			}
 	}
 }
-switch($tool){
-	case "weSearch":
-		$we_tabs->heightPlus = -30;
-		break;
-}
 
 $tab_header = $we_tabs->getHeader();
 
