@@ -76,7 +76,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		if($_editMode){
 			echo we_html_multiIconBox::_getBoxStart("100%", g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
 			$jsGUI->getContainer() .
-			we_html_multiIconBox::_getBoxEnd("100%");
+			we_html_multiIconBox::_getBoxEnd();
 			$js = '';
 			foreach($parts as $idx => $part){
 

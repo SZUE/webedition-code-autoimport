@@ -22,12 +22,12 @@
  */
 function we_cmd() {
 	var args = [];
-	for(var i = 0; i < arguments.length; i++)
-    {
-        args.push(arguments[i]);
-    }
+	for (var i = 0; i < arguments.length; i++)
+	{
+		args.push(arguments[i]);
+	}
 	if (top.we_cmd) {
-		top.we_cmd.apply(this,args);
+		top.we_cmd.apply(this, args);
 	}
 }
 
@@ -1203,13 +1203,6 @@ function EditorFrame(ref, elementId) {
 		var _update = this.EditorIsHot !== newVal;
 		this.EditorIsHot = newVal;
 		if (_update) {
-			if (!this.EditorIsHot) {
-				var _ed = this.getContentEditor();
-				if (_ed.document.weEditorApplet) {
-					_ed.document.weEditorApplet.setHot(false);
-					_ed.checkAndSetHot();
-				}
-			}
 			this.updateEditorTab();
 		}
 	};

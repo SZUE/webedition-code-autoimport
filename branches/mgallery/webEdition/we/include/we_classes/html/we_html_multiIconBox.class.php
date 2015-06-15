@@ -37,12 +37,12 @@ abstract class we_html_multiIconBox{
 	 * @param	$headline			string
 	 * @return	string
 	 */
-	static function getHTML($name, $width, array $content, $marginLeft = 0, $buttons = '', $foldAtNr = -1, $foldRight = '', $foldDown = '', $displayAtStartup = false, $headline = "", $delegate = "", $height = 0, $overflow = "auto"){
+	static function getHTML($name, $width, array $content, $marginLeft = 0, $buttons = '', $foldAtNr = -1, $foldRight = '', $foldDown = '', $displayAtStartup = false, $headline = '', $delegate = '', $height = 0, $overflow = "auto"){
 		$uniqname = $name ? : md5(uniqid(__FILE__, true));
 
-		$out = (isset($headline) && $headline != '') ?
-			we_html_multiIconBox::_getBoxStartHeadline($width, $headline, $uniqname, $marginLeft, $overflow) :
-			we_html_multiIconBox::_getBoxStart($width, $uniqname);
+		$out = $headline ?
+			we_html_multiIconBox::_getBoxStartHeadline($name, $width, $headline, $uniqname, $marginLeft, $overflow) :
+			we_html_multiIconBox::_getBoxStart($width, $uniqname, $name);
 
 		foreach($content as $i => $c){
 			if($c === null){
@@ -52,8 +52,8 @@ abstract class we_html_multiIconBox{
 
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
 				$out .= we_html_button::create_button_table(array(
-						we_html_multiIconBox::_getButton($uniqname, ($delegate ? : "" ) . ";weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "')", ($displayAtStartup ? "down" : "right"), g_l('global', '[openCloseBox]')),
-						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="' . ($delegate ? : "" ) . ';weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
+						we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');".($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')),
+						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ? : "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 					) .
 					'<br/><table id="table_' . $uniqname . '" width="100%" class="default" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
@@ -98,7 +98,7 @@ abstract class we_html_multiIconBox{
 			$out .= '</td></tr></table>';
 		}
 
-		$boxHTML = $out . we_html_multiIconBox::_getBoxEnd($width);
+		$boxHTML = $out . self::_getBoxEnd();
 
 		return ($buttons ?
 				//ignore height, replace by bottom:
@@ -268,8 +268,8 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 }');
 	}
 
-	static function _getBoxStartHeadline($width, $headline, $uniqname, $marginLeft = 0, $overflow = "auto"){
-		return '<table class="default" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '">
+	static function _getBoxStartHeadline($name, $width, $headline, $uniqname, $marginLeft = 0, $overflow = "auto"){
+		return '<table class="default" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '" id="' . $name . '">
 	<tr>
 		<td style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</td>
 	</tr>
@@ -280,21 +280,18 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 		<td id="td_' . $uniqname . '">';
 	}
 
-	static function _getBoxStart($w, $uniqname){
+	static function _getBoxStart($w, $uniqname, $name = ''){
 		if(strpos($w, "%") === false){
 			$wp = abs($w) . "px";
 		} else {
 			$wp = $w;
 		}
-		return '<table class="default" style="margin-top:10px;width:' . $wp . ';">
+		return '<table class="default" style="margin-top:10px;width:' . $wp . ';" id="' . $name . '">
 	<tr>
-		<td class="defaultfont"><b>' . we_html_tools::getPixel($w, 2) . '</b></td>
-	</tr>
-	<tr>
-		<td id="td_' . $uniqname . '">';
+		<td style="margin-top:2px;" id="td_' . $uniqname . '">';
 	}
 
-	static function _getBoxEnd($w){
+	static function _getBoxEnd(){
 		return '</td>
 	</tr>
 	<tr>

@@ -73,182 +73,40 @@ function initCM() {
 }
 
 function initDefaultEdior() {
-	sizeEditor();
 	document.getElementById("bodydiv").style.display = "block";
+	sizeEditor();
 	window.setTimeout(scrollToPosition, 50);
 }
 
 function sizeEditor() { // to be fixed (on 12.12.11)
-	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-	w = Math.max(w, 350);
-	var editorWidth = w - editorRightSpace;
-	var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "right";
-
+	if (window.editor && window.editor.frame && window.editor.frame.nextSibling !== undefined) {
+		document.getElementById("reindentButton").style.marginRight = (window.editor.frame.nextSibling.offsetWidth - 3) + "px";
+	}
+	var srtable = document.getElementById("srtable");
+	var wizardTable = document.getElementById("weTMPLDocEdit");
+	var editorDiv = document.getElementById("editorDiv");
 	var editarea = document.getElementById("editarea");
+	var cm = document.getElementsByClassName("CodeMirror");
 
-	var wizardTable = document.getElementById("wizardTable");
-	var tagAreaCol = document.getElementById("tagAreaCol");
-	var tagSelectCol = document.getElementById("tagSelectCol");
-	var spacerCol = document.getElementById("spacerCol");
-	var tag_edit_area = document.getElementById("tag_edit_area");
-
-	if (editarea) {
-		editarea.style.width = editorWidth + "px";
-		if (editarea.nextSibling !== undefined && editarea.nextSibling.style) {
-			editarea.nextSibling.style.width = editorWidth + "px";
-		}
+	editorDiv.style.bottom = (wizardTable?wizardTable.offsetHeight :0)+ "px";
+	editarea.style.height = srtable.offsetTop + "px";
+	if (cm && cm.length) {
+		cm[0].style.height = srtable.offsetTop + "px";
 	}
 
-	if (document.weEditorApplet && document.weEditorApplet.width !== undefined) {
-		document.weEditorApplet.width = editorWidth;
-	}
-
-	if (window.editor && window.editor.frame) {
-		if (window.editor.frame.nextSibling !== undefined) {
-			editorWidth -= window.editor.frame.nextSibling.offsetWidth;
-			document.getElementById("reindentButton").style.marginRight = (window.editor.frame.nextSibling.offsetWidth - 3) + "px";
-		}
-		window.editor.frame.style.width = editorWidth + "px";
-	}
-
-	if (h) { // h must be set (h!=0), if several documents are opened very fast -> editors are not loaded then => h = 0
-		if (wizardTable !== null) {
-			var editorHeight = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open));
-
-			if (editarea) {
-				editarea.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-				if (editarea.nextSibling !== undefined && editarea.nextSibling.style)
-					editarea.nextSibling.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-			}
-
-			if (window.editor && window.editor.frame) {
-				window.editor.frame.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-			}
-
-			if (document.weEditorApplet && document.weEditorApplet.setSize !== undefined) {
-				try {
-					document.weEditorApplet.height = editorHeight;
-					//document.weEditorApplet.setSize(editorWidth,editorHeight);
-				} catch (err) {/*nothing*/
-				}
-
-			}
-
-			wizardTable.style.width = editorWidth + "px";
-			//wizardTableButtons.style.width=editorWidth+"px"; // causes problems with codemirror2
-			tagAreaCol.style.width = (editorWidth - 300) + "px";
-			tag_edit_area.style.width = (editorWidth - 300) + "px";
-			tagSelectCol.style.width = "250px";
-			spacerCol.style.width = "50px";
-
-		} else {
-			if (editarea) {
-				editarea.style.height = (h - wizardHeight.closed) + "px";
-				if (editarea.nextSibling !== undefined && editarea.nextSibling.style) {
-					editarea.nextSibling.style.height = (h - wizardHeight.closed) + "px";
-				}
-			}
-
-			if (window.editor && window.editor.frame) {
-				window.editor.frame.style.height = (h - wizardHeight.closed) + "px";
-			}
-
-			if (document.weEditorApplet && document.weEditorApplet.setSize !== undefined) {
-				try {
-					document.weEditorApplet.height = h - wizardHeight.closed;
-					//document.weEditorApplet.setSize(editorWidth,h - wizardHeight.closed);
-				} catch (err) {/*nothing*/
-				}
-			}
-		}
-	}
 	window.scroll(0, 0);
-}
-
-
-function javaEditorSetCode() {// imi: console.log("javaEditorSetCode() called");
-	if (document.weEditorApplet.height != 3000) {
-		try {
-			document.weEditorApplet.setCode(document.forms.we_form.elements["we_" + docName + "_txt[data]"].value);
-			countJEditorInitAttempts = 0;
-		} catch (err) {
-			setTimeout(javaEditorSetCode, 1000);
-		}
-	} else { // change size not yet finished
-		setTimeout(javaEditorSetCode, 1000);
-	}
-}
-
-
-function toggleTagWizard() {
-	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;
-	w = Math.max(w, 350);
-	var editorWidth = w - 37;
-	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-	var wizardOpen = weGetCookieVariable("but_weTMPLDocEdit") == "down";
-	if (document.weEditorApplet) {
-		var editorHeight = h - (wizardOpen ? wizardHeight.closed : wizardHeight.open);
-		document.weEditorApplet.height = editorHeight;
-	} else {
-		var editarea = document.getElementById("editarea");
-		editarea.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-		if (editarea.nextSibling !== undefined && editarea.nextSibling.style)
-			editarea.nextSibling.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-
-		if (window.editor && window.editor.frame) {
-			window.editor.frame.style.height = (h - (wizardOpen ? wizardHeight.closed : wizardHeight.open)) + "px";
-		}
-	}
-}
-
-// ################ Java Editor specific Functions
-
-function weEditorSetHiddenText() {
-	if (document.weEditorApplet && document.weEditorApplet.getCode !== undefined) {
-		if (document.weEditorApplet.isHot()) {
-			_EditorFrame.setEditorIsHot(true);
-			document.weEditorApplet.setHot(false);
-		}
-		document.forms.we_form.elements["we_" + docName + "_txt[data]"].value = document.weEditorApplet.getCode();
-	}
-}
-
-
-function checkAndSetHot() {
-	if (document.weEditorApplet && document.weEditorApplet.isHot !== undefined) {
-		if (document.weEditorApplet.isHot()) {
-			_EditorFrame.setEditorIsHot(true);
-		} else {
-			setTimeout(checkAndSetHot, 1000);
-		}
-	}
-}
-
-
-function setCode() {
-	if (document.weEditorApplet && document.weEditorApplet.setCode !== undefined) {
-		document.weEditorApplet.setCode(document.forms.we_form.elements["we_" + docName + "_txt[data]"].value);
-	}
 }
 
 // ################## Textarea specific functions #############
 
 function getScrollPosTop() {
 	var elem = document.getElementById("editarea");
-	if (elem) {
-		return elem.scrollTop;
-	}
-	return 0;
-
+	return (elem ? elem.scrollTop : 0);
 }
 
 function getScrollPosLeft() {
 	var elem = document.getElementById("editarea");
-	if (elem) {
-		return elem.scrollLeft;
-	}
-	return 0;
+	return  (elem ? elem.scrollLeft : 0);
 }
 
 function scrollToPosition() {
@@ -291,16 +149,10 @@ function setSource(source) {
 	if (editor !== undefined && editor !== null && typeof editor === 'object') {
 		editor.setValue(source);
 	}
-	// for Applet
-	setCode(source);
 }
 
 function getSource() {
-	if (document.weEditorApplet && document.weEditorApplet.getCode !== undefined) {
-		return document.weEditorApplet.getCode();
-	}
 	return document.forms.we_form.elements['we_' + docName + '_txt[data]'].value;
-
 }
 
 function getCharset() {
@@ -472,9 +324,7 @@ function openTagWizardPrompt(_wrongTag) {
 }
 
 function insertAtStart(tagText) {
-	if (document.weEditorApplet && typeof (document.weEditorApplet.insertAtStart) != undefined) {
-		document.weEditorApplet.insertAtStart(tagText);
-	} else if (window.editor && window.editor.frame) {
+	if (window.editor && window.editor.frame) {
 		window.editor.insertIntoLine(window.editor.firstLine(), 0, tagText + "\n");
 	} else {
 		document.we_form["we_" + docName + "_txt[data]"].value = tagText + "\n" + document.we_form["we_" + docName + "_txt[data]"].value;
@@ -483,9 +333,7 @@ function insertAtStart(tagText) {
 }
 
 function insertAtEnd(tagText) {
-	if (document.weEditorApplet && typeof (document.weEditorApplet.insertAtEnd) != undefined) {
-		document.weEditorApplet.insertAtEnd(tagText);
-	} else if (window.editor && window.editor.frame) {
+	if (window.editor && window.editor.frame) {
 		window.editor.insertIntoLine(window.editor.lastLine(), "end", "\n" + tagText);
 	} else {
 		document.we_form["we_" + docName + "_txt[data]"].value += "\n" + tagText;
@@ -494,26 +342,24 @@ function insertAtEnd(tagText) {
 }
 
 function addCursorPosition(tagText) {
-	if (document.weEditorApplet && typeof (document.weEditorApplet.replaceSelection) != undefined) {
-		document.weEditorApplet.replaceSelection(tagText);
-	} else if (window.editor && window.editor.frame) {
+	if (window.editor && window.editor.frame) {
 		window.editor.replaceSelection(tagText);
+		return;
+	}
+	var weForm = document.we_form["we_" + docName + "_txt[data]"];
+	if (document.selection) {
+		weForm.focus();
+		document.selection.createRange().text = tagText;
+		document.selection.createRange().select();
+	} else if (weForm.selectionStart || weForm.selectionStart == "0") {
+		intStart = weForm.selectionStart;
+		intEnd = weForm.selectionEnd;
+		weForm.value = (weForm.value).substring(0, intStart) + tagText + (weForm.value).substring(intEnd, weForm.value.length);
+		window.setTimeout(scrollToPosition, 50);
+		weForm.focus();
+		weForm.selectionStart = eval(intStart + tagText.length);
+		weForm.selectionEnd = eval(intStart + tagText.length);
 	} else {
-		var weForm = document.we_form["we_" + docName + "_txt[data]"];
-		if (document.selection) {
-			weForm.focus();
-			document.selection.createRange().text = tagText;
-			document.selection.createRange().select();
-		} else if (weForm.selectionStart || weForm.selectionStart == "0") {
-			intStart = weForm.selectionStart;
-			intEnd = weForm.selectionEnd;
-			weForm.value = (weForm.value).substring(0, intStart) + tagText + (weForm.value).substring(intEnd, weForm.value.length);
-			window.setTimeout(scrollToPosition, 50);
-			weForm.focus();
-			weForm.selectionStart = eval(intStart + tagText.length);
-			weForm.selectionEnd = eval(intStart + tagText.length);
-		} else {
-			weForm.value += tagText;
-		}
+		weForm.value += tagText;
 	}
 }

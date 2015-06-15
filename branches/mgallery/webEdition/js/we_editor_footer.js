@@ -63,7 +63,7 @@ function editSource() {
 	if (top.plugin.editSource) {
 		top.plugin.editSource(doc.editFilename, doc.contentType);
 	} else {
-		we_cmd("initPlugin", "top.plugin.editSource(\"" + doc.editFilename + "\",\"" + doc.contentType + "\")");
+		we_cmd("initPlugin", "top.plugin.editSource('" + doc.editFilename + "','" + doc.contentType + "')");
 	}
 }
 

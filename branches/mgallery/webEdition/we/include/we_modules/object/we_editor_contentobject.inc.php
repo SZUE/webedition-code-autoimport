@@ -91,7 +91,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
  </tr>
  </table>
  </div>' .
-		we_html_multiIconBox::_getBoxEnd('100%');
+		we_html_multiIconBox::_getBoxEnd();
 
 		$js = '';
 		for($i = 0; $i <= $count && $sort; $i++){

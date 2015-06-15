@@ -132,9 +132,6 @@ function we_submitForm(target, url) {
 		} else if (_EditorFrame.getEditorDidSetHiddenText()) {
 			_EditorFrame.setEditorDidSetHiddenText(false);
 		}
-		if ((self.weEditorSetHiddenText) !== undefined) {
-			self.weEditorSetHiddenText();
-		}
 	}
 	f.submit();
 }
