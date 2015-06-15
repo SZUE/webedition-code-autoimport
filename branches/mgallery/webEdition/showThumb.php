@@ -34,7 +34,7 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 
 	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
 
-	$table = '<table class="default" cellpadding="5"><tr>';
+	$table = '<table class="default"><tr>';
 
 	foreach($thumbIDs as $thumbid){
 		$thumbObj = new we_thumbnail();

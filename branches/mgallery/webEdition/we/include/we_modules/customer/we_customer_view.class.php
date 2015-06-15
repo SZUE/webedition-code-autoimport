@@ -970,7 +970,7 @@ self.close();');
 
 				$img->initByID($imgId, FILE_TABLE);
 				return '
-<table class="weEditTable" cellpadding="2" cellspacing="2">
+<table class="weEditTable">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" align="center">' . $img->getHtml() . we_html_element::htmlHidden($field, $imgId) . '</td>
 	</tr>
@@ -987,7 +987,7 @@ self.close();');
 	}
 
 	private function getCommonTable(array $common, $isAll){
-		$table = new we_html_table(array('width' => 500, 'height' => 50, 'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0), 1, 2);
+		$table = new we_html_table(array('width' => 500, 'height' => 50, 'class' => 'customer'), 1, 2);
 		$c = 0;
 		$table->setRow(0, array('valign' => 'top'));
 		foreach($common as $pk => $pv){
@@ -1042,7 +1042,7 @@ self.close();');
 	}
 
 	private function getOtherTable(array $other, $isAll){
-		$table = new we_html_table(array('width' => 500, 'height' => 50, 'cellpadding' => 10, 'cellspacing' => 0, 'border' => 0), 1, 2);
+		$table = new we_html_table(array('width' => 500, 'height' => 50, 'class' => 'customer'), 1, 2);
 		$c = 0;
 		$table->setRow(0, array('valign' => 'top'));
 		foreach($other as $k => $v){
@@ -1174,7 +1174,7 @@ self.close();');
 						}
 					}
 
-					$table = new we_html_table(array("width" => 500, "height" => 50, "cellpadding" => 10, "cellspacing" => 0, "border" => 0), 1, 2);
+					$table = new we_html_table(array("width" => 500, "height" => 50, "class" => 'customer'), 1, 2);
 					$c = 0;
 					$table->setRow(0, array("valign" => "top"));
 					foreach($branch as $k => $v){

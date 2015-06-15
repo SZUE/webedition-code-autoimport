@@ -1291,9 +1291,7 @@ _multiEditorreload = true;';
 	}
 
 	function formGroupData(){
-		$_attr = array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0);
-
-		$_tableObj = new we_html_table($_attr, 5, 1);
+		$_tableObj = new we_html_table(array(), 5, 1);
 
 		$_username = $this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
@@ -1357,9 +1355,8 @@ _multiEditorreload = true;';
 
 	function formUserData(){
 		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
-		$_attr = array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0);
 
-		$_tableObj = new we_html_table($_attr, 12, 2, array(
+		$_tableObj = new we_html_table(array(), 12, 2, array(
 			array(array(null, $this->getUserfield('Salutation', 'salutation'))),
 			array(
 				array(null, $this->getUserfield('First', 'first_name')),
@@ -1650,7 +1647,7 @@ function delElement(elvalues,elem) {
 
 			//$content .= '<p>';
 
-			$content1.='<input type="hidden" name="' . $obj_values . '" value="" /><table border="0" cellpadding="0" cellspacing="2" width="520">';
+			$content1.='<input type="hidden" name="' . $obj_values . '" value="" /><table width="520">';
 			foreach($v as $key => $val){
 				$value = $val;
 				$path = f('SELECT Path FROM ' . $k . ' WHERE ' . $k . '.ID=' . $value, '', $this->DB_WE);
@@ -2132,7 +2129,7 @@ function show_seem_chooser(val) {
 		$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200);
 
 		// Create predefined window dimension buttons
-		$_window_predefined_table = new we_html_table(array("border" => 0, "align" => "right", "cellpadding" => 1, "cellspacing" => 0), 3, 1);
+		$_window_predefined_table = new we_html_table(array("align" => "right"), 3, 1);
 
 		$_window_predefined_table->setCol(0, 0, null, we_html_button::create_button_table(array(we_html_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';", true), we_html_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';", true))));
 		$_window_predefined_table->setCol(2, 0, null, we_html_button::create_button_table(array(we_html_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true), we_html_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true))));

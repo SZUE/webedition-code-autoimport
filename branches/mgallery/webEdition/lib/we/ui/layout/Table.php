@@ -43,7 +43,6 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 */
 	protected $_cellAttributes = array();
 
-
 	/**
 	 * Pointer to the current row
 	 *
@@ -292,19 +291,17 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @return integer
 	 */
 	public function getBorder(){
+		t_e('deprecated', __FUNCTION__);
 		return 0;
 	}
 
 	public function getCellPadding(){
+		t_e('deprecated', __FUNCTION__);
 		return 0;
 	}
 
-	/**
-	 * Retrieve cellspacing attribute
-	 *
-	 * @return integer
-	 */
 	public function getCellSpacing(){
+		t_e('deprecated', __FUNCTION__);
 		return 0;
 	}
 
@@ -314,19 +311,16 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 * @param integer $border
 	 * @return void
 	 */
-	public function setBorder($border){
+	public function setBorder(){
+		t_e('deprecated', __FUNCTION__);
 	}
 
-	public function setCellPadding($cellPadding){
+	public function setCellPadding(){
+		t_e('deprecated', __FUNCTION__);
 	}
 
-	/**
-	 * Sets the cellspaceing attribute
-	 *
-	 * @param integer $cellSpacing
-	 * @return void
-	 */
-	public function setCellSpacing($cellSpacing){
+	public function setCellSpacing(){
+		t_e('deprecated', __FUNCTION__);
 	}
 
 }

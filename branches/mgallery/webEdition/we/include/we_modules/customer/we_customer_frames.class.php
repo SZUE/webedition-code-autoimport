@@ -297,7 +297,7 @@ top.content.hloaded = 1;'));
 		switch($type){
 			case "branch":
 				$hiddens.=we_html_element::htmlHidden("pnt", "branch_editor");
-				$edit = new we_html_table(array("border" => 0, "cellpadding" => 3, "cellspacing" => 3, "width" => 300), 1, 2);
+				$edit = new we_html_table(array("width" => 300), 1, 2);
 				$edit->setCol(0, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer', '[field_name]'));
 				$edit->setCol(0, 1, array("valign" => "middle", "class" => "defaultfont"), we_html_tools::htmlTextInput("name", 26, $branch, '', ''));
 
@@ -323,7 +323,7 @@ top.content.hloaded = 1;'));
 					$enc->selectOption(1);
 				}
 
-				$edit = new we_html_table(array("border" => 0, "cellpadding" => 3, "cellspacing" => 3, "width" => 300), 5, 2);
+				$edit = new we_html_table(array("width" => 300), 5, 2);
 
 				$edit->setCol(0, 0, array("valign" => "middle", "class" => "defaultgray"), g_l('modules_customer', '[branch]'));
 				$edit->setCol(0, 1, array("valign" => "middle", "class" => "defaultfont"), $branch);
@@ -443,7 +443,7 @@ top.content.hloaded = 1;'));
 			}
 		}
 
-		$table = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0, 'width' => 550, 'height' => 50), 3, 1);
+		$table = new we_html_table(array('width' => 550, 'height' => 50), 3, 1);
 		$table->setCol(0, 0, array(), $search->getHtml());
 		$table->setCol(1, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[search_result]'));
 		$table->setCol(2, 0, array(), $select->getHtml());

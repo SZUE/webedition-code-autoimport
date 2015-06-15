@@ -940,7 +940,8 @@ div.progress_failed{
 	background: linear-gradient(#fe7c8b, #de3a3a 50%,#ff8da3);
 }
 
-table.default{
+table.default,
+table.customer{
 	border:none;
 	border-spacing:0px;
 }
@@ -948,4 +949,9 @@ table.default{
 table.default td,
 table.default th{
 	padding:0xp;
+}
+
+table.customer td,
+table.customer th{
+	padding:10xp;
 }

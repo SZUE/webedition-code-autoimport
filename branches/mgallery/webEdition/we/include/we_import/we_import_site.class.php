@@ -771,7 +771,7 @@ function doUnload() {
 				$ratio_checkbox = we_html_forms::checkbox(
 						1, $this->keepRatio, "keepRatio", g_l('thumbnails', '[ratio]'));
 
-				$_resize = '<table border="0" cellpadding="2" cellspacing="0">
+				$_resize = '<table>
 				<tr>
 					<td class="defaultfont">' . g_l('weClass', '[width]') . ':</td>
 					<td>' . $widthInput . '</td>

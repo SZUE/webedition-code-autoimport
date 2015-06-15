@@ -25,7 +25,7 @@ echo (!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmlto
  STYLESHEET;
 
 $_row = 0;
-$_starttable = new we_html_table(array("border" => 0, "cellpadding" => 7, "cellspacing" => 0), 3, 1);
+$_starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), $title);
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
 $_starttable->setCol($_row++, 0, array("align" => "center"), $content);

@@ -255,7 +255,7 @@ function we_getImageResizeDialog(){
 
 	$ratio_checkbox = we_html_forms::checkbox(1, true, "ratio", g_l('thumbnails', '[ratio]'), false, "defaultfont", "if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
 
-	$_table = '<table border="0" cellpadding="2" cellspacing="0">
+	$_table = '<table>
 	<tr>
 		<td class="defaultfont">' . g_l('weClass', '[width]') . ':</td>
 		<td>' . $widthInput . '</td>

@@ -30,7 +30,7 @@ echo STYLESHEET .
 </head>
 <body class="weEditorBody">
 	<form name="we_form"><?php echo we_class::hiddenTrans(); ?>
-		<table cellpadding="6" cellspacing="0" border="0">
+		<table cellpadding="6">
 			<?php
 			$parts = array();
 
@@ -77,7 +77,7 @@ echo STYLESHEET .
 
 						$delbut = we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('del_thumb','" . $thumbid . "');", true, 30);
 
-						$thumbnail = '<table cellspacing="0" style="boder:0px;padding:0x;width:570px;"><tr><td width="538"><img src="' . $src . '" width="' . $thumbObj->getOutputWidth() .
+						$thumbnail = '<table class="default" style="width:570px;"><tr><td width="538"><img src="' . $src . '" width="' . $thumbObj->getOutputWidth() .
 							'" height="' . $thumbObj->getOutputHeight() . '" border="0" /></td><td width="10">' . we_html_tools::getPixel(10, 2) . '</td><td width="22">' . $delbut . '</td></tr></table>';
 
 						$parts[] = array("headline" => $thumbObj->getThumbName(),

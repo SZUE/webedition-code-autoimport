@@ -24,7 +24,7 @@
  */
 function getObjectTags($id, $isField = false){
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
-	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
+	$content = '<table style="border:1px solid black;width:400px">';
 	$regs = array();
 	foreach($tableInfo as $cur){
 		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
@@ -42,7 +42,7 @@ function getMultiObjectTags($name){
 	}
 	$id = $_SESSION['weS']['we_data'][$cmd3][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"];
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
-	$content = '<table cellpadding="2" cellspacing="0" border="1" width="400">';
+	$content = '<table style="border:1px solid black;width:400px">';
 
 	//FIXME: causes internal server error
 	$regs = array();
@@ -147,7 +147,7 @@ $content = '<html>
 		<we:keywords></we:keywords>
 	</head>
 	<body>
-		<table cellpadding="2" cellspacing="0" border="1" width="400">
+		<table style="border1px solid black;width:400px">
 ';
 
 if($sort){
@@ -165,7 +165,7 @@ if($_SESSION['weS']['we_data'][$cmd3][0]["ID"]){
 		<p>
 		<we:listview type="object" classid="' . $_SESSION['weS']['we_data'][$cmd3][0]["ID"] . '" rows="10">
 			<we:repeat>
-		<p><table cellpadding="2" cellspacing="0" border="1" width="400">';
+		<p><table style="border:1px solid black;width:400px">';
 
 
 	if($sort){

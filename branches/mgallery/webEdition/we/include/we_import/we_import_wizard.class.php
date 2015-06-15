@@ -608,7 +608,7 @@ handle_event("previous");');
 
 		$parts = array();
 		if($we_valid){
-			$tbl_extra = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 0, 'border' => 0), 5, 1);
+			$tbl_extra = new we_html_table(array(), 5, 1);
 
 			// import documents
 			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v['import_docs']) && $v['import_docs']) ? true : false, 'v[import_docs]', g_l('import', '[import_docs]'), false, 'defaultfont', "toggle('doc_table')"));
@@ -633,7 +633,7 @@ handle_event("previous");');
 
 			$docPath = weSuggest::getYuiFiles() . $yuiSuggest->getHTML();
 
-			$attribs = array('cellpadding' => 2, 'cellspacing' => 2, 'border' => 0, 'id' => 'doc_table');
+			$attribs = array('id' => 'doc_table');
 
 			$dir_table = new we_html_table($attribs, 3, 2);
 			if((isset($v['import_docs']) && !$v['import_docs'])){
@@ -689,7 +689,7 @@ handle_event("previous");');
 
 
 			if(defined('OBJECT_TABLE')){
-				$tbl_extra = new we_html_table(array("cellpadding" => 2, "cellspacing" => 0, "border" => 0), 2, 1);
+				$tbl_extra = new we_html_table(array(), 2, 1);
 				$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_objs"]) && $v["import_objs"]) ? true : false, "v[import_objs]", g_l('import', '[import_objs]')));
 				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_classes"]) && $v["import_classes"]) ? true : false, "v[import_classes]", g_l('import', '[import_classes]')));
 
@@ -700,7 +700,7 @@ handle_event("previous");');
 				);
 			}
 
-			$tbl_extra = new we_html_table(array("cellpadding" => 2, "cellspacing" => 0, "border" => 0), 4, 1);
+			$tbl_extra = new we_html_table(array(), 4, 1);
 			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_dt"]) && $v["import_dt"]) ? true : false, "v[import_dt]", g_l('import', '[import_doctypes]')));
 			$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_ct"]) && $v["import_ct"]) ? true : false, "v[import_ct]", g_l('import', '[import_cats]')));
 			$tbl_extra->setCol(2, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_navigation"]) && $v["import_navigation"]) ? true : false, "v[import_navigation]", g_l('import', '[import_navigation]'), false, 'defaultfont', "toggle('navigation_table')"));
@@ -712,7 +712,7 @@ handle_event("previous");');
 
 			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('openNavigationDirselector','" . $wecmdenc1 . "','','" . $wecmdenc2 . "');");
 
-			$attribs = array("cellpadding" => 2, "cellspacing" => 2, "border" => 0, "id" => "navigation_table");
+			$attribs = array("id" => "navigation_table");
 			$yuiSuggest->setAcId("NaviPath");
 			$yuiSuggest->setContentType("folder");
 			$yuiSuggest->setInput("v[navigation_dir]", (isset($v["navigation_dir"]) ? $v["navigation_dir"] : id_to_path($rootDirID)));
@@ -795,11 +795,11 @@ handle_event("previous");');
 			$show_owner_opt = strpos($header, '<we:info>') !== false;
 
 			if($show_owner_opt){
-				$tbl_extra = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 0, 'border' => 0), 2, 1);
+				$tbl_extra = new we_html_table(array(), 2, 1);
 				$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v['import_owners']) && $v['import_owners']) ? true : false, 'v[import_owners]', g_l('import', '[handle_owners]')));
 				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v['owners_overwrite']) && $v['owners_overwrite']) ? true : false, 'v[owners_overwrite]', g_l('import', '[owner_overwrite]')));
 
-				$tbl_extra2 = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 0, 'border' => 0), 1, 2);
+				$tbl_extra2 = new we_html_table(array(), 1, 2);
 				$tbl_extra2->setCol(0, 0, null, we_html_tools::getPixel(20, 20));
 				$tbl_extra2->setCol(0, 1, null, $this->formWeChooser(USER_TABLE, '', 0, 'v[owners_overwrite_id]', (isset($v['owners_overwrite_id']) ? $v['owners_overwrite_id'] : 0), 'v[owners_overwrite_path]', (isset($v['owners_overwrite_path']) ? $v['owners_overwrite_path'] : '/')));
 

@@ -521,7 +521,7 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 
 		$out = '
-<table cellpadding="2" cellspacing="0" border="0" width="510">
+<table style="width:510px">
 <form name="we_form_search" action="" onsubmit="sub();return false;" methode="GET">
 ' . we_class::hiddenTrans() . '
 <input type="hidden" name="todo" />

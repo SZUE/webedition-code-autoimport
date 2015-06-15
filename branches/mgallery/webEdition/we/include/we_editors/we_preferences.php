@@ -649,7 +649,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_languages->selectOption(get_value('Language'));
 				// Lang notice
 				$langNote = '<div id="langnote" style="padding: 5px; background-color: rgb(221, 221, 221); width: 190px; display:none">
-<table border="0" cellpadding="2" width="100%">
+<table width="100%">
 <tbody>
 <tr>
 <td style="padding-right: 10px;" valign="top">
@@ -1063,7 +1063,7 @@ function build_dialog($selected_setting = 'ui'){
 			setlocale(LC_ALL, $oldLocale);
 			$countries_top = explode(',', get_value('WE_COUNTRIES_TOP'));
 			$countries_shown = explode(',', get_value('WE_COUNTRIES_SHOWN'));
-			$tabC = new we_html_table(array('border' => 1, 'cellpadding' => 2, 'cellspacing' => 0), 1, 4);
+			$tabC = new we_html_table(array('style' => 'border:1px solid black'), 1, 4);
 			$i = 0;
 			$tabC->setCol($i, 0, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_country]'));
 			$tabC->setCol($i, 1, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_top]'));
@@ -1471,7 +1471,7 @@ for(i=0;i<elements.length; ++i){
 				$_formmail_log->addOption(0, g_l('prefs', '[no]'));
 				$_formmail_log->selectOption(get_value("FORMMAIL_LOG") ? 1 : 0);
 
-				$_html = '<table border="0" cellpading="0" cellspacing="0">
+				$_html = '<table class="default">
 							<tr>
 								<td>' . $_formmail_log->getHtml() . '</td>
 								<td style="padding-left:10px;">' . we_html_button::create_button("logbook", 'javascript:we_cmd(\'show_formmail_log\')') . '</td>
@@ -1519,7 +1519,7 @@ for(i=0;i<elements.length; ++i){
 				$_formmail_block->addOption(0, g_l('prefs', '[no]'));
 				$_formmail_block->selectOption(get_value("FORMMAIL_BLOCK") ? 1 : 0);
 
-				$_html = '<table border="0" cellpading="0" cellspacing="0">
+				$_html = '<table class="default">
 							<tr>
 								<td>' . $_formmail_block->getHtml() . '</td>
 								<td style="padding-left:10px;">' . we_html_button::create_button("logbook", 'javascript:we_cmd(\'show_formmail_block_log\')') . '</td>

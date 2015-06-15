@@ -887,7 +887,7 @@ set_button_state(false);';
 		$out .= g_l('versions', '[step2_txt3]') .
 			'</div>
 <div style="background-color:#fff;width:520px;margin-top:20px;">
-	<table border="0" cellpadding="2" cellspacing="0" width="100%">
+	<table width="100%">
 		<tr class="defaultfont" style="height:30px;">
 		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[_id]') . '</th>
 		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[path]') . '</th>
@@ -1011,7 +1011,7 @@ set_button_state(false);';
 		$out = '
 <div style="width:520px;">' . sprintf(g_l('versions', '[step2_txt_reset]'), date("d.m.y - H:i:s", $timestamp)) . '</div>
 <div style="background-color:#fff;width:520px;margin-top:20px;">
-	<table border="0" cellpadding="2" cellspacing="0" width="100%">
+	<table width="100%">
 	<tr class="defaultfont" style="height:30px;">
 		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[_id]') . '</th>
 		<th style="border-bottom:1px solid #B7B5B6;">' . g_l('versions', '[path]') . '</th>

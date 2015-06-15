@@ -160,7 +160,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			case we_base_ContentTypes::IMAGE:
 				$_metaData = $GLOBALS['we_doc']->getMetaData();
 				$_metaDataTable = '
-<table style="border:0px;padding:0px;" cellspacing="0">
+<table class="default">
 	<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_exif_data]') . '</td></tr>';
 				if(isset($_metaData["exif"])){
 					foreach($_metaData["exif"] as $_key => $_val){
@@ -186,7 +186,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 				if($GLOBALS['we_doc']->Extension === '.pdf'){
 					$metaData = $GLOBALS['we_doc']->getMetaData();
 					$_metaDataTable = '
-<table style="border:0px;padding:0px;" cellspacing="0">
+<table class="default">
 	<tr><td style="padding-bottom: 5px;" class="weMultiIconBoxHeadline" colspan="2">' . g_l('metadata', '[info_pdf_data]') . '</td></tr>';
 					if(!empty($metaData['pdf'])){
 						foreach($metaData['pdf'] as $key => $val){

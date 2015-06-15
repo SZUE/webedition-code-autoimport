@@ -743,22 +743,17 @@ this.selectedIndex = 0;' .
 		$yesButton = ($yes ? we_html_button::create_button(we_html_button::YES, 'javascript:' . $yesHandler) : '');
 
 
-		$content = new we_html_table(array('cellpadding' => 10, 'cellspacing' => 0, 'border' => 0), 1, ($img ? 2 : 1));
+		$content = new we_html_table(array('class' => 'default'), 1, ($img ? 2 : 1));
 
-		if(!empty($img) && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
+		if($img && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
-			$content->setCol(
-				0, 0, array(
-				'valign' => 'top'
-				), we_html_element::htmlImg(
+			$content->setCol(0, 0, array('valign' => 'top', 'style' => 'padding:10px;'), we_html_element::htmlImg(
 					array(
 						'src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1]
 			)));
 		}
 
-		$content->setCol(0, ($img ? 1 : 0), array(
-			'class' => 'defaultfont'
-			), $text);
+		$content->setCol(0, ($img ? 1 : 0), array('class' => 'defaultfont', 'style' => 'padding:10px;'), $text);
 
 		return self::htmlDialogLayout(
 				($script ? we_html_element::jsElement($script) : '') . $content->getHtml()
@@ -841,7 +836,7 @@ function clip_' . $unique . '(){
 			}
 		}
 
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" cellpadding="2" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
+		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
 	}
 
 	public static function setHttpCode($status){

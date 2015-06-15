@@ -321,7 +321,7 @@ function closeAllType(){
 	}
 
 	function getHTMLTab2(){
-		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 5, 1);
+		$formattable = new we_html_table(array(), 5, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', '[handle_def_templates]'), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', '[handle_document_includes]'), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 		if(defined('OBJECT_TABLE')){
@@ -338,7 +338,7 @@ function closeAllType(){
 		);
 
 		if(defined('OBJECT_TABLE')){
-			$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
+			$formattable = new we_html_table(array(), 3, 1);
 			$formattable->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', '[handle_def_classes]'), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 			$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', '[handle_object_embeds]'), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 			$parts[] = array(
@@ -348,7 +348,7 @@ function closeAllType(){
 			);
 		}
 
-		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
+		$formattable = new we_html_table(array(), 3, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDoctypes ? true : false), "HandleDoctypes", g_l('export', '[handle_doctypes]'), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleCategorys ? true : false), "HandleCategorys", g_l('export', '[handle_categorys]'), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 		$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleNavigation ? true : false), "HandleNavigation", g_l('export', '[handle_navigation]'), false, 'defaultfont', $this->topFrame . '.hot=1;', false, g_l('export', '[navigation_hint]'), 1, 509));
@@ -365,7 +365,7 @@ function closeAllType(){
 			"space" => $this->_space_size
 		);
 
-		$formattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 1, 1);
+		$formattable = new we_html_table(array(), 1, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleOwners ? true : false), "HandleOwners", g_l('export', '[handle_owners]'), false, 'defaultfont', $this->topFrame . '.hot=1;'));
 
 		$parts[] = array(

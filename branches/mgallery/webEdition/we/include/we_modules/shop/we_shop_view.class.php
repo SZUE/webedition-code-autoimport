@@ -346,7 +346,7 @@ function submitForm() {
 			echo we_html_element::jsElement('top.content.deleteEntry(' . $bid . ')') .
 			'</head>
 			<body class="weEditorBody" onunload="doUnload()">
-			<table border="0" cellpadding="0" cellspacing="2" width="300">
+			<table width="300">
 			  <tr>
 				<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout('<span class="defaultfont">' . g_l('modules_shop', '[geloscht]') . '</span>', g_l('modules_shop', '[loscht]')) . '</td>
 			  </tr>
@@ -447,7 +447,7 @@ function submitForm() {
 				echo we_html_element::jsElement('parent.parent.getElementById(iconbar).location.reload();') . '
 			</head>
 			<body class="weEditorBody" onunload="doUnload()">
-			<table border="0" cellpadding="0" cellspacing="2" width="300">
+			<table width="300">
 		      <tr>
 			<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop', '[orderDoesNotExist]') . "</span>", g_l('modules_shop', '[loscht]')) . '</td>
 		      </tr>

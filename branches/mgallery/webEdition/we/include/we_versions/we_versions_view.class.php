@@ -646,7 +646,7 @@ function delRow(id) {
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
-<table cellpadding="2" cellspacing="0"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
+<table id="advSearch2" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 <tbody id="filterTable">
 <tr>
 	<td>' . we_class::hiddenTrans() . '</td>
@@ -1012,7 +1012,7 @@ function delRow(id) {
 	public function tblList($content, $headline){
 		//$anz = count($headline) - 1;
 		return '
-<table border="0" style="background-color:#fff;" width="100%" cellpadding="5" cellspacing="0">
+<table border="0" style="background-color:#fff;" width="100%" cellpadding="5">
 <tr>
 	<td valign="top" style="width:15px;border-bottom:1px solid #AFB0AF;">' . we_html_tools::getPixel(15, 1) . '</td>
 	<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
@@ -1028,7 +1028,7 @@ function delRow(id) {
 	}
 
 	function tabListContent($searchstart, $anzahl, $content){
-		$out = '<table border="0" cellpadding="5" cellspacing="0" width="100%" id="contentTable">';
+		$out = '<table cellpadding="5" width="100%" id="contentTable">';
 
 		$anz = count($content);
 		$x = $searchstart + $anzahl;

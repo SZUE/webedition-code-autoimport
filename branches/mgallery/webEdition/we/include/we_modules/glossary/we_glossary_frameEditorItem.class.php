@@ -667,7 +667,7 @@ function we_save() {
 
 		$_input_width = 70;
 
-		$_popup = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0), 4, 4);
+		$_popup = new we_html_table(array('cellpadding' => 5), 4, 4);
 
 		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
 		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($weGlossaryFrames->View->Glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));

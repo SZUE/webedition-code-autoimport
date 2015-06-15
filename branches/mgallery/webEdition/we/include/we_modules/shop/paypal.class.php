@@ -252,7 +252,7 @@ class paypal_class{
 		// add_field() function.
 
 		echo "<h3>paypal_class->dump_fields() Output:</h3>";
-		echo "<table width=\"95%\" border=\"1\" cellpadding=\"2\" cellspacing=\"0\">
+		echo "<table style=\"width:95%;border:1px solid black;\">
             <tr>
                <td style=\"background-color:black;text-weight:bold;color:white;\">Field Name</td>
                <td style=\"background-color:black;text-weight:bold;color:white;\">Value</td>

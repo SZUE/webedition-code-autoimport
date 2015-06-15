@@ -228,7 +228,7 @@ if(isset($daten)){
 
 				$classid = abs(we_base_request::_(we_base_request::INT, "ViewClass")); // gets the value from the selectbox;
 
-				$classSelectTable .= '<table cellpadding="2" cellspacing="0" width="600" border="0">
+				$classSelectTable .= '<table width="600">
     <tr>
         <td colspan="2" class="defaultfont">' . $selClass . '</td>
     </tr>
@@ -316,7 +316,7 @@ if(isset($daten)){
 			} else { // if there is an empty result form the object table
 				$parts = array(
 					array(
-						'html' => '<table cellpadding="2" cellspacing="0" width="100%" border="0">' .
+						'html' => '<table width="100%">' .
 						'<tr><td class="defaultfont">' . g_l('modules_shop', '[noRecordAlert]') . '</td></tr>' .
 						'<tr><td class="defaultfont">' . we_html_button::create_button("fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '</td></tr>' .
 						'</table>',

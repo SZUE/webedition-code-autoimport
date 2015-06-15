@@ -166,7 +166,7 @@ if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
 		}
 
 		// if button is between these radio boces, they can not be reachable with <tab>
-		$_modetable->setCol(0, 0, array(), '<table style="border:0px;padding:0px;" cellspacing="0">
+		$_modetable->setCol(0, 0, array(), '<table class="default">
 		<tr><td>' . $we_login_type . '</td></tr>' .
 			'<tr><td>' .
 			we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .

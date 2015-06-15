@@ -103,7 +103,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <table style="margin-left:30px;" class="default">
 <tr>
 <td class="defaultfont" width="600">
-<table cellpadding="6" cellspacing="0" border="0">' .
+<table cellpadding="6">' .
 			$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
 			'</table>
 		</td>

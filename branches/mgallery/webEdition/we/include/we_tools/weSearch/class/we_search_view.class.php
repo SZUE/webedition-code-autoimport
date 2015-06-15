@@ -556,9 +556,6 @@ weSearch.g_l = {
 
 		$_table = new we_html_table(
 			array(
-			'border' => 0,
-			'cellpadding' => 2,
-			'cellspacing' => 0,
 			'width' => 500,
 			'height' => 50
 			), 5, 2);
@@ -592,9 +589,6 @@ weSearch.g_l = {
 	function getSearchDialogMediaType($whichSearch){
 		$_table = new we_html_table(
 			array(
-			'border' => 0,
-			'cellpadding' => 2,
-			'cellspacing' => 0,
 			'width' => 500,
 			'height' => 50
 			), 7, 3);
@@ -628,9 +622,6 @@ weSearch.g_l = {
 	function getSearchDialogFilter($whichSearch){
 		$_table = new we_html_table(
 			array(
-			'border' => 0,
-			'cellpadding' => 2,
-			'cellspacing' => 0,
 			'width' => 500,
 			'height' => 50
 			), 7, 4);
@@ -783,9 +774,6 @@ weSearch.g_l = {
 
 		$_table = new we_html_table(
 			array(
-			'border' => 0,
-			'cellpadding' => 2,
-			'cellspacing' => 0,
 			'width' => 550,
 			'height' => 50
 			), 4, 3);
@@ -1996,7 +1984,7 @@ weSearch.g_l = {
 			$this->searchclass->height = 0;
 		}
 
-		$out = '<div style="margin-left:123px;"><div id="mouseOverDivs_AdvSearch"></div><table cellpadding="3" cellspacing="0" border="0">
+		$out = '<div style="margin-left:123px;"><div id="mouseOverDivs_AdvSearch"></div><table>
 <tbody id="filterTableAdvSearch">
 <tr>
  <td></td>
@@ -2186,7 +2174,7 @@ weSearch.g_l = {
 			$this->searchclass->height = 0;
 		}
 
-		$out = '<div ' . ($whichSearch === self::SEARCH_MEDIA ? '' : 'style="margin-left:123px;"') . '><div id="mouseOverDivs_' . $whichSearch . '"></div><table cellpadding="3" cellspacing="0" border="0">
+		$out = '<div ' . ($whichSearch === self::SEARCH_MEDIA ? '' : 'style="margin-left:123px;"') . '><div id="mouseOverDivs_' . $whichSearch . '"></div><table>
 <tbody id="filterTable' . $whichSearch . '">
 <tr>
  <td></td>
@@ -2442,7 +2430,7 @@ weSearch.g_l = {
 			<div style="width:100%;border-top:1px solid #DDDDDD;">
 				<div style="padding:15px;display: inline-block;">' . $content[$n][5]["dat"] . '</div>
 
-					<table style="font-size:10px;margin-left:150px;width:200px;display:inline-table;" border="0" cellspacing="0" cellpadding="3">
+					<table style="font-size:10px;margin-left:150px;width:200px;display:inline-table;">
 					<tr>
 					<td colspan="2" style="font-size:12px;">' . $content[$n][9]["dat"] . '<br/><br/></td></tr>
 					<tr><td valign="top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
@@ -2474,7 +2462,7 @@ weSearch.g_l = {
 				$outDivs .= '
 					<div style="height:20px;overflow:hidden;border-top:1px solid #DDDDDD;margin-top:15px;padding:5px 0px 0px 15px;">' . g_l('searchtool', '[metafelder]') . ':</div>
 						<div style="background-color:#FFF;margin:10px 10px 10px 15px;">
-						<table style="font-size:10px;" border="0" cellspacing="0" cellpadding="3">';
+						<table style="font-size:10px;">';
 				foreach($content[$n][15]["dat"] as $k => $v){
 					$outDivs .= '<tr><td>' . we_util_Strings::shortenPath($k, 90) . ':' . '</td><td>' . we_util_Strings::shortenPath($v, 90) . '</td></tr>';
 				}

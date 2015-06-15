@@ -264,7 +264,7 @@ class we_customer_EIWizard{
 
 					break;
 				case self::TYPE_CSV:
-					$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 5, 1);
+					$fileformattable = new we_html_table(array(), 5, 1);
 
 					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
@@ -731,7 +731,7 @@ class we_customer_EIWizard{
 
 					//t_e($csv_delimiter, $csv_enclose, $max, $charCount, $r, $n, $csv_lineend, $csv_fieldnames,$line);
 
-					$fileformattable = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 6, 1);
+					$fileformattable = new we_html_table(array(), 6, 1);
 
 					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
@@ -951,7 +951,7 @@ class we_customer_EIWizard{
 		$tmpdir = we_base_request::_(we_base_request::FILE, "tmpdir");
 		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
-		$table = new we_html_table(array("cellpadding" => 2, "cellspacing" => 2, "border" => 0), 3, 1);
+		$table = new we_html_table(array(), 3, 1);
 		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
 
 		if($tmpdir && is_file(TEMP_PATH . $tmpdir . '/' . $tmpdir . '.log') && is_readable(TEMP_PATH . "$tmpdir/$tmpdir.log")){

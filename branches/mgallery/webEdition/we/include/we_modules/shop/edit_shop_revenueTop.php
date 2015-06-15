@@ -306,7 +306,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 	$parts[] = array(
 		'html' => '
-			<table class="defaultfont" width="680" cellpadding="2">
+			<table class="defaultfont" width="680">
 			<tr>
 				<th>' . g_l('modules_shop', '[anual]') . '</th>
 				<th>' . ($selectedMonth ? g_l('modules_shop', '[monat]') : '' ) . '</th>

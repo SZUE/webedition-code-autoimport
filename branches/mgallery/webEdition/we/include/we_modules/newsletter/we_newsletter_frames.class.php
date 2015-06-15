@@ -356,7 +356,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$parts = array();
 
 		foreach($newsletterMailOrders as $key => $newsletterMailOrder){
-			$table = new we_html_table(array('cellpadding' => 3, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont', 'style' => 'width: 588px'), 1, 5);
+			$table = new we_html_table(array('class' => 'defaultfont', 'style' => 'width: 588px'), 1, 5);
 			$this->View->db->query('SELECT Log,COUNT(1) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log NOT IN (\'log_start_send\',\'log_end_send\') AND stamp BETWEEN "' . $newsletterMailOrder['start_send'] . '" AND "' . (isset($newsletterMailOrder['end_send']) ? $newsletterMailOrder['end_send'] : 'NOW()') . '" GROUP BY Log');
 
 			$results = array();
@@ -2700,7 +2700,7 @@ self.focus();');
 		asort($charsets);
 		reset($charsets);
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 2, "cellspacing" => 0), 1, 2);
+		$table = new we_html_table(array(), 1, 2);
 		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 100));
 		$table->setCol(0, 1, null, we_html_tools::htmlSelect("CharsetSelect", $charsets, 1, $value, false, array("onblur" => "document.forms[0].elements[\"Charset\"].value=this.options[this.selectedIndex].value;", "onchange" => "document.forms[0].elements[\"Charset\"].value=this.options[this.selectedIndex].value;"), 'value', 'text', (self::def_width - 120), false));
 

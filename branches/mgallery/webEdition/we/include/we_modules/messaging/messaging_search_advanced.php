@@ -59,7 +59,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save')){
 				"we_transaction"=>we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'),
 				"save"=>1));
 
-			$table = '<table cellpadding="10" cellspacing="0" border="0">
+			$table = '<table cellpadding="10">
 <tr>
     <td valign="top" class="defaultgray">' . g_l('modules_messaging', '[to_search_fields]') . '</td>
     <td><select name="search_fields[]" size="3" multiple>

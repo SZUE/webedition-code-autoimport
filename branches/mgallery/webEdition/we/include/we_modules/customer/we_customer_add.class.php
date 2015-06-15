@@ -45,7 +45,7 @@ abstract class we_customer_add{
 			$fcounter = 0;
 			$row_num = 0;
 
-			$sort_table = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 1, 'width' => 400, 'height' => 50), 1, 5);
+			$sort_table = new we_html_table(array('width' => 400, 'height' => 50), 1, 5);
 			$sort_table->setCol(0, 0, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_branch]')));
 			$sort_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_field]')));
 			//$sort_table->setCol(0, 2, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_function]')));
@@ -222,7 +222,7 @@ function setScrollTo(){
 		}
 
 
-		$advsearch = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 4);
+		$advsearch = new we_html_table(array(), 1, 4);
 		$branch = $pob->View->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
@@ -321,7 +321,7 @@ function setScrollTo(){
 		$table1 = new we_html_table(array('class' => 'default', "width" => '100%'), 1, 1);
 		$table1->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_tools::getPixel(300, 1));
 
-		$table = new we_html_table(array("border" => 0, "cellpadding" => 0, "cellspacing" => 3), 1, 3);
+		$table = new we_html_table(array(), 1, 3);
 		$table->setRow(0, array("valign" => "bottom"));
 
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), $select->getHtml());

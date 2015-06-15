@@ -287,7 +287,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 				$we_doc->getElement('data')
 			);
 
-		$maineditor = '<table style="border:0px;padding:0px;width:95%" cellspacing="0"><tr><td>' .
+		$maineditor = '<table class="default" style="width:95%"><tr><td>' .
 			'<textarea id="editarea" style="width: 100%; height: ' . (($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : "320") . 'px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : "") .
 			'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
 			'" id="data" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' .
@@ -303,7 +303,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
          </tr>
          <tr>
             <td align="left">' .
-			we_html_tools::getPixel(2, 10) . '<br/><table cellspacing="0" style="border:0px;width:100%;padding:0px;">
+			we_html_tools::getPixel(2, 10) . '<br/><table class="default" style="width:100%;">
 	    <tr>
 <td align="left" class="defaultfont">' .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) === 'codemirror' ? '
@@ -513,7 +513,7 @@ function openTagWizWithReturn (Ereignis) {
 	//return false;
 }') .
 				'
-		<table id="wizardTable" style="width: 700px;border:0px;padding:0px;" class="defaultfont" cellspacing="0">
+		<table id="wizardTable" style="width:700px;" class="default defaultfont">
 		<tr>
 			<td align="right">' . $groupselect . '</td>
 		</tr>
@@ -529,12 +529,12 @@ function openTagWizWithReturn (Ereignis) {
 			<td>' . we_html_tools::getPixel(5, 5) . '</td>
 		</tr>
 	</table>
-	<table id="wizardTableButtons" class="defaultfont" style="border:0px;padding:0px;" cellspacing="0" >
+	<table id="wizardTableButtons" class="default defaultfont">
 		<tr>
 			<td id="tagSelectColButtons" style="width: 250px;"></td>
 			<td id="spacerColButtons" style="width: 50px;"></td>
 			<td id="tagAreaColButtons" style="width: 100%;" align="right">
-				<table style="border:0px;padding:0px;" cellspacing="0">
+				<table class="default">
 				<tr>
 				<td style="padding-right:10px;">' . $selectallbut . '</td>
 					<td style="padding-right:10px;">' . $prependbut . '</td>

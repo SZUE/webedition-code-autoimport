@@ -263,187 +263,29 @@ function build_dialog($selected_setting = 'ui'){
 	</tbody>
 </table>';
 
-			$js = we_html_element::jsElement('
-	function togglePropositionTable(sel, index){
-		var row = document.getElementById("proposalTable_" + index);
-		row.style.display = sel.value === "none" ? "none" : "block";
-
-		var fields = row.getElementsByTagName("INPUT");
-		for(var i = 0; i < fields.length; i++){
-			fields[i].disabled = sel.value === "auto" ? true : false;
-		}
-	}
-
-	function toggleType(sel, index){
-		var row = document.getElementById("proposalTable_" + index);
-		var selMode = document.forms[0].elements["metadataMode[" + index + "]"];
-
-		row.style.display = sel.value !== "textfield" ? "none" : (selMode.options[selMode.selectedIndex].value === "none" ? "none" : "block");
-		selMode.disabled = sel.value === "textfield" ? false : true;
-	}
-
-	function addRow() {
-		var tagInp = "' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
-		var importInp = "' . addslashes(we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]', 24, "", 255, "", "text", 210)) . '";
-		var typeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, 'textfield', false, array('class' => 'defaultfont', 'onchange' => 'toggleType(this, __we_new_id__)')))) . '";
-		var fieldSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, '', false, array('class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)')))) . '";
-		var modeSel = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $_metadata_modes, 1, 'none', false, array('class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)')))) . '";
-		var addPropositionBtn = "' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, __we_new_id__)'))) . '";
-
-		var elem = document.getElementById("metadataTable");
-		newID = (elem.rows.length) / 5;
-		if(elem){
-			var newRow = document.createElement("TR");
-				cell = document.createElement("TD");
-				cell.innerHTML = "<strong>' . g_l('metadata', '[tagname]') . '</strong>";
-				cell.width="210";
-				cell.style.paddingTop="12px";
-			newRow.appendChild(cell);
-				cell = document.createElement("TD");
-				cell.innerHTML = "<strong>' . g_l('metadata', '[type]') . '</strong>";
-				cell.width="110";
-				cell.style.paddingTop="12px";
-				cell.colspan="2";
-			newRow.appendChild(cell);
-			elem.appendChild(newRow);
-
-			newRow = document.createElement("TR");
-			newRow.setAttribute("id", "metadataRow_" + newID);
-				cell = document.createElement("TD");
-				cell.innerHTML=tagInp.replace(/__we_new_id__/g,newID);
-				cell.width="210";
-			newRow.appendChild(cell);
-				cell = document.createElement("TD");
-				cell.innerHTML=typeSel.replace(/__we_new_id__/g,newID);
-				cell.width="200";
-			newRow.appendChild(cell);
-				cell = document.createElement("TD");
-				cell.width="30";
-				cell.align="right"
-				cell.innerHTML=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(' + newID + ')") . '\';
-			newRow.appendChild(cell);
-			elem.appendChild(newRow);
-
-			newRow = document.createElement("TR");
-			newRow.setAttribute("id", "metadataRow2_" + newID);
-				cell = document.createElement("TD");
-				cell.style.paddingBottom="6px";
-				cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', '[import_from]')) . '</div>\'+importInp.replace(/__we_new_id__/,newID);
-			newRow.appendChild(cell);
-				cell = document.createElement("TD");
-				cell.setAttribute("colspan",2);
-				cell.style.paddingBottom="6px";
-				cell.innerHTML=\'<div class="small">' . oldHtmlspecialchars(g_l('metadata', '[fields]')) . '</div>\'+fieldSel.replace(/__we_new_id__/g,newID);
-			newRow.appendChild(cell);
-			elem.appendChild(newRow);
-
-			newRow = document.createElement("TR");
-			newRow.setAttribute("id", "metadataRow3_" + newID);
-				cell = document.createElement("TD");
-				cell.style.paddingBottom="1px";
-				cell.innerHTML=\'<div class="small">Vorschlagsliste</div>\' + modeSel.replace(/__we_new_id__/g,newID);
-			newRow.appendChild(cell);
-				cell = document.createElement("TD");
-				cell.setAttribute("colspan",2);
-			newRow.appendChild(cell);
-			elem.appendChild(newRow);
-
-			newRow = document.createElement("TR");
-			newRow.setAttribute("id", "metadataRow4_" + newID);
-				cell = document.createElement("TD");
-				cell.colSpan = "3";
-				cell.style.paddingBottom = "16px";
-				cell.paddingRight = "5px";
-					var nestedTable = document.createElement("TABLE");
-					nestedTable.setAttribute("id", "proposalTable_" + newID);
-					nestedTable.style.width = "100%";
-					nestedTable.style.display = "none";
-					//nestedTable.style.backgroundColor = "white";
-					nestedTable.style.border = "1px solid gray";
-					nestedTable.style.paddingTop = "8px";
-					nestedTable.appendChild(getPropositionRow(newID, 0));
-						nestedRow = document.createElement("TR");
-							nestedCell = document.createElement("TD");
-							nestedCell.width = "15%";
-						nestedRow.appendChild(nestedCell);
-							nestedCell = document.createElement("TD");
-							nestedCell.innerHTML = addPropositionBtn.replace(/__we_new_id__/,newID);
-						nestedRow.appendChild(nestedCell);
-							nestedCell = document.createElement("TD");
-							nestedCell.width = "25";
-						nestedRow.appendChild(nestedCell);
-					nestedTable.appendChild(nestedRow);
-				cell.appendChild(nestedTable);
-			newRow.appendChild(cell);
-			elem.appendChild(newRow);
-		}
-	}
-
-	function delRow(id) {
-		var elem = document.getElementById("metadataTable");
-		if(elem){
-			var trows = elem.rows;
-			var rowID = "metadataRow_" + id;
-			var rowID2 = "metadataRow2_" + id;
-
-					for (i=trows.length-1;i>=0;i--) {
-						if(rowID == trows[i].id || rowID2 == trows[i].id) {
-							elem.deleteRow(i);
-						}
-					}
-
-		}
-	}
-
-	function addProposition(btn, index){
-		var plusRow = btn.parentNode.parentNode;
-		var newProp = getPropositionRow(index, (plusRow.parentNode.rows.length - 1));
-		plusRow.parentNode.insertBefore(newProp,plusRow);
-	}
-
-	function delProposition(btn){
-		var prop = btn.parentNode.parentNode;
-		prop.parentNode.removeChild(prop);
-	}
-
-	function getPropositionRow(indexMeta, indexProp){
-		var proposalInp = "' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '";
-		var delPropositionBtn = "' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:delProposition(this)'))) . '";
-
-		var row = document.createElement("TR");
-		var cell = document.createElement("TD");
-		cell.width = "15%";
-		row.appendChild(cell);
-
-		cell = document.createElement("TD");
-		cell.innerHTML = proposalInp.replace(/__we_meta_id__/,indexMeta).replace(/__we_prop_id__/,indexProp);
-		row.appendChild(cell);
-
-		cell = document.createElement("TD");
-		cell.width = "25";
-		cell.innerHTML = delPropositionBtn;
-		row.appendChild(cell);
-
-		return row;
-	}
-
-	function init() {
-		self.focus();
-	}
-
-	function addFieldToInput(sel, inpNr) {
-		if (sel && sel.selectedIndex >= 0 && sel.options[sel.selectedIndex].parentNode.nodeName.toLowerCase() == "optgroup") {
-			var _inpElem = document.forms[0].elements["metadataImportFrom["+inpNr+"]"];
-			var _metaType = sel.options[sel.selectedIndex].parentNode.label.toLowerCase();
-			var _str = _metaType + "/" + sel.options[sel.selectedIndex].value;
-			_inpElem.value = _inpElem.value ? _inpElem.value + (","+_str) : _str;
-		}
-		sel.selectedIndex = 0;
-	}');
+			$js = we_html_element::jsScript(JS_DIR.'edit_metadatafields.js').
+				we_html_element::jsElement('
+var g_l={
+	tagname:"'.g_l('metadata', '[tagname]').'",
+	type:"'.g_l('metadata', '[type]').'",
+	import_from:"'.oldHtmlspecialchars(g_l('metadata', '[import_from]')).'",
+	fields:"'. oldHtmlspecialchars(g_l('metadata', '[fields]')).'",
+};
+var phpdata={
+	tagInp:"' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210)) . '",
+	importInp:"' . addslashes(we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]', 24, "", 255, "", "text", 210)) . '",
+	typeSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_types, 1, 'textfield', false, array('class' => 'defaultfont', 'onchange' => 'toggleType(this, __we_new_id__)')))) . '",
+	fieldSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, '', false, array('class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)')))) . '",
+	modeSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $_metadata_modes, 1, 'none', false, array('class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)')))) . '",
+	addPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, __we_new_id__)'))) . '",
+	trashButton:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(' + newID + ')") . '\',
+	proposalInp:"' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '",
+	delPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:delProposition(this)'))) . '"
+};');
 
 			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_ALERT, 440, false);
 
-			$_metadata = new we_html_table(array('border' => 1, 'cellpadding' => 0, 'cellspacing' => 2, 'width' => 440, 'height' => 50), 4, 3);
+			$_metadata = new we_html_table(array('style' => 'border:1px solid black','width' => 440, 'height' => 50), 4, 3);
 
 			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_html_button::create_button(we_html_button::PLUS, 'javascript:addRow()');
 

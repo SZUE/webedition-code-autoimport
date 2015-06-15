@@ -273,7 +273,7 @@ class we_voting_frames extends we_modules_frame{
 
 	function getHTMLTab1(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$table = new we_html_table(array('id' => 'ownersTable', 'style' => 'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';', 'cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 3, 2);
+		$table = new we_html_table(array('id' => 'ownersTable', 'style' => 'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';'), 3, 2);
 		$table->setColContent(0, 0, we_html_tools::getPixel(10, 5));
 		$table->setCol(0, 1, array('colspan' => 2, 'class' => 'defaultfont'), g_l('modules_voting', '[limit_access_text]'));
 		$table->setColContent(1, 1, we_html_element::htmlDiv(array('id' => 'owners', 'class' => 'multichooser', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;')));
@@ -317,7 +317,7 @@ class we_voting_frames extends we_modules_frame{
 		);
 
 		if($this->View->voting->IsFolder){
-			$table = new we_html_table(array('id' => 'LogGroupData', 'cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 1, 2);
+			$table = new we_html_table(array('id' => 'LogGroupData'), 1, 2);
 			$table->setColContent(0, 0, we_html_tools::getPixel(10, 5));
 			$table->setColContent(0, 1, we_html_button::position_yes_no_cancel(
 					we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')'), we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'), null
@@ -392,7 +392,7 @@ class we_voting_frames extends we_modules_frame{
 		$activeTime->addOption((1), g_l('modules_voting', '[until]'));
 		$activeTime->selectOption($this->View->voting->ActiveTime);
 
-		$table = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 4, 2);
+		$table = new we_html_table(array(), 4, 2);
 		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), we_html_tools::TYPE_INFO, $this->_width_size, false, 133));
 		$table->setCol(1, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting', '[active_till]'), false, 'defaultfont', 'toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 
@@ -493,7 +493,7 @@ class we_voting_frames extends we_modules_frame{
 		$selectTime->addOption((0), g_l('modules_voting', '[always]'));
 		$selectTime->selectOption($this->View->voting->RevoteTime);
 
-		$table = new we_html_table(array('id' => 'method_table', 'style' => 'display: ' . ($this->View->voting->RevoteTime == 0 ? 'none' : 'block'), 'cellpadding' => 2, 'cellspacing' => 1, 'border' => 0), 10, 2);
+		$table = new we_html_table(array('id' => 'method_table', 'style' => 'display: ' . ($this->View->voting->RevoteTime == 0 ? 'none' : 'block')), 10, 2);
 		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::htmlAlertAttentionBox(
 				we_html_element::htmlB(g_l('modules_voting', '[cookie_method]')) . we_html_element::htmlBr() .
 				g_l('modules_voting', '[cookie_method_help]') .
@@ -533,7 +533,7 @@ class we_voting_frames extends we_modules_frame{
 			'space' => $this->_space_size
 		);
 
-		$table = new we_html_table(array('id' => 'LogData', 'style' => 'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';', 'cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 1, 2);
+		$table = new we_html_table(array('id' => 'LogData', 'style' => 'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';'), 1, 2);
 		$table->setColContent(0, 0, we_html_tools::getPixel(10, 5));
 		$table->setColContent(0, 1, we_html_button::position_yes_no_cancel(
 				we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')'), we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'), null
@@ -556,7 +556,7 @@ class we_voting_frames extends we_modules_frame{
 		);
 
 
-		$table = new we_html_table(array('id' => 'RestrictIPDiv', 'style' => 'display: ' . ($this->View->voting->RestrictIP ? 'block' : 'none') . ';', 'cellpadding' => 2, 'cellspacing' => 2, "border" => 0), 2, 2);
+		$table = new we_html_table(array('id' => 'RestrictIPDiv', 'style' => 'display: ' . ($this->View->voting->RestrictIP ? 'block' : 'none') . ';'), 2, 2);
 		$table->setColContent(0, 0, we_html_tools::getPixel(10, 5));
 		$table->setColContent(0, 1, we_html_element::htmlDiv(array('id' => 'iptable', 'class' => 'blockWrapper', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;padding: 5px;')));
 
@@ -625,7 +625,7 @@ function newIp(){
 
 		$version = we_base_request::_(we_base_request::INT, 'vernr', 0);
 
-		$table = new we_html_table(array('cellpadding' => 3, 'cellspacing' => 0, 'border' => 0, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'), 1, 5);
+		$table = new we_html_table(array('class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'), 1, 5);
 		if(isset($this->View->voting->QASet[$version])){
 			$table->setCol(0, 0, array('colspan' => 5, 'class' => 'defaultfont'), we_html_element::htmlB(we_html_element::htmlSpan(array('id' => 'question_score'), oldHtmlspecialchars(stripslashes($this->View->voting->QASet[$version]['question'])))));
 		}

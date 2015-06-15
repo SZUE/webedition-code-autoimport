@@ -26,16 +26,9 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET)
 <body class="weDialogBody" onload="self.focus();" onblur="self.close();">
 	<?php
 	echo '
-<table border="0" cellpadding="7" width="100%" class="defaultfont">
-<tr>
-	<td colspan="2"><strong>' . sprintf(g_l('moduleActivation', '[headline]'), $GLOBALS['moduleName']) . '</strong></td>
-</tr>
-<tr>
-	<td valign="top">
-		<img src="' . IMAGE_DIR . "alert.gif" . '" />
-	</td>
-	<td class="defaultfont">' . g_l('moduleActivation', '[content]') . '</td>
-</tr>
+<table width="100%" class="default defaultfont">
+<tr><td colspan="2"><strong>' . sprintf(g_l('moduleActivation', '[headline]'), $GLOBALS['moduleName']) . '</strong></td></tr>
+<tr><td valign="top"><img src="' . IMAGE_DIR . "alert.gif" . '" /></td><td class="defaultfont">' . g_l('moduleActivation', '[content]') . '</td></tr>
 </table>';
 	?>
 </body>

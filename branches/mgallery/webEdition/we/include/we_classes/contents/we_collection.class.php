@@ -380,7 +380,7 @@ weCollectionEdit.blankGridItem = '" . str_replace(array("'"), "\'", str_replace(
 		$rowControlls = we_html_button::create_button_table($rowControllsArr, 5);
 
 		//FIXME: use we_html_table
-		$rowHtml = '<table cellspacing="0" draggable="false">
+		$rowHtml = '<table draggable="false">
 				<tr style="background-color:#f5f5f5;cursor:move;" height="34px">
 					<td width="70px" style="padding:0 0 0 20px;" class="weMultiIconBoxHeadline">Nr. <span id="label_' . $index . '">' . $index . '</span></td>
 					<td width="220px" style="padding:4px 40px 0 0;">' . $yuiSuggest->getHTML() . '</td>

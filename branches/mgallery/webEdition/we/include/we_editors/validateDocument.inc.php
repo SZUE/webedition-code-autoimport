@@ -113,8 +113,8 @@ $parts = array(
 	array('html' => g_l('validation', '[description]'), 'space' => 0),
 	array('headline' => g_l('validation', '[service]'),
 		'html' =>
-		'<table style="border:0px;padding:0px;" cellspacing="0">
-                                 <tr><td class="defaultfont">' .
+		'<table class="default">
+<tr><td class="defaultfont">' .
 		$_select .
 		$_hiddens .
 		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .

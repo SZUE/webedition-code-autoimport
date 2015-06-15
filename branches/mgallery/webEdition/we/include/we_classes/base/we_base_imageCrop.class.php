@@ -55,9 +55,6 @@ var size={
 
 		return we_html_element::htmlHidden("cropCoordX", "", "cropCoordX") .
 			we_html_element::htmlHidden("cropCoordY", "", "cropCoordY") . '
-<table cellpadding="0" cellspacing="5" border="0">
-  <tr>
-    <td>
       <div id="weImgDiv">
         <div id="weImagePanelBorder"><div id="weImagePanel">
           <img id="weImage" src="' . $attribs["src"] . '"' . (isset($attribs["width"]) ? ' width="' . $attribs["width"] . '"' : '' ) . (isset($attribs["height"]) ? ' height="' . $attribs["height"] . '"' : '') . (isset($attribs["alt"]) ? ' alt="' . $attribs["alt"] . '"' : '') . ' /></div>
@@ -80,9 +77,6 @@ var size={
           </tr>
         </table>
       </div>
-   	</td>
-  </tr>
-</table>
 ';
 	}
 

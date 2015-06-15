@@ -1606,7 +1606,7 @@ function ' . $prefix . 'setLinkSelection(value){
 
 		$_input_width = 70;
 
-		$_popup = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0), 4, 4);
+		$_popup = new we_html_table(array('cellpadding' => 5), 4, 4);
 
 		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", $this->topFrame . '.mark();"'));
 		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", $this->topFrame . '.mark();"'));
@@ -1638,7 +1638,7 @@ function ' . $prefix . 'setLinkSelection(value){
 
 	function getHTMLImageAttributes(){
 		$_input_width = 70;
-		$_img_props = new we_html_table(array('cellpadding' => 5, 'cellspacing' => 0, 'border' => 0), 4, 5);
+		$_img_props = new we_html_table(array('cellpadding' => 5), 4, 5);
 
 		$_img_props->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlTextInput('Attributes[icon_width]', 5, $this->Model->getAttribute('icon_width'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_width]')));

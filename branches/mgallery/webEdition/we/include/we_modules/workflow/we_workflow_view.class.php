@@ -1028,7 +1028,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 	}') .
 			'</head>
 		<body class="weEditorBody" onunload="doUnload()">
-				<form name="we_form">' . we_class::hiddenTrans() . '<table cellpadding="6" cellspacing="0" border="0">' .
+				<form name="we_form">' . we_class::hiddenTrans() . '<table cellpadding="6">' .
 			we_html_multiIconBox::getHTML('', '100%', $_parts, 30) .
 			'</form></body></html>';
 	}
@@ -1232,7 +1232,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 	}
 
 	function getLogQuestion(){
-		$vals = array('<table cellpading="0" cellspacing="0"><tr><td>' . we_html_tools::getPixel(22, 5) . '</td><td>' . we_html_tools::getDateInput2("log_time%s", (time() - (336 * 3600))) . '</td></tr></table>');
+		$vals = array('<table class="default"><tr><td>' . we_html_tools::getPixel(22, 5) . '</td><td>' . we_html_tools::getDateInput2("log_time%s", (time() - (336 * 3600))) . '</td></tr></table>');
 
 		return we_html_element::jsElement('
 			function clear(){
@@ -1258,7 +1258,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			we_html_tools::htmlDialogLayout(
 				we_html_element::htmlHidden('clear_opt', 1) .
 				'<form name="we_form">' .
-				'<table cellpading="0" cellspacing="0">' .
+				'<table class="default">' .
 				'<tr><td class="defaultfont">' . g_l('modules_workflow', '[log_question_text]') . '</td></tr>' .
 				'<tr><td>' . we_html_tools::getPixel(10, 10) . '</td></tr>' .
 				'<tr><td>' . $this->getTypeTableHTML(we_html_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td></tr>' .
