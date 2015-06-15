@@ -207,8 +207,10 @@ abstract class we_util_Strings{
 	 * @param float $number  The version number to convert into a string.
 	 * @param bool  $isApp   Handle minor version (default: false)
 	 * @return string
+	 * @deprecated since 6.5.0
 	 */
 	static function number2version($number, $isApp = false){
+		t_e('deprecated');
 
 		$mynumber = "$number";
 		$numbers = array();

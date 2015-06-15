@@ -333,7 +333,7 @@ function path_to_id_ct($path, $table, &$contentType){
 
 function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false, $isPublished = false){
 	if(!is_array($IDs) && !$IDs){
-		return ($asArray ? array('/') : '/');
+		return ($asArray ? array(0 => '/') : '/');
 	}
 
 	$db = $db ? : new DB_WE();
@@ -667,16 +667,6 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	return (intval(FILE_UPLOAD_MAX_UPLOAD_SIZE) == 0 ?
 			$min :
 			min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
-}
-
-/**
- *
- * @param we_database_base $db
- * @return type
- * @deprecated since version 6.3.8
- */
-function getMaxAllowedPacket(we_database_base $db){
-	return $db->getMaxAllowedPacket();
 }
 
 function we_convertIniSizes($in){

@@ -2007,7 +2007,7 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
-		$maxDB = 65535; //min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
+		$maxDB = 65535;
 		$text = substr(preg_replace(array("/\n+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB);
 
 		if(!$text){
@@ -2016,12 +2016,7 @@ class we_objectFile extends we_document{
 			return true;
 		}
 
-		$ws = makeArrayFromCSV($this->Workspaces);
-		$ws2 = makeArrayFromCSV($this->ExtraWorkspacesSelected);
-		foreach($ws2 as $w){
-			$ws[] = $w;
-		}
-		$ws = array_unique($ws);
+		$ws = array_unique(array_merge(makeArrayFromCSV($this->Workspaces),makeArrayFromCSV($this->ExtraWorkspacesSelected)));
 
 		if(!$ws){
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -2039,12 +2034,9 @@ class we_objectFile extends we_document{
 			)));
 		}
 
-		foreach($ws as $w){
-			$wsPath = id_to_path($w, FILE_TABLE, $this->DB_WE);
-			if((strlen($wsPath) > 0) || (intval($w) == 0)){
-				if($w == '0'){
-					$wsPath = '/';
-				}
+		$ws = id_to_path($ws, FILE_TABLE, $this->DB_WE);
+
+		foreach($ws as $w => $wsPath){
 				if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 							'ID' => $this->ID,
 							'OID' => $this->ID,
@@ -2060,7 +2052,6 @@ class we_objectFile extends we_document{
 					)))){
 					return false;
 				}
-			}
 		}
 		return true;
 	}

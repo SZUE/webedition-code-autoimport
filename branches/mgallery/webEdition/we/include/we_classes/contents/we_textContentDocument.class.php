@@ -96,7 +96,7 @@ abstract class we_textContentDocument extends we_textDocument{
 			//variants are initialized, so nothing special to do
 		}
 
-		$maxDB = 65535; //min(1000000, $this->DB_WE->getMaxAllowedPacket() - 1024);
+		$maxDB = 65535;
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
 					'ID' => intval($this->ID),
 					'DID' => intval($this->ID),

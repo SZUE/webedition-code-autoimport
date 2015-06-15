@@ -335,13 +335,13 @@ if(!empty($this->model->ID)){
 			if(!empty($this->model->appconfig->dependencies->version)){
 				$we_version = we_util_Strings::version2number(WE_VERSION, false);
 				if($we_version < $this->model->appconfig->dependencies->version){
-					$html .= $translate->_('MinWeVersion') . ': <strong><span style="color:red">' . we_util_Strings::number2version($this->model->appconfig->dependencies->version, false) . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>';
+					$html .= $translate->_('MinWeVersion') . ': <strong><span style="color:red">' . $this->model->appconfig->dependencies->version . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>';
 				} else {
-					$html .= $translate->_('MinWeVersion') . ': <strong>' . we_util_Strings::number2version($this->model->appconfig->dependencies->version, false) . '</strong>';
+					$html .= $translate->_('MinWeVersion') . ': <strong>' .$this->model->appconfig->dependencies->version . '</strong>';
 				}
 			}
 			if(!empty($this->model->appconfig->dependencies->sdkversion)){
-				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . we_util_Strings::number2version($this->model->appconfig->dependencies->sdkversion, false) . '</strong>';
+				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . $this->model->appconfig->dependencies->sdkversion. '</strong>';
 			}
 			$html .= '<br/>' . ($this->model->appconfig ?
 							$translate->_('The application manifest is available') :

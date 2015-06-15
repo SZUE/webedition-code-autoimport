@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/conf/we_conf.in
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
 
 abstract class we_database_base{
-
 	private static $pool = array(); //fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
@@ -384,7 +382,7 @@ abstract class we_database_base{
 
 		$this->Insert_ID = 0;
 		$this->Affected_Rows = 0;
-		$isSelect = stripos($Query_String, 'select')===0;
+		$isSelect = stripos($Query_String, 'select') === 0;
 		//FIX for current MySQL Versions which do not cache queries with dates
 		if($isSelect){
 			$Query_String = str_replace(array('CURDATE()', 'CURRENT_DATE()'), '"' . $date . '"', $Query_String);
@@ -747,8 +745,8 @@ abstract class we_database_base{
 			$query = array();
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-								$value . ' ' . $mode :
-								$key . ' ' . $value);
+						$value . ' ' . $mode :
+						$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -892,8 +890,8 @@ abstract class we_database_base{
 	function getTableCreateArray($tab){
 		$this->query('SHOW CREATE TABLE ' . $this->escape($tab));
 		return ($this->next_record()) ?
-				explode("\n", $this->f("Create Table")) :
-				false;
+			explode("\n", $this->f("Create Table")) :
+			false;
 	}
 
 	public function getTableKeyArray($tab){
@@ -1001,7 +999,7 @@ abstract class we_database_base{
 	 * move a column to a new position inside the table
 	 * @param string $tab tablename
 	 * @param string $colName the name of the col to move
-	 * @param string $newPos the new position (possible: FIRST, AFTER colname)
+	 * @param string $newPos the new position (possible: FIRST, colname)
 	 */
 	public function moveCol($tab, $colName, $newPos){
 		//get the old col def, use for alter table.
@@ -1083,32 +1081,10 @@ abstract class we_database_base{
 	 */
 	public static function getMysqlVer(/* $nodots = true */){
 		$DB_WE = new DB_WE();
-		$res = f('SELECT VERSION()', '', $DB_WE);
+		$res = f('SELECT VERSION()', '', $DB_WE)? : f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE);
 
-		if($res){
-			$res = explode('-', $res);
-		} else {
-			$res = f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE);
-			if($res){
-				$res = explode('-', $res);
-			}
-		}
-		/* if(isset($res)){
-		  if($nodots){
-		  $strver = str_replace('.', '', $res[0]);
-		  $ver = (int) $strver;
-		  if(strlen($ver) < 4){
-		  $ver = sprintf('%04d', $ver);
-		  if(substr($ver, 0, 1) == '0'){
-		  $ver = (int) (substr($ver, 1) . '0');
-		  }
-		  }
-
-		  return $ver;
-		  }
-		  return $res[0];
-		  } */
-		return '';
+		$res = explode('-', $res);
+		return $res[0];
 	}
 
 	/**
