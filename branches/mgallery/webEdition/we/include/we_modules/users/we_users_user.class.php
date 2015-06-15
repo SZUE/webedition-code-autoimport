@@ -2149,7 +2149,6 @@ function show_seem_chooser(val) {
 		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => 1, "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 		$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
 		$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
-		$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
 		$_template_editor_mode->selectOption($this->Preferences['editorMode']);
 		$_settings = array(
 			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), "space" => 150)

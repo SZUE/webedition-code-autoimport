@@ -379,3 +379,141 @@ function myReplace(text, replaceby, caseIns) {
 	editor.replaceSelection(replaceby);
 	search(text, caseIns);
 }
+
+function executeEditButton() {
+	if (document.getElementById('weTagGroupSelect').value == 'snippet_custom') {
+		YUIdoAjax(document.getElementById('codesnippet_custom').value);
+
+	} else if (document.getElementById('weTagGroupSelect').value == 'snippet_standard') {
+		YUIdoAjax(document.getElementById('codesnippet_standard').value);
+
+	} else {
+		var _sel = document.getElementById('tagSelection');
+		if (_sel.selectedIndex > -1) {
+			edit_wetag(_sel.value);
+		}
+	}
+}
+
+function edit_wetag(tagname, insertAtCursor) {
+	if (!insertAtCursor) {
+		insertAtCursor = 0;
+	}
+	we_cmd("open_tag_wizzard", tagname, insertAtCursor);
+}
+
+function selectTagGroup(groupname) {
+
+	if (groupname == "snippet_custom") {
+		document.getElementById('codesnippet_standard').style.display = 'none';
+		document.getElementById('tagSelection').style.display = 'none';
+		document.getElementById('codesnippet_custom').style.display = 'block';
+
+	} else if (groupname == "snippet_standard") {
+		document.getElementById('codesnippet_custom').style.display = 'none';
+		document.getElementById('tagSelection').style.display = 'none';
+		document.getElementById('codesnippet_standard').style.display = 'block';
+
+	} else if (groupname != "-1") {
+		document.getElementById('codesnippet_custom').style.display = 'none';
+		document.getElementById('codesnippet_standard').style.display = 'none';
+		document.getElementById('tagSelection').style.display = 'block';
+		elem = document.getElementById("tagSelection");
+		var i;
+		for (i = (elem.options.length - 1); i >= 0; i--) {
+			elem.options[i] = null;
+		}
+
+		for (i = 0; i < tagGroups[groupname].length; i++) {
+			elem.options[i] = new Option(tagGroups[groupname][i], tagGroups[groupname][i]);
+		}
+	}
+}
+
+function openTagWizWithReturn(Ereignis) {
+	if (!Ereignis)
+		Ereignis = window.event;
+	if (Ereignis.which) {
+		Tastencode = Ereignis.which;
+	} else if (Ereignis.keyCode) {
+		Tastencode = Ereignis.keyCode;
+	}
+	if (Tastencode == 13)
+		edit_wetag(document.getElementById("tagSelection").value);
+	//return false;
+}
+
+function openTagWizardPrompt(_wrongTag) {
+	var _prompttext = g_l.insert_tagname;
+	if (_wrongTag) {
+		_prompttext = g_l.insert_tagname_not_exist + _prompttext;
+	}
+
+	var _tagName = prompt(_prompttext);
+	var _tagExists = false;
+
+	if (typeof (_tagName) == "string") {
+
+		for (i = 0; i < tagGroups["alltags"].length && !_tagExists; i++) {
+			if (tagGroups["alltags"][i] == _tagName) {
+				_tagExists = true;
+
+			}
+		}
+
+		if (_tagExists) {
+			edit_wetag(_tagName, 1);
+
+		} else {
+			openTagWizardPrompt(_tagName);
+
+		}
+	}
+}
+
+function insertAtStart(tagText) {
+	if (document.weEditorApplet && typeof (document.weEditorApplet.insertAtStart) != undefined) {
+		document.weEditorApplet.insertAtStart(tagText);
+	} else if (window.editor && window.editor.frame) {
+		window.editor.insertIntoLine(window.editor.firstLine(), 0, tagText + "\n");
+	} else {
+		document.we_form["we_" + docName + "_txt[data]"].value = tagText + "\n" + document.we_form["we_" + docName + "_txt[data]"].value;
+	}
+	_EditorFrame.setEditorIsHot(true);
+}
+
+function insertAtEnd(tagText) {
+	if (document.weEditorApplet && typeof (document.weEditorApplet.insertAtEnd) != undefined) {
+		document.weEditorApplet.insertAtEnd(tagText);
+	} else if (window.editor && window.editor.frame) {
+		window.editor.insertIntoLine(window.editor.lastLine(), "end", "\n" + tagText);
+	} else {
+		document.we_form["we_" + docName + "_txt[data]"].value += "\n" + tagText;
+	}
+	_EditorFrame.setEditorIsHot(true);
+}
+
+function addCursorPosition(tagText) {
+	if (document.weEditorApplet && typeof (document.weEditorApplet.replaceSelection) != undefined) {
+		document.weEditorApplet.replaceSelection(tagText);
+	} else if (window.editor && window.editor.frame) {
+		window.editor.replaceSelection(tagText);
+	} else {
+		var weForm = document.we_form["we_" + docName + "_txt[data]"];
+		if (document.selection) {
+			weForm.focus();
+			document.selection.createRange().text = tagText;
+			document.selection.createRange().select();
+		} else if (weForm.selectionStart || weForm.selectionStart == "0") {
+			intStart = weForm.selectionStart;
+			intEnd = weForm.selectionEnd;
+			weForm.value = (weForm.value).substring(0, intStart) + tagText + (weForm.value).substring(intEnd, weForm.value.length);
+			window.setTimeout(scrollToPosition, 50);
+			weForm.focus();
+			weForm.selectionStart = eval(intStart + tagText.length);
+			weForm.selectionEnd = eval(intStart + tagText.length);
+		} else {
+			weForm.value += tagText;
+		}
+	}
+}

@@ -419,7 +419,7 @@ switch($_SESSION['weS']['we_mode']){
 		$headerSize = 39;
 }
 ?>
-<body onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" onunload="doUnload();">
+<body onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" onunload="doUnload();" style="overflow:hidden">
 	<?php
 	//FIXME: if we want to remove these iframes, e.g. EditorFrameController.js enumerate the frames, make sure to get all
 	echo we_html_element::htmlIFrame('editHeader', we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"), 'position:absolute;top:0px;left:0px;right:0px;height:' . $headerSize . 'px;', '', '', false) .

@@ -66,8 +66,6 @@ function menuaction(cmd) {
 	}
 
 	function getHTMLMenu($old = true){
-		// On Mozilla OSX, when the Java Menu is loaded, it is not possible to make any text input (java steels focus from input fields or e.g) so we dont show the applet.
-
 		$out = '<ul id="nav">';
 		$menus = array();
 

@@ -51,7 +51,8 @@ echo we_html_multiIconBox::getJS();
 	var docCharSet = "<?php echo ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']); ?>";
 	var editorHighlightCurrentLine =<?php echo intval($_SESSION['prefs']['editorHighlightCurrentLine']); ?>;
 	var g_l = {
-		'no_java': '<?php echo we_message_reporting::prepareMsgForJS(g_l('eplugin', '[no_java]')); ?>'
+		insert_tagname: "<?php echo g_l('weTagWizard', '[insert_tagname]'); ?>",
+		insert_tagname_not_exist: "<?php sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"" + _wrongTag + "\"') . '\n\n'; ?>",
 	}
 //-->
 </script>
@@ -301,9 +302,7 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 
 		$maineditor .= '</td>
          </tr>
-         <tr>
-            <td align="left">' .
-			we_html_tools::getPixel(2, 10) . '<br/><table class="default" style="width:100%;">
+         <tr><td align="left"><table class="default" style="width:100%;">
 	    <tr>
 <td align="left" class="defaultfont">' .
 			(substr($_SESSION['prefs']['editorMode'], 0, 10) === 'codemirror' ? '
@@ -372,161 +371,13 @@ window.orignalTemplateContent=document.getElementById("editarea").value.replace(
 			$addCursorPositionbut = we_html_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
 
 			$tagWizardHtml = $CodeWizard->getJavascript() .
-				we_html_element::jsElement('
-function executeEditButton() {
-	if(document.getElementById(\'weTagGroupSelect\').value == \'snippet_custom\') {
-		YUIdoAjax(document.getElementById(\'codesnippet_custom\').value);
-
-	} else if(document.getElementById(\'weTagGroupSelect\').value == \'snippet_standard\') {
-		YUIdoAjax(document.getElementById(\'codesnippet_standard\').value);
-
-	} else {
-		var _sel=document.getElementById(\'tagSelection\');
-		if(_sel.selectedIndex > -1) {
-			edit_wetag(_sel.value);
-		}
-	}
-}
-
-function openTagWizardPrompt( _wrongTag ) {
-	var _prompttext = "' . g_l('weTagWizard', '[insert_tagname]') . '";
-	if ( _wrongTag ) {
-		_prompttext = "' . sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"" + _wrongTag + "\"') . '\n\n" + _prompttext;
-	}
-
-	var _tagName = prompt(_prompttext);
-	var _tagExists = false;
-
-	if ( typeof(_tagName) == "string") {
-
-		for ( i=0; i < tagGroups["alltags"].length && !_tagExists; i++ ) {
-			if ( tagGroups["alltags"][i] == _tagName ) {
-				_tagExists = true;
-
-			}
-		}
-
-		if ( _tagExists ) {
-			edit_wetag(_tagName, 1);
-
-		} else {
-			openTagWizardPrompt( _tagName );
-
-		}
-	}
-}
-
-function edit_wetag(tagname, insertAtCursor) {
-	if (!insertAtCursor) {
-		insertAtCursor = 0;
-	}
-	we_cmd("open_tag_wizzard", tagname, insertAtCursor);
-
-}
-
-function insertAtStart(tagText) {
-	if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtStart) != undefined) {
-		document.weEditorApplet.insertAtStart(tagText);
-	} else if(window.editor && window.editor.frame) {
-		window.editor.insertIntoLine(window.editor.firstLine(), 0, tagText + "\n");
-	} else {
-		document.we_form["we_' . $we_doc->Name . '_txt[data]"].value = tagText + "\n" + document.we_form["we_' . $we_doc->Name . '_txt[data]"].value;
-	}
-	_EditorFrame.setEditorIsHot(true);
-}
-
-function insertAtEnd(tagText) {
-	if (document.weEditorApplet && typeof(document.weEditorApplet.insertAtEnd) != undefined) {
-		document.weEditorApplet.insertAtEnd(tagText);
-	} else if(window.editor && window.editor.frame) {
-		window.editor.insertIntoLine(window.editor.lastLine(), "end", "\n" + tagText);
-	} else {
-		document.we_form["we_' . $we_doc->Name . '_txt[data]"].value += "\n" + tagText;
-	}
-	_EditorFrame.setEditorIsHot(true);
-
-}
-
-function addCursorPosition ( tagText ) {
-
-	if (document.weEditorApplet && typeof(document.weEditorApplet.replaceSelection) != undefined) {
-		document.weEditorApplet.replaceSelection(tagText);
-	} else if(window.editor && window.editor.frame) {
-		window.editor.replaceSelection(tagText);
-	} else {
-		var weForm = document.we_form["we_' . $we_doc->Name . '_txt[data]"];
-		if(document.selection){
-						weForm.focus();
-						document.selection.createRange().text=tagText;
-						document.selection.createRange().select();
-		}else if (weForm.selectionStart || weForm.selectionStart == "0"){
-				intStart = weForm.selectionStart;
-				intEnd = weForm.selectionEnd;
-				weForm.value = (weForm.value).substring(0, intStart) + tagText + (weForm.value).substring(intEnd, weForm.value.length);
-					window.setTimeout(scrollToPosition,50);
-				weForm.focus();
-					weForm.selectionStart = eval(intStart+tagText.length);
-					weForm.selectionEnd = eval(intStart+tagText.length);
-			}else{
-				weForm.value += tagText;
-			}
-	}
-}
-
-function selectTagGroup(groupname) {
-
-	if(groupname == "snippet_custom") {
-		document.getElementById(\'codesnippet_standard\').style.display = \'none\';
-		document.getElementById(\'tagSelection\').style.display = \'none\';
-		document.getElementById(\'codesnippet_custom\').style.display = \'block\';
-
-	} else if(groupname == "snippet_standard") {
-		document.getElementById(\'codesnippet_custom\').style.display = \'none\';
-		document.getElementById(\'tagSelection\').style.display = \'none\';
-		document.getElementById(\'codesnippet_standard\').style.display = \'block\';
-
-	} else if (groupname != "-1") {
-		document.getElementById(\'codesnippet_custom\').style.display = \'none\';
-		document.getElementById(\'codesnippet_standard\').style.display = \'none\';
-		document.getElementById(\'tagSelection\').style.display = \'block\';
-		elem = document.getElementById("tagSelection");
-
-		for(var i=(elem.options.length-1); i>=0;i--) {
-			elem.options[i] = null;
-		}
-
-		for (var i=0; i<tagGroups[groupname].length; i++) {
-			elem.options[i] = new Option(tagGroups[groupname][i],tagGroups[groupname][i]);
-		}
-	}
-}
-' . $groupJs . '
-function openTagWizWithReturn (Ereignis) {
-	if (!Ereignis)
-	Ereignis = window.event;
-	if (Ereignis.which) {
-	Tastencode = Ereignis.which;
-	} else if (Ereignis.keyCode) {
-	Tastencode = Ereignis.keyCode;
-	}
-	if (Tastencode==13) edit_wetag(document.getElementById("tagSelection").value);
-	//return false;
-}') .
-				'
+				we_html_element::jsElement($groupJs . (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '')) . '
 		<table id="wizardTable" style="width:700px;" class="default defaultfont">
+		<tr><td style="padding-bottom:5px;">' . $groupselect . '</td></tr>
 		<tr>
-			<td align="right">' . $groupselect . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(5, 5) . '</td>
-		</tr>
-		<tr>
-			<td id="tagSelectCol" style="width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
+			<td id="tagSelectCol" style="padding-bottom:5px;width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
 			<td id="spacerCol" style="width: 50px;" align="center">' . $editTagbut . '</td>
 			<td id="tagAreaCol" style="width: 100%;" align="right">' . we_html_element::htmlTextArea(array('name' => 'we_' . $we_doc->Name . '_TagWizardCode', 'id' => 'tag_edit_area', 'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""), 'class' => 'defaultfont'), $we_doc->TagWizardCode) . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(5, 5) . '</td>
 		</tr>
 	</table>
 	<table id="wizardTableButtons" class="default defaultfont">
@@ -549,14 +400,8 @@ function openTagWizWithReturn (Ereignis) {
 			$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 			$znr = 1;
 		}
-		echo '<div id="bodydiv"' . ($_SESSION['prefs']['editorMode'] === 'java' ? '' : 'style="display:none;"') . '>' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>' .
+		echo '<div id="bodydiv" style="display:none;">' . we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === "down"), "", 'toggleTagWizard();') . '</div>' .
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form></body>
-
-<?php
-if(isset($selectedGroup)){
-	echo we_html_element::jsElement("selectTagGroup('" . $selectedGroup . "');");
-}
-?>
 </html>
