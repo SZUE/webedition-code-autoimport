@@ -1658,7 +1658,6 @@ function CalendarChanged(calObject) {
 				$js = ($newone ?
 						'
 var attribs = {
- icon:"' . $this->raw->Icon . '",
  id:"' . $this->raw->ID . '",
  typ:"item",
  parentid:"0",

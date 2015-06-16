@@ -37,7 +37,6 @@ class we_template extends we_document{
 
 	function __construct(){
 		parent::__construct();
-		$this->Icon = 'we_template.gif';
 		$this->Table = TEMPLATES_TABLE;
 
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');

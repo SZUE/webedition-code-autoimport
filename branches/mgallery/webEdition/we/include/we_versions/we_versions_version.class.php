@@ -41,7 +41,6 @@ class we_versions_version{
 	protected $ContentType;
 	protected $Text;
 	protected $ParentID;
-	protected $Icon;
 	protected $CreationDate;
 	protected $CreatorID;
 	protected $Path;
@@ -282,13 +281,6 @@ class we_versions_version{
 	 */
 	public function getFromScheduler(){
 		return $this->fromScheduler;
-	}
-
-	/**
-	 * @return unknown
-	 */
-	public function getIcon(){
-		return $this->icon;
 	}
 
 	/**
@@ -629,13 +621,6 @@ class we_versions_version{
 	}
 
 	/**
-	 * @param unknown_type $Icon
-	 */
-	public function setIcon($icon){
-		$this->icon = $icon;
-	}
-
-	/**
 	 * @param unknown_type $ID
 	 */
 	public function setID($iD){
@@ -815,9 +800,9 @@ class we_versions_version{
 		$ct = we_base_ContentTypes::inst();
 		foreach($ct->getContentTypes() as $k){
 			switch($k){
-				case "object":
-				case "folder":
-				case "class_folder":
+				case we_base_ContentTypes::OBJECT:
+				case we_base_ContentTypes::FOLDER:
+				case we_base_ContentTypes::CLASS_FOLDER:
 					break;
 				default:
 					$contentTypes[] = $k;

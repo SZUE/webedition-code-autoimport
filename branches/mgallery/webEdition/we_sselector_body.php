@@ -217,7 +217,6 @@ var i = 0;';
 					}
 				}
 
-				$icon = $isfolder ? we_base_ContentTypes::FOLDER_ICON : ( $islink ? we_base_ContentTypes::LINK_ICON : we_base_ContentTypes::FILE_ICON);
 				$filesize = file_exists($dir . '/' . $entry) ? filesize($dir . '/' . $entry) : 0;
 
 				$_size = ($isfolder ?

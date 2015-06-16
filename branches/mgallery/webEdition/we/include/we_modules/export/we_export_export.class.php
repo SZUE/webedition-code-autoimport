@@ -32,7 +32,6 @@ class we_export_export extends weModelBase{
 	var $ID;
 	var $Text;
 	var $ParentID;
-	var $Icon;
 	var $IsFolder;
 	var $Path;
 	var $ExportTo; // local | server
@@ -62,7 +61,7 @@ class we_export_export extends weModelBase{
 	var $ExportDepth;
 	var $Log = array();
 	var $ExportFilename;
-	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text');
+	var $protected = array('ID', 'ParentID', 'IsFolder', 'Path', 'Text');
 
 	/**
 	 * Default Constructor
@@ -100,7 +99,6 @@ class we_export_export extends weModelBase{
 	}
 
 	function save($force_new = false){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
 		$sets = array();
 		$wheres = array();
 		foreach($this->persistent_slots as $val){
@@ -170,7 +168,6 @@ class we_export_export extends weModelBase{
 	function setDefaults(){
 		$this->ParentID = 0;
 		$this->Text = "weExport_" . time();
-		$this->Icon = we_base_ContentTypes::FILE_ICON;
 		$this->Selection = 'auto';
 		$this->SelectionType = 'doctype';
 		$this->Filename = $this->Text . ".xml";

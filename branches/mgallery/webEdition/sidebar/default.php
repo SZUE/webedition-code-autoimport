@@ -52,10 +52,9 @@ echo we_html_tools::getHtmlTop('sideBar') .
 						}
 					}
 
-					$icon = "";
-					if(isset($text['icon']) && $text['icon'] != ""){
-						$icon = sprintf($link, '<img src="' . WEBEDITION_DIR . 'sidebar/img/' . $text['icon'] . '" width="42" height="42" border="0" />');
-					}
+					$icon = (isset($text['icon']) && $text['icon'] != "" ?
+							sprintf($link, '<img src="' . WEBEDITION_DIR . 'sidebar/img/' . $text['icon'] . '" width="42" height="42" border="0" />') :
+							'');
 
 					$headline = "";
 					if(isset($text['headline']) && $text['headline'] != ""){
@@ -64,21 +63,21 @@ echo we_html_tools::getHtmlTop('sideBar') .
 					?>
 					<tr><td colspan="2"><?php echo we_html_tools::getPixel(1, 5); ?></td></tr>
 					<tr><?php
-						if(!$icon){
-							?>
-							<td class="defaultfont" valign="top" colspan="2">
-								<strong><?php echo $headline; ?></strong><br />
-								<?php echo we_html_tools::getPixel(1, 4); ?>
-								<br />
-								<?php echo $text['text']; ?>
-							</td>
-							<?php
-						} else {
+						if($icon){
 							?>
 							<td class="defaultfont" valign="top" width="52"><?php echo $icon; ?></td>
 							<td class="defaultfont" valign="top">
 								<strong><?php echo $headline; ?></strong><br />
 								<?php echo we_html_tools::getPixel(1, 4); ?><br />
+								<?php echo $text['text']; ?>
+							</td>
+							<?php
+						} else {
+							?>
+							<td class="defaultfont" valign="top" colspan="2">
+								<strong><?php echo $headline; ?></strong><br />
+								<?php echo we_html_tools::getPixel(1, 4); ?>
+								<br />
 								<?php echo $text['text']; ?>
 							</td>
 							<?php

@@ -37,7 +37,7 @@ class we_shop_shop{
 	var $ShoppingCartKey = '';
 	var $ActItem;
 
-	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Icon,Text,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
+	const ignoredEditFields = 'ID,Username,Password,MemberSince,LastLogin,LastAccess,ParentID,Path,IsFolder,Text,AutoLogin,AutoLoginDenied,ModifiedBy,ModifyDate';
 	const ignoredExtraShowFields = 'Forename,Surname';
 
 	public function __construct($shoppingCart){

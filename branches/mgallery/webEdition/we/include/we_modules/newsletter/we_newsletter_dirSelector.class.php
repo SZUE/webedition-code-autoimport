@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_newsletter_dirSelector extends we_selector_directory{
-	var $fields = "ID,ParentID,Text,Path,IsFolder,Icon";
+	var $fields = "ID,ParentID,Text,Path,IsFolder";
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $rootDirID = 0, $multiple = 0){
 		$table = NEWSLETTER_TABLE;

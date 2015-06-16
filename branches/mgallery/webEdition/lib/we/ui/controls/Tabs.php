@@ -62,16 +62,6 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 	const kTabImageBorder_Class = 'we_ui_controls_Tab_ImageBorder';
 
 	/**
-	 * path of close icon
-	 */
-	const kTabCloseIconPath = '/webEdition/images/multiTabs/close.gif';
-
-	/**
-	 * path of mouseOver close icon
-	 */
-	const kTabCloseIconMouseOverPath = '/webEdition/images/multiTabs/closeOver.gif';
-
-	/**
 	 * id attribute
 	 *
 	 * @var string

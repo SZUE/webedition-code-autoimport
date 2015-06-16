@@ -71,7 +71,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveShopSta
 
 // array with all rules
 
-$ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path', 'IsFolder', 'Icon', 'Text');
+$ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path', 'IsFolder', 'Text');
 $customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
 $selectFields['-'] = '-';
 foreach($customerTableFields as $tblField){

@@ -269,11 +269,9 @@ function we_tag_saveRegisteredUser_processRequest(array $protected, array $allow
 				$set['Username'] = we_base_util::rmPhp($val);
 				$set['Path'] = '/' . we_base_util::rmPhp($val);
 				$set['Text'] = we_base_util::rmPhp($val);
-				$set['Icon'] = 'customer.gif';
 				break;
 			case 'Text':
 			case 'Path':
-			case 'Icon':
 			case 'ID':
 				break;
 			default:

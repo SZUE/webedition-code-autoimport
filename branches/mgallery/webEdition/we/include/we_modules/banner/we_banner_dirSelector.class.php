@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_banner_dirSelector extends we_selector_directory{
-	var $fields = 'ID,ParentID,Text,Path,IsFolder,Icon';
+	var $fields = 'ID,ParentID,Text,Path,IsFolder';
 
 	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editDirID = 0, $FolderText = ''){
 		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, '', $we_editDirID, $FolderText);
@@ -95,7 +95,6 @@ top.clearEntries();
 			$folder->we_new();
 			$folder->setParentID($this->dir);
 			$folder->Table = $this->table;
-			$folder->Icon = "banner_folder.gif";
 			$folder->Text = $txt;
 			$folder->Path = $folder->getPath();
 			$this->db->query('SELECT ID FROM ' . $this->table . ' WHERE Path="' . $this->db->escape($folder->Path) . '"');

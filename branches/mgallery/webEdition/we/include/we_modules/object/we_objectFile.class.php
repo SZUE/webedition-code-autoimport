@@ -65,7 +65,6 @@ class we_objectFile extends we_document{
 
 	function __construct(){
 		parent::__construct();
-		$this->Icon = 'objectFile.gif';
 		$this->Table = OBJECT_FILES_TABLE;
 		$this->ContentType = we_base_ContentTypes::OBJECT_FILE;
 		$this->PublWhenSave = 0;
@@ -2103,7 +2102,6 @@ class we_objectFile extends we_document{
 	}
 
 	function we_ImportSave(){
-		$this->Icon = 'objectFile.gif';
 		if(!parent::we_save(true)){
 			return false;
 		}

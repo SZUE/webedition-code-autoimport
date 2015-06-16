@@ -849,7 +849,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 									$Glossary = new we_glossary_glossary();
 									$Glossary->Path = '/' . $Language . '/' . $Entry['type'] . '/' . $Key;
 									$Glossary->IsFolder = 0;
-									$Glossary->Icon = "";
 									$Glossary->Text = $Key;
 									$Glossary->Type = $Entry['type'];
 									$Glossary->Language = $Language;

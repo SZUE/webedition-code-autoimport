@@ -198,7 +198,6 @@ print we_html_element('<script type="text/javascript">
 					$folder - > we_new();
 					$folder - > setParentID($this - > dir);
 					$folder - > Table = $this - > table;
-					$folder - > Icon = we_base_ContentTypes::FOLDER_ICON;
 					$folder - > Text = $txt;
 					$folder - > Path = $folder - > getPath();
 					$this - > db - > query("SELECT ID FROM ".$this - > db - > escape($this - > table)." WHERE Path='".$this - > db - > escape($folder - > Path)."'");

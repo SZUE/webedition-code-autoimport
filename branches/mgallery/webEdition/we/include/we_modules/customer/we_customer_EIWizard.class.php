@@ -1732,14 +1732,17 @@ function filter_cmd(){
 document.we_form.filter_count.value="' . $count . '";');
 
 		$custfields = array();
-		$customers_fields = array();
 		$this->db->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
 		while($this->db->next_record()){
-			$customers_fields[] = $this->db->f("Field");
-		}
-		foreach($customers_fields as $fk => $fv){
-			if($fv != "ParentID" && $fv != "IsFolder" && $fv != "Path" && $fv != "Text" && $fv != "Icon"){
-				$custfields[$fv] = $fv;
+			$fv = $this->db->f("Field");
+			switch($fv){
+				case 'ParentID':
+				case 'IsFolder':
+				case 'Path':
+				case 'Text':
+					break;
+				default:
+					$custfields[$fv] = $fv;
 			}
 		}
 

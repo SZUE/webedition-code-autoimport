@@ -39,7 +39,6 @@ $filename = we_base_request::_(we_base_request::FILE, 'we_' . $sid . '_Filename'
 
 $GLOBALS['we_doc']->Filename = $filename;
 $GLOBALS['we_doc']->Extension = '.tmpl';
-$GLOBALS['we_doc']->Icon = 'prog.gif';
 $GLOBALS['we_doc']->setParentID(we_base_request::_(we_base_request::INT, 'we_' . $sid . '_ParentID'));
 $GLOBALS['we_doc']->Path = $GLOBALS['we_doc']->ParentPath . (($GLOBALS['we_doc']->ParentPath != '/') ? '/' : '') . $filename . '.tmpl';
 $GLOBALS['we_doc']->ContentType = we_base_ContentTypes::TEMPLATE;

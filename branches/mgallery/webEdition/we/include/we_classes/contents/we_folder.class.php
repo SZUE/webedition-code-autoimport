@@ -50,7 +50,6 @@ class we_folder extends we_root{
 		}
 		$this->Table = FILE_TABLE;
 		$this->ContentType = we_base_ContentTypes::FOLDER;
-		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 	}
 
 	public function we_new(){
@@ -177,7 +176,6 @@ class we_folder extends we_root{
 				}
 			}
 			$this->we_new();
-			$this->Icon = $last_pid == 0 ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 			$this->Table = $tblName;
 			$this->IsClassFolder = $last_pid == 0;
 			$this->ParentID = $last_pid;

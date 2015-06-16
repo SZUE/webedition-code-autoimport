@@ -823,7 +823,6 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 				case 'IsFolder':
 				case 'Path':
 				case 'Text' :
-				case 'Icon':
 					continue;
 				default:
 					$custfields[$fv] = $fv;

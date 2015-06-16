@@ -90,6 +90,10 @@ while(1){
 			return $s;
 		}
 
+		$hasSched = false;
+		foreach($doc->schedArr as $sched){
+			$hasSched|=$sched['active'];
+		}
 		$s .= '
 if(weWindow.treeData){
 	var obj = weWindow.treeData;
@@ -101,11 +105,12 @@ if(weWindow.treeData){
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.indexOfEntry(' . $doc->ParentID . ')]){
 				var attribs={
-				"id":\'' . $doc->ID . '\',
-				"parentid":\'' . $doc->ParentID . '\',
+				"id":' . $doc->ID . ',
+				"parentid":' . $doc->ParentID . ',
 				"text":\'' . $doc->Text . '\',
-				"published":\'' . $published . '\',
-				"table":\'' . $doc->Table . '\'
+				"published":' . $published . ',
+				"table":\'' . $doc->Table . '\',
+				"inschedule":\'' . intval($hasSched) . '\'
 				};
 
 				var visible=(' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')!=-1?
@@ -123,6 +128,7 @@ if(weWindow.treeData){
 								elem.parentid=attribs["parentid"];
 								elem.table=attribs["table"];
 								elem.published=attribs["published"];
+								elem.inschedule=attribs["inschedule"];
 							}
 							++ai;
 						}
@@ -134,6 +140,7 @@ if(weWindow.treeData){
 				attribs["open"]=\'0\';
 				attribs["disabled"]=\'0\';
 				attribs["tooltip"]=\'' . $doc->ID . '\';
+
 				' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
 		}
 		weWindow.drawTree();
@@ -160,8 +167,8 @@ if(weWindow.treeData){
 					. "attribs={";
 				foreach($item as $k => $v){
 					$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
-						intval($v):
-						'\'' . addslashes($v) . '\'') . ',';
+							intval($v) :
+							'\'' . addslashes($v) . '\'') . ',';
 				}
 
 				$js.='};' . $this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));

@@ -56,13 +56,6 @@ class we_glossary_glossary extends weModelBase{
 	var $IsFolder = false;
 
 	/**
-	 * Icon of the item
-	 *
-	 * @var string
-	 */
-	var $Icon = "";
-
-	/**
 	 * Text of the item
 	 *
 	 * @var string
@@ -250,8 +243,6 @@ class we_glossary_glossary extends weModelBase{
 	 *
 	 */
 	function save(){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : 'prog.gif');
-
 		$this->setPath();
 
 		// serialize all needed attributes

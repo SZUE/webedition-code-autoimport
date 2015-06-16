@@ -1,8 +1,9 @@
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblTemplates)###
+/* query separator */
 CREATE TABLE ###TBLPREFIX###tblTemplates (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
-  Icon enum('folder.gif','we_template.gif') NOT NULL default 'we_template.gif',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   ContentType enum('folder','text/weTmpl') NOT NULL default 'text/weTmpl',
   CreationDate int(11) unsigned NOT NULL default '0',
@@ -27,6 +28,3 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
 ) ENGINE=MyISAM;
-
-/* query separator */
-###UPDATEONLY###UPDATE ###TBLPREFIX###tblTemplates SET Icon="we_template.gif" WHERE IsFolder=0;

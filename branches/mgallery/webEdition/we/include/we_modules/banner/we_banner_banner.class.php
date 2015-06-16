@@ -44,7 +44,6 @@ class we_banner_banner extends we_banner_base{
 	var $clickPrice = 0;
 	var $showPrice = 0;
 	var $IsFolder = 0;
-	var $Icon = "banner.gif";
 	var $Path = "";
 	var $IntHref = 0;
 	var $FileIDs;
@@ -95,7 +94,6 @@ class we_banner_banner extends we_banner_base{
 			'clickPrice' => we_base_request::RAW,
 			'showPrice' => we_base_request::RAW,
 			'IsFolder' => we_base_request::BOOL,
-			'Icon' => we_base_request::RAW,
 			'Path' => we_base_request::STRINGC,
 			'IntHref' => we_base_request::RAW,
 			'FileIDs' => we_base_request::INTLIST,
@@ -117,10 +115,6 @@ class we_banner_banner extends we_banner_base{
 		$this->IsFolder = $IsFolder;
 		$this->Text = g_l('modules_banner', ($this->IsFolder ? '[newbannergroup]' : '[newbanner]'));
 		$this->Path = '/' . g_l('modules_banner', ($this->IsFolder ? '[newbannergroup]' : '[newbanner]'));
-
-		if($this->IsFolder){
-			$this->Icon = "banner_folder.gif";
-		}
 
 		if($bannerID){
 			$this->ID = $bannerID;

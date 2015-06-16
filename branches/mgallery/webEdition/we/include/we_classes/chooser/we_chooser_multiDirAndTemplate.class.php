@@ -33,7 +33,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 	var $mustPaths;
 	var $create = 0;
 
-	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $tmplcsv = "", $tmplSelectName = "", $mustTemplateIDs = "", $tmplWs = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont"){
+	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $tmplcsv = "", $tmplSelectName = "", $mustTemplateIDs = "", $tmplWs = "", $fields = "Path", $table = FILE_TABLE, $css = "defaultfont"){
 		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $fields, $table, $css);
 		$this->lines = 2;
 		$this->tmplcsv = $tmplcsv;

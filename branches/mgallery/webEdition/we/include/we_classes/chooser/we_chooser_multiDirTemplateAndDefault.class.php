@@ -27,7 +27,7 @@ class we_chooser_multiDirTemplateAndDefault extends we_chooser_multiDirAndTempla
 	private $defaultName = '';
 	private $defaultArr = array();
 
-	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $tmplcsv = "", $tmplSelectName = "", $mustTemplateIDs = "", $tmplWs = "", $defaultName = "", $defaultCSV = "", $fields = "Icon,Path", $table = FILE_TABLE, $css = "defaultfont"){
+	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $tmplcsv = "", $tmplSelectName = "", $mustTemplateIDs = "", $tmplWs = "", $defaultName = "", $defaultCSV = "", $fields = "Path", $table = FILE_TABLE, $css = "defaultfont"){
 		$this->defaultName = $defaultName;
 		$this->defaultArr = makeArrayFromCSV($defaultCSV);
 		parent::__construct($width, $ids, $cmd_del, $addbut, $ws, $tmplcsv, $tmplSelectName, $mustTemplateIDs, $tmplWs, $fields, $table, $css);

@@ -62,7 +62,7 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		}
 		$we_doc = new we_folder();
 		break;
-	case 'class_folder':
+	case we_base_ContentTypes::CLASS_FOLDER:
 		$we_doc = new we_class_folder();
 		break;
 	case 'nested_class_folder':

@@ -48,7 +48,6 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	var $IsFolder = 0;
 	var $Text = '';
 	var $Path = '/';
-	var $Icon = 'newsletter.gif';
 	var $Subject = '';
 	var $Sender = '';
 	var $Reply = '';
@@ -81,7 +80,6 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			'ParentID' => we_base_request::INT,
 			'Text' => we_base_request::STRING,
 			'Path' => we_base_request::FILE,
-			'Icon' => we_base_request::STRING,
 			'Subject' => we_base_request::STRING,
 			'Sender' => we_base_request::EMAIL,
 			'Reply' => we_base_request::EMAIL,
@@ -137,7 +135,6 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		}
 
 		if($this->IsFolder){
-			$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 			$this->fixChildsPaths();
 		}
 

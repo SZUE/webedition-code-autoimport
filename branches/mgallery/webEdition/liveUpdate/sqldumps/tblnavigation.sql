@@ -1,5 +1,6 @@
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblnavigation SET SelectionType="doctype" WHERE SelectionType="docType"
-
+/* query separator */
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblnavigation)###
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblnavigation (
@@ -10,7 +11,6 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   Text text NOT NULL,
   Display text NOT NULL,
   ContentType enum('weNavigation') NOT NULL default 'weNavigation',
-  Icon enum('folder.gif','link.gif') NOT NULL default 'link.gif',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   TitleField smalltext NOT NULL,
   IconID int(11) unsigned NOT NULL default '0',

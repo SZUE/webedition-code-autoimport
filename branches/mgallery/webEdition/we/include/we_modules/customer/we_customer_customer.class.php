@@ -45,7 +45,6 @@ class we_customer_customer extends weModelBase{
 	var $ID;
 	var $Text;
 	var $ParentID;
-	var $Icon;
 	var $IsFolder;
 	var $Path;
 	var $Username;
@@ -58,7 +57,7 @@ class we_customer_customer extends weModelBase{
 	var $LastAccess = 0;
 	var $ModifyDate;
 	var $ModifiedBy;
-	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text', 'ModifiedBy', 'ModifyDate');
+	var $protected = array('ID', 'ParentID', 'IsFolder', 'Path', 'Text', 'ModifiedBy', 'ModifyDate');
 	var $properties = array('Username', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLoginDenied', 'AutoLogin');
 	var $udates = array('MemberSince', 'LastLogin', 'LastAccess');
 
@@ -102,7 +101,6 @@ class we_customer_customer extends weModelBase{
 	}
 
 	function save($force_new = false){
-		$this->Icon = 'customer.gif';
 		$this->IsFolder = 0;
 		$this->Text = $this->Username;
 		$this->Path = '/' . $this->Username;

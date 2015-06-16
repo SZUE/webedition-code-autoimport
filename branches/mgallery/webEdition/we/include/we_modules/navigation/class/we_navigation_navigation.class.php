@@ -121,7 +121,6 @@ class we_navigation_navigation extends weModelBase{
 			'Text' => we_base_request::STRING,
 			'Display' => we_base_request::RAW_CHECKED, //note: it is desired to have test<sup>a</sup>
 			'ContentType' => we_base_request::STRING,
-			'Icon' => we_base_request::STRING,
 			'IsFolder' => we_base_request::BOOL,
 			'TitleField' => we_base_request::STRING,
 			'IconID' => we_base_request::INT,
@@ -243,8 +242,6 @@ class we_navigation_navigation extends weModelBase{
 		}
 
 		$this->Text = self::encodeSpecChars($this->Text);
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
-
 		$_paths = $this->Categories;
 		$this->Categories = makeCSVFromArray(weConvertToIds($this->Categories, CATEGORY_TABLE), true);
 

@@ -99,17 +99,38 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 
 		$tmp = array_filter($openFolders);
 		$tmp[] = $ParentID;
-		$ct = we_base_ContentTypes::inst();
 
-		$elem = 'ID,ParentID,Path,Text,IsFolder,ContentType,ModDate' .
-			(($table === FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE)) ? ',Published' : '') .
-			((defined('OBJECT_FILES_TABLE') && $table === OBJECT_FILES_TABLE) ? ',IsClassFolder' : '') .
-			($table === FILE_TABLE || $table === TEMPLATES_TABLE ? ',Extension' : '') .
-			($table === VFILE_TABLE ? ',remTable' : '');
+		$elem = 'ID,ParentID,Path,Text,IsFolder,ContentType,ModDate';
+		$queryTable = $table;
+		switch($table){
+			case FILE_TABLE:
+				$elem .=',Published,Extension,IF(Published!=0 && Published<ModDate,-1,Published) AS isPublished';
+				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+					$elem .=',st.DID IS NOT NULL AS inSchedule';
+					$queryTable.=' LEFT JOIN ' . SCHEDULE_TABLE . ' st ON (st.DID=ID AND st.ClassName IN ("we_webEditionDocument","we_htmlDocument") AND st.Active=1)';
+				}
+				break;
+			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
+				$elem .=',Published,IsClassFolder';
+				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
+					$elem .=',st.DID IS NOT NULL AS inSchedule';
+					$queryTable.=' LEFT JOIN ' . SCHEDULE_TABLE . ' st ON (st.DID=ID AND st.ClassName="we_objectFile" AND st.Active=1)';
+				}
+				break;
+			case TEMPLATES_TABLE:
+				$elem .=',Extension,1 AS isPublished';
+				break;
+			case VFILE_TABLE:
+				$elem .=',remTable,1 AS isPublished,1 AS IsFolder';
+				break;
+			default:
+				$elem.='1 AS isPublished';
+				break;
+		}
 
 		$where = $collectionIDs ? ' WHERE ID IN(' . implode(',', $collectionIDs) . ') AND IsFolder=0 AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')' :
 			' WHERE ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
-		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,ABS(REPLACE(Text,"info","")),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
+		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $queryTable . ' ' . $where . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,ABS(REPLACE(Text,"info","")),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$tmpItems = array();
 		$tree_count = 0;
@@ -117,28 +138,22 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			$tree_count++;
 			$ID = $DB_WE->f('ID');
 			$Path = $DB_WE->f('Path');
-			$ContentType = $DB_WE->f("ContentType");
-			$published = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
-					(($DB_WE->f('Published') != 0) && ($DB_WE->f('Published') < $DB_WE->f('ModDate')) ?
-						-1 :
-						$DB_WE->f('Published')) :
-					1);
 
 			$tmpItems[$ID] = array(
-				"icon" => $ct->getIcon($ContentType, we_base_ContentTypes::FILE_ICON, $DB_WE->f("Extension")),
 				"id" => $ID,
 				"we_id" => $collectionIDs ? $ID : 0,
 				"parentid" => $DB_WE->f("ParentID"),
 				"text" => $DB_WE->f("Text"),
-				"contenttype" => $ContentType,
+				"contenttype" => $DB_WE->f("ContentType"),
 				"isclassfolder" => $DB_WE->f("IsClassFolder"),
 				"table" => $table,
 				"checked" => 0,
-				"typ" => ($table === VFILE_TABLE || $DB_WE->f("IsFolder") ? "group" : "item"),
+				"typ" => $DB_WE->f("IsFolder") ? "group" : "item",
 				"open" => (in_array($ID, $openFolders) ? 1 : 0),
-				"published" => $published,
+				"published" => $DB_WE->f("isPublished"),
 				"disabled" => (in_array($Path, $parentpaths) ? 1 : 0),
 				"tooltip" => $ID,
+				'inSchedule' => intval($DB_WE->f("inSchedule")),
 				"offset" => $offset
 			);
 		}

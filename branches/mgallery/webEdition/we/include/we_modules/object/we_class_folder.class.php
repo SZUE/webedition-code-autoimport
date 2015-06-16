@@ -42,7 +42,6 @@ class we_class_folder extends we_folder{
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CFWORKSPACE, we_base_constants::WE_EDITPAGE_FIELDS, we_base_constants::WE_EDITPAGE_INFO);
 		}
-		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 		$this->ContentType = we_base_ContentTypes::FOLDER;
 	}
 
@@ -117,7 +116,6 @@ class we_class_folder extends we_folder{
 						$folder->Text = $p[$i];
 						$folder->Filename = $p[$i];
 						$folder->IsClassFolder = $i == 0;
-						$folder->Icon = ($i == 0) ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
 
 						$folder->Path = $pa;
 						$folder->save($skipHook);
@@ -129,8 +127,6 @@ class we_class_folder extends we_folder{
 			$this->Table = $tblName;
 			$this->ClassName = __CLASS__;
 			$this->IsClassFolder = $last_pid == 0;
-			$this->Icon = $last_pid == 0 ? we_base_ContentTypes::CLASS_FOLDER_ICON : we_base_ContentTypes::FOLDER_ICON;
-
 			$this->ParentID = $last_pid;
 			$this->Text = $folderName;
 			$this->Filename = $folderName;
@@ -148,7 +144,6 @@ class we_class_folder extends we_folder{
 			return $this->IsClassFolder ? true : false;
 		}
 		$this->IsClassFolder = 0;
-		$this->Icon = we_base_ContentTypes::FOLDER_ICON;
 		return true;
 	}
 

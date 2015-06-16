@@ -41,7 +41,6 @@ class we_voting_voting extends weModelBase{
 	var $ParentID;
 	var $Path;
 	var $IsFolder;
-	var $Icon;
 	var $Text;
 	var $PublishDate = 0;
 	var $QASet = array();
@@ -73,7 +72,7 @@ class we_voting_voting extends weModelBase{
 	var $answerCount = -1;
 	var $defVersion = 0;
 	var $LogDB = 0;
-	var $protected = array('ID', 'ParentID', 'Icon', 'IsFolder', 'Path', 'Text');
+	var $protected = array('ID', 'ParentID', 'IsFolder', 'Path', 'Text');
 	var $FallbackActive = 0;
 
 	/**
@@ -87,7 +86,6 @@ class we_voting_voting extends weModelBase{
 			'ParentID' => we_base_request::INT,
 			'Path' => we_base_request::FILE,
 			'IsFolder' => we_base_request::BOOL,
-			'Icon' => we_base_request::FILE,
 			'Text' => we_base_request::FILE,
 			'PublishDate' => we_base_request::INT,
 			'QASet' => we_base_request::RAW,
@@ -159,8 +157,6 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function save($with_scores = true){
-		$this->Icon = ($this->IsFolder == 1 ? we_base_ContentTypes::FOLDER_ICON : we_base_ContentTypes::FILE_ICON);
-
 		if($this->ActiveTime && $this->Valid < time()){
 			$this->Active = 0;
 		}

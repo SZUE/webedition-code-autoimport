@@ -222,7 +222,6 @@ function we_cmd(){
 					$tt = addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db));
 					$js = ($newone ? '
 var attribs = {;
-	icon:"' . $this->customer->Icon . '",
 	id:"' . $this->customer->ID . '",
 	typ:"item",
 	parentid:"0",

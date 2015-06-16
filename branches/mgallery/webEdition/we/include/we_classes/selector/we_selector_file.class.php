@@ -96,7 +96,7 @@ class we_selector_file{
 			case TEMPLATES_TABLE:
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				$this->fields.= ',Icon,ContentType';
+				$this->fields.= ',ContentType';
 				break;
 			default:
 		}

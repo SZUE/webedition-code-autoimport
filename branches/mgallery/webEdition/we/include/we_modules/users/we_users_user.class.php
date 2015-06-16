@@ -68,7 +68,6 @@ class we_users_user{
 		'ParentPerms' => we_base_request::RAW,
 		'Description' => we_base_request::STRING,
 		'Alias' => we_base_request::STRING,
-		'Icon' => we_base_request::STRING,
 		'IsFolder' => we_base_request::INT,
 		'CreatorID' => we_base_request::INT,
 		'CreateDate' => we_base_request::INT,
@@ -152,7 +151,6 @@ class we_users_user{
 	var $Text = '';
 	var $Path = '';
 	var $Alias = '';
-	var $Icon = 'user.gif';
 	var $CreatorID = 0;
 	var $CreateDate = 0;
 	var $ModifierID = 0;
@@ -245,22 +243,12 @@ class we_users_user{
 
 	function initType($typ, $ext = 0){
 		$this->Type = $typ;
-		switch($typ){
-			case self::TYPE_ALIAS:
-				$this->Icon = 'user_alias.gif';
-				break;
-			case self::TYPE_USER_GROUP:
-				$this->Icon = 'usergroup.gif';
-				break;
-			default:
-				$this->Icon = 'user.gif';
-				break;
-		}
+
 		$this->mapPermissions();
 		if($ext){
 			$this->initExt = $ext;
-			foreach($this->extensions_slots as $k => $v){
-				$this->extensions_slots[$k]->init($this);
+			foreach($this->extensions_slots as $k => &$v){
+				$v->init($this);
 			}
 		}
 	}

@@ -96,11 +96,9 @@ top.clearEntries();';
 			$folder->we_new();
 			$folder->setParentID($this->dir);
 			$folder->Table = $this->table;
-			$folder->Icon = we_base_ContentTypes::FOLDER_ICON;
 			$folder->Text = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query('SELECT ID FROM ' . $this->table . ' WHERE Path="' . $folder->Path . '"');
-			if($this->db->next_record()){
+			if(f('SELECT 1 FROM ' . $this->table . ' WHERE Path="' . $folder->Path . '"','',$this->db)){
 				echo we_message_reporting::getShowMessageCall(g_l('navigation', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_navigation_navigation::filenameNotValid($folder->Text)){
 				echo we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
@@ -110,13 +108,11 @@ top.clearEntries();';
 if(top.opener.top.makeNewEntry){
 	ref = top.opener.top;
 	ref.makeNewEntry(' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",0,0);
-}
-';
+}';
 				if($this->canSelectDir){
 					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-';
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";';
 				}
 			}
 		}

@@ -1547,7 +1547,7 @@ weSearch.g_l = {
 			}
 
 			$ext = isset($_result[$f]["Extension"]) ? $_result[$f]["Extension"] : "";
-			$Icon = we_base_ContentTypes::getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
+			$Icon = we_base_ContentTypes::inst()->getIcon($_result[$f]["ContentType"], we_base_ContentTypes::FILE_ICON, $ext);
 			$foundInVersions = isset($_result[$f]["foundInVersions"]) ? makeArrayFromCSV($_result[$f]["foundInVersions"]) : "";
 
 			if(!$view || $view == self::VIEW_LIST){

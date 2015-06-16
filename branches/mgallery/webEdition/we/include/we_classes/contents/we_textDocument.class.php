@@ -32,7 +32,6 @@ class we_textDocument extends we_document{
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_VALIDATION, we_base_constants::WE_EDITPAGE_VERSIONS);
 		}
 		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
-		$this->Icon = we_base_ContentTypes::FILE_ICON;
 	}
 
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */

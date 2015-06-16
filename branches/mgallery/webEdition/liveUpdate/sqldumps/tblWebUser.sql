@@ -1,5 +1,7 @@
 ###UPDATEONLY### UPDATE ###TBLPREFIX###tblWebUser SET Path=CONCAT("/",Username) WHERE SUBSTR(Path,1,1)!="/"
 /* query separator */
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblWebUser)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblWebUser (
   ID bigint(20) unsigned NOT NULL auto_increment,
@@ -18,7 +20,6 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   ParentID tinyint(0) unsigned NOT NULL default '0',
   Path varchar(255) default NULL,
   IsFolder tinyint(1) unsigned NOT NULL default '0',
-  Icon ENUM('customer.gif') NOT NULL default 'customer.gif',
   `Text` varchar(255) default NULL,
   `Newsletter_Ok` enum('','ja','0','1','2') NOT NULL,
   PRIMARY KEY  (ID),

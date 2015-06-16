@@ -361,7 +361,6 @@ function we_tag_addDelNewsletterEmail($attribs){
 							'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
 							'MemberSince' => time(),
 							'IsFolder' => 0,
-							'Icon' => 'customer.gif',
 							'ParentID' => 0,
 							'LoginDenied' => 0,
 							'LastLogin' => 0,

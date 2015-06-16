@@ -1,9 +1,10 @@
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblObject)###
+/* query separator */
 CREATE TABLE ###TBLPREFIX###tblObject (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned NOT NULL default '0',
   strOrder text NOT NULL,
   `Text` varchar(255) NOT NULL default '',
-  Icon ENUM('object.gif') NOT NULL default 'object.gif',
   IsFolder tinyint(4) unsigned NOT NULL default '0',
   ContentType enum('object') NOT NULL default 'object',
   CreationDate int(11) unsigned NOT NULL default '0',

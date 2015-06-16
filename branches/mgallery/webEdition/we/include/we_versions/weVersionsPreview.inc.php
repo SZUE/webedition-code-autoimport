@@ -104,7 +104,7 @@ function doNotShowFields($k){
 		'modifications',
 		'IP',
 		'Browser',
-		'Icon',
+		'Icon',//FIXME: remove in 7.0
 		'CreationDate',
 		'Path',
 		'ClassName',

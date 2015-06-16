@@ -160,7 +160,7 @@ height:19px;
 .mceActionPanel #apply,
 body .mceActionPanel #replaceBtn,
 .mceActionPanel #replaceAllBtn {
-	background-image: url("/webEdition/images/button/btn_normal_middle.gif");
+/*	background-image: url("/webEdition/images/button/btn_normal_middle.gif");*/
 	background-position: left top;
 	height: 22px !important;
 	color: black !important;

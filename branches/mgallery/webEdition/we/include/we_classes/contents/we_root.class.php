@@ -68,9 +68,6 @@ abstract class we_root extends we_class{
 	/* ContentType of the Object  */
 	public $ContentType = '';
 
-	/* Icon which is shown at the tree-menue  */
-	public $Icon = '';
-
 	/* array which holds the content of the Object */
 	var $elements = array();
 	private $wasMoved = false;
@@ -99,7 +96,7 @@ abstract class we_root extends we_class{
 		parent::__construct();
 		$this->CreationDate = time();
 		$this->ModDate = time();
-		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'Icon', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser', 'LangLinks');
+		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser', 'LangLinks');
 	}
 
 	public function makeSameNew(){
@@ -265,7 +262,7 @@ abstract class we_root extends we_class{
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
-		$yuiSuggest->setContentType('folder,class_folder');
+		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
 		$yuiSuggest->setInput($textname, $path, array('onblur' => $_parentPathChangedBlur));
 		$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
 		$yuiSuggest->setMaxResults(10);
@@ -852,9 +849,6 @@ abstract class we_root extends we_class{
 	public function we_new(){
 		parent::we_new();
 		$this->CreatorID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
-		if(isset($this->ContentType) && $this->ContentType){
-			$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType);
-		}
 		$this->ParentPath = $this->getParentPath();
 	}
 

@@ -38,11 +38,6 @@ class we_search_model extends we_tool_model{
 	var $ModelClassName = __CLASS__;
 
 	/**
-	 * @var string: name of the icon in the tree
-	 */
-	var $Icon = 'Suche.gif';
-
-	/**
 	 * @var string: toolname
 	 */
 	var $toolName = 'weSearch';
@@ -176,7 +171,6 @@ class we_search_model extends we_tool_model{
 
 	function setIsFolder($value){
 		$this->IsFolder = $value;
-		$this->Icon = ($value ? we_base_ContentTypes::FOLDER_ICON : 'Suche.gif');
 	}
 
 	function filenameNotValid($text){

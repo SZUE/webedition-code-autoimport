@@ -28,11 +28,6 @@ class we_otherDocument extends we_binaryDocument{
 
 	function __construct(){
 		parent::__construct();
-		switch($this->Extension){
-			case '.pdf':
-				$this->Icon = 'pdf.gif';
-				break;
-		}
 		if(isWE()){
 			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_PREVIEW;
 		}
@@ -66,7 +61,6 @@ class we_otherDocument extends we_binaryDocument{
 	}
 
 	public function we_save($resave = false, $skipHook = false){
-		$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType, '', $this->Extension);
 		return parent::we_save($resave, $skipHook);
 	}
 

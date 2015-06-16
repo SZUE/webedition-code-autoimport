@@ -1,8 +1,10 @@
+###UPDATEDROPCOL(Icon,###TBLPREFIX###tblexport)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblexport (
   ID smallint(6) unsigned NOT NULL auto_increment,
   ParentID smallint(6) unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
-  Icon ENUM('folder.gif','link.gif') NOT NULL default 'link.gif',
   IsFolder tinyint(1) unsigned NOT NULL default '0',
   Path varchar(255) NOT NULL default '',
   ExportTo enum('','local','server') NOT NULL default '',

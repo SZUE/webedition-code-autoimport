@@ -193,7 +193,7 @@ class we_document extends we_root{
 		} else {
 			$delallbut = '';
 		}
-		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), 'module_navigation_edit_navi', 'Icon,Path', NAVIGATION_TABLE);
+		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), 'module_navigation_edit_navi', 'Path', NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $_path){

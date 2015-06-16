@@ -23,11 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_ContentTypes{
-	const CLASS_FOLDER_ICON = 'class_folder.gif';
-	const FOLDER_ICON = 'folder.gif';
 	const IMAGE_ICON = 'image.gif';
 	const FILE_ICON = 'link.gif';
-	const LINK_ICON = 'symlink.gif';
 	const IMAGE = 'image/*';
 	const TEMPLATE = 'text/weTmpl';
 	const XML = 'text/xml';
@@ -43,6 +40,7 @@ class we_base_ContentTypes{
 	const AUDIO = 'audio/*';
 	const APPLICATION = 'application/*';
 	const FOLDER = 'folder';
+	const CLASS_FOLDER = 'class_folder';
 	const OBJECT = 'object';
 	const OBJECT_FILE = 'objectFile';
 	const COLLECTION = 'text/weCollection';
@@ -176,17 +174,17 @@ class we_base_ContentTypes{
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Icon' => self::FOLDER_ICON,
+				'Icon' => 'folder.gif',
 				'Table' => array(FILE_TABLE, TEMPLATES_TABLE, OBJECT_TABLE, OBJECT_FILES_TABLE, VFILE_TABLE),
 			),
-			'class_folder' => array(
+			self::CLASS_FOLDER => array(
 				'Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Icon' => self::CLASS_FOLDER_ICON,
+				'Icon' => 'class_folder.gif',
 				'Table' => array(OBJECT_FILES_TABLE),
 			),
 			self::FLASH => array(
@@ -266,7 +264,7 @@ class we_base_ContentTypes{
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
-				'IsRealFile' => false,//TODO: use this when saving
+				'IsRealFile' => false, //TODO: use this when saving
 				'IsWebEditionFile' => false,
 				'Icon' => 'collection.gif',
 				'Table' => array(VFILE_TABLE)
@@ -276,8 +274,7 @@ class we_base_ContentTypes{
 
 	public static function inst(){
 		static $inst = 0;
-		$inst = ($inst ? : new self());
-		return $inst;
+		return ($inst = ($inst ? : new self()));
 	}
 
 	public function hasContentType($name){
@@ -288,7 +285,7 @@ class we_base_ContentTypes{
 		if($filter){
 			$ret = array();
 			foreach($this->ct as $k => $v){
-				if(in_array($filter , $v['Table']) && !($filterOmitFolder && ($k === self::FOLDER || $k === 'class_folder'))){
+				if(in_array($filter, $v['Table']) && !($filterOmitFolder && ($k === self::FOLDER || $k === self::CLASS_FOLDER))){
 					$ret[] = $k;
 				}
 			}
@@ -328,9 +325,8 @@ class we_base_ContentTypes{
 				default:
 					return 'prog.gif';
 			}
-		} else {
-			return isset($this->ct[$name]) ? $this->ct[$name]['Icon'] : $default;
 		}
+		return isset($this->ct[$name]) ? $this->ct[$name]['Icon'] : $default;
 	}
 
 	public function getExtension($name, $ignoreIsFilename = false){
