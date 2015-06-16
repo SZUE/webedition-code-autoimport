@@ -440,7 +440,7 @@ function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
 					"text": txt,
 					"parentid": pid,
 					"open": open,
-					"typ": (ct == "folder" ? "group" : "item"),
+					"typ": (ct === "folder" ? "group" : "item"),
 					"table": tab,
 					"tooltip": id,
 					"contenttype": ct,

@@ -82,17 +82,15 @@ class we_banner_frames extends we_modules_frame{
 
 		$extraHead = $tab_head .
 			we_html_element::jsElement('
-				function setTab(tab){
-					switch(tab){
-						case ' . we_banner_banner::PAGE_PROPERTY . ':
-						case ' . we_banner_banner::PAGE_PLACEMENT . ':
-						case ' . we_banner_banner::PAGE_STATISTICS . ':
-							top.content.editor.edbody.we_cmd("switchPage",tab);
-							break;
-					}
-				}
-				top.content.hloaded=1;
-			');
+function setTab(tab){
+	switch(tab){
+		case ' . we_banner_banner::PAGE_PROPERTY . ':
+		case ' . we_banner_banner::PAGE_PLACEMENT . ':
+		case ' . we_banner_banner::PAGE_STATISTICS . ':
+			top.content.editor.edbody.we_cmd("switchPage",tab);
+			break;
+	}
+}');
 
 		//TODO: we have the following body in several modules!
 		$body = we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'id' => 'eHeaderBody'), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(

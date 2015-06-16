@@ -87,9 +87,7 @@ function setTab(tab){
 			top.content.editor.edbody.we_cmd("switchPage",1);
 			break;
 	}
-}
-
-top.content.hloaded=1;') .
+}') .
 			$tab_header;
 
 		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(

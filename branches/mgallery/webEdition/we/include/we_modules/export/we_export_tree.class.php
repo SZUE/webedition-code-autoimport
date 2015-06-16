@@ -214,16 +214,7 @@ var openFolders= {
 					$path = dirname($path);
 				}
 			}
-		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
-			$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
-			foreach($ac as $cid){
-				$path = id_to_path($cid, OBJECT_TABLE);
-				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
-				$wsQuery[] = 'Path="' . $GLOBALS['DB_WE']->escape($path) . '"';
-			}
 		}
-
-		$GLOBALS['wsQuery'] = ' ' . ($wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '');
 
 		switch($table){
 			case FILE_TABLE:
@@ -240,6 +231,14 @@ var openFolders= {
 				if(!permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
 					return 0;
 				}
+				if(!permissionhandler::hasPerm("ADMINISTRATOR")){
+					$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
+					foreach($ac as $cid){
+						$path = id_to_path($cid, OBJECT_TABLE);
+						$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%"';
+						$wsQuery[] = 'Path="' . $GLOBALS['DB_WE']->escape($path) . '"';
+					}
+				}
 				break;
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				if(!permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
@@ -247,6 +246,8 @@ var openFolders= {
 				}
 				break;
 		}
+
+		$GLOBALS['wsQuery'] = ' ' . ($wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '');
 
 		$treeItems = array();
 

@@ -33,11 +33,10 @@ class we_glossary_frameEditor{
 				//$tabsBody
 		);
 		$_js = "
-			function setTab(tab) {
-				" . $this->topFrame . ".activ_tab=tab;
-				//top.content.editor.edbody.we_cmd('switchPage',0);
-			}
-			top.content.hloaded = 1;\n";
+function setTab(tab) {
+	" . $this->topFrame . ".activ_tab=tab;
+	//top.content.editor.edbody.we_cmd('switchPage',0);
+}";
 
 		$js = we_html_element::jsElement($_js);
 

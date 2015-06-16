@@ -331,10 +331,7 @@ function setTab(tab) {
 			parent.edbody.document.location = "edit_shop_orderlist.php?cid=' . $cid . '";
 			break;
 	}
-}
-
-top.content.hloaded = 1;
-		');
+}');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) .
 			$we_tabs->getHTML() .
@@ -396,9 +393,7 @@ function setTab(tab) {
 			break;
 		' : '') . '
 	}
-}
-top.content.hloaded = 1;
-		');
+}');
 
 		$tab_body_content = '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB($headline) . '</div>' . we_html_tools::getPixel(100, 3) .
 			$we_tabs->getHTML() .

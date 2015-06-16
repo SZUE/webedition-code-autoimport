@@ -339,15 +339,10 @@ abstract class we_base_variants{
 					}
 					$name = we_base_constants::WE_VARIANTS_PREFIX . $i . '_' . $realname;
 					//$name = ''; //#6924
-					$content .= '<tr>
-						<td><span class="defaultfont"><b>' . $realname . '</b></span><div class="objectDescription">' . (isset($model->DefArray[$type . '_' . $realname]['editdescription']) ? str_replace("\n", we_html_element::htmlBr(), $model->DefArray[$type . '_' . $realname]['editdescription']) : '') . '</div></td>
-						</tr>
-						<tr>
-						<td>' . $model->getFieldHTML($name, $type, $attributes, true, true) . '</td>
-						</tr>
-						<tr>
-							<td>' . we_html_tools::getPixel(1, 8) . '</td>
-						</tr>';
+					$content .= '
+<tr><td><span class="defaultfont"><b>' . $realname . '</b></span><div class="objectDescription">' . (isset($model->DefArray[$type . '_' . $realname]['editdescription']) ? str_replace("\n", we_html_element::htmlBr(), $model->DefArray[$type . '_' . $realname]['editdescription']) : '') . '</div></td></tr>
+<tr><td>' . $model->getFieldHTML($name, $type, $attributes, true, true) . '</td></tr>
+<tr><td>' . we_html_tools::getPixel(1, 8) . '</td></tr>';
 				}
 				$content .= '</table>';
 				$parts[] = array(

@@ -177,8 +177,7 @@ class we_customer_frames extends we_modules_frame{
 function setTab(tab) {
 	' . $this->topFrame . '.activ_tab=tab;
 	parent.edbody.we_cmd(\'switchPage\',tab);
-}
-top.content.hloaded = 1;'));
+}'));
 	}
 
 	protected function getHTMLEditorBody(){

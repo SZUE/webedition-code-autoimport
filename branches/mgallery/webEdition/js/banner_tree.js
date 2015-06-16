@@ -26,9 +26,7 @@
 
 //FIXME: compare & unite all _tree.js files
 
-var hloaded = 0;
 var count = 0;
-var folder = 0;
 
 function setHot() {
 	hot = 1;

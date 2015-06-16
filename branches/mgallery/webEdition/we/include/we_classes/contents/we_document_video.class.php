@@ -53,16 +53,6 @@ class we_document_video extends we_binaryDocument{
 	</tr>
 	<tr valign="top">
 		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
-	</tr>' . /*
-			  <tr valign="top">
-			  <td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  <td>' . we_html_tools::getPixel(18, 2) . '</td>
-			  <td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  <td>' . we_html_tools::getPixel(18, 2) . '</td>
-			  <td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-			  </tr> */
-			'<tr valign="top">
-		<td colspan="5">' . we_html_tools::getPixel(2, 5) . '</td>
 	</tr>
 	<tr valign="top">
 		<td>' . $this->formSelectElement(155, 'autoplay', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>

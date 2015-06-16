@@ -89,12 +89,9 @@ function setTab(tab) {
 	parent.edbody.toggle("tab"+' . $this->topFrame . '.activ_tab);
 	parent.edbody.toggle("tab"+tab);
 	' . $this->topFrame . '.activ_tab=tab;
-}
-' . ($this->View->export->ID ? '' : $this->topFrame . '.activ_tab=1;') . '
-
-' . ($this->View->export->IsFolder == 1 ? $this->topFrame . '.activ_tab=1;' : '') . '
-
-top.content.hloaded = 1;');
+}' .
+				($this->View->export->ID ? '' : $this->topFrame . '.activ_tab=1;') .
+				($this->View->export->IsFolder == 1 ? $this->topFrame . '.activ_tab=1;' : ''));
 
 		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px', 'class' => 'default'), 1, 1);
 
@@ -147,7 +144,7 @@ top.content.hloaded = 1;');
 		}
 
 		$col = 0;
-		$table2 = new we_html_table(array('style' => 'margin-top:10px;','class' => 'default', "width" => 210), 1, 5);
+		$table2 = new we_html_table(array('style' => 'margin-top:10px;', 'class' => 'default', "width" => 210), 1, 5);
 		$table2->setRow(0, array("valign" => "middle"));
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(5, 5));
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()")

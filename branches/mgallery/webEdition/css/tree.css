@@ -44,18 +44,18 @@
 .tree table{
 	border: none;
 	width: 100%;
-	border-spacing: 0;
+	border-spacing: 0px;
 	border-collapse: collapse;
 }
 
 .tree label,
 .treetable label{
-	padding-left:1ex;
+	padding-left:.5ex;
 }
 
 span.treeKreuz{
 	width: 16px;
-	height: 2em;
+	height: 1.8em;
 	vertical-align: middle;
 	position: relative;
 	display:inline-block;
@@ -193,7 +193,7 @@ span.threedots{
 	content:" ";
 	display:inline-block;
 	position: absolute;
-	top: 1.6ex;
+	top: 1.4ex;
 	width:1em;
 	border-bottom:1px solid darkgrey;
 }
@@ -202,7 +202,7 @@ span.threedots{
 	width:1ex;
 	margin-left:1ex;
 	border-left: 1px solid darkgrey;
-	height:1em;
+	height:.8em;
 	margin-bottom: 1em;
 }
 
