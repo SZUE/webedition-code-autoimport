@@ -191,7 +191,7 @@ $_selectWorkspace";
 
 	static function getAllNavigationRules(){
 		$db = new DB_WE();
-		$db->query('SELECT * FROM ' . NAVIGATION_RULE_TABLE);
+		$db->query('SELECT * FROM ' . NAVIGATION_RULE_TABLE . ' ORDER BY ID');
 
 		$navigationRules = array();
 
