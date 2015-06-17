@@ -165,6 +165,8 @@ abstract class we_html_button{
 					case 'btn_reload':
 						$name = self::REFRESH;
 						goto restart;
+					default:
+						t_e('old image button', $name);
 				}
 				$name = $names;
 				//set width for image button if given width has not default value
