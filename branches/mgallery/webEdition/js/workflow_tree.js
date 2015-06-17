@@ -30,14 +30,6 @@ var count = 0;
 var folder = 0;
 var startloc = 0;
 
-function setHot() {
-	hot = 1;
-}
-
-function usetHot() {
-	hot = 0;
-}
-
 function doClick(id) {
 	var item = top.content.get(id);
 	ct = item.contenttype;

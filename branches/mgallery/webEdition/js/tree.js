@@ -217,7 +217,7 @@ function clickHandler(cur) {
 			case treeData.tree_states.selectitem:
 				row += (cur.typ == "group" ?
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label>" :
-								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><i class=\"fa fa-" + (cur.checked == 1 ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i></a>' +
+								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><i class=\"fa fa-" + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i></a>' +
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" + cur.text + "</label>"
 								);
 				break;
@@ -233,7 +233,7 @@ function clickHandler(cur) {
 								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" + cur.text + "</label>";
 				break;
 			default:
-				row += (cur.inschedule ? '<i class="fa fa-clock-o"></i> ' : '') +"<a ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label></a>";
+				row += (cur.inschedule ? '<i class="fa fa-clock-o"></i> ' : '') + "<a ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label></a>";
 		}
 	}
 	row += "<br/>";
@@ -386,7 +386,7 @@ function checkNode(imgName) {
 		if (treeData[i].id != object_name) {
 			continue;
 		}
-		if (treeData[i].checked == 1) {
+		if (treeData[i].checked) {
 			treeData[i].checked = 0;
 			treeData[i].applylayout();
 			try {
@@ -395,16 +395,16 @@ function checkNode(imgName) {
 
 			}
 			break;
-		} else {
-			treeData[i].checked = 1;
-			treeData[i].applylayout();
-			try {
-				eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
-			} catch (e) {
-
-			}
-			break;
 		}
+		treeData[i].checked = 1;
+		treeData[i].applylayout();
+		try {
+			eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
+		} catch (e) {
+
+		}
+		break;
+
 	}
 
 	if (!document.images) {
@@ -457,4 +457,11 @@ function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
 			}
 		}
 	}
+}
+
+function setHot() {
+	hot = 1;
+}
+function usetHot() {
+	hot = 0;
 }

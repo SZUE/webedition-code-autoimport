@@ -52,7 +52,7 @@ echo we_html_multiIconBox::getJS();
 //-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js');
+echo we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', 'top.we_setEditorWasLoaded(false);');
 
 function we_getCSSIds(){
 	$tp = new we_tag_tagParser($GLOBALS['we_doc']->getElement('data'));
@@ -355,34 +355,34 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	$addCursorPositionbut = we_html_button::create_button("addCursorPosition", 'javascript:addCursorPosition(document.getElementById("tag_edit_area").value);_EditorFrame.setEditorIsHot(true);');
 
 	$tagWizardHtml = $CodeWizard->getJavascript() . '
-		<table id="wizardTable" style="width:700px;" class="default defaultfont">
-		<tr><td style="padding-bottom:5px;">' . $groupselect . '</td></tr>
-		<tr>
-			<td id="tagSelectCol" style="padding-bottom:5px;width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
-			<td id="spacerCol" style="width: 50px;" align="center">' . $editTagbut . '</td>
-			<td id="tagAreaCol" style="width: 100%;" align="right">' . we_html_element::htmlTextArea(array(
-			'name' => 'we_' . $we_doc->Name . '_TagWizardCode',
-			'id' => 'tag_edit_area',
-			'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
-			'class' => 'defaultfont'
-			), $we_doc->TagWizardCode) . '</td>
-		</tr>
-	</table>
-	<table id="wizardTableButtons" class="default defaultfont">
-		<tr>
-			<td id="tagSelectColButtons" style="width: 250px;"></td>
-			<td id="spacerColButtons" style="width: 50px;"></td>
-			<td id="tagAreaColButtons" style="width: 100%;" align="right">
-				<table class="default">
-				<tr>
-				<td style="padding-right:10px;">' . $selectallbut . '</td>
-					<td style="padding-right:10px;">' . $prependbut . '</td>
-					<td style="padding-right:10px;">' . $appendbut . '</td>
-					<td>' . $addCursorPositionbut . '</td>
-				</table>
-			</td>
-		</tr>
-	</table>';
+<table id="wizardTable" style="width:700px;" class="default defaultfont">
+	<tr><td style="padding-bottom:5px;">' . $groupselect . '</td></tr>
+	<tr>
+		<td id="tagSelectCol" style="padding-bottom:5px;width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
+		<td id="spacerCol" style="width: 50px;" align="center">' . $editTagbut . '</td>
+		<td id="tagAreaCol" style="width: 100%;" align="right">' . we_html_element::htmlTextArea(array(
+		'name' => 'we_' . $we_doc->Name . '_TagWizardCode',
+		'id' => 'tag_edit_area',
+		'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
+		'class' => 'defaultfont'
+		), $we_doc->TagWizardCode) . '</td>
+	</tr>
+</table>
+<table id="wizardTableButtons" class="default defaultfont">
+	<tr>
+		<td id="tagSelectColButtons" style="width: 250px;"></td>
+		<td id="spacerColButtons" style="width: 50px;"></td>
+		<td id="tagAreaColButtons" style="width: 100%;" align="right">
+			<table class="default">
+			<tr>
+			<td style="padding-right:10px;">' . $selectallbut . '</td>
+				<td style="padding-right:10px;">' . $prependbut . '</td>
+				<td style="padding-right:10px;">' . $appendbut . '</td>
+				<td>' . $addCursorPositionbut . '</td>
+			</table>
+		</td>
+	</tr>
+</table>';
 	$parts = array(
 		array(),
 		array("headline" => "", "html" => $tagWizardHtml, "space" => 0)

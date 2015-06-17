@@ -21,21 +21,16 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+var editor = null;
 var weIsTextEditor = true;
 var reloadContent = false;
-try {
-	top.we_setEditorWasLoaded(false);
-} catch (e) {
-
-}
+var lastPos = null, lastQuery = null, marked = [];
 var countJEditorInitAttempts = 0;
 var wizardHeight = {
 	"open": 305,
 	"closed": 140
 };
-
-var editor = null;
-
 
 function initCM() {
 	try {
@@ -88,7 +83,7 @@ function sizeEditor() { // to be fixed (on 12.12.11)
 	var editarea = document.getElementById("editarea");
 	var cm = document.getElementsByClassName("CodeMirror");
 
-	editorDiv.style.bottom = (wizardTable?wizardTable.offsetHeight :0)+ "px";
+	editorDiv.style.bottom = (wizardTable ? wizardTable.offsetHeight : 0) + "px";
 	editarea.style.height = srtable.offsetTop + "px";
 	if (cm && cm.length) {
 		cm[0].style.height = srtable.offsetTop + "px";
@@ -130,8 +125,8 @@ function wedoKeyDown(ta, keycode) {
 			ta.setSelectionRange(selectionEnd + 1, selectionEnd + 1);
 			ta.focus();
 			return false;
-
-		} else if (document.selection) {
+		}
+		if (document.selection) {
 			var selection = document.selection;
 			var range = selection.createRange();
 			range.text = "\t";
@@ -173,7 +168,7 @@ function reindent() { // reindents code of CodeMirror2
 		editor.indentLine(i, 'smart');
 	}
 }
-var lastPos = null, lastQuery = null, marked = [];
+
 function unmark() {
 	for (var i = 0; i < marked.length; ++i) {
 		marked[i].clear();
@@ -255,43 +250,47 @@ function edit_wetag(tagname, insertAtCursor) {
 }
 
 function selectTagGroup(groupname) {
+	switch (groupname) {
+		case '-1':
+			break;
+		case "snippet_custom":
+			document.getElementById('codesnippet_standard').style.display = 'none';
+			document.getElementById('tagSelection').style.display = 'none';
+			document.getElementById('codesnippet_custom').style.display = 'block';
+			break;
+		case "snippet_standard":
+			document.getElementById('codesnippet_custom').style.display = 'none';
+			document.getElementById('tagSelection').style.display = 'none';
+			document.getElementById('codesnippet_standard').style.display = 'block';
+			break;
+		default:
+			document.getElementById('codesnippet_custom').style.display = 'none';
+			document.getElementById('codesnippet_standard').style.display = 'none';
+			document.getElementById('tagSelection').style.display = 'block';
+			elem = document.getElementById("tagSelection");
+			var i;
+			for (i = (elem.options.length - 1); i >= 0; i--) {
+				elem.options[i] = null;
+			}
 
-	if (groupname == "snippet_custom") {
-		document.getElementById('codesnippet_standard').style.display = 'none';
-		document.getElementById('tagSelection').style.display = 'none';
-		document.getElementById('codesnippet_custom').style.display = 'block';
-
-	} else if (groupname == "snippet_standard") {
-		document.getElementById('codesnippet_custom').style.display = 'none';
-		document.getElementById('tagSelection').style.display = 'none';
-		document.getElementById('codesnippet_standard').style.display = 'block';
-
-	} else if (groupname != "-1") {
-		document.getElementById('codesnippet_custom').style.display = 'none';
-		document.getElementById('codesnippet_standard').style.display = 'none';
-		document.getElementById('tagSelection').style.display = 'block';
-		elem = document.getElementById("tagSelection");
-		var i;
-		for (i = (elem.options.length - 1); i >= 0; i--) {
-			elem.options[i] = null;
-		}
-
-		for (i = 0; i < tagGroups[groupname].length; i++) {
-			elem.options[i] = new Option(tagGroups[groupname][i], tagGroups[groupname][i]);
-		}
+			for (i = 0; i < tagGroups[groupname].length; i++) {
+				elem.options[i] = new Option(tagGroups[groupname][i], tagGroups[groupname][i]);
+			}
 	}
 }
 
 function openTagWizWithReturn(Ereignis) {
-	if (!Ereignis)
+	if (!Ereignis){
 		Ereignis = window.event;
+	}
 	if (Ereignis.which) {
 		Tastencode = Ereignis.which;
 	} else if (Ereignis.keyCode) {
 		Tastencode = Ereignis.keyCode;
 	}
-	if (Tastencode == 13)
+	if (Tastencode == 13){
 		edit_wetag(document.getElementById("tagSelection").value);
+	}
 	//return false;
 }
 
@@ -305,17 +304,14 @@ function openTagWizardPrompt(_wrongTag) {
 	var _tagExists = false;
 
 	if (typeof (_tagName) == "string") {
-
 		for (i = 0; i < tagGroups["alltags"].length && !_tagExists; i++) {
 			if (tagGroups["alltags"][i] == _tagName) {
 				_tagExists = true;
-
 			}
 		}
 
 		if (_tagExists) {
 			edit_wetag(_tagName, 1);
-
 		} else {
 			openTagWizardPrompt(_tagName);
 

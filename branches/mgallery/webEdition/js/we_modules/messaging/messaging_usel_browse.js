@@ -67,22 +67,23 @@ function check(entry) {
 	for (i = 1; i <= treeData.len; i++) {
 		if (treeData[i].name == id) {
 			if (treeData[i].checked) {
-				if (document.images) {
-					if (messaging_usel_main.document.images[img])
-						messaging_usel_main.document.images[img].src = tree_img_dir + "check0.gif";
-				}
 				treeData[i].checked = false;
+				if (messaging_usel_main.document.getElementsByName(imgName)) {
+					var tmp = messaging_usel_main.document.getElementsByName(imgName)[0];
+					tmp.classList.remove('fa-check-square-o');
+					tmp.classList.add('fa-square-o');
+				}
 				unSelectMessage(entry, 'elem', messaging_usel_main);
 				break;
-			} else {
-				if (document.images) {
-					if (messaging_usel_main.document.images[img])
-						messaging_usel_main.document.images[img].src = tree_img_dir + "check1.gif";
-				}
-				treeData[i].checked = true;
-				doSelectMessage(entry, 'elem', messaging_usel_main);
-				break;
 			}
+			treeData[i].checked = true;
+			if (messaging_usel_main.document.getElementsByName(imgName)) {
+				var tmp = messaging_usel_main.document.getElementsByName(imgName)[0];
+				tmp.classList.add('fa-check-square-o');
+				tmp.classList.remove('fa-square-o');
+			}
+			doSelectMessage(entry, 'elem', messaging_usel_main);
+			break;
 		}
 	}
 	if (!document.images) {
@@ -97,37 +98,26 @@ function zeichne(startEntry, zweigEintrag) {
 	while (ai <= nf.len) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == 'user') {
-			if (ai == nf.len) {
-				ret += "<IMG SRC=\"" + tree_img_dir + "kreuzungend.gif\" class=\"treeKreuz\">";
-			} else {
-				ret += "<IMG SRC=\"" + tree_img_dir + "kreuzung.gif\" class=\"treeKreuz\">";
-			}
+			ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
 			if (nf[ai].name != -1) {
 				ret += "<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">";
 			}
 			ret += getTreeIcon(nf[ai].contentType) + "</a>" +
-							"<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><img src=\"" + tree_img_dir + (nf[ai].checked ? "check1.gif" : "check0.gif") + "\" \" alt=\"\" name=\"img_" + nf[ai].name + "\" /></a>" +
+							"<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].name + '"></i></a>' +
 							"&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A><br/>"
 		} else {
 			var newAst = zweigEintrag;
 
-			var zusatz = (ai == nf.len) ? "end" : "";
-			var zusatz2 = "";
-			if (nf[ai].open === 0) {
-				ret += "<A href=\"javascript:top.openClose('" + nf[ai].name + "',1)\"><IMG SRC=\"" + tree_img_dir + "auf" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
-			} else {
-				ret += "<A href=\"javascript:top.openClose('" + nf[ai].name + "',0)\"><IMG SRC=\"" + tree_img_dir + "zu" + zusatz + ".gif\" class=\"treeKreuz\"></A>";
-				zusatz2 = "open";
-			}
+			ret += '<a href="javascript:top.openClose(\'' + nf[ai].name + '\',1)"><span class="treeKreuz fa-stack ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span>";
 			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + getTreeIcon('we/userGroup') + "</a>" +
 							"<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
 							"&nbsp;<b>" + nf[ai].text + "</b></a>" +
 							"<br/>";
 			if (nf[ai].open) {
 				if (ai == nf.len) {
-					newAst += "<span class=\"treeKreuz\"></span>";
+					newAst += '<span class="treeKreuz"></span>';
 				} else {
-					newAst += "<img SRC=\"" + tree_img_dir + "strich2.gif\" class=\"treeKreuz\">";
+					newAst += '<span class="strich treeKreuz "></span>';
 				}
 				ret += zeichne(nf[ai].name, newAst);
 			}

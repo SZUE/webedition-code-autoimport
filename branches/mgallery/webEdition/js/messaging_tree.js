@@ -24,7 +24,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-var hot = 0;
 var multi_select = 0;
 var startloc = 0;
 var count = 0;
@@ -51,17 +50,23 @@ function check(img) {
 				document.images[img].src = tree_img_dir + "check0.gif";
 			}
 			treeData[i].checked = false;
+			if (document.getElementsByName(imgName)) {
+				var tmp = document.getElementsByName(imgName)[0];
+				tmp.classList.remove('fa-check-square-o');
+				tmp.classList.add('fa-square-o');
+			}
+
 			unSelectMessage(img, "elem", "");
 			break;
-		} else {
-			if (document.images && document.images[img]) {
-				document.images[img].src = tree_img_dir + "check1.gif";
-
-			}
-			treeData[i].checked = true;
-			doSelectMessage(img, "elem", "");
-			break;
 		}
+		treeData[i].checked = true;
+		if (document.getElementsByName(imgName)) {
+			var tmp = document.getElementsByName(imgName)[0];
+			tmp.classList.add('fa-check-square-o');
+			tmp.classList.remove('fa-square-o');
+		}
+		doSelectMessage(img, "elem", "");
+		break;
 	}
 }
 if (!document.images) {
@@ -238,15 +243,6 @@ function we_cmd() {
 	}
 }
 
-function setHot() {
-	hot = 1;
-}
-
-function usetHot() {
-	hot = 0;
-}
-
-
 function drawEintraege() {
 	fr = top.content.tree.window.document.body; //IMI: set tree indstead of left
 	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
@@ -271,8 +267,7 @@ function zeichne(startEntry, zweigEintrag) {
 			if (deleteMode) {
 				if (nf[ai].id != -1) {
 					trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
-					ret += '<a href="' + trg + '"><img src="' + tree_img_dir + (nf[ai].checked ? "check1.gif" : "check0.gif") + '" id="img_' + nf[ai].id + '"></a>';
-
+					ret += '<a href="' + trg + '"><i class="fa fa-' + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>';
 				}
 			} else {
 				ret += '<a id="_' + nf[ai].id + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ");return true;\">" +
@@ -287,12 +282,7 @@ function zeichne(startEntry, zweigEintrag) {
 			if (deleteMode) {
 				if (nf[ai].id != -1) {
 					trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
-					ret += "<a href=\"" + trg + "\"><img src=\"" + tree_img_dir +
-									(nf[ai].checked ?
-													"check1.gif" :
-													"check0.gif"
-													) +
-									"\" id='img_" + nf[ai].id + "'></a>";
+					ret += "<a href=\"" + trg + "\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>';
 				}
 			} else {
 				trg = "doClick(" + nf[ai].id + ");return true;";

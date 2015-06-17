@@ -92,7 +92,7 @@ function we_cmd() {
 		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)){ url += "&"; }
 		}
-	if(hot == "1" && args[0] != "save_voting") {
+	if(hot == 1 && args[0] != "save_voting") {
 		if(confirm("' . g_l('modules_voting', '[save_changed_voting]') . '")) {
 			args[0] = "save_voting";
 		} else {

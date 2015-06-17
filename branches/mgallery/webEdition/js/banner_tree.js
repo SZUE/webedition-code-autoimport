@@ -28,14 +28,6 @@
 
 var count = 0;
 
-function setHot() {
-	hot = 1;
-}
-
-function usetHot() {
-	hot = 0;
-}
-
 function doClick(id) {
 	var item = top.content.get(id);
 	ct = item.contenttype;

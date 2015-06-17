@@ -91,16 +91,8 @@ class we_glossary_view extends we_modules_view{
 				we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
-var hot = 0;
 var scrollToVal = 0;
 
-function setHot() {
-	hot = "1";
-}
-
-function usetHot() {
-	hot = "0";
-}
 
 function doUnload() {
 	if (!!jsWindow_count) {
