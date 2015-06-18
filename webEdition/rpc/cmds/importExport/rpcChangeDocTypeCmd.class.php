@@ -29,7 +29,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 		$categories = '<tr><td style="font-size:8px">&nbsp;</td></tr>';
 		if(($dt = we_base_request::_(we_base_request::INT, 'docType')) !== false){
 			if($dt >= 0){
-				$values = getHash('SELECT dt.*,dtf.Path FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID WHERE dt.ID=' . $dt);
+				$values = getHash('SELECT dt.*,dtf.Path FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID WHERE dt.ID=' . $dt);
 
 				$ids_arr = makeArrayFromCSV($values['Templates']);
 
