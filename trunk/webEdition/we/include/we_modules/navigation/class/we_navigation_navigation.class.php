@@ -588,7 +588,6 @@ class we_navigation_navigation extends weModelBase{
 						'currentonanker' => $_nav->CurrentOnAnker,
 						'currentoncat' => $_nav->SelectionType === self::STPYE_CATLINK ? 1 : 0,
 						'catparam' => $_nav->CatParameter,
-						'catid' => $_nav->LinkID,
 						'limitaccess' => $_nav->LimitAccess,
 						'depended' => $_nav->Depended
 					);
@@ -620,7 +619,6 @@ class we_navigation_navigation extends weModelBase{
 							'depended' => 2,
 							'currentoncat' => 0,
 							'catparam' => '',
-							'catid' => 0,
 						);
 
 						if($rules){
