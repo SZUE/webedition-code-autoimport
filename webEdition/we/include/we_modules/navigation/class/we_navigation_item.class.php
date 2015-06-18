@@ -46,6 +46,9 @@ class we_navigation_item{
 	private $visible = true;
 	var $CurrentOnUrlPar;
 	var $CurrentOnAnker;
+	var $currentOnCat;
+	var $catParam;
+	var $catID;
 	//attributes
 	var $title;
 	var $anchor;
@@ -60,7 +63,7 @@ class we_navigation_item{
 	var $customers;
 	var $items = array();
 
-	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = 0){
+	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = 0, $currentOnCat = 0, $catParam = '', $catID = 0){
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;
@@ -75,6 +78,9 @@ class we_navigation_item{
 		$this->position = 0;
 		$this->CurrentOnUrlPar = $CurrentOnUrlPar;
 		$this->CurrentOnAnker = $CurrentOnAnker;
+		$this->currentOnCat = $currentOnCat;
+		$this->catParam = $catParam;
+		$this->catID = $catID;
 
 		if(!is_array($attributes)){
 			$attributes = @unserialize($attributes);

@@ -228,7 +228,7 @@ class we_navigation_items{
 				if(isset($_item['name']) && $_item['name']){
 					$_item['text'] = $_item['name'];
 				}
-				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
+				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '', $_item['currentoncat'], $_item['catparam'], $_item['catid']);
 
 				if(isset($this->items['id' . $_item['parentid']])){
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
