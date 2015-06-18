@@ -228,12 +228,13 @@ abstract class we_class{
 		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']', true) ? : $name) . $infotext, $size, $width, '', $attribs);
 	}
 
-	function formSelect2($width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
+	function formSelect2($width, $name, $table, $val, $txt, $text, $sqlFrom = '', $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
 		$vals = array();
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
-		$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt) . ' FROM ' . $this->DB_WE->escape($table) . ' WHERE ' . $sqlTail);
+		$sqlFrom = $sqlFrom ? : $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt);
+		$this->DB_WE->query('SELECT ' . $sqlFrom . ' FROM ' . $this->DB_WE->escape($table) . ' WHERE ' . $sqlTail);
 		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$v = $this->DB_WE->f($val);
 			$t = $this->DB_WE->f($txt);
