@@ -219,7 +219,7 @@ class we_docTypes extends we_class{
 	private function formDocTypes2($arrHide = array()){
 		$vals = array();
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
-		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
+		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 
 		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f('ID');
@@ -234,7 +234,7 @@ class we_docTypes extends we_class{
 
 	private function formDocTypes3($headline, $langkey, $derDT = 0){
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
-		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE dt.Language="' . $langkey . '" AND ' . $dtq['where']);
+		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE dt.Language="' . $langkey . '" AND ' . $dtq['where']);
 		$vals = array(0 => g_l('weClass', '[nodoctype]'));
 		foreach($this->DB_WE->getAllFirst(false) as $k => $v){
 			$vals[$k] = $v;

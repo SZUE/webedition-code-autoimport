@@ -308,7 +308,7 @@ class we_exim_XMLExIm{
 					$ws_where = '';
 				}
 
-				$db->query('SELECT DISTINCT ID FROM ' . FILE_TABLE . ' WHERE 1 ' . $ws_where . '  AND tblFile.IsFolder=0 AND tblFile.DocType="' . $db->escape($doctype) . '"' . $cat_sql);
+				$db->query('SELECT DISTINCT ID FROM ' . FILE_TABLE . ' f WHERE 1 ' . $ws_where . '  AND f.IsFolder=0 AND f.DocType="' . $db->escape($doctype) . '"' . $cat_sql);
 				$selDocs = $db->getAll(true);
 				return;
 			default:

@@ -1347,7 +1347,7 @@ if (top.footer.setProgress){
 
 	private function getHTMLDocType($width = 350){
 		$dtq = we_docTypes::getDoctypeQuery($this->db);
-		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
+		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		$select = new we_html_select(array("name" => "doctype", "size" => 1, "class" => "weSelect", "style" => "{width: $width;}", "onchange" => ""));
 		$first = "";
 		while($this->db->next_record()){

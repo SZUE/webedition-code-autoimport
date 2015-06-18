@@ -281,7 +281,7 @@ class we_search_search extends we_search_base{
 		$_db = new DB_WE();
 
 		$dtq = we_docTypes::getDoctypeQuery($_db);
-		$_db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
+		$_db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		return $_db->getAllFirst(false);
 	}
 

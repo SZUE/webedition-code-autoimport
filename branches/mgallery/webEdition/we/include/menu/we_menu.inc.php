@@ -786,7 +786,7 @@ $we_menu = array(
 );
 
 $dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
-$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
+$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 if($GLOBALS['DB_WE']->num_rows() && permissionhandler::hasPerm('NO_DOCTYPE')){
 	$we_menu[1010102] = array('parent' => 1010100); // separator
 }

@@ -266,7 +266,7 @@ function closeAllType(){
 }');
 
 		$dtq = we_docTypes::getDoctypeQuery($this->db);
-		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN tblFile dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
+		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		$docTypes = $this->db->getAllFirst(false);
 
 		if(defined('OBJECT_TABLE')){
