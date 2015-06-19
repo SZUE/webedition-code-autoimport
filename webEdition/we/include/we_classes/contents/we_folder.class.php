@@ -622,7 +622,7 @@ class we_folder extends we_root{
 		static $ret = -1;
 		if($ret == -1){
 			$ret = array('full' => array(), 'url' => array(), 'full_host' => array(), 'url_host' => array(),);
-			$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!=""');
+			$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!="" ORDER BY Path DESC');
 			while($db->next_record(MYSQL_NUM)){
 				$host = trim(preg_replace('-(http://|https://)-', '', $db->f(1)), '/');
 				$ret['full_host']['${1}' . '//' . $host . '${4}'] = $ret['full']['${1}' . ($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '${4}'] = '-((href\s*=|src\s*=|action\s*=|location\s*=|content\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';
