@@ -69,7 +69,10 @@ function we_profiler($start = true){
 		define('WE_PROFILER_54', version_compare(PHP_VERSION, '5.4.0', '>='));
 		$GLOBALS['we_profile'] = array();
 	} else {
-		p_r($GLOBALS['we_profile']);
+		echo 'tag,line,file,time,mem<br/>';
+		foreach($GLOBALS['we_profile'] as $line){
+			echo implode(',', $line) . '<br/>';
+		}
 	}
 }
 
