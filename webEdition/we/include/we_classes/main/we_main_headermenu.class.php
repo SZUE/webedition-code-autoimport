@@ -130,7 +130,7 @@ top.weSidebar = weSidebar;
 			return null;
 		}
 		$we_menu = include(WE_INCLUDES_PATH . 'menu/we_menu.inc.php');
-		ksort($we_menu);
+
 		if(// menu for normalmode
 				isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 			$jmenu = new we_base_menu($we_menu, "top.load");

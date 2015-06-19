@@ -32,7 +32,6 @@ $we_menu = array(
 		'parent' => 1000000,
 	),
 	1010100 => array(// File > New > webEdition Document
-
 		'text' => g_l('javaMenu_global', '[webEdition_page]'),
 		'parent' => 1010000,
 		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
@@ -56,7 +55,7 @@ $we_menu = array(
 	),
 	array(// File > New > Others (Import)
 		'text' => g_l('javaMenu_global', '[other]'),
-		'parent' => 1010100,
+		'parent' => 1010000,
 		'cmd' => 'openFirstStepsWizardDetailTemplates',
 		'perm' => 'NO_DOCTYPE && ADMINISTRATOR',
 		'hide' => !$seeMode,
@@ -728,21 +727,19 @@ $we_menu = array(
 
 $dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
 $GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
+$pre = '1010102_';
+$nr = 0;
 if($GLOBALS['DB_WE']->num_rows() && permissionhandler::hasPerm('NO_DOCTYPE')){
-	$we_menu[1010102] = array('parent' => 1010100); // separator
+	$we_menu[$pre . ($nr++)] = array('parent' => 1010100); // separator
 }
 // File > New > webEdition Document > Doctypes*
-$nr = 1010103;
 while($GLOBALS['DB_WE']->next_record()){
-	$we_menu[$nr++] = array(
+	$we_menu[$pre . ($nr++)] = array(
 		'text' => str_replace(array(',', '"', '\'',), array(' ', ''), $GLOBALS['DB_WE']->f('DocType')),
 		'parent' => 1010100,
 		'cmd' => 'new_dtPage' . $GLOBALS['DB_WE']->f('ID'),
 		'perm' => 'NEW_WEBEDITIONSITE || ADMINISTRATOR',
 	);
-	if($nr == 197){
-		break;
-	}
 }
 
 
@@ -751,43 +748,37 @@ if(defined('OBJECT_TABLE')){
 	$ac = makeCSVFromArray(we_users_util::getAllowedClasses($GLOBALS['DB_WE']));
 	if($ac){
 		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
-		$nr = 801;
+		$pre = '1010200_';
+		$nr = 0;
 		while($GLOBALS['DB_WE']->next_record()){
-
-			$we_menu[1010200]['enabled'] = 1;
-
-			$foo = str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text'));
-
-			$we_menu[1010 . $nr] = array(
-				'text' => $foo,
+			$we_menu[$pre . ($nr++)] = array(
+				'text' => str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text')),
 				'parent' => 1010200,
 				'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),
 				'perm' => 'NEW_OBJECTFILE || ADMINISTRATOR',
 			);
-			$nr++;
-			if($nr == 999){
-				break;
-			}
+		}
+		if($nr){
+			$we_menu[1010200]['enabled'] = 1;
 		}
 	}
 }
 
-$z = 3000001;
 // order all modules
 $allModules = we_base_moduleInfo::getAllModules();
 we_base_moduleInfo::orderModuleArray($allModules);
 
 //$moduleList = 'schedpro|';
-
+$pre = '3000000_';
+$nr=0;
 foreach($allModules as $m){
-
 	if(we_base_moduleInfo::showModuleInMenu($m['name'])){
 		// workarround (old module names) for not installed Modules WIndow
 		/* 	if($m['name'] === 'customer'){
 		  $moduleList .= 'customerpro|';
 		  }
 		  $moduleList .= $m['name'] . '|'; */
-		$we_menu[$z++] = array(
+		$we_menu[$pre.($nr++)] = array(
 			'text' => $m['text'] . '&hellip;',
 			'parent' => 3000000,
 			'cmd' => $m['name'] . '_edit_ifthere',
@@ -811,9 +802,7 @@ $_activeIntModules = we_base_moduleInfo::getIntegratedModules(true);
 we_base_moduleInfo::orderModuleArray($_activeIntModules);
 
 if($_activeIntModules){
-
 	$z = 4184100;
-
 	foreach($_activeIntModules as $modInfo){
 		if($modInfo['hasSettings']){
 			$we_menu[$z++] = array(
@@ -825,5 +814,5 @@ if($_activeIntModules){
 		}
 	}
 }
-
+ksort($we_menu);
 return $we_menu;
