@@ -31,7 +31,7 @@ var folder = 0;
 
 function drawEintraege() {
 	fr = top.content.tree.window.document.body;
-	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
+	fr.innerHTML = '<div id="treetable"><nobr>' +
 					"<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + treeYearClick + "\" >" + treeYear + ": <strong>" + top.yearshop + " </strong></a> <br/>" +
 					zeichne(0, "") +
 					"</nobr></div>" +

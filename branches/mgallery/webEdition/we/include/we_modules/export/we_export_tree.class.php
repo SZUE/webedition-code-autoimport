@@ -104,7 +104,7 @@ var openFolders= {
 "' . OBJECT_TABLE . '":"",
 ') : '') . '
 "' . TEMPLATES_TABLE . '":""
-};' . $this->getJSStartTree()) . $this->getStyles();
+};' . $this->getJSStartTree()) . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){
 			$captions = array();

@@ -24,41 +24,6 @@
  */
 class weMainTree extends weTree{
 
-	function __construct($frameset = "", $topFrame = "", $treeFrame = "", $cmdFrame = ""){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-
-		$this->node_layouts = array(
-			'item' => 'item',
-			'group' => 'group',
-			'threedots' => 'changed',
-			'item-disabled' => 'disabled',
-			'group-disabled' => 'disabled',
-			'group-disabled-open' => 'disabled',
-			'item-checked' => 'checked_item',
-			'group-checked' => 'checked_group',
-			'group-open' => 'group',
-			'group-checked-open' => 'checked_group',
-			'item-notpublished' => 'notpublished',
-			'item-checked-notpublished' => 'checked_notpublished',
-			'item-changed' => 'changed',
-			'item-checked-changed' => 'checked_changed',
-			'item-selected' => 'selected_item',
-			'item-selected-notpublished' => 'selected_notpublished_item',
-			'item-selected-changed' => 'selected_changed_item',
-			'group-selected' => 'selected_group',
-			'group-selected-open' => 'selected_open_group'
-		);
-
-		$this->styles = array(
-			'.item {cursor: pointer;}',
-			'.group {cursor: pointer;}',
-			'.selected_item {background-color: #D4DBFA;}',
-			'.selected_group {background-color: #D4DBFA;}',
-			'.selected_notpublished_item {color: red;}',
-			'.selected_open_group {color: black;}',
-		);
-	}
-
 	function getJSStartTree(){
 		return '
 we_scrollY["' . FILE_TABLE . '"] = 0;

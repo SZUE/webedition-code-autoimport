@@ -24,15 +24,14 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-#treetable,
-.treetable{
+#treetable{
 	margin: 0px;
 	background-color: #F3F7FF;
 	padding: 0px;
 	/*padding-left:1ex;*/
 }
 
-.tree {
+#treetable {
 	color: black;
 	border-width: 0px;
 	border-collapse: collapse;
@@ -40,20 +39,18 @@
 	padding-left:1ex;
 }
 
-#treetable table,
-.tree table{
+#treetable table{
 	border: none;
 	width: 100%;
 	border-spacing: 0px;
 	border-collapse: collapse;
 }
 
-.tree label,
-.treetable label{
+#treetable label{
 	padding-left:.5ex;
 }
 
-span.treeKreuz{
+#treetable span.treeKreuz{
 	width: 16px;
 	height: 1.8em;
 	vertical-align: middle;
@@ -63,133 +60,128 @@ span.treeKreuz{
 	border: 0px solid darkgray;
 }
 
-.item,
-.group,
-#treetable a{
+#treetable .item,
+#treetable .group,
+#treetable a,
+#treetable .selected_item,
+#treetable .selected_group{
 	color: black;
+	cursor: pointer;
 }
 
-#tree .disabled a,
+#treetable .disabled a,
 #treetable a,
 #treetable a:active,
 #treetable a:visited,
-.tree a,
-.item a,
-.group a,
-.selected_item a,
-.selected_group a,
-.notpublished a,.selected_open_group a,
-.selected_notpublished_item a ,
-.selected_changed_item a,
-.checked_item a,
-.checked_group a,
-.checked_notpublished a,
-.checked_changed a,
-.selected_notpublished_item a,
-.selected_changed_item a,
-.selected_open_group a {
+#treetable .item a,
+#treetable .group a,
+#treetable .selected_item a,
+#treetable .selected_group a,
+#treetable .notpublished a,.selected_open_group a,
+#treetable .selected_notpublished_item a ,
+#treetable .selected_changed_item a,
+#treetable .checked_item a,
+#treetable .checked_group a,
+#treetable .checked_notpublished a,
+#treetable .checked_changed a,
+#treetable .selected_notpublished_item a,
+#treetable .selected_changed_item a,
+#treetable .selected_open_group a {
 	text-decoration:none;
 }
 
-.group {
+#treetable .group,
+#treetable .selected_group {
 	font-weight: bold;
 }
 
-.selected_item,
-.selected_group{
-	color: black;
+#treetable .selected_item,
+#treetable .selected_group{
 	background-color: #6070B6;
-	cursor: pointer;
 }
 
-.selected_group {
-	font-weight: bold;
-}
-
-.loginDenied {
+#treetable .loginDenied {
 	color:red;
 }
 
-.notpublished {
-	color: red;
-	cursor: pointer;
-}
-
-.selected_notpublished_item,
-.selected_changed_item,
-.selected_open_group,
-.checked_changed,
-.checked_item,
-.checked_group,
-.checked_notpublished{
+#treetable .selected_notpublished_item,
+#treetable .selected_changed_item,
+#treetable .selected_open_group,
+#treetable .checked_changed,
+#treetable .checked_item,
+#treetable .checked_group,
+#treetable .checked_notpublished{
 	color: #3366CC;
 	background-color: #D4DBFA;
 	cursor: pointer;
 }
 
-.selected_open_group,
-.checked_group{
+#treetable .selected_open_group,
+#treetable .checked_group{
 	color: black;
 	font-weight: bold;
 }
-#tree .disabled {
+
+#treetable .disabled {
 	color: grey;
 	cursor: pointer;
 }
 
-.checked_item,
-.checked_group{
+#treetable .checked_item,
+#treetable .checked_group{
 	color: black;
 }
 
-.checked_notpublished {
+#treetable .notpublished,
+#treetable .checked_notpublished,
+#treetable .selected_notpublished_item {
 	color: red;
 }
 
-.bold{
+#treetable .bold{
 	font-weight: bold;
 }
 
-.blue{
+#treetable .blue{
 	color:blue;
 }
 
-.red{
+#treetable .red{
 	color:red;
 }
 /*change fa sizes in tree*/
-div.tree fa-stack{
+#treetable fa-stack{
 	height: 1em;
 	line-height: 1em;
 	width: 1em;
 }
-div.tree i.fa-folder-open,
-div.tree i.fa-folder{
+#treetable i.fa-folder-open,
+#treetable i.fa-folder{
 	color: #ADC5E3;
 }
 
-span.threedots{
+#treetable span.threedots{
 	display:inline-block;
 	background-color:lightgrey;
 	width:80%;
 	text-align:center;
 }
 
-.tree span.strich{
+#treetable span.strich{
 	width:1ex;
 	margin-left:1ex;
 	border-left-width: 1px;
 }
 
 
-.tree span.kreuzung{
+#treetable span.kreuzung{
 	width: 1ex;
 	margin-left:1ex;
 	border-left-width: 1px;
 }
 
-.tree span.kreuzung::before,
-.tree span.kreuzungend::before{
+#treetable span.kreuzung::before,
+#treetable span.kreuzungend::before{
 	content:" ";
 	display:inline-block;
 	position: absolute;
@@ -198,7 +190,7 @@ span.threedots{
 	border-bottom:1px solid darkgrey;
 }
 
-.tree span.kreuzungend{
+#treetable span.kreuzungend{
 	width:1ex;
 	margin-left:1ex;
 	border-left: 1px solid darkgrey;
@@ -206,9 +198,17 @@ span.threedots{
 	margin-bottom: 1em;
 }
 
-.tree span.kreuzung i::before,
-.tree span.kreuzungend i::before{
+#treetable span.kreuzung i::before,
+#treetable span.kreuzungend i::before{
 	position: absolute;
 	top:0px;
 	left:-5px;
+}
+
+#treetable .selected_group,
+#treetable .selected_item {
+	background-color: #D4DBFA;
+}
+#treetable .selected_open_group {
+	color: black;
 }

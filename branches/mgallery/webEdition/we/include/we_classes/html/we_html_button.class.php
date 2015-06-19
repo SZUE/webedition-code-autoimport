@@ -159,10 +159,7 @@ abstract class we_html_button{
 			case self::WE_IMAGE_BUTTON_IDENTIFY:// Button is an image
 				//fixes for Update
 				switch($name){
-					case 'function_reload':
-					case 'btn_function_reload':
-					case 'reload':
-					case 'btn_reload':
+					case 'image:btn_function_reload':
 						$name = self::REFRESH;
 						goto restart;
 					default:

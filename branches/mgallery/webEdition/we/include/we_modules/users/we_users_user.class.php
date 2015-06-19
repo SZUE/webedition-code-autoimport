@@ -1427,7 +1427,7 @@ _multiEditorreload = true;';
 						g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
 				) :
 				'-');
-		$_tableObj = new we_html_table($_attr, 5, 2, array(
+		$_tableObj = new we_html_table(array(), 5, 2, array(
 			array(
 				array(array('style' => 'padding-bottom:10px;width:280px;'), $_username),
 				array(array('style' => 'width:280px;'), we_html_tools::htmlFormElementTable($_password, g_l('modules_users', '[password]')))

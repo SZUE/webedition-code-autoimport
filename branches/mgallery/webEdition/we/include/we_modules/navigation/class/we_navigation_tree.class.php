@@ -24,15 +24,6 @@
  */
 class we_navigation_tree extends weTree{
 
-	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-
-		$this->styles = array(
-			'.selected_item {background-color: #D4DBFA;}',
-			'.selected_group {background-color: #D4DBFA;}',
-		);
-	}
-
 	function customJSFile(){
 		return parent::customJSFile() . we_html_element::jsScript(JS_DIR . 'navigation_tree.js');
 	}
@@ -58,7 +49,7 @@ frames={
 
 	function getHTMLContruct(){
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-				$this->getStyles(), we_html_element::htmlBody(array('id' => 'treetable',), '<div id="treetable"></div>')
+				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable',))
 		);
 	}
 

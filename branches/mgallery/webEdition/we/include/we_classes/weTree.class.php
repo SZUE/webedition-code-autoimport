@@ -53,8 +53,25 @@ class weTree{
 		3 => 'tree'
 	);
 	var $node_layouts = array(
-		'item' => 'tree',
-		'group' => 'group'
+		'item' => 'item',
+		'group' => 'group',
+		'threedots' => 'changed',
+		'item-disabled' => 'disabled',
+		'group-disabled' => 'disabled',
+		'group-disabled-open' => 'disabled',
+		'item-checked' => 'checked_item',
+		'group-checked' => 'checked_group',
+		'group-open' => 'group',
+		'group-checked-open' => 'checked_group',
+		'item-notpublished' => 'notpublished',
+		'item-checked-notpublished' => 'checked_notpublished',
+		'item-changed' => 'changed',
+		'item-checked-changed' => 'checked_changed',
+		'item-selected' => 'selected_item',
+		'item-selected-notpublished' => 'selected_notpublished_item',
+		'item-selected-changed' => 'selected_changed_item',
+		'group-selected' => 'selected_group',
+		'group-selected-open' => 'selected_open_group'
 	);
 	var $default_segment = 30;
 
@@ -163,26 +180,17 @@ function container(){
 }';
 	}
 
-	function getStyles(){
-		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			($this->styles ? we_html_element::cssElement(implode("\n", $this->styles)) : '');
-	}
-
 	// Function which control how tree contenet will be displayed
-	function getHTMLContruct($onresize = ''){
-
+	function getHTMLContruct(){
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-				$this->getStyles(), we_html_element::htmlBody(array(
-					'id' => 'treetable',
-					'onresize' => $onresize
-					), ''
+				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable',), ''
 				)
 		);
 	}
 
 	function getHTMLContructX($onresize = ''){
 		return
-			$this->getStyles() .
+			we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::htmlDiv(array(
 				'id' => 'treetable',
 				'onresize' => $onresize

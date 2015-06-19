@@ -24,15 +24,6 @@
  */
 class we_search_tree extends weTree{
 
-	function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
-		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
-
-		$this->styles = array(
-			'.selected_item {background-color: #D4DBFA;}',
-			'.selected_group {background-color: #D4DBFA;}',
-		);
-	}
-
 	function getJSTreeCode(){
 		return parent::getJSTreeCode() .
 			we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
@@ -55,7 +46,7 @@ treeData.frames=frames;
 
 	function getHTMLContruct(){
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-				$this->getStyles(), we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
+				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
 		);
 	}
 
