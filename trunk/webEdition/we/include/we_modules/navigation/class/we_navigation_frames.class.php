@@ -956,13 +956,13 @@ function showPreview() {
 		// if id in template is same as id in session_navigation object,
 		// use dynamic entries
 
-		$matches = array();
+		/*$matches = array();
 		if(preg_match('/parentid="(.*)"/', $templateCode, $matches)){
 
 			if($matches[1] == $this->Model->ID){
 				$GLOBALS['initNavigationFromSession'] = true;
 			}
-		}
+		}*/
 
 		// initialize a document (only for caching needed)
 		$GLOBALS['we_doc'] = new we_webEditionDocument();

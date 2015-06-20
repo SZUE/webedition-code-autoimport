@@ -84,7 +84,7 @@ class we_navigation_items{
 
 		$this->readItemsFromDb($this->rootItem);
 
-		$this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $navigation->LinkID, ($navigation->IsFolder ? ($navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), $showRoot ? we_base_ContentTypes::FOLDER : 'root', $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
+		$this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $navigation->LinkID, ($navigation->IsFolder ? ($navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), ($showRoot ? we_base_ContentTypes::FOLDER : 'root'), $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
 
 		$items = $navigation->getDynamicPreview($this->Storage);
 
@@ -181,9 +181,8 @@ class we_navigation_items{
 		}
 
 		if(is_object($this->items['id' . $parentid])){
-			$this->items['id' . $parentid]->type = $showRoot ? ($parentid == 0 ? 'root' : $this->items['id' . $parentid]->type) : 'root';
+			$this->items['id' . $parentid]->type = !$showRoot || $parentid == 0 ? 'root' : we_base_ContentTypes::FOLDER;
 		}
-
 		$navigationRulesStorage = we_navigation_cache::getCachedRule();
 		if($navigationRulesStorage !== false){
 			$this->currentRules = unserialize($navigationRulesStorage);
@@ -200,7 +199,7 @@ class we_navigation_items{
 		return true;
 	}
 
-	function initById($parentid = 0, $depth = false, $showRoot = true){
+	function initById($parentid = 0, $showRoot = true){
 		$this->items = array();
 		$this->rootItem = intval($parentid);
 
@@ -218,7 +217,7 @@ class we_navigation_items{
 		$this->setDefaultTemplates();
 
 		$this->items['id' . $_navigation->ID] = new we_navigation_item(
-			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, self::getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), (!$showRoot || $_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, self::getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
 
 		$items = $_navigation->getDynamicPreview($this->Storage, true);
 
@@ -344,10 +343,10 @@ class we_navigation_items{
 				}
 
 				/* go on seraching for more matches or one with higher prio (= higher ID) anyway!
-				if($_ponder === 0){
-					$this->setCurrent($_rule->NavigationID);
-					return true;
-				}
+				  if($_ponder === 0){
+				  $this->setCurrent($_rule->NavigationID);
+				  return true;
+				  }
 				 * */
 
 				if($_ponder <= $_score){
