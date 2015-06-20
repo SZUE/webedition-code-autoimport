@@ -1020,10 +1020,9 @@ abstract class we_root extends we_class{
 		$_languages = getWeFrontendLanguagesForBackend();
 
 		if(LANGLINK_SUPPORT){
-			$documentTable = $isObject && !$isFolder ? tblObjectFile : stripTblPrefix(FILE_TABLE);
-			foreach($_languages as $langkey => $lang){
-				$tmpIDs[$langkey] = intval(f("SELECT LDID FROM " . LANGLINK_TABLE . " WHERE DocumentTable='" . $documentTable . "' AND IsObject=" . intval($isObject) . " AND DID=" . intval($this->ID) . " AND Locale='" . $this->DB_WE->escape($langkey) . "'", 'LDID', $this->DB_WE));
-			}
+			$documentTable = $isObject && !$isFolder ? stripTblPrefix(OBJECT_FILES_TABLE) : stripTblPrefix(FILE_TABLE);
+			$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND IsObject=' . intval($isObject) . ' AND DID=' . intval($this->ID) . ' AND Locale IN ("' . implode('","', $_languages) . '")');
+			$tmpIDs = $this->DB_WE->getAllFirst(false);
 
 			$tmpPaths = id_to_path($tmpIDs, $this->Table, null, false, true);
 			foreach($_languages as $langkey => $lang){
