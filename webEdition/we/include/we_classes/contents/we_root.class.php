@@ -1028,10 +1028,10 @@ abstract class we_root extends we_class{
 			foreach($_languages as $langkey => $lang){
 				$this->LangLinks[$langkey] = array('id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]);
 			}
-		} else {
-			foreach($_languages as $langkey => $lang){
-				$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
-			}
+			return;
+		}
+		foreach($_languages as $langkey => $lang){
+			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
 		}
 	}
 
