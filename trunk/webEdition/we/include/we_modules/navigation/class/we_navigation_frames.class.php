@@ -948,28 +948,14 @@ function showPreview() {
 	}
 
 	function getHTMLEditorPreviewIframe(){
-
 		require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 		$templateCode = $this->Model->previewCode;
 
-		// if id in template is same as id in session_navigation object,
-		// use dynamic entries
-
-		/*$matches = array();
-		if(preg_match('/parentid="(.*)"/', $templateCode, $matches)){
-
-			if($matches[1] == $this->Model->ID){
-				$GLOBALS['initNavigationFromSession'] = true;
-			}
-		}*/
-
 		// initialize a document (only for caching needed)
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
-		$GLOBALS['weNoCache'] = true;
 
 		$tp = new we_tag_tagParser($templateCode);
-
 		$tp->parseTags($templateCode);
 //FIXME:eval
 		eval('?>' . $templateCode);

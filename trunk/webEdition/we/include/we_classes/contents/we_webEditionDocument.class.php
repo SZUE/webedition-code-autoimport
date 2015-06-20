@@ -139,12 +139,12 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	public function makeSameNew(){
-		$TemplateID = $this->TemplateID;
-		$TemplatePath = $this->TemplatePath;
+/*		$TemplateID = $this->TemplateID;
+		$TemplatePath = $this->TemplatePath;*/
 		$IsDynamic = $this->IsDynamic;
 		parent::makeSameNew();
-		$this->TemplateID = $TemplateID;
-		$this->TemplatePath = $TemplatePath;
+		/*$this->TemplateID = $TemplateID;
+		$this->TemplatePath = $TemplatePath;*/
 		$this->IsDynamic = $IsDynamic;
 	}
 
