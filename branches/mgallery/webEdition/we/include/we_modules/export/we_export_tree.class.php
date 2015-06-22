@@ -120,6 +120,9 @@ var openFolders= {
 			if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 				$captions[OBJECT_TABLE] = g_l('export', '[classes]');
 			}
+			if(we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION) && permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
+				$captions[VFILE_TABLE] = g_l('export', '[collections]');
+			}
 
 			$header = new we_html_table(array(), 3, 1);
 			$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
@@ -242,6 +245,11 @@ var openFolders= {
 				break;
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				if(!permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+					return 0;
+				}
+				break;
+			case VFILE_TABLE:
+				if(!permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
 					return 0;
 				}
 				break;

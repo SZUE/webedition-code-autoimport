@@ -55,8 +55,9 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 
 	function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = array(), $collections = array()){
 		global $openFolders, $parentpaths, $wsQuery, $treeItems;
-
-		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm('CAN_SEE_TEMPLATES')) || ($table == FILE_TABLE && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS'))){
+		if(($table === TEMPLATES_TABLE && !permissionhandler::hasPerm('CAN_SEE_TEMPLATES')) ||
+				($table === FILE_TABLE && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')) ||
+				($table === VFILE_TABLE && !permissionhandler::hasPerm('CAN_SEE_COLLECTIONS'))){
 			return 0;
 		}
 

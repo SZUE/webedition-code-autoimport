@@ -82,6 +82,9 @@ switch($we_Table){
 	case FILE_TABLE:
 		$_needPerm = 'CAN_SEE_DOCUMENTS';
 		break;
+	case VFILE_TABLE:
+		$_needPerm = 'CAN_SEE_COLLECTIONS';
+		break;
 	default:
 		$_needPerm = '';
 }

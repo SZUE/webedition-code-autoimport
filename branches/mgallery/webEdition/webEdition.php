@@ -97,6 +97,8 @@ if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$_table_to_load = OBJECT_FILES_TABLE;
 } else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
 	$_table_to_load = OBJECT_TABLE;
+} else if(permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
+	$_table_to_load = VFILE_TABLE;
 } else {
 	$_table_to_load = "";
 }

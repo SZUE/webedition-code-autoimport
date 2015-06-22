@@ -68,12 +68,19 @@ wePropertiesEdit = {
 
 weCollectionEdit = {
 	maxIndex: 0,
-	blankGridItem: '',
-	blankListItem: '',
+	blankItem: {
+		list : '',
+		grid : ''
+	},
 	collectionName: '',
 	csv: '',
 	view: 'grid',
-	gridItemSize: 180,
+	gridItemSize: 200,
+	collectionArr: [],
+	collectionCsv: '',
+	sliderDiv: null,
+	iconSizes: [],
+
 	ct: {
 		grid: null,
 		list: null
@@ -116,6 +123,7 @@ weCollectionEdit = {
 	init: function(){
 		this.ct.grid = document.getElementById('content_table_grid');
 		this.ct.list = document.getElementById('content_table_list');
+		this.sliderDiv = document.getElementById('sliderDiv');
 
 		for(var i = 0; i < this.ct.grid.children.length; i++){
 			this.addListenersToItem('grid', this.ct.grid.children[i], i+1);
@@ -123,12 +131,30 @@ weCollectionEdit = {
 
 		this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
 		this.collectionCsv = document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value;
+		//this.setView('grid');
+		//this.renderView();
 	},
 
-	setview: function(view){
+	setView: function(view){
 		this.view = view;
+		document.we_form['we_' + this.we_doc.name + '_view'].value = this.view;
 		this.ct.grid.style.display = this.view === 'grid' ? 'inline-block' : 'none';
 		this.ct.list.style.display = this.view === 'list' ? 'block' : 'none';
+		this.sliderDiv.style.display = this.view === 'grid' ? 'block' : 'none';
+		this.renderView(false);
+	},
+
+	renderView: function(fromServer){
+		this.ct[this.view].innerHTML = '';
+		this.maxIndex = 0;
+
+		for(i = 0; i < this.collectionArr.length; i++){
+			this.insertItem(null, false, this.storage['item_' + this.collectionArr[i]], this);
+		}
+
+		if(this.view === 'list'){
+			this.repaintAndRetrieveCsv();
+		}
 	},
 
 	addListenersToItem: function(view, elem, num){
@@ -178,10 +204,10 @@ weCollectionEdit = {
 
 	doClickAdd: function(elem){
 		var el = this.getItem(elem),
-			num = document.getElementById('numselect_' + el.id.substr(10)).value;
+			num = 1;//document.getElementById('numselect_' + el.id.substr(10)).value;
 
 		for(var i = 0; i < num; i++){
-			el = this.addListItem(el, false);
+			el = this.insertItem(el, false);
 		}
 		this.repaintAndRetrieveCsv();
 	},
@@ -209,10 +235,17 @@ weCollectionEdit = {
 	},
 
 	doZoomGrid: function(value){
-		this.gridItemSize = value;
+		this.gridItemSize = this.iconSizes[7 - value];
+		document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value = (7 - value);
 		for(var i = 0; i < this.ct['grid'].children.length; i++){
-			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = value + 'px';
+			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = this.gridItemSize + 'px';
 		}
+	},
+
+	doClickOpenToEdit: function(id){
+		var table = this.we_doc.remTable === 'tblFile' ? this.we_const.FILE_TABLE : this.we_const.OBJECT_FILES_TABLE,
+			ct = this.storage['item_' + id].ct;top.console.debug('ct', ct);
+		top.weEditorFrameController.openDocument(table,id,ct);
 	},
 
 	getPlaceholder: function(){
@@ -237,7 +270,7 @@ weCollectionEdit = {
 		} else {
 			this.dd.placeholder.setAttribute("ondrop","weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
 			this.dd.placeholder.style.border = '1px solid #006db8';
-			this.dd.placeholder.style.height = '34px';
+			this.dd.placeholder.style.height = '88px';
 			this.dd.placeholder.style.width = '804px';
 			this.dd.placeholder.style.marginTop = '4px';
 		}
@@ -253,45 +286,38 @@ weCollectionEdit = {
 		return elem;
 	},
 
-	addListItem: function(elem, repaint, id, path){
-		var el = this.getItem(elem),
-			div, newElem, cmd1, cmd2;
+	insertItem: function(elem, repaint, item, scope){
+		var t = scope ? scope : this,
+			el = elem ? t.getItem(elem) : null,
+			div, newElem, cmd1, cmd2,
+			id = item && item.id ? item.id : -1,
+			path = item && item.path ? item.path : '',
+			ct = item && item.ct ? item.ct : 'image/*',
+			iconSrc = item && item.iconSrc ? item.iconSrc : '';
 
-		id = id || -1;
-		path = path || '';
 		repaint = repaint || false;
+		++t.maxIndex;
 
-		cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/XX/g, ++this.maxIndex));
-		cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/XX/g, this.maxIndex));
 		div = document.createElement("div");
-		div.innerHTML = this.blankListItem.replace(/XX/g, this.maxIndex).replace(/CMD1/, cmd1).replace(/CMD2/, cmd2);
+		div.innerHTML = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, id).replace(/##PATH##/g, path).replace(/##CT##/g, ct).replace(/##ICONURL##/g, iconSrc.replace('%2F', '/'));
 
-		newElem = this.ct[this.view].insertBefore(div.firstChild, el.nextSibling);
-		document.getElementById('yuiAcInputItem_' + this.maxIndex).value = path;
-		document.getElementById('yuiAcResultItem_' + this.maxIndex).value = id;
-
-		if(repaint){
-			this.repaintAndRetrieveCsv();
+		if(t.view === 'list'){
+			//TODO: list fallback!
+			cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
+			cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
+		} else {
+			// TODO: use replace here too!
+			//div.firstChild.firstChild.style.background = 'url(' + item.iconSrc.replace('%2F', '/') + ') no-repeat center center';
+			//div.firstChild.firstChild.style.backgroundSize = 'contain';
+			div.firstChild.style.width = div.firstChild.style.height = t.gridItemSize + 'px';
+			t.addListenersToItem('grid', div.firstChild);
 		}
+		newElem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
 
-		return newElem;
-	},
+		
 
-	addGridItem: function(elem, repaint, object){
-		var el = this.getItem(elem),
-			id, div, newElem;
-
-		id = object ? object.id : -1;
-		repaint = repaint || false;
-
-		div = document.createElement("div");
-		div.innerHTML = this.blankGridItem.replace(/##INDEX##/g, '100').replace(/##ID##/, id).replace(/##URL##/g, object ? object.iconSrc : '');
-		div.firstChild.style.width = div.firstChild.style.height = this.gridItemSize + 'px';
-		this.addListenersToItem('grid', div.firstChild);
-
-		newElem = this.ct[this.view].insertBefore(div.firstChild, el.nextSibling);
 		if(repaint){
-			this.repaintAndRetrieveCsv(this.view);
+			t.repaintAndRetrieveCsv();
 		}
 
 		return newElem;
@@ -317,14 +343,26 @@ weCollectionEdit = {
 			while(!isFirstSet && items.length){
 				var item = items.shift();
 				if(this.dd.IsDuplicates === 1 || this.collectionCsv.search(',' + item.id + ',') === -1){
+					var newEl = this.insertItem(el, true, item, this);
+					this.doClickDelete(el);
+					el = newEl;
+					/*
 					if(this.view === 'grid'){
-						document.getElementById('grid_item_' + index).firstChild.style.background = 'url(' + item.iconSrc.replace('%2F', '/') + ') no-repeat center center';
+						
+						//var next = el.nextSibling;top.console.debug('next: ', next);
+						
+						var div = document.getElementById('grid_item_' + index);
+						div.firstChild.style.background = 'url(' + item.iconSrc.replace('%2F', '/') + ') no-repeat center center';
+						div.firstChild.style.backgroundSize = 'contain';
+						div.firstChild.title = item.path;
 						//TODO: name id-fiels using index from item-id and rename when reordering...
-						document.getElementById('grid_item_' + index).childNodes[2].value = item.id;
+						div.childNodes[2].value = item.id;
+						
 					} else {
-						document.getElementById('yuiAcInputItem_' + index).value = item.path;
-						document.getElementById('yuiAcResultItem_' + index).value = item.id;
+						this.insertItem(el, true, item, this);
+						this.doClickDelete(el);
 					}
+					*/
 					itemsSet[0].push(item.id);
 					isFirstSet = true;
 				} else {
@@ -332,6 +370,7 @@ weCollectionEdit = {
 				}
 			}
 		}
+		
 
 		for(var i = 0; i < items.length; i++){
 			if(this.dd.IsDuplicates || this.collectionCsv.search(',' + items[i].id + ',') === -1){
@@ -339,10 +378,13 @@ weCollectionEdit = {
 				if(this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 10) === this.view + '_item_'){
 					index = el.nextSibling.id.substr(10);
 					id = this.view === 'grid' ? el.nextSibling.childNodes[2].value : document.getElementById('yuiAcResultItem_' + index).value;
-					if(id == -1 || id == 0){
+					if(id === -1 || id === 0){
+						//TODO: use insertItem()!!
 						if(this.view === 'grid'){
 							el.nextSibling.childNodes[2].value = items[i].id;
 							el.nextSibling.firstChild.style.background = 'url(' + items[i].iconSrc.replace('%2F', '/') + ') no-repeat center center';
+							el.nextSibling.firstChild.style.backgroundSize = 'contain';
+							el.nextSibling.firstChild.title = items[i].path;
 						} else {
 							document.getElementById('yuiAcInputItem_' + index).value = items[i].path;
 							document.getElementById('yuiAcResultItem_' + index).value = items[i].id;
@@ -353,11 +395,7 @@ weCollectionEdit = {
 						rowsFull = true;
 					}
 				}
-				if(this.view === 'grid'){
-					el = this.addGridItem(el, false, items[i]);
-				} else {
-					el = this.addListItem(el, false, items[i].id, items[i].path);
-				}
+				el = this.insertItem(el, false, items[i]);
 			} else {
 				itemsSet[1].push(items[i].id);
 			}
@@ -366,48 +404,43 @@ weCollectionEdit = {
 		return itemsSet;
 	},
 
-	deleteItem: function(view, elem){
-		var el;
-		if(view == 'grid'){
-			el = this.getItem(elem);
-			el.parentNode.removeChild(el);
-			this.repaintAndRetrieveCsv(this.view);
-		}
-	},
+	repaintAndRetrieveCsv: function(){
+		var ct = this.ct[this.view], 
+			row, item, index, csv = ',', val, btns, arr = [];
 
-	repaintAndRetrieveCsv: function(view){
-		var ct = this.ct[view], 
-			row, item, index, csv = ',', val, btns;
-
-		switch(view){
+		switch(this.view){
 			case 'grid':
 				for(var i = 0; i < ct.childNodes.length; i++){
 					item = ct.childNodes[i];
 					item.id = 'grid_item_' + (i+1);
 					val = ct.childNodes.length > 1 ? parseInt(document.we_form.collectionItem_we_id[i].value) : parseInt(document.we_form.collectionItem_we_id.value);
 					csv += (val !== 0 ? val : -1) + ',';
+					arr.push((val !== 0 ? val : -1));
 				}
 				break;
 			case 'list':
 				for(var i = 0; i < ct.childNodes.length; i++){
 					row = ct.childNodes[i];
-					btns = row.getElementsByTagName('BUTTON');
+					//btns = row.getElementsByTagName('BUTTON');
 					index = row.id.substr(10);
 					val = parseInt(document.getElementById('yuiAcResultItem_' + index).value);
 					csv += (val !== 0 ? val : -1) + ',';
+					arr.push((val !== 0 ? val : -1));
 					document.getElementById('label_' + index).innerHTML = i + 1;
+					/*
 					btns[2].disabled = (val === - 1);
 					btns[4].disabled = (i === 0);
 					btns[5].disabled = (i === (ct.childNodes.length - 1));
 					btns[6].disabled = (ct.childNodes.length === 1);
+					*/
 				}
 				break;
 		}
 		if(val !== -1){
-			if(view === 'grid'){
-				this.addGridItem(ct.lastChild, true);
+			if(this.view === 'grid'){
+				this.insertItem(ct.lastChild, true);
 			} else {
-				this.addListItem(ct.lastChild, true);
+				this.insertItem(ct.lastChild, true);
 			}
 		}
 
@@ -416,6 +449,7 @@ weCollectionEdit = {
 		}
 		document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value = csv;
 		this.collectionCsv = csv;
+		this.collectionArr = arr;
 		top.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 	},
 
@@ -490,13 +524,13 @@ weCollectionEdit = {
 							}
 					}
 				} else {
-					/*
+					
 					switch(type){
 						case 'item':
 							var t = this.ct[this.view], index;
+
 							for(var i = 0; i < t.childNodes.length; i++){
-								index = t.childNodes[i].id.substr(10);
-								//document.getElementById(this.view + '_elem_ + index).style.border = '1px solid #006db8';
+								t.childNodes[i].style.border = '1px solid #006db8';
 							}
 
 							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
@@ -505,6 +539,7 @@ weCollectionEdit = {
 								el.style.border = '1px solid red';
 							}
 							break;
+						/*
 						case 'space':
 							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
 								elem.style.width = '36px';
@@ -515,8 +550,9 @@ weCollectionEdit = {
 							} else {
 								//el.style.border = '1px solid red';
 							}
+						*/
 					}
-					*/
+					
 				}
 				break;
 			default:
@@ -621,6 +657,7 @@ weCollectionEdit = {
 					this.dd.moveItem.el.firstChild.style.borderColor = 'green';
 
 					// move item in second view!
+					/*
 					if(indexNextToNewPos){
 						this.ct[otherView].insertBefore(this.ct[otherView].removeChild(document.getElementById(otherView + '_item_' + this.dd.moveItem.index)),
 								document.getElementById(otherView + '_item_' + indexNextToNewPos)
@@ -630,6 +667,7 @@ weCollectionEdit = {
 								this.ct[otherView].lastChild
 							);
 					}
+					*/
 					this.repaintAndRetrieveCsv(view);
 
 					setTimeout(function(){
@@ -644,15 +682,19 @@ weCollectionEdit = {
 					index = el.id.substr(10);
 					
 					if(type === 'item'){
-						el.firstChild.style.border = '1px solid #006db8';
+						if(this.view === 'list'){
+							//el.style.border = '1px solid red';
+						}
+						el.firstChild.style.backgroundColor = 'palegreen';
 					} else {
-						this.hideSpace(elem)
+						this.hideSpace(elem);
 					}
 
 					if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
 						if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
 							this.callForVerifiedItemsAndInsert(index, data[2], false, type !== 'item');
 						} else {
+							
 							//alert("the item you try to drag from doesn't match your collection's content types");
 						}
 					} else {

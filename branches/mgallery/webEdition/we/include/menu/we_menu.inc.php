@@ -172,7 +172,7 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[collection_directory]'),
 		'parent' => 1011000,
 		'cmd' => 'new_collection_folder',
-		'perm' => '', //NEW_COLLECTION',
+		'perm' => 'NEW_COLLECTION_FOLDER',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// separator
@@ -196,14 +196,14 @@ $we_menu = array(
 	),
 	array(// separator
 		'parent' => 1010000,
-		'perm' => '', //NEW_COLLECTION',
+		'perm' => 'NEW_COLLECTION',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// File > COLLECTION
 		'text' => g_l('javaMenu_global', '[collection]'),
 		'parent' => 1010000,
 		'cmd' => 'new_collection',
-		'perm' => '', //NEW_COLLECTION',
+		'perm' => 'NEW_COLLECTION',
 		'hide' => !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	/* 	$we_menu[1011100]['parent'] = 1010000; // separator
@@ -242,7 +242,7 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[collection]') . '&hellip;',
 		'parent' => 1030000,
 		'cmd' => 'open_collection',
-		'perm' => 'CAN_SEE_DOCUMENTS',
+		'perm' => 'CAN_SEE_COLLECTIONS',
 		'hide' => !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// separator
@@ -305,14 +305,14 @@ $we_menu = array(
 	),
 	array(// separator
 		'parent' => 1080000,
-		'perm' => 'CAN_SEE_TEMPLATES || CAN_SEE_OBJECTS',
+		'perm' => 'DELETE_COLLECTION',
 		'hide' => $seeMode
 	),
 	array(// File > Delete > Collection
 		'text' => g_l('global', '[vfile]'),
 		'parent' => 1080000,
 		'cmd' => 'delete_collections',
-		'perm' => '', //'DELETE_COLLECTION',
+		'perm' => 'DELETE_COLLECTION',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION),
 	),
 	1090000 => array(// File > Move
@@ -352,21 +352,21 @@ $we_menu = array(
 		'text' => g_l('javaMenu_global', '[add_to_collection]'),
 		'parent' => 1000000,
 		'hide' => $seeMode,
-		'perm' => '',
+		'perm' => 'SAVE_COLLECTION',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// File > add to collection > documents
 		'text' => g_l('javaMenu_global', '[documents]'),
 		'parent' => 1095000,
 		'cmd' => 'add_documents_to_collection',
-		'perm' => '',
+		'perm' => 'SAVE_COLLECTION',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION),
 	),
 	array(/// File > add to collection > objects
 		'text' => g_l('javaMenu_object', '[objects]'),
 		'parent' => 1095000,
 		'cmd' => 'add_objectfiles_to_collection',
-		'perm' => '',
+		'perm' => 'SAVE_COLLECTION',
 		'hide' => !defined('OBJECT_TABLE') || ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_NORMAL) || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
 	array(// separator
