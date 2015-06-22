@@ -56,98 +56,34 @@ for(i=0;i<newID;i++) {
 		}
 
 		return we_html_element::jsElement('
-function init() {
-	sizeScrollContent();
-}
-
-function printScreen() {
-
-	var scrollContent = document.getElementById("scrollContent");
-	var hScrollContent = scrollContent.innerHeight ? scrollContent.innerHeight : scrollContent.offsetHeight;
-
-	var contentTable = document.getElementById("contentTable");
-	var hContentTable = contentTable.innerHeight ? contentTable.innerHeight : contentTable.offsetHeight;
-
-	//hContentTable = hContentTable-500;
-
-	scrollContent.style.height = hContentTable+"px";
-	window.print();
-
-	setTimeout(function(){setCrollContent(hScrollContent);},2000);
-}
-
-function setCrollContent(hScrollContent) {
-	var scrollContent = document.getElementById("scrollContent");
-	scrollContent.style.height = hScrollContent+"px";
-}
+var g_l={
+	resetVersions:"' . g_l('versions', '[resetVersions]') . '",
+	mark:"' . g_l('versions', '[mark]') . '",
+	notMark:"' . g_l('versions', '[notMark]') . '",
+};
+var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
 
 function sizeScrollContent() {
-
 	var elem = document.getElementById("filterTable");
 	if(elem) {
 		newID = elem.rows.length-1;
+		scrollheight = ' . $h . ';
+		' . $addinputRows . '
 
-			scrollheight = ' . $h . ';
+		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+		var scrollContent = document.getElementById("scrollContent");
 
-			' . $addinputRows . '
-
-			var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-			var scrollContent = document.getElementById("scrollContent");
-
-			var height = 240;
-			if((h - height)>0) {
-				scrollContent.style.height=(h - height)+"px";
-			}
-			if((scrollContent.offsetHeight - scrollheight)>0){
-				scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
-			}
+		var height = 240;
+		if((h - height)>0) {
+			scrollContent.style.height=(h - height)+"px";
+		}
+		if((scrollContent.offsetHeight - scrollheight)>0){
+			scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
+		}
 	}
-}
-
-var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
-
-var ajaxCallbackResultList = {
-	success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-		document.getElementById("scrollContent").innerHTML = o.responseText;
-		makeAjaxRequestParametersTop();
-		makeAjaxRequestParametersBottom();
-	}
-},
-	failure: function(o) {
-	}
-}
-
-var ajaxCallbackParametersTop = {
-	success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-		document.getElementById("parametersTop").innerHTML = o.responseText;
-	}
-},
-	failure: function(o) {
-	}
-}
-var ajaxCallbackParametersBottom = {
-	success: function(o) {
-	if(o.responseText !== undefined && o.responseText != "") {
-		document.getElementById("parametersBottom").innerHTML = o.responseText;
-	}
-},
-	failure: function(o) {
-	}
-}
-
-function search(newSearch) {
-
-	if(newSearch) {
-		document.we_form.searchstart.value=0;
-	}
-	makeAjaxRequestDoclist();
-
 }
 
 function makeAjaxRequestDoclist() {
-
 	var args = "";
 	var newString = "";
 	for(var i = 0; i < document.we_form.elements.length; i++) {
@@ -181,35 +117,6 @@ function makeAjaxRequestParametersBottom() {
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&position=bottom&cns=versionlist&cmd=GetSearchParameters&classname=' . $GLOBALS['we_doc']->ClassName . '&id=' . $GLOBALS['we_doc']->ID . '&we_transaction=' . $GLOBALS['we_transaction'] . '"+args+"");
 
 }
-
-var ajaxCallbackDeleteVersion = {
-	success: function(o) {
-	},
-	failure: function(o) {
-	}
-}
-
-function deleteVersionAjax() {
-
-	var args = "";
-	var check = "";
-	var newString = "";
-	var checkboxes = document.getElementsByName("deleteVersion");
-	for(var i = 0; i < checkboxes.length; i++) {
-		if(checkboxes[i].checked) {
-				if(check!="") check += ",";
-				check += checkboxes[i].value;
-					newString = checkboxes[i].name;
-		}
-	}
-	args += "&we_cmd["+encodeURI(newString)+"]="+encodeURI(check);
-	var scroll = document.getElementById("scrollContent");
-	scroll.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
-
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDeleteVersion, "protocol=json&cns=versionlist&cmd=DeleteVersion&"+args+"");
-
-}
-
 
 function deleteVers() {
 	var checkAll = document.getElementsByName("deleteAllVersions");
@@ -261,23 +168,6 @@ function deleteVers() {
 	}
 }
 
-function checkAll() {
-
-	var checkAll = document.getElementsByName("deleteAllVersions");
-	var checkboxes = document.getElementsByName("deleteVersion");
-	var check = false;
-	var label = document.getElementById("label_deleteAllVersions");
-	label.innerHTML = "' . g_l('versions', '[mark]') . '";
-	if(checkAll[0].checked) {
-		check = true;
-		label.innerHTML = "' . g_l('versions', '[notMark]') . '";
-	}
-	for(var i = 0; i < checkboxes.length; i++) {
-		checkboxes[i].checked = check;
-	}
-
-}
-
 var ajaxCallbackResetVersion = {
 	success: function(o) {
 		if(o.responseText !== undefined) {
@@ -310,115 +200,6 @@ function resetVersionAjax(id, documentID, version, table) {
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id="+id+"&documentID="+documentID+"&version="+version+"&documentTable="+table+"&we_transaction=' . $GLOBALS['we_transaction'] . '");
 }
 
-function resetVersion(id, documentID, version, table) {
-	Check = confirm("' . g_l('versions', '[resetVersions]') . '");
-	if (Check == true) {
-		if(document.getElementById("publishVersion_"+id)!=null) {
-			if(document.getElementById("publishVersion_"+id).checked) {
-				id += "___1";
-			}else {
-				id += "___0";
-			}
-		}
-		resetVersionAjax(id, documentID, version, table);
-	}
-
-}
-
-function previewVersion(ID) {
-	top.we_cmd("versions_preview", ID, 0);
-}
-
-function switchSearch(mode) {
-	document.we_form.mode.value=mode;
-	var defSearch = document.getElementById("defSearch");
-	var advSearch = document.getElementById("advSearch");
-	var advSearch2 = document.getElementById("advSearch2");
-	var advSearch3 = document.getElementById("advSearch3");
-	var scrollContent = document.getElementById("scrollContent");
-
-	scrollheight = 37;
-
-	var elem = document.getElementById("filterTable");
-	newID = elem.rows.length-1;
-
-	for(i=0;i<newID;i++) {
-		scrollheight = scrollheight + ' . (we_base_browserDetect::isIE() ? '22' : '26') . ';
-	}
-
-	if (mode==1) {
-		scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
-		defSearch.style.display = "none";
-		advSearch.style.display = "block";
-		advSearch2.style.display = "block";
-		advSearch3.style.display = "block";
-	}else {
-		scrollContent.style.height = (scrollContent.offsetHeight + scrollheight) +"px";
-		defSearch.style.display = "block";
-		advSearch.style.display = "none";
-		advSearch2.style.display = "none";
-		advSearch3.style.display = "none";
-	}
-
-}
-
-var msBack=0;
-var diffBack = 0;
-var msNext=0;
-var diffNext = 0;
-
-function next(anzahl){
-	var zeit = new Date();
-	if(msBack!=0) {
-		diffBack = zeit.getTime() - msBack;
-	}
-	msBack = zeit.getTime();
-	if(diffBack>1000 || diffBack==0) {
-		document.we_form.elements.searchstart.value = parseInt(document.we_form.elements.searchstart.value) + anzahl;
-
-		search(false);
-	}
-}
-
-function back(anzahl){
-	var zeit = new Date();
-	if(msNext!=0) {
-		diffNext = zeit.getTime() - msNext;
-	}
-	msNext = zeit.getTime();
-	if(diffNext>1000 || diffNext==0) {
-		document.we_form.elements.searchstart.value = parseInt(document.we_form.elements.searchstart.value) - anzahl;
-
-		search(false);
-	}
-
-}
-
-function setOrder(order){
-	columns = ["version", "modifierID", "timestamp"];
-	for(var i=0;i<columns.length;i++) {
-		if(order!=columns[i]) {
-			deleteArrow = document.getElementById(""+columns[i]+"");
-			deleteArrow.innerHTML = "";
-		}
-	}
-	arrow = document.getElementById(""+order+"");
-	orderVal = document.we_form.elements.order.value;
-
-	if(order+" DESC"==orderVal){
-		document.we_form.elements.order.value=order;
-		arrow.innerHTML = "<i class=\"fa fa-sort-asc fa-lg\"></i>";
-	}else{
-		document.we_form.elements.order.value=order+" DESC";
-		arrow.innerHTML = "<i class=\"fa fa-sort-desc fa-lg\"></i>";
-	}
-	search(false);
-
-}
-
-
-var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
-
 function newinput() {
 	var searchFields = "' . str_replace(
 					"\n", '\n', addslashes(
@@ -440,7 +221,6 @@ function newinput() {
 	var scrollContent = document.getElementById("scrollContent");
 	scrollContent.style.height = scrollContent.offsetHeight - 26 +"px";
 
-
 	if(elem){
 		var newRow = document.createElement("TR");
 			newRow.setAttribute("id", "filterRow_" + rows);
@@ -461,8 +241,7 @@ function newinput() {
 
 			cell = document.createElement("TD");
 			cell.setAttribute("id", "td_delButton["+rows+"]");
-			cell.innerHTML=\'' . we_html_button::create_button(
-					we_html_button::TRASH, "javascript:delRow('+rows+')") . '\';
+			cell.innerHTML=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow('+rows+')") . '\';
 			newRow.appendChild(cell);
 
 		elem.appendChild(newRow);
@@ -596,32 +375,8 @@ function changeit(value, rowNr){
 		cell.innerHTML=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow('+rowNr+')") . '\';
 		row.appendChild(cell);
 	}
-		}
-
-function calendarSetup(x){
-	for(i=0;i<x;i++) {
-		if(document.getElementById("date_picker_from"+i+"") != null) {
-			Calendar.setup({inputField:"search["+i+"]",ifFormat:"%d.%m.%Y",button:"date_picker_from"+i+"",align:"Tl",singleClick:true});
-		}
-	}
 }
-
-function delRow(id) {
-	var scrollContent = document.getElementById("scrollContent");
-	scrollContent.style.height = scrollContent.offsetHeight + 26 +"px";
-
-	var elem = document.getElementById("filterTable");
-	if(elem){
-		trows = elem.rows;
-		rowID = "filterRow_" + id;
-
-				for (i=0;i<trows.length;i++) {
-					if(rowID == trows[i].id) {
-						elem.deleteRow(i);
-					}
-				}
-	}
-}');
+') . we_html_element::jsElement(JS_DIR . 'versions_view.js');
 	}
 
 	/**

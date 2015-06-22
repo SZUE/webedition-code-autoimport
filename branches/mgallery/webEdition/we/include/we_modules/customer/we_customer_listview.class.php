@@ -86,7 +86,7 @@ class we_customer_listview extends we_listview_base{
 	}
 
 	function next_record(){
-		$ret = $this->DB_WE->next_record();
+		$ret = $this->DB_WE->next_record(MYSQL_ASSOC);
 		if($ret){
 			array_merge($this->DB_WE->Record, we_customer_customer::getEncryptedFields());
 			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_cid=' . $this->DB_WE->Record['ID'];

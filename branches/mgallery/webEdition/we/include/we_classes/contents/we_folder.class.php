@@ -58,12 +58,13 @@ class we_folder extends we_root{
 	}
 
 	function getPath(){
-		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
-			return we_root::getPath();
+		switch($this->Table){
+			case FILE_TABLE:
+			case TEMPLATES_TABLE:
+				return parent::getPath();
+			default:
+				return rtrim($this->getParentPath(), '/') . '/' . $this->Text;
 		}
-		$ParentPath = $this->getParentPath();
-		$ParentPath .= ($ParentPath != '/') ? '/' : '';
-		return $ParentPath . $this->Text;
 	}
 
 	public function we_initSessDat($sessDat){
@@ -406,7 +407,7 @@ class we_folder extends we_root{
 <colgroup><col style="width:20px;"/><col style="width:20px;"/><col style="width:100px;"/></colgroup>
 	<tr><td class="defaultfont" style="padding-bottom:10px;">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
 	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(388) . '</td></tr>' .
-				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ?					'
+				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ? '
 		<tr><td colspan="3" class="defaultfont" style="padding-top:4px;">' . $this->formTriggerDocument() . '</td></tr>
 			<tr><td colspan="3">
 		<table class="default"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .

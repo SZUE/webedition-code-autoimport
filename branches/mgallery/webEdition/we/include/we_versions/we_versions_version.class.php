@@ -1587,47 +1587,37 @@ class we_versions_version{
 		}
 
 		if($resetArray){
-			$resetDoc = new $resetArray["ClassName"]();
-
+			$resetDoc = new $resetArray['ClassName']();
 			foreach($resetArray as $k => $v){
-
 				if(isset($resetDoc->$k)){
-					if($k != "ID"){
-						$resetDoc->$k = $v;
+					switch($k){
+						case 'ID':
+							break;
+						default:
+							$resetDoc->$k = $v;
 					}
 				} else {
 					switch($k){
-						case "documentID":
+						case 'documentID':
 							$resetDoc->ID = $v;
 							break;
-						case "documentElements":
+						case 'documentElements':
 							if($v){
-								$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-										html_entity_decode(urldecode($v), ENT_QUOTES) :
-										$v)
-								);
-								$resetDoc->elements = $docElements;
+								$resetDoc->elements = we_unserialize($v);
 							}
 							break;
 						case 'documentScheduler':
 							if($v){
-								$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-										html_entity_decode(urldecode($v), ENT_QUOTES) :
-										$v)
-								);
-								$resetDoc->schedArr = $docElements;
+								$resetDoc->schedArr = we_unserialize($v);
 							}
 							break;
 						case 'documentCustomFilter':
 							if($v){
-								$docElements = we_unserialize((substr_compare($v, 'a%3A', 0, 4) == 0 ?
-										html_entity_decode(urldecode($v), ENT_QUOTES) :
-										$v)
-								);
+								$docElements = we_unserialize($v);
 								$resetDoc->documentCustomerFilter = new we_customer_documentFilter();
 								foreach($docElements as $k => $v){
 									if(isset($resetDoc->documentCustomerFilter->$k)){
-										if($v != "" || !empty($v)){
+										if($v){
 											$resetDoc->documentCustomerFilter->$k = $v;
 										}
 									}
@@ -1639,31 +1629,33 @@ class we_versions_version{
 			}
 
 			if($resetDoc->ContentType == we_base_ContentTypes::IMAGE){
-				$lastBinaryPath = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $resetArray["documentTable"] . "' AND version <='" . $version . "' AND binaryPath !='' ORDER BY version DESC LIMIT 1", 'binaryPath', $db);
+				$lastBinaryPath = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray['documentID']) . ' AND documentTable="' . $resetArray['documentTable'] . '" AND version <="' . $version . '" AND binaryPath !="" ORDER BY version DESC LIMIT 1', '', $db);
 				$resetDoc->elements["data"]["dat"] = $_SERVER['DOCUMENT_ROOT'] . $lastBinaryPath;
 			}
 
 			$resetDoc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 
-			$existsInFileTable = f('SELECT ID FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetDoc->ID), "", $db);
+			$existsInFileTable = getHash('SELECT ID,ParentID FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE ID=' . intval($resetDoc->ID), $db);
 //if document was deleted
 
-			if(!$existsInFileTable){
+			if($existsInFileTable){
+				$resetDoc->ParentID = $existsInFileTable['ParentID'];
+				$resetDoc->Path = $resetDoc->getPath();
+			} else {
 //save this id and contenttype to turn the id for the versions
 				$oldId = $resetDoc->ID;
 				$oldCt = $resetDoc->ContentType;
 				$resetDoc->ID = 0;
-				$lastEntryVersion = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' ORDER BY version DESC LIMIT 1", "version", $db);
+				$lastEntryVersion = f('SELECT version FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . ' AND documentTable="' . $db->escape($resetArray['documentTable']) . '" ORDER BY version DESC LIMIT 1', '', $db);
 				$resetDoc->version = $lastEntryVersion + 1;
 			}
 
-			if($resetArray["ParentID"] != 0){
+			if($resetDoc->ParentID){
 //if folder was deleted
-				$existsPath = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID=' . intval($resetArray["ParentID"]) . ' AND IsFolder=1', '', $db);
+				$existsPath = f('SELECT 1 FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE ID=' . intval($resetDoc->ParentID) . ' AND IsFolder=1', '', $db);
 
 				if(!$existsPath){
 // create old folder if it does not exists
-
 					$folders = explode('/', $resetArray["Path"]);
 					foreach($folders as $k => $v){
 						if($k != 0 && $k != (count($folders) - 1)){
@@ -1674,21 +1666,21 @@ class we_versions_version{
 
 							$folder->we_new();
 							$folder->setParentID($parentID);
-							$folder->Table = $resetArray["documentTable"];
+							$folder->Table = $resetArray['documentTable'];
 							$folder->Text = $v;
 							$folder->CreationDate = time();
 							$folder->ModDate = time();
 							$folder->Filename = $v;
 							$folder->Published = time();
 							$folder->Path = $folder->getPath();
-							$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-							$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-							$existsFolderPathID = f('SELECT ID FROM ' . $db->escape($resetArray["documentTable"]) . " WHERE Path='" . $db->escape($folder->Path) . "' AND IsFolder=1 ", '', $db);
-							if(empty($existsFolderPathID)){
+							$folder->CreatorID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
+							$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
+							$existsFolderPathID = f('SELECT ID FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE Path="' . $db->escape($folder->Path) . '" AND IsFolder=1', '', $db);
+							if($existsFolderPathID){
+								$_SESSION['weS']['versions']['lastPathID'] = $existsFolderPathID;
+							} else {
 								$folder->we_save();
 								$_SESSION['weS']['versions']['lastPathID'] = $folder->ID;
-							} else {
-								$_SESSION['weS']['versions']['lastPathID'] = $existsFolderPathID;
 							}
 						}
 					}
@@ -1699,14 +1691,14 @@ class we_versions_version{
 				}
 			}
 
-			$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . " AND Path= '" . $db->escape($resetDoc->Path) . "' LIMIT 1", '', $db);
+			$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . ' AND Path="' . $db->escape($resetDoc->Path) . '" LIMIT 1', '', $db);
 
 			$doPark = false;
 			if($existsFile){
-				$resetDoc->Path = str_replace($resetDoc->Text, "_" . $resetArray["documentID"] . "_" . $resetDoc->Text, $resetDoc->Path);
-				$resetDoc->Text = "_" . $resetArray["documentID"] . "_" . $resetDoc->Text;
-				if(isset($resetDoc->Filename) && $resetDoc->Filename != ""){
-					$resetDoc->Filename = "_" . $resetArray["documentID"] . "_" . $resetDoc->Filename;
+				$resetDoc->Path = str_replace($resetDoc->Text, '_' . $resetArray['documentID'] . '_' . $resetDoc->Text, $resetDoc->Path);
+				$resetDoc->Text = '_' . $resetArray["documentID"] . '_' . $resetDoc->Text;
+				if(isset($resetDoc->Filename) && $resetDoc->Filename != ''){
+					$resetDoc->Filename = '_' . $resetArray["documentID"] . '_' . $resetDoc->Filename;
 					$publish = 0;
 					$doPark = true;
 				}
@@ -1728,7 +1720,7 @@ class we_versions_version{
 			$resetDoc->ModDate = time();
 			$resetDoc->Published = $resetArray["timestamp"];
 
-			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray["documentTable"]) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
+			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . " AND documentTable='" . $db->escape($resetArray['documentTable']) . "' AND status='published' ORDER BY version DESC LIMIT 1", '', $db);
 			$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
 			$publishedDocExists = true;
 			if($resetArray['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
