@@ -94,8 +94,7 @@ onunload=function() {
 
 	static function getMenuReloadCode($location = 'top.opener.'){
 		$menu = self::getMenu();
-		$menu = str_replace("\n", '"+"', addslashes($menu->getHTML()));
-		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . $menu . '";';
+		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . str_replace("\n", '"+"', addslashes($menu->getHTML())) . '";';
 	}
 
 	static function getMenu(){

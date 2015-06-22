@@ -172,14 +172,14 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 				// update table
 				$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ' . we_database_base::arraySetter(array(
 						'ParentID' => intval($parentID),
-						'Path' => $newPath . "/" . $fileName
+						'Path' => $newPath . '/' . $fileName
 					)) . "' WHERE ID=" . intval($id));
 
 				continue;
 
 			// move Objects
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-
+//FIME: check no classfolder (top level element is moved)
 				// get information about the object which has to be moved
 				$row = getHash('SELECT TableID,Path,Text,IsFolder,ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND ID=' . intval($id), $DB_WE);
 
@@ -206,7 +206,7 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 						$object->ParentID = $parentID;
 						$version->saveVersion($object);
 					} else {
-						we_versions_version::updateLastVersionPath($id, $table, $parentId, $newPath . '/' . $fileName);
+						we_versions_version::updateLastVersionPath($id, $table, $parentID, $newPath . '/' . $fileName);
 					}
 				}
 

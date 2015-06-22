@@ -225,7 +225,7 @@ function updateJsStyleCls() {
 }
 
 function getLabel(id) {
-	return strip_tags(gel(id + '_prefix').value + gel(id + '_postfix').value);
+	return /*strip_tags(*/gel(id + '_prefix').value + gel(id + '_postfix').value/*)*/;
 }
 
 function setLabel(id, prefix, postfix) {
@@ -235,7 +235,7 @@ function setLabel(id, prefix, postfix) {
 	if (prefix === undefined || postfix === undefined) {
 		label = getLabel(id);
 	} else {
-		label = strip_tags(prefix + postfix);
+		label = prefix + postfix;
 		label = label.replace(/\[\[/g, "<");
 		label = label.replace(/\]\]/g, ">");
 	}

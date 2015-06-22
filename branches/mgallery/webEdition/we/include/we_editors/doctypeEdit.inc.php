@@ -50,12 +50,12 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			$we_show_response = 1;
 		} else {
-			$we_JavaScript = 'opener.top.makefocus = self;' .
-				we_main_headermenu::getMenuReloadCode();
 			if($we_doc->we_save()){
 				$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
 				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
 				$we_show_response = 1;
+				$we_JavaScript = 'opener.top.makefocus = self;' .
+					we_main_headermenu::getMenuReloadCode();
 			} else {
 				echo "ERROR";
 			}
