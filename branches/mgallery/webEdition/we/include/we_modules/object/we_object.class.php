@@ -91,8 +91,8 @@ class we_object extends we_document{
 		$GLOBALS['we_responseTextType'] = we_message_reporting::WE_MESSAGE_NOTICE;
 
 		if($this->OldPath && ($this->OldPath != $this->Path)){
-			$fID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . $this->DB_WE->escape($this->OldPath) . "'", 'ID', $this->DB_WE);
-			$pID = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . " WHERE Path='" . str_replace("\\", "/", dirname($this->Path)) . "'", 'ID', $this->DB_WE));
+			$fID = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $this->DB_WE->escape($this->OldPath) . '"', '', $this->DB_WE);
+			$pID = intval(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . str_replace("\\", "/", dirname($this->Path)) . '"', '', $this->DB_WE));
 			$cf = new we_class_folder();
 			$cf->initByID($fID, OBJECT_FILES_TABLE);
 			$cf->Text = $this->Text;

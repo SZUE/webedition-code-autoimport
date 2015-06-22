@@ -56,8 +56,10 @@ while(1){
 		}
 
 		$hasSched = false;
-		foreach($doc->schedArr as $sched){
-			$hasSched|=$sched['active'];
+		if(isset($doc->schedArr) && $doc->schedArr && is_array($doc->schedArr)){
+			foreach($doc->schedArr as $sched){
+				$hasSched|=$sched['active'];
+			}
 		}
 		$s .= '
 if(weWindow.treeData){

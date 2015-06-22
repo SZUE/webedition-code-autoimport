@@ -159,17 +159,21 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 
 				if(we_versions_version::CheckPreferencesCtypes($row['ContentType'])){
 					$version = new we_versions_version();
-					$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
 					if(!we_versions_version::versionExists($id, $table)){
+						$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
+						$object->Path = $newPath . '/' . $fileName;
+						$object->ParentID = $parentID;
 						$version->saveVersion($object);
+					} else {
+						we_versions_version::updateLastVersionPath($id, $table, $parentID, $newPath . '/' . $fileName);
 					}
-					$object->Path = $newPath . '/' . $fileName;
-					$object->ParentID = $parentID;
-					$version->saveVersion($object);
 				}
 
 				// update table
-				$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ParentID=' . intval($parentID) . ", Path='" . $DB_WE->escape($newPath) . "/" . $DB_WE->escape($fileName) . "' WHERE ID=" . intval($id));
+				$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ' . we_database_base::arraySetter(array(
+						'ParentID' => intval($parentID),
+						'Path' => $newPath . "/" . $fileName
+					)) . "' WHERE ID=" . intval($id));
 
 				continue;
 
@@ -196,13 +200,14 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 
 				if(we_versions_version::CheckPreferencesCtypes($row['ContentType'])){
 					$version = new we_versions_version();
-					$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
 					if(!we_versions_version::versionExists($id, $table)){
+						$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
+						$object->Path = $newPath . '/' . $fileName;
+						$object->ParentID = $parentID;
 						$version->saveVersion($object);
+					} else {
+						we_versions_version::updateLastVersionPath($id, $table, $parentId, $newPath . '/' . $fileName);
 					}
-					$object->Path = $newPath . '/' . $fileName;
-					$object->ParentID = $parentID;
-					$version->saveVersion($object);
 				}
 
 				// update table

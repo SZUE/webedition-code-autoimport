@@ -1038,8 +1038,8 @@ class we_versions_version{
 			$document = self::objectToArray($document);
 		}
 
-		if(isset($document["documentCustomerFilter"]) && is_object($document["documentCustomerFilter"])){
-			$document["documentCustomerFilter"] = self::objectToArray($document["documentCustomerFilter"]);
+		if(isset($document['documentCustomerFilter']) && is_object($document['documentCustomerFilter'])){
+			$document['documentCustomerFilter'] = self::objectToArray($document['documentCustomerFilter']);
 		}
 
 //preferences
@@ -1062,11 +1062,11 @@ class we_versions_version{
 					break;
 				}
 			default:
-				$status = "saved";
+				$status = 'saved';
 		}
 		switch($status){
-			case "unpublished":
-			case "deleted":
+			case 'unpublished':
+			case 'deleted':
 				break;
 			default:
 				if($this->IsScheduler()){
@@ -1074,13 +1074,13 @@ class we_versions_version{
 				}
 		}
 		if(isset($_SESSION['weS']['versions']['doPublish']) && $_SESSION['weS']['versions']['doPublish']){
-			$status = "published";
+			$status = 'published';
 		}
 
-		switch($document["ContentType"]){
+		switch($document['ContentType']){
 			case we_base_ContentTypes::TEMPLATE:
 				if(VERSIONS_CREATE_TMPL){
-					if($status != "published" && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
+					if($status != 'published' && !we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 5)){
 						return;
 					}
 					break;
@@ -1148,8 +1148,8 @@ class we_versions_version{
 		$db = new DB_WE();
 
 		switch($fieldName){
-			case "documentID":
-				$entry = $document["ID"];
+			case 'documentID':
+				$entry = $document['ID'];
 				break;
 			case 'documentTable':
 				$entry = $document['Table']; //FIXME: check if this is tblFile or Prefixed version
@@ -1164,7 +1164,7 @@ class we_versions_version{
 					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["schedArr"]), 9)) . '\'');
 				}
 				break;
-			case "documentCustomFilter":
+			case 'documentCustomFilter':
 				if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
 					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["documentCustomerFilter"]), 9)) . '\'');
 				}
@@ -2124,12 +2124,23 @@ class we_versions_version{
 	 * @return array with fields and values
 	 */
 	private static function getLastEntry($docID, $docTable, we_database_base $db){
-		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') ORDER BY version DESC LIMIT 1", $db, MYSQL_ASSOC);
+		return getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND status IN ("saved","published","unpublished","deleted") ORDER BY version DESC LIMIT 1', $db, MYSQL_ASSOC);
 	}
 
 	public static function versionExists($docID, $docTable){
 		$db = new DB_WE();
-		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . " AND documentTable='" . $db->escape($docTable) . "' AND status IN ('saved','published','unpublished','deleted') LIMIT 1", '', $db);
+		return f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($docID) . ' AND documentTable="' . $db->escape($docTable) . '" AND status IN ("saved","published","unpublished","deleted") LIMIT 1', '', $db);
+	}
+
+	public static function updateLastVersionPath($docID, $docTable, $parentId, $path){
+		$db = new DB_WE();
+		$fields = self::getLastEntry($docID, $docTable, $db);
+		if($fields){
+			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+					'ParentID' => $parentId,
+					'Path' => $path
+			)));
+		}
 	}
 
 	/**

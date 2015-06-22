@@ -475,11 +475,15 @@ class we_folder extends we_root{
 	function modifyIndexPath(){
 		//FIXME: tablescan!
 		$this->DB_WE->query('UPDATE ' . INDEX_TABLE . ' SET Workspace="' . $this->DB_WE->escape($this->Path . substr($this->DB_WE->f('Workspace'), strlen($this->OldPath))) . '" WHERE Workspace LIKE "' . $this->DB_WE->escape($this->OldPath) . '%"');
+		$this->DB_WE->query('UPDATE ' . INDEX_TABLE . ' SET Path=CONCAT("' . $this->DB_WE->escape($this->Path) . '",SUBSTRING(Path,' . (strlen($this->OldPath) + 1) . ')) WHERE Path LIKE "' . $this->DB_WE->escape($this->OldPath) . '%"');
 	}
 
 	function modifyLinks(){
-		if($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE){
-			$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Path=CONCAT("' . $this->DB_WE->escape($this->Path) . '",SUBSTRING(Path,' . (strlen($this->OldPath) + 1) . ')) WHERE Path LIKE "' . $this->DB_WE->escape($this->OldPath) . '/%" OR Path="' . $this->DB_WE->escape($this->OldPath) . '"');
+		switch($this->Table){
+			case FILE_TABLE:
+			case TEMPLATES_TABLE:
+			case OBJECT_FILES_TABLE:
+				$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Path=CONCAT("' . $this->DB_WE->escape($this->Path) . '",SUBSTRING(Path,' . (strlen($this->OldPath) + 1) . ')) WHERE Path LIKE "' . $this->DB_WE->escape($this->OldPath) . '/%" OR Path="' . $this->DB_WE->escape($this->OldPath) . '"');
 		}
 	}
 
@@ -488,14 +492,17 @@ class we_folder extends we_root{
 		$DB_WE = new DB_WE();
 		// Update Paths also in Doctype Table
 		//TODO: remove ParentPath
-		$DB_WE->query('UPDATE ' . DOC_TYPES_TABLE . ' SET ParentPath="' . $DB_WE->escape($this->Path) . '" WHERE ParentID=' . intval($this->ID));
+		if($this->Table == FILE_TABLE){
+			$DB_WE->query('UPDATE ' . DOC_TYPES_TABLE . ' SET ParentPath="' . $DB_WE->escape($this->Path) . '" WHERE ParentID=' . intval($this->ID));
+		}
+		//FIMXE: is this really correct? this will only get the first, but not the second level files
 		$DB_WE->query('SELECT ID,ClassName FROM ' . $DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ID));
 		while($DB_WE->next_record()){
 			update_time_limit(30);
 			$we_doc = $DB_WE->f('ClassName');
 			if($we_doc){
 				$we_doc = new $we_doc();
-				$we_doc->initByID($DB_WE->f('ID'), $this->Table, we_class::LOAD_TEMP_DB); // BUG4397 - added LOAD_TEMP_DB to parameters
+				$we_doc->initByID($DB_WE->f('ID'), $this->Table, we_class::LOAD_TEMP_DB);
 				$we_doc->ModifyPathInformation($this->ID);
 			} else {
 				t_e('No class set at entry ', $DB_WE->f('ID'), $this->Table);
