@@ -1740,7 +1740,7 @@ class we_versions_version{
 
 			if(defined('WORKFLOW_TABLE') && $resetDoc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 				if(we_workflow_utility::inWorkflow($resetDoc->ID, $resetDoc->Table)){
-					we_workflow_utility::removeDocFromWorkflow($resetDoc->ID, $resetDoc->Table, $_SESSION["user"]["ID"], "");
+					we_workflow_utility::removeDocFromWorkflow($resetDoc->ID, $resetDoc->Table, $_SESSION['user']['ID'], '');
 				}
 			}
 
