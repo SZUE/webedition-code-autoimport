@@ -214,6 +214,9 @@ $l_buttons_global=array(
 	'btn_open_sidebar'=>array(
 		'alt'=>'Sidebar öffnen',
 	),
+	'btn_select_files'=>array(
+		'alt'=>'Mehrere Dateien auswählen',
+	),
 	'btn_select_image'=>array(
 		'alt'=>'Grafik auswählen',
 	),
