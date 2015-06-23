@@ -37,6 +37,9 @@ $l_weTag=array(
 	'banner'=>array(
 		'description'=>'Käytä we:banner tagia sisällyttääksesi bannerin Banneri Moduulista.',
 	),
+	'blockControls'=>array(
+		'description'=>'This tag is intended to show the control elements of a block. It is only valid to have this tag inside a block.',
+	),
 	'block'=>array(
 		'description'=>'Tagi we:block tagi mahdollistaa laajennettavien blockien/listojen luonnin. Kaikki aloitus- ja lopetustagien väliin tuleva sisältö (HTML-koodi, lähes kaikki we:tagit) lisätään sivulle plus-painikkeen painallukselle sivun muokkaustilassa.',
 	),

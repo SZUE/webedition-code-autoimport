@@ -37,6 +37,9 @@ $l_weTag=array(
 	'banner'=>array(
 		'description'=>'Gebruik de we:banner tag om een banner in te voegen vanuit de Banner/Statistieken Module.',
 	),
+	'blockControls'=>array(
+		'description'=>'This tag is intended to show the control elements of a block. It is only valid to have this tag inside a block.',
+	),
 	'block'=>array(
 		'description'=>'De we:block tag geeft de mogelijkheid om uitbreidbare blokken/lijsten aan te maken. Alles binnen de start en eind tag wordt herhaald (elke HTML en bijna alle we:tags), wanneer u op de plus knop drukt in de edit modus.',
 	),

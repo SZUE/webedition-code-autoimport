@@ -37,6 +37,9 @@ $l_weTag=array(
 	'banner'=>array(
 		'description'=>'Use the we:banner tag to include a banner from the Banner Module.',
 	),
+	'blockControls'=>array(
+		'description'=>'This tag is intended to show the control elements of a block. It is only valid to have this tag inside a block.',
+	),
 	'block'=>array(
 		'description'=>'The we:block tag allows you to create expandable blocks/lists. Everything located between the start tag and the end tag will be entered (any HTML and almost all we:tags), if you click the plus button in edit mode.',
 	),
