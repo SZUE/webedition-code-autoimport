@@ -441,22 +441,23 @@ function changeit(value, rowNr){
 
 			if(isset($this->searchclass->searchFields[$i])){
 
-				if($this->searchclass->searchFields[$i] === "allModsIn"){
-					$search = we_html_tools::htmlSelect(
-							"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
-				}
-				if($this->searchclass->searchFields[$i] === "modifierID"){
-					$search = we_html_tools::htmlSelect(
-							"search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
-				}
-				if($this->searchclass->searchFields[$i] === "status"){
-					$search = we_html_tools::htmlSelect(
-							"search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
-				}
-				if($this->searchclass->searchFields[$i] === "timestamp"){
-					$locationDisabled = "";
-					$handle = "date";
-					$search = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $this->searchclass->search[$i]);
+				switch($this->searchclass->searchFields[$i]){
+					case "allModsIn":
+						$search = we_html_tools::htmlSelect(
+								"search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						break;
+					case "modifierID":
+						$search = we_html_tools::htmlSelect(
+								"search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						break;
+					case "status":
+						$search = we_html_tools::htmlSelect(
+								"search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($this->searchclass->search) && is_array($this->searchclass->search) && isset($this->searchclass->search[$i]) ? $this->searchclass->search[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						break;
+					case "timestamp":
+						$locationDisabled = "";
+						$handle = "date";
+						$search = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $this->searchclass->search[$i]);
 				}
 			}
 

@@ -721,7 +721,7 @@ class we_document extends we_root{
 		if($this->isMoved()){
 			we_base_file::deleteLocalFile($this->getSitePath(true));
 		}
-		return we_base_file::save($this->getSitePath(), $doc);
+		return we_base_file::checkAndMakeFolder(dirname($this->getSitePath()),true) && we_base_file::save($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){

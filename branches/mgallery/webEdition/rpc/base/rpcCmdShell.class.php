@@ -35,7 +35,7 @@ class rpcCmdShell{
 	protected $Response;
 	protected $Status = rpcCmd::STATUS_OK;
 
-	function __construct(&$cmd, $protocol){
+	public function __construct(&$cmd, $protocol){
 
 		$this->Protocol = $protocol;
 		$this->Cmd = $this->createCmd($cmd);
@@ -52,7 +52,7 @@ class rpcCmdShell{
 		}
 	}
 
-	function createCmd(&$cmd){
+	private function createCmd(&$cmd){
 		$this->CmdName = $cmd['cmd'];
 		$_classname = 'rpc' . $cmd['cmd'] . 'Cmd';
 

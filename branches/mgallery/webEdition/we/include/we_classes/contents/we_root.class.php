@@ -1066,6 +1066,7 @@ abstract class we_root extends we_class{
 		we_loadLanguageConfig();
 		$_languages = getWeFrontendLanguagesForBackend();
 		$langkeys = array_keys($_languages);
+		$langkeys = array_keys($_languages);
 		if(LANGLINK_SUPPORT){
 			$isFolder = $this instanceof we_folder;
 			$isObject = (defined('OBJECT_FILES_TABLE') ? $this->Table == OBJECT_FILES_TABLE || $this->Table == OBJECT_TABLE : false);
@@ -1075,12 +1076,16 @@ abstract class we_root extends we_class{
 
 			$tmpPaths = id_to_path($tmpIDs, $this->Table, null, false, true);
 			foreach($langkeys as $langkey){
-				$this->LangLinks[$langkey] = array('id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]);
+				$this->LangLinks[$langkey] = isset($tmpIDs[$langkey]) ? array('id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]) :
+					array('id' => 0, 'path' => '');
 			}
-		} else {
+			return;
+		}
 			foreach($langkeys as $langkey){
 				$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
-			}
+		}
+		foreach($langkeys as $langkey){
+			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
 		}
 	}
 

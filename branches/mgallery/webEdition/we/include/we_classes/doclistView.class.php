@@ -31,7 +31,7 @@ abstract class doclistView{
 	 * @abstract create javascript for document list
 	 * @return javascript code
 	 */
-	function getSearchJS(){
+	public static function getSearchJS(){
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		return we_html_element::jsElement('
@@ -229,7 +229,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 		$obj->searchclassFolder->searchstart = we_base_request::_(we_base_request::INT, "searchstart", 0);
 
-		$searchFields = we_base_request::_(we_base_request::STRING, 'searchFields', $obj->searchclassFolder->searchFields);
+		$searchFields = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->searchFields, 'searchFields');
 		$searchText = array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->search, 'search'));
 		$location = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->location, 'location');
 		$_order = we_base_request::_(we_base_request::STRING, 'we_cmd', $obj->searchclassFolder->order, 'order');

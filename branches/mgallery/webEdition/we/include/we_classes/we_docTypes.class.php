@@ -281,8 +281,8 @@ class we_docTypes extends we_class{
 			$tlist = array_merge($tlist, explode(',', $this->Templates));
 		}
 		$tlist = array_filter(array_unique($tlist));
-		$sqlTeil = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, '', array(), 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
+		$sqlTail = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), '', $sqlTail, 1, $this->TemplateID, false, '', array(), 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
 	}
 
 	private function formIsDynamic(){
