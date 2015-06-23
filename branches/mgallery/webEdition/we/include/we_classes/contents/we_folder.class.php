@@ -352,10 +352,6 @@ class we_folder extends we_root{
 		$this->Text = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 	}
 
-	protected function i_getLangLinks(){
-		parent::i_getLangLinks(true, (defined('OBJECT_FILES_TABLE') && ($this->Table == OBJECT_FILES_TABLE) ? true : false));
-	}
-
 	function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($this->Path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->DB_WE);
 	}

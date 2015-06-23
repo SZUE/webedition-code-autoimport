@@ -2097,10 +2097,6 @@ class we_object extends we_document{
 		$this->setElement("Sortgesamt", ($f - 1));
 	}
 
-	protected function i_getLangLinks(){
-		parent::i_getLangLinks(false, true);
-	}
-
 	protected function i_set_PersistentSlot($name, $value){
 		if(in_array($name, $this->persistent_slots)){
 			$this->$name = $value;

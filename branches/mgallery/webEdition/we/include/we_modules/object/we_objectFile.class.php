@@ -2654,10 +2654,6 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	protected function i_getLangLinks(){
-		parent::i_getLangLinks(false, true);
-	}
-
 	protected function i_setText(){
 // do nothing here!
 	}

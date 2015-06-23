@@ -1062,22 +1062,23 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	protected function i_getLangLinks($isFolder = false, $isObject = false){
+	protected function i_getLangLinks(){
 		we_loadLanguageConfig();
 		$_languages = getWeFrontendLanguagesForBackend();
-
+		$langkeys = array_keys($_languages);
 		if(LANGLINK_SUPPORT){
+			$isFolder = $this instanceof we_folder;
+			$isObject = (defined('OBJECT_FILES_TABLE') ? $this->Table == OBJECT_FILES_TABLE || $this->Table == OBJECT_TABLE : false);
 			$documentTable = $isObject && !$isFolder ? OBJECT_FILES_TABLE : stripTblPrefix(FILE_TABLE);
-			foreach($_languages as $langkey => $lang){
-				$tmpIDs[$langkey] = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND IsObject=' . intval($isObject) . ' AND DID=' . intval($this->ID) . ' AND Locale="' . $this->DB_WE->escape($langkey) . '"', '', $this->DB_WE));
-			}
+			$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $documentTable . '" AND IsObject=' . intval($isObject) . ' AND DID=' . intval($this->ID) . ' AND Locale IN("' . implode('","', $langkeys) . '")');
+			$tmpIDs = $this->DB_WE->getAllFirst(false);
 
 			$tmpPaths = id_to_path($tmpIDs, $this->Table, null, false, true);
-			foreach($_languages as $langkey => $lang){
+			foreach($langkeys as $langkey){
 				$this->LangLinks[$langkey] = array('id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]);
 			}
 		} else {
-			foreach($_languages as $langkey => $lang){
+			foreach($langkeys as $langkey){
 				$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
 			}
 		}
