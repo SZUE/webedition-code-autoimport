@@ -33,7 +33,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   CreatorID int(11) unsigned NOT NULL default '0',
   ModifierID int(11) unsigned NOT NULL default '0',
   RestrictOwners tinyint(1) unsigned NOT NULL default '0',
-  Owners tinytext NOT NULL default '',
+  Owners tinytext NOT NULL,
   OwnersReadOnly text NOT NULL,
   `Language` varchar(5) NOT NULL default '',
   WebUserID bigint(20) unsigned NOT NULL default '0',

@@ -581,7 +581,7 @@ function t_e($type = 'warning'){
 		}
 	}
 
-	if(count($data) > 0){
+	if($data){
 		trigger_error(implode("\n---------------------------------------------------\n", $data), $type);
 	}
 }
@@ -1234,11 +1234,12 @@ function we_unserialize($string, $default = array(), $quiet = false){
 	return $default;
 }
 
-function we_serialize(array $array, $target, $force = false){
+function we_serialize(array $array, $target = 'serialize', $force = false){
 	switch($target){
 		//remove defined after php 5.3 support ends
 		case 'json':
 			return ($array || $force ? json_encode($array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0)) : '');
+		default:
 		case 'serialize':
 			return ($array || $force ? serialize($array) : '');
 	}
