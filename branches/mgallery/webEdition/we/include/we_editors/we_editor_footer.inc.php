@@ -144,14 +144,15 @@ echo STYLESHEET .
 
 	};
 	var doc={
-		"ID":"' . $we_doc->ID . '",
-		"Path":"' . $we_doc->Path . '",
-		"Text":"' . $we_doc->Text . '",
-		"contentType":"' . $we_doc->ContentType . '",
-		"editFilename":"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
-		"makeSameDocCheck": ' . intval($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) . ',
-		"isTemplate":' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
-		"isFolder":' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . '
+		ID:"' . $we_doc->ID . '",
+		Path:"' . $we_doc->Path . '",
+		Text:"' . $we_doc->Text . '",
+		contentType:"' . $we_doc->ContentType . '",
+		editFilename:"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
+		makeSameDocCheck: ' . intval($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) . ',
+		isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
+		isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
+		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
 	};
 	var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
 	var _showGlossaryCheck = ' . $showGlossaryCheck . ';
@@ -180,7 +181,7 @@ if(inWorkflow($we_doc)){
 }
 ?>
 
-<body id="footerBody" onload="we_footerLoaded();"<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER);?>>
+<body id="footerBody" onload="we_footerLoaded();"<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER); ?>>
 	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
 					<?php

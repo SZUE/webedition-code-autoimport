@@ -97,7 +97,7 @@ function setTextDocument(hasCtrl, value) {
 
 function setPath() {
 	try {
-		_EditorFrame.getDocumentReference().frames.editHeader.we_setPath(doc.Path, doc.Text, doc.ID);
+		_EditorFrame.getDocumentReference().frames.editHeader.we_setPath(doc.Path, doc.Text, doc.ID, doc.classname);
 	} catch (e) {
 	}
 }
@@ -198,22 +198,21 @@ function we_save_document() {
 var we_editor_footer = {
 	timeout: null,
 	evtCounter: 0,
-
-	dragEnter: function(){
+	dragEnter: function () {
 		++this.evtCounter;
 		this.scrollDownEditorContent();
 	},
-
-	dragLeave: function(){
-		if(--this.evtCounter === 0){
+	dragLeave: function () {
+		if (--this.evtCounter === 0) {
 			clearTimeout(this.timeout);
 		}
 	},
-
-	scrollDownEditorContent: function(){
-		_EditorFrame.getContentEditor().scrollBy(0,10);
-		if(this.evtCounter){
-			this.timeout = setTimeout(function(){we_editor_footer.scrollDownEditorContent();},66);
+	scrollDownEditorContent: function () {
+		_EditorFrame.getContentEditor().scrollBy(0, 10);
+		if (this.evtCounter) {
+			this.timeout = setTimeout(function () {
+				we_editor_footer.scrollDownEditorContent();
+			}, 66);
 		}
 	}
 };

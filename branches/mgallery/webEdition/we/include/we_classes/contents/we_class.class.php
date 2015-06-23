@@ -451,7 +451,7 @@ abstract class we_class{
 	 * Before writing LangLinks to the db, we must check the Document-Locale: if it has changed, we must update or clear
 	 * existing LangLinks from and to this document.
 	 */
-	protected function setLanguageLink($LinkArray, $type, $isfolder = false, $isobject = false){
+	protected function setLanguageLink(array $LinkArray, $type, $isfolder = false, $isobject = false){
 		if(!(LANGLINK_SUPPORT)){
 			return true;
 		}
@@ -461,6 +461,7 @@ abstract class we_class{
 		}
 
 		if($type !== 'tblDocTypes'){
+			$LangLinkArray = array();
 			foreach($LinkArray as $lang => $link){
 				$LangLinkArray[$lang] = $link['id'];
 			}
@@ -519,7 +520,7 @@ abstract class we_class{
 	 * 1) We only write new or changed LangLinks to db, if LangLink-Locale and Locale of the targe-document/object fit together.
 	 * 2) In recursive-mode we only one document/object to another, if their respective link-chains are not in conflict.
 	 */
-	private function prepareSetLanguageLink($LangLinkArray, $origLinks, $langChange, $ownLocale, $type, $isfolder, $isobject, $ownDocumentTable){
+	private function prepareSetLanguageLink(array $LangLinkArray, $origLinks, $langChange, $ownLocale, $type, $isfolder, $isobject, $ownDocumentTable){
 		$documentTable = ($type === 'tblObjectFile') ? 'tblObjectFiles' : $type; // we could take these  from setLanguageLink()...
 		$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);
 

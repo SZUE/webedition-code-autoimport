@@ -2015,7 +2015,7 @@ class we_objectFile extends we_document{
 			return true;
 		}
 
-		$ws = array_unique(array_merge(makeArrayFromCSV($this->Workspaces),makeArrayFromCSV($this->ExtraWorkspacesSelected)));
+		$ws = array_unique(array_merge(makeArrayFromCSV($this->Workspaces), makeArrayFromCSV($this->ExtraWorkspacesSelected)));
 
 		if(!$ws){
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -2036,21 +2036,21 @@ class we_objectFile extends we_document{
 		$ws = id_to_path($ws, FILE_TABLE, $this->DB_WE);
 
 		foreach($ws as $w => $wsPath){
-				if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'ID' => $this->ID,
-							'OID' => $this->ID,
-							'Text' => $text,
-							'Workspace' => $wsPath,
-							'WorkspaceID' => $w,
-							'Category' => $this->Category,
-							'ClassID' => $this->TableID,
-							'Title' => $this->getElement("Title"),
-							'Description' => $this->getElement("Description"),
-							'Path' => $this->Text,
-							'Language' => $this->Language
-					)))){
-					return false;
-				}
+			if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+						'ID' => $this->ID,
+						'OID' => $this->ID,
+						'Text' => $text,
+						'Workspace' => $wsPath,
+						'WorkspaceID' => $w,
+						'Category' => $this->Category,
+						'ClassID' => $this->TableID,
+						'Title' => $this->getElement("Title"),
+						'Description' => $this->getElement("Description"),
+						'Path' => $this->Text,
+						'Language' => $this->Language
+				)))){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -2232,6 +2232,9 @@ class we_objectFile extends we_document{
 			$version->save($this);
 		}
 		if(LANGLINK_SUPPORT){
+			if(!is_array($this->LangLinks)){
+				$this->LangLinks = array();
+			}
 			$this->setLanguageLink($this->LangLinks, 'tblObjectFile', false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!

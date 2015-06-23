@@ -24,13 +24,17 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function we_setPath(path, text, id) {
+function we_setPath(path, text, id, classname) {
 
 	// update document-tab
 	_EditorFrame.initEditorFrameData({
 		"EditorDocumentText": text,
 		"EditorDocumentPath": path
 	});
+
+	if (classname) {
+		top.weMultiTabs.setTextClass(_EditorFrame.FrameId, classname);
+	}
 
 	path = path.replace(/</g, '&lt;');
 	path = path.replace(/>/g, '&gt;');
@@ -72,22 +76,21 @@ function we_cmd() {
 var we_editor_header = {
 	timeout: null,
 	evtCounter: 0,
-
-	dragEnter: function(){
+	dragEnter: function () {
 		++this.evtCounter;
 		this.scrollUpEditorContent();
 	},
-
-	dragLeave: function(){
-		if(--this.evtCounter === 0){
+	dragLeave: function () {
+		if (--this.evtCounter === 0) {
 			clearTimeout(this.timeout);
 		}
 	},
-
-	scrollUpEditorContent: function(){
-		_EditorFrame.getContentEditor().scrollBy(0,-10);
-		if(this.evtCounter){
-			this.timeout = setTimeout(function(){we_editor_header.scrollUpEditorContent();},66);
+	scrollUpEditorContent: function () {
+		_EditorFrame.getContentEditor().scrollBy(0, -10);
+		if (this.evtCounter) {
+			this.timeout = setTimeout(function () {
+				we_editor_header.scrollUpEditorContent();
+			}, 66);
 		}
 	}
 };

@@ -27,7 +27,7 @@ define("WE_EDIT_IMAGE", true);
 echo we_html_tools::getHtmlTop();
 
 if(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === "doImage_convert"){
-	echo we_html_element::jsElement('parent.frames.editHeader.we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");');
+	echo we_html_element::jsElement('parent.frames.editHeader.we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");');
 }
 
 echo we_html_element::jsScript(JS_DIR . 'windows.js');
@@ -63,8 +63,8 @@ echo STYLESHEET;
 <tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>' :
 			''
 		) . '<tr><td>' . $we_doc->getHtml(true) . '</td></tr>'
-		. '</table>'.
-			we_html_element::htmlHidden("we_complete_request", 1);
+		. '</table>' .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body>

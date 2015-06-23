@@ -33,6 +33,8 @@ class we_folder extends we_root{
 	var $GreenOnly = 0;
 	var $searchclassFolder;
 	var $searchclassFolder_class;
+	//folders are always published
+	public $Published = PHP_INT_MAX;
 	protected $urlMap;
 
 	/**

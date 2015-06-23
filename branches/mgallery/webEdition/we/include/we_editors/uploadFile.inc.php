@@ -137,7 +137,7 @@ if($weFileupload->processFileRequest()){
 	$_buttons = we_html_button::position_yes_no_cancel(
 			we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_btn'), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmd('cancel'))
 	);
-	$buttonsTable = new we_html_table(array('class' => 'default','style' => 'width:100%;'), 1, 2);
+	$buttonsTable = new we_html_table(array('class' => 'default', 'style' => 'width:100%;'), 1, 2);
 	$buttonsTable->setCol(0, 0, array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
 	$buttonsTable->setCol(0, 1, array('align' => 'right'), $_buttons);
 	$_buttons = $buttonsTable->getHtml();
@@ -158,7 +158,7 @@ if($weFileupload->processFileRequest()){
 		?>
 		opener.we_cmd("update_file");
 		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
-		_EditorFrame.getDocumentReference().frames.editHeader.we_setPath("<?php echo $we_doc->Path; ?>", "<?php echo $we_doc->Text; ?>");
+		_EditorFrame.getDocumentReference().frames.editHeader.we_setPath("<?php echo $we_doc->Path; ?>", "<?php echo $we_doc->Text; ?>",<?php echo $we_doc->ID; ?>, "published");
 		self.close();
 	<?php } ?>
 	//-->
@@ -166,13 +166,14 @@ if($weFileupload->processFileRequest()){
 	</head>
 
 	<body class="weDialogBody" onload="self.focus();">
-	<div style="text-align:center">
-		<form method="post" enctype="multipart/form-data">
-			<?php echo we_html_element::htmlHidden("we_transaction", $we_transaction) .
-			we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $_buttons);
-			?>
-		</form>
-	</div>
+		<div style="text-align:center">
+			<form method="post" enctype="multipart/form-data">
+				<?php
+				echo we_html_element::htmlHidden("we_transaction", $we_transaction) .
+				we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $_buttons);
+				?>
+			</form>
+		</div>
 	</body>
 
 	</html>

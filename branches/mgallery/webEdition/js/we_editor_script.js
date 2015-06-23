@@ -184,7 +184,7 @@ function pathOfDocumentChanged() {
 		}
 
 		_filepath += _filetext;
-		parent.frames.editHeader.we_setPath(_filepath, _filetext, -1);
+		parent.frames.editHeader.we_setPath(_filepath, _filetext, -1, "");
 		if (hasCustomerFilter) {
 			updateCustomerFilterIfNeeded();
 		}

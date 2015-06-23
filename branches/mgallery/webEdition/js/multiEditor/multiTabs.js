@@ -131,6 +131,12 @@ TabView.prototype = {
 		}
 		setTimeout(setFrameSize, 50);
 	},
+	setTextClass: function (frameId, classname) {
+		text = this.myDoc.getElementById('text_' + frameId);
+		if (classname) {
+			text.className = "text " + classname;
+		}
+	},
 	/**
 	 * sets the tab title
 	 */
@@ -160,7 +166,7 @@ TabView.prototype = {
 	setLoading: function (frameId, loading) {
 		if (loading) {
 			this.myDoc.getElementById('load_' + frameId).innerHTML = '<i class="fa fa-2x fa-spinner fa-pulse"></i>';
-		} else{
+		} else {
 			var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
 			var _ext = _text ? _text.replace(/^.*\./, ".") : "";
 			this.myDoc.getElementById('load_' + frameId).innerHTML = getTreeIcon(this.contentType[frameId], false, _ext);

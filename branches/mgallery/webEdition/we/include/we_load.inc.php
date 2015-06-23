@@ -125,7 +125,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 				$elem .=',remTable,1 AS isPublished,1 AS IsFolder';
 				break;
 			default:
-				$elem.='1 AS isPublished';
+				$elem.=',1 AS isPublished';
 				break;
 		}
 
