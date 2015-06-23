@@ -25,9 +25,10 @@
 function we_tag_ifObject(){
 	switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
 		case 'we_object_listview':
+			//classID
 			return true;
 		case 'we_listview_search':
-			return $GLOBALS['lv']->f('ClassID');
+			return $GLOBALS['lv']->f('ClassID') > 0;
 		default:
 			return false;
 	}

@@ -345,6 +345,7 @@ a.changed{ /*elements which are saved & published*/
 
 .notpublished,
 a.notpublished {
+	color: red;
 	cursor: pointer;
 }
 

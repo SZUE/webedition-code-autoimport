@@ -209,7 +209,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', we_html_button::create_button_table(array($delallbut, $addbut)), "", 'IF(IsFolder,"folder","we/category")', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
+		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', we_html_button::create_button_table(array($delallbut, $addbut)), "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[categories]'));
 	}
@@ -218,7 +218,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", 'IF(IsFolder,"folder","we/category")', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
+		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[categories]'));
 	}

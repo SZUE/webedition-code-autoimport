@@ -61,7 +61,7 @@ class we_category extends weModelBase{
 		$folders = array();
 		if($categoryids){
 			$idarray2 = array_unique(array_map('trim', explode(',', trim($categoryids, ','))));
-			$db->query('SELECT ID,IsFolder,Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . implode(',', $idarray2) . ')');
+			$db->query('SELECT ID,1 AS IsFolder,Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . implode(',', $idarray2) . ')');
 			while($db->next_record()){
 				if($db->f('IsFolder')){
 					//all folders need to be searched in deep
@@ -78,7 +78,7 @@ class we_category extends weModelBase{
 				$cat = '/' . trim($cat, '/ ');
 				$isFolder = 0;
 				$tmp = array();
-				$db->query('SELECT ID, IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
+				$db->query('SELECT ID, 1 AS IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
 				while($db->next_record()){
 					$tmp[] = $db->f('ID');
 					$isFolder|=$db->f('IsFolder');
@@ -142,7 +142,7 @@ class we_category extends weModelBase{
 		$field = $catfield ? : ($showpath ? 'Path' : 'Category');
 		$showpath &=!$catfield;
 
-		$db->query('SELECT ID,Path,Category,Title,Description, IsFolder, ParentID FROM ' . CATEGORY_TABLE . ' WHERE (' . $whereIDs . $whereDir . ')' . $whereIncludeDir . $orderBy);
+		$db->query('SELECT ID,Path,Category,Title,Description, ParentID FROM ' . CATEGORY_TABLE . ' WHERE (' . $whereIDs . $whereDir . ')' . $whereIncludeDir . $orderBy);
 		while($db->next_record()){
 			$data = $db->getRecord();
 			if(!$complete){
@@ -165,7 +165,7 @@ class we_category extends weModelBase{
 					'Category' => $data['Category'],
 					'Title' => $data['Title'],
 					'Description' => $data['Description'],
-					'IsFolder' => $data['IsFolder']
+					'IsFolder' => 1//$data['IsFolder']
 				);
 			}
 		}

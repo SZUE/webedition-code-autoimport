@@ -98,6 +98,9 @@ class we_selector_file{
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
 				$this->fields.= ',ContentType';
 				break;
+			case CATEGORY_TABLE:
+				$this->fields = 'ID,ParentID,Text,Path,1 AS IsFolder';
+				break;
 			default:
 		}
 
@@ -159,7 +162,7 @@ class we_selector_file{
 	function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
-			( ($this->filter ? ($this->table == CATEGORY_TABLE ? 'AND IsFolder="' . $this->db->escape($this->filter) . '" ' : 'AND ContentType="' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
+			( ($this->filter ? ($this->table == CATEGORY_TABLE ? /* 'AND IsFolder="' . $this->db->escape($this->filter) . '" ' */ '' : 'AND ContentType="' . $this->db->escape($this->filter) . '" ') : '' ) . $wsQuery ) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
@@ -309,7 +312,7 @@ function exit_open(){' . ($this->JSIDName ? '
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"].'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter;
+		return $_SERVER["SCRIPT_NAME"] . 'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter;
 	}
 
 	protected function printBodyHTML(){
@@ -377,7 +380,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 		$ret = '';
 		$this->query();
 		while($this->db->next_record()){
-			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Text")), '"') . '",' . $this->db->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Path")), '"') . '","'.$this->db->f("ContentType").'");';
+			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Text")), '"') . '",' . $this->db->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Path")), '"') . '","' . $this->db->f("ContentType") . '");';
 		}
 		return $ret;
 	}

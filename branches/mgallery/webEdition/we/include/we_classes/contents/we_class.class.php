@@ -187,7 +187,7 @@ abstract class we_class{
 	}
 
 	//fixme: add auto-grouping, add format
-	function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0){
+	function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $classes = array()){
 		$optgroup = false;
 		$selIndex = $multiple ? explode(',', $selectedIndex) : array($selectedIndex);
 		$ret = '';
@@ -203,7 +203,7 @@ abstract class we_class{
 				continue;
 			}
 
-			$ret .= '<option value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare === 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
+			$ret .= '<option ' . (isset($classes[$value]) ? 'class="' . $classes[$value] . '" ' : '') . ' value="' . oldHtmlspecialchars($value) . '"' . (in_array((($compare === 'value') ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . $text . '</option>';
 		}
 		return we_html_element::htmlSelect(array_merge($attribs, array(
 				'id' => trim($name),

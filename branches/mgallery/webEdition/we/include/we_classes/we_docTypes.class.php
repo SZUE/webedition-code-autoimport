@@ -131,7 +131,7 @@ class we_docTypes extends we_class{
 	private function formCategory(){
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", 'IF(IsFolder,"folder","we/category")', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", '"we/category"', CATEGORY_TABLE);
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', '[category]'));
 	}
 

@@ -439,7 +439,7 @@ abstract class we_rebuild_wizard{
 		$butTable = we_html_button::create_button_table(array($delallbut, $addbut));
 		$upperTable = '<table class="default" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
 
-		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', 'IF(IsFolder,"folder","we/category")', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', '"we/category"', CATEGORY_TABLE);
 		return g_l('global', '[categorys]') . '<br/>' . we_html_tools::getPixel(1, 3) . '<br/>' . $cats->get();
 	}
 

@@ -631,7 +631,7 @@ var g_l={
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\'add_cat\',top.allIDs);')");
 
-		$cats = new we_chooser_multiDir(495, $this->banner->CategoryIDs, "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", 'IF(IsFolder,"folder","we/category")', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(495, $this->banner->CategoryIDs, "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", '"we/category"', CATEGORY_TABLE);
 
 		return $cats->get();
 	}

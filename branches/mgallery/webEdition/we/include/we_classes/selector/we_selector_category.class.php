@@ -81,10 +81,10 @@ class we_selector_category extends we_selector_file{
 		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
 		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select></td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:top.setRootDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
-		<td>' . we_html_button::create_button("fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder", "javascript:top.goBackDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
+		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-tag', "javascript:top.goBackDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
 			($this->userCanEditCat() ?
-				'<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>
-		<td width="38">' . we_html_button::create_button("fa:btn_add_cat,fa-plus,fa-lg fa-tag", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>' : '') .
+				/* '<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>' */
+				'<td width="38">' . we_html_button::create_button("fa:btn_add_cat,fa-plus,fa-lg fa-tag", 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>' : '') .
 			($this->userCanEditCat() ?
 				'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>' : '') .
 			'</tr>
@@ -141,7 +141,7 @@ options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 					'ParentID' => intval($this->dir),
 					'Text' => $txt,
 					'Path' => $Path,
-					'IsFolder' => intval($what),
+					'IsFolder' => 1,//intval($what),
 			)));
 			$folderID = $this->db->getInsertId();
 			$js.='top.currentPath = "' . $Path . '";
@@ -200,7 +200,7 @@ top.selectFile(top.currentID);'), we_html_element::htmlBody());
 					'Path' => $Path,
 				)) .
 				' WHERE ID=' . intval($this->we_editCatID));
-			if(f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db)){
+			if(true || f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db)){
 				$this->renameChildrenPath($this->we_editCatID);
 			}
 			$js.='top.currentPath = "' . $Path . '";
@@ -239,7 +239,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 		$db = $db ? : new DB_WE();
 		$path = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id));
 		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("' . $path . '","/",Text) WHERE ParentID=' . intval($id));
-		$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE IsFolder=1 AND ParentID=' . intval($id));
+		$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id)); //IsFolder=1 AND
 		$updates = $db->getAll(true);
 		foreach($updates as $id){
 			$this->renameChildrenPath($id, $db);
@@ -248,12 +248,12 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 
 	function CatInUse($id, $IsDir, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
-		if($IsDir){
-			return $this->DirInUse($id, $db);
-		}
-		if(f('SELECT 1  FROM ' . FILE_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) OR FIND_IN_SET(' . intval($id) . ',temp_category) LIMIT 1', '', $db) ||
+		if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) OR FIND_IN_SET(' . intval($id) . ',temp_category) LIMIT 1', '', $db) ||
 			(defined('OBJECT_TABLE') && f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE FIND_IN_SET(' . intval($id) . ',Category) LIMIT 1', '', $db))){
 			return true;
+		}
+		if($IsDir){
+			return $this->DirInUse($id, $db);
 		}
 
 		return false;
@@ -265,9 +265,9 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			return true;
 		}
 
-		$db->query('SELECT ID,IsFolder FROM ' . $db->escape($this->table) . ' WHERE ParentID=' . intval($id));
+		$db->query('SELECT ID FROM ' . $db->escape($this->table) . ' WHERE ParentID=' . intval($id));
 		while($db->next_record()){
-			if($this->CatInUse($db->f("ID"), $db->f("IsFolder"))){
+			if($this->CatInUse($db->f("ID"), 1/* $db->f("IsFolder") */)){
 				return true;
 			}
 		}
@@ -283,7 +283,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			$catlistNotDeleted = "";
 			$changeToParent = false;
 			foreach($catsToDel as $id){
-				$IsDir = f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "", $this->db);
+				$IsDir = 1;//f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "", $this->db);
 				if($this->CatInUse($id, $IsDir)){
 					$catlistNotDeleted .= id_to_path($id, CATEGORY_TABLE) . '\n';
 				} else {
@@ -333,12 +333,12 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 	}
 
 	function delDir($id){
-		$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($id));
+		$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($id)); //IsFolder=1 AND
 		$entries = $this->db->getAll(true);
 		foreach($entries as $entry){
 			$this->delDir($entry);
 		}
-		$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=0 AND ParentID=' . intval($id));
+		$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($id));
 		$entries = $this->db->getAll(true);
 		$entries[] = $id;
 		$this->delEntry($entries);
@@ -527,7 +527,7 @@ function we_checkName() {
 ' . ($showPrefs ? '
 	<form onsubmit="weWysiwygSetHiddenText();"; action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
 		' . $table->getHtml() . "<br/>" . $ta . "<br/>" . $saveBut . '
-	</div>' : '' ) .
+	</div></form>' : '' ) .
 			(isset($yuiSuggest) ?
 				$yuiSuggest->getYuiJs() : '') .
 			'</body>');

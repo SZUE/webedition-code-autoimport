@@ -297,7 +297,6 @@ we_templateInit();?>';
 				), $code);
 
 			$code = str_replace($repl, array_keys($repl), $code);
-
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
 			$code = '<?php we_templateHead(true);?>' . $code . '<?php we_templatePostContent(false,true);?>';
 		} else {
@@ -535,22 +534,27 @@ we_templateInit();?>';
 		if($this->ID == 0){
 			return array();
 		}
-		$this->DB_WE->query('SELECT ID, CONCAT(Path," (ID: ",ID,")") FROM ' . FILE_TABLE . ' WHERE temp_template_id=' . intval($this->ID) . ' OR (temp_template_id=0 AND TemplateID=' . intval($this->ID) . ') ORDER BY Path');
-		return $this->DB_WE->getAllFirst(false);
+		$this->DB_WE->query('SELECT ID, CONCAT(Path," (ID: ",ID,")"),IF(Published=0,"notpublished",IF(ModDate>Published,"changed","published")) FROM ' . FILE_TABLE . ' WHERE temp_template_id=' . intval($this->ID) . ' OR (temp_template_id=0 AND TemplateID=' . intval($this->ID) . ') ORDER BY Path');
+		return $this->DB_WE->getAllFirst(true);
 	}
 
 	function formTemplateDocuments(){
 		if($this->ID == 0){
 			return g_l('weClass', '[no_documents]');
 		}
-		$path = $this->isUsedByDocuments();
+		$elems = $this->isUsedByDocuments();
 
-		if(empty($path)){
+		if(!$elems){
 			return g_l('weClass', '[no_documents]');
+		}
+		$path = $elemAttribs = array();
+		foreach($elems as $id => $data){
+			$path[$id] = $data[0];
+			$elemAttribs[$id] = $data[1];
 		}
 
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');");
-		return we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, array('style' => 'margin-right: 20px;'), 'value', 388, $elemAttribs), '', 'left', 'defaultfont', '', $button);
 	}
 
 	/**
