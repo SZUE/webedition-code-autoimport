@@ -335,7 +335,7 @@ abstract class we_base_file{
 
 	public static function createLocalFolderByPath($completeDirPath){
 		$returnValue = true;
-
+		
 		if(self::checkAndMakeFolder($completeDirPath, true)){
 			return $returnValue;
 		}
