@@ -148,7 +148,7 @@ weCollectionEdit = {
 		this.ct[this.view].innerHTML = '';
 		this.maxIndex = 0;
 
-		for(i = 0; i < this.collectionArr.length; i++){
+		for(var i = 0; i < this.collectionArr.length; i++){
 			this.insertItem(null, false, this.storage['item_' + this.collectionArr[i]], this);
 		}
 
@@ -244,7 +244,7 @@ weCollectionEdit = {
 
 	doClickOpenToEdit: function(id){
 		var table = this.we_doc.remTable === 'tblFile' ? this.we_const.FILE_TABLE : this.we_const.OBJECT_FILES_TABLE,
-			ct = this.storage['item_' + id].ct;top.console.debug('ct', ct);
+			ct = this.storage['item_' + id].ct;
 		top.weEditorFrameController.openDocument(table,id,ct);
 	},
 
@@ -297,6 +297,10 @@ weCollectionEdit = {
 
 		repaint = repaint || false;
 		++t.maxIndex;
+
+		if(id && !this.storage['item_' + id]){
+			this.storage['item_' + id] = item;
+		}
 
 		div = document.createElement("div");
 		div.innerHTML = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, id).replace(/##PATH##/g, path).replace(/##CT##/g, ct).replace(/##ICONURL##/g, iconSrc.replace('%2F', '/'));

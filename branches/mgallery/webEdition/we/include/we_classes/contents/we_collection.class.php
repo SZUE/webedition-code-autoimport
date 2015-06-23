@@ -98,22 +98,52 @@ class we_collection extends we_root{
 
 		$this->DB_WE->query('SELECT ' . $fields . ' FROM ' . $table . ' WHERE ID IN (' . trim($this->$activeCollectionName, ',') . ') AND NOT IsFolder');
 		$verifiedItems = array();
+		$verifiedItemsCsv = '';
 		while($this->DB_WE->next_record()){
 			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
+				$verifiedItemsCsv .= $this->DB_WE->f('ID') . ','; 
 				$verifiedItems[$this->DB_WE->f('ID')] = $full ? array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'type' => $this->DB_WE->f($cField)) : $this->DB_WE->f('ID');
 				if($full && $this->remTable == stripTblPrefix(FILE_TABLE)){
 					$verifiedItems[$this->DB_WE->f('ID')]['ext'] = $this->DB_WE->f('Extension');
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['title'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['alt'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['Title'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['Description'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['custom'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
 				}
+			}
+		}
+
+		$orCustomElement = ' OR (l.Name = "elemIMG" AND c.Dat != "") OR (l.Name = "elemIMG" AND c.BDID != 0)';
+		if($full && $this->remTable == stripTblPrefix(FILE_TABLE)){
+			$this->DB_WE->query('SELECT l.DID, l.Name, l.type, c.Dat, c.BDID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID = c.ID
+				WHERE l.DID IN (' . rtrim($verifiedItemsCsv, ',') . ') AND ((l.type = "attrib" AND l.Name IN ("title", "alt")) OR (l.type = "txt" AND l.Name IN ("Title", "Description")) ' . $orCustomElement . ')'
+				);
+
+			while($this->DB_WE->next_record()){
+				switch($this->DB_WE->f('Name')){
+					case 'title':
+					case 'alt':
+					case 'Title':
+					case 'Descrition':
+						$fieldname = $this->DB_WE->f('Name');
+						break;
+					default: 
+						$fieldname = 'custom';
+					
+
+				}
+				$verifiedItems[$this->DB_WE->f('DID')]['elements'][$fieldname] = array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID'));
 			}
 		}
 
 		$ret = array();
 		$tempCollection = ',';
-		$emptyItem = array('id' => -1, 'path' => '', 'type' => '');
+		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'ext' => '', 'elements' => array('title' => array('Dat' => ''), 'alt' => array('Dat' => ''), 'Title' => array('Dat' => ''), 'Description' => array('Dat' => ''), 'custom' => array('Dat' => '', 'BDID' => 0)));
 
-		$ac = explode(',', trim($this->$activeCollectionName, ','));
-		$ac = $this->IsDuplicates ? $ac : array_unique($ac);
-		foreach($ac as $id){
+		$activeCollection = explode(',', trim($this->$activeCollectionName, ','));
+		$activeCollection = $this->IsDuplicates ? $activeCollection : array_unique($activeCollection);
+		foreach($activeCollection as $id){
 			$id = intval($id);
 			if(isset($verifiedItems[$id])){
 				$ret[] = $verifiedItems[$id];
@@ -136,7 +166,6 @@ class we_collection extends we_root{
 		$this->$collectionName = ',' . implode(',', $coll) . ',';
 	}
 
-	//FIXME: maybe add column Filename to db to avoid setting Text = Filename and Filename = Text when initializing or saving we_doc!
 	public function getText(){
 		return $this->Filename;
 	}
@@ -326,16 +355,14 @@ class we_collection extends we_root{
 			} else {
 				$rows .= $this->getListItem($item, $index, $yuiSuggest, count($items), true);
 			}
-			$jsItems .= $this->getJsItem($item, $index);
+			$jsStorageItems .= $this->getJsStrorageItem($item, $index);
 			$jsItemsArr .= $item['id'] . ',';
 			
 		}
-		
-		
 
 		// write "blank" collection row to js
 		$placeholders = array('id' => '##ID##', "path" => '##PATH##', 'type' => '##CT##', 'icon' => array('url' => '##ICONURL##'));
-		
+
 		$this->jsFormCollection .= "
 weCollectionEdit.gridItemSize = " . $this->iconSizes[$this->itemsPerRow] . ";
 weCollectionEdit.maxIndex = " . count($items) . ";
@@ -345,7 +372,7 @@ weCollectionEdit.collectionArr = [" . rtrim($jsItemsArr, ',') . "];
 weCollectionEdit.view = '" . $this->view . "';
 weCollectionEdit.iconSizes = " . json_encode($this->iconSizes) . ";
 weCollectionEdit.storage = {};" .
-$jsItems;
+$jsStorageItems;
 
 		return we_html_element::jsElement($this->jsFormCollection) .
 			we_html_element::htmlHiddens(array(
@@ -437,7 +464,7 @@ $jsItems;
 				), $rowHtml->getHtml());
 	}
 
-
+	/*
 	private function getListItem_fallback($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
 		$textname = 'we_' . $this->Name . '_ItemName_' . $index;
 		$idname = 'we_' . $this->Name . '_ItemID_' . $index;
@@ -502,6 +529,8 @@ $jsItems;
 				'ondragend' => 'weCollectionEdit.dragEnd(event)'
 				), $rowHtml->getHtml());
 	}
+	 * 
+	 */
 
 	private function getGridItem($item, $index){
 		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
@@ -525,8 +554,8 @@ $jsItems;
 		);
 	}
 
-	private function getJsItem($item, $index){
-		return "weCollectionEdit.storage['item_" . $item['id'] . "'] = {'id' : " . $item['id'] . ", 'path' : '" . $item['path'] . "', 'ct' : '" . $item['type'] . "', 'iconSrc' : '" . $item['icon']['url'] . "'};\n";
+	private function getJsStrorageItem($item){t_e("item?", $item);
+		return "weCollectionEdit.storage['item_" . $item['id'] . "'] = {'id' : " . $item['id'] . ", 'path' : '" . $item['path'] . "', 'ct' : '" . $item['type'] . "', 'iconSrc' : '" . $item['icon']['url'] . "', 'meta' : {'title' : '" . $item['elements']['Title']['Dat'] . "', 'description' : '" . $item['elements']['Description']['Dat'] . "'}, 'attribs' : {'title' : '" . $item['elements']['title']['Dat'] . "', 'alt' : '" . $item['elements']['alt']['Dat'] . "'}, 'custom': {'type': '" . $item['elements']['custom']['type'] . "', 'Dat': '" . $item['elements']['custom']['Dat'] . "', 'BDID': " . $item['elements']['custom']['BDID'] . "}};\n";
 	}
 
 	function i_filenameDouble(){
@@ -682,6 +711,8 @@ $jsItems;
 			$classField = '';
 		}
 
+		$resultIDsCsv = '';
+
 		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
 		while($this->DB_WE->next_record()){
 			$data = $this->DB_WE->getRecord();
@@ -699,12 +730,17 @@ $jsItems;
 					$iconHTML = we_search_view::getHtmlIconThmubnail($file, 200, 200);
 				}
 				//END
+				$resultIDsCsv .= $data['ID'] . ',';
 				if($data['ParentID'] == 0){
 					$resultRoot[$data['ID']] = $returnFull ? array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField], 'iconSrc' => $iconHTML['url']) : $data['ID'];
 				} else {
 					$result[$data['Path']] = array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField], 'iconSrc' => $iconHTML['url']);
 				}
 			}
+		}
+
+		if($resultIDsCsv && $returnFull){
+			// get elements from tblContent: use some new fn in getCollectionVerified too!!
 		}
 
 		if(!empty($todo)){
@@ -719,7 +755,7 @@ $jsItems;
 			}
 			$result = array_merge($tmpResult, $resultRoot);
 		}
-
+		t_e("result", $result);
 		return $result;
 	}
 
