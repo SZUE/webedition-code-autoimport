@@ -50,7 +50,6 @@ class we_wysiwyg_editor{
 	private $fontnames = array();
 	private $tinyFonts = '';
 	private $formats = 'p,div,h1,h2,h3,h4,h5,h6,pre,code,blockquote,samp';
-	private $maxGroupWidth = 0;
 	private $outsideWE = false;
 	private $xml = false;
 	private $removeFirstParagraph = true;
@@ -71,7 +70,7 @@ class we_wysiwyg_editor{
 
 	const CONDITIONAL = true;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
@@ -177,7 +176,6 @@ class we_wysiwyg_editor{
 
 		$this->setToolbarElements();
 		$this->setFilteredElements();
-		$this->getMaxGroupWidth();
 		$this->value = $value;
 	}
 
@@ -230,19 +228,6 @@ class we_wysiwyg_editor{
 		return $ret;
 	}
 
-	function getMaxGroupWidth(){
-		$w = 0;
-		foreach($this->filteredElements as $i => $v){
-			if($v->classname === 'we_wysiwyg_ToolbarSeparator'){
-				$this->maxGroupWidth = max($w, $this->maxGroupWidth);
-				$w = 0;
-			} else {
-				$w += $v->width;
-			}
-		}
-		$this->maxGroupWidth = max($w, $this->maxGroupWidth) + 2;
-	}
-
 	static function getHeaderHTML($loadDialogRegistry = false){
 		if(defined('WE_WYSIWG_HEADER')){
 			if($loadDialogRegistry && !defined('WE_WYSIWG_HEADER_REG')){
@@ -257,6 +242,10 @@ class we_wysiwyg_editor{
 		}
 
 		return we_html_element::cssElement('
+table.mceToolbar{
+	float:left;
+}
+
 .tbButtonWysiwygBorder {
 	border: 1px solid #006DB8;
 	background-image: url(' . IMAGE_DIR . 'pixel.gif);
@@ -398,12 +387,12 @@ function weWysiwygSetHiddenText(arg) {
 		//group: font
 		$this->elements = array_filter(
 			array(new we_wysiwyg_ToolbarButton($this, "fontname", 92, 20),
-				($this->width < 194 ? $sep : false),
+				//($this->width < 194 ? $sep : false),
 				new we_wysiwyg_ToolbarButton($this, 'fontsize', 92, 20),
 				$sep,
 				//group: prop
 				new we_wysiwyg_ToolbarButton($this, "formatblock", 92, 20),
-				($this->width < 194 ? $sep : false),
+				//($this->width < 194 ? $sep : false),
 				new we_wysiwyg_ToolbarButton($this, "applystyle", 92, 20),
 				$sep,
 				new we_wysiwyg_ToolbarButton($this, "bold"),
@@ -518,14 +507,6 @@ function weWysiwygSetHiddenText(arg) {
 		));
 	}
 
-	function getWidthOfElem($startPos, $end){//TODO: throw out if obsolete
-		$w = 0;
-		for($i = $startPos; $i <= $end; $i++){
-			$w += $this->filteredElements[$i]->width;
-		}
-		return $w;
-	}
-
 	function setFilteredElements(){
 		$lastSep = true;
 		foreach($this->elements as $elem){
@@ -543,21 +524,11 @@ function weWysiwygSetHiddenText(arg) {
 		}
 	}
 
-	function hasSep($rowArr){
-		foreach($rowArr as $i => $elem){
-			if($elem->classname === "we_wysiwyg_ToolbarSeparator"){
-				return true;
-			}
-		}
-		return false;
+	function getHTML(){
+		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML());
 	}
 
-	function getHTML($value = ''){
-		return ($this->inlineedit ? $this->getInlineHTML() : $this->getEditButtonHTML($value));
-	}
-
-	function getEditButtonHTML($value = ''){
-		list($tbwidth, $tbheight) = $this->getToolbarWidthAndHeight();
+	function getEditButtonHTML(){
 		$fns = '';
 		foreach($this->fontnames as $fn){
 			$fns .= str_replace(",", ";", $fn) . ",";
@@ -565,8 +536,9 @@ function weWysiwygSetHiddenText(arg) {
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 
-		return we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . max(220, $this->width) . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
-			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
+
+		return we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . $this->width . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
+			'" . $this->outsideWE . "','" . $this->width . "','" . $this->height . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
 			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
 
@@ -595,60 +567,21 @@ function weWysiwygSetHiddenText(arg) {
 	}
 
 	function getToolbarRows(){
-		$width = $this->width - 12;
-		$maxGroupWidth = $this->maxGroupWidth - 2;
-
 		$tmpElements = $this->filteredElements;
-		$rows = array();
 		$rownr = 0;
-		$rows[$rownr] = array();
-		$rowwidth = 0;
-		while(!empty($tmpElements)){
-			if(!$this->hasSep($rows[$rownr]) || $rowwidth <= max($width, $maxGroupWidth)){
-				//TinyMCE: There is a 5px border on the left, another 5px on the right looks nicer, and buttons/blocks of buttons have a 1 px border on the left and right = 12px
-				$rows[$rownr][] = array_shift($tmpElements);
-				$rowwidth += $rows[$rownr][count($rows[$rownr]) - 1]->width;
-			} else {
-				if(!empty($rows[$rownr])){
-					if($rows[$rownr][count($rows[$rownr]) - 1]->classname === "we_wysiwyg_ToolbarSeparator"){
-						array_pop($rows[$rownr]);
-						$rownr++;
-						$rowwidth = 0;
-						$rows[$rownr] = array();
-					} else {
-						do{
-							array_unshift($tmpElements, array_pop($rows[$rownr]));
-						} while($tmpElements[0]->classname != "we_wysiwyg_ToolbarSeparator");
-						array_shift($tmpElements);
-						$rownr++;
-						$rowwidth = 0;
-						$rows[$rownr] = array();
-					}
-				}
+		$rows = array(
+			$rownr => array()
+		);
+
+		foreach($tmpElements as $elem){
+			if($elem->classname === "we_wysiwyg_ToolbarSeparator"){
+				$rownr++;
+				$rows[$rownr] = array();
+				continue;
 			}
+			$rows[$rownr][] = $elem;
 		}
 		return $rows;
-	}
-
-	function getToolbarWidthAndHeight(){
-
-		$rows = $this->getToolbarRows();
-		$toolbarheight = 0;
-		$min_w = 0;
-		$row_w = 0;
-		foreach($rows as $curRow){
-			$rowheight = 0;
-			foreach($curRow as $curCol){
-				$rowheight = max($rowheight, $curCol->height);
-				$row_w += $curCol->width;
-			}
-			$toolbarheight += ($rowheight + 2);
-			$min_w = max($min_w, $row_w);
-			$row_w = 0;
-		}
-
-		$realWidth = max($min_w, $this->width);
-		return array($realWidth, ($toolbarheight + 18));
 	}
 
 	function getContextmenuCommands(){
@@ -812,9 +745,10 @@ function weWysiwygSetHiddenText(arg) {
 			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
 			($this->wePlugins ? $this->wePlugins . ',' : '') .
 			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
-		//fast fix for textarea-height. TODO, when wysiwyg is thrown out: use or rewrite existing methods like getToolbarWithAndHeight()
-		$toolBarHeight = $this->buttonpos === 'external' ? 0 : ($k - 1) * 26 + 22 - $k * 3;
-		$this->height += $toolBarHeight;
+//only a simple fix
+		if(is_numeric($this->height) && is_numeric($this->width)){
+			$this->height += $this->buttonpos === 'external' ? 0 : round((($k) / ($this->width / (5 * 22))) * 26);
+		}
 
 		$wefullscreenVars = array(
 			'outsideWE' => $this->outsideWE ? "1" : "",
@@ -827,8 +761,7 @@ function weWysiwygSetHiddenText(arg) {
 		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
 
-		return we_html_element::jsElement('
-				' . ($this->fieldName ? '
+		return $this->height . $this->width . we_html_element::jsElement(($this->fieldName ? '
 /* -- tinyMCE -- */
 
 /*
@@ -1220,7 +1153,7 @@ tinyMCE.addI18n(tinyMceTranslationObject);
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') .
 			'
-<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (max($this->width, $this->maxGroupWidth + 8)) . 'px; height:' . $this->height . 'px;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
+<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (is_numeric($this->width) ? $this->width . 'px' : $this->width) . ';height:' . (is_numeric($this->height) ? $this->height . 'px' : $this->height) . ';" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
 	}
 
 }
