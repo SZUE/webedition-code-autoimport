@@ -358,7 +358,7 @@ class we_tag_tagParser{
 				($content ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';
 	}
 
-	public static function printArray($array, $printEmpty = true){
+	public static function printArray(array $array, $printEmpty = true){
 		$ret = array();
 		foreach($array as $key => $val){
 			switch($key){

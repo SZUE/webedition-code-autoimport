@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -49,14 +48,17 @@ function we_parse_tag_block($attribs, $content, array $arr){
 	$blockName = weTag_getParserAttribute('name', $arr);
 	$name = str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', md5($blockName)) . $GLOBALS['blkCnt'];
 
-	//if(strpos($content,'blockControls')===false){
-	$content = (preg_match('/^< ?(tr|td)/i', $content) ?
-		//table found
-			strtr(preg_replace('|(< ?td[^>]*>)|si', '$1'  . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, array('=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####')), 1), array('#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>')) :
-		//no tables found
-			 '<?php we_tag_blockControls($block_' . $name . ');?>' . $content
-		);
 
+	if(($content = str_replace('we_tag_blockControls(##blockControlsREPL##', 'we_tag_blockControls($block_' . $name, $content, $count)) && $count){
+		//nothing to do, we have a userdefined blockcontrol
+	} else {
+		$content = (preg_match('/< ?(tr|td)/i', $content) ?
+				//table found
+				strtr(preg_replace('|(< ?td[^>]*>)|si', '$1' . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, array('=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####')), 1), array('#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>')) :
+				//no tables found
+				'<?php we_tag_blockControls($block_' . $name . ');?>' . $content
+			);
+	}
 //	}
 	//here postTagName is explicitly needed, because the control-element is not "inside" the block-tag (no block defined/first element) but controls its elements
 	return '<?php

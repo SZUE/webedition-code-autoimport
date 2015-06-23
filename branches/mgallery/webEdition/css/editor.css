@@ -50,3 +50,8 @@ input:invalid {
 .border0{
 	border-style: none;
 }
+
+div.we_blockControls button,
+div.we_blockControls select{
+	margin-right:1em;
+}
