@@ -246,6 +246,10 @@ table.mceToolbar{
 	float:left;
 }
 
+td.mceToolbar{
+	padding-right:3px;
+}
+
 .tbButtonWysiwygBorder {
 	border: 1px solid #006DB8;
 	background-image: url(' . IMAGE_DIR . 'pixel.gif);
