@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_statusMails{
-
 	var $FieldsHidden; //an array of statusfield names not to be shown in order
 	var $FieldsHiddenCOV; //an array of statusfield names not to be shown in order
 	var $FieldsText; //an array with keys equal to name of statusfield, and value = text to be shown
@@ -46,7 +45,7 @@ class we_shop_statusMails{
 
 	public static function initByRequest(){//FIXME: this is unchecked!!
 		return new self(
-				we_base_request::_(we_base_request::STRING, 'FieldsHidden'), we_base_request::_(we_base_request::STRING, 'FieldsHiddenCOV'), we_base_request::_(we_base_request::STRING, 'FieldsText'), we_base_request::_(we_base_request::STRING, 'FieldsMails'), we_base_request::_(we_base_request::STRING, 'EMailData'), we_base_request::_(we_base_request::STRING, 'LanguageData'), we_base_request::_(we_base_request::INT, 'FieldsDocuments', 0)
+			we_base_request::_(we_base_request::STRING, 'FieldsHidden'), we_base_request::_(we_base_request::STRING, 'FieldsHiddenCOV'), we_base_request::_(we_base_request::STRING, 'FieldsText'), we_base_request::_(we_base_request::STRING, 'FieldsMails'), we_base_request::_(we_base_request::STRING, 'EMailData'), we_base_request::_(we_base_request::STRING, 'LanguageData'), we_base_request::_(we_base_request::INT, 'FieldsDocuments', 0)
 		);
 	}
 
@@ -82,7 +81,7 @@ class we_shop_statusMails{
 			$documentsarray[$langkey] = $documentsarray['default'];
 		}
 		$zw = new self(
-				array(//Fieldshidden
+			array(//Fieldshidden
 			'DateOrder' => 0,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -99,7 +98,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 1
-				), array(//FieldshiddenCOV
+			), array(//FieldshiddenCOV
 			'DateOrder' => 0,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -116,7 +115,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 1
-				), array(//FieldsTexts
+			), array(//FieldsTexts
 			'DateOrder' => g_l('modules_shop', '[bestelldatum]'),
 			'DateConfirmation' => g_l('modules_shop', '[bestaetigt]'),
 			'DateCustomA' => g_l('modules_shop', '[customA]'),
@@ -133,7 +132,7 @@ class we_shop_statusMails{
 			'DateCustomI' => g_l('modules_shop', '[customI]'),
 			'DateCustomJ' => g_l('modules_shop', '[customJ]'),
 			'DateFinished' => g_l('modules_shop', '[beendet]')
-				), array(//FieldsMails
+			), array(//FieldsMails
 			'DateOrder' => 1,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -150,7 +149,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 0
-				), array(//EMailData
+			), array(//EMailData
 			'address' => '',
 			'name' => '',
 			'bcc' => '',
@@ -159,11 +158,11 @@ class we_shop_statusMails{
 			'DocumentAttachmentFieldB' => '',
 			'emailField' => '',
 			'titleField' => ''
-				), array(//LanguageData
+			), array(//LanguageData
 			'useLanguages' => 1,
 			'languageField' => '',
 			'languageFieldIsISO' => 0
-				), $documentsarray
+			), $documentsarray
 		);
 		$zw2 = strtr(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"', '', $DB_WE), array('O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":'));
 
@@ -225,8 +224,8 @@ class we_shop_statusMails{
 				$field = 1;
 			} else {
 				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was]) ?
-								$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
-								$this->FieldsDocuments['default']['Date' . $was]);
+						$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
+						$this->FieldsDocuments['default']['Date' . $was]);
 				$field = 2;
 			}
 			if(isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
@@ -252,9 +251,9 @@ class we_shop_statusMails{
 			$maildoc = new we_webEditionDocument();
 			$maildoc->initByID($docID);
 
-			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA'] != ''){
-				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
-				$codes = $codes . $attachmentA;
+			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA']){
+				$attachment = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
+				$codes = $codes . $attachment;
 			}
 			unset($_REQUEST['we_orderid'], $_SESSION['WE_SendMail']);
 		} else {
@@ -267,9 +266,9 @@ class we_shop_statusMails{
 
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
 			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address'] ?
-							$this->EMailData['address'] :
-							array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
-					);
+					$this->EMailData['address'] :
+					array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
+				);
 
 			$phpmail = new we_util_Mailer('', $subject, $from);
 			$phpmail->setIsEmbedImages(true);
@@ -281,18 +280,18 @@ class we_shop_statusMails{
 				$bccArray = explode(',', $this->EMailData['bcc']);
 				$phpmail->setBCC($bccArray);
 			}
-			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA'] != ''){
-				$attachmentAinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . we_base_link::MAGIC_INT_LINK);
-				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . ($attachmentAinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
-				if($attachmentA){
-					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentA);
+			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA']){
+				$attachmentinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . we_base_link::MAGIC_INT_LINK);
+				$attachment = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . ($attachmentinternal ? we_base_link::MAGIC_INT_LINK_ID : ''));
+				if($attachment){
+					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . ($attachmentinternal ? id_to_path($attachment) : $attachment));
 				}
 			}
-			if(isset($this->EMailData['DocumentAttachmentFieldB']) && $this->EMailData['DocumentAttachmentFieldB'] != ''){
-				$attachmentBinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . we_base_link::MAGIC_INT_LINK);
-				$attachmentB = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
-				if($attachmentB){
-					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentB);
+			if(isset($this->EMailData['DocumentAttachmentFieldB']) && $this->EMailData['DocumentAttachmentFieldB']){
+				$attachmentinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . we_base_link::MAGIC_INT_LINK);
+				$attachment = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? we_base_link::MAGIC_INT_LINK_ID : ''));
+				if($attachment){
+					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . ($attachmentinternal ? id_to_path($attachment) : $attachment));
 				}
 			}
 			$phpmail->buildMessage();

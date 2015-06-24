@@ -60,16 +60,17 @@ function we_isVarSet($name, $orig, $type, $docAttr, $property = false, $formname
 				return isset($doc->$name) || isset($doc->orig);
 			}
 			if($type === 'href' && $doc->getElement($name . we_base_link::MAGIC_INT_LINK, 'dat', -1) == 0){
-				return isset($doc->elements[$name . we_base_link::MAGIC_INT_LINK_PATH]['dat']);
+				//internal link is empty, check if external link is present
+				return $doc->issetElement($name . we_base_link::MAGIC_INT_LINK_EXTPATH);
 			}
-			if(isset($doc->elements[$name])){
+			if($doc->issetElement($name)){
 				switch(isset($doc->elements[$name]['type']) ? $doc->elements[$name]['type'] : ''){
 					case 'checkbox_feld':
 						return intval($doc->getElement($name)) != 0;
 					case 'img':
 						return intval($doc->getElement($name, 'bdid')) != 0;
 					case 'href'://can be serialized
-						return intval($doc->getElement($name, 'bdid')) != 0 || $doc->getElement($name, 'dat');
+						return intval($doc->getElement($name, 'bdid')) != 0 || $doc->getElement($name);
 					default:
 						return isset($doc->elements[$name]['dat']);
 				}
