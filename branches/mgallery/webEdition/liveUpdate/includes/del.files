@@ -2500,8 +2500,10 @@ js/weJsStrings.php
 js/weJsStrings.inc.php
 js/weDOM_Safari.js
 js/we_colors.js
+js/utils/rewrite_element.js
 js/utils/progressBar.js
 js/utils/lib.js
+js/utils/dimension.js
 js/selectors/we_sselector_footer.js
 js/seeMode.php
 js/messageConsoleImages.js

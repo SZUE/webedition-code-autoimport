@@ -142,92 +142,86 @@ var le_dragInit = function (oMouseEvt) {
 	}
 };
 
-var oWidget = {};
-oWidget.br = navigator.userAgent;
-oWidget.Gecko = oWidget.br.indexOf('Gecko') != -1;
-oWidget.Safari = oWidget.br.indexOf('Safari') != -1;
-oWidget.oShieldId = 'divShieldId';
-oWidget.oModShieldId = 'modDivShieldId';
-oWidget.hide = function () {
-	oWidget.oTbl.style.display = 'none';
-};
-oWidget.show = function () {
-	oWidget.oTbl.style.display = '';
-};
-oWidget.oMask = null;
-oWidget.p = function () {
-	if (!oWidget.oMask) {
-		oWidget.oMask = document.createElement('div');
-		oWidget.oMask.className = 'le_widget';
-		oWidget.oMask.backgroundColor = '';
-		oWidget.oMask.style.border = '2px dotted #aaa';
-		oWidget.oMask.innerHTML = '&nbsp;';
-	}
-	return oWidget.oMask;
-};
-
-oWidget.applyEvt = function (obj, evt) {
-	return function () {
-		return obj[evt].apply(obj, arguments);
-	};
-};
-
-oWidget.adaptOffset = function (oParent) {
-	for (var i = 0; i < oWidget.c.length; i++) {
-		var obj = oWidget.c[i];
-		obj.node.pagePosLeft = oWidget.setOffsetLeftTop(obj.node, true);
-		obj.node.pagePosTop = oWidget.setOffsetLeftTop(obj.node, false);
-	}
-	var oNextSibling = oParent.node.nextSibling;
-	while (oNextSibling) {
-		oNextSibling.pagePosTop -= oParent.node.offsetHeight;
-		oNextSibling = oNextSibling.nextSibling;
-	}
-};
-
-oWidget.setOffsetLeftTop = function (obj, bIterate) {
-	var count = 0;
-	while (obj !== null) {
-		count += obj['offset' + (bIterate ? 'Left' : 'Top')];
-		obj = obj.offsetParent;
-	}
-	return count;
-};
-
-oWidget.appendMaskClone = function (aTbl) {
-	oWidget.removeMasks();
-	var oNewDiv = document.createElement('div');
-	oNewDiv.id = oWidget.oShieldId;
-	oNewDiv.innerHTML = '&nbsp;';
-	oNewDiv.style.position = 'absolute';
-	oNewDiv.style.width = '100%';
-	oNewDiv.style.height = document.body.offsetHeight + 'px';
-	oNewDiv.style.left = '0px';
-	oNewDiv.style.top = '0px';
-	//oNewDiv.style.backgroundImage = 'url(/webEdition/images/pixel.gif)';
-	document.body.appendChild(oNewDiv);
-};
-
-oWidget.removeMasks = function () {
-	var aShields = [oWidget.oModShieldId, oWidget.oShieldId];
-	for (var i = 0; i < aShields.length; i++) {
-		var oRemove = gel(aShields[i]);
-		if (oRemove) {
-			oRemove.parentNode.removeChild(oRemove);
-			oRemove = null;
+var oWidget = {
+	Gecko: navigator.userAgent.indexOf('Gecko') !== -1,
+	Safari: navigator.userAgent.indexOf('Safari') !== -1,
+	oShieldId: 'divShieldId',
+	oModShieldId: 'modDivShieldId',
+	oMask: null,
+	hide: function () {
+		oWidget.oTbl.style.display = 'none';
+	},
+	show: function () {
+		oWidget.oTbl.style.display = '';
+	},
+	p: function () {
+		if (!oWidget.oMask) {
+			oWidget.oMask = document.createElement('div');
+			oWidget.oMask.className = 'le_widget';
+			oWidget.oMask.backgroundColor = '';
+			oWidget.oMask.style.border = '2px dotted #aaa';
+			oWidget.oMask.innerHTML = '&nbsp;';
 		}
-	}
-};
-
-oWidget.br = function () {
-	var s = '';
-	for (var i = 0; i < oWidget.oCell.length; i++) {
-		var oCurrCell = oWidget.oCell[i];
-		for (var j = 0; j < oCurrCell.childNodes.length - 1; j++) {
-			var oChild = oCurrCell.childNodes[j];
-			if (oChild.tagName == 'DIV') {
-				s += s !== '' ? ':' : '';
-				s += oChild.id.substring(2) + '_' + oCurrCell.id.substring(2);
+		return oWidget.oMask;
+	},
+	applyEvt: function (obj, evt) {
+		return function () {
+			return obj[evt].apply(obj, arguments);
+		};
+	},
+	adaptOffset: function (oParent) {
+		for (var i = 0; i < oWidget.c.length; i++) {
+			var obj = oWidget.c[i];
+			obj.node.pagePosLeft = oWidget.setOffsetLeftTop(obj.node, true);
+			obj.node.pagePosTop = oWidget.setOffsetLeftTop(obj.node, false);
+		}
+		var oNextSibling = oParent.node.nextSibling;
+		while (oNextSibling) {
+			oNextSibling.pagePosTop -= oParent.node.offsetHeight;
+			oNextSibling = oNextSibling.nextSibling;
+		}
+	},
+	setOffsetLeftTop: function (obj, bIterate) {
+		var count = 0;
+		while (obj !== null) {
+			count += obj['offset' + (bIterate ? 'Left' : 'Top')];
+			obj = obj.offsetParent;
+		}
+		return count;
+	},
+	appendMaskClone: function (aTbl) {
+		oWidget.removeMasks();
+		var oNewDiv = document.createElement('div');
+		oNewDiv.id = oWidget.oShieldId;
+		oNewDiv.innerHTML = '&nbsp;';
+		oNewDiv.style.position = 'absolute';
+		oNewDiv.style.width = '100%';
+		oNewDiv.style.height = document.body.offsetHeight + 'px';
+		oNewDiv.style.left = '0px';
+		oNewDiv.style.top = '0px';
+		//oNewDiv.style.backgroundImage = 'url(/webEdition/images/pixel.gif)';
+		document.body.appendChild(oNewDiv);
+	},
+	removeMasks: function () {
+		var aShields = [oWidget.oModShieldId, oWidget.oShieldId];
+		for (var i = 0; i < aShields.length; i++) {
+			var oRemove = gel(aShields[i]);
+			if (oRemove) {
+				oRemove.parentNode.removeChild(oRemove);
+				oRemove = null;
+			}
+		}
+	},
+	br: function () {
+		var s = '';
+		for (var i = 0; i < oWidget.oCell.length; i++) {
+			var oCurrCell = oWidget.oCell[i];
+			for (var j = 0; j < oCurrCell.childNodes.length - 1; j++) {
+				var oChild = oCurrCell.childNodes[j];
+				if (oChild.tagName == 'DIV') {
+					s += s !== '' ? ':' : '';
+					s += oChild.id.substring(2) + '_' + oCurrCell.id.substring(2);
+				}
 			}
 		}
 	}
@@ -340,10 +334,10 @@ function drop() {
 	oWidget.hide();
 	this.node.style.position = '';
 	this.node.style.left = '0px';
-	 this.node.style.zIndex = '';
+	this.node.style.zIndex = '';
 	this.node.style.top = '0px';
-	 this.node.style.filter = '';
-	 this.node.style.opacity = '';
+	this.node.style.filter = '';
+	this.node.style.opacity = '';
 	var oNodeDiv = oWidget.p();
 	if (oNodeDiv.nextSibling != this.origNextSibling) {
 		oNodeDiv.parentNode.insertBefore(this.node, oNodeDiv.nextSibling);
