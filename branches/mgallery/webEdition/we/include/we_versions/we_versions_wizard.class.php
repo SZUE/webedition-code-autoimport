@@ -1092,7 +1092,7 @@ set_button_state(false);';
 		} else {
 			$body = we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'body')), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;') .
+						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'body')), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'busy')), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false) .
 						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array('we_cmd' => array(0 => 'versions_wizard'), 'fr' => 'cmd')), 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 			));

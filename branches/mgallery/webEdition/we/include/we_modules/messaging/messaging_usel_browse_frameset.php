@@ -128,7 +128,7 @@ checked : checked
 <?php
 echo we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'start();')
 	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'usel.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;', 'border:0px;width:100%;height:100%;overflow: auto;') .
+		, we_html_element::htmlIFrame('messaging_usel_main', HTML_DIR . 'usel.html', 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
 		we_html_element::htmlDiv(array('style' => 'height:20px;bottom:0px;left:0px;right:0px;overflow: hidden;padding:10px;', 'class' => 'editfooter'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_selupdate();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:close();")
 		))
 ));
