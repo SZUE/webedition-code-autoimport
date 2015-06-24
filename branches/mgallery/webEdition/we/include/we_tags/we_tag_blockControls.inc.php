@@ -28,16 +28,18 @@ function we_parse_tag_blockControls($attribs, $content, array $arr){
 
 function we_tag_blockControls($attribs){
 	//if in listview no Buttons are shown!
-	if(!$GLOBALS['we_editmode'] || isset($GLOBALS['lv']) || !isset($attribs['list'])){
+	if(!$GLOBALS['we_editmode'] || isset($GLOBALS['lv']) || !isset($attribs['list']) || (isset($attribs['show']) && !$attribs['show'])){
 		return '';
 	}
+	$showSelect = weTag_getAttribute('showselect', $attribs, $attribs['ctlShowSelect'], we_base_request::BOOL);
+
 	if(!isset($attribs['ctlName'])){
 		$attribs['ctlName'] = md5(str_replace('.', '', uniqid('', true))); // #6590, changed from: uniqid(time())
 	}
 
 	if($attribs['pos'] < $attribs['listSize']){
 		$tabArray = array();
-		if($attribs['ctlShowSelect'] && $attribs['ctlShow'] > 0){
+		if($showSelect && $attribs['ctlShow'] > 0){
 			$jsSelector = $attribs['pos'] . ",document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].options[document.we_form.elements['" . $attribs['ctlName'] . '_' . $attribs['pos'] . "'].selectedIndex].text";
 			$tabArray[] = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "'," . $jsSelector . ")", true, 100, 22, '', '', !($attribs['ctlShow'] > 0));
 
@@ -66,7 +68,7 @@ function we_tag_blockControls($attribs){
 		echo '<div class="we_blockControls">' . implode('', $tabArray) . '</div>';
 		return;
 	}
-	if($attribs['ctlShowSelect'] && $attribs['ctlShow'] > 0){
+	if($showSelect && $attribs['ctlShow'] > 0){
 		$selectb = '<select name="' . $attribs['ctlName'] . '_00">';
 		for($j = 1; $j <= $attribs['ctlShow']; $j++){
 			$selectb .= '<option value="' . $j . '">' . $j . '</option>';
