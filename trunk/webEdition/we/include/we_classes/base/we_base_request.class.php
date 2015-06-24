@@ -136,30 +136,34 @@ class we_base_request{
 				return;
 			case self::EMAILLISTA:
 			case self::EMAILLIST:
-				$var = str_replace('mailto:', '', $var);
-				$mails = array_map('trim', explode(',', $var));
+				$mails = array_map('trim', explode(',', str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var)));
 				$regs = array();
 				foreach($mails as &$mail){
-					if(preg_match('-("[\S ]+"|\S+) <(\S+@\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
-						if(filter_var($regs[2], FILTER_VALIDATE_EMAIL) !== false){
-							continue;
+					if(!preg_match('-("[\S\s]+"\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
+						//if format didn't match, filter the whole var as one address
+						$regs = array_merge(array(''), explode('@', $mail, 2));
 						}
+					$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[2]) : $regs[2]);
+					$mail = (filter_var($regs[1] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
+							$regs[0] . $regs[1] . '@' . $regs[2] :
+							'');
 					}//if format didn't match, filter the whole var as one address
 
-					$mail = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $mail), FILTER_SANITIZE_EMAIL);
-				}
-				$var = ($type == self::EMAILLISTA ? array_filter($mails) : implode(',', array_filter($mails)));
+				$mails = array_filter($mails);
+				$var = ($type == self::EMAILLISTA ? $mails : implode(',', $mails));
 				return;
 			case self::EMAIL://removes mailto:
 				$regs = array();
-				$var = str_replace('mailto:', '', $var);
-				if(preg_match('-("[\S ]+"|\S+) <(\S+@\S+)>-', $var, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
-					if(filter_var($regs[2], FILTER_VALIDATE_EMAIL) !== false){
-						return;
+				$mail = trim(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var));
+				if(!preg_match('-("[\S\s]+"\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
+					//if format didn't match, filter the whole var as one address
+					$regs = array_merge(array(''), explode('@', $mail, 2));
 					}
-				}//if format didn't match, filter the whole var as one address
+				$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[2]) : $regs[2]);
 
-				$var = filter_var(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var), FILTER_SANITIZE_EMAIL);
+				$var = (filter_var($regs[1] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
+						$regs[0] . $regs[1] . '@' . $regs[2] :
+						'');
 				return;
 			case self::WEFILELIST:
 			case self::WEFILELISTA:
@@ -192,7 +196,10 @@ class we_base_request{
 				}
 				return;
 			case self::URL:
-				$var = filter_var(urldecode($var), FILTER_SANITIZE_URL);
+				$var = urldecode($var);
+				$var = (function_exists('idn_to_ascii') ? idn_to_ascii($var) : $var);
+				$var = filter_var($var, FILTER_SANITIZE_URL);
+				$var = (function_exists('idn_to_ascii') ? idn_to_utf8($var) : $var);
 				return;
 			case self::STRINGC:
 			case self::STRING://strips tags
