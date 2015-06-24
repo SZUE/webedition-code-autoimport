@@ -49,7 +49,7 @@ function we_parse_tag_block($attribs, $content, array $arr){
 	$name = str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', md5($blockName)) . $GLOBALS['blkCnt'];
 
 
-	if(($content = str_replace('we_tag_blockControls(##blockControlsREPL##', 'we_tag_blockControls($block_' . $name, $content, $count)) && $count){
+	if(($content = str_replace('we_tag_blockControls("##blockControlsREPL##"', 'we_tag_blockControls($block_' . $name, $content, $count)) && $count){
 		//nothing to do, we have a userdefined blockcontrol
 	} else {
 		$content = (preg_match('/< ?(tr|td)/i', $content) ?
