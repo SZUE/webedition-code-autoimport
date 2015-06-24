@@ -36,6 +36,8 @@ $l_sysinfo=array(
 	'suhosin simulation'=>'Simulations Modus',
 	'suhosin warning'=>'Wegen der vielfältigen Konfigurationsmöglichkeiten kann bei Nutzung dieser PHP Erweiterung die volle Funktionsfähigkeit von webEdition leider nicht garantiert werden.',
 	'sysinfo'=>'Systeminformationen',
+	'umlautdomains'=>'Internationale Domains',
+	'umlautdomains_warning'=>'Die Unterstützung für internationale Domains fehlt (PECL intl >= 1.0.2, PECL idn >= 0.1). Es können keine Domains mit nicht ASCII Zeichen eingegeben werden.',
 	'version'=>'Version',
 	'we_max_upload_size'=>'Max. Dateigröße für Uploads',
 	'we_version'=>'webEdition-Version',
