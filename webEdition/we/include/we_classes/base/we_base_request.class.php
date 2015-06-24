@@ -142,6 +142,10 @@ class we_base_request{
 					if(!preg_match('-("[\S\s]+"\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 						//if format didn't match, filter the whole var as one address
 						$regs = array_merge(array(''), explode('@', $mail, 2));
+						if(!isset($regs[2])){
+							$mail = '';
+							continue;
+						}
 						}
 					$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[2]) : $regs[2]);
 					$mail = (filter_var($regs[1] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
@@ -158,6 +162,10 @@ class we_base_request{
 				if(!preg_match('-("[\S\s]+"\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 					//if format didn't match, filter the whole var as one address
 					$regs = array_merge(array(''), explode('@', $mail, 2));
+					if(!isset($regs[2])){
+						$mail = '';
+						continue;
+					}
 					}
 				$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[2]) : $regs[2]);
 
