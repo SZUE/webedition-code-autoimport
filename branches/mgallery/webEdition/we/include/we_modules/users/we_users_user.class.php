@@ -222,17 +222,16 @@ class we_users_user{
 		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
 
 		$this->DB_WE = new DB_WE();
-		/*
-		  if(defined('OBJECT_TABLE')){
-		  $this->workspaces[OBJECT_FILES_TABLE] = $this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
-		  }
-		  if(defined('NEWSLETTER_TABLE')){
-		  $this->workspaces[NEWSLETTER_TABLE] = $this->workspaces_defaults[NEWSLETTER_TABLE] = array();
-		  }
+		if(defined('OBJECT_TABLE')){
+			$this->workspaces[OBJECT_FILES_TABLE] = array();
+		}
+		if(defined('NEWSLETTER_TABLE')){
+			$this->workspaces[NEWSLETTER_TABLE] = array();
+		}
 
-		  if(defined('CUSTOMER_TABLE')){
-		  $this->workspaces[CUSTOMER_TABLE] = $this->workspaces_defaults[CUSTOMER_TABLE] = array();
-		  } */
+		if(defined('CUSTOMER_TABLE')){
+			$this->workspaces[CUSTOMER_TABLE] = array();
+		}
 
 		foreach($this->preference_slots as $val){
 			$this->Preferences[$val] = null;
@@ -581,14 +580,14 @@ class we_users_user{
 			$this->workspaces[$k] = $new_array;
 		}
 
-		$this->workSpace = makeCSVFromArray($this->workspaces[FILE_TABLE], true, ',');
-		$this->workSpaceTmp = makeCSVFromArray($this->workspaces[TEMPLATES_TABLE], true, ',');
-		$this->workSpaceNav = makeCSVFromArray($this->workspaces[NAVIGATION_TABLE], true, ',');
+		$this->workSpace = implode(',', $this->workspaces[FILE_TABLE]);
+		$this->workSpaceTmp = implode(',', $this->workspaces[TEMPLATES_TABLE]);
+		$this->workSpaceNav = implode(',', $this->workspaces[NAVIGATION_TABLE]);
 		if(defined('OBJECT_TABLE')){
-			$this->workSpaceObj = makeCSVFromArray($this->workspaces[OBJECT_FILES_TABLE], true, ',');
+			$this->workSpaceObj = implode(',', $this->workspaces[OBJECT_FILES_TABLE]);
 		}
 		if(defined('NEWSLETTER_TABLE')){
-			$this->workSpaceNwl = makeCSVFromArray($this->workspaces[NEWSLETTER_TABLE], true, ',');
+			$this->workSpaceNwl = implode(',', $this->workspaces[NEWSLETTER_TABLE]);
 		}
 		if(defined('CUSTOMER_TABLE')){
 			$this->workSpaceCust = $this->workspaces[CUSTOMER_TABLE] ? serialize($this->workspaces[CUSTOMER_TABLE]) : '';
@@ -2337,7 +2336,7 @@ function resetTabs(){
 		top.content.editor.edheader.tabCtrl.setActiveTab(' . self::TAB_DATA . ');
 }') .
 			$tab_header .
-			'<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;padding-left:10px;" id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>';
+			'<div id="main"><div id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $headline1) . '&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", ($this->Path ? : $this->getPath($this->ParentID))) . '</b></span></nobr></div>' . $we_tabs->getHTML() . '</div>';
 	}
 
 	public static function getUsername($id, we_database_base $db = null){

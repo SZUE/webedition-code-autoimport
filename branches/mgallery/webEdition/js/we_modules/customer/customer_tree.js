@@ -50,20 +50,6 @@ function openClose(id) {
 	}
 }
 
-
-function updateEntry(id, text) {
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id == id) {
-			text = text.replace(/</g, "&lt;");
-			text = text.replace(/>/g, "&gt;");
-			treeData[ai].text = text;
-		}
-		ai++;
-	}
-	drawTree();
-}
-
 function showSegment() {
 	var sort = "";
 	parentnode = frames.top.get(this.parentid);

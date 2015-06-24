@@ -88,8 +88,7 @@ abstract class we_html_tools{
 			}
 		}
 		return '<table class="default">' .
-			($text ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
-			($abstand ? ('<tr style="height:' . $abstand . 'px"><td colspan="' . $colspan . '"></td></tr>') : '') .
+			($text ? '<tr><td class="' . trim($textclass) . '" '.($abstand ?'style="margin-bottom:'.$abstand. 'px;"':'').' align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
 			'<tr>' . $elemOut . '</tr></table>';
 	}
 

@@ -100,20 +100,6 @@ function openClose(id) {
 	}
 }
 
-function updateEntry(id, text, pid, pub, order) {
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id == id) {
-			treeData[ai].text = text;
-			treeData[ai].parentid = pid;
-			treeData[ai].order = order;
-			treeData[ai].tooltip = id;
-		}
-		ai++;
-	}
-	drawTree();
-}
-
 function doClick(id, typ) {
 	var node = top.content.get(id);
 	top.content.resize.right.editor.edbody.we_cmd("tool_weSearch_edit", node.id);

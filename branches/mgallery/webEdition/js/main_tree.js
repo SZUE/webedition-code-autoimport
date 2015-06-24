@@ -85,6 +85,7 @@ function updateEntry(id, text, pid, tab) {
 			if (tab) {
 				treeData[ai].table = tab;
 			}
+			break;
 		}
 		drawTree();
 	}

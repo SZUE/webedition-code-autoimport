@@ -126,15 +126,14 @@ function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
 
 
 function updateEntry(id, text, pub) {
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
 			if (treeData[ai].name == id) {
 				treeData[ai].text = text;
 				treeData[ai].published = pub;
+				break;
 			}
 		}
-		ai++;
 	}
 	drawEintraege();
 }

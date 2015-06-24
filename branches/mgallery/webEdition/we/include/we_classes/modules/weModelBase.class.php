@@ -127,7 +127,7 @@ class weModelBase{
 		$this->db->query('DELETE FROM ' . $this->db->escape($this->table) . ' WHERE ' . $this->getKeyWhere());
 		return true;
 	}
-	
+
 	function registerMediaLinks(){ // FIXME: use this for categorys and newsletter too
 		$c = count($this->MediaLinks);
 		for($i = 0; $i < $c; $i++){

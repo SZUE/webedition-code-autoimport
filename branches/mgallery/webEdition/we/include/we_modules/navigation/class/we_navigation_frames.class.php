@@ -204,11 +204,11 @@ function setTab(tab) {
 				"id" => "eHeaderBody",
 				"onload" => "setFrameSize()",
 				"onresize" => "setFrameSize()"
-				), we_html_element::htmlDiv(array('id' => "main"), we_html_tools::getPixel(100, 3) . we_html_element::htmlDiv(array('id' => 'headrow', 'style' => "margin:0px;"), '&nbsp;' .
+				), we_html_element::htmlDiv(array('id' => "main"), we_html_element::htmlDiv(array('id' => 'headrow'), '&nbsp;' .
 						we_html_element::htmlB(g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' .
 							str_replace('&amp;', '&', $this->Model->Text) .
 							we_html_element::htmlDiv(array('id' => 'mark', 'style' => 'display: none;'), '*'))) .
-					we_html_tools::getPixel(100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))
+					$we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))
 		);
 
 		return $this->getHTMLDocument($body, we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') . $tabsHead);

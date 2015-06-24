@@ -197,7 +197,7 @@ function doScrollTo(){
 function setScrollTo(){
 		opener.' . $pob->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
 }' .
-			$pob->getJSSubmitFunction("sort_admin")) .
+				$pob->getJSSubmitFunction("sort_admin")) .
 			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_sortAdmin.js');
 	}
 
@@ -318,22 +318,15 @@ function setScrollTo(){
 		$select->setAttributes(array('onchange' => 'applySort();', 'style' => 'width:150px'));
 		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
 
-		$table1 = new we_html_table(array('class' => 'default', "width" => '100%'), 1, 1);
-		$table1->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_tools::getPixel(300, 1));
+		$table = $select->getHtml() .
+			we_html_button::create_button(we_html_button::RELOAD, "javascript:applySort();") .
+			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('show_sort_admin')");
 
-		$table = new we_html_table(array(), 1, 3);
-		$table->setRow(0, array("valign" => "bottom"));
-
-		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), $select->getHtml());
-		$table->setCol(0, 1, array("nowrap" => null, "class" => "small"), we_html_button::create_button(we_html_button::RELOAD, "javascript:applySort();"));
-		$table->setCol(0, 2, array("nowrap" => null, "class" => "small"), we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('show_sort_admin')"));
-
-		return we_html_element::htmlForm(array("name" => "we_form_treeheader"), we_html_element::htmlHiddens(array(
+		return we_html_element::htmlForm(array("name" => "we_form_treeheader", 'style' => 'margin:5px'), we_html_element::htmlHiddens(array(
 					"pnt" => "treeheader",
 					"pid" => 0,
 					"cmd" => "no_cmd")) .
-				$table1->getHtml() .
-				$table->getHtml()
+				$table
 		);
 	}
 

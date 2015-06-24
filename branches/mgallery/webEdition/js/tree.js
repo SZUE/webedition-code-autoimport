@@ -369,15 +369,15 @@ function info(text) {
 }
 
 function updateEntry(attribs) {
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if (treeData[ai].id == attribs["id"]) {
 			for (aname in attribs) {
 				treeData[ai][aname] = attribs[aname];
 			}
+			break;
 		}
-		ai++;
 	}
+	drawTree();
 }
 
 function checkNode(imgName) {

@@ -320,14 +320,6 @@ function in_array(haystack, needle) {
 	return false;
 }
 
-function makeNewEntry(id, pid, txt, offen, ct, tab) {
-	opener.top.makeNewEntry(id, pid, txt, offen, ct, tab);
-}
-
-function updateEntry(id, text, pid, tab) {
-	opener.top.updateEntry(id, text, pid, tab);
-}
-
 function disableLangDefault(allnames, allvalues, deselect) {
 	var arr = allvalues.split(",");
 

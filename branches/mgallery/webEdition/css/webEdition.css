@@ -261,6 +261,9 @@ td.boxHeader{
 #resize.withIconBar{
 	top:72px;
 }
+.weSelect{
+	margin-right:.5ex;
+}
 .weSelect,
 .wetextinput{
 	background-color: white;
@@ -952,9 +955,13 @@ table.default th{
 	padding:0xp;
 }
 
+table.customer table{
+	padding-bottom:10px;
+}
+
 table.customer td,
 table.customer th{
-	padding:10px;
+	padding: 2px 5px 2px 2px;
 }
 
 #weTMPLDocEdit{

@@ -219,7 +219,7 @@ function we_cmd(){
 				$saveOk = $this->customer->save();
 
 				if($saveOk){
-					$tt = addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db));
+					$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), array('>' => '&gt;', '<' => '&lt;'));
 					$js = ($newone ? '
 var attribs = {;
 	id:"' . $this->customer->ID . '",
@@ -231,7 +231,8 @@ var attribs = {;
 }' .
 							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
 							$this->topFrame . '.applySort();' :
-							$this->topFrame . '.updateEntry(' . $this->customer->ID . ',"' . $tt . '");'
+							$this->topFrame . '.updateEntry({id:' . $this->customer->ID . ',text:"' . $tt . '"});
+							top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $this->customer->Text . '";'
 						);
 				} else {
 					$js = '';

@@ -87,20 +87,6 @@ function reloadGroup(pid) {
 	}
 }
 
-function updateEntry(id, text, pid, pub, order) {
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id == id) {
-			treeData[ai].text = text;
-			treeData[ai].parentid = pid;
-			treeData[ai].order = order;
-			treeData[ai].tooltip = id;
-		}
-		ai++;
-	}
-	drawTree();
-}
-
 function info(text) {
 	t = frames.top.document.getElementById("infoField");
 	if (text != " ") {

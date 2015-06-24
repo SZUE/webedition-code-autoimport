@@ -440,7 +440,7 @@ function start() {
 				$js = ($newone ?
 						$this->topFrame . '.makeNewEntry(\'' . $this->export->ID . '\',\'' . $this->export->ParentID . '\',\'' . $this->export->Text . '\',0,\'' . ($this->export->IsFolder ? 'folder' : 'we/export') . '\',\'' . EXPORT_TABLE . '\');' .
 						$this->topFrame . '.drawTree();' :
-						$this->topFrame . '.updateEntry(' . $this->export->ID . ',"' . $this->export->Text . '","' . $this->export->ParentID . '");'
+						$this->topFrame . '.updateEntry({id:' . $this->export->ID . ',text:"' . $this->export->Text . '",parentid:"' . $this->export->ParentID . '"});'
 					);
 				echo we_html_element::jsElement(
 					$js .

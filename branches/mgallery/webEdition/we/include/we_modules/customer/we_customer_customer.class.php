@@ -128,6 +128,7 @@ class we_customer_customer extends weModelBase{
 		}
 
 		parent::registerMediaLinks();
+		return true;
 	}
 
 	/**

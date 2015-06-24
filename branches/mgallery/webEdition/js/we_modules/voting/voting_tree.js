@@ -41,19 +41,6 @@ function openClose(id) {
 	}
 }
 
-function updateEntry(id, text, pid, pub) {
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id == id) {
-			treeData[ai].text = text;
-			treeData[ai].parentid = pid;
-			treeData[ai].published = pub;
-		}
-		ai++;
-	}
-	drawTree();
-}
-
 function doClick(id, typ) {
 	var cmd = "";
 	if (top.content.hot == "1") {

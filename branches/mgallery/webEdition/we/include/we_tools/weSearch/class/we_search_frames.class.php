@@ -139,10 +139,12 @@ function setTab(tab) {
 				'id' => 'eHeaderBody',
 				'onload' => 'setFrameSize()',
 				'onresize' => 'setFrameSize()'
-				), '<div id="main" >' . we_html_tools::getPixel(100, 3) . '<div style="margin:0px;" id="headrow">&nbsp;' . we_html_element::htmlB(
+				), '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB(
 					g_l('searchtool', ($this->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' .
-					$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' . we_html_tools::getPixel(
-					100, 3) . $we_tabs->getHTML() . '</div>' . we_html_element::jsElement($setActiveTabJS));
+					$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' .
+				$we_tabs->getHTML() .
+				'</div>' .
+				we_html_element::jsElement($setActiveTabJS));
 
 		return $this->getHTMLDocument($body, $tabsHead);
 	}

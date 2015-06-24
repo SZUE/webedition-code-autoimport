@@ -21,19 +21,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
-function updateEntry(id, text, pid) {
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id == id) {
-			treeData[ai].text = text;
-			treeData[ai].parentid = pid;
-		}
-		ai++;
-	}
-	drawTree();
-}
-
 function doClick(id, typ) {
 	var node = frames.top.get(id);
 	frames.top.we_cmd('newsletter_edit', node.id, node.typ, node.table);
