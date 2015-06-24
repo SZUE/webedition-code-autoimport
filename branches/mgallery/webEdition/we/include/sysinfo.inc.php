@@ -144,7 +144,7 @@ function getWarning($message, $value){
 }
 
 function getInfo($message, $value){
-	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative;" title="' . $message . '">' . $value 		. '<span class="fa-stack fa-lg" style="font-size: 10px;color:#007de3;position: absolute;right:.5ex;">
+	return '<div style="min-height:2.5ex; min-width: 2ex;cursor:pointer; padding-right:2ex; padding-left:0px;position:relative;" title="' . $message . '">' . $value . '<span class="fa-stack fa-lg" style="font-size: 10px;color:#007de3;position: absolute;right:.5ex;">
   <i class="fa fa-circle fa-stack-2x" ></i>
   <i class="fa fa-info fa-stack-1x fa-inverse"></i>
 </span></div>';
@@ -235,7 +235,7 @@ $_info = array(
 		'short_open_tag' => (ini_get_bool('short_open_tag')) ? getWarning(g_l('sysinfo', '[short_open_tag warning]'), ini_get('short_open_tag')) : ini_get_message('short_open_tag'),
 		'allow_url_fopen' => ini_get_message('allow_url_fopen'),
 		'open_basedir' => ini_get_message('open_basedir'),
-		'safe_mode' =>  (ini_get_bool('safe_mode')) ? getInfo(g_l('sysinfo', '[safe_mode warning]'), ini_get('safe_mode')) : getOK('', ini_get_message('safe_mode')),
+		'safe_mode' => (ini_get_bool('safe_mode')) ? getInfo(g_l('sysinfo', '[safe_mode warning]'), ini_get('safe_mode')) : getOK('', ini_get_message('safe_mode')),
 		'safe_mode_exec_dir' => ini_get_message('safe_mode_exec_dir'),
 		'safe_mode_gid' => ini_get_message('safe_mode_gid'),
 		'safe_mode_include_dir' => ini_get_message('safe_mode_include_dir'),
@@ -245,7 +245,8 @@ $_info = array(
 		'session.auto_start' => (ini_get_bool('session.auto_start')) ? getWarning(g_l('sysinfo', '[session.auto_start warning]'), ini_get('session.auto_start')) : getOK('', ini_get_message('session.auto_start')),
 		'Suhosin' => $SuhosinText,
 		'display_errors' => (ini_get_bool('display_errors') ? getWarning(g_l('sysinfo', '[display_errors warning]'), 'on') : getOK('', ini_get_message('off'))),
-		'finfo' => (!class_exists('finfo')? getWarning(g_l('sysinfo', '[class_missing]'), '') : getOK('', '')),
+		'finfo' => (!class_exists('finfo') ? getWarning(g_l('sysinfo', '[class_missing]'), '') : getOK('', '')),
+		g_l('sysinfo', '[umlautdomains]') => (!function_exists('idn_to_ascii') ? getWarning(g_l('sysinfo', '[umlautdomains_warning]'), '') : getOK('', '')),
 	),
 	'MySql' => array(
 		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", we_database_base::getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', '[dbversion warning]'), we_database_base::getMysqlVer(false)), we_database_base::getMysqlVer(false)) : getOK('', we_database_base::getMysqlVer(false)),
