@@ -243,6 +243,7 @@ $_info = array(
 		'display_errors' => (ini_get_bool('display_errors') ? getWarning(g_l('sysinfo', '[display_errors warning]'), 'on') : getOK('', ini_get_message('off'))),
 		'finfo' => (!class_exists('finfo')? getWarning(g_l('sysinfo', '[class_missing]'), '') : getOK('', '')),
 
+		g_l('sysinfo', '[umlautdomains]') => (!function_exists('idn_to_ascii') ? getWarning(g_l('sysinfo', '[umlautdomains_warning]'), '') : getOK('', '')),
 	),
 	'MySql' => array(
 		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", we_database_base::getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', '[dbversion warning]'), we_database_base::getMysqlVer(false)), we_database_base::getMysqlVer(false)) : getOK('', we_database_base::getMysqlVer(false)),
