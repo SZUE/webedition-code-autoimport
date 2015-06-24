@@ -26,7 +26,6 @@ weSearch = {
 		showSelects: 0,
 		rows: 0,
 		we_transaction: '',
-		isIE: 0,
 		checkRightTempTable: 0,
 		checkRightDropTable: 0
 	},
@@ -352,16 +351,16 @@ weSearch = {
 		if (this.conf.editorBodyFrame.loaded){
 			var scrollheight;
 			if(this.conf.whichsearch === this.we_const.SEARCH_ADV){
-				scrollheight = this.conf.isIE ? 125 : 140;
+				scrollheight = 140;
 			} else {
-				scrollheight = this.conf.isIE ? 155 : 170;
+				scrollheight = 170;
 			}
 
 			var elem = document.getElementById('filterTable' + this.conf.whichsearch),
 				//newID = elem.rows.length - 1,
 				h = window.innerHeight ? window.innerHeight : document.body.offsetHeight,
 				scrollContent = document.getElementById("scrollContent_' + whichSearch + '"),
-				heightDiv = this.conf.isIE ? 200 : 180;
+				heightDiv = 180;
 
 			if((h - heightDiv) > 0){
 				scrollContent.style.height = (h - heightDiv) + 'px';

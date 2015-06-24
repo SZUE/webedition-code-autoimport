@@ -52,7 +52,7 @@ abstract class we_html_multiIconBox{
 
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
 				$out .= we_html_button::create_button_table(array(
-						we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');".($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')),
+						we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');" . ($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')),
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ? : "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 					) .
@@ -87,7 +87,7 @@ abstract class we_html_multiIconBox{
 
 			$out .= $rightContent .
 				'<br style="clear:both;"/>
-					</div>' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? '<br/>' : '') .
+					</div>' .
 				($i < (count($content) - 1) && (!isset($c["noline"])) ?
 					'<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' :
 					'<div style="margin:10px 0;clear:both;"></div>') .
@@ -249,8 +249,6 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 
 	var mainTD = document.getElementById("td_' . $uniqname . '");
 	mainTD.appendChild(mainDiv);
-
-' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10 ? 'mainTD.appendChild(document.createElement("BR"));' : '') . '
 
 	var lastDiv = document.createElement("DIV");
 	if(insertDivAfter !== -1){

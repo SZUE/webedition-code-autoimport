@@ -215,7 +215,7 @@ var ajaxCallback = {
 };
 
 function setScrollTo() {
-	parent.scrollToVal = isOldIE ? document.body.scrollTop : pageYOffset;
+	parent.scrollToVal = pageYOffset;
 }
 
 function goTemplate(tid) {

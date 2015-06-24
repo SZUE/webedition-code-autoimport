@@ -76,8 +76,6 @@ we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 	};
 
 	var isWEObject =<?php echo intval(isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT/* FIXME: only supported for type object || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE */)); ?>;
-	var isOldIE =<?php echo intval(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10); ?>;
-
 	var WE_EDIT_IMAGE =<?php echo intval(defined('WE_EDIT_IMAGE')); ?>;
 	var WE_SPELLCHECKER_MODULE_DIR = "<?php echo defined('SPELLCHECKER') ? WE_SPELLCHECKER_MODULE_DIR : ''; ?>";
 	var TEMPLATES_TABLE = "<?php echo TEMPLATES_TABLE ?>";

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_customer_filterView{
-
 	/**
 	 * filter for view
 	 *
@@ -50,7 +48,7 @@ class we_customer_filterView{
 	 */
 	var $_width = 0;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param we_customer_abstractFilter $filter
@@ -150,8 +148,8 @@ EO_SCRIPT;
 		// ################# Radio buttons ###############
 		$_modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $this->_filter->getMode() === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioNone = ($ShowModeNone ?
-						we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $this->_filter->getMode() === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
-						'');
+				we_html_forms::radiobutton(we_customer_abstractFilter::NOT_LOGGED_IN_USERS, $this->_filter->getMode() === we_customer_abstractFilter::NOT_LOGGED_IN_USERS, 'wecf_mode', g_l('modules_customerFilter', '[mode_none]'), true, "defaultfont", "wecf_hot();updateView();") :
+				'');
 
 		$_modeRadioAll = we_html_forms::radiobutton(we_customer_abstractFilter::ALL, $this->_filter->getMode() === we_customer_abstractFilter::ALL, 'wecf_mode', g_l('modules_customerFilter', '[mode_all]'), true, "defaultfont", "wecf_hot();updateView();");
 		$_modeRadioSpecific = we_html_forms::radiobutton(we_customer_abstractFilter::SPECIFIC, $this->_filter->getMode() === we_customer_abstractFilter::SPECIFIC, 'wecf_mode', g_l('modules_customerFilter', '[mode_specific]'), true, "defaultfont", "wecf_hot();updateView();");
@@ -206,7 +204,7 @@ function wecf_hot() {
 EO_SCRIPT;
 
 		return we_html_element::jsElement($_script) .
-				we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
+			we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
 	}
 
 	/**
@@ -258,7 +256,7 @@ EOS;
 	 * @return string
 	 */
 	function getMultiEdit($name, $data, $headline = "", $isVisible = true){
-		$_delBut = addslashes(we_html_button::create_button(we_html_button::TRASH,"javascript:#####placeHolder#####;wecf_hot();"));
+		$_delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;wecf_hot();"));
 		$_script = <<<EO_SCRIPT
 
 var $name = new multi_edit("{$name}MultiEdit",document.we_form,0,"$_delBut",$this->_width,false);
@@ -271,7 +269,7 @@ EO_SCRIPT;
 		if(is_array($data)){
 			foreach($data as $_dat){
 				$_script .= $name . '.addItem();' .
-						$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");';
+					$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");';
 			}
 		}
 
@@ -280,16 +278,16 @@ EO_SCRIPT;
 		$_addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
 
 		$_buttonTable = we_html_button::create_button_table(array(
-					we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")"),
-					$_addbut
-						)
+				we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")"),
+				$_addbut
+				)
 		);
 
 		$_select = we_html_tools::hidden($name . 'Control', we_base_request::_(we_base_request::RAW, $name . 'Control', 0)) .
-				we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .
-				($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
-				'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . ($this->_width + (we_base_browserDetect::isIE() ? 13 : 0)) . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
-				'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>' . we_html_element::jsElement($_script);
+			we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .
+			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
+			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . $this->_width . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
+			'<div style="width:' . ($this->_width + 13) . 'px;" align="right">' . $_buttonTable . '</div>' . we_html_element::jsElement($_script);
 		return self::getDiv($_select, $name . 'Div', $isVisible, 22);
 	}
 
@@ -325,14 +323,14 @@ EO_SCRIPT;
 
 		if(!$startEmpty && empty($_filter)){
 			$this->_filter->setFilter(
+				array(
 					array(
-						array(
-							'logic' => '',
-							'field' => 'id',
-							'operation' => 0,
-							'value' => ''
-						)
+						'logic' => '',
+						'field' => 'id',
+						'operation' => 0,
+						'value' => ''
 					)
+				)
 			);
 		}
 
@@ -345,33 +343,32 @@ EO_SCRIPT;
 			$_adv_row .= '
 				<tr id="filterRow_' . $_i . '">
 					<td style="padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-					(($_i == 0) ? we_html_tools::getPixel(64, 1) : we_html_tools::htmlSelect('filterLogic_' . $_i, $_filter_logic, 1, $_value['logic'], false, array('onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicFilterInput"))) .
-					'</td>
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+				(($_i == 0) ? we_html_tools::getPixel(64, 1) : we_html_tools::htmlSelect('filterLogic_' . $_i, $_filter_logic, 1, $_value['logic'], false, array('onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicFilterInput"))) .
+				'</td>
 
 					<td style="padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-					we_html_tools::htmlSelect('filterSelect_' . $_i, $_filter_args, 1, $_value['field'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont leftFilterInput")) .
-					'</td>
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+				we_html_tools::htmlSelect('filterSelect_' . $_i, $_filter_args, 1, $_value['field'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont leftFilterInput")) .
+				'</td>
 
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
 				we_html_tools::htmlSelect('filterOperation_' . $_i, $_filter_op, 1, $_value['operation'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont middleFilterInput")) .
-					'</td>
+				'</td>
 
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-					'<input name="filterValue_' . $_i . '" value="' . $_value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont rightFilterInput"/>' .
-					'</td>
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+				'<input name="filterValue_' . $_i . '" value="' . $_value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont rightFilterInput"/>' .
+				'</td>
 					<td style="padding-top: ' . ($_value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-					we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(" . ($_i + 1) . ")", true, 25) .
-					'</td>
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+				we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(" . ($_i + 1) . ")", true, 25) .
+				'</td>
 					<td style="padding-left:5px;padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
-					((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-					(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_html_button::create_button(we_html_button::TRASH, "javascript:delRow($_i)", true, 25)) .
-					'</td>
+				((isset($_filter[$_key + 1]) && $_filter[$_key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
+				(($_i == 0) ? we_html_tools::getPixel(25, 1) : we_html_button::create_button(we_html_button::TRASH, "javascript:delRow($_i)", true, 25)) .
+				'</td>
 				</tr>';
 			$_i++;
 			$_first = 1;
@@ -391,7 +388,7 @@ EO_SCRIPT;
 
 
 		return
-		we_html_element::jsElement('
+			we_html_element::jsElement('
 var filter={
 	"logic":\'' . $_filter_logic_str . '\',
 	"args":\'' . $_filter_args_str . '\',
@@ -401,11 +398,10 @@ var buttons={
 	"add":\'' . we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(__CNT__)", true, 25) . '\',
 	"trash":\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__CNT__)", true, 25) . '\'
 };') .
-				we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_filter.js') .
-				$_filterTable .
-				'<div style="height:5px;"></div>' .
-				we_html_button::create_button(we_html_button::PLUS, "javascript:addRow()");
-
+			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_filter.js') .
+			$_filterTable .
+			'<div style="height:5px;"></div>' .
+			we_html_button::create_button(we_html_button::PLUS, "javascript:addRow()");
 	}
 
 	/* #########################################################################################

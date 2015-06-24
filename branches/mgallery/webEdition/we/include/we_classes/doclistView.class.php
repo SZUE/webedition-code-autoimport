@@ -666,8 +666,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 				$out .= '<div style="float:left;width:' . $leftWidth . 'px">' . $leftContent . '</div>';
 			}
 
-			$out .= $rightContent .
-				'</div>' . ((we_base_browserDetect::isIE()) ? we_html_element::htmlBr() : '');
+			$out .= $rightContent . '</div>';
 
 			if($i < (count($content) - 1) && (!isset($c["noline"]))){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';

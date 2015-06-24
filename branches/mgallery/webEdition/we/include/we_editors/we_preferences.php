@@ -772,7 +772,7 @@ function build_dialog($selected_setting = 'ui'){
 				$showStartType = false;
 				$permitedStartTypes = array('');
 				$_start_type->addOption(0, '-');
-				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:" . (we_base_browserDetect::isIE() ? '33px' : '24px') . ";'>&nbsp;</div>";
+				$_seem_cockpit_selectordummy = "<div id='selectordummy' style='height:24px;'>&nbsp;</div>";
 				if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 					$_start_type->addOption('cockpit', g_l('prefs', '[seem_start_type_cockpit]'));
 					$showStartType = true;

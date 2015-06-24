@@ -322,7 +322,7 @@ var modFrameSet="' . $this->frameset . '";
 var checkMail=' . intval(isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed']) . ';
 
 function setScrollTo() {
-	parent.scrollToVal = ' . ((we_base_browserDetect::isIE()) ? 'document.body.scrollTop' : 'pageYOffset') . ';
+	parent.scrollToVal = pageYOffset;
 }
 
 function getStatusContol() {

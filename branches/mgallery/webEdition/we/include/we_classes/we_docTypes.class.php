@@ -185,7 +185,7 @@ class we_docTypes extends we_class{
 	public function formDocTypeDefaults(){
 		return '
 <table class="default">
-	<tr><td colspan="3">' . $this->formDirChooser(we_base_browserDetect::isIE() ? 403 : 409) . '</td></tr>
+	<tr><td colspan="3">' . $this->formDirChooser(409) . '</td></tr>
 	<tr><td>' . we_html_tools::getPixel(300, 5) . '</td>
 		<td>' . we_html_tools::getPixel(20, 5) . '</td>
 		<td>' . we_html_tools::getPixel(200, 5) . '</td>

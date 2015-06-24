@@ -42,7 +42,7 @@ $sid = we_base_request::_(we_base_request::RAW, "sid");
 ?>
 <script type="text/javascript"><!--
 	function setScrollTo() {
-		parent.scrollToVal =<?php if(we_base_browserDetect::isIE()){ ?>document.body.scrollTop;<?php } else { ?>pageYOffset;<?php } ?>
+		parent.scrollToVal = pageYOffset;
 	}
 //-->
 </script><?php

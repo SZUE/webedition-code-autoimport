@@ -424,7 +424,7 @@ function setSegment(id) {
 function setScrollY() {
 	if (frames.top) {
 		if (frames.top.we_scrollY) {
-			frames.top.we_scrollY[treeData.table] = (document.body.scrollTop === undefined ? pageYOffset : document.body.scrollTop);
+			frames.top.we_scrollY[treeData.table] = pageYOffset;
 		}
 	}
 }

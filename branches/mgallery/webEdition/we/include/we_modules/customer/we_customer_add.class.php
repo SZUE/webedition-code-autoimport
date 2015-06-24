@@ -195,7 +195,7 @@ function doScrollTo(){
 }
 
 function setScrollTo(){
-		opener.' . $pob->topFrame . '.scrollToVal=' . (we_base_browserDetect::isIE() ? 'document.body.scrollTop' : 'pageYOffset') . ';
+		opener.' . $pob->topFrame . '.scrollToVal=pageYOffset;
 }' .
 				$pob->getJSSubmitFunction("sort_admin")) .
 			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_sortAdmin.js');

@@ -377,14 +377,14 @@ case "tool_weSearch_new_forObjects":
 	function getSearchJS($whichSearch){
 		switch($whichSearch){
 			case "AdvSearch":
-				$h = (we_base_browserDetect::isIE() ? 125 : 140);
+				$h = 140;
 				//add height of each input row to calculate the scrollContent-height
 				$addinputRows = 'for(i=1;i<newID;i++) {
         //scrollheight = scrollheight + 28;
        }';
 				break;
 			default:
-				$h = (we_base_browserDetect::isIE() ? 155 : 170);
+				$h = 170;
 				$addinputRows = "";
 		}
 
@@ -441,7 +441,6 @@ weSearch.conf = {
 	showSelects: ' . ($showSelects ? 1 : 0) . ',
 	rows: ' . ((isset($_REQUEST["searchFields" . $whichSearch]) ? count($_REQUEST["searchFields" . $whichSearch]) - ($whichSearch == self::SEARCH_ADV ? 1 : 0) : ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : 0))) . ',
 	we_transaction: "' . $GLOBALS["we_transaction"] . '",
-	isIE: ' . (we_base_browserDetect::isIE() ? 1 : 0) . ',
 	checkRightTempTable: ' . (we_search_search::checkRightTempTable() ? 1 : 0) . ',
 	checkRightDropTable: ' . (we_search_search::checkRightDropTable() ? 1 : 0) . '
 };
