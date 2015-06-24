@@ -38,7 +38,7 @@ $l_weTag=array(
 		'description'=>'Mit dem Tag wird der Werbebanner des Banner Moduls eingebunden.',
 	),
 	'blockControls'=>array(
-		'description'=>'Mit diesem Tag gibt man die Steuerelement eines Blocks manuell aus.',
+		'description'=>'Mit diesem Tag gibt man die Steuerelement eines Blocks manuell aus. Dieses Tag muß sich innerhalb eines Blocks befinden.',
 	),
 	'block'=>array(
 		'description'=>'Mit dem we:block-Tag kann man erweiterbare Blöcke/Listen erzeugen. Alles, was zwischen Start- und Endtag steht, wird im Bearbeitungsmodus durch einen Klick auf den Plus-Button angehängt, bzw. eingefügt. Dies können beliebiges HTML sowie fast alle we:tags sein.',
