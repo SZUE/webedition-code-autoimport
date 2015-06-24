@@ -210,17 +210,9 @@ class we_class_folder extends we_folder{
 
 	function searchProperties(){
 		$this->searchclass->Order = we_base_request::_(we_base_request::STRING, 'Order', (isset($this->Order) ? $this->Order : 'ModDate DESC'));
-
 		$this->Order = we_base_request::_(we_base_request::STRING, 'Order');
-
-		if(($start = we_base_request::_(we_base_request::INT, 'SearchStart'))){
-			$this->searchclass->searchstart = $start;
-		}
-
-		if(($anz = we_base_request::_(we_base_request::INT, 'Anzahl'))){
-			$this->searchclass->anzahl = $anz;
-		}
-
+		$this->searchclass->searchstart = we_base_request::_(we_base_request::INT, 'SearchStart', $this->searchclass->searchstart);
+		$this->searchclass->anzahl = we_base_request::_(we_base_request::INT, 'Anzahl', $this->searchclass->anzahl);
 		$we_obectPathLength = 32;
 
 		$we_wsLength = $we_extraWsLength = 26;
@@ -238,7 +230,7 @@ class we_class_folder extends we_folder{
 
 		$where = (isset($this->searchclass->searchname) ?
 				'1 ' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
-				"1" . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
+				'1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' JOIN ' . OBJECT_FILES_TABLE . ' ON ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID');
 		$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . ".OF_PATH LIKE '" . $this->Path . "/%' " . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
