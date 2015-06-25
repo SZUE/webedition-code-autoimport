@@ -158,7 +158,7 @@ top.clearEntries();
 				echo 'var ref;
 if(top.opener.top.updateEntry){
 	ref = top.opener.top;
-	ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '",1,0);
+	ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
 }' . ($this->canSelectDir ?
 					'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";

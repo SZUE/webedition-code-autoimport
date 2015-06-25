@@ -292,7 +292,7 @@ if(
 	)
 	) &&
 	!$we_doc->IsDynamic &&
-	isset($_POST) && $_POST &&
+	!empty($_POST) &&
 	we_base_request::_(we_base_request::BOOL, 'we_complete_request')
 ){
 	$we_include = $we_doc->editor();
@@ -343,7 +343,7 @@ if(
 		$contents = we_glossary_replace::replace($contents, $we_doc->Language);
 	}
 
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(!empty($GLOBALS['we_editmode'])){
 		$matches = array();
 		preg_match_all('|<form( name="we_form")|i', $contents, $matches, PREG_PATTERN_ORDER);
 		if($matches && count($matches[0])/* >2 */){
@@ -499,7 +499,7 @@ if(
 
 						$wf_flag = false;
 						$wasNew = (intval($we_doc->ID) == 0) ? true : false;
-						$wasPubl = (isset($we_doc->Published) && $we_doc->Published) ? true : false;
+						$wasPubl = (!empty($we_doc->Published)) ? true : false;
 						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != we_base_ContentTypes::OBJECT && $we_doc->ContentType != we_base_ContentTypes::OBJECT_FILE && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;

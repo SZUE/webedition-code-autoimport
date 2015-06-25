@@ -22,7 +22,7 @@ function we_tag_ifNotCustomerResetPassword(array $attribs){
 	$type = weTag_getAttribute('type', $attribs, 'all', we_base_request::STRING);
 	switch($type){
 		case 'all':
-			return isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'];
+			return !empty($GLOBALS['ERROR']['customerResetPassword']);
 		case 'passwordMismatch':
 			return isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_NOT_MATCH;
 		case 'required':

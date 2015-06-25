@@ -33,7 +33,7 @@ $searchButton = we_html_button::create_button(we_html_button::SEARCH, $_SERVER['
 $clientSubVersion = (isset($GLOBALS['LU_Variables']['clientSubVersion']) && $GLOBALS['LU_Variables']['clientSubVersion'] != '0000') ?
 	', SVN-Revision: ' . $GLOBALS['LU_Variables']['clientSubVersion'] : '';
 
-$clientVersionName = (isset($GLOBALS['LU_Variables']['clientVersionName']) && $GLOBALS['LU_Variables']['clientVersionName'] != '') ?
+$clientVersionName = (!empty($GLOBALS['LU_Variables']['clientVersionName'])) ?
 	$GLOBALS['LU_Variables']['clientVersionName'] : $GLOBALS['LU_Variables']['clientVersion'];
 
 

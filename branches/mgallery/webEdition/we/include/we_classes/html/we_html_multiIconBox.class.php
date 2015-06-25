@@ -59,18 +59,18 @@ abstract class we_html_multiIconBox{
 					'<br/><table id="table_' . $uniqname . '" width="100%" class="default" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
 			}
 
-			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
+			$_forceRightHeadline = (!empty($c["forceRightHeadline"]));
 
-			$icon = (isset($c["icon"]) && $c["icon"] ?
+			$icon = (!empty($c["icon"]) ?
 					we_html_element::htmlImg(array('src' => ICON_DIR . $c["icon"], 'style' => "margin-left:20px;", 'class' => 'multiIcon')) :
 					'');
-			$headline = (isset($c["headline"]) && $c["headline"] ?
+			$headline = (!empty($c["headline"]) ?
 					'<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>' :
 					'');
 
-			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : '';
+			$mainContent = !empty($c["html"]) ? $c["html"] : '';
 
-			$leftWidth = (isset($c["space"]) && $c["space"]) ? abs($c["space"]) : 0;
+			$leftWidth = (!empty($c["space"]) ? abs($c["space"]) : 0);
 
 			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
 

@@ -241,7 +241,7 @@ function we_tag_listview($attribs){
 			$filterdatestart = weTag_getAttribute('filterdatestart', $attribs, -1, we_base_request::INT);
 			$filterdateend = weTag_getAttribute('filterdateend', $attribs, -1, we_base_request::INT);
 			$bannerid = f('SELECT ID FROM ' . BANNER_TABLE . ' WHERE PATH="' . $GLOBALS[DB_WE]->escape($path) . '"');
-			if($customer && defined('CUSTOMER_TABLE') && isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && (!we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
+			if($customer && defined('CUSTOMER_TABLE') && !empty($_SESSION['webuser']['registered']) && (!we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $bannerid, $GLOBALS['DB_WE']))){
 				$bannerid = 0;
 			}
 			$GLOBALS['lv'] = new we_banner_listview($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);

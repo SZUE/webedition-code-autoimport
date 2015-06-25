@@ -33,7 +33,7 @@ $errorMessage = (isset($Response) ? str_replace("</body></html>", "", stristr($R
 		"<li>curl</li>" : '') .
 	"</ul>
 	<li>" . g_l('liveUpdate', '[connect][connectionType]') . ": ";
-if(isset($_SESSION['le_proxy_use']) && $_SESSION['le_proxy_use'] == 1){
+if(!empty($_SESSION['le_proxy_use'])){
 	$errorMessage .= 'Proxy (fsockopen)' .
 		'<ul>
 <li>' . g_l('liveUpdate', '[connect][proxyHost]') . ": " . $_SESSION["le_proxy_host"] . "</li>

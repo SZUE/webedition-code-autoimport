@@ -68,11 +68,11 @@ function we_tag_link($attribs, $content){
 				'vspace' => '',
 				'align' => '',
 				'alt' => '',
-				'ctype' => ((isset($imageid) && $imageid != 0) ? we_base_link::CONTENT_INT : we_base_link::CONTENT_TEXT),
-				'img_id' => ((isset($imageid) && $imageid != 0) ? $imageid : ''),
+				'ctype' => ((!empty($imageid)) ? we_base_link::CONTENT_INT : we_base_link::CONTENT_TEXT),
+				'img_id' => ((!empty($imageid) ) ? $imageid : ''),
 				'type' => (isset($id) ? we_base_link::TYPE_INT : we_base_link::TYPE_EXT),
 				'href' => (isset($id) ? '' : we_base_link::EMPTY_EXT),
-				'text' => (isset($imageid) && $imageid ? (isset($text) && $text ? $text : g_l('global', '[new_link]')) : '')
+				'text' => (!empty($imageid) ? (!empty($text) ? $text : g_l('global', '[new_link]')) : '')
 			);
 
 			// Link should only displayed if it's a preset link

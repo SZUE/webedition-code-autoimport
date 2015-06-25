@@ -365,7 +365,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 */
 	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter, $classID, $ids){
 		//FIXME: this will query ALL documents with restrictions - this is definately not what we want!
-		$_cid = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered']&& $_SESSION['webuser']['ID'] ? $_SESSION['webuser']['ID'] : 0;
+		$_cid = !empty($_SESSION['webuser']['registered']) && $_SESSION['webuser']['ID'] ? $_SESSION['webuser']['ID'] : 0;
 		//cache result
 		static $_filesWithRestrictionsForCustomer = array();
 

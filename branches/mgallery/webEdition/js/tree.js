@@ -56,17 +56,15 @@ function applyLayout() {
 }
 
 function rootEntry(id, text, rootstat, offset) {
-	this.id = id;
-	this.text = text;
-	this.open = 1;
-	this.loaded = 1;
-	this.typ = "root";
-	this.offset = offset;
-	this.rootstat = rootstat;
-	this.showsegment = showSegment;
-	this.clear = clearItems;
-
-	return this;
+	return new node({
+		id: id,
+		text: text,
+		open: 1,
+		loaded: 1,
+		typ: "root",
+		offset: offset,
+		rootstat: rootstat,
+	});
 }
 
 function node(attribs) {
@@ -168,12 +166,10 @@ function parentChecked(start) {
 }
 
 function clearItems() {
-	var ai = 1;
 	var deleted = 0;
 
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if (treeData[ai].parentid != this.id) {
-			ai++;
 			continue;
 		}
 		if (treeData[ai].contenttype == "group") {
@@ -269,36 +265,30 @@ function drawGroup(nf, ai, zweigEintrag) {
 }
 
 function indexOfEntry(id) {
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if (treeData[ai].id == id) {
 			return ai;
 		}
-		ai++;
 	}
 	return -1;
 }
 
 function get(eintrag) {
 	var nf = new container();
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if (treeData[ai].id == eintrag) {
-			nf = treeData[ai];
+			return treeData[ai];
 		}
-		ai++;
 	}
 	return nf;
 }
 
 function search(eintrag) {
 	var nf = new container();
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if (treeData[ai].parentid == eintrag) {
 			nf.add(treeData[ai]);
 		}
-		ai++;
 	}
 	return nf;
 }
@@ -309,10 +299,8 @@ function add(object) {
 
 function updateTreeAfterDel(ind) {
 	if (ind !== 0) {
-		ai = ind;
-		while (ai <= treeData.len - 1) {
+		for (var ai = ind; ai <= treeData.len - 1; ai++) {
 			treeData[ai] = treeData[ai + 1];
-			ai++;
 		}
 		treeData.len[treeData.len] = null;
 		treeData.len--;
@@ -369,20 +357,27 @@ function info(text) {
 }
 
 function updateEntry(attribs) {
+	if (attribs.table && treeData.table != attribs.table) {
+		return;
+	}
+	var updated = false;
 	for (var ai = 1; ai <= treeData.len; ai++) {
 		if (treeData[ai].id == attribs["id"]) {
+			updated = true;
 			for (aname in attribs) {
 				treeData[ai][aname] = attribs[aname];
 			}
 			break;
 		}
 	}
-	drawTree();
+	if (updated) {
+		drawTree();
+	}
 }
 
 function checkNode(imgName) {
 	var object_name = imgName.substring(4, imgName.length);
-	for (i = 1; i <= treeData.len; i++) {
+	for (var i = 1; i <= treeData.len; i++) {
 		if (treeData[i].id != object_name) {
 			continue;
 		}
@@ -428,34 +423,36 @@ function setScrollY() {
 		}
 	}
 }
+/*	if (attribs.table && treeData.table != attribs.table) {
+		return;
+	}
+*/
+function makeNewEntry(id, pid, txt, open, ct, tab) {
+	if (tab && treeData.table != tab) {
+		return;
+	}
+	var pos = indexOfEntry(pid);
+	if (treeData[pos] && treeData[pos].loaded) {
 
-function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
-	if (treeData.table == tab) {
-		if (treeData[indexOfEntry(pid)]) {
-			if (treeData[indexOfEntry(pid)].loaded) {
-
-				var attribs = {
-					"id": id,
-					"icon": icon,
-					"text": txt,
-					"parentid": pid,
-					"open": open,
-					"typ": (ct === "folder" ? "group" : "item"),
-					"table": tab,
-					"tooltip": id,
-					"contenttype": ct,
-					"disabled": 0,
-					"selected": 0
-				};
-				if (attribs["typ"] == "item") {
-					attribs["published"] = 0;
-				}
-
-				treeData.addSort(new node(attribs));
-
-				drawTree();
-			}
+		var attribs = {
+			"id": id,
+			"text": txt,
+			"parentid": pid,
+			"open": open,
+			"typ": (ct === "folder" ? "group" : "item"),
+			"table": tab,
+			"tooltip": id,
+			"contenttype": ct,
+			"disabled": 0,
+			"selected": 0
+		};
+		if (attribs.typ == "item") {
+			attribs.published = 0;
 		}
+
+		treeData.addSort(new node(attribs));
+
+		drawTree();
 	}
 }
 

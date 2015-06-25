@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo (!(isset($GLOBALS['we_print_not_htmltop']) && $GLOBALS['we_print_not_htmltop']) ? we_html_tools::getHtmlTop() : '') .
+echo ((empty($GLOBALS['we_print_not_htmltop'])) ? we_html_tools::getHtmlTop() : '') .
  STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
 

@@ -182,7 +182,7 @@ if(inWorkflow($we_doc)){
 ?>
 
 <body id="footerBody" onload="we_footerLoaded();"<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER); ?>>
-	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
+	<form name="we_form" action=""<?php if(!empty($we_doc->IsClassFolder)){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
 					<?php
 					echo we_html_element::htmlHidden('sel', $we_doc->ID);

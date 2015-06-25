@@ -268,7 +268,7 @@ top.content.drawEintraege();
 						$js_out = '
 top.content.treeData.clear();
 top.content.startloc=0;
-top.content.treeData.add(new top.content.self.rootEntry(0,"root","root"));';
+top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
 
 						foreach($this->messaging->available_folders as $folder){
 							if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0){

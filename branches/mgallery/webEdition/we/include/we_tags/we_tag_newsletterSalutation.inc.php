@@ -26,7 +26,7 @@ function we_tag_newsletterSalutation($attribs){
 	$type = trim(weTag_getAttribute('type', $attribs, '', we_base_request::STRING));
 	switch($type){
 		case 'customerid':
-			return (isset($GLOBALS['WE_CUSTOMERID']) && $GLOBALS['WE_CUSTOMERID'] ) ? $GLOBALS['WE_CUSTOMERID'] : '';
+			return (!empty($GLOBALS['WE_CUSTOMERID'])) ? $GLOBALS['WE_CUSTOMERID'] : '';
 		case 'title':
 			return isset($GLOBALS['WE_TITLE']) ? $GLOBALS['WE_TITLE'] : '';
 		case 'firstname':

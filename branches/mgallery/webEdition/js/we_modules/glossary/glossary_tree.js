@@ -67,13 +67,12 @@ function showSegment() {
 	drawTree();
 }
 
-function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
+function makeNewEntry(id, pid, txt, open, ct, tab, pub) {
 	if (treeData[indexOfEntry(pid)]) {
 		if (treeData[indexOfEntry(pid)].loaded) {
 			ct = (ct == "folder" ? "group" : "item");
 			var attribs = {
 				"id": id,
-				"icon": icon,
 				"text": txt,
 				"parentid": pid,
 				"open": open,

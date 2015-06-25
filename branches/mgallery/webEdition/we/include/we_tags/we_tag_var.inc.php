@@ -60,7 +60,7 @@ function we_tag_var($attribs){
 			break;
 		case 'multiobject' :
 			$data = we_unserialize($doc->getField($attribs, $type, true));
-			return (isset($data['objects']) && $data['objects'] ? implode(',', $data['objects']) : '');
+			return (!empty($data['objects']) ? implode(',', $data['objects']) : '');
 
 		case 'property' :
 			$return = (isset($GLOBALS['we_obj']) ?

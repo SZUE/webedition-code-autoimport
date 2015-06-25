@@ -114,11 +114,13 @@ top.clearEntries();
 			} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;
-if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
-else if(top.opener.top.opener) ref = top.opener.top.opener.top;
+if(top.opener.top.content.makeNewEntry){
+	ref = top.opener.top.content;
+}else if(top.opener.top.opener){
+	ref = top.opener.top.opener.top;
+}
 ';
-				echo 'ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");
-';
+				echo 'ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});';
 				if($this->canSelectDir){
 					echo 'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";

@@ -328,7 +328,7 @@ abstract class we_html_button{
 
 		//	Existing buttons are added to array
 		for($_i = 0; $_i < count($_order); $_i++){
-			if(isset($$_order[$_i]) && $$_order[$_i] != ''){
+			if(!empty($$_order[$_i])){
 				$_buttons[] = $$_order[$_i];
 			}
 		}

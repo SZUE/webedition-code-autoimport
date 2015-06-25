@@ -50,7 +50,7 @@ function we_tag_author($attribs){
 			}
 
 			if(!$authorID){
-				$authorID = (isset($objID) && $objID  ?
+				$authorID = (!empty($objID) ?
 								f('SELECT ' . $author . ' FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objID)) :
 								f('SELECT ' . $author . ' FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID)));
 			}

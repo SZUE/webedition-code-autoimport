@@ -25,7 +25,7 @@ require_once(WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 we_html_tools::protect();
 
-$charset = (isset($GLOBALS['we_doc']->Charset) && $GLOBALS['we_doc']->Charset ? //	send charset which might be determined in template
+$charset = (!empty($GLOBALS['we_doc']->Charset) ? //	send charset which might be determined in template
 		$GLOBALS['we_doc']->Charset : DEFAULT_CHARSET);
 
 
@@ -36,7 +36,7 @@ $parts = $GLOBALS['we_doc']->getFieldsHTML($_editMode);
 if(is_array($GLOBALS['we_doc']->DefArray)){
 	foreach($GLOBALS['we_doc']->DefArray as $n => $v){
 		if(is_array($v)){
-			if(isset($v["required"]) && $v["required"] && $_editMode){
+			if(!empty($v["required"]) && $_editMode){
 				$parts[] = array(
 					"headline" => "",
 					"html" => '*' . g_l('global', '[required_fields]'),

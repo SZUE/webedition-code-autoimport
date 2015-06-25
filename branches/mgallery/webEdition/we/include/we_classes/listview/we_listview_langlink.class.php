@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  *
  */
 class we_listview_langlink extends we_listview_base{
-
 	var $docType = ''; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
 	var $foundlinks = array();
@@ -120,10 +118,10 @@ class we_listview_langlink extends we_listview_base{
 		}
 
 		$this->DB_WE->query(
-				'SELECT ' . LANGLINK_TABLE . '.Locale,' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path' .
-				$extraSelect .
-				'FROM ' . LANGLINK_TABLE . ' JOIN ' . $this->dirsearchtable . ' ON ' . LANGLINK_TABLE . '.LDID=' . $this->dirsearchtable . '.ID' .
-				' WHERE ' . LANGLINK_TABLE . '.Locale IN ("' . implode('","', $langs) . '") AND ' . $this->dirsearchtable . '.Published>0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . $this->id);
+			'SELECT ' . LANGLINK_TABLE . '.Locale,' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path' .
+			$extraSelect .
+			'FROM ' . LANGLINK_TABLE . ' JOIN ' . $this->dirsearchtable . ' ON ' . LANGLINK_TABLE . '.LDID=' . $this->dirsearchtable . '.ID' .
+			' WHERE ' . LANGLINK_TABLE . '.Locale IN ("' . implode('","', $langs) . '") AND ' . $this->dirsearchtable . '.Published>0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . $this->id);
 
 		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$this->foundlinks[$this->DB_WE->f('Locale')] = $this->DB_WE->Record;
@@ -203,14 +201,14 @@ class we_listview_langlink extends we_listview_base{
 			return;
 		}
 		$extraSelect = ($this->linkType === 'tblFile' ?
-						',' . $this->dirsearchtable . '.ParentID ' :
-						', ' . $this->dirsearchtable . '.Url, ' . $this->dirsearchtable . '.TriggerID ');
+				',' . $this->dirsearchtable . '.ParentID ' :
+				', ' . $this->dirsearchtable . '.Url, ' . $this->dirsearchtable . '.TriggerID ');
 
 		$data = getHash(
-				'SELECT ' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.Locale, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path as Path' .
-				$extraSelect .
-				' FROM ' . LANGLINK_TABLE . "," . $this->dirsearchtable .
-				' WHERE ' . LANGLINK_TABLE . '.Locale="' . $langkey . '" AND ' . LANGLINK_TABLE . '.LDID = ' . $this->dirsearchtable . '.ID AND ' . $this->dirsearchtable . '.Published >0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . intval($pid)
+			'SELECT ' . LANGLINK_TABLE . '.DID, ' . LANGLINK_TABLE . '.DLocale, ' . LANGLINK_TABLE . '.LDID, ' . LANGLINK_TABLE . '.Locale, ' . LANGLINK_TABLE . '.IsFolder, ' . LANGLINK_TABLE . '.IsObject, ' . LANGLINK_TABLE . '.DocumentTable, ' . $this->dirsearchtable . '.Path as Path' .
+			$extraSelect .
+			' FROM ' . LANGLINK_TABLE . "," . $this->dirsearchtable .
+			' WHERE ' . LANGLINK_TABLE . '.Locale="' . $langkey . '" AND ' . LANGLINK_TABLE . '.LDID = ' . $this->dirsearchtable . '.ID AND ' . $this->dirsearchtable . '.Published >0 AND ' . LANGLINK_TABLE . '.DocumentTable="' . $this->linkType . '" AND ' . LANGLINK_TABLE . '.DID=' . intval($pid)
 		);
 		if($data){
 			$this->foundlinks[$data['Locale']] = $data;
@@ -231,22 +229,22 @@ class we_listview_langlink extends we_listview_base{
 				$WE_PATH = $link["Path"];
 			} else {
 
-				$path_parts = pathinfo((isset($link['TriggerID']) && $link['TriggerID'] ?
-								id_to_path($link['TriggerID']) :
-								$_SERVER['SCRIPT_NAME'])
+				$path_parts = pathinfo((!empty($link['TriggerID']) ?
+						id_to_path($link['TriggerID']) :
+						$_SERVER['SCRIPT_NAME'])
 				);
 
 				if($this->objectseourls && $link['Url'] != '' && show_SeoLinks()){
 					$WE_PATH = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-							(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-									'' :
-									$path_parts['filename'] . '/') .
-							$link['Url'];
+						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+							'' :
+							$path_parts['filename'] . '/') .
+						$link['Url'];
 				} else {
 					$WE_PATH = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-									($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
-									$_SERVER['SCRIPT_NAME']) .
-							'?we_objectID=' . $link['LDID'];
+							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
+							$_SERVER['SCRIPT_NAME']) .
+						'?we_objectID=' . $link['LDID'];
 				}
 			}
 

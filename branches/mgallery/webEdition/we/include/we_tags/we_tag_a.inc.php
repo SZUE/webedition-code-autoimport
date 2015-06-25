@@ -142,14 +142,14 @@ function we_tag_a($attribs, $content){
 					$type = $GLOBALS['lv']->ActItem['type'];
 					$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
 				} else {
-					$idd = (isset($GLOBALS['lv']->IDs[$foo]) && $GLOBALS['lv']->IDs[$foo] != '') ?
+					$idd = (!empty($GLOBALS['lv']->IDs[$foo])) ?
 							$GLOBALS['lv']->IDs[$foo] :
 							((isset($GLOBALS['lv']->classID)) ?
 									$GLOBALS['lv']->f('WE_ID') :
 									((isset($GLOBALS['we_obj']->ID)) ?
 											$GLOBALS['we_obj']->ID :
 											$GLOBALS['WE_MAIN_DOC']->ID));
-					$type = (isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs[$foo]) && $GLOBALS['lv']->IDs[$foo] != '') ?
+					$type = (isset($GLOBALS['lv']) && !empty($GLOBALS['lv']->IDs[$foo])) ?
 							((isset($GLOBALS['lv']->classID) || isset($GLOBALS['lv']->Record['OF_ID'])) ?
 									we_shop_shop::OBJECT :
 									we_shop_shop::DOCUMENT) :

@@ -315,7 +315,7 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	$tagGroups = we_wizard_tag::getWeTagGroups($allWeTags);
 
 	$groupJs = '';
-	$selectedGroup = isset($we_doc->TagWizardSelection) && $we_doc->TagWizardSelection ? $we_doc->TagWizardSelection : "alltags";
+	$selectedGroup = !empty($we_doc->TagWizardSelection) ? $we_doc->TagWizardSelection : "alltags";
 	$groupselect = '<select class="weSelect" style="width: 250px;" id="weTagGroupSelect" name="we_' . $we_doc->Name . '_TagWizardSelection" onchange="selectTagGroup(this.value);">
 <optgroup label="' . g_l('weCodeWizard', '[snippets]') . '">
 <option value="snippet_standard" ' . ($selectedGroup === 'snippet_standard' ? 'selected' : '') . '>' . g_l('weCodeWizard', '[standard_snippets]') . '</option>

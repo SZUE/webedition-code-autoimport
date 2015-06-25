@@ -416,7 +416,7 @@ function error_showDevice($type, $message, $file, $line, $skip = false){
 	}
 
 	// Mail error?
-	if(isset($GLOBALS['we']['errorhandler']) && isset($GLOBALS['we']['errorhandler']['send']) && $GLOBALS['we']['errorhandler']['send']){
+	if(isset($GLOBALS['we']['errorhandler']) && !empty($GLOBALS['we']['errorhandler']['send'])){
 		mail_error_message($type, $message, $file, $line, $skip, isset($insertID) ? $insertID : false);
 	}
 }

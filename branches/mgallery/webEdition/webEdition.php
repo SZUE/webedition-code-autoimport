@@ -50,7 +50,7 @@ function pWebEdition_Tree(){
 			break;
 		case we_base_constants::MODE_SEE:
 			echo we_html_element::jsElement('
-function makeNewEntry(id,pid,txt,open,typ,tab){
+function makeNewEntry(){
 }
 function drawTree(){
 }
@@ -141,7 +141,7 @@ var weplugin_wait = null;
 var weSidebar = null;
 // seeMode
 var SEEMODE =<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>;
-var seeMode_edit_include = <?php echo (isset($SEEM_edit_include) && $SEEM_edit_include) ? 'true' : 'false'; ?>; // in edit_include mode of seeMode
+var seeMode_edit_include = <?php echo (!empty($SEEM_edit_include)) ? 'true' : 'false'; ?>; // in edit_include mode of seeMode
 var userID =<?php echo $_SESSION["user"]["ID"]; ?>;
 var sess_id = "<?php echo session_id(); ?>";
 var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
@@ -257,7 +257,7 @@ var constants = {
 /**
  * setting integer, any sum of 1,2,4
  */
-var messageSettings = <?php echo (isset($_SESSION["prefs"]["message_reporting"]) && $_SESSION["prefs"]["message_reporting"] > 0 ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
+var messageSettings = <?php echo (!empty($_SESSION["prefs"]["message_reporting"]) ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
 var weEditorWasLoaded = false;
 var setPageNrCallback = {
 	success: function (o) {

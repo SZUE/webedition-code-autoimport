@@ -27,14 +27,14 @@ if(!defined('NO_SESS')){
 }
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-if((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'])){
+if(!empty($GLOBALS['we_editmode'])){
 	return;
 }
 
-$urlLookingFor = (isset($_SERVER['REDIRECT_URL']) && $_SERVER['REDIRECT_URL'] && !strpos($_SERVER['REDIRECT_URL'], ltrim(WEBEDITION_DIR, "/"))) ?
+$urlLookingFor = (!empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], ltrim(WEBEDITION_DIR, "/"))) ?
 	urldecode($_SERVER['REDIRECT_URL']) :
-	(isset($_SERVER['REQUEST_URI']) && ($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, "/")) ?
-		parse_url(urldecode($_SERVER['REQUEST_URI']),PHP_URL_PATH) : 
+	(!empty($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, "/")) ?
+		parse_url(urldecode($_SERVER['REQUEST_URI']),PHP_URL_PATH) :
 		'');
 
 if(!$urlLookingFor){
@@ -64,7 +64,7 @@ $urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
 	strtr(urlencode($urlLookingFor), array('%2F' => '/', '//' => '/')) :
 	strtr($urlLookingFor, array('//' => '/'))
 	);
- 
+
 while($urlLookingFor){
 	if(($object = getHash('SELECT ID,TriggerID,Url FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
 		/**
@@ -85,9 +85,9 @@ while($urlLookingFor){
 
 		//get query string if there
 		$urlQueryString = array();
-		if(isset($_SERVER['REDIRECT_QUERY_STRING']) && ($_SERVER['REDIRECT_QUERY_STRING'])){
+		if(!empty($_SERVER['REDIRECT_QUERY_STRING'])){
 			parse_str($_SERVER['REDIRECT_QUERY_STRING'], $urlQueryString);
-		} elseif(isset($_SERVER['QUERY_STRING']) && ($_SERVER['QUERY_STRING'])){
+		} elseif(!empty($_SERVER['QUERY_STRING'])){
 			parse_str($_SERVER['QUERY_STRING'], $urlQueryString);
 		}
 

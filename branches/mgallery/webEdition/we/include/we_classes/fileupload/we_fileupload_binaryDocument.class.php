@@ -318,7 +318,7 @@ div.we_file_drag_binDoc{
 				file_put_contents(TEMP_PATH . $fileNameTemp, file_get_contents(TEMP_PATH . $tempName), FILE_APPEND);
 				unlink(TEMP_PATH . $tempName);
 			}
-			$response = array('status' => ($partNum == $partCount ? 'success' : 'continue'), 'fileNameTemp' => $fileNameTemp, 'mimePhp' => (isset($mime) && $mime ? $mime : $fileCt), 'message' => '', 'completed' => ($partNum == $partCount ? 1 : 0), 'finished' => '');
+			$response = array('status' => ($partNum == $partCount ? 'success' : 'continue'), 'fileNameTemp' => $fileNameTemp, 'mimePhp' => (!empty($mime) ? $mime : $fileCt), 'message' => '', 'completed' => ($partNum == $partCount ? 1 : 0), 'finished' => '');
 			if($partCount && $partCount != $partNum){
 				echo json_encode($response);
 				return;
@@ -415,7 +415,7 @@ div.we_file_drag_binDoc{
 		}
 
 
-		if(isset($we_alerttext) && $we_alerttext){
+		if(!empty($we_alerttext)){
 			return array(false, $we_alerttext);
 		}
 

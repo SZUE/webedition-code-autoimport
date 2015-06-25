@@ -291,7 +291,7 @@ we_templateInit();?>';
 				'%(<head[^>]*>)%i',
 				'%(</body[^>]*>)%i',
 				), array(
-				'${1}<?php echo (isset($GLOBALS[\'we_editmode\']) && $GLOBALS[\'we_editmode\']? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>',
+				'${1}<?php echo (!empty($GLOBALS[\'we_editmode\']) ? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>',
 				'${1}<?php we_templateHead();?>',
 				'<?php we_templatePostContent(true);?>${1}'
 				), $code);
@@ -698,7 +698,7 @@ we_templateInit();?>';
 				if(isset($att['type']) && $att['type'] === 'template'){
 
 					// if path is set - look for the id of the template
-					if(isset($att['path']) && $att['path']){
+					if(!empty($att['path'])){
 						// get id of template
 						$templId = path_to_id($att['path'], TEMPLATES_TABLE);
 						if($templId){
@@ -841,7 +841,7 @@ we_templateInit();?>';
 					}
 					break;
 				case 'listview':
-					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' && isset($tag['attribs']['id']) && $tag['attribs']['id']){
+					if(isset($tag['attribs']['type']) && $tag['attribs']['type'] === 'document' && !empty($tag['attribs']['id'])){
 						$ids = explode(',', $tag['attribs']['id']);
 						foreach($ids as $id){
 							$id = trim($id);
@@ -915,19 +915,19 @@ we_templateInit();?>';
 						$ok = true;
 						break;
 					case 'default':
-						$ok = (isset($setting['htmlDefAttr']) && $setting['htmlDefAttr']);
+						$ok = (!empty($setting['htmlDefAttr']));
 						break;
 					case 'js':
-						$ok = (isset($setting['htmlJSAttr']) && $setting['htmlJSAttr']);
+						$ok = (!empty($setting['htmlJSAttr']));
 						break;
 					case 'norm':
-						$ok = (isset($setting['htmlAttr']) && $setting['htmlAttr']);
+						$ok = (!empty($setting['htmlAttr']));
 						break;
 					case 'default_html5':
-						$ok = (isset($setting['html5Tag']) && isset($setting['htmlDefAttr']) && $setting['html5Tag'] && $setting['htmlDefAttr']);
+						$ok = (!empty($setting['html5Tag']) && !empty($setting['htmlDefAttr']));
 						break;
 					case 'html5':
-						$ok = (isset($setting['html5Tag']) && isset($setting['html5Attr']) && $setting['html5Tag'] && $setting['html5Attr']);
+						$ok = (!empty($setting['html5Tag']) && !empty($setting['html5Attr']));
 						break;
 					default:
 						$ok = false;

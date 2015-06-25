@@ -29,7 +29,7 @@ function we_tag_ifShopPayVat($attribs){
 
 	if(we_tag('ifRegisteredUser', array(), '')){
 		$customer = $_SESSION['webuser'];
-	} elseif(isset($GLOBALS[$namefrom]) && $GLOBALS[$namefrom]){
+	} elseif(!empty($GLOBALS[$namefrom])){
 		$customer = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$namefrom]));
 		$customer = $customer ? array_merge($customer, we_customer_customer::getEncryptedFields()) : array();
 	} else {

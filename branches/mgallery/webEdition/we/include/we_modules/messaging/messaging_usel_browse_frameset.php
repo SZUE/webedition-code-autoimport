@@ -49,7 +49,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 $entries = array();
 $DB_WE->query('SELECT ID,ParentID,username,Permissions,Type FROM ' . USER_TABLE . ' ORDER BY username ASC');
 echo "startloc=0 ;
-treeData.add(new self.rootEntry('0','root','root'));";
+treeData.add(self.rootEntry('0','root','root'));";
 while($DB_WE->next_record()){
 	if($DB_WE->f('Type') == 1){
 		echo "  treeData.add({

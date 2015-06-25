@@ -1188,7 +1188,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 					'align' => 'right',
 				),
 				array(
-					'dat' => '<div class="middlefont">' . ((isset($foo['First']) && $foo['First']) ? $foo['First'] : '-') . ' ' . ((isset($foo['Second']) && $foo['Second']) ? $foo['Second'] : '-') . ((isset($foo['username']) && $foo['username']) ? ' (' . $foo['username'] . ')' : '') . '</div>',
+					'dat' => '<div class="middlefont">' . ((!empty($foo['First'])) ? $foo['First'] : '-') . ' ' . ((!empty($foo['Second'])) ? $foo['Second'] : '-') . ((!empty($foo['username'])) ? ' (' . $foo['username'] . ')' : '') . '</div>',
 					'height' => '',
 					'align' => 'left',
 				),

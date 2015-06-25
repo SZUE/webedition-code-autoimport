@@ -170,7 +170,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 						$isDefCountry = false;
 					}
 
-					$value = isset($relations[$cat['ID']][$k]) && $relations[$cat['ID']][$k] ? $relations[$cat['ID']][$k] : 0;
+					$value = !empty($relations[$cat['ID']][$k]) ? $relations[$cat['ID']][$k] : 0;
 					$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
 					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 

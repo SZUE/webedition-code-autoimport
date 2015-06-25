@@ -411,7 +411,7 @@ function start() {
 						break;
 					}
 				}
-				if(isset($this->export->Folder) && !empty($this->export->Folder) && $this->export->ParentID > 0){
+				if(!empty($this->export->Folder) && $this->export->ParentID > 0){
 					$weAcQuery = new we_selector_query();
 					$weAcResult = $weAcQuery->getItemById($this->export->Folder, FILE_TABLE, array("IsFolder"));
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){

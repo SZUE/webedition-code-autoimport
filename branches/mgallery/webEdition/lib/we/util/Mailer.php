@@ -133,7 +133,7 @@ class we_util_Mailer extends Zend_Mail{
 				//this should set return-path
 				$suhosin = extension_loaded('suhosin');
 				$_sender = $sender ? $this->parseEmailUser($sender) : '';
-				$tr = ($_sender && isset($_sender['email']) && $_sender['email'] != '' && !$suhosin ?
+				$tr = ($_sender && !empty($_sender['email'])  && !$suhosin ?
 								new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
 								new Zend_Mail_Transport_Sendmail());
 

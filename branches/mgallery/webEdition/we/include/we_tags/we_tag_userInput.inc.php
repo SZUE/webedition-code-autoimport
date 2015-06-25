@@ -137,7 +137,7 @@ function we_tag_userInput($attribs, $content){
 					$imgTag = $GLOBALS['we_doc']->getField($attribs, 'img');
 				}
 
-				$checked = (isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']) ? ' checked' : '';
+				$checked = (!empty($_SESSION[$_imgDataId]['doDelete'])) ? ' checked' : '';
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
@@ -161,7 +161,7 @@ function we_tag_userInput($attribs, $content){
 	</tr>
 </table>';
 			}
-			
+
 			$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" />';
 
 			if(isset($_SESSION[$_imgDataId]['serverPath'])){
@@ -169,18 +169,18 @@ function we_tag_userInput($attribs, $content){
 
 				return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />' . $hidden;
 			}
-			
-			if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']){
+
+			if(!empty($_SESSION[$_imgDataId]['doDelete'])){
 				return $hidden;
 			}
-			
-			if((isset($_SESSION[$_imgDataId]['id']) && $_SESSION[$_imgDataId]['id']) || (isset($orgVal) && $orgVal)){//Fix #9835
+
+			if((!empty($_SESSION[$_imgDataId]['id'])) || (isset($orgVal) && $orgVal)){//Fix #9835
 				unset($attribs['width']);
 				unset($attribs['height']);
 				$attribs['id'] = $_SESSION[$_imgDataId]['id'] ? $_SESSION[$_imgDataId]['id'] : $orgVal;
 				return $GLOBALS['we_doc']->getField($attribs, 'img') . $hidden;
 			}
-			
+
 			return '';
 
 		case 'flashmovie' :
@@ -219,12 +219,12 @@ function we_tag_userInput($attribs, $content){
 					unset($attribs['height']);
 
 					// Include Flash class
-					$flashmovieTag = (isset($attribs['id']) && $attribs['id'] ?
+					$flashmovieTag = (!empty($attribs['id']) ?
 									$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
 									'<img src="' . ICON_DIR . 'no_flashmovie.gif" alt="" width="64" height="64" />');
 				}
 
-				$checked = (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] ? ' checked' : '');
+				$checked = (!empty($_SESSION[$_flashmovieDataId]['doDelete']) ? ' checked' : '');
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
@@ -252,9 +252,9 @@ function we_tag_userInput($attribs, $content){
 
 				return $hidden;
 			}
-			if(isset($_SESSION[$_flashmovieDataId]['id']) && $_SESSION[$_flashmovieDataId]['id']){
+			if(!empty($_SESSION[$_flashmovieDataId]['id'])){
 
-				if(isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete']){
+				if(!empty($_SESSION[$_flashmovieDataId]['doDelete'])){
 					return $hidden;
 				}
 
@@ -300,12 +300,12 @@ function we_tag_userInput($attribs, $content){
 				} else {
 					unset($attribs['width']);
 					unset($attribs['height']);
-					$quicktimeTag = (isset($attribs['id']) && $attribs['id'] ?
+					$quicktimeTag = (!empty($attribs['id']) ?
 									$GLOBALS['we_doc']->getField($attribs, 'quicktime') :
 									'<img src="' . ICON_DIR . 'no_quicktime.gif" alt="" width="64" height="64" />');
 				}
 
-				$checked = (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"] ? ' checked' : '');
+				$checked = (!empty($_SESSION[$_quicktimeDataId]["doDelete"]) ? ' checked' : '');
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
@@ -339,9 +339,9 @@ function we_tag_userInput($attribs, $content){
 				$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(isset($_SESSION[$_quicktimeDataId]['id']) && $_SESSION[$_quicktimeDataId]['id']){
+			if(!empty($_SESSION[$_quicktimeDataId]['id'])){
 
-				if(isset($_SESSION[$_quicktimeDataId]['doDelete']) && $_SESSION[$_quicktimeDataId]['doDelete']){
+				if(!empty($_SESSION[$_quicktimeDataId]['doDelete'])){
 					return $hidden;
 				}
 
@@ -391,7 +391,7 @@ function we_tag_userInput($attribs, $content){
 					$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
 				}
 
-				$checked = (isset($_SESSION[$_binaryDataId]['doDelete']) && $_SESSION[$_binaryDataId]['doDelete'] ? ' checked' : '');
+				$checked = (!empty($_SESSION[$_binaryDataId]['doDelete']) ? ' checked' : '');
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 						<tr>
@@ -428,8 +428,8 @@ function we_tag_userInput($attribs, $content){
 				$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(isset($_SESSION[$_binaryDataId]["id"]) && $_SESSION[$_binaryDataId]["id"]){
-				if(isset($_SESSION[$_binaryDataId]["doDelete"]) && $_SESSION[$_binaryDataId]["doDelete"]){
+			if(!empty($_SESSION[$_binaryDataId]["id"])){
+				if(!empty($_SESSION[$_binaryDataId]["doDelete"])){
 					return $hidden;
 				}
 

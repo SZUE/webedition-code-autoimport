@@ -87,7 +87,7 @@ class we_navigation_frames extends we_modules_frame{
 
 		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' : '');
+				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' : '');
 
 		$hiddens = we_html_element::htmlHiddens(array(
 				'pnt' => 'cmd',
@@ -245,7 +245,7 @@ function setTab(tab) {
 			'style' => 'margin-top: 5px;'
 			), 1, 3);
 
-		$_parentid = (isset($this->Model->Text) && $this->Model->Text && isset($this->Model->ID) && $this->Model->ID ?
+		$_parentid = (!empty($this->Model->Text) && !empty($this->Model->ID) ?
 				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
 				(we_base_request::_(we_base_request::STRING, 'presetFolder') ?
 					$this->Model->ParentID :
@@ -1471,7 +1471,7 @@ function ' . $prefix . 'setLinkSelection(value){
 	}
 
 	function getHTMLCharsetTable(){
-		$value = ((isset($this->Model->Charset) && $this->Model->Charset) ? $this->Model->Charset : $GLOBALS['WE_BACKENDCHARSET']);
+		$value = (!empty($this->Model->Charset) ? $this->Model->Charset : $GLOBALS['WE_BACKENDCHARSET']);
 
 		$charsetHandler = new we_base_charsetHandler();
 

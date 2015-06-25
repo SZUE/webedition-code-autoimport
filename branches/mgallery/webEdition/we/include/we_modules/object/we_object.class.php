@@ -104,7 +104,7 @@ class we_object extends we_document{
 		}
 
 		$this->OldPath = $this->Path; // reset oldPath
-		if(!(isset($this->isInApp) && $this->isInApp)){// allows to save Classes from within WE-Apps
+		if(!(!empty($this->isInApp))){// allows to save Classes from within WE-Apps
 			$GLOBALS['we_JavaScript'] = "top.we_cmd('reload_editpage');_EditorFrame.setEditorDocumentId(" . $this->ID . ");" .
 				$this->getUpdateTreeScript() .
 				we_main_headermenu::getMenuReloadCode('top.');
@@ -389,7 +389,7 @@ class we_object extends we_document{
 			$neu = explode(',', $this->getElement('neuefelder'));
 
 			foreach($neu as $cur){
-				if(isset($cur) && $cur != ''){
+				if(!empty($cur) ){
 					$nam = $this->getElement($cur . self::ELEMENT_TYPE) . '_' . $this->getElement($cur);
 					$arrt[$nam] = array(
 						'default' => $this->getElement($cur . 'default'),
@@ -1512,8 +1512,8 @@ class we_object extends we_document{
 			foreach($allUsers as $user => $data){
 				$content .= '<tr><td class="userIcon" data-contenttype="' . $data['ContentType'] . '"></td><td class="defaultfont">' . $data["Path"] . '</td><td>' .
 					($canChange ?
-						we_html_element::htmlHidden('we_users_read_only[' . $user . ']', (isset($usersReadOnly[$user]) && $usersReadOnly[$user]) ? $usersReadOnly[$user] : "" ) .
-						'<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (isset($usersReadOnly[$user]) && $usersReadOnly[$user] ) ? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
+						we_html_element::htmlHidden('we_users_read_only[' . $user . ']', (!empty($usersReadOnly[$user])) ? $usersReadOnly[$user] : "" ) .
+						'<input type="checkbox" value="1" name="wetmp_users_read_only[' . $user . ']"' . ( (!empty($usersReadOnly[$user])) ? ' checked' : '') . ' onclick="this.form.elements[\'we_users_read_only[' . $user . ']\'].value=(this.checked ? 1 : 0);_EditorFrame.setEditorIsHot(true);" />' :
 						'<i class="fa fa-' . ($usersReadOnly[$user] ? 'check-' : '') . 'square-o wecheckIcon disabled"></i>'
 					) . '</td><td class="defaultfont">' . g_l('weClass', '[readOnly]') . '</td><td>' .
 					($canChange ?
@@ -1874,7 +1874,7 @@ class we_object extends we_document{
 		$obj->create = 1;
 		$content = $obj->get();
 
-		if(isset($GLOBALS['WE_DEL_WORKSPACE_ERROR']) && $GLOBALS['WE_DEL_WORKSPACE_ERROR']){
+		if(!empty($GLOBALS['WE_DEL_WORKSPACE_ERROR'])){
 			unset($GLOBALS['WE_DEL_WORKSPACE_ERROR']);
 			$content .= we_html_element::jsElement(we_message_reporting::getShowMessageCall(addslashes(g_l('weClass', '[we_del_workspace_error]')), we_message_reporting::WE_MESSAGE_ERROR));
 		}
@@ -2000,7 +2000,7 @@ class we_object extends we_document{
 				$this->CSS = $vals[$name];
 			}
 			if(isset($vals[$name]) && is_array($vals[$name])){
-				$this->setElement($name . "count", (( isset($vals[$name]["meta"]) && $vals[$name]["meta"]) ? (count($vals[$name]["meta"]) - 1) : 0));
+				$this->setElement($name . "count", (( !empty($vals[$name]["meta"])) ? (count($vals[$name]["meta"]) - 1) : 0));
 				if(isset($vals[$name]["meta"]) && is_array($vals[$name]["meta"])){
 					$keynames = array_keys($vals[$name]["meta"]);
 					for($ll = 0; $ll <= count($vals[$name]["meta"]); $ll++){
@@ -2152,7 +2152,7 @@ class we_object extends we_document{
 		while((list($k, $v) = $this->nextElement('defaultText'))){
 			if(substr($k, 0, 12) === 'DefaultText_'){
 				$end = substr($k, 12, strlen($k));
-				if(isset($_REQUEST['textwert_' . $end]) && isset($v['dat']) && $v['dat'] && !in_array($v['dat'], $allowedReplace) && preg_match('/[^\w\-.]/', $v['dat'])){
+				if(isset($_REQUEST['textwert_' . $end]) && !empty($v['dat']) && !in_array($v['dat'], $allowedReplace) && preg_match('/[^\w\-.]/', $v['dat'])){
 					return true;
 				}
 			}

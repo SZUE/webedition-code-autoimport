@@ -486,7 +486,7 @@ function we_cmd() {
 
 	private function delete_user(){
 
-		if(isset($_SESSION["user_session_data"]) && $_SESSION["user_session_data"]){
+		if(!empty($_SESSION["user_session_data"])){
 			$user_object = $_SESSION["user_session_data"];
 
 			if($user_object->ID == $_SESSION["user"]["ID"]){

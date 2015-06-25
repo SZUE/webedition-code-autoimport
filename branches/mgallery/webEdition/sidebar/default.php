@@ -41,7 +41,7 @@ echo we_html_tools::getHtmlTop('sideBar') .
 					$text = &$textArray[$i];
 
 					$link = "%s";
-					if(isset($text['link']) && $text['link'] != ""){
+					if(!empty($text['link'])){
 
 						if(stripos($text['link'], 'javascript:') === 0){
 							$text['link'] = str_replace("\"", "'", $text['link']); #6625
@@ -52,12 +52,12 @@ echo we_html_tools::getHtmlTop('sideBar') .
 						}
 					}
 
-					$icon = (isset($text['icon']) && $text['icon'] != "" ?
+					$icon = (!empty($text['icon']) ?
 							sprintf($link, '<img src="' . WEBEDITION_DIR . 'sidebar/img/' . $text['icon'] . '" width="42" height="42" border="0" />') :
 							'');
 
 					$headline = "";
-					if(isset($text['headline']) && $text['headline'] != ""){
+					if(!empty($text['headline'])){
 						$headline = sprintf($link, $text['headline']);
 					}
 					?>

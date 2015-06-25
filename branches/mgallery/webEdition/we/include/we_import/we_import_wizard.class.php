@@ -611,7 +611,7 @@ handle_event("previous");');
 			$tbl_extra = new we_html_table(array(), 5, 1);
 
 			// import documents
-			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v['import_docs']) && $v['import_docs']) ? true : false, 'v[import_docs]', g_l('import', '[import_docs]'), false, 'defaultfont', "toggle('doc_table')"));
+			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((!empty($v['import_docs'])) ? true : false, 'v[import_docs]', g_l('import', '[import_docs]'), false, 'defaultfont', "toggle('doc_table')"));
 
 			$rootDirID = get_def_ws();
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[doc_dir_id]'].value");
@@ -642,14 +642,14 @@ handle_event("previous");');
 			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[documents_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
-			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((isset($v['restore_doc_path']) && $v['restore_doc_path']), 'v[restore_doc_path]', g_l('import', '[maintain_paths]'), false, "defaultfont", "self.document.we_form.elements['v[doc_dir]'].value='/';"));
+			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((!empty($v['restore_doc_path'])), 'v[restore_doc_path]', g_l('import', '[maintain_paths]'), false, "defaultfont", "self.document.we_form.elements['v[doc_dir]'].value='/';"));
 
 			$tbl_extra->setCol(1, 0, null, $dir_table->getHtml());
 
 			// --------------
 			// import templates
 			$rootDirID = get_def_ws(TEMPLATES_TABLE);
-			$tbl_extra->setCol(2, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden((isset($v['import_templ']) && $v['import_templ']), 'v[import_templ]', g_l('import', '[import_templ]'), false, 'defaultfont', "toggle('tpl_table')"));
+			$tbl_extra->setCol(2, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden((!empty($v['import_templ'])), 'v[import_templ]', g_l('import', '[import_templ]'), false, 'defaultfont', "toggle('tpl_table')"));
 			$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[tpl_dir_id]'].value");
 			$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[tpl_dir]'].value");
 			$wecmdenc3 = '';
@@ -673,12 +673,12 @@ handle_event("previous");');
 			$dir_table->setAttribute('id', 'tpl_table');
 			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[templates_desc]'), we_html_tools::TYPE_ALERT, 390, true, 50));
 			$dir_table->setCol(1, 1, null, $docPath);
-			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((isset($v['restore_tpl_path']) && $v['restore_tpl_path']) ? true : false, 'v[restore_tpl_path]', g_l('import', '[maintain_paths]'), false, 'defaultfont', "self.document.we_form.elements['v[tpl_dir]'].value='/';"));
+			$dir_table->setCol(2, 1, null, we_html_forms::checkboxWithHidden((!empty($v['restore_tpl_path'])) ? true : false, 'v[restore_tpl_path]', g_l('import', '[maintain_paths]'), false, 'defaultfont', "self.document.we_form.elements['v[tpl_dir]'].value='/';"));
 
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
 
-			$tbl_extra->setCol(4, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden((isset($v["import_thumbnails"]) && $v["import_thumbnails"]) ? true : false, "v[import_thumbnails]", g_l('import', '[import_thumbnails]'), false, "defaultfont"));
+			$tbl_extra->setCol(4, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden((!empty($v["import_thumbnails"])) ? true : false, "v[import_thumbnails]", g_l('import', '[import_thumbnails]'), false, "defaultfont"));
 
 
 			$parts[] = array(
@@ -690,8 +690,8 @@ handle_event("previous");');
 
 			if(defined('OBJECT_TABLE')){
 				$tbl_extra = new we_html_table(array(), 2, 1);
-				$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_objs"]) && $v["import_objs"]) ? true : false, "v[import_objs]", g_l('import', '[import_objs]')));
-				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_classes"]) && $v["import_classes"]) ? true : false, "v[import_classes]", g_l('import', '[import_classes]')));
+				$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((!empty($v["import_objs"])) ? true : false, "v[import_objs]", g_l('import', '[import_objs]')));
+				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((!empty($v["import_classes"])) ? true : false, "v[import_classes]", g_l('import', '[import_classes]')));
 
 				$parts[] = array(
 					"headline" => g_l('import', '[handle_object_options]') . '<br/>' . g_l('import', '[handle_class_options]'),
@@ -701,9 +701,9 @@ handle_event("previous");');
 			}
 
 			$tbl_extra = new we_html_table(array(), 4, 1);
-			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_dt"]) && $v["import_dt"]) ? true : false, "v[import_dt]", g_l('import', '[import_doctypes]')));
-			$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_ct"]) && $v["import_ct"]) ? true : false, "v[import_ct]", g_l('import', '[import_cats]')));
-			$tbl_extra->setCol(2, 0, null, we_html_forms::checkboxWithHidden((isset($v["import_navigation"]) && $v["import_navigation"]) ? true : false, "v[import_navigation]", g_l('import', '[import_navigation]'), false, 'defaultfont', "toggle('navigation_table')"));
+			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((!empty($v["import_dt"])) ? true : false, "v[import_dt]", g_l('import', '[import_doctypes]')));
+			$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((!empty($v["import_ct"])) ? true : false, "v[import_ct]", g_l('import', '[import_cats]')));
+			$tbl_extra->setCol(2, 0, null, we_html_forms::checkboxWithHidden((!empty($v["import_navigation"])) ? true : false, "v[import_navigation]", g_l('import', '[import_navigation]'), false, 'defaultfont', "toggle('navigation_table')"));
 
 			// --
 
@@ -749,27 +749,27 @@ handle_event("previous");');
 				if(($xml_encoding != DEFAULT_CHARSET)){
 					$parts[] = array(
 						'headline' => g_l('import', '[encoding_headline]'),
-						'html' => we_html_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_change]') . $xml_encoding . g_l('import', '[encoding_to]') . DEFAULT_CHARSET . g_l('import', '[encoding_default]')) . we_html_element::htmlHiddens(array("v[import_XMLencoding]" => $xml_encoding, "v[import_TARGETencoding]" => DEFAULT_CHARSET)),
+						'html' => we_html_forms::checkboxWithHidden((!empty($v['import_ChangeEncoding'])) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_change]') . $xml_encoding . g_l('import', '[encoding_to]') . DEFAULT_CHARSET . g_l('import', '[encoding_default]')) . we_html_element::htmlHiddens(array("v[import_XMLencoding]" => $xml_encoding, "v[import_TARGETencoding]" => DEFAULT_CHARSET)),
 						'space' => 120
 					);
 				}
 			} else {
 				$parts[] = array(
 					'headline' => g_l('import', '[encoding_headline]'),
-					'html' => we_html_forms::checkboxWithHidden((isset($v['import_ChangeEncoding']) && $v['import_ChangeEncoding']) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]') . we_html_element::htmlHidden("v[import_XMLencoding]", $xml_encoding), false, "defaultfont", '', true),
+					'html' => we_html_forms::checkboxWithHidden((!empty($v['import_ChangeEncoding'])) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]') . we_html_element::htmlHidden("v[import_XMLencoding]", $xml_encoding), false, "defaultfont", '', true),
 					'space' => 120
 				);
 			}
 
 			$parts[] = array(
 				'headline' => g_l('import', '[handle_file_options]'),
-				'html' => we_html_forms::checkboxWithHidden((isset($v['import_binarys']) && $v['import_binarys']) ? true : false, 'v[import_binarys]', g_l('import', '[import_files]')),
+				'html' => we_html_forms::checkboxWithHidden((!empty($v['import_binarys'])) ? true : false, 'v[import_binarys]', g_l('import', '[import_files]')),
 				'space' => 120
 			);
 
 			$parts[] = array(
 				'headline' => g_l('import', '[rebuild]'),
-				'html' => we_html_forms::checkboxWithHidden((isset($v['rebuild']) && $v['rebuild']) ? true : false, 'v[rebuild]', g_l('import', '[rebuild_txt]')),
+				'html' => we_html_forms::checkboxWithHidden((!empty($v['rebuild'])) ? true : false, 'v[rebuild]', g_l('import', '[rebuild_txt]')),
 				'space' => 120
 			);
 
@@ -796,8 +796,8 @@ handle_event("previous");');
 
 			if($show_owner_opt){
 				$tbl_extra = new we_html_table(array(), 2, 1);
-				$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((isset($v['import_owners']) && $v['import_owners']) ? true : false, 'v[import_owners]', g_l('import', '[handle_owners]')));
-				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((isset($v['owners_overwrite']) && $v['owners_overwrite']) ? true : false, 'v[owners_overwrite]', g_l('import', '[owner_overwrite]')));
+				$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((!empty($v['import_owners'])) ? true : false, 'v[import_owners]', g_l('import', '[handle_owners]')));
+				$tbl_extra->setCol(1, 0, null, we_html_forms::checkboxWithHidden((!empty($v['owners_overwrite'])) ? true : false, 'v[owners_overwrite]', g_l('import', '[owner_overwrite]')));
 
 				$tbl_extra2 = new we_html_table(array(), 1, 2);
 				$tbl_extra2->setCol(0, 0, null, we_html_tools::getPixel(20, 20));
@@ -2292,7 +2292,7 @@ HTS;
 		$storeTo = $yuiSuggest->getHTML();
 
 		$seaPu = new we_html_table(array('class' => 'default'), 2, 1);
-		$seaPu->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(isset($v["doc_search"]) && $v["doc_search"], 'v[doc_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
+		$seaPu->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(!empty($v["doc_search"]), 'v[doc_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
 		$seaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["doc_publish"]) ? $v["doc_publish"] : true, 'v[doc_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
@@ -2363,7 +2363,7 @@ HTS;
 			$objStoreTo = $yuiSuggest->getHTML();
 
 			$objSeaPu = new we_html_table(array('class' => 'default'), 2, 1);
-			$objSeaPu->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(isset($v["obj_search"]) && $v["obj_search"], 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
+			$objSeaPu->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(!empty($v["obj_search"]), 'v[obj_search]', g_l('weClass', '[IsSearchable]'), false, 'defaultfont'));
 			$objSeaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
 			$objCats = new we_html_table(array('class' => 'default'), 2, 2);

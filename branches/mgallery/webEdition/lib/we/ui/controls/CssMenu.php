@@ -115,7 +115,7 @@ function menuaction(cmd) {
 						($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
 						(isset($e['text']) ? $e['text'] : ''));
 
-				if(isset($e['hide']) && $e['hide']){
+				if(!empty($e['hide'])){
 
 				} else {
 					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){

@@ -657,7 +657,7 @@ abstract class we_backup_base{
 		unlink($filename);
 		$tn = strtolower($ctbl . $itbl);
 
-		$this->current_description = (isset($this->description["import"]["$tn"]) && $this->description["import"]["$tn"] ?
+		$this->current_description = (!empty($this->description["import"]["$tn"]) ?
 				$this->description["import"][$tn] :
 				g_l('backup', '[working]'));
 

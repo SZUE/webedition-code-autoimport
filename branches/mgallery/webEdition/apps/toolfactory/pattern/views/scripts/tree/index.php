@@ -10,7 +10,7 @@ $page->addJSFile(JS_DIR.'we_showMessage.js');
 
 
 $nodes = array();
-$table = <?php echo (isset($TABLECONSTANT) && !empty($TABLECONSTANT) && $TABLEEXISTS) ? $TABLECONSTANT : "''"; ?>;
+$table = <?php echo (!empty($TABLECONSTANT) && $TABLEEXISTS) ? $TABLECONSTANT : "''"; ?>;
 
 $TreeDiv = new we_ui_layout_Div();
 $TreeDiv->setId('TreeDiv_<?php echo $TOOLNAME; ?>');

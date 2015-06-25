@@ -435,9 +435,12 @@ top.clearEntries();';
 				if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 					$folder->we_save();
 					echo 'var ref;
-if(top.opener.top.makeNewEntry) ref = top.opener.top;
-else if(top.opener.top.opener) ref = top.opener.top.opener.top;
-ref.updateEntry(' . $folder->ID . ',"' . $txt . '","' . $folder->ParentID . '","' . $this->table . '");' .
+if(top.opener.top.makeNewEntry){
+ref = top.opener.top;
+}else if(top.opener.top.opener){
+ref = top.opener.top.opener.top;
+}
+ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '",table:"' . $this->table . '"});' .
 					($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
@@ -512,7 +515,7 @@ top.selectFile(top.currentID);
 	}') .
 			'</head>
 <body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
-		if(isset($result['ContentType']) && $result['ContentType']){
+		if(!empty($result['ContentType'])){
 			switch($this->table){
 				case FILE_TABLE:
 				case VFILE_TABLE:

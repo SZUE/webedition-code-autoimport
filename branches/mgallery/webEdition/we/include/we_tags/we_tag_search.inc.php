@@ -33,7 +33,7 @@ function we_tag_search($attribs){
 		'type' => 'hidden',
 		'xml' => $xml,
 		'name' => 'we_from_search_' . $name,
-		'value' => (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] ? 0 : 1)
+		'value' => (!empty($GLOBALS['we_editmode']) ? 0 : 1)
 	);
 
 

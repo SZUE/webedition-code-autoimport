@@ -349,7 +349,7 @@ class we_object_exImport extends we_object{
 		} else {
 			$this->strOrder = '';
 		}
-		if(isset($this->isAddFieldNoSave) && $this->isAddFieldNoSave){
+		if(!empty($this->isAddFieldNoSave)){
 			return true;
 		}
 		return $this->saveToDB(true);
@@ -385,11 +385,10 @@ class we_object_exImport extends we_object{
 			unset($arrOrder[array_search(max($arrOrder), $arrOrder)]);
 
 			$this->strOrder = implode(',', $arrOrder);
-			if(isset($this->isDropFieldNoSave) && $this->isDropFieldNoSave){
+			if(!empty($this->isDropFieldNoSave)){
 				return true;
-			} else {
-				return $this->saveToDB(true);
 			}
+			return $this->saveToDB(true);
 		}
 
 		return false;
@@ -430,11 +429,10 @@ class we_object_exImport extends we_object{
 		}
 		$this->DefaultValues = serialize($this->SerializedArray);
 
-		if(isset($this->isModifyFieldNoSave) && $this->isModifyFieldNoSave){
+		if(!empty($this->isModifyFieldNoSave)){
 			return true;
-		} else {
-			return $this->saveToDB(true);
 		}
+		return $this->saveToDB(true);
 	}
 
 	function resetOrder(){

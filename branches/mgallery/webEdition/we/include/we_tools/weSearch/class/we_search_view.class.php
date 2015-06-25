@@ -837,7 +837,7 @@ weSearch.g_l = {
 				if($this->Model->searchForContentDocSearch){
 					$this->Model->searchFieldsDocSearch[] = "Content";
 				}
-				if((isset($_SESSION['weS']['weSearch']['keyword']) && $_SESSION['weS']['weSearch']['keyword']) && we_base_request::_(we_base_request::INT, 'tab') == 1){
+				if((!empty($_SESSION['weS']['weSearch']['keyword']) && we_base_request::_(we_base_request::INT, 'tab') == 1){
 					$this->Model->searchDocSearch[0] = ($_SESSION['weS']['weSearch']['keyword']);
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchDocSearch[0] = utf8_encode($this->Model->searchDocSearch[0]);
@@ -865,7 +865,7 @@ weSearch.g_l = {
 				if($this->Model->searchForContentTmplSearch){
 					$this->Model->searchFieldsTmplSearch[] = "Content";
 				}
-				if((isset($_SESSION['weS']['weSearch']['keyword']) && $_SESSION['weS']['weSearch']['keyword'] != '') && we_base_request::_(we_base_request::INT, "tab") == 2){
+				if((!empty($_SESSION['weS']['weSearch']['keyword'])) && we_base_request::_(we_base_request::INT, "tab") == 2){
 					$this->Model->searchTmplSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchTmplSearch[0] = utf8_encode($this->Model->searchTmplSearch[0]);
@@ -900,7 +900,7 @@ weSearch.g_l = {
 					$this->Model->searchFieldsMediaSearch[] = "Meta";
 				}
 
-				if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && we_base_request::_(we_base_request::INT, "tab") == 1){
+				if((!empty($_SESSION['weS']['weSearch']["keyword"])) && we_base_request::_(we_base_request::INT, "tab") == 1){
 					$this->Model->searchMediaSearch[0] = ($_SESSION['weS']['weSearch']["keyword"]);
 					if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 						$this->Model->searchMediaSearch[0] = utf8_encode($this->Model->searchMediaSearch[0]);
@@ -1200,7 +1200,7 @@ weSearch.g_l = {
 								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[$i]) : $searchText[$i]) :
 								($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8" ? utf8_encode($searchText[0]) : $searchText[0]));
 					}
-					if(isset($searchString) && $searchString){
+					if(!empty($searchString)){
 						if($searchFields[$i] != "Status" && $searchFields[$i] != "Speicherart"){
 							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 						}
@@ -1432,7 +1432,7 @@ weSearch.g_l = {
 			$this->searchclass->selectFromTempTable($_searchstart, $_anzahl, $_order);
 
 			while($this->searchclass->next_record()){
-				if(isset($this->searchclass->Record['VersionID']) && $this->searchclass->Record['VersionID'] != 0){
+				if(!empty($this->searchclass->Record['VersionID'])){
 
 					$versionsFound[] = array(
 						$this->searchclass->Record['ContentType'],
@@ -1751,7 +1751,7 @@ weSearch.g_l = {
 	function makeAdditionalContentMedia($result){
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
 
-		if(isset($usedMediaLinks['mediaID_' . $result['docID']]) && $usedMediaLinks['mediaID_' . $result['docID']]){
+		if(!empty($usedMediaLinks['mediaID_' . $result['docID']])){
 			$out = '<table style="font-weight:normal; background-color:#fafafa;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>Dieses Medien-Dokument wird an folgenden Stellen referenziert:</stong></td></tr>'; // FIXME: G_L()
 			foreach($usedMediaLinks['mediaID_' . $result['docID']] as $type => $links){
 				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $type . ':</em></td></tr>';
@@ -1941,7 +1941,7 @@ weSearch.g_l = {
 
 	// FIXME: is obsolete as soon as getSearchDialogOptionalFields() works properly
 	function getSearchDialogAdvSearch(){
-		if((isset($_SESSION['weS']['weSearch']["keyword"]) && $_SESSION['weS']['weSearch']["keyword"] != "") && (we_base_request::_(we_base_request::INT, "tab") == 3)){
+		if((!empty($_SESSION['weS']['weSearch']["keyword"])) && (we_base_request::_(we_base_request::INT, "tab") == 3)){
 			$this->Model->searchAdvSearch[0] = $_SESSION['weS']['weSearch']["keyword"];
 			if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 				$this->Model->searchAdvSearch[0] = utf8_encode($this->Model->searchAdvSearch[0]);
@@ -2131,7 +2131,7 @@ weSearch.g_l = {
 		$searchFieldsWhichSearch = $whichSearch === self::SEARCH_ADV ? "searchFieldsAdvSearch" : "searchFieldsMediaSearch";
 		$locationWhichSearch = $whichSearch === self::SEARCH_ADV ? "locationAdvSearch" : "locationMediaSearch";
 
-		if((isset($_SESSION['weS']['weSearch']['keyword']) && $_SESSION['weS']['weSearch']['keyword'] != "") && (we_base_request::_(we_base_request::INT, 'tab') === ($whichSearch === self::SEARCH_ADV ? 3 : (self::SEARCH_MEDIA ? 5 : -1)))){
+		if((!empty($_SESSION['weS']['weSearch']['keyword'])) && (we_base_request::_(we_base_request::INT, 'tab') === ($whichSearch === self::SEARCH_ADV ? 3 : (self::SEARCH_MEDIA ? 5 : -1)))){
 			$this->Model->$searchWhichSearch[0] = $_SESSION['weS']['weSearch']['keyword'];
 			if($GLOBALS['WE_BACKENDCHARSET'] === "UTF-8"){
 				$this->Model->$searchWhichSearch[0] = utf8_encode($this->Model->$searchWhichSearch[0]);
@@ -2486,7 +2486,7 @@ weSearch.g_l = {
 
 		$out = '';
 		for($f = 0; $f < $anz; $f++){
-			$out .= '<td ' . ($f < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' . ((isset($content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
+			$out .= '<td ' . ($f < 2 ? '' : 'style="font-weight:bold;height:30px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;"') . '>' . ((!empty($content[$f]["dat"])) ? $content[$f]["dat"] : "&nbsp;") . '</td>';
 		}
 
 		if(isset($content[0]["version"])){
@@ -2524,7 +2524,7 @@ weSearch.g_l = {
 				case 'table':
 					// FIXME :this whole colgroup-stuff in dynamically built tables is absurde! throw out or generate dynamically too!
 					$out .=!isset($content[$i]['dat']) || !is_array($content[$i]['dat']) ? '&nbsp;' : ('<table style="table-layout:fixed;white-space:nowrap;width:100%;padding:0 0 0 0;margin:0 0 0 0;background-color:#fff;" >' .
-						(isset($content[$i]['colgroup']) && $content[$i]['colgroup'] ? $content[$i]['colgroup'] : '') .
+						(!empty($content[$i]['colgroup']) ? $content[$i]['colgroup'] : '') .
 						self::tblListRowMedia($content[$i]["dat"]) .
 						'</table>');
 					break;
@@ -2543,10 +2543,10 @@ weSearch.g_l = {
 		return '<table width="100%" class="default ' . $class . '">
 <tr>
 	<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
-			((isset($content[0]["dat"]) && $content[0]["dat"]) ? $content[0]["dat"] : "&nbsp;") . '</td>
+			((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
 		<td width="105" valign="top" style="line-height:20px;">
-		<span>' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</span><br/><br/>
-		<span>' . ((isset($content[1]["dat"]) && $content[1]["dat"]) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
+		<span>' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</span><br/><br/>
+		<span>' . ((!empty($content[1]["dat"])) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
 </tr></table>';
 	}
 
@@ -2554,12 +2554,12 @@ weSearch.g_l = {
 		return '<table width="100%" class="default ' . $class . '">
 <tr>
 	<td width="100%" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
-			((isset($content[5]["dat"]) && $content[5]["dat"]) ? $content[5]["dat"] : "&nbsp;") .
+			((!empty($content[5]["dat"])) ? $content[5]["dat"] : "&nbsp;") .
 			'</td>
 </tr>
 <tr>
 		<td width="100%" valign="top" style="line-height:20px;text-align:center">
-		<span>' . ((isset($content[2]["dat"]) && $content[2]["dat"]) ? $content[2]["dat"] : "&nbsp;") . '</span>
+		<span>' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</span>
 </tr></table>';
 	}
 

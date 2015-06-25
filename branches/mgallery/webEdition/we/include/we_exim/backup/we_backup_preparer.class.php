@@ -263,7 +263,7 @@ abstract class we_backup_preparer{
 			}
 		}
 
-		$we_upload_file = (isset($_FILES['we_upload_file']) && $_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '';
+		$we_upload_file = (!empty($_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '');
 		if($we_upload_file && ($we_upload_file != 'none')){
 			$_SESSION['weS']['weBackupVars']['options']['upload'] = 1;
 			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
@@ -476,7 +476,7 @@ abstract class we_backup_preparer{
 			$_mess = g_l('backup', '[unspecified_error]');
 		}
 
-		if(isset($_SESSION['weS']['weBackupVars']['backup_log']) && $_SESSION['weS']['weBackupVars']['backup_log']){
+		if(!empty($_SESSION['weS']['weBackupVars']['backup_log'])){
 			we_backup_util::addLog('Error: ' . $_mess);
 		}
 

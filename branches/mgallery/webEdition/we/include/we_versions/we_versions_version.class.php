@@ -909,9 +909,9 @@ class we_versions_version{
 			$_SESSION['weS']['versions']['fromImport'] = 1;
 			$this->saveVersion($docObj);
 		} else {
-			if((isset($_SESSION['weS']['versions']['fromScheduler']) && $_SESSION['weS']['versions']['fromScheduler']) ||
+			if((!empty($_SESSION['weS']['versions']['fromScheduler'])) ||
 				((we_base_request::_(we_base_request::STRING, "type") === "reset_versions") ||
-				(isset($_SESSION['weS']['versions']['initialVersions']) && $_SESSION['weS']['versions']['initialVersions']))){
+				(!empty($_SESSION['weS']['versions']['initialVersions'])))){
 				$cmd0 = "save_document";
 				if(isset($_SESSION['weS']['versions']['initialVersions'])){
 					unset($_SESSION['weS']['versions']['initialVersions']);
@@ -1073,7 +1073,7 @@ class we_versions_version{
 					$status = "published";
 				}
 		}
-		if(isset($_SESSION['weS']['versions']['doPublish']) && $_SESSION['weS']['versions']['doPublish']){
+		if(!empty($_SESSION['weS']['versions']['doPublish'])){
 			$status = 'published';
 		}
 
@@ -1210,7 +1210,7 @@ class we_versions_version{
 							$this->writePreviewDynFile($document['ID'], $siteFile, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 						} elseif(file_exists($siteFile) && $document['Extension'] === '.php' && ($document['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $document['ContentType'] == we_base_ContentTypes::HTML)){
 							we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $binaryPath, gzencode(file_get_contents($siteFile), 9));
-						} elseif(isset($document['TemplatePath']) && $document['TemplatePath'] && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
+						} elseif(!empty($document['TemplatePath']) && substr($document['TemplatePath'], -18) != '/' . we_template::NO_TEMPLATE_INC && $document['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
 							$includeTemplate = preg_replace('/.tmpl$/i', '.php', $document['TemplatePath']);
 							$this->writePreviewDynFile($document['ID'], $includeTemplate, $_SERVER['DOCUMENT_ROOT'] . $binaryPath, $documentObj);
 						} else {
@@ -1369,10 +1369,10 @@ class we_versions_version{
 				$entry = $this->IsScheduler();
 				break;
 			case 'fromImport':
-				$entry = (isset($_SESSION['weS']['versions']['fromImport']) && $_SESSION['weS']['versions']['fromImport']) ? 1 : 0;
+				$entry = (!empty($_SESSION['weS']['versions']['fromImport'])) ? 1 : 0;
 				break;
 			case 'resetFromVersion':
-				$entry = (isset($document['resetFromVersion']) && $document['resetFromVersion'] != '') ? $document['resetFromVersion'] : 0;
+				$entry = (!empty($document['resetFromVersion'])) ? $document['resetFromVersion'] : 0;
 				break;
 			default:
 				$entry = '';
@@ -1697,7 +1697,7 @@ class we_versions_version{
 			if($existsFile){
 				$resetDoc->Path = str_replace($resetDoc->Text, '_' . $resetArray['documentID'] . '_' . $resetDoc->Text, $resetDoc->Path);
 				$resetDoc->Text = '_' . $resetArray["documentID"] . '_' . $resetDoc->Text;
-				if(isset($resetDoc->Filename) && $resetDoc->Filename != ''){
+				if(!empty($resetDoc->Filename)){
 					$resetDoc->Filename = '_' . $resetArray["documentID"] . '_' . $resetDoc->Filename;
 					$publish = 0;
 					$doPark = true;
@@ -1928,7 +1928,7 @@ class we_versions_version{
 										if($key3 != ""){
 											$fieldValueText .= $key3 . ': ';
 										}
-										if(isset($val3['dat']) && $val3['dat'] != ""){
+										if(!empty($val3['dat'])){
 											$fieldValueText .= $val3['dat'] . '<br/>';
 										}
 									}

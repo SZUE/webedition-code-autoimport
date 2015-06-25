@@ -116,7 +116,7 @@ if(defined('WE_WEBUSER_LANGUAGE')){
 }
 
 
-if(isset($_SESSION['prefs']['Language']) && !empty($_SESSION['prefs']['Language'])){
+if(!empty($_SESSION['prefs']['Language'])){
 	$GLOBALS['WE_LANGUAGE'] = (is_dir(WE_INCLUDES_PATH . 'we_language/' . $_SESSION['prefs']['Language']) ?
 			$_SESSION['prefs']['Language'] :
 			//  bugfix #4229
@@ -134,7 +134,7 @@ define('STYLESHEET_SCRIPT', we_html_element::cssLink(CSS_DIR . 'global.php') .
 define('STYLESHEET', STYLESHEET_SCRIPT . SCRIPT_BUTTONS_ONLY);
 
 if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
-	$GLOBALS['WE_BACKENDCHARSET'] = (isset($_SESSION['prefs']['BackendCharset']) && $_SESSION['prefs']['BackendCharset'] ?
+	$GLOBALS['WE_BACKENDCHARSET'] = (!empty($_SESSION['prefs']['BackendCharset'])  ?
 			$_SESSION['prefs']['BackendCharset'] : 'UTF-8');
 
 	//send header?
@@ -160,7 +160,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 				));
 			break;
 		case '__default__':
-			$header = !((isset($GLOBALS['show_stylesheet']) && $GLOBALS['show_stylesheet']));
+			$header = empty($GLOBALS['show_stylesheet']);
 			break;
 		default:
 			$header = true;

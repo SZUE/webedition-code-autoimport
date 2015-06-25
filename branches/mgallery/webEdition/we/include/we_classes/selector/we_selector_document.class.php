@@ -553,7 +553,7 @@ top.makeNewDocument = true;' .
 			}
 			switch($result['ContentType']){
 				case we_base_ContentTypes::IMAGE:
-					$Title = (isset($metainfos['title']) ? $metainfos['title'] : ((isset($metainfos['Title']) && isset($metainfos['useMetaTitle']) && $metainfos['useMetaTitle']) ? $metainfos['Title'] : ''));
+					$Title = (isset($metainfos['title']) ? $metainfos['title'] : ((isset($metainfos['Title']) && !empty($metainfos['useMetaTitle'])) ? $metainfos['Title'] : ''));
 					$name = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					$alt = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
 					if($Title !== ""){
@@ -627,7 +627,7 @@ top.makeNewDocument = true;' .
 			}
 
 			$out .= '<table class="default" width="100%">';
-			if(isset($_imagepreview) && $_imagepreview){
+			if(!empty($_imagepreview)){
 				$out .= "<tr><td colspan='2' valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'>" . $_imagepreview . "</td></tr>";
 			}
 

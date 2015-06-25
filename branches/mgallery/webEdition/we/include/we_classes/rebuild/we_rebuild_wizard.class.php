@@ -510,7 +510,7 @@ abstract class we_rebuild_wizard{
 
 		foreach($metaDataFields as $md){
 			if($md['importFrom']){
-				$checked = isset($metaFields[$md['tag']]) && $metaFields[$md['tag']];
+				$checked = !empty($metaFields[$md['tag']]);
 				$_html .= we_html_forms::checkbox(1, $checked, "_field[" . $md['tag'] . "]", $md['tag'], false, "defaultfont", "checkForError()");
 			}
 		}

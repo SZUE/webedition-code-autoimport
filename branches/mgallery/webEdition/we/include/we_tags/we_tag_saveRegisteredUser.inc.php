@@ -120,7 +120,7 @@ function we_tag_saveRegisteredUser($attribs){
 	}
 
 	//die neuen daten in die session schreiben
-	$oldReg = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'];
+	$oldReg = !empty($_SESSION['webuser']['registered']);
 	if($changesessiondata && $oldReg){
 		//keep Password if known
 		if(SECURITY_SESSION_PASSWORD & we_customer_customer::STORE_PASSWORD){
@@ -182,8 +182,8 @@ function we_saveCustomerImages(){
 						$_text = $_fileName . $_extension;
 
 						//image needs to be scaled
-						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
-								(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
+						if((!empty($_SESSION['webuser']['imgtmp'][$imgName]['width'])) ||
+								(!empty($_SESSION['webuser']['imgtmp'][$imgName]['height']))){
 							$imageData = we_base_file::load($_serverPath);
 							$thumb = new we_thumbnail();
 							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);

@@ -460,7 +460,7 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.ti
 
 	function getJs(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$css = isset($this->args["cssClasses"]) && $this->args["cssClasses"] ? explode(',', $this->args["cssClasses"]) : array();
+		$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : array();
 		return parent::getJs() . we_html_element::jsElement('
 var size = {
 	"docSelect": {

@@ -242,10 +242,10 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		if($href && (strpos($href, "?") !== false || strpos($href, "#") !== false)){
 			$urlparts = parse_url($href);
 
-			if((!$param) && isset($urlparts["query"]) && $urlparts["query"]){
+			if((!$param) && !empty($urlparts["query"])){
 				$param = $urlparts["query"];
 			}
-			if((!$anchor) && isset($urlparts["fragment"]) && $urlparts["fragment"]){
+			if((!$anchor) && !empty($urlparts["fragment"])){
 				$anchor = $urlparts["fragment"];
 			}
 		}
@@ -544,7 +544,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		return parent::getJs() . we_html_element::jsElement('
 var weAcCheckLoop = 0;
 var editname="' . (isset($this->args["editname"]) ? $this->args["editname"] : '') . '";
-var classNames = ' . (isset($this->args["cssClasses"]) && $this->args["cssClasses"] ? '"' . $this->args['cssClasses'] . '".split(/,/)' : 'top.opener.weclassNames_tinyMce;') . ';
+var classNames = ' . (!empty($this->args["cssClasses"]) ? '"' . $this->args['cssClasses'] . '".split(/,/)' : 'top.opener.weclassNames_tinyMce;') . ';
 
 var g_l={
 	anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",

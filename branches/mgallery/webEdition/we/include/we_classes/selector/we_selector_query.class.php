@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@ class we_selector_query{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-
 	private $db;
 	var $result = array();
 	var $fields;
@@ -94,7 +92,7 @@ class we_selector_query{
 			$type = str_replace(" ", "", $type);
 			if($type == we_base_ContentTypes::FOLDER){
 				$q[] = 'IsFolder=1';
-			} elseif(isset($typeField) && $typeField){
+			} elseif(!empty($typeField)){
 				$q[] = $typeField . '="' . $this->db->escape($type) . '"';
 				$isFolder = 0;
 				$addCT = 1;
@@ -153,8 +151,8 @@ class we_selector_query{
 		$where = ($rootOnly ?
 				"Path LIKE '" . $rootDir . "'" :
 				"Path REGEXP '^" . preg_quote(preg_quote($search)) . "[^/]*$'" . (
-						($rootDir) ?
-						" AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" :
+				($rootDir) ?
+					" AND (Path LIKE '" . $this->db->escape($rootDir) . "' OR Path LIKE '" . $this->db->escape($rootDir) . "%')" :
 					''));
 
 		$isFolder = 0;
@@ -167,7 +165,7 @@ class we_selector_query{
 			$type = str_replace(" ", "", $type);
 			if($type == we_base_ContentTypes::FOLDER){
 				$q[] = 'IsFolder=1';
-			} elseif(isset($typeField) && $typeField){
+			} elseif(!empty($typeField)){
 				$q[] = $typeField . '="' . $this->db->escape($type) . '"';
 				$isFolder = 0;
 				$addCT = 1;
@@ -224,7 +222,7 @@ class we_selector_query{
 		}
 
 		$this->db->query('SELECT ' . implode(',', $this->fields) . ' FROM ' . $this->db->escape($table) . ' WHERE ParentID=' . intval($id) . ' AND (IsFolder=1 ' . $ctntQuery . ' ) ' .
-				$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
+			$userExtraSQL . ' ORDER BY IsFolder DESC, Path ');
 	}
 
 	/**
@@ -244,7 +242,7 @@ class we_selector_query{
 		}
 
 		$userExtraSQL = (!defined('BANNER_TABLE') || $table != BANNER_TABLE ?
-						($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
+				($useExtraSQL ? $this->getUserExtraQuery($table, $useCreatorID) : '') : '');
 
 		$this->addQueryField("Text");
 		$this->addQueryField("ParentID");

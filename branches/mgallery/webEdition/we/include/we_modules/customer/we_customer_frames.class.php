@@ -318,7 +318,7 @@ function setTab(tab) {
 				$enc = new we_html_select(array("name" => "field_encrypt", "class" => "weSelect", "style" => "width:200px;"));
 				$enc->addOptions(array(0 => g_l('global', '[no]'), 1 => g_l('global', '[yes]')));
 
-				if(isset($field_props['encrypt']) && $field_props['encrypt']){
+				if(!empty($field_props['encrypt'])){
 					$enc->selectOption(1);
 				}
 
@@ -437,9 +437,9 @@ function setTab(tab) {
 			if(($k = we_base_request::_(we_base_request::STRINGC, 'keyword')) && we_base_request::_(we_base_request::BOOL, 'search')){
 				$result = $this->View->getSearchResults($k, $max_res);
 			}
-			
+
 			$foundItems = count($result);
-			
+
 			foreach($result as $id => $text){
 				$select->addOption($id, $text);
 			}

@@ -46,7 +46,7 @@ $we_dt = isset($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]) ? $_SESS
 include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 $cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 if($cmd && $cmd != 'ResetVersion' && $cmd != 'PublishDocs'){
-	if(isset($FROM_WE_SHOW_DOC) && $FROM_WE_SHOW_DOC){ // when called showDoc.php
+	if(!empty($FROM_WE_SHOW_DOC)){ // when called showDoc.php
 		if((!$we_doc->IsDynamic) && (!$tmplID)){ // if the document is not a dynamic php-doc and is published we make a redirect to the static page
 			header('Location: ' . ($we_doc->Published ? $we_doc->Path : '/this_file_does_not_exist_on_this_server'));
 			exit();
@@ -97,7 +97,7 @@ if($tmplID && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT)){ // if
 
 if(($we_include = $we_doc->editor())){
 	if(substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
-		if((!defined('WE_CONTENT_TYPE_SET')) && isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat']){ //	send charset which might be determined in template
+		if((!defined('WE_CONTENT_TYPE_SET')) && !empty($we_doc->elements['Charset']['dat'])){ //	send charset which might be determined in template
 			define('WE_CONTENT_TYPE_SET', 1);
 			we_html_tools::headerCtCharset('text/html', $we_doc->elements['Charset']['dat'], true);
 		}

@@ -42,7 +42,7 @@ class rpcDeleteVersionsWizardCmd extends rpcCmd{
 //		foreach($_SESSION['weS']['versions']['IDs'] as $k=>$v) {
 //			weVersions::deleteVersion($v);
 //		}
-		if(isset($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && $_SESSION['weS']['versions']['deleteWizardbinaryPath']){
+		if(!empty($_SESSION['weS']['versions']['deleteWizardbinaryPath']) && is_array($_SESSION['weS']['versions']['deleteWizardbinaryPath'])){
 			foreach($_SESSION['weS']['versions']['deleteWizardbinaryPath'] as $v){
 				$binaryPath = $_SERVER['DOCUMENT_ROOT'] . $v;
 				$binaryPathUsed = f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE binaryPath="' . $db->escape($v) . '" LIMIT 1', '', $db);

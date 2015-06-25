@@ -90,8 +90,8 @@ function we_tag_img($attribs){
 		$title = $GLOBALS['we_doc']->getElement($titleField);
 		if(we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 2) === 'change_image'){
 			//in case of changed images give them priority to already set text
-			$tagAttribs['alt'] = (isset($tagAttribs['alt']) && $tagAttribs['alt'] ? $tagAttribs['alt'] : $alt);
-			$tagAttribs['title'] = (isset($tagAttribs['title']) && $tagAttribs['title'] ? $tagAttribs['title'] : $title);
+			$tagAttribs['alt'] = (!empty($tagAttribs['alt']) ? $tagAttribs['alt'] : $alt);
+			$tagAttribs['title'] = (!empty($tagAttribs['title']) ? $tagAttribs['title'] : $title);
 		} else {
 			$tagAttribs['alt'] = $alt ? : (isset($tagAttribs['alt']) ? $tagAttribs['alt'] : '');
 			$tagAttribs['title'] = $title ? : (isset($tagAttribs['title']) ? $tagAttribs['title'] : '');

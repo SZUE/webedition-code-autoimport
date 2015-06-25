@@ -257,7 +257,7 @@ class we_base_request{
 		$var = $_REQUEST;
 		$args = func_get_args();
 		unset($args[0], $args[2]);
-		if(false && isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'] && WE_VERSION_SUPP){
+		if(false && !empty($_SESSION['user']['isWeSession']) && WE_VERSION_SUPP){
 			$argname = implode('.', $args);
 			//reduce duplicate requests on the same global scope
 			static $requests = array();

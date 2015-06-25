@@ -1240,7 +1240,7 @@ _multiEditorreload = true;';
 		/* 		if(!$onlyParent && !array_filter($user_permissions)){
 		  t_e('error reading user permissions! Check parent permissions & resave parent folders! UID: ' . $uid, $user_permissions);
 		  } */
-		return (isset($user_permissions['ADMINISTRATOR']) && $user_permissions['ADMINISTRATOR'] ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
+		return (!empty($user_permissions['ADMINISTRATOR']) ? array('ADMINISTRATOR' => 1) : array_filter($user_permissions));
 	}
 
 	/**
@@ -1393,7 +1393,7 @@ _multiEditorreload = true;';
 
 		$_username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 
-		$_password = (isset($_SESSION['user']['ID']) && $_SESSION['user']['ID'] && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
+		$_password = (!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
 				'****************' :
 				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="top.content.setHot()" autocomplete="off"', 'password', 240));
 
@@ -1529,7 +1529,7 @@ function toggleRebuildPerm(disabledOnly) {';
 				if($pname != 'ADMINISTRATOR'){
 					$uncheckjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = false;top.content.setHot();';
 					$checkjs .= 'document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = true;top.content.setHot();';
-					$defaultjs.='document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = ' . (isset($this->permissions_defaults[$gname][$pname]) && $this->permissions_defaults[$gname][$pname] ? 'true' : 'false') . ';top.content.setHot();';
+					$defaultjs.='document.we_form.' . $this->Name . '_Permission_' . $pname . '.checked = ' . (!empty($this->permissions_defaults[$gname][$pname]) ? 'true' : 'false') . ';top.content.setHot();';
 				}
 			}
 		}
@@ -1789,7 +1789,7 @@ function delElement(elvalues,elem) {
 
 		if(!empty($_language)){ // Build language select box
 			$_languages = new we_html_select(array('name' => $this->Name . '_Preference_Language', 'class' => 'weSelect'));
-			$myCompLang = (isset($this->Preferences['Language']) && $this->Preferences['Language'] ? $this->Preferences['Language'] : $GLOBALS['WE_LANGUAGE']);
+			$myCompLang = (!empty($this->Preferences['Language']) ? $this->Preferences['Language'] : $GLOBALS['WE_LANGUAGE']);
 
 			foreach($_language as $key => $value){
 				$_languages->addOption($key, $value);
@@ -1812,7 +1812,7 @@ function delElement(elvalues,elem) {
 		foreach($c as $char){
 			$_charset->addOption($char, $char);
 		}
-		$myCompChar = (isset($this->Preferences['BackendCharset']) && $this->Preferences['BackendCharset'] ? $this->Preferences['BackendCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
+		$myCompChar = (!empty($this->Preferences['BackendCharset']) ? $this->Preferences['BackendCharset'] : $GLOBALS['WE_BACKENDCHARSET']);
 		$_charset->selectOption($myCompChar);
 		$_settings[] = array(
 			'headline' => g_l('prefs', '[choose_backendcharset]'),

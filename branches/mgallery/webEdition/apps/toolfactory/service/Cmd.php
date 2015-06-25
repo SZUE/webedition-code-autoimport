@@ -109,7 +109,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		}
 
 		// check if maintable exists
-		if((isset($model->maintable) && $model->maintable != "")){
+		if((!empty($model->maintable))){
 			$db=new DB_WE();
 			if($db->isTabExist($model->maintable)){
 				$ex = new we_service_Exception(

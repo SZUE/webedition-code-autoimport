@@ -72,7 +72,6 @@ treeData.frames=frames;
 		$db->query('SELECT ' . $elem . ' FROM ' . $table . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,abs(text),Text' . ($segment ? " LIMIT $offset,$segment" : '' ));
 
 		while($db->next_record()){
-
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,

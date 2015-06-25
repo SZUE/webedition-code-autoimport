@@ -595,7 +595,7 @@ abstract class we_root extends we_class{
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $ctype . "',1)");
 		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . $ctype . "','" . $etype . "'); }");
-		if(isset($this->DocType) && $this->DocType && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
+		if(!empty($this->DocType) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 			$db = new DB_WE();
 			$LDcoType = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->DocType . ' AND Locale="' . $db->escape($langkey) . '"', '', $db);
 			if($LDcoType){
@@ -632,7 +632,7 @@ abstract class we_root extends we_class{
 			$htmlzw = '';
 			foreach($_languages as $langkey => $lang){
 				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
-				$LDID = isset($this->LangLinks[$langkey]['id']) && $this->LangLinks[$langkey]['id'] && $this->LangLinks[$langkey]['id'] !== -1 ? $this->LangLinks[$langkey]['id'] : 0;
+				$LDID = !empty($this->LangLinks[$langkey]['id']) && $this->LangLinks[$langkey]['id'] !== -1 ? $this->LangLinks[$langkey]['id'] : 0;
 				$path = $LDID ? $this->LangLinks[$langkey]['ipath'] : '';
 
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formInputLangLink($lang, $langkey, $LDID, $path) . '</div>';
@@ -697,7 +697,7 @@ abstract class we_root extends we_class{
 		switch($key){
 			case 'dat':
 				//check bdid first
-				return (isset($this->elements[$name]['bdid']) && $this->elements[$name]['bdid'] ?
+				return (!empty($this->elements[$name]['bdid']) ?
 						$this->elements[$name]['bdid'] :
 						(isset($this->elements[$name]['dat']) && (!$defaultOnEmpty || $this->elements[$name]['dat']) ?
 							$this->elements[$name]['dat'] :
@@ -886,7 +886,7 @@ abstract class we_root extends we_class{
 	 *
 	 */
 	function resaveWeDocumentCustomerFilter(){
-		if(isset($this->documentCustomerFilter) && $this->documentCustomerFilter){
+		if(!empty($this->documentCustomerFilter)){
 			we_customer_documentFilter::saveForModel($this);
 		}
 	}
@@ -1081,8 +1081,8 @@ abstract class we_root extends we_class{
 			}
 			return;
 		}
-			foreach($langkeys as $langkey){
-				$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
+		foreach($langkeys as $langkey){
+			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
 		}
 		foreach($langkeys as $langkey){
 			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
@@ -1102,7 +1102,7 @@ abstract class we_root extends we_class{
 		$replace = $this->getLinkReplaceArray();
 		foreach($this->elements as $k => $v){
 			if($this->i_isElement($k)){
-				if((!isset($v['type']) || $v['type'] != 'vars') && (( isset($v['dat']) && $v['dat'] != '' ) || (isset($v['bdid']) && $v['bdid']) || (isset($v['ffname']) && $v['ffname']))){
+				if((!isset($v['type']) || $v['type'] != 'vars') && (!empty($v['dat']) || !empty($v['bdid']) || !empty($v['ffname']) )){
 
 					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
 					$data = array();
@@ -1112,7 +1112,7 @@ abstract class we_root extends we_class{
 						if($k === 'data' && $this->isBinary()){
 							break;
 						}
-						if($fieldName === 'Dat' && (isset($v['ffname']) && $v['ffname'])){
+						if($fieldName === 'Dat' && !empty($v['ffname'])){
 							$v['type'] = 'formfield';
 							$val = serialize($v);
 							// Artjom garbage fix
@@ -1486,7 +1486,7 @@ abstract class we_root extends we_class{
 	 */
 	function rewriteNavigation(){
 		// rewrite filter
-		if(defined('CUSTOMER_TABLE') && isset($this->documentCustomerFilter) && $this->documentCustomerFilter != false){
+		if(defined('CUSTOMER_TABLE') && !empty($this->documentCustomerFilter)){
 			we_navigation_customerFilter::updateByFilter($this->documentCustomerFilter, $this->ID, $this->Table);
 		}
 

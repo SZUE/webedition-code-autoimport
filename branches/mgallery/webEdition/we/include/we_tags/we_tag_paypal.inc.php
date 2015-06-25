@@ -129,7 +129,7 @@ function we_tag_paypal($attribs){
 		if(isset($formField[4])){ // determine the City
 			$sendCity = $_SESSION['webuser'][$formField[4]];
 		}
-		if(isset($formField[18]) && $formField[18]){ // determine the City
+		if(!empty($formField[18])){ // determine the City
 			$sSendEmail = $_SESSION['webuser'][$formField[18]];
 		}
 
@@ -219,7 +219,7 @@ function we_tag_paypal($attribs){
 					if(we_shop_category::isCategoryMode()){
 						$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
 						$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
-						$catId = isset($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
+						$catId = !empty($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
 						$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry, true);
 						$shopCategory = we_shop_category::getShopCatFieldByID($catId, $wedocCategory, 'ID');
@@ -247,7 +247,7 @@ function we_tag_paypal($attribs){
 						case (!$useVat && !$netprices) :
 							$shopVat = (1 + ($shopVat / 100));
 							//paypal allows only two decimal places
-							$itemPrice = ($itemPrice / $shopVat);	
+							$itemPrice = ($itemPrice / $shopVat);
 							break;
 						case ($netprices && $useVat) :
 							$totalVat = $itemPrice / 100 * $shopVat;
@@ -258,12 +258,12 @@ function we_tag_paypal($attribs){
 						default:
 							break;
 					}
-					
+
 					//round itemprice first here, because for calculating correct vat we need orign itemprice
 					$itemPrice = round($itemPrice, 2); //#6546
-					
+
 					$p->add_field('amount_' . $i, $itemPrice);
-					
+
 					// determine the shipping cost by accumulating the total
 					$summit += ( $itemPrice * $item['quantity']);
 				}

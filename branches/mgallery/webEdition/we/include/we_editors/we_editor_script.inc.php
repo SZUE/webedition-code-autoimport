@@ -90,7 +90,7 @@ we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 $js = '';
 
 if(isset($GLOBALS['we_doc'])){
-	if(isset($GLOBALS['we_doc']->ApplyWeDocumentCustomerFiltersToChilds) && $GLOBALS['we_doc']->ApplyWeDocumentCustomerFiltersToChilds && $GLOBALS['we_doc']->ParentID){
+	if(!empty($GLOBALS['we_doc']->ApplyWeDocumentCustomerFiltersToChilds) && $GLOBALS['we_doc']->ParentID){
 		$js.="top.we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "', '" . $GLOBALS['we_doc']->ParentID . "');";
 	}
 

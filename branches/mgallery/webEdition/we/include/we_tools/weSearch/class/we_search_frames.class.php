@@ -53,7 +53,7 @@ class we_search_frames extends we_tool_frames{
 
 		$rootjs = (!$pid ?
 				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(new ' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
+				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
 				'');
 
 
@@ -424,13 +424,13 @@ function setTab(tab) {
 		$out = '';
 
 		foreach($content as $i => $c){
-			$_forceRightHeadline = (isset($c['forceRightHeadline']) && $c['forceRightHeadline']);
-			$icon = (isset($c['icon']) && $c['icon'] ?
+			$_forceRightHeadline = (!empty($c['forceRightHeadline']));
+			$icon = (!empty($c['icon']) ?
 					'<img src="' . ICON_DIR . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />' :
 					"");
-			$headline = (isset($c['headline']) && $c['headline']) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
-			$mainContent = (isset($c['html']) && $c['html']) ? $c['html'] : '';
-			$leftWidth = (isset($c['space']) && $c['space']) ? abs($c['space']) : 0;
+			$headline = (!empty($c['headline'])) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
+			$mainContent = (!empty($c['html'])) ? $c['html'] : '';
+			$leftWidth = (!empty($c['space'])) ? abs($c['space']) : 0;
 			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === '') || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 

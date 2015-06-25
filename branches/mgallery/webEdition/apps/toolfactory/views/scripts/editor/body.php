@@ -224,11 +224,11 @@ if(!empty($this->model->ID)){
 						$authorentry = array();
 						for($i = 0; $i < count($authornames); $i++){
 							$htmla = '';
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+							if(!empty($authorlinks[$i])){
 								$htmla .= '<a href="' . $authorlinks[$i] . '" target="_blank" >';
 							}
 							$htmla .= $authornames[$i];
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+							if(!empty($authorlinks[$i])){
 								$htmla .= '</a>';
 							}
 							$authorentry[] = $htmla;
@@ -236,11 +236,11 @@ if(!empty($this->model->ID)){
 						$html = implode(', ', $authorentry);
 					} else {
 						$html = '';
-						if(isset($authorlinks) && !empty($authorlinks)){
+						if(!empty($authorlinks)){
 							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
 						}
 						$html .= $authornames;
-						if(isset($authorlinks) && !empty($authorlinks)){
+						if(!empty($authorlinks)){
 							$html .= '</a>';
 						}
 					}
@@ -277,11 +277,11 @@ if(!empty($this->model->ID)){
 						$authorentry = array();
 						for($i = 0; $i < count($authornames); $i++){
 							$htmla = '';
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+							if(!empty($authorlinks[$i])){
 								$htmla .= '<a href="' . $authorlinks[$i] . '" target="_blank" >';
 							}
 							$htmla .= $authornames[$i];
-							if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+							if(!empty($authorlinks[$i])){
 								$htmla .= '</a>';
 							}
 							$authorentry[] = $htmla;
@@ -289,11 +289,11 @@ if(!empty($this->model->ID)){
 						$html .= implode(', ', $authorentry);
 					} else {
 						$html .= '';
-						if(isset($authorlinks) && !empty($authorlinks)){
+						if(!empty($authorlinks)){
 							$html .= '<a href="' . $authorlinks . '" target="_blank" >';
 						}
 						$html .= $authornames;
-						if(isset($authorlinks) && !empty($authorlinks)){
+						if(!empty($authorlinks)){
 							$html .= '</a>';
 						}
 					}

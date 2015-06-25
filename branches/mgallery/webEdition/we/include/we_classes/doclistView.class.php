@@ -255,7 +255,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 				if(isset($searchText[0])){
 					$searchString = (isset($searchText[$i]) ? $searchText[$i] : $searchText[0]);
 				}
-				if(isset($searchString) && $searchString != ""){
+				if(!empty($searchString)){
 
 					switch($searchField){
 						default:
@@ -649,11 +649,11 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 <tr><td class="defaultfont">';
 
 		foreach($content as $i => $c){
-			$_forceRightHeadline = (isset($c["forceRightHeadline"]) && $c["forceRightHeadline"]);
-			$icon = (isset($c["icon"]) && $c["icon"]) ? ('<img src="' . ICON_DIR . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
-			$headline = (isset($c["headline"]) && $c["headline"]) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>') : "";
-			$mainContent = (isset($c["html"]) && $c["html"]) ? $c["html"] : "";
-			$leftWidth = (isset($c["space"]) && $c["space"]) ? abs($c["space"]) : 0;
+			$_forceRightHeadline = (!empty($c["forceRightHeadline"]));
+			$icon = (!empty($c["icon"])) ? ('<img src="' . ICON_DIR . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
+			$headline = (!empty($c["headline"])) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>') : "";
+			$mainContent = (!empty($c["html"])) ? $c["html"] : "";
+			$leftWidth = (!empty($c["space"])) ? abs($c["space"]) : 0;
 			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
 			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 

@@ -119,17 +119,6 @@ function update_icon(fid) {
 	drawEintraege();
 }
 
-function get_mentry_index(id) {
-	var ai = 1;
-	while (ai <= treeData.len) {
-		if (treeData[ai].id == id) {
-			return ai;
-		}
-		ai++;
-	}
-	return -1;
-}
-
 function set_frames(vc) {
 	if (vc == "message" || vc == "todo") {
 		top.content.iconbar.location = we_frameset + "?we_transaction=" + we_transaction + "&pnt=iconbar&viewclass=" + vc;
@@ -171,7 +160,7 @@ function we_cmd() {
 			}
 			break;
 		case "show_folder_content":
-			ind = get_mentry_index(arguments[1]);
+			ind = indexOfEntry(arguments[1]);
 			if (ind > -1) {
 				update_icon(arguments[1]);
 				if (top.content.viewclass != treeData[ind].viewclass) {
@@ -254,9 +243,8 @@ function drawEintraege() {
 
 function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
-	var ai = 1;
 	ret = "";
-	while (ai <= nf.len) {
+	for (var ai = 1; ai <= nf.len; ai++) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == "leaf_Folder") {
 			ret += '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
@@ -303,7 +291,6 @@ function zeichne(startEntry, zweigEintrag) {
 				ret += zeichne(nf[ai].id, newAst);
 			}
 		}
-		ai++;
 	}
 	return ret;
 }
@@ -373,21 +360,6 @@ function search(eintrag) {
 	return nf;
 }
 
-function container() {
-	this.len = 0;
-	this.clear = function () {
-		this.len = 0;
-	};
-	this.add = add;
-	this.addSort = addSort;
-	return this;
-}
-
-function add(object) {
-	this.len++;
-	this[this.len] = object;
-}
-
 function update_Node(id) {
 	var i;
 	var off = -1;
@@ -453,12 +425,13 @@ function delete_menu_entries(ids) {
 }
 
 function rootEntry(id, text, rootstat) {
-	this.id = id;
-	this.text = text;
-	this.loaded = true;
-	this.typ = 'root';
-	this.rootstat = rootstat;
-	return this;
+	return new node({
+		id: id,
+		text: text,
+		loaded: true,
+		typ: 'root',
+		rootstat: rootstat,
+	});
 }
 
 function msg_start() {
@@ -469,4 +442,3 @@ function msg_start() {
 function doClick(id) {
 	top.content.we_cmd(top.content.mode, id);
 }
-var treeData = new container();

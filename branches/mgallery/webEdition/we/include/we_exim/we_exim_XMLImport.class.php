@@ -532,7 +532,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				} else if($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']){
 					$own = $this->options['owners_overwrite_id'];
 				}
-				if(isset($own) && $own && !in_array($own, $newowners)){
+				if(!empty($own) && !in_array($own, $newowners)){
 					if(!$object->CreatorID){
 						$object->CreatorID = $own;
 					}

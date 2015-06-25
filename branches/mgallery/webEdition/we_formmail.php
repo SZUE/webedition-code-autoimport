@@ -170,7 +170,7 @@ if(!check_required($_req)){
 	error_page();
 }
 
-if(isset($_REQUEST['email']) && $_REQUEST['email']){//fixme: note this mail can be in "abc" <cc@de.de> format
+if(!empty($_REQUEST['email'])){//fixme: note this mail can be in "abc" <cc@de.de> format
 	if(!we_check_email($_REQUEST['email'])){
 		if(($foo = we_base_request::_(we_base_request::URL, 'mail_error_page'))){
 			redirect($foo);
@@ -235,16 +235,16 @@ $we_html .= '</table>';
 $we_html_confirm = '';
 $we_txt_confirm = '';
 
-if(isset($_REQUEST['email']) && $_REQUEST['email']){
-	if(isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']){
+if(!empty($_REQUEST['email'])){
+	if(!empty($_REQUEST['confirm_mail'])){
 		$we_html_confirm = $we_html;
 		$we_txt_confirm = $we_txt;
-		if(isset($_REQUEST['pre_confirm']) && $_REQUEST['pre_confirm']){
+		if(!empty($_REQUEST['pre_confirm'])){
 			contains_bad_str($_REQUEST['pre_confirm']);
 			$we_html_confirm = $_REQUEST['pre_confirm'] . getHtmlTag('br') . $we_html_confirm;
 			$we_txt_confirm = $_REQUEST['pre_confirm'] . "\n\n" . $we_txt_confirm;
 		}
-		if(isset($_REQUEST['post_confirm']) && $_REQUEST['post_confirm']){
+		if(!empty($_REQUEST['post_confirm'])){
 			contains_bad_str($_REQUEST['post_confirm']);
 			$we_html_confirm = $we_html_confirm . getHtmlTag('br') . $_REQUEST['post_confirm'];
 			$we_txt_confirm = $we_txt_confirm . "\n\n" . $_REQUEST['post_confirm'];
@@ -252,16 +252,16 @@ if(isset($_REQUEST['email']) && $_REQUEST['email']){
 	}
 }
 
-$email = (isset($_REQUEST['email']) && $_REQUEST['email']) ?
+$email = (!empty($_REQUEST['email'])) ?
 	$_REQUEST['email'] :
-	((isset($_REQUEST['from']) && $_REQUEST['from']) ?
+	((!empty($_REQUEST['from'])) ?
 		$_REQUEST['from'] :
 		WE_DEFAULT_EMAIL);
 
 $subject = we_base_request::_(we_base_request::STRING, 'subject', WE_DEFAULT_SUBJECT);
 $charset = str_replace(array("\n", "\r"), '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET']));
-$recipient = (isset($_REQUEST['recipient']) && $_REQUEST['recipient']) ? $_REQUEST['recipient'] : '';
-$from = (isset($_REQUEST['from']) && $_REQUEST['from']) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL;
+$recipient = (!empty($_REQUEST['recipient'])) ? $_REQUEST['recipient'] : '';
+$from = (!empty($_REQUEST['from'])) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL;
 
 $mimetype = we_base_request::_(we_base_request::STRING, 'mimetype', '');
 
@@ -318,7 +318,7 @@ if($recipient){
 
 	if($recipientsList){
 		foreach($_FILES as $file){
-			if(isset($file['tmp_name']) && $file['tmp_name']){
+			if(!empty($file['tmp_name'])){
 				$tempName = TEMP_PATH . $file['name'];
 				move_uploaded_file($file['tmp_name'], $tempName);
 				$phpmail->doaddAttachment($tempName);
@@ -336,7 +336,7 @@ if($recipient){
 		}
 	}
 
-	if((isset($_REQUEST['confirm_mail']) && $_REQUEST['confirm_mail']) && FORMMAIL_CONFIRM){
+	if((!empty($_REQUEST['confirm_mail'])) && FORMMAIL_CONFIRM){
 		if($wasSent){
 			// validation
 			if(!we_check_email($email)){

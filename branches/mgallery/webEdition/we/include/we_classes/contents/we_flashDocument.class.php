@@ -160,7 +160,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 			$this->html = getHtmlTag('object', $attribs, $this->html . $altContent);
 			if(isset($attribs['only'])){
 				$this->html = $attribs[$attribs['only']];
-			} else if(isset($attribs['pathonly']) && $attribs['pathonly']){
+			} else if(!empty($attribs['pathonly'])){
 				$this->html = $src;
 			}
 		} else {

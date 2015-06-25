@@ -224,9 +224,8 @@ function drawTree(){
 			'
 function draw(startEntry,zweigEintrag){
 	var nf = search(startEntry);
-	var ai = 1;
 	var row="";
-	while (ai <= nf.len) {
+	for (var ai = 1;ai <= nf.len;ai++) {
 		row+=zweigEintrag;
 		var pind=indexOfEntry(nf[ai].parentid);
 		if(pind!=-1){
@@ -242,7 +241,6 @@ function draw(startEntry,zweigEintrag){
 				}
 			}
 		}
-		ai++;
 	}
 	return row;
 }';

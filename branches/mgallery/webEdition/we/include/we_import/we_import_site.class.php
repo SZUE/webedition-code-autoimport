@@ -63,7 +63,7 @@ class we_import_site{
 	public function __construct(){
 		$wsa = makeArrayFromCSV(get_def_ws());
 		$ws = ($wsa ? $wsa[0] : 0);
-		$this->from = we_base_request::_(we_base_request::FILE, 'from', (isset($_SESSION['prefs']['import_from']) && $_SESSION['prefs']['import_from'] ? $_SESSION['prefs']['import_from'] : $this->from));
+		$this->from = we_base_request::_(we_base_request::FILE, 'from', (!empty($_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from));
 		$_SESSION['prefs']['import_from'] = $this->from;
 		$this->to = we_base_request::_(we_base_request::FILE, 'to', (strlen($this->to) ? $this->to : $ws));
 		$this->depth = we_base_request::_(we_base_request::INT, 'depth', $this->depth);
@@ -1253,9 +1253,9 @@ function doUnload() {
 						$attribs[$regs2[1][$z]] = $regs2[2][$z];
 					}
 					if(isset($attribs["rel"]) && $attribs["rel"] === 'stylesheet'){
-						if(isset($attribs["href"]) && $attribs["href"]){
+						if(!empty($attribs["href"])){
 							$id = path_to_id($attribs["href"]);
-							$tag = '<we:css id="' . $id . '" xml="true" ' . ((isset($attribs["media"]) && $attribs["media"]) ? ' pass_media="' . $attribs["media"] . '"' : '') . '/>';
+							$tag = '<we:css id="' . $id . '" xml="true" ' . ((!empty($attribs["media"])) ? ' pass_media="' . $attribs["media"] . '"' : '') . '/>';
 							$templateCode = str_replace($regs[0][$i], $tag, $templateCode);
 						}
 					}
@@ -1343,7 +1343,7 @@ function doUnload() {
 		$_templateFields = self::_getFieldsFromTemplate($templateId);
 
 		foreach($fieldValues as $field){
-			if(isset($field["pre"]) && $field["pre"] && isset($field["post"]) && $field["post"] && isset($field["name"]) && $field["name"]){
+			if(!empty($field["pre"]) && !empty($field["post"]) && !empty($field["name"])){
 				$fieldval = '';
 				$field['pre'] = str_replace(array("\r\n", "\r"), "\n", $field['pre']);
 				$field['post'] = str_replace(array("\r\n", "\n"), "\n", $field['post']);

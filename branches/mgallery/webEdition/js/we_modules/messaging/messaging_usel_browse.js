@@ -128,8 +128,7 @@ function zeichne(startEntry, zweigEintrag) {
 }
 
 
-function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
-
+function makeNewEntry(id, pid, txt, open, ct, tab, pub) {
 	if (table == tab) {
 		if (treeData[indexOfEntry(pid)]) {
 			if (ct === "folder") {
@@ -231,40 +230,14 @@ function search(eintrag) {
 	return nf;
 }
 
-function container() {
-	this.len = 0;
-	this.clear = function () {
-		this.len = 0;
-	};
-	this.add = add;
-	this.addSort = addSort;
-	return this;
-}
-
-function add(object) {
-	this.len++;
-	this[this.len] = object;
-}
-
-function addSort(object) {
-	this.len++;
-	for (var i = this.len; i > 0; i--) {
-		if (i > 1 && this[i - 1].text.toLowerCase() > object.text.toLowerCase()) {
-			this[i] = this[i - 1];
-		} else {
-			this[i] = object;
-			break;
-		}
-	}
-}
-
 function rootEntry(name, text, rootstat) {
-	this.name = name;
-	this.text = text;
-	this.loaded = true;
-	this.typ = 'root';
-	this.rootstat = rootstat;
-	return this;
+	return new node({
+		name: name,
+		text: text,
+		loaded: true,
+		typ: 'root',
+		rootstat: rootstat,
+	});
 }
 
 function drawEintraege() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree

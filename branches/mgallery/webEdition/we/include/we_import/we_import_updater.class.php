@@ -39,7 +39,7 @@ class we_import_updater extends we_exim_XMLExIm{
 
 		$this->Patterns = new we_exim_searchPatterns();
 
-		if(isset($object->MasterTemplateID) && $object->MasterTemplateID){
+		if(!empty($object->MasterTemplateID)){
 			$ref = $this->RefTable->getRef(
 				array(
 					'OldID' => $object->MasterTemplateID,
@@ -73,7 +73,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		if($this->debug){
 			t_e("Updating TemplateID property");
 		}
-		if(isset($object->TemplateID) && $object->TemplateID){
+		if(!empty($object->TemplateID)){
 			$ref = $this->RefTable->getRef(
 				array(
 					"OldID" => $object->TemplateID,
@@ -82,7 +82,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			);
 			if($ref){
 				$object->TemplateID = $ref->ID;
-			} else if(isset($object->TemplatePath) && $object->TemplatePath){
+			} else if(!empty($object->TemplatePath)){
 				$ref = $this->RefTable->getRef(
 					array(
 						"ID" => $object->ID,
@@ -111,7 +111,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			);
 			if($ref){
 				$object->DocType = $ref->ID;
-			} else if(isset($object->OldDocTypeName) && $object->OldDocTypeName){
+			} else if(!empty($object->OldDocTypeName)){
 				$object->DocType = intval(f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($object->OldDocTypeName) . '"'));
 			}
 		}
@@ -407,7 +407,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			t_e("Updating doctype object...\n");
 		}
 		// quick fix for fsw
-		if(isset($object->ParentPath) && $object->ParentPath){
+		if(!empty($object->ParentPath)){
 			$_new_id = path_to_id($object->ParentPath);
 			if($_new_id){
 				$object->ParentID = $_new_id;

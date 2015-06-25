@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo (!(isset($GLOBALS["we_print_not_htmltop"]) && $GLOBALS["we_print_not_htmltop"]) ? we_html_tools::getHtmlTop() : '') .
+echo (empty($GLOBALS["we_print_not_htmltop"]) ? we_html_tools::getHtmlTop() : '') .
  STYLESHEET;
 
 $_row = 0;

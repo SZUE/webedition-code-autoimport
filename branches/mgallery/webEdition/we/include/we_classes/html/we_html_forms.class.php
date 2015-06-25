@@ -188,8 +188,8 @@ abstract class we_html_forms{
 					weTag_getAttribute('showmenus', $attribs, true, we_base_request::BOOL)));
 
 		$importrtf = weTag_getAttribute('importrtf', $attribs, false, we_base_request::BOOL);
-		$doc = (isset($GLOBALS['we_doc']) && $GLOBALS['we_doc'] && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
-		$inwebedition = ($forceinwebedition ? : (isset($GLOBALS[$doc]->InWebEdition) && $GLOBALS[$doc]->InWebEdition));
+		$doc = (!empty($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
+		$inwebedition = ($forceinwebedition ? : !empty($GLOBALS[$doc]->InWebEdition));
 
 		$inlineedit = // we are in frontend, where default is inlineedit = true
 			weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), we_base_request::BOOL);

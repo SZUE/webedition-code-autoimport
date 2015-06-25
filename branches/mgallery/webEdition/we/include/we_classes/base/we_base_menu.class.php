@@ -121,10 +121,10 @@ we_lcmd(cmd,cmd1);
 						($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
 						(isset($e['text']) ? $e['text'] : ''));
 
-				if(isset($e['hide']) && $e['hide']){
+				if(!empty($e['hide'])){
 
 				} else {
-					if((!(isset($e['cmd']) && $e['cmd'])) && $mtext){
+					if(empty($e['cmd']) && $mtext){
 						if($e['enabled'] == 1){
 							$opt .= '<li><a class="fly" href="#void">' . $mtext . '<i class="fa fa-caret-right"></i></a><ul>';
 							$this->h_pCODE($men, $opt, $id, $newAst);

@@ -38,7 +38,7 @@ if(!isset($we_ContentType)){
 	}
 }
 
-$showDoc = isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC'];
+$showDoc = !empty($GLOBALS['FROM_WE_SHOW_DOC']);
 switch(isset($we_ContentType) ? $we_ContentType : ''){
 	case we_base_ContentTypes::VIDEO:
 		$we_doc = new we_document_video();
@@ -93,7 +93,7 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		$we_doc = new we_otherDocument();
 		break;
 	case '':
-		$we_doc = (isset($we_dt[0]['ClassName']) && $we_dt[0]['ClassName'] && ($classname = $we_dt[0]['ClassName']) ?
+		$we_doc = (!empty($we_dt[0]['ClassName']) && ($classname = $we_dt[0]['ClassName']) ?
 				new $classname() :
 				new we_webEditionDocument());
 		break;
@@ -107,8 +107,8 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		}
 }
 
-if(isset($we_ID) && $we_ID){
-	$we_doc->initByID($we_ID, $we_Table, ( (isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
+if(!empty($we_ID)){
+	$we_doc->initByID($we_ID, $we_Table, ( (!empty($GLOBALS['FROM_WE_SHOW_DOC'])) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
 } else if(isset($we_dt)){
 	$we_doc->we_initSessDat($we_dt);
 
@@ -116,7 +116,7 @@ if(isset($we_ID) && $we_ID){
 	$we_doc->executeDocumentControlElements();
 } else {
 	$we_doc->ContentType = $we_ContentType;
-	$we_doc->Table = (isset($we_Table) && $we_Table) ? $we_Table : FILE_TABLE;
+	$we_doc->Table = (!empty($we_Table) ? $we_Table : FILE_TABLE);
 	$we_doc->we_new();
 }
 

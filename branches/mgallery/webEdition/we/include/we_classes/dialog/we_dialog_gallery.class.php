@@ -70,7 +70,7 @@ top.close();
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('ID');
 		$yuiSuggest->setContentType(we_base_ContentTypes::COLLECTION);
-		$yuiSuggest->setInput($textname, isset($this->args['collid']) && $this->args['collid'] ? id_to_path($this->args['collid'], VFILE_TABLE) : '');
+		$yuiSuggest->setInput($textname, !empty($this->args['collid']) ? id_to_path($this->args['collid'], VFILE_TABLE) : '');
 		$yuiSuggest->setMaxResults(4);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, isset($this->args['collid']) ? $this->args['collid'] : 0);

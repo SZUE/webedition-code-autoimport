@@ -668,7 +668,7 @@ function submitForm() {
 		</tr>';
 				// if this article has custom fields or is a variant - we show them in a extra rows
 				// add variant.
-				if(isset($shopArticleObject['WE_VARIANT']) && $shopArticleObject['WE_VARIANT']){
+				if(!empty($shopArticleObject['WE_VARIANT'])){
 
 					$orderTable .='
 		<tr>
@@ -1027,15 +1027,15 @@ function CalendarChanged(calObject) {
 					if(we_shop_category::isCategoryMode()){
 						$wedocCategory = ((isset($serialDoc['we_wedoc_Category'])) ? $serialDoc['we_wedoc_Category'] : $serialDoc['wedoc_Category']);
 						$stateField = we_shop_vatRule::getStateField();
-						$billingCountry = isset($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) && $orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] ?
+						$billingCountry = !empty($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) ?
 							$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();
 
-						$shopVat = we_shop_category::getShopVatByIdAndCountry((isset($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) && $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry);
+						$shopVat = we_shop_category::getShopVatByIdAndCountry((!empty($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry);
 					} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
 						$shopVat = we_shop_vats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
 					}
 
-					if(isset($shopVat) && $shopVat){
+					if(!empty($shopVat)){
 						$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $shopVat->vat;
 					} elseif($standardVat){
 						$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $standardVat->vat;
@@ -1283,8 +1283,7 @@ function CalendarChanged(calObject) {
 				break;
 
 			case 'delete_shop_cart_custom_field':
-
-				if(isset($_REQUEST['cartfieldname']) && $_REQUEST['cartfieldname']){
+				if(!empty($_REQUEST['cartfieldname'])){
 
 					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 
@@ -1327,7 +1326,7 @@ function CalendarChanged(calObject) {
 
 				$val = '';
 
-				if(isset($_REQUEST['cartfieldname']) && $_REQUEST['cartfieldname']){
+				if(!empty($_REQUEST['cartfieldname'])){
 
 					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 					$serialOrder = we_unserialize($strSerialOrder);
@@ -1365,7 +1364,7 @@ function CalendarChanged(calObject) {
 
 			case 'save_shop_cart_custom_field':
 
-				if(isset($_REQUEST['cartfieldname']) && $_REQUEST['cartfieldname']){
+				if(!empty($_REQUEST['cartfieldname'])){
 
 					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
 					$serialOrder = we_unserialize($strSerialOrder);
@@ -1511,7 +1510,7 @@ function CalendarChanged(calObject) {
 
 				foreach($_customer as $k => $v){
 					if(!in_array($k, $dontEdit) && !is_numeric($k)){
-						if(isset($this->CLFields['stateField']) && isset($this->CLFields['stateFieldIsISO']) && $k == $this->CLFields['stateField'] && $this->CLFields['stateFieldIsISO']){
+						if(isset($this->CLFields['stateField']) && !empty($this->CLFields['stateFieldIsISO']) && $k == $this->CLFields['stateField']){
 							$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 							$langcode = array_search($lang[0], getWELangs());
 							$countrycode = array_search($langcode, getWECountries());
@@ -1556,7 +1555,7 @@ function CalendarChanged(calObject) {
 								'html' => $countryselect->getHtml(),
 								'noline' => 1
 							);
-						} elseif((isset($this->CLFields['languageField']) && isset($this->CLFields['languageFieldIsISO']) && $k == $this->CLFields['languageField'] && $this->CLFields['languageFieldIsISO'])){
+						} elseif((isset($this->CLFields['languageField']) && !empty($this->CLFields['languageFieldIsISO']) && $k == $this->CLFields['languageField'])){
 							$frontendL = $GLOBALS['weFrontendLanguages'];
 							foreach($frontendL as $lc => &$lcvalue){
 								$lccode = explode('_', $lcvalue);

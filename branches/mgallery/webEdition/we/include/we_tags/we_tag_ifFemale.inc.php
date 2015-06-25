@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifFemale(){
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(!empty($GLOBALS['we_editmode'])){
 		return true;
 	}
 	static $femaleSalutation = '';
-	if(isset($GLOBALS['WE_SALUTATION']) && $GLOBALS['WE_SALUTATION']){
+	if(!empty($GLOBALS['WE_SALUTATION'])){
 		$femaleSalutation = $femaleSalutation ? : f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="' . we_newsletter_base::FEMALE_SALUTATION_FIELD . '"');
 		$femaleSalutation = $femaleSalutation ? : g_l('modules_newsletter', '[default][female]');
 

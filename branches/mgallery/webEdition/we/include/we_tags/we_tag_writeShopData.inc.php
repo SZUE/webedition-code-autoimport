@@ -94,7 +94,7 @@ function we_tag_writeShopData($attribs){
 			if(we_shop_category::isCategoryMode()){
 				$wedocCategory = ((isset($shoppingItem['serial']['we_wedoc_Category'])) ? $shoppingItem['serial']['we_wedoc_Category'] : $shoppingItem['serial']['wedoc_Category']);
 				$billingCountry = we_shop_category::getCountryFromCustomer(false, $_SESSION['webuser']);
-				$catId = isset($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) && $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] ? $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
+				$catId = !empty($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
 				$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry, true);
 				$shopCategory = we_shop_category::getShopCatFieldByID($catId, $wedocCategory, 'ID');

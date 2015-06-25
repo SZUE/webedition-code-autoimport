@@ -437,7 +437,7 @@ function get_ws($table = FILE_TABLE, $prePostKomma = false, $asArray = false){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return $asArray ? array() : '';
 		}
-		if($_SESSION['user']['workSpace'] && isset($_SESSION['user']['workSpace'][$table]) && $_SESSION['user']['workSpace'][$table] != ''){
+		if($_SESSION['user']['workSpace'] && !empty($_SESSION['user']['workSpace'][$table])){
 			return $asArray ? $_SESSION['user']['workSpace'][$table] : makeCSVFromArray($_SESSION['user']['workSpace'][$table], $prePostKomma);
 		}
 	}
@@ -791,7 +791,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 		$_xmlClose = true;
 
 		if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
-			$showWrong = (isset($_SESSION['prefs']['xhtml_show_wrong']) && $_SESSION['prefs']['xhtml_show_wrong'] && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
+			$showWrong = (!empty($_SESSION['prefs']['xhtml_show_wrong']) && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
 // at the moment only transitional is supported
 			$xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional', we_base_request::STRING);
 			$attribs = removeAttribs($attribs, $removeAttribs);
@@ -905,7 +905,7 @@ function getVarArray($arr, $string){
 }
 
 function CheckAndConvertISOfrontend($utf8data){
-	$to = (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET);
+	$to = (!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET);
 	return ($to === 'UTF-8' ? $utf8data : mb_convert_encoding($utf8data, $to, 'UTF-8'));
 }
 
@@ -938,7 +938,7 @@ function g_l($name, $specific, $omitErrors = false){
 //inside we
 			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
-			(isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+			(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 //	return $name.$specific;
 //cache last accessed lang var
 	static $cache = array();
@@ -1068,7 +1068,7 @@ function we_templateHead($fullHeader = false){
 }
 
 function we_templatePreContent($force = false){//force is used by templates with a full html/body.
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+	if(!empty($GLOBALS['we_editmode'])){
 		if($force || (!isset($GLOBALS['WE_HTML_HEAD_BODY']) && !isset($GLOBALS['we_templatePreContent']))){
 			echo '<form name="we_form" action="" method="post" onsubmit="return false;">' .
 			we_class::hiddenTrans();
@@ -1078,7 +1078,7 @@ function we_templatePreContent($force = false){//force is used by templates with
 }
 
 function we_templatePostContent($force = false, $fullPoster = false){//force on </body tag
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && ($force || ( --$GLOBALS['we_templatePreContent']) == 0)){
+	if(!empty($GLOBALS['we_editmode']) && ($force || ( --$GLOBALS['we_templatePreContent']) == 0)){
 		if($force){//never do this again
 			$GLOBALS['we_templatePreContent'] = -10000;
 		}
@@ -1135,12 +1135,12 @@ function we_templatePost(){
 function show_SeoLinks(){
 	return (
 		!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-		!(SEOINSIDE_HIDEINEDITMODE && (isset($GLOBALS['we_editmode']) && ($GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])))
+		!(SEOINSIDE_HIDEINEDITMODE && (!empty($GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])))
 		);
 }
 
 function we_TemplateExit($param = 0){
-	if(isset($GLOBALS['FROM_WE_SHOW_DOC']) && $GLOBALS['FROM_WE_SHOW_DOC']){
+	if(!empty($GLOBALS['FROM_WE_SHOW_DOC'])){
 		exit($param);
 	}
 //we are inside we, we don't terminate here
@@ -1181,7 +1181,7 @@ function update_mem_limit($newLimit){
  * @return bool true if inside WE
  */
 function isWE(){
-	return isset($_SESSION['user']['isWeSession']) && $_SESSION['user']['isWeSession'];
+	return !empty($_SESSION['user']['isWeSession']);
 }
 
 function getWELangs(){

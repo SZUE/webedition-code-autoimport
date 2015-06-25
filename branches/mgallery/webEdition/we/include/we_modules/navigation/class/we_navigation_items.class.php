@@ -127,9 +127,9 @@ class we_navigation_items{
 				$href = id_to_path($_dyn['id']);
 				$items[] = array(
 					'id' => $_dyn['id'],
-					'text' => isset($_dyn['field']) && $_dyn['field'] ? $_dyn['field'] : $_dyn['text'],
-					'display' => isset($_dyn['display']) && $_dyn['display'] ? $_dyn['display'] : '',
-					'name' => isset($_dyn['field']) && $_dyn['field'] ? $_dyn['field'] : (isset($_dyn['name']) && $_dyn['name'] ? $_dyn['name'] : $_dyn['text']),
+					'text' => !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
+					'display' => !empty($_dyn['display']) ? $_dyn['display'] : '',
+					'name' => !empty($_dyn['field']) ? $_dyn['field'] : (!empty($_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
 					'docid' => $_dyn['id'],
 					'table' => (($_nav->SelectionType == we_navigation_navigation::STPYE_CLASS || $_nav->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 					'href' => $href,
@@ -224,7 +224,7 @@ class we_navigation_items{
 		foreach($items as $_item){
 
 			if($_item['id']){
-				if(isset($_item['name']) && $_item['name']){
+				if(!empty($_item['name']) ){
 					$_item['text'] = $_item['name'];
 				}
 				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '', $_item['currentoncat'], $_item['catparam']);

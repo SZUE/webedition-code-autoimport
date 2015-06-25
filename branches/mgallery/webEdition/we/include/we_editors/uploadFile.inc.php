@@ -154,7 +154,7 @@ if($weFileupload->processFileRequest()){
 		}
 	}
 
-	if(isset($we_File) && $we_File && !$we_alerttext){
+	if(!empty($we_File) !$we_alerttext){
 		?>
 		opener.we_cmd("update_file");
 		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();

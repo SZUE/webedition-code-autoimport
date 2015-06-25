@@ -633,10 +633,10 @@ class we_messaging_messaging extends we_class{
 
 		if(!empty($msgobj_name)){
 			$rcpt_info['msg_obj'] = $msgobj_name;
-			if(isset($addr_is_email) && $addr_is_email && ($rcpt_info['msg_obj'] != 'we_msg_email')){
+			if(!empty($addr_is_email) && ($rcpt_info['msg_obj'] != 'we_msg_email')){
 				return 0;
 			}
-		} else if(isset($addr_is_email) && $addr_is_email){
+		} else if(!empty($addr_is_email)){
 			$rcpt_info['msg_obj'] = 'we_msg_email';
 		} else {
 			$rcpt_info['msg_obj'] = 'we_message';

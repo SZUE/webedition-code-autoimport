@@ -61,12 +61,11 @@ function doClick(id, typ) {
 	}
 }
 
-function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
+function makeNewEntry(id, pid, txt, open, ct, tab) {
 	if (treeData[indexOfEntry(pid)] && treeData[indexOfEntry(pid)].loaded) {
 		ct = (ct == "folder" ? "group" : "item");
 		var attribs = {
 			"id": id,
-			"icon": icon,
 			"text": txt,
 			"parentid": pid,
 			"open": open,

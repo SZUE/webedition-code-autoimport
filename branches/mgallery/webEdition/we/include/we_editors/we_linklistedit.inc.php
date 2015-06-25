@@ -295,7 +295,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$cc = isset($link['cc']) ? $link['cc'] : '';
 		$subject = isset($link['subject']) ? $link['subject'] : '';
 
-		$jswin = isset($link['jswin']) && $link['jswin'] ? : '';
+		$jswin = !empty($link['jswin']) ? : '';
 		$jscenter = isset($link['jscenter']) ? $link['jscenter'] : '';
 		$jsposx = isset($link['jsposx']) ? $link['jsposx'] : '';
 		$jsposy = isset($link['jsposy']) ? $link['jsposy'] : '';
@@ -319,10 +319,10 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$align = isset($link['align']) ? $link['align'] : '';
 		$alt = isset($link['alt']) ? $link['alt'] : '';
 		$img_title = isset($link['img_title']) ? $link['img_title'] : '';
-		$href_int = (isset($id) && $id) ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) : '';
+		$href_int = (!empty($id) ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)) : '');
 		if(defined('OBJECT_TABLE')){
 			$obj_id = isset($link['obj_id']) ? $link['obj_id'] : '';
-			$href_obj = (isset($obj_id) && $obj_id) ? f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($obj_id)) : '';
+			$href_obj = (!empty($obj_id) ? f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($obj_id)) : '');
 		}
 		$src_int = $img_id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($img_id)) : '';
 		$ctype = isset($link['ctype']) ? $link['ctype'] : '';
@@ -359,13 +359,13 @@ if($ok && $cmd === "edit_link_at_class"){
 		opener.we_cmd("object_change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
 		top.close();
 	<?php
-} else if($ok && isset($linklist) && $linklist){
+} else if($ok && !empty($linklist)){
 	$_SESSION['weS']["WE_LINKLIST"] = $linklist;
 	?>
 		opener.setScrollTo();
 		opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
 	<?php
-} else if($ok && isset($link) && $link){
+} else if($ok && !empty($link)){
 	$_SESSION['weS']['WE_LINK'] = $link;
 	?>
 		opener.setScrollTo();
@@ -738,7 +738,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 			<?php
-			if(isset($ll) && $ll){
+			if(!empty($ll)){
 				?>
 				<input type="hidden" name="linklist" value="<?php echo oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php

@@ -997,7 +997,7 @@ function setLocation(loc){
 
 		$content.=$table->getHtml();
 
-		$do_import_after_backup = (isset($_SESSION['weS']['weBackupVars']['options']['do_import_after_backup']) && $_SESSION['weS']['weBackupVars']['options']['do_import_after_backup']) ? 1 : 0;
+		$do_import_after_backup = (!empty($_SESSION['weS']['weBackupVars']['options']['do_import_after_backup'])) ? 1 : 0;
 		$js = we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
@@ -1064,7 +1064,7 @@ function startStep(){
 		$_error_message = new we_html_table(array("class" => "default defaultfont"), 1, 1);
 		$_error_message->setCol(0, 0, null, g_l('backup', '[download_failed]'));
 
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',STYLESHEET,'<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($_error_message->getHtml(), g_l('backup', '[export_step2]')));
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($_error_message->getHtml(), g_l('backup', '[export_step2]')));
 	}
 
 	function getHTMLExtern(){
@@ -1129,7 +1129,7 @@ function doExport() {
 					case 3:
 						if(we_base_request::_(we_base_request::BOOL, "do_import_after_backup")){
 							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=body&step=2';top.busy.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=cmd';top.cmd.location='" . WE_INCLUDES_DIR . "we_editors/we_recover_backup.php?pnt=busy';");
-						} else if(isset($_SESSION['weS']['inbackup']) && $_SESSION['weS']['inbackup']){
+						} else if(!empty($_SESSION['weS']['inbackup'])){
 							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.opener.weiter();top.close();");
 							unset($_SESSION['weS']['inbackup']);
 						} else {
@@ -1386,7 +1386,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					$we_backup_obj->rebuild = we_base_request::_(we_base_request::BOOL, "rebuild");
 
 					$backup_select = we_base_request::_(we_base_request::STRING, "backup_select", '');
-					$we_upload_file = (isset($_FILES["we_upload_file"]) && $_FILES["we_upload_file"]) ? $_FILES["we_upload_file"] : "";
+					$we_upload_file = (!empty($_FILES["we_upload_file"]) ? $_FILES["we_upload_file"] : "");
 					$ok = false;
 
 					if($backup_select){

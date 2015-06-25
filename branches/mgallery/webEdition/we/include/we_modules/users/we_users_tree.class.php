@@ -93,7 +93,7 @@ treeData.startloc=' . $startloc . ';
 							'open' => 0,
 							'contentType' => ($db->f("Type") == we_users_user::TYPE_ALIAS ? 'we/alias' : 'we/user'),
 							'table' => USER_TABLE,
-							'class' => (isset($p["ADMINISTRATOR"]) && $p["ADMINISTRATOR"] ? 'bold ' : '') . ($db->f("LoginDenied") ? 'red' : '')
+							'class' => (!empty($p["ADMINISTRATOR"]) ? 'bold ' : '') . ($db->f("LoginDenied") ? 'red' : '')
 						);
 				}
 			}

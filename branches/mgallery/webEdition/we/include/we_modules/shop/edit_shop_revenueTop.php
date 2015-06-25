@@ -353,12 +353,12 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		$articleData = $orderRow['articleArray'];
 
 		$variantStr = '';
-		if(isset($articleData['WE_VARIANT']) && $articleData['WE_VARIANT']){
+		if(!empty($articleData['WE_VARIANT'])){
 			$variantStr = '<br /><strong>' . g_l('modules_shop', '[variant]') . ': ' . $articleData['WE_VARIANT'].'</strong>';
 		}
 
 		$customFields = '';
-		if(isset($articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && $articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD]){
+		if(!empty($articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
 			$customFields = we_html_element::htmlBr();
 			foreach($articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => $val){
 				$customFields .= $key . '=' . $val . we_html_element::htmlBr();

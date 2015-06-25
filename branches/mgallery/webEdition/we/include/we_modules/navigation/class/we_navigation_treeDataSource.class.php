@@ -67,7 +67,6 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 		$db->query('SELECT ' . $elem . ', abs(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' WHERE ' . $where . ' ORDER BY Ordn, isNr DESC,Nr,Text ' . ($segment ? 'LIMIT ' . $offset . ',' . $segment : ''));
 
 		while($db->next_record()){
-
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,

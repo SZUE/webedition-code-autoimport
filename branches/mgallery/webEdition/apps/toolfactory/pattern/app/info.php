@@ -140,11 +140,11 @@ if (is_array($authornames)){
 $authorentry = array();
 for ($i=0; $i < count($authornames);$i++){
 $htmla = '';
-if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+if(!empty($authorlinks[$i])){
 $htmla .= '<a style="color:#000000" href="'.$authorlinks[$i].'" target="_blank" >';
 	}
 	$htmla .= $authornames[$i];
-	if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+	if(!empty($authorlinks[$i])){
 	$htmla .= '</a>';
 }
 $authorentry[]=$htmla;
@@ -152,11 +152,11 @@ $authorentry[]=$htmla;
 $html .= implode(', ',$authorentry);
 } else {
 $html .= '';
-if(isset($authorlinks) && !empty($authorlinks)){
+if(!empty($authorlinks)){
 $html .= '<a style="color:#000000" href="'.$authorlinks.'" target="_blank" >';
 	}
 	$html .= $authornames;
-	if(isset($authorlinks) && !empty($authorlinks)){
+	if(!empty($authorlinks)){
 	$html .= '</a>';
 }
 }
@@ -190,11 +190,11 @@ if (is_array($authornames)){
 $authorentry = array();
 for ($i=0; $i < count($authornames);$i++){
 $htmla = '';
-if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+if(!empty($authorlinks[$i])){
 $htmla .= '<a style="color:#000000" href="'.$authorlinks[$i].'" target="_blank" >';
 	}
 	$htmla .= $authornames[$i];
-	if(isset($authorlinks[$i]) && !empty($authorlinks[$i])){
+	if(!empty($authorlinks[$i])){
 	$htmla .= '</a>';
 }
 $authorentry[]=$htmla;
@@ -202,11 +202,11 @@ $authorentry[]=$htmla;
 $html .= implode(', ',$authorentry);
 } else {
 $html .= '';
-if(isset($authorlinks) && !empty($authorlinks)){
+if(!empty($authorlinks)){
 $html .= '<a style="color:#000000" href="'.$authorlinks.'" target="_blank" >';
 	}
 	$html .= $authornames;
-	if(isset($authorlinks) && !empty($authorlinks)){
+	if(!empty($authorlinks)){
 	$html .= '</a>';
 }
 }

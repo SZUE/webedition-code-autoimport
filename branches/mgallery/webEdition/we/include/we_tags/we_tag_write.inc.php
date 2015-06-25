@@ -39,7 +39,7 @@ function we_tag_write($attribs){
 			break;
 	}
 
-	$name = weTag_getAttribute('formname', $attribs, ((isset($GLOBALS['WE_FORM']) && $GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : 'we_global_form'), we_base_request::STRING);
+	$name = weTag_getAttribute('formname', $attribs, ((!empty($GLOBALS['WE_FORM'])) ? $GLOBALS['WE_FORM'] : 'we_global_form'), we_base_request::STRING);
 
 	$publish = weTag_getAttribute('publish', $attribs, false, we_base_request::BOOL);
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
@@ -60,7 +60,7 @@ function we_tag_write($attribs){
 	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0, we_base_request::INT);
 	$doworkflow = ($workflowname != '' && $workflowuserid != 0);
 	$searchable = weTag_getAttribute('searchable', $attribs, true, we_base_request::BOOL);
-	
+
 	if(we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
 
 		switch($type){
@@ -85,12 +85,12 @@ function we_tag_write($attribs){
 			$GLOBALS['we_object_write_ok'] = false;
 			return;
 		}
-		$isOwner = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && (
+		$isOwner = !empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && (
 			($protected && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID)) ||
 			($userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)))
 			);
 
-		$isAdmin = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
+		$isAdmin = !empty($_SESSION['webuser']['registered']) && $admin && !empty($_SESSION['webuser'][$admin]);
 
 		$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($admin/* only if this field is used */ ? $isAdmin : true) : false); //FR #8411
 
@@ -213,7 +213,7 @@ function we_tag_write($attribs){
 					}
 				}
 				$GLOBALS['we_object_write_ID'] = $GLOBALS['we_doc']->ID;
-				
+
 				/**
 				* Fix #9818
 				* now we have to set the new document/object ID as request value to avoid
@@ -259,13 +259,13 @@ function we_tag_write($attribs){
 			$GLOBALS['we_object_write_ok'] = false;
 		}
 	}
-	if(isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START']){
+	if(!empty($GLOBALS['WE_SESSION_START'])){
 		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]); //fix #8051
 	}
 }
 
 function checkAndCreateBinary($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+	$webuserId = !empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 	$regs = array();
 
 	$checks = array(

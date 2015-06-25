@@ -88,7 +88,7 @@ abstract class we_html_tools{
 			}
 		}
 		return '<table class="default">' .
-			($text ? '<tr><td class="' . trim($textclass) . '" '.($abstand ?'style="margin-bottom:'.$abstand. 'px;"':'').' align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
+			($text ? '<tr><td class="' . trim($textclass) . '" ' . ($abstand ? 'style="margin-bottom:' . $abstand . 'px;"' : '') . ' align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
 			'<tr>' . $elemOut . '</tr></table>';
 	}
 
@@ -210,11 +210,11 @@ this.selectedIndex = 0;' .
 		$out = '<td style="border-bottom: 1px solid silver;background-color:white;">' . self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
 
 		for($f = 0; $f < $anz; $f++){
-			$bgcol = $bgColor ? : ((isset($content[$f]["bgcolor"]) && $content[$f]["bgcolor"]) ? $content[$f]["bgcolor"] : "white");
+			$bgcol = $bgColor ? : ((!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : "white");
 			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' .
-				((isset($content[$f]["align"])) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' .
-				((isset($content[$f]["height"])) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' .
-				((isset($content[$f]["dat"]) && $content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
+				(isset($content[$f]["align"]) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' .
+				(isset($content[$f]["height"]) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' .
+				(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
 				'</td>';
 		}
 		$out .= '<td style="border-bottom: 1px solid silver;background-color:white;">' . self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';

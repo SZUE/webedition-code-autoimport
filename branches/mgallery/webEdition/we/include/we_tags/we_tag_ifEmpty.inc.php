@@ -80,5 +80,5 @@ function we_tag_ifEmpty($attribs){
 		echo $foo;
 		return false;
 	}
-	return (isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || !we_isNotEmpty($attribs);
+	return (!empty($GLOBALS['we_editmode'])) || !we_isNotEmpty($attribs);
 }

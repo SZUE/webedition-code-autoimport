@@ -546,7 +546,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function canVoteUserID(){
-		$userid = (defined('CUSTOMER_TABLE') && isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['registered'] && $_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : -1;
+		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID'])) ? $_SESSION['webuser']['ID'] : -1;
 
 		if(!$this->LogDB || ($userid <= 0)){
 			return self::SUCCESS;
@@ -711,7 +711,7 @@ class we_voting_voting extends weModelBase{
 			$additionalfields = '';
 		}
 		$_cookieStatus = $this->cookieDisabled() ? 0 : 1;
-		$userid = (defined('CUSTOMER_TABLE') && isset($_SESSION["webuser"]["registered"]) && isset($_SESSION["webuser"]["ID"]) && $_SESSION["webuser"]["registered"] && $_SESSION["webuser"]["ID"] ?
+		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION["webuser"]["registered"]) && !empty($_SESSION["webuser"]["ID"]) ?
 				$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
 				'votingsession' => $votingsession,

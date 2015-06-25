@@ -212,7 +212,7 @@ abstract class we_base_util{
 	}
 
 	static function html2uml($text){
-		return html_entity_decode($text, ENT_COMPAT, (isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET));
+		return html_entity_decode($text, ENT_COMPAT, (!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET));
 	}
 
 	/**
@@ -279,7 +279,7 @@ abstract class we_base_util{
 		  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
 		  } */
 
-		if(isset($_pathA[1]) && $_pathA[1] != ''){
+		if(!empty($_pathA[1])){
 			$_url_param = explode('&', $_pathA[1]);
 			foreach($_url_param as $cur){
 				$_param_split = explode('=', $cur);

@@ -413,7 +413,7 @@ class we_customer_customer extends weModelBase{
 		}
 
 		foreach($customerFields as $key => $value){
-			if(isset($value['encryption']) && $value['encryption']){
+			if(!empty($value['encryption'])){
 				$fields[$key] = self::ENCRYPTED_DATA;
 			}
 		}

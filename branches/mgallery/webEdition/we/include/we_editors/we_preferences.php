@@ -108,7 +108,7 @@ function get_value($settingname){
 			return defined('WE_PROXYHOST');
 
 		case 'message_reporting':
-			return (isset($_SESSION['prefs']['message_reporting']) && $_SESSION['prefs']['message_reporting']) ? $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
+			return (!empty($_SESSION['prefs']['message_reporting'])) ? $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR + we_message_reporting::WE_MESSAGE_WARNING + we_message_reporting::WE_MESSAGE_NOTICE);
 
 		default:
 			if(isset($GLOBALS['configs']['user'][$settingname])){
@@ -396,11 +396,11 @@ _multiEditorreload = true;";
 						$_single_recipient = explode('<#>', $_recipient);
 
 						if(isset($_single_recipient[0]) && ($_single_recipient[0] === '#')){
-							if(isset($_single_recipient[1]) && $_single_recipient[1]){
+							if(!empty($_single_recipient[1])){
 								$DB_WE->query('INSERT INTO ' . RECIPIENTS_TABLE . ' (Email) VALUES("' . $DB_WE->escape($_single_recipient[1]) . '")');
 							}
 						} else {
-							if(isset($_single_recipient[1]) && isset($_single_recipient[0]) && $_single_recipient[1] && $_single_recipient[0]){
+							if(!empty($_single_recipient[1]) && !empty($_single_recipient[0])){
 								$DB_WE->query('UPDATE ' . RECIPIENTS_TABLE . ' SET Email="' . $DB_WE->escape($_single_recipient[1]) . '" WHERE ID=' . intval($_single_recipient[0]));
 							}
 						}
@@ -830,7 +830,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_seem_weapp_chooser = '';
 				if($_start_weapp->getOptionNum()){
 					$_start_type->addOption('weapp', g_l('prefs', '[seem_start_type_weapp]'));
-					if(isset($_seem_start_weapp) && $_seem_start_weapp != ''){
+					if(!empty($_seem_start_weapp)){
 						$_start_weapp->selectOption($_seem_start_weapp);
 					}
 					$weAPPSelector = $_start_weapp->getHtml();

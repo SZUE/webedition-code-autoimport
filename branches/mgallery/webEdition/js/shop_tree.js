@@ -40,9 +40,8 @@ function drawEintraege() {
 
 function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
-	var ai = 1;
 	ret = "";
-	while (ai <= nf.len) {
+	for (var ai = 1; ai <= nf.len; ai++) {
 		ret += zweigEintrag;
 		if (nf[ai].typ === 'shop') {
 			ret += '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
@@ -88,12 +87,11 @@ function zeichne(startEntry, zweigEintrag) {
 				ret += zeichne(nf[ai].name, newAst);
 			}
 		}
-		ai++;
 	}
 	return ret;
 }
 
-function makeNewEntry(icon, id, pid, txt, open, ct, tab, pub) {
+function makeNewEntry(id, pid, txt, open, ct, tab, pub) {
 	if (table === tab && treeData[indexOfEntry(pid)]) {
 		if (ct === "folder") {
 			treeData.addSort({
@@ -139,16 +137,14 @@ function updateEntry(id, text, pub) {
 }
 
 function deleteEntry(id) {
-	var ai = 1;
 	var ind = 0;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
 			if (treeData[ai].name == id) {
 				ind = ai;
 				break;
 			}
 		}
-		ai++;
 	}
 	updateTreeAfterDel(ind);
 }
@@ -160,55 +156,36 @@ function openClose(name, status) {
 }
 
 function indexOfEntry(name) {
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ === 'root') || (treeData[ai].typ === 'folder')) {
 			if (treeData[ai].name == name) {
 				return ai;
 			}
 		}
-		ai++;
 	}
 	return -1;
 }
 
 function search(eintrag) {
 	var nf = new container();
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
 			if (treeData[ai].parentid == eintrag) {
 				nf.add(treeData[ai]);
 			}
 		}
-		ai++;
 	}
 	return nf;
 }
 
-function container() {
-	this.len = 0;
-	this.clear = function () {
-		this.len = 0;
-	};
-	this.add = add;
-	this.addSort = addSort;
-	return this;
-}
-
-function add(object) {
-	this.len++;
-	this[this.len] = object;
-}
-
-
 function rootEntry(name, text, rootstat) {
-	this.name = name;
-	this.text = text;
-	this.loaded = true;
-	this.typ = 'root';
-	this.rootstat = rootstat;
-	return this;
+	return new node({
+		name: name,
+		text: text,
+		loaded: true,
+		typ: 'root',
+		rootstat: rootstat,
+	});
 }
 
 function start() {
@@ -225,4 +202,3 @@ function doFolderClick(id, ct, table) {
 function doYearClick(yearView) {
 	top.content.editor.location = '/webEdition/we/include/we_modules/shop/edit_shop_frameset.php?pnt=editor&ViewYear=' + yearView;
 }
-var treeData = new container();

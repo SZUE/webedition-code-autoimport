@@ -286,7 +286,7 @@ function weDoOk() {' .
 				$clSelect->addOption($val, "." . $val);
 			}
 		}
-		if(isset($this->args["cssclass"]) && $this->args["cssclass"]){
+		if(!empty($this->args["cssclass"])){
 			$clSelect->selectOption($this->args["cssclass"]);
 		}
 

@@ -80,7 +80,7 @@ class we_customer_selector extends we_users_selector{
 			$select = $grouparr = $orderarr = array();
 
 			foreach($sort_defs as $c => $sortdef){
-				if(isset($sortdef['function']) && $sortdef['function']){
+				if(!empty($sortdef['function'])){
 					$select[] = '@select' . count($select) . ':=' . ($settings->customer->isInfoDate($sortdef['field']) ?
 							sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef['field'] . "_" . $sortdef["function"] :
 							sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef['function']);
@@ -97,7 +97,7 @@ class we_customer_selector extends we_users_selector{
 					$select[] = '@select' . count($select) . ':=' . $sortdef['field'];
 					$grouparr[] = $sortdef['field'];
 					$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
-					if(isset($pidarr[$c]) && $pidarr[$c]){
+					if(!empty($pidarr[$c])){
 						$havingarr[] = (empty($pidarr[$c]) ?
 								'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
 								$sortdef['field'] . "='" . $pidarr[$c] . "'");

@@ -332,25 +332,25 @@ function back(id) {
 						case "application/*":
 						case "text/xml":
 						case "objectFile":
-							$val = g_l('logging', (isset($v) && $v) ? '[activated]' : '[deactivated]');
+							$val = g_l('logging', (!empty($v)) ? '[activated]' : '[deactivated]');
 							$out .= '-> ' . g_l('logging', '[contenttype]') . " " . g_l('contentTypes', '[' . $k . ']') . ": " . $val;
 							break;
 						case "time_days":
-							$val = (isset($v) && $v != "" && $v != -1) ? ($v / $secondsDay) : "";
+							$val = (!empty($v) && $v != -1) ? ($v / $secondsDay) : "";
 							$out .= '-> ' . g_l('logging', '[zeitraum]') . " " . g_l('logging', '[days]') . ": " . $val;
 							break;
 						case "time_weeks":
-							$val = (isset($v) && $v != "" && $v != -1) ? ($v / $secondsWeek) : "";
+							$val = (!empty($v) && $v != -1) ? ($v / $secondsWeek) : "";
 							$out .= '-> ' . g_l('logging', '[zeitraum]') . " " .
 								g_l('logging', '[weeks]') . ": " . $val;
 							break;
 						case "time_years":
-							$val = (isset($v) && $v != "" && $v != -1) ? ($v / $secondsYear) : "";
+							$val = (!empty($v) && $v != -1) ? ($v / $secondsYear) : "";
 							$out .= '-> ' . g_l('logging', '[zeitraum]') . " " .
 								g_l('logging', '[years]') . ": " . $val;
 							break;
 						case "anzahl":
-							$val = (isset($v) && $v != "") ? $v : "";
+							$val = (!empty($v)) ? $v : "";
 							$out .= '-> ' . g_l('logging', '[anzahlVersions]') . ": " . $val;
 							break;
 					}

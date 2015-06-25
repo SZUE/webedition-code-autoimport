@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$notprotect = isset($GLOBALS["NOT_PROTECT"]) && $GLOBALS["NOT_PROTECT"] && (!isset($_REQUEST["NOT_PROTECT"]));
+$notprotect = !empty($GLOBALS["NOT_PROTECT"]) && (!isset($_REQUEST["NOT_PROTECT"]));
 
 if(!$notprotect){
 	we_html_tools::protect();

@@ -54,7 +54,7 @@ var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 			we_html_element::jsScript(JS_DIR . 'shop_tree.js');
 		$menu = 'function loadData() {
 				treeData.clear();
-				treeData.add(new self.rootEntry(0, "root", "root"));';
+				treeData.add(self.rootEntry(0, "root", "root"));';
 
 
 		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
@@ -311,7 +311,7 @@ function we_cmd() {
 		}
 		$we_tabs = new we_tabs();
 
-		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"] && $_REQUEST["mid"] != '00'){
+		if(!empty($_REQUEST["mid"]) && $_REQUEST["mid"] != '00'){
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::ACTIVE, 0));
 		} else {
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][orderdata]'), we_tab::ACTIVE, "setTab(0);"));
@@ -319,7 +319,7 @@ function we_cmd() {
 		}
 
 		$textPre = g_l('modules_shop', $bid > 0 ? '[orderList][order]' : '[order_view]');
-		$textPost = isset($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $bid, $cdat) : '');
+		$textPost = !empty($_REQUEST['mid']) && $_REQUEST['mid'] > 0 ? (strlen($_REQUEST['mid']) > 5 ? g_l('modules_shop', '[month][' . substr($_REQUEST['mid'], 0, -5) . ']') . " " . substr($_REQUEST['mid'], -5, 4) : substr($_REQUEST['mid'], 1)) : ($bid ? sprintf(g_l('modules_shop', '[orderNo]'), $bid, $cdat) : '');
 
 		$tab_head = $we_tabs->getHeader() . we_html_element::jsElement('
 function setTab(tab) {
@@ -363,7 +363,7 @@ function setTab(tab) {
 
 
 		$we_tabs = new we_tabs();
-		if(isset($_REQUEST["mid"]) && $_REQUEST["mid"]){
+		if(!empty($_REQUEST["mid"])){
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::ACTIVE, "//"));
 		} else {
 			switch(true){

@@ -117,7 +117,7 @@ abstract class we_workflow_utility{
 	 */
 	static function getWorkflowDocumentID($docID, $table, $status = we_workflow_document::STATUS_UNKNOWN){
 		$doc = self::getWorkflowDocument($docID, $table, $status);
-		return (isset($doc->ID) && $doc->ID ? $doc->ID : false);
+		return (!empty($doc->ID) ? $doc->ID : false);
 	}
 
 	/**
@@ -159,7 +159,7 @@ abstract class we_workflow_utility{
 
 	static function inWorkflow($docID, $table, we_database_base $db = null){
 		$doc = self::getWorkflowDocument($docID, $table, we_workflow_document::STATUS_UNKNOWN, $db);
-		return (isset($doc->ID) && $doc->ID);
+		return (!empty($doc->ID));
 	}
 
 	static function isWorkflowFinished($docID, $table){

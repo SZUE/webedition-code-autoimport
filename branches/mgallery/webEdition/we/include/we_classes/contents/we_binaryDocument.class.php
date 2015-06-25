@@ -177,7 +177,7 @@ class we_binaryDocument extends we_document{
 	}
 
 	function insertAtIndex(){
-		if(!(isset($this->IsSearchable) && $this->IsSearchable && $this->Published)){
+		if(!(!empty($this->IsSearchable) && $this->Published)){
 			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($this->ID));
 			return true;
 		}
@@ -323,13 +323,13 @@ class we_binaryDocument extends we_document{
 		$_mdtypes = array();
 
 		if($_metaData){
-			if(isset($_metaData["exif"]) && !empty($_metaData["exif"])){
+			if(!empty($_metaData["exif"])){
 				$_mdtypes[] = "Exif";
 			}
-			if(isset($_metaData["iptc"]) && !empty($_metaData["iptc"])){
+			if(!empty($_metaData["iptc"])){
 				$_mdtypes[] = "IPTC";
 			}
-			if(isset($_metaData["pdf"]) && !empty($_metaData["pdf"])){
+			if(!empty($_metaData["pdf"])){
 				$_mdtypes[] = "PDF";
 			}
 		}

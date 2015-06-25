@@ -217,10 +217,10 @@ class we_shop_statusMails{
 
 	function sendEMail($was, $order, $cdata, $pagelang = ''){
 		global $DB_WE;
-		$recipientOK = (isset($this->EMailData['emailField']) && $this->EMailData['emailField'] != '' && isset($cdata[$this->EMailData['emailField']]) && we_check_email($cdata[$this->EMailData['emailField']]));
+		$recipientOK = (!empty($this->EMailData['emailField']) && isset($cdata[$this->EMailData['emailField']]) && we_check_email($cdata[$this->EMailData['emailField']]));
 		$UserLang = '';
 		$field = 0;
-		if(isset($this->LanguageData['useLanguages']) && $this->LanguageData['useLanguages'] && isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
+		if(!empty($this->LanguageData['useLanguages']) && !empty($this->LanguageData['languageField']) && !empty($cdata[$this->LanguageData['languageField']])){
 			if($pagelang && isset($this->FieldsDocuments[$pagelang]) && isset($this->FieldsDocuments[$pagelang]['Date' . $was])){
 				$docID = $this->FieldsDocuments[$pagelang]['Date' . $was];
 				$field = 1;
@@ -230,13 +230,13 @@ class we_shop_statusMails{
 						$this->FieldsDocuments['default']['Date' . $was]);
 				$field = 2;
 			}
-			if(isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
+			if(!empty($this->LanguageData['languageField']) && !empty($cdata[$this->LanguageData['languageField']])){
 				$UserLang = $cdata[$this->LanguageData['languageField']];
 			}
 		} else {
 			$docID = $this->FieldsDocuments['default']['Date' . $was];
 			$field = 3;
-			if(isset($this->LanguageData['languageField']) && $this->LanguageData['languageField'] != '' && isset($cdata[$this->LanguageData['languageField']]) && $cdata[$this->LanguageData['languageField']] != ''){
+			if(!empty($this->LanguageData['languageField']) && !empty($cdata[$this->LanguageData['languageField']])){
 				$UserLang = $cdata[$this->LanguageData['languageField']];
 			}
 		}
@@ -253,7 +253,7 @@ class we_shop_statusMails{
 			$maildoc = new we_webEditionDocument();
 			$maildoc->initByID($docID);
 
-			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA'] != ''){
+			if(!empty($this->EMailData['DocumentAttachmentFieldA'])){
 				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
 				$codes = $codes . $attachmentA;
 			}
@@ -283,19 +283,19 @@ class we_shop_statusMails{
 				'<br />' => "\n",
 				'<br/>' => "\n"
 			))));
-			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
-			if(isset($this->EMailData['bcc']) && $this->EMailData['bcc'] != ''){
+			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (!empty($this->EMailData['titleField']) && !empty($cdata[$this->EMailData['titleField']]) ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
+			if(!empty($this->EMailData['bcc'])){
 				$bccArray = explode(',', $this->EMailData['bcc']);
 				$phpmail->setBCC($bccArray);
 			}
-			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA'] != ''){
+			if(!empty($this->EMailData['DocumentAttachmentFieldA'])){
 				$attachmentAinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . we_base_link::MAGIC_INT_LINK);
 				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . ($attachmentAinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
 				if($attachmentA){
 					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentA);
 				}
 			}
-			if(isset($this->EMailData['DocumentAttachmentFieldB']) && $this->EMailData['DocumentAttachmentFieldB'] != ''){
+			if(!empty($this->EMailData['DocumentAttachmentFieldB'])){
 				$attachmentBinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . we_base_link::MAGIC_INT_LINK);
 				$attachmentB = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
 				if($attachmentB){

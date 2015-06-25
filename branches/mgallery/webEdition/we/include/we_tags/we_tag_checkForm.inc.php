@@ -37,7 +37,7 @@ function we_parse_tag_checkForm($attribs, $content, array $arr){
  */
 function we_tag_checkForm($attribs, $content){
 	//  dont make this in editMode
-	if(isset($GLOBALS["we_editmode"]) && $GLOBALS["we_editmode"]){
+	if(!empty($GLOBALS["we_editmode"])){
 		return "";
 	}
 

@@ -85,7 +85,7 @@ class we_class_folder extends we_folder{
 
 	public function we_save($resave = false, $skipHook = false){
 		$sp = explode('/', $this->Path);
-		if(isset($sp[2]) && $sp[2] != ''){
+		if(!empty($sp[2])){
 			$this->IsClassFolder = 0;
 		}
 		parent::we_save($resave, $skipHook);
@@ -461,7 +461,7 @@ class we_class_folder extends we_folder{
 							break;
 						case we_objectFile::TYPE_MULTIOBJECT:
 							$temp = we_unserialize($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
-							if($temp && isset($temp['objects']) && $temp['objects']){
+							if($temp && !empty($temp['objects'])){
 								$objects = $temp['objects'];
 								$class = $temp['class'];
 								$content[$f][$i + 5]['dat'] = '<ul>';

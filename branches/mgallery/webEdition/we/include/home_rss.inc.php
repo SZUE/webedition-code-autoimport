@@ -43,7 +43,7 @@ $rss->parse();
 $rss_out = '<div id="rss">';
 foreach($rss->getItems() as $item){
 	$rss_out .= '<b>' . $item['title'] . '</b><p>' . $item['description'] . " " .
-		(isset($item['link']) && !empty($item['link']) ? '<a href="' . $item['link'] . '" target="_blank">' . g_l('cockpit', '[more]') . '</a>' : '') .
+		(!empty($item['link']) ? '<a href="' . $item['link'] . '" target="_blank">' . g_l('cockpit', '[more]') . '</a>' : '') .
 		"</p>" .
 		we_html_tools::getPixel(1, 10) . we_html_element::htmlBr();
 }

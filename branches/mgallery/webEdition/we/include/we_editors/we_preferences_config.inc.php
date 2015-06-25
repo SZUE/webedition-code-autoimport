@@ -126,7 +126,7 @@ $GLOBALS['configs'] = array(
 		'NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH' => array('Flag if NAV- rules should be evaluated even after a first match', we_base_request::BOOL, false),
 //SEO stuff
 		'NAVIGATION_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Nav-output', we_base_request::BOOL, false),
-		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRINGC, 'index.php,index.html'),		
+		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRINGC, 'index.php,index.html'),
 		'WYSIWYGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Wysiwyg-editor output', we_base_request::BOOL, false),
 		'TAGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in tag output', we_base_request::BOOL, false),
 		'OBJECTSEOURLS_LOWERCASE' => array('Flag if object SEO-URLs save in lower or camelcase', we_base_request::BOOL, false),
@@ -263,7 +263,7 @@ $GLOBALS['configs'] = array(
 		'DB_USER' => array('Username to access the database', '', 'root', true),
 		'DB_PASSWORD' => array('Password to access the database', '', 'root', true),
 		'TBL_PREFIX' => array('Prefix of tables in database for this webEdition.', '', ''),
-		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, ''),
+		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, (defined('DB_CHARSET')?DB_CHARSET:'')),
 		'DB_COLLATION' => array('Collation of tables in database for this webEdition.', '', ''),
 		'WE_LANGUAGE' => array('Original language of this version of webEdition, used for login-screen', '', 'English'),
 		'WE_BACKENDCHARSET' => array('Original backend charset of this version of webEdition, used for login-screen', '', 'UTF-8'),

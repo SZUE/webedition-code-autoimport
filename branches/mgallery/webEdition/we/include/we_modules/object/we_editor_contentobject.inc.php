@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 //	---> Setting the Content-Type
 
-$charset = (isset($we_doc->elements['Charset']['dat']) && $we_doc->elements['Charset']['dat'] ? //	send charset which might be determined in template
+$charset = (!empty($we_doc->elements['Charset']['dat']) ? //	send charset which might be determined in template
 		$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
 
 echo we_html_tools::getHtmlTop('', $charset, 5);

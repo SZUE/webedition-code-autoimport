@@ -5,7 +5,7 @@
  * $Rev$
  * $Author$
  * $Date$
- *  
+ *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -202,7 +202,7 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 				'cTypes': '" . $this->contentTypes[$i] . "',
 				'workspace': [" . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . "],
 				'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false") . ",
-				'checkField': " . intval(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]);
+				'checkField': " . intval(!empty($this->checkFieldsValues[$i]));
 
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					if($this->setOnSelectFields[$i]){
@@ -217,7 +217,7 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 				if($this->_doOnTextfieldBlur[$i]){
 					$fildsObj .=',blur:function(){' . $this->_doOnTextfieldBlur[$i] . '}';
 				}
-				if(isset($this->checkFieldsValues[$i]) && $this->checkFieldsValues[$i]){
+				if(!empty($this->checkFieldsValues[$i])){
 					$additionalFields = "";
 					if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 						for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){

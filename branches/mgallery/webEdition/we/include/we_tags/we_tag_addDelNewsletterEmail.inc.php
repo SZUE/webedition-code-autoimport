@@ -103,7 +103,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 		$GLOBALS['WE_TITLE'] = isset($f['subscribe_title']) ? $f['subscribe_title'] : '';
 		$GLOBALS['WE_FIRSTNAME'] = isset($f['subscribe_firstname']) ? $f['subscribe_firstname'] : '';
 		$GLOBALS['WE_LASTNAME'] = isset($f['subscribe_lastname']) ? $f['subscribe_lastname'] : '';
-		if(isset($f['lists']) && $f['lists']){
+		if(!empty($f['lists'])){
 			if(strpos($f['lists'], '.')){
 				$paths = makeArrayFromCSV($f['lists']);
 			} else {
@@ -246,7 +246,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				}
 
 
-				$charset = isset($mywedoc->elements['Charset']['dat']) && $mywedoc->elements['Charset']['dat'] ? $mywedoc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET'];
+				$charset = !empty($mywedoc->elements['Charset']['dat']) ? $mywedoc->elements['Charset']['dat'] : $GLOBALS['WE_BACKENDCHARSET'];
 				$mailtext = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $db) ? we_getDocumentByID($mailid, '', $db, $charset) : '';
 
 				if($f['subscribe_title']){
@@ -279,7 +279,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$we_recipientCC = array();
 				foreach($toCC as $cc){
 					if(strpos($cc, '@') === false){
-						if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser'][$cc]) && strpos($_SESSION['webuser'][$cc], '@') !== false){ //wenn man registrierten Usern was senden moechte
+						if(!empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$cc]) && strpos($_SESSION['webuser'][$cc], '@') !== false){ //wenn man registrierten Usern was senden moechte
 							if(we_check_email($_SESSION['webuser'][$cc])){
 								$we_recipientCC[] = $_SESSION['webuser'][$cc];
 							}
@@ -297,7 +297,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 				$we_recipientBCC = array();
 				foreach($toBCC as $bcc){
 					if(strpos($bcc, '@') === false){
-						if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser'][$bcc]) && strpos('@', $_SESSION['webuser'][$bcc]) !== false){ //wenn man registrierte Usern was senden moechte
+						if(!empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$bcc]) && strpos('@', $_SESSION['webuser'][$bcc]) !== false){ //wenn man registrierte Usern was senden moechte
 							if(we_check_email($_SESSION['webuser'][$bcc])){
 								$we_recipientBCC[] = $_SESSION['webuser'][$bcc];
 							}

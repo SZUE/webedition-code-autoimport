@@ -33,7 +33,7 @@ var $fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
 function __construct($id,$JSIDName='',$JSTextName='',$JSCommand='',$order='',$we_editDirID='',$FolderText=''){
 $JSIDName = stripslashes($JSIDName);
 $JSTextName = stripslashes($JSTextName);
-parent::__construct($id,<?php echo (isset($TABLECONSTANT) && !empty($TABLECONSTANT)) ? $TABLECONSTANT : "''"; ?>,$JSIDName,$JSTextName,$JSCommand,$order,'',$we_editDirID,$FolderText);
+parent::__construct($id,<?php echo (!empty($TABLECONSTANT)) ? $TABLECONSTANT : "''"; ?>,$JSIDName,$JSTextName,$JSCommand,$order,'',$we_editDirID,$FolderText);
 $this->userCanMakeNewFolder = true;
 }
 
@@ -269,11 +269,11 @@ echo '<script type="text/javascript"><!--
 	$we_responseText = $GLOBALS["l_<?php echo $TOOLNAME; ?>"]["wrongtext"];
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 	} else{
-	if (f("SELECT Text FROM ".$this - > db - > escape($this - > table)." WHERE ID=".intval($this - > we_editDirID), "Text", $this - > db) != $txt){
+	if (f('SELECT Text FROM '.$this - > db - > escape($this - > table)." WHERE ID=".intval($this - > we_editDirID), "Text", $this - > db) != $txt){
 	$folder - > we_save();
 					echo 'var ref = top.opener.top.content;
 					if (ref.updateEntry){
-	ref.updateEntry('.$folder->ID.', "'.$txt.'", "'.$folder->ParentID.'", 1, 0);
+	ref.updateEntry({id:'.$folder->ID.', text:"'.$txt.'", parentid:"'.$folder->ParentID.'"});
 	}
 	';
 					if ($this - > canSelectDir){

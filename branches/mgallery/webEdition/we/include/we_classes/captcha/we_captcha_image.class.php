@@ -441,7 +441,7 @@ class we_captcha_image{
 	}
 
 	private function getFont($family, $size, $sign){
-		if(isset($this->fontpath) && $this->fontpath != '' && file_exists($_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . ".ttf")){
+		if(!empty($this->fontpath) && file_exists($_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . ".ttf")){
 			$family = $_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . '.ttf';
 			$use_fontfile = true;
 
@@ -452,7 +452,7 @@ class we_captcha_image{
 			$coords = imagettfbbox($size, $angle, $family, $sign);
 			$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
 			$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
-		} else if(isset($this->fontpath) && $this->fontpath != '' && file_exists($this->fontpath . $family . ".ttf")){
+		} else if(!empty($this->fontpath) && file_exists($this->fontpath . $family . ".ttf")){
 			$family = $this->fontpath . $family . ".ttf";
 			$use_fontfile = true;
 

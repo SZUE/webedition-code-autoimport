@@ -137,13 +137,13 @@ abstract class validation{
 					}
 
 					if($showWrong){
-						if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
+						if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
 							echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_attribute][text]') . $removeText, $k, $element) . '</p>';
 						}
-						if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs][xhtml_show_wrong_js']){
+						if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR));
 						}
-						if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
+						if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 							t_e(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText);
 						}
 					}
@@ -157,13 +157,13 @@ abstract class validation{
 					if(!array_key_exists($required, $attribs)){
 
 						if($showWrong){
-							if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
+							if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
 								echo '<p>' . sprintf(g_l('xhtmlDebug', '[missing_attribute][text]'), $required, $element) . '</p>';
 							}
-							if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs']['xhtml_show_wrong_js']){
+							if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 								echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR));
 							}
-							if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
+							if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 								error_log(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element));
 							}
 						}
@@ -172,13 +172,13 @@ abstract class validation{
 			}
 		} else { //	element does not exist
 			if($showWrong){
-				if(isset($_SESSION['prefs']['xhtml_show_wrong_text']) && $_SESSION['prefs']['xhtml_show_wrong_text']){
+				if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
 					echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_element][text]'), $element) . '</p>';
 				}
-				if(isset($_SESSION['prefs']['xhtml_show_wrong_js']) && $_SESSION['prefs']['xhtml_show_wrong_js']){
+				if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR));
 				}
-				if(isset($_SESSION['prefs']['xhtml_show_wrong_error_log']) && $_SESSION['prefs']['xhtml_show_wrong_error_log']){
+				if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 					error_log(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element));
 				}
 			}

@@ -127,7 +127,7 @@ function loadData() {
 
 		$jsOut .= '
 	startloc=0;
-	treeData.add(new self.rootEntry("0","root","root"));
+	treeData.add(self.rootEntry("0","root","root"));
 		';
 
 		foreach($this->messaging->available_folders as $folder){

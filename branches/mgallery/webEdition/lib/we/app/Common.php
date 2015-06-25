@@ -117,7 +117,7 @@ class we_app_Common{
 		}
 		//error_log("loading toc from file.");
 		self::readConfig();
-		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
+		if(!empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
 			$filename = WE_APPS_PATH . "toc.xml";
@@ -145,7 +145,7 @@ class we_app_Common{
 		}
 		//error_log("loading toc from file.");
 		self::readConfig();
-		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
+		if(!empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
 			$filename = WE_APPS_PATH . "toc.xml";
@@ -170,7 +170,7 @@ class we_app_Common{
 
 		//error_log("loading toc from file.");
 		self::readConfig();
-		if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
+		if(!empty(self::$_config->applicationpath)){
 			$filename = self::$_config->applicationpath . "/toc.xml";
 		} else {
 			$filename = WE_APPS_PATH . "toc.xml";
@@ -342,7 +342,7 @@ class we_app_Common{
 		try{
 			self::$_config = new Zend_Config_Xml($filename, null, true);
 			// add $_SERVER['DOCUMENT_ROOT'] to <applicationpath> value
-			if(isset(self::$_config->applicationpath) && !empty(self::$_config->applicationpath)){
+			if(!empty(self::$_config->applicationpath)){
 				if(self::$_config->applicationpath{0} != '/'){
 					$newpath = $_SERVER['DOCUMENT_ROOT'] . '/' . self::$_config->applicationpath;
 				} else {

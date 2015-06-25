@@ -283,7 +283,7 @@ if($newDocElements){
 
 		$newVal = ($k == we_base_constants::WE_VARIANTS_ELEMENT_NAME ?
 				we_versions_version::showValue($k, $newDocElements[$k]['dat']) :
-				(isset($v['dat']) && $v['dat'] != "" ? $v['dat'] : '')
+				(!empty($v['dat']) ? $v['dat'] : '')
 			);
 
 		$mark = "border-bottom:1px solid #B8B8B7; ";
@@ -291,7 +291,7 @@ if($newDocElements){
 
 			if($k === 'weInternVariantElement' && isset($oldDocElements[$k]['dat'])){
 				$oldVal = we_versions_version::showValue($k, $oldDocElements[$k]['dat']);
-			} elseif(isset($oldDocElements[$k]['dat']) && $oldDocElements[$k]['dat'] != ""){
+			} elseif(!empty($oldDocElements[$k]['dat'])){
 				$oldVal = $oldDocElements[$k]['dat'];
 			} else {
 				$oldVal = '';

@@ -62,7 +62,7 @@ if($fields['charset'] != DEFAULT_CHARSET && $_charsets && is_array($_charsets)){
 	$found = false;
 	$tmp = strtolower($fields['charset']);
 	foreach($_charsets as $v){
-		if(isset($v['charset']) && $v['charset']){
+		if(!empty($v['charset'])){
 			if(strtolower($v['charset']) == $tmp){
 				$found = true;
 				break;

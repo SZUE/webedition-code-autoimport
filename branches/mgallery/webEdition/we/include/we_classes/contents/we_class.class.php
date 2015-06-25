@@ -594,7 +594,7 @@ abstract class we_class{
 							return true;
 						}
 						// instead of modifying db-Enries, we delete them and create new ones
-						if(isset($actualLinks[$locale]) && $actualLinks[$locale] > 0){
+						if(!empty($actualLinks[$locale])){
 							$deleteObsoleteArray = $actualLinks;
 							$deleteObsoleteArray[$locale] = -1;
 							$this->executeSetLanguageLink($deleteObsoleteArray, $type, $isfolder, $isobject);

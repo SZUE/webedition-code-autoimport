@@ -27,7 +27,7 @@ function _getMails($to){
 	foreach($to as $mail){
 		if(strpos($mail, '@') === false){
 			if((
-				(isset($_SESSION["webuser"]["registered"]) && $_SESSION["webuser"]["registered"]) ||
+				(!empty($_SESSION["webuser"]["registered"])) ||
 				(isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK)) &&
 				isset($_SESSION["webuser"][$mail]) && strpos($_SESSION["webuser"][$mail], '@') !== false){ //wenn man registireten Usern was senden moechte
 				if(we_check_email($_SESSION["webuser"][$mail])){

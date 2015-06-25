@@ -220,7 +220,7 @@ class we_imageDocument extends we_binaryDocument{
 
 	public function initByID($ID, $Table = '', $from = we_class::LOAD_MAID_DB){
 		parent::initByID($ID, $Table, $from);
-		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+		if(!empty($GLOBALS['we_editmode'])){
 			$this->checkDisableEditpages();
 		}
 	}
@@ -491,15 +491,15 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 			while((list($k, $v) = $this->nextElement('attrib'))){
 				if(!in_array($k, $filter)){
-					if(isset($v['dat']) && $v['dat'] != ''){
+					if(!empty($v['dat'])){
 						$attribs[$k] = $v['dat'];
 					}
 				}
 			}
 
-			$showAttrOnly = (isset($attribs['only']) && $attribs['only']) ?
+			$showAttrOnly = (!empty($attribs['only'])) ?
 				$attribs['only'] :
-				((isset($attribs['pathonly']) && $attribs['pathonly']) ?
+				((!empty($attribs['pathonly'])) ?
 					'src' :
 					''
 				);
@@ -522,7 +522,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					break;
 			}
 
-			if((isset($href) && $href) && $inc_href){ //  use link with rollover
+			if((!empty($href)) && $inc_href){ //  use link with rollover
 				$aAtts = array(
 					'href' => $href,
 					'title' => isset($attribs['title']) ? $attribs['title'] : '',

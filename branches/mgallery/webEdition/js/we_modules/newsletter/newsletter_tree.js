@@ -49,7 +49,7 @@ function openClose(id) {
 	}
 }
 
-function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
+function makeNewEntry(id, pid, txt, open, ct, tab) {
 	if (treeData[indexOfEntry(pid)]) {
 		if (treeData[indexOfEntry(pid)].loaded) {
 
@@ -57,7 +57,6 @@ function makeNewEntry(icon, id, pid, txt, open, ct, tab) {
 
 			var attribs = {
 				"id": id,
-				"icon": icon,
 				"text": txt,
 				"parentid": pid,
 				"open": open,

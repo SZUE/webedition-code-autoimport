@@ -177,7 +177,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		$content = /* ($isSeemode ? file_get_contents($realPath) : */ 'include' . ($once ? '_once' : '') . '(\'' . $realPath . '\');'/* ) */;
 	}
 
-	if(isset($GLOBALS['we']['backVars']) && $GLOBALS['we']['backVars']){
+	if(!empty($GLOBALS['we']['backVars'])){
 		end($GLOBALS['we']['backVars']);
 		$we_unique = key($GLOBALS['we']['backVars']) + 1;
 		$GLOBALS['we']['backVars'][$we_unique] = array();

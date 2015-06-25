@@ -55,7 +55,7 @@ abstract class we_dialog_deleteProgress{
 	}
 
 	public static function cmd(){
-		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
+		if(!empty($_SESSION['weS']['backup_delete'])){
 			$taskname = md5(session_id() . "_backupdel");
 			new we_backup_delete($taskname, 1, 0);
 		} else {

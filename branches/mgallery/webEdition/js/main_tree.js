@@ -70,26 +70,6 @@ function info(text) {
 		t.style.display = "none";
 	}
 }
-function updateEntry(id, text, pid, tab) {
-	if ((treeData.table == tab) && (treeData[indexOfEntry(pid)])) {
-		for (var ai = 1; ai <= treeData.len; ai++) {
-			if (treeData[ai].id != id) {
-				continue;
-			}
-			if (text) {
-				treeData[ai].text = text;
-			}
-			if (pid) {
-				treeData[ai].parentid = pid;
-			}
-			if (tab) {
-				treeData[ai].table = tab;
-			}
-			break;
-		}
-		drawTree();
-	}
-}
 
 function doClick(id) {
 	var node = frames.top.get(id);

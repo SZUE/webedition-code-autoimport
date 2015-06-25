@@ -46,7 +46,7 @@ class we_backup_tableAdv extends we_backup_table{
 		if(!(isset($_SESSION['weS']['weBackupVars']['tablekeys']) && is_array($_SESSION['weS']['weBackupVars']['tablekeys']))){
 			$_SESSION['weS']['weBackupVars']['tablekeys'] = array();
 		}
-		if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
+		if(!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset'])){
 			$doConvert = true;
 			$searchArray = array('CHARACTER SET latin1', 'COLLATE latin1_bin', 'COLLATE latin1_danish_ci', 'COLLATE latin1_general_ci', 'COLLATE latin1_general_cs', 'COLLATE latin1_german1_ci', 'COLLATE latin1_german2_ci', 'COLLATE latin1_spanish_ci', 'COLLATE latin1_swedish_ci');
 		} else {

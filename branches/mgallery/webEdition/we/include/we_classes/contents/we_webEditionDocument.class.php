@@ -59,7 +59,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $wewrite = false){
 		//  check if a <we:sessionStart> Tag was before
-		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
+		$session = !empty($GLOBALS['WE_SESSION_START']);
 
 		if(!(isset($GLOBALS['we_document']) && is_array($GLOBALS['we_document']))){
 			$GLOBALS['we_document'] = array();
@@ -738,7 +738,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 
-		if(isset($we_EDITOR) && $we_EDITOR){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
+		if(!empty($we_EDITOR)){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
 			$GLOBALS['we_doc'] = $this;
 		}
 

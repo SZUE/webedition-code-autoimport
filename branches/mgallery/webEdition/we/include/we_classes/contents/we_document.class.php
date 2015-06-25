@@ -584,7 +584,7 @@ class we_document extends we_root{
 	}
 
 	function resaveWeDocumentCustomerFilter(){
-		if(isset($this->documentCustomerFilter) && $this->documentCustomerFilter){
+		if(!empty($this->documentCustomerFilter)){
 			we_customer_documentFilter::saveForModel($this);
 		}
 	}
@@ -608,9 +608,9 @@ class we_document extends we_root{
 								case 'img':
 								case 'quicktime':
 								case 'video':
-									if(isset($v['bdid']) && $v['bdid'] && is_numeric($v['bdid'])){
+									if(!empty($v['bdid']) && is_numeric($v['bdid'])){
 										$this->MediaLinks[] = $v['bdid'];
-									} elseif(isset($v['dat']) && $v['dat'] && is_numeric($v['dat'])){
+									} elseif(!empty($v['dat']) && is_numeric($v['dat'])){
 										$this->MediaLinks[] = $v['dat'];
 									}
 									break;
@@ -634,7 +634,7 @@ class we_document extends we_root{
 									}
 									break;
 								default:
-									if(isset($v['bdid']) && $v['bdid']){
+									if(!empty($v['bdid'])){
 										$this->MediaLinks[] = $v['bdid'];
 									}
 							}
@@ -721,7 +721,7 @@ class we_document extends we_root{
 		if($this->isMoved()){
 			we_base_file::deleteLocalFile($this->getSitePath(true));
 		}
-		return we_base_file::checkAndMakeFolder(dirname($this->getSitePath()),true) && we_base_file::save($this->getSitePath(), $doc);
+		return we_base_file::checkAndMakeFolder(dirname($this->getSitePath()), true) && we_base_file::save($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
@@ -801,8 +801,8 @@ class we_document extends we_root{
 							$title = $GLOBALS['lv']->f($titleField) ? : '';
 						case 'we_object_listview':
 						case 'we_object_listviewMultiobject':
-							$attribs['alt'] = isset($alt) && $alt ? $alt : ($img->getElement('alt') ? : (isset($attribs['alt']) ? $attribs['alt'] : ''));
-							$attribs['title'] = isset($title) && $title ? $title : ($img->getElement('title') ? : (isset($attribs['title']) ? $attribs['title'] : ''));
+							$attribs['alt'] = !empty($alt) ? $alt : ($img->getElement('alt') ? : (isset($attribs['alt']) ? $attribs['alt'] : ''));
+							$attribs['title'] = !empty($title) ? $title : ($img->getElement('title') ? : (isset($attribs['title']) ? $attribs['title'] : ''));
 							break;
 					}
 				}
@@ -898,7 +898,7 @@ class we_document extends we_root{
 				if($pathOnly || $only === 'href'){
 					$return = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
-					if((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])){
+					if(!empty($GLOBALS['we_link_not_published'])){
 						unset($GLOBALS['we_link_not_published']);
 						return '';
 					}
@@ -934,7 +934,7 @@ class we_document extends we_root{
 				return '';
 			case 'date':
 				$val = $val ? : time();
-				$format = isset($attribs['format']) && $attribs['format'] ? $attribs['format'] : g_l('date', '[format][default]');
+				$format = !empty($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
 				Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage'])));
 				$zdate = is_numeric($val) ? new Zend_Date($val, Zend_Date::TIMESTAMP) : new Zend_Date($val);
 
@@ -1087,7 +1087,7 @@ class we_document extends we_root{
 	}
 
 	static function getHrefByArray(array $hrefArr){
-		if(isset($hrefArr['int']) && $hrefArr['int']){
+		if(!empty($hrefArr['int'])){
 			$intID = isset($hrefArr['intID']) ? $hrefArr['intID'] : 0;
 			return $intID ? id_to_path($intID) : '';
 		}
@@ -1102,13 +1102,13 @@ class we_document extends we_root{
 			$link['type'] = we_base_link::TYPE_MAIL;
 
 //added for #7269
-			if(isset($link['subject']) && $link['subject'] != ''){
+			if(!empty($link['subject'])){
 				$link['href'] = $link['href'] . "?subject=" . $link['subject'];
 			}
-			if(isset($link['cc']) && $link['cc'] != ''){
+			if(!empty($link['cc'])){
 				$link['href'] = $link['href'] . "&cc=" . $link['cc'];
 			}
-			if(isset($link['bcc']) && $link['bcc'] != ''){
+			if(!empty($link['bcc'])){
 				$link['href'] = $link['href'] . "&bcc=" . $link['bcc'];
 			}
 		}
@@ -1142,7 +1142,7 @@ class we_document extends we_root{
 	function getLinkContent($link, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $xml = '', $_useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
 		$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
-		if(isset($GLOBALS['we_link_not_published']) && $GLOBALS['we_link_not_published']){
+		if(!empty($GLOBALS['we_link_not_published'])){
 			unset($GLOBALS['we_link_not_published']);
 			return '';
 		}
@@ -1178,7 +1178,7 @@ class we_document extends we_root{
 //  deal with all remaining attribs
 				$img_attList = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name');
 				foreach($img_attList as $k){
-					if(isset($link[$k]) && $link[$k] != ''){
+					if(!empty($link[$k])){
 						$img_attribs[$k] = $link[$k];
 					}
 				}
@@ -1271,11 +1271,11 @@ class we_document extends we_root{
 			}
 
 
-			if(isset($_popUpCtrl['jswin']) && $_popUpCtrl['jswin']){ //  add attribs for popUp-window
+			if(!empty($_popUpCtrl['jswin'])){ //  add attribs for popUp-window
 				$js = 'var we_winOpts = \'\';';
-				if(isset($_popUpCtrl["jscenter"]) && $_popUpCtrl["jscenter"] && isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] && isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"]){
+				if(!empty($_popUpCtrl["jscenter"]) && !empty($_popUpCtrl["jswidth"]) && !empty($_popUpCtrl["jsheight"])){
 					$js .= 'if (window.screen) {var w = ' . $_popUpCtrl["jswidth"] . ';var h = ' . $_popUpCtrl["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
-				} else if((isset($_popUpCtrl["jsposx"]) && $_popUpCtrl["jsposx"] != "") || (isset($_popUpCtrl["jsposy"]) && $_popUpCtrl["jsposy"] != "")){
+				} else if(!empty($_popUpCtrl["jsposx"]) || !empty($_popUpCtrl["jsposy"])){
 					if($_popUpCtrl["jsposx"] != ''){
 						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $_popUpCtrl["jsposx"] . '\';';
 					}
@@ -1284,15 +1284,15 @@ class we_document extends we_root{
 					}
 				}
 				$js.=
-					(isset($_popUpCtrl["jswidth"]) && $_popUpCtrl["jswidth"] ?
+					(!empty($_popUpCtrl["jswidth"]) ?
 						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'width=' . $_popUpCtrl["jswidth"] . '\';' : '') .
-					(isset($_popUpCtrl["jsheight"]) && $_popUpCtrl["jsheight"] ?
-						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (isset($_popUpCtrl["jsstatus"]) && $_popUpCtrl["jsstatus"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (isset($_popUpCtrl["jsscrollbars"]) && $_popUpCtrl["jsscrollbars"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (isset($_popUpCtrl["jsmenubar"]) && $_popUpCtrl["jsmenubar"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (isset($_popUpCtrl["jsresizable"]) && $_popUpCtrl["jsresizable"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (isset($_popUpCtrl["jslocation"]) && $_popUpCtrl["jslocation"] ? 'yes' : 'no') . '\';' .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (isset($_popUpCtrl["jstoolbar"]) && $_popUpCtrl["jstoolbar"] ? 'yes' : 'no') . '\';';
+					(!empty($_popUpCtrl["jsheight"]) ?
+						'we_winOpts += (we_winOpts ? \',\' : \'\')+\'height=' . $_popUpCtrl["jsheight"] . '\';' : '') . 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (!empty($_popUpCtrl["jsstatus"]) ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'scrollbars=' . (!empty($_popUpCtrl["jsscrollbars"]) ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'menubar=' . (!empty($_popUpCtrl["jsmenubar"]) ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'resizable=' . (!empty($_popUpCtrl["jsresizable"]) ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'location=' . (!empty($_popUpCtrl["jslocation"]) ? 'yes' : 'no') . '\';' .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'toolbar=' . (!empty($_popUpCtrl["jstoolbar"]) ? 'yes' : 'no') . '\';';
 				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs["name"]) ? $attribs["name"] : "") . "',we_winOpts);";
 
 				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
@@ -1301,7 +1301,7 @@ class we_document extends we_root{
 			$_linkAttribs = removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls'));
 			return $rollOverScript . getHtmlTag('a', $_linkAttribs, '', false, true);
 		} else {
-			if((isset($GLOBALS['we_link_not_published'])) && ($GLOBALS['we_link_not_published'])){
+			if(!empty($GLOBALS['we_link_not_published'])){
 				unset($GLOBALS['we_link_not_published']);
 			}
 		}
@@ -1541,7 +1541,7 @@ class we_document extends we_root{
 				return $allIds;
 			}
 
-			$DB_WE->query('SELECT ID,Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $allIds) . ')' . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'));
+			$DB_WE->query('SELECT ID,Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $allIds) . ')' . (!empty($GLOBALS['we_doc']->InWebEdition) ? '' : ' AND Published>0'));
 			$allDocs = $DB_WE->getAllFirst(true, MYSQL_ASSOC);
 			foreach($regs as $reg){
 				$foo = isset($allDocs[$reg[2]]) ? $allDocs[$reg[2]] : '';

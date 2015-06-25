@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_charset($attribs, $content){
-	$content = isset($GLOBALS['CHARSET']) && $GLOBALS['CHARSET'] ? $GLOBALS['CHARSET'] : $content;
-	if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode'] && $GLOBALS['we_doc']->EditPageNr === we_base_constants::WE_EDITPAGE_PROPERTIES){
+	$content = !empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $content;
+	if(!empty($GLOBALS['we_editmode']) && $GLOBALS['we_doc']->EditPageNr === we_base_constants::WE_EDITPAGE_PROPERTIES){
 		//set meta data & exit
 		$GLOBALS['meta']['Charset'] = array(
 			'default' => $content,

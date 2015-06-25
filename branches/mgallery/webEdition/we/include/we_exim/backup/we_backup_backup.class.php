@@ -135,7 +135,7 @@ class we_backup_backup extends we_backup_base{
 			return;
 		}
 		$tablename = $this->fixTableName($tablename);
-		$this->current_description = (isset($this->description["import"][strtolower($tablename)]) && $this->description["import"][strtolower($tablename)] ?
+		$this->current_description = (!empty($this->description["import"][strtolower($tablename)]) ?
 				$this->description["import"][strtolower($tablename)] :
 				g_l('backup', '[working]'));
 
@@ -425,7 +425,7 @@ class we_backup_backup extends we_backup_base{
 	 */
 	function isFixed($tab){
 		if(defined('OBJECT_X_TABLE') && stripos($tab, OBJECT_X_TABLE) !== false){
-			return !(isset($this->handle_options["object"]) && $this->handle_options["object"]);
+			return (empty($this->handle_options["object"]));
 		}
 		if(stripos($tab, "tblobject") !== false){
 			return true;

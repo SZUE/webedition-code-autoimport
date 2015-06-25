@@ -278,7 +278,7 @@ function submitForm() {
 	}
 
 	function getJSProperty($load = ''){
-		$_mailCheck = (isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed'] ?
+		$_mailCheck = (!empty($this->settings['reject_save_malformed']) ?
 				"we.validate.email(email);" :
 				"true");
 
@@ -319,7 +319,7 @@ var size = {
 };
 
 var modFrameSet="' . $this->frameset . '";
-var checkMail=' . intval(isset($this->settings['reject_save_malformed']) && $this->settings['reject_save_malformed']) . ';
+var checkMail=' . intval(!empty($this->settings['reject_save_malformed'])) . ';
 
 function setScrollTo() {
 	parent.scrollToVal = pageYOffset;
@@ -1187,8 +1187,8 @@ self.close();');
 		}
 
 
-		$port = (isset($this->settings["use_port"]) && $this->settings["use_port"]) ? ':' . $this->settings["use_port"] : '';
-		$protocol = (isset($this->settings["use_https_refer"]) && $this->settings["use_https_refer"] ? 'https://' : 'http://');
+		$port = (!empty($this->settings["use_port"])) ? ':' . $this->settings["use_port"] : '';
+		$protocol = (!empty($this->settings["use_https_refer"]) ? 'https://' : 'http://');
 
 		if($hm){
 			if($block->Type != we_newsletter_block::URL){

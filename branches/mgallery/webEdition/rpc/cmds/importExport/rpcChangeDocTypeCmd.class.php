@@ -59,7 +59,7 @@ class rpcChangeDocTypeCmd extends rpcCmd{
 					$_noDocTypeLayerDisplay = 'block';
 				}
 				$_templateName = '';
-				if(isset($values['TemplateID']) && $values['TemplateID'] > 0){
+				if(!empty($values['TemplateID'])){
 					$_templateName = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($values['TemplateID']));
 				}
 				$resp->setData('elements', array(

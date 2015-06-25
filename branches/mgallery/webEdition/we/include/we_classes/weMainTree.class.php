@@ -56,65 +56,50 @@ while(1){
 		}
 
 		$hasSched = false;
-		if(isset($doc->schedArr) && $doc->schedArr && is_array($doc->schedArr)){
+		if(!empty($doc->schedArr) && is_array($doc->schedArr)){
 			foreach($doc->schedArr as $sched){
 				$hasSched|=$sched['active'];
 			}
 		}
 		$s .= '
 if(weWindow.treeData){
-	var obj = weWindow.treeData;
-	var isIn = false;' .
+	var obj = weWindow.treeData;' .
 			($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
 	weWindow.treeData.selection="' . $doc->ID . '";' :
 				'weWindow.treeData.unselectnode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.indexOfEntry(' . $doc->ParentID . ')]){
-				var attribs={
-				"id":' . $doc->ID . ',
-				"parentid":' . $doc->ParentID . ',
-				"text":\'' . $doc->Text . '\',
-				"published":' . $published . ',
-				"table":\'' . $doc->Table . '\',
-				"inschedule":\'' . intval($hasSched) . '\'
-				};
+			var attribs={
+			"id":' . $doc->ID . ',
+			"parentid":' . $doc->ParentID . ',
+			"text":\'' . $doc->Text . '\',
+			"published":' . $published . ',
+			"table":\'' . $doc->Table . '\',
+			"inschedule":\'' . intval($hasSched) . '\'
+			};
 
-				var visible=(' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')!=-1?
-					' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')].open:
-						0);
-
-				if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
-						isIn=true;
-						var ai = 1;
-						var elem;
-						while (ai <= ' . $this->topFrame . '.treeData.len) {
-							elem=' . $this->topFrame . '.treeData[ai];
-							if (elem.id==attribs["id"]){
-								elem.text=attribs["text"];
-								elem.parentid=attribs["parentid"];
-								elem.table=attribs["table"];
-								elem.published=attribs["published"];
-								elem.inschedule=attribs["inschedule"];
-							}
-							++ai;
-						}
+			var visible=(' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')!=-1?
+				' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')].open:
+					0);
+			if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
+				' . $this->topFrame . '.updateEntry(attribs);
 			}else{
-				attribs["contenttype"]=\'' . $doc->ContentType . '\';
-				attribs["isclassfolder"]=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';
-				attribs["checked"]=\'0\';
-				attribs["typ"]=\'' . ($doc->IsFolder ? "group" : "item") . '\';
-				attribs["open"]=\'0\';
-				attribs["disabled"]=\'0\';
-				attribs["tooltip"]=\'' . $doc->ID . '\';
-
+			//FIXME: makenewentry!!!
+				attribs.contenttype=\'' . $doc->ContentType . '\';
+				attribs.isclassfolder=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';
+				attribs.checked=\'0\';
+				attribs.typ=\'' . ($doc->IsFolder ? "group" : "item") . '\';
+				attribs.open=\'0\';
+				attribs.disabled=\'0\';
+				attribs.tooltip=\'' . $doc->ID . '\';
 				' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
-		}
-		weWindow.drawTree();
-	}else if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
+			}
+			weWindow.drawTree();
+		}else if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
 		' . $this->topFrame . '.deleteEntry(' . $doc->ID . ');
+		}
 	}
-}
 }';
 
 

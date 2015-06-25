@@ -76,7 +76,7 @@ function startTree(){
 
 		$js = (!$rootID ?
 				$this->topFrame . '.treeData.clear();' .
-				$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
+				$this->topFrame . '.treeData.add(' . $this->topFrame . '.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
 			'var attribs={};';
 		foreach($treeItems as $item){
 			$js.='if(' . $this->topFrame . '.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' .
@@ -204,11 +204,11 @@ function startTree(){
 		}
 
 		$select = $grouparr = $orderarr = array();
-		
+
 		$total = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE );
 
 		foreach($sort_defs as $c => $sortdef){
-			if(isset($sortdef['function']) && $sortdef['function']){
+			if(!empty($sortdef['function'])){
 				$select[] = ($settings->customer->isInfoDate($sortdef['field']) ?
 						sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef["field"] . "_" . $sortdef["function"] :
 						sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef["function"]);
@@ -225,7 +225,7 @@ function startTree(){
 				$select[] = $sortdef['field'];
 				$grouparr[] = $sortdef['field'];
 				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
-				if(isset($pidarr[$c]) && $pidarr[$c]){
+				if(!empty($pidarr[$c])){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
 							'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
 							$sortdef['field'] . "='" . $pidarr[$c] . "'");
@@ -249,7 +249,6 @@ function startTree(){
 		$first = true;
 
 		while($db->next_record()){
-
 			$old = 0;
 
 			if($level == 0){
@@ -257,7 +256,7 @@ function startTree(){
 				$gid = '{' . $gname . '}';
 
 				$groupTotal = f('SELECT COUNT(ID) FROM ' . CUSTOMER_TABLE . ' WHERE ' . $grp . '="' . $db->escape($gname) . '"' .
-					(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+					(!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
 					(count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
 
 				$items[] = array(

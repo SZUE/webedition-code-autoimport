@@ -295,7 +295,7 @@ class we_search_search extends we_search_base{
 		$_db2->query('SELECT DocumentID, DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . " WHERE DocTable = 'tblFile' AND Active = 1 AND DocumentObject LIKE '%" . $_db2->escape(trim($keyword)) . "%'");
 		while($_db2->next_record()){
 			$tempDoc = we_unserialize($_db2->f('DocumentObject'));
-			if(isset($tempDoc[0]['elements']['Title']) && $tempDoc[0]['elements']['Title']['dat'] != ''){
+			if(!empty($tempDoc[0]['elements']['Title'])){
 				$keyword = str_replace(array('\_', '\%'), array('_', '%'), $keyword);
 				if(stristr($tempDoc[0]['elements']['Title']['dat'], $keyword)){
 					$titles[] = $_db2->f('DocumentID');
@@ -356,7 +356,7 @@ class we_search_search extends we_search_base{
 				$_db->query($query2);
 				while($_db->next_record()){
 					$tempObj = we_unserialize($_db->f('DocumentObject'));
-					if(isset($tempObj[0]['Category']) && $tempObj[0]['Category'] != ''){
+					if(!empty($tempObj[0]['Category'])){
 						if(!array_key_exists($tempObj[0]['ID'], $res)){
 							$res[$tempObj[0]['ID']] = $tempObj[0]['Category'];
 						}
@@ -1064,7 +1064,7 @@ class we_search_search extends we_search_base{
 			if($searchfield == $cur['name']){
 				$searchfield = $tablename . '.' . $cur['name'];
 
-				if(isset($searchname) && $searchname != ''){
+				if(!empty($searchname)){
 					if(($whatParentID === 'ParentIDDoc' && ($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID === 'ParentIDObj' && ($this->table == OBJECT_FILES_TABLE || $this->table == VERSIONS_TABLE)) || ($whatParentID === 'ParentIDTmpl' && $this->table == TEMPLATES_TABLE)){
 						if($this->table == VERSIONS_TABLE){
 							if($whatParentID === 'ParentIDDoc'){

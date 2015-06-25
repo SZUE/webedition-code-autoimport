@@ -113,7 +113,7 @@ if(is_readable($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php')){
 $_table->setCol($_actRow++, 0, array("width" => $_widthTotal, "colspan" => 3), we_html_tools::getPixel($_widthTotal, 10));
 
 
-if(isset($GLOBALS["loginpage"]) && $GLOBALS["loginpage"]){
+if(!empty($GLOBALS["loginpage"])){
 
 	$loginRow = 0;
 

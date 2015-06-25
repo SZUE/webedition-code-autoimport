@@ -27,7 +27,7 @@ echo we_html_element::htmlDocType();
 
 	<head>
 		<?php
-		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+		if(!empty($GLOBALS['we_editmode'])){
 			echo STYLESHEET;
 		}
 		if($we_doc->getElement('Charset')){
@@ -44,7 +44,7 @@ echo we_html_element::htmlDocType();
 		<?php } ?>
 		<title><?php echo $we_doc->getElement('Title') ?></title>
 		<?php
-		if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){
+		if(!empty($GLOBALS['we_editmode'])){
 			echo we_html_element::jsScript(JS_DIR . 'windows.js');
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		} else {
@@ -52,7 +52,7 @@ echo we_html_element::htmlDocType();
 		}
 		?>
 	</head>
-	<?php if(isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']){ ?>
+	<?php if(!empty($GLOBALS['we_editmode'])){ ?>
 		<body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15">
 			<form name="we_form" method="post"><?php
 				echo we_class::hiddenTrans();

@@ -208,7 +208,7 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function hasNextPage($parentEnd = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 			return true;
 		}
 		if($parentEnd && ($end = we_base_request::_(we_base_request::INT, 'we_lv_pend_' . $this->name))){
@@ -225,7 +225,7 @@ abstract class we_listview_base{
 	 *
 	 */
 	public function hasPrevPage($parentStart = false){
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 			return true;
 		}
 		if($parentStart && ($start = we_base_request::_(we_base_request::INT, 'we_lv_pstart_' . $this->name, 0))){
@@ -244,7 +244,7 @@ abstract class we_listview_base{
 	public function getBackLink($attribs){
 		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 		$urlID = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 
 			$month = $this->calendar_struct['month_human'];
 			$day = $this->calendar_struct['day_human'];
@@ -350,7 +350,7 @@ abstract class we_listview_base{
 	public function getNextLink($attribs){
 		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 		$urlID = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-		if(isset($this->calendar_struct['calendar']) && $this->calendar_struct['calendar'] != ''){
+		if(!empty($this->calendar_struct['calendar'])){
 
 			$month = $this->calendar_struct['month_human'];
 			$day = $this->calendar_struct['day_human'];

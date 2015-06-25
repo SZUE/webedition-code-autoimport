@@ -32,16 +32,16 @@ class we_htmlDocument extends we_textContentDocument{
 	function i_saveContentDataInDB(){
 		if(($code = $this->getElement('data'))){
 			$metas = $this->getMetas($code);
-			if(isset($metas['title']) && $metas['title']){
+			if(!empty($metas['title'])){
 				$this->setElement('Title', $metas['title']);
 			}
-			if(isset($metas['description']) && $metas['description']){
+			if(!empty($metas['description'])){
 				$this->setElement('Description', $metas['description']);
 			}
-			if(isset($metas['keywords']) && $metas['keywords']){
+			if(!empty($metas['keywords'])){
 				$this->setElement('Keywords', $metas['keywords']);
 			}
-			if(isset($metas['charset']) && $metas['charset']){
+			if(!empty($metas['charset'])){
 				$this->setElement('Charset', $metas['charset'], 'attrib');
 			}
 		}

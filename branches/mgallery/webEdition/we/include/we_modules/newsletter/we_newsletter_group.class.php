@@ -93,7 +93,7 @@ class we_newsletter_group extends we_newsletter_base{
 					case "MemberSince":
 					case "LastAccess":
 					case "LastLogin":
-						if(isset($v['fieldvalue']) && $v['fieldvalue'] != ""){
+						if(!empty($v['fieldvalue'])){
 							if(stristr($v['fieldvalue'], '.')){
 								$date = explode(".", $v['fieldvalue']);
 								$v['fieldvalue'] = mktime($v['hours'], $v['minutes'], 0, $date[1], $date[0], $date[2]);

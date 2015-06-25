@@ -31,7 +31,7 @@ class we_backup_delete extends we_fragment_base{
 	}
 
 	function init(){
-		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
+		if(!empty($_SESSION['weS']['backup_delete'])){
 
 			$this->db->query('SELECT ContentType,Path, CHAR_LENGTH(Path) as Plen FROM ' . FILE_TABLE . ' ORDER BY IsFolder, Plen DESC');
 			while($this->db->next_record()){
@@ -73,7 +73,7 @@ class we_backup_delete extends we_fragment_base{
 	}
 
 	function finish(){
-		if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok']) && $_SESSION['weS']['delete_files_nok']){
+		if(!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
 			echo we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
 					new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,600,550,true,true,true);
