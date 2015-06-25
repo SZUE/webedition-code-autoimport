@@ -87,6 +87,8 @@ class we_base_preferences{
 		$processedConfigs = ($file ?
 				array('global' => 'contentBak') :
 				array('global' => 'contentDef', 'conf' => 'contentDef'));
+
+		$moveToConf = array('DB_SET_CHARSET');
 		foreach($processedConfigs as $conf => $dataField){
 			// Read the global configuration file
 			$file_name = $GLOBALS['config_files']['conf_' . $conf]['filename'];
@@ -98,11 +100,7 @@ class we_base_preferences{
 				$content = we_base_file::load($file);
 				//leave settings in their current state
 				foreach($leave as $settingname){
-					//moved constants
-					if($settingname == 'DB_SET_CHARSET' && $conf === 'global'){
-						$content = self::changeSourceCode('define', $content, 'DB_SET_CHARSET', '', false);
-						continue;
-					}
+					$active = in_array($settingname, $moveToConf) ? ($conf === 'conf') : true;
 					$content = self::changeSourceCode('define', $content, $settingname, (defined($settingname) ? constant($settingname) : ''), true);
 				}
 			} else {
@@ -116,7 +114,7 @@ class we_base_preferences{
 			foreach($GLOBALS['configs'][$conf] as $define => $value){
 				if(!preg_match('/define\(["\']' . $define . '["\'],/', $content)){
 					// Add needed variable
-					$active = ($conf == 'global' ? true : defined($define));
+					$active = in_array($define, $moveToConf) ? ($conf === 'conf') : ($conf == 'global' ? true : defined($define));
 					$content = self::changeSourceCode('add', $content, $define, (defined($define) ? constant($define) : $value[2]), $active, $value[0], isset($value[3]) && $conf != 'global'/* access restriction */ ? $value[3] : false);
 					//define it in running session
 					if(!defined($define) && $active){
