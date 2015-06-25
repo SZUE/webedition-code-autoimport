@@ -30,7 +30,7 @@ var count = 0;
 var folder = 0;
 
 function drawEintraege() {
-	fr = top.content.tree.window.document.body;
+	fr = top.content.tree;
 	fr.innerHTML = '<div id="treetable"><nobr>' +
 					"<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + treeYearClick + "\" >" + treeYear + ": <strong>" + top.yearshop + " </strong></a> <br/>" +
 					zeichne(0, "") +
@@ -46,8 +46,8 @@ function zeichne(startEntry, zweigEintrag) {
 		if (nf[ai].typ === 'shop') {
 			ret += '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
 			if (perm_EDIT_SHOP_ORDER) { // make  in tree clickable
-				if (nf[ai].name !== -1) {
-					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
+				if (nf[ai].id !== -1) {
+					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
 				}
 			}
 			ret += getTreeIcon('we/shop') +
@@ -55,7 +55,7 @@ function zeichne(startEntry, zweigEintrag) {
 											"</a>" :
 											"") +
 							(perm_EDIT_SHOP_ORDER ? // make orders in tree clickable
-											"<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
+											"<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 											"") +
 							//changed for #6786
 							"<span style='" + nf[ai].st + "'>" + nf[ai].text + "</span>" +
@@ -66,15 +66,15 @@ function zeichne(startEntry, zweigEintrag) {
 		} else {
 			var newAst = zweigEintrag;
 
-			ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].name + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>";
+			ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>";
 			ret += (perm_EDIT_SHOP_ORDER ?
-							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
+							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 							"") +
 							getTreeIcon('folder', nf[ai].open) +
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" +
 											// make the month in tree clickable
-											"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
+											"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 											"") +
 							(parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
 							(perm_EDIT_SHOP_ORDER ?
@@ -84,81 +84,23 @@ function zeichne(startEntry, zweigEintrag) {
 				newAst += (ai === nf.len ?
 								'<span class="treeKreuz"></span>' :
 								'<span class="strich treeKreuz "></span>');
-				ret += zeichne(nf[ai].name, newAst);
+				ret += zeichne(nf[ai].id, newAst);
 			}
 		}
 	}
 	return ret;
 }
 
-function makeNewEntry(id, pid, txt, open, ct, tab, pub) {
-	if (table === tab && treeData[indexOfEntry(pid)]) {
-		if (ct === "folder") {
-			treeData.addSort({
-				name: id,
-				parentid: pid,
-				text: txt,
-				typ: 'folder',
-				open: (open ? 1 : 0),
-				contentType: ct,
-				table: tab,
-				loaded: (open ? 1 : 0),
-				checked: false
-			});
-		} else {
-			treeData.addSort({
-				name: id,
-				parentid: pid,
-				text: txt,
-				typ: 'shop',
-				checked: false,
-				contentType: ct,
-				table: tab,
-				published: pub,
-			}
-			);
-		}
-		drawEintraege();
-	}
-}
-
-
-function updateEntry(id, text, pub) {
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
-			if (treeData[ai].name == id) {
-				treeData[ai].text = text;
-				treeData[ai].published = pub;
-				break;
-			}
-		}
-	}
-	drawEintraege();
-}
-
-function deleteEntry(id) {
-	var ind = 0;
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
-			if (treeData[ai].name == id) {
-				ind = ai;
-				break;
-			}
-		}
-	}
-	updateTreeAfterDel(ind);
-}
-
-function openClose(name, status) {
-	var eintragsIndex = indexOfEntry(name);
+function openClose(id, status) {
+	var eintragsIndex = indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawEintraege();
 }
 
-function indexOfEntry(name) {
+function indexOfEntry(id) {
 	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ === 'root') || (treeData[ai].typ === 'folder')) {
-			if (treeData[ai].name == name) {
+			if (treeData[ai].id == id) {
 				return ai;
 			}
 		}
@@ -169,18 +111,16 @@ function indexOfEntry(name) {
 function search(eintrag) {
 	var nf = new container();
 	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'shop')) {
-			if (treeData[ai].parentid == eintrag) {
-				nf.add(treeData[ai]);
-			}
+		if (treeData[ai].parentid == eintrag) {
+			nf.add(treeData[ai]);
 		}
 	}
 	return nf;
 }
 
-function rootEntry(name, text, rootstat) {
+function rootEntry(id, text, rootstat) {
 	return new node({
-		name: name,
+		id: id,
 		text: text,
 		loaded: true,
 		typ: 'root',

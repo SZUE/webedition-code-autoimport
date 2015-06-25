@@ -28,12 +28,11 @@ class we_shop_frames extends we_modules_frame{
 	var $frameset;
 	public $module = 'shop';
 	protected $hasIconbar = true;
-	protected $useMainTree = false;
 	protected $treeDefaultWidth = 204;
 
 	function __construct($frameset){
 		parent::__construct(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
-//		$this->Tree = new we_shop_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_shop_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_shop_view(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php', 'top.content');
 	}
 
@@ -41,92 +40,8 @@ class we_shop_frames extends we_modules_frame{
 		return $this->View->getJSTop_tmp();
 	}
 
-	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
-		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement('
-var table="' . SHOP_TABLE . '";
-var we_dir="' . WEBEDITION_DIR . '";'
-				. parent::getTree_g_l() . '
-var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
-var treeYear="' . g_l('modules_shop', '[treeYear]') . '";
-var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
-') . we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
-			we_html_element::jsScript(JS_DIR . 'shop_tree.js');
-		$menu = 'function loadData() {
-				treeData.clear();
-				treeData.add(self.rootEntry(0, "root", "root"));';
-
-
-		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
-		while($this->db->next_record()){
-//added for #6786
-			$style = 'color:black;font-weight:bold;';
-
-			if($this->db->f('DateCustomA') != '' || $this->db->f('DateCustomB') != '' || $this->db->f('DateCustomC') != '' || $this->db->f('DateCustomD') != '' || $this->db->f('DateCustomE') != '' || $this->db->f('DateCustomF') != '' || $this->db->f('DateCustomG') != '' || $this->db->f('DateCustomH') != '' || $this->db->f('DateCustomI') != '' || $this->db->f('DateCustomJ') != '' || $this->db->f('DateConfirmation') != '' || ($this->db->f('DateShipping') != '0000-00-00 00:00:00' && $this->db->f('DateShipping') != '')){
-				$style = 'color:red;';
-			}
-
-			if($this->db->f('DatePayment') != '0000-00-00 00:00:00' && $this->db->f('DatePayment') != ''){
-				$style = 'color:#006699;';
-			}
-
-			if($this->db->f('DateCancellation') != '' || $this->db->f('DateFinished') != ''){
-				$style = 'color:black;';
-			}
-			$menu.= "  treeData.add({
-name:'" . $this->db->f("IntOrderID") . "',
-	parentid:" . $this->db->f("mdate") . ",
-	text:'" . $this->db->f("IntOrderID") . ". " . g_l('modules_shop', '[bestellung]') . " " . $this->db->f("orddate") . "',
-	typ:'shop',
-	checked:false,
-	contentType:'shop',
-	table:'" . SHOP_TABLE . "',
-	published:" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . ",
-	st:'" . $style . "'
-});";
-
-			if($this->db->f('DateShipping') <= 0){
-				if(isset(${'l' . $this->db->f('mdate')})){
-					${'l' . $this->db->f('mdate')} ++;
-				} else {
-					${'l' . $this->db->f('mdate')} = 1;
-				}
-			}
-
-
-//FIXME: remove eval
-			if(isset(${'v' . $this->db->f('mdate')})){
-				${'v' . $this->db->f('mdate')} ++;
-			} else {
-				${'v' . $this->db->f('mdate')} = 1;
-			}
-		}
-
-		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
-//unset($_SESSION['year']);
-		for($f = 12; $f > 0; $f--){
-			$r = (isset(${'v' . $f . $year}) ? ${'v' . $f . $year} : '');
-			$k = (isset(${'l' . $f . $year}) ? ${'l' . $f . $year} : '');
-			$menu.= "treeData.add({
-	name:'" . $f . $year . "',
-	parentid:0,
-	text:'" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',
-	typ:'folder',
-	open:0,
-	contentType:'we/shop',
-	table:'',
-	loaded: 0,
-	checked: false,
-	published:" . (($k > 0) ? 1 : 0) . "
-});";
-		}
-		$menu.='top.yearshop = ' . $year . ';
-			}';
-		return $ret . we_html_element::jsElement($menu);
-	}
-
 	function getHTMLFrameset(){
-		$extraHead = $this->getJSTreeCode();
+		$extraHead = $this->Tree->getJSTreeCode();
 
 		if(($bid = we_base_request::_(we_base_request::INT, 'bid')) === -1){
 			$bid = intval(f('SELECT IntOrderID FROM ' . SHOP_TABLE . ' ORDER BY IntID DESC', '', $this->db));

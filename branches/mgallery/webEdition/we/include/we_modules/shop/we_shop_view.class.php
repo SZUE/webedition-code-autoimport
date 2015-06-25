@@ -1666,7 +1666,7 @@ var attribs = {
 };' .
 						$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
 						$this->topFrame . '.drawTree();' :
-						$this->topFrame . '.updateEntry(' . $this->raw->ID . ',"' . $tt . '");'
+						$this->topFrame . '.updateEntry({id:' . $this->raw->ID . ',text:"' . $tt . '"});'
 					);
 				echo we_html_element::jsElement(
 					$js .

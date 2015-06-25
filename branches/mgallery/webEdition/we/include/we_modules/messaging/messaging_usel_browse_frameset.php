@@ -42,7 +42,7 @@ var we_dir="' . WEBEDITION_DIR . '";'
 //FIXME: make the js code equal to *_tree.js
 ?>
 <script type="text/javascript"><!--
-	function loadData() {
+function loadData() {
 		treeData.clear();
 
 <?php
@@ -53,7 +53,7 @@ treeData.add(self.rootEntry('0','root','root'));";
 while($DB_WE->next_record()){
 	if($DB_WE->f('Type') == 1){
 		echo "  treeData.add({
-name : " . $DB_WE->f("ID") . ",
+id: " . $DB_WE->f("ID") . ",
 parentid : " . $DB_WE->f("ParentID") . ",
 text : '" . $DB_WE->f("username") . "',
 typ : 'folder',
@@ -68,7 +68,7 @@ checked : false
 
 		echo 'checked = (user_array_search("' . $DB_WE->f('ID') . '", opener.current_sel, "1", "we_message") != -1) ? 1 : 0;' .
 		'treeData.add({
-name : ' . $DB_WE->f("ID") . ',
+id : ' . $DB_WE->f("ID") . ',
 parentid : ' . $DB_WE->f("ParentID") . ',
 text : "' . $DB_WE->f("username") . '",
 typ : "user",

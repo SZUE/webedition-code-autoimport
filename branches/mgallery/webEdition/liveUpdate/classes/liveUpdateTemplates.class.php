@@ -72,7 +72,7 @@ class liveUpdateTemplates{
 	 *
 	 * @return string
 	 */
-	function getHtmlHead(){
+	static function getHtmlHead(){
 		return we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . STYLESHEET .
 			LIVEUPDATE_CSS;
 	}
@@ -88,7 +88,7 @@ class liveUpdateTemplates{
 	 * @param integer $contentHeight
 	 * @return string
 	 */
-	function getHtml($headline, $content, $header = '', $buttons = '', $contentWidth = 550, $contentHeight = 400){
+	static function getHtml($headline, $content, $header = '', $buttons = '', $contentWidth = 550, $contentHeight = 400){
 
 		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html><head>' .
 			liveUpdateTemplates::getHtmlHead() .

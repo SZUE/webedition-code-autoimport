@@ -106,7 +106,7 @@ top.clearEntries();
 				echo 'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
-	ref.makeNewEntry(' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",1);
+	ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:1});
 }
 ' . ($this->canSelectDir ?
 					'top.currentPath = "' . $folder->Path . '";

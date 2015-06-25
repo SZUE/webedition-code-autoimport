@@ -210,7 +210,7 @@ print we_html_element('<script type="text/javascript">
 	$folder - > we_save();
 					print 'var ref = top.opener.top.content;
 					if (ref.makeNewEntry){
-	ref.makeNewEntry('.$folder->ID.', "'.$folder->ParentID.'", "'.$txt.'", 1, "folder", "'.$this->table.'", 0, 0);
+	ref.makeNewEntry({id:'.$folder->ID.', parentid:"'.$folder->ParentID.'", text:"'.$txt.'", open:1, contenttype:"folder", table:"'.$this->table.'"});
 	}
 	';
 					if ($this - > canSelectDir){

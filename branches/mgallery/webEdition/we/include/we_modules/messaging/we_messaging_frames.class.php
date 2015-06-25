@@ -32,7 +32,6 @@ class we_messaging_frames extends we_modules_frame{
 	public $viewclass;
 	public $module = "messaging";
 	protected $hasIconbar = true;
-	protected $useMainTree = false;
 	protected $treeDefaultWidth = 204;
 
 	const TYPE_MESSAGE = 1;
@@ -45,7 +44,7 @@ class we_messaging_frames extends we_modules_frame{
 		$this->weTransaction = &$weTransaction;
 		$this->viewclass = $viewclass;
 		$this->View = new we_messaging_view(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php", "top.content", $this->transaction, $this->weTransaction);
-//		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd",$this->transaction);
 	}
 
 	function getHTML($what){
@@ -62,131 +61,6 @@ class we_messaging_frames extends we_modules_frame{
 
 	function getJSCmdCode(){
 		return $this->View->getJSTop_tmp();
-	}
-
-	function getJSTreeCode(){ //TODO: move to new class weUsersTree (extends weModulesTree)
-		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
-		$modData = we_base_moduleInfo::getModuleData($mod);
-		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
-		if(($param = we_base_request::_(we_base_request::INT, 'msg_param'))){
-			switch($param){
-				case self::TYPE_TODO:
-					$f = $this->messaging->get_inbox_folder('we_todo');
-					break;
-				case self::TYPE_MESSAGE:
-					$f = $this->messaging->get_inbox_folder('we_message');
-					break;
-			}
-		}
-
-		$jsinit = '
-var we_dir="' . WEBEDITION_DIR . '";
-var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
-
-parent.document.title = "' . $title . '";
-we_transaction = "' . $this->transaction . '";
-var we_frameset="' . $this->frameset . '";'
-			. parent::getTree_g_l() . '
-var table="' . MESSAGES_TABLE . '";
-var save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
-';
-
-		$jsOut = '
-function cb_incstate() {
-		loaded = true;
-		loadData();
-		' . (isset($f) ?
-				'r_tree_open(' . $f['ID'] . ');
-we_cmd("show_folder_content", ' . $f['ID'] . ');' :
-				'drawEintraege();'
-			) . '
-}
-
-function translate(inp){
-	if(inp.substring(0,12).toLowerCase() == "messages - ("){
-		return "' . g_l('modules_messaging', '[Mitteilungen]') . ' - ("+inp.substring(12,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "task - ("){
-		return "' . g_l('modules_messaging', '[ToDo]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "todo - ("){
-		return "' . g_l('modules_messaging', '[ToDo]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "done - ("){
-		return "' . g_l('modules_messaging', '[Erledigt]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,12).toLowerCase() == "rejected - ("){
-		return "' . g_l('modules_messaging', '[Zurueckgewiesen]') . ' - ("+inp.substring(12,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "sent - ("){
-		return "' . g_l('modules_messaging', '[Gesendet]') . ' - ("+inp.substring(8,inp.length);
-	}else{
-		return inp;
-	}
-
-}
-
-function loadData() {
-	treeData.clear();
-		';
-
-		$jsOut .= '
-	startloc=0;
-	treeData.add(self.rootEntry("0","root","root"));
-		';
-
-		foreach($this->messaging->available_folders as $folder){
-			switch($folder['obj_type']){
-				case we_messaging_proto::FOLDER_INBOX:
-					$iconbasename = $folder['ClassName'] === 'we_todo' ? 'todo_in_folder' : 'msg_in_folder';
-					$folder['Name'] = g_l('modules_messaging', $folder['ClassName'] === 'we_todo' ? '[ToDo]' : '[Mitteilungen]');
-					break;
-				case we_messaging_proto::FOLDER_SENT:
-					$iconbasename = 'msg_sent_folder';
-					$folder['Name'] = g_l('modules_messaging', '[Gesendet]');
-					break;
-				case we_messaging_proto::FOLDER_DONE:
-					$iconbasename = 'todo_done_folder';
-					$folder['Name'] = g_l('modules_messaging', '[Erledigt]');
-					break;
-				case we_messaging_proto::FOLDER_REJECT:
-					$iconbasename = 'todo_reject_folder';
-					$folder['Name'] = g_l('modules_messaging', '[Zurueckgewiesen]');
-					break;
-				default:
-					$iconbasename = $folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder';
-					break;
-			}
-			$jsOut .= '
-	treeData.add(' .
-				(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0 ?
-					'{
-	id : ' . $folder['ID'] . ',
-	parentid : ' . $folder['ParentID'] . ',
-	text : "' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
-	typ : "parent_Folder",
-	open : 0,
-	contenttype : "folder",
-	leaf_count : ' . $sf_cnt . ',
-	table : "' . MESSAGES_TABLE . '",
-	loaded : 0,
-	checked : false,
-	viewclass : "' . $folder['view_class'] . '",
-}' : '{
-	id : ' . $folder['ID'] . ',
-	parentid : ' . $folder['ParentID'] . ',
-	text : "' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
-	typ : "leaf_Folder",
-	checked : false,
-	contenttype : "folder",
-	table : "' . MESSAGES_TABLE . '",
-	viewclass : "' . $folder['view_class'] . '"
-}') . ');';
-		}
-		$jsOut .= '
-}
-
-		';
-		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement($jsinit) .
-			we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
-			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
-			we_html_element::jsElement($jsOut);
 	}
 
 	protected function getHTMLTree($extraHead = ''){
@@ -221,7 +95,7 @@ function loadData() {
 		$extraHead = $this->getJSCmdCode() .
 			we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
 			we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_hl.js') .
-			$this->getJSTreeCode() .
+			$this->Tree->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart());
 
 		return parent::getHTMLFrameset($extraHead, '&we_transaction=' . $this->transaction);
@@ -233,6 +107,7 @@ function loadData() {
 	}
 
 	function getHTMLCmd(){
+		//FIXME: here we have to add the tree code!
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), ''), $this->View->processCommands());
 	}
 

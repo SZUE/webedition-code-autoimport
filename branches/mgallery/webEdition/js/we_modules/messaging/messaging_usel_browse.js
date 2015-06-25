@@ -65,7 +65,7 @@ function check(entry) {
 	var img = "img_" + id;
 
 	for (i = 1; i <= treeData.len; i++) {
-		if (treeData[i].name == id) {
+		if (treeData[i].id == id) {
 			if (treeData[i].checked) {
 				treeData[i].checked = false;
 				if (messaging_usel_main.document.getElementsByName(imgName)) {
@@ -93,24 +93,23 @@ function check(entry) {
 
 function zeichne(startEntry, zweigEintrag) {
 	var nf = search(startEntry);
-	var ai = 1;
 	ret = "";
-	while (ai <= nf.len) {
+	for(var ai = 1;ai <= nf.len;ai++) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == 'user') {
 			ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
-			if (nf[ai].name != -1) {
-				ret += "<a name='_" + nf[ai].name + "' href=\"javascript:doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">";
+			if (nf[ai].id != -1) {
+				ret += "<a name='_" + nf[ai].id + "' href=\"javascript:doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">";
 			}
 			ret += getTreeIcon(nf[ai].contentType) + "</a>" +
-							"<a href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].name + '"></i></a>' +
-							"&nbsp;<a name='_" + nf[ai].name + "' href=\"javascript:top.check('" + nf[ai].name + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].name + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A><br/>"
+							"<a href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>' +
+							"&nbsp;<a name='_" + nf[ai].id + "' href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].id + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A><br/>"
 		} else {
 			var newAst = zweigEintrag;
 
-			ret += '<a href="javascript:top.openClose(\'' + nf[ai].name + '\',1)"><span class="treeKreuz fa-stack ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span>";
-			ret += "<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + getTreeIcon('we/userGroup') + "</a>" +
-							"<a name='_" + nf[ai].name + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].name + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
+			ret += '<a href="javascript:top.openClose(\'' + nf[ai].id + '\',1)"><span class="treeKreuz fa-stack ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span>";
+			ret += "<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + getTreeIcon('we/userGroup') + "</a>" +
+							"<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
 							"&nbsp;<b>" + nf[ai].text + "</b></a>" +
 							"<br/>";
 			if (nf[ai].open) {
@@ -119,77 +118,24 @@ function zeichne(startEntry, zweigEintrag) {
 				} else {
 					newAst += '<span class="strich treeKreuz "></span>';
 				}
-				ret += zeichne(nf[ai].name, newAst);
+				ret += zeichne(nf[ai].id, newAst);
 			}
 		}
-		ai++;
 	}
 	return ret;
 }
 
-
-function makeNewEntry(id, pid, txt, open, ct, tab, pub) {
-	if (table == tab) {
-		if (treeData[indexOfEntry(pid)]) {
-			if (ct === "folder") {
-				treeData.addSort({
-					name: id,
-					parentid: pid,
-					text: txt,
-					typ: 'folder',
-					open: (open ? 1 : 0),
-					contentType: ct,
-					table: tab,
-					loaded: 0,
-					checked: false,
-				});
-			} else {
-				treeData.addSort({
-					name: id,
-					parentid: pid,
-					text: txt,
-					typ: 'user',
-					contentType: ct,
-					table: tab,
-					published: pub,
-					checked: false,
-				});
-			}
-			drawEintraege();
-		}
-	}
-}
-
-
-function updateEntry(id, pid, text, pub) {
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'user')) {
-			if (treeData[ai].name == id) {
-				treeData[ai].parentid = pid;
-				treeData[ai].text = text;
-				treeData[ai].published = pub;
-			}
-		}
-	}
-	drawEintraege();
-}
-
 function deleteEntry(id) {
-	var ai = 1;
 	var ind = 0;
-	while (ai <= treeData.len) {
-		if ((treeData[ai].typ == 'folder') || (treeData[ai].typ == 'user'))
-			if (treeData[ai].name == id) {
-				ind = ai;
-				break;
-			}
-		ai++;
+	for (var ai = 1; ai <= treeData.len; ai++) {
+		if (treeData[ai].id == id) {
+			ind = ai;
+			break;
+		}
 	}
 	if (ind !== 0) {
-		ai = ind;
-		while (ai <= treeData.len - 1) {
+		for (ai = ind; ai <= treeData.len - 1; ai++) {
 			treeData[ai] = treeData[ai + 1];
-			ai++;
 		}
 		treeData.len[treeData.len] = null;
 		treeData.len--;
@@ -197,42 +143,39 @@ function deleteEntry(id) {
 	}
 }
 
-function openClose(name, status) {
-	var eintragsIndex = indexOfEntry(name);
+
+function openClose(id, status) {
+	var eintragsIndex = indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawEintraege();
 }
 
-function indexOfEntry(name) {
-	var ai = 1;
-	while (ai <= treeData.len) {
+function indexOfEntry(id) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ == 'root') || (treeData[ai].typ == 'folder')) {
-			if (treeData[ai].name == name) {
+			if (treeData[ai].id == id) {
 				return ai;
 			}
 		}
-		ai++;
 	}
 	return -1;
 }
 
 function search(eintrag) {
 	var nf = new container();
-	var ai = 1;
-	while (ai <= treeData.len) {
+	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ == 'folder') || (treeData[ai].typ == 'user')) {
 			if (treeData[ai].parentid == eintrag) {
 				nf.add(treeData[ai]);
 			}
 		}
-		ai++;
 	}
 	return nf;
 }
 
-function rootEntry(name, text, rootstat) {
+function rootEntry(id, text, rootstat) {
 	return new node({
-		name: name,
+		id: id,
 		text: text,
 		loaded: true,
 		typ: 'root',

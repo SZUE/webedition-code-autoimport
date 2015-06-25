@@ -233,12 +233,11 @@ function we_cmd() {
 }
 
 function drawEintraege() {
-	fr = top.content.tree.window.document.body; //IMI: set tree indstead of left
+	fr = top.content.tree;
 	fr.innerHTML = '<div id="treetable"><nobr>' +
 					zeichne(top.content.startloc, "") +
 					"</nobr></div>" +
 					"</body></html>";
-	top.content.tree.window.loadFinished();
 }
 
 function zeichne(startEntry, zweigEintrag) {
@@ -315,20 +314,6 @@ function updateEntry(id, pid, text, pub, redraw) {
 	if (redraw == 1) {
 		drawEintraege();
 	}
-}
-
-function deleteEntry(id) {
-	var ind = 0;
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].id != id) {
-			continue;
-		}
-		if ((treeData[ai].typ == "parent_Folder") || (treeData[ai].typ == "leaf_Folder")) {
-			ind = ai;
-			break;
-		}
-	}
-	updateTreeAfterDel(ind);
 }
 
 function openClose(id, status) {

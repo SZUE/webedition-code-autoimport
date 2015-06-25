@@ -69,25 +69,3 @@ function showSegment() {
 	frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();
 }
-
-function makeNewEntry(id, pid, txt, open, ct, tab, pub) {
-	if (treeData[indexOfEntry(pid)] && treeData[indexOfEntry(pid)].loaded) {
-		ct = (ct == "folder" ? "group" : "item");
-
-		var attribs = {
-			"id": id,
-			"text": txt,
-			"parentid": pid,
-			"open": open,
-			"tooltip": id,
-			"typ": ct,
-			"disabled": 0,
-			"published": (ct == "item" ? pub : 1),
-			"selected": 0
-		};
-
-		treeData.addSort(new node(attribs));
-
-		drawTree();
-	}
-}

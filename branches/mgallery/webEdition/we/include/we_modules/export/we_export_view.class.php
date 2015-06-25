@@ -438,7 +438,7 @@ function start() {
 				}
 
 				$js = ($newone ?
-						$this->topFrame . '.makeNewEntry(\'' . $this->export->ID . '\',\'' . $this->export->ParentID . '\',\'' . $this->export->Text . '\',0,\'' . ($this->export->IsFolder ? 'folder' : 'we/export') . '\',\'' . EXPORT_TABLE . '\');' .
+						$this->topFrame . '.makeNewEntry({id:\'' . $this->export->ID . '\',parentid:\'' . $this->export->ParentID . '\',text:\'' . $this->export->Text . '\',open:0,contenttype:\'' . ($this->export->IsFolder ? 'folder' : 'we/export') . '\',table:\'' . EXPORT_TABLE . '\'});' .
 						$this->topFrame . '.drawTree();' :
 						$this->topFrame . '.updateEntry({id:' . $this->export->ID . ',text:"' . $this->export->Text . '",parentid:"' . $this->export->ParentID . '"});'
 					);

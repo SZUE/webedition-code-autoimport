@@ -48,7 +48,6 @@ function startTree(){
 			$IsFolder = $db->f("IsFolder");
 			$items[] = ($IsFolder ? array(
 					'id' => $db->f('ID'),
-					'name' => $db->f('ID'),
 					'parentid' => $db->f("ParentID"),
 					'text' => addslashes($db->f("Text")),
 					'typ' => 'group',
@@ -60,7 +59,6 @@ function startTree(){
 					) :
 					array(
 					'id' => $db->f('ID'),
-					'name' => $db->f('ID'),
 					'parentid' => $db->f("ParentID"),
 					'text' => addslashes($db->f("Text")),
 					'typ' => 'item',

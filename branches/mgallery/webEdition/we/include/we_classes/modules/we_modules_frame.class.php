@@ -33,7 +33,6 @@ abstract class we_modules_frame{
 	var $topFrame;
 	var $treeFrame;
 	var $cmdFrame;
-	protected $useMainTree = true;
 	protected $treeHeaderHeight = 1;
 	protected $treeFooterHeight = 0;
 	protected $treeDefaultWidth = 200;
@@ -167,38 +166,24 @@ abstract class we_modules_frame{
 		$attribs = array('id' => 'left', 'name' => 'left', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;');
 
 		$content = we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . ($this->treeHeaderHeight > 1 ? $this->treeHeaderHeight - 6/* padding+border */ : 1) . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'padding: 5px 0 0 0 ; ' : 'background: #ffffff')), $this->getHTMLTreeheader()) .
-			($this->useMainTree ? $this->getHTMLTree() :
-				we_html_element::htmlIFrame('tree', $this->frameset . '?pnt=tree', 'position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%;')) .
+			$this->getHTMLTree() .
 			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('id' => 'treefooter', 'class' => 'editfooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'), $this->getHTMLTreefooter()));
 
 		return we_html_element::htmlDiv($attribs, $content);
 	}
 
-	//TODO: we do not abandon the two tree types because trees will be re-implemented anyway
 	protected function getHTMLTree($extraHead = ''){
-		if($this->useMainTree){
-
-			return we_html_element::htmlDiv(array(
-					'id' => 'tree',
-					'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
-					'link' => '#000000',
-					'alink' => '#000000',
-					'vlink' => '#000000',
-					'marginwidth' => 0,
-					'marginheight' => 4,
-					'leftmargin' => 0,
-					'topmargin' => 4), $this->Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
-			);
-		}
-//FIXME make this a static document & use this at messaging_usel_browse_frameset.php as well
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'treetable')), we_html_element::cssLink(CSS_DIR . 'tree.css') .
-				we_html_tools::getJSErrorHandler() . we_html_element::jsElement('
-	clickCount=0;
-	wasdblclick=false;
-	tout=null;
-function loadFinished(){
-	top.content.loaded=1;
-}') . $extraHead);
+		return we_html_element::htmlDiv(array(
+				'id' => 'tree',
+				'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
+				'link' => '#000000',
+				'alink' => '#000000',
+				'vlink' => '#000000',
+				'marginwidth' => 0,
+				'marginheight' => 4,
+				'leftmargin' => 0,
+				'topmargin' => 4), $this->Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
+		);
 	}
 
 	protected function getHTMLTreeHeader(){

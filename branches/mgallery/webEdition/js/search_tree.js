@@ -28,30 +28,6 @@ function showSegment() {
 	top.reloadGroup(this.parentid, this.offset);
 }
 
-function makeNewEntry(id, pid, txt, open, ct, tab, pub, order) {
-	if (treeData[indexOfEntry(pid)] && treeData[indexOfEntry(pid)].loaded) {
-
-		ct = (ct == "folder" ? "group" : "item");
-
-		var attribs = {
-			"id": id,
-			"text": txt,
-			"parentid": pid,
-			"open": open,
-			"order": order,
-			"tooltip": id,
-			"typ": ct,
-			"disabled": 0,
-			"published": (pub == 0 ? 1 : 0),
-			"depended": pub,
-			"selected": 0,
-		};
-
-		treeData.addSort(new node(attribs));
-
-		drawTree();
-	}
-}
 function reloadGroup(pid) {
 	var ai = 1;
 	var it = get(pid);

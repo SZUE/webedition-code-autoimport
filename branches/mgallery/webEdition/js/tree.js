@@ -297,18 +297,6 @@ function add(object) {
 	this[++this.len] = object;
 }
 
-function updateTreeAfterDel(ind) {
-	if (ind !== 0) {
-		for (var ai = ind; ai <= treeData.len - 1; ai++) {
-			treeData[ai] = treeData[ai + 1];
-		}
-		treeData.len[treeData.len] = null;
-		treeData.len--;
-		drawTree();
-	}
-}
-
-
 function addSort(object) {
 	this.len++;
 	for (var i = this.len; i > 0; i--) {
@@ -424,28 +412,19 @@ function setScrollY() {
 	}
 }
 /*	if (attribs.table && treeData.table != attribs.table) {
-		return;
-	}
-*/
-function makeNewEntry(id, pid, txt, open, ct, tab) {
+ return;
+ }
+ */
+function makeNewEntry(attribs) {
 	if (tab && treeData.table != tab) {
 		return;
 	}
-	var pos = indexOfEntry(pid);
+	var pos = indexOfEntry(attribs.parentid);
 	if (treeData[pos] && treeData[pos].loaded) {
-
-		var attribs = {
-			"id": id,
-			"text": txt,
-			"parentid": pid,
-			"open": open,
-			"typ": (ct === "folder" ? "group" : "item"),
-			"table": tab,
-			"tooltip": id,
-			"contenttype": ct,
-			"disabled": 0,
-			"selected": 0
-		};
+		attribs.typ = (attribs.contenttype === "folder" ? "group" : "item");
+		attribs.tooltip = attribs.id;
+		attribs.disabled = 0;
+		attribs.selected = 0;
 		if (attribs.typ == "item") {
 			attribs.published = 0;
 		}

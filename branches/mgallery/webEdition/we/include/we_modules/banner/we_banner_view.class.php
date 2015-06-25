@@ -488,7 +488,7 @@ var g_l={
 					$this->banner->save($message);
 					echo we_html_element::jsElement(
 						($newone ?
-							'top.content.makeNewEntry(' . $this->banner->ID . ',' . $this->banner->ParentID . ',"' . $this->banner->Text . '",true,"' . ($this->banner->IsFolder ? 'folder' : 'file') . '","weBanner",1);' :
+							'top.content.makeNewEntry({id:' . $this->banner->ID . ',parentid:' . $this->banner->ParentID . ',text:"' . $this->banner->Text . '",open:1,contenttype:"' . ($this->banner->IsFolder ? 'folder' : 'file') . '",table:"weBanner"});' :
 							'top.content.updateEntry({id:' . $this->banner->ID . ',parentid:' . $this->banner->ParentID . ',text:"' . $this->banner->Text . '"});') .
 						$childs .
 						we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));

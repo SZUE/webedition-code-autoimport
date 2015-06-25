@@ -697,7 +697,7 @@ var weNavTitleField = [];
 				}
 
 				$js = ($newone ?
-						$this->topFrame . '.makeNewEntry(\'' . $this->Model->ID . '\',\'' . $this->Model->ParentID . '\',\'' . addslashes($this->Model->Text) . '\',0,\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',\'' . NAVIGATION_TABLE . '\',0,' . $this->Model->Ordn . ');' :
+						$this->topFrame . '.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
 						$this->topFrame . '.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
@@ -710,7 +710,7 @@ var weNavTitleField = [];
 					}
 					$_items = $this->Model->populateGroup($_old_items);
 					foreach($_items as $_k => $_item){
-						$js .= $this->topFrame . '.makeNewEntry(\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'we/navigation\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+						$js .= $this->topFrame . '.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
@@ -845,7 +845,7 @@ var weNavTitleField = [];
 				$_js = '';
 				foreach($_items as $_k => $_item){
 					$_js .= $this->topFrame . '.deleteEntry(' . $_item['id'] . ');';
-					$_js .= $this->topFrame . '.makeNewEntry(\'' . $_item['id'] . '\',\'' . $this->Model->ID . '\',\'' . addslashes($_item['text']) . '\',0,\'we/navigation\',\'' . NAVIGATION_TABLE . '\',1,' . $_k . ');';
+					$_js .= $this->topFrame . '.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 				}
 				echo we_html_element::jsElement(
 					$_js .

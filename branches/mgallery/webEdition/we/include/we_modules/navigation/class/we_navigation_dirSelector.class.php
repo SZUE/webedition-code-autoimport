@@ -107,7 +107,7 @@ top.clearEntries();';
 				echo 'var ref;
 if(top.opener.top.makeNewEntry){
 	ref = top.opener.top;
-	ref.makeNewEntry(' . $folder->ID . ',"' . $folder->ParentID . '","' . $txt . '",1,"folder","' . $this->table . '",0,0);
+	ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:0,order:0});
 }';
 				if($this->canSelectDir){
 					echo 'top.currentPath = "' . $folder->Path . '";
