@@ -765,7 +765,7 @@ function weWysiwygSetHiddenText(arg) {
 		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
 
-		return $this->height . $this->width . we_html_element::jsElement(($this->fieldName ? '
+		return we_html_element::jsElement(($this->fieldName ? '
 /* -- tinyMCE -- */
 
 /*
