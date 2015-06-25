@@ -229,7 +229,7 @@ function draw(startEntry,zweigEintrag){
 		row+=zweigEintrag;
 		var pind=indexOfEntry(nf[ai].parentid);
 		if(pind!=-1){
-			if(treeData[pind].open==1){
+			if(treeData[pind].open){
 				switch(nf[ai].typ){
 					case "item":
 						row+=drawItem(nf,ai);

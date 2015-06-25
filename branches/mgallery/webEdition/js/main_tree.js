@@ -29,10 +29,10 @@ function getLayout() {
 		return treeData.node_layouts["threedots"];
 	}
 	var layout_key = (this.typ === "group" && this.contenttype !== "text/weCollection" ? "group" : "item") +
-					(this.selected == 1 ? "-selected" : "") +
-					(this.disabled == 1 ? "-disabled" : "") +
-					(this.checked == 1 ? "-checked" : "") +
-					(this.open == 1 ? "-open" : "") +
+					(this.selected ? "-selected" : "") +
+					(this.disabled ? "-disabled" : "") +
+					(this.checked ? "-checked" : "") +
+					(this.open ? "-open" : "") +
 					(this.typ == "item" && this.published == 0 ? "-notpublished" : "") +
 					(this.typ == "item" && this.published == -1 ? "-changed" : "");
 
@@ -43,7 +43,7 @@ function openClose(id) {
 		return;
 	}
 	var eintragsIndex = indexOfEntry(id);
-	var openstatus = (treeData[eintragsIndex].open == 0 ? 1 : 0);
+	var openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 	treeData[eintragsIndex].open = openstatus;
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {
 		we_cmd("loadFolder", top.treeData.table, treeData[eintragsIndex].id);

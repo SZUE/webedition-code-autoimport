@@ -88,11 +88,11 @@ if(weWindow.treeData){
 			//FIXME: makenewentry!!!
 				attribs.contenttype=\'' . $doc->ContentType . '\';
 				attribs.isclassfolder=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';
-				attribs.checked=\'0\';
+				attribs.checked=0;
 				attribs.typ=\'' . ($doc->IsFolder ? "group" : "item") . '\';
-				attribs.open=\'0\';
-				attribs.disabled=\'0\';
-				attribs.tooltip=\'' . $doc->ID . '\';
+				attribs.open=0;
+				attribs.disabled=0;
+				attribs.tooltip=' . $doc->ID . ';
 				' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
 			}
 			weWindow.drawTree();

@@ -136,7 +136,7 @@ function deleteEntry(id) {
 function makeFoldersOpenString() {
 	var op = "";
 	for (i = 1; i <= treeData.len; i++) {
-		if (treeData[i].typ == "group" && treeData[i].open == 1) {
+		if (treeData[i].typ == "group" && treeData[i].open) {
 			op += treeData[i].id + ",";
 		}
 	}
@@ -249,16 +249,16 @@ function drawThreeDots(nf, ai) {
 function drawGroup(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 
-	row = "<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span></a>";
+	row = "<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
 
 	row += clickHandler(nf[ai]);
 
-	if (nf[ai].open == 1) {
-		if (ai == nf.len) {
-			newAst += "<span class=\"treeKreuz\"></span>";
-		} else {
-			newAst += '<span class="strich treeKreuz "></span>';
-		}
+	if (nf[ai].open) {
+		newAst += (ai == nf.len ?
+						"<span class=\"treeKreuz\"></span>" :
+						'<span class="strich treeKreuz "></span>'
+						);
+
 		row += draw(nf[ai].id, newAst);
 	}
 	return row;
@@ -328,7 +328,7 @@ function openClose(id) {
 
 	var eintragsIndex = indexOfEntry(id);
 
-	openstatus = (treeData[eintragsIndex].open == 0 ? 1 : 0);
+	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 
 	treeData[eintragsIndex].open = openstatus;
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {

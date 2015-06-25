@@ -31,7 +31,7 @@ function openClose(id) {
 	var eintragsIndex = indexOfEntry(id);
 	var openstatus;
 
-	openstatus = (treeData[eintragsIndex].open == 0 ? 1 : 0);
+	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {
