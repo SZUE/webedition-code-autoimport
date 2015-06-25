@@ -425,7 +425,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database_base $db = null){
 	$db = $db? : new DB_WE();
 	$arr[] = $id;
-	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
+	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder === 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
 	$all = $db->getAll(true);
 	foreach($all as $id){
 		pushChilds($arr, $id, $table, $isFolder, $db);
@@ -1272,6 +1272,7 @@ function we_serialize(array $array, $target, $force = false){
 			return ($array || $force ? serialize($array) : '');
 	}
 }
+
 if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4
 
 	function hex2bin($hex_string){
