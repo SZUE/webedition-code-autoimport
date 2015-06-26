@@ -30,7 +30,7 @@ class liveUpdateHttp{
 
 	function connectFopen($server, $url, $parameters = array()){
 		// try fopen first
-		$address = 'https://' . $server . $url . ($parameters ? '?' . http_build_query($parameters) : '');
+		$address = 'https://' . $server . $url . ($parameters ? '?' . http_build_query($parameters, '', '&') : '');
 		return file_get_contents($address);
 	}
 
@@ -84,7 +84,7 @@ class liveUpdateHttp{
 
 		if($parameters){
 			curl_setopt($session, CURLOPT_POST, 1);
-			curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($parameters));
+			curl_setopt($session, CURLOPT_POSTFIELDS, http_build_query($parameters, '', '&'));
 		}
 
 		if(defined('WE_PROXYHOST') && WE_PROXYHOST != ''){
