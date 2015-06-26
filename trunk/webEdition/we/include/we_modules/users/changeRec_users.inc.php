@@ -34,15 +34,14 @@ if(permissionhandler::hasPerm("ADMINISTRATOR")){
 
 	$childs = array();
 	pushChilds($childs, $we_doc->ID, $we_doc->Table, '', $GLOBALS['DB_WE']);
-	$childlist = makeCSVFromArray($childs);
-	if($childlist){
+	if($childs){
 		$q = 'UPDATE ' . $we_doc->Table . ' SET ' .
 			we_database_base::arraySetter(array(
 				'CreatorID' => $we_doc->CreatorID,
 				'Owners' => $we_doc->Owners,
 				'RestrictOwners' => $we_doc->RestrictOwners,
 				'OwnersReadOnly' => $we_doc->OwnersReadOnly
-			)) . ' WHERE ID IN(' . $childlist . ')';
+			)) . ' WHERE ID IN(' . implode(',', $childs) . ')';
 		$ok = $DB_WE->query($q);
 	}
 }

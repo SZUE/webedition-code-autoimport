@@ -216,7 +216,7 @@ class we_exim_contentProvider{
 		return false;
 	}
 
-	static function needCdata($classname, $prop, $content){
+	static function needCdata($content){
 		return preg_match('-[<>&]-', $content);
 	}
 
@@ -263,7 +263,7 @@ class we_exim_contentProvider{
 				if(isset($object->$v)){
 					$content = $object->$v;
 				}
-				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
+				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($content) || self::needSerialize($object->ClassName, $v, $content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				}
@@ -306,10 +306,10 @@ class we_exim_contentProvider{
 					$content = $object->$v;
 				}
 				$coding = self::CODING_NONE;
-				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($object->ClassName, $v, $content)){//fix for faulty parser
+				if(self::needCoding($object->ClassName, $v, $content) || self::needCdata($content)){//fix for faulty parser
 					$content = self::getCDATA(self::encode($content));
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
-				} else if(self::needCdata($object->ClassName, $v, $content)){
+				} else if(self::needCdata($content)){
 					$content = self::getCDATA($content);
 				}
 				$attribs .= we_xml_composer::we_xmlElement($v, $content, $coding);
@@ -409,12 +409,12 @@ class we_exim_contentProvider{
 				$content = (isset($object->$v) ? $object->$v : '');
 				$coding = self::CODING_NONE;
 			}
-			if(self::needCoding($classname, $v, $content) || self::needCdata($classname, $v, $content)){//fix for faulty parser
+			if(self::needCoding($classname, $v, $content) || self::needCdata($content)){//fix for faulty parser
 				if(!is_array($content)){
 					$content = self::encode($content);
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				}
-			} else if(self::needCdata($classname, $v, $content)){
+			} else if(self::needCdata($content)){
 				$content = self::getCDATA($content);
 			}
 
