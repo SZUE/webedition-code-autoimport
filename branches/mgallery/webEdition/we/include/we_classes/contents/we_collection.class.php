@@ -105,10 +105,10 @@ class we_collection extends we_root{
 				$verifiedItems[$this->DB_WE->f('ID')] = $full ? array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'type' => $this->DB_WE->f($cField)) : $this->DB_WE->f('ID');
 				if($full && $this->remTable == stripTblPrefix(FILE_TABLE)){
 					$verifiedItems[$this->DB_WE->f('ID')]['ext'] = $this->DB_WE->f('Extension');
-					$verifiedItems[$this->DB_WE->f('ID')]['elements']['title'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
-					$verifiedItems[$this->DB_WE->f('ID')]['elements']['alt'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
-					$verifiedItems[$this->DB_WE->f('ID')]['elements']['Title'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
-					$verifiedItems[$this->DB_WE->f('ID')]['elements']['Description'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['attrib_title'] = array('Dat' => '', 'state' => 'red');
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['attrib_alt'] = array('Dat' => '', 'state' => 'red');
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['meta_title'] = array('Dat' => '', 'state' => 'red');
+					$verifiedItems[$this->DB_WE->f('ID')]['elements']['meta_description'] = array('Dat' => '', 'state' => 'red');
 					$verifiedItems[$this->DB_WE->f('ID')]['elements']['custom'] = array('type' => '', 'Dat' => '', 'BDID' => 0);
 				}
 			}
@@ -124,22 +124,27 @@ class we_collection extends we_root{
 				switch($this->DB_WE->f('Name')){
 					case 'title':
 					case 'alt':
+						$fieldname = 'attrib_' . $this->DB_WE->f('Name');
+						break;
 					case 'Title':
-					case 'Descrition':
-						$fieldname = $this->DB_WE->f('Name');
+						$fieldname = 'meta_title';
+						break;
+					case 'Description':
+						$fieldname = 'meta_description';
 						break;
 					default: 
 						$fieldname = 'custom';
 					
 
 				}
-				$verifiedItems[$this->DB_WE->f('DID')]['elements'][$fieldname] = array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID'));
+				//FIXME: use props for 'green', 'red'
+				$verifiedItems[$this->DB_WE->f('DID')]['elements'][$fieldname] = $fieldname === 'custom' ? array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID')) : array('Dat' => $this->DB_WE->f('Dat'), 'state' => ($this->DB_WE->f('Dat') ? 'green' : 'red'));
 			}
 		}
 
 		$ret = array();
 		$tempCollection = ',';
-		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'ext' => '', 'elements' => array('title' => array('Dat' => ''), 'alt' => array('Dat' => ''), 'Title' => array('Dat' => ''), 'Description' => array('Dat' => ''), 'custom' => array('Dat' => '', 'BDID' => 0)));
+		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'ext' => '', 'elements' => array('attrib_title' => array('Dat' => '', 'state' => 'red'), 'attrib_alt' => array('Dat' => '', 'state' => 'red'), 'meta_title' => array('Dat' => '', 'state' => 'red'), 'meta_description' => array('Dat' => '', 'state' => 'red'), 'custom' => array('type' => '', 'Dat' => '', 'BDID' => 0)), 'icon' => array('imageView' => '', 'imageViewPopup' => '', 'sizeX' => 0, 'sizeY' => 0, 'url' => '', 'urlPopup' => ''));
 
 		$activeCollection = explode(',', trim($this->$activeCollectionName, ','));
 		$activeCollection = $this->IsDuplicates ? $activeCollection : array_unique($activeCollection);
@@ -329,10 +334,13 @@ class we_collection extends we_root{
 		$head->setCol(0, 3, array('width' => '42px'), $btnListview);
 		$head->setCol(0, 5, array('width' => '52px'), $btnImport);
 
-		$items = $this->getCollectionVerified(false, true, true);
+		$items = $this->getCollectionVerified(false, true, true);t_e('all', $items);
+		/*
 		if($items[count($items) - 1]['id'] !== -1){
 			$items[] = array('id' => -1, 'path' => '', 'type' => '');
 		}
+		 * 
+		 */
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$index = 0;
@@ -341,14 +349,14 @@ class we_collection extends we_root{
 		$jsItemsArr = '';
 
 		foreach($items as $item){
-			$icon = $item['id'] === '##ID##' ? array('url' => '##URL##') : array();
+			//FIXME: set icon in getCollectionVerified()
 			if(is_numeric($item['id']) && $item['id'] !== -1){
 				$file = array('docID' => $item['id'], 'Path' => $item['path'], 'ContentType' => isset($item['type']) ? $item['type'] : 'text/*', 'Extension' => $item['ext']);
 				$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 				$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
-				$icon = we_search_view::getHtmlIconThmubnail($file, 400, 400);
+				$item['icon'] = we_search_view::getHtmlIconThmubnail($file, 400, 400);
 			}
-			$item['icon'] = $icon;
+
 			$index++;
 			if($this->view === 'grid'){
 				$divs .= $this->getGridItem($item, $index, count($items));
@@ -361,7 +369,19 @@ class we_collection extends we_root{
 		}
 
 		// write "blank" collection row to js
-		$placeholders = array('id' => '##ID##', "path" => '##PATH##', 'type' => '##CT##', 'icon' => array('url' => '##ICONURL##'));
+		$placeholders = array(
+			'id' => '##ID##',
+			'path' => '##PATH##',
+			'type' => '##CT##',
+			'icon' => array('url' => '##ICONURL##'),
+			'elements' => array(
+				'attrib_alt' => array('Dat' => '##ATTRIB_ALT##', 'state' => '##S_ATTRIB_ALT##'),
+				'attrib_title' => array('Dat' => '##ATTRIB_TITLE##', 'state' => '##S_ATTRIB_TITLE##'),
+				'meta_desc' => array('Dat' => '##META_DESC##', 'state' => '##S_META_DESC##'),
+				'meta_title' => array('Dat' => '##META_TITLE##', 'state' => '##S_META_TITLE##'),
+				'custom' => array('Dat' => '##CUSTOM##')
+			)
+		);
 
 		$this->jsFormCollection .= "
 weCollectionEdit.gridItemSize = " . $this->iconSizes[$this->itemsPerRow] . ";
@@ -536,6 +556,12 @@ $jsStorageItems;
 		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
 
+		$toolbar = new we_html_table(array('draggable' => 'false', 'width' => '100%'), 1, 4);
+		$toolbar->setCol(0, 0, array('width' => '*', 'style' => 'padding:0 0 0 10px;text-align:left;', 'class' => 'weMultiIconBoxHeadline'), '<span name="el_label" id="label_' . $index . '">' . $index . '</span>');
+		$toolbar->setCol(0, 1, array('width' => '20', 'style' => 'padding-bottom:3px', 'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle" style="color:' . $item['elements']['attrib_alt']['state'] . ';font-size:16px;"></i>');
+		$toolbar->setCol(0, 2, array('width' => '20', 'style' => 'padding-bottom:3px', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle" style="color:' . $item['elements']['attrib_alt']['state'] .  ';font-size:16px;"></i>');
+		$toolbar->setCol(0, 3, array('width' => '70', 'style' => ''), $editButton . $trashButton);
+
 		return we_html_element::htmlDiv(array(
 				'style' => 'position:relative;width:' . $this->iconSizes[$this->itemsPerRow] . 'px;height:' . $this->iconSizes[$this->itemsPerRow] . 'px;float:left;dislpay:block;',
 				'id' => 'grid_item_' . $index,
@@ -545,8 +571,8 @@ $jsStorageItems;
 					'style' => 'position:absolute;left:0;top:0;bottom:14px;right:14px;border:1px solid #006db8;float:left;dislpay:block;' . ($item['icon'] ? "background:url('" . $item['icon']['url'] . "') no-repeat center center;background-size:contain;" : 'background-color:white;'),
 					'draggable' => 'true',
 					), we_html_element::htmlDiv(array(
-						'style' => 'position:absolute;bottom:0;width:100%;height:30px;text-align:right;padding-top:6px;background-color:#f5f5f5;opacity:0.6;display:none;',
-						), $editButton . $trashButton)) .
+						'style' => 'position:absolute;bottom:0;width:100%;height:30px;text-align:right;padding-bottom:6px;background-color:#f5f5f5;opacity:0.6;display:none;',
+						), $toolbar->getHtml())) .
 				we_html_element::htmlDiv(array(
 					'style' => 'position:absolute;top:0;right:0;bottom:14px;width:12px;border:1px solid white;float:left;dislpay:block;',
 					'id' => 'grid_space_' . $index,
@@ -554,8 +580,9 @@ $jsStorageItems;
 		);
 	}
 
-	private function getJsStrorageItem($item){t_e("item?", $item);
-		return "weCollectionEdit.storage['item_" . $item['id'] . "'] = {'id' : " . $item['id'] . ", 'path' : '" . $item['path'] . "', 'ct' : '" . $item['type'] . "', 'iconSrc' : '" . $item['icon']['url'] . "', 'meta' : {'title' : '" . $item['elements']['Title']['Dat'] . "', 'description' : '" . $item['elements']['Description']['Dat'] . "'}, 'attribs' : {'title' : '" . $item['elements']['title']['Dat'] . "', 'alt' : '" . $item['elements']['alt']['Dat'] . "'}, 'custom': {'type': '" . $item['elements']['custom']['type'] . "', 'Dat': '" . $item['elements']['custom']['Dat'] . "', 'BDID': " . $item['elements']['custom']['BDID'] . "}};\n";
+	private function getJsStrorageItem($item){
+		//FIXME: use json_encode()!!
+		return "weCollectionEdit.storage['item_" . $item['id'] . "'] = {'id' : " . $item['id'] . ", 'path' : '" . $item['path'] . "', 'ct' : '" . $item['type'] . "', 'iconSrc' : '" . $item['icon']['url'] . "', 'elements' : {'attrib_alt': {'Dat': '" . $item['elements']['attrib_alt']['Dat'] . "', 'state': '" . $item['elements']['attrib_alt']['state'] . "'}, 'attrib_title' : {'Dat': '" . $item['elements']['attrib_title']['Dat'] . "', 'state': '" . $item['elements']['attrib_title']['state'] . "'}, 'meta_title': {'Dat': '" . $item['elements']['meta_title']['Dat'] . "', 'state': '" . $item['elements']['meta_title']['state'] . "'}, 'meta_description': {'Dat': '" . $item['elements']['meta_description']['Dat'] . "', 'state': '" . $item['elements']['meta_description']['state'] . "'}, 'custom': {'type': '" . $item['elements']['custom']['type'] . "', 'Dat': '" . $item['elements']['custom']['Dat'] . "', 'BDID': " . $item['elements']['custom']['BDID'] . "}}};\n";
 	}
 
 	function i_filenameDouble(){

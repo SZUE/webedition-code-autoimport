@@ -293,7 +293,11 @@ weCollectionEdit = {
 			id = item && item.id ? item.id : -1,
 			path = item && item.path ? item.path : '',
 			ct = item && item.ct ? item.ct : 'image/*',
-			iconSrc = item && item.iconSrc ? item.iconSrc : '';
+			iconSrc = item && item.iconSrc ? item.iconSrc : '',
+			alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : this.g_l['element_not_set'],
+			title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : this.g_l['element_not_set'],
+			state_alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.state : 'red',
+			state_title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.state : 'red';
 
 		repaint = repaint || false;
 		++t.maxIndex;
@@ -303,7 +307,9 @@ weCollectionEdit = {
 		}
 
 		div = document.createElement("div");
-		div.innerHTML = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, id).replace(/##PATH##/g, path).replace(/##CT##/g, ct).replace(/##ICONURL##/g, iconSrc.replace('%2F', '/'));
+		div.innerHTML = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, id).replace(/##PATH##/g, path).
+				replace(/##CT##/g, ct).replace(/##ICONURL##/g, iconSrc.replace('%2F', '/')).replace(/##ATTRIB_ALT##/g, alt).
+				replace(/##ATTRIB_TITLE##/g, title).replace(/##S_ATTRIB_ALT##/g, state_alt).replace(/##S_ATTRIB_TITLE##/g, state_title);
 
 		if(t.view === 'list'){
 			//TODO: list fallback!
@@ -313,6 +319,7 @@ weCollectionEdit = {
 			// TODO: use replace here too!
 			//div.firstChild.firstChild.style.background = 'url(' + item.iconSrc.replace('%2F', '/') + ') no-repeat center center';
 			//div.firstChild.firstChild.style.backgroundSize = 'contain';
+
 			div.firstChild.style.width = div.firstChild.style.height = t.gridItemSize + 'px';
 			t.addListenersToItem('grid', div.firstChild);
 		}
@@ -414,12 +421,21 @@ weCollectionEdit = {
 
 		switch(this.view){
 			case 'grid':
+				
+				var labels = document.getElementsByName('el_label');
 				for(var i = 0; i < ct.childNodes.length; i++){
-					item = ct.childNodes[i];
-					item.id = 'grid_item_' + (i+1);
+					labels[i].innerHTML = i+1;
+					
+					/*
+					ct.childNodes[i].id = 'grid_item_' + (i+1);
+					labels[i].innerHTML = i+1;
+					labels[i].id = 'label_' + (i+1);
+					*/
+
 					val = ct.childNodes.length > 1 ? parseInt(document.we_form.collectionItem_we_id[i].value) : parseInt(document.we_form.collectionItem_we_id.value);
 					csv += (val !== 0 ? val : -1) + ',';
 					arr.push((val !== 0 ? val : -1));
+
 				}
 				break;
 			case 'list':

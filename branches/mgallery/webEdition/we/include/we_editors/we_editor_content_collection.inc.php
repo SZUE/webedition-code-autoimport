@@ -45,6 +45,10 @@ weCollectionEdit.we_const = {
 	OBJECT_FILES_TABLE: "' . OBJECT_FILES_TABLE . '",
 };
 
+weCollectionEdit.g_l = {
+	"element_not_set": "nicht gesetzt" //FIXME: G_L();
+};
+
 // since these props are defined on Properties we can write them here
 weCollectionEdit.dd.IsDuplicates = ' . intval($GLOBALS['we_doc']->IsDuplicates) . ';
 weCollectionEdit.dd.fillEmptyRows = 1;
