@@ -65,7 +65,7 @@ $urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
 	strtr($urlLookingFor, array('//' => '/'))
 	);
 
-while($urlLookingFor){
+while($urlLookingFor){// first we try to get the object
 	if(($object = getHash('SELECT ID,TriggerID,Url FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
 		/**
 		* we check if the given URL and DB Url are identical
@@ -75,6 +75,31 @@ while($urlLookingFor){
 			header("Location: " . str_replace($urlLookingFor, $object['Url'], WE_REDIRECTED_SEO), true, 301);
 			exit;
 		}
+		break;
+	} else {//reduce the rest of the given url and try again
+		$urlLookingFor = ltrim(stristr($urlLookingFor, "/"), "/");
+	}
+}
+
+/**
+* now we try to get the trigger document
+*/
+if(is_array($object) && $object['ID']){
+	$triggerDocPath = false;
+	if($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))){
+		$triggerDocPath = id_to_path($object['TriggerID'], FILE_TABLE);
+	}elseif(NAVIGATION_DIRECTORYINDEX_NAMES){//fallback: now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
+		$docPathOfUrl = str_replace($urlLookingFor, '', WE_REDIRECTED_SEO); //cut the known seo-url from object of the whole URL
+		$dirIndexArray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
+		foreach($dirIndexArray as $dirIndex){
+			if(($triggerID = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND IsDynamic=1 AND Path="' . $GLOBALS['DB_WE']->escape($docPathOfUrl.$dirIndex) . '" LIMIT 1')))){
+				$triggerDocPath = id_to_path($triggerID, FILE_TABLE);
+				break;
+			}
+		}		
+	}
+	
+	if($triggerDocPath){// now we hav an object and an trigger document
 		//remove all cookies from Request String if set (if not, cookies are exposed on listviews etc & max interfer with given Cookies)
 		if(stristr('C', ini_get('request_order') ? : ini_get('variables_order'))){
 			//unset all cookies from request
@@ -97,21 +122,18 @@ while($urlLookingFor){
 		$_REQUEST = isset($_REQUEST) ? array_merge($_REQUEST, $urlQueryString) : $urlQueryString;
 		$_REQUEST['we_objectID'] = $object['ID'];
 		$_REQUEST['we_oid'] = $object['ID'];
-		$_SERVER['SCRIPT_NAME'] = id_to_path($object['TriggerID'], FILE_TABLE);
+		
+		$_SERVER['SCRIPT_NAME'] = $triggerDocPath;
 
 		we_html_tools::setHttpCode(200);
 		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_SERVER['SCRIPT_NAME']);
-
 		exit;
-	} else {//reduce the rest of the given url and try again
-		$urlLookingFor = ltrim(stristr($urlLookingFor, "/"), "/");
 	}
 }
 
 /**
  * nothing found show errorDoc404
  */
-
 if(ERROR_DOCUMENT_NO_OBJECTFILE){
 	we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
 	if(FORCE404REDIRECT){
