@@ -133,7 +133,7 @@ function we_isFieldNotEmpty($attribs){
 			}
 		//no break;
 	}
-	return $GLOBALS['lv']->f($match) != '';
+	return $GLOBALS['lv']->f($match) ? true : false;
 }
 
 function we_tag_ifFieldEmpty($attribs){
