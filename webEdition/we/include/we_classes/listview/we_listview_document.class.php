@@ -162,7 +162,7 @@ class we_listview_document extends we_listview_base{
 
 		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
 
-		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', 'ID', $this->DB_WE) : '#NODOCTYPE#';
+		$dt = ($this->docType) ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : '#NODOCTYPE#';
 
 		$ws_where = '';
 
@@ -170,7 +170,7 @@ class we_listview_document extends we_listview_base{
 			$this->contentTypes = str_replace(array('img', 'wepage', 'binary'), array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::APPLICATION), $this->contentTypes);
 			$CtArr = explode(',', $this->contentTypes);
 			if($CtArr){
-				$sql_tail .= ' OR ' . FILE_TABLE . '.ContentType IN ("' . implode('","', array_map('escape_sql_query', $CtArr)) . '")';
+				$sql_tail .= ' AND ' . FILE_TABLE . '.ContentType IN ("' . implode('","', array_map('escape_sql_query', $CtArr)) . '")';
 			}
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
