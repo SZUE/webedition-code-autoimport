@@ -325,7 +325,10 @@ class we_collection extends we_root{
 		$slider = '<div id="sliderDiv"><input type="range" style="width:120px;height:20px;" name="zoom" min="1" step="1" max="5" value="' . (7 - $this->itemsPerRow) . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/></div>';
 		$btnIconview = we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weCollectionEdit.setView('grid');", true, 40, "", "", "", false);
 		$btnListview = we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weCollectionEdit.setView('list');", true, 40, "", "", "", false);
-		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2);
+
+		//FIXME: send param table => what quots do work?
+		$callback = urlencode("if(top.opener.top.weEditorFrameController.getEditorIfOpen(" . $this->ID . ", 1)){top.opener.top.weEditorFrameController.getEditorIfOpen(" . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)}");
+		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2, $callback);
 
 		$head = new we_html_table(array("style" => "border: 0px solid gray;width:100%;height:32px"), 1, 6);
 		$head->setCol(0, 0, array('width' => '*'), $recursive);

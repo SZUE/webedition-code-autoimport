@@ -798,5 +798,9 @@ weCollectionEdit = {
 		} catch (e) {
 			top.console.debug(e);
 		}
+	},
+
+	insertImportedDocuments : function(ids) {
+		top.console.debug(this.we_doc.ID, ids);
 	}
 };

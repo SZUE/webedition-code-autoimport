@@ -764,7 +764,7 @@ var weFileUpload = (function () {
 
 			this.postProcess = function (resp) {
 				var that = _.sender,
-								cur = this.currentFile;
+					cur = this.currentFile;
 
 				this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
 				this.form.form.elements.weFileCt.value = cur.mimePHP;
@@ -1132,10 +1132,17 @@ var weFileUpload = (function () {
 			};
 
 			this.postProcess = function (resp) {
+				var that = _.sender;
+				_.sender.resp = resp;
+
 				if (!this.isCancelled) {
 					_.view.elems.footer.setProgress(100);
 					_.view.elems.footer.setProgressText('progress_title', '');
 					eval(resp.completed);
+
+					setTimeout(function () {
+						that.callback(_);
+					}, 100);
 				}
 				_.view.reloadOpener();
 

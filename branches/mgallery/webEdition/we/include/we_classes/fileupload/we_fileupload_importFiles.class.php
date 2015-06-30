@@ -33,7 +33,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		'marginBottom' => 0
 	);
 
-	public function __construct($name){
+	public function __construct($name, $callback = ''){
 		parent::__construct($name);
 		$this->type = 'imp';
 		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
@@ -50,6 +50,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		$this->fileTable = FILE_TABLE;
 		$this->footerName = 'imgimportbuttons';
 		$this->contentName = 'imgimportcontent';
+		$this->callback = $callback;
 	}
 
 	public function getHTML($hiddens = ''){
@@ -98,8 +99,8 @@ class we_fileupload_importFiles extends we_fileupload_base{
 	}
 
 	//TODO: add param filetype
-	public static function getBtnImportFiles($importToID = 0){
-		return we_html_button::create_button("fa:btn_import_files,fa-lg fa-upload", "javascript:top.we_cmd('import_files','" . $importToID . "')", true, 50);
+	public static function getBtnImportFiles($importToID = 0, $callback = ''){
+		return we_html_button::create_button("fa:btn_import_files,fa-lg fa-upload", "javascript:top.we_cmd('import_files','" . $importToID . "', '" . $callback . "')", true, 50);
 	}
 
 	protected function _getHtmlFileRow(){

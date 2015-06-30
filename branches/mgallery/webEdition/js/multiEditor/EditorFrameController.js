@@ -876,6 +876,26 @@ function EditorFrameController() {
 		var _EditorFrame = this.getEditorFrame(frameId);
 		return _EditorFrame.getEditorIsInUse();
 	};
+
+	//TODO: check table!!
+	this.getEditorIfOpen = function (id, editPage) {
+		if(!(id && editPage)){
+			return false;
+		}
+
+		var usedEditors = this.getEditorsInUse(),
+			frameId,
+			editor;
+
+		for (frameId in usedEditors) {
+			editor = usedEditors[frameId];
+			if (editor.getEditorDocumentId() == id && editor.getEditorEditPageNr() == editPage) {
+				return editor.getContentEditor();
+			}
+		}
+		return false;
+	};
+	
 }
 top.weEditorFrameController = new EditorFrameController();
 

@@ -198,7 +198,7 @@ we_FileUpload.init({
 	typeCondition : ' . str_replace(array("\n\r", "\r\n", "\r", "\n"), "", json_encode($this->typeCondition)) . ',
 	isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
 	isLegacyMode : false,
-	callback : function(){' . $this->callback . '},
+	callback : function(scope){' . $this->callback . '},
 	fileselectOnclick : function(){' . $this->fileselectOnclick . '},
 	chunkSize : ' . self::CHUNK_SIZE . ',
 	intProgress : ' . json_encode($this->internalProgress) . ',
