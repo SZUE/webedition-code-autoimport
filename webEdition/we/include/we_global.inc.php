@@ -1263,13 +1263,20 @@ function we_unserialize($string, $default = array(), $quiet = false){
 	return $default;
 }
 
-function we_serialize(array $array, $target, $force = false){
+/**
+ * serializes an array
+ * @param array $array array to operate on
+ * @param string $target can be of two types "serialize" or "json" - NO default jet (!)
+ * @param bool $numeric forces data to be treated as numeric (not assotiative) array - no position data will be used
+ * @return string serialized data
+ */
+function we_serialize(array $array, $target, $numeric = false){
 	switch($target){
 		//remove defined after php 5.3 support ends
 		case 'json':
-			return ($array || $force ? json_encode($array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0)) : '');
+			return ($array ? json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0)) : '');
 		case 'serialize':
-			return ($array || $force ? serialize($array) : '');
+			return ($array ? serialize($numeric ? array_values($array) : $array) : '');
 	}
 }
 
