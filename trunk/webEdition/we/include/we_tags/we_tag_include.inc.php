@@ -28,10 +28,10 @@ function we_parse_tag_include($attribs, $c, array $attr){
 		$attr['_parsed'] = 'true';
 	}
 	return ($type !== 'template' ?
-					'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
-					//(($path ?
-					'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
-			);
+			'<?php eval(' . we_tag_tagParser::printTag('include', $attribs) . ');?>' : //include documents
+			//(($path ?
+			'<?php if(($we_inc=' . we_tag_tagParser::printTag('include', $attr) . ')){include' . (weTag_getParserAttribute('once', $attr, false, true) ? '_once' : '') . '($we_inc);}; ?>'//include templates of ID's
+		);
 }
 
 function we_setBackVar($we_unique){
@@ -143,7 +143,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 
 	if($id){
 		if($GLOBALS['WE_MAIN_DOC']->ID == $id || //don't include same id
-				$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
+			$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
 		){
 			return '';
 		}
@@ -193,7 +193,7 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 	}
 
 	return 'we_setBackVar(' . $we_unique . ');' .
-			$content .
-			($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), 'include') . '\';' : '') .
-			'we_resetBackVar(' . $we_unique . ');';
+		$content .
+		($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), 'include') . '\';' : '') .
+		'we_resetBackVar(' . $we_unique . ');';
 }
