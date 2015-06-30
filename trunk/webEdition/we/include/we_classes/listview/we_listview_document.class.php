@@ -168,9 +168,9 @@ class we_listview_document extends we_listview_base{
 
 		if($this->contentTypes){
 			$this->contentTypes = str_replace(array('img', 'wepage', 'binary'), array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::APPLICATION), $this->contentTypes);
-			$CtArr = makeArrayFromCSV($this->contentTypes);
-			foreach($CtArr as $ct){
-				$sql_tail .= ' OR ' . FILE_TABLE . '.ContentType="' . $this->DB_WE->escape($ct) . '"';
+			$CtArr = explode(',', $this->contentTypes);
+			if($CtArr){
+				$sql_tail .= ' OR ' . FILE_TABLE . '.ContentType IN (' . implode(',', array_map('escape_sql_query', $CtArr)) . ')';
 			}
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
