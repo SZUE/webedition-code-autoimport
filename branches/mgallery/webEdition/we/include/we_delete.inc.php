@@ -150,7 +150,7 @@ if(!$wfchk){
 					// check if childrenfolders are workspaces
 					$childs = array();
 
-					pushChilds($childs, $selectedItem, $table, true, $GLOBALS['DB_WE']);
+					pushChilds($childs, $selectedItem, $table, 1, $GLOBALS['DB_WE']);
 					$users = array();
 					foreach($childs as $ch){
 						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs));
@@ -173,7 +173,7 @@ if(!$wfchk){
 					// check if childrenfolders are workspaces
 					$childs = array();
 
-					pushChilds($childs, $selectedItem, $table, true, $GLOBALS['DB_WE']);
+					pushChilds($childs, $selectedItem, $table, 1, $GLOBALS['DB_WE']);
 					$users = array();
 					foreach($childs as $ch){
 						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs, "workSpaceTmp"));
@@ -196,7 +196,7 @@ if(!$wfchk){
 
 					$childs = array();
 
-					pushChilds($childs, $selectedItem, $table, true, $GLOBALS['DB_WE']);
+					pushChilds($childs, $selectedItem, $table, 1, $GLOBALS['DB_WE']);
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs, "workSpaceObj");
 
 					if($users){
@@ -213,7 +213,7 @@ if(!$wfchk){
 
 					$childs = array();
 
-					pushChilds($childs, $selectedItem, $table, true, $GLOBALS['DB_WE']);
+					pushChilds($childs, $selectedItem, $table, 1, $GLOBALS['DB_WE']);
 					$objects = getObjectsForDocWorkspace($childs, $GLOBALS['DB_WE']);
 
 					if($objects){

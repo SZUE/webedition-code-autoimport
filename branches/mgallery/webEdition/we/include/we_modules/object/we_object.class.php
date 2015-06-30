@@ -176,7 +176,7 @@ class we_object extends we_document{
 				'OF_IsSearchable tinyint(1) NOT NULL default "1"',
 				'OF_Charset VARCHAR(64) NOT NULL',
 				'OF_WebUserID BIGINT NOT NULL',
-				'OF_Language VARCHAR(5) default "NULL"'
+				'OF_Language VARCHAR(5) default "NULL"',
 			);
 
 			$indexe = array(

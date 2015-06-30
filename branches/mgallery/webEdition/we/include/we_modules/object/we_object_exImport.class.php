@@ -66,7 +66,7 @@ class we_object_exImport extends we_object{
 			foreach($this->SerializedArray as $key => $value){
 				if(!in_array($key, $noFields)){
 					$arr = explode('_', $key);
-					$len = isset($value['length']) ? $value['length'] : $this->getElement($key . "length", "dat");
+					$len = isset($value['length']) ? $value['length'] : $this->getElement($key . 'length', "dat");
 					$type = $this->switchtypes2($arr[0], $len);
 					if(!empty($type)){
 						$qarr[] = $key . $type;
@@ -103,12 +103,9 @@ class we_object_exImport extends we_object{
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 			$tableInfo = $this->DB_WE->metadata($ctable, true);
 
-			$add = array();
-			$drop = array();
-			$alter = array();
+			$add = $drop = $alter = array();
 
 			foreach($this->SerializedArray as $fieldname => $value){
-
 				$arr = explode('_', $fieldname);
 				if(!isset($arr[0])){
 					continue;
@@ -138,7 +135,6 @@ class we_object_exImport extends we_object{
 			}
 
 			if(isset($tableInfo['meta'])){
-
 				foreach($tableInfo['meta'] as $key => $value){
 					if(!isset($this->SerializedArray[$key]) && substr($key, 0, 3) != 'OF_' && $key != 'ID'){
 						$drop[$key] = $key;
@@ -146,9 +142,11 @@ class we_object_exImport extends we_object{
 				}
 			}
 
+			//FIXME: deactivated for #9899 - some elements are not present (e.g. object-references) & will be deleted therefore
+			/*
 			foreach($drop as $key => $value){
 				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
-			}
+			}*/
 
 			foreach($alter as $key => $value){
 				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $key . ' ' . $value);

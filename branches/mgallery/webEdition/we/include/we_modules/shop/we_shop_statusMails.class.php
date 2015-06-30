@@ -264,10 +264,7 @@ class we_shop_statusMails{
 		}
 
 
-		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']);
-		if(!$subject){
-			$subject = 'no subject given';
-		}
+		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField'])? : 'no subject given';
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
 			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address'] ?
 					$this->EMailData['address'] :
@@ -278,21 +275,18 @@ class we_shop_statusMails{
 			$phpmail->setIsEmbedImages(true);
 
 			$phpmail->addHTMLPart($codes);
-			$phpmail->addTextPart(strip_tags(strtr($codes, array(
-				'&nbsp;' => ' ',
-				'<br />' => "\n",
-				'<br/>' => "\n"
-			))));
-			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (!empty($this->EMailData['titleField']) && !empty($cdata[$this->EMailData['titleField']]) ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
-			if(!empty($this->EMailData['bcc'])){
+			$phpmail->setTextPartOutOfHTML($codes);
+			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
+			if(isset($this->EMailData['bcc']) && $this->EMailData['bcc'] != ''){
 				$bccArray = explode(',', $this->EMailData['bcc']);
 				$phpmail->setBCC($bccArray);
 			}
-			if(!empty($this->EMailData['DocumentAttachmentFieldA'])){
-				$attachmentAinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . we_base_link::MAGIC_INT_LINK);
-				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . ($attachmentAinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
-				if($attachmentA){
-					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentA);
+			if(isset($this->EMailData['DocumentAttachmentFieldA']) && $this->EMailData['DocumentAttachmentFieldA']){
+				$attachmentinternal = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . we_base_link::MAGIC_INT_LINK);
+				$attachment = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA'] . ($attachmentinternal ? we_base_link::MAGIC_INT_LINK_ID : ''));
+				if($attachment){
+					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . ($attachmentinternal ? id_to_path($attachment) : $attachment));
+
 				}
 			}
 			if(!empty($this->EMailData['DocumentAttachmentFieldB'])){
@@ -300,6 +294,7 @@ class we_shop_statusMails{
 				$attachmentB = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldB'] . ($attachmentBinternal ? we_base_link::MAGIC_INT_LINK_PATH : ''));
 				if($attachmentB){
 					$phpmail->doaddAttachment($_SERVER['DOCUMENT_ROOT'] . $attachmentB);
+
 				}
 			}
 			$phpmail->buildMessage();

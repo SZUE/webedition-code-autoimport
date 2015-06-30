@@ -25,7 +25,9 @@
 class we_navigation_cache{
 	const CACHEDIR = WE_CACHE_PATH;
 
-	static $rebuildRootCnt = 0;
+	public static function getNavigationFilename($id){
+		return WE_CACHE_PATH . 'navigation_' . $id . '.php';
+	}
 
 	static function delNavigationTree($id){
 		static $deleted = array();
@@ -74,15 +76,15 @@ class we_navigation_cache{
 	}
 
 	static function delCacheNavigationEntry($id){
-		we_base_file::delete(self::CACHEDIR . 'navigation_' . $id . '.php');
+		we_base_file::delete(self::getNavigationFilename($id));
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		we_base_file::save(self::CACHEDIR . 'navigation_' . $id . '.php', gzcompress(serialize($_naviItemes->items), 9));
+		we_base_file::save(self::getNavigationFilename($id), gzdeflate(serialize($_naviItemes->items), 9));
 	}
 
 	static function getCacheFromFile($parentid){
-		$_cache = self::CACHEDIR . 'navigation_' . $parentid . '.php';
+		$_cache = self::getNavigationFilename($parentid);
 
 		if(file_exists($_cache)){
 			$data = we_base_file::load($_cache);
@@ -92,7 +94,7 @@ class we_navigation_cache{
 	}
 
 	static function getCachedRule(){//FIXME: this file is never written!
-		$_cache = self::CACHEDIR . 'rules.php';
+		$_cache = WE_CACHE_PATH . 'rules.php';
 		if(file_exists($_cache)){
 			return we_base_file::load($_cache);
 		}
@@ -103,15 +105,15 @@ class we_navigation_cache{
 	 * Used on upgrade to remove all navigation entries
 	 */
 	static function clean($force = false){
-		if(file_exists(self::CACHEDIR . 'clean')){
-			unlink(self::CACHEDIR . 'clean');
+		if(file_exists(WE_CACHE_PATH . 'clean')){
+			unlink(WE_CACHE_PATH . 'clean');
 			$force = true;
 		}
 		if($force){
-			$files = scandir(self::CACHEDIR);
+			$files = scandir(WE_CACHE_PATH);
 			foreach($files as $file){
 				if(strpos($file, 'navigation_') === 0){
-					unlink(self::CACHEDIR . $file);
+					unlink(WE_CACHE_PATH . $file);
 				}
 			}
 		}

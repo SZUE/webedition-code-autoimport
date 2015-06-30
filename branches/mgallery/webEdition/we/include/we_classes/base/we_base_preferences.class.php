@@ -101,7 +101,7 @@ class we_base_preferences{
 				//leave settings in their current state
 				foreach($leave as $settingname){
 					$active = in_array($settingname, $moveToConf) ? ($conf === 'conf') : true;
-					$content = self::changeSourceCode('define', $content, $settingname, (defined($settingname) ? constant($settingname) : ''), true);
+					$content = self::changeSourceCode('define', $content, $settingname, (defined($settingname) ? constant($settingname) : ''), $active);
 				}
 			} else {
 				$content = $GLOBALS['config_files']['conf_' . $conf][$dataField];
