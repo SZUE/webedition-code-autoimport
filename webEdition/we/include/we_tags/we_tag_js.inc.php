@@ -35,7 +35,7 @@ function we_tag_js($attribs){
 	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
 	$attribs['type'] = 'text/javascript';
-	$attribs['src'] = $url . ($GLOBALS['we_editmode'] ? '?time=' . $row['Published'] : '');
+	$attribs['src'] = $url . '?m=' . $row['Published'];
 
 	//	prepare $attribs for output:
 	return getHtmlTag('script', removeAttribs($attribs, array('id')), '', true) . "\n";
