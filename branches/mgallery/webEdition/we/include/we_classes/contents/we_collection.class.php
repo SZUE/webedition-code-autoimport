@@ -301,8 +301,8 @@ class we_collection extends we_root{
 		$btnListview = we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weCollectionEdit.setView('list');", true, 40, "", "", "", false);
 
 		//FIXME: send param table => what quots do work?
-		$callback = we_base_request::encCmd("if(top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)}");
-		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2, $callback);
+		$callback = we_base_request::encCmd("if(top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
+		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2, $callback, 'btn_import_files_and_insert');
 
 		$head = new we_html_table(array("style" => "border: 0px solid gray;width:100%;height:32px"), 1, 6);
 		$head->setCol(0, 0, array('width' => '*'), $recursive);
@@ -399,7 +399,6 @@ $jsStorageItems;
 
 		//$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
 		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems(this);", true, 52, 22, '', '', false, false, '', false, '');
-		
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
 
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
@@ -413,17 +412,17 @@ $jsStorageItems;
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		//$yuiSuggest->setSelectButton($button, 4);
+		$yuiSuggest->setSelectButton($editButton, 4);
 		$yuiSuggest->setAdditionalButton($addFromTreeButton, 6);
-		$yuiSuggest->setOpenButton($editButton, 4);
+		//$yuiSuggest->setOpenButton($editButton, 4);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 
 		$rowControllsArr = array();
 		$rowControllsArr[] = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);", true, 50, 22);
 		//$rowControllsArr[] = we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index));
-		//$rowControllsArr[] = we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
-		//$rowControllsArr[] = we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-		$rowControllsArr[] = we_html_button::create_button(we_html_button::TRASH, 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
+		$rowControllsArr[] = we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
+		$rowControllsArr[] = we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
+		$rowControllsArr[] = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
 		$rowControlls = we_html_button::create_button_table($rowControllsArr, 5);
 
 		$rowHtml = new we_html_table(array('draggable' => 'false'), 1, 5);
@@ -524,8 +523,12 @@ $jsStorageItems;
 	 */
 
 	private function makeGridItem($item, $index){
-		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
+		$trashButton = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['ct'] . "');", true, 27, 22);
+
+		$wecmdenc1 = $wecmdenc2 = $wecmdenc3 = '';
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
+
 
 		$toolbar = new we_html_table(array('draggable' => 'false', 'width' => '100%'), 1, 4);
 		$toolbar->setCol(0, 0, array('width' => '*', 'style' => 'padding:0 0 0 10px;text-align:left;', 'class' => 'weMultiIconBoxHeadline'), '<span name="el_label" id="label_' . $index . '">' . $index . '</span>');
@@ -533,16 +536,22 @@ $jsStorageItems;
 		$toolbar->setCol(0, 2, array('width' => '20', 'style' => 'padding-bottom:3px', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle" style="color:' . $item['elements']['attrib_alt']['state'] .  ';font-size:16px;"></i>');
 		$toolbar->setCol(0, 3, array('width' => '70', 'style' => ''), $editButton . $trashButton);
 
+		$displayBtnEdit = 'none';//$item['id'] === -1 ? 'inline-block' : 'none';
+
+		//TODO: use css classes to avoid all this inline css
 		return we_html_element::htmlDiv(array(
-				'style' => 'position:relative;width:' . $this->iconSizes[$this->itemsPerRow] . 'px;height:' . $this->iconSizes[$this->itemsPerRow] . 'px;float:left;dislpay:block;',
-				'id' => 'grid_item_' . $index,
-				'class' => 'drop_reference'
+					'style' => 'position:relative;width:' . $this->iconSizes[$this->itemsPerRow] . 'px;height:' . $this->iconSizes[$this->itemsPerRow] . 'px;float:left;dislpay:block;',
+					'id' => 'grid_item_' . $index,
+					'class' => 'drop_reference'
 				), we_html_element::htmlDiv(array(
-					'title' => $item['path'],
-					'style' => 'position:absolute;left:0;top:0;bottom:14px;right:14px;border:1px solid #006db8;float:left;dislpay:block;' . ($item['icon'] ? "background:url('" . $item['icon']['url'] . "') no-repeat center center;background-size:contain;" : 'background-color:white;'),
-					'draggable' => 'true',
+						'title' => $item['path'],
+						'style' => 'position:absolute;left:0;top:0;bottom:14px;right:14px;border:1px solid #006db8;float:left;dislpay:block;' . ($item['icon'] ? "background:url('" . $item['icon']['url'] . "') no-repeat center center;background-size:contain;" : 'background-color:white;'),
+						'draggable' => 'true',
 					), we_html_element::htmlDiv(array(
-						'style' => 'position:absolute;bottom:0;width:100%;height:30px;text-align:right;padding-bottom:6px;background-color:#f5f5f5;opacity:0.6;display:none;',
+							'style' => 'position:absolute;top:' . (($this->iconSizes[$this->itemsPerRow] - 30)/2 - 10) . 'px;bottom:30px;width:100%;text-align:center;vertical-align:center;display:' . $displayBtnEdit
+						), $selectButton) .
+						we_html_element::htmlDiv(array(
+							'style' => 'position:absolute;bottom:0;width:100%;height:30px;text-align:right;padding-bottom:6px;background-color:#f5f5f5;opacity:0.6;display:none;',
 						), $toolbar->getHtml())) .
 				we_html_element::htmlDiv(array(
 					'style' => 'position:absolute;top:0;right:0;bottom:14px;width:12px;border:1px solid white;float:left;dislpay:block;',

@@ -325,8 +325,6 @@ weCollectionEdit = {
 		}
 		newElem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
 
-		
-
 		if(repaint){
 			t.repaintAndRetrieveCsv();
 		}
@@ -421,7 +419,6 @@ weCollectionEdit = {
 
 		switch(this.view){
 			case 'grid':
-				
 				var labels = document.getElementsByName('el_label');
 				for(var i = 0; i < ct.childNodes.length; i++){
 					labels[i].innerHTML = i+1;
@@ -441,18 +438,17 @@ weCollectionEdit = {
 			case 'list':
 				for(var i = 0; i < ct.childNodes.length; i++){
 					row = ct.childNodes[i];
-					//btns = row.getElementsByTagName('BUTTON');
 					index = row.id.substr(10);
 					val = parseInt(document.getElementById('yuiAcResultItem_' + index).value);
 					csv += (val !== 0 ? val : -1) + ',';
 					arr.push((val !== 0 ? val : -1));
 					document.getElementById('label_' + index).innerHTML = i + 1;
-					/*
-					btns[2].disabled = (val === - 1);
-					btns[4].disabled = (i === 0);
-					btns[5].disabled = (i === (ct.childNodes.length - 1));
-					btns[6].disabled = (ct.childNodes.length === 1);
-					*/
+					btns = row.getElementsByTagName('BUTTON');
+					btns[1].disabled = (val === - 1);
+					btns[3].disabled = (i === 0);
+					btns[4].disabled = (i === (ct.childNodes.length - 1));
+					//btns[6].disabled = (ct.childNodes.length === 1);
+					
 				}
 				break;
 		}
@@ -604,7 +600,7 @@ weCollectionEdit = {
 		if(view === 'grid'){
 			switch(type){
 				case 'item':
-					elem.firstChild.style.display = 'block';
+					elem.lastChild.style.display = 'block';
 					break;
 				case 'btns':
 					elem.style.opacity = '1';
@@ -617,7 +613,7 @@ weCollectionEdit = {
 		if(view === 'grid'){
 			switch(type){
 				case 'item':
-					elem.firstChild.style.display = 'none';
+					elem.lastChild.style.display = 'none';
 					break;
 				case 'btns':
 					elem.style.opacity = '0.8';
@@ -801,6 +797,10 @@ weCollectionEdit = {
 	},
 
 	insertImportedDocuments : function(ids) {
-		top.console.debug(this.we_doc.ID, ids);
+		//top.console.debug(ids);
+		if(ids){
+			this.callForValidItemsAndInsert(this.ct[this.view].lastChild.id.substr(10), ids.join());
+		}
+
 	}
 };
