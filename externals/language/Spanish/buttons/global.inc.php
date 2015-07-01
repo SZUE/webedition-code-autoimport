@@ -175,6 +175,9 @@ $l_buttons_global=array(
 	'btn_import_files'=>array(
 		'alt'=>'Import files',
 	),
+	'btn_import_files_and_insert'=>array(
+		'alt'=>'Import files and insert them into collection',
+	),
 	'btn_mail_resend'=>array(
 		'alt'=>'resend e-mail',
 	),
@@ -213,6 +216,9 @@ $l_buttons_global=array(
 	),
 	'btn_open_sidebar'=>array(
 		'alt'=>'Open sidebar',
+	),
+	'btn_remove_from_collection'=>array(
+		'alt'=>'Remove from collection',
 	),
 	'btn_select_files'=>array(
 		'alt'=>'Select files',
