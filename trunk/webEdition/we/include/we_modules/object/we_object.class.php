@@ -443,7 +443,7 @@ class we_object extends we_document{
 						}
 						if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 							$arrt[$nam]['meta'][] = $_val;
-						} elseif(($key = $this->getElement($cur . 'defaultkey' . $f))){
+						} elseif(($key = $this->getElement($cur . 'defaultkey' . $f))!==''){ //Fix #9830
 							$arrt[$nam]['meta'][$key] = $_val;
 						} else {
 							$arrt[$nam]['meta'][''] = $_val;
