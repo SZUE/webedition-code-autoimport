@@ -293,7 +293,7 @@ weCollectionEdit = {
 			id = item && item.id ? item.id : -1,
 			path = item && item.path ? item.path : '',
 			ct = item && item.ct ? item.ct : 'image/*',
-			iconSrc = item && item.iconSrc ? item.iconSrc : '',
+			iconSrc = item && item.icon ? item.icon.url : '',
 			alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : this.g_l['element_not_set'],
 			title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : this.g_l['element_not_set'],
 			state_alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.state : 'red',
@@ -393,7 +393,7 @@ weCollectionEdit = {
 						//TODO: use insertItem()!!
 						if(this.view === 'grid'){
 							el.nextSibling.childNodes[2].value = items[i].id;
-							el.nextSibling.firstChild.style.background = 'url(' + items[i].iconSrc.replace('%2F', '/') + ') no-repeat center center';
+							el.nextSibling.firstChild.style.background = 'url(' + items[i].icon.url('%2F', '/') + ') no-repeat center center';
 							el.nextSibling.firstChild.style.backgroundSize = 'contain';
 							el.nextSibling.firstChild.title = items[i].path;
 						} else {
@@ -712,7 +712,7 @@ weCollectionEdit = {
 
 					if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
 						if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-							this.callForVerifiedItemsAndInsert(index, data[2], false, type !== 'item');
+							this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
 						} else {
 							
 							//alert("the item you try to drag from doesn't match your collection's content types");
@@ -758,7 +758,7 @@ weCollectionEdit = {
 		};
 	},
 
-	callForVerifiedItemsAndInsert: function (index, csvIDs, message, notReplace) {
+	callForValidItemsAndInsert: function (index, csvIDs, message, notReplace) {
 		notReplace = notReplace !== undefined ? notReplace : false;
 		try {
 			if(csvIDs){

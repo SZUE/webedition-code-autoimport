@@ -61,7 +61,7 @@ if($cmd0 === 'do_addToCollection'){
 			$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('wrong table for this collection', we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$collBefore = $collection->getCollection();
-			if(($items = $collection->getVerifiedRemObjectsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'InsertRecursive', false)))){
+			if(($items = $collection->getValidItemsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'InsertRecursive', false)))){
 				$result = $collection->addItemsToCollection($items, $isSession ? $insertPos : -1);
 				if($isSession){
 					$collection->saveInSession($_SESSION['weS']['we_data'][$transaction]);

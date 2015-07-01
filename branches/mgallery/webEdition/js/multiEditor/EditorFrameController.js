@@ -877,9 +877,8 @@ function EditorFrameController() {
 		return _EditorFrame.getEditorIsInUse();
 	};
 
-	//TODO: check table!!
-	this.getEditorIfOpen = function (id, editPage) {
-		if(!(id && editPage)){
+	this.getEditorIfOpen = function (table, id, editPage) {
+		if(!(table && id && editPage)){
 			return false;
 		}
 
@@ -889,13 +888,13 @@ function EditorFrameController() {
 
 		for (frameId in usedEditors) {
 			editor = usedEditors[frameId];
-			if (editor.getEditorDocumentId() == id && editor.getEditorEditPageNr() == editPage) {
+			if (editor.getEditorEditorTable() == table && editor.getEditorDocumentId() == id && editor.getEditorEditPageNr() == editPage) {
 				return editor.getContentEditor();
 			}
 		}
 		return false;
 	};
-	
+
 }
 top.weEditorFrameController = new EditorFrameController();
 

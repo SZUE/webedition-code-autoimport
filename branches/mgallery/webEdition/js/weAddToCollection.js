@@ -99,7 +99,7 @@ weAddToCollection = {
 					onInsertClose = true;
 				}
 
-				_contentEditor.weCollectionEdit.callForVerifiedItemsAndInsert(this.conf.targetInsertIndex, sel, true);
+				_contentEditor.weCollectionEdit.callForValidItemsAndInsert(this.conf.targetInsertIndex, sel, true);
 				_editor.setEditorIsHot(true);
 
 				if(onInsertClose){

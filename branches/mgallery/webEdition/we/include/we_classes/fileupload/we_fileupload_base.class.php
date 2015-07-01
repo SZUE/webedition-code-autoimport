@@ -185,6 +185,7 @@ abstract class we_fileupload_base{
 			$progressbar->setStudLen($this->externalProgress['width']);
 			$this->externalProgress['html'] = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $progressbar->getHTML());
 		}
+		$this->callback = strpos($this->callback, 'WECMDENC_') !== false ? base64_decode(urldecode(substr($this->callback, 9))) : $this->callback;
 
 		return self::isFallback() || self::isLegacyMode() ? '' : (we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
 			we_html_element::jsElement('
