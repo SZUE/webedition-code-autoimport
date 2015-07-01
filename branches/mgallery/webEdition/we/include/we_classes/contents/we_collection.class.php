@@ -300,7 +300,9 @@ class we_collection extends we_root{
 		$btnIconview = we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weCollectionEdit.setView('grid');", true, 40, "", "", "", false);
 		$btnListview = we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weCollectionEdit.setView('list');", true, 40, "", "", "", false);
 
-		//FIXME: send param table => what quots do work?
+		//FIXME: try using opener for callback
+		//$callback = we_base_request::encCmd("if(top.opener && top.opener.weCollectionEdit && top.opener.weCollectionEdit.we_doc.ID == " . $this->ID . "){top.opener.weCollectionEdi.insertImportedDocuments(scope.sender.resp.success)} top.close();");
+
 		$callback = we_base_request::encCmd("if(top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
 		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2, $callback, 'btn_import_files_and_insert');
 
