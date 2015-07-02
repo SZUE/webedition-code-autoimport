@@ -208,3 +208,11 @@ td.mdcIcon{
 	height:20px;
 	padding-right:4px;
 }
+
+#users_online td{
+	vertical-align:middle;
+}
+
+#users_online td.we-user{
+	font-weight:bold;
+}

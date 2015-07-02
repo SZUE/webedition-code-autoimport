@@ -34,7 +34,6 @@ class we_users_online{
 	public function __construct(){
 		global $DB_WE;
 		$_row = '';
-		$_u = '';
 		$colors = array(
 			'red',
 			'blue',
@@ -55,17 +54,16 @@ class we_users_online{
 		$colorCount = count($colors);
 		while($DB_WE->next_record()){
 			$this->num_uo++;
-			$_fontWeight = ($_SESSION['user']['ID'] == $DB_WE->f('ID')) ? 'bold' : 'bold';
 			$_row .= '<tr><td width="30" style="margin-top:8px;color:' . $colors[( ++$i) % $colorCount] . '"><i class="fa fa-user fa-2x"></i></td>' .
-				'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . ($DB_WE->f('User')? : $DB_WE->f('username')) . '</td>' .
+				'<td class="middlefont we-user">' . ($DB_WE->f('User')? : $DB_WE->f('username')) . '</td>' .
 				(defined('MESSAGES_TABLE') ?
-					'<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f('username') . '\');">' .
+					'<td><a href="javascript:newMessage(\'' . $DB_WE->f('username') . '\');">' .
 					'<i style="color:#9fbcd5;" class="fa fa-2x fa-envelope"></i></a><td>' :
 					''
 				) . '</tr>';
 		}
 
-		$this->users = $_u . '<div style="height:187px;overflow:auto;"><table width="100%" class="default">' . $_row . '</table></div>';
+		$this->users = '<div style="height:187px;overflow:auto;"><table width="100%" class="default">' . $_row . '</table></div>';
 	}
 
 	function getNumUsers(){

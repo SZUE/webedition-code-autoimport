@@ -104,39 +104,32 @@ class we_fileupload_importFiles extends we_fileupload_base{
 	}
 
 	protected function _getHtmlFileRow(){
-		$butEdit = we_html_button::create_button(we_html_button::EDIT, 'javascript:void(0)');
-		$butTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);");
-
-		return str_replace(array("\n\r", "\r\n", "\r", "\n"), "", '<table class="default" width="520"><tbody><tr height="28" width="520">
-			<td width="20" valign="bottom"></td>
-			<td class="weMultiIconBoxHeadline" width="80" valign="bottom">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span><span style="display:inline-block;width:20px;height:5px;"></span></td>
-			<td valign="bottom" width="260"><input id="name_uploadFiles_WEFORMNUM" display:inline-block; type="text" size="' . (we_base_browserDetect::isOpera() ? 34 : 38) . '" readonly="readonly" value="FILENAME" /></td>
-			<td width valign="bottom" width="150">
+		return str_replace(array("\r", "\n"), "", '<table class="default"><tbody><tr height="28">
+			<td width="20"></td>
+			<td class="weMultiIconBoxHeadline" width="80" >' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span><span style="display:inline-block;width:20px;height:5px;"></span></td>
+			<td width="260"><input id="name_uploadFiles_WEFORMNUM" display:inline-block; type="text" size="' . (we_base_browserDetect::isOpera() ? 34 : 38) . '" readonly="readonly" value="FILENAME" /></td>
+			<td>
 				<div style="display: block" id="div_rowButtons_WEFORMNUM">
 					<table class="default"><tbody><tr width="150">
-							<td valign="bottom" width="2"></td>
-							<td valign="bottom" width="76"><span id="size_uploadFiles_WEFORMNUM">FILESIZE<span></td>
-							<td width="16" valign="bottom" align="middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
-							<td valign="bottom" width="32" height="22">
-								<div class="fileInputWrapper" style="vertical-align: bottom; display: inline-block; height: 22px; width: 27px;">
+							<td width="76"><span style="margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</span></td>
+							<td align="middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
+							<td>
+								<div class="fileInputWrapper" style="vertical-align: bottom; display: inline-block;">
 									<input class="fileInput fileInputList fileInputHidden" type="file" id="fileInput_uploadFiles_WEFORMNUM" name="" />
-									' . $butEdit . '
+									' . we_html_button::create_button(we_html_button::EDIT, 'javascript:void(0)') . '
 								</div>
 							</td>
-							<td valign="bottom" width="27" align="right" height="22">
-								<div style="vertical-align: bottom; display: inline-block; height: 22px; width: 27px;">
-								' . $butTrash . '
-								</div>
+							<td>
+								' . we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);") . '
 							</td>
 					</tr></tbody></table>
 				</div>
 				<div style="display: none" id="div_rowProgress_WEFORMNUM">
 					<table class="default"><tbody><tr>
-						<td valign="bottom" width="2"></td>
 						<td valign="middle" width="' . ($this->internalProgress['width'] + 6) . '"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" valign="top"></div><div class="progress_image_bg" style="width:90px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" valign="top"></div></td>
-						<td valign="bottom" width="1"></td>
-						<td width="34" class="small" style="color:#006699;font-weight:bold"><span id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</span></td>
-						<td width="14" valign="bottom"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
+						<td width="34" class="small" style="color:#006699;font-weight:bold"><span style="margin-left:8px" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</span></td>
+						<td><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
+
 					</tr></tbody></table>
 				</div>
 			<td>
