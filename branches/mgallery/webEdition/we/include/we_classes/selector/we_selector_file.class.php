@@ -74,7 +74,7 @@ class we_selector_file{
 	protected $multiple = true;
 	protected $open_doc = 0;
 
-	public function __construct($id, $table = FILE_TABLE, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $rootDirID = 0, $multiple = true, $filter = "", $startID = 0){
+	public function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $multiple = true, $filter = '', $startID = 0){
 		if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE){
 			$this->fields = str_replace('Text', 'CONCAT(Text," (",Forename," ", Surname,")") AS Text', $this->fields);
 		}

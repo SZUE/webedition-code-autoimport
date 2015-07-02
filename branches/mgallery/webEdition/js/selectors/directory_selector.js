@@ -159,7 +159,7 @@ function writeBody(d) {
 					'<table class="selector">' +
 					(makeNewFolder ?
 									'<tr style="background-color:#DFE9F5;">' +
-									'<td align="center">' + getTreeIcon('folder', false) + '</td>' +
+									'<td class="selectoricon">' + getTreeIcon('folder', false) + '</td>' +
 									'<td><input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
 									'<td class="selector moddate">' + g_l.date_format + '</td>' +
 									'</tr>' :
@@ -171,7 +171,7 @@ function writeBody(d) {
 		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="treeIcon">' + getTreeIcon(entries[i].contentType, false) + '</td>' +
 						(we_editDirID == entries[i].ID ?
-										'<td class="selector treeIcon"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector cutText directory" style="" title="' + entries[i].text + '">' + entries[i].text
 										) +
 						'</td><td class="selector moddate">' + entries[i].modDate + '</td>' +

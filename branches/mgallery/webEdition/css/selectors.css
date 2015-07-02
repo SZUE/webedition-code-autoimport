@@ -96,6 +96,11 @@ th.selector{
 	padding-left: 3px;
 }
 
+.selectoricon{
+	width:25px;
+	text-align: center;
+}
+
 .filename,
 .filesize{
 	min-width:200px;

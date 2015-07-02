@@ -25,13 +25,12 @@
 class we_users_selector extends we_selector_file{
 
 	function __construct($id, $table = USER_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
+		$this->order = 'Second,First,Text';
 
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
+		$this->fields = str_replace('Text', 'CONCAT(First," ", Second," (",Text,")") AS Text', $this->fields);
 		$this->fields.= ',(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType';
-
-		//FIXME: fix userSelector String
-		//$GLOBALS["l_fileselector"]["filename"] = ($this->filter == "group") ? g_l('fileselector',"[groupname]") : g_l('fileselector',"[username]");
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
@@ -78,13 +77,7 @@ class we_users_selector extends we_selector_file{
 			default:
 				$q = '';
 		}
-		//if(!$_SESSION["perms"]["ADMINISTRATOR"]){
-		//	$upid = f("SELECT ParentID FROM ".$this->table." WHERE ID='".$_SESSION["user"]["ID"]."'","ParentID",$this->db);
-		//	if($upid) $upath = f("SELECT Path FROM ".$this->table." WHERE ID='".$upid."'","Path",$this->db);
-		//	else $upath = "/";
-		//}else{
 		$upath = '';
-		//}
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' .
 			$this->db->escape($this->table) .
 			' WHERE ParentID=' . intval($this->dir) .

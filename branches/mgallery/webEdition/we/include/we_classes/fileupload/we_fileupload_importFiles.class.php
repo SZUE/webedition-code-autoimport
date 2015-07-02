@@ -105,13 +105,12 @@ class we_fileupload_importFiles extends we_fileupload_base{
 
 	protected function _getHtmlFileRow(){
 		return str_replace(array("\r", "\n"), "", '<table class="default"><tbody><tr height="28">
-			<td width="20"></td>
-			<td class="weMultiIconBoxHeadline" width="80" >' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span><span style="display:inline-block;width:20px;height:5px;"></span></td>
-			<td width="260"><input id="name_uploadFiles_WEFORMNUM" display:inline-block; type="text" size="' . (we_base_browserDetect::isOpera() ? 34 : 38) . '" readonly="readonly" value="FILENAME" /></td>
+			<td class="weMultiIconBoxHeadline" style="width:80px;padding-left:20px;padding-right:20px;" >' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td>
+			<td><input id="name_uploadFiles_WEFORMNUM" style="width:15em;" type="text" readonly="readonly" value="FILENAME" /></td>
 			<td>
-				<div style="display: block" id="div_rowButtons_WEFORMNUM">
-					<table class="default"><tbody><tr width="150">
-							<td width="76"><span style="margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</span></td>
+				<div id="div_rowButtons_WEFORMNUM">
+					<table class="default"><tbody><tr>
+							<td style="width:6em;text-align:right;margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</td>
 							<td align="middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
 							<td>
 								<div class="fileInputWrapper" style="vertical-align: bottom; display: inline-block;">
@@ -126,10 +125,9 @@ class we_fileupload_importFiles extends we_fileupload_base{
 				</div>
 				<div style="display: none" id="div_rowProgress_WEFORMNUM">
 					<table class="default"><tbody><tr>
-						<td valign="middle" width="' . ($this->internalProgress['width'] + 6) . '"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" valign="top"></div><div class="progress_image_bg" style="width:90px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" valign="top"></div></td>
-						<td width="34" class="small" style="color:#006699;font-weight:bold"><span style="margin-left:8px" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</span></td>
+						<td valign="middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" valign="top"></div><div class="progress_image_bg" style="width:90px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" valign="top"></div></td>
+						<td class="small" style="width:3em;color:#006699;font-weight:bold;margin-left:8px;" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</td>
 						<td><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
-
 					</tr></tbody></table>
 				</div>
 			<td>

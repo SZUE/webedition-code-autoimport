@@ -1007,7 +1007,7 @@ var weFileUpload = (function () {
 
 					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
 					nameField.value = f.file.name;
-					sizeField.innerHTML = f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>';
+					sizeField.innerHTML = f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red"> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>';
 				}
 
 				if (f.isSizeOk) {
