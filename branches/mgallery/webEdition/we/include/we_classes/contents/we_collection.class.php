@@ -524,7 +524,7 @@ $jsStorageItems;
 
 	private function makeGridItem($item, $index){
 		$idname = 'collectionItem_we_id_' . $index;
-		$wecmd1 = "document.we_form.elements['collectionItem_we_id_" . $idname . "'].value";
+		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "";
 		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{opener._EditorFrame.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(" . $index . ", opener._EditorFrame.getContentEditor().document.we_form.elements['collectionItem_we_id_" . $index . "'].value);} catch(e){}";
 
