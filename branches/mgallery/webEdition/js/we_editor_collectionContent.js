@@ -289,7 +289,7 @@ weCollectionEdit = {
 	insertItem: function(elem, repaint, item, scope){
 		var t = scope ? scope : this,
 			el = elem ? t.getItem(elem) : null,
-			div, newElem, cmd1, cmd2,
+			div, newElem, cmd1, cmd2, cmd3, blank,
 			id = item && item.id ? item.id : -1,
 			path = item && item.path ? item.path : '',
 			ct = item && item.ct ? item.ct : 'image/*',
@@ -307,19 +307,27 @@ weCollectionEdit = {
 		}
 
 		div = document.createElement("div");
-		div.innerHTML = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, id).replace(/##PATH##/g, path).
+		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, id).replace(/##PATH##/g, path).
 				replace(/##CT##/g, ct).replace(/##ICONURL##/g, iconSrc.replace('%2F', '/')).replace(/##ATTRIB_ALT##/g, alt).
 				replace(/##ATTRIB_TITLE##/g, title).replace(/##S_ATTRIB_ALT##/g, state_alt).replace(/##S_ATTRIB_TITLE##/g, state_title);
 
 		if(t.view === 'list'){
 			//TODO: list fallback!
-			cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
-			cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
+			//cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
+			//cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
+			//blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, cmd2);
+			div.innerHTML = blank;
 		} else {
-			// TODO: use replace here too!
-			//div.firstChild.firstChild.style.background = 'url(' + item.iconSrc.replace('%2F', '/') + ') no-repeat center center';
-			//div.firstChild.firstChild.style.backgroundSize = 'contain';
+			if(id === -1){top.console.debug("beatlisevireto");
+				cmd1 = weCmdEnc(weCollectionEdit.gridBtnCmds[0].replace(/##INDEX##/g, t.maxIndex));
+				cmd3 = weCmdEnc(weCollectionEdit.gridBtnCmds[2].replace(/##INDEX##/g, t.maxIndex));
+				blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, '').replace(/##CMD3##/g, cmd3).replace(/##SHOWBTN##/g, 'block');
+			} else {
+				blank = blank.replace(/##SHOWBTN##/g, 'none');
+			}
+			div.innerHTML = blank;
 
+			// TODO: use replace here too!
 			div.firstChild.style.width = div.firstChild.style.height = t.gridItemSize + 'px';
 			t.addListenersToItem('grid', div.firstChild);
 		}

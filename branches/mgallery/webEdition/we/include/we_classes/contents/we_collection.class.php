@@ -300,10 +300,8 @@ class we_collection extends we_root{
 		$btnIconview = we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weCollectionEdit.setView('grid');", true, 40, "", "", "", false);
 		$btnListview = we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weCollectionEdit.setView('list');", true, 40, "", "", "", false);
 
-		//FIXME: try using opener for callback
-		//$callback = we_base_request::encCmd("if(top.opener && top.opener.weCollectionEdit && top.opener.weCollectionEdit.we_doc.ID == " . $this->ID . "){top.opener.weCollectionEdi.insertImportedDocuments(scope.sender.resp.success)} top.close();");
-
-		$callback = we_base_request::encCmd("if(top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
+		//$callback = we_base_request::encCmd("if(top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
+		$callback = we_base_request::encCmd("var fc, editorID, frame, ce; if((fc = top.opener.top.weEditorFrameController) && (editorID = fc.getEditorIdOfOpenDocument('" . VFILE_TABLE . "', " . $this->ID . ")) && (fc.getEditorEditPageNr(editorID) == 1) && (frame = fc.getEditorFrame(editorID)) && (ce = frame.getContentEditor().weCollectionEdit)){ce.insertImportedDocuments(scope.sender.resp.success);} else {top.opener.top.console.debug('error: collection closed or changed tab');} top.close()");
 		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2, $callback, 'btn_import_files_and_insert');
 
 		$head = new we_html_table(array("style" => "border: 0px solid gray;width:100%;height:32px"), 1, 6);
@@ -525,11 +523,30 @@ $jsStorageItems;
 	 */
 
 	private function makeGridItem($item, $index){
+		$idname = 'collectionItem_we_id_' . $index;
+		$wecmd1 = "document.we_form.elements['collectionItem_we_id_" . $idname . "'].value";
+		$wecmd2 = "";
+		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{opener._EditorFrame.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(" . $index . ", opener._EditorFrame.getContentEditor().document.we_form.elements['collectionItem_we_id_" . $index . "'].value);} catch(e){}";
+
+		switch($item['id']){
+			case '##ID##':
+				$this->jsFormCollection .= "\n" . 'weCollectionEdit.gridBtnCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];';
+				$wecmdenc1 = '##CMD1##';
+				$wecmdenc2 = '';
+				$wecmdenc3 = '##CMD3##';
+				break;
+			case -1:
+				$wecmdenc1 = we_base_request::encCmd($wecmd1);
+				$wecmdenc2 = '';
+				$wecmdenc3 = we_base_request::encCmd($wecmd3);
+				break;
+			default:
+				$wecmdenc1 = $wecmdenc2 = $wecmdenc3 = '';
+		}
+
 		$trashButton = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['ct'] . "');", true, 27, 22);
-
-		$wecmdenc1 = $wecmdenc2 = $wecmdenc3 = '';
-		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
 
 		$toolbar = new we_html_table(array('draggable' => 'false', 'width' => '100%'), 1, 4);
@@ -538,7 +555,7 @@ $jsStorageItems;
 		$toolbar->setCol(0, 2, array('width' => '20', 'style' => 'padding-bottom:3px', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle" style="color:' . $item['elements']['attrib_alt']['state'] .  ';font-size:16px;"></i>');
 		$toolbar->setCol(0, 3, array('width' => '70', 'style' => ''), $editButton . $trashButton);
 
-		$displayBtnEdit = 'none';//$item['id'] === -1 ? 'inline-block' : 'none';
+		$displayBtnEdit = $item['id'] === -1 ? 'block' : ($item['id'] === '##ID##' ? '##SHOWBTN##' : 'none');
 
 		//TODO: use css classes to avoid all this inline css
 		return we_html_element::htmlDiv(array(
@@ -558,8 +575,9 @@ $jsStorageItems;
 				we_html_element::htmlDiv(array(
 					'style' => 'position:absolute;top:0;right:0;bottom:14px;width:12px;border:1px solid white;float:left;dislpay:block;',
 					'id' => 'grid_space_' . $index,
-					), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id'])
+					), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id']) . we_html_element::htmlHidden('collectionItem_we_id_' . $index, $item['id'])
 		);
+		//TODO: use indexed input field only
 	}
 
 	private function getJsStrorageItem($item){

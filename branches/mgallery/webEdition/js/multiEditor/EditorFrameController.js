@@ -877,6 +877,8 @@ function EditorFrameController() {
 		return _EditorFrame.getEditorIsInUse();
 	};
 
+	/*
+	// TODO: make better fn getEditorStateByID(id, table, editPage), returning an array with all status data and references if open
 	this.getEditorIfOpen = function (table, id, editPage) {
 		if(!(table && id && editPage)){
 			return false;
@@ -894,6 +896,7 @@ function EditorFrameController() {
 		}
 		return false;
 	};
+	*/
 
 }
 top.weEditorFrameController = new EditorFrameController();

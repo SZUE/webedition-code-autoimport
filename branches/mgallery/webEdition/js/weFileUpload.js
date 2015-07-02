@@ -547,18 +547,19 @@ var weFileUpload = (function () {
 
 			this.setInternalProgress = function (progress, index) {
 				var coef = this.intProgress.width / 100,
-								i = typeof index !== 'undefined' || index === false ? index : false,
-								p = i === false ? '' : '_' + i;
+					i = typeof index !== 'undefined' || index === false ? index : false,
+					p = i === false ? '' : '_' + i;
 
+				document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
 				document.getElementById(_.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
-				document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = (coef * 100) - (coef * progress) + "px";
+
 				this.setInternalProgressText('progress_text', progress + '%', index);
 			};
 
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				var s = success || false,
-								i = index || false,
-								p = !i ? '' : '_' + i;
+					i = index || false,
+					p = !i ? '' : '_' + i;
 
 				if (s) {
 					this.setInternalProgress(100, i);
