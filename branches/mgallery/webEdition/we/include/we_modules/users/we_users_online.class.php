@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * This class handles the users online for the personalized desktop (Cockpit).
  */
 class we_users_online{
-
 	var $num_uo = 0;
 	var $users = '';
 
@@ -53,21 +51,18 @@ class we_users_online{
 			'seagreen'
 		); //FIXME:add usefull colors
 		$i = -1;
-		$DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . ' WHERE Ping>(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
+		$DB_WE->query('SELECT ID,username,TRIM(CONCAT(First," ",Second)) AS User FROM ' . USER_TABLE . ' WHERE Ping>(DATE_SUB(NOW(),INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND )) ORDER BY Ping DESC');
 		$colorCount = count($colors);
 		while($DB_WE->next_record()){
 			$this->num_uo++;
 			$_fontWeight = ($_SESSION['user']['ID'] == $DB_WE->f('ID')) ? 'bold' : 'bold';
-			if($i >= 0){
-				$_row .= '<tr><td height="8">' . we_html_tools::getPixel(1, 8) . '</td></tr>';
-			}
-			$_row .= '<tr><td width="30" style="color:'.$colors[( ++$i) % $colorCount].'"><i class="fa fa-user fa-2x"></i></td>' .
-					'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . $DB_WE->f("username") . '</td>';
-			if(defined('MESSAGES_TABLE')){
-				$_row .= '<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f("username") . '\');">' .
-						'<i style="color:#9fbcd5;" class="fa fa-2x fa-envelope"></i></a><td>';
-			}
-			$_row .= '</tr>';
+			$_row .= '<tr><td width="30" style="margin-top:8px;color:' . $colors[( ++$i) % $colorCount] . '"><i class="fa fa-user fa-2x"></i></td>' .
+				'<td valign="middle" class="middlefont" style="font-weight:' . $_fontWeight . ';">' . ($DB_WE->f('User')? : $DB_WE->f('username')) . '</td>' .
+				(defined('MESSAGES_TABLE') ?
+					'<td valign="middle" width="24"><a href="javascript:newMessage(\'' . $DB_WE->f('username') . '\');">' .
+					'<i style="color:#9fbcd5;" class="fa fa-2x fa-envelope"></i></a><td>' :
+					''
+				) . '</tr>';
 		}
 
 		$this->users = $_u . '<div style="height:187px;overflow:auto;"><table width="100%" class="default">' . $_row . '</table></div>';
