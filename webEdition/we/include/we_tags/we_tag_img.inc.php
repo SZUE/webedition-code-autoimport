@@ -118,7 +118,7 @@ function we_tag_img($attribs){
 		$out = getHtmlTag('img', $tagAttribs);
 		$tagAttribs['alt'] = $tagAttribs['title'] = '';
 	} else {
-		$out = ''; //no_image war noch in der Vorscha sichtbar
+		$out = ''; //no_image war noch in der Vorschau sichtbar
 	}
 
 	if(!$id && (!$GLOBALS['we_editmode'])){
