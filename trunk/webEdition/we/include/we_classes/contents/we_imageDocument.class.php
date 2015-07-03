@@ -343,7 +343,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			switch($this->getElement('LinkType')){
 				case we_base_link::TYPE_INT:
-					$href = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), 'Path', $this->DB_WE);
+					$href = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), '', $this->DB_WE);
 					break;
 				case we_base_link::TYPE_EXT:
 					$href = $this->getElement('LinkHref');
@@ -353,7 +353,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					if(isset($GLOBALS['WE_MAIN_DOC'])){
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
 					} else {
-						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), 'Workspaces', $this->DB_WE);
+						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), '', $this->DB_WE);
 						$foo = makeArrayFromCSV($pidCvs);
 						$pid = (empty($foo) ? 0 : $foo[0]);
 					}

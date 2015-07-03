@@ -862,7 +862,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		contextmenu : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
 		templates : "' . $this->templates . '",
 		formats : "' . $this->formats . '",
-		galleryTemplates : "' . $this->galleryTemplates . '"
 	},
 	weClassNames_urlEncoded : "' . urlencode($this->cssClasses) . '",
 	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
