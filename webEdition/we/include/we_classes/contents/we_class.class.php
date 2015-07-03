@@ -234,6 +234,7 @@ abstract class we_class{
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
 		$sqlFrom = $sqlFrom ? : $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt);
+		//FIX: table can contain joins!
 		$this->DB_WE->query('SELECT ' . $sqlFrom . ' FROM ' . $table . ' WHERE ' . $sqlTail);
 		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$v = $this->DB_WE->f($val);
