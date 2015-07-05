@@ -40,14 +40,13 @@ function startTree(){
 }';
 	}
 
-	function getJSTreeCode(){ //TODO: use we_html_element::jsElement and move to new class weShopTree
+	function getJSTreeCode(){
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::jsElement('
-var table="' . SHOP_TABLE . '";
-var we_dir="' . WEBEDITION_DIR . '";'
+var table="' . SHOP_TABLE . '";'
 				. parent::getTree_g_l() . '
-var treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
-var treeYear="' . g_l('modules_shop', '[treeYear]') . '";
+g_l.treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
+g_l.treeYear="' . g_l('modules_shop', '[treeYear]') . '";
 var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
 ') .
 			we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .

@@ -183,7 +183,7 @@ function container(){
 	// Function which control how tree contenet will be displayed
 	function getHTMLContruct(){
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable',), ''
+				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable'), ''
 				)
 		);
 	}
@@ -193,6 +193,7 @@ function container(){
 			we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::htmlDiv(array(
 				'id' => 'treetable',
+				'class' => 'tree',
 				'onresize' => $onresize
 				), ''
 		);

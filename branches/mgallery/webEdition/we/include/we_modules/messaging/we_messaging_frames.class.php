@@ -173,9 +173,8 @@ class we_messaging_frames extends we_modules_frame{
 	}
 
 	function getHTMLFvHeaders(){
-
-		$this->transaction = $this->transaction != 'no_request' ? $this->transaction : $this->weTransaction;
-		$this->transaction = (preg_match('|^([a-f0-9]){32}$|i', $this->transaction) ? $this->transaction : 0);
+		$t = $this->transaction != 'no_request' ? $this->transaction : $this->weTransaction;
+		$this->transaction = (preg_match('|^([a-f0-9]){32}$|i', $t) ? $t : 0);
 
 		$extraHead = we_html_element::jsElement('
 			function doSort(sortitem) {
@@ -196,7 +195,7 @@ class we_messaging_frames extends we_modules_frame{
 		);
 
 		$table = new we_html_table(array(
-			'style' => 'margin: 5px 0 0 0px',
+			'style' => 'margin: 5px 0px 0px 0px',
 			'class' => 'default',
 			'width' => '100%'), 1, count($colsArray) + 1);
 

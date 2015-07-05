@@ -138,7 +138,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = we_dir + "we_cmd.php?we_transaction=" + we_transaction + "&";
+	var url = "/webEdition/we_cmd.php?we_transaction=" + we_transaction + "&";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -147,7 +147,7 @@ function we_cmd() {
 	}
 
 	if (hot == "1" && arguments[0] != "messaging_start_view") {
-		if (confirm(save_changed_folder)) {
+		if (confirm(g_l.save_changed_folder)) {
 			top.content.editor.document.edit_folder.submit();
 		} else {
 			top.content.usetHot();
@@ -426,4 +426,25 @@ function msg_start() {
 
 function doClick(id) {
 	top.content.we_cmd(top.content.mode, id);
+}
+
+function loadData() {
+	treeData.clear();
+	startloc = 0;
+	treeData.add(self.rootEntry("0", "root", "root"));
+}
+
+function translate(inp) {
+	if (inp.substring(0, 12).toLowerCase() == "messages - (") {
+		return g_l.Mitteilungen + " - (" + inp.substring(12, inp.length);
+	} else if (inp.substring(0, 8).toLowerCase() == "task - (" || inp.substring(0, 8).toLowerCase() == "todo - (") {
+		return g_l.ToDo + " - (" + inp.substring(8, inp.length);
+	} else if (inp.substring(0, 8).toLowerCase() == "done - (") {
+		return g_l.Erledigt + " - (" + inp.substring(8, inp.length);
+	} else if (inp.substring(0, 12).toLowerCase() == "rejected - (") {
+		return g_l.Zurueckgewiesen + " - (" + inp.substring(12, inp.length);
+	} else if (inp.substring(0, 8).toLowerCase() == "sent - (") {
+		return g_l.Gesendet + " - (" + inp.substring(8, inp.length);
+	}
+	return inp;
 }

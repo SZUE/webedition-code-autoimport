@@ -36,10 +36,8 @@ class we_messaging_tree extends weTree{
 
 	function getJSStartTree(){
 		return parent::getTree_g_l() . '
-var save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
-var we_dir="' . WEBEDITION_DIR . '";
+g_l.save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
 var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
-
 var table="' . MESSAGES_TABLE . '";
 
 function startTree(){
@@ -141,8 +139,9 @@ function translate(inp){
 			}
 		}
 
-		$jsinit = '
-var we_dir="' . WEBEDITION_DIR . '";
+		return parent::getJSTreeCode() .
+			we_html_element::cssLink(CSS_DIR . 'tree.css') .
+			we_html_element::jsElement('
 var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
 
 parent.document.title = "' . $title . '";
@@ -150,10 +149,15 @@ we_transaction = "' . $this->transaction . '";
 var we_frameset="' . $this->frameset . '";'
 			. parent::getTree_g_l() . '
 var table="' . MESSAGES_TABLE . '";
-var save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
-';
-
-		$jsOut = '
+g_l.save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
+g_l.Mitteilungen="'.g_l('modules_messaging', '[Mitteilungen]').'";
+g_l.ToDo="' . g_l('modules_messaging', '[ToDo]') . '";
+g_l.Erledigt="' . g_l('modules_messaging', '[Erledigt]') . '";
+g_l.Zurueckgewiesen="' . g_l('modules_messaging', '[Zurueckgewiesen]') . '";
+g_l.Gesendet="' . g_l('modules_messaging', '[Gesendet]') . '";
+') .
+			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
+			we_html_element::jsElement('
 var treeData = new container();
 function cb_incstate() {
 		loaded = true;
@@ -163,43 +167,7 @@ function cb_incstate() {
 we_cmd("show_folder_content", ' . $f['ID'] . ');' :
 				'drawEintraege();'
 			) . '
-}
-
-function translate(inp){
-	if(inp.substring(0,12).toLowerCase() == "messages - ("){
-		return "' . g_l('modules_messaging', '[Mitteilungen]') . ' - ("+inp.substring(12,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "task - ("){
-		return "' . g_l('modules_messaging', '[ToDo]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "todo - ("){
-		return "' . g_l('modules_messaging', '[ToDo]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "done - ("){
-		return "' . g_l('modules_messaging', '[Erledigt]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,12).toLowerCase() == "rejected - ("){
-		return "' . g_l('modules_messaging', '[Zurueckgewiesen]') . ' - ("+inp.substring(12,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "sent - ("){
-		return "' . g_l('modules_messaging', '[Gesendet]') . ' - ("+inp.substring(8,inp.length);
-	}else{
-		return inp;
-	}
-
-}
-
-function loadData() {
-	treeData.clear();
-		';
-
-		$jsOut .= '
-	startloc=0;
-	treeData.add(self.rootEntry("0","root","root"));
-		';
-		$jsOut .= '
-}
-
-		';
-		return parent::getJSTreeCode() . we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement($jsinit) .
-			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
-			we_html_element::jsElement($jsOut);
+}');
 	}
 
 }

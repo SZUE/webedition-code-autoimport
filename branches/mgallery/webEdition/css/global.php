@@ -104,12 +104,6 @@ font-size: <?php echo (we_base_browserDetect::isGecko() && we_base_browserDetect
 font-family: <?php echo g_l('css', '[font_family]'); ?>;
 }
 
-
-.header_shop {
-background-image: url(<?php echo WE_MODULES_DIR; ?>shop/images/shopInfast.gif);
-}
-
-
 .big,
 .weDocListSearchHeadline,
 .weDocListSearchHeadlineDivs{

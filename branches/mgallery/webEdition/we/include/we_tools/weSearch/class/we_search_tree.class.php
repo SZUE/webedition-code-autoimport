@@ -46,7 +46,7 @@ treeData.frames=frames;
 
 	function getHTMLContruct(){
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" style="height:100%;border-right:1px solid black"></div>')
+				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" class="tree" style="height:100%;border-right:1px solid black"></div>')
 		);
 	}
 
