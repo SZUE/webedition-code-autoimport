@@ -101,7 +101,7 @@ class we_base_request{
 				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
-				$var = (preg_match('/(\d+.?\d*) ?(em|ex|pt|px|in|mm|cm|pc|ch|rem|vw|vh|vmin|vmax|%)?/', $var, $regs) ? $regs[1] . (isset($regs[2]) ? $regs[2] : '') : '' );
+				$var = (preg_match('/(\d+\.?\d*) ?(em|ex|pt|px|in|mm|cm|pc|ch|rem|vw|vh|vmin|vmax|%)?/', $var, $regs) ? $regs[1] . (isset($regs[2]) ? $regs[2] : '') : '' );
 				return;
 			case self::INT:
 				$var = ($var === '' ? $default : intval($var));

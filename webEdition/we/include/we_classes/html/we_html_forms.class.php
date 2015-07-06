@@ -151,7 +151,6 @@ abstract class we_html_forms{
 		$buttonBottom = false;
 		$editorcss = weTag_getAttribute('editorcss', $attribs, '', we_base_request::STRING);
 		$editorcss = $editorcss ? id_to_path($editorcss, FILE_TABLE, null, false, true) : array();
-
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
 
 		$contentCss = array_filter(array_merge((isset($GLOBALS['we_doc']) && is_object($GLOBALS['we_doc']) && !$ignoredocumentcss ? $GLOBALS['we_doc']->getDocumentCss() : array()), $editorcss));
@@ -197,8 +196,6 @@ abstract class we_html_forms{
 
 		$width = $width ? : (abs($cols) ? (abs($cols) * 5.5) : 520);
 		$height = $height ? : (abs($rows) ? (abs($rows) * 8) : 200);
-		$width = (is_numeric($width) ? round($width / 96, 3) . 'in' : $width);
-		$height = (is_numeric($height) ? round($height / 96, 3) . 'in' : $height);
 
 		if($wysiwyg){
 			if(!$showmenues){
