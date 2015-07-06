@@ -44,14 +44,14 @@ function checkRequired(array $required, array $loadFields, $emailfield = ''){
 			return;
 		}
 	}
-	if(($uid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . implode(' AND ', $where)))){
+	if(($uid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE LoginDenied=0 AND ' . implode(' AND ', $where)))){
 		array_push($loadFields, 'ID', 'Username');
 		if($emailfield){
 			$loadFields[] = $emailfield;
 		}
 		$loadFields = array_unique($loadFields);
 
-		$_SESSION['webuser'] = getHash('SELECT `' . implode('`,`', $loadFields) . '` FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $uid);
+		$_SESSION['webuser'] = getHash('SELECT `' . implode('`,`', $loadFields) . '` FROM ' . CUSTOMER_TABLE . ' WHERE LoginDenied=0 AND ID=' . $uid);
 		return $uid;
 	}
 
@@ -136,7 +136,7 @@ function we_tag_customerResetPassword(array $attribs){
 				$data['password'] = we_customer_customer::cryptPassword(we_base_request::_(we_base_request::STRING, 's', '', 'Password'));
 			}
 			//ok, we have a password, all (optional requirements are met) & token was valid
-			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET Password="' . $GLOBALS['DB_WE']->escape($data['password']) . '" WHERE ID=' . $data['ID']);
+			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET Password="' . $GLOBALS['DB_WE']->escape($data['password']) . '" WHERE LoginDenied=0 AND ID=' . $data['ID']);
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE UserTable="tblWebUser" AND ID=' . $data['ID']);
 
 			$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK;
