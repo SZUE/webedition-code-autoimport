@@ -391,12 +391,10 @@ function weWysiwygSetHiddenText(arg) {
 		//group: font
 		$this->elements = array_filter(
 			array(new we_wysiwyg_ToolbarButton($this, "fontname", 92, 20),
-				//($this->width < 194 ? $sep : false),
 				new we_wysiwyg_ToolbarButton($this, 'fontsize', 92, 20),
 				$sep,
 				//group: prop
 				new we_wysiwyg_ToolbarButton($this, "formatblock", 92, 20),
-				//($this->width < 194 ? $sep : false),
 				new we_wysiwyg_ToolbarButton($this, "applystyle", 92, 20),
 				$sep,
 				new we_wysiwyg_ToolbarButton($this, "bold"),
@@ -540,8 +538,8 @@ function weWysiwygSetHiddenText(arg) {
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 
-
-		return we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . $this->width . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
+		return
+			we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . we_base_util::convertUnits($this->width) . "', '" . we_base_util::convertUnits($this->height) . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
 			'" . $this->outsideWE . "','" . $this->width . "','" . $this->height . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
 			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
@@ -750,9 +748,8 @@ function weWysiwygSetHiddenText(arg) {
 			($this->wePlugins ? $this->wePlugins . ',' : '') .
 			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 //only a simple fix
-		if(is_numeric($this->height) && is_numeric($this->width)){
-			$this->height += $this->buttonpos === 'external' ? 0 : round((($k) / ($this->width / (5 * 22))) * 26);
-		}
+
+		$this->height = we_base_util::convertUnits($this->height) - ($this->buttonpos === 'external' ? 0 : round((($k) / (we_base_util::convertUnits($this->width) / (5 * 22))) * 26));
 
 		$wefullscreenVars = array(
 			'outsideWE' => $this->outsideWE ? "1" : "",
@@ -1155,9 +1152,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 }
 tinyMCE.addI18n(tinyMceTranslationObject);
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
-') .
-			'
-<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . (is_numeric($this->width) ? $this->width . 'px' : $this->width) . ';height:' . (is_numeric($this->height) ? $this->height . 'px' : $this->height) . ';" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
+') . '
+<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in;height:' . round(we_base_util::convertUnits($this->height) / 96, 3) . 'in;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
 	}
 
 }
