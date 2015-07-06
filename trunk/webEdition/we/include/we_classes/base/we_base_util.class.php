@@ -490,13 +490,14 @@ abstract class we_base_util{
 
 	static function convertUnits($string, $base = 16){
 		$regs = array();
-		if(!preg_match('/(\d+.?\d*) ?(em|ex|pt|px|in|mm|cm|pc|ch|rem|vw|vh|vmin|vmax|%)?/', $string, $regs)){
+		if(!preg_match('/(\d+\.?\d*) ?(em|ex|pt|px|in|mm|cm|pc|ch|rem|vw|vh|vmin|vmax|%)?/', $string, $regs)){
 			$regs[1] = intval($string);
 			$regs[2] = 'px';
 		}
-		
-		switch($regs[2]){
+
+		switch(isset($regs[2]) ? $regs[2] : 'px'){
 			case 'ch':
+				$regs[1]*=1.2;
 			case 'ex':
 				$regs[1]*=2;
 			case 'rem':
