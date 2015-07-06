@@ -403,11 +403,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 			$target = $this->getElement('LinkTarget');
 
-			srand((double) microtime() * 1000000);
-			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
-				$img_path;
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . microtime() :
+				$img_path . '?m=' . $this->Published;
 
 			if($this->issetElement('sizingrel')){
 				$this->setElement('width', round($this->getElement('width') * $this->getElement('sizingrel')), 'attrib');
