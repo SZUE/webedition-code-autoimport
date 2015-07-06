@@ -488,4 +488,34 @@ abstract class we_base_util{
 		return false;
 	}
 
+	static function convertUnits($string, $base = 16){
+		$regs = array();
+		if(!preg_match('/(\d+.?\d*) ?(em|ex|pt|px|in|mm|cm|pc|ch|rem|vw|vh|vmin|vmax|%)?/', $string, $regs)){
+			$regs[1] = intval($string);
+			$regs[2] = 'px';
+		}
+		
+		switch($regs[2]){
+			case 'ch':
+			case 'ex':
+				$regs[1]*=2;
+			case 'rem':
+			case 'em':
+				return $regs[1] * $base;
+			case 'pt':
+				return round($regs[1] * 96 / 72);
+			case 'pc':
+				return round($regs[1] * 96 / 6);
+			case 'in':
+				return round($regs[1] * 96);
+			case 'mm':
+				return round($regs[1] * 96 / 254);
+			case 'cm':
+				return round($regs[1] * 96 / 2.54);
+			default:
+			case 'px':
+				return $regs[1];
+		}
+	}
+
 }
