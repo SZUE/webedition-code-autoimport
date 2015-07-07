@@ -23,10 +23,9 @@
  */
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
 ?>
-<body style="background-color:#EBEBEB;margin: 0px 0px 0px 0px;" onblur="self.close()" onclick="self.close()" onload="self.focus();">
-	<div style="text-align:center"><?php
-		include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
-		?>
-	</div>
+<body style="background-color:#EBEBEB;margin: 0px 0px 0px 0px;text-align:center;" onblur="self.close()" onclick="self.close()" onload="self.focus();">
+	<?php
+	include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
+	?>
 </body>
 </html>
