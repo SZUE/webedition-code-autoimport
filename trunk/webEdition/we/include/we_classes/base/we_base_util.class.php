@@ -489,6 +489,7 @@ abstract class we_base_util{
 	}
 
 	static function convertUnits($string, $base = 16){
+		//FIXME: what to do with % ??
 		$regs = array();
 		if(!preg_match('/(\d+\.?\d*) ?(em|ex|pt|px|in|mm|cm|pc|ch|rem|vw|vh|vmin|vmax|%)?/', $string, $regs)){
 			$regs[1] = intval($string);
