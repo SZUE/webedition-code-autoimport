@@ -1031,10 +1031,10 @@ function we_cmd_base(args, url) {
 			if (top.weEditorFrameController.getActiveDocumentReference()) {
 				top.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
 			}
-			var wyw = Math.max(args[2], args[9]);
-			wyw = wyw ? wyw : 800;
-			var wyh = parseInt(args[3]) + parseInt(args[10]);
-			wyh = wyh ? wyh : 600;
+			var wyw = arguments[2];
+			wyw = Math.max(wyw ? wyw : 800);
+			var wyh = arguments[3];
+			wyh = Math.max(wyh ? wyh : 600);
 			if (window.screen) {
 				var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
 				screen_height = screen_height - 40;

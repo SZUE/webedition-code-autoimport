@@ -376,12 +376,10 @@ td.mceToolbar{
 		//group: font
 		$this->elements = array_filter(
 			array(new we_wysiwyg_ToolbarButton($this, "fontname", 92, 20),
-				//($this->width < 194 ? $sep : false),
 				new we_wysiwyg_ToolbarButton($this, 'fontsize', 92, 20),
 				$sep,
 				//group: prop
 				new we_wysiwyg_ToolbarButton($this, "formatblock", 92, 20),
-				//($this->width < 194 ? $sep : false),
 				new we_wysiwyg_ToolbarButton($this, "applystyle", 92, 20),
 				$sep,
 				new we_wysiwyg_ToolbarButton($this, "bold"),
@@ -769,9 +767,8 @@ td.mceToolbar{
 			($this->wePlugins ? $this->wePlugins . ',' : '') .
 			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 //only a simple fix
-		if(is_numeric($this->height) && is_numeric($this->width)){
-			$this->height += $this->buttonpos === 'external' ? 0 : round((($k) / ($this->width / (5 * 22))) * 26);
-		}
+
+		$this->height = we_base_util::convertUnits($this->height) - ($this->buttonpos === 'external' ? 0 : round((($k) / (we_base_util::convertUnits($this->width) / (5 * 22))) * 26));
 
 		$wefullscreenVars = array(
 			'outsideWE' => $this->outsideWE ? "1" : "",
@@ -1154,7 +1151,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 
 		/*
-		/*
 		ed.onClick.add(function(ed) {
 			if(!weEditorFrameIsHot && editorLevel == "inline" && ed.isDirty()){
 				try{
@@ -1227,7 +1223,7 @@ tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') .
 			getHtmlTag('textarea', array(
 				'wrap' => "off",
-				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . (is_numeric($this->width) ? $this->width . 'px' : $this->width) . '; height:' . (is_numeric($this->height) ? $this->height . 'px' : $this->height) . ';',
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in; height:' . round(we_base_util::convertUnits($this->height) / 96, 3). 'in;',
 				'id' => $this->name,
 				'name' => $this->name), strtr($editValue, array('\n' => '', '&' => '&amp;')));
 	}
