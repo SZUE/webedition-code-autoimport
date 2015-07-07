@@ -1152,8 +1152,13 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 }
 tinyMCE.addI18n(tinyMceTranslationObject);
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
-') .'
-<textarea wrap="off" style="color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in;height:' . round(we_base_util::convertUnits($this->height) / 96, 3) . 'in;" id="' . $this->name . '" name="' . $this->name . '">' . str_replace(array('\n', '&'), array('', '&amp;'), $editValue) . '</textarea>';
+') .getHtmlTag('textarea', array(
+				'wrap' => "off",
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in; height:' . round(we_base_util::convertUnits($this->height) / 96, 3) . 'in;',
+				'id' => $this->name,
+				'name' => $this->name,
+				'class' => 'wetextarea'
+				), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
 	}
 
 }
