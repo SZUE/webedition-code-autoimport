@@ -28,14 +28,14 @@ $_charsets = $_charsetHandler->charsets;
 $fields = array(
 	'cmd' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
 	'name' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1),
-	/*'width' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 2),
-	'height' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 3),*/
+	'windowwidth' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 2),
+	'windowheight' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 3),
 	'empty' => we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 4),
 	'propstring' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 5),
 	'classname' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 6),
 	'fontnames' => we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 7),
 	'outsidewe' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8),
-	'width' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 9), // (toolbar width)
+	'width' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 9),
 	'height' => we_base_request::_(we_base_request::UNIT, 'we_cmd', 0, 10),
 	'xml' => we_base_request::_(we_base_request::BOOL, 'we_cmd', true, 11),
 	'removeFirstParagraph' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 12),
@@ -145,7 +145,7 @@ top.close();');
 			}
 
 			$e = new we_wysiwyg_editor(
-				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], ''/*$fields['formats']*/
+				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], ''/* $fields['formats'] */
 			);
 
 
