@@ -308,30 +308,30 @@ function we_tag_userInput($attribs, $content){
 				$checked = (!empty($_SESSION[$_quicktimeDataId]["doDelete"]) ? ' checked' : '');
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="center">' . $quicktimeTag . '
-								<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
-							</td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table class="weEditTable padding0 spacing0 border0">
-									<tr>
-										<td style="padding-right: 5px;">
-											<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
-										</td>
-										<td>
-											<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>';
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="center">' . $quicktimeTag . '
+			<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+		</td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<table class="weEditTable padding0 spacing0 border0">
+				<tr>
+					<td style="padding-right: 5px;">
+						<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
+					</td>
+					<td>
+						<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>';
 			}
 			$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" />';
 
@@ -394,26 +394,26 @@ function we_tag_userInput($attribs, $content){
 				$checked = (!empty($_SESSION[$_binaryDataId]['doDelete']) ? ' checked' : '');
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
-								<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
-							</td>
-						</tr>
-						<tr>
-							<td class="weEditmodeStyle" colspan="2" align="left">
-								<table class="weEditTable padding0 spacing0 border0">
-									<tr>
-										<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
-										<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label></td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>';
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
+			<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+		</td>
+	</tr>
+	<tr>
+		<td class="weEditmodeStyle" colspan="2" align="left">
+			<table class="weEditTable padding0 spacing0 border0">
+				<tr>
+					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
+					<td><label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>';
 			}
 			if(!isset($_SESSION[$_binaryDataId])){
 				$_SESSION[$_binaryDataId] = array();

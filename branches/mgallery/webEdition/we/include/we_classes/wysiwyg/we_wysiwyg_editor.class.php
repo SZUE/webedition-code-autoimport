@@ -523,9 +523,14 @@ td.mceToolbar{
 		}
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
+		$width = we_base_util::convertUnits($this->width);
+		$width = (is_numeric($width) ? "'" . $width . "'" : intval($width) . '/100*screen.availWidth');
+		//even if height in % doesn't make sense...
+		$height = we_base_util::convertUnits($this->height);
+		$height = (is_numeric($height) ? "'" . $height . "'" : intval($height) . '/100*screen.availHeight');
 
-		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . $this->width . "', '" . $this->height . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
-			'" . $this->outsideWE . "','" . $tbwidth . "','" . $tbheight . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
+		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "'," . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
+			'" . $this->outsideWE . "'," . $width . "," . $tbheight . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
 			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
 
@@ -766,9 +771,13 @@ td.mceToolbar{
 			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
 			($this->wePlugins ? $this->wePlugins . ',' : '') .
 			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
-//only a simple fix
 
-		$this->height = we_base_util::convertUnits($this->height) - ($this->buttonpos === 'external' ? 0 : round((($k) / (we_base_util::convertUnits($this->width) / (5 * 22))) * 26));
+		$height = we_base_util::convertUnits($this->height);
+		$width = we_base_util::convertUnits($this->width);
+		if(is_numeric($height) && is_numeric($width)){
+			//only a simple fix
+			$this->height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
+		}
 
 		$wefullscreenVars = array(
 			'outsideWE' => $this->outsideWE ? "1" : "",
@@ -780,6 +789,11 @@ td.mceToolbar{
 
 		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
+
+		$width = we_base_util::convertUnits($this->width);
+		$width = (is_numeric($width) ? round($width / 96, 3) . 'in' : $width);
+		$height = we_base_util::convertUnits($this->height);
+		$height = (is_numeric($height) ? round($height / 96, 3) . 'in' : $height);
 
 		return we_html_element::jsElement(($this->fieldName ? '
 /* -- tinyMCE -- */
@@ -1220,12 +1234,13 @@ tinyMCE.PluginManager.load = function(n, u, cb, s) {
 		};
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
-') .
-			getHtmlTag('textarea', array(
+') .getHtmlTag('textarea', array(
 				'wrap' => "off",
-				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in; height:' . round(we_base_util::convertUnits($this->height) / 96, 3). 'in;',
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in; height:' . round(we_base_util::convertUnits($this->height) / 96, 3) . 'in;',
 				'id' => $this->name,
-				'name' => $this->name), strtr($editValue, array('\n' => '', '&' => '&amp;')));
+				'name' => $this->name,
+				'class' => 'wetextarea'
+				), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
 	}
 
 }

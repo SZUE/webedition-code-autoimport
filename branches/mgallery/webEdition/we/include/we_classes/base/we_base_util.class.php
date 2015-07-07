@@ -514,6 +514,9 @@ abstract class we_base_util{
 				return round($regs[1] * 96 / 254);
 			case 'cm':
 				return round($regs[1] * 96 / 2.54);
+			case '%':
+				//don't convert %
+				return $string;
 			default:
 			case 'px':
 				return $regs[1];
