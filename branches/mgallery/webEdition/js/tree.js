@@ -190,49 +190,39 @@ function clearItems() {
 }
 
 function clickHandler(cur) {
-	var row = "";
+	var row = "<span>";
+	var href = false;
+	var select = false;
 	if (treeData.selection_table == treeData.table && cur.id == treeData.selection) {
 		cur.selected = 1;
 	}
-	if (!cur.disabled) {
-		if (treeData.state == treeData.tree_states.select) {
-			row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
-		} else if (treeData.state == treeData.tree_states.selectitem && cur.typ == "item") {
-			row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
-		} else if (treeData.state == treeData.tree_states.selectgroup && cur.typ == "group") {
-			row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">";
-		} else {
-			row += '<a name="_' + cur.id + '" href="javascript://"  ondblclick="' + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){ " + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
-		}
+	switch (cur.disabled ? -1 : treeData.state) {
+		case -1:
+			href = false;
+			break;
+		case treeData.tree_states.selectitem:
+			href = cur.typ != "group";
+			select = true;
+			break;
+		case treeData.tree_states.selectgroup:
+			href = cur.typ != "item";
+			select = true;
+			break;
+		case treeData.tree_states.select:
+			href = true;
+			select = true;
+			break;
+		default:
+			href = true;
+			row += "<a ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
 	}
-	row += getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) + (cur.disabled ? "" : "</a>");
-	if (cur.disabled) {
-		row += "<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label>";
-	} else {
-		switch (treeData.state) {
-			case treeData.tree_states.selectitem:
-				row += (cur.typ == "group" ?
-								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label>" :
-								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><i class=\"fa fa-" + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i></a>' +
-								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" + cur.text + "</label>"
-								);
-				break;
-			case treeData.tree_states.selectgroup:
-				row += (cur.typ == "item" ?
-								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label>" :
-								"<a href=\"javascript:" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><i class=\"fa fa-" + (cur.checked == 1 ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i></a>' +
-								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" + cur.text + "</label>"
-								);
-				break;
-			case treeData.tree_states.select:
-				row += '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\"><i class=\"fa fa-" + (cur.checked == 1 ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i></a>' +
-								"<label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\" onclick=\"" + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" + cur.text + "</label>";
-				break;
-			default:
-				row += (cur.inschedule > 0 ? '<i class="fa fa-clock-o"></i> ' : '') + "<a ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\"><label id=\"lab_" + cur.id + "\"" + (cur.tooltip !== "" ? " title=\"" + (cur.tooltip ? cur.tooltip : cur.id) + "\"" : "") + " class=\"" + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + "\">" + cur.text + "</label></a>";
-		}
-	}
-	row += "<br/>";
+	row += (select && href ? '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" : '') +
+					getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
+					(cur.inschedule > 0 ? '<i class="fa fa-clock-o"></i> ' : '') +
+					(select && href ? '<i class="fa fa-' + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i>' : '') +
+					'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
+					(href ? "</a>" : "") +
+					"</span><br/>";
 	return row;
 }
 
