@@ -41,32 +41,14 @@ var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
 var table="' . MESSAGES_TABLE . '";
 
 function startTree(){
-			frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
+	frames={
+	top:' . $this->topFrame . ',
+	cmd:' . $this->cmdFrame . '
 	};
 	treeData.frames=frames;
 	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid=0";
 }
-
-function translate(inp){
-	if(inp.substring(0,12).toLowerCase() == "messages - ("){
-		return "' . g_l('modules_messaging', '[Mitteilungen]') . ' - ("+inp.substring(12,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "task - ("){
-		return "' . g_l('modules_messaging', '[ToDo]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "todo - ("){
-		return "' . g_l('modules_messaging', '[ToDo]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "done - ("){
-		return "' . g_l('modules_messaging', '[Erledigt]') . ' - ("+inp.substring(8,inp.length);
-	}else if(inp.substring(0,12).toLowerCase() == "rejected - ("){
-		return "' . g_l('modules_messaging', '[Zurueckgewiesen]') . ' - ("+inp.substring(12,inp.length);
-	}else if(inp.substring(0,8).toLowerCase() == "sent - ("){
-		return "' . g_l('modules_messaging', '[Gesendet]') . ' - ("+inp.substring(8,inp.length);
-	}else{
-		return inp;
-	}
-
-}';
+';
 	}
 
 	public static function getItems($ParentId, $Offset, $Segment, we_messaging_messaging $messaging){
@@ -124,7 +106,7 @@ function translate(inp){
 		return $items;
 	}
 
-	function getJSTreeCode(){ //TODO: move to new class weUsersTree (extends weModulesTree)
+	function getJSTreeCode(){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
