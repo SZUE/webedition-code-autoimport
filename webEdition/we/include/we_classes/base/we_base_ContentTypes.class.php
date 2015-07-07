@@ -117,7 +117,7 @@ class we_base_ContentTypes{
 		<we:ifNotEmpty match="Image">
 			<p><we:img name="Image" showthumbcontrol="true"/></p>
 		</we:ifNotEmpty>
-		<we:textarea name="Content" width="400" height="200" autobr="true" wysiwyg="true" removefirstparagraph="false" inlineedit="true"/>
+		<we:textarea name="Content" width="400" height="400" autobr="true" wysiwyg="true" removefirstparagraph="false" inlineedit="true"/>
 	</article>
 </body>
 </html>',

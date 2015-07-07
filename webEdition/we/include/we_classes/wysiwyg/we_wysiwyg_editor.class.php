@@ -537,10 +537,15 @@ function weWysiwygSetHiddenText(arg) {
 		}
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
+		$width = we_base_util::convertUnits($this->width);
+		$width = (is_numeric($width) ? "'" . $width . "'" : intval($width) . '/100*screen.availWidth');
+		//even if height in % doesn't make sense...
+		$height = we_base_util::convertUnits($this->height);
+		$height = (is_numeric($height) ? "'" . $height . "'" : intval($height) . '/100*screen.availHeight');
 
 		return
-			we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "','" . we_base_util::convertUnits($this->width) . "', '" . we_base_util::convertUnits($this->height) . "','" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
-			'" . $this->outsideWE . "','" . $this->width . "','" . $this->height . "','" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
+			we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "'," . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
+			'" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
 			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
 
@@ -747,9 +752,13 @@ function weWysiwygSetHiddenText(arg) {
 			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
 			($this->wePlugins ? $this->wePlugins . ',' : '') .
 			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
-//only a simple fix
 
-		$this->height = we_base_util::convertUnits($this->height) - ($this->buttonpos === 'external' ? 0 : round((($k) / (we_base_util::convertUnits($this->width) / (5 * 22))) * 26));
+		$height = we_base_util::convertUnits($this->height);
+		$width = we_base_util::convertUnits($this->width);
+		if(is_numeric($height) && is_numeric($width)){
+			//only a simple fix
+			$this->height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
+		}
 
 		$wefullscreenVars = array(
 			'outsideWE' => $this->outsideWE ? "1" : "",
@@ -761,6 +770,11 @@ function weWysiwygSetHiddenText(arg) {
 
 		$editorLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
+
+		$width = we_base_util::convertUnits($this->width);
+		$width = (is_numeric($width) ? round($width / 96, 3) . 'in' : $width);
+		$height = we_base_util::convertUnits($this->height);
+		$height = (is_numeric($height) ? round($height / 96, 3) . 'in' : $height);
 
 		return we_html_element::jsElement(($this->fieldName ? '
 /* -- tinyMCE -- */
@@ -1152,9 +1166,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 }
 tinyMCE.addI18n(tinyMceTranslationObject);
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
-') .getHtmlTag('textarea', array(
+') . getHtmlTag('textarea', array(
 				'wrap' => "off",
-				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in; height:' . round(we_base_util::convertUnits($this->height) / 96, 3) . 'in;',
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
 				'id' => $this->name,
 				'name' => $this->name,
 				'class' => 'wetextarea'
