@@ -65,9 +65,9 @@ class we_otherDocument extends we_binaryDocument{
 		return we_html_tools::htmlFormElementTable($this->htmlTextInput('we_' . $this->Name . '_Extension', 5, $this->Extension, '', 'onchange="_EditorFrame.setEditorIsHot(true);" style="width:92px"'), g_l('weClass', '[extension]'));
 	}
 
-	public function we_save($resave = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$this->Icon = we_base_ContentTypes::inst()->getIcon($this->ContentType, '', $this->Extension);
-		return parent::we_save($resave);
+		return parent::we_save($resave, $skipHook);
 	}
 
 	/**

@@ -24,7 +24,6 @@
  */
 class we_docTypes extends we_class{
 	/* The Text that will be shown in the tree-menue */
-
 	var $DocType = 'New DocType';
 	var $Extension = DEFAULT_STATIC_EXT;
 	var $ParentID = 0;
@@ -33,11 +32,6 @@ class we_docTypes extends we_class{
 	var $ContentTable = '';
 	var $IsDynamic = false;
 	var $IsSearchable = false;
-	var $JavaScript = '';
-	var $Notify = '';
-	var $NotifyTemplateID = '';
-	var $NotifySubject = '';
-	var $NotifyOnChange = '';
 	var $Templates = '';
 	var $SubDir = self::SUB_DIR_NO;
 	var $Category = '';
@@ -45,11 +39,11 @@ class we_docTypes extends we_class{
 
 	public function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Category', 'DocType', 'Extension', 'ParentID', 'ParentPath', 'TemplateID', 'ContentTable', 'IsDynamic', 'IsSearchable', 'Notify', 'NotifyTemplateID', 'NotifySubject', 'NotifyOnChange', 'SubDir', 'Templates', 'Language');
+		array_push($this->persistent_slots, 'Category', 'DocType', 'Extension', 'ParentID', 'ParentPath', 'TemplateID', 'ContentTable', 'IsDynamic', 'IsSearchable', 'SubDir', 'Templates', 'Language');
 		$this->Table = DOC_TYPES_TABLE;
 	}
 
-	public function we_save($resave = 0){
+	public function we_save($resave = false){
 		$idArr = makeArrayFromCSV($this->Templates);
 		$newIdArr = array();
 		foreach($idArr as $id){
@@ -73,7 +67,7 @@ class we_docTypes extends we_class{
 	}
 
 	public function we_save_exim(){
-		return parent::we_save(0);
+		return parent::we_save(false);
 	}
 
 	function saveInSession(&$save){
@@ -114,7 +108,7 @@ class we_docTypes extends we_class{
 		}
 	}
 
-	private function formLanguage(){
+	private function formLangLinks(){
 		we_loadLanguageConfig();
 
 		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
@@ -129,7 +123,7 @@ class we_docTypes extends we_class{
 				$langkeys[] = $langkey;
 			}
 			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
-					we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
+				we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		}
 		return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array(), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 	}
@@ -210,7 +204,7 @@ class we_docTypes extends we_class{
 		<td>' . $this->formIsSearchable() . '</td>
 	</tr>
 	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-	<tr><td colspan="3">' . $this->formLanguage(521) . '</td></tr>
+	<tr><td colspan="3">' . $this->formLangLinks(521) . '</td></tr>
 	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
 	<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
 </table>';
@@ -224,7 +218,8 @@ class we_docTypes extends we_class{
 	 */
 	private function formDocTypes2($arrHide = array()){
 		$vals = array();
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
+		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
+		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 
 		while($this->DB_WE->next_record()){
 			$v = $this->DB_WE->f('ID');
@@ -238,8 +233,13 @@ class we_docTypes extends we_class{
 	}
 
 	private function formDocTypes3($headline, $langkey, $derDT = 0){
-		$this->DB_WE->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . self::getDoctypeQuery($this->DB_WE));
-		$vals = array_merge(array(0 => g_l('weClass', '[nodoctype]')), $this->DB_WE->getAllFirst(false));
+		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
+		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE dt.Language="' . $langkey . '" AND ' . $dtq['where']);
+		$vals = array(0 => g_l('weClass', '[nodoctype]'));
+		foreach($this->DB_WE->getAllFirst(false) as $k => $v){
+			$vals[$k] = $v;
+		}
+
 		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, array(($langkey == $this->Language ? 'disabled' : null) => "disabled", 'width' => 328, 'onchange' => '')), $headline, "left", "defaultfont");
 	}
 
@@ -281,22 +281,22 @@ class we_docTypes extends we_class{
 			$tlist = array_merge($tlist, explode(',', $this->Templates));
 		}
 		$tlist = array_filter(array_unique($tlist));
-		$sqlTeil = 'WHERE IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), $sqlTeil, 1, $this->TemplateID, false, '', array(), 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
+		$sqlTail = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), '', $sqlTail, 1, $this->TemplateID, false, '', array(), 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
 	}
 
 	private function formIsDynamic(){
 		$n = 'we_' . $this->Name . '_IsDynamic';
 
 		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . $this->htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
-				we_html_element::jsElement('
+			we_html_element::jsElement('
 function switchExt(){
 	var a=document.we_form.elements;' .
-						($this->ID ?
-								'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') .
-						'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . DEFAULT_DYNAMIC_EXT . '";} else {var changeto="' . DEFAULT_STATIC_EXT . '";}
+				($this->ID ?
+					'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') .
+				'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . DEFAULT_DYNAMIC_EXT . '";} else {var changeto="' . DEFAULT_STATIC_EXT . '";}
 	a["we_' . $this->Name . '_Extension"].value=changeto;' .
-						($this->ID ? '}' : '') . '
+				($this->ID ? '}' : '') . '
 }');
 	}
 
@@ -329,27 +329,32 @@ function switchExt(){
 		$db = $db ? : new DB_WE();
 
 		$paths = array();
-		$ws = get_ws(FILE_TABLE);
-		if($ws){
-			$b = makeArrayFromCSV($ws);
-			if(!WE_DOCTYPE_WORKSPACE_BEHAVIOR){
-				foreach($b as $k => $v){
-					$db->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v));
-					while($db->next_record()){
-						$paths[] = '(ParentPath = "' . $db->escape($db->f('Path')) . '" || ParentPath LIKE "' . $db->escape($db->f('Path')) . '/%")';
-					}
-				}
-				return ($paths ? 'WHERE (' . implode(' OR ', $paths) . ' OR ParentPath="")' : '') . ' ORDER BY DocType';
-			}
-			foreach($b as $k => $v){
-				$_tmp_path = id_to_path($v);
-				while($_tmp_path && $_tmp_path != '/'){
-					$paths[] = '"' . $db->escape($_tmp_path) . '"';
-					$_tmp_path = dirname($_tmp_path);
-				}
-			}
+		$ws = get_ws(FILE_TABLE, false, true);
+		if(!$ws){
+			return array(
+				'join' => '',
+				'where' => '1 ORDER BY dt.DocType'
+			);
 		}
-		return ($paths ? 'WHERE ParentPath IN (' . implode(',', $paths) . ',"")' : '') . ' ORDER BY DocType';
+		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR){
+			return array(
+				'join' => 'LEFT JOIN ' . FILE_TABLE . ' f ON CONCAT(f.Path,"/") LIKE CONCAT(dtf.Path,"/%")',
+				'where' => 'ISNULL(dtf.ID) OR (f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1) ORDER BY dt.DocType'
+			);
+		}
+
+		$db->query('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ws) . ')');
+		while($db->next_record()){
+			$paths[] = 'dtf.Path LIKE "' . $db->escape($db->f('Path')) . '/%"';
+		}
+		return ($paths ?
+				array(
+				'join' => '',
+				'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY dt.DocType'
+				) : array(
+				'join' => '',
+				'where' => '1 ORDER BY dt.DocType'
+		));
 	}
 
 }

@@ -161,6 +161,7 @@ function we_tag_userInput($attribs, $content){
 	</tr>
 </table>';
 			}
+			
 			$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" />';
 
 			if(isset($_SESSION[$_imgDataId]['serverPath'])){
@@ -168,16 +169,18 @@ function we_tag_userInput($attribs, $content){
 
 				return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />' . $hidden;
 			}
-			if(isset($_SESSION[$_imgDataId]['id']) && $_SESSION[$_imgDataId]['id']){
-				if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']){
-					return $hidden;
-				}
-
+			
+			if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']){
+				return $hidden;
+			}
+			
+			if((isset($_SESSION[$_imgDataId]['id']) && $_SESSION[$_imgDataId]['id']) || (isset($orgVal) && $orgVal)){//Fix #9835
 				unset($attribs['width']);
 				unset($attribs['height']);
-				$attribs['id'] = $_SESSION[$_imgDataId]['id'];
+				$attribs['id'] = $_SESSION[$_imgDataId]['id'] ? $_SESSION[$_imgDataId]['id'] : $orgVal;
 				return $GLOBALS['we_doc']->getField($attribs, 'img') . $hidden;
 			}
+			
 			return '';
 
 		case 'flashmovie' :
@@ -754,7 +757,7 @@ function open_wysiwyg_win(){
 			));
 			return (!$isset ?
 							we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
-							we_getInputRadioField($fieldname, $content, $orgVal, $atts));
+							we_getInputRadioField($fieldname, $orgVal, $value, $atts));
 
 		case 'hidden':
 			return getHtmlTag('input', array(

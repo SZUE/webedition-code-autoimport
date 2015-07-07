@@ -96,9 +96,7 @@ function we_tag_saveRegisteredUser($attribs){
 		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($weUsername) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 			$userexists = $userexists ? : g_l('modules_customer', '[username_exists]');
 			echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf($userexists, $weUsername), we_message_reporting::WE_MESSAGE_FRONTEND));
-		} elseif(isset($_REQUEST['s'])){
-			// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
-
+		} elseif(isset($_REQUEST['s'])){// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 			$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
 			$ret = $hook->executeHook();
 
@@ -181,7 +179,7 @@ function we_saveCustomerImages(){
 
 						//image needs to be scaled
 						if((isset($_SESSION['webuser']['imgtmp'][$imgName]['width']) && $_SESSION['webuser']['imgtmp'][$imgName]['width']) ||
-								(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
+							(isset($_SESSION['webuser']['imgtmp'][$imgName]['height']) && $_SESSION['webuser']['imgtmp'][$imgName]['height'])){
 							$imageData = we_base_file::load($_serverPath);
 							$thumb = new we_thumbnail();
 							$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], $_SESSION['webuser']['imgtmp'][$imgName]['keepratio'], $_SESSION['webuser']['imgtmp'][$imgName]['maximize'], false, false, '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
@@ -273,15 +271,18 @@ function we_tag_saveRegisteredUser_processRequest(array $protected, array $allow
 			case 'Icon':
 			case 'ID':
 				break;
+			case 'Password':
+				if($val == we_customer_customer::NOPWD_CHANGE || strlen($val) == 0){
+					continue;
+				}
 			default:
 				if(($protected && in_array($name, $protected)) ||
-						($allowed && !in_array($name, $allowed)) ||
-						($name === 'Password' && $val == we_customer_customer::NOPWD_CHANGE)){
+					($allowed && !in_array($name, $allowed))){
 					continue;
 				}
 				$set[$name] = ($name === 'Password' ?
-								we_customer_customer::cryptPassword($val) :
-								we_base_util::rmPhp($val));
+						we_customer_customer::cryptPassword($val) :
+						we_base_util::rmPhp($val));
 				break;
 		}
 	}

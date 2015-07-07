@@ -127,7 +127,7 @@ class we_backup_backup extends we_backup_base{
 		return true;
 	}
 
-	function recoverTable($nodeset, &$xmlBrowser){
+	private static function recoverTable($nodeset, &$xmlBrowser){
 		$attributes = $xmlBrowser->getAttributes($nodeset);
 
 		$tablename = $attributes["name"];
@@ -161,7 +161,7 @@ class we_backup_backup extends we_backup_base{
 		$object->save();
 	}
 
-	function recoverTableItem($nodeset, &$xmlBrowser){
+	private static function recoverTableItem($nodeset, &$xmlBrowser){
 		$content = array();
 		$node_set2 = $xmlBrowser->getSet($nodeset);
 		$classname = "we_backup_tableItem";
@@ -186,7 +186,7 @@ class we_backup_backup extends we_backup_base{
 		$object->save(true);
 	}
 
-	function recoverBinary($nodeset, &$xmlBrowser){
+	private static function recoverBinary($nodeset, &$xmlBrowser){
 		$content = array();
 		$node_set2 = $xmlBrowser->getSet($nodeset);
 		$classname = we_exim_contentProvider::getContentTypeHandler("weBinary");
@@ -201,7 +201,7 @@ class we_backup_backup extends we_backup_base{
 
 		if($object->ID && $this->backup_binary){
 			$object->save(true);
-		} else if($this->handle_options["settings"] && $object->Path == WE_INCLUDES_DIR . "conf/we_conf_global.inc.php"){
+		} else if($this->handle_options["settings"] && $object->Path == WE_INCLUDES_DIR . 'conf/we_conf_global.inc.php'){
 			we_backup_backup::recoverPrefs($object);
 		} else if(!$object->ID && $this->backup_extern){
 			$object->save(true);
@@ -216,25 +216,25 @@ class we_backup_backup extends we_backup_base{
 		we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $file);
 	}
 
-	function recover($chunk_file){
+	private function recover($chunk_file){
 		if(!is_readable($chunk_file)){
 			return false;
 		}
 
 		$xmlBrowser = new we_xml_browser($chunk_file);
-		$xmlBrowser->mode = "backup";
+		$xmlBrowser->mode = 'backup';
 
 		foreach($xmlBrowser->nodes as $key => $val){
 			$name = $xmlBrowser->nodeName($key);
 			switch($name){
-				case "we:table":
-					we_backup_backup::recoverTable($key, $xmlBrowser);
+				case 'we:table':
+					self::recoverTable($key, $xmlBrowser);
 					break;
-				case "we:tableitem":
-					we_backup_backup::recoverTableItem($key, $xmlBrowser);
+				case 'we:tableitem':
+					self::recoverTableItem($key, $xmlBrowser);
 					break;
-				case "we:binary":
-					we_backup_backup::recoverBinary($key, $xmlBrowser);
+				case 'we:binary':
+					self::recoverBinary($key, $xmlBrowser);
 					break;
 			}
 		}
@@ -291,11 +291,8 @@ class we_backup_backup extends we_backup_base{
 		}
 
 		$tables = $this->arraydiff($tabtmp, $this->extables);
-		$num_tables = count($tables);
-		if($num_tables){
-			$i = 0;
-			while($i < $num_tables){
-				$table = $tables[$i];
+		if($tables){
+			foreach($tables as $table){
 				$noprefix = $this->getDefaultTableName($table);
 
 				if(!$this->isFixed($noprefix)){
@@ -334,13 +331,12 @@ class we_backup_backup extends we_backup_base{
 						}
 					} while(self::limitsReached($table, microtime(true) - $start));
 				}
-				$i++;
 				if($this->backup_step < $this->table_end && $this->backup_db->num_rows() != 0){
 					$this->partial = true;
 					break;
-				} else {
-					$this->partial = false;
 				}
+				$this->partial = false;
+
 				if(!$this->partial && !in_array($table, $this->extables)){
 					$this->extables[] = $table;
 				}
@@ -360,7 +356,7 @@ class we_backup_backup extends we_backup_base{
 	 *
 	 * Description: This function exports the fields from table
 	 */
-	function exportInfo($filename, $table, $fields){
+	static function exportInfo($filename, $table, $fields){
 		if(!is_array($fields)){
 			return false;
 		}
@@ -398,26 +394,11 @@ class we_backup_backup extends we_backup_base{
 	}
 
 	/**
-	 * Function: removeDumpFile
-	 *
-	 * Description: This function deletes a database dump.
-	 */
-	function removeDumpFile(){
-		if($this->export2send && !$this->export2server){
-			we_base_file::insertIntoCleanUp($this->dumpfilename, time());
-		} else if(is_file($this->dumpfilename)){
-			@unlink($this->dumpfilename);
-			$this->dumpfilename = "";
-			$this->tempfilename = "";
-		}
-	}
-
-	/**
 	 * Function: restoreFromBackup
 	 *
 	 * Description: This function restores a backup.
 	 */
-	function restoreChunk($filename){
+	public function restoreChunk($filename){
 		if(!is_readable($filename)){
 			$this->setError(sprintf(g_l('backup', '[can_not_open_file]'), $filename));
 			return false;
@@ -432,18 +413,9 @@ class we_backup_backup extends we_backup_base{
 		$this->mode = ($this->isOldVersion($file) ? "sql" : "xml");
 	}
 
-	function isOldVersion($file){
+	private function isOldVersion($file){
 		$part = we_base_file::loadPart($file, 0, 512);
 		return (stripos($part, "# webEdition version:") !== false && stripos($part, "DROP TABLE") !== false && stripos($part, "CREATE TABLE") !== false);
-	}
-
-	function isCompressed($file){
-		$part = we_base_file::loadPart($file, 0, 512);
-		return stripos($part, "<?xml version=") === false;
-	}
-
-	function getDownloadFile(){
-		return ($this->export2server ? $this->backup_dir . $this->filename : $this->dumpfilename);
 	}
 
 	/**
@@ -473,11 +445,7 @@ class we_backup_backup extends we_backup_base{
 			switch($entry){
 				case '.':
 				case '..':
-				case 'CVS':
 				case 'sql_dumps':
-				case '.project':
-				case '.trustudio.dbg.php':
-				case 'LanguageChanges.csv':
 					continue;
 				case 'webEdition':
 				case $thumbDir:
@@ -534,7 +502,7 @@ class we_backup_backup extends we_backup_base{
 	 * Description: This function backup external files.
 	 *
 	 */
-	function exportExtern(){
+	private function exportExtern(){
 		$this->current_description = g_l('backup', '[external_backup]');
 
 		if(isset($this->file_list[0])){

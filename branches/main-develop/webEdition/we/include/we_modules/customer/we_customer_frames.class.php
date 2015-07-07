@@ -433,6 +433,9 @@ top.content.hloaded = 1;');
 			if(($k = we_base_request::_(we_base_request::STRINGC, 'keyword')) && we_base_request::_(we_base_request::BOOL, 'search')){
 				$result = $this->View->getSearchResults($k, $max_res);
 			}
+			
+			$foundItems = count($result);
+			
 			foreach($result as $id => $text){
 				$select->addOption($id, $text);
 			}
@@ -440,7 +443,7 @@ top.content.hloaded = 1;');
 
 		$table = new we_html_table(array('border' => 0, 'cellpadding' => 2, 'cellspacing' => 0, 'width' => 550, 'height' => 50), 3, 1);
 		$table->setCol(0, 0, array(), $search->getHtml());
-		$table->setCol(1, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[search_result]'));
+		$table->setCol(1, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[num_data_sets]') . ($foundItems ? ' (' . $foundItems .')' : ''));
 		$table->setCol(2, 0, array(), $select->getHtml());
 
 		return $this->getHTMLDocument(

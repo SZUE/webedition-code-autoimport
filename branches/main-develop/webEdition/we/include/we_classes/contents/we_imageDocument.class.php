@@ -60,13 +60,13 @@ class we_imageDocument extends we_binaryDocument{
 	 * @return boolean
 	 * @param boolean $resave
 	 */
-	public function we_save($resave = 0){
+	public function we_save($resave = false, $skipHook = false){
 		// get original width and height of the image
 		$arr = $this->getOrigSize(true, true);
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
 		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
-		if(parent::we_save($resave)){
+		if(parent::we_save($resave, $skipHook)){
 			$thumbs = $this->getThumbs();
 			if($docChanged){
 				we_thumbnail::deleteByImageID($this->ID);
@@ -343,7 +343,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			switch($this->getElement('LinkType')){
 				case we_base_link::TYPE_INT:
-					$href = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), 'Path', $this->DB_WE);
+					$href = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID = ' . intval($this->getElement('LinkID')), '', $this->DB_WE);
 					break;
 				case we_base_link::TYPE_EXT:
 					$href = $this->getElement('LinkHref');
@@ -353,7 +353,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					if(isset($GLOBALS['WE_MAIN_DOC'])){
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
 					} else {
-						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), 'Workspaces', $this->DB_WE);
+						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), '', $this->DB_WE);
 						$foo = makeArrayFromCSV($pidCvs);
 						$pid = (empty($foo) ? 0 : $foo[0]);
 					}
@@ -403,11 +403,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 			$target = $this->getElement('LinkTarget');
 
-			srand((double) microtime() * 1000000);
-			$randval = rand();
 			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . $randval :
-				$img_path;
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . microtime() :
+				$img_path . '?m=' . $this->Published;
 
 			if($this->issetElement('sizingrel')){
 				$this->setElement('width', round($this->getElement('width') * $this->getElement('sizingrel')), 'attrib');

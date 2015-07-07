@@ -425,7 +425,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database_base $db = null){
 	$db = $db? : new DB_WE();
 	$arr[] = $id;
-	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder == 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
+	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder === 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
 	$all = $db->getAll(true);
 	foreach($all as $id){
 		pushChilds($arr, $id, $table, $isFolder, $db);
@@ -1241,6 +1241,43 @@ function getWECountries(){
 
 function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
+}
+
+function we_unserialize($string, $default = array(), $quiet = false){
+	if(!$string){
+		return $default;
+	}
+	if($string[0] === 'x'){
+		$string = gzuncompress($string);
+	}
+	if(preg_match('|^[asO]:\d+:|', $string)){
+		$ret = unserialize($string);
+		return ($ret === false ? $default : $ret);
+	}
+	if(preg_match('|^[{\[].*[}\]]$|', $string)){
+		return json_decode($string, true);
+	}
+	if(!$quiet){
+		t_e('unable to decode', $string);
+	}
+	return $default;
+}
+
+/**
+ * serializes an array
+ * @param array $array array to operate on
+ * @param string $target can be of two types "serialize" or "json" - NO default jet (!)
+ * @param bool $numeric forces data to be treated as numeric (not assotiative) array - no position data will be used
+ * @return string serialized data
+ */
+function we_serialize(array $array, $target, $numeric = false){
+	switch($target){
+		//remove defined after php 5.3 support ends
+		case 'json':
+			return ($array ? json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0)) : '');
+		case 'serialize':
+			return ($array ? serialize($numeric ? array_values($array) : $array) : '');
+	}
 }
 
 if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4

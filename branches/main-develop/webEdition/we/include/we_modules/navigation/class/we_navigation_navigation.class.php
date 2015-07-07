@@ -586,6 +586,8 @@ class we_navigation_navigation extends weModelBase{
 						'customers' => we_navigation_items::getCustomerData($_nav),
 						'currentonurlpar' => $_nav->CurrentOnUrlPar,
 						'currentonanker' => $_nav->CurrentOnAnker,
+						'currentoncat' => $_nav->SelectionType === self::STPYE_CATLINK ? 1 : 0,
+						'catparam' => $_nav->CatParameter,
 						'limitaccess' => $_nav->LimitAccess,
 						'depended' => $_nav->Depended
 					);
@@ -615,6 +617,8 @@ class we_navigation_navigation extends weModelBase{
 							'currentonanker' => $_nav->CurrentOnAnker,
 							'limitaccess' => $_nav->LimitAccess,
 							'depended' => 2,
+							'currentoncat' => 0,
+							'catparam' => '',
 						);
 
 						if($rules){
@@ -661,7 +665,7 @@ class we_navigation_navigation extends weModelBase{
 		return true;
 	}
 
-	private function reorder($pid){
+	public function reorder($pid){// FIXME: set private again in 6.5
 		$this->db->query('SET @count:=-1');
 		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=(@count:=@count+1) WHERE ParentID=' . intval($pid) . ' ORDER BY Ordn');
 	}

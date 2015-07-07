@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -25,7 +24,6 @@
 we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER);
 
 class we_schedpro{
-
 	const SCHEDULE_FROM = 1; //publish
 	const SCHEDULE_TO = 2; //park
 	const DELETE = 3;
@@ -190,8 +188,8 @@ function checkFooter(){
 		switch($this->task){
 			case self::DOCTYPE:
 				$db = new DB_WE();
-				$q = we_docTypes::getDoctypeQuery($db);
-				$db->query('SELECT ID,DocType FROM ' . DOC_TYPES_TABLE . ' ' . $q);
+				$dtq = we_docTypes::getDoctypeQuery($db);
+				$db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 				$doctypepop = '<select class="weSelect" name="we_schedule_doctype_' . $this->nr . '" size="1" onchange="_EditorFrame.setEditorIsHot(true)">';
 				while($db->next_record()){
 					$doctypepop .= '<option value="' . $db->f("ID") . '"' . (($this->DoctypeID == $db->f("ID")) ? ' selected="selected"' : '') . '>' . $db->f("DocType") . '</option>';
@@ -761,7 +759,7 @@ function checkFooter(){
 						'Wann' => $Wann,
 						'Was' => $s['task'],
 						'ClassName' => $object->ClassName,
-						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\''): ''),
+						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
 						'Schedpro' => serialize($s),
 						'Type' => $s['type'],
 						'Active' => $s['active']

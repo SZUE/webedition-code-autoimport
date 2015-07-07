@@ -824,7 +824,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 	function formDoctypes(){
 		$dt = '<select name="DoctypeIDs[]" size="10" multiple="multiple" style="width:495" onchange="top.content.setHot();">';
-		$this->db->query('SELECT DocType,ID FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
+		$this->db->query('SELECT dt.DocType,dt.ID FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 
 		$doctypesArr = makeArrayFromCSV($this->banner->DoctypeIDs);
 		while($this->db->next_record()){

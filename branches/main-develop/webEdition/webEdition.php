@@ -148,7 +148,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 		if (!win) {
 			win = this.window;
 		}
-		 // default is error, to avoid missing messages
+		// default is error, to avoid missing messages
 		prio = prio ? prio : <?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>;
 
 		// always show in console !
@@ -454,14 +454,14 @@ if(($_jsincludes = we_tool_lookup::getJsCmdInclude())){
 	}
 }
 $modSwitch = str_replace(
-		array_merge(explode("\n", we_html_element::jsElement()), array(
+	array_merge(explode("\n", we_html_element::jsElement()), array(
 	'switch (WE_REMOVE) {',
 	'switch(WE_REMOVE){',
 	'switch(WE_REMOVE) {',
 	'switch (WE_REMOVE){',
 	'}//WE_REMOVE'
-				)
-		), '', ob_get_clean()
+		)
+	), '', ob_get_clean()
 );
 
 echo $modSwitch; // deal with not activated modules
@@ -1157,10 +1157,10 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 				if (top.weEditorFrameController.getActiveDocumentReference()) {
 					top.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
 				}
-				var wyw = Math.max(arguments[2], arguments[9]);
-				wyw = wyw ? wyw : 800;
-				var wyh = parseInt(arguments[3]) + parseInt(arguments[10]);
-				wyh = wyh ? wyh : 600;
+				var wyw = arguments[2];
+				wyw = Math.max(wyw ? wyw : 800);
+				var wyh = arguments[3];
+				wyh = Math.max(wyh ? wyh : 600);
 
 				if (window.screen) {
 					var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;

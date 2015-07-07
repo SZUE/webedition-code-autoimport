@@ -75,11 +75,15 @@ top.close();
 
 			$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query));
 
-			$tmpClass = $args['class'];
-			foreach($args as &$val){
-				$val = '';
+			foreach($args as $k => &$val){
+				switch($k){
+					case 'class':
+					case 'title':
+						break;
+					default: 
+						$val = '';
+				}
 			}
-			$args['class'] = $tmpClass;
 		}
 
 		return we_dialog_base::getTinyMceJS() .

@@ -1867,7 +1867,7 @@ class Archive_Tar {
     // Drupal integration.
     // Changed the code to use drupal_mkdir() instead of mkdir().
     //if (!@drupal_mkdir($p_dir, 0777)) {
-	if (!@mkdir($p_dir, WE_NEW_FOLDER_MOD)) {
+	if (!@mkdir($p_dir, octdec(intval(WE_NEW_FOLDER_MOD)) )) {
       $this->_error("Unable to create directory '$p_dir'");
       return false;
     }

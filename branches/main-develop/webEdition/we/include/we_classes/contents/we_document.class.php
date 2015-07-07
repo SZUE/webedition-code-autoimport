@@ -113,7 +113,7 @@ class we_document extends we_root{
 		while(!$this->Language){
 			if($ParentID == 0 || $i > 20){
 				we_loadLanguageConfig();
-				$this->Language = self::getDefaultLanguage();
+				$this->Language = parent::getDefaultLanguage();
 				if(empty($this->Language)){
 					$this->Language = 'de_DE';
 				}
@@ -129,66 +129,9 @@ class we_document extends we_root{
 		}
 	}
 
-	function getDefaultLanguage(){
-// get interface language of user
-		list($_userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
-
-// trying to get locale string out of interface language
-		$_key = array_search($_userLanguage, getWELangs());
-
-		$_defLang = $GLOBALS['weDefaultFrontendLanguage'];
-
-// if default language is not equal with frontend language
-		if(substr($_defLang, 0, strlen($_key)) !== $_key){
-// get first language that fits
-			foreach(getWeFrontendLanguagesForBackend() as $_k => $_v){
-				$_parts = explode('_', $_k);
-				if($_parts[0] === $_key){
-					$_defLang = $_k;
-				}
-			}
-		}
-		return $_defLang;
-	}
-
 	/*
 	 * Form Functions
 	 */
-
-	function formLanguage($withHeadline = true){
-		we_loadLanguageConfig();
-		$_defLang = self::getDefaultLanguage();
-		$value = ($this->Language ? : $_defLang);
-		$inputName = 'we_' . $this->Name . '_Language';
-		$_languages = getWeFrontendLanguagesForBackend();
-		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
-
-		if(LANGLINK_SUPPORT){
-			$htmlzw = '';
-			foreach($_languages as $langkey => $lang){
-				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . " WHERE DocumentTable='tblFile' AND DID=" . $this->ID . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
-				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
-				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID) . '</div>';
-				$langkeys[] = $langkey;
-			}
-			return '
-<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	' . $_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-	<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
-</table>
-<br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
-		} else {
-			return '
-<table border="0" cellpadding="0" cellspacing="0">
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	' . $_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-</table>';
-		}
-	}
 
 	function formInGlossar(){
 		return (we_base_moduleInfo::we_getModuleNameByContentType('glossary') === 'glossary' ?
@@ -281,7 +224,7 @@ class we_document extends we_root{
 		} else {
 			$delallbut = '';
 		}
-		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), "module_navigation_edit_navi", "Icon,Path", NAVIGATION_TABLE);
+		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), 'module_navigation_edit_navi', 'Icon,Path', NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $_path){
@@ -329,43 +272,35 @@ class we_document extends we_root{
 	function addNavi($id, $text, $parentid, $ordn){
 		$text = urldecode($text); //Bug #3769
 		if($this->ID){
-
 			if(is_numeric($ordn)){
 				$ordn--;
 			}
-			$_ord = ($ordn === 'end' ? f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid)) : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
+			$_ord = ($ordn === 'end' ? -1 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
 			$_new_path = rtrim($_ppath, '/') . '/' . $text;
-
-			$rename = false;
-			if(empty($id)){
-				$id = path_to_id($_new_path, NAVIGATION_TABLE);
-				if($id){
-					$rename = true;
-				}
-			}
+			$id = $id? : path_to_id($_new_path, NAVIGATION_TABLE);
 
 			$_naviItem = new we_navigation_navigation($id);
 
-			$_naviItem->Ordn = $_ord;
+			$_naviItem->Ordn = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid));
 			$_naviItem->ParentID = $parentid;
 			$_naviItem->LinkID = $this->ID;
 			$_naviItem->Text = $text;
 			$_naviItem->Path = $_new_path;
-			if(NAVIGATION_ENTRIES_FROM_DOCUMENT == 0){
+			if(NAVIGATION_ENTRIES_FROM_DOCUMENT){
+				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
+				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
+			} else {
 				$_naviItem->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCTYPE;
 				$_naviItem->IsFolder = 1;
 				$charset = $_naviItem->findCharset($_naviItem->ParentID);
 				$_naviItem->Charset = ($charset ? : (DEFAULT_CHARSET ? : $GLOBALS['WE_BACKENDCHARSET']));
-			} else {
-				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
-				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
 			}
 
 			$_naviItem->save();
-			$_naviItem->reorder($parentid);
+			$_naviItem->reorderAbs($_ord);
 		}
 	}
 
@@ -374,7 +309,7 @@ class we_document extends we_root{
 		$navis = $this->getNavigationItems();
 		if(in_array($path, $navis)){
 			$pos = array_search($path, $navis);
-			if($pos !== false || $pos == '0'){
+			if($pos !== false || $pos == 0){
 				$_id = path_to_id($path, NAVIGATION_TABLE);
 				$_naviItem = new we_navigation_navigation($_id);
 				if(!$_naviItem->hasAnyChilds()){
@@ -383,11 +318,9 @@ class we_document extends we_root{
 				}
 			}
 		}
-//$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	function delAllNavi(){
-//		$navis = makeArrayFromCSV($this->NavigationItems);
 		$navis = $this->getNavigationItems();
 		foreach($navis as $_path){
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
@@ -400,8 +333,6 @@ class we_document extends we_root{
 				}
 			}
 		}
-
-//	$this->NavigationItems = makeCSVFromArray($navis, true);
 	}
 
 	/*
@@ -555,19 +486,24 @@ class we_document extends we_root{
 	}
 
 	function changeLink($name){//FIXME: can we store info in bdid? add info on type, if it is object or file?
+		if(!isset($_SESSION['weS']['WE_LINK'])){
+			return;
+		}
 		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']), 'link');
 		unset($_SESSION['weS']['WE_LINK']);
 	}
 
 	function changeLinklist($name){
+		if(!isset($_SESSION['weS']['WE_LINKLIST'])){
+			return;
+		}
 		$this->setElement($name, $_SESSION['weS']['WE_LINKLIST'], 'linklist');
 		unset($_SESSION['weS']['WE_LINKLIST']);
 	}
 
 	function getNamesFromContent($content){
-		$result = array();
+		$arr = $result = array();
 		preg_match_all('/< ?we:[^>]+name="([^"]+)"[^>]*>/i', $content, $result, PREG_SET_ORDER);
-		$arr = array();
 		foreach($result as $val){
 			$arr[] = $val[1];
 		}
@@ -636,15 +572,14 @@ class we_document extends we_root{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$this->errMsg = '';
 		$this->i_setText();
 
 		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -659,7 +594,7 @@ class we_document extends we_root{
 		}
 		$this->OldPath = $this->Path;
 
-		if($resave == 0){ // NO rebuild!!!
+		if(!$resave){ // NO rebuild!!!
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
@@ -671,9 +606,8 @@ class we_document extends we_root{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -759,7 +693,7 @@ class we_document extends we_root{
 		if($this->isMoved()){
 			we_base_file::deleteLocalFile($this->getSitePath(true));
 		}
-		return we_base_file::save($this->getSitePath(), $doc);
+		return we_base_file::checkAndMakeFolder(dirname($this->getSitePath()),true) && we_base_file::save($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
@@ -1157,7 +1091,7 @@ class we_document extends we_root{
 		switch($link['type']){
 			case we_base_link::TYPE_INT:
 				$id = $link['id'];
-				if(empty($id)){
+				if(!$id){
 					return '';
 				}
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db);
@@ -1594,8 +1528,7 @@ class we_document extends we_root{
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\d+),(\d+)"/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$imgID = $reg[1];
-				$thumbID = $reg[2];
+				list(, $imgID, $thumbID) = $reg;
 				$thumbObj = new we_thumbnail();
 				if($thumbObj->initByImageIDAndThumbID($imgID, $thumbID)){
 					$text = str_replace('src="' . we_base_link::TYPE_THUMB_PREFIX . $imgID . ',' . $thumbID . '"', 'src="' . $thumbObj->getOutputPath(false, true) . '"', $text);

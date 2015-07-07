@@ -120,7 +120,7 @@ abstract class we_export_functions{
 
 				// Get a matching doctype or classname
 				if(($doctype != null) && ($doctype != "") && ($doctype != 0)){
-					$_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($doctype), "DocType", new DB_WE());
+					$_doctype = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($doctype), '', new DB_WE());
 				} else if(($tableid != null) && ($tableid != "") && ($tableid != 0)){
 					$tableid = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableid), "Text", new DB_WE());
 				}

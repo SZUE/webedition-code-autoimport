@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_base_file{
-
 	const SZ_HUMAN = 0;
 	const SZ_BYTE = 1;
 	const SZ_KB = 2;
@@ -58,7 +57,7 @@ abstract class we_base_file{
 					break;
 				}
 				$buffer .= $data;
-			}while(true);
+			} while(true);
 			$close($fp);
 			return $buffer;
 		}
@@ -288,16 +287,16 @@ abstract class we_base_file{
 	static function mkpath($path){
 		$path = str_replace('\\', '/', $path);
 		return (self::hasURL($path) ?
-						false :
-						($path ? self::createLocalFolderByPath($path) : false));
+				false :
+				($path ? self::createLocalFolderByPath($path) : false));
 	}
 
 	public static function insertIntoCleanUp($path, $date){
 		$DB_WE = new DB_WE();
 		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'Path' => $DB_WE->escape($path),
-					'Date' => date('Y-m-d H:i:s', intval($date))
-				)) . ' ON DUPLICATE KEY UPDATE Date=VALUES(Date)');
+				'Path' => $DB_WE->escape($path),
+				'Date' => date('Y-m-d H:i:s', intval($date))
+			)) . ' ON DUPLICATE KEY UPDATE Date=VALUES(Date)');
 	}
 
 	public static function deleteLocalFile($filename){
@@ -318,12 +317,15 @@ abstract class we_base_file{
 		}
 
 		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
+		$umask = umask(0);
 
 // check for directories: create it if we could no write into it:
 		if(!mkdir($path, $mod, $recursive)){
 			t_e('warning', "Could not create local Folder at 'we_util_File/checkAndMakeFolder()': '" . $path . "'");
+			umask($umask);
 			return false;
 		}
+		umask($umask);
 		return true;
 	}
 
@@ -333,7 +335,7 @@ abstract class we_base_file{
 
 	public static function createLocalFolderByPath($completeDirPath){
 		$returnValue = true;
-
+		
 		if(self::checkAndMakeFolder($completeDirPath, true)){
 			return $returnValue;
 		}
@@ -346,15 +348,16 @@ abstract class we_base_file{
 			$cf[] = $parent;
 			$parent = str_replace('\\', '/', dirname($parent));
 		}
+		$mod = octdec(intval(WE_NEW_FOLDER_MOD));
+		$umask = umask(0);
 
-		for($i = (count($cf) - 1); $i >= 0; $i--){
-			$mod = octdec(intval(WE_NEW_FOLDER_MOD));
-
-			if(!@mkdir($cf[$i], $mod)){
-				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $cf[$i] . "'");
+		foreach(array_reverse($cf) as $dir){
+			if(!mkdir($dir, $mod, true)){
+				t_e('Warning', "Could not create local Folder at File.php/createLocalFolderByPath(): '" . $dir . "'");
 				$returnValue = false;
 			}
 		}
+		umask($umask);
 
 		return $returnValue;
 	}
@@ -455,7 +458,7 @@ abstract class we_base_file{
 					if($_data_size != $_written){
 						return false;
 					}
-				}while(true);
+				} while(true);
 				$close($gzfp);
 			} else {
 				fclose($fp);
@@ -486,7 +489,7 @@ abstract class we_base_file{
 						break;
 					}
 					fwrite($fp, $data);
-				}while(true);
+				} while(true);
 				fclose($fp);
 			} else {
 				gzclose($gzfp);

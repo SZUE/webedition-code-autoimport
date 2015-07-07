@@ -139,12 +139,12 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	public function makeSameNew(){
-		$TemplateID = $this->TemplateID;
-		$TemplatePath = $this->TemplatePath;
+/*		$TemplateID = $this->TemplateID;
+		$TemplatePath = $this->TemplatePath;*/
 		$IsDynamic = $this->IsDynamic;
 		parent::makeSameNew();
-		$this->TemplateID = $TemplateID;
-		$this->TemplatePath = $TemplatePath;
+		/*$this->TemplateID = $TemplateID;
+		$this->TemplatePath = $TemplatePath;*/
 		$this->IsDynamic = $IsDynamic;
 	}
 
@@ -351,7 +351,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
 		}
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), 'WHERE IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), '', 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
 	}
 
 	/**
@@ -396,7 +396,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>' .
 			$this->getCharsetSelect() .
-			$this->formLanguage(true) .
+			$this->formLangLinks(true) .
 			'</table>';
 	}
 
@@ -626,7 +626,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		// First off correct corupted fields
 		$this->correctFields();
 //FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
@@ -636,14 +636,15 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		// Last step is to save the webEdition document
 		$out = parent::we_save($resave, $skipHook);
-		if(LANGLINK_SUPPORT && ($docID = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
-			$this->setLanguageLink($docID, 'tblFile', false, false); // response deactivated
+
+		if(LANGLINK_SUPPORT){
+			$this->setLanguageLink($this->LangLinks, 'tblFile', false, false); // response deactivated
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
 
-		if($resave == 0){
+		if(!$resave){
 			$hy = unserialize(we_base_preferences::getUserPref('History'));
 			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
 			we_base_preferences::setUserPref('History', serialize($hy));
@@ -656,7 +657,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return parent::i_writeDocument();
 	}
 
-	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_category = $this->Category;
 		return parent::we_publish($DoNotMark, $saveinMainDB, $skipHook);

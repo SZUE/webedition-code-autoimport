@@ -87,7 +87,7 @@ $GLOBALS['configs'] = array(
 		'FILE_UPLOAD_MAX_UPLOAD_SIZE' => array('Set the maximum size a file can have', we_base_request::INT, 128),
 		'FILE_UPLOAD_USE_LEGACY' => array('If the old uploader without d&d should be used (deprecated)', we_base_request::BOOL, false),
 		'WE_NEW_FOLDER_MOD' => array('File permissions when creating a new directory', we_base_request::INT, 755), //this should be string but deny access by user doesn't make sense
-		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace false=normal behaviour , true=new behaviour', we_base_request::BOOL, false),
+		'WE_DOCTYPE_WORKSPACE_BEHAVIOR' => array('Which Doctypes should be shown for which workspace', we_base_request::BOOL, false),
 		'SCHEDULER_TRIGGER' => array('decide how the scheduler works', we_base_request::INT, 1), //postdoc
 		'SYSTEM_WE_SESSION' => array('use webedition session handling', we_base_request::BOOL, false),
 		'SYSTEM_WE_SESSION_TIME' => array('time after which the session is killed if not active anymore', we_base_request::INT, get_cfg_var('session.gc_maxlifetime')? : 1440),
@@ -259,7 +259,7 @@ $GLOBALS['configs'] = array(
 		'DB_USER' => array('Username to access the database', '', 'root', true),
 		'DB_PASSWORD' => array('Password to access the database', '', 'root', true),
 		'TBL_PREFIX' => array('Prefix of tables in database for this webEdition.', '', ''),
-		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, ''),
+		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, (defined('DB_CHARSET')?DB_CHARSET:'')),
 		'DB_COLLATION' => array('Collation of tables in database for this webEdition.', '', ''),
 		'WE_LANGUAGE' => array('Original language of this version of webEdition, used for login-screen', '', 'English'),
 		'WE_BACKENDCHARSET' => array('Original backend charset of this version of webEdition, used for login-screen', '', 'UTF-8'),

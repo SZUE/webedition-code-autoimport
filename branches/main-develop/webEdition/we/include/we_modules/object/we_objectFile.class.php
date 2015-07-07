@@ -93,60 +93,60 @@ class we_objectFile extends we_document{
 		if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
 			$GLOBALS['we_object'] = array();
 		}
-		$GLOBALS['we_object'][$formname] = new we_objectFile();
+		$GLOBALS['we_object'][$formname] = $wof = new we_objectFile();
 		if((!$session) || (!isset($_SESSION['weS']['we_object_session_' . $formname])) || $wewrite){
 			if($session){
 				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
-			$GLOBALS['we_object'][$formname]->we_new();
+			$wof->we_new();
 			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
-				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
-				if(!$GLOBALS['we_object'][$formname]->TableID){
+				$wof->initByID($id, OBJECT_FILES_TABLE);
+				if(!$wof->TableID){
 					return false;
 				}
 			} else {
-				$GLOBALS['we_object'][$formname]->TableID = $classID;
-				$GLOBALS['we_object'][$formname]->setRootDirID(true);
-				$GLOBALS['we_object'][$formname]->resetParentID();
-				$GLOBALS['we_object'][$formname]->restoreDefaults();
+				$wof->TableID = $classID;
+				$wof->setRootDirID(true);
+				$wof->resetParentID();
+				$wof->restoreDefaults();
 				if(strlen($categories)){
 					$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-					$GLOBALS['we_object'][$formname]->Category = $categories;
+					$wof->Category = $categories;
 				}
 				if($parentid){
 					// check if parentid is in correct folder ...
 					$parentfolder = new we_class_folder();
 					$parentfolder->initByID($parentid, OBJECT_FILES_TABLE);
 
-					if(($GLOBALS['we_object'][$formname]->ParentPath == $parentfolder->Path) || strpos($parentfolder->Path . '/', $GLOBALS['we_object'][$formname]->ParentPath) === 0){
-						$GLOBALS['we_object'][$formname]->ParentID = $parentfolder->ID;
-						$GLOBALS['we_object'][$formname]->Path = $parentfolder->Path . '/' . $GLOBALS['we_object'][$formname]->Filename;
+					if(($wof->ParentPath == $parentfolder->Path) || strpos($parentfolder->Path . '/', $wof->ParentPath) === 0){
+						$wof->ParentID = $parentfolder->ID;
+						$wof->Path = $parentfolder->Path . '/' . $wof->Filename;
 					}
 				}
 			}
 
 			if($session){
-				$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
+				$wof->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 			}
 		} else {
 			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
-				$GLOBALS['we_object'][$formname]->initByID($id, OBJECT_FILES_TABLE);
+				$wof->initByID($id, OBJECT_FILES_TABLE);
 			} elseif($session){
-				$GLOBALS['we_object'][$formname]->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
+				$wof->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}
-			if($classID && ($GLOBALS['we_object'][$formname]->TableID != $classID)){
-				$GLOBALS['we_object'][$formname]->TableID = $classID;
+			if($classID && ($wof->TableID != $classID)){
+				$wof->TableID = $classID;
 			}
 			if(strlen($categories)){
 				$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-				$GLOBALS['we_object'][$formname]->Category = $categories;
+				$wof->Category = $categories;
 			}
 		}
 
-		$GLOBALS['we_object'][$formname]->DefArray = $GLOBALS['we_object'][$formname]->DefArray ? : $GLOBALS['we_object'][$formname]->getDefaultValueArray(); //bug #7426
+		$wof->DefArray = $wof->DefArray ? : $wof->getDefaultValueArray(); //bug #7426
 
 		if(($ret = we_base_request::_(we_base_request::URL, 'we_returnpage'))){
-			$GLOBALS['we_object'][$formname]->setElement('we_returnpage', $ret);
+			$wof->setElement('we_returnpage', $ret);
 		}
 
 		if(isset($_REQUEST['we_ui_' . $formname]) && is_array($_REQUEST['we_ui_' . $formname])){
@@ -154,24 +154,24 @@ class we_objectFile extends we_document{
 
 			foreach($_REQUEST['we_ui_' . $formname] as $n => $v){
 				$v = we_base_util::rmPhp($v);
-				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $n);
-				$GLOBALS['we_object'][$formname]->setElement($n, $v);
+				$wof->i_convertElemFromRequest('', $v, $n);
+				$wof->setElement($n, $v);
 			}
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_categories'])){
 			$cats = makeIDsFromPathCVS(we_base_request::_(we_base_request::WEFILELISTA, 'we_ui_' . $formname . '_categories'), CATEGORY_TABLE);
-			$GLOBALS['we_object'][$formname]->Category = $cats;
+			$wof->Category = $cats;
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
 			$_REQUEST['we_ui_' . $formname . '_Category'] = (is_array($_REQUEST['we_ui_' . $formname . '_Category']) ?
 					makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true) :
 					makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true));
 		}
-		foreach($GLOBALS['we_object'][$formname]->persistent_slots as $slotname){
+		foreach($wof->persistent_slots as $slotname){
 			if($slotname != 'categories' && ($tmp = we_base_request::_(we_base_request::RAW, 'we_ui_' . $formname . '_' . $slotname)) !== false){
 				$v = we_base_util::rmPhp($tmp);
-				$GLOBALS['we_object'][$formname]->i_convertElemFromRequest('', $v, $slotname);
-				$GLOBALS['we_object'][$formname]->{$slotname} = $v;
+				$wof->i_convertElemFromRequest('', $v, $slotname);
+				$wof->{$slotname} = $v;
 			}
 		}
 
@@ -181,9 +181,9 @@ class we_objectFile extends we_document{
 		we_otherDocument::checkAndPrepare($formname, 'we_object');
 
 		if($session){
-			$GLOBALS['we_object'][$formname]->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
+			$wof->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 		}
-		return $GLOBALS['we_object'][$formname];
+		return $wof;
 	}
 
 	function makeSameNew(){
@@ -263,36 +263,6 @@ class we_objectFile extends we_document{
 		return $this->htmlHidden($idname, $this->CopyID) . $but;
 	}
 
-	function formLanguage(){
-		we_loadLanguageConfig();
-		$value = (isset($this->Language) ? $this->Language : $GLOBALS['weDefaultFrontendLanguage']);
-		$inputName = 'we_' . $this->Name . '_Language';
-		$_languages = getWeFrontendLanguagesForBackend();
-		$this->setRootDirID(true);
-		$langkeys = array();
-
-		if(LANGLINK_SUPPORT){
-			$htmlzw = we_html_element::htmlBr();
-			foreach($_languages as $langkey => $lang){
-				$LDID = intval(f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($this->ID) . ' AND Locale="' . $langkey . '"', '', $this->DB_WE));
-				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
-				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formLanguageDocument($lang, $langkey, $LDID, $this->Table, $this->rootDirID) . '</div>';
-				$langkeys[] = $langkey;
-			}
-		} else {
-			$htmlzw = '';
-		}
-
-		return '<table border="0" cellpadding="0" cellspacing="0">
-				<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-				<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>' .
-			(LANGLINK_SUPPORT ?
-				'<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
-					<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>' :
-				'') .
-			'</table>' . $htmlzw;
-	}
-
 	function copyDoc($id){
 		if(!$id){
 			return;
@@ -366,7 +336,7 @@ class we_objectFile extends we_document{
 	}
 
 	function setRootDirID($doit = false){
-		if($this->InWebEdition || $doit){
+		if($this->TableID && ($this->InWebEdition || $doit)){
 			$hash = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON o.ID=of.TableID WHERE o.Path=of.Path AND of.IsClassFolder=1 AND o.ID=' . intval($this->TableID), $this->DB_WE);
 			$this->RootDirPath = $hash['Path'];
 			$this->rootDirID = $hash['ID'];
@@ -651,7 +621,7 @@ class we_objectFile extends we_document{
 	public function formClass(){
 		return ($this->ID ?
 				'<span class="defaultfont">' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) . '</span>' :
-				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', 'WHERE IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
+				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', '', 'IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
 	}
 
 	public function formClassId(){
@@ -1430,7 +1400,7 @@ class we_objectFile extends we_document{
 
 		$autobr = $this->getElement($name, "autobr") ? : (isset($attribs["autobr"]) ? $attribs["autobr"] : "");
 		$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
-		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", (isset($attribs["classes"]) && $attribs["classes"]) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
+		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", ((isset($attribs["classes"]) && $attribs["classes"]) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 		return ($variant ? '' :
 				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["text_" . $name]["required"] ? "*" : "") . "</span>" . ( isset($this->DefArray["text_" . $name]['editdescription']) && $this->DefArray["text_" . $name]['editdescription'] ? self::formatDescription($this->DefArray["text_" . $name]['editdescription']) : we_html_element::htmlBr())
@@ -1554,8 +1524,7 @@ class we_objectFile extends we_document{
 			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
 			return $foo ? unserialize($foo) : array();
 		}
-		t_e('error no tableID!', $this);
-		t_e('error', 'error no tableID!');
+		return array();
 	}
 
 	public function canMakeNew(){
@@ -2175,7 +2144,7 @@ class we_objectFile extends we_document{
 
 	function we_ImportSave(){
 		$this->Icon = 'objectFile.gif';
-		if(!parent::we_save(1)){
+		if(!parent::we_save(true)){
 			return false;
 		}
 		$this->wasUpdate = true;
@@ -2221,7 +2190,7 @@ class we_objectFile extends we_document{
 		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/' || strpos($this->Path, $this->RootDirPath) !== 0;
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		if(intval($this->TableID) == 0 || $this->IsFolder){
 			return false;
 		}
@@ -2255,9 +2224,8 @@ class we_objectFile extends we_document{
 
 		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2265,7 +2233,7 @@ class we_objectFile extends we_document{
 
 		if((!$this->ID || $resave)){
 			$_resaveWeDocumentCustomerFilter = false;
-			if((!parent::we_save($resave, 1)) || ($resave) || (!$this->we_republish())){
+			if((!parent::we_save($resave, true)) || ($resave) || (!$this->we_republish())){
 				return false;
 			}
 		}
@@ -2279,7 +2247,7 @@ class we_objectFile extends we_document{
 		}
 
 		if(!$this->Published){
-			if(!we_root::we_save(1)){
+			if(!we_root::we_save(true)){
 				return false;
 			}
 			if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
@@ -2292,18 +2260,18 @@ class we_objectFile extends we_document{
 			$version = new we_versions_version();
 			$version->save($this);
 		}
-		if(LANGLINK_SUPPORT && ($docid = we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_LanguageDocID'))){
-			$this->setLanguageLink($docid, 'tblObjectFile', false, true);
+		if(LANGLINK_SUPPORT){
+			$this->setLanguageLink($this->LangLinks, 'tblObjectFile', false, true);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
 			$this->checkRemoteLanguage($this->Table, false);
 		}
+
 // hook
 		if(!$skipHook){
 			$hook = new weHook('save', '', array($this, 'resave' => $resave));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2428,19 +2396,16 @@ class we_objectFile extends we_document{
 		return '';
 	}
 
-	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = 0){
+	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		if(!$skipHook){
 			$hook = new weHook('prePublish', '', array($this));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
 		}
 		$old = $this->Published;
-		$oldUrl = f('SELECT Url FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
-		$wasPublished = $this->Published > 0;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
 		if($saveinMainDB && !we_root::we_save()){
@@ -2454,9 +2419,8 @@ class we_objectFile extends we_document{
 		//hook
 		if(!$skipHook){
 			$hook = new weHook('publish', '', array($this, 'prePublishTime' => $old));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2485,9 +2449,8 @@ class we_objectFile extends we_document{
 		/* hook */
 		if(!$skipHook){
 			$hook = new weHook('unpublish', '', array($this));
-			$ret = $hook->executeHook();
 //check if doc should be saved
-			if($ret === false){
+			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
 				return false;
 			}
@@ -2680,6 +2643,10 @@ class we_objectFile extends we_document{
 				}
 			}
 		}
+	}
+
+	protected function i_getLangLinks(){
+		parent::i_getLangLinks(false, true);
 	}
 
 	protected function i_setText(){
@@ -3190,7 +3157,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function getDocumentCss(){
-		return array();
+		return id_to_path($this->CSS, FILE_TABLE, null, false, true);
 	}
 
 }

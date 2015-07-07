@@ -23,21 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_navigation($attribs){
-	$parentid = weTag_getAttribute("parentid", $attribs, -1, we_base_request::INT);
-	$id = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
-	$name = weTag_getAttribute("navigationname", $attribs, "default", we_base_request::STRING);
+	$parentid = weTag_getAttribute('parentid', $attribs, -1, we_base_request::INT);
+	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
+	$name = weTag_getAttribute('navigationname', $attribs, 'default', we_base_request::STRING);
 
 	$GLOBALS['we_navigation'][$name] = new we_navigation_items();
-	if(isset($GLOBALS['initNavigationFromSession']) && $GLOBALS['initNavigationFromSession']){
-		$showRoot = ($parentid == -1);
-		$GLOBALS['we_navigation'][$name]->initByNavigationObject($showRoot);
-	} else {
-		$realId = ($id ? : ($parentid != -1 ? $parentid : 0));
-		$showRoot = ($id ? true : ($parentid == -1));
-		if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, $showRoot)){
-			//make sure we use cache next time!
-			$GLOBALS['we_navigation'][$name]->initById($realId, false, $showRoot);
-			we_navigation_cache::saveCacheNavigation($realId, $GLOBALS['we_navigation'][$name]);
-		}
+	$realId = ($id ? : ($parentid != -1 ? $parentid : 0));
+	$showRoot = ($id ? true : ($parentid == -1));
+	if(!$GLOBALS['we_navigation'][$name]->initFromCache($realId, $showRoot)){
+		//make sure we use cache next time!
+		$GLOBALS['we_navigation'][$name]->initById($realId, $showRoot);
+		we_navigation_cache::saveCacheNavigation($realId, $GLOBALS['we_navigation'][$name]);
 	}
 }

@@ -240,7 +240,10 @@ $_info = array(
 		'max_input_vars' => version_compare(PHP_VERSION, '5.3.0', '>=') ? (ini_get('max_input_vars') < 2000 ? getWarning('<2000', ini_get('max_input_vars')) : getOK('>=2000', ini_get_message('max_input_vars'))) : '-',
 		'session.auto_start' => (ini_get_bool('session.auto_start')) ? getWarning(g_l('sysinfo', '[session.auto_start warning]'), ini_get('session.auto_start')) : getOK('', ini_get_message('session.auto_start')),
 		'Suhosin' => $SuhosinText,
-		'display_errors' => (ini_get_bool('display_errors')) ? getWarning(g_l('sysinfo', '[display_errors warning]'), 'on') : getOK('', ini_get_message('off')),
+		'display_errors' => (ini_get_bool('display_errors') ? getWarning(g_l('sysinfo', '[display_errors warning]'), 'on') : getOK('', ini_get_message('off'))),
+		'finfo' => (!class_exists('finfo')? getWarning(g_l('sysinfo', '[class_missing]'), '') : getOK('', '')),
+
+		g_l('sysinfo', '[umlautdomains]') => (!function_exists('idn_to_ascii') ? getWarning(g_l('sysinfo', '[umlautdomains_warning]'), '') : getOK('', '')),
 	),
 	'MySql' => array(
 		g_l('sysinfo', '[mysql_version]') => (version_compare("5.0.0", we_database_base::getMysqlVer(false)) > 1) ? getWarning(sprintf(g_l('sysinfo', '[dbversion warning]'), we_database_base::getMysqlVer(false)), we_database_base::getMysqlVer(false)) : getOK('', we_database_base::getMysqlVer(false)),

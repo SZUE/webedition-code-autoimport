@@ -461,7 +461,7 @@ abstract class we_SEEM{
 			return $destCode;
 		}
 		//	This is Code, to have the same effect like pressing a vertical tab
-		for($i = 0; $i < count($linkArray[0]); $i++){
+		foreach($linkArray[0] as $i => $curLink){
 
 			if($linkArray[6][$i] != -1){ //  The target of the Link is a webEdition - Document.
 				$javascriptCode = ' onclick="' . self::getClassVars('vtabSrcObjs');
@@ -479,28 +479,30 @@ abstract class we_SEEM{
 				//  Target document is on another Web-Server - leave webEdition !!!!!
 			} elseif(strpos($linkArray[5][$i], 'http://') === 0 || strpos($linkArray[5][$i], 'https://') === 0){
 				$javascriptCode = " onclick=\"if(confirm('" . g_l('SEEM', '[ext_document_on_other_server_selected]') . "')){ window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');top.info(' '); } else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\"";
-			} else { //  Target is on the same Web-Server - open doc with webEdition.
-				if(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){ //  it is a command link - use open_document_with_parameters
-					//  Work with the parameters
-					if($linkArray[3][$i] != ''){
-						$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
-						$theParameters = self::arrayToParameters($theParameterArray, "", array('we_cmd'));
-					} else {
-						$theParameters = '';
-					}
 
-					$javascriptCode = (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
-							" onclick=\"" . self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
-							" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_doc_with_parameter]') . "');\"");
+				//  Target is on the same Web-Server - open doc with webEdition.
+			} elseif(strpos($linkArray[5][$i], WEBEDITION_DIR . 'we_cmd.php') === 0){ //  it is a command link - use open_document_with_parameters
+				//  Work with the parameters
+				if($linkArray[3][$i]){
+					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
+					$theParameters = self::arrayToParameters($theParameterArray, '', array('we_cmd'));
 				} else {
-					//	This is a javascript:history link, to get back to the last document.
-					$javascriptCode = (strpos($linkArray[2][$i], 'javascript') === 0 && strpos($linkArray[2][$i], 'history') ?
-							' onclick="' . we_message_reporting::getShowMessageCall(g_l('SEEM', '[link_does_not_work]'), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onmouseover=\"top.info('" . g_l('SEEM', '[info_link_does_not_work]') . "')\"" :
-							//  Check, if the current document was changed
-							" onclick=\"if(confirm('" . g_l('SEEM', '[ext_doc_selected]') . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\"");
+					$theParameters = '';
 				}
+
+				$javascriptCode = (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
+						" onclick=\"" . self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
+						" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_doc_with_parameter]') . "');\""
+					);
+			} else {
+				//	This is a javascript:history link, to get back to the last document.
+				$javascriptCode = (strpos($linkArray[2][$i], 'javascript') === 0 && strpos($linkArray[2][$i], 'history') ?
+						' onclick="' . we_message_reporting::getShowMessageCall(g_l('SEEM', '[link_does_not_work]'), we_message_reporting::WE_MESSAGE_FRONTEND) . "\" onmouseover=\"top.info('" . g_l('SEEM', '[info_link_does_not_work]') . "')\"" :
+						//  Check, if the current document was changed
+						" onclick=\"if(confirm('" . g_l('SEEM', '[ext_doc_selected]') . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\""
+					);
 			}
-			$destCode = str_replace($linkArray[0][$i], '<a href="javascript://" ' . $javascriptCode . ' onmouseout="top.info(\' \')">', $destCode);
+			$destCode = str_replace($curLink, '<' . $linkArray[1][$i] . 'javascript://' . $linkArray[4][$i] . ' ' . $javascriptCode . ' onmouseout="top.info(\' \')">', $destCode);
 		}
 		return $destCode;
 	}
@@ -514,13 +516,10 @@ abstract class we_SEEM{
 	 * @return   allLinks    array containing all <a href ...>-Tags, the targets and parameters
 	 */
 	static function getAllHrefs($code){
-
 		$trenner = '[ |\n|\t|\r]*';
 		$allLinks = array();
 		//  <a href="(Ziele)(?Parameter)" ...> Ziele und Parameter eines Links ermitteln.
-		$pattern = '/<(a' . $trenner . '[^>]+href' . $trenner . "[\=\"|\=\'|\=|\=\\\\]*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . $trenner . '[^>]*)>/sie';
-
-		preg_match_all($pattern, $code, $allLinks);
+		preg_match_all('/<(a' . $trenner . '[^>]+href' . $trenner . "[\=\"|\=\'|\=|\=\\\\]*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . '[^>]*)>/sie', $code, $allLinks);
 		return $allLinks;
 	}
 

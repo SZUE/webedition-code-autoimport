@@ -22,6 +22,8 @@ function we_parse_tag_ifNotField($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifField', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
+include_once('we_tag_ifField.inc.php');
+
 function we_tag_ifNotField($attribs, $content){
-	return !we_tag('ifField', $attribs, $content);
+	return we_tag_ifField($attribs, $content);
 }

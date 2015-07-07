@@ -138,7 +138,7 @@ margin:0px;
 	<input type="hidden" name="id" value="#\'+top.currentDir+#\'" />
 
 #if(makeNewFolder){
-	<div class="imgDiv" id="line_#\'+entries[i].ID+#\'"><img class="icon" src="' . ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON . '"/><br/>
+	<div class="imgDiv" id="line_0"><img class="icon" src="' . ICON_DIR . 'doclist/' . we_base_ContentTypes::FOLDER_ICON . '"/><br/>
 		<input type="hidden" name="we_FolderText" value="' . g_l('fileselector', "[new_folder_name]") . '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' . g_l('fileselector', "[new_folder_name]") . '" class="wetextinput" style="width:100%" />
 	</div>
 #}

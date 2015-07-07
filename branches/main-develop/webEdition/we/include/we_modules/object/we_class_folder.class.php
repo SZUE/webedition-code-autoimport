@@ -55,7 +55,7 @@ class we_class_folder extends we_folder{
 
 	public function we_rewrite(){
 		$this->ClassName = __CLASS__;
-		return $this->we_save(0, 1);
+		return $this->we_save(false, true);
 	}
 
 	function we_initSessDat($sessDat){
@@ -84,7 +84,7 @@ class we_class_folder extends we_folder{
 		$this->setClassProp();
 	}
 
-	public function we_save($resave = 0, $skipHook = 0){
+	public function we_save($resave = false, $skipHook = false){
 		$sp = explode('/', $this->Path);
 		if(isset($sp[2]) && $sp[2] != ''){
 			$this->IsClassFolder = 0;
@@ -210,17 +210,9 @@ class we_class_folder extends we_folder{
 
 	function searchProperties(){
 		$this->searchclass->Order = we_base_request::_(we_base_request::STRING, 'Order', (isset($this->Order) ? $this->Order : 'ModDate DESC'));
-
 		$this->Order = we_base_request::_(we_base_request::STRING, 'Order');
-
-		if(($start = we_base_request::_(we_base_request::INT, 'SearchStart'))){
-			$this->searchclass->searchstart = $start;
-		}
-
-		if(($anz = we_base_request::_(we_base_request::INT, 'Anzahl'))){
-			$this->searchclass->anzahl = $anz;
-		}
-
+		$this->searchclass->searchstart = we_base_request::_(we_base_request::INT, 'SearchStart', $this->searchclass->searchstart);
+		$this->searchclass->anzahl = we_base_request::_(we_base_request::INT, 'Anzahl', $this->searchclass->anzahl);
 		$we_obectPathLength = 32;
 
 		$we_wsLength = $we_extraWsLength = 26;
@@ -238,7 +230,7 @@ class we_class_folder extends we_folder{
 
 		$where = (isset($this->searchclass->searchname) ?
 				'1 ' . $this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
-				"1" . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
+				'1' . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' JOIN ' . OBJECT_FILES_TABLE . ' ON ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID = ' . OBJECT_FILES_TABLE . '.ID');
 		$this->searchclass->setwhere($where . ' AND ' . OBJECT_X_TABLE . $this->TableID . ".OF_PATH LIKE '" . $this->Path . "/%' " . ' AND ' . OBJECT_X_TABLE . $this->TableID . '.OF_ID!=0');
@@ -987,9 +979,9 @@ for ( frameId in _usedEditors ) {
 				$obj->ExtraWorkspaces = "";
 				$obj->ExtraWorkspacesSelected = "";
 				$oldModDate = $obj->ModDate;
-				$obj->we_save(0, 1);
+				$obj->we_save(false, true);
 				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(0, 1, 1);
+					$obj->we_publish(false, true, true);
 				}
 			}
 		}
@@ -1010,9 +1002,9 @@ for ( frameId in _usedEditors ) {
 				$obj->getContentDataFromTemporaryDocs($ofid);
 				$obj->Charset = $Charset;
 				$oldModDate = $obj->ModDate;
-				$obj->we_save(0, 1);
+				$obj->we_save(false, true);
 				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(0, 1, 1);
+					$obj->we_publish(false, true, true);
 				}
 			}
 		}
@@ -1031,9 +1023,9 @@ for ( frameId in _usedEditors ) {
 				$obj->getContentDataFromTemporaryDocs($ofid);
 				$obj->TriggerID = $DefaultTriggerID;
 				$oldModDate = $obj->ModDate;
-				$obj->we_save(0, 1);
+				$obj->we_save(false, true);
 				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(0, 1, 1);
+					$obj->we_publish(false, true, true);
 				}
 			}
 		}
@@ -1052,9 +1044,9 @@ for ( frameId in _usedEditors ) {
 				$obj->getContentDataFromTemporaryDocs($ofid);
 				$obj->IsSearchable = ($searchable != true ? 0 : 1);
 				$oldModDate = $obj->ModDate;
-				$obj->we_save(0, 1);
+				$obj->we_save(false, true);
 				if($obj->Published != 0 && $obj->Published == $oldModDate){
-					$obj->we_publish(0, 1, 1);
+					$obj->we_publish(false, true, true);
 				}
 			}
 		}
@@ -1068,38 +1060,27 @@ for ( frameId in _usedEditors ) {
 		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
 
 		foreach(array_keys($weg) as $ofid){//FIXME: this is not save
-			if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
-				if($publish != true){
+			if(!permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
+				continue;
+			}
+			$obj = new we_objectFile();
+			$obj->initByID($ofid, OBJECT_FILES_TABLE);
 
-					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
+			if($publish){
+				$obj->getContentDataFromTemporaryDocs($ofid);
+				$update = $obj->we_publish();
+			} else {
+				$update = $obj->we_unpublish();
+			}
 
-					if($obj->we_unpublish()){
-						$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
-							//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-							$obj->getUpdateTreeScript(false) . "
-if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
-	 top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
-}
-weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
-					}
-				} else {
-
-					$obj = new we_objectFile();
-					$obj->initByID($ofid, OBJECT_FILES_TABLE);
-
-					$obj->getContentDataFromTemporaryDocs($ofid);
-
-					if($obj->we_publish()){
-						$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
-							//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
-							$obj->getUpdateTreeScript(false) . "
+			if($update){
+				$javascript .= "_EditorFrame = top.weEditorFrameController.getActiveEditorFrame();" .
+					//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
+					$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	top.rframe.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
 weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
-					}
-				}
 			}
 		}
 

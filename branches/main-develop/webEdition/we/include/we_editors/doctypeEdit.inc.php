@@ -27,6 +27,7 @@ $we_doc = new we_docTypes();
 
 // Initialize variables
 $we_show_response = 0;
+$we_JavaScript = "";
 
 switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case "save_docType":
@@ -39,17 +40,14 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		if(preg_match('|[\'",]|', $we_doc->DocType)){
 			$we_responseText = g_l('alert', '[doctype_hochkomma]');
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-			$we_JavaScript = "";
 			$we_show_response = 1;
 		} else if(!$we_doc->DocType){
 			$we_responseText = g_l('alert', '[doctype_empty]');
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-			$we_JavaScript = "";
 			$we_show_response = 1;
-		} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '" LIMIT 1')) && ($we_doc->ID != $id)){
+		} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '" LIMIT 1')) && ($we_doc->ID != $id)){
 			$we_responseText = sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType);
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-			$we_JavaScript = "";
 			$we_show_response = 1;
 		} else {
 			$we_JavaScript = 'opener.top.makefocus = self;' .
@@ -76,7 +74,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			break;
 		}
 		$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
+		$name = f('SELECT DocType FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . $id);
 		$del = false;
 		if($name){
 			if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' LIMIT 1')){
@@ -95,7 +93,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 				$del = true;
 			}
 			if($del){
-				if(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType LIMIT 1'))){
+				if(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType LIMIT 1'))){
 					$we_doc->initByID($id, DOC_TYPES_TABLE);
 				}
 			} else {
@@ -142,9 +140,11 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		}
 		break;
 	default:
-		$id = (($tmp = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) ?
-				$tmp :
-				f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' ' . we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']) . ' LIMIT 1'));
+		$id = (we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : 0);
+		if(!$id){
+			$dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
+			$id = f('SELECT dt.ID FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'] . ' LIMIT 1');
+		}
 
 		if($id){
 			$we_doc->initByID($id, DOC_TYPES_TABLE);
@@ -245,7 +245,7 @@ function we_cmd() {
 			break;
 		case "newDocType":
 <?php
-$GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' ORDER BY DocType');
+$GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(dt.DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 $dtNames = implode(',', $GLOBALS['DB_WE']->getAll(true));
 echo 'var docTypeNames = new Array(' . $dtNames . ');';
 ?>

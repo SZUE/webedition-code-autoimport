@@ -84,7 +84,7 @@ class we_navigation_items{
 
 		$this->readItemsFromDb($this->rootItem);
 
-		$this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $navigation->LinkID, ($navigation->IsFolder ? ($navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), $showRoot ? we_base_ContentTypes::FOLDER : 'root', $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
+		$this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $navigation->LinkID, ($navigation->IsFolder ? ($navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), ($showRoot ? we_base_ContentTypes::FOLDER : 'root'), $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
 
 		$items = $navigation->getDynamicPreview($this->Storage);
 
@@ -181,9 +181,8 @@ class we_navigation_items{
 		}
 
 		if(is_object($this->items['id' . $parentid])){
-			$this->items['id' . $parentid]->type = $showRoot ? ($parentid == 0 ? 'root' : $this->items['id' . $parentid]->type) : 'root';
+			$this->items['id' . $parentid]->type = !$showRoot || $parentid == 0 ? 'root' : we_base_ContentTypes::FOLDER;
 		}
-
 		$navigationRulesStorage = we_navigation_cache::getCachedRule();
 		if($navigationRulesStorage !== false){
 			$this->currentRules = unserialize($navigationRulesStorage);
@@ -200,7 +199,7 @@ class we_navigation_items{
 		return true;
 	}
 
-	function initById($parentid = 0, $depth = false, $showRoot = true){
+	function initById($parentid = 0, $showRoot = true){
 		$this->items = array();
 		$this->rootItem = intval($parentid);
 
@@ -218,7 +217,7 @@ class we_navigation_items{
 		$this->setDefaultTemplates();
 
 		$this->items['id' . $_navigation->ID] = new we_navigation_item(
-			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), $showRoot ? ($_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')) : 'root', $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, self::getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+			$_navigation->ID, $_navigation->LinkID, ($_navigation->IsFolder ? ($_navigation->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_navigation->SelectionType == we_navigation_navigation::STPYE_CLASS || $_navigation->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE)), $_navigation->Text, $_navigation->Display, $_navigation->getHref($this->Storage['ids']), (!$showRoot || $_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), $this->id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, self::getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
 
 		$items = $_navigation->getDynamicPreview($this->Storage, true);
 
@@ -228,7 +227,7 @@ class we_navigation_items{
 				if(isset($_item['name']) && $_item['name']){
 					$_item['text'] = $_item['name'];
 				}
-				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
+				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '', $_item['currentoncat'], $_item['catparam']);
 
 				if(isset($this->items['id' . $_item['parentid']])){
 					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
@@ -283,24 +282,25 @@ class we_navigation_items{
 		$_curr_len = 0;
 		$_ponder = 0;
 
-		$_isObject = (isset($GLOBALS['we_obj']) && ($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
+		$_isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
 
 		foreach($this->currentRules as $_rule){
 			$_ponder = 4;
 			$parentPath = '';
-			switch($_rule->SelectionType){
+			switch($_rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
 				case we_navigation_navigation::STPYE_DOCTYPE:
-					if($_rule->DoctypeID){
-						if(isset($GLOBALS['WE_MAIN_DOC']->DocType) && ($_rule->DoctypeID == $GLOBALS['WE_MAIN_DOC']->DocType)){
-							$_ponder--;
-						} else {
-							$_ponder = 999; // remove from selection
+					if($_isObject){
+						$_ponder = 999; // remove from selection
+					} else {
+						if($_rule->DoctypeID){
+							if(isset($GLOBALS['WE_MAIN_DOC']->DocType) && ($_rule->DoctypeID == $GLOBALS['WE_MAIN_DOC']->DocType)){
+								$_ponder--;
+							} else {
+								$_ponder = 999;
+							}
 						}
-					}
 
-					if(!$_isObject){
 						$parentPath = $this->id2path($_rule->FolderID);
-
 						if($parentPath && $parentPath != '/'){
 							$parentPath .= '/';
 						}
@@ -308,51 +308,58 @@ class we_navigation_items{
 					break;
 
 				case we_navigation_navigation::STPYE_CLASS:
-					if($_rule->ClassID){
-						if(($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile) && !$GLOBALS["WE_MAIN_DOC"]->IsFolder && ($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID)){
-							$_ponder--;
-						} else {
-							$_ponder = 999; // remove from selection
+					if(!$_isObject){
+						$_ponder = 999; // remove from selection
+					} else {
+						if($_rule->ClassID){
+							if($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID){
+								$_ponder--;
+							} else {
+								$_ponder = 999; // remove from selection
+							}
 						}
-					}
 
-					if($_isObject){
 						$parentPath = rtrim($this->id2path($_rule->WorkspaceID), '/') . '/';
 					}
 					break;
 			}
 
-
-			if(!empty($parentPath) && strpos($GLOBALS['WE_MAIN_DOC']->Path, $parentPath) === 0){
-				$_ponder--;
-				$_curr_len = strlen($parentPath);
-				if($_curr_len > $_len){
-					$_len = $_curr_len;
+			if($_ponder !== 999){
+				if(!empty($parentPath) && strpos($GLOBALS['WE_MAIN_DOC']->Path, $parentPath) === 0){
 					$_ponder--;
+					$_curr_len = strlen($parentPath);
+					if($_curr_len > $_len){
+						$_len = $_curr_len;
+						$_ponder--;
+					}
 				}
-			}
 
-			if(($cats = makeArrayFromCSV($_rule->Categories))){
-				if($this->checkCategories($cats, $GLOBALS['WE_MAIN_DOC']->Category)){
-					$_ponder--;
-				} else {
-					$_ponder = 999; // remove from selection
+				if(($cats = makeArrayFromCSV($_rule->Categories))){
+					if($this->checkCategories($cats, $GLOBALS['WE_MAIN_DOC']->Category)){
+						$_ponder--;
+					} else {
+						$_ponder = 999; // remove from selection
+					}
 				}
-			}
 
-			if($_ponder == 0){
-				$this->setCurrent($_rule->NavigationID);
-				return true;
-			}
-			if($_ponder <= $_score){
-				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
-					$this->setCurrent($_rule->NavigationID);
-				} else {
-					$_score = $_ponder;
-					$_candidate = $_rule->NavigationID;
+				/* go on seraching for more matches or one with higher prio (= higher ID) anyway!
+				  if($_ponder === 0){
+				  $this->setCurrent($_rule->NavigationID);
+				  return true;
+				  }
+				 * */
+
+				if($_ponder <= $_score){
+					if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
+						$this->setCurrent($_rule->NavigationID);
+					} else {
+						$_score = $_ponder;
+						$_candidate = $_rule->NavigationID;
+					}
 				}
 			}
 		}
+
 		if($_candidate != 0){
 			$this->setCurrent($_candidate);
 			return true;

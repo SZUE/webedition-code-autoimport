@@ -1,3 +1,14 @@
+###UPDATEDROPCOL(JavaScript,###TBLPREFIX###tblDocTypes)###
+/* query separator */
+###UPDATEDROPCOL(Notify,###TBLPREFIX###tblDocTypes)###
+/* query separator */
+###UPDATEDROPCOL(NotifyTemplateID,###TBLPREFIX###tblDocTypes)###
+/* query separator */
+###UPDATEDROPCOL(NotifySubject,###TBLPREFIX###tblDocTypes)###
+/* query separator */
+###UPDATEDROPCOL(NotifyOnChange,###TBLPREFIX###tblDocTypes)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblDocTypes (
   ID smallint(6) unsigned NOT NULL auto_increment,
   DocType varchar(64) NOT NULL default '',
@@ -9,14 +20,9 @@ CREATE TABLE ###TBLPREFIX###tblDocTypes (
   IsDynamic tinyint(1) unsigned NOT NULL default '0',
   IsSearchable tinyint(1) unsigned NOT NULL default '0',
   ContentTable varchar(32) NOT NULL default '',
-  JavaScript text NOT NULL,
-  Notify text NOT NULL,
-  NotifyTemplateID int(11) unsigned NOT NULL default '0',
-  NotifySubject varchar(64) NOT NULL default '',
-  NotifyOnChange tinyint(1) unsigned NOT NULL default '0',
   LockID int(11) unsigned NOT NULL default '0',
   Templates varchar(255) NOT NULL default '',
   Category varchar(255) default NULL,
   Language varchar(5) default NULL,
   PRIMARY KEY  (ID)
-) ENGINE=MyISAM; 
+) ENGINE=MyISAM;

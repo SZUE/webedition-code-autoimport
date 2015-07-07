@@ -118,7 +118,7 @@ function we_tag_img($attribs){
 		$out = getHtmlTag('img', $tagAttribs);
 		$tagAttribs['alt'] = $tagAttribs['title'] = '';
 	} else {
-		$out = ''; //no_image war noch in der Vorscha sichtbar
+		$out = ''; //no_image war noch in der Vorschau sichtbar
 	}
 
 	if(!$id && (!$GLOBALS['we_editmode'])){
@@ -174,11 +174,13 @@ function we_tag_img($attribs){
 		$out .= '
 	<tr><td class="weEditmodeStyle" colspan="2" align="center">';
 
-		$_editButton = (empty($id) ? // disable edit_image_button
-				we_html_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true) :
-				//	show edit_image_button
+		$_editButton = ($id ?
+				////	show edit_image_button
 				//	we use hardcoded Content-Type - because it must be an image -> <we:img  >
-				we_html_button::create_button("image:btn_edit_image", "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )"));
+				we_html_button::create_button("image:btn_edit_image", "javascript:top.doClickDirect($id,'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )") :
+// disable edit_image_button
+				we_html_button::create_button("image:btn_edit_image", "#", false, 100, 20, "", "", true)
+			);
 
 		$wecmdenc1 = we_base_request::encCmd("document.forms['we_form'].elements['" . $fname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
