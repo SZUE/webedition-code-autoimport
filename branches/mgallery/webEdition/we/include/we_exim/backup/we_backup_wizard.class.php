@@ -319,8 +319,8 @@ function doClick(opt) {
 	function getHTMLFrameset(){
 		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_' . ($this->mode == self::BACKUP ? 'backup' : 'recover') . '_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'weMainBody')
 					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-						, we_html_element::htmlIFrame('body', $this->frameset . "?pnt=body", 'position:absolute;top:0px;bottom:60px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
-						we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:60px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
+						, we_html_element::htmlIFrame('body', $this->frameset . "?pnt=body", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', 'border:0px;width:100%;height:100%;') .
+						we_html_element::htmlIFrame('busy', $this->frameset, 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 						we_html_element::htmlIFrame('cmd', $this->frameset . "?pnt=cmd")
 				))
 		);
@@ -1081,23 +1081,20 @@ function startStep(){
 	}
 
 	function getHTMLBusy(){
-
 		$head = STYLESHEET;
 		$body = '';
 
-		$table = new we_html_table(array('class' => 'default', "align" => "right"), 2, 4);
-		$table->setCol(0, 0, null, we_html_tools::getPixel(15, 5));
+		$table = new we_html_table(array('class' => 'default', "align" => "right"), 1, 3);
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
 			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', '[working]'));
-
 			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0));
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
 			$head.=$progress->getJSCode('top.busy');
-			$body.=$progress->getHtml();
-			$table->setCol(0, 1, null, $body);
-			$table->setCol(1, 1, null, we_html_tools::getPixel(250, 1));
+			$pg = $progress->getHtml('','margin-left:15px');
+		} else {
+			$pg = '';
 		}
 
 
@@ -1119,12 +1116,10 @@ function doExport() {
 		top.body.we_submitForm("cmd","' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php");
 	}
 }');
-						$table->setCol(0, 2, null, we_html_tools::getPixel(355, 5));
-						$table->setCol(0, 3, null, we_html_button::position_yes_no_cancel(we_html_button::create_button("make_backup", "javascript:doExport();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")));
+						$table->setCol(0, 1, null, we_html_button::position_yes_no_cancel(we_html_button::create_button("make_backup", "javascript:doExport();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")));
 						break;
 					case 2:
-						$table->setCol(0, 2, null, we_html_tools::getPixel(265, 5));
-						$table->setCol(0, 3, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
+						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 						break;
 					case 3:
 						if(we_base_request::_(we_base_request::BOOL, "do_import_after_backup")){
@@ -1136,8 +1131,7 @@ function doExport() {
 							$head.=we_html_element::jsElement("top.opener.top.afterBackup=true;");
 							$body = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();");
 						}
-						$table->setCol(0, 2, null, we_html_tools::getPixel(495, 5));
-						$table->setCol(0, 3, null, $body);
+						$table->setCol(0, 1, null, $body);
 						break;
 					default:
 				}
@@ -1171,8 +1165,7 @@ function press_yes() {
 						$buttons = we_html_button::position_yes_no_cancel(
 								we_html_button::create_button(we_html_button::YES, "javascript:press_yes();"), we_html_button::create_button(we_html_button::NO, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 						);
-						$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
-						$table->setCol(0, 3, null, $buttons);
+						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 2:
 
@@ -1182,8 +1175,7 @@ function press_yes() {
 
 						$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 
-						$table->setCol(0, 2, null, we_html_tools::getPixel(290, 5));
-						$table->setCol(0, 3, null, $buttons);
+						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 3:
 						//FIXME: delete condition when new uploader is stable
@@ -1221,23 +1213,20 @@ function press_yes() {
 								$nextbut));
 						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $cancelCall));
 
-						$table->setCol(0, 2, null, we_html_tools::getPixel(240, 5));
-						$table->setCol(0, 3, null, $buttons);
+						$table->setCol(0, 1, null, $buttons);
 						break;
 					case 4:
-						$table->setCol(0, 2, null, we_html_tools::getPixel(260, 5));
-						$table->setCol(0, 3, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
+						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 						break;
 					case 5:
-						$table->setCol(0, 2, null, we_html_tools::getPixel(490, 5));
-						$table->setCol(0, 3, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();"));
+						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();"));
 						break;
 					default:
 				}
 				break;
 		}
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), $table->getHtml())
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), $pg . $table->getHtml())
 		);
 	}
 

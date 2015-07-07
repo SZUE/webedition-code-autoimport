@@ -125,7 +125,7 @@ function setProgress' . $this->name . '(progress){
 		$this->texts = array();
 	}
 
-	public function getHTML(){
+	public function getHTML($class = '', $style = ''){
 		$left = $right = $top = $bottom = '';
 
 		if($this->showProgressText){
@@ -135,18 +135,16 @@ function setProgress' . $this->name . '(progress){
 		foreach($this->texts as $text){
 			switch($text["place"]){
 				case 0:
-					$top.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>' .
-						'<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
+					$top.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';margin-right:5px;' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
 					break;
 				case 1:
-					$right.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
+					$right.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';margin-left:5px;' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
 					break;
 				case 2:
-					$bottom.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>' .
-						'<td>' . we_html_tools::getPixel(5, $text["height"]) . '</td>';
+					$bottom.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';margin-right:5px;' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
 					break;
 				case 3:
-					$left.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
+					$left.='<td ' . ($text["name"] ? 'id="' . $text["name"] . $this->name . '" ' : "") . 'class="' . $text["class"] . '" style="color:' . $text["color"] . ';margin-right:5px;' . ($text["bold"] ? "font-weight:bold" : "" ) . '">' . $text["text"] . '</td>';
 					break;
 			}
 		}
@@ -155,16 +153,11 @@ function setProgress' . $this->name . '(progress){
 		$progress_len = ($this->stud_len / 100) * $this->progress;
 		$rest_len = $this->stud_len - $progress_len;
 
-		return ($top ?
-				'<table class="default"><tr>' . $top . '</tr></table>' :
-				'') .
-			'<table class="default">
-			<tr>' . ($left ? $left . '<td>' . we_html_tools::getPixel(5, 1) . '</td>' : '') .
+		return '<table class="default ' . $class . '" style="display:inline-table;font-size: 1px;line-height: 0;' . $style . '">' . ($top ?
+				'<tr>' . $top . '</tr>' : '') .
+			'<tr>' . $left .
 			'<td><div id="progress_image' . $this->name . '" class="progress_image" style="width:' . $progress_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div><div id="progress_image_bg' . $this->name . '" class="progress_image_bg" style="width:' . $rest_len . 'px;height:' . ($this->stud_width - 2) . 'px;"></div></td>' .
-			($right ?
-				'<td>' . we_html_tools::getPixel(5, 1) . "</td>" . $right :
-				''
-			) .
+			$right .
 			'</tr></table>' .
 			($bottom ?
 				'<table class="default"><tr>' . $bottom . '</tr></table>' :
