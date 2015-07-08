@@ -24,15 +24,8 @@
 
 .weBtn{
 	height:22px ! important;
-}
-
-.weBtn{
 	width:auto;
 	background-color:darkgrey ! important;
-	color:black;
-}
-
-.weBtn{
 	cursor:pointer;
 	border-width: 0px;
 	border-collapse: collapse;
@@ -56,6 +49,7 @@ button.weBtn{
 	padding-left: 0.5em !important;
 	padding-right: 0.5em !important;
 	box-shadow: 2px 2px 2px #555555;
+	margin-left:0.5em;
 	margin-right:0.5em;
 	margin-bottom: 1ex;
 	min-width: 2.5em;

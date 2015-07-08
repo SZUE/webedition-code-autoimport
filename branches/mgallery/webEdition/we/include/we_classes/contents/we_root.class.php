@@ -318,7 +318,7 @@ abstract class we_root extends we_class{
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','user'," . $cmd1 . ",'" . $wecmdenc5 . "')");
 
-		return we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, we_html_tools::getPixel(20, 4), $button);
+		return we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, $button);
 	}
 
 	function formRestrictOwners($canChange){
@@ -458,14 +458,9 @@ abstract class we_root extends we_class{
 		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
 <table class="default">
 	<tr>
-		<td>' . $filenameinput . '</td>
+		<td style="padding-bottom:4px;">' . $filenameinput . '</td>
 		<td></td>
 		<td>' . $this->formExtension2() . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(20, 4) . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td>' . we_html_tools::getPixel(100, 2) . '</td>
 	</tr>
 	<tr><td colspan="3">' . $this->formDirChooser(388, 0, '', 'ParentPath', 'ParentID', '', true, $disablePath) . '</td></tr>
 </table>';
@@ -498,7 +493,7 @@ abstract class we_root extends we_class{
 		}
 
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		return we_root::htmlFormElementTable(we_root::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_html_element::htmlHidden($idname, $userid), we_html_tools::getPixel(20, 4), we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form.elements['" . $idname . "'].value','" . $wecmdenc2 . "','user')"));
+		return we_html_tools::htmlFormElementTable(self::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_html_element::htmlHidden($idname, $userid), we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form.elements['" . $idname . "'].value','" . $wecmdenc2 . "','user')"));
 	}
 
 	//FIXME: this should be a general selector

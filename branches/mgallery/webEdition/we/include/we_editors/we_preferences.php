@@ -1449,7 +1449,7 @@ for(i=0;i<elements.length; ++i){
 
 				$_editlist_table->setCol(0, 0, null, $_hidden_fields . $_select_box->getHtml());
 				$_editlist_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-				$_editlist_table->setCol(0, 2, array("valign" => "top"), we_html_button::create_button(we_html_button::ADD, "javascript:add_recipient();") . we_html_tools::getPixel(1, 10) . we_html_button::create_button(we_html_button::EDIT, "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . we_html_tools::getPixel(1, 10) . we_html_button::create_button(we_html_button::DELETE, "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
+				$_editlist_table->setCol(0, 2, array("valign" => "top"), we_html_button::create_button(we_html_button::ADD, "javascript:add_recipient();") . we_html_button::create_button(we_html_button::EDIT, "javascript:edit_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false) . we_html_tools::getPixel(1, 10) . we_html_button::create_button(we_html_button::DELETE, "javascript:delete_recipient();", true, 100, 22, "", "", !$_enabled_buttons, false));
 
 				// Build dialog if user has permission
 				$_settings[] = array("headline" => "", "html" => $_editlist_table->getHtml(), "space" => 0);

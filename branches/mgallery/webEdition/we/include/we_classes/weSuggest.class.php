@@ -270,15 +270,15 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 				"valign" => "top",
 				"style" => "height  : 10px"), $this->label, 'left', 'defaultfont', (
 				$this->selectButton ?
-					array("text" => '<div style="margin-right : ' . $this->selectButtonSpace . 'px"">' . $this->selectButton . '</div>', "valign" => "top") :
+					array("text" => '<div style="margin-right: ' . $this->selectButtonSpace . 'px">' . $this->selectButton . '</div>', "valign" => "top") :
 					''
 				), (
 				$this->additionalButton ?
-					array("text" => '<div style="margin-right : ' . $this->additionalButtonSpace . 'px">' . $this->additionalButton . '</div>', "valign" => "top") :
+					array("text" => '<div style="margin-right: ' . $this->additionalButtonSpace . 'px">' . $this->additionalButton . '</div>', "valign" => "top") :
 					''
 				), (
 				$this->trashButton ?
-					array("text" => '<div style="margin-right : ' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
+					array("text" => '<div style="margin-right: ' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
 					''
 				), (
 				$this->openButton ?

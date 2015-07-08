@@ -128,7 +128,7 @@ abstract class we_customer_add{
 
 			$sort_table->addRow();
 			$row_num++;
-			$sort_table->setCol($row_num, 4, array(), we_html_tools::getPixel(2, 5) . we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort_field',document.we_form.sort_" . $counter . ".value)", true, 30));
+			$sort_table->setCol($row_num, 4, array(), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort_field',document.we_form.sort_" . $counter . ".value)", true, 30));
 
 
 			$fhidden.=we_html_element::htmlHidden("fcounter_" . $counter, "$fcounter");
