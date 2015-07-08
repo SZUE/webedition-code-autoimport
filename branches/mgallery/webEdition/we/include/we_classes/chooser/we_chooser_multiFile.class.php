@@ -98,9 +98,8 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 		$table2->setCol(0, 0, array(), we_html_element::htmlDiv(array("style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"), $table->getHtml()));
 
 		if($this->addbut){
-			$table2->addRow(2);
-			$table2->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
-			$table2->setCol(2, 0, array("align" => "right"), $this->addbut);
+			$table2->addRow(1);
+			$table2->setCol(1, 0, array("align" => "right", 'style'=>"padding-top:2px;"), $this->addbut);
 		}
 
 		return $table2->getHtml() . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');

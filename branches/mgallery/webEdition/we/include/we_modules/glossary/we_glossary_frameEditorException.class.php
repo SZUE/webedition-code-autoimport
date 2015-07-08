@@ -61,8 +61,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		$language = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
 		$content = '<table class="default">
-					<tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_exception]'), we_html_tools::TYPE_INFO, 520, true, 0) . '</td></tr>
-					<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+					<tr><td style="padding-bottom:4px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[hint_exception]'), we_html_tools::TYPE_INFO, 520, true, 0) . '</td></tr>
 					<tr><td>' . we_html_element::htmlTextarea(array('name' => 'Exception', 'cols' => 60, 'rows' => 20, 'style' => 'width:520px;'), implode("", we_glossary_glossary::getException($language))) . '</td></tr>
 				</table>';
 

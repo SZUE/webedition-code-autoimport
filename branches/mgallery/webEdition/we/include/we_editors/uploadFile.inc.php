@@ -126,9 +126,8 @@ if($weFileupload->processFileRequest()){
 	}
 
 	$content = '<table class="default">
-					<tr><td>' . $weFileupload->getHtmlAlertBoxes() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
-					<tr><td>' . $weFileupload->getHtml() . '</td></tr>
-					<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>';
+					<tr><td style="padding-bottom:10px;">' . $weFileupload->getHtmlAlertBoxes() . '</td></tr>
+					<tr><td style="padding-bottom:10px;">' . $weFileupload->getHtml() . '</td></tr>';
 	if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 		$content .= '<tr><td>' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) . '</td></tr>';
 	}

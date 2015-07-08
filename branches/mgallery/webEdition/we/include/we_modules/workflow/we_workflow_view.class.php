@@ -1250,7 +1250,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				'<tr><td class="defaultfont">' . g_l('modules_workflow', '[log_question_text]') . '</td></tr>' .
 				'<tr><td>' . we_html_tools::getPixel(10, 10) . '</td></tr>' .
 				'<tr><td>' . $this->getTypeTableHTML(we_html_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td></tr>' .
-				'<tr><td>' . we_html_tools::getPixel(22, 10) . '<br/>' . we_html_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td></tr>' .
+				'<tr><td style="padding-top:1em;">' . we_html_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td></tr>' .
 				'</table>'
 				, g_l('modules_workflow', '[empty_log]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, 'javascript:self.clear();'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();')
 				)

@@ -90,12 +90,10 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
-</table>
-<table class="default"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
-<tbody id="filterTable">
-<tr>
-	<td>' . we_class::hiddenTrans() . '</td>
-</tr>';
+</table>' .
+			we_class::hiddenTrans() .
+			'<table class="default"  id="advSearch2" border="0" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
+<tbody id="filterTable">';
 
 		$r = $r2 = $r3 = array();
 		if(isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search)){
@@ -174,20 +172,17 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			}
 
 			$out .= '
-        <tr id="filterRow_' . $i . '">
-          <td>' . we_html_tools::hidden("hidden_searchFields[" . $i . "]", isset($GLOBALS['we_doc']->searchclassFolder->searchFields[$i]) ? $GLOBALS['we_doc']->searchclassFolder->searchFields[$i] : "" ) . we_html_tools::htmlSelect("searchFields[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFields($i, "doclist"), 1, (isset($GLOBALS['we_doc']->searchclassFolder->searchFields) && is_array($GLOBALS['we_doc']->searchclassFolder->searchFields) && isset($GLOBALS['we_doc']->searchclassFolder->searchFields [$i]) ? $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] : ""), false, array('class' => "defaultfont", 'id' => "searchFields[' . $i . ']", 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
-          <td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($GLOBALS['we_doc']->searchclassFolder->location) && is_array($GLOBALS['we_doc']->searchclassFolder->location) && isset($GLOBALS['we_doc']->searchclassFolder->location [$i]) ? $GLOBALS['we_doc']->searchclassFolder->location [$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
-          <td id="td_search[' . $i . ']">' . $searchInput . '</td>
-          <td id="td_delButton[' . $i . ']">' . $button . '</td>
-        </tr>
+<tr id="filterRow_' . $i . '">
+	<td>' . we_html_tools::hidden("hidden_searchFields[" . $i . "]", isset($GLOBALS['we_doc']->searchclassFolder->searchFields[$i]) ? $GLOBALS['we_doc']->searchclassFolder->searchFields[$i] : "" ) . we_html_tools::htmlSelect("searchFields[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFields($i, "doclist"), 1, (isset($GLOBALS['we_doc']->searchclassFolder->searchFields) && is_array($GLOBALS['we_doc']->searchclassFolder->searchFields) && isset($GLOBALS['we_doc']->searchclassFolder->searchFields [$i]) ? $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] : ""), false, array('class' => "defaultfont", 'id' => "searchFields[' . $i . ']", 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
+	<td id="td_location[' . $i . ']">' . we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($GLOBALS['we_doc']->searchclassFolder->location) && is_array($GLOBALS['we_doc']->searchclassFolder->location) && isset($GLOBALS['we_doc']->searchclassFolder->location [$i]) ? $GLOBALS['we_doc']->searchclassFolder->location [$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
+	<td id="td_search[' . $i . ']">' . $searchInput . '</td>
+	<td id="td_delButton[' . $i . ']">' . $button . '</td>
+</tr>
         ';
 		}
 
 		$out .= '</tbody></table>
-<table class="default" id="advSearch3" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
-	<tr>
-		<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
-	</tr>
+<table class="default" id="advSearch3" style="margin-left:20px;margin-top:10px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
 	<tr>
 		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 		<td width="155"></td>

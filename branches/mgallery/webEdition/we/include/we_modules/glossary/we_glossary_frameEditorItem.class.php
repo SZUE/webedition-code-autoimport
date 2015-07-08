@@ -249,12 +249,10 @@ function we_save() {
 
 		$content = $hidden . '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array("onchange" => "top.content.setHot();"), "value", 520) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array("onchange" => "top.content.setHot();"), "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[type]') . '</td></tr>
 	<tr><td>' . we_html_tools::htmlSelect("Type", $_types, 1, $weGlossaryFrames->View->Glossary->Type, false, array("onchange" => "top.content.setHot();showType(this.value);"), "value", 520) . '</td></tr>
-	<tr><td class="defaultfont">' .
-			we_html_forms::checkboxWithHidden((bool) $weGlossaryFrames->View->Glossary->Fullword, 'Fullword', g_l('modules_glossary', '[Fullword]'), false, 'defaultfont', 'top.content.setHot();') . '</td></tr>
+	<tr><td class="defaultfont">' . we_html_forms::checkboxWithHidden((bool) $weGlossaryFrames->View->Glossary->Fullword, 'Fullword', g_l('modules_glossary', '[Fullword]'), false, 'defaultfont', 'top.content.setHot();') . '</td></tr>
 </table>';
 		$parts = array(
 			array(
@@ -290,11 +288,9 @@ function we_save() {
 		return '<div id="type_abbreviation" style="display: block;">'
 			. '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[abbreviation]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("abbreviation[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[announced_word]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput("abbreviation[Title]", 24, $title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("abbreviation[Title]", 24, $title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . self::getLangField("abbreviation[Attributes][lang]", $language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
 </table>
 </div>';
@@ -312,11 +308,9 @@ function we_save() {
 		return '<div id="type_acronym" style="display: none;">
 <table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[acronym]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput("acronym[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("acronym[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[announced_word]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput("acronym[Title]", 24, $_title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("acronym[Title]", 24, $_title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . self::getLangField("acronym[Attributes][lang]", $_language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
 </table>
 </div>';
@@ -332,8 +326,7 @@ function we_save() {
 
 		return '<div id="type_foreignword" style="display: none;"><table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[foreignword]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput("foreignword[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("foreignword[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td>' . self::getLangField("foreignword[Attributes][lang]", $_language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
 </table></div>';
 	}
@@ -348,8 +341,7 @@ function we_save() {
 
 		return '<div id="type_textreplacement" style="display: none;"><table class="default">
 <tr><td class="defaultfont">' . g_l('modules_glossary', '[textreplacement]') . '</td></tr>
-<tr><td>' . we_html_tools::htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 <tr><td class="defaultfont">' . g_l('modules_glossary', '[textreplacement_Text]') . '</td></tr>
 <tr><td>' . we_html_tools::htmlTextInput("textreplacement[Title]", 24, $_title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 </table></div>';
@@ -367,15 +359,13 @@ function we_save() {
 			'<div id="type_link" style="display: none;">
 <table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[link]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput("link[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td>' . we_html_tools::htmlSelect("link[Attributes][mode]", array(
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("link[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][mode]", array(
 				'intern' => g_l('modules_glossary', '[link_intern]'),
 				'extern' => g_l('modules_glossary', '[link_extern]'),
 				'object' => g_l('modules_glossary', '[link_object]'),
 				'category' => g_l('modules_glossary', '[link_category]'),
 				), 1, $_mode, false, array("onchange" => "setHot();showLinkMode(this.value);"), "value", 520) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 </table>' .
 			self::getHTMLIntern($weGlossaryFrames) .
 			self::getHTMLExtern($weGlossaryFrames) .
@@ -405,9 +395,7 @@ function we_save() {
 
 		return '<div id="mode_intern" style="display: none;">'
 			. '<table class="default">
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	<tr><td>' . $selector . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+	<tr><td style="padding:2px 0px;">' . $selector . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 	<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][InternParameter]', 58, $_internParameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 </table></div>';
@@ -424,9 +412,7 @@ function we_save() {
 
 		return '<div id="mode_extern" style="display: none;">
 	<table class="default">
-		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
-		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td style="padding:2px 0px;">' . we_html_tools::htmlTextInput('link[Attributes][ExternUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table>
@@ -456,9 +442,7 @@ function we_save() {
 
 		return '<div id="mode_object" style="display: none;">
 	<table class="default">
-			<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-			<tr><td>' . $selector . '</td></tr>
-			<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+			<tr><td style="padding:2px 0px;">' . $selector . '</td></tr>
 	</table>
 	<div id="ObjectWorkspaceID" style="display: block;">
 		<table class="default">
@@ -467,8 +451,7 @@ function we_save() {
 		</table>
 	</div>
 	<table class="default">
-		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
+		<tr><td class="defaultfont" style="padding-top:2px;">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table></div>';
 	}
@@ -518,15 +501,12 @@ function we_save() {
 
 		return '<div id="mode_category" style="display: none;">
 <table class="default">
-		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td>' . $selector1 . '</td></tr>
-		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
+		<tr><td style="padding:2px 0px;">' . $selector1 . '</td></tr>
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[link_selection]') . '</td></tr>
-		<tr><td>' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", array(
+		<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", array(
 				'intern' => g_l('modules_glossary', '[link_intern]'),
 				'extern' => g_l('modules_glossary', '[link_extern]'),
 				), 1, $_modeCategory, false, array('onchange' => "setHot();showLinkModeCategory(this.value);"), "value", 520) . '</td></tr>
-		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 	</table>
 	<div id="mode_category_intern" style="display: none;">
 	<table class="default">
@@ -539,10 +519,8 @@ function we_save() {
 		</table>
 	</div>
 	<table class="default">
-		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter_name]') . '</td></tr>
+		<tr><td class="defaultfont" style="padding:2px 0px;">' . g_l('modules_glossary', '[parameter_name]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryCatParameter]', 58, $_catParameter, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
-		<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table></div>';

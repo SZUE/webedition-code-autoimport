@@ -129,22 +129,22 @@ $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'
 
 $oPool = new we_html_table(array("width" => 420, 'class' => 'default'), 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
-$oPool->setCol(
-	0, 1, array(
-	"align" => "center", "valign" => "middle"
-	), we_html_element::htmlA(
+$oPool->setCol(	0, 1, array(	"align" => "center", "valign" => "middle"	), we_html_element::htmlA(
 		array(
 		"href" => "#",
 		"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
-		), '<i class="fa fa-lg fa-caret-up"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
+		), '<i class="fa fa-lg fa-caret-up"></i>') .
+	we_html_element::htmlBr() . we_html_element::htmlBr() .
 	we_html_element::htmlA(array(
 		"href" => "#",
 		"onclick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
-		), '<i class="fa fa-lg fa-caret-right"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
+		), '<i class="fa fa-lg fa-caret-right"></i>') .
+	we_html_element::htmlBr() . we_html_element::htmlBr() .
 	we_html_element::htmlA(array(
 		"href" => "#",
 		"onclick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
-		), '<i class="fa fa-lg fa-caret-left"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
+		), '<i class="fa fa-lg fa-caret-left"></i>') .
+	we_html_element::htmlBr() . we_html_element::htmlBr() .
 	we_html_element::htmlA(array(
 		"href" => "#",
 		"onclick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
@@ -156,8 +156,8 @@ $oPool->setCol(2, 0, array(
 	"align" => "right", "colspan" => 3
 	), $oBtnDelete);
 
-$content = $oShortcutsRem . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
-		$oSctPool->getHTML(), g_l('cockpit', '[select_buttons]'), "left", "defaultfont") . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oPool->getHTML();
+$content = $oShortcutsRem . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
+		$oSctPool->getHTML(), g_l('cockpit', '[select_buttons]'), "left", "defaultfont") . we_html_element::htmlBr() . $oPool->getHTML();
 
 $parts = array(
 	array(

@@ -362,21 +362,9 @@ class we_webEditionDocument extends we_textContentDocument{
 		//	if a meta-tag is set all information are in array $GLOBALS["meta"]
 		return '
 <table class="default">
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 4) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 4) . '</td>
-	</tr>
-	<tr>
-		<td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>' .
+	<tr><td style="padding-bottom:2px;">' . $this->formInputField("txt", "Title", g_l('weClass', '[Title]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td  style="padding-bottom:2px;">' . $this->formInputField("txt", "Description", g_l('weClass', '[Description]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+	<tr><td colspan="2">' . $this->formInputField("txt", "Keywords", g_l('weClass', '[Keywords]'), 40, 508, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>	</tr>' .
 			$this->getCharsetSelect() .
 			$this->formLangLinks(true) .
 			'</table>';
@@ -425,8 +413,8 @@ class we_webEditionDocument extends we_textContentDocument{
 			$retSelect = $this->htmlSelect("dummi2", array(g_l('charset', '[error][no_charset_available]')), 1, DEFAULT_CHARSET, false, array('disabled' => 'disabled'), 'value', 254);
 		}
 		//getCharsets
-		return '<tr><td colspan="2">' . we_html_tools::getPixel(2, 4) . '</td></tr>
-<tr><td>
+		return '
+<tr><td style="padding-top:2px;">
 	<table class="default">
 		<tr><td colspan="2" class="defaultfont">' . g_l('weClass', '[Charset]') . '</td>
 		<tr><td>' . $retInput . '</td><td>' . $retSelect . '</td></tr>

@@ -497,7 +497,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		<td></td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::htmlTextInput('jsposx', 4, $jsposx, '', '', "text", 40) . '</td>
+		<td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput('jsposx', 4, $jsposx, '', '', "text", 40) . '</td>
 		<td>' . we_html_tools::getPixel(10, 2) . '</td>
 		<td>' . we_html_tools::htmlTextInput('jsposy', 4, $jsposy, '', "", "text", 40) . '</td>
 		<td>' . we_html_tools::getPixel(10, 2) . '</td>
@@ -505,9 +505,6 @@ if($ok && $cmd === "edit_link_at_class"){
 		<td>' . we_html_tools::getPixel(10, 2) . '</td>
 		<td>' . we_html_tools::htmlTextInput("jsheight", 4, $jsheight, "", ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
 		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	</tr>
-	<tr>
-		<td colspan="9">' . we_html_tools::getPixel(2, 2) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_forms::checkbox(1, $jsstatus, "jsstatus", g_l('global', '[status]'), true, "small") . '</td>
@@ -659,7 +656,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		<td>' . $intImg . '</td>
 	</tr>
 	<tr id="cimgprops_tr" style="display:' . (($ctype == we_base_link::CONTENT_TEXT) ? "none" : "table-row") . ';">
-		<td>' . we_html_tools::getPixel(10, 3) . "<br/>" . $imgProps . '</td>
+		<td style="padding-top:1em;">' . $imgProps . '</td>
 	</tr>
 </table><div></div>',
 				'space' => 150),

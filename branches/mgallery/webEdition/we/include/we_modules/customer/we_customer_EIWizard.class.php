@@ -933,7 +933,7 @@ class we_customer_EIWizard{
 			),
 			array(
 				"headline" => g_l('modules_customer', '[import_step4]'),
-				"html" => we_html_tools::getPixel(1, 8) . "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $tableheader, "defaultfont"),
+				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $tableheader, "defaultfont"),
 				"space" => 150),
 		);
 

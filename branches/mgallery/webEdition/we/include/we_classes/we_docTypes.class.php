@@ -164,9 +164,8 @@ class we_docTypes extends we_class{
 		return '
 <table class="default">
 	<tr valign="top">
-		<td>' . $this->formDocTypes2() . '</td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td>' . $this->formNewDocType() . we_html_tools::getPixel(2, 10) . $this->formDeleteDocType() . '</td>
+		<td style="padding-right:20px;">' . $this->formDocTypes2() . '</td>
+		<td><div style="padding-bottom:10px;">' . we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')") . '</div>' . we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')") . '</td>
 	</tr>
 </table>';
 	}
@@ -185,27 +184,19 @@ class we_docTypes extends we_class{
 	public function formDocTypeDefaults(){
 		return '
 <table class="default">
-	<tr><td colspan="3">' . $this->formDirChooser(409) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(300, 5) . '</td>
-		<td>' . we_html_tools::getPixel(20, 5) . '</td>
-		<td>' . we_html_tools::getPixel(200, 5) . '</td>
-	</tr>
+	<tr><td colspan="3" style="padding-bottom:5px;">' . $this->formDirChooser(409) . '</td></tr>
 	<tr>
 		<td>' . $this->formSubDir(300) . '</td>
 		<td>' . we_html_tools::getPixel(20, 2) . '</td>
 		<td>' . $this->formExtension(200) . '</td>
 	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-	<tr><td colspan="3">' . $this->formTemplatePopup(521) . '</td></tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+	<tr><td colspan="3" style="padding:5px 0px;">' . $this->formTemplatePopup(521) . '</td></tr>
 	<tr>
 		<td>' . $this->formIsDynamic() . '</td>
 		<td></td>
 		<td>' . $this->formIsSearchable() . '</td>
 	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-	<tr><td colspan="3">' . $this->formLangLinks(521) . '</td></tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(2, 5) . '</td></tr>
+	<tr><td colspan="3" style="padding:5px 0px;">' . $this->formLangLinks(521) . '</td></tr>
 	<tr><td colspan="3">' . $this->formCategory(521) . '</td></tr>
 </table>';
 	}
@@ -307,14 +298,6 @@ function switchExt(){
 
 	private function formSubDir($width = 100){
 		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, array(), 'value', $width), g_l('weClass', '[subdirectory]'));
-	}
-
-	public function formNewDocType(){
-		return we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')");
-	}
-
-	private function formDeleteDocType(){
-		return we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')");
 	}
 
 	/**

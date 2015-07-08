@@ -31,11 +31,9 @@ function getContent(){
 			we_html_tools::htmlDialogLayout('
 						<table class="default">
 							<tr><td class="defaultfont">' . g_l('global', '[oldPass]') . '</td></tr>
-							<tr><td>' . we_html_tools::htmlTextInput('oldpasswd', 20, '', 32, '', 'password', 200) . '</td></tr>
-							<tr><td>' . we_html_tools::getPixel(2, 5) . '</td></tr>
+							<tr><td style="padding-bottom:5px;">' . we_html_tools::htmlTextInput('oldpasswd', 20, '', 32, '', 'password', 200) . '</td></tr>
 							<tr><td class="defaultfont">' . g_l('global', '[newPass]') . '</td></tr>
-							<tr><td>' . we_html_tools::htmlTextInput('newpasswd', 20, '', 32, '', 'password', 200) . '</td></tr>
-							<tr><td>' . we_html_tools::getPixel(2, 5) . '</td></tr>
+							<tr><td style="padding-bottom:5x;">' . we_html_tools::htmlTextInput('newpasswd', 20, '', 32, '', 'password', 200) . '</td></tr>
 							<tr><td class="defaultfont">' . g_l('global', '[newPass2]') . '</td></tr>
 							<tr><td>' . we_html_tools::htmlTextInput('newpasswd2', 20, '', 32, '', 'password', 200) . '</td></tr>
 						</table>', g_l('global', '[changePass]'), we_html_button::position_yes_no_cancel(

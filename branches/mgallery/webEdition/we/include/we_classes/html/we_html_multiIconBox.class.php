@@ -268,14 +268,8 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 
 	static function _getBoxStartHeadline($name, $width, $headline, $uniqname, $marginLeft = 0, $overflow = "auto"){
 		return '<table class="default" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '" id="' . $name . '">
-	<tr>
-		<td style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(2, 8) . '</td>
-	</tr>
-	<tr>
-		<td id="td_' . $uniqname . '">';
+	<tr><td style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</td></tr>
+	<tr><td id="td_' . $uniqname . '">';
 	}
 
 	static function _getBoxStart($w, $uniqname, $name = ''){
@@ -292,11 +286,7 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 	static function _getBoxEnd(){
 		return '</td>
 	</tr>
-	<tr>
-		<td></td>
-	</tr>
-</table>
-';
+</table>';
 	}
 
 	static function _getButton($name, $cmd, $state = "right", $title = ""){

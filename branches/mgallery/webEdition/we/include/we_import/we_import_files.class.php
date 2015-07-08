@@ -148,7 +148,7 @@ function uploadFinished() {
 		$cb = $this->callBack;
 		$this->loadPropsFromSession();
 		$this->callBack = $cb;
-				
+
 		unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
 
 		// create Start Screen ##############################################################################
@@ -223,7 +223,7 @@ function uploadFinished() {
 
 			if(we_base_imageEdit::gd_version() > 0){
 				$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
-				$Thselect = g_l('importFiles', '[thumbnails]') . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
+				$Thselect = g_l('importFiles', '[thumbnails]') . "<br/><br/>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
 				$thumbsArray = makeArrayFromCSV($this->thumbs);
 				while($GLOBALS['DB_WE']->next_record()){

@@ -42,10 +42,9 @@ $rss = new we_xml_rss($feeddata, null, $GLOBALS['WE_BACKENDCHARSET']); // Umstel
 $rss->parse();
 $rss_out = '<div id="rss">';
 foreach($rss->getItems() as $item){
-	$rss_out .= '<b>' . $item['title'] . '</b><p>' . $item['description'] . " " .
+	$rss_out .= '<b>' . $item['title'] . '</b><p style="margin-bottom:1em;">' . $item['description'] . " " .
 		(!empty($item['link']) ? '<a href="' . $item['link'] . '" target="_blank">' . g_l('cockpit', '[more]') . '</a>' : '') .
-		"</p>" .
-		we_html_tools::getPixel(1, 10) . we_html_element::htmlBr();
+		'</p>';
 }
 $rss_out .= '</div>';
 echo $rss_out .

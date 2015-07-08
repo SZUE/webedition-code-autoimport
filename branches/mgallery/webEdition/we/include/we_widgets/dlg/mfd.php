@@ -61,7 +61,7 @@ $sUsrContent = '<table class="default" width="300"><tr><td>' . we_html_element::
 		array("class" => "multichooser"), $content) . we_html_element::htmlHiddens(array(
 		"UserNameTmp" => "",
 		"UserIDTmp" => ""
-	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . we_html_element::htmlBr() . we_html_button::create_button_table(
+	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right" style="padding-top:1em;">' . we_html_button::create_button_table(
 			array(
 				we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", ($users ? false : true)),
 				we_html_button::create_button(we_html_button::ADD, "javascript:opener.getUser('we_users_selector','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements[\"UserIDTmp\"].value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);")
@@ -125,7 +125,7 @@ $oSelMaxEntries->setCol(0, 0, array("valign" => "middle", "class" => "defaultfon
 $oSelMaxEntries->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 $oSelMaxEntries->setCol(0, 2, array("valign" => "middle"), $oSctNumEntries->getHTML());
 
-$show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . $oShowUser;
+$show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;
 
 $parts = array(
 	array(

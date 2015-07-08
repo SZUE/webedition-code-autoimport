@@ -280,7 +280,7 @@ class we_collection extends we_root{
 
 		$html = $selRemTable .
 			'<div id="mimetype" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . '; width:388px;margin-top:5px;">' .
-			'<br/>Erlaubte Dokumente auf folgende Typen einschränken:<br>' .
+			'<br/>Erlaubte Dokumente auf folgende Typen einschränken:<br/>' .
 			we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
 			$mimeTable->getHTML() .
 			'</div>
@@ -341,7 +341,7 @@ class we_collection extends we_root{
 			}
 			$jsStorageItems .= $this->getJsStrorageItem($item, $index);
 			$jsItemsArr .= $item['id'] . ',';
-			
+
 		}
 
 		// write "blank" collection row to js
@@ -377,7 +377,7 @@ $jsStorageItems;
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Inhalt der Sammlung') .
-			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;color:red;font-size:20px'), 'Hinweis: Die Sammlungen sind z.Zt. komplett unbenutzbar<br>(auch nicht zu Testzwecken)!') .
+			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;color:red;font-size:20px'), 'Hinweis: Die Sammlungen sind z.Zt. komplett unbenutzbar<br/>(auch nicht zu Testzwecken)!') .
 			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('style' => 'width:850px;padding:10px 0 0 20px;margin:12px 0 0 0;'), $head->getHtml()) .
 			we_html_element::htmlDiv(array('id' => 'content_table_list', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px;display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
@@ -431,7 +431,7 @@ $jsStorageItems;
 		$rowControlls = we_html_button::create_button_table($rowControllsArr, 5);
 
 		$rowHtml = new we_html_table(array('draggable' => 'false'), 1, 4);
-		
+
 		//imageView
 		$img = we_html_element::htmlDiv(array(
 				'id' => 'previweDiv_' . $index,
@@ -481,7 +481,7 @@ $jsStorageItems;
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
 		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems(this);", true, 52, 22, '', '', false, false, '', false, '');
-		
+
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
 
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
@@ -525,7 +525,7 @@ $jsStorageItems;
 				'ondragend' => 'weCollectionEdit.dragEnd(event)'
 				), $rowHtml->getHtml());
 	}
-	 * 
+	 *
 	 */
 
 	private function makeGridItem($item, $index){
@@ -651,9 +651,9 @@ $jsStorageItems;
 					case 'Description':
 						$fieldname = 'meta_description';
 						break;
-					default: 
+					default:
 						$fieldname = 'custom';
-					
+
 
 				}
 				$items[$this->DB_WE->f('DID')]['elements'][$fieldname] = $fieldname === 'custom' ? array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID')) : array('Dat' => $this->DB_WE->f('Dat'), 'state' => ($this->DB_WE->f('Dat') ? self::COLOR_YES : self::COLOR_NO));

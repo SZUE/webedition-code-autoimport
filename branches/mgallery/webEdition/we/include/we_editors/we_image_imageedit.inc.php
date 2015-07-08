@@ -49,7 +49,7 @@ echo STYLESHEET;
 
 		echo '<table class="default">
 ' . ($we_doc->EditPageNr == 15 ?
-			'<tr><td><select name="editmenue" size="1" onchange="var cmnd = this.options[this.selectedIndex].value; if(cmnd){if(cmnd==\'doImage_convertPNG\' || cmnd==\'doImage_convertGIF\'){_EditorFrame.setEditorIsHot(true);};we_cmd(cmnd,\'' . $we_transaction . '\');}this.selectedIndex=0"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
+			'<tr><td style="padding-bottom:20px;"><select name="editmenue" size="1" onchange="var cmnd = this.options[this.selectedIndex].value; if(cmnd){if(cmnd==\'doImage_convertPNG\' || cmnd==\'doImage_convertGIF\'){_EditorFrame.setEditorIsHot(true);};we_cmd(cmnd,\'' . $we_transaction . '\');}this.selectedIndex=0"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
 <option value="" disabled="disabled">' . g_l('weClass', '[edit]') . '</option>
 <option value="image_resize">' . g_l('weClass', '[resize]') . '&hellip;</option>
 <option value="image_rotate">' . g_l('weClass', '[rotate]') . '&hellip;</option>
@@ -58,9 +58,7 @@ echo STYLESHEET;
 			((in_array("jpg", we_base_imageEdit::supported_image_types())) ? '<option value="image_convertJPEG">&nbsp;&nbsp;' . g_l('weClass', '[convert_jpg]') . '...</option>' : '') .
 			(($_gdtype != "gif" && in_array("gif", we_base_imageEdit::supported_image_types())) ? '<option value="doImage_convertGIF">&nbsp;&nbsp;' . g_l('weClass', '[convert_gif]') . '</option>' : '') .
 			(($_gdtype != "png" && in_array("png", we_base_imageEdit::supported_image_types())) ? '<option value="doImage_convertPNG">&nbsp;&nbsp;' . g_l('weClass', '[convert_png]') . '</option>' : '') .
-			'</select></td></tr>
-<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
-<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>' :
+			'</select></td></tr>' :
 			''
 		) . '<tr><td>' . $we_doc->getHtml(true) . '</td></tr>'
 		. '</table>' .

@@ -66,9 +66,8 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 			'</div></td><td valign="top">' .
 			we_html_forms::checkbox(1, 0, 'CreateDoctypes', g_l('copyFolder', '[create_new_doctypes]')) .
 			'</td></tr>
-					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . '</td></tr>
-					<tr><td colspan="2">' . we_fragment_copyFolder::formCreateTemplateDirChooser() . '</td></tr>
-					<tr><td colspan="2">' . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr() . we_fragment_copyFolder::formCreateCategoryChooser() .
+					<tr><td colspan="2" style="padding:2px 0px;">' . we_fragment_copyFolder::formCreateTemplateDirChooser() . '</td></tr>
+					<tr><td colspan="2">' . we_fragment_copyFolder::formCreateCategoryChooser() .
 			$hidden .
 			'</td></tr></table>';
 	}

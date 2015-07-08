@@ -366,7 +366,7 @@ function disableLangDefault(allnames, allvalues, deselect) {
 		} else {
 			$parts = array(
 				array("headline" => "",
-					"html" => $we_doc->formNewDocType(),
+					"html" => we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')"),
 					"space" => 0
 				)
 			);

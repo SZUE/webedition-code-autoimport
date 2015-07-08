@@ -97,27 +97,16 @@ echo STYLESHEET;
 				if(permissionhandler::hasPerm("PUBLISH")){
 					$wf_textarea = '<textarea name="wf_text" rows="5" cols="50" style="left:10px;right:10px;height:150px;"></textarea>';
 					$content .= '
-<tr>
-	<td class="defaultfont">' . g_l('modules_workflow', '[workflow]') . '</td>
-</tr>
-<tr>
-	<td>' . $wf_select . '</td>
-</tr>
-<tr>
-	<td>' . we_html_tools::getPixel(2, 5) . '</td>
-</tr>';
+<tr><td class="defaultfont">' . g_l('modules_workflow', '[workflow]') . '</td></tr>
+<tr><td style="padding-bottom:5px;">' . $wf_select . '</td></tr>
+';
 				} else {
 					$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
 					$content .= we_html_element::htmlHidden("wf_select", $wfID);
 				}
 				$content .= '
-<tr>
-	<td class="defaultfont">
-		' . g_l('modules_workflow', '[message]') . '</td>
-</tr>
-<tr>
-	<td>' . $wf_textarea . '</td>
-</tr>
+<tr><td class="defaultfont">' . g_l('modules_workflow', '[message]') . '</td></tr>
+<tr><td>' . $wf_textarea . '</td></tr>
 </table>';
 
 				echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[in_workflow]'), we_html_button::position_yes_no_cancel($okbut, '', $cancelbut)) .

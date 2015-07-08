@@ -440,7 +440,7 @@ abstract class we_rebuild_wizard{
 		$upperTable = '<table class="default" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
 
 		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', '"we/category"', CATEGORY_TABLE);
-		return g_l('global', '[categorys]') . '<br/>' . we_html_tools::getPixel(1, 3) . '<br/>' . $cats->get();
+		return g_l('global', '[categorys]') . '<br/><br/>' . $cats->get();
 	}
 
 	/**
@@ -452,7 +452,7 @@ abstract class we_rebuild_wizard{
 	static function formDoctypes($doctypes){
 
 		$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
-		$DTselect = g_l('global', '[doctypes]') . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . '<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">' . "\n";
+		$DTselect = g_l('global', '[doctypes]') . "<br/><br/>" . '<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">' . "\n";
 
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		while($GLOBALS['DB_WE']->next_record()){
@@ -476,7 +476,7 @@ abstract class we_rebuild_wizard{
 
 		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", 'ContentType', FILE_TABLE);
 
-		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" . $dirs->get();
+		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . "<br/><br/>" . $dirs->get();
 	}
 
 	/**
@@ -487,7 +487,7 @@ abstract class we_rebuild_wizard{
 	 */
 	private static function formThumbs($thumbs){
 		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
-		$Thselect = g_l('rebuild', '[thumbnails]') . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" .
+		$Thselect = g_l('rebuild', '[thumbnails]') . "<br/><br/>" .
 			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
@@ -557,8 +557,8 @@ abstract class we_rebuild_wizard{
 				we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
 				'');
 
-		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br/>' . we_html_tools::getPixel(2, 5) . '<br/>' .
-			we_rebuild_wizard::formDoctypes($doctypes) . '<br/>' . we_html_tools::getPixel(2, 10) . '<br/>' .
+		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br/><br/>' .
+			we_rebuild_wizard::formDoctypes($doctypes) . '<br/><br/>' .
 			we_rebuild_wizard::formFolders($folders);
 
 		$filter_content = we_html_forms::radiobutton('rebuild_filter', ($btype === 'rebuild_filter' && permissionhandler::hasPerm('REBUILD_FILTERD') || ($btype === 'rebuild_all' && (!permissionhandler::hasPerm('REBUILD_ALL')) && permissionhandler::hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
@@ -650,7 +650,7 @@ abstract class we_rebuild_wizard{
 		$parts = array();
 
 		$content = we_rebuild_wizard::formThumbs($thumbs) .
-			'<br/>' . we_html_tools::getPixel(2, 15) . '<br/>' .
+			'<br/><br/>' .
 			we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
 
 		$parts[] = array(
@@ -717,7 +717,7 @@ abstract class we_rebuild_wizard{
 		}
 
 		$content = we_rebuild_wizard::formMetadata($metaFields, $onlyEmpty) .
-			we_html_element::htmlBr() . we_html_tools::getPixel(2, 15) . we_html_element::htmlBr() .
+			we_html_element::htmlBr() . we_html_element::htmlBr() .
 			we_rebuild_wizard::formFolders($metaFolders, true, 520);
 
 

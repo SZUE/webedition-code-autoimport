@@ -261,8 +261,8 @@ if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFI
 $divDynamic = we_html_element::htmlDiv(
 		array(
 		"id" => "dynamic", "style" => (!$_selection ? 'display:block;' : 'display:none;')
-		), getHTMLDirSelector($_selType) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
-				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . getHTMLCategory());
+		), getHTMLDirSelector($_selType) . we_html_element::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
+				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory());
 
 $divContent = we_html_element::htmlDiv(
 		array(
@@ -271,7 +271,7 @@ $divContent = we_html_element::htmlDiv(
 			"Selection", array(
 			"dynamic" => g_l('cockpit', '[dyn_selection]'), "static" => g_l('cockpit', '[stat_selection]')
 			), 1, ($_selection ? "static" : "dynamic"), false, array('style' => "width:420px;border:#AAAAAA solid 1px;", 'onchange' => "closeAllSelection();we_submit();"), 'value') . we_html_element::htmlBr() . we_html_tools::htmlSelect(
-			"headerSwitch", $captions, 1, (!$_selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, array('style' => "width:420px;border:#AAAAAA solid 1px;margin-top:10px;", 'onchange' => "setHead(this.value);we_submit();"), 'value', 420) . $divStatic . $divDynamic . we_html_tools::getPixel(1, 5) . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
+			"headerSwitch", $captions, 1, (!$_selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, array('style' => "width:420px;border:#AAAAAA solid 1px;margin-top:10px;", 'onchange' => "setHead(this.value);we_submit();"), 'value', 420) . $divStatic . $divDynamic . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
 			we_html_tools::htmlTextInput(
 				$name = "title", $size = 55, $value = $_title, $maxlength = 255, $attribs = "", $type = "text", $width = 420, $height = 0), g_l('cockpit', '[title]'), "left", "defaultfont"));
 

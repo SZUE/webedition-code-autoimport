@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_gallery extends we_dialog_base{
-
 	var $dialogWidth = 370;
 	var $JsOnly = true;
 	var $changeableArgs = array('collid',
@@ -33,7 +32,7 @@ class we_dialog_gallery extends we_dialog_base{
 
 	function __construct($noInternals = false){
 		parent::__construct();
-		$this->dialogTitle = 'Gallerie einfügen';// FIXME: G_L();
+		$this->dialogTitle = 'Gallerie einfügen'; // FIXME: G_L();
 		$this->noInternals = $noInternals;
 		$this->defaultInit();
 	}
@@ -54,7 +53,7 @@ var size = {
 	}
 };'
 			) . we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js') .
-				weSuggest::getYuiFiles();
+			weSuggest::getYuiFiles();
 	}
 
 	function getOkJs(){
@@ -99,26 +98,23 @@ top.close();
 		$input = we_html_tools::htmlSelect('we_dialog_args[tmpl]', $templatesArr, 1, (isset($this->args['tmpl']) ? id_to_path($this->args['tmpl'], TEMPLATES_TABLE) : 0), false, array(), '', 430);
 		$tmpl = we_html_tools::htmlFormElementTable($input, 'Template');
 
-		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value=''");
 		/*
-		$trash = '<table class="default">
-			<tbody>
-			<tr><td class="defaultfont" align="left" colspan="1"></td></tr>
-			<tr style="height:1px"><td colspan="1">&nbsp;</td></tr>
-			<tr style="height:1px"><td colspan="1"></td></tr>
-			<tr><td style="padding-left:12px;">' . $btnTrash . '
-			</td></tr>
-			</tbody>
-		</table>';
+		  $trash = '<table class="default">
+		  <tbody>
+		  <tr><td class="defaultfont" align="left" colspan="1"></td></tr>
+		  <tr style="height:1px"><td colspan="1">&nbsp;</td></tr>
+		  <tr style="height:1px"><td colspan="1"></td></tr>
+		  <tr><td style="padding-left:12px;">' . $btnTrash . '
+		  </td></tr>
+		  </tbody>
+		  </table>';
 		 *
 		 */
+		$trash = '';
 
 		$html = $yuiSuggest->getYuiJs() . '<table class="default">
-<tr><td>' . $collid . '</td><td>' . $trash . '</td></tr>
-<tr><td>' . we_html_tools::getPixel(225, 10) . '</td></tr>
-<tr><td>' . $tmpl . '</td></tr>
-
-<tr><td>' . we_html_tools::getPixel(225, 24) . '</td></tr>
+<tr><td style="padding-bottom:10px;">' . $collid . '</td><td>' . $trash . '</td></tr>
+<tr><td style="padding-bottom:24px;">' . $tmpl . '</td></tr>
 <tr><td>' . $btnTrash . ' Gallerie entfernen</td></tr>
 </table>';
 

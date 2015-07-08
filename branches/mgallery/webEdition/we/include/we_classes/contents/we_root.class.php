@@ -334,7 +334,7 @@ abstract class we_root extends we_class{
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
 
-		$content = '<table class="default" style="width:370px;">' .
+		$content = '<table class="default" style="width:370px;margin-bottom:2px;">' .
 			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
 		if($owners){
 			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $owners) . ')');
@@ -347,7 +347,7 @@ abstract class we_root extends we_class{
 		} else {
 			$content .= '<tr><td class="userIcon" data-contenttype="we/user"></td><td class="defaultfont">' . g_l('weClass', '[onlyOwner]') . '</td><td></td><td></td></tr>';
 		}
-		$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
+		$content .= '</table>';
 
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
@@ -359,7 +359,7 @@ abstract class we_root extends we_class{
 
 		$content = '<table class="default" style="width:500px;">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
-' . ($canChange ? '<tr><td align="right">' . we_html_tools::getPixel(2, 8) . '<br/>' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>' . we_html_element::jsElement('setIconOfDocClass(\'userIcon\');');
+' . ($canChange ? '<tr><td align="right"  style="padding-top:2px;">' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>' . we_html_element::jsElement('setIconOfDocClass(\'userIcon\');');
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}
@@ -368,12 +368,10 @@ abstract class we_root extends we_class{
 		$canChange = ((!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID));
 
 		return '<table class="default">
-<tr><td class="defaultfont">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
-<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+<tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
 			($this->RestrictOwners ?
-				'<tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
-<tr><td>' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
+				'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
 			'</table>';
 	}
 
@@ -639,19 +637,16 @@ abstract class we_root extends we_class{
 				$langkeys[] = $langkey;
 			}
 			return '
-<table class="default">
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	' . $_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(2, 20) . '</td></tr>
+<table class="default" style="margin-top:2px;">' .
+				$_headline . '
+	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
 	<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
 <br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
 		} else {
 			return '
-<table class="default">
-	<tr><td>' . we_html_tools::getPixel(2, 4) . '</td></tr>
-	' . $_headline . '
+<table class="default" style="margin-top:2px;">' .
+				$_headline . '
 	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
 </table>';
 		}

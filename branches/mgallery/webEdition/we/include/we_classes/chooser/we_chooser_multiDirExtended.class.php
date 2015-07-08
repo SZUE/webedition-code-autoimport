@@ -39,7 +39,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 		switch($lineNr){
 			case 0:
 				return '<tr id="' . $this->rowPrefix . 'Cat' . $this->Record["ID"] . '">
-	<td class="chooserFileIcon" data-contenttype="'.$this->Record['ContentType'].'"></td>
+	<td class="chooserFileIcon" data-contenttype="' . $this->Record['ContentType'] . '"></td>
 	<td class="' . $this->css . '">' . $this->Record['Path'] . '</td>
 	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . "; " . $_catFieldJS, true, 26) :
@@ -91,8 +91,7 @@ class we_chooser_multiDirExtended extends we_chooser_multiDir{
 
 		return '<table class="default" width="' . $this->width . '">
 <tr><td><div style="background-color:white;" class="multichooser">' . $out . '</div></td></tr>
-' . ($this->addbut ? ('<tr><td>' . we_html_tools::getPixel(2, 5) . '</td></tr>
-<tr><td align="right">' . $this->addbut . '</td></tr>') : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
+' . ($this->addbut ? ('<tr><td align="right" style="padding-top:2px;">' . $this->addbut . '</td></tr>') : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
 	}
 
 	function setRowPrefix($val){

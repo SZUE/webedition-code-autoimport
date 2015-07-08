@@ -237,12 +237,9 @@ div.we_file_drag_binDoc{
 			$thumbnailBig . '
 					</div>
 				</td>
-			</tr>
-			<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>' .
-			(self::isFallback() || self::isLegacyMode() ? '' : '<tr><td colspan="2" class="defaultfont">' . $this->getHtmlAlertBoxes() . '</td></tr>
-							<tr><td colspan="2">' . we_html_tools::getPixel(4, 20) . '</td></tr>') . '
-
-			<tr><td colspan="2" class="defaultfont">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
+			</tr>' .
+			(self::isFallback() || self::isLegacyMode() ? '' : '<tr><td colspan="2" class="defaultfont" style="padding-top:20px;">' . $this->getHtmlAlertBoxes() . '</td></tr>') . '
+			<tr><td colspan="2" class="defaultfont" style="padding-top:20px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', ($GLOBALS['we_doc']->getFilesize() ? "[upload_will_replace]" : "[upload_single_files]")), we_html_tools::TYPE_ALERT, 508) . '</td></tr>
 			</table>';
 	}
 

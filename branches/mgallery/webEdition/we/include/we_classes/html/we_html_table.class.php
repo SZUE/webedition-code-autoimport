@@ -133,10 +133,10 @@ class we_html_table extends we_html_baseCollection{
 	 * @return     void
 	 */
 	function setCol($rowid, $colid, $attribs = array(), $content = ''){
-		$col = &$this->getChild($rowid)->getChild($colid);
-		if(!is_object($col)){
-			t_e('x');
+		while(!isset($this->childs[$rowid])){
+			$this->addRow();
 		}
+		$col = $this->getChild($rowid)->getChild($colid);
 		$col->setAttributes($attribs);
 		$col->setContent($content);
 	}

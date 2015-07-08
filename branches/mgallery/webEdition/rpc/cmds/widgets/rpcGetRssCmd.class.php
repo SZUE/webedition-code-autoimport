@@ -116,7 +116,7 @@ class rpcGetRssCmd extends rpcCmd{
 						'')
 				) .
 				($bShowDesc || $bShowContEnc ?
-					we_html_tools::getPixel(1, 10) . we_html_element::htmlBr() :
+					we_html_element::htmlBr() :
 					"");
 			if($iNumItems){
 				$iCurrItem++;

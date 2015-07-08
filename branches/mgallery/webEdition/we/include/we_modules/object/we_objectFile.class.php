@@ -782,7 +782,7 @@ class we_objectFile extends we_document{
 			if($asString){
 				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : array()), $editable);
 				if($c2){
-					$c .= $c2 . we_html_element::htmlBr() . we_html_tools::getPixel(2, 5) . we_html_element::htmlBr();
+					$c .= $c2 . we_html_element::htmlBr() . we_html_element::htmlBr();
 				}
 			} else {
 				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : array()), $editable);
@@ -1341,7 +1341,7 @@ class we_objectFile extends we_document{
 		$d = abs($this->getElement($name));
 		return ($variant ?
 				'' :
-				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["date_$name"]['editdescription']) ? self::formatDescription($this->DefArray["date_$name"]['editdescription']) : we_html_element::htmlBr()) . we_html_tools::getPixel(2, 2) . we_html_element::htmlBr()
+				'<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray['date_' . $name]["required"] ? '*' : '') . '</span>' . (!empty($this->DefArray["date_$name"]['editdescription']) ? self::formatDescription($this->DefArray["date_$name"]['editdescription']) : we_html_element::htmlBr()) . we_html_element::htmlBr()
 			) .
 			we_html_tools::getDateInput2("we_" . $this->Name . '_date[' . $name . ']', ($d ? : time()), true);
 	}

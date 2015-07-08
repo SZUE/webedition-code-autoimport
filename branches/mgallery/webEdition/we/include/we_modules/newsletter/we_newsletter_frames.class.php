@@ -1388,17 +1388,15 @@ window.onload=extraInit;');
 
 		$js = we_html_element::jsElement('function save(){' . $js . '}');
 
+		$row = 0;
 		$table = new we_html_table(array('class' => 'default'), 12, 3);
 
-		$table->setCol(0, 0, array("class" => "defaultgray"), g_l('modules_newsletter', '[email]'));
-		$table->setCol(0, 1, array(), we_html_tools::getPixel(15, 10));
-		$table->setCol(0, 2, array(), we_html_tools::htmlTextInput("emailfield", 32, $email, "", "", "text", 310));
+		$table->setCol($row, 0, array("class" => "defaultgray"), g_l('modules_newsletter', '[email]'));
+		$table->setCol($row, 1, array(), we_html_tools::getPixel(15, 10));
+		$table->setCol($row++, 2, array('style' => "padding-bottom:2px;"), we_html_tools::htmlTextInput("emailfield", 32, $email, "", "", "text", 310));
 
-		$table->setCol(1, 2, array(), we_html_tools::getPixel(2, 3));
 
-		$table->setCol(2, 2, array(), we_html_forms::checkbox($htmlmail, (($htmlmail) ? true : false), "htmlmail", g_l('modules_newsletter', '[edit_htmlmail]'), false, "defaultfont", "if(document.we_form.htmlmail.checked) document.we_form.htmlmail.value=1; else document.we_form.htmlmail.value=0;"));
-
-		$table->setCol(3, 2, array(), we_html_tools::getPixel(2, 3));
+		$table->setCol($row++, 2, array('style' => "padding-bottom:2px;"), we_html_forms::checkbox($htmlmail, (($htmlmail) ? true : false), "htmlmail", g_l('modules_newsletter', '[edit_htmlmail]'), false, "defaultfont", "if(document.we_form.htmlmail.checked) document.we_form.htmlmail.value=1; else document.we_form.htmlmail.value=0;"));
 
 		$salut_select = new we_html_select(array("name" => "salutation", "style" => "width: 310px"));
 		$salut_select->addOption("", "");
@@ -1410,29 +1408,25 @@ window.onload=extraInit;');
 		}
 		$salut_select->selectOption($salutation);
 
-		$table->setCol(4, 0, array("class" => "defaultgray"), g_l('modules_newsletter', '[salutation]'));
-		$table->setCol(4, 1, array(), we_html_tools::getPixel(15, 10));
-		$table->setCol(4, 2, array(), $salut_select->getHtml());
+		$table->setCol($row, 0, array("class" => "defaultgray", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[salutation]'));
+		$table->setCol($row, 1, array(), we_html_tools::getPixel(15, 10));
+		$table->setCol($row++, 2, array(), $salut_select->getHtml());
 
-		$table->setCol(5, 2, array(), we_html_tools::getPixel(2, 3));
 
-		$table->setCol(6, 0, array("class" => "defaultgray"), g_l('modules_newsletter', '[title]'));
-		$table->setCol(6, 1, array(), we_html_tools::getPixel(15, 10));
-		$table->setCol(6, 2, array(), we_html_tools::htmlTextInput("title", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($title) : $title), "", "", "text", 310));
+		$table->setCol($row, 0, array("class" => "defaultgray", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[title]'));
+		$table->setCol($row, 1, array(), we_html_tools::getPixel(15, 10));
+		$table->setCol($row++, 2, array(), we_html_tools::htmlTextInput("title", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($title) : $title), "", "", "text", 310));
 
-		$table->setCol(7, 2, array(), we_html_tools::getPixel(2, 3));
 
-		$table->setCol(8, 0, array("class" => "defaultgray"), g_l('modules_newsletter', '[firstname]'));
-		$table->setCol(8, 1, array(), we_html_tools::getPixel(15, 10));
-		$table->setCol(8, 2, array(), we_html_tools::htmlTextInput("firstname", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($firstname) : $firstname), "", "", "text", 310));
+		$table->setCol($row, 0, array("class" => "defaultgray", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[firstname]'));
+		$table->setCol($row, 1, array(), we_html_tools::getPixel(15, 10));
+		$table->setCol($row++, 2, array(), we_html_tools::htmlTextInput("firstname", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($firstname) : $firstname), "", "", "text", 310));
 
-		$table->setCol(9, 2, array(), we_html_tools::getPixel(2, 3));
 
-		$table->setCol(10, 0, array("class" => "defaultgray"), g_l('modules_newsletter', '[lastname]'));
-		$table->setCol(10, 1, array(), we_html_tools::getPixel(15, 10));
-		$table->setCol(10, 2, array(), we_html_tools::htmlTextInput("lastname", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($lastname) : $lastname), "", "", "text", 310));
+		$table->setCol($row, 0, array("class" => "defaultgray", 'style' => "padding-bottom:2px;"), g_l('modules_newsletter', '[lastname]'));
+		$table->setCol($row, 1, array(), we_html_tools::getPixel(15, 10));
+		$table->setCol($row++, 2, array(), we_html_tools::htmlTextInput("lastname", 32, ($GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8' ? utf8_decode($lastname) : $lastname), "", "", "text", 310));
 
-		$table->setCol(11, 2, array(), we_html_tools::getPixel(2, 3));
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
@@ -2106,8 +2100,7 @@ function postSelectorSelect(wePssCmd) {
 				}
 			}
 
-			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", "align" => "center"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2)
-				. '<br/><br/>' .
+			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", "align" => "center", 'style' => "padding-bottom:2em;"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2) .
 				we_html_button::create_button(we_html_button::PLUS, "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 		}
 
