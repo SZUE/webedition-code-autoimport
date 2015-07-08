@@ -65,6 +65,7 @@ body.radient{
 	padding:8px 0px 10px 0px;
 	background-color:grey;/*for old browsers*/
 	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
+	height:100%;
 }
 
 #weMainBody{
@@ -999,4 +1000,12 @@ table.customer th{
 table.propertydualtable td{
 	padding-right:18px;
 	padding-bottom:2px;
+}
+
+table.footertable{
+	margin-left:7px;
+}
+
+table.footertable button.weBtn{
+	margin-right: 2em;
 }

@@ -217,6 +217,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		if($iDatLen > $iCurrCol){
 			$s1 .= '<td id="spacer_' . $iCurrCol . '" style="width: 5px;"></td>';
 		}
+		unset($oTblCont,$oTblDiv);
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
