@@ -44,9 +44,9 @@ class we_collection extends we_root{
 	private $iconSizes = array(2 => 400, 3 => 260, 4 => 200, 5 => 160, 6 => 134);
 	protected $itemsPerRow = 4;
 
-	const COLOR_YES = 'green';
-	const COLOR_NO = 'red';
-	const COLOR_NONE = 'transparent';
+	const CLASS_YES = 'we-state-green';
+	const CLASS_NO = 'we-state-red';
+	const CLASS_NONE = 'we-state-none';
 
 	/** Constructor
 	 * @return we_collection
@@ -54,6 +54,7 @@ class we_collection extends we_root{
 	 */
 	function __construct(){
 		parent::__construct();
+		$this->Published = 1;
 		$this->Table = VFILE_TABLE;
 		array_push($this->persistent_slots, 'fileCollection', 'objectCollection', 'remTable', 'remCT', 'remClass', 'insertPrefs', 'IsDuplicates', 'InsertRecursive', 'ContentType', 'view', 'itemsPerRow');
 
@@ -119,7 +120,7 @@ class we_collection extends we_root{
 
 		$ret = array();
 		$tempCollection = ',';
-		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'ext' => '', 'elements' => array('attrib_title' => array('Dat' => '', 'state' => self::COLOR_NONE), 'attrib_alt' => array('Dat' => '', 'state' => self::COLOR_NONE), 'meta_title' => array('Dat' => '', 'state' => self::COLOR_NONE), 'meta_description' => array('Dat' => '', 'state' => self::COLOR_NONE), 'custom' => array('type' => '', 'Dat' => '', 'BDID' => 0)), 'icon' => array('imageView' => '', 'imageViewPopup' => '', 'sizeX' => 0, 'sizeY' => 0, 'url' => '', 'urlPopup' => ''));
+		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'ext' => '', 'elements' => array('attrib_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'attrib_alt' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_description' => array('Dat' => '', 'state' => self::CLASS_NONE), 'custom' => array('type' => '', 'Dat' => '', 'BDID' => 0)), 'icon' => array('imageView' => '', 'imageViewPopup' => '', 'sizeX' => 0, 'sizeY' => 0, 'url' => '', 'urlPopup' => ''));
 
 		$activeCollection = explode(',', trim($this->$activeCollectionName, ','));
 		$activeCollection = $this->IsDuplicates ? $activeCollection : array_unique($activeCollection);
@@ -306,15 +307,14 @@ class we_collection extends we_root{
 		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2, $callback, 'btn_import_files_and_insert');
 		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems();", true, 52, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 
-		$head = new we_html_table(array("style" => "border: 0px solid gray;width:100%;height:32px"), 1, 8);
-		$head->setCol(0, 0, array('width' => '*'), $recursive);
-		$head->setCol(0, 1, array('width' => '160px'), $slider);
-		$head->setCol(0, 2, array('width' => '42px'), $btnIconview);
-		$head->setCol(0, 3, array('width' => '42px'), $btnListview);
-		$head->setCol(0, 4, array('width' => '20px'));
-		$head->setCol(0, 5, array('width' => '42px'), $addFromTreeButton);
-		$head->setCol(0, 6, array('width' => '42px'), $btnImport);
-		$head->setCol(0, 7, array('width' => '100px', 'style' => 'text-align: right;padding-right:4px;', 'class' => 'weMultiIconBoxHeadline'), 'Anzahl: <span id="numSpan"><i style="font-size:1em" class="fa fa-2x fa-spinner fa-pulse"></i></span>');
+		$toolbar = new we_html_table(array("style" => "border: 0px solid gray;width:100%;height:32px"), 1, 7);
+		$toolbar->setCol(0, 0, array('width' => '*'), $recursive);
+		$toolbar->setCol(0, 1, array('width' => '160px'), $slider);
+		$toolbar->setCol(0, 2, array('width' => '42px'), $btnIconview);
+		$toolbar->setCol(0, 3, array('width' => '42px'), $btnListview);
+		$toolbar->setCol(0, 4, array('width' => '60px', 'style' => 'padding-left:20px'), $addFromTreeButton);
+		$toolbar->setCol(0, 5, array('width' => '40px'), $btnImport);
+		$toolbar->setCol(0, 6, array('width' => '100px', 'style' => 'text-align: right;padding-right:4px;', 'class' => 'weMultiIconBoxHeadline'), 'Anzahl: <span id="numSpan"><i style="font-size:1em" class="fa fa-2x fa-spinner fa-pulse"></i></span>');
 
 		$items = $this->getValidCollection(false, true, true);
 
@@ -376,18 +376,16 @@ $jsStorageItems;
 				'we_' . $this->Name . '_itemsPerRow' => $this->itemsPerRow,
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
-			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;'), 'Inhalt der Sammlung') .
-			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline', 'style' => 'width:806px;margin:20px 0 0 20px;color:red;font-size:20px'), 'Hinweis: Die Sammlungen sind z.Zt. komplett unbenutzbar<br/>(auch nicht zu Testzwecken)!') .
-			we_html_element::htmlDiv(array('class' => '', 'style' => 'width:806px;margin:20px 0 0 20px;'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
-			we_html_element::htmlDiv(array('style' => 'width:850px;padding:10px 0 0 20px;margin:12px 0 0 0;'), $head->getHtml()) .
-			we_html_element::htmlDiv(array('id' => 'content_table_list', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px;background-color:white;min-height:200px;display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
-			we_html_element::htmlDiv(array('id' => 'content_table_grid', 'class' => 'content_table', 'style' => 'width:806px;border:1px solid #afb0af;padding:20px;margin:20px 0 0 20px;background-color:white;min-height:200px;display:' . ($this->view === 'grid' ? 'inline-block' : 'none')), $divs);
+			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collectionHead'), 'Inhalt der Sammlung') . //TODO: G_L()
+			we_html_element::htmlDiv(array('class' => 'collectionHead'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
+			we_html_element::htmlDiv(array('class' => 'collectionToolbar'), $toolbar->getHtml()) .
+			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'content_div', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
+			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'content_div', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')), $divs);
 	}
 
 	private function makeListItem($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
 		$textname = 'we_' . $this->Name . '_ItemName_' . $index;
 		$idname = 'we_' . $this->Name . '_ItemID_' . $index;
-
 		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "document.we_form.elements['" . $textname . "'].value";
 		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);opener.weCollectionEdit.repaintAndRetrieveCsv();";
@@ -404,7 +402,7 @@ $jsStorageItems;
 
 		//$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
 		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems(this);", true, 52, 22, '', '', false, false, '', false, '');
-		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
+		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22, '', '', ($item['id'] === -1), false, '', false, '', 'btn_edit');
 
 		$yuiSuggest->setTable(addTblPrefix($this->remTable));
 		$yuiSuggest->setContentType('folder,' . trim($this->remCT, ','));
@@ -412,7 +410,7 @@ $jsStorageItems;
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
-		$yuiSuggest->setInput($textname, $item['path'], array("onmouseover" => "document.getElementById('list_item_" . $index . "').draggable=false", "onmouseout" => "document.getElementById('list_item_" . $index . "').draggable=true"));
+		$yuiSuggest->setInput($textname, $item['path']);
 		$yuiSuggest->setResult($idname, $item['id']);
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
@@ -431,33 +429,22 @@ $jsStorageItems;
 		$rowControlls = we_html_button::create_button_table($rowControllsArr, 5);
 
 		$rowHtml = new we_html_table(array('draggable' => 'false'), 1, 4);
-
-		//imageView
-		$img = we_html_element::htmlDiv(array(
+		$imgDiv = we_html_element::htmlDiv(array(
 				'id' => 'previweDiv_' . $index,
-				'style' => "width:80px;height:80px;dislpay:block;background:url('" . $item['icon']['url'] . "') no-repeat center center;background-size:contain;",
+				'class' => 'previewDiv',
+				'style' => "background-image:url('" . $item['icon']['url'] . "');",
 				), '');
-		$rowHtml->setCol(0, 0, array('width' => '60px', 'style' => 'padding:0 10px 0 12px;', 'class' => 'weMultiIconBoxHeadline'), '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
-		$rowHtml->setCol(0, 1, array('width' => '80px', 'style' => 'padding:3px;background-color:none;', 'class' => ''), $img);
+		$rowHtml->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
+		$rowHtml->setCol(0, 1, array('class' => 'colPreview'), $imgDiv);
 
 		$rowInnerTable = new we_html_table(array('draggable' => 'false'), 2, 2);
-			$rowInnerTable->setCol(0, 0, array('colspan' => 2), '<div style="width:450px; padding:0 20px 0 10px;">' . $yuiSuggest->getHTML() . '</div>');
-			$rowInnerTable->setCol(1, 0, array('class' => 'defaultfont', 'style' => 'width:180px;cursor:default;padding:0px 10px 3px 12px;text-overflow: ellipsis;', 'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<div style="width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><i class="fa fa-lg fa-circle" style="color:' . $item['elements']['attrib_alt']['state'] . ';font-size:14px;"></i> ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt') . '</div>');
-			$rowInnerTable->setCol(1, 1, array('class' => 'defaultfont', 'style' => 'cursor:default;padding:0px 10px 3px 12px;text-overflow: ellipsis;', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<div style="width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><i class="fa fa-lg fa-circle" style="color:' . $item['elements']['attrib_alt']['state'] .  ';font-size:14px;"></i> ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt') . '</div>');
-		$rowHtml->setCol(0, 2, array(), $rowInnerTable->getHtml());
-		$rowHtml->setCol(0, 3, array('width' => '', 'style' => 'padding:4px 30px 0 10px;', 'class' => 'weMultiIconBoxHeadline'), $rowControlls);
+			$rowInnerTable->setCol(0, 0, array('colspan' => 2), $yuiSuggest->getHTML());
+			$rowInnerTable->setCol(1, 0, array(), we_html_element::htmlDiv(array('class' => 'innerDiv defaultfont', 'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i> ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt')));
+			$rowInnerTable->setCol(1, 1, array(), we_html_element::htmlDiv(array('class' => 'innerDiv defaultfont', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i> ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt')));
+		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $rowInnerTable->getHtml());
+		$rowHtml->setCol(0, 3, array('class' => 'colControls weMultiIconBoxHeadline'), $rowControlls);
 
-		return we_html_element::htmlDiv(array(
-				'style' => 'margin-top:4px;border:1px solid #006db8;background-color:#f5f5f5;cursor:move;',
-				'id' => 'list_item_' . $index,
-				'class' => 'drop_reference',
-				'draggable' => 'true',
-				'ondragstart' => 'weCollectionEdit.startMoveItem(event, \'list\')',
-				'ondrop' => 'weCollectionEdit.dropOnItem(\'item\',\'list\',event, this)',
-				'ondragover' => 'weCollectionEdit.allowDrop(event)',
-				'ondragenter' => 'weCollectionEdit.enterDrag(\'item\',\'list\',event, this)',
-				'ondragend' => 'weCollectionEdit.dragEnd(event)'
-				), $rowHtml->getHtml());
+		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'true'), $rowHtml->getHtml());
 	}
 
 	/*
@@ -554,31 +541,34 @@ $jsStorageItems;
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['ct'] . "');", true, 27, 22);
 		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
-		$toolbar = new we_html_table(array('draggable' => 'false', 'width' => '100%'), 1, 4);
-		$toolbar->setCol(0, 0, array('width' => '*', 'style' => 'padding:0 0 0 10px;text-align:left;', 'class' => 'weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>');
-		$toolbar->setCol(0, 1, array('width' => '20', 'style' => 'padding-bottom:3px', 'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle" style="color:' . $item['elements']['attrib_alt']['state'] . ';font-size:16px;"></i>');
-		$toolbar->setCol(0, 2, array('width' => '20', 'style' => 'padding-bottom:3px', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle" style="color:' . $item['elements']['attrib_alt']['state'] .  ';font-size:16px;"></i>');
-		$toolbar->setCol(0, 3, array('width' => '70', 'style' => ''), $editButton . $trashButton);
+		$toolbar = new we_html_table(array('class' => 'toolbar', 'draggable' => 'false'), 1, 4);
+		$toolbar->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>');
+		$toolbar->setCol(0, 1, array('class' => 'colAttrib', 'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>');
+		$toolbar->setCol(0, 2, array('class' => 'colAttrib', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>');
+		$toolbar->setCol(0, 3, array('class' => 'colBtn'), $editButton . $trashButton);
 
 		$displayBtnEdit = $item['id'] === -1 ? 'block' : ($item['id'] === '##ID##' ? '##SHOWBTN##' : 'none');
 
 		//TODO: use css classes to avoid all this inline css
 		return we_html_element::htmlDiv(array(
-					'style' => 'position:relative;width:' . $this->iconSizes[$this->itemsPerRow] . 'px;height:' . $this->iconSizes[$this->itemsPerRow] . 'px;float:left;dislpay:block;',
+					//TODO: let's set dimensions by JS
+					'style' => 'width:' . $this->iconSizes[$this->itemsPerRow] . 'px;height:' . $this->iconSizes[$this->itemsPerRow] . 'px;',
 					'id' => 'grid_item_' . $index,
-					'class' => 'drop_reference'
+					'class' => 'gridItem'
 				), we_html_element::htmlDiv(array(
 						'title' => $item['path'],
-						'style' => 'position:absolute;left:0;top:0;bottom:14px;right:14px;border:1px solid #006db8;float:left;dislpay:block;' . ($item['icon'] ? "background:url('" . $item['icon']['url'] . "') no-repeat center center;background-size:contain;" : 'background-color:white;'),
+						'class' => 'divContent',
+						'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : ''), // TODO: set url on JS::init();
 						'draggable' => 'true',
 					), we_html_element::htmlDiv(array(
-							'style' => 'position:absolute;top:' . (($this->iconSizes[$this->itemsPerRow] - 30)/2 - 10) . 'px;bottom:30px;width:100%;text-align:center;vertical-align:center;display:' . $displayBtnEdit
+							'class' => 'divSelect',
+							'style' => 'top:' . (($this->iconSizes[$this->itemsPerRow] - 30)/2 - 10) . 'px;display:' . $displayBtnEdit
 						), $selectButton) .
-						we_html_element::htmlDiv(array(
-							'style' => 'position:absolute;bottom:0;width:100%;height:30px;text-align:right;padding-bottom:6px;background-color:#f5f5f5;opacity:0.6;display:none;',
+					we_html_element::htmlDiv(array(
+							'class' => 'divToolbar',
 						), $toolbar->getHtml())) .
 				we_html_element::htmlDiv(array(
-					'style' => 'position:absolute;top:0;right:0;bottom:14px;width:12px;border:1px solid white;float:left;dislpay:block;',
+					'class' => 'divSpace',
 					'id' => 'grid_space_' . $index,
 					), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id']) . we_html_element::htmlHidden('collectionItem_we_id_' . $index, $item['id'])
 		);
@@ -598,18 +588,18 @@ $jsStorageItems;
 			'elements' => array(
 				'attrib_title' => array(
 					'Dat' => '',
-					'state' => self::COLOR_NO
+					'state' => self::CLASS_NO
 				),
 				'attrib_alt' => array(
 					'Dat' => '',
-					'state' => self::COLOR_NO
+					'state' => self::CLASS_NO
 				), 'meta_title' => array(
 					'Dat' => '',
-					'state' => self::COLOR_NONE
+					'state' => self::CLASS_NONE
 				),
 				'meta_description' => array(
 					'Dat' => '',
-					'state' => self::COLOR_NONE
+					'state' => self::CLASS_NONE
 				),
 				'custom' => array(
 					'type' => '',
@@ -654,9 +644,8 @@ $jsStorageItems;
 					default:
 						$fieldname = 'custom';
 
-
 				}
-				$items[$this->DB_WE->f('DID')]['elements'][$fieldname] = $fieldname === 'custom' ? array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID')) : array('Dat' => $this->DB_WE->f('Dat'), 'state' => ($this->DB_WE->f('Dat') ? self::COLOR_YES : self::COLOR_NO));
+				$items[$this->DB_WE->f('DID')]['elements'][$fieldname] = $fieldname === 'custom' ? array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID')) : array('Dat' => $this->DB_WE->f('Dat'), 'state' => ($this->DB_WE->f('Dat') ? self::CLASS_YES : self::CLASS_NO));
 			}
 		}
 

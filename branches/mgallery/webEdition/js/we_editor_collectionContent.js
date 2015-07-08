@@ -122,18 +122,16 @@ weCollectionEdit = {
 	},
 
 	init: function(){
-		this.ct.grid = document.getElementById('content_table_grid');
-		this.ct.list = document.getElementById('content_table_list');
+		this.ct.grid = document.getElementById('content_div_grid');
+		this.ct.list = document.getElementById('content_div_list');
 		this.sliderDiv = document.getElementById('sliderDiv');
 		this.numSpan = document.getElementById('numSpan');
 
-		if(this.view === 'grid'){
-			for(var i = 0; i < this.ct.grid.children.length; i++){
-				this.addListenersToItem('grid', this.ct.grid.children[i], i+1);
-			}
+		for(var i = 0; i < this.ct[this.view].children.length; i++){
+			this.addListenersToItem(this.view, this.ct[this.view].children[i], i+1);
 		}
 
-		this.reindexAndRetrieveCollection();
+		this.reindexAndRetrieveCollection(true);
 	},
 
 	setView: function(view){
@@ -159,30 +157,34 @@ weCollectionEdit = {
 	},
 
 	addListenersToItem: function(view, elem){
-		var t = this, item, ctrls, space;
+		var t = this, item, input, ctrls, space;
 
 		//TODO: grab elems by getElementByClassName instead of counting children...
 		if(view === 'grid'){
 			item = elem.firstChild;
-			item.addEventListener('drop', function(e){t.dropOnItem('item', view, e, item);}, false);
-			item.addEventListener('dragenter', function(e){t.enterDrag('item', view, e, item);}, false);
-			item.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
+			item.addEventListener('mouseover', function(){t.overMouse('item', view, item);}, false);
+			item.addEventListener('mouseout', function(){t.outMouse('item', view, item);}, false);
 			item.addEventListener('dragleave', function(e){t.leaveDrag('item', view, e, item);}, false);
-			item.addEventListener('dragstart', function(e){t.startMoveItem(e, view);}, false);
-			item.addEventListener('dragend', function(e){t.dragEnd(e);}, false);
-			item.addEventListener('mouseover', function(e){t.overMouse('item', view, item);}, false);
-			item.addEventListener('mouseout', function(e){t.outMouse('item', view, item);}, false);
-
 			ctrls = item.lastChild;
-			ctrls.addEventListener('mouseover', function(e){t.overMouse('btns', view, ctrls);}, false);
-			ctrls.addEventListener('mouseout', function(e){t.outMouse('btns', view, ctrls);}, false);
-
-			space = elem.childNodes[1]; //document.getElementById('grid_space_' + num);
+			ctrls.addEventListener('mouseover', function(){t.overMouse('btns', view, ctrls);}, false);
+			ctrls.addEventListener('mouseout', function(){t.outMouse('btns', view, ctrls);}, false);
+			space = elem.childNodes[1];
 			space.addEventListener('drop', function(e){t.dropOnItem('space', view, e, space);}, false);
 			space.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
 			space.addEventListener('dragenter', function(e){t.enterDrag('space', view, e, space);}, false);
 			space.addEventListener('dragleave', function(e){t.leaveDrag('space', view, e, space);}, false);
+		} else {
+			item = elem;
+			input = document.getElementById('yuiAcInputItem_' + item.id.substr(10));//top.console.debug(item.id.substr(10), input);
+			input.addEventListener('mouseover', function(){item.draggable=false;});
+			input.addEventListener('mouseout', function(){item.draggable=true;});
 		}
+		item.addEventListener('drop', function(e){t.dropOnItem('item', view, e, item);}, false);
+		item.addEventListener('dragenter', function(e){t.enterDrag('item', view, e, item);}, false);
+		item.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
+		item.addEventListener('dragstart', function(e){t.startMoveItem(e, view);}, false);
+		item.addEventListener('dragend', function(e){t.dragEnd(e);}, false);
+
 	},
 
 	doClickUp: function(elem){
@@ -283,8 +285,12 @@ weCollectionEdit = {
 	},
 
 	getItem: function(elem){
-		while(elem.className !== 'drop_reference' && elem.className !== 'content_table'){
+		var itemClass = this.view === 'grid' ? 'gridItem' : 'listItem';
+		while(elem.className !== itemClass){
 			elem = elem.parentNode;
+			if(elem.className === 'content_div'){
+				return false;
+			}
 		}
 
 		return elem;
@@ -293,15 +299,15 @@ weCollectionEdit = {
 	insertItem: function(elem, repaint, item, scope){
 		var t = scope ? scope : this,
 			el = elem ? t.getItem(elem) : null,
-			div, newElem, cmd1, cmd2, cmd3, blank,
+			div, newItem, cmd1, cmd2, cmd3, blank,
 			id = item && item.id ? item.id : -1,
 			path = item && item.path ? item.path : '',
 			ct = item && item.ct ? item.ct : 'image/*',
 			iconSrc = item && item.icon ? item.icon.url : '',
 			alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : this.g_l['element_not_set'],
 			title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : this.g_l['element_not_set'],
-			state_alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.state : 'red',
-			state_title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.state : 'red';
+			state_alt = item && item.elements.attrib_alt ? item.elements.attrib_alt.state : 'we-state-none',
+			state_title = item && item.elements.attrib_title ? item.elements.attrib_title.state : 'we-state-none';
 
 		repaint = repaint || false;
 		++t.maxIndex;
@@ -333,15 +339,15 @@ weCollectionEdit = {
 
 			// TODO: use replace here too!
 			div.firstChild.style.width = div.firstChild.style.height = t.gridItemSize + 'px';
-			t.addListenersToItem('grid', div.firstChild);
 		}
-		newElem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
+		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
+		t.addListenersToItem(t.view, newItem);
 
 		if(repaint){
 			t.reindexAndRetrieveCollection();
 		}
 
-		return newElem;
+		return newItem;
 	},
 
 	addItems: function(elem, items, notReplace){
@@ -425,11 +431,12 @@ weCollectionEdit = {
 		return itemsSet;
 	},
 
-	reindexAndRetrieveCollection: function(){
+	reindexAndRetrieveCollection: function(notSetHot){
 		var ct = this.ct[this.view], 
-			val, btns_up, btns_down,
+			val, btns_up, btns_down, btns_edit,
 			labels = document.getElementsByClassName(this.view + '_label');
 
+		btns_edit = ct.getElementsByClassName('btn_edit');
 		if(this.view === 'list'){
 			btns_up = ct.getElementsByClassName('btn_up');
 			btns_down = ct.getElementsByClassName('btn_down');
@@ -481,7 +488,9 @@ weCollectionEdit = {
 			this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
 		}
 		document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value = this.collectionCsv;
-		top.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+		if(!notSetHot){
+			top.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+		}
 	},
 
 	hideSpace: function(elem){
@@ -498,7 +507,7 @@ weCollectionEdit = {
 	},
 
 	enterDrag: function(type, view, evt, elem){
-		var el = this.getItem(elem),//this.getItem(evt.target),
+		var el = this.getItem(elem),
 			data = evt.dataTransfer.getData("text").split(',');
 
 		if(this.view === 'grid' && type === 'item'){
@@ -668,7 +677,7 @@ weCollectionEdit = {
 			/*
 			case 'moveRow':
 				this.dd.isMoveItem = false;
-				document.getElementById('content_table').replaceChild(this.dd.moveItem.el, this.getPlaceholder());
+				document.getElementById('content_div').replaceChild(this.dd.moveItem.el, this.getPlaceholder());
 				this.reindexAndRetrieveCollection();
 				this.dd.moveItem.el.style.borderColor = 'green';
 				setTimeout(function(){
