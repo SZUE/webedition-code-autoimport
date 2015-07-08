@@ -307,13 +307,6 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
   }
 
 
-  $_browser_table->setCol(0, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 20));
-  $_browser_table->setCol(2, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 50));
-  $_browser_table->setCol(4, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 30));
-  $_browser_table->setCol(6, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 10));
-  $_browser_table->setCol(8, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 5));
-  $_browser_table->setCol(10, 0, array('colspan' => $supportedBrowserCnt), we_html_tools::getPixel(1, 50));
-
   $_browser_table->setCol(11, 0, array('align' => 'center', 'class' => 'defaultfont', 'colspan' => $supportedBrowserCnt), we_html_element::htmlA(array('href' => WEBEDITION_DIR . 'index.php?ignore_browser=1'), g_l('start', '[ignore_browser]')));
 
   $_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);

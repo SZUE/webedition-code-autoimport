@@ -603,47 +603,33 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	 */
 	function formProperties(){
 		// Create table
-		$_content = new we_html_table(array('class' => 'default'), 12, 5);
-
+		$_content = new we_html_table(array('class' => 'default propertydualtable'), 5, 3);
+		$row=0;
 		// Row 1
-		$_content->setCol(0, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
-		$_content->setCol(0, 2, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
-		$_content->setCol(0, 4, null, $this->formInput2(155, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
+		$_content->setCol($row, 1, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
+		$_content->setCol($row++, 2, null, $this->formInput2(155, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
-		$_content->setCol(0, 1, null, we_html_tools::getPixel(18, 1));
-		$_content->setCol(0, 3, null, we_html_tools::getPixel(18, 1));
 
 		// Row 2
-		$_content->setCol(1, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
+		$_content->setCol($row, 0, null, $this->formInput2(155, 'align', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 1, null, $this->formInput2(155, 'hspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row++, 2, null, $this->formInput2(155, 'vspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+
 
 		// Row 3
-		$_content->setCol(2, 0, null, $this->formInput2(155, 'align', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(2, 2, null, $this->formInput2(155, 'hspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(2, 4, null, $this->formInput2(155, 'vspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 0, array('colspan' => 3), $this->formInput2(328, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row++, 2, null, $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
-		$_content->setCol(2, 1, null, we_html_tools::getPixel(18, 1));
-		$_content->setCol(2, 3, null, we_html_tools::getPixel(18, 1));
 
-		// Row 4
-		$_content->setCol(3, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
+		//	Row 4
+		$_content->setCol($row, 0, array('colspan' => 3), $this->formInput2(328, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
 
-		// Row 5
-		$_content->setCol(4, 0, array('colspan' => 3), $this->formInput2(328, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol(4, 3, null, we_html_tools::getPixel(18, 1));
-		$_content->setCol(4, 4, null, $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-
-		// Row 6
-		$_content->setCol(5, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
-
-		//	Row 7
-		$_content->setCol(6, 0, array('colspan' => 3), $this->formInput2(328, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
-
-		$_content->setCol(6, 3, null, we_html_tools::getPixel(18, 1));
 		$_titleField = 'we_' . $this->Name . '_attrib[title]';
 		$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_attrib[useMetaTitle]';
 		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
-		$_content->setCol(6, 4, array('valign' => 'bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $_titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $_titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $_titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $_titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol($row++, 2, array('valign' => 'bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $_titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $_titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $_titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $_titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
@@ -666,8 +652,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
 		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $longdesc_id_name . "'].value='-1';document.we_form.elements['" . $longdesc_text_name . "'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
-		$_content->setCol(7, 0, array('colspan' => 5), we_html_tools::getPixel(1, 5));
-		$_content->setCol(8, 0, array('valign' => 'bottom', 'colspan' => 5), $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs());
+		$_content->setCol($row, 0, array('valign' => 'bottom', 'colspan' => 5), $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs());
 
 		// Return HTML
 		return $_content->getHtml();

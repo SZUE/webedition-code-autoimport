@@ -118,15 +118,6 @@ class we_schedpro{
 		return $wd;
 	}
 
-	function getSpacerRowHTML(){
-		return '
-<tr valign="top">
-	<td>' . we_html_tools::getPixel(80, 10) . '</td>
-	<td>' . we_html_tools::getPixel(565, 10) . '</td>
-	<td>' . we_html_tools::getPixel(26, 10) . '</td>
-</tr>';
-	}
-
 	//needed to switch description of button publish to "save to scheduler" and vice versa
 	public static function getMainJS($doc){
 		return we_html_element::jsElement('
@@ -260,28 +251,27 @@ function checkFooter(){
 		$checknname = md5(uniqid(__FUNCTION__, true));
 		$table = '<table class="default">
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[task][headline]') . ':</td>
+		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[task][headline]') . ':</td>
 		<td class="defaultfont"><table class="default"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
 				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('schedule_del','" . $this->nr . "')") . '</td>
-	</tr>' . $this->getSpacerRowHTML();
+	</tr>';
 		if($extracont){
 			$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . $extraheadl . ':</td>
+		<td class="defaultgray" style="margin-bottom:10px;">' . $extraheadl . ':</td>
 		<td class="defaultfont">' . $extracont . '</td>
 		<td></td>
-	</tr>' . $this->getSpacerRowHTML();
+	</tr>';
 		}
 
 		$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[type][headline]') . ':</td>
+		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[type][headline]') . ':</td>
 		<td class="defaultfont">' . $typepopup . '</td>
 		<td></td>
-	</tr>' .
-			$this->getSpacerRowHTML();
+	</tr>';
 
 
 		switch($this->type){
@@ -312,11 +302,10 @@ function checkFooter(){
 			case self::TYPE_WEEK:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>' .
-					$this->getSpacerRowHTML() . '
+	</tr>
 	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', '[weekdays]') . ':</td>
 		<td class="defaultfont">' . $this->getWeekdaysHTML() . '</td>
@@ -326,11 +315,10 @@ function checkFooter(){
 			case self::TYPE_MONTH:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>' .
-					$this->getSpacerRowHTML() . '
+	</tr>
 	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
 		<td class="defaultfont">' . $this->getDaysHTML() . '</td>
@@ -340,17 +328,15 @@ function checkFooter(){
 			case self::TYPE_YEAR:
 				$table .= '
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[time]') . ':</td>
+		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[time]') . ':</td>
 		<td class="defaultfont">' . we_html_tools::getDateInput2("we_schedule_time%s_" . $this->nr, $this->time, true, "h:i") . '</td>
 		<td></td>
-	</tr>' .
-					$this->getSpacerRowHTML() . '
+	</tr>
 	<tr valign="top">
-		<td class="defaultgray">' . g_l('modules_schedule', '[months]') . ':</td>
+		<td class="defaultgray" style="margin-bottom:10px;">' . g_l('modules_schedule', '[months]') . ':</td>
 		<td class="defaultfont">' . $this->getMonthsHTML() . '</td>
 		<td></td>
-	</tr>' .
-					$this->getSpacerRowHTML() . '
+	</tr>
 	<tr valign="top">
 		<td class="defaultgray">' . g_l('modules_schedule', '[days]') . ':</td>
 		<td class="defaultfont">' . $this->getDaysHTML() . '</td>

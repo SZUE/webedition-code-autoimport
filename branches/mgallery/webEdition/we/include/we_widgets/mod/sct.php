@@ -95,11 +95,11 @@ $sSctOut = '';
 $_col = 0;
 
 foreach($shortcuts as $sctCol){
-	$sSctOut .= '<div class="sct_row" style="display: block; width: 100%; float: left;"><table class="default" width="100%">';
+	$sSctOut .= '<div class="sct_row" style="display: block; width: 100%; float: left;"><table class="default" style="width:100%;">';
 	$iCurrSctRow = 0;
 	foreach($sctCol as $_label){
 		if(isset($js[$_label])){
-			$sSctOut .= '<tr><td width="34" height="34">' . we_html_element::htmlA(
+			$sSctOut .= '<tr><td style="width:34px;height:34px;padding-right:5px;padding-bottom:3px;">' . we_html_element::htmlA(
 					array(
 					"href" => "javascript:" . $js[$_label]
 					), we_html_element::htmlImg(
@@ -109,14 +109,12 @@ foreach($shortcuts as $sctCol){
 							"height" => 34,
 							"border" => 0
 				))) . '</td>';
-			$sSctOut .= '<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>';
 			$sSctOut .= '<td valign="middle">' . we_html_element::htmlA(
 					array(
 					"href" => "javascript:" . $js[$_label],
 					"class" => "middlefont",
 					"style" => "font-weight:bold;text-decoration:none;"
 					), g_l('button', '[' . $_label . '][value]')) . '</td></tr>';
-			$sSctOut .= '<tr><td height="3">' . we_html_tools::getPixel(1, 3) . '</td></tr>';
 		}
 		$iCurrSctRow++;
 	}

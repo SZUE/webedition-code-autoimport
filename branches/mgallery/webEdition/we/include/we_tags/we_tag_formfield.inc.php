@@ -108,7 +108,7 @@ function we_tag_formfield($attribs){
 				<tr>';
 
 			foreach($ff as $f => $m){
-				$tbl .= '<td class="weEditmodeStyle" style="color: black; font-size: 10px; font-family: Verdana, sans-serif"><nobr><b>' . $f . ':</b><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif">&nbsp;';
+				$tbl .= '<td class="weEditmodeStyle" style="color: black; font-size: 10px; font-family: Verdana, sans-serif;margin-left:5px;"><nobr><b>' . $f . ':</b><span style="color: black; font-size: 12px; font-family: Verdana, sans-serif">&nbsp;';
 				$val = isset($m['value']) ? $m['value'] : '';
 
 				$default = isset($m['default']) ? makeArrayFromCSV($m['default']) : array();
@@ -144,7 +144,7 @@ function we_tag_formfield($attribs){
 						$tbl .= $foo . '<input type="hidden" name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" value="' . $foo . '" />';
 					}
 				}
-				$tbl .= '</span></nobr></td><td class="weEditmodeStyle">' . we_html_tools::getPixel(5, 2) . "</td>";
+				$tbl .= '</span></nobr></td>';
 			}
 			$tbl .= '</tr>
 			</table>
