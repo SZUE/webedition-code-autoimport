@@ -53,7 +53,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		$passed_dls = array();
 		foreach($messaging->selected_set as $key => $val){
 			echo '<tr onclick="check(\'' . $val['ID'] . '\')" style="cursor:pointer">
-		<td id="td_' . $val['ID'] . '_cb" width="18" align="left" class="defaultfont"></td>';
+		<td id="td_' . $val['ID'] . '_cb" width="18" align="left" class="defaultfont" style="padding-bottom:3px;"></td>';
 
 			if($val['hdrs']['ClassName'] === 'we_todo'){
 				if($val['hdrs']['Deadline'] < time()){
@@ -76,8 +76,6 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 				<td id="td_' . $val['ID'] . '_3" width="40" align="left" class="defaultfont"><img src="' . IMAGE_DIR . 'msg_' . ($val['hdrs']['seenStatus'] & we_messaging_proto::STATUS_READ ? '' : 'un') . 'read.gif" border="0" width="16" height="18" name="read_' . $val['ID'] . '" /></td>
 			</tr>';
 			}
-
-			echo '<tr><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td><td>' . we_html_tools::getPixel(1, 3) . '</td></tr>';
 		}
 		?></table><?php
 		?>
