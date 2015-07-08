@@ -78,17 +78,13 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		$out = '<table class="default" id="defSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'none' : 'block') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:switchSearch(1)", false) . '</td>
-	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:switchSearch(1)", false) . '</td>
 </tr>
 </table>
 <table class="default" id="advSearch" width="550" style="margin-left:20px;display:' . ($GLOBALS['we_doc']->searchclassFolder->mode ? 'block' : 'none') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('searchtool', '[suchen]') . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
-	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
+	<td>' . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
 </tr>
 </table>' .
 			we_class::hiddenTrans() .
@@ -154,7 +150,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 					$cmd1 = "document.we_form.elements['searchParentID[" . $i . "]'].value";
 					$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value") . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 					$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
+					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), $_button);
 
 					$searchInput = $selector;
 				}
@@ -165,7 +161,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 					$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
 					$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), we_html_tools::getPixel(5, 4), $_button);
+					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), $_button);
 
 					$searchInput = $selector;
 				}
@@ -418,7 +414,17 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			$Icon = we_base_ContentTypes::inst()->getIcon($_result[$f]['ContentType'], we_base_ContentTypes::FILE_ICON, $ext);
 
 			if($view == 0){
-				$publishCheckbox = (!$showPubCheckbox) ? (($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_result[$f]["ContentType"] == we_base_ContentTypes::HTML || $_result[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) && permissionhandler::hasPerm('PUBLISH')) ? we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "") : we_html_tools::getPixel(20, 10) : '';
+				switch($showPubCheckbox ? '-1' : $_result[$f]["ContentType"]){
+					case we_base_ContentTypes::WEDOCUMENT:
+					case we_base_ContentTypes::HTML:
+					case we_base_ContentTypes::OBJECT_FILE:
+						if(permissionhandler::hasPerm('PUBLISH')){
+							$publishCheckbox = we_html_forms::checkbox($_result[$f]["docID"] . "_" . $_result[$f]["docTable"], 0, "publish_docs_doclist", "", false, "middlefont", "");
+							break;
+						}
+					default:
+						$publishCheckbox = $showPubCheckbox ? '' : '<span style="width:20px"/>';
+				}
 
 				$content[$f] = array(
 					array('dat' => $publishCheckbox),
@@ -541,20 +547,16 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			we_html_tools::hidden("todo", "") .
 			we_html_tools::hidden("mode", $mode) .
 			we_html_tools::hidden("setView", $setView) .
-			'<table class="default">
+			'<table class="default" style="margin:12px 0px 12px 19px;">
 	<tr>
-		<td>' . we_html_tools::getPixel(19, 12) . '</td>
 		<td style="font-size:12px;width:125px;">' . g_l('searchtool', '[eintraege_pro_seite]') . ':</td>
 		<td class="defaultgray" style="width:60px;">' . we_html_tools::htmlSelect("anzahl", $anzahl, 1, $_anzahl, "", array('onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '</td>
 		<td>' . self::getNextPrev($foundItems) . '</td>
-		<td>' . we_html_tools::getPixel(10, 12) . '</td>
 		<td>' . we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
-		<td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>
-		<td>' . we_html_tools::getPixel(10, 12) . '</td>' .
+		<td>' . we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>' .
 			($id && $table === FILE_TABLE ? we_html_baseElement::getHtmlCode(new we_html_baseElement('td', true, array('style' => 'width:50px;'), we_fileupload_importFiles::getBtnImportFiles($id))) : '') .
 			'<td style="width:50px;">' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.we_cmd('new_document','" . FILE_TABLE . "','','" . we_base_ContentTypes::FOLDER . "','','" . $id . "')", true, 50, "", "", "", false) . '</td>
 	</tr>
-	<tr><td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td></tr>
 </table>';
 	}
 
@@ -577,7 +579,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	<tr>
 	 <td>' . $publishButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:125px;">' . $publishButton . '</td>
-	 <td class="defaultgray" style="width:60px;" id="resetBusy">' . we_html_tools::getPixel(30, 12) . '</td>
+	 <td class="defaultgray" style="width:60px;height:30px;" id="resetBusy"></td>
 	 <td style="width:370px;">' . self::getNextPrev($foundItems, false) . '</td>
 	</tr>
 </table>';
@@ -602,15 +604,14 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 				we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
 				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
 			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td>
-        <td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			'</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ? $we_search_anzahl : $searchstart + $anzahl) .
-			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
 				we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") :
 				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)
 			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+			'</td><td>';
 
 		$pages = array();
 		if($anzahl){

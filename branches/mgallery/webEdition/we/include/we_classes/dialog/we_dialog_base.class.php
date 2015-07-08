@@ -146,7 +146,7 @@ function doKeyDown() {
 	}
 
 	protected function getbackBut(){
-		return ($this->pageNr > 1) ? we_html_button::create_button(we_html_button::BACK, 'javascript:history.back();') . we_html_tools::getPixel(10, 2) : '';
+		return ($this->pageNr > 1) ? we_html_button::create_button(we_html_button::BACK, 'javascript:history.back();') : '';
 	}
 
 	function getDialogHTML(){

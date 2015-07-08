@@ -188,6 +188,7 @@ abstract class we_html_button{
 				if($type == self::WE_FA_BUTTON_IDENTIFY){
 					$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 				}
+				$class.=' multiicon';
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);

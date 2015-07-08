@@ -49,13 +49,13 @@ class we_chooser_multiDirTemplateAndDefault extends we_chooser_multiDirAndTempla
 		//$editable = $this->isEditable();
 		switch($lineNr){
 			case 0:
-				return we_chooser_multiDirAndTemplate::getLine(0);
+				return parent::getLine(0);
 			case 1:
 				$idArr = makeArrayFromCSV($this->ids);
 				$checkbox = we_html_forms::checkbox($idArr[$this->nr], (in_array($idArr[$this->nr], $this->defaultArr) ? true : false), $this->defaultName . "_" . $this->nr, g_l('weClass', '[standard_workspace]'));
 				return '<tr><td></td><td>' . $checkbox . '</td><td>' . we_html_tools::getPixel(50, 1) . '</td></tr>';
 			case 2:
-				return we_chooser_multiDirAndTemplate::getLine(1);
+				return parent::getLine(1);
 		}
 	}
 

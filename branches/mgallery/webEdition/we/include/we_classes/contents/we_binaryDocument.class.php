@@ -273,8 +273,7 @@ class we_binaryDocument extends we_document{
 		// second we build all input fields for them and take
 		// the elements of this imageDocument as values:
 		$_fieldcount = count($_defined_fields);
-		$_fieldcounter = 0; // needed for numbering the table rows
-		$_content = new we_html_table(array("class" => 'default', "style" => "margin-top:4px;"), ($_fieldcount * 2), 5);
+		$_content = new we_html_table(array("class" => 'default', "style" => "margin-top:4px;"), $_fieldcount, 5);
 		$_mdcontent = '';
 		for($i = 0; $i < $_fieldcount; $i++){
 			$_tagName = $_defined_fields[$i]["tag"];
@@ -300,10 +299,7 @@ class we_binaryDocument extends we_document{
 							$this->formInput2WithSelect(308, $_tagName, 23, 'txt', $attribs = '', $_defined_values[$_tagName], 200, false, true);
 				}
 
-				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), $_inp);
-				$_fieldcounter++;
-				$_content->setCol($_fieldcounter, 0, array("colspan" => 5), we_html_tools::getPixel(1, 5));
-				$_fieldcounter++;
+				$_content->setCol($i, 0, array("colspan" => 5, 'style' => 'padding-bottom:5px;'), $_inp);
 			}
 		}
 
@@ -391,13 +387,13 @@ class we_binaryDocument extends we_document{
 			$values[$groupname] = we_html_tools::OPTGROUP;
 			foreach($group as $k => $v){
 				$values[++$c] = $v['path'];
-				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},\n";
+				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},";
 			}
 			$values[$groupname . 'end'] = we_html_tools::OPTGROUP;
 		}
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.we_form.elements['MediaReferences'].value);");
 
-		return we_html_element::jsElement("top.we_mediaReferences = {\n" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $button);
+		return we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', $button);
 	}
 
 	public function getPropertyPage(){

@@ -53,14 +53,14 @@ echo $headCal .
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 		$_parts = array(
 			array("html" => doclistView::getSearchDialog()),
-			array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($GLOBALS['we_doc']->Table,$foundItems) . "</div>"),
+			array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($GLOBALS['we_doc']->Table, $foundItems) . "</div>"),
 		);
 
-		echo doclistView::getHTMLforDoclist($_parts).
-			we_html_element::htmlHiddens(array(
-				"obj"=>1,
-				"we_complete_request"=>1
-			));
+		echo doclistView::getHTMLforDoclist($_parts) .
+		we_html_element::htmlHiddens(array(
+			"obj" => 1,
+			"we_complete_request" => 1
+		));
 		?>
 	</form>
 </body>

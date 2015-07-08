@@ -340,7 +340,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 	}
 	if(x[5]!=undefined){
 		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[5];
-	}}"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_external_select_button, '', '', '', 0) . '</div>';
+	}}"', "url", 300), "", "left", "defaultfont", $_external_select_button, '', '', '', '', 0) . '</div>';
 
 
 			// INTERNAL LINK
@@ -383,7 +383,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				$_object_link = $yuiSuggest->getHTML();
 				/*
 				  $_object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")) .
-				  '<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_object_select_button, "", "", "", 0);
+				  '<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", $_object_select_button, "", "","", "", 0);
 				 */
 			}
 		}
@@ -391,7 +391,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$_anchorSel = '<div id="anchorlistcontainer"></div>';
 		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onblur="checkAnchor(this)"', "text", 300);
 
-		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_anchorSel, "", "", "", 0);
+		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", $_anchorSel, '', "", "", "", 0);
 
 		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', '', 'text', 300);
 
@@ -455,60 +455,44 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		<td class="defaultgray" valign="top" width="100">' . g_l('modules_messaging', '[subject]') . '</td>
 		<td>' . we_html_tools::htmlTextInput('we_dialog_args[mail_subject]', 30, $this->args["mailsubject"], "", "", "text", 300) . '</td>
 	</tr>
-
-	<tr><td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td></tr>
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', '[link_params]') . '</td>
+		<td class="defaultgray" valign="top" style="width:100px;padding-top:10px;">' . g_l('linklistEdit', '[link_params]') . '</td>
 		<td>' . $_param . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100">CC</td>
 		<td>' . we_html_tools::htmlTextInput("we_dialog_args[mail_cc]", 30, $this->args["mailcc"], "", "", "text", 300) . '</td>
 	</tr>
-	<tr><td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td></tr>
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultgray" valign="top" width="100">' . g_l('linklistEdit', '[link_target]') . '</td>
+		<td class="defaultgray" valign="top" style="width:100px;padding-top:10px;">' . g_l('linklistEdit', '[link_target]') . '</td>
 		<td>' . we_html_tools::targetBox('we_dialog_args[target]', 29, 300, 'we_dialog_args[target]', $this->args['target'], '', 10, 100) . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultgray" valign="top" width="100">BCC</td>
 		<td>' . we_html_tools::htmlTextInput("we_dialog_args[mail_bcc]", 30, $this->args['mailbcc'], '', '', 'text', 300) . '</td>
 	</tr>
-	<tr><td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td></tr>
 	<tr>
-		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', '[css_style]') . '</td>
+		<td class="defaultgray" valign="top" style="width:100px;padding-top:10px;">' . g_l('wysiwyg', '[css_style]') . '</td>
 		<td>' . $classSelect . '</td>
 	</tr>
 </table>'),
 			array('html' => '<table class="default">
 	<tr' . $show_accessible_class . '>
-		<td class="defaultgray" valign="top" width="100">
-			' . g_l('wysiwyg', '[language]') . '</td>
-		<td>
-			<table class="default"><tr><td>' . $_lang . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_hreflang . '</td></tr></table></td>
-	</tr>
-	<tr' . $show_accessible_class . '>
-		<td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td>
+		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', '[language]') . '</td>
+		<td><table class="default"><tr><td style="padding-left:2px;">' . $_lang . '</td><td>' . $_hreflang . '</td></tr></table></td>
 	</tr>
 	<tr>
-		<td class="defaultgray" valign="top" width="100">' . g_l('wysiwyg', '[title]') . '</td>
+		<td class="defaultgray" valign="top" style="width:100px;padding-top:10px;">' . g_l('wysiwyg', '[title]') . '</td>
 		<td>' . $_title . '</td>
 	</tr>
 	<tr' . $show_accessible_class . '>
-		<td colspan="2">' . we_html_tools::getPixel(110, 5) . '</td>
+		<td class="defaultgray" valign="top" style="padding-top:10px;">' . g_l('wysiwyg', '[keyboard]') . '</td>
+		<td><table class="default"><tr><td style="padding-left:2px;">' . $_accesskey . '</td><td>' . $_tabindex . '</td></tr></table></td>
 	</tr>
 	<tr' . $show_accessible_class . '>
-		<td class="defaultgray" valign="top">' . g_l('wysiwyg', '[keyboard]') . '</td>
-		<td><table class="default"><tr><td>' . $_accesskey . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_tabindex . '</td></tr></table></td>
+		<td class="defaultgray" valign="top" style="padding:10px 0px;">' . g_l('wysiwyg', '[relation]') . '</td>
+		<td><table class="default"><tr><td style="padding-left:2px;">' . $_rel . '</td><td>' . $_rev . '</td></tr></table></td>
 	</tr>
-	<tr' . $show_accessible_class . '>
-		<td colspan="2">' . we_html_tools::getPixel(110, 5) . '</td>
-	</tr>
-	<tr' . $show_accessible_class . '>
-		<td class="defaultgray" valign="top">' . g_l('wysiwyg', '[relation]') . '</td>
-		<td><table class="default"><tr><td>' . $_rel . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' . $_rev . '</td></tr></table></td>
-	</tr>
-	<tr><td colspan="2">' . we_html_tools::getPixel(110, 10) . '</td></tr>
 </table>'
 			)
 		);

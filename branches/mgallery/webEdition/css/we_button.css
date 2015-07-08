@@ -55,6 +55,10 @@ button.weBtn{
 	min-width: 2.5em;
 }
 
+button.multiicon{
+	min-width: 4em;
+}
+
 button.weBtn:active{
 	background: linear-gradient(to bottom, #EDF4FC, #DCE7F9 50%, #C7DAF4 50%,#C1D4F5);
 	box-shadow: none;

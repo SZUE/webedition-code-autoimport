@@ -1009,3 +1009,7 @@ table.footertable{
 table.footertable button.weBtn{
 	margin-right: 2em;
 }
+
+#anchorlistcontainer{
+	padding-left:10px;
+}

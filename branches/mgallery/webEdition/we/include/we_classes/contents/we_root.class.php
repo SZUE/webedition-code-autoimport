@@ -334,8 +334,8 @@ abstract class we_root extends we_class{
 		$owners = makeArrayFromCSV($this->Owners);
 		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
 
-		$content = '<table class="default" style="width:370px;margin-bottom:2px;">' .
-			'<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(351, 2) . '</td><td>' . we_html_tools::getPixel(100, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+		$content = '<table class="default" style="width:370px;margin:2px 0px;">
+<colgroup><col style="width:20px;"/><col style="width:351px;"/><col style="width:100px;"/><col style="width:26px;"/></colgroup>';
 		if($owners){
 			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN(' . implode(',', $owners) . ')');
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
