@@ -1196,7 +1196,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 	}
 
 	function getLogQuestion(){
-		$vals = array('<table class="default"><tr><td>' . we_html_tools::getPixel(22, 5) . '</td><td>' . we_html_tools::getDateInput2("log_time%s", (time() - (336 * 3600))) . '</td></tr></table>');
+		$vals = array('<table class="default" style="margin-left:22px;"><tr><td>' . we_html_tools::getDateInput2("log_time%s", (time() - (336 * 3600))) . '</td></tr></table>');
 
 		return we_html_element::jsElement('
 			function clear(){
