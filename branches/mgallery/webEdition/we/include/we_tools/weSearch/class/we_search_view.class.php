@@ -1924,12 +1924,11 @@ weSearch.g_l = {
 
 		return '<table class="default" style="margin-top:10px;">
 <tr>
-	 <td>' . $actionButtonCheckboxAll . '</td>
+	 <td style="padding-bottom:10px;">' . $actionButtonCheckboxAll . '</td>
 	 <td style="font-size:12px;width:140px;">' . $actionButton . '</td>
 	 <td style="width:60px;" id="resetBusy' . $whichSearch . '"></td>
 	 <td style="width:400px;">' . $resetButton . '</td>
 </tr>
-<tr><td>' . we_html_tools::getPixel(10, 12) . '</td>	</tr>
 <tr>
 	<td>' . we_html_tools::getPixel(19, 12) . '</td>
 	<td style="font-size:12px;width:140px;">' . we_html_tools::getPixel(30, 12) . '</td>

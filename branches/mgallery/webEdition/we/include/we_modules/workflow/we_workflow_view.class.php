@@ -264,17 +264,6 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 		$yuiSuggest = & weSuggest::getInstance();
 
-		/*		 * *** BROWSER DEPENDENCIES **** */
-		switch(we_base_browserDetect::inst()->getBrowser()){
-			case we_base_browserDetect::IE:
-				$_spacer_1_height = 13;
-				$_spacer_2_height = 5;
-				break;
-			default:
-				$_spacer_1_height = 7;
-				$_spacer_2_height = 5;
-		}
-
 		/*		 * *** WORKFLOWSTEPS **** */
 		foreach($this->workflowDef->steps as $sv){
 			$ids.=we_html_element::htmlHidden($this->uid . '_step' . $counter . '_sid', $sv->ID);
@@ -290,11 +279,10 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 					'align' => '',
 				),
 				array(
-					'dat' => '<table class="default"><tr><td>' . we_html_tools::getPixel(5, 7) . '</td></tr><tr valign="middle"><td class="middlefont">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, '', 'min="0" step="0.016" onchange="top.content.setHot();"','number') . '</td></tr>' .
-					'<tr valign="middle"><td>' . we_html_tools::getPixel(5, $_spacer_1_height) . '</td><tr>' .
-					'<tr valign="top">' .
-					'<td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td>' .
-					'</tr></table>',
+					'dat' => '<table class="default" style="margin-top:5px;">
+	<tr valign="middle"><td class="middlefont" style="padding-bottom:1em;">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, '', 'min="0" step="0.016" onchange="top.content.setHot();"', 'number') . '</td></tr>
+	<tr valign="top"><td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td></tr>
+</table>',
 					'height' => '',
 					'align' => '',
 				)
@@ -308,7 +296,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
 				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
-				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . "_task_" . $counter . '_' . $counter1 . '_userid.value','' . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
+				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . "_task_" . $counter . '_' . $counter1 . '_userid.value', '' . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
@@ -323,8 +311,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 				$yuiSuggest->setSelectButton($button, 6);
 
 				$content[$counter][$counter1 + 3] = array(
-					'dat' => '<table class="default">
-						<tr valign="middle"><td colspan="4">' . we_html_tools::getPixel(5, $_spacer_2_height) . '</td><tr>
+					'dat' => '<table class="default" style="margin-top:1ex;">
 						<tr valign="middle"><td>' . $yuiSuggest->getHTML() . '</td>
 						</tr></table>
 						<table class="default">
@@ -353,8 +340,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 			'	<table style="margin-right:30px;">
 				<tr valign="top">
 					<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>
-					<td><table class="default">
-						<tr><td>' . we_html_tools::getPixel(5, 3) . '</td></tr>
+					<td><table class="default" style="margin-top:3px;">
 						<tr><td>' . we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()", true, 30), we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()", true, 30))) . '</td>
 						</tr>
 						</table></td>
@@ -372,7 +358,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	function getTypeTableHTML($head, $values, $ident = 0, $textalign = "left", $textclass = "defaultfont"){
 		$out = '<table class="default">' . ($head ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="2">' . $head . '</td></tr>' : '');
 		foreach($values as $val){
-			$out.='<tr><td>' . we_html_tools::getPixel($ident, 5) . '</td><td class="' . trim($textclass) . '">' . $val . '</td></tr>';
+			$out.='<tr><td class="' . trim($textclass) . '" style="padding-left:' . $ident . 'px;">' . $val . '</td></tr>';
 		}
 		$out.='</table>';
 		return $out;
@@ -381,31 +367,21 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	function getBoxHTML($w, $h, $content, $headline = "", $width = 120){
 		$headline = str_replace(' ', '&nbsp;', $headline);
 		if($headline){
-			return '<table class="default">
-			<tr>' . we_html_tools::getPixel(24, 15) . '</td>
-				<td>' . we_html_tools::getPixel($width, 15) . '</td>
+			return '<table class="default" style="margin:15px 0px 15px 24px;">
+			<tr><td>' . we_html_tools::getPixel($width, 15) . '</td>
 				<td></td>
 			</tr>
 			<tr>
-				<td></td>
 				<td valign="top" class="defaultgray">' . $headline . '</td>
 				<td>' . $content . '</td>
 			</tr>
-			<tr>
-				<td>' . we_html_tools::getPixel(24, 15) . '</td>
-				<td>' . we_html_tools::getPixel($width, 15) . '</td>
-				<td></td>
-			</tr></table>';
+</table>';
 		} else {
-			return '<table class="default">
+			return '<table class="default" style="margin:15px 0px 15px 24px;">
 			<tr>
-				<td>' . we_html_tools::getPixel(24, 15) . '</td><td></td>
+				<td>' . $content . '</td>
 			</tr>
-			<tr>
-				<td></td><td>' . $content . '</td>
-			</tr>
-			<tr><td>' . we_html_tools::getPixel(24, 15) . '</td><td></td>
-			</tr></table>';
+</table>';
 		}
 	}
 
@@ -1247,8 +1223,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				we_html_element::htmlHidden('clear_opt', 1) .
 				'<form name="we_form">' .
 				'<table class="default">' .
-				'<tr><td class="defaultfont">' . g_l('modules_workflow', '[log_question_text]') . '</td></tr>' .
-				'<tr><td>' . we_html_tools::getPixel(10, 10) . '</td></tr>' .
+				'<tr><td class="defaultfont" style="padding-bottom:10px;">' . g_l('modules_workflow', '[log_question_text]') . '</td></tr>' .
 				'<tr><td>' . $this->getTypeTableHTML(we_html_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td></tr>' .
 				'<tr><td style="padding-top:1em;">' . we_html_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td></tr>' .
 				'</table>'

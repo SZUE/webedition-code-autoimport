@@ -357,11 +357,9 @@ class we_dialog_image extends we_dialog_base{
 		$srctable = '<table class="default">
 	<tr><td class="defaultgray" valign="top">' . g_l('wysiwyg', '[image_url]') . '</td><td>' . $extSrc . '</td></tr>';
 		if($intSrc){
-			$srctable .= '	<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
+			$srctable .= '<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
 	<tr><td></td><td>' . $intSrc . '</td></tr>' .
-				($thumbnails ?
-					'	<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
-	<tr><td></td><td>' . $thumbnails . '</td></tr>' : '');
+				($thumbnails ? '<tr><td></td><td style="padding-top:4px;">' . $thumbnails . '</td></tr>' : '');
 		}
 		$srctable .=
 			'<tr><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(10, 4) . '</td></tr>
@@ -377,12 +375,9 @@ class we_dialog_image extends we_dialog_base{
 			array("html" => '<table class="default" width="560"><tr><td>' . $hspace . '</td><td>' . $vspace . '</td><td>' . $border . '</td><td>' . $align . '</td></tr></table><div></div>'),
 			array("html" =>
 				'<div style="height:240px"><table class="default" width="380">
-<tr><td colspan="2">' . $name . '</td><td colspan="2">' . $alt . '</td></tr>
-<tr><td colspan="4">' . we_html_tools::getPixel(150, 15) . '</td></tr>
-<tr><td colspan="2">' . $classSelect . '</td><td colspan="2">' . $title . '</td></tr>
-<tr><td>' . we_html_tools::getPixel(160, 15) . '</td><td>' . we_html_tools::getPixel(160, 4) . '</td><td>' . we_html_tools::getPixel(100, 4) . '</td><td>' . we_html_tools::getPixel(100, 4) . '</td></tr>
-<tr><td colspan="4">' . $_longdesc . '</td></tr>
-<tr><td colspan="4">' . we_html_tools::getPixel(150, 15) . '</td></tr>
+<tr><td colspan="2" style="padding-bottom:15px;">' . $name . '</td><td colspan="2">' . $alt . '</td></tr>
+<tr><td colspan="2" style="padding-bottom:15px;">' . $classSelect . '</td><td colspan="2">' . $title . '</td></tr>
+<tr><td colspan="4" style="padding-bottom:15px;">' . $_longdesc . '</td></tr>
 </table></div>' .
 				we_html_tools::hidden("imgChangedCmd", 0) . we_html_tools::hidden("wasThumbnailChange", 0) . we_html_tools::hidden("isTinyMCEInitialization", 0) .
 				we_html_tools::hidden("tinyMCEInitRatioH", 0) . we_html_tools::hidden("tinyMCEInitRatioW", 0) .

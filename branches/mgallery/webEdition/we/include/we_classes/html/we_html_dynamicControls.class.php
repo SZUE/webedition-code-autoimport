@@ -361,9 +361,7 @@ function toggle_all() {
 <tr>
 	<td></td>
 	<td>' . ($parentGroups === false ? '' : '<i class="showParentPerms fa fa-' . (isset($parentGroups[$_group_item_values['perm']]) ? 'check" style="color:lightgreen"' : 'close" style="color:red"') . '></i>') . '</td>
-	<td style="padding:5px 0;">
-		' . we_html_forms::checkbox(1, ($_group_item_value ? true : false), $item_names . '_Permission_' . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>
-<tr><td>' . we_html_tools::getPixel(15, 3) . '</td></tr>';
+	<td style="padding:5px 0;">		' . we_html_forms::checkbox(1, ($_group_item_value ? true : false), $item_names . '_Permission_' . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>';
 						}
 					}
 				}

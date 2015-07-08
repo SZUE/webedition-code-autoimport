@@ -656,8 +656,7 @@ var g_l={
 
 		$content = '
 <table class="default">
-	<tr><td colspan="2">' . $datefilterCheck . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' . we_html_tools::getPixel(500, 2) . '</td></tr>
+	<tr><td colspan="2" style="padding-bottom:5px;">' . $datefilterCheck . '</td></tr>
 	<tr><td colspan="2">
 	<table class="default">
 	<tr>
@@ -709,12 +708,9 @@ var g_l={
 <table class="default">
 	<tr><td>' . $this->formBannerChooser(388, $this->uid . "_bannerID", $this->banner->bannerID, g_l('modules_banner', '[imagepath]'), "opener.we_cmd(\\'switchPage\\',\\'" . $this->page . "\\')") . '</td></tr>
 ' . ($this->banner->bannerID ?
-				'<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
-	<tr><td>' . $this->previewBanner() . '</td></tr>' : ''
+				'<tr><td style="padding-top:10px;">' . $this->previewBanner() . '</td></tr>' : ''
 			) .
-			'	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
-	<tr><td>' . $this->formBannerHref() . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
+			'<tr><td style="padding:10px 0px;">' . $this->formBannerHref() . '</td></tr>
 	<tr><td>' . $this->formBannerNumbers() . '</td></tr>
 </table>';
 	}
@@ -755,8 +751,7 @@ var g_l={
 
 	function formPath($leftsize = 120){
 		return '<table class="default">
-	<tr><td>' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_Text", 37, $this->banner->Text, "", 'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'), g_l('modules_banner', '[name]')) . '</td></tr>
-	<tr><td>' . we_html_tools::getPixel(20, 10) . '</td></tr>
+	<tr><td style="padding-bottom:10px;">' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_Text", 37, $this->banner->Text, "", 'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'), g_l('modules_banner', '[name]')) . '</td></tr>
 	<tr><td>' . $this->formDirChooser(388, BANNER_TABLE, $this->banner->ParentID, $this->uid . "_ParentID", g_l('modules_banner', '[group]'), "", "PathGroup") . '</td></tr>
 </table>';
 	}

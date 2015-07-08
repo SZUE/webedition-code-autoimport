@@ -1547,8 +1547,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		if(permissionhandler::hasPerm('ADMINISTRATOR') && $this->Type == self::TYPE_USER && is_array($this->permissions_slots['administrator'])){
 			foreach($this->permissions_slots['administrator'] as $k => $v){
 				$content = '
-<table class="default" width="500">
-	<tr><td>' . we_html_tools::getPixel(1, 5) . '</td></tr>
+<table class="default" width="500" style="margin-top:5px;">
 	<tr><td>' . we_html_forms::checkbox(1, $v, $this->Name . "_Permission_" . $k, $this->permissions_titles['administrator'][$k], false, 'defaultfont', ($k === 'REBUILD' ? 'setRebuidPerms();top.content.setHot();' : 'top.content.setHot();')) . '</td></tr>
 </table>';
 			}

@@ -89,8 +89,8 @@ if($weFileupload->processFileRequest()){
 	$buttonsTable->setCol(0, 1, array('align' => 'right'), $buttons);
 
 	$content = '<table class="default">' .
-			($maxsize ? ('<tr><td>' . $weFileupload->getHtmlAlertBoxes() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>') : '') . '
-				<tr><td>' . $weFileupload->getHTML() . '</td></tr><tr><td>' . we_html_tools::getPixel(2, 10) . '</td></tr>
+			($maxsize ? ('<tr><td style="padding-bottom:10px;">' . $weFileupload->getHtmlAlertBoxes() . '</td></tr>') : '') . '
+				<tr><td style="padding-bottom:10px;">' . $weFileupload->getHTML() . '</td></tr>
 				<tr><td class="defaultfont">' . g_l('newFile', '[caseFileExists]') . '</td></tr><tr><td>' .
 			we_html_forms::radiobutton("1", true, "overwrite", g_l('newFile', '[overwriteFile]')) .
 			we_html_forms::radiobutton("0", false, "overwrite", g_l('newFile', '[renameFile]')) . '</td></tr></table>';
