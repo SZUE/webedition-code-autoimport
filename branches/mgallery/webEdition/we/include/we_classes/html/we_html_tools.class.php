@@ -617,7 +617,8 @@ this.selectedIndex = 0;' .
 				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$hourSelect = getHtmlTag('select', array_merge($_attsSelect, array(
-					'name' => sprintf($name, '_hour'), 'id' => sprintf($name, '_hour')
+					'name' => sprintf($name, '_hour'),
+				'id' => sprintf($name, '_hour')
 					)), $hours, true) . '&nbsp;';
 		} else {
 			$hourSelect = getHtmlTag('input', array_merge($_attsHidden, array(

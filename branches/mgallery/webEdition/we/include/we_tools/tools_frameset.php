@@ -84,7 +84,7 @@ echo we_html_tools::getHtmlTop($title, '', 'frameset') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
 ?>
 </head>
-<body><?php
+<body style="overflow:hidden;"><?php
 	echo we_html_element::htmlIFrame('navi', WE_INCLUDES_DIR . 'we_tools/tools_header.php?tool=' . $tool, 'position:absolute;top:0px;left:0px;right:0px;height:21px;', '', '', false) .
 	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : ''), 'position:absolute;top:21px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false);
 	?>

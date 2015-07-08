@@ -589,12 +589,12 @@ function setTab(tab) {
 		  array());
 		 */
 
-		$_sortVal = isset($this->Model->Sort[0]['field']) ? $this->Model->Sort[0]['field'] : "";
+		$_sortVal = isset($this->Model->Sort[0]['field']) ? $this->Model->Sort[0]['field'] : '';
 		$_sortOrder = isset($this->Model->Sort[0]['order']) ? $this->Model->Sort[0]['order'] : "ASC";
 
 		$_sortSelect = we_html_tools::htmlSelect(
 				"SortOrder", array(
-				"ASC" => g_l('navigation', '[ascending]'), "DESC" => g_l('navigation', '[descending]')
+				"ASC" => g_l('navigation', '[ascending]'), 'DESC' => g_l('navigation', '[descending]')
 				), 1, $_sortOrder, false, array('onchange' => $this->topFrame . '.mark();'), "value", 120);
 
 		return we_html_element::jsElement('
@@ -605,13 +605,11 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 <div style="display: block;">
 	<div id="doctype" style="' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCTYPE ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . 'px;margin-top:5px;">' .
 			we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlSelect(
-					'DocTypeID', $docTypes, 1, $this->Model->DocTypeID, false, array('onchange' => 'clearFields();' . $this->topFrame . '.mark();'), 'value', $this->_width_size), g_l('navigation', '[doctype]')) . '
+				we_html_tools::htmlSelect('DocTypeID', $docTypes, 1, $this->Model->DocTypeID, false, array('onchange' => 'clearFields();' . $this->topFrame . '.mark();'), 'value', $this->_width_size), g_l('navigation', '[doctype]')) . '
 	</div>
 	<div id="classname" style="' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . 'px;margin-top:5px;">' .
 			(defined('OBJECT_TABLE') ? we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlSelect(
-						'ClassID', $classID2Name, 1, $this->Model->ClassID, false, array('onchange' => "clearFields();onSelectionClassChangeJS(this.value);"), 'value', $this->_width_size), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $_firstClass) : '') . '
+					we_html_tools::htmlSelect('ClassID', $classID2Name, 1, $this->Model->ClassID, false, array('onchange' => "clearFields();onSelectionClassChangeJS(this.value);"), 'value', $this->_width_size), g_l('navigation', '[class]')) . $this->getHTMLWorkspace('class', $_firstClass) : '') . '
 	</div>
 	<div id="fieldChooser" style="' . ($this->Model->SelectionType != we_navigation_navigation::STPYE_CATEGORY ? 'display: block' : 'display: none') . '; width: ' . $this->_width_size . 'px;margin-top: 5px;">' .
 			$this->getHTMLFieldChooser(g_l('navigation', '[title_field]'), 'TitleField', $this->Model->TitleField, 'putTitleField', $this->Model->SelectionType, ($this->Model->SelectionType == we_navigation_navigation::STPYE_CLASS ? $this->Model->ClassID : $this->Model->DocTypeID)) . '
