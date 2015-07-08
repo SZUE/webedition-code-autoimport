@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$oTblDiv = we_html_element::htmlDiv(
+$oTblCont = new we_html_table(
 	array(
 	"id" => "m_" . $iCurrId . "_inline",
 	"style" => "width:" . $iWidth . "px;",

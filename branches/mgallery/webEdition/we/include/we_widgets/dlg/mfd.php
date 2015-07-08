@@ -43,8 +43,8 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $wecmdenc2 = we_base_request::encCmd("top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].document.forms[0].elements.UserNameTmp.value");
 $wecmdenc5 = we_base_request::encCmd("opener.top.weEditorFrameController.getActiveDocumentReference()._propsDlg['" . $cmd0 . "'].addUserToField();");
 
-$content = '<table class="default" width="300">
-<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr>';
+$content = '<table class="default" width="300" style="margin-bottom:2px;">
+<colgroup><col style="width:20px;"/><col style="width:254px;"/><col style="width:26px;"/></colgroup>';
 
 if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 	$db = new DB_WE();
@@ -55,7 +55,7 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 } else {
 	$content .= '<tr><td class="mfdUIcon" data-contenttype="we/userGroup"></td><td class="defaultfont">' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? g_l('cockpit', '[all_users]') : $_SESSION['user']['Username']) . '</td><td></td><td></td></tr>';
 }
-$content .= '<tr><td>' . we_html_tools::getPixel(20, 2) . '</td><td>' . we_html_tools::getPixel(254, 2) . '</td><td>' . we_html_tools::getPixel(26, 2) . '</td></tr></table>';
+$content .= '</table>';
 
 $sUsrContent = '<table class="default" width="300"><tr><td>' . we_html_element::htmlDiv(
 		array("class" => "multichooser"), $content) . we_html_element::htmlHiddens(array(
