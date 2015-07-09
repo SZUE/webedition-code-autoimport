@@ -163,7 +163,7 @@ Options:
   --help                     Prints out this help
 
  Options what to recover:
-  --all                      Backups everything except external files
+  --all                      Recover everything except external files
   --core                     Documents and templates
   --versions                 Versions
   --versions_binarys         Versions binarys
