@@ -1029,7 +1029,7 @@ div.collection_props-classes{
 }
 
 div.collection_props-dublettes{
-	width: 388px; 
+	width: 388px;
 	margin: 20px 0 10px 0;
 }
 
@@ -1230,4 +1230,13 @@ div.collection-content{
 
 .we-state-none{
 	color: #f5f5f5;
+}
+
+.multiiconleft{
+	float:left;
+}
+
+.multiiconleft span.fileicon{
+	font-size: 32px;
+	margin-left:20px;
 }

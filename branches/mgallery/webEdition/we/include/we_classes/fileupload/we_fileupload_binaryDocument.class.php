@@ -230,7 +230,7 @@ div.we_file_drag_binDoc{
 			(self::isFallback() || self::isLegacyMode() ? '' : '
 						<div id="div_fileupload_right">' .
 				$divDropzone .
-				($this->binDocProperties['type'] === 'image' ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '') . '
+				($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '') . '
 						</div>'
 			) . '
 					<div id="div_fileupload_right_legacy" style="text-align:right;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . '">' .
@@ -470,8 +470,7 @@ div.we_file_drag_binDoc{
 		return $this->_checkFileType('', $fileName, 'ext');
 	}
 
-/*	private function _isFileMimeOk($mime){
-		return $this->_checkFileType($mime, '', 'mime');
-	}*/
-
+	/* 	private function _isFileMimeOk($mime){
+	  return $this->_checkFileType($mime, '', 'mime');
+	  } */
 }

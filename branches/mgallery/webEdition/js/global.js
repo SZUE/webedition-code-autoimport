@@ -134,7 +134,6 @@ function getTreeIcon(contentType, open, extension) {
 			return pre + '<i class="fa fa-link fa-stack-2x we-color"></i>' + post;
 		default:
 			return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
-			//FIXME: add support for file exension apllication pdf/word/excel/...
 	}
 }
 
