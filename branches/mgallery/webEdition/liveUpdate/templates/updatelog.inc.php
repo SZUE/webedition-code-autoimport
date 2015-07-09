@@ -105,15 +105,13 @@ if($this->Data['allEntries']){ // entries exist
 		 * Add buttons for next, back and delete
 		 */
 
-		$buttons = we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::DELETE, "javascript:confirmDelete();"),
-				($start > 0 ? //	backbutton
-					we_html_button::create_button(we_html_button::BACK, "javascript:lastEntries();") :
-					we_html_button::create_button(we_html_button::BACK, "#", true, 100, 22, "", "", true)),
-				($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
-					we_html_button::create_button(we_html_button::NEXT, "#", true, 100, 22, "", "", true) :
-					we_html_button::create_button(we_html_button::NEXT, "javascript:nextEntries();"))
-		));
+		$buttons = we_html_button::create_button(we_html_button::DELETE, "javascript:confirmDelete();") .
+			($start > 0 ? //	backbutton
+				we_html_button::create_button(we_html_button::BACK, "javascript:lastEntries();") :
+				we_html_button::create_button(we_html_button::BACK, "#", true, 100, 22, "", "", true)) .
+			($this->Data['amountEntries'] <= $start + $this->Data['amountPerPage'] ? //	next_button
+				we_html_button::create_button(we_html_button::NEXT, "#", true, 100, 22, "", "", true) :
+				we_html_button::create_button(we_html_button::NEXT, "javascript:nextEntries();"));
 
 		$content .= '
 </table>';

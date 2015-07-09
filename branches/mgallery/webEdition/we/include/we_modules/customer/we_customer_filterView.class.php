@@ -277,11 +277,7 @@ EO_SCRIPT;
 
 		$_addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
 
-		$_buttonTable = we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")"),
-				$_addbut
-				)
-		);
+		$_buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")") . $_addbut;
 
 		$_select = we_html_tools::hidden($name . 'Control', we_base_request::_(we_base_request::RAW, $name . 'Control', 0)) .
 			we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .

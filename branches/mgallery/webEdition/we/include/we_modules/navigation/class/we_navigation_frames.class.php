@@ -385,14 +385,10 @@ function setTab(tab) {
 		$wecmdenc3 = we_base_request::encCmd("opener." . $this->topFrame . ".we_cmd('populateFolderWs');");
 		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile',0)" : '';
 
-		$_button_doc = we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::SELECT, $_cmd_doc, true, 0, 0, '', '', false),
-				we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false)
-				), 2);
-		$_button_obj = we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::SELECT, $_cmd_obj, true, 0, 0, '', '', false),
-				(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false) : '')
-				), 2);
+		$_button_doc = we_html_button::create_button(we_html_button::SELECT, $_cmd_doc, true, 0, 0, '', '', false) .
+			we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false);
+		$_button_obj = we_html_button::create_button(we_html_button::SELECT, $_cmd_obj, true, 0, 0, '', '', false) .
+			(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false) : '');
 
 		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
 		$_path = ($this->Model->LinkID == 0 ?
@@ -629,11 +625,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			$this->getHTMLCount() .
 			we_html_button::create_button_table(
 				array(
-				we_html_button::create_button(
-					'preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
-				($this->Model->hasDynChilds() ? we_html_button::create_button(
-						'delete_all', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");') : '')
-				)
+				we_html_button::create_button('preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'), ($this->Model->hasDynChilds() ? we_html_button::create_button('delete_all', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");') : ''))
 				, 10, array('style' => 'margin-top:20px;'
 			)) . '
 </div>';
@@ -661,15 +653,11 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_cmd_cat = "javascript:we_cmd('we_selector_category',document.we_form.elements.LinkID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.LinkID.value','document.we_form.elements.LinkPath.value','opener." . $this->topFrame . ".we_cmd(\"populateText\");opener." . $this->topFrame . ".mark();','','" . $rootDirID . "')";
 
-		$_button_doc = we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::SELECT, $_cmd_doc, true, 0, 0, '', '', $disabled),
-				we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc')
-				), 2);
+		$_button_doc = we_html_button::create_button(we_html_button::SELECT, $_cmd_doc, true, 0, 0, '', '', $disabled) .
+			we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_doc');
 
-		$_button_obj = we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::SELECT, $_cmd_obj, true, 0, 0, '', '', $disabled),
-				(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '')
-				), 2);
+		$_button_obj = we_html_button::create_button(we_html_button::SELECT, $_cmd_obj, true, 0, 0, '', '', $disabled) .
+			(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', $disabled, false, '_navigation_obj') : '');
 		$_button_cat = we_html_button::create_button(we_html_button::SELECT, $_cmd_cat, true, 0, 0, '', '', $disabled);
 
 		$_buttons = '<div id="docLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_DOCLINK ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STPYE_CATLINK ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
@@ -841,12 +829,10 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			),
 			array(
 				'headline' => '',
-				'html' => we_html_button::create_button_table(
-					array(
-						we_html_button::create_button(we_html_button::PREVIEW, 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'),
-						we_html_button::create_button(we_html_button::REFRESH, 'javascript:' . $this->topFrame . '.we_cmd("populate");'),
-						we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:' . $this->topFrame . '.we_cmd("depopulate");')
-				)),
+				'html' =>
+				we_html_button::create_button(we_html_button::PREVIEW, 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");') .
+				we_html_button::create_button(we_html_button::REFRESH, 'javascript:' . $this->topFrame . '.we_cmd("populate");') .
+				we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:' . $this->topFrame . '.we_cmd("depopulate");'),
 				'space' => $this->_space_size
 			),
 			array(
@@ -878,13 +864,12 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			<td height="10"></td>
 		<tr>
 		<tr>
-			<td align="right">' . we_html_button::create_button_table(
-				array(
-					we_html_button::create_button(we_html_button::REFRESH, 'javascript: showPreview();'),
-					we_html_button::create_button(
-						'reset', 'javascript: document.getElementById("previewCode").value = "' . str_replace(array("\r\n", "\n"), '\n', addslashes(we_navigation_navigation::defaultPreviewCode)) . '"; showPreview();')
-				)//,we_button::create_button('new_template', 'javascript: '.$this->topFrame.'.we_cmd("create_template");')
-			) . '</td>
+			<td align="right">' .
+			we_html_button::create_button(we_html_button::REFRESH, 'javascript: showPreview();') .
+			we_html_button::create_button(
+				'reset', 'javascript: document.getElementById("previewCode").value = "' . str_replace(array("\r\n", "\n"), '\n', addslashes(we_navigation_navigation::defaultPreviewCode)) . '"; showPreview();')
+			//,we_button::create_button('new_template', 'javascript: '.$this->topFrame.'.we_cmd("create_template");')
+			. '</td>
 		</tr>
 		</table>';
 
@@ -1084,11 +1069,8 @@ function onSelectionClassChangeJS(value) {
 		}
 
 		if($showtrash){
-			$_button = we_html_button::create_button_table(
-					array(
-					we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $disabled),
-					we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22)
-					), 10);
+			$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $disabled) .
+				we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22);
 			$_width = 157;
 		} else {
 			$_width = 120;
@@ -1159,14 +1141,8 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 			)
 		);
 		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
-		$table->setCol(
-			4, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]'))
-		);
-		$table->setCol(
-			4, 1, array('align' => 'right'), we_html_button::create_button_table(
-				array(we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()"), $addbut)
-			)
-		);
+		$table->setCol(4, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]')));
+		$table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 		$table->setCol(5, 0, array('colspan' => 2), we_html_tools::getPixel(3, 3));
 
 		return $table->getHtml() . $js . we_html_element::jsElement('
@@ -1268,8 +1244,6 @@ function selectItem() {
 			)
 		);
 		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
-
-		we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::SAVE, 'javascript:setFields();', true, 100, 22, '', '', true, false), we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')));
 
 		$_body = we_html_element::htmlBody(
 				array(

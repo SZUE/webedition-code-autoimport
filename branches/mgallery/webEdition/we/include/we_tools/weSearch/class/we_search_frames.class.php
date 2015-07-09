@@ -207,13 +207,7 @@ function setTab(tab) {
 	}
 
 	protected function getHTMLEditorFooter(){
-		$_but_table = we_html_button::create_button_table(
-				array(
-				we_html_button::create_button(
-					'save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
-				), 10, array(
-				'style' => 'margin-left: 15px;'
-		));
+		$_but_table = we_html_button::create_button('save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')));
 
 		return $this->getHTMLDocument(
 				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .

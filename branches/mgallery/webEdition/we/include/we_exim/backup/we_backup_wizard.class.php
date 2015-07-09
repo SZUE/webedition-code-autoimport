@@ -1092,7 +1092,7 @@ function startStep(){
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
 			$head.=$progress->getJSCode('top.busy');
-			$pg = $progress->getHtml('','margin-left:15px');
+			$pg = $progress->getHtml('', 'margin-left:15px');
 		} else {
 			$pg = '';
 		}
@@ -1169,9 +1169,8 @@ function press_yes() {
 						break;
 					case 2:
 
-						$nextbuts = we_html_button::create_button_table(array(
-								we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=1'", true),
-								we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.we_submitForm('body','" . $this->frameset . "');")));
+						$nextbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=1'", true) .
+							we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.we_submitForm('body','" . $this->frameset . "');");
 
 						$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 
@@ -1208,9 +1207,7 @@ function press_yes() {
 							}
 						}
 
-						$nextprevbuts = we_html_button::create_button_table(array(
-								we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';"),
-								$nextbut));
+						$nextprevbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';") . $nextbut;
 						$buttons = we_html_button::position_yes_no_cancel($nextprevbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $cancelCall));
 
 						$table->setCol(0, 1, null, $buttons);

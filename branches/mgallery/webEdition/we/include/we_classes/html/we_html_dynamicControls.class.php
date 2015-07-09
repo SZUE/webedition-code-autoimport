@@ -285,15 +285,7 @@ function toggle_all() {
 				//	the different permission-groups shall be sorted alphabetically
 				//	therefore the content is first saved in an array.
 				// Build header of group
-				$_contentTable[$main_titles[$_groups_key]] = '<table class="default" width="' . $width . '">';
-
-				$_seperator_color = $seperator_color;
-
-				// Output the seperator
-				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr>
-						<td colspan="3" style="border-bottom:10px solid ' . $_seperator_color . '"></td>
-					</tr>';
+				$_contentTable[$main_titles[$_groups_key]] = '<table class="default" width="' . $width . '" style="border-top:5px solid '.$seperator_color.'">';
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
@@ -324,12 +316,7 @@ function toggle_all() {
 				// Build header for open group
 				$_contentTable[$main_titles[$_groups_key]] .= '
 			<i class="' . $_arrow_image . '" title="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></i></a></td>
-		<td class="defaultfont" colspan="3">
-			<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
-	</tr>
-	<tr valign="middle" bgcolor="' . $bgcolor . '">
-		<td>' . we_html_tools::getPixel(10, 1) . '</td>
-		<td>' . we_html_tools::getPixel($width, 1) . '</td>
+		<td class="defaultfont" colspan="3"><label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
 	</tr>
 </table>';
 
@@ -347,9 +334,6 @@ function toggle_all() {
 				}
 
 				foreach($_groups as $_groups_key => $_group_item){
-
-					//ksort($_group_item);
-
 					foreach($_group_item as $_group_item_values){
 
 						$_group_item_key = $_group_item_values['perm'];
@@ -359,9 +343,8 @@ function toggle_all() {
 							// Display the items of the group
 							$_contentTable[$main_titles[$_groups_key]] .= '
 <tr>
-	<td></td>
 	<td>' . ($parentGroups === false ? '' : '<i class="showParentPerms fa fa-' . (isset($parentGroups[$_group_item_values['perm']]) ? 'check" style="color:lightgreen"' : 'close" style="color:red"') . '></i>') . '</td>
-	<td style="padding:5px 0;">		' . we_html_forms::checkbox(1, ($_group_item_value ? true : false), $item_names . '_Permission_' . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td>';
+	<td style="padding:5px 0;">		' . we_html_forms::checkbox(1, ($_group_item_value ? true : false), $item_names . '_Permission_' . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td></tr>';
 						}
 					}
 				}

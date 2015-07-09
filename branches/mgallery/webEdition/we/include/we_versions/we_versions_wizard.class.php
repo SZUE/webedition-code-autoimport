@@ -64,9 +64,7 @@ abstract class we_versions_wizard{
 				"REBUILD_META"));
 
 		if($dc){
-			$buttons = we_html_button::create_button_table(array(
-					$refreshButton, $cancelButton
-					), 10);
+			$buttons = $refreshButton . $cancelButton;
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', '[rebuild]'), $buttons);
 		} else {
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);

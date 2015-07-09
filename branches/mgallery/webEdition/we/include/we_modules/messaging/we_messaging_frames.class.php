@@ -44,7 +44,7 @@ class we_messaging_frames extends we_modules_frame{
 		$this->weTransaction = &$weTransaction;
 		$this->viewclass = $viewclass;
 		$this->View = new we_messaging_view(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php", "top.content", $this->transaction, $this->weTransaction);
-		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd",$this->transaction);
+		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd", $this->transaction);
 	}
 
 	function getHTML($what){
@@ -149,10 +149,9 @@ class we_messaging_frames extends we_modules_frame{
 			we_html_tools::getPixel(10, 1)
 		);
 
-		$buttons = we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::SEARCH, "javascript:doSearch();"),
-				we_html_button::create_button("advanced", "javascript:launchAdvanced()", true),
-				we_html_button::create_button("reset_search", "javascript:clearSearch();")), 10);
+		$buttons = we_html_button::create_button(we_html_button::SEARCH, "javascript:doSearch();") .
+			we_html_button::create_button("advanced", "javascript:launchAdvanced()", true) .
+			we_html_button::create_button("reset_search", "javascript:clearSearch();");
 
 		$table->setCol(0, 1, array('class' => 'defaultfont'), $buttons);
 		$form = we_html_element::htmlForm(

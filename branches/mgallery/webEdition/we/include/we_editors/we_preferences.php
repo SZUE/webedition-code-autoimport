@@ -1802,11 +1802,11 @@ for(i=0;i<elements.length; ++i){
 				$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value");
 				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
-				$_thumbnail_dir = we_html_button::create_button_table(array($_inp, $_but));
+				$_thumbnail_dir = $_inp . $_but;
 			} else { //  gd lib ist nicht installiert
 				$_but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "#", true, 100, 22, '', '', true) : "";
 				$_inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125, 0, '', true);
-				$_thumbnail_dir = we_html_button::create_button_table(array($_inp, $_but)) . '<br/>' . g_l('thumbnails', '[add_description_nogdlib]');
+				$_thumbnail_dir = $_inp. $_but . '<br/>' . g_l('thumbnails', '[add_description_nogdlib]');
 			}
 
 			//  select if hooks can be executed
@@ -2042,20 +2042,20 @@ for(i=0;i<elements.length; ++i){
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -2073,11 +2073,11 @@ for(i=0;i<elements.length; ++i){
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array(), 's');
 
-			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
@@ -2502,7 +2502,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 <script type="text/javascript"><!--
 					var hot = false;
 	var g_l = {
-		'language_already_exists': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')); ?>',
+	'language_already_exists': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')); ?>',
 		'language_country_missing': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_country_missing]')); ?>',
 		'cannot_delete_default_language': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[cannot_delete_default_language]')); ?>',
 		'max_name_recipient': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[max_name_recipient]')); ?>',
@@ -2514,17 +2514,17 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 		'input_name': '<?php echo g_l('alert', '[input_name]'); ?>'
 	};
 	var modules = {
-		'SPELLCHECKER': '<?php echo intval(defined('SPELLCHECKER')); ?>'
+			'SPELLCHECKER': '<?php echo intval(defined('SPELLCHECKER')); ?>'
 	};
 	var tables = {
-		'OBJECT_FILES_TABLE': '<?php echo (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''); ?>',
+				'OBJECT_FILES_TABLE': '<?php echo (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''); ?>',
 		'FILE_TABLE': '<?php echo (defined('FILE_TABLE') ? FILE_TABLE : ''); ?>'
 	};
 	var perms = {
-		'CAN_SELECT_OTHER_USERS_FILES': '<?php echo (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1); ?>'
+			'CAN_SELECT_OTHER_USERS_FILES': '<?php echo (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1); ?>'
 	};
 	var contentTypes = {
-		'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>'
+				'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>'
 	};
 	var args = "";
 	var url = "<?php echo WEBEDITION_DIR; ?> 'we_cmd.php?";

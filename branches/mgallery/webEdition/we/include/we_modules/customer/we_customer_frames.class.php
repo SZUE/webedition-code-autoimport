@@ -214,12 +214,8 @@ function setTab(tab) {
 		$table = new we_html_table(array('class' => 'default', "width" => '100%'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
-			we_html_button::create_button_table(
-				array(
-					we_html_tools::htmlTextInput("keyword", 10, '', '', '', "text", "150px"),
-					we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
-				)
-			)
+			we_html_tools::htmlTextInput("keyword", 10, '', '', '', "text", "150px") .
+			we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')")
 		);
 
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter", "target" => "cmd"), $table->getHtml());
@@ -422,13 +418,9 @@ function setTab(tab) {
 			$sw = we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:we_cmd('switchToAdvance')");
 
 			$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-			$search->setCol(3, 0, array('align' => 'right', 'colspan' => $colspan), we_html_button::create_button_table(
-					array(
-						we_html_element::htmlDiv(array('class' => 'defaultfont'), g_l('modules_customer', '[advanced_search]')),
-						$sw,
-						$search_but
-					)
-				)
+			$search->setCol(3, 0, array('align' => 'right', 'colspan' => $colspan), we_html_element::htmlDiv(array('class' => 'defaultfont'), g_l('modules_customer', '[advanced_search]')) .
+				$sw .
+				$search_but
 			);
 			$hiddens.=we_html_element::htmlHidden('count', 1);
 
@@ -447,12 +439,11 @@ function setTab(tab) {
 
 		$table = new we_html_table(array('width' => 550, 'height' => 50), 3, 1);
 		$table->setCol(0, 0, array(), $search->getHtml());
-		$table->setCol(1, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[num_data_sets]') . ($foundItems ? ' (' . $foundItems .')' : ''));
+		$table->setCol(1, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[num_data_sets]') . ($foundItems ? ' (' . $foundItems . ')' : ''));
 		$table->setCol(2, 0, array(), $select->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')),
-					we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
 					we_html_element::jsScript(JS_DIR . 'utils/weDate.js') .
 					we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
 					we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .

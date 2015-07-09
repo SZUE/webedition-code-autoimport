@@ -995,17 +995,12 @@ class we_customer_EIWizard{
 
 		if($step == 1){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button_table(array(
-						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true),
-						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_next&step=" . $step . "';"))
-					), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) . we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		} else if($step == 4){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button_table(array(
-						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true),
-						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true))
-					), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+					we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 			$text = g_l('modules_customer', '[exporting]');
 			$progress = 0;
@@ -1016,17 +1011,13 @@ class we_customer_EIWizard{
 			$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 		} else if($step == 5){
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button_table(array(
-						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true),
-						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true))
-					), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+					we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		} else {
 			$buttons = we_html_button::position_yes_no_cancel(
-					we_html_button::create_button_table(array(
-						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_back&step=" . $step . "';"),
-						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_next&step=" . $step . "';"))
-					), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+					we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_back&step=" . $step . "';") .
+					we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		}
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
@@ -1048,26 +1039,20 @@ class we_customer_EIWizard{
 		switch($step){
 			case "1":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true),
-							we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';"))
-						), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
 			case "2":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=" . $step . "';"),
-							we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'))
-						), we_html_button::create_button(we_html_button::CANCEL, "javascript:" . we_fileupload_include::getJsBtnCmdStatic('cancel', 'body'))
+						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=" . $step . "';") .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'), we_html_button::create_button(we_html_button::CANCEL, "javascript:" . we_fileupload_include::getJsBtnCmdStatic('cancel', 'body'))
 				);
 				break;
 			case "5":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true),
-							we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true))
-						), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true) .
+						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				$text = g_l('modules_customer', '[importing]');
 				$progress = 0;
@@ -1084,18 +1069,14 @@ class we_customer_EIWizard{
 				break;
 			case "99":
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=2';"),
-							we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true))
-						), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=2';") .
+						we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 				break;
 			default:
 				$buttons = we_html_button::position_yes_no_cancel(
-						we_html_button::create_button_table(array(
-							we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=" . $step . "';"),
-							we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';"))
-						), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
+						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=" . $step . "';") .
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 		}
 		$content->setCol(0, 1, array("align" => "right"), $buttons);
@@ -1677,7 +1658,7 @@ function selector_cmd(){
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:selector_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".selector_cmd(\\'add_customer\\',top.allIDs);')");
-		$custs = new we_chooser_multiDir(400, ($customers ? : array()), "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", '"we/customer"', CUSTOMER_TABLE);
+		$custs = new we_chooser_multiDir(400, ($customers ? : array()), "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 
 		$custs->isEditable = permissionhandler::hasPerm("EDIT_CUSTOMER");
 		return $js . $hiddens . $custs->get();
@@ -1787,7 +1768,7 @@ document.we_form.filter_count.value="' . $count . '";');
 
 		$c++;
 		$table->addRow();
-		$table->setCol($c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array($plus, $trash)));
+		$table->setCol($c, 0, array("colspan" => $colspan), $plus . $trash);
 
 		return $js .
 			//(array("name"=>"filter_count","value"=>$count)).

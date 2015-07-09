@@ -783,7 +783,7 @@ function closeAllType(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->editorBodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
 
-		$cats = new we_chooser_multiDir($this->_width_size, $this->View->export->Categorys, "del_cat", we_html_button::create_button_table(array($delallbut, $addbut)), "", '"we/category"', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir($this->_width_size, $this->View->export->Categorys, "del_cat", $delallbut. $addbut, "", '"we/category"', CATEGORY_TABLE);
 
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;

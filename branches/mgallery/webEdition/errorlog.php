@@ -70,21 +70,17 @@ function getNavButtons($size, $pos, $id){
 
 
 	return '<table style="margin-top: 10px;width:100%;" class="default"><tr><td>' .
-		we_html_button::create_button_table(array(
-			we_html_button::create_button("fa:first,fa-lg fa-fast-backward", $_SERVER['SCRIPT_NAME'] . '?function=first', true, 0, 0, '', '', ($pos == 1)),
-			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)),
-			we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1)),
-			), 10) .
+		we_html_button::create_button("fa:first,fa-lg fa-fast-backward", $_SERVER['SCRIPT_NAME'] . '?function=first', true, 0, 0, '', '', ($pos == 1)) .
+		we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)) .
+		we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1))
+		.
 		'</td><td align="center">' .
-		we_html_button::create_button_table(array(
-			we_html_button::create_button("export", $_SERVER['SCRIPT_NAME'] . '?function=export&ID=' . $id, true, 0, 0),
-			we_html_button::create_button(we_html_button::DELETE, $_SERVER['SCRIPT_NAME'] . '?function=delete&ID=' . $id, true, 0, 0),
-			), 10) . '</td><td align="right">' .
-		we_html_button::create_button_table(array(
-			we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)),
-			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)),
-			we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $_SERVER['SCRIPT_NAME'] . '?function=last', true),
-			), 10) .
+		we_html_button::create_button("export", $_SERVER['SCRIPT_NAME'] . '?function=export&ID=' . $id, true, 0, 0) .
+		we_html_button::create_button(we_html_button::DELETE, $_SERVER['SCRIPT_NAME'] . '?function=delete&ID=' . $id, true, 0, 0) .
+		'</td><td align="right">' .
+		we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
+		we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
+		we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $_SERVER['SCRIPT_NAME'] . '?function=last', true) .
 		'</td></tr><tr><td colspan="3" align="center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
 		'</td></table>';
 }
@@ -99,8 +95,8 @@ function getPosData($bt, $file, $lineNo){
 
 	if(!$bt || $bt == '-' || !preg_match_all('|#\d+ [^\]]*\[([^:\]]*):(\d+)|', $bt, $matches)){
 		$matches = array(
-			1 => array(0=>str_replace('SECURITY_REPL_DOC_ROOT/','', $file)),
-			2 => array(0=>$lineNo)
+			1 => array(0 => str_replace('SECURITY_REPL_DOC_ROOT/', '', $file)),
+			2 => array(0 => $lineNo)
 		);
 	}
 
@@ -185,8 +181,8 @@ session.auto_start: ' . ini_get('session.auto_start') . $sep .
 		break;
 	case 'delete':
 		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id);
-		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`')-1;
-		//no break;
+		$size = f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '`') - 1;
+	//no break;
 	case 'next':
 		$cur = getHash('SELECT * FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id . ' ORDER BY ID ASC LIMIT 1');
 		$pos = $size - f('SELECT COUNT(1) FROM `' . ERROR_LOG_TABLE . '` WHERE ID>' . $id) + 1;
@@ -235,11 +231,11 @@ echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]')) .
 
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
-		<?php
-		echo we_html_multiIconBox::getJS() .
-		we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
-		we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
-		?>
+<?php
+echo we_html_multiIconBox::getJS() .
+ we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
+ we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
+?>
 	</div>
 </body>
 </html>

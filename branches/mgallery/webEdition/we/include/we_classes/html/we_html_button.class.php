@@ -262,7 +262,7 @@ abstract class we_html_button{
 	 */
 	static function create_button_table($buttons, $gap = 10, $attribs = ''){
 		//FIMXE: change all calls to this function => remove
-		return implode('', $buttons);
+		return ($attribs ? '<span ' . $attribs . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
 		// Get number of buttons
 		$_count_button = count($buttons);
 
@@ -309,6 +309,8 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
+
+	//FIXME: this function is used at many places where yes buttons contains more than one button!!
 	static function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
 		//	Create default attributes for table
 		$align = /* $align ? 'right' : */ 'right';

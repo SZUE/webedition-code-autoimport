@@ -786,7 +786,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_customers'," . $group . ")");
 			$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs," . $group . ");','','','',1)");
 
-			$cats = new we_chooser_multiDir(self::def_width, $this->View->newsletter->groups[$group]->Customers, "del_customer", we_html_button::create_button_table(array($delallbut, $addbut)), "", '"we/customer"', CUSTOMER_TABLE);
+			$cats = new we_chooser_multiDir(self::def_width, $this->View->newsletter->groups[$group]->Customers, "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 			$cats->extraDelFn = "document.we_form.ngroup.value=$group";
 			$out.=$cats->get();
 		}
@@ -802,11 +802,9 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','" . $wecmdenc4 . "','',1);");
 
 
-		$buttons = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ?
-			array($delallbut, $addbut) :
-			array($delallbut);
+		$buttons = $delallbut . (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? $addbut : '';
 
-		$cats = new we_chooser_multiFile(self::def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", we_html_button::create_button_table($buttons), "edit_file");
+		$cats = new we_chooser_multiFile(self::def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", $buttons, "edit_file");
 
 		$cats->extraDelFn = 'document.we_form.ngroup.value=' . $group;
 		return we_html_element::htmlHiddens(array('fileselect' => '')) .
@@ -891,7 +889,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 			$c++;
 			$table->addRow();
-			$table->setCol($c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array($plus, $trash)));
+			$table->setCol($c, 0, array("colspan" => $colspan), $plus . $trash);
 		}
 
 		$js = we_html_element::jsElement("calendarSetup(" . $group . "," . $k . ");");
@@ -939,7 +937,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$importbut = we_html_button::create_button("import", "javascript:we_cmd('set_import'," . $group . ")");
 		$exportbut = we_html_button::create_button("export", "javascript:we_cmd('set_export'," . $group . ")");
 
-		$table->setCol(4, 0, array("colspan" => 3), we_html_button::create_button_table(array($importbut, $exportbut)));
+		$table->setCol(4, 0, array("colspan" => 3), $importbut . $exportbut);
 
 		// Import dialog
 		if($this->View->getShowImportBox() == $group){
@@ -984,7 +982,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$import_box->setCol(4, 0, array(), we_html_tools::getPixel(5, 5));
 			$import_box->setCol(5, 0, array(), $import_options->getHtml());
 			$import_box->setCol(6, 0, array(), we_html_tools::getPixel(10, 10));
-			$import_box->setCol(7, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok, $cancel)));
+			$import_box->setCol(7, 0, array("nowrap" => null), $ok . $cancel);
 
 			$table->setCol(5, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_import" => $group)) . $import_box->getHtml());
 		}
@@ -999,7 +997,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
 			$export_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_dir" . $group, "/", "", "folder"));
 			$export_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-			$export_box->setCol(3, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok, $cancel)));
+			$export_box->setCol(3, 0, array("nowrap" => null), $ok . $cancel);
 
 			$table->setCol(5, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_export" => $group)) . $export_box->getHtml());
 		}
@@ -1201,7 +1199,7 @@ window.onload=extraInit;');
 			$plus = ($i == $count - 1 ? we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addGroup')") : null);
 			$trash = ($count > 1 ? we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delGroup'," . $i . ")") : null);
 
-			$buttons = we_html_button::create_button_table(array($plus, $trash), 10, array("align" => "right"));
+			$buttons = $plus. $trash;
 
 			$wepos = weGetCookieVariable("but_newsletter_group_box_$i");
 
@@ -1640,7 +1638,7 @@ self.focus();
 		$importbut = we_html_button::create_button("import", "javascript:set_import(1)");
 		$exportbut = we_html_button::create_button("export", "javascript:set_export(1)");
 
-		$table->setCol(2, 0, array("colspan" => 3), we_html_button::create_button_table(array($importbut, $exportbut)));
+		$table->setCol(2, 0, array("colspan" => 3), $importbut. $exportbut);
 
 		$sib = we_base_request::_(we_base_request::RAW, "sib", 0);
 		$seb = we_base_request::_(we_base_request::RAW, "seb", 0);
@@ -1667,7 +1665,7 @@ self.focus();
 			$import_box->setCol(4, 0, array(), we_html_tools::getPixel(5, 5));
 			$import_box->setCol(5, 0, array(), $import_options->getHtml());
 			$import_box->setCol(6, 0, array(), we_html_tools::getPixel(10, 10));
-			$import_box->setCol(7, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok, $cancel)));
+			$import_box->setCol(7, 0, array("nowrap" => null), $ok. $cancel);
 
 			$table->setCol(3, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_import" => 1)) .
 				$import_box->getHtml()
@@ -1680,7 +1678,7 @@ self.focus();
 			$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
 			$export_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_dir", "/", "", "folder"));
 			$export_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-			$export_box->setCol(3, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok, $cancel)));
+			$export_box->setCol(3, 0, array("nowrap" => null), $ok. $cancel);
 
 			$table->setCol(3, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_export" => 1)) .
 				$export_box->getHtml()
@@ -1714,7 +1712,7 @@ self.focus();
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
 		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
 
-		$buttons = we_html_button::create_button_table(array($cancel, $upload));
+		$buttons = $cancel. $upload;
 		$footerTable = new we_html_table(array('class' => 'default', 'style' => 'width:100%;'), 1, 2);
 		$footerTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
 		$footerTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
@@ -1946,7 +1944,7 @@ self.focus();
 						"align" => "left",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), we_html_button::create_button_table(array($edit, $trash))),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), $edit. $trash),
 						"height" => "",
 						"align" => "left",
 					),
@@ -2121,7 +2119,7 @@ function postSelectorSelect(wePssCmd) {
 						"eid" => "")) .
 					//we_button::create_button_table(array($close,$edit)).
 
-					we_html_tools::htmlDialogLayout($chooser->getHtml() . '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), we_html_button::create_button_table(array($close, $edit)), "100%", 30, 597)
+					we_html_tools::htmlDialogLayout($chooser->getHtml() . '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), $close. $edit, "100%", 30, 597)
 				)
 		);
 

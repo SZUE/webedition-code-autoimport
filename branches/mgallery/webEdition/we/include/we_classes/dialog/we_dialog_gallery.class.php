@@ -121,11 +121,4 @@ top.close();
 		return $html;
 	}
 
-	function getDialogButtons(){
-		$buttons = array();
-		$buttons[] = parent::getDialogButtons();
-
-		return we_html_button::create_button_table($buttons);
-	}
-
 }

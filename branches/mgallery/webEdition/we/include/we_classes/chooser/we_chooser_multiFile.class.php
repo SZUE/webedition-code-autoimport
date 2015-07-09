@@ -82,7 +82,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 				}
 
 
-				$table->setCol($c, 2, array('align' => 'right'), we_html_button::create_button_table(array($edit, $trash)));
+				$table->setCol($c, 2, array('align' => 'right'), $edit. $trash);
 
 				$c++;
 

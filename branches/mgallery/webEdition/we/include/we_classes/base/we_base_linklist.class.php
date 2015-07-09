@@ -470,7 +470,7 @@ class we_base_linklist{
 				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
 				$editbut = we_html_button::create_button("fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "','')", true);
-				echo we_html_button::create_button_table(array($plusbut, $upbut, $downbut, $editbut, $trashbut), 5);
+				echo $plusbut. $upbut. $downbut. $editbut. $trashbut;
 			}
 		}
 		$ret&= next($this->listArray);

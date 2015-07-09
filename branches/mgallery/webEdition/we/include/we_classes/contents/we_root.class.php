@@ -359,7 +359,7 @@ abstract class we_root extends we_class{
 
 		$content = '<table class="default" style="width:500px;">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
-' . ($canChange ? '<tr><td align="right"  style="padding-top:2px;">' . we_html_button::create_button_table(array($delallbut, $addbut)) . '</td></tr>' : "") . '</table>' . we_html_element::jsElement('setIconOfDocClass(\'userIcon\');');
+' . ($canChange ? '<tr><td align="right"  style="padding-top:2px;">' . $delallbut. $addbut . '</td></tr>' : "") . '</table>' . we_html_element::jsElement('setIconOfDocClass(\'userIcon\');');
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}

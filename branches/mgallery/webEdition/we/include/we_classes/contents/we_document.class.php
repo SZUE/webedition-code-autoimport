@@ -176,7 +176,7 @@ class we_document extends we_root{
 	function formCategory(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('delete_all_cats')", true, 0, 0, '', '', $this->Category ? false : true);
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
-		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', we_html_button::create_button_table(array($delallbut, $addbut)), '', '"folder","we/category"', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', $delallbut. $addbut, '', '"folder","we/category"', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get();
 	}
@@ -191,7 +191,7 @@ class we_document extends we_root{
 		} else {
 			$delallbut = '';
 		}
-		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', we_html_button::create_button_table(array($delallbut, $addbut)), 'module_navigation_edit_navi', 'Path', NAVIGATION_TABLE);
+		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', $delallbut. $addbut, 'module_navigation_edit_navi', 'Path', NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $_path){

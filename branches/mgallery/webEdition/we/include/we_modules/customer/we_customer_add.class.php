@@ -147,7 +147,7 @@ abstract class we_customer_add{
 
 		$_buttons = we_html_button::position_yes_no_cancel($save, null, $cancel);
 
-		$add_button = we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort')"), we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[add_sort_group]'))));
+		$add_button = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort')") . we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[add_sort_group]'));
 		$_parts[] = array('html' => $add_button);
 
 		$sort_code = we_html_multiIconBox::getHTML("", "100%", $_parts, 30, $_buttons, -1, "", "", false, "", "", 459) .
@@ -266,24 +266,19 @@ function setScrollTo(){
 		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
 
 		$advsearch->addRow();
-		$advsearch->setCol(++$c, 0, array("colspan" => $colspan), we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_search')"),
-				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_search')")
-				)
-			)
+		$advsearch->setCol( ++$c, 0, array("colspan" => $colspan), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_search')") .
+			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_search')")
 		);
 
 		$search->setCol(1, 0, array(), we_html_element::htmlHidden("count", $count) .
 			$advsearch->getHtml()
 		);
 		$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan), "<table class='default'><tr><td>" . we_html_button::create_button_table(
-				array(
-					we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[simple_search]')),
-					we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:we_cmd('switchToSimple')"),
-					$search_but
-				)
-			) . '</td><td>&nbsp;</td></tr></table>'
+		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan), "<table class='default'><tr><td>" .
+			we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[simple_search]')) .
+			we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:we_cmd('switchToSimple')") .
+			$search_but
+			. '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
 		$result = ($search_arr && we_base_request::_(we_base_request::BOOL, 'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());

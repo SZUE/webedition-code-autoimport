@@ -64,7 +64,7 @@ class we_users_frames extends we_modules_frame{
 				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_element::jsElement($rootjs .
 							$this->Tree->getJSLoadTree(we_users_tree::getItems($pid, $offset, $this->Tree->default_segment))
-							)
+						)
 					)
 				)
 		);
@@ -83,12 +83,8 @@ class we_users_frames extends we_modules_frame{
 		$table = new we_html_table(array('class' => 'default', "style" => 'width:100%;margin-top:10px;'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .
 			$hiddens .
-			we_html_button::create_button_table(
-				array(
-					we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px"),
-					we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
-				)
-			)
+			we_html_tools::htmlTextInput("keyword", 10, "", "", "", "text", "150px") .
+			we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);")
 		);
 
 		return we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table->getHtml());

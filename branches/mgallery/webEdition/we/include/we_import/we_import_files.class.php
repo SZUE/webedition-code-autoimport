@@ -554,7 +554,7 @@ function next() {
 		$progressbar = '<div id="progressbar" style="margin:0 0 6px 12px;' . (($this->step == 0) ? 'display:none;' : '') . '">' . $pb->getHTML() . '</div>';
 		$js .= $pb->getJSCode();
 
-		$prevNextButtons = $prevButton ? we_html_button::create_button_table(array($prevButton, $nextButton)) : null;
+		$prevNextButtons = $prevButton ? $prevButton . $nextButton : null;
 
 		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
@@ -862,7 +862,7 @@ function next() {
 				"imgsSearchable" => $this->imgsSearchable,
 				"importMetadata" => $this->importMetadata,
 				//"callBack" => $this->callBack
-			));
+		));
 	}
 
 	function _getFrameset(){
@@ -926,10 +926,8 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 		$table->setCol(
 			3, 0, array(
 			'colspan' => 2, 'align' => 'right'
-			), we_html_button::create_button_table(
-				array(
-					we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()"), $addbut
-		)));
+			), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut
+		);
 
 		return $table->getHtml() . $js . we_html_element::jsElement('
 function removeAllCats(){

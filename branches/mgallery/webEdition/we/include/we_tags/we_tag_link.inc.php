@@ -91,10 +91,7 @@ function we_tag_link($attribs, $content){
 		$editbut = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:setScrollTo(); we_cmd('edit_link', '" . $name . "')", true);
 		$delbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo(); we_cmd('delete_link', '" . $name . "')", true);
 
-		return we_html_button::create_button_table(
-				array(
-				($startTag ? : '') . ($content ? : $text) . ($startTag ? '</a>' : ''), $editbut, $delbut
-				), 5);
+		return ($startTag ? : '') . ($content ? : $text) . ($startTag ? '</a>' : '') . $editbut . $delbut;
 	}
 
 	return '';

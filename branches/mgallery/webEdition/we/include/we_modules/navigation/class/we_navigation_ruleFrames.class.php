@@ -373,13 +373,7 @@ function we_cmd(){
 
 		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
 
-		$table->setCol(
-			2, 0, array(
-			'colspan' => 2, 'align' => 'right'
-			), we_html_button::create_button_table(
-				array(
-					we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()"), $addbut
-		)));
+		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_html_element::jsElement('
 							function removeAllCats(){

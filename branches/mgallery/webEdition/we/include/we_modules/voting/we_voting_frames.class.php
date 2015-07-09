@@ -374,8 +374,7 @@ class we_voting_frames extends we_modules_frame{
 			$export_box->setColContent(8, 0, we_html_tools::getPixel(5, 5));
 			$export_box->setColContent(9, 0, we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
 			$export_box->setColContent(10, 0, we_html_tools::getPixel(5, 15));
-			$export_box->setCol(11, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok))
-			);
+			$export_box->setCol(11, 0, array("nowrap" => null), $ok);
 
 			$parts[] = array(
 				"headline" => g_l('modules_voting', '[export]'),
@@ -560,11 +559,8 @@ class we_voting_frames extends we_modules_frame{
 		$table->setColContent(0, 0, we_html_tools::getPixel(10, 5));
 		$table->setColContent(0, 1, we_html_element::htmlDiv(array('id' => 'iptable', 'class' => 'blockWrapper', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;padding: 5px;')));
 
-		$table->setCol(1, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button_table(array(
-				we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); removeAll()"),
-				we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); newIp()")
-				)
-			)
+		$table->setCol(1, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); removeAll()") .
+			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); newIp()")
 		);
 
 
@@ -736,8 +732,7 @@ function refreshTexts(){
 		$export_box->setColContent(6, 0, we_html_tools::getPixel(5, 5));
 		$export_box->setColContent(7, 0, we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
 		$export_box->setColContent(8, 0, we_html_tools::getPixel(5, 15));
-		$export_box->setCol(9, 0, array("nowrap" => null), we_html_button::create_button_table(array($ok))
-		);
+		$export_box->setCol(9, 0, array("nowrap" => null), $ok);
 
 
 

@@ -77,7 +77,7 @@ abstract class we_rebuild_wizard{
 		$nextbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm("REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm("REBUILD_META"));
 
 		if($dc){
-			$buttons = we_html_button::create_button_table(array($refreshButton, $cancelButton), 10);
+			$buttons = $refreshButton. $cancelButton;
 			$pb = we_html_tools::htmlDialogLayout($pb, g_l('rebuild', '[rebuild]'), $buttons);
 		} else {
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
@@ -436,7 +436,7 @@ abstract class we_rebuild_wizard{
 		$catAndCheck = we_html_forms::checkbox(1, $catAnd, "catAnd", g_l('rebuild', '[catAnd]'), false, "defaultfont", "document.we_form.btype[2].checked=true;");
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:document.we_form.btype[2].checked=true;we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22);
-		$butTable = we_html_button::create_button_table(array($delallbut, $addbut));
+		$butTable = $delallbut. $addbut;
 		$upperTable = '<table class="default" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
 
 		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', '"we/category"', CATEGORY_TABLE);
@@ -474,7 +474,7 @@ abstract class we_rebuild_wizard{
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
-		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", 'ContentType', FILE_TABLE);
+		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", $delallbut. $addbut, "", 'ContentType', FILE_TABLE);
 
 		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . "<br/><br/>" . $dirs->get();
 	}

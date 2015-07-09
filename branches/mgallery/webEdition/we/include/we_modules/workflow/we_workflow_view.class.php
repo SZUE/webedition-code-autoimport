@@ -200,7 +200,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
 
-		$dirs = new we_chooser_multiDir(495, $this->workflowDef->Folders, 'del_folder', we_html_button::create_button_table(array($delallbut, $addbut)), '', 'ContentType', FILE_TABLE, 'defaultfont', '', "top.content.setHot();");
+		$dirs = new we_chooser_multiDir(495, $this->workflowDef->Folders, 'del_folder', $delallbut . $addbut, '', 'ContentType', FILE_TABLE, 'defaultfont', '', "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($dirs->get(), g_l('modules_workflow', '[dirs]'));
 	}
@@ -209,7 +209,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', we_html_button::create_button_table(array($delallbut, $addbut)), "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
+		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[categories]'));
 	}
@@ -218,7 +218,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", we_html_button::create_button_table(array($delallbut, $addbut)), "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
+		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[categories]'));
 	}
@@ -228,7 +228,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('add_object',top.currentID);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','" . $wecmdenc3 . "')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
-		$cats = new we_chooser_multiDir(495, $this->workflowDef->Objects, "del_object", we_html_button::create_button_table(array($delallbut, $addbut)), "", "ContentType", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");
+		$cats = new we_chooser_multiDir(495, $this->workflowDef->Objects, "del_object", $delallbut . $addbut, "", "ContentType", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('modules_workflow', '[classes]'));
 	}
@@ -239,7 +239,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_object_file_folder',top.allIDs);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . OBJECT_FILES_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
 
-		$dirs = new we_chooser_multiDir(495, $this->workflowDef->ObjectFileFolders, "del_object_file_folder", we_html_button::create_button_table(array($delallbut, $addbut)), "", "ContentType", OBJECT_FILES_TABLE, "defaultfont", "", "top.content.setHot();");
+		$dirs = new we_chooser_multiDir(495, $this->workflowDef->ObjectFileFolders, "del_object_file_folder", $delallbut . $addbut, "", "ContentType", OBJECT_FILES_TABLE, "defaultfont", "", "top.content.setHot();");
 
 		return we_html_tools::htmlFormElementTable($dirs->get(), g_l('modules_workflow', '[dirs]'));
 	}
@@ -341,12 +341,12 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 				<tr valign="top">
 					<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>
 					<td><table class="default" style="margin-top:3px;">
-						<tr><td>' . we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()", true, 30), we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()", true, 30))) . '</td>
+						<tr><td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()", true, 30) . '</td>
 						</tr>
 						</table></td>
 				</tr>
 				<tr valign="top">
-					<td colspan="2" nowrap>' . we_html_button::create_button_table(array(we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30), we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30))) . '</td></tr>
+					<td colspan="2" nowrap>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
 				</table>' .
 			$yuiSuggest->getYuiJs() .
 			we_html_element::htmlHiddens(array(
