@@ -106,6 +106,7 @@ function we_getCodeMirror2Code(){
 		case we_base_ContentTypes::CSS:
 			$parser_js[] = 'mode/css/css.js';
 			$parser_js[] = 'mode/sass/sass.js';
+			$parser_js[] = 'mode/less/less.js';
 			$parser_js[] = 'addon/fold/foldcode.js';
 			$parser_js[] = 'addon/edit/matchbrackets.js';
 			$mode = 'text/css';
@@ -188,7 +189,7 @@ function we_getCodeMirror2Code(){
 		$settings = http_build_query(array('settings' => is_array($tmp) ? $tmp : array()));
 
 		$maineditor.=
-			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
+			(false &&$GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
 				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.js') :
 				'') .
 			($hasCompletion && $useCompletion ?
@@ -201,7 +202,7 @@ function we_getCodeMirror2Code(){
 				''
 			) .
 			we_html_element::cssElement(
-				($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
+				(false &&$GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
 					we_getCSSIds() : '') . '
 .weSelfClose:hover:after,
 .cm-weSelfClose:hover:after,
