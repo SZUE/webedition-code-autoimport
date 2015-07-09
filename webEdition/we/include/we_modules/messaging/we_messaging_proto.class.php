@@ -24,7 +24,6 @@
  */
 /* message protocol root class */
 class we_messaging_proto extends we_class{
-
 	const FOLDER_DONE = 13;
 	const FOLDER_REJECT = 11;
 	const FOLDER_TRASH = 9;
@@ -44,12 +43,11 @@ class we_messaging_proto extends we_class{
 	const ACTION_REJECT = 3;
 	const ACTION_DONE = 4;
 
-	/* ToDO properties */
+	/* To DO properties */
 	const TODO_PROP_NONE = 0;
 	const TODO_PROP_IMMOVABLE = 1;
 
 	/* Flag which is set when the file is not new */
-
 	var $Folder_ID = -1;
 	var $userid = -1;
 	var $username = '';
@@ -309,9 +307,11 @@ class we_messaging_proto extends we_class{
 	}
 
 	function save_sortstuff($id, $sortfield, $sortorder){
-		$sortorder = $sortorder === 'asc' ? 'desc' : 'asc';
-
-		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->folder_tbl) . ' SET sortItem="' . $this->DB_WE->escape($sortfield) . '", sortOrder="' . $this->DB_WE->escape($sortorder) . '" WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
+		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->folder_tbl) . ' SET ' . we_database_base::arraySetter(array(
+				'sortItem' => $sortfield,
+				'sortOrder' => ($sortorder === 'asc' ? 'desc' : 'asc')
+			)) .
+			' WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 	}
 
 	function init_sortstuff($id){
@@ -347,11 +347,11 @@ class we_messaging_proto extends we_class{
 	}
 
 	function get_newmsg_count(){
-		return intval(f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE (seenStatus&' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND ParentID = ' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE));
+		return intval(f('SELECT COUNT(1) FROM ' . $this->table . ' WHERE (seenStatus&' . we_messaging_proto::STATUS_READ . '=0) AND obj_type=' . $this->obj_type . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND ParentID=' . $this->default_folders[we_messaging_proto::FOLDER_INBOX] . ' AND UserID=' . intval($this->userid), '', $this->DB_WE));
 	}
 
 	function get_count($folder_id){
-		return f('SELECT COUNT(1) AS c FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . $this->obj_type . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($this->userid), 'c', $this->DB_WE);
+		return f('SELECT COUNT(1) FROM ' . $this->table . ' WHERE ParentID=' . intval($folder_id) . ' AND obj_type=' . $this->obj_type . ' AND msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid), '', $this->DB_WE);
 	}
 
 	static function arr_offset_arraysearch(&$needle, &$haystack){
