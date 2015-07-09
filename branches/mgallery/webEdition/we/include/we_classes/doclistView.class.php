@@ -428,7 +428,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 				$content[$f] = array(
 					array('dat' => $publishCheckbox),
-					array('dat' => we_html_element::jsElement('getTreeIcon("' . $_result[$f]["ContentType"] . '")')),
+					array('dat' => we_html_element::jsElement('document.write(getTreeIcon("' . $_result[$f]["ContentType"] . '"))')),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]['docID'] . '\',\'' . $_result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]['Text'] . '"><u>' . we_util_Strings::shortenPath($_result[$f]['Text'], $we_PathLength)),
 					//array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
 					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
@@ -640,31 +640,13 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	 * @return string, html
 	 */
 	public static function getHTMLforDoclist($content){
-
 		$out = '<table class="default" style="width:100%;">
 <tr><td class="defaultfont">';
 
 		foreach($content as $i => $c){
-			$_forceRightHeadline = (!empty($c["forceRightHeadline"]));
-			$icon = (!empty($c["icon"])) ? ('<img src="' . ICON_DIR . $c["icon"] . '" width="64" height="64" alt="" style="margin-left:20px;" />') : "";
-			$headline = (!empty($c["headline"])) ? ('<div class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>') : "";
-			$mainContent = (!empty($c["html"])) ? $c["html"] : "";
-			$leftWidth = (!empty($c["space"])) ? abs($c["space"]) : 0;
-			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : "");
-			$rightContent = '<div class="defaultfont">' . ((($icon && $headline) || ($leftContent === "") || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
+			$out .= '<div style="margin-left:0px" class="defaultfont">' . (!empty($c["html"]) ? $c["html"] : "") . '</div>';
 
-			$out .= '<div style="margin-left:0px" >';
-
-			if($leftContent || $leftWidth){
-				if((!$leftContent) && $leftWidth){
-					$leftContent = "&nbsp;";
-				}
-				$out .= '<div style="float:left;width:' . $leftWidth . 'px">' . $leftContent . '</div>';
-			}
-
-			$out .= $rightContent . '</div>';
-
-			if($i < (count($content) - 1) && (!isset($c["noline"]))){
+			if($i < (count($content) - 1)){
 				$out .= '<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>';
 			}
 		}

@@ -51,12 +51,11 @@ echo $headCal .
 		$content = doclistView::searchProperties($GLOBALS['we_doc']->Table);
 		$headline = doclistView::makeHeadLines($GLOBALS['we_doc']->Table);
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
-		$_parts = array(
+
+		echo doclistView::getHTMLforDoclist(array(
 			array("html" => doclistView::getSearchDialog()),
 			array("html" => "<div id='parametersTop'>" . doclistView::getSearchParameterTop($foundItems) . '</div>' . $view->tblList($content, $headline, "doclist") . "<div id='parametersBottom'>" . doclistView::getSearchParameterBottom($GLOBALS['we_doc']->Table, $foundItems) . "</div>"),
-		);
-
-		echo doclistView::getHTMLforDoclist($_parts) .
+		)) .
 		we_html_element::htmlHiddens(array(
 			"obj" => 1,
 			"we_complete_request" => 1
