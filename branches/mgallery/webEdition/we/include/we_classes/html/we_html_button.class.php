@@ -261,6 +261,8 @@ abstract class we_html_button{
 	 * @return     string
 	 */
 	static function create_button_table($buttons, $gap = 10, $attribs = ''){
+		//FIMXE: change all calls to this function => remove
+		return implode('', $buttons);
 		// Get number of buttons
 		$_count_button = count($buttons);
 
