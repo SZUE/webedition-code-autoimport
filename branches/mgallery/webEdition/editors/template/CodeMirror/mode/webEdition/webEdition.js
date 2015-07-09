@@ -176,5 +176,5 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 			}
 		}
 	};
-	return CodeMirror.overlayParser(CodeMirror.getMode(config, parserConfig.backdrop || "application/x-httpd-php"), webeditionOverlay);
+	return CodeMirror.overlayMode(CodeMirror.getMode(config, parserConfig.backdrop || "application/x-httpd-php"), webeditionOverlay);
 });

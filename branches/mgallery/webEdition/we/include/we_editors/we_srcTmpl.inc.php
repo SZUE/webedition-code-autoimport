@@ -189,7 +189,7 @@ function we_getCodeMirror2Code(){
 		$settings = http_build_query(array('settings' => is_array($tmp) ? $tmp : array()));
 
 		$maineditor.=
-			(false &&$GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
+			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
 				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.js') :
 				'') .
 			($hasCompletion && $useCompletion ?
