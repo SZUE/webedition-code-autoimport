@@ -34,7 +34,7 @@
  */
 function getTreeIcon(contentType, open, extension) {
 	var simplepre = '<span class="fa-stack fa-lg fileicon">';
-	var pre = simplepre + '<i class="fa fa-square fa-stack-2x fa-fw"></i>',
+	var pre = simplepre + '<i class="fa fa-file fa-inverse fa-stack-2x fa-fw"></i>',
 					post = '</span>';
 	switch (contentType) {
 		case 'cockpit':
