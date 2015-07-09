@@ -220,7 +220,7 @@ class we_collection extends we_root{
 		$mimeListTo = we_html_tools::htmlSelect(
 				'mimeListTo', $selectedMime, 13, '', true, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"), 'value', 184
 		);
-		$mimeTable = new we_html_table(array('class'=>'default',"width" => 388, "style" => "margin-top:10px"), 1, 3);
+		$mimeTable = new we_html_table(array('class'=>'collection_props-mime default'), 1, 3);
 		$mimeTable->setCol(0, 0, array(), $mimeListFrom);
 		$mimeTable->setCol(
 			0, 1, array(
@@ -258,7 +258,7 @@ class we_collection extends we_root{
 				'classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array("id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');"), 'value', 184
 		);
 
-		$classTable = new we_html_table(array("class" => 'default', "width" => 388, "style" => "margin-top:10px"), 1, 3);
+		$classTable = new we_html_table(array("class" => 'collection_props-classes default'), 1, 3);
 		$classTable->setCol(0, 0, null, $classListFrom);
 		$classTable->setCol(
 			0, 1, array(
@@ -279,18 +279,18 @@ class we_collection extends we_root{
 
 		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', 'Dubletten sind erlaubt');
 
-		$html = $selRemTable .
-			'<div id="mimetype" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . '; width:388px;margin-top:5px;">' .
+		$html = $selRemTable . // TODO: G_L()!! and we_html_element
+			'<div id="mimetype" class="collection_props-mime" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
 			'<br/>Erlaubte Dokumente auf folgende Typen einschränken:<br/>' .
 			we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
 			$mimeTable->getHTML() .
 			'</div>
-		<div id="classname" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:block' : 'display:none') . '; width: 380px;margin-top:5px;">' .
+		<div id="classname" class="collection_props-classes" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:block' : 'display:none') . ';">' .
 			(defined('OBJECT_TABLE') ? '<br/>Erlaubte Objekte auf folgende Klassen einschränken:<br/>' .
 				we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
 				$classTable->getHTML() : '') .
 			'</div>' .
-			we_html_element::htmlDiv(array('style' => 'width:388px;margin:20px 0 10px 0;'), $dublettes);
+			we_html_element::htmlDiv(array('class' => 'collection_props-dublettes'), $dublettes);
 
 		return $html;
 	}
@@ -298,8 +298,8 @@ class we_collection extends we_root{
 	function formCollection(){
 		$recursive = we_html_forms::checkboxWithHidden($this->InsertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_InsertRecursive', 'Verzeichnisse rekursiv einfügen') .
 			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_IsDuplicates', $this->IsDuplicates);
-		$slider = '<div id="sliderDiv" style="display:' . ($this->view === 'grid' ? 'block' : 'none') . '"><input type="range" style="width:120px;height:20px;" name="zoom" min="1" step="1" max="5" value="' . (7 - $this->itemsPerRow) . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/></div>';
-		$btnIconview = we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weCollectionEdit.setView('grid');", true, 40, "", "", "", false);
+		$slider = '<div id="sliderDiv" style="display:' . ($this->view === 'grid' ? 'block' : 'none') . '"><input type="range" class="collection-Slider" name="zoom" min="1" step="1" max="5" value="' . (7 - $this->itemsPerRow) . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/></div>';
+		$btnGridview = we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weCollectionEdit.setView('grid');", true, 40, "", "", "", false);
 		$btnListview = we_html_button::create_button("fa:listview,fa-lg fa-align-justify", "javascript:weCollectionEdit.setView('list');", true, 40, "", "", "", false);
 
 		//$callback = we_base_request::encCmd("if(top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){top.opener.top.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
@@ -307,14 +307,15 @@ class we_collection extends we_root{
 		$btnImport = we_fileupload_importFiles::getBtnImportFiles(2, $callback, 'btn_import_files_and_insert');
 		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems();", true, 52, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 
-		$toolbar = new we_html_table(array("style" => "border: 0px solid gray;width:100%;height:32px"), 1, 7);
-		$toolbar->setCol(0, 0, array('width' => '*'), $recursive);
-		$toolbar->setCol(0, 1, array('width' => '160px'), $slider);
-		$toolbar->setCol(0, 2, array('width' => '42px'), $btnIconview);
-		$toolbar->setCol(0, 3, array('width' => '42px'), $btnListview);
-		$toolbar->setCol(0, 4, array('width' => '60px', 'style' => 'padding-left:20px'), $addFromTreeButton);
-		$toolbar->setCol(0, 5, array('width' => '40px'), $btnImport);
-		$toolbar->setCol(0, 6, array('width' => '100px', 'style' => 'text-align: right;padding-right:4px;', 'class' => 'weMultiIconBoxHeadline'), 'Anzahl: <span id="numSpan"><i style="font-size:1em" class="fa fa-2x fa-spinner fa-pulse"></i></span>');
+		//TODO: use tables and some padding
+		$toolbar = new we_html_table(array(), 1, 7);
+		$toolbar->setCol(0, 0, array('class' => 'toolbarRecursive'), $recursive);
+		$toolbar->setCol(0, 1, array('class' => 'toolbarSlider'), $slider);
+		$toolbar->setCol(0, 2, array('class' => 'toolbarView'), $btnGridview);
+		$toolbar->setCol(0, 3, array('class' => 'toolbarView'), $btnListview);
+		$toolbar->setCol(0, 4, array('class' => 'toolbarAdd'), $addFromTreeButton);
+		$toolbar->setCol(0, 5, array('class' => 'toolbarImport'), $btnImport);
+		$toolbar->setCol(0, 6, array('class' => 'toolbarNum weMultiIconBoxHeadline'), 'Anzahl: <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');//TODO: G_L();!!
 
 		$items = $this->getValidCollection(false, true, true);
 
@@ -376,11 +377,11 @@ $jsStorageItems;
 				'we_' . $this->Name . '_itemsPerRow' => $this->itemsPerRow,
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
-			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collectionHead'), 'Inhalt der Sammlung') . //TODO: G_L()
-			we_html_element::htmlDiv(array('class' => 'collectionHead'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
-			we_html_element::htmlDiv(array('class' => 'collectionToolbar'), $toolbar->getHtml()) .
-			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'content_div', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
-			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'content_div', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')), $divs);
+			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collection-head'), 'Inhalt der Sammlung') . //TODO: G_L()
+			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
+			we_html_element::htmlDiv(array('class' => 'collection-toolbar'), $toolbar->getHtml()) .
+			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
+			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')), $divs);
 	}
 
 	private function makeListItem($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
@@ -415,8 +416,8 @@ $jsStorageItems;
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setSelectButton($editButton, 4);
-		$yuiSuggest->setAdditionalButton($addFromTreeButton, 6);
+		$yuiSuggest->setSelectButton($editButton, 0);
+		$yuiSuggest->setAdditionalButton($addFromTreeButton, 0);
 		//$yuiSuggest->setOpenButton($editButton, 4);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 
@@ -426,7 +427,7 @@ $jsStorageItems;
 		$rowControllsArr[] = we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index, false, '', 'btn_up');
 		$rowControllsArr[] = we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index, false, '', 'btn_down');
 		$rowControllsArr[] = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-		$rowControlls = we_html_button::create_button_table($rowControllsArr, 5);
+		$rowControlls = we_html_button::create_button_table($rowControllsArr, 0);
 
 		$rowHtml = new we_html_table(array('draggable' => 'false'), 1, 4);
 		$imgDiv = we_html_element::htmlDiv(array(
@@ -515,7 +516,7 @@ $jsStorageItems;
 	 *
 	 */
 
-	private function makeGridItem($item, $index){
+	private function makeGridItem($item, $index){ // TODO: maybe write only blank item and let JS render items oninit from storage?
 		$idname = 'collectionItem_we_id_' . $index;
 		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "";
@@ -541,17 +542,27 @@ $jsStorageItems;
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['ct'] . "');", true, 27, 22);
 		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
-		$toolbar = new we_html_table(array('class' => 'toolbar', 'draggable' => 'false'), 1, 4);
-		$toolbar->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>');
-		$toolbar->setCol(0, 1, array('class' => 'colAttrib', 'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>');
-		$toolbar->setCol(0, 2, array('class' => 'colAttrib', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>');
-		$toolbar->setCol(0, 3, array('class' => 'colBtn'), $editButton . $trashButton);
+		$toolbar = we_html_element::htmlDiv(array('class' => 'toolbarLeft weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .
+			we_html_element::htmlDiv(array('class' => 'toolbarRight'), we_html_element::htmlDiv(array(
+					'class' => 'toolbarAttribs',
+					'style' => 'display:' . ($this->itemsPerRow > 4 ? none : 'block')
+				), we_html_element::htmlDiv(array(
+							'class' => 'toolbarAttr',
+							'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')
+						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>') .
+					we_html_element::htmlDiv(array(
+							'class' => 'toolbarAttr',
+							'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')
+						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i>')
+				) . we_html_element::htmlDiv(array(
+						'class' => 'toolbarBtns',
+					), $editButton . $trashButton)
+			);
 
 		$displayBtnEdit = $item['id'] === -1 ? 'block' : ($item['id'] === '##ID##' ? '##SHOWBTN##' : 'none');
 
-		//TODO: use css classes to avoid all this inline css
 		return we_html_element::htmlDiv(array(
-					//TODO: let's set dimensions by JS
+					//TODO: set dimensions by JS
 					'style' => 'width:' . $this->iconSizes[$this->itemsPerRow] . 'px;height:' . $this->iconSizes[$this->itemsPerRow] . 'px;',
 					'id' => 'grid_item_' . $index,
 					'class' => 'gridItem'
@@ -566,7 +577,8 @@ $jsStorageItems;
 						), $selectButton) .
 					we_html_element::htmlDiv(array(
 							'class' => 'divToolbar',
-						), $toolbar->getHtml())) .
+							'draggable' => false
+						), $toolbar)) .
 				we_html_element::htmlDiv(array(
 					'class' => 'divSpace',
 					'id' => 'grid_space_' . $index,

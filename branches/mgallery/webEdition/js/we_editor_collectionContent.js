@@ -76,6 +76,7 @@ weCollectionEdit = {
 	csv: '',
 	view: 'grid',
 	gridItemSize: 200,
+	itemsPerRow: 4,
 	collectionArr: [],
 	collectionCsv: '',
 	collectionNum: 0,
@@ -126,6 +127,7 @@ weCollectionEdit = {
 		this.ct.list = document.getElementById('content_div_list');
 		this.sliderDiv = document.getElementById('sliderDiv');
 		this.numSpan = document.getElementById('numSpan');
+		this.itemsPerRow = document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value;
 
 		for(var i = 0; i < this.ct[this.view].children.length; i++){
 			this.addListenersToItem(this.view, this.ct[this.view].children[i], i+1);
@@ -241,10 +243,15 @@ weCollectionEdit = {
 	},
 
 	doZoomGrid: function(value){
-		this.gridItemSize = this.iconSizes[7 - value];
-		document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value = (7 - value);
+		var attribDivs = this.ct['grid'].getElementsByClassName('toolbarAttribs');
+
+		this.itemsPerRow = 7 - value;
+		this.gridItemSize = this.iconSizes[this.itemsPerRow];
+		document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value = this.itemsPerRow;
+
 		for(var i = 0; i < this.ct['grid'].children.length; i++){
 			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = this.gridItemSize + 'px';
+			attribDivs[i].style.display = this.itemsPerRow > 4 ? 'none' : 'block';
 		}
 	},
 
@@ -274,11 +281,12 @@ weCollectionEdit = {
 			inner.style.border = '1px dotted #006db8';
 			this.dd.placeholder.appendChild(inner);
 		} else {
+			this.dd.placeholder.class = 'listItem';
 			this.dd.placeholder.setAttribute("ondrop","weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
 			this.dd.placeholder.style.border = '1px solid #006db8';
-			this.dd.placeholder.style.height = '88px';
+			this.dd.placeholder.style.height = '90px';
 			this.dd.placeholder.style.width = '804px';
-			this.dd.placeholder.style.marginTop = '4px';
+			this.dd.placeholder.style.margin = '4px 0 0 20px';
 		}
 
 		return this.dd.placeholder;
@@ -288,7 +296,7 @@ weCollectionEdit = {
 		var itemClass = this.view === 'grid' ? 'gridItem' : 'listItem';
 		while(elem.className !== itemClass){
 			elem = elem.parentNode;
-			if(elem.className === 'content_div'){
+			if(elem.className === 'collection-content'){
 				return false;
 			}
 		}
@@ -339,6 +347,7 @@ weCollectionEdit = {
 
 			// TODO: use replace here too!
 			div.firstChild.style.width = div.firstChild.style.height = t.gridItemSize + 'px';
+			div.getElementsByClassName('toolbarAttribs')[0].style.display = this.itemsPerRow > 4 ? 'none' : 'block';
 		}
 		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
 		t.addListenersToItem(t.view, newItem);
