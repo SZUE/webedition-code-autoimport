@@ -332,8 +332,8 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset')) .
  weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
- we_html_element::jsScript(JS_DIR . 'windows.js').
-	we_html_element::jsScript(JS_DIR . 'linklistedit.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'linklistedit.js');
 ?>
 <script type="text/javascript"><!--
 
@@ -428,7 +428,7 @@ if($ok && $cmd === "edit_link_at_class"){
 		$wecmdenc1 = we_base_request::encCmd('document.we_form.href.value');
 		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.href.value, '')") : "";
 		$butspace = (we_base_browserDetect::isSafari() ? 8 : 10);
-		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", we_html_tools::getPixel($butspace, 20), $but, "", "", "", 0);
+		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", 'placeholder="user@example.com"', "text", 300);
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.id.value");
@@ -680,8 +680,7 @@ if($ok && $cmd === "edit_link_at_class"){
 				'html' => '
 <table class="default">
 	<tr>
-		<td>' . $lang . '</td>
-		<td>' . we_html_tools::getPixel(20, 5) . '</td>
+		<td style="padding-right:20px;">' . $lang . '</td>
 		<td>' . $hreflang . '</td>
 	</tr>
 </table>',
@@ -697,13 +696,11 @@ if($ok && $cmd === "edit_link_at_class"){
 				'html' => '
 <table class="default">
 	<tr>
-		<td class="small">' . g_l('linklistEdit', '[accesskey]') . '</td>
-		<td>' . we_html_tools::getPixel(20, 5) . '</td>
+		<td class="small" style="padding-right:20px;">' . g_l('linklistEdit', '[accesskey]') . '</td>
 		<td class="small">' . g_l('linklistEdit', '[tabindex]') . '</td>
 	</tr>
 	<tr>
-		<td>' . $accesskey . '</td>
-		<td>' . we_html_tools::getPixel(20, 5) . '</td>
+		<td style="padding-right:20px;">' . $accesskey . '</td>
 		<td>' . $tabindex . '</td>
 	</tr>
 </table>',
