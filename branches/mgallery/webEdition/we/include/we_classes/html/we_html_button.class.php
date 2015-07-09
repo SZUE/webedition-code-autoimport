@@ -188,12 +188,12 @@ abstract class we_html_button{
 				if($type == self::WE_FA_BUTTON_IDENTIFY){
 					$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 				}
-				if(count($fas) > 1){
-					$class.=' multiicon';
-				}
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
+				if(count($fas) > 1){
+					$class.=' multiicon';
+				}
 				$value = '';
 				foreach($fas as $cnt => $fa){
 					$value.='<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';
@@ -309,49 +309,23 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-
 	//FIXME: this function is used at many places where yes buttons contains more than one button!!
-	static function position_yes_no_cancel($yes_button, $no_button = null, $cancel_button = null, $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
+	static function position_yes_no_cancel($yes_button, $no_button = '', $cancel_button = '', $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
 		//	Create default attributes for table
 		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
-			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align === 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align === 'right' ? $aligngap : 0) . 'px;border-spacing:0px;',
-			'align' => $align,
-		);
+			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align === 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align === 'right' ? $aligngap : 0) . 'px;border-spacing:0px;float:' . $align,
+			) + $attribs;
 
-		// Check for attribute parameters
-		if($attribs && is_array($attribs)){
-			foreach($attribs as $k => $v){
-				$attr[$k] = $v;
-			}
-		}
 
 		//	Create button array
-		$_buttons = array();
 		//	button order depends on OS
-		$_order = (we_base_browserDetect::isMAC() ?
-				array('no_button', 'cancel_button', 'yes_button') :
-				array('yes_button', 'no_button', 'cancel_button'));
+		$buttons = (we_base_browserDetect::isMAC() ?
+				$no_button . $cancel_button . $yes_button :
+				$yes_button . $no_button . $cancel_button);
 
-		//	Existing buttons are added to array
-		for($_i = 0; $_i < count($_order); $_i++){
-			if(!empty($$_order[$_i])){
-				$_buttons[] = $$_order[$_i];
-			}
-		}
 
-		$_count_button = count($_buttons);
-
-		//	Create_table
-		$_button_table = new we_html_table($attr, 1, $_count_button);
-
-		//	Write buttons
-		foreach($_buttons as $i => $button){
-			$_button_table->setCol(0, $i, array('class' => 'weEditmodeStyle', 'style' => ( $i < $_count_button - 1 ? 'padding-right:' . $gap . 'px' : '')), $button);
-		}
-
-		// Return created HTML
-		return $_button_table->getHtml();
+		return we_html_element::htmlDiv($attr, $buttons);
 	}
 
 }
