@@ -199,12 +199,6 @@ class we_users_user{
 		TEMPLATES_TABLE => array(),
 		NAVIGATION_TABLE => array(),
 	);
-	// Workspace array
-	/* 	var $workspaces_defaults = array(
-	  FILE_TABLE => array(),
-	  TEMPLATES_TABLE => array(),
-	  NAVIGATION_TABLE => array(),
-	  ); */
 	// Permissions headers array
 	var $permissions_main_titles = array();
 	// Permissions values array
@@ -224,17 +218,16 @@ class we_users_user{
 		$this->Name = 'user_' . md5(uniqid(__FILE__, true));
 
 		$this->DB_WE = new DB_WE();
-		/*
-		  if(defined('OBJECT_TABLE')){
-		  $this->workspaces[OBJECT_FILES_TABLE] = $this->workspaces_defaults[OBJECT_FILES_TABLE] = array();
-		  }
-		  if(defined('NEWSLETTER_TABLE')){
-		  $this->workspaces[NEWSLETTER_TABLE] = $this->workspaces_defaults[NEWSLETTER_TABLE] = array();
-		  }
+		if(defined('OBJECT_TABLE')){
+			$this->workspaces[OBJECT_FILES_TABLE] = array();
+		}
+		if(defined('NEWSLETTER_TABLE')){
+			$this->workspaces[NEWSLETTER_TABLE] = array();
+		}
 
-		  if(defined('CUSTOMER_TABLE')){
-		  $this->workspaces[CUSTOMER_TABLE] = $this->workspaces_defaults[CUSTOMER_TABLE] = array();
-		  } */
+		if(defined('CUSTOMER_TABLE')){
+			$this->workspaces[CUSTOMER_TABLE] = array();
+		}
 
 		foreach($this->preference_slots as $val){
 			$this->Preferences[$val] = null;
@@ -1698,8 +1691,7 @@ function delElement(elvalues,elem) {
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-			//FIXME: check why it can happen $this->workspaces[CUSTOMER_TABLE] is undefined!
-			$filter = new we_navigation_customerFilter(we_customer_abstractFilter::FILTER, array(), array(), array(), isset($this->workspaces[CUSTOMER_TABLE]) ? $this->workspaces[CUSTOMER_TABLE] : array());
+			$filter = new we_navigation_customerFilter(we_customer_abstractFilter::FILTER, array(), array(), array(), $this->workspaces[CUSTOMER_TABLE]);
 			$view = new we_customer_filterView($filter, 'top.content.setHot();', 520);
 			if($parentWsp[CUSTOMER_TABLE]){
 
