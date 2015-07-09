@@ -267,9 +267,9 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 	}
 
 	static function _getBoxStartHeadline($name, $width, $headline, $uniqname, $marginLeft = 0, $overflow = "auto"){
-		return '<table class="default" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '" id="' . $name . '">
-	<tr><td style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</td></tr>
-	<tr><td id="td_' . $uniqname . '">';
+		return '<div class="default" style="margin-top:10px;width:' . $width . (is_numeric($width) ? 'px' : '') . '; overflow:' . $overflow . '" id="' . $name . '">
+	<div style="padding-left:' . $marginLeft . 'px;padding-bottom:10px;" class="weDialogHeadline">' . $headline . '</div>
+	<div id="td_' . $uniqname . '">';
 	}
 
 	static function _getBoxStart($w, $uniqname, $name = ''){
@@ -278,15 +278,13 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 		} else {
 			$wp = $w;
 		}
-		return '<table class="default" style="margin-top:10px;width:' . $wp . ';" id="' . $name . '">
-	<tr>
-		<td style="margin-top:2px;" id="td_' . $uniqname . '">';
+		return '<div class="default" style="margin-top:10px;width:' . $wp . ';" id="' . $name . '">
+		<div style="margin-top:2px;" id="td_' . $uniqname . '">';
 	}
 
 	static function _getBoxEnd(){
-		return '</td>
-	</tr>
-</table>';
+		return '</div>
+</div>';
 	}
 
 	static function _getButton($name, $cmd, $state = "right", $title = ""){

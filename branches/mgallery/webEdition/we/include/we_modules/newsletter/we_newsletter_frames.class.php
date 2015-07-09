@@ -1199,7 +1199,7 @@ window.onload=extraInit;');
 			$plus = ($i == $count - 1 ? we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addGroup')") : null);
 			$trash = ($count > 1 ? we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delGroup'," . $i . ")") : null);
 
-			$buttons = $plus. $trash;
+			$buttons = $plus . $trash;
 
 			$wepos = weGetCookieVariable("but_newsletter_group_box_$i");
 
@@ -1638,7 +1638,7 @@ self.focus();
 		$importbut = we_html_button::create_button("import", "javascript:set_import(1)");
 		$exportbut = we_html_button::create_button("export", "javascript:set_export(1)");
 
-		$table->setCol(2, 0, array("colspan" => 3), $importbut. $exportbut);
+		$table->setCol(2, 0, array("colspan" => 3), $importbut . $exportbut);
 
 		$sib = we_base_request::_(we_base_request::RAW, "sib", 0);
 		$seb = we_base_request::_(we_base_request::RAW, "seb", 0);
@@ -1665,7 +1665,7 @@ self.focus();
 			$import_box->setCol(4, 0, array(), we_html_tools::getPixel(5, 5));
 			$import_box->setCol(5, 0, array(), $import_options->getHtml());
 			$import_box->setCol(6, 0, array(), we_html_tools::getPixel(10, 10));
-			$import_box->setCol(7, 0, array("nowrap" => null), $ok. $cancel);
+			$import_box->setCol(7, 0, array("nowrap" => null), $ok . $cancel);
 
 			$table->setCol(3, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_import" => 1)) .
 				$import_box->getHtml()
@@ -1678,7 +1678,7 @@ self.focus();
 			$export_box->setCol(0, 0, array(), we_html_tools::getPixel(10, 10));
 			$export_box->setCol(1, 0, array(), $this->formFileChooser(200, "csv_dir", "/", "", "folder"));
 			$export_box->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-			$export_box->setCol(3, 0, array("nowrap" => null), $ok. $cancel);
+			$export_box->setCol(3, 0, array("nowrap" => null), $ok . $cancel);
 
 			$table->setCol(3, 0, array("colspan" => 3), we_html_element::htmlHiddens(array("csv_export" => 1)) .
 				$export_box->getHtml()
@@ -1712,7 +1712,7 @@ self.focus();
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
 		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
 
-		$buttons = $cancel. $upload;
+		$buttons = $cancel . $upload;
 		$footerTable = new we_html_table(array('class' => 'default', 'style' => 'width:100%;'), 1, 2);
 		$footerTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
 		$footerTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
@@ -1746,36 +1746,25 @@ self.focus();
 			return;
 		}
 
-		$table = new we_html_table(array('class' => 'default'), 7, 1);
+		$table = new we_html_table(array('class' => 'default'), 3, 1);
 
-		$table->setCol(0, 0, array(), we_html_tools::getPixel(5, 5));
-		$table->setCol(1, 0, array("class" => "defaultfont"), sprintf(g_l('modules_newsletter', '[csv_export]'), $link));
-		$table->setCol(2, 0, array(), we_html_tools::getPixel(5, 10));
-		$table->setCol(3, 0, array("class" => "defaultfont"), we_backup_wizard::getDownloadLinkText());
-		$table->setCol(4, 0, array(), we_html_tools::getPixel(5, 10));
-		$table->setCol(5, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link, 'download' => basename($link)), g_l('modules_newsletter', '[csv_download]')));
-		$table->setCol(6, 0, array(), we_html_tools::getPixel(100, 5));
+		$table->setCol(0, 0, array("class" => "defaultfont",'style'=>'padding-top:5px;'), sprintf(g_l('modules_newsletter', '[csv_export]'), $link));
+		$table->setCol(1, 0, array("class" => "defaultfont",'style'=>'padding-top:5px;'), we_backup_wizard::getDownloadLinkText());
+		$table->setCol(2, 0, array("class" => "defaultfont",'style'=>'padding:5px 0px;'), we_html_element::htmlA(array("href" => getServerUrl(true) . $link, 'download' => basename($link)), g_l('modules_newsletter', '[csv_download]')));
 
 		if($allowClear){
-			$table->addRow(3);
-			$table->setCol(7, 0, array(), we_html_tools::getPixel(100, 10));
-			$table->setCol(8, 0, array("class" => "defaultfont"), we_html_element::htmlB(g_l('modules_newsletter', '[clearlog_note]')));
-			$table->setCol(9, 0, array(), we_html_tools::getPixel(100, 15));
+			$table->setCol(3, 0, array("class" => "defaultfont",'style'=>'padding:5px 0px;'), we_html_element::htmlB(g_l('modules_newsletter', '[clearlog_note]')));
 			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 			$ok = we_html_button::create_button(we_html_button::OK, "javascript:clearLog();");
 		} else {
 			$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 		}
 
-
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", '') .
 					($allowClear ?
-						we_html_element::htmlHiddens(array("pnt" => "clear_log",
-							"ncmd" => "do_clear_log")) .
-						we_html_tools::htmlDialogLayout(
-							$table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_html_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
-						we_html_tools::htmlDialogLayout(
-							$table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, "", "hidden")
+						we_html_element::htmlHiddens(array("pnt" => "clear_log", "ncmd" => "do_clear_log")) .
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_html_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
+						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[csv_download]'), we_html_button::position_yes_no_cancel(null, $close, null), "100%", 30, "", "hidden")
 					) .
 					we_html_element::jsElement("self.focus();")
 				)
@@ -1944,7 +1933,7 @@ self.focus();
 						"align" => "left",
 					),
 					array(
-						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), $edit. $trash),
+						"dat" => we_html_element::htmlDiv(array("class" => "middlefont"), $edit . $trash),
 						"height" => "",
 						"align" => "left",
 					),
@@ -2119,7 +2108,7 @@ function postSelectorSelect(wePssCmd) {
 						"eid" => "")) .
 					//we_button::create_button_table(array($close,$edit)).
 
-					we_html_tools::htmlDialogLayout($chooser->getHtml() . '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), $close. $edit, "100%", 30, 597)
+					we_html_tools::htmlDialogLayout($chooser->getHtml() . '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), $close . $edit, "100%", 30, 597)
 				)
 		);
 
