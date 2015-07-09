@@ -193,7 +193,7 @@ function submitForm() {
 				$idx = we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders);
 				if($idx > -1){
 					$js_out .= '
-					top.content.updateEntry({id:'.$aid.',parentid: -1, text:"' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", published:1});';
+					top.content.updateEntry({id:'.$aid.',parentid: -1, text:"' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});';
 				}
 
 				return we_html_element::jsElement($js_out) . $this->update_treeview();
@@ -213,7 +213,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank";';
 
 				$aid = $this->messaging->Folder_ID;
 				$js_out = '
-					top.content.updateEntry({id:'.$aid.',parentid: -1, text:"' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", published:1});
+					top.content.updateEntry({id:'.$aid.',parentid: -1, text:"' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});
 				';
 				return we_html_element::jsElement($js_out);
 			case 'update_treeview':
@@ -274,7 +274,7 @@ top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
 								$js_out .= 'top.content.treeData.add({
 	id : "' . $folder['ID'] . '",
 	parentid : "' . $folder['ParentID'] . '",
-	text :"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
+	text :"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID']) . ')",
 	typ : "parent_Folder",
 	open :0,
 	contenttype : "folder",
@@ -288,7 +288,7 @@ top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
 								$js_out .= 'top.content.treeData.add({
 	id : "' . $folder['ID'] . '",
 	parentid :"' . $folder['ParentID'] . '",
-	text : "' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
+	text : "' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID']) . ')",
 	typ : "leaf_Folder",
 	checked : false,
 	contenttype : "folder",
@@ -383,7 +383,7 @@ if (top.content.editor.edbody.messaging_messages_overview) {
 	private function update_treeview(){
 		$tmp = '';
 		foreach($this->messaging->available_folders as $f){
-			$tmp.='top.content.updateEntry({id:' . $f['ID'] . ', parentid:' . $f['ParentID'] . ', text:"' . $f['Name'] . ' - (' . $this->messaging->get_message_count($f['ID'], '') . ')", published:1});';
+			$tmp.='top.content.updateEntry({id:' . $f['ID'] . ', parentid:' . $f['ParentID'] . ', text:"' . $f['Name'] . ' - (' . $this->messaging->get_message_count($f['ID']) . ')", published:1});';
 		}
 		$tmp.='top.content.drawEintraege();';
 		return we_html_element::jsElement($tmp);

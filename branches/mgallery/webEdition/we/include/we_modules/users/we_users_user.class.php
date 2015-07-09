@@ -197,12 +197,6 @@ class we_users_user{
 		TEMPLATES_TABLE => array(),
 		NAVIGATION_TABLE => array(),
 	);
-	// Workspace array
-	/* 	var $workspaces_defaults = array(
-	  FILE_TABLE => array(),
-	  TEMPLATES_TABLE => array(),
-	  NAVIGATION_TABLE => array(),
-	  ); */
 	// Permissions headers array
 	var $permissions_main_titles = array();
 	// Permissions values array
@@ -559,10 +553,6 @@ class we_users_user{
 		if(defined('CUSTOMER_TABLE')){
 			$this->workspaces[CUSTOMER_TABLE] = we_unserialize($this->workSpaceCust);
 		}
-
-		/* if($this->workSpaceDef){
-		  $this->workspaces_defaults[FILE_TABLE] = makeArrayFromCSV($this->workSpaceDef);
-		  } */
 	}
 
 	function saveWorkspaces(){
@@ -593,17 +583,6 @@ class we_users_user{
 			$this->workSpaceCust = $this->workspaces[CUSTOMER_TABLE] ? serialize($this->workspaces[CUSTOMER_TABLE]) : '';
 		}
 
-		/* foreach($this->workspaces_defaults as $k => $v){
-		  $new_array = array();
-		  foreach($v as $key => $val){
-		  if($val != 0){
-		  $new_array[] = $this->workspaces_defaults[$k][$key];
-		  }
-		  }
-		  $this->workspaces_defaults[$k] = $new_array;
-		  }
-		  //$this->workSpaceDef = ($this->workspaces[FILE_TABLE] ? makeCSVFromArray($this->workspaces_defaults[FILE_TABLE], true, ',') : '');
-		 */
 		// if no workspaces are set, take workspaces from creator
 		if(empty($this->workSpace)){
 			$_uws = get_ws(FILE_TABLE, true);
@@ -1044,17 +1023,6 @@ _multiEditorreload = true;';
 							unset($this->workspaces[$k][$val]);
 						}
 					}
-					/* if(isset($_POST[$obj]['id'])){
-					  $obj = $this->Name . '_defWorkspace_' . $k;
-					  $this->workspaces_defaults[$k] = array();
-					  if(isset($_POST[$obj])){
-					  foreach($this->workspaces[$k] as $pos => $id){
-					  if(isset($_POST[$obj][$pos]) && $_POST[$obj][$pos]){
-					  $this->workspaces_defaults[$k][] = $id;
-					  }
-					  }
-					  }
-					  } */
 				}
 				if(defined('CUSTOMER_TABLE')){
 					$this->workspaces[CUSTOMER_TABLE] = we_customer_abstractFilter::getFilterFromRequest();

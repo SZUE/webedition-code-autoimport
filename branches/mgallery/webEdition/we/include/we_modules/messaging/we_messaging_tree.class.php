@@ -81,7 +81,7 @@ function startTree(){
 					array(
 					'id' => $folder['ID'],
 					'parentid' => $folder['ParentID'],
-					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID'], '') . ')',
+					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
 					'typ' => 'group',
 					'open' => 0,
 					'contentType' => 'folder',
@@ -94,7 +94,7 @@ function startTree(){
 					array(
 					'id' => $folder['ID'],
 					'parentid' => $folder['ParentID'],
-					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID'], '') . ')',
+					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
 					'typ' => 'item',
 					'open' => 0,
 					'contentType' => 'folder',

@@ -26,7 +26,6 @@
 
 class we_messaging_messaging extends we_class{
 	/* Flag which is set when the file is not new */
-
 	var $we_transact;
 	var $Folder_ID = -1;
 	var $userid = -1;
@@ -474,7 +473,15 @@ class we_messaging_messaging extends we_class{
 		$this->DB_WE->query('DELETE FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . intval($this->userid));
 		foreach($addressbook as $elem){
 			if(!empty($elem)){
-				$this->DB_WE->query('INSERT INTO ' . MSG_ADDRBOOK_TABLE . ' (ID, UserID, strMsgType, strID, strAlias, strFirstname, strSurname) VALUES (NULL, ' . intval($this->userid) . ',"' . $this->DB_WE->escape($elem[0]) . '","' . $this->DB_WE->escape($elem[1]) . '","' . $this->DB_WE->escape($elem[2]) . '", "", "")');
+				$this->DB_WE->query('INSERT INTO ' . MSG_ADDRBOOK_TABLE . ' ' . we_database_base::arraySetter(array(
+						'UserID' => $this->userid,
+						'strMsgType' => $elem[0],
+						'strID' => $elem[1],
+						'strAlias' => $elem[2],
+						/* 'strFirstname',
+						 'strSurname' */
+						)
+				));
 			}
 		}
 
@@ -512,29 +519,23 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function get_addresses(){
-		$ret = array();
-
 		$this->DB_WE->query('SELECT strMsgType, strID, strAlias FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . intval($this->userid));
-		while($this->DB_WE->next_record()){
-			$ret[] = array($this->DB_WE->f('strMsgType'), $this->DB_WE->f('strID'), $this->DB_WE->f('strAlias'));
-		}
-
-		return $ret;
+		return $this->DB_WE->getAll(false,MYSQL_NUM);
 	}
 
 	function get_available_folders(){
 		$this->available_folders = array();
 
-		foreach($this->used_msgobjs as $key => $val){
-			$this->available_folders = array_merge($this->available_folders, $this->used_msgobjs[$key]->get_available_folders());
+		foreach($this->used_msgobjs as $val){
+			$this->available_folders = array_merge($this->available_folders, $val->get_available_folders());
 		}
 	}
 
-	function get_message_count($folderid, $classname = ''){
+	function get_message_count($folderid){
 		$classname = $this->available_folders[self::array_ksearch('ID', $folderid, $this->available_folders)]['ClassName'];
-		return (isset($classname) ?
-						$this->used_msgobjs[$classname]->get_count($folderid) :
-						-1);
+		return ($classname ?
+				$this->used_msgobjs[$classname]->get_count($folderid) :
+				-1);
 	}
 
 	function delete_folders(array $ids){
@@ -951,12 +952,12 @@ class we_messaging_messaging extends we_class{
 		$matchArray = array("Name" => $fooArray);
 
 		$mergedArray = array_merge(
-				array(
+			array(
 			array(
 				'ID' => 0,
 				'Name' => "-- " . g_l('modules_messaging', '[nofolder]') . " --"
 			)
-				), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
+			), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
 		);
 
 		$_arr1 = array('ID', 'Name');
