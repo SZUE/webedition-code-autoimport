@@ -88,16 +88,11 @@ class weSuggest{
 	var $resultId = '';
 	var $rootDir = '';
 	var $selectButton = '';
-	var $selectButtonSpace = '';
 	var $selector = "Dir"; //FIXME: self::DirSelector???
 	var $trashButton = '';
-	var $trashButtonSpace = '';
 	var $openButton = '';
-	var $openButtonSpace = '';
 	var $additionalButton = '';
-	var $additionalButtonSpace = '';
 	var $createButton = '';
-	var $createButtonSpace = '';
 	var $table = FILE_TABLE;
 	var $width = 280;
 	var $doOnItemSelect = '';
@@ -261,7 +256,7 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit);
 		$inputField = $this->_htmlTextInput($this->inputName, 30, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
-		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer"' . ($this->selectButton ? ' style="margin-right: ' . $this->selectButtonSpace . 'px"' : '') . '>' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
+		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
 
 
 		$html = we_html_tools::htmlFormElementTable(
@@ -270,23 +265,23 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 				"valign" => "top",
 				"style" => "height  : 10px"), $this->label, 'left', 'defaultfont', (
 				$this->selectButton ?
-					array("text" => '<div style="margin-right: ' . $this->selectButtonSpace . 'px">' . $this->selectButton . '</div>', "valign" => "top") :
+					array("text" => $this->selectButton, "valign" => "top") :
 					''
 				), (
 				$this->additionalButton ?
-					array("text" => '<div style="margin-right: ' . $this->additionalButtonSpace . 'px">' . $this->additionalButton . '</div>', "valign" => "top") :
+					array("text" => $this->additionalButton, "valign" => "top") :
 					''
 				), (
 				$this->trashButton ?
-					array("text" => '<div style="margin-right: ' . $this->trashButtonSpace . 'px">' . $this->trashButton . '</div>', "valign" => "top") :
+					array("text" => $this->trashButton, "valign" => "top") :
 					''
 				), (
 				$this->openButton ?
-					array("text" => '<div style="margin-right:' . $this->openButtonSpace . 'px">' . $this->openButton . '</div>', "valign" => "top") :
+					array("text" => $this->openButton, "valign" => "top") :
 					''
 				), (
 				$this->createButton ?
-					array("text" => '<div style="margin-right:' . $this->createButtonSpace . 'px">' . $this->createButton . '</div>', "valign" => "top") :
+					array("text" => $this->createButton, "valign" => "top") :
 					'')
 		);
 
@@ -301,14 +296,10 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 		$this->resultValue = '';
 		$this->resultId = '';
 		$this->selectButton = '';
-		$this->selectButtonSpace = '';
 		$this->selector = 'Dir'; //FIXME:self::Dirselector??
 		$this->trashButton = '';
-		$this->trashButtonSpace = '';
 		$this->openButton = '';
-		$this->openButtonSpace = '';
 		$this->createButton = '';
-		$this->createButtonSpace = '';
 		$this->table = FILE_TABLE;
 		$this->width = 280;
 		$this->doOnItemSelect = '';
@@ -475,9 +466,8 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 		$this->resultValue = $val;
 	}
 
-	function setSelectButton($val, $space = 20){
+	function setSelectButton($val){
 		$this->selectButton = $val;
-		$this->selectButtonSpace = $space;
 	}
 
 	/**
@@ -498,24 +488,20 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 		$this->table = $val;
 	}
 
-	function setTrashButton($val, $space = 10){
+	function setTrashButton($val){
 		$this->trashButton = $val;
-		$this->trashButtonSpace = $space;
 	}
 
-	function setOpenButton($val, $space = 10){
+	function setOpenButton($val){
 		$this->openButton = $val;
-		$this->openButtonSpace = $space;
 	}
 
-	function setAdditionalButton($val, $space = 10){
+	function setAdditionalButton($val){
 		$this->additionalButton = $val;
-		$this->additionalButtonSpace = $space;
 	}
 
-	function setCreateButton($val, $space = 10){
+	function setCreateButton($val){
 		$this->createButton = $val;
-		$this->createButtonSpace = $space;
 	}
 
 	function setWidth($var){
