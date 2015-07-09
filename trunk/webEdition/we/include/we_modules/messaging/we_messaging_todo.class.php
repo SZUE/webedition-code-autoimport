@@ -508,7 +508,7 @@ class we_messaging_todo extends we_messaging_proto{
 
 		$ret = array();
 		$i = 0;
-		foreach($$entries as $entry){
+		foreach($entries as $entry){
 			if(!($entry['seenStatus'] && we_messaging_proto::STATUS_READ)){
 				$read_ids[] = $entry['ID'];
 			}
