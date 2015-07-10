@@ -1806,16 +1806,11 @@ weSearch.g_l = {
 				$imageViewPopup = "<img src='" . $urlPopup . "' border='0' /></a>";
 			} else {
 				$imagesize = array(0, 0);
-				$url = $urlPopup = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
-				$imageView = "<img src='" . $url . "' border='0' />";
-				$imageViewPopup = "<img src='" . $url . "' border='0' />";
+				$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . we_base_ContentTypes::IMAGE . '"))');
 			}
 		} else {
-			$Icon = we_base_ContentTypes::inst()->getIcon($file["ContentType"], we_base_ContentTypes::FILE_ICON, $file['Extension']);
 			$imagesize = array(0, 0);
-			$url = $urlPopup = ICON_DIR . 'doclist/' . $Icon;
-			$imageView = '<img src="' . ICON_DIR . 'doclist/' . $url . '" border="0" width="64" height="64" />';
-			$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $url . '" border="0" width="64" height="64" />';
+			$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . $file["ContentType"] . '",false,"' . $file['Extension'] . '"))');
 		}
 
 		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup);

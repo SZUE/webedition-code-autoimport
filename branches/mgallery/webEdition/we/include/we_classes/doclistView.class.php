@@ -409,8 +409,6 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 				$published = 1;
 			}
 
-			$ext = isset($_result[$f]['Extension']) ? $_result[$f]['Extension'] : '';
-			$Icon = we_base_ContentTypes::inst()->getIcon($_result[$f]['ContentType'], we_base_ContentTypes::FILE_ICON, $ext);
 
 			if($view == 0){
 				switch($showPubCheckbox ? '-1' : $_result[$f]["ContentType"]){
@@ -454,14 +452,11 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 							) . "' border='0' /></a>";
 					} else {
 						$imagesize = array(0, 0);
-						$thumbpath = ICON_DIR . 'doclist/' . we_base_ContentTypes::IMAGE_ICON;
-						$imageView = "<img src='" . $thumbpath . "' border='0' />";
-						$imageViewPopup = "<img src='" . $thumbpath . "' border='0' />";
+						$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . we_base_ContentTypes::IMAGE . '"))');
 					}
 				} else {
 					$imagesize = array(0, 0);
-					$imageView = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
-					$imageViewPopup = '<img src="' . ICON_DIR . 'doclist/' . $Icon . '" border="0" width="64" height="64" />';
+					$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . $_result[$f]['ContentType'] . '",false,"' . $ext . '"))');
 				}
 
 				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', '[nobody]');
