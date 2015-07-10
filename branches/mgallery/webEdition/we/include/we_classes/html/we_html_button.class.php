@@ -317,8 +317,9 @@ abstract class we_html_button{
 		//	Create default attributes for table
 		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
-			'style' => 'border-style:none; padding-top:0px;padding-bottom:0px;padding-left:' . ($align === 'left' ? $aligngap : 0) . 'px;padding-right:' . ($align === 'right' ? $aligngap : 0) . 'px;border-spacing:0px;float:' . $align,
-			) + $attribs;
+			'style' => 'border-style:none; padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . 'border-spacing:0px;float:' . $align . ';'
+			);
+		array_merge($attr,$attribs);
 
 
 		//	Create button array
