@@ -574,8 +574,7 @@ function changeit(value, rowNr) {
 			innerhtml = "<table id=\"search[" + rowNr + "]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px; \" type=\"text\" />" +
 							"</td><td>&nbsp;</td><td><a href=\"#\">" +
-							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\">" +
-							"<img src=\"" + dirs.BUTTONS_DIR + "icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>" +
+							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\"><i class='fa fa-lg fa-calendar'></i>" +
 							"</button></a></td></tr></tbody></table>";
 
 

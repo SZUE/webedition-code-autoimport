@@ -111,12 +111,14 @@ function setTab(tab){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
 		}
 
-		echo we_html_tools::getHtmlTop() .
-		STYLESHEET;
-
-		$extraHead = $this->View->getJSFooterCode();
-
-		return parent::getHTMLEditorFooter('save_banner', $extraHead);
+		return we_html_tools::getHtmlTop() .
+			STYLESHEET .
+			parent::getHTMLEditorFooter('save_banner', we_html_element::jsElement(
+					'var g_l={
+		"save_error_fields_value_not_valid": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '"
+};
+') .
+				we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_footer.js'));
 	}
 
 	function getHTMLCmd(){

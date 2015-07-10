@@ -213,8 +213,39 @@ function setTab(tab) {
 
 		$group = we_base_request::_(we_base_request::INT, "group", 0);
 
-		$js = $this->View->getJSFooterCode() .
-			we_html_element::jsElement('
+		$js = we_html_element::jsElement('
+function doUnload() {
+	if (!!jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
+}
+
+function we_cmd() {
+	var args = "";
+	var url = /webEdition/we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){
+	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}
+	}
+
+	switch (arguments[0]) {
+		case "empty_log":
+			break;
+
+		default:
+					var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			parent.edbody.we_cmd.apply(this, args);
+
+	}
+}
+
 function addGroup(text, val) {
 	 ' . ($group ? '' : 'document.we_form.gview[document.we_form.gview.length] = new Option(text,val);' ) . '
 }
@@ -250,7 +281,18 @@ function populateGroups() {
 
 function we_save() {
 		setTimeout(\'top.content.we_cmd("save_newsletter")\',100);
+}
 
+function afterLoad(){
+if(self.document.we_form.htmlmail_check!==undefined) {
+	if(top.opener.top.nlHTMLMail) {
+		self.document.we_form.htmlmail_check.checked = true;
+		document.we_form.hm.value=1;
+	} else {
+		self.document.we_form.htmlmail_check.checked = false;
+		document.we_form.hm.value=0;
+	}
+}
 }');
 
 		$select = new we_html_select(array('name' => 'gview'));
@@ -283,20 +325,8 @@ function we_save() {
 			}
 		}
 
-		$post_js = we_html_element::jsElement('
-if(self.document.we_form.htmlmail_check!==undefined) {
-	if(top.opener.top.nlHTMLMail) {
-		self.document.we_form.htmlmail_check.checked = true;
-		document.we_form.hm.value=1;
-	} else {
-		self.document.we_form.htmlmail_check.checked = false;
-		document.we_form.hm.value=0;
-	}
-}');
-
-		$body = we_html_element::htmlBody(array("id" => "footerBody", "onload" => "setTimeout(populateGroups,100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden("hm", 0) .
-					$table2->getHtml() .
-					$post_js
+		$body = we_html_element::htmlBody(array("id" => "footerBody", "onload" => "afterLoad();setTimeout(populateGroups,100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden("hm", 0) .
+					$table2->getHtml()
 				)
 		);
 
@@ -357,11 +387,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			$table = new we_html_table(array('class' => 'defaultfont', 'style' => 'width: 588px'), 1, 5);
 			$this->View->db->query('SELECT Log,COUNT(1) FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log NOT IN (\'log_start_send\',\'log_end_send\') AND stamp BETWEEN "' . $newsletterMailOrder['start_send'] . '" AND "' . (isset($newsletterMailOrder['end_send']) ? $newsletterMailOrder['end_send'] : 'NOW()') . '" GROUP BY Log');
 
-			$results = array();
-			while($this->View->db->next_record(MYSQL_NUM)){
-				$rec = $this->View->db->getRecord();
-				$results[array_shift($rec)] = current($rec);
-			}
+			$results = $this->View->db->getAllFirst(false);
 
 			$allRecipients = array_sum($results);
 
@@ -1748,12 +1774,12 @@ self.focus();
 
 		$table = new we_html_table(array('class' => 'default'), 3, 1);
 
-		$table->setCol(0, 0, array("class" => "defaultfont",'style'=>'padding-top:5px;'), sprintf(g_l('modules_newsletter', '[csv_export]'), $link));
-		$table->setCol(1, 0, array("class" => "defaultfont",'style'=>'padding-top:5px;'), we_backup_wizard::getDownloadLinkText());
-		$table->setCol(2, 0, array("class" => "defaultfont",'style'=>'padding:5px 0px;'), we_html_element::htmlA(array("href" => getServerUrl(true) . $link, 'download' => basename($link)), g_l('modules_newsletter', '[csv_download]')));
+		$table->setCol(0, 0, array("class" => "defaultfont", 'style' => 'padding-top:5px;'), sprintf(g_l('modules_newsletter', '[csv_export]'), $link));
+		$table->setCol(1, 0, array("class" => "defaultfont", 'style' => 'padding-top:5px;'), we_backup_wizard::getDownloadLinkText());
+		$table->setCol(2, 0, array("class" => "defaultfont", 'style' => 'padding:5px 0px;'), we_html_element::htmlA(array("href" => getServerUrl(true) . $link, 'download' => basename($link)), g_l('modules_newsletter', '[csv_download]')));
 
 		if($allowClear){
-			$table->setCol(3, 0, array("class" => "defaultfont",'style'=>'padding:5px 0px;'), we_html_element::htmlB(g_l('modules_newsletter', '[clearlog_note]')));
+			$table->setCol(3, 0, array("class" => "defaultfont", 'style' => 'padding:5px 0px;'), we_html_element::htmlB(g_l('modules_newsletter', '[clearlog_note]')));
 			$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 			$ok = we_html_button::create_button(we_html_button::OK, "javascript:clearLog();");
 		} else {

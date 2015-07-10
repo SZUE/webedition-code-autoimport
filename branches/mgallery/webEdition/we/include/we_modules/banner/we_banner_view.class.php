@@ -232,14 +232,6 @@ var perms={
 			we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');
 	}
 
-	function getJSFooterCode(){
-		echo we_html_element::jsElement('
-var g_l={
-		"save_error_fields_value_not_valid": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '"
-};
-') .
-		we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_footer.js');
-	}
 
 	function getJSProperty(){
 		?>

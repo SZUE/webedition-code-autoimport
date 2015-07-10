@@ -66,8 +66,8 @@ var transaction="' . $GLOBALS['we_transaction'] . '";
 var doc={
 ID:' . intval() . ',
 Table:"' . $GLOBALS['we_doc']->Table . '",
-ClassName:"'.	$GLOBALS['we_doc']->ClassName.'",
-Text:"'.	$GLOBALS['we_doc']->Text.'",
+ClassName:"' . $GLOBALS['we_doc']->ClassName . '",
+Text:"' . $GLOBALS['we_doc']->Text . '",
 };
 
 function sizeScrollContent() {
@@ -141,18 +141,9 @@ function deleteVers() {
 }
 
 function newinput() {
-	var searchFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);')))) . '";
-	var locationFields = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '";
-	var search = "' . str_replace(
-					"\n", '\n', addslashes(
-						we_html_tools::htmlSelect(
-							'search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+	var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);')))) . '";
+	var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '";
+	var search = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
 	var elem = document.getElementById("filterTable");
 	newID = elem.rows.length-1;
@@ -189,17 +180,9 @@ function newinput() {
 }
 
 function changeit(value, rowNr){
-			var searchFields = "' . str_replace(
-					"\n", "\\n", addslashes(
-						we_html_tools::htmlSelect(
-							'searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-			var locationFields = "' . str_replace(
-					"\n", "\\n", addslashes(
-						we_html_tools::htmlSelect(
-							'location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-			var search = "' . addslashes(
-					we_html_tools::htmlTextInput(
-						'search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
+			var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
+			var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+			var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
 
 			var row = document.getElementById("filterRow_"+rowNr);
 			var locationTD = document.getElementById("td_location["+rowNr+"]");
@@ -216,10 +199,7 @@ function changeit(value, rowNr){
 					row.removeChild(delButtonTD);
 			}
 
-		search = "' . str_replace(
-					"\n", "\\n", addslashes(
-						we_html_tools::htmlSelect(
-							'search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
 		var cell = document.createElement("TD");
 		cell.setAttribute("id", "td_search["+rowNr+"]");
@@ -233,10 +213,7 @@ function changeit(value, rowNr){
 		}else if(value=="timestamp") {
 		row.removeChild(locationTD);
 
-		locationFields = "' . str_replace(
-					"\n", "\\n", addslashes(
-						we_html_tools::htmlSelect(
-							'location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
+		locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
 
 		var cell = document.createElement("TD");
 		cell.setAttribute("id", "td_location["+rowNr+"]");
@@ -245,12 +222,11 @@ function changeit(value, rowNr){
 
 		row.removeChild(searchTD);
 
-		var innerhtml= "<table id=\"search["+rowNr+"]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>\n"
-		+ "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />"
-		+ "</td><td>&nbsp;</td><td><a href=\"#\">"
-		+ "<button id=\"date_picker_from"+rowNr+"\" class=\"weBtn\">"
-		+ "<img src=\"' . BUTTONS_DIR . 'icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/>"
-	+ "</button></a></td></tr></tbody></table>";
+		var innerhtml= "<table id=\"search["+rowNr+"]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>"+
+		 "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />"+
+		 "</td><td>&nbsp;</td><td><a href=\"#\">"+
+		 "<button id=\"date_picker_from"+rowNr+"\" class=\"weBtn\"><i class=\"fa fa-lg fa-calendar\"></i>"+
+	 "</button></a></td></tr></tbody></table>";
 
 
 	cell = document.createElement("TD");
@@ -277,10 +253,7 @@ function changeit(value, rowNr){
 			row.removeChild(delButtonTD);
 		}
 
-		search = "' . str_replace(
-					"\n", "\\n", addslashes(
-						we_html_tools::htmlSelect(
-							'search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
 		var cell = document.createElement("TD");
 		cell.setAttribute("id", "td_search["+rowNr+"]");
@@ -300,10 +273,7 @@ function changeit(value, rowNr){
 			row.removeChild(delButtonTD);
 		}
 
-		search = "' . str_replace(
-					"\n", "\\n", addslashes(
-						we_html_tools::htmlSelect(
-							'search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
+		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
 
 		var cell = document.createElement("TD");
 		cell.setAttribute("id", "td_search["+rowNr+"]");
@@ -329,7 +299,7 @@ function changeit(value, rowNr){
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:switchSearch(1)", false) . '</td>
+	<td>' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:switchSearch(1)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>
@@ -337,7 +307,7 @@ function changeit(value, rowNr){
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
 	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td>' . we_html_tools::getPixel(40, 2) . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
+	<td>' . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
 	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
 </tr>
 </table>

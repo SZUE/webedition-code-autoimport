@@ -592,7 +592,7 @@ weSearch = {
 						 "<td></td>"+
 						 '<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ').replace('width: 170px', 'width: 100px') + '</td>'+
 						 "<td>&nbsp;</td>"+
-						 "<td><a href=\"#\"><button id=\"date_picker_from"+rowNr+"\" class=\"weBtn\"><img src=\"" + this.we_const.BUTTONS_DIR + "icons/date_picker.gif\" class=\"weBtnImage\" alt=\"\"/></button></a></td>"+
+						 "<td><a href=\"#\"><button id=\"date_picker_from"+rowNr+"\" class=\"weBtn\"><i class='fa fa-lg fa-calendar'></i></button></a></td>"+
 					 "</tr></tbody></table>";
 
 

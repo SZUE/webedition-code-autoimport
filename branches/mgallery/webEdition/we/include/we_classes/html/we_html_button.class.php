@@ -67,7 +67,7 @@ abstract class we_html_button{
 	const PREVIEW = 'fat:preview,fa-lg fa-eye';
 	const CALENDAR = 'fa:date_picker,fa-lg fa-calendar';
 	const PUBLISH = 'fat:publish,fa-lg fa-sun-o';
-	const NOT_FOUND ='.fa-lg fa-bullseye';
+	const NOT_FOUND = '.fa-lg fa-bullseye';
 
 	/**
 	 * Gets the HTML Code for the button.
@@ -153,7 +153,13 @@ abstract class we_html_button{
 		 */
 		// Check if the button is a text button or an image button
 		$value = '';
-
+		if($on_click){
+			if($href){
+				t_e('onclick on button is not supported');
+			} else {
+				$href = self::WE_JS_BUTTON_IDENTIFY . $on_click;
+			}
+		}
 
 		switch($type){
 			//FIXME: remove image buttons - we don't have any
@@ -165,8 +171,7 @@ abstract class we_html_button{
 						goto restart;
 					default:
 						t_e('old image button', $name);
-						$name=  str_replace(self::WE_IMAGE_BUTTON_IDENTIFY, 'fa', $name).self::NOT_FOUND;
-
+						$name = str_replace(self::WE_IMAGE_BUTTON_IDENTIFY, 'fa', $name) . self::NOT_FOUND;
 				}
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
 				//set width for image button if given width has not default value

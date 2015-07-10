@@ -237,35 +237,6 @@ var perms={
 ') . we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_top.js');
 	}
 
-	function getJSFooterCode(){
-		return we_html_element::jsElement('
-function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
-}
-
-function we_cmd() {
-	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	switch (arguments[0]) {
-		case "empty_log":
-			break;
-
-		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-			parent.edbody.we_cmd.apply(this, args);
-
-	}
-}');
-	}
-
 	function getJSCmd(){
 		return we_html_element::jsElement('
 function submitForm() {
