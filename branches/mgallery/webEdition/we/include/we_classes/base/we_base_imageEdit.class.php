@@ -546,7 +546,7 @@ abstract class we_base_imageEdit{
 	public static function createPreviewThumb($imgSrc, $imgID, $width, $height, &$outputFormat = "jpg", $outputQuality = 75, $tmpName = ""){
 		if(self::gd_version() == 0){
 			$outputFormat = 'gif';
-			return ICON_DIR . 'doclist/image.gif';
+			return ICON_DIR . 'image.gif';
 		}
 		if(substr($imgSrc, 0, strlen($_SERVER ['DOCUMENT_ROOT'])) == $_SERVER['DOCUMENT_ROOT']){ // it is no src, it is a server path
 			$imgSrc = substr($imgSrc, strlen($_SERVER['DOCUMENT_ROOT']));
@@ -561,7 +561,7 @@ abstract class we_base_imageEdit{
 				return $imgSrc;
 			}
 			$outputFormat = 'gif';
-			return ICON_DIR . 'doclist/image.gif';
+			return ICON_DIR . 'image.gif';
 		}
 		if(!file_exists($_imgPath) || !($imagesize = getimagesize($_imgPath))){
 			$imagesize = array(0, 0);
