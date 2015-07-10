@@ -401,7 +401,7 @@ function handle_event(evt) {
 		$importLocs = new we_html_table(array('class' => 'default'), 7, 1);
 		$importLocs->setCol(0, 0, array(), $rdoLServer);
 		$importLocs->setCol(1, 0, array(), $importFromServer);
-		$importLocs->setCol(3, 0, array('style'=>'padding-top:4px;'), $rdoLLocal);
+		$importLocs->setCol(3, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
@@ -834,11 +834,8 @@ function addLog(text){
 }
 
 function set_button_state() {
-
 	top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "disabled");
 	top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "disabled");
-
-
 }
 
 function handle_event(evt) {
@@ -1110,7 +1107,7 @@ HTS;
 		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[fserver]'].value");
 		$importFromButton = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? we_html_button::create_button(we_html_button::SELECT, "javascript: self.document.we_form.elements['v[rdofloc]'][0].checked=true;we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['v[fserver]'].value);") : "";
 		$inputLServer = we_html_tools::htmlTextInput('v[fserver]', 30, (isset($v['fserver']) ? $v['fserver'] : '/'), 255, 'readonly', 'text', 300);
-		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', we_html_tools::getPixel(10, 1), $importFromButton, '', '', '', 0);
+		$importFromServer = we_html_tools::htmlFormElementTable($inputLServer, '', 'left', 'defaultfont', $importFromButton, '', '', '', '', 0);
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
@@ -1230,9 +1227,8 @@ HTS;
 		$docCats->setCol(0, 1, array(), $docCategories);
 		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
 		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
-		$wecmdenc1 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_id]'].value");
-		$wecmdenc2 = we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value");
-		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['v[store_to_path]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')"
+		$cmd1 = "self.wizbody.document.we_form.elements['v[store_to_id]'].value";
+		$storeToButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("self.wizbody.document.we_form.elements['v[store_to_path]'].value") . "','','','0')"
 		);
 
 		$yuiSuggest->setAcId('DirPath');
@@ -1306,7 +1302,7 @@ HTS;
 				'space' => 120),
 			array(
 				'headline' => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
-				'html' => weSuggest::getYuiFiles() . $doctypeElement . we_html_tools::getPixel(1, 4) . $templateElement . we_html_tools::getPixel(1, 4) . $storeTo . $yuiSuggest->getYuiJs() . we_html_tools::getPixel(1, 4) . $specifyDoc->getHTML() . we_html_tools::getPixel(1, 4) .
+				'html' => weSuggest::getYuiFiles() . $doctypeElement . ' ' . $templateElement . ' ' . $storeTo . $yuiSuggest->getYuiJs() . ' ' . $specifyDoc->getHTML() . ' ' .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), 'left', 'defaultfont'),
 				'space' => 120,
 				'noline' => 1)
@@ -1315,8 +1311,7 @@ HTS;
 		if(defined('OBJECT_TABLE')){
 			$parts[] = array(
 				'headline' => $radioObjs,
-				'html' => (defined('OBJECT_TABLE')) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), 'left', 'defaultfont') .
-					we_html_tools::getPixel(1, 4) .
+				'html' => (defined('OBJECT_TABLE')) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), 'left', 'defaultfont') . ' ' .
 					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), 'left', 'defaultfont') : '',
 				'space' => 120,
 				'noline' => 1
