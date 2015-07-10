@@ -248,11 +248,10 @@ function init() {
 			}
 
 			// Create thumbnails list
-			$_thumbnails_table = new we_html_table(array('class' => 'default'), 2, 3);
+			$_thumbnails_table = new we_html_table(array('class' => 'default'), 1, 2);
 
-			$_thumbnails_table->setCol(0, 0, null, we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
-			$_thumbnails_table->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-			$_thumbnails_table->setCol(0, 2, array('valign' => 'top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') .we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
+			$_thumbnails_table->setCol(0, 0, array( 'style'=>"padding-right:10px;"), we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
+			$_thumbnails_table->setCol(0, 1, array('valign' => 'top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') .we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
 
 			// Build dialog
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);

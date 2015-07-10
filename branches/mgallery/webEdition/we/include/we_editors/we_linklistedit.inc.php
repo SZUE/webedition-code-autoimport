@@ -487,57 +487,37 @@ if($ok && $cmd === "edit_link_at_class"){
 <table class="default" style="width:100%">
 	<tr>
 		<td class="small">' . g_l('global', '[posx]') . '</td>
-		<td></td>
 		<td class="small">' . g_l('global', '[posy]') . '</td>
-		<td></td>
 		<td class="small">' . g_l('global', '[width]') . '</td>
-		<td></td>
 		<td class="small">' . g_l('global', '[height]') . '</td>
-		<td></td>
-		<td></td>
 	</tr>
 	<tr>
-		<td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput('jsposx', 4, $jsposx, '', '', "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-		<td>' . we_html_tools::htmlTextInput('jsposy', 4, $jsposy, '', "", "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-		<td>' . we_html_tools::htmlTextInput("jswidth", 4, $jswidth, '', ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-		<td>' . we_html_tools::htmlTextInput("jsheight", 4, $jsheight, "", ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td style="padding-bottom:2px;padding-right:10px;">' . we_html_tools::htmlTextInput('jsposx', 4, $jsposx, '', '', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput('jsposy', 4, $jsposy, '', "", "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("jswidth", 4, $jswidth, '', ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("jsheight", 4, $jsheight, "", ' onchange="if(this.form.jscenter.checked && this.value==\'\'){this.value=100}"', "text", 40) . '</td>
 	</tr>
 	<tr>
 		<td>' . we_html_forms::checkbox(1, $jsstatus, "jsstatus", g_l('global', '[status]'), true, "small") . '</td>
-		<td></td>
 		<td>' . we_html_forms::checkbox(1, $jsscrollbars, "jsscrollbars", g_l('global', '[scrollbars]'), true, "small") . '</td>
-		<td></td>
 		<td>' . we_html_forms::checkbox(1, $jsmenubar, "jsmenubar", g_l('global', '[menubar]'), true, "small") . '</td>
-		<td></td>
-		<td></td>
-		<td></td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>' . we_html_forms::checkbox(1, $jsresizable, "jsresizable", g_l('global', '[resizable]'), true, "small") . '</td>
-		<td></td>
 		<td>' . we_html_forms::checkbox(1, $jslocation, "jslocation", g_l('global', '[location]'), true, "small") . '</td>
-		<td></td>
 		<td>' . we_html_forms::checkbox(1, $jstoolbar, "jstoolbar", g_l('global', '[toolbar]'), true, "small") . '</td>
-		<td></td>
-		<td></td>
-		<td></td>
 		<td></td>
 	</tr>
 </table>';
 		$foo = '
 <table class="default">
 	<tr>
-		<td>' . we_html_forms::checkbox(1, $jswin, "jswin", g_l('global', '[open]')) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td style="padding-right:10px;">' . we_html_forms::checkbox(1, $jswin, "jswin", g_l('global', '[open]')) . '</td>
 		<td>' . we_html_forms::checkbox(1, $jscenter, "jscenter", g_l('global', '[center]'), true, "defaultfont", "if(this.checked){if(this.form.jswidth.value==''){this.form.jswidth.value='100';};if(this.form.jsheight.value==''){this.form.jsheight.value='100';};}") . '</td>
 	</tr>
 </table>';
-		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", we_html_tools::getPixel(10, 2), "", "", "", "", 0);
+		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", '', "", "", "", "", 0);
 
 
 		$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
@@ -551,7 +531,7 @@ if($ok && $cmd === "edit_link_at_class"){
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.img_src.value");
 		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.img_src.value, '')") : "";
-		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", we_html_tools::getPixel(10, 2), $but, "", "", "", 0);
+		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.img_id.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.src_int.value");
@@ -572,28 +552,18 @@ if($ok && $cmd === "edit_link_at_class"){
 <table class="default" style="width:100%">
 	<tr>
 		<td class="small">' . g_l('global', '[width]') . '</td>
-		<td></td>
 		<td class="small">' . g_l('global', '[height]') . '</td>
-		<td></td>
 		<td class="small">' . g_l('global', '[border]') . '</td>
-		<td></td>
 		<td class="small">' . g_l('global', '[hspace]') . '</td>
-		<td></td>
 		<td class="small">' . g_l('global', '[vspace]') . '</td>
-		<td></td>
 		<td class="small">' . g_l('global', '[align]') . '</td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::htmlTextInput("width", 4, $width, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-		<td>' . we_html_tools::htmlTextInput("height", 4, $height, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-		<td>' . we_html_tools::htmlTextInput("border", 4, $border, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-		<td>' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
-		<td>' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
-		<td>' . we_html_tools::getPixel(10, 2) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("width", 4, $width, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("height", 4, $height, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("border", 4, $border, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
 		<td>
 			<select class="defaultfont" name="align" size="1">
 			<option value="">Default</option>
@@ -608,7 +578,6 @@ if($ok && $cmd === "edit_link_at_class"){
 			<option value="absbottom"' . (($align === "absbottom") ? "selected" : "") . '>Abs Bottom</option>
 		</select></td>
 	</tr>
-	<tr><td colspan="12">' . we_html_tools::getPixel(2, 2) . '</td></tr>
 	<tr><td colspan="12" class="small">' . g_l('linklistEdit', '[alt_text]') . '</td></tr>
 	<tr><td colspan="12">' . we_html_tools::htmlTextInput("alt", 20, $alt, "", '', "text", 300) . '</td></tr>
 	<tr><td colspan="12" class="small">' . g_l('linklistEdit', '[title]') . '</td></tr>
@@ -708,13 +677,7 @@ if($ok && $cmd === "edit_link_at_class"){
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('wysiwyg', '[relation]'),
-				'html' => '<table class="default">
-                            <tr>
-                                <td>' . $relfield . '</td>
-                                <td>' . we_html_tools::getPixel(20, 5) . '</td>
-                                <td>' . $revfield . '</td>
-                            </tr>
-			                 </table>',
+				'html' => '<span class="default" style="margin-right:20px;">' . $relfield . '</span>' . $revfield,
 				'space' => 150,
 				'noline' => 1);
 

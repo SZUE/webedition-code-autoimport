@@ -223,7 +223,6 @@ var dirs = {
 	WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
 	WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
 	WE_MESSAGING_MODULE_DIR: "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
-	BUTTONS_DIR: "<?php echo BUTTONS_DIR; ?>"
 };
 var contentTypes = {
 	TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,10 +27,10 @@ $createForeignWord = we_html_button::create_button("new_glossary_foreignword", "
 $createLink = we_html_button::create_button("new_glossary_link", "javascript:top.opener.top.we_cmd('new_glossary_link');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 $createTextReplacement = we_html_button::create_button("new_glossary_textreplacement", "javascript:top.opener.top.we_cmd('new_glossary_textreplacement');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
-$content = $createAbbreviation . we_html_tools::getPixel(2, 10) .
-	$createAcronym . we_html_tools::getPixel(2, 10) .
-	$createForeignWord . we_html_tools::getPixel(2, 10) .
-	$createLink . we_html_tools::getPixel(2, 10) .
+$content = $createAbbreviation . '<br/>' .
+	$createAcronym . '<br/>' .
+	$createForeignWord . '<br/>' .
+	$createLink . '<br/>' .
 	$createTextReplacement;
 
 $modimage = "glossary.gif";

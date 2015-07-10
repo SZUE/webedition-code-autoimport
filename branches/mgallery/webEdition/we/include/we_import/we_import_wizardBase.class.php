@@ -218,7 +218,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 
 							echo we_html_element::jsElement('
 if (top.wizbody && top.wizbody.addLog){
-	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br/>");
+	top.wizbody.addLog("<br/>");
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . we_html_element::htmlB(g_l('import', '[start_import]') . ' - ' . date("d.m.Y H:i:s")) . '<br/><br/>");
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[prepare]')) . '<br/>");
 	top.wizbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5)) . we_html_element::htmlB(g_l('import', '[import]')) . '<br/>");

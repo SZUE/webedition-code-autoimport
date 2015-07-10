@@ -49,7 +49,6 @@ define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/tinymce/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 
 define('EDIT_IMAGE_DIR', IMAGE_DIR . 'edit/');
-define('BUTTONS_DIR', IMAGE_DIR . 'button/');
 
 //all paths
 define('WEBEDITION_PATH', $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR);

@@ -58,19 +58,12 @@ function htmlClipElement($smalltext, $text, $content){
 	');
 
 	$oClip = new we_html_table(array('class' => 'default'), 1, 3);
-	$oClip->setCol(
-		0, 0, array(
-		"width" => 21, "valign" => "top", "align" => "right", "id" => "btn_" . $unique
-		), '<button class="weBtn" onclick="clip_' . $unique . '();">' .
+	$oClip->setCol(0, 0, array("width" => 21, "valign" => "top", "align" => "right", "id" => "btn_" . $unique), '<button class="weBtn" onclick="clip_' . $unique . '();">' .
 		we_html_element::htmlImg(array(
 			"src" => BUTTONS_DIR . "/icons/direction_right.gif", "border" => 0
 		)) . '</button>');
-	$oClip->setCol(0, 1, array(
-		"width" => 10, "nowrap" => "nowrap"
-		), we_html_tools::getPixel(10, 1));
-	$oClip->setCol(
-		0, 2, null, we_html_element::htmlSpan(
-			array(
+	$oClip->setCol(0, 1, array("width" => 10, "nowrap" => "nowrap"), we_html_tools::getPixel(10, 1));
+	$oClip->setCol(0, 2, null, we_html_element::htmlSpan(array(
 			"id" => $unique,
 			"class" => "defaultfont",
 			"style" => "cursor:pointer;",

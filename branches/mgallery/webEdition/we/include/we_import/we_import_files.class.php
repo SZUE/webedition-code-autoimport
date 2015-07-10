@@ -104,7 +104,6 @@ class we_import_files{
 		return we_html_element::jsElement("
 var dirs={
 	WEBEDITION_DIR:'" . WEBEDITION_DIR . "',
-	BUTTONS_DIR:'" . BUTTONS_DIR . "'
 };
 var tables={
 FILE_TABLE:'" . FILE_TABLE . "'

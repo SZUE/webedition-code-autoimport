@@ -121,9 +121,6 @@ this.selectedIndex = 0;' .
 			'_blank' => '_blank'
 		));
 
-		$_table = new we_html_table(array(
-			'class' => 'default'
-			), 1, 3);
 
 		if($width){
 			$_inputs['style'] = 'width: ' . $width . 'px;';
@@ -141,17 +138,7 @@ this.selectedIndex = 0;' .
 			$_inputs['onchange'] = $onChange;
 		}
 
-		$_table->setCol(0, 0, array(
-			'class' => 'defaultfont'
-			), self::htmlTextInput($name, $size, $value, '', ($onChange ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled));
-
-		$_table->setCol(0, 1, null, self::getPixel($abstand, 1));
-
-		$_table->setCol(0, 2, array(
-			'class' => 'defaultfont'
-			), $_target_box->getHtml());
-
-		return $_table->getHtml();
+		return we_html_element::htmlSpan(array('class' => 'defaultfont', 'style' => 'margin-right:' . $abstand . 'px'), self::htmlTextInput($name, $size, $value, '', ($onChange ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled)) . $_target_box->getHtml();
 	}
 
 	static function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0, $markHot = '', $disabled = false){
@@ -618,7 +605,7 @@ this.selectedIndex = 0;' .
 			}
 			$hourSelect = getHtmlTag('select', array_merge($_attsSelect, array(
 					'name' => sprintf($name, '_hour'),
-				'id' => sprintf($name, '_hour')
+					'id' => sprintf($name, '_hour')
 					)), $hours, true) . '&nbsp;';
 		} else {
 			$hourSelect = getHtmlTag('input', array_merge($_attsHidden, array(

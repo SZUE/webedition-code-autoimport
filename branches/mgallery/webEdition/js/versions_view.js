@@ -258,3 +258,68 @@ function checkAll() {
 		checkboxes[i].checked = check;
 	}
 }
+
+function makeAjaxRequestDoclist() {
+	var args = "";
+	var newString = "";
+	for (var i = 0; i < document.we_form.elements.length; i++) {
+		newString = document.we_form.elements[i].name;
+		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
+	}
+	var scroll = document.getElementById("scrollContent");
+	scroll.innerHTML = '<table border="0" width="100%" height="100%"><tr><td align="center"><i class="fa fa-2x fa-spinner fa-pulse"></i></td></tr></table>';
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=versionlist&cmd=GetSearchResult&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + transaction + args);
+}
+
+function makeAjaxRequestParametersTop() {
+	var args = "";
+	var newString = "";
+	for (var i = 0; i < document.we_form.elements.length; i++) {
+		newString = document.we_form.elements[i].name;
+		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
+	}
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&position=top&cns=versionlist&cmd=GetSearchParameters&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args);
+}
+
+function makeAjaxRequestParametersBottom() {
+	var args = "";
+	var newString = "";
+	for (var i = 0; i < document.we_form.elements.length; i++) {
+		newString = document.we_form.elements[i].name;
+		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
+	}
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&position=bottom&cns=versionlist&cmd=GetSearchParameters&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args);
+}
+
+
+var ajaxCallbackResetVersion = {
+	success: function (o) {
+		if (o.responseText !== undefined) {
+			//top.we_cmd("save_document",transaction,"0","1","0", "","");
+			setTimeout('search(false);', 500);
+			// reload current document => reload all open Editors on demand
+
+			var _usedEditors = top.weEditorFrameController.getEditorsInUse();
+			for (frameId in _usedEditors) {
+
+				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
+					_usedEditors[frameId].setEditorReloadAllNeeded(true);
+					_usedEditors[frameId].setEditorIsActive(true);
+				} else {
+//					_usedEditors[frameId].setEditorReloadAllNeeded(true);
+				}
+			}
+			_multiEditorreload = true;
+
+			//reload tree
+			top.we_cmd("load", doc.Table, 0);
+
+		}
+	},
+	failure: function (o) {
+	}
+}
+
+function resetVersionAjax(id, documentID, version, table) {
+	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + transaction);
+}

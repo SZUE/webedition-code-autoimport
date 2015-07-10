@@ -39,9 +39,7 @@ function getDateSelector($_label, $_name, $_btn){
 	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $_btn);
 	$oSelector = new we_html_table(array('class' => 'default', 'id' => $_name . '_cell'), 1, 5);
 	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $_label);
-	$oSelector->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, '', 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
-	$oSelector->setCol(0, 3, null, we_html_tools::getPixel(5, 1));
 	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
 	return $oSelector->getHTML();
 }
@@ -262,40 +260,20 @@ $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button
 
 // Edit note dialog
 $oTblProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 9, 2);
-$oTblProps->setCol(0, 0, array(
-	"class" => "middlefont"
-	), g_l('cockpit', '[valid]') . '&nbsp;');
-$oTblProps->setCol(0, 1, array(
-	"colspan" => 2, "align" => "right"
-	), $oTblPeriod->getHTML());
-$oTblProps->setCol(1, 0, null, we_html_tools::getPixel(1, 8));
-$oTblProps->setCol(2, 0, array(
-	"class" => "middlefont"
-	), g_l('cockpit', '[prio]'));
+$oTblProps->setCol(0, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[valid]') . '&nbsp;');
+$oTblProps->setCol(0, 1, array("colspan" => 2, "align" => "right"), $oTblPeriod->getHTML());
+$oTblProps->setCol(2, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[prio]'));
 $oTblProps->setCol(2, 1, null, $oTblPrio->getHTML());
-$oTblProps->setCol(3, 0, null, we_html_tools::getPixel(1, 8));
-$oTblProps->setCol(4, 0, array(
-	"class" => "middlefont"
-	), g_l('cockpit', '[title]'));
-$oTblProps->setCol(
-	4, 1, null, we_html_tools::htmlTextInput(
-		"props_title", 255, "", 255, "", "text", "100%", 0));
-$oTblProps->setCol(5, 0, null, we_html_tools::getPixel(1, 8));
-$oTblProps->setCol(6, 0, array(
-	"class" => "middlefont", "valign" => "top"
-	), g_l('cockpit', '[note]'));
-$oTblProps->setCol(
-	6, 1, null, we_html_element::htmlTextArea(
-		array(
+$oTblProps->setCol(4, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[title]'));
+$oTblProps->setCol(4, 1, null, we_html_tools::htmlTextInput("props_title", 255, "", 255, "", "text", "100%", 0));
+$oTblProps->setCol(6, 0, array("class" => "middlefont", "valign" => "top", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[note]'));
+$oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea(array(
 		'name' => 'props_text',
 		'id' => 'previewCode',
 		'style' => 'width:100%;height:60px;',
 		'class' => 'wetextinput',
 		), ""));
-$oTblProps->setCol(7, 0, null, we_html_tools::getPixel(1, 8));
-$oTblProps->setCol(8, 0, array(
-	"colspan" => 3
-	), $buttons);
+$oTblProps->setCol(8, 0, array("colspan" => 3), $buttons);
 
 // Button: add note
 $oTblBtnProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);

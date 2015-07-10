@@ -83,18 +83,11 @@ $selected = $we_doc->getElement($name . "forbidphp", "dat", 'on') === "on" ? 'on
 $forbidphp = we_html_tools::htmlSelect("forbidphp", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table class="default">
+	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<tr>
 		<td class="defaultfont" align="right">wysiwyg&nbsp;</td><td>' . $wysiwyg . '</td>
 		<td class="defaultfont" align="right">forbidphp&nbsp;</td><td>' . $forbidphp . '</td>
 		<td class="defaultfont" align="right">forbidhtml&nbsp;</td><td>' . $forbidhtml . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(70, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-		<td>' . we_html_tools::getPixel(95, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-		<td>' . we_html_tools::getPixel(140, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
 	</tr>
 </table>';
 $parts = array(
@@ -113,18 +106,11 @@ $selected = $we_doc->getElement($name . "removefirstparagraph", "dat", 'on') ===
 $removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table class="default">
+	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<tr>
 		<td class="defaultfont" align="right">xml&nbsp;</td><td>' . $xml . '</td>
 		<td class="defaultfont" align="right"></td><td></td>
 		<td class="defaultfont" align="right">removefirstparagraph&nbsp;</td><td>' . $removefirstparagraph . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(70, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-		<td>' . we_html_tools::getPixel(95, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-		<td>' . we_html_tools::getPixel(140, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
 	</tr>
 </table>';
 
@@ -143,18 +129,11 @@ $selected = $we_doc->getElement($name . "showmenus", "dat", 'on') === "on" ? 'on
 $showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
 
 $table = '<table class="default">
+	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<tr>
 		<td class="defaultfont" align="right">inlineedit&nbsp;</td><td>' . $inlineedit . '</td>
 		<td class="defaultfont" align="right"></td><td></td>
 		<td class="defaultfont" align="right">showmenus&nbsp;</td><td>' . $showmenus . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(70, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-		<td>' . we_html_tools::getPixel(95, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-		<td>' . we_html_tools::getPixel(140, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
 	</tr>
 </table>';
 
@@ -167,31 +146,17 @@ $parts[] = array(
 
 // WIDTH & HEIGHT & BGCOLOR
 $table = '<table class="default">
+	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
+	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" align="right">width&nbsp;</td><td>' . we_html_tools::htmlTextInput('width', 24, $we_doc->getElement($name . "width"), 5, '', 'number', 60, 0) . '</td>
+		<td class="defaultfont" align="right" style="padding-bottom:6px;">width&nbsp;</td><td>' . we_html_tools::htmlTextInput('width', 24, $we_doc->getElement($name . "width"), 5, '', 'number', 60, 0) . '</td>
 		<td class="defaultfont" align="right">height&nbsp;</td><td>' . we_html_tools::htmlTextInput('height', 24, $we_doc->getElement($name . "height"), 5, '', 'number', 60, 0) . '</td>
 		<td class="defaultfont" align="right">bgcolor&nbsp;</td><td>' . we_html_tools::htmlTextInput('bgcolor', 24, $we_doc->getElement($name . "bgcolor"), 20, '', 'text', 60, 0) . '</td>
 		<td class="defaultfont" align="right"></td><td></td>
 	</tr>
 	<tr>
-		<td>' . we_html_tools::getPixel(70, 6) . '</td>
-		<td>' . we_html_tools::getPixel(60, 6) . '</td>
-		<td>' . we_html_tools::getPixel(95, 6) . '</td>
-		<td>' . we_html_tools::getPixel(60, 6) . '</td>
-		<td>' . we_html_tools::getPixel(140, 6) . '</td>
-		<td>' . we_html_tools::getPixel(60, 6) . '</td>
-	</tr>
-	<tr>
 		<td class="defaultfont" align="right">class&nbsp;</td><td>' . we_html_tools::htmlTextInput('class', 24, $we_doc->getElement($name . "class"), 20, '', 'text', 60, 0) . '</td>
 		<td class="defaultfont" align="right"></td><td></td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(70, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-		<td>' . we_html_tools::getPixel(95, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
-		<td>' . we_html_tools::getPixel(140, 1) . '</td>
-		<td>' . we_html_tools::getPixel(60, 1) . '</td>
 	</tr>
 </table>';
 
@@ -204,12 +169,9 @@ $parts[] = array(
 
 // CLASSES
 $table = '<table class="default">
+	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
 		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), array('style' => "width:415px;height:50px")) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
 	</tr>
 </table>';
 
@@ -224,19 +186,12 @@ $select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditor
 $select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
 
 $table = '<table class="default">
+	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 10) . '</td>
-		<td>' . we_html_tools::getPixel(395, 10) . '</td>
+		<td class="defaultfont" style="padding-bottom:10px;" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
 		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
 	</tr>
 </table>';
 
@@ -248,12 +203,9 @@ $parts[] = array(
 
 // TINYPARAMS
 $table = '<table class="default">
+	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
 		<td class="defaultfont" valign="top" align="right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->getElement($name . "tinyparams"), 1024, '', 'text', 350, 0) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
 	</tr>
 </table>';
 
@@ -265,13 +217,10 @@ $parts[] = array(
 
 // TINY-TEMPLATES
 $table = '<table class="default">
+	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
 		<td class="defaultfont" valign="top" align="right">templates&nbsp;</td>
 		<td colspan="5">' . we_html_tools::htmlTextInput('templates', 24, $we_doc->getElement($name . "templates"), 1024, '', 'text', 350, 0) . '</td>
-	</tr>
-	<tr>
-		<td>' . we_html_tools::getPixel(90, 1) . '</td>
-		<td>' . we_html_tools::getPixel(395, 1) . '</td>
 	</tr>
 </table>';
 

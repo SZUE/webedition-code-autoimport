@@ -90,8 +90,7 @@ $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['
 		'<input type="hidden" name="chbx_type" value="0"/>');
 
 $oDbTableType = new we_html_table(array('class' => 'default'), 1, 3);
-$oDbTableType->setCol(0, 0, null, $oChbxDocs . $oChbxTmpl);
-$oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
+$oDbTableType->setCol(0, 0, array('style'=>'padding-right:10px;'), $oChbxDocs . $oChbxTmpl);
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
 
 $oSctDate = new we_html_select(array("name" => "sct_date", "size" => 1, "class" => "defaultfont", "onchange" => ""));
@@ -120,8 +119,7 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 $oSctNumEntries->selectOption($iAmountEntries);
 
 $oSelMaxEntries = new we_html_table(array("height" => "100%", 'class' => 'default'), 1, 3);
-$oSelMaxEntries->setCol(0, 0, array("valign" => "middle", "class" => "defaultfont"), g_l('cockpit', '[max_amount_entries]'));
-$oSelMaxEntries->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
+$oSelMaxEntries->setCol(0, 0, array("valign" => "middle", "class" => "defaultfont",'style'=>'padding-right:5px;'), g_l('cockpit', '[max_amount_entries]'));
 $oSelMaxEntries->setCol(0, 2, array("valign" => "middle"), $oSctNumEntries->getHTML());
 
 $show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;

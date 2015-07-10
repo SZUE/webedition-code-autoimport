@@ -418,7 +418,6 @@ case "tool_weSearch_new_forObjects":
 weSearch.we_const = {
 	WEBEDITION_DIR: "' . WEBEDITION_DIR . '",
 	IMAGE_DIR: "' . IMAGE_DIR . '",
-	BUTTONS_DIR: "' . BUTTONS_DIR . '",
 	CATEGORY_TABLE: "' . CATEGORY_TABLE . '",
 	TEMPLATES_TABLE: "' . TEMPLATES_TABLE . '",
 	FILE_TABLE: "' . FILE_TABLE . '",

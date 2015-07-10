@@ -70,13 +70,13 @@ if(permissionhandler::hasPerm("administrator")){
 
 		$next = $start + $count;
 
-		$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
+		$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td style="padding-right:20px;">' .
 			($start > 0 ?
 				we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
 				we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)) .
-			we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
+			"</td><td align='center' class='defaultfont' width='120'><b>" . ($start + 1) . "&nbsp;-&nbsp;" .
 			min($num_all, $start + $count) .
-			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
+			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . '</b></td><td style="padding-right:20px;">' .
 			($next < $num_all ?
 				we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . "?start=" . $next) : //bt_next
 				we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)) .

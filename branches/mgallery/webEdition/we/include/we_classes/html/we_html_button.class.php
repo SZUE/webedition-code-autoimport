@@ -67,6 +67,7 @@ abstract class we_html_button{
 	const PREVIEW = 'fat:preview,fa-lg fa-eye';
 	const CALENDAR = 'fa:date_picker,fa-lg fa-calendar';
 	const PUBLISH = 'fat:publish,fa-lg fa-sun-o';
+	const NOT_FOUND ='.fa-lg fa-bullseye';
 
 	/**
 	 * Gets the HTML Code for the button.
@@ -164,12 +165,9 @@ abstract class we_html_button{
 						goto restart;
 					default:
 						t_e('old image button', $name);
+						$name=  str_replace(self::WE_IMAGE_BUTTON_IDENTIFY, 'fa', $name).self::NOT_FOUND;
+
 				}
-				$name = $names;
-				//set width for image button if given width has not default value
-				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
-				$value = we_html_element::htmlImg(array('src' => BUTTONS_DIR . 'icons/' . str_replace('btn_', '', $name) . '.gif', 'class' => 'weBtnImage'));
-				break;
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
 				//set width for image button if given width has not default value
 				$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);

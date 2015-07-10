@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /// config
 $feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
 for($i = 0; $i <= 3; $i++){
@@ -47,9 +45,9 @@ if(($resultD) && $resultO){ //docs and objects
 	$prefshop2 = we_html_button::create_button("quick_rev", "javascript:top.content.editor.location='" . WE_MODULES_DIR . "shop/edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true);
 }
 
-$content = $prefshop . we_html_tools::getPixel(2, 14) .
-	$prefshop1 . we_html_tools::getPixel(2, 14) .
-	(isset($prefshop2) ? $prefshop2 . we_html_tools::getPixel(2, 14) : '');
+$content = $prefshop . '<br/>' .
+	$prefshop1 . '<br/>' .
+	(isset($prefshop2) ? $prefshop2 . '<br/>' : '');
 
 
 $modimage = "shop.gif";

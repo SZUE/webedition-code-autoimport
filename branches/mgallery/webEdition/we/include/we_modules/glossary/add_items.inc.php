@@ -523,16 +523,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 					function addRow(word, suggestions) {
 						var tr = document.createElement('tr');
-
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						table.appendChild(tr);
-
 						tr = document.createElement('tr');
 						tr.appendChild(getTextColumn(word, 1));
 						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
@@ -553,15 +543,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 					function addPredefinedRow(word, suggestions, type, title, lang) {
 						var tr = document.createElement('tr');
-
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(1, 5); ?>'));
-						table.appendChild(tr);
 
 						tr = document.createElement('tr');
 						tr.appendChild(getTextColumn(word, 1));
@@ -730,47 +711,21 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 					$Content = '
 	<table width="650" class="default defaultfont">
+	<colgroup><col style="width:150px;"/><col style="width:140px;"/><col style="width:200px;"/><col style="width:100px;"/></colgroup>
 	<tr>
-		<td>' . we_html_tools::getPixel(150, 1) . '</td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-		<td>' . we_html_tools::getPixel(140, 1) . '</td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-		<td>' . we_html_tools::getPixel(200, 1) . '</td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-		<td>' . we_html_tools::getPixel(100, 1) . '</td>
+		<td colspan="7" style="padding-bottom:5px;">' . g_l('modules_glossary', '[not_identified_words]') . '</td>
 	</tr>
 	<tr>
-		<td colspan="7">' . g_l('modules_glossary', '[not_identified_words]') . '</td>
-	</tr>
-	<tr>
-		<td colspan="7">' . we_html_tools::getPixel(2, 5) . '</td>
-	</tr>
-	<tr>
-		<td><b>' . g_l('modules_glossary', '[not_known_word]') . '</b></td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-		<td><b>' . g_l('modules_glossary', '[action]') . '</b></td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-		<td><b>' . g_l('modules_glossary', '[announced_word]') . ' / ' . g_l('modules_glossary', '[suggestion]') . '</b></td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
+		<td style="padding-right:20px;"><b>' . g_l('modules_glossary', '[not_known_word]') . '</b></td>
+		<td style="padding-right:20px;"><b>' . g_l('modules_glossary', '[action]') . '</b></td>
+		<td style="padding-right:20px;"><b>' . g_l('modules_glossary', '[announced_word]') . ' / ' . g_l('modules_glossary', '[suggestion]') . '</b></td>
 		<td><b>' . g_l('modules_glossary', '[language]') . '</b></td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-	</tr>
 	<tr>
-		<td colspan="7">' . we_html_tools::getPixel(2, 5) . '</td>
-	</tr>
 	</table>
 	<div style="height: 248px; width: 675px; overflow: auto;">
 	<table width="650" class="default defaultfont">
 	<tbody id="unknown">
-	<tr>
-		<td>' . we_html_tools::getPixel(150, 1) . '</td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-		<td>' . we_html_tools::getPixel(140, 1) . '</td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-		<td>' . we_html_tools::getPixel(200, 1) . '</td>
-		<td>' . we_html_tools::getPixel(20, 1) . '</td>
-		<td>' . we_html_tools::getPixel(100, 1) . '</td>
-	</tr>
+	<colgroup><col style="width:150px;"/><col style="width:140px;"/><col style="width:200px;"/><col style="width:100px;"/></colgroup>
 	</tbody>
 	</table>';
 

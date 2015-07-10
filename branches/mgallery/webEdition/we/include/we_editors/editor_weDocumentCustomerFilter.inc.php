@@ -97,8 +97,7 @@ function formWebuser($canChange, $width = 388){
 	  "left",
 	  "defaultfont",
 	  $idfield,
-	  we_html_tools::getPixel(20,4),
-	  $button,we_html_tools::getPixel(5,4),$_trashBut);
+	  $button,$_trashBut);
 	 */
 	$yuiSuggest = & weSuggest::getInstance();
 	$yuiSuggest->setAcId("Customer");

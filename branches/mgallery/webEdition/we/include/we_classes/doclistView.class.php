@@ -41,7 +41,6 @@ var docID="' . $GLOBALS['we_doc']->ID . '";
 var transaction="' . $we_transaction . '";
 var dirs={
 	"IMAGE_DIR":"' . IMAGE_DIR . '",
-	"BUTTONS_DIR":"' . BUTTONS_DIR . '"
 };
 var tables={
 	"CATEGORY_TABLE":"' . CATEGORY_TABLE . '",

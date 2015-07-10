@@ -34,18 +34,17 @@ $oRdoSort = array(
 );
 
 $sort = new we_html_table(array('class' => 'default'), 3, 3);
-$sort->setCol(0, 0, array("width" => 145), $oRdoSort[0]);
-$sort->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-$sort->setCol(0, 2, array(
-	"width" => 145
-	), $oRdoSort[3]);
+$sort->setCol(0, 0, array("width" => 145, 'style' => 'padding-right:10px;'), $oRdoSort[0]);
+$sort->setCol(0, 2, array("width" => 145), $oRdoSort[3]);
 $sort->setCol(1, 0, null, $oRdoSort[1]);
 $sort->setCol(1, 2, null, $oRdoSort[4]);
 $sort->setCol(2, 0, null, $oRdoSort[2]);
 
 $parts = array(
 	array(
-		"headline" => g_l('cockpit', '[sorting]'), "html" => $sort->getHTML(), "space" => 100
+		"headline" => g_l('cockpit', '[sorting]'),
+		"html" => $sort->getHTML(),
+		"space" => 100
 	)
 );
 
@@ -55,16 +54,13 @@ $oRdoDisplay = array(
 );
 
 $display = new we_html_table(array('class' => 'default'), 1, 3);
-$display->setCol(0, 0, array(
-	"width" => 145
-	), $oRdoDisplay[0]);
-$display->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
-$display->setCol(0, 2, array(
-	"width" => 145
-	), $oRdoDisplay[1]);
+$display->setCol(0, 0, array("width" => 145, 'style' => 'padding-right:10px;'), $oRdoDisplay[0]);
+$display->setCol(0, 2, array("width" => 145), $oRdoDisplay[1]);
 
 $parts[] = array(
-	"headline" => g_l('cockpit', '[display]'), "html" => $display->getHTML(), "space" => 100
+	"headline" => g_l('cockpit', '[display]'),
+	"html" => $display->getHTML(),
+	"space" => 100
 );
 
 $oRdoDate = array(
@@ -81,7 +77,9 @@ $date->setCol(1, 0, null, $oRdoDate[1]);
 $date->setCol(2, 0, null, $oRdoDate[2]);
 
 $parts[] = array(
-	"headline" => g_l('cockpit', '[display_date]'), "html" => $date->getHTML(), "space" => 100
+	"headline" => g_l('cockpit', '[display_date]'),
+	"html" => $date->getHTML(),
+	"space" => 100
 );
 
 $oRdoPrio = array(
@@ -91,14 +89,9 @@ $oRdoPrio = array(
 );
 
 $prio = new we_html_table(array('class' => 'default'), 3, 3);
-$prio->setCol(0, 0, array(
-	"width" => 70
-	), $oRdoPrio[0]);
-$prio->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
+$prio->setCol(0, 0, array("width" => 70, 'style' => 'padding-right:10px;'), $oRdoPrio[0]);
 
-$prio->setCol(0, 2, array(
-	"width" => 20
-	), '<i class="fa fa-dot-circle-o" style="color:red"></i>');
+$prio->setCol(0, 2, array("width" => 20), '<i class="fa fa-dot-circle-o" style="color:red"></i>');
 $prio->setCol(1, 0, null, $oRdoPrio[1]);
 $prio->setCol(1, 2, null, '<i class="fa fa-dot-circle-o" style="color:yellow"></i>');
 $prio->setCol(2, 0, null, $oRdoPrio[2]);

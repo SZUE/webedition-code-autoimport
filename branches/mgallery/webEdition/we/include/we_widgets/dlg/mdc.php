@@ -78,7 +78,7 @@ function getHTMLDirSelector($_selType){
 				"<div id=\"yuiAcLayerDoc\" class=\"yuiAcLayer\">" . $yuiSuggest->getErrorMarkPlaceHolder(
 					"yuiAcErrorMarkDoc") . we_html_tools::htmlTextInput(
 					"FolderPath", 58, $_path, "", 'onchange="" id="yuiAcInputDoc"', "text", (420 - 120), 0) . "<div id=\"yuiAcContainerDoc\"></div></div>", g_l('cockpit', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden("FolderID", $folderID, "yuiAcIdDoc"
-				), we_html_tools::getPixel(20, 4), $_buttons));
+				), $_buttons));
 }
 
 $docTypes = array(0 => g_l('cockpit', '[no_entry]'));
@@ -137,23 +137,17 @@ function getHTMLCategory(){
 	$table = new we_html_table(
 		array(
 		'id' => 'CategoriesBlock',
-		'style' => 'display: block;',
+		'style' => 'display: block;margin-top: 5px;',
 		'class' => 'default'
 		), 5, 1);
 
-	$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
-	$table->setCol(1, 0, array(
-		'class' => 'defaultfont'
-		), "Kategorien");
-	$table->setColContent(
-		2, 0, we_html_element::htmlDiv(
+	$table->setCol(1, 0, array('class' => 'defaultfont'), "Kategorien");
+	$table->setColContent(2, 0, we_html_element::htmlDiv(
 			array(
 				'id' => 'categories',
 				'class' => 'blockWrapper',
-				'style' => 'width:420px;height:60px;border:#AAAAAA solid 1px;'
+				'style' => 'width:420px;height:60px;border:#AAAAAA solid 1px;margin-bottom:5px;'
 	)));
-
-	$table->setColContent(3, 0, we_html_tools::getPixel(5, 5));
 
 	$table->setCol(4, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:removeAllCats()') . $addbut);
 
@@ -228,9 +222,7 @@ function init(){
 }
 ";
 
-$_seltype = array(
-	'doctype' => g_l('cockpit', '[documents]')
-);
+$_seltype = array('doctype' => g_l('cockpit', '[documents]'));
 if(defined('OBJECT_TABLE')){
 	$_seltype['classname'] = g_l('cockpit', '[objects]');
 }
@@ -253,8 +245,7 @@ if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFI
 }
 
 $divDynamic = we_html_element::htmlDiv(
-		array(
-		"id" => "dynamic", "style" => (!$_selection ? 'display:block;' : 'display:none;')
+		array("id" => "dynamic", "style" => (!$_selection ? 'display:block;' : 'display:none;')
 		), getHTMLDirSelector($_selType) . we_html_element::htmlBr() . ((!$_selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
 				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory());
 
@@ -271,10 +262,14 @@ $divContent = we_html_element::htmlDiv(
 
 $parts = array(
 	array(
-		"headline" => "", "html" => $divContent, "space" => 0
+		"headline" => "",
+		"html" => $divContent,
+		"space" => 0
 	),
 	array(
-		"headline" => "", "html" => $oSelCls->getHTML(), "space" => 0
+		"headline" => "",
+		"html" => $oSelCls->getHTML(),
+		"space" => 0
 	)
 );
 

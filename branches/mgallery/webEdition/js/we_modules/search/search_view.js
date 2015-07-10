@@ -2,7 +2,6 @@ weSearch = {
 	we_const: {// FIXME: move most important constants to webedition.js
 		WEBEDITION_DIR: '',
 		IMAGE_DIR: '',
-		BUTTONS_DIR: '',
 		CATEGORY_TABLE: '',
 		TEMPLATES_TABLE: '',
 		FILE_TABLE: '',

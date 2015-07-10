@@ -114,12 +114,12 @@ $parts = array(
 	array('headline' => g_l('validation', '[service]'),
 		'html' =>
 		'<table class="default">
-<tr><td class="defaultfont">' .
+<tr><td class="defaultfont" style="padding-right:20px;">' .
 		$_select .
 		$_hiddens .
-		'</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
+		'</td><td style="padding-right:20px;">' .
 		we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !permissionhandler::hasPerm("CAN_EDIT_VALIDATION"))
-		. '</td><td>' . we_html_tools::getPixel(20, 5) . '</td><td>' .
+		. '</td><td>' .
 		we_html_button::create_button(we_html_button::OK, 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
 		. '</td></tr></table>'
 		, 'space' => 95),

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,5 +23,5 @@
  */
 $createBanner = we_html_button::create_button("new_banner", "javascript:top.opener.top.we_cmd('new_banner');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
 $createGroup = we_html_button::create_button("new_bannergroup", "javascript:top.opener.top.we_cmd('new_bannergroup');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
-$content = $createBanner . we_html_tools::getPixel(2, 14) . $createGroup;
+$content = $createBanner . '<br/>' . $createGroup;
 $modimage = "banner.gif";
