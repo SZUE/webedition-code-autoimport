@@ -319,7 +319,10 @@ abstract class we_html_button{
 		$attr = array(
 			'style' => 'border-style:none; padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . 'border-spacing:0px;float:' . $align . ';'
 			);
-		array_merge($attr,$attribs);
+			
+		if(is_array($attribs) && count($attribs) > 0){
+			array_merge($attr, $attribs);
+		}
 
 
 		//	Create button array
