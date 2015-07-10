@@ -64,7 +64,7 @@ var g_l={
 var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
 var transaction="' . $GLOBALS['we_transaction'] . '";
 var doc={
-ID:' . intval() . ',
+ID:' . intval($GLOBALS['we_doc']->ID) . ',
 Table:"' . $GLOBALS['we_doc']->Table . '",
 ClassName:"' . $GLOBALS['we_doc']->ClassName . '",
 Text:"' . $GLOBALS['we_doc']->Text . '",
