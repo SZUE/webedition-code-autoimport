@@ -91,17 +91,17 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	private function getDocProperties(){
 		switch($this->contentType){
 			case we_base_ContentTypes::IMAGE;
-				return array('type' => 'image', 'icon' => ICON_DIR . 'no_image.gif');
+				return array('type' => 'image', 'ct' => $this->contentType);
 			case we_base_ContentTypes::FLASH;
-				return array('type' => 'flash', 'icon' => ICON_DIR . 'no_flashmovie.gif');
+				return array('type' => 'flash', 'ct' => $this->contentType);
 			case we_base_ContentTypes::VIDEO;
-				return array('type' => 'video', 'icon' => ICON_DIR . 'doclist/video.svg');
+				return array('type' => 'video', 'ct' => $this->contentType);
 			case we_base_ContentTypes::AUDIO;
-				return array('type' => 'audio', 'icon' => ICON_DIR . 'doclist/audio.svg');
+				return array('type' => 'audio', 'ct' => $this->contentType);
 			case we_base_ContentTypes::QUICKTIME;
-				return array('type' => 'quicktime', 'icon' => ICON_DIR . 'no_quicktime.gif');
+				return array('type' => 'quicktime', 'ct' => $this->contentType);
 			default:
-				return array('type' => 'other', 'icon' => ICON_DIR . 'doc.gif');
+				return array('type' => 'other', 'ct' => $this->contentType);
 		}
 	}
 
@@ -198,7 +198,7 @@ div.we_file_drag_binDoc{
 				<div style="display:table-cell;width:178px;height:116px;padding-left:4px;vertical-align:middle;color:#cccccc;font-weight:normal;font-size:' . ($this->isDragAndDrop ? 16 : 14) . 'px">' .
 			$dropText . '
 				</div>' .
-			we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? : we_html_element::htmlImg(array('src' => $this->binDocProperties['icon'])))) . '
+			we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));'))) . '
 			</div>
 			<div class="we_file_drag we_file_drag_binDoc" style="display:none;' . (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '') . '" id="div_fileupload_fileDrag_state_1">
 				<div id="div_upload_fileDrag_innerLeft" style="display:table-cell;width:178px;height:116px;padding-left:10px;vertical-align:middle;text-align:left;color:#333;font-weight: normal;font-size:12px">' .

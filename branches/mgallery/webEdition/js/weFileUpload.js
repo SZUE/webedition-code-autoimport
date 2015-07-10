@@ -547,8 +547,8 @@ var weFileUpload = (function () {
 
 			this.setInternalProgress = function (progress, index) {
 				var coef = this.intProgress.width / 100,
-					i = typeof index !== 'undefined' || index === false ? index : false,
-					p = i === false ? '' : '_' + i;
+								i = typeof index !== 'undefined' || index === false ? index : false,
+								p = i === false ? '' : '_' + i;
 
 				document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
 				document.getElementById(_.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
@@ -558,8 +558,8 @@ var weFileUpload = (function () {
 
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				var s = success || false,
-					i = index || false,
-					p = !i ? '' : '_' + i;
+								i = index || false,
+								p = !i ? '' : '_' + i;
 
 				if (s) {
 					this.setInternalProgress(100, i);
@@ -765,7 +765,7 @@ var weFileUpload = (function () {
 
 			this.postProcess = function (resp) {
 				var that = _.sender,
-					cur = this.currentFile;
+								cur = this.currentFile;
 
 				this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
 				this.form.form.elements.weFileCt.value = cur.mimePHP;
@@ -1383,7 +1383,7 @@ var weFileUpload = (function () {
 			_.view.uploadBtnName = conf.uploadBtnName || _.view.uploadBtnName;
 			_.fieldName = 'we_File';
 			if (typeof conf.binDocProperties !== 'undefined') {
-				_.view.icon = conf.binDocProperties.icon || _.view.icon;
+				_.view.icon = getTreeIcon(conf.binDocProperties.ct);
 				_.view.binDocType = conf.binDocProperties.type || _.view.binDocType;
 			}
 			_.view.icon = conf.icon || _.view.icon;
@@ -1452,7 +1452,7 @@ var weFileUpload = (function () {
 					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 
 					window.we_cmd('update_file');
-					_EditorFrame.getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text,0,"published");
+					_EditorFrame.getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
 					this.fireCallback();
 				}
 			};

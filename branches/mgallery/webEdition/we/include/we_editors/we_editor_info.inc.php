@@ -69,7 +69,6 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			'headline' => '',
 			'html' => $_html,
 			'space' => 140,
-			//'icon' => 'doclist/' . we_base_ContentTypes::inst()->getIcon($GLOBALS['we_doc']->ContentType, '', (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : '')),
 			'iconX' => we_html_element::jsElement('document.write(getTreeIcon("' . $GLOBALS['we_doc']->ContentType . '",true,"' . (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : '') . '"))')
 		)
 	);
