@@ -189,15 +189,9 @@ function setTab(tab) {
 
 ' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;'));
 
-		$table = new we_html_table(array("width" => '100%', "class" => 'default'), 3, 1);
+		/*$table = new we_html_table(array("width" => '100%', "class" => 'default'), 3, 1);
 
-		$table->setCol(0, 0, array(), we_html_tools::getPixel(1, 3));
-
-		$table->setCol(1, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
-			we_html_element::htmlB(
-				g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>'
-			)
-		);
+		$table->setCol(1, 0, array("valign" => "top", "class" => "small",'style'=>'p'), we_html_tools::getPixel(15, 2) . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>'));*/
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(array("id" => "eHeaderBody", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .

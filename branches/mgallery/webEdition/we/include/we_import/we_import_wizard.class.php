@@ -401,8 +401,7 @@ function handle_event(evt) {
 		$importLocs = new we_html_table(array('class' => 'default'), 7, 1);
 		$importLocs->setCol(0, 0, array(), $rdoLServer);
 		$importLocs->setCol(1, 0, array(), $importFromServer);
-		$importLocs->setCol(2, 0, array(), we_html_tools::getPixel(1, 4));
-		$importLocs->setCol(3, 0, array(), $rdoLLocal);
+		$importLocs->setCol(3, 0, array('style'=>'padding-top:4px;'), $rdoLLocal);
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){

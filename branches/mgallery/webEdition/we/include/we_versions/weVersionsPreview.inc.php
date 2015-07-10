@@ -391,8 +391,8 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 		$number = $k + 1;
 		$contentDiff .= '<tr>
 	<td width="33%" style="background-color:#FFF; "><strong>' . g_l('versions', '[scheduleTask]') . ' ' . $number . '</strong></td>
-	<td width="33%" style="background-color:#FFF;">' . we_html_tools::getPixel(1, 1) . '</td>
-	<td width="33%" style="background-color:#FFF;">' . we_html_tools::getPixel(1, 1) . '</td>
+	<td width="33%" style="background-color:#FFF;"></td>
+	<td width="33%" style="background-color:#FFF;"></td>
 </tr>';
 
 		foreach($v as $key => $val){
@@ -420,8 +420,8 @@ if(empty($newDocScheduler) && empty($oldDocScheduler)){
 
 		$contentDiff .= '<tr>
 	<td width="33%" style="background-color:#FFF; "><strong>' . g_l('versions', '[scheduleTask]') . ' ' . $number . '</strong></td>
-	<td width="33%" style="background-color:#FFF;">' . we_html_tools::getPixel(1, 1) . '</td>' .
-			(empty($oldDoc) ? '' : '<td width="33%" style="background-color:#FFF;">' . we_html_tools::getPixel(1, 1) . '</td>') . '
+	<td width="33%" style="background-color:#FFF;"></td>' .
+			(empty($oldDoc) ? '' : '<td width="33%" style="background-color:#FFF;"></td>') . '
 </tr>';
 
 

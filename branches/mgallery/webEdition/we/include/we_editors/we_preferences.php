@@ -958,9 +958,8 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_specify_code = we_html_forms::radiobutton(1, !(get_value('sizeOpt') == 0), 'newconf[sizeOpt]', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;");
 
 			// Create specify window dimension input
-			$_window_specify_table = new we_html_table(array('class' => 'default'), 4, 4);
+			$_window_specify_table = new we_html_table(array('class' => 'default','style'=>'margin-top:10px;'), 4, 4);
 
-			$_window_specify_table->setCol(0, 0, null, we_html_tools::getPixel(1, 10));
 			$_window_specify_table->setCol(1, 0, null, we_html_tools::getPixel(50, 1));
 			$_window_specify_table->setCol(2, 0, null, we_html_tools::getPixel(1, 5));
 			$_window_specify_table->setCol(3, 0, null, we_html_tools::getPixel(50, 1));

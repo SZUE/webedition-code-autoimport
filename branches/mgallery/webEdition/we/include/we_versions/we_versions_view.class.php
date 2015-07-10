@@ -592,12 +592,12 @@ function changeit(value, rowNr){
 					($resetFromVersion ? : '')),
 				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button("reset", "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
-				array("dat" => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>" . we_html_tools::getPixel(1, 1)),
+				array("dat" => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>"),
 				array("dat" => "<span class='printShow'>" .
 					(($_versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $_versions[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
 						we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
 						'') .
-					'</span>' . we_html_tools::getPixel(1, 1)),
+					'</span>'),
 			);
 		}
 
@@ -617,10 +617,10 @@ function changeit(value, rowNr){
 			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' . we_html_button::create_button(
 						we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
 				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
-			array("dat" => we_html_tools::getPixel(1, 1)),
-			array("dat" => we_html_tools::getPixel(1, 1)),
-			array("dat" => we_html_tools::getPixel(1, 1)),
-			array("dat" => we_html_tools::getPixel(1, 1)),
+			array("dat" => ''),
+			array("dat" => ''),
+			array("dat" => ''),
+			array("dat" => ''),
 		);
 	}
 
@@ -713,7 +713,7 @@ function changeit(value, rowNr){
 
 	private static function tblListRow($content){
 		//$anz = count($content) - 1;
-		return '<td valign="top" style="width:15px;">' . we_html_tools::getPixel(1, 1) . '</td>
+		return '<td valign="top" style="width:15px;"></td>
 <td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
 <td valign="top" style="width:15em;" class="middlefont">' . ((!empty($content[1]["dat"])) ? $content[1]["dat"] : "&nbsp;") . '</td>
 <td valign="top" style="width:120px;" class="middlefont">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</td>
@@ -725,7 +725,7 @@ function changeit(value, rowNr){
 <td valign="top" colspan="2" style="width:220px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[5]["dat"]) ) ? $content[5]["dat"] : "&nbsp;") . ((!empty($content[7]["dat"])) ? $content[7]["dat"] : "&nbsp;") . '</td>
 <td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[6]["dat"])) ? $content[6]["dat"] : "&nbsp;") . '</td>
 <td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(120, 1) . '</td>
-<td valign="top" style="width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(1, 1) . '</td>';
+<td valign="top" style="width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont"></td>';
 	}
 
 	public function getHTMLforVersions($content){

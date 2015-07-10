@@ -36,7 +36,6 @@ $_errormsg = (strpos($url, $_webEditionSiteUrl) === 0 ?
 $_table = new we_html_table(array('class' => 'default'), 2, 4);
 
 $_table->setColContent(0, 0, we_html_tools::getPixel(20, 6));
-$_table->setColContent(1, 0, we_html_tools::getPixel(1, 1));
 $_table->setColContent(1, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", "width" => 25, "height" => 27)));
 $_table->setColContent(1, 2, we_html_tools::getPixel(9, 1));
 $_table->setCol(1, 3, array("class" => "middlefontred"), $_errormsg);

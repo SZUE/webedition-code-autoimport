@@ -705,8 +705,7 @@ function fsubmit(e) {
 			'class' => 'default',
 			), 5, 2);
 
-		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
-		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100), g_l('copyFolder', '[categories]'));
+		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100, 'style'=>'padding-top:5px;'), g_l('copyFolder', '[categories]'));
 		$table->setCol(1, 1, array('class' => 'defaultfont'), we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
 		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(
 				array(
@@ -715,8 +714,7 @@ function fsubmit(e) {
 					'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
 
-		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
-		$table->setCol(4, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
+		$table->setCol(4, 0, array('colspan' => 2, 'align' => 'right', 'style'=>'padding-top:5px;'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . $js;
 	}

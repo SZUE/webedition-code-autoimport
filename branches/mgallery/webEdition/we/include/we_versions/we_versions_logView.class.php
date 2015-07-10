@@ -218,7 +218,7 @@ function back(id) {
 				$out .= '<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
 					g_l('logging', '[date]') . ':</td><td width="200">' .
 					date("d.m.y - H:i:s", $content[$i]['timestamp']) . '</td>' .
-					'<td width="auto">' . we_html_tools::getPixel(1, 1) . '</td></tr>' .
+					'<td width="auto"></td></tr>' .
 					'<tr><td style="font-weight:bold;width:100px;padding:5px 15px 5px 15px;">' .
 					g_l('logging', '[user]') . ':</td><td width="auto">' .
 					f('SELECT Text FROM `' . USER_TABLE . "` WHERE ID=" . intval($content[$i]['userID']), "Text", new DB_WE()) .
@@ -228,8 +228,7 @@ function back(id) {
 					$this->showLog($content[$i]['typ'], $content[$i]['ID']) . '</td></tr>' .
 					'<tr><td colspan="3" style="padding:5px 15px 5px 15px;"><div id="dataContent_' . $content[$i]['ID'] . '" name="dataContent">' .
 					$this->handleData($content[$i]['ID'], 0, self::versionPerPage) . '</div>' .
-					'<div style="border-top:1px solid #000;margin-top:20px;margin-bottom:20px;">' . we_html_tools::getPixel(1, 1) .
-					'</div></td></tr>';
+					'<div style="border-top:1px solid #000;margin-top:20px;margin-bottom:20px;"></div></td></tr>';
 			}
 
 			$out .= '</table></div>';
@@ -268,8 +267,7 @@ function back(id) {
 			case we_versions_log::VERSIONS_RESET:
 
 				$out = '<table style="width:100%;border:1px solid #BBBAB9;" class="middlefont">' .
-					'<thead><tr style="background-color:#dddddd;font-weight:bold;"><td>' .
-					we_html_tools::getPixel(1, 1) . '</td><td>' .
+					'<thead><tr style="background-color:#dddddd;font-weight:bold;"><td></td><td>' .
 					g_l('logging', '[ID]') . '</td><td>' .
 					g_l('logging', '[name]') . '</td><td>' .
 					g_l('logging', '[path]') . '</td><td>' .

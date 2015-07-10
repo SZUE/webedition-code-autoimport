@@ -201,7 +201,7 @@ class we_messaging_frames extends we_modules_frame{
 		$table->setCol(0, 0, array('width' => 18), '');
 		for($i = 0; $i < count($colsArray); $i++){
 			$table->setCol(0, $i + 1, array('class' => 'tableHeader defaultfont', 'width' => $colsArray[$i][0]), '<a href="javascript:doSort(\'' . $colsArray[$i][1] . '\');">' . g_l('modules_messaging', $colsArray[$i][2]) .
-				'&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow(we_base_request::_(we_base_request::STRING, 'so'), "") : we_html_tools::getPixel(1, 1)) . '</a>'
+				'&nbsp;' . (we_base_request::_(we_base_request::STRING, "si") == $colsArray[$i][1] ? self::sort_arrow(we_base_request::_(we_base_request::STRING, 'so'), "") : '') . '</a>'
 			);
 		}
 

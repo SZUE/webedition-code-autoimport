@@ -1646,7 +1646,7 @@ weSearch.g_l = {
 					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'padding-top:10px;"', 'dat' => we_html_tools::getPixel(1, 1) . $actionCheckbox),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'padding-top:10px;"', 'dat' => $actionCheckbox),
 										)),
 									array('elem' => 'row', 'attribs' => '', 'dat' => array(
 											array('elem' => 'td', 'attribs' => '', 'dat' => '&nbsp;'),
@@ -2503,7 +2503,7 @@ weSearch.g_l = {
 				for($y = 0; $y < $anz; $y++){
 					$out .= '<td style="font-weight:bold;font-size:11px;' . ($f == 0 ? "width:30px;" : '') . '">' . ($y == 2 ?
 							$content[5]["version"][$k] . '<br/>' :
-							we_html_tools::getPixel(1, 1)
+							''
 						) . '</td>';
 				}
 			}
