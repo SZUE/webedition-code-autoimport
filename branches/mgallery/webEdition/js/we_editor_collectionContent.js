@@ -75,13 +75,17 @@ weCollectionEdit = {
 	collectionName: '',
 	csv: '',
 	view: 'grid',
-	gridItemSize: 200,
+	gridItemDimension: {
+		item: 200,
+		icon: 32
+	},
+	gridItemDimension: {},
 	itemsPerRow: 4,
 	collectionArr: [],
 	collectionCsv: '',
 	collectionNum: 0,
 	sliderDiv: null,
-	iconSizes: [],
+	iconSizes: {},
 
 	ct: {
 		grid: null,
@@ -128,12 +132,17 @@ weCollectionEdit = {
 		this.sliderDiv = document.getElementById('sliderDiv');
 		this.numSpan = document.getElementById('numSpan');
 		this.itemsPerRow = document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value;
-
+		
+		/* use this when delivering complete html-items by php
 		for(var i = 0; i < this.ct[this.view].children.length; i++){
 			this.addListenersToItem(this.view, this.ct[this.view].children[i], i+1);
 		}
-
 		this.reindexAndRetrieveCollection(true);
+		*/
+
+		/* use this to render fron storage */
+		this.renderView(false);
+		
 	},
 
 	setView: function(view){
@@ -152,17 +161,14 @@ weCollectionEdit = {
 		for(var i = 0; i < this.collectionArr.length; i++){
 			this.insertItem(null, false, this.storage['item_' + this.collectionArr[i]], this);
 		}
-
-		if(this.view === 'list'){
-			this.reindexAndRetrieveCollection();
-		}
+		this.reindexAndRetrieveCollection();
 	},
 
 	addListenersToItem: function(view, elem){
 		var t = this, item, input, ctrls, space;
 
 		//TODO: grab elems by getElementByClassName instead of counting children...
-		if(view === 'grid'){
+		if(this.view === 'grid'){
 			item = elem.firstChild;
 			item.addEventListener('mouseover', function(){t.overMouse('item', view, item);}, false);
 			item.addEventListener('mouseout', function(){t.outMouse('item', view, item);}, false);
@@ -177,7 +183,7 @@ weCollectionEdit = {
 			space.addEventListener('dragleave', function(e){t.leaveDrag('space', view, e, space);}, false);
 		} else {
 			item = elem;
-			input = document.getElementById('yuiAcInputItem_' + item.id.substr(10));//top.console.debug(item.id.substr(10), input);
+			input = document.getElementById('yuiAcInputItem_' + item.id.substr(10));
 			input.addEventListener('mouseover', function(){item.draggable=false;});
 			input.addEventListener('mouseout', function(){item.draggable=true;});
 		}
@@ -244,14 +250,21 @@ weCollectionEdit = {
 
 	doZoomGrid: function(value){
 		var attribDivs = this.ct['grid'].getElementsByClassName('toolbarAttribs');
+		var iconDivs = this.ct['grid'].getElementsByClassName('divInner'), next;
 
 		this.itemsPerRow = 7 - value;
-		this.gridItemSize = this.iconSizes[this.itemsPerRow];
+		this.gridItemDimension = this.gridItemDimensions[this.itemsPerRow];
 		document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value = this.itemsPerRow;
 
 		for(var i = 0; i < this.ct['grid'].children.length; i++){
-			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = this.gridItemSize + 'px';
+			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = this.gridItemDimension.item + 'px';
+			//this.ct['grid'].children[i].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
+			
 			attribDivs[i].style.display = this.itemsPerRow > 4 ? 'none' : 'block';
+			iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.icon + 'px';
+			if(next = iconDivs[i].firstChild.nextSibling){
+				next.style.fontSize = this.gridItemDimension.font + 'px';
+			}
 		}
 	},
 
@@ -273,11 +286,11 @@ weCollectionEdit = {
 			this.dd.placeholder.setAttribute("ondrop","weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
 			this.dd.placeholder.style.float = 'left';
 			this.dd.placeholder.style.display = 'block';
-			this.dd.placeholder.style.height = this.gridItemSize + 'px';
-			this.dd.placeholder.style.width = this.gridItemSize + 'px';
+			this.dd.placeholder.style.height = this.gridItemDimension.item + 'px';
+			this.dd.placeholder.style.width = this.gridItemDimension.item + 'px';
 			var inner = document.createElement("div");
-			inner.style.height = (this.gridItemSize - 14) + 'px';
-			inner.style.width = (this.gridItemSize - 18) + 'px';
+			inner.style.height = (this.gridItemDimension.item - 14) + 'px';
+			inner.style.width = (this.gridItemDimension.item - 18) + 'px';
 			inner.style.border = '1px dotted #006db8';
 			this.dd.placeholder.appendChild(inner);
 		} else {
@@ -304,18 +317,23 @@ weCollectionEdit = {
 		return elem;
 	},
 
-	insertItem: function(elem, repaint, item, scope){
+	insertItem: function(elem, repaint, item, scope, color){
 		var t = scope ? scope : this,
 			el = elem ? t.getItem(elem) : null,
-			div, newItem, cmd1, cmd2, cmd3, blank,
+			div, newItem, cmd1, cmd2, cmd3, blank, elPreview,
 			id = item && item.id ? item.id : -1,
 			path = item && item.path ? item.path : '',
-			ct = item && item.ct ? item.ct : 'image/*',
+			ct = item && item.ct ? item.ct : '',
+			name = item && item.name ? item.name : '*',
+			ext = item && item.ext ? item.ext : 'txt',
 			iconSrc = item && item.icon ? item.icon.url : '',
+			sizeX = item && item.icon ? item.icon.sizeX : 0,
+			sizeY = item && item.icon ? item.icon.sizeY : 0,
 			alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : this.g_l['element_not_set'],
 			title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : this.g_l['element_not_set'],
 			state_alt = item && item.elements.attrib_alt ? item.elements.attrib_alt.state : 'we-state-none',
 			state_title = item && item.elements.attrib_title ? item.elements.attrib_title.state : 'we-state-none';
+			color = color ? color : false;
 
 		repaint = repaint || false;
 		++t.maxIndex;
@@ -335,6 +353,13 @@ weCollectionEdit = {
 			//cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
 			//blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, cmd2);
 			div.innerHTML = blank;
+
+			if(ct !== 'image/*' && id !== -1){
+				elPreview = div.getElementsByClassName('previewDiv')[0];
+				elPreview.innerHTML = getTreeIcon(ct, false, ext);
+				elPreview.style.background = 'transparent';
+				elPreview.style.display = 'block';
+			}
 		} else {
 			if(id === -1){
 				cmd1 = weCmdEnc(weCollectionEdit.gridBtnCmds[0].replace(/##INDEX##/g, t.maxIndex));
@@ -344,12 +369,22 @@ weCollectionEdit = {
 				blank = blank.replace(/##SHOWBTN##/g, 'none');
 			}
 			div.innerHTML = blank;
+			div.getElementsByClassName('divContent')[0].style.backgroundSize = Math.max(sizeX, sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 
-			// TODO: use replace here too!
-			div.firstChild.style.width = div.firstChild.style.height = t.gridItemSize + 'px';
+			if(ct !== 'image/*' && id !== -1){
+				elPreview = div.getElementsByClassName('divInner')[0];
+				elPreview.innerHTML = getTreeIcon(ct, false, ext) + '<div class="divTitle defaultfont" style="font-size:' + this.gridItemDimension.font + 'px;">' + name + ext + '</div>';
+				elPreview.getElementsByTagName('SPAN')[0].style.fontSize = this.gridItemDimension.icon + 'px';
+				elPreview.style.background = 'transparent';
+				elPreview.style.display = 'block';
+			}
+
+			div.firstChild.style.width = div.firstChild.style.height = t.gridItemDimension.item + 'px';
 			div.getElementsByClassName('toolbarAttribs')[0].style.display = this.itemsPerRow > 4 ? 'none' : 'block';
 		}
+
 		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
+		newItem.firstChild.style.backgroundColor = color;
 		t.addListenersToItem(t.view, newItem);
 
 		if(repaint){
@@ -359,10 +394,12 @@ weCollectionEdit = {
 		return newItem;
 	},
 
-	addItems: function(elem, items, notReplace){
+	addItems: function(elem, items, notReplace, notReindex){
 		if(elem === undefined){
 			return false;
 		}
+
+		notReindex = notReindex ? true : false;
 
 		var el = this.getItem(elem),
 			index = el.id.substr(10),
@@ -379,26 +416,9 @@ weCollectionEdit = {
 			while(!isFirstSet && items.length){
 				var item = items.shift();
 				if(this.dd.IsDuplicates === 1 || this.collectionCsv.search(',' + item.id + ',') === -1){
-					var newEl = this.insertItem(el, true, item, this);
+					var newEl = this.insertItem(el, false, item, this, '#00ee00');
 					this.doClickDelete(el);
 					el = newEl;
-					/*
-					if(this.view === 'grid'){
-						
-						//var next = el.nextSibling;top.console.debug('next: ', next);
-						
-						var div = document.getElementById('grid_item_' + index);
-						div.firstChild.style.background = 'url(' + item.iconSrc.replace('%2F', '/') + ') no-repeat center center';
-						div.firstChild.style.backgroundSize = 'contain';
-						div.firstChild.title = item.path;
-						//TODO: name id-fiels using index from item-id and rename when reordering...
-						div.childNodes[2].value = item.id;
-						
-					} else {
-						this.insertItem(el, true, item, this);
-						this.doClickDelete(el);
-					}
-					*/
 					itemsSet[0].push(item.id);
 					isFirstSet = true;
 				} else {
@@ -406,7 +426,6 @@ weCollectionEdit = {
 				}
 			}
 		}
-		
 
 		for(var i = 0; i < items.length; i++){
 			if(this.dd.IsDuplicates || this.collectionCsv.search(',' + items[i].id + ',') === -1){
@@ -431,7 +450,7 @@ weCollectionEdit = {
 						rowsFull = true;
 					}
 				}
-				el = this.insertItem(el, false, items[i]);
+				el = this.insertItem(el, false, items[i], null, '#00ee00');
 			} else {
 				itemsSet[1].push(items[i].id);
 			}
@@ -458,21 +477,18 @@ weCollectionEdit = {
 		for(var i = 0; i < ct.childNodes.length; i++){
 			switch(this.view){
 				case 'grid':
-					/*
 					ct.childNodes[i].id = 'grid_item_' + (i+1);
-					labels[i].id = 'label_' + (i+1);
-					*/
-
+					//labels[i].id = 'label_' + (i+1);
 					val = ct.childNodes.length > 1 ? parseInt(document.we_form.collectionItem_we_id[i].value) : parseInt(document.we_form.collectionItem_we_id.value);
 					break;
 				case 'list':
 					val = parseInt(document.getElementById('yuiAcResultItem_' + ct.childNodes[i].id.substr(10)).value);
-
 					btns_up[i].disabled = i === 0;
 					btns_down[i].disabled = (i === (ct.childNodes.length - 1));
 					break;
 			}
 			labels[i].innerHTML = i+1;
+			
 
 			if(val === 0 || val === -1){
 				this.collectionCsv += -1 + ',';
@@ -502,13 +518,37 @@ weCollectionEdit = {
 		}
 	},
 
-	hideSpace: function(elem){
+	hideSpace: function(elem){ // TODO: use classes do define states!
 		elem.style.width = '12px';
 		elem.style.right = '0px';
 		elem.style.border = '1px solid white';
+		elem.style.backgroundColor = 'white';
 		elem.style.margin = '0';
 		elem.previousSibling.style.right = '14px';
 		elem.parentNode.nextSibling.firstChild.style.left = '0px';
+	},
+	
+	resetColors: function(){
+		for(var i = 0; i < this.ct[this.view].childNodes.length; i++){
+			this.resetItemColors(this.ct[this.view].childNodes[i]);
+		}
+	},
+
+	resetItemColors: function(el){
+		if(!el){
+			return;
+		}
+
+		switch(this.view){
+			case 'grid':
+				el.firstChild.style.border = '1px solid #006db8';
+				el.firstChild.style.backgroundColor = 'white';
+				break;
+			case 'list':
+				el.style.border = '1px solid #006db8';
+				el.firstChild.style.backgroundColor = '#f5f5f5';
+				break;
+		}
 	},
 
 	allowDrop: function(evt){
@@ -516,8 +556,9 @@ weCollectionEdit = {
 	},
 
 	enterDrag: function(type, view, evt, elem){
-		var el = this.getItem(elem),
-			data = evt.dataTransfer.getData("text").split(',');
+		var el = this.getItem(elem);
+		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
+
 
 		if(this.view === 'grid' && type === 'item'){
 			this.outMouse(type, this.view, elem);
@@ -547,44 +588,44 @@ weCollectionEdit = {
 				if(this.view === 'grid'){
 					switch(type){
 						case 'item':
-							var c = this.ct[this.view], 
-									index;
+							var c = this.ct[this.view],
+								index;
 							for(var i = 0; i < c.childNodes.length; i++){
-								el.firstChild.style.border = '1px solid #006db8';
-							}
-
-							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) + ',' !== -1){
-								el.firstChild.style.border = '1px solid #00cc00';
-							} else {
-								el.firstChild.style.border = '1px solid red';
+								//el.firstChild.style.border = '1px solid #006db8';
+								//el.firstChild.style.backgroundColor = 'white';
 							}
 							break;
 						case 'space':
-							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
+							if(elem.parentNode.id.substr(10) % this.itemsPerRow === 0){
 								elem.style.width = '36px';
-								elem.style.right = '-16px';
-								elem.style.margin = '0 4px 0 4px';
-								elem.style.border = '1px dotted #00cc00';
-								elem.previousSibling.style.right = '28px';
-								elem.parentNode.nextSibling.firstChild.style.left = '14px';
+								elem.previousSibling.style.right = '42px';
+								elem.style.margin = '0 0 0 4px';
 							} else {
-								//el.style.border = '1px solid red';
+								elem.style.width = '48px';
+								elem.style.right = '-22px';
+								elem.style.margin = '0 4px 0 4px';
+								elem.previousSibling.style.right = '37px';
+								elem.parentNode.nextSibling.firstChild.style.left = '22px';
 							}
+							break;
+					}
+					if(data[0] === 'dragFolder'){
+						elem.style.border = '1px dotted #ffff00';
+						elem.style.backgroundColor = '#ffffee';
+					} else if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) !== -1){
+						elem.style.border = '1px dotted #00ff00';
+						elem.style.backgroundColor = '#fafffa';
+					} else {
+						elem.style.border = '1px dotted #ff0000';
+						elem.style.backgroundColor = '#fffafa';
 					}
 				} else {
-					
 					switch(type){
 						case 'item':
 							var t = this.ct[this.view], index;
 
 							for(var i = 0; i < t.childNodes.length; i++){
 								t.childNodes[i].style.border = '1px solid #006db8';
-							}
-
-							if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
-								el.style.border = '1px solid #00cc00';
-							} else {
-								el.style.border = '1px solid red';
 							}
 							break;
 						/*
@@ -600,7 +641,16 @@ weCollectionEdit = {
 							}
 						*/
 					}
-					
+					if(data[0] === 'dragFolder'){
+						el.style.border = '1px dotted #ffff00';
+						el.firstChild.style.backgroundColor = '#ffffee';
+					} else if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) !== -1){
+						el.style.border = '1px dotted yellow';
+						el.firstChild.style.backgroundColor = '#fafffa';
+					} else {
+						el.style.border = '1px dotted #ff0000';
+						el.firstChild.style.backgroundColor = '#fffafa';
+					}
 				}
 				break;
 			default:
@@ -609,7 +659,7 @@ weCollectionEdit = {
 	},
 			
 	leaveDrag: function(type, view, evt, elem){
-		var data = evt.dataTransfer.getData("text").split(',');
+		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
 
 		switch(data[0]){
 			case 'dragItem':
@@ -617,6 +667,7 @@ weCollectionEdit = {
 				switch(type){
 					case 'item':
 						elem.style.border = '1px solid #006db8';
+						elem.style.backgroundColor = '#ffffff';
 						break;
 					case 'space':
 						this.hideSpace(elem);
@@ -657,8 +708,7 @@ weCollectionEdit = {
 	startMoveItem: function(evt, view) {
 		var el = this.getItem(evt.target),
 			index = parseInt(el.id.substr(10)),
-
-		position = [].indexOf.call(this.ct[view].children, el);
+			position = [].indexOf.call(this.ct[view].children, el);
 
 		this.view = view;
 		this.dd.isMoveItem = true;
@@ -669,6 +719,7 @@ weCollectionEdit = {
 		this.dd.moveItem.pos = position;
 		this.dd.moveItem.removed = false;
 
+		top.dd.dataTransfer.text = 'moveItem,' + el.id;
 		evt.dataTransfer.setData('text', 'moveItem,' + el.id);
 
 		if(this.view === 'grid'){
@@ -679,22 +730,10 @@ weCollectionEdit = {
 	dropOnItem: function(type, view, evt, elem){
 		evt.preventDefault();
 
-		var data = evt.dataTransfer.getData("text").split(','),
+		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(','),
 			el, index;
 
 		switch(data[0]){
-			/*
-			case 'moveRow':
-				this.dd.isMoveItem = false;
-				document.getElementById('content_div').replaceChild(this.dd.moveItem.el, this.getPlaceholder());
-				this.reindexAndRetrieveCollection();
-				this.dd.moveItem.el.style.borderColor = 'green';
-				setTimeout(function(){
-					weCollectionEdit.dd.moveItem.el.style.borderColor = '#006db8';
-					weCollectionEdit.resetDdParams();
-				}, 200);
-				break;
-			*/
 			case 'moveItem':
 				this.dd.isMoveItem = false;
 				if(this.dd.moveItem.el !== this.getItem(elem)){
@@ -703,37 +742,26 @@ weCollectionEdit = {
 
 					this.ct[this.view].replaceChild(this.dd.moveItem.el, this.getPlaceholder());
 					this.dd.moveItem.el.firstChild.style.borderColor = 'green';
-
-					// move item in second view!
-					/*
-					if(indexNextToNewPos){
-						this.ct[otherView].insertBefore(this.ct[otherView].removeChild(document.getElementById(otherView + '_item_' + this.dd.moveItem.index)),
-								document.getElementById(otherView + '_item_' + indexNextToNewPos)
-							);
-					} else {
-						this.ct[otherView].replaceChild(this.ct[otherView].removeChild(document.getElementById(otherView + '_item_' + this.dd.moveItem.index)),
-								this.ct[otherView].lastChild
-							);
-					}
-					*/
 					this.reindexAndRetrieveCollection();
 
 					setTimeout(function(){
 						weCollectionEdit.dd.moveItem.el.firstChild.style.borderColor = '#006db8';
 						weCollectionEdit.resetDdParams();
 					}, 200);
+					
+					//weCollectionEdit.resetDdParams();
 				}
 				break;
 			case 'dragItem':
 			case 'dragFolder':
 					el = this.getItem(elem);
 					index = el.id.substr(10);
-					
+
 					if(type === 'item'){
 						if(this.view === 'list'){
 							//el.style.border = '1px solid red';
 						}
-						el.firstChild.style.backgroundColor = 'palegreen';
+						//el.firstChild.style.backgroundColor = 'palegreen';
 					} else {
 						this.hideSpace(elem);
 					}
@@ -741,6 +769,7 @@ weCollectionEdit = {
 					if(this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]){
 						if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1){
 							this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
+							return;
 						} else {
 							
 							//alert("the item you try to drag from doesn't match your collection's content types");
@@ -748,11 +777,13 @@ weCollectionEdit = {
 					} else {
 						alert("the tree you try to drag from doesn't match your collection's table property");
 					}
+					setTimeout(function(){
+						weCollectionEdit.resetItemColors(el);
+					}, 100);
 				break;
 			default:
 				return;
 		}
-
 	},
 
 	dragEnd: function(evt){
@@ -812,6 +843,10 @@ weCollectionEdit = {
 									top.we_showMessage(weCollectionEdit.g_l.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
 								}
 							}
+							setTimeout(function(){
+								weCollectionEdit.resetColors();
+							}, 300);
+							
 						} else {
 							top.console.debug('http request failed');
 							return false;
@@ -829,7 +864,6 @@ weCollectionEdit = {
 	},
 
 	insertImportedDocuments : function(ids) {
-		//top.console.debug(ids);
 		if(ids){
 			this.callForValidItemsAndInsert(this.ct[this.view].lastChild.id.substr(10), ids.join());
 		}

@@ -174,6 +174,14 @@ var g_l = {
 	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) . '",
 	nothing_to_publish: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) . '"
 };
+
+// TODO: move to some JS-file
+var dd = {
+		dataTransfer: {
+			text : ''
+		}
+	};
+
 var size = {
 	tree: {
 		hidden:<?php echo weTree::HiddenWidth; ?>,

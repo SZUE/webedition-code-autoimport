@@ -30,7 +30,8 @@ var wasdblclick = false;
 var tout = null;
 var hot = 0;
 
-function treeStartDrag(evt, type, table, id, ct) {
+function treeStartDrag(evt, type, table, id, ct) { // TODO: throw out setData
+	top.dd.dataTransfer.text = type + ',' + table + ',' + id + ',' + ct;
 	evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct);
 }
 

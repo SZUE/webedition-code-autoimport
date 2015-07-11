@@ -41,7 +41,13 @@ class we_collection extends we_root{
 	protected $insertPrefs;
 	private $tmpFoldersDone = array();
 	protected $view = 'grid';
-	private $iconSizes = array(2 => 400, 3 => 260, 4 => 200, 5 => 160, 6 => 134);
+	private $gridItemDimensions = array(
+		2 => array('item' => 400, 'icon' => 56, 'font' => 30),
+		3 => array('item' => 264, 'icon' => 42, 'font' => 24),
+		4 => array('item' => 200, 'icon' => 32, 'font' => 18),
+		5 => array('item' => 159, 'icon' => 24, 'font' => 14),
+		6 => array('item' => 134, 'icon' => 20, 'font' => 11)
+	);
 	protected $itemsPerRow = 4;
 
 	const CLASS_YES = 'we-state-green';
@@ -89,13 +95,13 @@ class we_collection extends we_root{
 	public function getValidCollection($skipEmpty = true, $full = false, $updateCollection = false){
 		if($this->remTable == stripTblPrefix(FILE_TABLE)){
 			$activeCollectionName = 'fileCollection';
-			$fields = 'ID,Path,ContentType,Extension';
+			$fields = 'ID,Path,ContentType,Extension,Filename';
 			$table = FILE_TABLE;
 			$prop = 'remCT';
 			$cField = 'ContentType';
 		} else {
 			$activeCollectionName = 'objectCollection';
-			$fields = 'ID,Path,TableID';
+			$fields = 'ID,Path,TableID,Text';
 			$table = OBJECT_FILES_TABLE;
 			$prop = 'remClass';
 			$cField = 'TableID';
@@ -107,7 +113,7 @@ class we_collection extends we_root{
 		while($this->DB_WE->next_record()){
 			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
 				if($full){
-					$verifiedItems[$this->DB_WE->f('ID')] = array_merge($this->getEmptyItem(), array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f($cField), 'ext' => $this->DB_WE->f('Extension')));
+					$verifiedItems[$this->DB_WE->f('ID')] = array_merge($this->getEmptyItem(), array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f($cField), 'name' => $this->DB_WE->f('Filename'), 'ext' => $this->DB_WE->f('Extension')));
 				} else {
 					$verifiedItems[$this->DB_WE->f('ID')] = $this->DB_WE->f('ID');
 				}
@@ -120,7 +126,7 @@ class we_collection extends we_root{
 
 		$ret = array();
 		$tempCollection = ',';
-		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'ext' => '', 'elements' => array('attrib_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'attrib_alt' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_description' => array('Dat' => '', 'state' => self::CLASS_NONE), 'custom' => array('type' => '', 'Dat' => '', 'BDID' => 0)), 'icon' => array('imageView' => '', 'imageViewPopup' => '', 'sizeX' => 0, 'sizeY' => 0, 'url' => '', 'urlPopup' => ''));
+		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'name' => '', 'ext' => '', 'elements' => array('attrib_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'attrib_alt' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_description' => array('Dat' => '', 'state' => self::CLASS_NONE), 'custom' => array('type' => '', 'Dat' => '', 'BDID' => 0)), 'icon' => array('imageView' => '', 'imageViewPopup' => '', 'sizeX' => 0, 'sizeY' => 0, 'url' => '', 'urlPopup' => ''));
 
 		$activeCollection = explode(',', trim($this->$activeCollectionName, ','));
 		$activeCollection = $this->IsDuplicates ? $activeCollection : array_unique($activeCollection);
@@ -326,21 +332,24 @@ class we_collection extends we_root{
 		$jsItemsArr = '';
 
 		foreach($items as $item){
-			//FIXME: set icon in getValidCollection()
-			if(is_numeric($item['id']) && $item['id'] !== -1){
+			//FIXME: set icon in getValidCollection() and make only what's really needed
+			if(is_numeric($item['id']) && $item['id'] !== -1 && $item['ct'] === 'image/*'){
 				$file = array('docID' => $item['id'], 'Path' => $item['path'], 'ContentType' => isset($item['ct']) ? $item['ct'] : 'text/*', 'Extension' => $item['ext']);
 				$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 				$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
 				$item['icon'] = we_search_view::getHtmlIconThmubnail($file, 400, 400);
 			}
 
+			/*
 			$index++;
 			if($this->view === 'grid'){
 				$divs .= $this->makeGridItem($item, $index, count($items));
 			} else {
 				$rows .= $this->makeListItem($item, $index, $yuiSuggest, count($items), true);
 			}
-			$jsStorageItems .= $this->getJsStrorageItem($item, $index);
+			 * 
+			 */
+			$jsStorageItems .= $this->getJsStrorageItem($item, ++$index);
 			$jsItemsArr .= $item['id'] . ',';
 		}
 
@@ -360,13 +369,13 @@ class we_collection extends we_root{
 		);
 
 		$this->jsFormCollection .= "
-weCollectionEdit.gridItemSize = " . $this->iconSizes[$this->itemsPerRow] . ";
+weCollectionEdit.gridItemDimension = " . json_encode($this->gridItemDimensions[$this->itemsPerRow]) . ";
 weCollectionEdit.maxIndex = " . count($items) . ";
 weCollectionEdit.blankItem.list = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->makeListItem($placeholders, '##INDEX##', $yuiSuggest, 1, true, true))) . "';
 weCollectionEdit.blankItem.grid = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->makeGridItem($placeholders, '##INDEX##'))) . "';
 weCollectionEdit.collectionArr = [" . rtrim($jsItemsArr, ',') . "];
 weCollectionEdit.view = '" . $this->view . "';
-weCollectionEdit.iconSizes = " . json_encode($this->iconSizes) . ";
+weCollectionEdit.gridItemDimensions = " . json_encode($this->gridItemDimensions) . ";
 weCollectionEdit.storage = {};" .
 			$jsStorageItems;
 
@@ -380,7 +389,7 @@ weCollectionEdit.storage = {};" .
 			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('class' => 'collection-toolbar'), $toolbar->getHtml()) .
 			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
-			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')), $divs);
+			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')));
 	}
 
 	private function makeListItem($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
@@ -542,7 +551,7 @@ weCollectionEdit.storage = {};" .
 		$toolbar = we_html_element::htmlDiv(array('class' => 'toolbarLeft weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .
 			we_html_element::htmlDiv(array('class' => 'toolbarRight'), we_html_element::htmlDiv(array(
 					'class' => 'toolbarAttribs',
-					'style' => 'display:' . ($this->itemsPerRow > 4 ? none : 'block')
+					'style' => 'display:' . ($this->itemsPerRow > 4 ? 'none' : 'block')
 					), we_html_element::htmlDiv(array(
 						'class' => 'toolbarAttr',
 						'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')
@@ -566,11 +575,11 @@ weCollectionEdit.storage = {};" .
 				), we_html_element::htmlDiv(array(
 					'title' => $item['path'],
 					'class' => 'divContent',
-					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : ''), // TODO: set url on JS::init();
+					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < $this->iconSizes[$this->itemsPerRow] ? 'background-size:auto;' : ''), // TODO: set url on JS::init();
 					'draggable' => 'true',
 					), we_html_element::htmlDiv(array(
-						'class' => 'divSelect',
-						'style' => 'top:' . (($this->iconSizes[$this->itemsPerRow] - 30) / 2 - 10) . 'px;display:' . $displayBtnEdit
+						'class' => 'divInner',
+						'style' => 'display:' . $displayBtnEdit
 						), $selectButton) .
 					we_html_element::htmlDiv(array(
 						'class' => 'divToolbar',
@@ -593,6 +602,7 @@ weCollectionEdit.storage = {};" .
 			'id' => -1,
 			'path' => '',
 			'ct' => '',
+			'name' => '',
 			'ext' => '',
 			'elements' => array(
 				'attrib_title' => array(
@@ -808,26 +818,30 @@ weCollectionEdit.storage = {};" .
 			$typeProp = 'remClass';
 			$whereType = $this->remClass ? 'AND TableID IN (' . trim($this->remClass, ',') . ',0) ' : '';
 			$classField = ',TableID';
+			$nameField = 'Text';
 		} else {
 			$typeField = 'ContentType';
 			$typeProp = 'remCT';
 			$whereType = trim($this->remCT, "',") ? 'AND ContentType IN ("' . (str_replace(',', '","', trim($this->remCT, ','))) . '","folder") ' : '';
 			$classField = '';
+			$nameField = 'Filename';
 		}
 
 		$resultIDsCsv = '';
 
-		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
+		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ',' .  $nameField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
 		while($this->DB_WE->next_record()){
 			$data = $this->DB_WE->getRecord();
 			if(($recursive || $recursion === 0) && $data['ContentType'] === 'folder' && !isset($foldersDone[$data['ID']])){
 				$todo[] = $data['ID'];
 				$foldersDone[] = $data['ID'];
 			}
+
+			
 			if($data['ContentType'] !== 'folder'){
 				//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== 'folder'){
 				//IMI:TEST ==> get icon from some fn!!
-				if($data['ID'] !== -1){
+				if($data['ID'] !== -1 && $data[$typeField] === 'image/*'){
 					$file = array('docID' => $data['ID'], 'Path' => $data['Path'], 'ContentType' => isset($data[$typeField]) ? $data[$typeField] : 'text/*', 'Extension' => $data['Extension']);
 					$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 					$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
@@ -838,13 +852,13 @@ weCollectionEdit.storage = {};" .
 
 				if($data['ParentID'] == 0){
 					if($returnFull){
-						$resultRoot[$data['ID']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField]));
+						$resultRoot[$data['ID']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
 						$resultRoot[$data['ID']]['icon'] = $iconHTML;
 					} else {
 						$data['ID'];
 					}
 				} else {
-					$result[$data['Path']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField]));
+					$result[$data['Path']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
 					$result[$data['Path']]['icon'] = $iconHTML;
 				}
 			}
