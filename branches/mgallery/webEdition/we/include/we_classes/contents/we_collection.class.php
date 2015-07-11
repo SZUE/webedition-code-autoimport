@@ -419,7 +419,7 @@ weCollectionEdit.storage = {};" .
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
-		$yuiSuggest->setInput($textname, $item['path']);
+		$yuiSuggest->setInput($textname, $item['path'], array('title' => $item['path']));
 		$yuiSuggest->setResult($idname, $item['id']);
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
@@ -449,19 +449,19 @@ weCollectionEdit.storage = {};" .
 
 		$attrTitle = we_html_element::htmlDiv(array(
 			'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_title']['Dat'] ? ' div_' . $item['elements']['attrib_title']['state'] : ''),
-			'title' => 'title-Attribut: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt')
+			'title' => ($item['elements']['attrib_title']['Dat'])
 		), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i> ' . $item['elements']['attrib_title']['write']);
 		$attrAlt = we_html_element::htmlDiv(array(
 			'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_alt']['Dat'] ? ' div_' . $item['elements']['attrib_alt']['state'] : ''),
-			'title' => 'alt-Attribut: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt')
+			'title' => ($item['elements']['attrib_alt']['Dat'])
 		), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i> ' . $item['elements']['attrib_alt']['write']);
 		$metaTitle = we_html_element::htmlDiv(array(
 			'class' => 'innerDiv defaultfont' . ($item['elements']['meta_title']['Dat'] ? ' div_' . $item['elements']['meta_title']['state'] : ''),
-			'title' => 'Titel: ' . ($item['elements']['meta_title']['Dat'] ? : 'nicht gesetzt')
+			'title' => ($item['elements']['meta_title']['Dat'])
 		), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i> ' . $item['elements']['meta_title']['write']);
 		$metaDesc = we_html_element::htmlDiv(array(
 			'class' => 'innerDiv defaultfont' . ($item['elements']['meta_description']['Dat'] ? ' div_' . $item['elements']['meta_description']['state'] : ''), 
-			'title' => 'Beschreibung: ' . ($item['elements']['meta_description']['Dat'] ? : 'nicht gesetzt')
+			'title' => ($item['elements']['meta_description']['Dat'])
 		), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i> ' . $item['elements']['meta_description']['write']);
 
 		$rowInnerTable->setCol(1, 0, array(), $attrTitle . $attrAlt . $metaTitle . $metaDesc);
@@ -696,12 +696,20 @@ weCollectionEdit.storage = {};" .
 					$items[$k]['elements'][$name]['write'] = $items[$k]['elements'][$name]['Dat'] && $c++ < 2 ? $items[$k]['elements'][$name]['Dat'] : '';
 					switch($name){
 						case 'attrib_title':
+							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'alt-Attribut: nicht gesetzt');
+							break;
 						case 'attrib_alt':
 							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'title-Attribut: nicht gesetzt');
 							break;
 						case 'meta_title':
+							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'Titel: nicht gesetzt');
+							break;
 						case 'meta_description':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'Beschreibung: nicht gesetzt');
 							break;
 						default:
 							$fieldname = 'custom';
@@ -709,7 +717,7 @@ weCollectionEdit.storage = {};" .
 				}
 			}
 		}
-t_e('items!!', $items);
+
 		return $items;
 	}
 

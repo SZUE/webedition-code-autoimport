@@ -333,19 +333,19 @@ c2: 0,
 			sizeY = item && item.icon ? item.icon.sizeY : 0,
 			color = color ? color : false,
 
-			attrib_title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : this.g_l['element_not_set'],
+			attrib_title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : '',
 			attrib_title_s = item && item.elements.attrib_title ? item.elements.attrib_title.state : 'we-state-none',
 			attrib_title_w = item && item.elements.attrib_title ? item.elements.attrib_title.write : '',
 
-			attrib_alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : this.g_l['element_not_set'],
+			attrib_alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : '',
 			attrib_alt_s = item && item.elements.attrib_alt ? item.elements.attrib_alt.state : 'we-state-none',
 			attrib_alt_w = item && item.elements.attrib_alt ? item.elements.attrib_alt.write : '',
 
-			meta_title = item && item.elements.meta_title.Dat ? item.elements.meta_title.Dat : this.g_l['element_not_set'],
+			meta_title = item && item.elements.meta_title.Dat ? item.elements.meta_title.Dat : '',
 			meta_title_s = item && item.elements.meta_title ? item.elements.meta_title.state : 'we-state-none',
 			meta_title_w = item && item.elements.meta_title ? item.elements.meta_title.write : '',
 
-			meta_desc = item && item.elements.meta_description.Dat ? item.elements.meta_description.Dat : this.g_l['element_not_set'],
+			meta_desc = item && item.elements.meta_description.Dat ? item.elements.meta_description.Dat : '',
 			meta_desc_s = item && item.elements.meta_description ? item.elements.meta_description.state : 'we-state-none',
 			meta_desc_w = item && item.elements.meta_description ? item.elements.meta_description.write : '';
 
