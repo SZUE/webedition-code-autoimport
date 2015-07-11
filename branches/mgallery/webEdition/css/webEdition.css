@@ -1131,7 +1131,8 @@ div.collection-content{
 }
 
 .collection-content .listItem div.innerDiv{
-	width: 180px;
+	float: left;
+	width: 20px;
 	padding: 0px 10px 3px 6px;
 	cursor: default;
 	white-space: nowrap;
@@ -1254,12 +1255,17 @@ div.collection-content{
 	color: #00cc00;
 }
 
+.collection-content .listItem div.div_we-state-green{
+	width:auto;
+	max-width: 160px;
+}
+
 .we-state-red{
 	color: red;
 }
 
 .we-state-none{
-	color: #f5f5f5;
+	color: gray;
 }
 
 .multiiconleft{

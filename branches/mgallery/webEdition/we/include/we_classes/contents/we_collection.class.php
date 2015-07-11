@@ -360,10 +360,10 @@ class we_collection extends we_root{
 			'type' => '##CT##',
 			'icon' => array('url' => '##ICONURL##'),
 			'elements' => array(
-				'attrib_alt' => array('Dat' => '##ATTRIB_ALT##', 'state' => '##S_ATTRIB_ALT##'),
-				'attrib_title' => array('Dat' => '##ATTRIB_TITLE##', 'state' => '##S_ATTRIB_TITLE##'),
-				'meta_desc' => array('Dat' => '##META_DESC##', 'state' => '##S_META_DESC##'),
-				'meta_title' => array('Dat' => '##META_TITLE##', 'state' => '##S_META_TITLE##'),
+				'attrib_title' => array('Dat' => '##ATTRIB_TITLE##', 'state' => '##S_ATTRIB_TITLE##', 'write' => '##W_ATTRIB_TITLE##'),
+				'attrib_alt' => array('Dat' => '##ATTRIB_ALT##', 'state' => '##S_ATTRIB_ALT##', 'write' => '##W_ATTRIB_ALT##'),
+				'meta_title' => array('Dat' => '##META_TITLE##', 'state' => '##S_META_TITLE##', 'write' => '##W_META_TITLE##'),
+				'meta_description' => array('Dat' => '##META_DESC##', 'state' => '##S_META_DESC##', 'write' => '##W_META_DESC##'),
 				'custom' => array('Dat' => '##CUSTOM##')
 			)
 		);
@@ -444,10 +444,27 @@ weCollectionEdit.storage = {};" .
 		$rowHtml->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
 		$rowHtml->setCol(0, 1, array('class' => 'colPreview'), $imgDiv);
 
-		$rowInnerTable = new we_html_table(array('draggable' => 'false'), 2, 2);
-		$rowInnerTable->setCol(0, 0, array('colspan' => 2), $yuiSuggest->getHTML());
-		$rowInnerTable->setCol(1, 0, array(), we_html_element::htmlDiv(array('class' => 'innerDiv defaultfont', 'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i> ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt')));
-		$rowInnerTable->setCol(1, 1, array(), we_html_element::htmlDiv(array('class' => 'innerDiv defaultfont', 'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i> ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt')));
+		$rowInnerTable = new we_html_table(array('draggable' => 'false'), 2, 1);
+		$rowInnerTable->setCol(0, 0, array('colspan' => 1), $yuiSuggest->getHTML());
+
+		$attrTitle = we_html_element::htmlDiv(array(
+			'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_title']['Dat'] ? ' div_' . $item['elements']['attrib_title']['state'] : ''),
+			'title' => 'title-Attribut: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt')
+		), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i> ' . $item['elements']['attrib_title']['write']);
+		$attrAlt = we_html_element::htmlDiv(array(
+			'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_alt']['Dat'] ? ' div_' . $item['elements']['attrib_alt']['state'] : ''),
+			'title' => 'alt-Attribut: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt')
+		), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i> ' . $item['elements']['attrib_alt']['write']);
+		$metaTitle = we_html_element::htmlDiv(array(
+			'class' => 'innerDiv defaultfont' . ($item['elements']['meta_title']['Dat'] ? ' div_' . $item['elements']['meta_title']['state'] : ''),
+			'title' => 'Titel: ' . ($item['elements']['meta_title']['Dat'] ? : 'nicht gesetzt')
+		), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i> ' . $item['elements']['meta_title']['write']);
+		$metaDesc = we_html_element::htmlDiv(array(
+			'class' => 'innerDiv defaultfont' . ($item['elements']['meta_description']['Dat'] ? ' div_' . $item['elements']['meta_description']['state'] : ''), 
+			'title' => 'Beschreibung: ' . ($item['elements']['meta_description']['Dat'] ? : 'nicht gesetzt')
+		), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i> ' . $item['elements']['meta_description']['write']);
+
+		$rowInnerTable->setCol(1, 0, array(), $attrTitle . $attrAlt . $metaTitle . $metaDesc);
 		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $rowInnerTable->getHtml());
 		$rowHtml->setCol(0, 3, array('class' => 'colControls weMultiIconBoxHeadline'), $rowControlls);
 
@@ -607,18 +624,22 @@ weCollectionEdit.storage = {};" .
 			'elements' => array(
 				'attrib_title' => array(
 					'Dat' => '',
-					'state' => self::CLASS_NO
+					'state' => self::CLASS_NO,
+					'write' => 0
 				),
 				'attrib_alt' => array(
 					'Dat' => '',
-					'state' => self::CLASS_NO
+					'state' => self::CLASS_NO,
+					'write' => 0
 				), 'meta_title' => array(
 					'Dat' => '',
-					'state' => self::CLASS_NONE
+					'state' => self::CLASS_NO,
+					'write' => 0
 				),
 				'meta_description' => array(
 					'Dat' => '',
-					'state' => self::CLASS_NONE
+					'state' => self::CLASS_NO,
+					'write' => 0
 				),
 				'custom' => array(
 					'type' => '',
@@ -653,20 +674,42 @@ weCollectionEdit.storage = {};" .
 					case 'title':
 					case 'alt':
 						$fieldname = 'attrib_' . $this->DB_WE->f('Name');
+						$state = $items[$this->DB_WE->f('DID')]['ct'] !== 'image/*' ? self::CLASS_NONE : ($this->DB_WE->f('Dat') ? self::CLASS_YES : self::CLASS_NO);
 						break;
 					case 'Title':
-						$fieldname = 'meta_title';
-						break;
 					case 'Description':
-						$fieldname = 'meta_description';
+						$fieldname = 'meta_' . strtolower ($this->DB_WE->f('Name'));
+						$state = !in_array($items[$this->DB_WE->f('DID')]['ct'], $hasMeta) ? self::CLASS_NONE : ($this->DB_WE->f('Dat') ? self::CLASS_YES : self::CLASS_NO);
 						break;
 					default:
 						$fieldname = 'custom';
 				}
-				$items[$this->DB_WE->f('DID')]['elements'][$fieldname] = $fieldname === 'custom' ? array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID')) : array('Dat' => $this->DB_WE->f('Dat'), 'state' => ($this->DB_WE->f('Dat') ? self::CLASS_YES : self::CLASS_NO));
+				$items[$this->DB_WE->f('DID')]['elements'][$fieldname] = $fieldname === 'custom' ? array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID')) : array('Dat' => $this->DB_WE->f('Dat'), 'state' => self::CLASS_NONE);
+			}
+
+			// mark the first 2 set elements of each item in an ordered way
+			$elements = array('attrib_title', 'attrib_alt', 'meta_title', 'meta_description');
+			$hasMeta = array('application/*', 'application/x-shockwave-flash', 'audio/*', 'image/*', 'text/webedition', 'video/quicktime', 'video/*');
+			foreach($items as $k => $v){
+				$c = 0;
+				foreach($elements as $name){
+					$items[$k]['elements'][$name]['write'] = $items[$k]['elements'][$name]['Dat'] && $c++ < 2 ? $items[$k]['elements'][$name]['Dat'] : '';
+					switch($name){
+						case 'attrib_title':
+						case 'attrib_alt':
+							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
+							break;
+						case 'meta_title':
+						case 'meta_description':
+							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
+							break;
+						default:
+							$fieldname = 'custom';
+					}
+				}
 			}
 		}
-
+t_e('items!!', $items);
 		return $items;
 	}
 

@@ -331,12 +331,23 @@ c2: 0,
 			iconSrc = item && item.icon ? item.icon.url : '',
 			sizeX = item && item.icon ? item.icon.sizeX : 0,
 			sizeY = item && item.icon ? item.icon.sizeY : 0,
-			alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : this.g_l['element_not_set'],
-			title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : this.g_l['element_not_set'],
-			propDesc = item && item.elements.meta_description.Dat ? item.elements.meta_description.Dat : this.g_l['element_not_set'],
-			state_alt = item && item.elements.attrib_alt ? item.elements.attrib_alt.state : 'we-state-none',
-			state_title = item && item.elements.attrib_title ? item.elements.attrib_title.state : 'we-state-none';
-			color = color ? color : false;
+			color = color ? color : false,
+
+			attrib_title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : this.g_l['element_not_set'],
+			attrib_title_s = item && item.elements.attrib_title ? item.elements.attrib_title.state : 'we-state-none',
+			attrib_title_w = item && item.elements.attrib_title ? item.elements.attrib_title.write : '',
+
+			attrib_alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : this.g_l['element_not_set'],
+			attrib_alt_s = item && item.elements.attrib_alt ? item.elements.attrib_alt.state : 'we-state-none',
+			attrib_alt_w = item && item.elements.attrib_alt ? item.elements.attrib_alt.write : '',
+
+			meta_title = item && item.elements.meta_title.Dat ? item.elements.meta_title.Dat : this.g_l['element_not_set'],
+			meta_title_s = item && item.elements.meta_title ? item.elements.meta_title.state : 'we-state-none',
+			meta_title_w = item && item.elements.meta_title ? item.elements.meta_title.write : '',
+
+			meta_desc = item && item.elements.meta_description.Dat ? item.elements.meta_description.Dat : this.g_l['element_not_set'],
+			meta_desc_s = item && item.elements.meta_description ? item.elements.meta_description.state : 'we-state-none',
+			meta_desc_w = item && item.elements.meta_description ? item.elements.meta_description.write : '';
 
 		repaint = repaint || false;
 		++t.maxIndex;
@@ -347,10 +358,16 @@ c2: 0,
 
 		div = document.createElement("div");
 		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, id).replace(/##PATH##/g, path).
-				replace(/##CT##/g, ct).replace(/##ICONURL##/g, iconSrc.replace('%2F', '/')).replace(/##ATTRIB_ALT##/g, alt).
-				replace(/##ATTRIB_TITLE##/g, title).replace(/##S_ATTRIB_ALT##/g, state_alt).replace(/##S_ATTRIB_TITLE##/g, state_title);
+				replace(/##CT##/g, ct).replace(/##ICONURL##/g, iconSrc.replace('%2F', '/')).
+				replace(/##ATTRIB_TITLE##/g, attrib_title).replace(/##S_ATTRIB_TITLE##/g, attrib_title_s).
+				replace(/##ATTRIB_ALT##/g, attrib_alt).replace(/##S_ATTRIB_ALT##/g, attrib_alt_s).
+				replace(/##META_TITLE##/g, meta_title).replace(/##S_META_TITLE##/g, meta_title_s).
+				replace(/##META_DESC##/g, meta_desc).replace(/##S_META_DESC##/g, meta_desc_s);
 
 		if(t.view === 'list'){
+			blank = blank.replace(/##W_ATTRIB_TITLE##/g, attrib_title_w).replace(/##W_ATTRIB_ALT##/g, attrib_alt_w).
+				replace(/##W_META_TITLE##/g, meta_title_w).replace(/##W_META_DESC##/g, meta_desc_w);
+	
 			//TODO: list fallback!
 			//cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
 			//cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
