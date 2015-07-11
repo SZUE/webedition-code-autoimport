@@ -155,6 +155,7 @@ abstract class we_editor_footer{
 			case we_base_ContentTypes::OBJECT_FILE:
 			case we_base_ContentTypes::FOLDER:
 			case we_base_ContentTypes::CLASS_FOLDER:
+			case we_base_ContentTypes::COLLECTION:
 				break;
 			default:
 				$_normalTable->addCol(2);

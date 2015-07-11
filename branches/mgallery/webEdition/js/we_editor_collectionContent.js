@@ -111,6 +111,9 @@ weCollectionEdit = {
 		fillEmptyRows: true,
 		placeholder: null,
 
+counter: 0,
+c2: 0,
+
 		isMoveItem: true,
 		moveItem: {
 			el: null,
@@ -151,6 +154,7 @@ weCollectionEdit = {
 		this.ct.grid.style.display = this.view === 'grid' ? 'inline-block' : 'none';
 		this.ct.list.style.display = this.view === 'list' ? 'block' : 'none';
 		this.sliderDiv.style.display = this.view === 'grid' ? 'block' : 'none';
+		this.dd.counter = 0;
 		this.renderView(false);
 	},
 
@@ -172,7 +176,6 @@ weCollectionEdit = {
 			item = elem.firstChild;
 			item.addEventListener('mouseover', function(){t.overMouse('item', view, item);}, false);
 			item.addEventListener('mouseout', function(){t.outMouse('item', view, item);}, false);
-			item.addEventListener('dragleave', function(e){t.leaveDrag('item', view, e, item);}, false);
 			ctrls = item.lastChild;
 			ctrls.addEventListener('mouseover', function(){t.overMouse('btns', view, ctrls);}, false);
 			ctrls.addEventListener('mouseout', function(){t.outMouse('btns', view, ctrls);}, false);
@@ -187,6 +190,7 @@ weCollectionEdit = {
 			input.addEventListener('mouseover', function(){item.draggable=false;});
 			input.addEventListener('mouseout', function(){item.draggable=true;});
 		}
+		item.addEventListener('dragleave', function(e){t.leaveDrag('item', view, e, item);}, false);
 		item.addEventListener('drop', function(e){t.dropOnItem('item', view, e, item);}, false);
 		item.addEventListener('dragenter', function(e){t.enterDrag('item', view, e, item);}, false);
 		item.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
@@ -294,12 +298,10 @@ weCollectionEdit = {
 			inner.style.border = '1px dotted #006db8';
 			this.dd.placeholder.appendChild(inner);
 		} else {
-			this.dd.placeholder.class = 'listItem';
 			this.dd.placeholder.setAttribute("ondrop","weCollectionEdit.dropOnItem(\'item\',\'grid\',event, this)");
-			this.dd.placeholder.style.border = '1px solid #006db8';
+			this.dd.placeholder.style.border = '1px dotted #006db8';
 			this.dd.placeholder.style.height = '90px';
-			this.dd.placeholder.style.width = '804px';
-			this.dd.placeholder.style.margin = '4px 0 0 20px';
+			this.dd.placeholder.style.margin = '4px 0 0 0';
 		}
 
 		return this.dd.placeholder;
@@ -331,6 +333,7 @@ weCollectionEdit = {
 			sizeY = item && item.icon ? item.icon.sizeY : 0,
 			alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : this.g_l['element_not_set'],
 			title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : this.g_l['element_not_set'],
+			propDesc = item && item.elements.meta_description.Dat ? item.elements.meta_description.Dat : this.g_l['element_not_set'],
 			state_alt = item && item.elements.attrib_alt ? item.elements.attrib_alt.state : 'we-state-none',
 			state_title = item && item.elements.attrib_title ? item.elements.attrib_title.state : 'we-state-none';
 			color = color ? color : false;
@@ -374,9 +377,12 @@ weCollectionEdit = {
 			if(ct !== 'image/*' && id !== -1){
 				elPreview = div.getElementsByClassName('divInner')[0];
 				elPreview.innerHTML = getTreeIcon(ct, false, ext) + '<div class="divTitle defaultfont" style="font-size:' + this.gridItemDimension.font + 'px;">' + name + ext + '</div>';
+					//<div class="divTitle defaultfont" style="font-size:10px;">Titel: ' + propDesc + '</div>';
 				elPreview.getElementsByTagName('SPAN')[0].style.fontSize = this.gridItemDimension.icon + 'px';
 				elPreview.style.background = 'transparent';
 				elPreview.style.display = 'block';
+				elPreview.style.textAlign = 'left';
+				elPreview.style.padding = '14% 0 0 10%';
 			}
 
 			div.firstChild.style.width = div.firstChild.style.height = t.gridItemDimension.item + 'px';
@@ -559,7 +565,6 @@ weCollectionEdit = {
 		var el = this.getItem(elem);
 		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
 
-
 		if(this.view === 'grid' && type === 'item'){
 			this.outMouse(type, this.view, elem);
 		}
@@ -620,12 +625,24 @@ weCollectionEdit = {
 						elem.style.backgroundColor = '#fffafa';
 					}
 				} else {
+					this.dd.counter++;
+					var c = this.ct[this.view];
+					for(var i = 0; i < c.childNodes.length; i++){
+						c.childNodes[i].style.border = '1px solid #006db8';
+						c.childNodes[i].firstChild.style.backgroundColor = '#f5f5f5';
+					}
 					switch(type){
 						case 'item':
-							var t = this.ct[this.view], index;
 
-							for(var i = 0; i < t.childNodes.length; i++){
-								t.childNodes[i].style.border = '1px solid #006db8';
+							if(data[0] === 'dragFolder'){
+								el.style.border = '1px dotted #ffff00';
+								el.firstChild.style.backgroundColor = '#ffffee';
+							} else if(!this.we_doc.remCT || this.we_doc.remCT.search(',' + data[3]) !== -1){
+								el.style.border = '1px dotted #00ff00';
+								el.firstChild.style.backgroundColor = '#fafffa';
+							} else {
+								el.style.border = '1px dotted #ff0000';
+								el.firstChild.style.backgroundColor = '#fffafa';
 							}
 							break;
 						/*
@@ -641,16 +658,6 @@ weCollectionEdit = {
 							}
 						*/
 					}
-					if(data[0] === 'dragFolder'){
-						el.style.border = '1px dotted #ffff00';
-						el.firstChild.style.backgroundColor = '#ffffee';
-					} else if(!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) !== -1){
-						el.style.border = '1px dotted yellow';
-						el.firstChild.style.backgroundColor = '#fafffa';
-					} else {
-						el.style.border = '1px dotted #ff0000';
-						el.firstChild.style.backgroundColor = '#fffafa';
-					}
 				}
 				break;
 			default:
@@ -659,23 +666,30 @@ weCollectionEdit = {
 	},
 			
 	leaveDrag: function(type, view, evt, elem){
-		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
-
-		switch(data[0]){
-			case 'dragItem':
-			case 'dragFolder':
-				switch(type){
-					case 'item':
-						elem.style.border = '1px solid #006db8';
-						elem.style.backgroundColor = '#ffffff';
-						break;
-					case 'space':
-						this.hideSpace(elem);
-						break;
-				}
-				break;
-			default:
-				return;
+		if(this.view === 'list'){
+			this.dd.counter--;
+			if(this.dd.counter === 0){
+				elem.style.border = '1px solid #006db8';
+				elem.firstChild.style.backgroundColor = '#f5f5f5';
+			}
+		} else {
+			var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
+			switch(data[0]){
+				case 'dragItem':
+				case 'dragFolder':
+					switch(type){
+						case 'item':
+							elem.style.border = '1px solid #006db8';
+							elem.style.backgroundColor = '#ffffff';
+							break;
+						case 'space':
+							this.hideSpace(elem);
+							break;
+					}
+					break;
+				default:
+					return;
+			}
 		}
 	},
 
@@ -800,11 +814,15 @@ weCollectionEdit = {
 		setTimeout(function(){
 			weCollectionEdit.dd.moveItem.el.style.borderColor = '#006db8';
 			weCollectionEdit.resetDdParams();
+			if(this.view === 'list'){
+				
+			}
 		}, 300);
 	},
 
 	resetDdParams: function(){
 		this.dd.placeholder = null;
+		this.dd.counter = 0;
 
 		this.dd.isMoveItem = false;
 		this.dd.moveItem = {
@@ -813,7 +831,7 @@ weCollectionEdit = {
 			index: 0,
 			next: null,
 			pos: 0,
-			removed: false
+			removed: false,
 		};
 	},
 

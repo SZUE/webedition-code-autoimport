@@ -1175,7 +1175,9 @@ div.collection-content{
 	top: 0px;
 	bottom: 30px;
 	width: 100%;
-	padding: 10% 0 0 10%;
+	padding: 40% 0 0 0;
+	text-align: center;
+	
 }
 
 .collection-content .gridItem .divContent .divInner span{

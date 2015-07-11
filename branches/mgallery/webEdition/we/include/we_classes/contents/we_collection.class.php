@@ -852,13 +852,13 @@ weCollectionEdit.storage = {};" .
 
 				if($data['ParentID'] == 0){
 					if($returnFull){
-						$resultRoot[$data['ID']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
+						$resultRoot[$data['ID']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ext' => $data['Extension'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
 						$resultRoot[$data['ID']]['icon'] = $iconHTML;
 					} else {
 						$data['ID'];
 					}
 				} else {
-					$result[$data['Path']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
+					$result[$data['Path']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ext' => $data['Extension'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
 					$result[$data['Path']]['icon'] = $iconHTML;
 				}
 			}
