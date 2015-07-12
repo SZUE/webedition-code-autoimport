@@ -83,7 +83,7 @@ abstract class we_html_multiIconBox{
 				if((!$leftContent) && $leftWidth){
 					$leftContent = "&nbsp;";
 				}
-				$out .= '<div style="width:' . $leftWidth . 'px" class="multiiconleft">' . $leftContent . '</div>';
+				$out .= '<div style="width:' . $leftWidth . 'px" class="multiiconleft largeicons">' . $leftContent . '</div>';
 			}
 
 			$out .= $rightContent .

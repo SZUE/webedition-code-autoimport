@@ -2360,7 +2360,7 @@ weSearch.g_l = {
 
 		$out .= '</tr></table>' .
 			//FIXME: realize with tbody?
-			'<div id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
+			'<div class="largeicons" id="scrollContent_' . $whichSearch . '" style="overflow-y:auto;background-color:#fff;width:100%;height:100%;">' .
 			$this->tabListContent($view, $content, $class, $whichSearch) .
 			'</div>';
 

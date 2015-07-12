@@ -1271,12 +1271,14 @@ div.collection-content{
 .multiiconleft{
 	float:left;
 }
-
 .multiiconleft span.fileicon{
-	font-size: 32px;
-	margin-left:20px;
+		margin-left:20px;
 }
 
-.multiiconleft span.fileicon .we-icon i {
+.largeicons span.fileicon{
+	font-size: 32px;
+}
+
+.largeicons span.fileicon .we-icon i {
 	bottom: -0.3ex;
 }
