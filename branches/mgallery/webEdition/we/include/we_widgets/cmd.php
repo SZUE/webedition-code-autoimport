@@ -78,7 +78,7 @@ var widgetFrame = top.weEditorFrameController.getActiveDocumentReference();
 						we_html_element::jsElement($js)) .
 				we_html_element::htmlBody(
 						array('onload' => 'transmit();'
-						), we_html_element::htmlDiv(array('id' => 'content'), isset($oTblCont) ? $oTblCont->getHtml() : $oTblDiv) .
+						), we_html_element::htmlDiv(array('id' => 'content'), $oTblDiv) .
 						we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
 						we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
 						we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : ''))));

@@ -207,7 +207,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			}
 			if(file_exists(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php')){
 				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
-				$$aProps[0] = we_base_widget::create('m_' . $iCurrId, $aProps[0], (isset($oTblCont) ? $oTblCont->getHtml() : $oTblDiv), $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
+				$$aProps[0] = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
 				$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $$aProps[0]);
 			}
 		}
@@ -217,7 +217,6 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		if($iDatLen > $iCurrCol){
 			$s1 .= '<td id="spacer_' . $iCurrCol . '" style="width: 5px;"></td>';
 		}
-		unset($oTblCont,$oTblDiv);
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;

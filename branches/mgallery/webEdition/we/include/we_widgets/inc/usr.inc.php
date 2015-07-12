@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,3 +30,5 @@ $oTblCont->setCol(0, 0, null, $inline);
 $aLang = array(
 	g_l('cockpit', '[users_online]'), ' (<span id="num_users">' . $UO->getNumUsers() . '</span>)'
 );
+
+$oTblDiv = $oTblCont->getHtml();
