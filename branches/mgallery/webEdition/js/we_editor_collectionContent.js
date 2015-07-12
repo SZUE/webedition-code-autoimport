@@ -264,7 +264,7 @@ c2: 0,
 			this.ct['grid'].children[i].style.width = this.ct['grid'].children[i].style.height = this.gridItemDimension.item + 'px';
 			//this.ct['grid'].children[i].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 			
-			attribDivs[i].style.display = this.itemsPerRow > 4 ? 'none' : 'block';
+			attribDivs[i].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
 			iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.icon + 'px';
 			if(next = iconDivs[i].firstChild.nextSibling){
 				next.style.fontSize = this.gridItemDimension.font + 'px';
@@ -403,7 +403,7 @@ c2: 0,
 			}
 
 			div.firstChild.style.width = div.firstChild.style.height = t.gridItemDimension.item + 'px';
-			div.getElementsByClassName('toolbarAttribs')[0].style.display = this.itemsPerRow > 4 ? 'none' : 'block';
+			div.getElementsByClassName('toolbarAttribs')[0].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
 		}
 
 		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);

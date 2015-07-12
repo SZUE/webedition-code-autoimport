@@ -565,22 +565,31 @@ weCollectionEdit.storage = {};" .
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['ct'] . "');", true, 27, 22);
 		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
+		// TODO: make fn for attribs: same structure as in list
 		$toolbar = we_html_element::htmlDiv(array('class' => 'toolbarLeft weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .
-			we_html_element::htmlDiv(array('class' => 'toolbarRight'), we_html_element::htmlDiv(array(
+			we_html_element::htmlDiv(array(
 					'class' => 'toolbarAttribs',
-					'style' => 'display:' . ($this->itemsPerRow > 4 ? 'none' : 'block')
+					'style' => 'display:' . ($this->itemsPerRow > 5 ? 'none' : 'block')
 					), we_html_element::htmlDiv(array(
 						'class' => 'toolbarAttr',
-						'title' => 'alt: ' . ($item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!')
+						'title' => $item['elements']['attrib_title']['Dat']
+						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i>') .
+					we_html_element::htmlDiv(array(
+						'class' => 'toolbarAttr',
+						'title' => $item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!'
 						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>') .
 					we_html_element::htmlDiv(array(
 						'class' => 'toolbarAttr',
-						'title' => 'title: ' . ($item['elements']['attrib_title']['Dat'] ? : 'nicht gesetzt => g_l()!')
-						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i>')
+						'title' => $item['elements']['meta_title']['Dat'] ? : 'nicht gesetzt => g_l()!'
+						), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i>') .
+					we_html_element::htmlDiv(array(
+						'class' => 'toolbarAttr',
+						'title' => $item['elements']['meta_description']['Dat']
+						), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i>')
 				) . we_html_element::htmlDiv(array(
 					'class' => 'toolbarBtns',
-					), $editButton . $trashButton)
-		);
+					), $editButton . $trashButton);
+		//);
 
 		$displayBtnEdit = $item['id'] === -1 ? 'block' : ($item['id'] === '##ID##' ? '##SHOWBTN##' : 'none');
 
@@ -697,19 +706,19 @@ weCollectionEdit.storage = {};" .
 					switch($name){
 						case 'attrib_title':
 							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'alt-Attribut: nicht gesetzt');
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? 'title-Attribut: ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'title-Attribut: nicht gesetzt');
 							break;
 						case 'attrib_alt':
 							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'title-Attribut: nicht gesetzt');
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? 'alt-Attribut: ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'alt-Attribut: nicht gesetzt');
 							break;
 						case 'meta_title':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'Titel: nicht gesetzt');
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? 'Titel: ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'Titel: nicht gesetzt');
 							break;
 						case 'meta_description':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'Beschreibung: nicht gesetzt');
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? 'Beschreibung: ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'Beschreibung: nicht gesetzt');
 							break;
 						default:
 							$fieldname = 'custom';
