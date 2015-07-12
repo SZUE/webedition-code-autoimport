@@ -51,7 +51,7 @@ function we_tag_write($attribs){
 	$admin = weTag_getAttribute('admin', $attribs, '', we_base_request::STRING);
 	$mail = weTag_getAttribute('mail', $attribs, '', we_base_request::STRING); //FIXME: email_list
 	$mailfrom = weTag_getAttribute('mailfrom', $attribs, '', we_base_request::EMAIL);
-	$forceedit = weTag_getAttribute('forceedit', $attribs, false, we_base_request::BOOL);
+	$forceedit = weTag_getAttribute('forceedit', $attribs, false, we_base_request::BOOL) && !empty($_SESSION['webuser']['registered']);
 	$workspaces = weTag_getAttribute('workspaces', $attribs, array(), we_base_request::INTLISTA);
 	$objname = preg_replace('/[^a-z0-9_-]/i', '', weTag_getAttribute('name', $attribs, '', we_base_request::STRING));
 	$onduplicate = ($objname === '' ? 'overwrite' : weTag_getAttribute('onduplicate', $attribs, 'increment', we_base_request::STRING));
@@ -61,7 +61,7 @@ function we_tag_write($attribs){
 	$doworkflow = ($workflowname != '' && $workflowuserid != 0);
 	$searchable = weTag_getAttribute('searchable', $attribs, true, we_base_request::BOOL);
 	$language = weTag_getAttribute('language', $attribs, '', we_base_request::STRING);
-	
+
 	if(we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
 
 		switch($type){
@@ -72,8 +72,16 @@ function we_tag_write($attribs){
 				break;
 			case 'object':
 				$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
+				$id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0);
+
 				if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid))){
-					$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), true);
+					if(!$id || f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $id . ' AND TableID=' . intval($classid))){
+						$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), true);
+					} else {
+						$GLOBALS['we_object_write_ok'] = false;
+						t_e('Object ' . $id . ' is no element of class ' . intval($classid) . '!');
+						return;
+					}
 				} else {
 					$GLOBALS['we_object_write_ok'] = false;
 					t_e('Table ' . intval($classid) . ' does not exist!');
@@ -222,12 +230,12 @@ function we_tag_write($attribs){
 					}
 				}
 				$GLOBALS['we_object_write_ID'] = $GLOBALS['we_doc']->ID;
-				
+
 				/**
-				* Fix #9818
-				* now we have to set the new document/object ID as request value to avoid
-				* createing more documents/objects by reload the webform (<we:form type="object | document">) by an user
-				*/
+				 * Fix #9818
+				 * now we have to set the new document/object ID as request value to avoid
+				 * createing more documents/objects by reload the webform (<we:form type="object | document">) by an user
+				 */
 				$requestVarName = 'we_edit' . ucfirst($type) . '_ID';
 				$_REQUEST[$requestVarName] = $GLOBALS['we_doc']->ID;
 			}
