@@ -1192,16 +1192,12 @@ class we_objectFile extends we_document{
 	}
 
 	private function getCountryFieldHTML($type, $name, $attribs, $editable = true, $variant = false){
-		if(!Zend_Locale::hasCache()){
-			Zend_Locale::setCache(getWEZendCache());
-		}
-
 		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 		$langcode = array_search($lang[0], getWELangs());
 
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
-				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'territory', $langcode)) . '</div>' :
+				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(we_base_country::getTranslation($this->getElement($name), we_base_country::TERRITORY, $langcode)) . '</div>' :
 					'');
 		}
 
@@ -1211,12 +1207,12 @@ class we_objectFile extends we_document{
 		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
 		foreach($topCountries as $countrykey => &$countryvalue){
-			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+			$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 		}
 		unset($countryvalue);
 		$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 		foreach($shownCountries as $countrykey => &$countryvalue){
-			$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+			$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 		}
 		unset($countryvalue);
 		$oldLocale = setlocale(LC_ALL, NULL);
@@ -1252,7 +1248,7 @@ class we_objectFile extends we_document{
 	private function getLanguageFieldHTML($type, $name, $attribs, $editable = true, $variant = false){
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
-				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(Zend_Locale::getTranslation($this->getElement($name), 'language', array_search($GLOBALS['WE_LANGUAGE'], getWELangs()))) . '</div>' :
+				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(we_base_country::getTranslation($this->getElement($name), we_base_country::LANGUAGE, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()))) . '</div>' :
 					'');
 		}
 		$frontendL = $GLOBALS["weFrontendLanguages"];

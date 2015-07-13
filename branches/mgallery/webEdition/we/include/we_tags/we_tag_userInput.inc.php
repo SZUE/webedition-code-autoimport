@@ -602,18 +602,14 @@ function open_wysiwyg_win(){
 							substr($lang, 0, 2) :
 							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
 			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
@@ -655,12 +651,9 @@ function open_wysiwyg_win(){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
 			$frontendLL = array();
 			foreach($frontendL as &$lcvalue){
-				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}
 
 			$oldLocale = setlocale(LC_ALL, NULL);

@@ -75,19 +75,14 @@ function we_tag_sessionField($attribs, $content){
 					substr($lang, 0, 2) :
 					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
-			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 			$topCountries = WE_COUNTRIES_TOP ? array_flip(explode(',', WE_COUNTRIES_TOP)) : array();
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 
 			$shownCountries = WE_COUNTRIES_SHOWN ? array_flip(explode(',', WE_COUNTRIES_SHOWN)) : array();
 			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
@@ -125,13 +120,9 @@ function we_tag_sessionField($attribs, $content){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
 			$frontendLL = array();
 			foreach($frontendL as &$lcvalue){
-				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}
 
 			$oldLocale = setlocale(LC_ALL, NULL);
@@ -216,9 +207,6 @@ function we_tag_sessionField($attribs, $content){
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);
 			$aslanguage = weTag_getAttribute('aslanguage', $attribs, false, we_base_request::BOOL);
 			if($ascountry || $aslanguage){
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
 
 				$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 				if(!$lang){
@@ -230,7 +218,7 @@ function we_tag_sessionField($attribs, $content){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], getWELangs());
 				}
-				return ($ascountry && $orgVal === '--' ? '' : CheckAndConvertISOfrontend(Zend_Locale::getTranslation($orgVal, ($ascountry ? 'territory' : 'language'), $langcode)));
+				return ($ascountry && $orgVal === '--' ? '' : CheckAndConvertISOfrontend(we_base_country::getTranslation($orgVal, ($ascountry ? we_base_country::TERRITORY : we_base_country::LANGUAGE), $langcode)));
 			}
 			if($dateformat){//FIXME: use document settings for dateformat => get locale - note DateTime doesn't use locale settings
 				try{

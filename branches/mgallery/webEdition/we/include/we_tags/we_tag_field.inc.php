@@ -293,10 +293,7 @@ function we_tag_field($attribs){
 			if(WE_COUNTRIES_DEFAULT != '' && $GLOBALS['lv']->f($name) === '--'){
 				$out = WE_COUNTRIES_DEFAULT;
 			} else {
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['lv']->f($name), 'territory', $langcode));
+				$out = CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['lv']->f($name), we_base_country::TERRITORY, $langcode));
 			}
 			break;
 		case 'language' :
@@ -310,10 +307,7 @@ function we_tag_field($attribs){
 				$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 				$langcode = array_search($lang[0], getWELangs());
 			}
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-			$out = CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['lv']->f($name), 'language', $langcode));
+			$out = CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['lv']->f($name), we_base_country::LANGUAGE, $langcode));
 			break;
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){

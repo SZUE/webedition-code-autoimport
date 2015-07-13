@@ -260,8 +260,8 @@ class we_listview_langlink extends we_listview_base{
 				'WE_TARGETLOCALE' => $link['Locale'],
 				'WE_TARGETCOUNTRY' => $targetCountry,
 				'WE_TARGETLANGUAGE' => $targetLang,
-				'WE_TARGETLANGUAGE_NAME' => $targetLang ? Zend_Locale::getTranslation($targetLang, 'language', $targetLang) : '',
-				'WE_TARGETCOUNTRY_NAME' => $targetLang ? Zend_Locale::getTranslation($targetCountry, 'country', $targetLang) : ''
+				'WE_TARGETLANGUAGE_NAME' => $targetLang ? we_base_country::getTranslation($targetLang, we_base_country::LANGUAGE, $targetLang) : '',
+				'WE_TARGETCOUNTRY_NAME' => $targetLang ? we_base_country::getTranslation($targetCountry, we_base_country::TERRITORY, $targetLang) : ''
 			);
 
 			$this->count++;

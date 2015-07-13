@@ -257,19 +257,14 @@ function we_tag_formfield($attribs){
 			$lang = $doc->Language;
 			$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
 
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
-			//$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 			$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 			foreach($topCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 			foreach($shownCountries as $countrykey => &$countryvalue){
-				$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 			unset($countryvalue);
 			$oldLocale = setlocale(LC_ALL, NULL);
@@ -307,12 +302,8 @@ function we_tag_formfield($attribs){
 				$lcvalue = $lccode[0];
 			}
 			unset($lcvalue);
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
-
 			foreach($frontendL as &$lcvalue){
-				$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}
 
 			$oldLocale = setlocale(LC_ALL, NULL);

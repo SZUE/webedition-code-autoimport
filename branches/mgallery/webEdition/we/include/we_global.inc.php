@@ -743,7 +743,7 @@ function getServerUrl($useUserPwd = false){
 	return getServerProtocol(true) . ($useUserPwd && strlen($pwd) > 3 ? $pwd : '') . $_SERVER['SERVER_NAME'] . $port;
 }
 
-function we_check_email($email){ // Zend validates only the pure address
+function we_check_email($email){ // php validates only the pure address
 	if(($pos = strpos($email, '<'))){//format is "xxx xx" <test@test.de>
 		++$pos;
 		$email = substr($email, $pos, strrpos($email, '>') - $pos);
@@ -848,14 +848,11 @@ function getWeFrontendLanguagesForBackend(){
 		return array();
 	}
 	$targetLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
-	if(!Zend_Locale::hasCache()){
-		Zend_Locale::setCache(getWEZendCache());
-	}
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
 		$la[$Locale] = (count($temp) == 1 ?
-				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' ' . $Locale) :
-				CheckAndConvertISObackend(Zend_Locale::getTranslation($temp[0], 'language', $targetLang) . ' (' . Zend_Locale::getTranslation($temp[1], 'territory', $targetLang) . ') ' . $Locale));
+				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
+				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
 	}
 	return $la;
 }

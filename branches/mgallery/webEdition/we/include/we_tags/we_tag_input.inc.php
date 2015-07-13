@@ -70,18 +70,14 @@ function we_tag_input($attribs, $content){
 				$langcode = ($lang ? substr($lang, 0, 2) : array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 				$orgVal = $GLOBALS['we_doc']->getElement($name);
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 				foreach($topCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 				}
 				unset($countryvalue);
 				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 				foreach($shownCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 				}
 				unset($countryvalue);
 				$oldLocale = setlocale(LC_ALL, NULL);
@@ -119,12 +115,9 @@ function we_tag_input($attribs, $content){
 					$lccode = explode('_', $lcvalue);
 					$lcvalue = $lccode[0];
 				}
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
 				$frontendLL = array();
 				foreach($frontendL as &$lcvalue){
-					$frontendLL[$lcvalue] = Zend_Locale::getTranslation($lcvalue, 'language', $langcode);
+					$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 				}
 
 				$oldLocale = setlocale(LC_ALL, NULL);
@@ -207,10 +200,7 @@ function we_tag_input($attribs, $content){
 				if($GLOBALS['we_doc']->getElement($name) === '--'){
 					return '';
 				}
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'territory', $langcode));
+				return CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['we_doc']->getElement($name), we_base_country::TERRITORY, $langcode));
 			case 'language':
 				$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);
 				if(!$lang){
@@ -223,10 +213,7 @@ function we_tag_input($attribs, $content){
 					$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 					$langcode = array_search($lang[0], getWELangs());
 				}
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
-				return CheckAndConvertISOfrontend(Zend_Locale::getTranslation($GLOBALS['we_doc']->getElement($name), 'language', $langcode));
+				return CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['we_doc']->getElement($name), we_base_country::LANGUAGE, $langcode));
 			case 'choice':
 				return $GLOBALS['we_doc']->getElement($name);
 			case 'select':

@@ -1033,19 +1033,16 @@ function build_dialog($selected_setting = 'ui'){
 			if(!we_base_preferences::userIsAllowed('WE_COUNTRIES_DEFAULT')){
 				break;
 			}
-			if(!Zend_Locale::hasCache()){
-				Zend_Locale::setCache(getWEZendCache());
-			}
 
 			$_countries_default = we_html_tools::htmlTextInput('newconf[WE_COUNTRIES_DEFAULT]', 22, get_value('WE_COUNTRIES_DEFAULT'), '', '', 'text', 225);
 
 			$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 			$langcode = array_search($lang[0], getWELangs());
 			$countrycode = array_search($langcode, getWECountries());
-			$zendsupported = Zend_Locale::getTranslationList('territory', $langcode, 2);
+			$supported = we_base_country::getTranslationList(we_base_country::TERRITORY, $langcode);
 			$oldLocale = setlocale(LC_ALL, NULL);
 			setlocale(LC_ALL, $langcode . '_' . $countrycode . '.UTF-8');
-			asort($zendsupported, SORT_LOCALE_STRING);
+			asort($supported, SORT_LOCALE_STRING);
 			setlocale(LC_ALL, $oldLocale);
 			$countries_top = explode(',', get_value('WE_COUNTRIES_TOP'));
 			$countries_shown = explode(',', get_value('WE_COUNTRIES_SHOWN'));
@@ -1055,7 +1052,7 @@ function build_dialog($selected_setting = 'ui'){
 			$tabC->setCol($i, 1, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_top]'));
 			$tabC->setCol($i, 2, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_show]'));
 			$tabC->setCol($i, 3, array('class' => 'defaultfont', 'style' => 'font-weight:bold', 'nowrap' => 'nowrap'), g_l('prefs', '[countries_noshow]'));
-			foreach($zendsupported as $countrycode => $country){
+			foreach($supported as $countrycode => $country){
 				$i++;
 				$tabC->addRow();
 				$tabC->setCol($i, 0, array('class' => 'defaultfont'), CheckAndConvertISObackend($country));

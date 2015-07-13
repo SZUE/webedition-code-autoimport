@@ -51,10 +51,8 @@ abstract class we_html_multiIconBox{
 			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '');
 
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
-				$out .= we_html_button::create_button_table(array(
-						we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');" . ($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')),
+				$out .= we_html_element::htmlSpan(array('style' => 'margin-left:' . $marginLeft . 'px;'), we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');" . ($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')) .
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ? : "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
-						), 10, array('style' => 'margin-left:' . $marginLeft . 'px;')
 					) .
 					'<br/><table id="table_' . $uniqname . '" width="100%" class="default" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';
 			}
@@ -64,7 +62,7 @@ abstract class we_html_multiIconBox{
 			$icon = (!empty($c["icon"]) ?
 					we_html_element::htmlImg(array('src' => ICON_DIR . $c["icon"], 'style' => "margin-left:20px;", 'class' => 'multiIcon')) :
 					'');
-			$icon=$icon?:(!empty($c["iconX"]) ?$c["iconX"]:'');
+			$icon = $icon? : (!empty($c["iconX"]) ? $c["iconX"] : '');
 			$headline = (!empty($c["headline"]) ?
 					'<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline" style="margin-bottom:10px;">' . $c["headline"] . '</div>' :
 					'');

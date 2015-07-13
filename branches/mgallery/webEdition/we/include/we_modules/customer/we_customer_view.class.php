@@ -873,16 +873,13 @@ self.close();');
 
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
 				foreach($topCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 				}
 				unset($countryvalue);
 				$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 				foreach($shownCountries as $countrykey => &$countryvalue){
-					$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+					$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 				}
 				unset($countryvalue);
 				$oldLocale = setlocale(LC_ALL, NULL);

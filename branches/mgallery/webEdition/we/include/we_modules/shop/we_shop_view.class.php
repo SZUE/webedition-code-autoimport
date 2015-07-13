@@ -1479,9 +1479,6 @@ function CalendarChanged(calObject) {
 			case 'edit_order_customer'; // edit data of the saved customer.
 				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
-				if(!Zend_Locale::hasCache()){
-					Zend_Locale::setCache(getWEZendCache());
-				}
 				// 1st get the customer for this order
 				$_customer = $this->getOrderCustomerData($_REQUEST['bid']);
 				ksort($_customer);
@@ -1517,16 +1514,13 @@ function CalendarChanged(calObject) {
 							$countryselect = new we_html_select(array('name' => "weCustomerOrder[$k]", 'size' => 1, 'style' => '{width:280;}', 'class' => 'wetextinput'));
 
 							$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
-							if(!Zend_Locale::hasCache()){
-								Zend_Locale::setCache(getWEZendCache());
-							}
 							foreach($topCountries as $countrykey => &$countryvalue){
-								$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+								$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 							}
 							unset($countryvalue);
 							$shownCountries = array_flip(explode(',', WE_COUNTRIES_SHOWN));
 							foreach($shownCountries as $countrykey => &$countryvalue){
-								$countryvalue = Zend_Locale::getTranslation($countrykey, 'territory', $langcode);
+								$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 							}
 							unset($countryvalue);
 							$oldLocale = setlocale(LC_ALL, NULL);
