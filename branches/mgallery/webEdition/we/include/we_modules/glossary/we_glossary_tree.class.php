@@ -199,7 +199,7 @@ treeData.frames=frames;
 			$Items[] = $Item;
 		}
 
-		$Total = f('SELECT COUNT(1) FROM ' . $Db->escape(GLOSSARY_TABLE) . ' ' . $Where, '', $Db);
+		$Total = f('SELECT COUNT(1) FROM ' . $Db->escape(GLOSSARY_TABLE)/* . ' ' . $Where*/, '', $Db);
 
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){

@@ -34,7 +34,7 @@ if(!isset($_COOKIE[SESSION_NAME]) && isset($_COOKIE['PHPSESSID'])){
 	session_id($_COOKIE['PHPSESSID']);
 	unset($_REQUEST['PHPSESSID'], $_GET['PHPSESSID'], $_POST['PHPSESSID']);
 //note due to session upgrade: in session are serialized classes so an autoloader is needed before starting the session
-	require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
 	session_start();
 	if(!empty($_SESSION['user']['isWeSession'])){//use this session&rename if we have a good we session found
 		setcookie('PHPSESSID', '', time() - 3600);

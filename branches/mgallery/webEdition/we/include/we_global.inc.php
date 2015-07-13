@@ -988,7 +988,7 @@ function we_templateInit(){
 		$GLOBALS['WE_TEMPLATE_INIT'] = 1;
 
 		// Activate the autoloader & webEdition error handler
-		require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/lib/we/core/autoload.inc.php');
+		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_tag.inc.php');
 
 		if(!isset($GLOBALS['DB_WE'])){
