@@ -75,14 +75,8 @@ class we_navigation_ruleFrames{
 				'headline' => g_l('navigation', '[rules][available_rules]'),
 				'space' => 200,
 				'html' => weSuggest::getYuiFiles() . '<table class="default">
-										<tr><td>' . we_html_tools::htmlSelect(
-					'navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
-											<td>' . we_html_tools::getPixel(10, 1) . '</td>
-											<td valign="top">
-												' . we_html_button::create_button(
-					'new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>
-												' . we_html_button::create_button(
-					'delete', 'javascript:we_cmd("delete_navigation_rule")') . '
+										<tr><td>' . we_html_tools::htmlSelect('navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
+											<td valign="top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
 											</td>
 										</tr>
 										</table>'
@@ -360,20 +354,17 @@ function we_cmd(){
 			array(
 			'id' => 'CategoriesBlock',
 			'style' => 'display: block;',
-			'class' => 'default'
-			), 3, 1);
+			'class' => 'default withSpace'
+			), 2, 1);
 
-		$table->setColContent(
-			0, 0, we_html_element::htmlDiv(
+		$table->setColContent(0, 0, we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',
 					'class' => 'blockWrapper',
 					'style' => 'width: 380px; height: 80px; border: #AAAAAA solid 1px;'
 		)));
 
-		$table->setColContent(1, 0, we_html_tools::getPixel(5, 5));
-
-		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
+		$table->setCol(1, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_html_element::jsElement('
 							function removeAllCats(){

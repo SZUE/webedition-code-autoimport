@@ -589,8 +589,7 @@ var perms={
 		$code = '<table class="default"><tr><td class="defaultfont">' .
 			we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="top.content.setHot();"') .
 			'</td>
-<td class="defaultfont">' . we_html_tools::getPixel(10, 2) . '</td>
-<td class="defaultfont"><select style="width:240px" class="weSelect" name="' . $this->uid . '_TagName_tmp" size="1" onchange="top.content.setHot(); this.form.elements[\'' . $this->uid . '_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">' .
+<td class="defaultfont" style="padding-left:10px;"><select style="width:240px" class="weSelect" name="' . $this->uid . '_TagName_tmp" size="1" onchange="top.content.setHot(); this.form.elements[\'' . $this->uid . '_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">' .
 			'<option value=""></option>';
 		foreach($tagnames as $tagname){
 			$code .= '<option value="' . $tagname . '">' . $tagname . '</option>' . "\n";
@@ -717,18 +716,11 @@ var perms={
 
 		return '<table class="default">
 	<tr>
-		<td>' . $checkStart . '</td>
-		<td></td>
+		<td style="padding-right:20px;">' . $checkStart . '</td>
 		<td>' . $checkEnd . '</td>
 	</tr>
 	<tr>
-		<td></td>
-		<td>' . we_html_tools::getPixel(20, 2) . '</td>
-		<td></td>
-	</tr>
-	<tr>
 		<td>' . we_html_tools::getDateInput2("we__From%s", $from, false, "", "top.content.setHot();") . '</td>
-		<td></td>
 		<td>' . we_html_tools::getDateInput2("we__To%s", $to, false, "", "top.content.setHot();") . '</td>
 	</tr>
 </table>';
@@ -817,12 +809,9 @@ var perms={
 		return '<table class="default">
 	<tr>
 		<td>' . $activeCheckbox . '</td>
-		<td>' . we_html_tools::getPixel(40, 2) . '</td>
-		<td>' . $maxShow . '</td>
-		<td>' . we_html_tools::getPixel(40, 2) . '</td>
-		<td>' . $maxClicks . '</td>
-		<td>' . we_html_tools::getPixel(40, 2) . '</td>
-		<td>' . $weight . '</td>
+		<td style="padding-left:40px;">' . $maxShow . '</td>
+		<td style="padding-left:40px;">' . $maxClicks . '</td>
+		<td style="padding-left:40px;">' . $weight . '</td>
 	</tr>
 </table>';
 	}

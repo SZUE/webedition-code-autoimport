@@ -604,7 +604,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	function formProperties(){
 		// Create table
 		$_content = new we_html_table(array('class' => 'default propertydualtable'), 5, 3);
-		$row=0;
+		$row = 0;
 		// Row 1
 		$_content->setCol($row, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
 		$_content->setCol($row, 1, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
@@ -825,30 +825,22 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 		// Create table
 		$_content = new we_html_table(array('class' => 'default'), (defined('OBJECT_TABLE') ? 11 : 9), 2);
-
+		$row = 0;
 		// No link
-		$_content->setCol(0, 0, array('valign' => 'top'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
-		$_content->setCol(0, 1, null, '');
-
-		// Space
-		$_content->setCol(1, 0, null, we_html_tools::getPixel(100, 10));
-		$_content->setCol(1, 1, null, we_html_tools::getPixel(400, 10));
+		$_content->setCol($row, 0, array('valign' => 'top', 'style' => 'padding-bottom:10px;'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol($row++, 1, null, '');
 
 		// External link
-		$_ext_link_table = new we_html_table(array('class' => 'default'), 1, 3);
+		$_ext_link_table = new we_html_table(array('class' => 'default'), 1, 2);
 
 		$_ext_link_table->setCol(0, 0, null, $this->htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
-		$_ext_link_table->setCol(0, 1, null, we_html_tools::getPixel(20, 1));
-		$_ext_link_table->setCol(0, 2, null, $butExt);
+		$_ext_link_table->setCol(0, 1, null, $butExt);
 
 		$_ext_link = "href" . we_html_element::htmlBr() . $_ext_link_table->getHtml();
 
-		$_content->setCol(2, 0, array('valign' => 'top'), we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
-		$_content->setCol(2, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_ext_link);
+		$_content->setCol($row, 0, array('valign' => 'top', 'style' => 'padding-bottom:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
+		$_content->setCol($row++, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_ext_link);
 
-		// Space
-		$_content->setCol(3, 0, null, we_html_tools::getPixel(100, 10));
-		$_content->setCol(3, 1, null, we_html_tools::getPixel(400, 10));
 
 		// Internal link
 		$yuiSuggest->setAcId('internalPath');
@@ -864,13 +856,11 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setLabel('href');
 		$_int_link = $yuiSuggest->getHTML();
 
-		$_content->setCol(4, 0, array('valign' => 'top'), we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
-		$_content->setCol(4, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_int_link);
+		$_content->setCol($row, 0, array('valign' => 'top'), we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol($row++, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_int_link);
 
 		// Object link
 		if(defined('OBJECT_TABLE')){
-			$_content->setCol(5, 0, null, we_html_tools::getPixel(100, 10));
-			$_content->setCol(5, 1, null, we_html_tools::getPixel(400, 10));
 
 			$yuiSuggest->setAcId('objPathLink');
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
@@ -886,20 +876,13 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			$_obj_link = $yuiSuggest->getHTML();
 
 
-			$_content->setCol(6, 0, array('valign' => 'top'), we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
-			$_content->setCol(6, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_obj_link);
+			$_content->setCol($row, 0, array('valign' => 'top','style'=>'padding-top:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+			$_content->setCol($row++, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_obj_link);
 		}
 
-		// Space
-		$_content->setCol((defined('OBJECT_TABLE') ? 7 : 5), 0, null, we_html_tools::getPixel(100, 20));
-		$_content->setCol((defined('OBJECT_TABLE') ? 7 : 5), 1, null, we_html_tools::getPixel(400, 20));
-
 		// Target
-		$_content->setCol((defined('OBJECT_TABLE') ? 8 : 6), 0, array('colspan' => 2, 'class' => 'defaultfont', 'valign' => 'top'), g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 380, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
+		$_content->setCol($row++, 0, array('colspan' => 2, 'class' => 'defaultfont', 'valign' => 'top', 'style' => 'padding:20px 0px;'), g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 380, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
 
-		// Space
-		$_content->setCol((defined('OBJECT_TABLE') ? 9 : 7), 0, null, we_html_tools::getPixel(100, 20));
-		$_content->setCol((defined('OBJECT_TABLE') ? 9 : 7), 1, null, we_html_tools::getPixel(400, 20));
 
 		// Rollover image
 		$yuiSuggest->setAcId('rollOverPath');
@@ -915,8 +898,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setLabel('href');
 		$_rollover = $yuiSuggest->getHTML();
 
-		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 0, array('valign' => 'top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
-		$_content->setCol((defined('OBJECT_TABLE') ? 10 : 8), 1, array('class' => 'defaultfont', 'valign' => 'top'), $_rollover);
+		$_content->setCol($row, 0, array('valign' => 'top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
+		$_content->setCol($row, 1, array('class' => 'defaultfont', 'valign' => 'top'), $_rollover);
 
 		return $_content->getHtml();
 	}

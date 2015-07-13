@@ -120,15 +120,7 @@ abstract class we_customer_add{
 
 			$sort_table->addRow();
 			$row_num++;
-			$sort_table->setCol($row_num, 0, array("class" => "defaultfont"), we_html_tools::getPixel(180, 5));
-			$sort_table->setCol($row_num, 1, array("class" => "defaultfont"), we_html_tools::getPixel(180, 5));
-			//$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), we_html_tools::getPixel(130, 5));
-			$sort_table->setCol($row_num, 3, array("class" => "defaultfont"), we_html_tools::getPixel(90, 5));
-			$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_html_tools::getPixel(22, 5));
-
-			$sort_table->addRow();
-			$row_num++;
-			$sort_table->setCol($row_num, 4, array(), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort_field',document.we_form.sort_" . $counter . ".value)", true, 30));
+			$sort_table->setCol($row_num, 4, array('style' => 'padding-top:5px;'), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort_field',document.we_form.sort_" . $counter . ".value)", true, 30));
 
 
 			$fhidden.=we_html_element::htmlHidden("fcounter_" . $counter, "$fcounter");
@@ -263,18 +255,12 @@ function setScrollTo(){
 		}
 
 		$advsearch->addRow();
-		$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
-
-		$advsearch->addRow();
-		$advsearch->setCol( ++$c, 0, array("colspan" => $colspan), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_search')") .
+		$advsearch->setCol($c, 0, array("colspan" => $colspan,'style'=>'padding-top:5px;'), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_search')") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_search')")
 		);
 
-		$search->setCol(1, 0, array(), we_html_element::htmlHidden("count", $count) .
-			$advsearch->getHtml()
-		);
-		$search->setCol(2, 0, array(), we_html_tools::getPixel(5, 5));
-		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan), "<table class='default'><tr><td>" .
+		$search->setCol(1, 0, array(), we_html_element::htmlHidden("count", $count) . $advsearch->getHtml());
+		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan, 'style' => 'padding-top:5px;'), "<table class='default'><tr><td>" .
 			we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[simple_search]')) .
 			we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:we_cmd('switchToSimple')") .
 			$search_but

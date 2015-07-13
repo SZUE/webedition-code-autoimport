@@ -145,6 +145,7 @@ td.boxHeader{
 	border-left-width: 0px;
 	border-right-width: 0px;
 	border-top-width: 0px;
+	height:21px;
 }
 
 #bm_searchField{
@@ -956,6 +957,10 @@ table.default th{
 	padding:0xp;
 }
 
+table.withSpace tr td{
+	padding-bottom: 5px;
+}
+
 table.customer table{
 	padding-bottom:10px;
 }
@@ -1178,7 +1183,7 @@ div.collection-content{
 	width: 100%;
 	padding: 40% 0 0 0;
 	text-align: center;
-	
+
 }
 
 .collection-content .gridItem .divContent .divInner span{

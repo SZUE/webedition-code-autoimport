@@ -646,7 +646,7 @@ function setState(a) {
 			array("headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'), "html" => $formattable->getHtml(), "space" => $_space),
 			array("headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable2->getHtml(), "space" => $_space),
 			array("headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable3->getHtml(), "space" => $_space),
-			array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array(), g_l('export', '[to_level]')) . we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space)
+			array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space)
 		);
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
@@ -710,11 +710,10 @@ function setState(a) {
 				break;
 
 			case we_import_functions::TYPE_GENERIC_XML:
-				$table = new we_html_table(array('class' => 'default'), 3, 1);
+				$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 
-				$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
 				$table->setColContent(0, 0, we_html_forms::radiobutton("true", ($cdata === "true"), "cdata", g_l('export', '[export_xml_cdata]'), true, "defaultfont", $this->topFrame . ".cdata='true'"));
-				$table->setColContent(2, 0, we_html_forms::radiobutton("false", ($cdata === "false"), "cdata", g_l('export', '[export_xml_entities]'), true, "defaultfont", $this->topFrame . ".cdata='false'"));
+				$table->setColContent(1, 0, we_html_forms::radiobutton("false", ($cdata === "false"), "cdata", g_l('export', '[export_xml_entities]'), true, "defaultfont", $this->topFrame . ".cdata='false'"));
 
 				$parts[] = array("headline" => g_l('export', '[cdata]'), "html" => $table->getHtml(), "space" => $_space);
 				break;
@@ -889,8 +888,7 @@ function setState(a) {
 				  ' . ($art === "objects" && defined('OBJECT_FILES_TABLE') ? ('we_tabs.push(new we_tab("' . g_l('export', '[objects]') . '",(' . $this->topFrame . '.table=="' . OBJECT_FILES_TABLE . '" ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . '),"self.setTab(1);"));') : ''));
 
 
-				  $table->setCol(0, 0, array("class" => "header_small"), we_html_tools::getPixel(5, 15) . we_html_element::htmlB(g_l('export', '[step2]')));
-				  $table->setCol(1, 0, array("valign" => "top"), we_html_tools::getPixel(15, 2));
+				  $table->setCol(0, 0, array("class" => "header_small"), we_html_element::htmlB(g_l('export', '[step2]')));
 				  $table->setCol(2, 0, array("nowrap" => "nowrap"), we_html_element::jsElement('setTimeout(we_tabInit,500);')
 				  ); */
 				break;
@@ -1300,16 +1298,16 @@ if (top.footer.setProgress){
 
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
 			we_html_element::jsElement('
-				function formFileChooser() {
-					var args = "";
-					var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
-					switch (arguments[0]) {
-						case "browse_server":
-							new jsWindow(url,"server_selector",-1,-1,500,300,true,false,true);
-						break;
-					}
-				}
-		') . we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+function formFileChooser() {
+	var args = "";
+	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
+	switch (arguments[0]) {
+		case "browse_server":
+			new jsWindow(url,"server_selector",-1,-1,500,300,true,false,true);
+		break;
+	}
+}') .
+			we_html_tools::htmlFormElementTable(we_html_tools::getPixel(5, 5) . we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1334,7 +1332,7 @@ if (top.footer.setProgress){
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:formDirChooser('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 
 	private function getHTMLDocType($width = 350){
@@ -1437,7 +1435,7 @@ if (top.footer.setProgress){
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->exportVars["categories"]) ? false : true));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->bodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
-		$cats = new we_chooser_multiDir(350, $this->exportVars["categories"], "del_cat", $delallbut. $addbut, "", '"we/category"', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(350, $this->exportVars["categories"], "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;

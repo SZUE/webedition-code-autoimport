@@ -34,14 +34,10 @@ class we_banner_dirSelector extends we_selector_directory{
 	function printHeaderHeadlines(){
 		return '
 <table class="headerLines" width="550">
+<colgroup><col style="width:25px;"/><col style="width:200px;"/><col style="width:300px;"/></colgroup>
 	<tr>
 		<th class="selector treeIcon"></th>
 		<th class="selector" colspan="2"><a href="#" onclick="javascript:top.orderIt(\'Text\');">' . g_l('modules_banner', '[name]') . '</a></th>
-	</tr>
-	<tr>
-		<td width="25">' . we_html_tools::getPixel(25, 1) . '</td>
-		<td width="200">' . we_html_tools::getPixel(200, 1) . '</td>
-		<td width="300">' . we_html_tools::getPixel(300, 1) . '</td>
 	</tr>
 </table>';
 	}

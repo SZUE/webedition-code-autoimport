@@ -576,7 +576,7 @@ function doUnload() {
 
 		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
-				$foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden('templateID', intval($tid)), we_html_tools::getPixel(20, 4), $button);
+				$foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden('templateID', intval($tid)), $button);
 	}
 
 	/**
@@ -592,9 +592,7 @@ function doUnload() {
 			"";
 
 		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
-
-		$_importFrom = we_html_tools::htmlFormElementTable(
-				$_input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", we_html_tools::getPixel(10, 1), $_from_button, "", "", "", 0);
+		$_importFrom = we_html_tools::htmlFormElementTable($_input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $_from_button, '', "", "", "", 0);
 
 		// Destination Directory
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.to.value");
@@ -603,7 +601,7 @@ function doUnload() {
 
 		//$_hidden = we_html_tools::hidden("to",$this->to);
 		//$_input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
-		//$_importTo = we_html_tools::htmlFormElementTable($_input, g_l('siteimport',"[importTo]"), "left", "defaultfont", we_html_tools::getPixel(10, 1), $_to_button, $_hidden, "", "", 0);
+		//$_importTo = we_html_tools::htmlFormElementTable($_input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $_to_button, $_hidden, "", "", 0);
 
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -1041,7 +1039,6 @@ function doUnload() {
 		  "left",
 		  "defaultfont",
 		  we_html_tools::hidden($idname,0),
-		  we_html_tools::getPixel(20,4),
 		  $button);
 		 */
 

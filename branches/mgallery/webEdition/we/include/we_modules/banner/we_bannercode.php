@@ -108,6 +108,11 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 	}
 	//-->
 </script>
+<style>
+	td.right{
+		padding-left:10px;
+	}
+</style>
 </head>
 <body class="weDialogBody"<?php if($ok){ ?> onload="self.focus();document.we_form.code.focus();
 			document.we_form.code.select();"<?php } ?>>
@@ -118,33 +123,22 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 <option' . (($type === "iframe") ? " selected" : "") . '>iframe</option>
 </select>';
 
-		$content = '<table class="default">
+		$content = '<table class="default withSpace">
 ';
 		if(!$ok){
-			$content.= '	<tr><td class="defaultfont">' . g_l('modules_banner', '[type]') . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . $typeselect . '</td></tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>	</tr>
-	<tr><td class="defaultfont">' . g_l('modules_banner', '[tagname]') . '*</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("tagname", 40, $tagname, "", "", "text", 300) . '</td>	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>	</tr>
-	<tr><td class="defaultfont">' . g_l('modules_banner', '[pageurl]') . '*</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("page", 40, $page, "", "", "text", 300) . '</td>	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>	</tr>
-	<tr><td class="defaultfont">' . g_l('modules_banner', '[target]') . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("target", 40, $target, "", "", "text", 300) . '</td>	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>	</tr>
-	<tr><td class="defaultfont">' . g_l('modules_banner', '[width]') . '*</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("width", 40, $width, "", "", "text", 300) . '</td>	</tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>	</tr>
-	<tr><td class="defaultfont">' . g_l('modules_banner', '[height]') . '*</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("height", 40, $height, "", "", "text", 300) . '</td></tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>	</tr>
-	<tr><td class="defaultfont">' . g_l('modules_banner', '[paths]') . '</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("paths", 40, $paths, "", "", "text", 300) . '</td></tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td></tr>
-	<tr><td class="defaultfont">' . g_l('modules_banner', '[getscript]') . '*</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("getscript", 40, $getscript, "", "", "text", 300) . '</td></tr>
-	<tr><td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td></tr>
-	<tr><td class="defaultfont">' . g_l('modules_banner', '[clickscript]') . '*</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont">' . we_html_tools::htmlTextInput("clickscript", 40, $clickscript, "", "", "text", 300) . '</td>	</tr>
+			$content.= '	<tr><td class="defaultfont">' . g_l('modules_banner', '[type]') . '</td><td class="defaultfont right">' . $typeselect . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_banner', '[tagname]') . '*</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("tagname", 40, $tagname, "", "", "text", 300) . '</td>	</tr>
+	<tr><td class="defaultfont">' . g_l('modules_banner', '[pageurl]') . '*</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("page", 40, $page, "", "", "text", 300) . '</td>	</tr>
+	<tr><td class="defaultfont">' . g_l('modules_banner', '[target]') . '</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("target", 40, $target, "", "", "text", 300) . '</td>	</tr>
+	<tr><td class="defaultfont">' . g_l('modules_banner', '[width]') . '*</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("width", 40, $width, "", "", "text", 300) . '</td>	</tr>
+	<tr><td class="defaultfont">' . g_l('modules_banner', '[height]') . '*</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("height", 40, $height, "", "", "text", 300) . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_banner', '[paths]') . '</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("paths", 40, $paths, "", "", "text", 300) . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_banner', '[getscript]') . '*</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("getscript", 40, $getscript, "", "", "text", 300) . '</td></tr>
+	<tr><td class="defaultfont">' . g_l('modules_banner', '[clickscript]') . '*</td><td class="defaultfont right">' . we_html_tools::htmlTextInput("clickscript", 40, $clickscript, "", "", "text", 300) . '</td>	</tr>
 ';
 		}
 		if($ok){
-			$content .= '	<tr>
-		<td colspan="3">' . we_html_tools::getPixel(10, 10) . '</td>
-	</tr>
-	<tr>
+			$content .= '<tr>
 		<td colspan="3" class="defaultfont"><textarea name="code" rows="8" cols="40" style="width:430px;height:300px">' . oldHtmlspecialchars($code) . '</textarea></td>
 	</tr>
 ';

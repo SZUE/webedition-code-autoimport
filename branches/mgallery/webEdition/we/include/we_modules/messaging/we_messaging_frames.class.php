@@ -143,11 +143,8 @@ class we_messaging_frames extends we_modules_frame{
 		$hidden = we_html_tools::hidden('we_transaction', $this->transaction);
 		$table = new we_html_table(array('style' => 'margin: 4px 0px 0px 7px;', 'border' => 0), 1, 2);
 
-		$table->setCol(0, 0, array('class' => 'defaultfont'), g_l('modules_messaging', $searchlabel) .
-			we_html_tools::getPixel(10, 1) .
-			we_html_tools::htmlTextInput('messaging_search_keyword', 15, we_base_request::_(we_base_request::RAW, 'messaging_search_keyword', ''), 15) .
-			we_html_tools::getPixel(10, 1)
-		);
+		$table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left:10px;'), g_l('modules_messaging', $searchlabel) .
+			we_html_tools::htmlTextInput('messaging_search_keyword', 15, we_base_request::_(we_base_request::RAW, 'messaging_search_keyword', ''), 15));
 
 		$buttons = we_html_button::create_button(we_html_button::SEARCH, "javascript:doSearch();") .
 			we_html_button::create_button("advanced", "javascript:launchAdvanced()", true) .

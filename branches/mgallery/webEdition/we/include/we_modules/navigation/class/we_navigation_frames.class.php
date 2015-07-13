@@ -188,16 +188,16 @@ function setTab(tab) {
 }' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;')
 		);
 
+		/*
+		  $table = new we_html_table(array("style" => 'width:100%;margin-top:3px;', 'class' => 'default'), 1, 1);
 
-		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px;', 'class' => 'default'), 1, 1);
-
-		$table->setCol(0, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
-			we_html_element::htmlB(
-				g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) .
-				':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) .
-				'<div id="mark" style="display: none;">*</div>' . we_html_tools::getPixel(1, 19)
-		));
-
+		  $table->setCol(0, 0, array("valign" => "top", "class" => "small"),
+		  we_html_element::htmlB(
+		  g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) .
+		  ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) .
+		  '<div id="mark" style="display: none;">*</div>'
+		  ));
+		 */
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(
 				array(
@@ -297,7 +297,7 @@ function setTab(tab) {
 			array(
 				'headline' => '',
 				'html' => $this->getHTMLChooser(
-					g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . we_html_tools::getPixel($this->_width_size, 10) . '<table><tr><td>' . we_html_multiIconBox::getJS() . we_html_multiIconBox::_getButton(
+					g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table style="margin-left:' . $this->_width_size . 'px;"><tr><td>' . we_html_multiIconBox::getJS() . we_html_multiIconBox::_getButton(
 					$uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
 						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 					g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
@@ -1014,12 +1014,12 @@ function onSelectionClassChangeJS(value) {
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
 					we_html_tools::hidden($name, $value) . $this->htmlTextInput(
-						"__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); ' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 120), 0), $title, 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $_button);
+						"__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); ' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 120), 0), $title, 'left', 'defaultfont', '', $_button);
 		} else {
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
 					we_html_tools::hidden($name, $value) . $this->htmlTextInput(
-						"__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); ' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 120) - abs($extraFieldWidth) - 8, 0), $title, 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $extraField, we_html_tools::getPixel(10, 4), $_button);
+						"__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); ' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 120) - abs($extraFieldWidth) - 8, 0), $title, 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $extraField, $_button);
 		}
 	}
 
@@ -1096,7 +1096,7 @@ function onSelectionClassChangeJS(value) {
 		return (isset($weAcSelector) ?
 				$weAcSelector :
 				we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlTextInput($PathName, 58, $_path, '', 'readonly', 'text', ($this->_width_size - $_width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $_button)
+					we_html_tools::htmlTextInput($PathName, 58, $_path, '', 'readonly', 'text', ($this->_width_size - $_width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $_button)
 			);
 	}
 
@@ -1126,13 +1126,12 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 			array(
 			'id' => 'CategoriesBlock',
 			'style' => 'display: block;',
-			'class' => 'default'
-			), 6, 2
+			'class' => 'default withSpace'
+			), 3, 2
 		);
 
-		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::getPixel(3, 3));
-		$table->setCol(1, 0, array('colspan' => 2, 'class' => 'defaultfont'), g_l('navigation', '[categories]'));
-		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(
+		$table->setCol(0, 0, array('colspan' => 2, 'class' => 'defaultfont'), g_l('navigation', '[categories]'));
+		$table->setCol(1, 0, array('colspan' => 2), we_html_element::htmlDiv(
 				array(
 					'id' => 'categories',
 					'class' => 'blockWrapper',
@@ -1140,10 +1139,8 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 				)
 			)
 		);
-		$table->setCol(3, 0, array('colspan' => 2), we_html_tools::getPixel(5, 5));
-		$table->setCol(4, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]')));
-		$table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
-		$table->setCol(5, 0, array('colspan' => 2), we_html_tools::getPixel(3, 3));
+		$table->setCol(2, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]')));
+		$table->setCol(2, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . $js . we_html_element::jsElement('
 function removeAllCats(){
@@ -1451,10 +1448,9 @@ function ' . $prefix . 'setLinkSelection(value){
 		asort($charsets);
 		reset($charsets);
 
-		$table = new we_html_table(array('class' => 'default'), 1, 3);
+		$table = new we_html_table(array('class' => 'default'), 1, 2);
 		$table->setCol(0, 0, null, we_html_tools::htmlTextInput("Charset", 15, $value, '', '', 'text', 120));
-		$table->setCol(0, 1, null, we_html_tools::getPixel(2, 10, 0));
-		$table->setCol(0, 2, null, we_html_tools::htmlSelect("CharsetSelect", $charsets, 1, $value, false, array('onblur' => 'document.forms[0].elements.Charset.value=this.options[this.selectedIndex].value;', 'onchange' => 'document.forms[0].elements.Charset.value=this.options[this.selectedIndex].value;document.we_form.submit();'), 'value', ($this->_width_size - 122), "defaultfont", false));
+		$table->setCol(0, 1, null, we_html_tools::htmlSelect("CharsetSelect", $charsets, 1, $value, false, array('onblur' => 'document.forms[0].elements.Charset.value=this.options[this.selectedIndex].value;', 'onchange' => 'document.forms[0].elements.Charset.value=this.options[this.selectedIndex].value;document.we_form.submit();'), 'value', ($this->_width_size - 122), "defaultfont", false));
 
 		return $table->getHtml();
 	}

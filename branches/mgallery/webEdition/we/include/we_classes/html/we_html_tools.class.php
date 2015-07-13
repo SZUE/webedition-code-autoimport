@@ -167,12 +167,12 @@ this.selectedIndex = 0;' .
 		$anz = count($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ' style="width:' . $w . 'px;' . $style . '" class="default">
 		<tr>
-		<td width="8" class="boxHeader">' . self::getPixel(8, 21) . '</td>';
+		<td width="8" class="boxHeader"></td>';
 		// HEADLINE
 		for($f = 0; $f < $anz; $f++){
 			$out .= '<td class="' . $class . ' boxHeader">' . $headline[$f]["dat"] . '</td>';
 		}
-		$out .= '<td width="8" class="boxHeader">' . self::getPixel(8, 21) . '</td>
+		$out .= '<td width="8" class="boxHeader"></td>
 				</tr>';
 
 		//CONTENT
@@ -184,8 +184,7 @@ this.selectedIndex = 0;' .
 		if($buttons){
 			$_table = new we_html_table(array('class' => 'default'), 3, 1, array(
 				array(array('colspan' => 2), $out),
-				array(null, self::getPixel($w, 5)), // row for gap between buttons and dialogborder
-				array(array('align' => 'right'), $buttons),
+				array(array('align' => 'right','style'=>'margin-top:5px;'), $buttons),
 			));
 			return $_table->getHtml();
 		}
@@ -210,12 +209,12 @@ this.selectedIndex = 0;' .
 
 	static function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . 'style="width:' . $w . 'px;' . $style . '" class="default">
-		<tr><td width="8" class="boxHeader">' . self::getPixel(8, 21) . '</td>';
+		<tr><td width="8" class="boxHeader"></td>';
 		// HEADLINE
 		foreach($headline as $h){
 			$out .= '<td class="' . $class . ' boxHeader">' . $h["dat"] . '</td>';
 		}
-		$out .= '<td width="8" class="boxHeader">' . self::getPixel(8, 21) . '</td></tr>';
+		$out .= '<td width="8" class="boxHeader"></td></tr>';
 
 		//CONTENT
 		foreach($content as $c){
@@ -226,8 +225,7 @@ this.selectedIndex = 0;' .
 		if($buttons){
 			$_table = new we_html_table(array("class" => 'default'), 3, 1, array(
 				array(array("colspan" => 2), $out),
-				array(null, self::getPixel($w, 5)), // row for gap between buttons and dialogborder
-				array(array("align" => "right"), $buttons)
+				array(array("align" => "right",'style'=>'padding-top:5px;'), $buttons)
 			));
 			return $_table->getHtml();
 		}

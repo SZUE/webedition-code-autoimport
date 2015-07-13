@@ -467,7 +467,7 @@ function toggle_all() {
 </table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" width="' . $width . '" style="display: ' . $_style_display . '" id="group_' . $_groups_key . '"><tr><td>' . we_html_tools::getPixel(30, 10) . '</td><td colspan="2">' . we_html_tools::getPixel($width, 10) . '</td></tr>';
+				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" width="' . $width . '" style="margin:10px 30px 0 0;display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
 
 				// Go through all items of the group
 				foreach($multiboxes[$_groups_key] as $i => $c){
@@ -477,17 +477,11 @@ function toggle_all() {
 					}
 					$_contentTable[$main_titles[$_groups_key]] .= '
 <tr>
-	<td></td>
-	<td valign="top" align="left"><span  id="headline_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</span></td>
+	<td valign="top" align="left" style="padding-bottom:15px;"><span  id="headline_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</span></td>
 	<td class="defaultfont">' . $c["html"] . '</td>
-</tr>
-<tr>
-	<td></td>
-	<td>' . we_html_tools::getPixel($c["space"], 15) . '</td>
-	<td></td>
 </tr>';
 					if($i < (count($multiboxes[$_groups_key]) - 1) && (!isset($c["noline"]))){
-						$_contentTable[$main_titles[$_groups_key]] .= '<tr><td></td><td colspan="2"><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>';
+						$_contentTable[$main_titles[$_groups_key]] .= '<tr><td colspan="2"><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>';
 					}
 				}
 				$_contentTable[$main_titles[$_groups_key]] .= '</table>';

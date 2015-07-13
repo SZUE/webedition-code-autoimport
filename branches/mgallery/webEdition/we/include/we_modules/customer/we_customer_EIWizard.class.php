@@ -110,10 +110,9 @@ class we_customer_EIWizard{
 	function getHTMLExportStep1(){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
-		$generic = new we_html_table(array('class' => 'default'), 3, 1);
+		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
-		$generic->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$generic->setCol(2, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
+		$generic->setCol(1, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
 		$parts = array(
 			array(
@@ -138,25 +137,16 @@ class we_customer_EIWizard{
 	function getHTMLExportStep2(){
 		$selection = we_base_request::_(we_base_request::STRING, "selection", self::SELECTION_FILTER);
 
-		$table = new we_html_table(array('class' => 'default'), 1, 2);
-		$table->setColContent(0, 0, we_html_tools::getPixel(25, 5));
-		$table->setColContent(0, 1, $this->getHTMLCustomerFilter()
-		);
+		$table = new we_html_table(array('class' => 'default', 'style' => 'margin:5px 25px 0 0;'), 1, 2);
+		$table->setColContent(0, 1, $this->getHTMLCustomerFilter());
 
-		$generic = new we_html_table(array('class' => 'default'), 8, 1);
-		$generic->setColContent(0, 0, we_html_tools::getPixel(5, 10));
-		$generic->setColContent(1, 0, we_html_forms::radiobutton(self::SELECTION_FILTER, ($selection == self::SELECTION_FILTER), "selection", g_l('modules_customer', '[filter_selection]'), true, "defaultfont", "if(document.we_form.selection[0].checked) " . $this->topFrame . ".selection='" . self::SELECTION_FILTER . "';"));
-		$generic->setColContent(2, 0, we_html_tools::getPixel(5, 10));
+		$generic = new we_html_table(array('class' => 'default withSpace'), 4, 1);
+		$generic->setColContent(0, 0, we_html_forms::radiobutton(self::SELECTION_FILTER, ($selection == self::SELECTION_FILTER), "selection", g_l('modules_customer', '[filter_selection]'), true, "defaultfont", "if(document.we_form.selection[0].checked) " . $this->topFrame . ".selection='" . self::SELECTION_FILTER . "';"));
+		$generic->setColContent(1, 0, $table->getHtml());
+
+		$table->setColContent(0, 1, we_html_tools::htmlFormElementTable($this->getHTMLCustomer(), g_l('modules_customer', '[customer]')));
+		$generic->setColContent(2, 0, we_html_forms::radiobutton(self::SELECTION_MANUAL, ($selection == self::SELECTION_MANUAL), "selection", g_l('modules_customer', '[manual_selection]'), true, "defaultfont", "if(document.we_form.selection[1].checked) " . $this->topFrame . ".selection='" . self::SELECTION_MANUAL . "';"));
 		$generic->setColContent(3, 0, $table->getHtml());
-		$generic->setColContent(4, 0, we_html_tools::getPixel(5, 10));
-
-		$table->setColContent(0, 1, we_html_tools::htmlFormElementTable(
-				$this->getHTMLCustomer(), g_l('modules_customer', '[customer]')
-			)
-		);
-		$generic->setColContent(5, 0, we_html_forms::radiobutton(self::SELECTION_MANUAL, ($selection == self::SELECTION_MANUAL), "selection", g_l('modules_customer', '[manual_selection]'), true, "defaultfont", "if(document.we_form.selection[1].checked) " . $this->topFrame . ".selection='" . self::SELECTION_MANUAL . "';"));
-		$generic->setColContent(6, 0, we_html_tools::getPixel(5, 10));
-		$generic->setColContent(7, 0, $table->getHtml());
 
 		$parts = array(array(
 				"headline" => "",
@@ -254,17 +244,16 @@ class we_customer_EIWizard{
 			switch($type){
 				case we_import_functions::TYPE_GENERIC_XML:
 
-					$table = new we_html_table(array('class' => 'default'), 3, 1);
+					$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 
-					$table->setColContent(1, 0, we_html_tools::getPixel(1, 10));
 					$table->setColContent(0, 0, we_html_forms::radiobutton(1, $cdata, "cdata", g_l('modules_customer', '[export_xml_cdata]'), true, "defaultfont", ""));
-					$table->setColContent(2, 0, we_html_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer', '[export_xml_entities]'), true, "defaultfont", ""));
+					$table->setColContent(1, 0, we_html_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer', '[export_xml_entities]'), true, "defaultfont", ""));
 
 					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), "space" => $_space);
 
 					break;
 				case self::TYPE_CSV:
-					$fileformattable = new we_html_table(array(), 5, 1);
+					$fileformattable = new we_html_table(array('style'=>'margin-top:10px;'), 4, 1);
 
 					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
@@ -272,23 +261,20 @@ class we_customer_EIWizard{
 					$_file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
 					$_file_encoding->selectOption($csv_lineend);
 
-					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
-					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br/>" . $_file_encoding->getHtml());
-					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array("," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
-					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
+					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br/>" . $_file_encoding->getHtml());
+					$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array("," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
+					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
 
-					$fileformattable->setColContent(4, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
+					$fileformattable->setColContent(3, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
 					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => $_space);
 			}
 
 			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", "space" => 0, "noline" => 1);
 
-			$table = new we_html_table(array('class' => 'default'), 1, 2);
-			$table->setColContent(0, 0, we_html_tools::getPixel(20, 2));
-			$table->setColContent(0, 1, we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", $this->topFrame . ".export_to='" . self::EXPORT_SERVER . "'"));
+			$table = we_html_element::htmlDiv(array('class' => 'default','style'=>'margin-left:20px;'), we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", $this->topFrame . ".export_to='" . self::EXPORT_SERVER . "'"));
 			$parts[] = array("space" => $_space, "noline" => 1,
-				"headline" => $table->getHtml(),
+				"headline" => $table,
 				"html" =>
 				we_html_element::htmlBr() .
 				we_html_tools::htmlFormElementTable($this->formFileChooser(200, "path", $path, "", we_base_ContentTypes::FOLDER), g_l('modules_customer', '[path]'))
@@ -567,10 +553,9 @@ class we_customer_EIWizard{
 	function getHTMLImportStep1(){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
-		$generic = new we_html_table(array('class' => 'default'), 3, 1);
+		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) " . $this->topFrame . ".type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
-		$generic->setCol(1, 0, array(), we_html_tools::getPixel(0, 4));
-		$generic->setCol(2, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
+		$generic->setCol(1, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) " . $this->topFrame . ".type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
 
 		$parts = array(
 			array(
@@ -615,14 +600,10 @@ class we_customer_EIWizard{
 				') . $fileUploader->getJs();
 		$css = STYLESHEET . $fileUploader->getCss();
 
-		$tmptable = new we_html_table(array('class' => 'default'), 4, 1);
-		$tmptable->setCol(0, 0, array("valign" => "middle"), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
-		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
-
-		$table = new we_html_table(array('class' => 'default'), 4, 2);
+		$table = new we_html_table(array('class' => 'default withSpace'), 2, 2);
 		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_SERVER, ($import_from == self::EXPORT_SERVER), "import_from", g_l('modules_customer', '[server_import]'), true, "defaultfont", "switchImportFrom(this);"));
-		$table->setColContent(1, 0, we_html_tools::getPixel(25, 5));
-		$table->setColContent(2, 1, $tmptable->getHtml());
+
+		$table->setCol(1, 1, array('style' => 'padding-bottom:5px;'), $this->formFileChooser(250, "source", $source, "opener." . $this->bodyFrame . ".document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
 
 		$parts[] = array(
 			"headline" => g_l('modules_customer', '[source_file]'),
@@ -632,18 +613,16 @@ class we_customer_EIWizard{
 		);
 
 		//upload table
+		$tmptable = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 		//$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 		$tmptable->setCol(0, 0, array(), $fileUploader->getHtmlAlertBoxes());
-		$tmptable->setCol(1, 0, array(), we_html_tools::getPixel(2, 5));
 
 		//$tmptable->setCol(2, 0, array("valign" => "middle"), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
-		$tmptable->setCol(2, 0, array("valign" => "middle"), $fileUploader->getHTML());
-		$tmptable->setCol(3, 0, array(), we_html_tools::getPixel(2, 5));
+		$tmptable->setCol(1, 0, array("valign" => "middle"), $fileUploader->getHTML());
 
-		$table = new we_html_table(array('class' => 'default'), 3, 2);
+		$table = new we_html_table(array('class' => 'default withSpace'), 2, 2);
 		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont", "switchImportFrom(this)"));
-		$table->setColContent(1, 0, we_html_tools::getPixel(25, 5));
-		$table->setColContent(2, 1, $tmptable->getHtml());
+		$table->setColContent(1, 1, $tmptable->getHtml());
 
 		$parts[] = array(
 			"headline" => "",
@@ -731,7 +710,7 @@ class we_customer_EIWizard{
 
 					//t_e($csv_delimiter, $csv_enclose, $max, $charCount, $r, $n, $csv_lineend, $csv_fieldnames,$line);
 
-					$fileformattable = new we_html_table(array(), 6, 1);
+					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 5, 1);
 
 					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
@@ -748,15 +727,12 @@ class we_customer_EIWizard{
 					$import_Charset = '<table class="default"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
 
 
-					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), we_html_tools::getPixel(10, 10));
-					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $_file_encoding->getHtml());
-					$fileformattable->setCol(2, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
-					//$fileformattable->setCol(2, 0, array("class" => "defaultfont"), "abc");
+					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $_file_encoding->getHtml());
+					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
+					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
+					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));
 
-					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
-					$fileformattable->setColContent(4, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));
-
-					$fileformattable->setColContent(5, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
+					$fileformattable->setColContent(4, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
 					$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), "space" => 150));
 					break;
@@ -1582,7 +1558,7 @@ function formFileChooser() {
 		$wecmdenc4 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value,'" . $wecmdenc4 . "');");
 
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", we_html_tools::getPixel(20, 4), permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1605,7 +1581,7 @@ function formDirChooser() {
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:formDirChooser('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), we_html_tools::getPixel(20, 4), $button);
+		return $js . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 
 	function getHTMLCustomer(){
@@ -1676,8 +1652,7 @@ function selector_cmd(){
 		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 3);
 
 		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
-		$table->setColContent(0, 1, we_html_tools::getPixel(10, 10));
-		$table->setColContent(0, 2, $select->getHtml());
+		$table->setCol(0, 1, array('style' => 'padding-left:10px;'), $select->getHtml());
 
 		return we_html_tools::htmlFormElementTable($table->getHtml(), $title);
 	}

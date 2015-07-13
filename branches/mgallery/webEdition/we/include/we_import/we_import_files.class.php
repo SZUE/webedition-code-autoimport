@@ -329,8 +329,7 @@ function uploadFinished() {
 
 	function getStep2Legacy(){
 		// create Second Screen ##############################################################################
-		$but = we_html_tools::getPixel(10, 22) .
-			we_html_button::create_button(we_html_button::TRASH, "wedelRow(WEFORMNUM + 1,this)");
+		$but = we_html_button::create_button(we_html_button::TRASH, "wedelRow(WEFORMNUM + 1,this)");
 		$but = str_replace(array("\n", "\r"), " ", $but);
 		$maxsize = we_base_file::getHumanFileSize(getUploadMaxFilesize(false, $GLOBALS['DB_WE']), we_base_file::SZ_MB);
 
@@ -354,8 +353,7 @@ function uploadFinished() {
 					'onchange' => "checkFileinput();"
 			)) . $but;
 
-		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td>' . we_html_tools::getPixel(
-				35, 5) . '</td><td>' . $fileinput . '</td></tr></table>';
+		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td style="padding-left:35px;">' . $fileinput . '</td></tr></table>';
 
 		$form_content = str_replace("WEFORMNUM", 0, $this->_getHiddens("buttons", $this->step) . str_replace("WE_FORM_NUM", 1, $fileinput));
 		$formhtml = we_html_element::htmlForm(
@@ -910,20 +908,16 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 			array(
 			'id' => 'CategoriesBlock',
 			'style' => 'display: block;',
-			'class' => 'default'
-			), 4, 1);
+			'class' => 'default withSpace'
+			), 2, 1);
 
-		$table->setColContent(0, 0, we_html_tools::getPixel(5, 5));
-		$table->setColContent(
-			1, 0, we_html_element::htmlDiv(
+		$table->setColContent(0, 0, we_html_element::htmlDiv(
 				array(
 					'id' => 'categoriesDiv',
 					'class' => 'blockWrapper',
 					'style' => 'width: ' . ($_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
-		$table->setColContent(2, 0, we_html_tools::getPixel(5, 5));
-		$table->setCol(
-			3, 0, array(
+		$table->setCol(1, 0, array(
 			'colspan' => 2, 'align' => 'right'
 			), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut
 		);

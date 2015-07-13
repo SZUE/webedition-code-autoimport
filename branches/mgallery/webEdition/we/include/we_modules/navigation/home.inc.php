@@ -28,12 +28,12 @@ echo (!empty($GLOBALS["we_print_not_htmltop"]) ? we_html_tools::getHtmlTop() : '
 
 $_row = 0;
 $_starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
-$_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline",	"colspan" => 3), g_l('navigation', '[navigation]'));
-$_starttable->setCol($_row++, 0, array("class" => "defaultfont",	"colspan" => 3), "");
+$_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), g_l('navigation', '[navigation]'));
+$_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
 
 $createNavigation = we_html_button::create_button('new_item', "javascript:we_cmd('module_navigation_new');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
 $createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
-$content = $createNavigation . we_html_tools::getPixel(2, 14) . $createNavigationGroup;
+$content = $createNavigation . '<br/>' . $createNavigationGroup;
 
 $_starttable->setCol($_row++, 0, array("align" => "center"), $content);
 
@@ -43,11 +43,12 @@ echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
 
 </head>
 
-<body bgcolor="#F0EFF0" onload="loaded = 1;var we_is_home = 1;">
+<body bgcolor="#F0EFF0" onload="loaded = 1;
+		var we_is_home = 1;">
 	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 	<div id="modimage"><img src="<?php echo IMAGE_DIR . 'startscreen/navigation.gif'; ?>" width="335" height="329" /></div>
 
-	<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
+<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
 </body>
 
 </html>

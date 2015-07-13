@@ -124,11 +124,7 @@ var openFolders= {
 				$captions[VFILE_TABLE] = g_l('export', '[collections]');
 			}
 
-			$header = new we_html_table(array(), 3, 1);
-			$header->setCol(0, 0, array("bgcolor" => "white"), we_html_tools::getPixel(5, 5));
-			$header->setColContent(1, 0, we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
-			$header->setColContent(2, 0, we_html_tools::getPixel(5, 5));
-			$header = $header->getHtml();
+			$header = we_html_element::htmlDiv(array('style' => 'margin:5px 0px;'), we_html_tools::htmlSelect('headerSwitch', $captions, 1, we_base_request::_(we_base_request::TABLE, 'headerSwitch', 0), false, array('onchange' => "setHead(this.value);"), 'value', $width));
 		} else {
 			$header = '';
 		}

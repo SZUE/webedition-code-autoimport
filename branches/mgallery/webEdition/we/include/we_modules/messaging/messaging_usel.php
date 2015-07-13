@@ -287,9 +287,6 @@ if($maxsel){
         </td>
       </tr>
       <tr>
-	<td>' . we_html_tools::getPixel(22, 1) . '</td>
-      </tr>
-      <tr>
 	<td valign="top">' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:add_addr2sel()") . '</td>
       </tr>
       <tr>
@@ -298,10 +295,7 @@ if($maxsel){
 	<td>' . we_html_button::create_button(we_html_button::DELETE, "javascript:rm_sel_user();") . '</td>
       </tr>
       <tr>
-	<td colspan="3">' . we_html_tools::getPixel(1, 15) . '<td>
-      </tr>
-      <tr>
-	<td>' . we_html_button::create_button("save_address", "javascript:save_addrbook();") . '<td>
+	<td style="padding-top:15px;">' . we_html_button::create_button("save_address", "javascript:save_addrbook();") . '<td>
 	<td colspan="2">' . we_html_button::create_button("select_user", "javascript:browse_users_window();") . '<td>
       </tr>
     </table>';
