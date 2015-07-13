@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -221,31 +220,31 @@ function build_dialog($selected_setting = 'ui'){
 </tr>
 <tr id="metadataRow3_' . $key . '">
 	<td style="padding-bottom:1px;padding-right:5px;">
-		<div class="small">Vorschlagsliste</div>' . we_html_tools::htmlSelect('metadataMode[' . $key . ']', $_metadata_modes, 1, $value['mode'], false, array(($value['type'] === 'textfield' ? '' : 'disabled') => ($value['type'] === 'textfield' ? '' : '1') , 'class' => "defaultfont", 'style' => "width:98%", 'onchange' => "togglePropositionTable(this, " . $key . ");")) . '
+		<div class="small">Vorschlagsliste</div>' . we_html_tools::htmlSelect('metadataMode[' . $key . ']', $_metadata_modes, 1, $value['mode'], false, array(($value['type'] === 'textfield' ? '' : 'disabled') => ($value['type'] === 'textfield' ? '' : '1'), 'class' => "defaultfont", 'style' => "width:98%", 'onchange' => "togglePropositionTable(this, " . $key . ");")) . '
 	</td>
 	<td colspan="2" style="padding-bottom:1px;">
 	</td>
 </tr>
 <tr id="metadataRow4_' . $key . '">
 	<td colspan="3" style="padding-bottom:16px;padding-right:5px;">
-		<table id="proposalTable_' . $key . '" style="width:100%;border:1px solid gray;display:' . ($value['mode'] === 'none' ? 'none' : 'block')  . ';padding-top:8px;">';
-			if(isset($_defined_values[$value['tag']])){
-				$i = 0;
-				foreach($_defined_values[$value['tag']] as $proposal){
-					$_adv_row .= '<tr>
+		<table id="proposalTable_' . $key . '" style="width:100%;border:1px solid gray;display:' . ($value['mode'] === 'none' ? 'none' : 'block') . ';padding-top:8px;">';
+				if(isset($_defined_values[$value['tag']])){
+					$i = 0;
+					foreach($_defined_values[$value['tag']] as $proposal){
+						$_adv_row .= '<tr>
 						<td width="15%"></td>
 						<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][' . $i++ . ']', 24, $proposal, 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
 						<td width="25">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
 					</tr>';
-				}
-			} else {
-				$_adv_row .= '<tr>
+					}
+				} else {
+					$_adv_row .= '<tr>
 					<td width="15%"></td>
 					<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, '', 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
 					<td width="25">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
 				</tr>';
-			}
-			$_adv_row .= '<tr>
+				}
+				$_adv_row .= '<tr>
 				<td align="right" width="15%"></td>
 				<td align="left" style="">' . we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, ' . $key . ')') . '</td>
 				<td width="25"></td>
@@ -263,13 +262,12 @@ function build_dialog($selected_setting = 'ui'){
 	</tbody>
 </table>';
 
-			$js = we_html_element::jsScript(JS_DIR.'edit_metadatafields.js').
-				we_html_element::jsElement('
+			$js = we_html_element::jsElement('
 var g_l={
-	tagname:"'.g_l('metadata', '[tagname]').'",
-	type:"'.g_l('metadata', '[type]').'",
-	import_from:"'.oldHtmlspecialchars(g_l('metadata', '[import_from]')).'",
-	fields:"'. oldHtmlspecialchars(g_l('metadata', '[fields]')).'",
+	tagname:"' . g_l('metadata', '[tagname]') . '",
+	type:"' . g_l('metadata', '[type]') . '",
+	import_from:"' . oldHtmlspecialchars(g_l('metadata', '[import_from]')) . '",
+	fields:"' . oldHtmlspecialchars(g_l('metadata', '[fields]')) . '",
 };
 var phpdata={
 	tagInp:"' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210)) . '",
@@ -281,11 +279,12 @@ var phpdata={
 	trashButton:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(' + newID + ')") . '\',
 	proposalInp:"' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '",
 	delPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:delProposition(this)'))) . '"
-};');
+};') .
+				we_html_element::jsScript(JS_DIR . 'edit_metadatafields.js');
 
 			$_hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_ALERT, 440, false);
 
-			$_metadata = new we_html_table(array('style' => 'border:1px solid black','width' => 440, 'height' => 50), 4, 3);
+			$_metadata = new we_html_table(array('style' => 'border:1px solid black', 'width' => 440, 'height' => 50), 4, 3);
 
 			$_content = $_hint . '<div style="height:20px"></div>' . $_metadataTable . we_html_button::create_button(we_html_button::PLUS, 'javascript:addRow()');
 
@@ -314,7 +313,7 @@ function getMainDialog(){
 	// Check if we need to save settings
 	if(we_base_request::_(we_base_request::BOOL, 'save_metadatafields')){
 		$save_javascript = '';
-		$name=we_base_request::_(we_base_request::STRING,'metadatafields_name');
+		$name = we_base_request::_(we_base_request::STRING, 'metadatafields_name');
 		if((strpos($name, "'") !== false || strpos($name, ',') !== false)){
 			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[metadatafields_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
 					'history.back()');
@@ -352,7 +351,7 @@ function saveOnKeyBoard() {
 }'
 ) . STYLESHEET .
  '</head>' .
- we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;','onload'=>'self.focus();')
+ we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onload' => 'self.focus();')
 	, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 		, we_html_element::htmlExIFrame('we_metadatafields', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow:auto;', 'weDialogBody') .
 		we_html_element::htmlExIFrame('we_metadatafields_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
