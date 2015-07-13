@@ -118,6 +118,9 @@ $l_buttons_global=array(
 	'btn_direction_up'=>array(
 		'alt'=>'Naar boven',
 	),
+	'btn_edit'=>array(
+		'alt'=>'Open to edit',
+	),
 	'btn_edit_edit'=>array(
 		'alt'=>'Wijzig',
 	),
@@ -502,6 +505,10 @@ $l_buttons_global=array(
 		'alt'=>'Bewaar en publiceer',
 		'value'=>'Publish',
 		'width'=>100,
+	),
+	'quit_addToCollection'=>array(
+		'alt'=>'Quit insertion mode',
+		'value'=>'Quit insertion mode',
 	),
 	'quit_delete'=>array(
 		'alt'=>'Sluit Verwijder modus af',

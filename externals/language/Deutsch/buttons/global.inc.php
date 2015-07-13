@@ -118,6 +118,9 @@ $l_buttons_global=array(
 	'btn_direction_up'=>array(
 		'alt'=>'Nach oben',
 	),
+	'btn_edit'=>array(
+		'alt'=>'Zum Bearbeiten öffnen',
+	),
 	'btn_edit_edit'=>array(
 		'alt'=>'Bearbeiten',
 	),
@@ -502,6 +505,10 @@ $l_buttons_global=array(
 		'alt'=>'Speichert und veröffentlicht das Dokument',
 		'value'=>'Veröffentlichen',
 		'width'=>120,
+	),
+	'quit_addToCollection'=>array(
+		'alt'=>'Einfüge-Modus beenden',
+		'value'=>'Einfüge-Modus beenden',
 	),
 	'quit_delete'=>array(
 		'alt'=>'Lösch-Modus beenden',

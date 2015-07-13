@@ -118,6 +118,9 @@ $l_buttons_global=array(
 	'btn_direction_up'=>array(
 		'alt'=>'Ylös',
 	),
+	'btn_edit'=>array(
+		'alt'=>'Open to edit',
+	),
 	'btn_edit_edit'=>array(
 		'alt'=>'Muokkaa',
 	),
@@ -502,6 +505,10 @@ $l_buttons_global=array(
 		'alt'=>'Tallenna ja julkaise',
 		'value'=>'Julkaise',
 		'width'=>100,
+	),
+	'quit_addToCollection'=>array(
+		'alt'=>'Quit insertion mode',
+		'value'=>'Quit insertion mode',
 	),
 	'quit_delete'=>array(
 		'alt'=>'Lopeta poistotila',

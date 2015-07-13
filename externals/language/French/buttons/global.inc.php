@@ -118,6 +118,9 @@ $l_buttons_global=array(
 	'btn_direction_up'=>array(
 		'alt'=>'Vers le hauthaut',
 	),
+	'btn_edit'=>array(
+		'alt'=>'Open to edit',
+	),
 	'btn_edit_edit'=>array(
 		'alt'=>'Éditer',
 	),
@@ -502,6 +505,10 @@ $l_buttons_global=array(
 		'alt'=>'Enregistre et publie le document',
 		'value'=>'Publier',
 		'width'=>120,
+	),
+	'quit_addToCollection'=>array(
+		'alt'=>'Quit insertion mode',
+		'value'=>'Quit insertion mode',
 	),
 	'quit_delete'=>array(
 		'alt'=>'Quittter le mode `suppression`',
