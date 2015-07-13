@@ -48,16 +48,43 @@ abstract class we_base_country{
 
 	public static function getTranslation($countrykey, $type, $langcode){
 		if(!isset(self::$last[$langcode]) && !self::loadLang($langcode)){
-			return false;
+			return '';
 		}
 		return empty(self::$last[$langcode][$type][$countrykey]) ? '' : self::$last[$langcode][$type][$countrykey];
 	}
 
 	public static function getTranslationList($type, $langcode){
 		if(!isset(self::$last[$langcode]) && !self::loadLang($langcode)){
-			return false;
+			return array();
 		}
 		return empty(self::$last[$langcode][$type]) ? '' : self::$last[$langcode][$type];
+	}
+
+	public static function dateformat($langcode, DateTime $date, $format){
+		if(!isset(self::$last[$langcode]) && !self::loadLang($langcode)){
+			return '';
+		}
+
+		$months = self::getTranslationList(self::MONTH, $langcode);
+		$days = self::getTranslationList(self::DAY, $langcode);
+
+		$dat = $date->format(strtr($format, array(
+			'D' => "\dD\d", //Mon bis Sun
+			'l' => "\lD\l", //Sunday bis Saturday
+			'F' => "\\fn\\f", //January bis December
+			'M' => '\mn\m', //Jan bis Dec
+		)));
+
+		$wd = $date->format('D');
+		$mon = $date->format('n');
+
+		return strtr($dat, array(
+			"d" . $wd . "d" => $days['abbreviated'][strtolower($wd)], //Mon bis Sun
+			"l" . $wd . "l" => $days['wide'][strtolower($wd)], //Sunday bis Saturday
+			"f" . $mon . "f" => $months['wide'][$mon], //January bis December
+			"m" . $mon . "m" => $months['abbreviated'][$mon], //Jan bis Dec
+			)
+		);
 	}
 
 }

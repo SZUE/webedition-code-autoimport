@@ -176,7 +176,7 @@ class we_document extends we_root{
 	function formCategory(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('delete_all_cats')", true, 0, 0, '', '', $this->Category ? false : true);
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();fillIDs();opener.top.we_cmd(\\'add_cat\\',top.allIDs);')");
-		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', $delallbut. $addbut, '', '"folder","we/category"', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(508, $this->Category, 'delete_cat', $delallbut . $addbut, '', '"folder","we/category"', CATEGORY_TABLE);
 		$cats->extraDelFn = 'setScrollTo();';
 		return $cats->get();
 	}
@@ -191,7 +191,7 @@ class we_document extends we_root{
 		} else {
 			$delallbut = '';
 		}
-		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', $delallbut. $addbut, 'module_navigation_edit_navi', 'Path', NAVIGATION_TABLE);
+		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', $delallbut . $addbut, 'module_navigation_edit_navi', 'Path', NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $_path){
@@ -933,18 +933,10 @@ class we_document extends we_root{
 			case 'date':
 				$val = $val ? : time();
 				$format = !empty($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
-				Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage'])));
-				$zdate = is_numeric($val) ? new Zend_Date($val, Zend_Date::TIMESTAMP) : new Zend_Date($val);
+				$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
+				$date = is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val);
 
-//workaround buggy zend dateformat with \h which duplicates the char
-				$ret = '';
-				for($i = 0; $i < strlen($format); $i++){
-					$ret.=($format[$i] === '\\' ?
-							$format[++$i] :
-							$zdate->toString($format[$i], 'php')
-						);
-				}
-				return $ret;
+				return we_base_country::dateformat($langcode, $date, $format);
 
 			case 'select':
 				if(defined('OBJECT_TABLE')){

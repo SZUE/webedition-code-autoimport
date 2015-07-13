@@ -170,7 +170,7 @@ abstract class we_autoloader{
 	);
 
 	public static function loadZend($class_name){
-		//t_e('load zend beacause of', $class_name);
+		//t_e('load zend because of', $class_name);
 		if(!class_exists('Zend_Loader_Autoloader', false)){
 			require_once('Zend/Loader/Autoloader.php');
 			$loader = Zend_Loader_Autoloader::getInstance(); #3815

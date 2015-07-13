@@ -144,17 +144,8 @@ function getDateWord(f,dateObj){
 			return we_html_element::jsElement($js);
 		case 'php':
 		default:
-			Zend_Registry::set('Zend_Locale', new Zend_Locale((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage'])));
-			$zdate = new Zend_Date();
+			$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
-			//workaround buggy zend dateformat with \h which duplicates the char
-			$ret = '';
-			for($i = 0; $i < strlen($format); $i++){
-				$ret.=($format[$i] === '\\' ?
-						$format[++$i] :
-						$zdate->toString($format[$i], 'php')
-					);
-			}
-			return $ret;
+			return we_base_country::dateformat($langcode, new DateTime(), $format);
 	}
 }

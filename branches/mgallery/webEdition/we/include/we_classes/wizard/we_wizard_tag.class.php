@@ -47,7 +47,7 @@ abstract class we_wizard_tag{
 	static function getWeTagGroups($allTags = array()){
 		//initTagList
 		$tags = self::getExistingWeTags();
-		$cache = getWEZendCache();
+		$cache = getWECache();
 		return $cache->load('TagWizard_groups');
 
 
@@ -98,8 +98,8 @@ abstract class we_wizard_tag{
 	}
 
 	static function getMainTagModules($useDeprecated = true){
-		$cache = getWEZendCache();
-		if(!($main = $cache->load('TagWizard_mainTags'))){
+		/*$cache = getWECache();
+		if(!($main = $cache->load('TagWizard_mainTags'))){*/
 			$main = array();
 			$tags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/');
 			foreach($tags as $tagname){
@@ -108,8 +108,8 @@ abstract class we_wizard_tag{
 					$main[$tag->getModule()][] = $tagname;
 				}
 			}
-			$cache->save($main);
-		}
+			/*$cache->save($main);
+		}*/
 		return $main;
 	}
 
@@ -117,7 +117,7 @@ abstract class we_wizard_tag{
 	 * Initializes database for all tags
 	 */
 	static function initTagLists($tags){
-		$cache = getWEZendCache(24 * 3600);
+		$cache = getWECache(24 * 3600);
 		if(($count = $cache->load('TagWizard_tagCount')) && (count($tags) == $count)){
 			return;
 		}
@@ -150,7 +150,7 @@ abstract class we_wizard_tag{
 
 	//FIXME: check if custom tags are updated correctly!
 	static function getTagsWithEndTag(){
-		$cache = getWEZendCache(24 * 3600);
+		$cache = getWECache(24 * 3600);
 		if(!($tags = $cache->load('TagWizard_needsEndTag'))){
 			self::getExistingWeTags();
 			$tags = $cache->load('TagWizard_needsEndTag');
@@ -159,11 +159,11 @@ abstract class we_wizard_tag{
 	}
 
 	static function getCustomTags(){
-		$cache = getWEZendCache();
-		if(!($customTags = $cache->load('TagWizard_customTags'))){
+		/*$cache = getWECache();
+		if(!($customTags = $cache->load('TagWizard_customTags'))){*/
 			$customTags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags');
-			$cache->save($customTags);
-		}
+			/*$cache->save($customTags);
+		}*/
 		return $customTags;
 	}
 
