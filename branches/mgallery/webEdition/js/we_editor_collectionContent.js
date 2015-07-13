@@ -110,10 +110,7 @@ weCollectionEdit = {
 	dd: {
 		fillEmptyRows: true,
 		placeholder: null,
-
-counter: 0,
-c2: 0,
-
+		counter: 0,
 		isMoveItem: true,
 		moveItem: {
 			el: null,
@@ -126,7 +123,7 @@ c2: 0,
 	},
 
 	g_l: {
-		info_insertion: 'Inserted: ##INS##\nAs duplicates rejected: ##REJ##\n\nOthers items may have been rejecected because of inapropriate class/mime type.'
+		info_insertion: ''
 	},
 
 	init: function(){

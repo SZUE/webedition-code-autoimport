@@ -283,16 +283,16 @@ class we_collection extends we_root{
 			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388);
 
 
-		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', 'Dubletten sind erlaubt');
+		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'));
 
-		$html = $selRemTable . // TODO: G_L()!! and we_html_element
+		$html = $selRemTable .
 			'<div id="mimetype" class="collection_props-mime" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:none' : 'display:block') . ';">' .
-			'<br/>Erlaubte Dokumente auf folgende Typen einschränken:<br/>' .
+			'<br/>' . g_l('weClass', '[collection][filter_contenttype]') . ':<br/>' .
 			we_html_element::htmlHidden('we_' . $this->Name . '_remCT', $this->remCT, 'we_remCT') .
 			$mimeTable->getHTML() .
 			'</div>
 		<div id="classname" class="collection_props-classes" style="' . ($this->remTable === 'tblObjectFiles' ? 'display:block' : 'display:none') . ';">' .
-			(defined('OBJECT_TABLE') ? '<br/>Erlaubte Objekte auf folgende Klassen einschränken:<br/>' .
+			(defined('OBJECT_TABLE') ? '<br/>' . g_l('weClass', '[collection][filter_class]') . ':<br/>' .
 				we_html_element::htmlHidden('we_' . $this->Name . '_remClass', $this->remClass, 'we_remClass') .
 				$classTable->getHTML() : '') .
 			'</div>' .
@@ -302,7 +302,7 @@ class we_collection extends we_root{
 	}
 
 	function formCollection(){
-		$recursive = we_html_forms::checkboxWithHidden($this->InsertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_InsertRecursive', 'Verzeichnisse rekursiv einfügen') .
+		$recursive = we_html_forms::checkboxWithHidden($this->InsertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_InsertRecursive', g_l('weClass', '[collection][insertRecursive]')) .
 			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_IsDuplicates', $this->IsDuplicates);
 		$slider = '<div id="sliderDiv" style="display:' . ($this->view === 'grid' ? 'block' : 'none') . '"><input type="range" class="collection-Slider" name="zoom" min="1" step="1" max="5" value="' . (7 - $this->itemsPerRow) . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/></div>';
 		$btnGridview = we_html_button::create_button("fa:iconview,fa-lg fa-th", "javascript:weCollectionEdit.setView('grid');", true, 40, "", "", "", false);
@@ -321,7 +321,7 @@ class we_collection extends we_root{
 		$toolbar->setCol(0, 3, array('class' => 'toolbarView'), $btnListview);
 		$toolbar->setCol(0, 4, array('class' => 'toolbarAdd'), $addFromTreeButton);
 		$toolbar->setCol(0, 5, array('class' => 'toolbarImport'), $btnImport);
-		$toolbar->setCol(0, 6, array('class' => 'toolbarNum weMultiIconBoxHeadline'), 'Anzahl: <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>'); //TODO: G_L();!!
+		$toolbar->setCol(0, 6, array('class' => 'toolbarNum weMultiIconBoxHeadline'), g_l('weClass', '[collection][number]') . ': <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');
 
 		$items = $this->getValidCollection(false, true, true);
 
@@ -385,8 +385,8 @@ weCollectionEdit.storage = {};" .
 				'we_' . $this->Name . '_itemsPerRow' => $this->itemsPerRow,
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
-			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collection-head'), 'Inhalt der Sammlung') . //TODO: G_L()
-			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox('Ausführlich zu Drag&Drop, Seletoren etc (zum Aufklappen)', we_html_tools::TYPE_INFO, 680)) .
+			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collection-head'), g_l('weClass', '[collection][collectionTitle]')) .
+			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][attentionBox]'), we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('class' => 'collection-toolbar'), $toolbar->getHtml()) .
 			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
 			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')));
@@ -576,11 +576,11 @@ weCollectionEdit.storage = {};" .
 						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i>') .
 					we_html_element::htmlDiv(array(
 						'class' => 'toolbarAttr',
-						'title' => $item['elements']['attrib_alt']['Dat'] ? : 'nicht gesetzt => g_l()!'
+						'title' => $item['elements']['attrib_alt']['Dat'],
 						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>') .
 					we_html_element::htmlDiv(array(
 						'class' => 'toolbarAttr',
-						'title' => $item['elements']['meta_title']['Dat'] ? : 'nicht gesetzt => g_l()!'
+						'title' => $item['elements']['meta_title']['Dat'],
 						), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i>') .
 					we_html_element::htmlDiv(array(
 						'class' => 'toolbarAttr',
@@ -601,7 +601,7 @@ weCollectionEdit.storage = {};" .
 				), we_html_element::htmlDiv(array(
 					'title' => $item['path'],
 					'class' => 'divContent',
-					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < $this->iconSizes[$this->itemsPerRow] ? 'background-size:auto;' : ''), // TODO: set url on JS::init();
+					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < $this->iconSizes[$this->itemsPerRow] ? 'background-size:auto;' : ''),
 					'draggable' => 'true',
 					), we_html_element::htmlDiv(array(
 						'class' => 'divInner',
@@ -706,19 +706,19 @@ weCollectionEdit.storage = {};" .
 					switch($name){
 						case 'attrib_title':
 							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? 'title-Attribut: ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'title-Attribut: nicht gesetzt');
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? g_l('weClass', '[collection][attr_title]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[collection][attr_title]') . ': ' . g_l('weClass', '[collection][notSet]'));
 							break;
 						case 'attrib_alt':
 							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? 'alt-Attribut: ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'alt-Attribut: nicht gesetzt');
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? g_l('weClass', '[collection][attr_alt]') .': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[collection][attr_alt]') . ': ' . g_l('weClass', '[collection][notSet]'));
 							break;
 						case 'meta_title':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? 'Titel: ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'Titel: nicht gesetzt');
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? g_l('weClass', '[Title]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[Title]') . ': ' . g_l('weClass', '[collection][notSet]'));
 							break;
 						case 'meta_description':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? 'Beschreibung: ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : 'Beschreibung: nicht gesetzt');
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? g_l('weClass', '[Description]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[Description]') . ': ' . g_l('weClass', '[collection][notSet]'));//
 							break;
 						default:
 							$fieldname = 'custom';

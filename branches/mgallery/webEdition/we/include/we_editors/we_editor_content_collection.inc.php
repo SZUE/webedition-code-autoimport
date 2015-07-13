@@ -46,7 +46,9 @@ weCollectionEdit.we_const = {
 };
 
 weCollectionEdit.g_l = {
-	"element_not_set": "nicht gesetzt" //FIXME: G_L();
+	element_not_set: "' . g_l('weClass', '[collection][notSet]') . '",
+	info_insertion: "' . g_l('weClass', '[collection][infoAddFiles]') . '"
+
 };
 
 // since these props are defined on Properties we can write them here
@@ -54,7 +56,6 @@ weCollectionEdit.dd.IsDuplicates = ' . intval($GLOBALS['we_doc']->IsDuplicates) 
 weCollectionEdit.dd.fillEmptyRows = 1;
 weCollectionEdit.view = "grid";
 ');
-// FIXME: set weCollectionEdit.csv when first used in addItems()...
 
 ?>
 
