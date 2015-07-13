@@ -37,7 +37,7 @@ if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
 		$fileUploader->setAction($weBackupWizard->frameset . '?pnt=cmd&operation_mode=import');
 		$fileUploader->setInternalProgress(array('width' => 300));
 		$fileUploader->setDimensions(array('width' => 500, 'dragHeight' => 60, 'marginTop' => 5));
-		$fileUploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
+		$fileUploader->setFileNameTemp(array('path' => BACKUP_PATH . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
 		$weBackupWizard->setFileUploader($fileUploader);
 	}
 }

@@ -1148,10 +1148,6 @@ function we_TemplateExit($param = 0){
 	t_e('template forces document to exit, see Backtrace for template name. Message of statement', $param);
 }
 
-function getWECache($lifetime = 1800){
-	return Zend_Cache::factory('Core', 'File', array('lifetime' => $lifetime, 'automatic_serialization' => true), array('cache_dir' => WE_CACHE_PATH));
-}
-
 /**
  *
  * @deprecated since version 6.3.0

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -62,11 +61,12 @@ define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
 define('WE_JS_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_JS_MODULES_DIR);
 define('WE_THUMB_PREVIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_THUMB_PREVIEW_DIR);
 define('WE_USERS_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_USERS_MODULE_DIR);
+define('BACKUP_PATH', $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR);
 
 //paths without "DIRS"
 define('WE_FRAGMENT_PATH', WEBEDITION_PATH . 'fragments/');
 define('WE_CACHE_PATH', WEBEDITION_PATH . 'we/cache/');
-define('ZENDCACHE_PATH', WE_CACHE_PATH);//FIXME: remove
+define('ZENDCACHE_PATH', WE_CACHE_PATH); //FIXME: remove
 
 include_once (WE_INCLUDES_PATH . 'we_version.php');
 
@@ -116,7 +116,7 @@ define('SESSION_NAME', 'WESESSION');
 if(!isset($_SERVER['REQUEST_URI'])){
 	if(!isset($_SERVER['HTTP_REQUEST_URI'])){
 		$_SERVER['HTTP_REQUEST_URI'] = (isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']) .
-				(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+			(isset($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 	}
 }
 

@@ -287,16 +287,10 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement{
 		<td style="padding-left:' . $this->_marginLeft . 'px;padding-bottom:10px;" class="' . oldHtmlspecialchars(self::kTableTitle) . '">' . oldHtmlspecialchars($this->getTitle()) . '</td>
 	</tr>
 	<tr>
-		<td>' . we_ui_layout_Image::getPixel(2, 8) . '</td>
-	</tr>
-	<tr>
 		<td id="td_' . oldHtmlspecialchars($this->getId()) . '">';
 		} else {
 
 			return $tableTag . '
-	<tr>
-		<td class="defaultfont"><b>' . we_ui_layout_Image::getPixel($this->getWidth(), 2) . '</b></td>
-	</tr>
 	<tr>
 		<td id="td_' . oldHtmlspecialchars($this->getId()) . '">';
 		}

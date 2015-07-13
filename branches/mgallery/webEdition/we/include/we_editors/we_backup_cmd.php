@@ -196,7 +196,7 @@ run();');
 
 //copy the file to right location
 			if($_SESSION['weS']['weBackupVars']['options']['export2server'] == 1){
-				$_backup_filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'data/' . $_SESSION['weS']['weBackupVars']['filename'];
+				$_backup_filename = BACKUP_PATH . 'data/' . $_SESSION['weS']['weBackupVars']['filename'];
 
 				we_backup_util::addLog('Move file to ' . $_backup_filename);
 
@@ -342,8 +342,8 @@ run();');
 				we_backup_importSql::delBackupTable();
 			}
 
-			if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file'])){
-				unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file']);
+			if(is_file(BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file'])){
+				unlink(BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['backup_file']);
 			}
 
 // reload user prefs

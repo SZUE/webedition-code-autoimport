@@ -25,9 +25,9 @@
 abstract class we_backup_preparer{
 
 	private static function checkFilePermission(){
-		if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/')){
-			we_backup_util::addLog('Error: Can\'t write to ' . $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/');
-			t_e('Error: Can\'t write to ' . $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/');
+		if(!is_writable(BACKUP_PATH . 'tmp/')){
+			we_backup_util::addLog('Error: Can\'t write to ' . BACKUP_PATH . 'tmp/');
+			t_e('Error: Can\'t write to ' . BACKUP_PATH . 'tmp/');
 			return false;
 		}
 		return true;
@@ -48,7 +48,7 @@ abstract class we_backup_preparer{
 			'backup_steps' => 5,
 			'backup_log' => we_base_request::_(we_base_request::BOOL, 'backup_log'),
 			'backup_log_data' => '',
-			'backup_log_file' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . we_backup_backup::logFile,
+			'backup_log_file' => BACKUP_PATH . we_backup_backup::logFile,
 			'limits' => array(
 				'mem' => we_convertIniSizes(ini_get('memory_limit')),
 				'exec' => min(30, ($execTime > 120 ? ($execTime > 2000 ? 5 : 15) : $execTime)),
@@ -83,7 +83,7 @@ abstract class we_backup_preparer{
 
 		$_SESSION['weS']['weBackupVars']['options']['compress'] = (we_base_file::hasCompression(we_base_request::_(we_base_request::BOOL, 'compress'))) ? we_backup_base::COMPRESSION : we_backup_base::NO_COMPRESSION;
 		$_SESSION['weS']['weBackupVars']['filename'] = we_base_request::_(we_base_request::FILE, 'filename') . ($_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_base::NO_COMPRESSION ? '.' . we_base_file::getZExtension(we_backup_base::COMPRESSION) : '');
-		$_SESSION['weS']['weBackupVars']['backup_file'] = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'];
+		$_SESSION['weS']['weBackupVars']['backup_file'] = BACKUP_PATH . 'tmp/' . $_SESSION['weS']['weBackupVars']['filename'];
 		$prefix = we_base_file::getComPrefix($_SESSION['weS']['weBackupVars']['options']['compress']);
 		$_SESSION['weS']['weBackupVars']['open'] = $prefix . 'open';
 		$_SESSION['weS']['weBackupVars']['close'] = $prefix . 'close';
@@ -250,7 +250,7 @@ abstract class we_backup_preparer{
 
 	private static function getBackupFile(){
 		if(($backup_select = we_base_request::_(we_base_request::FILE, 'backup_select'))){
-			return $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
+			return BACKUP_PATH . $backup_select;
 		}
 
 		if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
@@ -258,7 +258,7 @@ abstract class we_backup_preparer{
 			if(!(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode())){
 				$uploader = new we_fileupload_include('we_upload_file');
 				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
-				$uploader->setFileNameTemp(array('path' => $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
+				$uploader->setFileNameTemp(array('path' => BACKUP_PATH . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
 				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
 			}
 		}
@@ -270,7 +270,7 @@ abstract class we_backup_preparer{
 				return false;
 			}
 
-			$filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
+			$filename = BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'];
 
 			//FIXME: delete condition when new uploader is stable
 			if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
@@ -279,7 +279,7 @@ abstract class we_backup_preparer{
 					return $filename;
 				}
 			} else {
-				if(move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'])){
+				if(move_uploaded_file($_FILES['we_upload_file']['tmp_name'], BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'])){
 					we_base_file::insertIntoCleanUp($filename, 0);
 					return $filename;
 				}
@@ -486,7 +486,7 @@ abstract class we_backup_preparer{
 
 	static function makeCleanGzip($gzfile, $offset){
 
-		$file = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . we_base_file::getUniqueId();
+		$file = BACKUP_PATH . 'tmp/' . we_base_file::getUniqueId();
 		$fs = @fopen($gzfile, "rb");
 
 		if(!$fs){

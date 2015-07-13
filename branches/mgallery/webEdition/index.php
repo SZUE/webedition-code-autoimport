@@ -43,6 +43,7 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 }
 
 if(!defined('CONF_SAVED_VERSION') || (defined('CONF_SAVED_VERSION') && (intval(WE_SVNREV) > intval(CONF_SAVED_VERSION)))){
+	define('WE_VERSION_UPDATE', 1);
 	//resave config file(s)
 	we_base_preferences::check_global_config(true);
 }
@@ -144,15 +145,12 @@ function showMessage(message, prio, win){
 }
 
 function cleanWECache(){
-	if(file_exists(WE_CACHE_PATH . 'clean')){
+	if(defined('WE_VERSION_UPDATE')){
 		if(!is_writeable(WE_CACHE_PATH)){
 			t_e('cachedir ' . WE_CACHE_PATH . ' is not writeable expect errors, undefined behaviour');
 			return;
 		}
-		$cache = getWECache();
-		$cache->clean(Zend_Cache::CLEANING_MODE_ALL);
-//remove file
-		unlink(WE_CACHE_PATH . 'clean');
+		we_cache_file::clean();
 	}
 }
 
@@ -163,7 +161,7 @@ $removePaths = array(
 	WEBEDITION_PATH . 'we/include/we_modules/navigation/cache', //old navi-cache
 	$_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller',
 	$_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller.php',
-	WEBEDITION_PATH . 'we/zendcache', //old specific zend cache dir
+	WEBEDITION_PATH . 'we/zendcache',
 );
 
 foreach($removePaths as $path){

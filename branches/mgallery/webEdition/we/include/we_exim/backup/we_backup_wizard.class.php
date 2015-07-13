@@ -451,7 +451,7 @@ extra_files_desc=[];';
 			$dateformat = g_l('date', '[format][default]');
 			for($i = 0; $i <= 1; $i++){
 				$adddatadir = ($i == 0 ? '' : 'data/');
-				$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $adddatadir;
+				$dstr = BACKUP_PATH . $adddatadir;
 				$d = dir($dstr);
 				while(($entry = $d->read())){
 					switch($entry){
@@ -1007,7 +1007,7 @@ function startStep(){
 		if(we_base_request::_(we_base_request::BOOL, "backupfile")){
 			$_filename = urldecode(we_base_request::_(we_base_request::RAW, "backupfile"));
 
-			if(file_exists($_filename) && stripos($_filename, $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR) !== false){ // Does file exist and does it saved in backup dir?
+			if(file_exists($_filename) && stripos($_filename, BACKUP_PATH) !== false){ // Does file exist and does it saved in backup dir?
 				$_size = filesize($_filename);
 
 				header("Pragma: public");
@@ -1221,7 +1221,7 @@ function press_yes() {
 			case '-1':
 				return;
 			case "backup":
-				if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
+				if(!is_writable(BACKUP_PATH . "tmp")){
 					echo we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
@@ -1320,7 +1320,7 @@ top.close();'
 				break;
 			case "import":
 				$continue = true;
-				if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
+				if(!is_writable(BACKUP_PATH . "tmp")){
 					echo we_html_element::jsElement('
 function setLocation(loc){
 	location.href=loc;
@@ -1365,7 +1365,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 					$ok = false;
 
 					if($backup_select){
-						$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $backup_select;
+						$we_backup_obj->filename = BACKUP_PATH . $backup_select;
 						$ok = true;
 					} else if($we_upload_file && ($we_upload_file != "none")){
 						//FIXME: delete condition when new uploader is stable
@@ -1373,8 +1373,8 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 							if($this->fileUploader){
 								$continue = $this->fileUploader->processFileRequest();
 							} else {
-								$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
-								if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $_FILES["we_upload_file"]["name"])){
+								$we_backup_obj->filename = BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'];
+								if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], BACKUP_PATH . "tmp/" . $_FILES["we_upload_file"]["name"])){
 									echo we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
 										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
 									return '';
@@ -1383,8 +1383,8 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 								$ok = true;
 							}
 						} else {
-							$we_backup_obj->filename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $_FILES['we_upload_file']['name'];
-							if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $_FILES["we_upload_file"]["name"])){
+							$we_backup_obj->filename = BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'];
+							if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], BACKUP_PATH . "tmp/" . $_FILES["we_upload_file"]["name"])){
 								echo we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
 									we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
 								return '';
@@ -1440,7 +1440,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 								');
 						flush();
 					} else if($we_backup_obj->file_counter < $we_backup_obj->file_end){
-						$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . basename($we_backup_obj->filename) . "_" . $we_backup_obj->file_counter;
+						$filename_tmp = BACKUP_PATH . "tmp/" . basename($we_backup_obj->filename) . "_" . $we_backup_obj->file_counter;
 						$we_backup_obj->file_counter++;
 						$ok = $we_backup_obj->restoreChunk($filename_tmp);
 						$temp_filename = $we_backup_obj->saveState($temp_filename);
@@ -1469,8 +1469,8 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						flush();
 					} else {
 						$we_backup_obj->doUpdate();
-						if(is_file($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename) && $we_backup_obj->rebuild && empty($we_backup_obj->errors)){
-							unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $temp_filename);
+						if(is_file(BACKUP_PATH . 'tmp/' . $temp_filename) && $we_backup_obj->rebuild && empty($we_backup_obj->errors)){
+							unlink(BACKUP_PATH . 'tmp/' . $temp_filename);
 						}
 						echo we_html_element::jsElement('
 	top.opener.top.we_cmd("load", "' . FILE_TABLE . '");
@@ -1496,10 +1496,10 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 				if(strpos($bfile, '..') === 0){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR));
 				} else {
-					if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $bfile)){
+					if(!is_writable(BACKUP_PATH . $bfile)){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
 					} else {
-						echo we_html_element::jsElement((unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $bfile) ?
+						echo we_html_element::jsElement((unlink(BACKUP_PATH . $bfile) ?
 								'if(top.body.delSelItem) top.body.delSelItem();' :
 								we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
 						);

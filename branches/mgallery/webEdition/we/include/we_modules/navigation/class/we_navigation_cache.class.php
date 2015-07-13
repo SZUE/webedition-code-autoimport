@@ -25,6 +25,8 @@
 class we_navigation_cache{
 	const CACHEDIR = WE_CACHE_PATH;
 
+	//FIXME: use we_cache_file to save navidata
+
 	public static function getNavigationFilename($id){
 		return WE_CACHE_PATH . 'navigation_' . $id . '.php';
 	}
@@ -105,16 +107,9 @@ class we_navigation_cache{
 	 * Used on upgrade to remove all navigation entries
 	 */
 	static function clean($force = false){
-		if(file_exists(WE_CACHE_PATH . 'clean')){
-			unlink(WE_CACHE_PATH . 'clean');
-			$force = true;
-		}
 		if($force){
-			$files = scandir(WE_CACHE_PATH);
-			foreach($files as $file){
-				if(strpos($file, 'navigation_') === 0){
-					unlink(WE_CACHE_PATH . $file);
-				}
+			foreach(glob(WE_CACHE_PATH . 'navigation_*') as $file){
+				unlink(WE_CACHE_PATH . $file);
 			}
 		}
 	}

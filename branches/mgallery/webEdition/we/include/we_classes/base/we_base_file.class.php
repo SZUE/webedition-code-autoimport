@@ -335,7 +335,7 @@ abstract class we_base_file{
 
 	public static function createLocalFolderByPath($completeDirPath){
 		$returnValue = true;
-		
+
 		if(self::checkAndMakeFolder($completeDirPath, true)){
 			return $returnValue;
 		}
@@ -629,31 +629,41 @@ abstract class we_base_file{
 		}
 		$d = dir(TEMP_PATH);
 		while(false !== ($entry = $d->read())){
-			if($entry != '.' && $entry != '..'){
-				$foo = TEMP_PATH . $entry;
-				if(filemtime($foo) <= (time() - 300)){
-					if(is_dir($foo)){
-						self::deleteLocalFolder($foo, 1);
-					} elseif(file_exists($foo)){
-						self::deleteLocalFile($foo);
-					}
-				}
-			}
-		}
-		$d->close();
-		$dstr = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
-		if(self::checkAndMakeFolder($dstr)){
-			$d = dir($dstr);
-			while(false !== ($entry = $d->read())){
-				if($entry != '.' && $entry != '..'){
-					$foo = $dstr . $entry;
+			switch($entry){
+				case '.':
+				case '..':
+				case '.htaccess':
+					break;
+				default:
+					$foo = TEMP_PATH . $entry;
 					if(filemtime($foo) <= (time() - 300)){
 						if(is_dir($foo)){
 							self::deleteLocalFolder($foo, 1);
-						} elseif(file_exists($foo) && is_writable($foo)){
+						} elseif(file_exists($foo)){
 							self::deleteLocalFile($foo);
 						}
 					}
+			}
+		}
+		$d->close();
+		$dstr = BACKUP_PATH . 'tmp/';
+		if(self::checkAndMakeFolder($dstr)){
+			$d = dir($dstr);
+			while(false !== ($entry = $d->read())){
+				switch($entry){
+					case '.':
+					case '..':
+					case '.htaccess':
+						break;
+					default:
+						$foo = $dstr . $entry;
+						if(filemtime($foo) <= (time() - 300)){
+							if(is_dir($foo)){
+								self::deleteLocalFolder($foo, 1);
+							} elseif(file_exists($foo) && is_writable($foo)){
+								self::deleteLocalFile($foo);
+							}
+						}
 				}
 			}
 			$d->close();
@@ -662,15 +672,20 @@ abstract class we_base_file{
 // when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 		while(false !== ($entry = $d->read())){
-			if($entry != '.' && $entry != '..'){
-				$foo = WE_FRAGMENT_PATH . $entry;
-				if(filemtime($foo) <= (time() - 3600 * 24)){
-					if(is_dir($foo)){
-						self::deleteLocalFolder($foo, true);
-					} elseif(file_exists($foo)){
-						self::deleteLocalFile($foo);
+			switch($entry){
+				case '.':
+				case '..':
+				case '.htaccess':
+					break;
+				default:
+					$foo = WE_FRAGMENT_PATH . $entry;
+					if(filemtime($foo) <= (time() - 3600 * 24)){
+						if(is_dir($foo)){
+							self::deleteLocalFolder($foo, true);
+						} elseif(file_exists($foo)){
+							self::deleteLocalFile($foo);
+						}
 					}
-				}
 			}
 		}
 		$d->close();
@@ -688,7 +703,7 @@ abstract class we_base_file{
 		self::save($file, preg_replace('/' . preg_quote($string1, '/') . '/i', $string2, self::load($file, 'r')), 'w');
 	}
 
-	public static function deleteLocalFolder($filename, $delAll = false){
+	public static function deleteLocalFolder($filename, $delAll = false, $withFolder = true){
 		if(!file_exists($filename)){
 			return false;
 		}
@@ -696,18 +711,26 @@ abstract class we_base_file{
 			$foo = (substr($filename, -1) === '/') ? $filename : ($filename . '/');
 			$d = dir($filename);
 			while(false !== ($entry = $d->read())){
-				if($entry != ".." && $entry != "."){
-					$path = $foo . $entry;
-					if(is_dir($path)){
-						self::deleteLocalFolder($path, 1);
-					} else {
-						self::deleteLocalFile($path);
-					}
+				switch($entry){
+					case '.':
+					case '..':
+						break;
+					case '.htaccess':
+						if(!$withFolder){
+							break;
+						}
+					default:
+						$path = $foo . $entry;
+						if(is_dir($path)){
+							self::deleteLocalFolder($path, 1);
+						} else {
+							self::deleteLocalFile($path);
+						}
 				}
 			}
 			$d->close();
 		}
-		return @rmdir($filename);
+		return $withFolder ? rmdir($filename) : true;
 	}
 
 	/**

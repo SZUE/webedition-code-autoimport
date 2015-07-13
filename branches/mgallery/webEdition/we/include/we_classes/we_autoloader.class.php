@@ -36,6 +36,7 @@ abstract class we_autoloader{
 		'backup' => 'we_exim/backup',
 		'banner' => 'we_modules/banner',
 		'base' => 'we_classes/base',
+		'cache' => 'we_classes/cache',
 		'database' => 'we_classes/database',
 		'captcha' => 'we_classes/captcha',
 		'chooser' => 'we_classes/chooser',

@@ -31,7 +31,7 @@
  */
 abstract class we_ui_layout_Image{
 
-	
+
 	/**
 	 * loading
 	 */
@@ -43,6 +43,7 @@ abstract class we_ui_layout_Image{
 	 * @param integer $w with of the image
 	 * @param integer $h height of the image
 	 * @return string
+	 * @deprecated since 6.5.0
 	 */
 	static function getPixel($w = 1, $h = 1){
 		return we_html_tools::getPixel(intval($w), intval($h));

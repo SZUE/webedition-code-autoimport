@@ -78,8 +78,8 @@ class we_backup_backup extends we_backup_base{
 
 		$this->mode = 'xml';
 
-		$this->backup_dir = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR;
-		$this->backup_dir_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/';
+		$this->backup_dir = BACKUP_PATH;
+		$this->backup_dir_tmp = BACKUP_PATH . 'tmp/';
 	}
 
 	function splitFile2(){
@@ -379,7 +379,7 @@ class we_backup_backup extends we_backup_base{
 	 * Description: This function saves the dump to the backup directory.
 	 */
 	function printDump2BackupDir(){
-		$backupfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . $this->filename;
+		$backupfilename = BACKUP_PATH . $this->filename;
 		if($this->compress != self::NO_COMPRESSION && $this->compress != ""){
 			$this->dumpfilename = we_base_file::compress($this->dumpfilename, $this->compress);
 			$this->filename = $this->filename . '.' . we_base_file::getZExtension($this->compress);

@@ -414,7 +414,7 @@ abstract class we_backup_base{
 	 */
 	function printDump2BackupDir(){
 		if($this->export2server == 1){
-			$backupfilename = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "weBackup_" . time() . ".php";
+			$backupfilename = BACKUP_PATH . "weBackup_" . time() . ".php";
 			return @copy($this->dumpfilename, $backupfilename);
 		}
 		return true;
@@ -531,7 +531,7 @@ abstract class we_backup_base{
 
 				if($open_new){
 					$num++;
-					$filename_tmp = $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . basename($filename) . '_' . $num;
+					$filename_tmp = BACKUP_PATH . '/tmp/' . basename($filename) . '_' . $num;
 					$fh_temp = fopen($filename_tmp, "wb");
 					$open_new = false;
 				}
@@ -921,7 +921,7 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 */
 	function saveState($of = ""){
 		$of = ($of ? : we_base_file::getUniqueId()); // #6590, changed from: uniqid(time())
-		we_base_file::save($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . 'tmp/' . $of, $this->_saveState(), 'wb');
+		we_base_file::save(BACKUP_PATH . 'tmp/' . $of, $this->_saveState(), 'wb');
 		return $of;
 	}
 
@@ -932,26 +932,26 @@ $this->dummy=' . var_export($this->dummy, true) . ';
 	 */
 	function restoreState($temp_filename){
 		//FIXME: use __sleep/__wakeup
-		if(file_exists($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename)){
-			include($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp/" . $temp_filename);
+		if(file_exists(BACKUP_PATH . "tmp/" . $temp_filename)){
+			include(BACKUP_PATH . "tmp/" . $temp_filename);
 			return $temp_filename;
 		}
 		return 0;
 	}
 
 	private function clearOldTmp(){
-		if(!is_writable($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp")){
+		if(!is_writable(BACKUP_PATH . "tmp")){
 			$this->setError(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR));
 			return -1;
 		}
 
-		$d = dir($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . "tmp");
+		$d = dir(BACKUP_PATH . "tmp");
 		$co = -1;
 		$limit = time() - 86400;
 		while(false !== ($entry = $d->read())){
 			if($entry != "." && $entry != ".." && !@is_dir($entry)){
-				if(filemtime($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry) < $limit){
-					unlink($_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR . '/tmp/' . $entry);
+				if(filemtime(BACKUP_PATH . '/tmp/' . $entry) < $limit){
+					unlink(BACKUP_PATH . '/tmp/' . $entry);
 				}
 			}
 		}
