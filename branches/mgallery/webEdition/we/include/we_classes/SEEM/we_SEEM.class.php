@@ -494,6 +494,8 @@ abstract class we_SEEM{
 						' onclick="' . self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
 						" onclick=\"top.doClickWithParameters('" . $GLOBALS['we_doc']->ID . "','" . we_base_ContentTypes::WEDOCUMENT . "','" . FILE_TABLE . "', '" . $theParameters . "');top.info(' ');\" onmouseover=\"top.info('" . g_l('SEEM', '[info_doc_with_parameter]') . "');\""
 					);
+			} elseif(!trim($linkArray[5][$i])){
+				$javascriptCode = '';
 			} else {
 				//	This is a javascript:history link, to get back to the last document.
 				$javascriptCode = (strpos($linkArray[2][$i], 'javascript') === 0 && strpos($linkArray[2][$i], 'history') ?
@@ -502,7 +504,7 @@ abstract class we_SEEM{
 						" onclick=\"if(confirm('" . g_l('SEEM', '[ext_doc_selected]') . "')){top.doExtClick('" . $linkArray[5][$i] . $linkArray[3][$i] . "');top.info(' ');} else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\""
 					);
 			}
-			$destCode = str_replace($curLink, '<' . $linkArray[1][$i] . 'javascript://' . $linkArray[4][$i] . ' ' . $javascriptCode . ' onmouseout="top.info(\' \')">', $destCode);
+			$destCode = str_replace($curLink, '<' . $linkArray[1][$i] . ($javascriptCode ? 'javascript://' : '') . $linkArray[4][$i] . ' ' . ($javascriptCode? : '') . ' onmouseout="top.info(\' \')">', $destCode);
 		}
 		return $destCode;
 	}
