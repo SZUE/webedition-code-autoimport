@@ -156,7 +156,7 @@ function getOK($message = '', $value = ''){
 
 $_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
 
-$_install_dir = '<abbr title="' . $_install_dir . '">' . we_util_Strings::shortenPath($_install_dir, 35) . '</abbr>';
+$_install_dir = '<abbr title="' . $_install_dir . '">' . we_base_util::shortenPath($_install_dir, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
 	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? '|' . WE_VERSION_BRANCH : '') . ')' : '') .

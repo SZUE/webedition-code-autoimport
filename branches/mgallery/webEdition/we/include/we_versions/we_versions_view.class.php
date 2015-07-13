@@ -573,7 +573,7 @@ function changeit(value, rowNr){
 
 			$content[] = array(
 				array("dat" => '<nobr>' . $vers . '</nobr>'),
-				array("dat" => '<nobr>' . we_util_Strings::shortenPath($user, 30) . '</nobr>'),
+				array("dat" => '<nobr>' . we_base_util::shortenPath($user, 30) . '</nobr>'),
 				array("dat" => '<nobr>' . ($_versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $_versions[$f]["timestamp"]) : "-") . ' </nobr>'),
 				array("dat" => (($modificationText != '') ? $modificationText : '') .
 					($fromScheduler ? : '') .

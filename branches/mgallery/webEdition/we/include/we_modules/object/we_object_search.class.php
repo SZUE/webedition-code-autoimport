@@ -157,7 +157,7 @@ function toggleShowVisible(c) {
 <tr>
 	<td>' . $checkbox . '</td>
 	<td style="width:5px;"></td>
-	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_extraWsLength) . '</a><td>
+	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $we_extraWsLength) . '</a><td>
 </tr>';
 			}
 		}
@@ -177,7 +177,7 @@ function toggleShowVisible(c) {
 				$out .= '
 <tr>
 	<td class="middlefont">
-		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_wsLength) . '</a><td>
+		&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $we_wsLength) . '</a><td>
 </tr>';
 			}
 		}

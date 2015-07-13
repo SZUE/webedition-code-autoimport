@@ -1682,7 +1682,7 @@ function ' . $prefix . 'setLinkSelection(value){
 	//TODO: function comes from weToolFrames: do we need it in navigation?
 	function getPercent($total, $value, $precision = 0){
 		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
-		return we_util_Strings::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
+		return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
 	}
 
 }

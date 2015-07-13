@@ -896,7 +896,7 @@ set_button_state(false);';
 			$out .= '
 <tr class="defaultfont">
 	<td align="center">' . $k . '</td>
-	<td align="center">' . we_util_Strings::shortenPath($v['Path'], 55) . '</td>
+	<td align="center">' . we_base_util::shortenPath($v['Path'], 55) . '</td>
 	<td align="center">' . $v['ContentType'] . '</td>
 </tr>';
 		}
@@ -1020,7 +1020,7 @@ set_button_state(false);';
 			$out .= '
 <tr class="defaultfont">
 	<td align="center">' . $k . '</td>
-	<td align="center">' . we_util_Strings::shortenPath($v['Path'], 55) . '</td>
+	<td align="center">' . we_base_util::shortenPath($v['Path'], 55) . '</td>
 	<td align="center">' . $v['ContentType'] . '</td>
 </tr>';
 		}

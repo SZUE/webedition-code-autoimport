@@ -353,7 +353,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		function getPercent($total, $value, $precision = 0){
 			$result = ($total ? round(($value * 100) / $total, $precision) : 0);
-			return we_util_Strings::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
+			return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
 		}
 
 		$this->View->db->query('SELECT Log,stamp,DATE_FORMAT(stamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS LogTime FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log IN(\'log_start_send\', \'log_end_send\') ORDER BY stamp ASC');

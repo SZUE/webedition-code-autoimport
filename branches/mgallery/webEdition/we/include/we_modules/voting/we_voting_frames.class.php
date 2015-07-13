@@ -153,7 +153,7 @@ class we_voting_frames extends we_modules_frame{
 
 	function getPercent($total, $value, $precision = 0){
 		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
-		return we_util_Strings::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
+		return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
 	}
 
 	function getHTMLVariant(){

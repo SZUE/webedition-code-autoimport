@@ -1805,7 +1805,7 @@ class we_versions_version{
 							if($fieldValueText != ''){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1819,7 +1819,7 @@ class we_versions_version{
 							if($fieldValueText != ""){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1833,7 +1833,7 @@ class we_versions_version{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1847,7 +1847,7 @@ class we_versions_version{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1861,7 +1861,7 @@ class we_versions_version{
 							if(!empty($fieldValueText)){
 								$fieldValueText .= '<br/>';
 							}
-							$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
+							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
 						}
 					}
 				}
@@ -1880,7 +1880,7 @@ class we_versions_version{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -1892,7 +1892,7 @@ class we_versions_version{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -1907,7 +1907,7 @@ class we_versions_version{
 							$fieldValueText .= "<br/>";
 						}
 						$stat = g_l('versions', ($val == 1) ? '[activ]' : '[notactiv]');
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength) . ": " . $stat;
 					}
 				}
 				return $fieldValueText;
@@ -1994,7 +1994,7 @@ class we_versions_version{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2004,9 +2004,9 @@ class we_versions_version{
 			case '_accessControlOnTemplate':
 				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case '_errorDocNoLogin':
-				return we_util_Strings::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
+				return we_base_util::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
 			case '_errorDocNoAccess':
-				return we_util_Strings::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
+				return we_base_util::shortenPathSpace(id_to_path($v, FILE_TABLE), $pathLength);
 			case '_mode':
 				switch($v){
 					case 0:
@@ -2027,7 +2027,7 @@ class we_versions_version{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2038,7 +2038,7 @@ class we_versions_version{
 						if($fieldValueText != ""){
 							$fieldValueText .= "<br/>";
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;
@@ -2049,7 +2049,7 @@ class we_versions_version{
 						if($fieldValueText != ''){
 							$fieldValueText .= '<br/>';
 						}
-						$fieldValueText .= we_util_Strings::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
+						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CUSTOMER_TABLE), $pathLength);
 					}
 				}
 				return $fieldValueText;

@@ -254,7 +254,7 @@ function we_save() {
 
 	function getPercent($total, $value, $precision = 0){
 		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
-		return we_util_Strings::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
+		return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
 	}
 
 	function getHTMLPropertiesItem(){

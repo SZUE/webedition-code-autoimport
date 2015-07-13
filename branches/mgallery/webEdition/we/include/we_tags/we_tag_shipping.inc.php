@@ -77,5 +77,5 @@ function we_tag_shipping($attribs){
 		default:
 	}
 
-	return we_util_Strings::formatNumber($shippingCost, weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING));
+	return we_base_util::formatNumber($shippingCost, weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING));
 }

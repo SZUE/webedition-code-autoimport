@@ -313,7 +313,7 @@ class we_voting_voting extends weModelBase{
 		return $this->QASet[$this->defVersion]['answers'][$this->answerCount];
 	}
 
-	function getResult($type = 'count', $num_format = '', $precision = we_util_Strings::PRECISION){
+	function getResult($type = 'count', $num_format = '', $precision = 2){
 		switch($type){
 			case 'percent':
 				$total = $this->getResult('total');
@@ -335,7 +335,7 @@ class we_voting_voting extends weModelBase{
 		}
 
 		if($num_format){
-			$result = we_util_Strings::formatNumber($result, $num_format, $precision);
+			$result = we_base_util::formatNumber($result, $num_format, $precision);
 		}
 		return $result;
 	}

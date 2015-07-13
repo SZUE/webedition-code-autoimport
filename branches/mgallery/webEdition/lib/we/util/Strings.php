@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -28,7 +27,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 abstract class we_util_Strings{
-
 	const PRECISION = 2;
 
 	/**
@@ -104,11 +102,7 @@ abstract class we_util_Strings{
 	 * @return string
 	 */
 	static function shortenPath($path, $len){
-		if(strlen($path) <= $len || strlen($path) < 10){
-			return $path;
-		}
-		$l = ($len / 2) - 2;
-		return substr($path, 0, $l) . '...' . substr($path, $l * -1);
+		return we_base_util::shortenPath($path, $len);
 	}
 
 	/**
@@ -123,11 +117,7 @@ abstract class we_util_Strings{
 	 * @return string
 	 */
 	static function shortenPathSpace($path, $len){
-		if(strlen($path) <= $len || strlen($path) < 10){
-			return $path;
-		}
-		$l = $len;
-		return substr($path, 0, $l) . ' ' . self::shortenPathSpace(substr($path, $l), $len);
+		return we_base_util::shortenPathSpace($path, $len);
 	}
 
 	/**
@@ -140,18 +130,7 @@ abstract class we_util_Strings{
 	 * @return string
 	 */
 	static function formatNumber($number, $format = '', $precision = self::PRECISION){
-		switch($format){
-			case 'german':
-			case 'deutsch':
-				return number_format(floatval($number), $precision, ',', '.');
-			case 'french':
-				return number_format(floatval($number), $precision, ',', ' ');
-			case 'swiss':
-				return number_format(floatval($number), $precision, '.', "'");
-			case 'english':
-			default:
-				return number_format(floatval($number), $precision, '.', '');
-		}
+		return we_base_util::formatNumber($number, $format, $precision);
 	}
 
 	/**
@@ -271,12 +250,12 @@ abstract class we_util_Strings{
 	 * This function prints recursively any array or object.
 	 *
 	 * @param *       $val   The variable to print
- 	 * @param boolean $html  Whether to apply oldHtmlspecialchars (default: true)
+	 * @param boolean $html  Whether to apply oldHtmlspecialchars (default: true)
 	 * @param boolean $useTA Whether output is formated as textarea (dfault: false)
 	 * @return void
 	 */
 	static function p_r($val, $html = true, $useTA = false){
-		return p_r($val,$html,$useTA);
+		return p_r($val, $html, $useTA);
 	}
 
 }

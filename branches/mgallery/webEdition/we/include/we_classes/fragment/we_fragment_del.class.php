@@ -45,7 +45,7 @@ class we_fragment_del extends we_fragment_base{
 	}
 
 	function doTask(){
-		$p = addslashes(we_util_Strings::shortenPath(id_to_path($this->data, $this->table, $this->db), 70));
+		$p = addslashes(we_base_util::shortenPath(id_to_path($this->data, $this->table, $this->db), 70));
 		$GLOBALS['we_folder_not_del'] = array();
 		$currentID = we_base_request::_(we_base_request::INT, 'currentID', 0);
 		$currentParents = array();

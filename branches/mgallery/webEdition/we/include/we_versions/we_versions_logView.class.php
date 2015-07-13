@@ -295,8 +295,8 @@ function back(id) {
 					$out .= '<tr id="' . $name . '" name="' . $name . '" style="display:' . $display . ';">
 					<td align="left">' . $m . '.</td><td align="left">' .
 						$v['documentID'] . '</td><td align="left">' .
-						we_util_Strings::shortenPath($v['Text'], 18) . '</td><td align="left">' .
-						we_util_Strings::shortenPath($v['Path'], 40) . '</td><td align="left">' .
+						we_base_util::shortenPath($v['Text'], 18) . '</td><td align="left">' .
+						we_base_util::shortenPath($v['Path'], 40) . '</td><td align="left">' .
 						$v['Version'] . '</td><td align="left">' .
 						$v['ContentType'] . '</td></tr>';
 				}

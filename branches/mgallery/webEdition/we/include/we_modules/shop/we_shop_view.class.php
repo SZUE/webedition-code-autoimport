@@ -659,10 +659,10 @@ function submitForm() {
 			<td></td>
 			<td>' . self::getFieldFromShoparticle($shopArticleObject, WE_SHOP_DESCRIPTION_FIELD_NAME, 45) . '</td>
 			<td></td>
-			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_util_Strings::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
+			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_base_util::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
 			<td></td>
-			<td class="shopContentfontR">' . we_util_Strings::formatNumber($articlePrice) . $waehr . '</td>' .
-					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_util_Strings::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
+			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
+					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
 			<td>' . $pixelImg . '</td>
 			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
@@ -720,7 +720,7 @@ function submitForm() {
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[Preis]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong>' . we_util_Strings::formatNumber($totalPrice) . $waehr . '</strong></td>
+			<td colspan="4" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
 		</tr>';
 
 			if($calcVat){ // add Vat to price
@@ -735,9 +735,9 @@ function submitForm() {
 						$orderTable .= '
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_util_Strings::formatNumber($shippingCostsNet) . $waehr . '</a></strong></td>
+			<td colspan="4" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></strong></td>
 			<td></td>
-			<td class="shopContentfontR small">(' . we_util_Strings::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
+			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
@@ -755,7 +755,7 @@ function submitForm() {
 							$orderTable .= '
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
-			<td colspan="4" class="shopContentfontR">' . we_util_Strings::formatNumber($sum) . $waehr . '</td>
+			<td colspan="4" class="shopContentfontR">' . we_base_util::formatNumber($sum) . $waehr . '</td>
 		</tr>';
 						}
 					}
@@ -765,7 +765,7 @@ function submitForm() {
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong>' . we_util_Strings::formatNumber($totalPriceAndVat) . $waehr . '</strong></td>
+			<td colspan="4" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPriceAndVat) . $waehr . '</strong></td>
 		</tr>';
 				} else { // prices are gros
 					$orderTable .= '<tr><td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td></tr>';
@@ -775,16 +775,16 @@ function submitForm() {
 						$orderTable .= '
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_util_Strings::formatNumber($shippingCostsGros) . $waehr . '</a></td>
+			<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_base_util::formatNumber($shippingCostsGros) . $waehr . '</a></td>
 			<td></td>
-			<td class="shopContentfontR small">(' . we_util_Strings::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
+			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong>' . we_util_Strings::formatNumber($totalPrice) . $waehr . '</strong></td>
+			<td colspan="4" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
@@ -802,7 +802,7 @@ function submitForm() {
 							$orderTable .= '
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
-			<td colspan="4" class="shopContentfontR">' . we_util_Strings::formatNumber($sum) . $waehr . '</td>
+			<td colspan="4" class="shopContentfontR">' . we_base_util::formatNumber($sum) . $waehr . '</td>
 		</tr>';
 						}
 					}
@@ -818,7 +818,7 @@ function submitForm() {
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . we_util_Strings::formatNumber($shippingCostsNet) . $waehr . '</a></td>
+			<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
@@ -833,7 +833,7 @@ function submitForm() {
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong>' . we_util_Strings::formatNumber($totalPrice) . $waehr . '</strong></td>
+			<td colspan="4" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>

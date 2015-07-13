@@ -986,7 +986,7 @@ class we_document extends we_root{
 				if(preg_match('/^[\d.,]+$/', trim($retval))){
 					$precision = isset($attribs['precision']) ? abs($attribs['precision']) : 2;
 					if(($num = weTag_getAttribute('num_format', $attribs, '', we_base_request::STRING))){
-						$retval = we_util_Strings::formatNumber(we_base_util::std_numberformat($retval), $num, $precision);
+						$retval = we_base_util::formatNumber(we_base_util::std_numberformat($retval), $num, $precision);
 					}
 				}
 				if(weTag_getAttribute('win2iso', $attribs, false, we_base_request::BOOL)){

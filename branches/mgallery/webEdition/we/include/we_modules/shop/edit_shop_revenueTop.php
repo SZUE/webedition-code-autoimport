@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'we/util/Strings.php');
 $protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
 we_html_tools::protect($protect);
 
@@ -120,9 +119,7 @@ echo we_html_tools::getHtmlTop() .
 			default: // not needed yet
 				break;
 		}
-	}
-
-'). '
+	}'). '
 </head>
 <body class="weEditorBody" onload="self.focus(); setHeaderTitle();" onunload="">
 <form>';
@@ -296,7 +293,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<tr>
 					<td colspan="5"></td>
 					<td class="shopContentfontR">' . $_vat . '&nbsp;%</td>
-					<td class="shopContentfontR">' . we_util_Strings::formatNumber($_amount) . $waehr . '</td>
+					<td class="shopContentfontR">' . we_base_util::formatNumber($_amount) . $waehr . '</td>
 				</tr>'."\n";
 		}
 	}
@@ -318,9 +315,9 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<td>' . ($selectedMonth > 0 ? $selectedMonth : '' ) . '</td>
 				<td>' . $amountOrders . '</td>
 				<td class="npshopContentfontR">' . ($amountOrders - $editedOrders) . '</td>
-				<td>' . we_util_Strings::formatNumber($payed) . $waehr . '</td>
-				<td class="npshopContentfontR">' . we_util_Strings::formatNumber($unpayed) . $waehr . '</td>
-				<td class="shopContentfontR">' . we_util_Strings::formatNumber($total) . $waehr . '</td>
+				<td>' . we_base_util::formatNumber($payed) . $waehr . '</td>
+				<td class="npshopContentfontR">' . we_base_util::formatNumber($unpayed) . $waehr . '</td>
+				<td class="shopContentfontR">' . we_base_util::formatNumber($total) . $waehr . '</td>
 			</tr>' . "\n" .
 			$vatTable . '</table>'. "\n",
 		'space' => 0
@@ -366,8 +363,8 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			array('dat' => '<a href="javascript:we_cmd(\'openOrder\','.$orderRow['IntOrderID'].',\'shop\',\''.SHOP_TABLE.'\');">'.$orderRow['IntOrderID'].'</a>'),
 			array('dat' => $orderRow[WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
 			array('dat' => $orderRow['IntQuantity']),
-			array('dat' => we_util_Strings::formatNumber($orderRow['Price']) . $waehr),
-			array('dat' => we_util_Strings::formatNumber($orderRow['articleSum']) . $waehr),
+			array('dat' => we_base_util::formatNumber($orderRow['Price']) . $waehr),
+			array('dat' => we_base_util::formatNumber($orderRow['articleSum']) . $waehr),
 			array('dat' => $orderRow['formatDateOrder']),
 			array('dat' => $orderRow['IntArticleID']),
 			array('dat' => ($orderRow['DatePayment'] ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] ? '<span class="npshopContentfontR">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="npshopContentfontR">' . g_l('modules_shop', '[artNPay]') . '</span>'))),

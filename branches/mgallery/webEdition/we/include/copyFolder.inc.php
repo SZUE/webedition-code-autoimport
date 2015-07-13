@@ -89,7 +89,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	'<body class="weDialogBody" onload="self.focus();">' .
 	'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
 	we_html_tools::htmlDialogLayout(
-		$content, g_l('copyFolder', '[headline]') . ": " . we_util_Strings::shortenPath(id_to_path($cmd1, $cmd4), 46), $buttons
+		$content, g_l('copyFolder', '[headline]') . ": " . we_base_util::shortenPath(id_to_path($cmd1, $cmd4), 46), $buttons
 	) .
 	'</form>' .
 	'<iframe frameborder="0" src="about:blank" name="pbUpdateFrame" width="0" height="0" id="pbUpdateFrame"></iframe>' .

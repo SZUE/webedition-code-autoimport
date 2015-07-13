@@ -426,9 +426,9 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 				$content[$f] = array(
 					array('dat' => $publishCheckbox),
 					array('dat' => we_html_element::jsElement('document.write(getTreeIcon("' . $_result[$f]["ContentType"] . '"))')),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]['docID'] . '\',\'' . $_result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]['Text'] . '"><u>' . we_util_Strings::shortenPath($_result[$f]['Text'], $we_PathLength)),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]['docID'] . '\',\'' . $_result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $_result[$f]['Text'] . '"><u>' . we_base_util::shortenPath($_result[$f]['Text'], $we_PathLength)),
 					//array("dat" => '<nobr>' . g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']') . '</nobr>'),
-					array("dat" => '<nobr>' . we_util_Strings::shortenPath($_result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
+					array("dat" => '<nobr>' . we_base_util::shortenPath($_result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>')
 				);
@@ -470,7 +470,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 					if($templateID){
 						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
-							$templateText = we_util_Strings::shortenPath($DB_WE->f('Text'), 20) . " (ID=" . $DB_WE->f('ID') . ")";
+							$templateText = we_base_util::shortenPath($DB_WE->f('Text'), 20) . " (ID=" . $DB_WE->f('ID') . ")";
 						}
 					}
 				} else {
@@ -490,26 +490,26 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
 						$metafields[$_tagName] = "";
 						while($DB_WE->next_record()){
-							$metafields[$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
+							$metafields[$_tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);
 						}
 					}
 				}
 
 				$content[$f] = array(
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageView . '</a>'),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]["Text"] . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 17) . '</u></a>'),
+					array("dat" => we_base_util::shortenPath($_result[$f]["SiteTitle"], 17)),
+					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]["Text"] . '"><u>' . we_base_util::shortenPath($_result[$f]["Text"], 17) . '</u></a>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
 					array("dat" => '<a href="javascript:openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
 					array("dat" => we_base_file::getHumanFileSize($fs)),
 					array("dat" => $imagesize[0] . " x " . $imagesize[1]),
-					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . ($_result[$f]['ContentType']) . ']'), 22)),
-					array("dat" => '<span class="' . $fontColor . '">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
+					array("dat" => we_base_util::shortenPath(g_l('contentTypes', '[' . ($_result[$f]['ContentType']) . ']'), 22)),
+					array("dat" => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($_result[$f]["Text"], 30) . '</span>'),
+					array("dat" => we_base_util::shortenPath($_result[$f]["SiteTitle"], 45)),
+					array("dat" => we_base_util::shortenPath($_result[$f]["Description"], 100)),
 					array("dat" => $_result[$f]['ContentType']),
-					array("dat" => we_util_Strings::shortenPath($creator, 22)),
+					array("dat" => we_base_util::shortenPath($creator, 22)),
 					array("dat" => $templateText),
 					array("dat" => $metafields),
 					array("dat" => $_result[$f]["docID"]),

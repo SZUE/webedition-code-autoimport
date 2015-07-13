@@ -73,9 +73,9 @@ function we_tag_showShopItemNumber($attribs){
 		return getHtmlTag('select', $attr, $out, true) . getHtmlTag('input', array('type' => 'hidden', 'name' => 't', 'value' => time()));
 	}
 	if($inputfield || ($type === 'textinput')){
-		$itemQuantity = ($floatquantities ? we_util_Strings::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
+		$itemQuantity = ($floatquantities ? we_base_util::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
 		$attr = array_merge($attr, array('type' => 'text', 'name' => 'shop_cart_id[' . $GLOBALS['lv']->ShoppingCartKey . ']', 'size' => 2, 'value' => $itemQuantity));
 		return getHtmlTag('input', $attr) . getHtmlTag('input', array('type' => 'hidden', 'name' => 't', 'value' => time()));
 	}
-	return ($floatquantities ? we_util_Strings::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
+	return ($floatquantities ? we_base_util::formatNumber($itemQuantity, $num_format, 2) : intval($itemQuantity));
 }

@@ -91,7 +91,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		$_targetDoc->documentCustomerFilter->saveForModel($_targetDoc);
 		$_targetDoc->rewriteNavigation();
 
-		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_util_Strings::shortenPath($_targetDoc->Path, 55) . "');
+		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_base_util::shortenPath($_targetDoc->Path, 55) . "');
 			parent.setProgress(" . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
 	}
 

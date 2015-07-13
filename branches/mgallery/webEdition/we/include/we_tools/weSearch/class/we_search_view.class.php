@@ -1700,7 +1700,7 @@ weSearch.g_l = {
 					if($templateID){
 						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
-							$templateText = we_util_Strings::shortenPath($DB_WE->f('Text'), 20) . ' (ID=' . $DB_WE->f('ID') . ')';
+							$templateText = we_base_util::shortenPath($DB_WE->f('Text'), 20) . ' (ID=' . $DB_WE->f('ID') . ')';
 						}
 					}
 				} else {
@@ -1717,26 +1717,26 @@ weSearch.g_l = {
 						$DB_WE->query('SELECT a.ID,c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . ' AND b.Name="' . escape_sql_query($_tagName) . '" AND b.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 						$metafields[$_tagName] = '';
 						while($DB_WE->next_record()){
-							$metafields[$_tagName] = we_util_Strings::shortenPath($DB_WE->f('Dat'), 45);
+							$metafields[$_tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);
 						}
 					}
 				}
 
 				$content[] = array(
 					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $iconHTML['imageView'] . '</a>'),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $_result[$f]["Path"] : $_result[$f]["Text"]) . '"><u>' . we_util_Strings::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
+					array("dat" => we_base_util::shortenPath($_result[$f]["SiteTitle"], 17)),
+					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $_result[$f]["Path"] : $_result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($_result[$f]["Text"], 20) . '</u></a>'),
 					array("dat" => '<nobr>' . ($_result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($_result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $_result[$f]["ModDate"]) : "-") . '</nobr>'),
 					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]["docTable"] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $_result[$f]["Text"] . '">' . $iconHTML['imageViewPopup'] . '</a>'),
 					array("dat" => $_result[$f]['fileSize']),
 					array("dat" => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']),
-					array("dat" => we_util_Strings::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
-					array("dat" => '<span class="' . $fontColor . '">' . we_util_Strings::shortenPath($_result[$f]["Text"], 30) . '</span>'),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["SiteTitle"], 45)),
-					array("dat" => we_util_Strings::shortenPath($_result[$f]["Description"], 100)),
+					array("dat" => we_base_util::shortenPath(g_l('contentTypes', '[' . $_result[$f]['ContentType'] . ']'), 22)),
+					array("dat" => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($_result[$f]["Text"], 30) . '</span>'),
+					array("dat" => we_base_util::shortenPath($_result[$f]["SiteTitle"], 45)),
+					array("dat" => we_base_util::shortenPath($_result[$f]["Description"], 100)),
 					array("dat" => $_result[$f]['ContentType']),
-					array("dat" => we_util_Strings::shortenPath($creator, 22)),
+					array("dat" => we_base_util::shortenPath($creator, 22)),
 					array("dat" => $templateText),
 					array("dat" => $metafields),
 					array("dat" => $_result[$f]["docID"]),
@@ -2447,7 +2447,7 @@ weSearch.g_l = {
 			if($content[$n][11]["dat"]){
 				$outDivs .= '<table class="default" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
 						15, 5) . '</td><td>' .
-					we_util_Strings::shortenPath($content[$n][11]["dat"], 150) .
+					we_base_util::shortenPath($content[$n][11]["dat"], 150) .
 					'</td></tr></table>';
 			}
 			$outDivs .= '</div>
@@ -2458,7 +2458,7 @@ weSearch.g_l = {
 						<div style="background-color:#FFF;margin:10px 10px 10px 15px;">
 						<table style="font-size:10px;">';
 				foreach($content[$n][15]["dat"] as $k => $v){
-					$outDivs .= '<tr><td>' . we_util_Strings::shortenPath($k, 90) . ':' . '</td><td>' . we_util_Strings::shortenPath($v, 90) . '</td></tr>';
+					$outDivs .= '<tr><td>' . we_base_util::shortenPath($k, 90) . ':' . '</td><td>' . we_base_util::shortenPath($v, 90) . '</td></tr>';
 				}
 				$outDivs .= '</table>
 					</div>';

@@ -162,6 +162,30 @@ abstract class we_base_util{
 	}
 
 	/**
+	 * Returns a formatted string representation for the given float.
+	 *
+	 * @param float   $value     The float to format
+	 * @param string  $format    The number format to use (default:english,
+	 *                           available: german, deutsch, french, swiss, english)
+	 * @param integer $precision The number of decimal points (default: 2)
+	 * @return string
+	 */
+	static function formatNumber($number, $format = '', $precision = 2){
+		switch($format){
+			case 'german':
+			case 'deutsch':
+				return number_format(floatval($number), $precision, ',', '.');
+			case 'french':
+				return number_format(floatval($number), $precision, ',', ' ');
+			case 'swiss':
+				return number_format(floatval($number), $precision, '.', "'");
+			case 'english':
+			default:
+				return number_format(floatval($number), $precision, '.', '');
+		}
+	}
+
+	/**
 	 * Converts all windows and mac newlines from string to unix newlines
 	 * Returns the converted String.
 	 *
@@ -521,6 +545,40 @@ abstract class we_base_util{
 			case 'px':
 				return $regs[1];
 		}
+	}
+
+	/**
+	 * Returns a shortened string representation of a path (e.g. '/path/.../file.php')
+	 *
+	 * @param string $path  The path to be shortened.
+	 * @param integer $len  Length (lower bound), when to start shortening (minimum = 10).
+	 * @return string
+	 */
+	static function shortenPath($path, $len){
+		if(strlen($path) <= $len || strlen($path) < 10){
+			return $path;
+		}
+		$l = ($len / 2) - 2;
+		return substr($path, 0, $l) . '...' . substr($path, $l * -1);
+	}
+
+	/**
+	 * Splits up the given path every n-th character and adds a space separator in between
+	 *
+	 * Example for $len = 10:
+	 *   input:  "file(filename)"
+	 *   output: "/segment-1 /segment-2 /segment-3 /file"
+	 *
+	 * @param string $path  The path to be split up.
+	 * @param integer $len  Length, when to start the next segment (minimum = 10).
+	 * @return string
+	 */
+	static function shortenPathSpace($path, $len){
+		if(strlen($path) <= $len || strlen($path) < 10){
+			return $path;
+		}
+		$l = $len;
+		return substr($path, 0, $l) . ' ' . self::shortenPathSpace(substr($path, $l), $len);
 	}
 
 }

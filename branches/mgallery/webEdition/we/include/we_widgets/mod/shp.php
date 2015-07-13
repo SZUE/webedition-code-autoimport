@@ -196,39 +196,39 @@ if($bOrders){
 	//4. row
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol(++$i, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][articles_order]'));
-	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right", 'style' => 'padding-bottom:2ex;'), we_util_Strings::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
+	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right", 'style' => 'padding-bottom:2ex;'), we_base_util::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
 }
 
 if($bAverageOrder){
 	//order volume
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol(++$i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][order_volume]')));
-	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
+	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_base_util::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
 
 	//canceled volume
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol(++$i, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
-	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
+	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_base_util::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
 
 	//revenue
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol(++$i, 0, array("class" => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
-	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_util_Strings::formatNumber(($total - $canceled), $numberformat) . '&nbsp;' . $currency));
+	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right"), we_html_element::htmlB(we_base_util::formatNumber(($total - $canceled), $numberformat) . '&nbsp;' . $currency));
 
 	//payed volume
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol(++$i, 0, array("class" => "middlefont", "style" => "color:green;"), g_l('cockpit', '[shop_dashboard][payed]'));
-	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right", "style" => "color:green;"), we_util_Strings::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
+	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right", "style" => "color:green;"), we_base_util::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
 
 	//unpayed volume
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol(++$i, 0, array("class" => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][unpayed]'));
-	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_util_Strings::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
+	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right", "style" => "color:red;"), we_base_util::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
 
 	//volume per order
 	$shopDashboardTable->addRow();
 	$shopDashboardTable->setCol(++$i, 0, array("class" => "middlefont"), g_l('cockpit', '[shop_dashboard][order_value_order]'));
-	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right"), we_util_Strings::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
+	$shopDashboardTable->setCol($i, 1, array("class" => "middlefont", "align" => "right"), we_base_util::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
 
 	//need some space
 	$shopDashboardTable->addRow();
@@ -246,7 +246,7 @@ if($bCustomer){
 $shopDashboard = '<div style="width:60%;float:left;">' .
 	$shopDashboardTable->getHtml() .
 	'</div>'
-	. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_util_Strings::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
+	. '<div style="width:40%;float:right;">' . ($bTarget ? '<b>' . g_l('cockpit', '[shop_dashboard][revenue_target]') . '&nbsp;' . we_base_util::formatNumber($sRevenueTarget, $numberformat) . '&nbsp;' . $currency . '</b><br/>' : '') .
 	'<canvas id="' . $newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>';
 
@@ -276,7 +276,7 @@ addLoadEvent( function() {
 
 	// Draw the gauge using custom settings
 	options = {
-		value: " . we_util_Strings::formatNumber(($total - $canceled)) . ",
+		value: " . we_base_util::formatNumber(($total - $canceled)) . ",
 		label: 'Ziel in " . $currency . "',
 		unitsLabel: ' " . $currency . "',
 		min: 0,

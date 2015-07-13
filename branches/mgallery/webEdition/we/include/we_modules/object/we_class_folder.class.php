@@ -259,7 +259,7 @@ class we_class_folder extends we_folder{
 							'<i class="fa fa-lg fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '"></i>' :
 							'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '"></i>')),
 					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
-					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
+					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . we_base_util::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
 					array('dat' => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("OF_Workspaces")), $we_wsLength)),
 					array('dat' => $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("OF_ExtraWorkspaces")), $we_extraWsLength, $this->TableID, $userWSArray)),
 					array('dat' => '<nobr>' . ($this->searchclass->f("OF_Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("OF_Published")) : "-") . '</nobr>'),
@@ -433,7 +433,7 @@ class we_class_folder extends we_folder{
 						'"></i>'
 					),
 					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),
-					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . we_util_Strings::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
+					array('dat' => '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="defaultfont" title="' . $this->searchclass->f("OF_Path") . '">' . we_base_util::shortenPath($this->searchclass->f("OF_Text"), $we_obectPathLength) . '</a>'),
 				);
 				for($i = 0; $i < $count; $i++){
 					switch($type[$i + 5]){
@@ -444,7 +444,7 @@ class we_class_folder extends we_folder{
 							$tmp = f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", '', $this->DB_WE);
 							if($tmp != ""){
 								$publ = f("SELECT Published FROM " . OBJECT_FILES_TABLE . " WHERE ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "Published", $this->DB_WE);
-								$obj = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . ',\'objectFile\');" ' . ($publ ? '' : 'color:red;') . '" class="defaultfont" title="' . $tmp . '">' . we_util_Strings::shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "OF_Path", $this->DB_WE), $we_obectPathLength) . '</a>';
+								$obj = '<a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . ',\'objectFile\');" ' . ($publ ? '' : 'color:red;') . '" class="defaultfont" title="' . $tmp . '">' . we_base_util::shortenPath(f("SELECT OF_Path FROM " . OBJECT_X_TABLE . $object[$i + 5] . " WHERE OF_ID='" . $this->searchclass->f($type[$i + 5] . "_" . $object[$i + 5]) . "'", "OF_Path", $this->DB_WE), $we_obectPathLength) . '</a>';
 							} else {
 								$obj = "&nbsp;";
 							}
@@ -457,7 +457,7 @@ class we_class_folder extends we_folder{
 								$class = $temp['class'];
 								$content[$f][$i + 5]['dat'] = '<ul>';
 								foreach($objects as $id){
-									$content[$f][$i + 5]['dat'] .= '<li><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . intval($class) . " WHERE OF_ID='" . $id . "'", "", $this->DB_WE) . '">' . we_util_Strings::shortenPath(f('SELECT OF_Path FROM ' . OBJECT_X_TABLE . intval($class) . ' WHERE OF_ID=' . intval($id), '', $this->DB_WE), $we_obectPathLength) . '.</a></li>';
+									$content[$f][$i + 5]['dat'] .= '<li><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . intval($class) . " WHERE OF_ID='" . $id . "'", "", $this->DB_WE) . '">' . we_base_util::shortenPath(f('SELECT OF_Path FROM ' . OBJECT_X_TABLE . intval($class) . ' WHERE OF_ID=' . intval($id), '', $this->DB_WE), $we_obectPathLength) . '.</a></li>';
 								}
 								$content[$f][$i + 5]['dat'] .= '</ul>';
 							} else {
