@@ -463,8 +463,7 @@ echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'
 }
 function we_cmd() {
 	var args = [];
-	for (var i = 0; i < arguments.length; i++)
-	{
+	for (var i = 0; i < arguments.length; i++) {
 		args.push(arguments[i]);
 	}
 	if (top.we_cmd) {

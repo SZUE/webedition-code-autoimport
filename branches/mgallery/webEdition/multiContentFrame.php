@@ -40,14 +40,6 @@ echo we_html_tools::getHtmlTop() .
 
 ?>
 <script type="text/javascript"><!--
-	function we_cmd() {
-		var args = [];
-		for (var i = 0; i < arguments.length; i++) {
-			args.push(arguments[i]);
-		}
-		parent.we_cmd.apply(this, args);
-	}
-
 	function startMultiEditor() {
 		we_cmd('start_multi_editor'<?php echo $_cmd_string; ?>);
 	}

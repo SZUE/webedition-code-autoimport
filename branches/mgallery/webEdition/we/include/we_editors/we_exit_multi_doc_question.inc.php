@@ -48,7 +48,7 @@ print <<< EOFEOF
 <script type="text/javascript"><!--
 var ctLngs = {$ctLngs};
 var g_l={
-	"untitled":"$untitled"
+	untitled:"$untitled"
 };
 var nextCmd="$nextCmd";
 	//-->

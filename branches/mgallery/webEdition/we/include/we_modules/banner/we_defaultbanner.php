@@ -64,10 +64,10 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 ?>
 <script type="text/javascript"><!--
 	var dirs = {
-		"WEBEDITION_DIR": "<?php echo WEBEDITION_DIR; ?>",
+		WEBEDITION_DIR: "<?php echo WEBEDITION_DIR; ?>",
 	};
 	var g_l = {
-		'save_error_fields_value_not_valid': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>'
+		save_error_fields_value_not_valid: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>'
 	};
 
 

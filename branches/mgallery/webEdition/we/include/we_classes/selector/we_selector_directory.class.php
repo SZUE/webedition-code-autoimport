@@ -307,8 +307,6 @@ top.clearEntries();';
 		$txt = $this->FolderText;
 		if(!$txt){
 			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
-			//}elseif(strpos($txt,".")!==false){ entfernt fuer #4333
-			//print we_message_reporting::getShowMessageCall(g_l('weEditor',"[folder][we_filename_notAllowed]"), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(substr($txt, -1) === '.'){ // neue Version f�r 4333 testet auf "." am ende, analog zu i_filenameNotAllowed in we_root
 			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(preg_match('-[<>?":|\\/*]-', $txt)){ // Test auf andere verbotene Zeichen

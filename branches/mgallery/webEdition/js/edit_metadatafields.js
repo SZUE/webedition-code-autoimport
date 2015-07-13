@@ -87,7 +87,7 @@ function addFieldToInput(sel, inpNr) {
 
 function addRow() {
 	var elem = document.getElementById("metadataTable");
-	newID = (elem.rows.length) / 5;
+	var newID = (elem.rows.length) / 5;
 	if (elem) {
 		var newRow = document.createElement("TR");
 		cell = document.createElement("TD");

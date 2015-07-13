@@ -24,12 +24,36 @@
 include_once(WE_SPELLCHECKER_MODULE_PATH . '/spellchecker.conf.inc.php');
 
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('modules_glossary', '[glossary_check]')) . STYLESHEET;
-
 // Transaction
 if(!($Transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 2))){
 	die('No Transaction');
 }
+
+echo we_html_tools::getHtmlTop(g_l('modules_glossary', '[glossary_check]')) .
+ STYLESHEET .
+ we_html_element::cssLink(CSS_DIR . 'glossary_add.css') .
+ we_html_element::jsElement('
+var g_l={
+	checking:"' . g_l('modules_glossary', '[checking]') . '",
+	all_words_identified:"' . g_l('modules_glossary', '[all_words_identified]') . '",
+	no_java:"' . g_l('modules_glossary', '[no_java]') . '",
+	change_to:"' . g_l('modules_glossary', '[change_to]') . '",
+	input:"' . g_l('modules_glossary', '[input]') . '",
+	suggestions:"' . g_l('modules_glossary', '[suggestions]') . '",
+};
+
+var doc={
+EditPageNr:' . intval($we_doc->EditPageNr) . '",
+};
+var transaction="' . $Transaction . '";
+var consts={
+	TYPE_FOREIGNWORD:"' . we_glossary_glossary::TYPE_FOREIGNWORD . '",
+	TYPE_ABBREVATION:"' . we_glossary_glossary::TYPE_ABBREVATION . '",
+	TYPE_ACRONYM:"' . we_glossary_glossary::TYPE_ACRONYM . '",
+};
+') .
+ we_html_element::jsScript(WE_JS_GLOSSARY_MODULE_DIR . 'add_items.js');
+
 
 //
 // ---> Main Frame
@@ -118,11 +142,9 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		}
 
 		$Text = preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\n", $ReplBody);
-		$Text = str_replace(array("\r\n", "\n"), ' ', $Text);
-		$Text = str_replace("\"", "\\\"", $ReplBody);
+		$Text = str_replace(array("\r\n", "\n", "\""), array(' ', ' ', "\\\""), $Text);
 		$Text = preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\n", $Text);
-		$Text = str_replace(array("\r\n", "\n"), ' ', $Text);
-		$Text = str_replace("&nbsp;", " ", $Text);
+		$Text = str_replace(array("\r\n", "\n", "&nbsp;"), ' ', $Text);
 		$Text = preg_replace(array("/[\t]+/", "/[ ]+/"), " ", $Text);
 
 		$ExceptionListFilename = we_glossary_glossary::getExceptionFilename($Language);
@@ -148,31 +170,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		?>
 		<script type="text/javascript"><!--
 
-			function applyOnEnter() {
-				top.frames.glossarycheck.checkForm();
-				return true;
-
-			}
-
-			function closeOnEscape() {
-				return true;
-
-			}
-
-			var orginal;
-			var retryjava = 0;
-			var retry = 0;
-			var to;
-
 			top.opener.top.toggleBusy();
 
-			function customAdapter() {
-				this.innerHTML;
-
-				this.getSelectedText = function () {
-				}
-
-			}
 
 			function setDialog() {
 
@@ -197,111 +196,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 			}
 
-			function spellcheck() {
-				retry = 0;
-				if (document.spellchecker.isReady()) {
-					top.frames.glossarycheck.document.getElementById("statusText").innerHTML = "<?php echo g_l('modules_glossary', '[checking]'); ?>...";
-					var text = getTextOnly(orginal);
-					document.spellchecker.check(text);
-					window.setTimeout(findNext, 2000);
-				} else {
-					if (retryjava < 5) {
-						window.setTimeout(spellcheck, 1000);
-						retryjava++;
-					} else {
-						fadeout("spinner", 80, 10, 10);
-						top.frames.glossarycheck.noJava();
-					}
-				}
-			}
-
-
-			function findNext() {
-				if (document.spellchecker.isReady()) {
-					if (document.spellchecker.isReady()) {
-						if (document.spellchecker.nextSuggestion()) {
-							temp = document.spellchecker.getMisspelledWord();
-							var suggs = document.spellchecker.getSuggestions();
-							suggs = suggs + "";
-							var suggA = suggs.split("|");
-							top.frames.glossarycheck.addRow(temp, suggA);
-
-							clearTimeout(to);
-							to = window.setTimeout(findNext, 250);
-
-						} else if (document.spellchecker.isWorking()) {
-							clearTimeout(to);
-							to = window.setTimeout(findNext, 250);
-
-						} else if (retry < 7) {
-							clearTimeout(to);
-							to = window.setTimeout(findNext, 250);
-							retry++;
-
-						} else {
-							if (top.frames.glossarycheck.document.getElementById("spinner").style.display != "none") {
-								fadeout("spinner", 80, 10, 10);
-								top.frames.glossarycheck.activateButtons();
-							}
-							retry = 0;
-							clearTimeout(to);
-						}
-
-					}
-
-				} else {
-					window.setTimeout(spellcheck, 250);
-
-				}
-
-			}
-
-			function add() {
-				document.spellchecker.addWords(top.frames.glossarycheck.AddWords);
-			}
-
-			function getTextOnly(text) {
-				var newtext = text.replace(/(<([^>]+)>)/ig, " ");
-				newtext = newtext.replace(/\&([^; ]+);/ig, " ");
-				newtext = newtext.replace("&amp;", "&");
-
-				return newtext;
-
-			}
-
-			function fade(id, opacity) {
-				var styleObj = top.frames.glossarycheck.document.getElementById(id).style;
-				styleObj.opacity = (opacity / 100);
-				styleObj.MozOpacity = (opacity / 100);
-				styleObj.KhtmlOpacity = (opacity / 100);
-				styleObj.filter = "alpha(opacity=" + opacity + ")";
-			}
-
-			function fadeout(id, from, step, speed) {
-				fade(id, from);
-				if (from === 0) {
-					top.frames.glossarycheck.document.getElementById(id).style.display = "none";
-				} else {
-					window.setTimeout("fadeout(\"" + id + "\"," + (from - step) + "," + step + "," + speed + ")", speed);
-				}
-			}
-			function we_save_document() {
-				top.opener._showGlossaryCheck = 0;
-				top.opener.we_save_document();
-				top.close();
-			}
-			function we_reloadEditPage() {
-				top.opener.top.we_cmd('switch_edit_page', <?php echo $we_doc->EditPageNr; ?>, '<?php echo $Transaction; ?>', 'save_document');
-			}
 			//-->
 		</script>
-		<style type="text/css">
-			#applet {
-				top: 0px;
-				left: 0px;
-				z-index: -10;
-			}
-		</style>
 		</head>
 
 		<body style="margin:0px;padding:0px;">
@@ -352,103 +248,14 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				$Modes['correct'] = g_l('modules_glossary', '[correct_word]');
 				$Modes['dictionary'] = g_l('modules_glossary', '[to_dictionary]');
 				?>
-				<style type="text/css">
-
-					#spinner {
-						width: 330px;
-						height: 20px;
-						padding: 0px;
-						z-index: 1;
-						position: absolute;
-						left:480px;
-						top:15px;
-					}
-
-					#statusText {
-						width: 300px;
-						line-height: 15px;
-						vertical-align: middle;
-						height: 20px;
-						text-align: left;
-					}
-
-					#statusImage {
-						float: left;
-						width: 20px;
-						height: 20px;
-						padding-right: 5px;
-					}
-				</style>
 				<?php echo we_html_element::jsScript(JS_DIR . 'weCombobox.js'); ?>
 				<script type="text/javascript"><!--
-
-					var table;
-					var counter = 0;
-					var Combobox = new weCombobox();
-
+			Combobox = new weCombobox();
 
 					function init() {
 						table = document.getElementById('unknown');
 						top.setDialog();
 					}
-
-
-					function getTextColumn(text, colspan) {
-						text = text + '';
-						var td = document.createElement('td');
-						td.setAttribute('style', 'overflow: hidden;');
-						td.setAttribute('title', text);
-						if (colspan > 1) {
-							td.setAttribute("colspan", colspan);
-							td.setAttribute("align", "center");
-							td.setAttribute("valign", "middle");
-							td.setAttribute("height", "220");
-						}
-						if (text !== "<?php echo g_l('modules_glossary', '[all_words_identified]'); ?>" && text !== "<?php echo g_l('modules_glossary', '[no_java]'); ?>") {
-							text = shortenWord(text, 20);
-						}
-
-						td.appendChild(document.createTextNode(text));
-						return td;
-					}
-
-					function shortenWord(text, chars) {
-						var newText = "";
-						var textlength = text.length;
-						if (textlength > chars) {
-							var showPointsFrom = Math.round(chars / 2) - 1;
-							var showPointsTo = Math.round(chars / 2) + 1;
-							for (var i = 0; i < chars; i++) {
-								if (i < showPointsFrom) {
-									newText += text.charAt(i);
-								}
-								if (i >= showPointsFrom && i <= showPointsTo) {
-									newText += ".";
-								}
-								if (i > showPointsTo) {
-									var pos = textlength - (chars - i);
-									newText += text.charAt(pos);
-								}
-							}
-						} else {
-							newText = text;
-						}
-
-						return newText;
-					}
-
-					function getInnerColumn(html) {
-						var td = document.createElement('td');
-						td.innerHTML = html;
-						return td;
-					}
-
-					function getImageColumn(src, width, height) {
-						var td = document.createElement('td');
-						td.innerHTML = '<img src="' + src + '" width="' + width + '" height="' + height + '" />';
-						return td;
-					}
-
 
 					function getActionColumn(word, type) {
 						var td = document.createElement('td');
@@ -466,32 +273,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 						return td;
 					}
 
-
-					function getTitleColumn(word, suggestions, title) {
-						var td = document.createElement('td');
-						var html;
-
-						html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" disabled=\"disabled\" " />' +
-										'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">' +
-										'<option value="' + word + '">' + word + '</option>' +
-										'<optgroup label="<?php echo g_l('modules_glossary', '[change_to]'); ?>">' +
-										'<option value="">-- <?php echo g_l('modules_glossary', '[input]'); ?> --</option>' +
-										'</optgroup>';
-						if (suggestions.length > 1) {
-							html += '<optgroup label="<?php echo g_l('modules_glossary', '[suggestions]'); ?>">';
-							for (i = 0; i < suggestions.length; i++) {
-								if (suggestions[i] !== '') {
-									html += '<option value="' + suggestions[i] + '">' + suggestions[i] + '</option>';
-								}
-							}
-							html += '</optgroup>';
-						}
-						html += '</select>';
-
-						td.innerHTML = html;
-
-						return td;
-					}
 
 
 					function getLanguageColumn(word, lang) {
@@ -514,60 +295,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					}
 
 
-					function getColumn(text) {
-						var td = document.createElement('td');
-						td.appendChild(document.createTextNode(text));
-						return td;
-					}
-
-
-					function addRow(word, suggestions) {
-						var tr = document.createElement('tr');
-						tr = document.createElement('tr');
-						tr.appendChild(getTextColumn(word, 1));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
-						tr.appendChild(getActionColumn(word, ''));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
-						tr.appendChild(getTitleColumn(word, suggestions, ''));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
-						tr.appendChild(getLanguageColumn(word, ''));
-						table.appendChild(tr);
-
-						Combobox.init('suggest_' + counter, 'wetextinput');
-						Combobox.init('lang_' + counter, 'wetextinput');
-
-						counter++;
-
-					}
-
-
-					function addPredefinedRow(word, suggestions, type, title, lang) {
-						var tr = document.createElement('tr');
-
-						tr = document.createElement('tr');
-						tr.appendChild(getTextColumn(word, 1));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
-						tr.appendChild(getActionColumn(word, type));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
-						tr.appendChild(getTitleColumn(word, suggestions, title));
-						tr.appendChild(getInnerColumn('<?php echo we_html_tools::getPixel(20, 1); ?>'));
-						tr.appendChild(getLanguageColumn(word, lang));
-						table.appendChild(tr);
-
-						Combobox.init('suggest_' + counter, 'wetextinput');
-						Combobox.init('lang_' + counter, 'wetextinput');
-
-						disableItem(counter, type);
-
-						counter++;
-
-					}
 
 					function activateButtons() {
 						if (counter === 0) {
 							var tr = document.createElement('tr');
 
-							tr.appendChild(getTextColumn('<?php echo g_l('modules_glossary', '[all_words_identified]'); ?>', 7));
+							tr.appendChild(getTextColumn(g_l.all_words_identified, 7));
 							table.appendChild(tr);
 							weButton.hide('execute');
 		<?php
@@ -588,7 +321,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					function noJava() {
 						var tr = document.createElement('tr');
 
-						tr.appendChild(getTextColumn('<?php echo g_l('modules_glossary', '[no_java]'); ?>', 7));
+						tr.appendChild(getTextColumn(g_l.no_java, 7));
 						table.appendChild(tr);
 						weButton.hide('execute');
 		<?php
@@ -599,44 +332,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			<?php
 		}
 		?>
-
-					}
-
-					function disableItem(id, value) {
-						switch (value) {
-							case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD; ?>:
-								document.getElementById('title_' + id).disabled = true;
-								document.getElementById('lang_' + id).disabled = false;
-								document.getElementById('title_' + id).style.display = 'inline';
-								document.getElementById('suggest_' + id).style.display = 'none';
-								break;
-							case 'ignore':
-							case 'exception':
-							case 'dictionary':
-								document.getElementById('title_' + id).disabled = true;
-								document.getElementById('lang_' + id).disabled = true;
-								document.getElementById('suggest_' + id).style.display = 'none';
-								document.getElementById('title_' + id).style.display = 'inline';
-								break;
-							case 'correct':
-								document.getElementById('title_' + id).style.display = 'none';
-								document.getElementById('lang_' + id).disabled = true;
-								document.getElementById('suggest_' + id).disabled = false;
-								document.getElementById('title_' + id).disabled = false;
-								document.getElementById('suggest_' + id).style.display = 'inline';
-								break;
-							case "":
-								document.getElementById('title_' + id).disabled = true;
-								document.getElementById('lang_' + id).disabled = true;
-								document.getElementById('suggest_' + id).style.display = 'none';
-								document.getElementById('title_' + id).style.display = 'inline';
-								break;
-							default:
-								document.getElementById('title_' + id).disabled = false;
-								document.getElementById('lang_' + id).disabled = false;
-								document.getElementById('suggest_' + id).style.display = 'none';
-								document.getElementById('title_' + id).style.display = 'inline';
-						}
 					}
 
 					function checkForm() {
@@ -645,8 +340,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 							title = document.getElementById('title_' + i).value;
 							lang = document.getElementById('lang_' + i).value;
 							switch (type) {
-								case <?php echo we_glossary_glossary::TYPE_ABBREVATION; ?>:
-								case <?php echo we_glossary_glossary::TYPE_ACRONYM; ?>:
+								case consts.TYPE_ABBREVATION:
+								case consts.TYPE_ACRONYM:
 									if (title === '') {
 										document.getElementById('title_' + i).focus();
 		<?php echo we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_title]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -658,7 +353,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 										return false;
 									}
 									break;
-								case <?php echo we_glossary_glossary::TYPE_FOREIGNWORD; ?>:
+								case consts.TYPE_FOREIGNWORD:
 									if (lang === '') {
 										document.getElementById('lang_' + i).focus();
 		<?php echo we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[please_insert_language]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
@@ -689,9 +384,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					}
 					//-->
 				</script>
-
 			</head>
-
 			<body class="weDialogBody" onload="init();">
 
 				<div id="spinner">
@@ -848,8 +541,8 @@ top.add();' .
 					</head>
 					<body class="weDialogBody">
 						<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-	}
-			?>
+					}
+					?>
 				</form>
 				</center>
 			</body>
