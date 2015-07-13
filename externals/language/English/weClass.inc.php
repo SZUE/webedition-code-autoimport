@@ -26,12 +26,18 @@ $l_weClass=array(
 	'change_compression'=>'Change compression',
 	
 	'collection'=>array(
+		'allowDuplicates'=>'Allow duplicates',
+		'attentionBox'=>'--',
 		'attr_alt'=>'Attribute alt',
 		'attr_title'=>'Attribute title',
+		'collectionTitle'=>'Content of the collection',
 		'filter_class'=>'Permit objects of the following classes only',
 		'filter_contenttype'=>'Permit documents of the following content types only',
+		'infoAddFiles'=>'Inserted: ##INS##\nAs duplicates rejected: ##REJ##\n\nOther items may have been rejecected because of inapropriate class/mime type.',
+		'insertRecursive'=>'Insert folders recursive',
 		'notSet'=>'not set',
 		'not_set'=>'delete!',
+		'number'=>'Number',
 	),
 	'confirm_ext_change'=>'You have changed dynamic generation\nDo you want to change extension to default?',
 	'contenttable'=>'Content table',

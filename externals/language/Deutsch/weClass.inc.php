@@ -26,12 +26,18 @@ $l_weClass=array(
 	'change_compression'=>'Komprimierung ändern',
 	
 	'collection'=>array(
+		'allowDuplicates'=>'Dubletten sind erlaubt',
+		'attentionBox'=>'--',
 		'attr_alt'=>'alt-Attribut',
 		'attr_title'=>'title-Attribut',
+		'collectionTitle'=>'Inhalt der Sammlung',
 		'filter_class'=>'Erlaubte Objekte auf folgende Klassen einschränken',
 		'filter_contenttype'=>'Erlaubte Dokumente auf folgende Typen einschränken',
+		'infoAddFiles'=>'Eingefügt: ##INS##\nAls Dubletten abgewiesen: ##REJ##\n\nWeitere Elemente können aufgrund unpassender Klassen bzw. MIME-Typen abgewiesen worden sein.',
+		'insertRecursive'=>'Verzeichnisse rekursiv einfügen',
 		'notSet'=>'nicht gesetzt',
 		'not_set'=>'delete!',
+		'number'=>'Anzahl',
 	),
 	'confirm_ext_change'=>'Sie haben `Seite dynamisch generieren` verändert!\nMöchten Sie die Dateierweiterung auf den Standardwert zurücksetzen?',
 	'contenttable'=>'Content Tabelle',
