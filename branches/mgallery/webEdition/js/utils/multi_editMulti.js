@@ -216,7 +216,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 
 			set.innerHTML = TabStart + TabMiddle1 + TabMiddle2 + TabMiddle3 + TabEnd;
 		} else {
-			set.innerHTML = "<table style=\"margin-bottom:5px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\"><label id=\"" + this.name + "_item_label_" + this.itemCount + "\" class=\"defaultfont\"></td><td>&nbsp;</td><td>" + butt + "</td></tr></table>";
+			set.innerHTML = '<table style="margin-bottom:5px;" class="default"><tr valign="middle"><td style="width:' + this.defWidth + "px\"><label id=\"" + this.name + "_item_label_" + this.itemCount + "\" class=\"defaultfont\"></td><td>&nbsp;</td><td>" + butt + "</td></tr></table>";
 		}
 
 		this.parent.appendChild(set);

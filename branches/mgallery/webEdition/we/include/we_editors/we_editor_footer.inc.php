@@ -152,7 +152,7 @@ echo STYLESHEET .
 		makeSameDocCheck: ' . intval($we_doc->IsTextContentDoc && $haspermNew && (!inWorkflow($we_doc))) . ',
 		isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
 		isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
-		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
+		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
 	};
 	var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
 	var _showGlossaryCheck = ' . $showGlossaryCheck . ';
@@ -206,7 +206,7 @@ if(inWorkflow($we_doc)){
 
 						$_noPermTable = new we_html_table(array("class" => 'default footertable'), 1, 2);
 
-						$_noPermTable->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif",'style'=>'margin-right:10px;')));
+						$_noPermTable->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:10px;')));
 						$_noPermTable->setColContent(0, 1, g_l('SEEM', '[no_permission_to_edit_document]'));
 
 
