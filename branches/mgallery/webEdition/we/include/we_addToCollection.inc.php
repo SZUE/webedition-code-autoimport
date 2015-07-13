@@ -70,7 +70,7 @@ if($cmd0 === 'do_addToCollection'){
 				}
 				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('Inserted: ' . implode(',', $result[0]) . '\nAs duplicates rejected: ' . implode(',', $result[1]) . '. \n\nOthers items may have been rejecected because of inapropriate class/mime type.', we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall("none of the items selected do not matches the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
+				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall("none of the items selected does matche the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
 			}
 		}
 	}
@@ -129,7 +129,7 @@ $yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELEC
 
 $yuiSuggest->setAdditionalButton(we_html_button::create_button("fa:btn_add_collection,fa-plus,fa-lg fa-suitcase", "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false), 0);
 $weAcSelector = $yuiSuggest->getHTML();
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button("quit_move", "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button("quit_addToCollection", "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 
 $recursive = we_html_forms::checkboxWithHidden(1, 'InsertRecursive', 'Verzeichnisse rekursiv einfügen');
 

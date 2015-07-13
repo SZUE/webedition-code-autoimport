@@ -86,15 +86,21 @@ weAddToCollection = {
 		if(_isOpen){
 			if(_isEditorCollActive){
 
-				var contentTable = _contentEditor.document.getElementById('content_table'),
-					onInsertClose = false;
+				var onInsertClose = false;
 
-				if(!this.conf.targetInsertIndex){// opened from menu, not from collection
-					this.conf.targetInsertIndex = contentTable.firstChild.id.substr(5);
-					for(var i = 0, index; i < contentTable.childNodes.length; i++){
-						index = contentTable.childNodes[i].id.substr(5);
-						this.conf.targetInsertIndex = _contentEditor.document.getElementById('yuiAcResultItem_' + index).value != -1 ? contentTable.childNodes[i].nextSibling.id.substr(5) : this.conf.targetInsertIndex;
+				if(!this.conf.targetInsertIndex){// opened from menu or from collection head
+					var ct = _contentEditor.document.getElementById('content_div_' + _contentEditor.weCollectionEdit.view),
+						collectionArr = _contentEditor.weCollectionEdit.collectionArr, 
+						index = collectionArr[collectionArr.length -1];
+
+					for(var j = collectionArr.length - 1; j >= 0; j--){
+						if(collectionArr[j] === -1){
+							index = j;
+						} else {
+							break;
+						}
 					}
+					this.conf.targetInsertIndex = ct.childNodes[index].id.substr(10);
 				} else {
 					onInsertClose = true;
 				}

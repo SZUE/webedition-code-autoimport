@@ -377,7 +377,7 @@ class we_binaryDocument extends we_document{
 		$references = $ml['mediaID_' . $this->ID]; //IMPORTANT: we hava a nested structure: make optgroupa
 
 		if(empty($references)){
-			return 'Dieses Medien-Dokument wird nirgendwo referenziert.'; //g_l('weClass', '[no_documents]');
+			return g_l('weClass', '[notReferenced]');
 		}
 
 		$js = "";
@@ -401,7 +401,6 @@ class we_binaryDocument extends we_document{
 		we_html_multiIconBox::getHTML('weOtherDocProp', '100%', array(
 			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
 			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
-			array('icon' => 'references.gif', 'headline' => 'Verwendung', 'html' => $this->formReferences(), 'space' => 140),
 			array('icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => 140),
 			array('icon' => 'cat.gif', 'headline' => g_l('weClass', '[category]'), 'html' => $this->formCategory(), 'space' => 140),
 			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))

@@ -57,7 +57,6 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[content_type]') . '</div>
 <div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 
-
 	if($GLOBALS['we_doc']->ContentType !== "folder" && $GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::COLLECTION){
 		$fs = $GLOBALS['we_doc']->getFilesize();
 
@@ -202,6 +201,17 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 					$_metaDataTable = g_l('metadata', '[no_metadata_supported]');
 				}
 		}
+
+		if (is_a($GLOBALS['we_doc'], 'we_binaryDocument')) {
+			$parts[] = array(
+				'headline' => g_l('weClass', '[isUsed]'),
+				'html' => $GLOBALS['we_doc']->formReferences(),
+				'space' => 140,
+				'forceRightHeadline' => 1,
+				'icon' => 'references.gif'
+			);
+		}
+
 		if(isset($_metaDataTable)){
 			$parts[] = array(
 				'headline' => '',

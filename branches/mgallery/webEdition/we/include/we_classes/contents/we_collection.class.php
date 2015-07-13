@@ -683,12 +683,10 @@ weCollectionEdit.storage = {};" .
 					case 'title':
 					case 'alt':
 						$fieldname = 'attrib_' . $this->DB_WE->f('Name');
-						$state = $items[$this->DB_WE->f('DID')]['ct'] !== 'image/*' ? self::CLASS_NONE : ($this->DB_WE->f('Dat') ? self::CLASS_YES : self::CLASS_NO);
 						break;
 					case 'Title':
 					case 'Description':
 						$fieldname = 'meta_' . strtolower ($this->DB_WE->f('Name'));
-						$state = !in_array($items[$this->DB_WE->f('DID')]['ct'], $hasMeta) ? self::CLASS_NONE : ($this->DB_WE->f('Dat') ? self::CLASS_YES : self::CLASS_NO);
 						break;
 					default:
 						$fieldname = 'custom';
@@ -925,14 +923,14 @@ weCollectionEdit.storage = {};" .
 		}
 
 		if($result && $returnFull){
-			$result = $this->setItemElements($result);
+			//$result = $this->setItemElements($result);
 		}
 
 		if(!empty($todo)){
 			$result = array_merge($result, $this->getValidItemsFromIDs($todo, $returnFull, $recursive, '', $recursion + 1, $foldersDone, true, $wspaces));
 		}
 
-		if($recursion++ === 0){ // when finishing the initial call, sort complete result (on root level folders first, then items)
+		if($recursion++ === 0){ // when finishing the initial call, sort complete result (on root level folders first, then items and set items' elements)
 			ksort($result);
 			$tmpResult = array();
 			foreach($result as $res){
