@@ -87,9 +87,6 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 				$c++;
 
 			}
-		} else {
-			$table->addRow();
-			$table->setCol(1, 0, array(), we_html_tools::getPixel(20, 12));
 		}
 
 

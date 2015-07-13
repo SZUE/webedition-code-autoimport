@@ -30,6 +30,8 @@
 abstract class we_base_widget{
 	static $js = '';
 
+	const w_icon = 20;
+
 	/**
 	 * To add a widget give a unique id ($iId). Currently supported widget types ($sType) are Shortcuts (sct), RSS Reader (rss),
 	 * Last modified (mfd), ToDo/Messaging (msg), Users Online (usr), and Unpublished docs and objs (ubp).
@@ -47,33 +49,28 @@ abstract class we_base_widget{
 	 * @return     object Returns the we_html_table object
 	 */
 	static function create($iId, $sType, $oContent, $aLabel = array("", ""), $sCls = "white", $iRes = 0, $sCsv = "", $w = 0, $h = 0, $resize = true){
-		$w_icon = 40;
 		$w+=22;
 
 		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:100%"), 1, 1);
-		$oDrag->setCol(0, 0, array("width" => $w_icon), we_html_tools::getPixel('100%', 16));
+		$oDrag->setCol(0, 0, array('style' => 'width:' . self::w_icon . 'px;height:16px;'));
 
 		$oIco_prc = new we_html_table(array(), 1, 3);
-		$oIco_prc->setCol(0, 0, array(),
-			'<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',gel(\'' . $iId . '_csv\').value);this.blur();">
+		$oIco_prc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',gel(\'' . $iId . '_csv\').value);this.blur();">
 		  <i class="fa fa-square-o fa-stack-2x"></i>
 		  <i class="fa fa-align-justify fa-stack-1x"></i>
 		  </span>'
-			);
-		$oIco_prc->setCol(0, 1, array(),
-						'<span id="'.$iId . '_icon_resize" class="fa-stack" title="'.g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]')).'" onclick="resizeWidget(\'' . $iId . '\');this.blur();">
+		);
+		$oIco_prc->setCol(0, 1, array(), '<span id="' . $iId . '_icon_resize" class="fa-stack" title="' . g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]')) . '" onclick="resizeWidget(\'' . $iId . '\');this.blur();">
 		  <i class="fa fa-square-o fa-stack-2x"></i>
 		  <i class="fa fa-expand fa-stack-1x"></i>
 		  </span>'
-);
-		$oIco_prc->setCol(0, 2, array(),
-			'<span class="fa-stack" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		);
+		$oIco_prc->setCol(0, 2, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
 		  <i class="fa fa-square-o fa-stack-2x"></i>
 		  <i class="fa fa-close fa-stack-1x"></i>
 		  </span>');
 		$oIco_pc = new we_html_table(array(), 1, 2);
-		$oIco_pc->setCol(0, 0, array(),
-			'<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',gel(\'' . $iId . '_csv\').value);this.blur();">
+		$oIco_pc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',gel(\'' . $iId . '_csv\').value);this.blur();">
 		  <i class="fa fa-square-o fa-stack-2x"></i>
 		  <i class="fa fa-align-justify fa-stack-1x"></i>
 		  </span>');
@@ -89,7 +86,7 @@ abstract class we_base_widget{
 
 		$oTb = new we_html_table(array("id" => $iId . "_tb", 'class' => 'widget_controls'), 1, 2);
 		$oTb->setCol(0, 0, array(), $oDrag->getHtml());
-		$oTb->setCol(0, 1, array("width" => $w_icon), $sIco);
+		$oTb->setCol(0, 1, array("width" => self::w_icon), $sIco);
 
 		if($iId != 'clone'){
 			self::$js.="setLabel('" . $iId . "','" . str_replace("'", "\'", $aLabel[0]) . "','" . str_replace("'", "\'", $aLabel[1]) . "');" .

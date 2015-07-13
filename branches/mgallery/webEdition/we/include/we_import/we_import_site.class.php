@@ -694,19 +694,19 @@ function doUnload() {
 		$_attr = array('class' => 'default');
 		$_tableObj = new we_html_table($_attr, 6, 3);
 		$_tableObj->setCol(0, 0, array("colspan" => 2), $_images);
+		$_tableObj->setCol(0, 2, null, $_jss);
 		$_tableObj->setCol(1, 0, array("colspan" => 2), $_flashmovies);
+		$_tableObj->setCol(1, 2, null, $_css);
 		$_tableObj->setCol(2, 0, array("colspan" => 2), $_htmlPages);
+		$_tableObj->setCol(2, 2, null, $_text);
 		$_tableObj->setCol(3, 0, null, "");
 		$_tableObj->setCol(3, 1, null, $_createWePages);
+		$_tableObj->setCol(3, 2, null, $_others);
 		$_tableObj->setCol(4, 1, null, $_wePagesOptionButton);
+		$_tableObj->setCol(4, 2, array("valign" => "top"), $_quicktime);
 		$_tableObj->setCol(5, 0, null, we_html_tools::getPixel(20, 1));
 		$_tableObj->setCol(5, 1, null, we_html_tools::getPixel(200, 1));
 		$_tableObj->setCol(5, 2, null, we_html_tools::getPixel(180, 1));
-		$_tableObj->setCol(0, 2, null, $_jss);
-		$_tableObj->setCol(1, 2, null, $_css);
-		$_tableObj->setCol(2, 2, null, $_text);
-		$_tableObj->setCol(3, 2, null, $_others);
-		$_tableObj->setCol(4, 2, array("valign" => "top"), $_quicktime);
 
 
 		$parts = array(
