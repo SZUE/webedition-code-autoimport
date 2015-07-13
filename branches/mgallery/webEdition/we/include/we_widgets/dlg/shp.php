@@ -135,7 +135,7 @@ if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
 
 $oDbTableType = new we_html_table(array('class' => 'default'), 1, 3);
 $oDbTableType->setCol(0, 0, null, $oChbxOrders . $oChbxCustomer);
-$oDbTableType->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
+$oDbTableType->setCol(0, 1, array('width' => 10));
 $oDbTableType->setCol(0, 2, null, $oChbxAverageOrder . $oChbxTarget);
 //$oDbTableType->setCol(0, 3, null, $revenueTarget);
 

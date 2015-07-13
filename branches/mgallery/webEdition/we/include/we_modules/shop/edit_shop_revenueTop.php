@@ -289,10 +289,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		ksort($articleVatArray);
 		$vatTable .= '
 			<tr>
-				<td colspan="7">' . we_html_tools::getPixel(1, 10) . '</td>
-			</tr>
-			<tr>
-				<td colspan="7" class="shopContentfontR">' . g_l('modules_shop', '[includedVat]') . ':</td>
+				<td colspan="7" class="shopContentfontR" style="padding-top:10px;">' . g_l('modules_shop', '[includedVat]') . ':</td>
 			</tr>';
 		foreach($articleVatArray as $_vat => $_amount){
 			$vatTable .= '

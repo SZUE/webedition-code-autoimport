@@ -966,7 +966,7 @@ class we_objectFile extends we_document{
 					$trashbut;
 
 				$content .= we_html_tools::htmlFormElementTable(
-						$this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', 'text', $inputWidth), '', 'left', 'defaultfont', we_html_tools::getPixel(20, 4), $buttontable);
+						$this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', 'text', $inputWidth), '', 'left', 'defaultfont', $buttontable);
 
 				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $myid){
 					$ob = new we_objectFile();
@@ -1148,9 +1148,7 @@ class we_objectFile extends we_document{
 				'<input' . ($showRadio ? ' onchange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
 			) . '
 	</td>
-	<td>' . we_html_tools::getPixel(6, 4) . '</td>
 	<td>' . $but . '</td>
-	<td>' . we_html_tools::getPixel(5, 2) . '</td>
 	<td>' . $trashbut . '</td>
 </tr>';
 	}

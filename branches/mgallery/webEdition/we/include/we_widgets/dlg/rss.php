@@ -45,7 +45,7 @@ function htmlClipElement($smalltext, $text, $content){
 			}else{
 				oText.innerHTML=textsmall_' . $unique . ';
 				oDiv.style.display="none";
-				oBtn.innerHTML=\'' . we_html_button::create_button(we_html_button::DIRRIGHT,'javascript:clip_' . $unique . '();') . '\';
+				oBtn.innerHTML=\'' . we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();') . '\';
 				state_' . $unique . '=0;
 			}
 		}
@@ -53,7 +53,7 @@ function htmlClipElement($smalltext, $text, $content){
 
 	$oClip = new we_html_table(array('class' => 'default'), 1, 3);
 	$oClip->setCol(0, 0, array("width" => 21, "valign" => "top", "align" => "right", "id" => "btn_" . $unique), we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();'));
-	$oClip->setCol(0, 1, array("width" => 10, "nowrap" => "nowrap"), we_html_tools::getPixel(10, 1));
+	$oClip->setCol(0, 1, array("width" => 10, "nowrap" => "nowrap"));
 	$oClip->setCol(0, 2, null, we_html_element::htmlSpan(array(
 			"id" => $unique,
 			"class" => "defaultfont",
@@ -84,15 +84,15 @@ $btnDeleteTopRssFeed = we_html_button::create_button(we_html_button::DELETE, "ja
 
 $oBtnNewFeed = new we_html_table(array('class' => 'default'), 1, 5);
 $oBtnNewFeed->setCol(0, 0, null, $btnAddTopRssFeed);
-$oBtnNewFeed->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
+$oBtnNewFeed->setCol(0, 1, array('style' => 'width:10px;'));
 $oBtnNewFeed->setCol(0, 2, null, $btnOverwriteTopRssFeed);
-$oBtnNewFeed->setCol(0, 3, null, we_html_tools::getPixel(10, 1));
+$oBtnNewFeed->setCol(0, 3, array('style' => 'width:10px;'));
 $oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 
 $oNewFeed = new we_html_table(array("width" => 390, 'class' => 'default'), 3, 1);
 $oNewFeed->setCol(
 	0, 0, null, $oRemTopFeeds . we_html_element::htmlBr() . $oIptNewTitle . we_html_element::htmlBr() . $oIptNewUri);
-$oNewFeed->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
+$oNewFeed->setCol(1, 0, array('style'=>'width:5px;'));
 $oNewFeed->setCol(2, 0, array(
 	"align" => "right"
 	), $oBtnNewFeed->getHTML());
@@ -121,7 +121,7 @@ $oRssContR = new we_html_table(array("height" => "100%", 'class' => 'default'), 
 $oRssContR->setCol(0, 0, array(
 	"valign" => "middle", "class" => "defaultfont"
 	), g_l('cockpit', '[limit_entries]'));
-$oRssContR->setCol(0, 1, null, we_html_tools::getPixel(5, 1));
+$oRssContR->setCol(0, 1, array('style'=>'width:5px;'));
 $oRssContR->setCol(0, 2, array(
 	"valign" => "middle"
 	), $oSctNumEntries->getHTML());

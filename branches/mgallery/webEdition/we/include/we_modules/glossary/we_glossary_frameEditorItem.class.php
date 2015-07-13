@@ -204,16 +204,12 @@ function submitForm() {
 		$table2 = new we_html_table(array('class' => 'default'), 1, 6);
 		$table2->setRow(0, array("valign" => "middle"));
 		if($ShowUnpublish){
-			$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(10, 20));
 			$table2->setCol(0, $col++, array("nowrap" => null), $UnpublishButton);
 		}
-		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(10, 20));
 		$table2->setCol(0, $col++, array("nowrap" => null), $SaveButton);
 		if(!$ShowUnpublish){
-			$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(10, 20));
 			$table2->setCol(0, $col++, array("nowrap" => null), $PublishWhenSaved);
 		}
-		$table2->setCol(0, $col++, array("nowrap" => null), we_html_tools::getPixel(10, 20));
 		$table2->setCol(0, $col++, array("nowrap" => null), $NewEntry);
 
 		$js = we_html_element::jsElement('
@@ -391,7 +387,7 @@ function we_save() {
 			$_linkPath = $_linkID = $_internParameter = "";
 		}
 
-		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][InternLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button);
+		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][InternLinkID]', $_linkID), $_button);
 
 		return '<div id="mode_intern" style="display: none;">'
 			. '<table class="default">
@@ -436,7 +432,7 @@ function we_save() {
 		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
-		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][ObjectLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button);
+		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][ObjectLinkID]', $_linkID), $_button);
 
 		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
@@ -484,19 +480,15 @@ function we_save() {
 		$wecmdenc3 = we_base_request::encCmd("opener.setHot();");
 
 		$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'" . CATEGORY_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "')";
-		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
-		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $_linkID), we_html_tools::getPixel(20, 4), $_button
-		);
+		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $_linkID), we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false));
 
 		$_rootDirID = 0;
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value");
+		$cmd1 = "document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value");
-		$wecmdenc3 = '';
-		$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "')";
-		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
+		$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "')";
 
-		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $_internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryInternLinkID]', $_internLinkID), we_html_tools::getPixel(20, 4), $_button
+		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $_internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryInternLinkID]', $_internLinkID), we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false)
 		);
 
 		return '<div id="mode_category" style="display: none;">

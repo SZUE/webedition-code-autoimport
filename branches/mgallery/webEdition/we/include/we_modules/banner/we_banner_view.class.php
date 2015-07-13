@@ -232,7 +232,6 @@ var perms={
 			we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');
 	}
 
-
 	function getJSProperty(){
 		?>
 		<script type="text/javascript"><!--
@@ -603,7 +602,7 @@ var perms={
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_file',top.allIDs);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_selector_document',0,'" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "','',1)");
 
-		$dirs = new we_chooser_multiDir(495, $this->banner->FileIDs, "del_file", $delallbut. $addbut, "", 'ContentType', FILE_TABLE);
+		$dirs = new we_chooser_multiDir(495, $this->banner->FileIDs, "del_file", $delallbut . $addbut, "", 'ContentType', FILE_TABLE);
 
 		return $dirs->get();
 	}
@@ -613,7 +612,7 @@ var perms={
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
-		$dirs = new we_chooser_multiDir(495, $this->banner->FolderIDs, "del_folder", $delallbut. $addbut, "", "ContentType", FILE_TABLE);
+		$dirs = new we_chooser_multiDir(495, $this->banner->FolderIDs, "del_folder", $delallbut . $addbut, "", "ContentType", FILE_TABLE);
 
 		return $dirs->get();
 	}
@@ -622,7 +621,7 @@ var perms={
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\'add_cat\',top.allIDs);')");
 
-		$cats = new we_chooser_multiDir(495, $this->banner->CategoryIDs, "del_cat", $delallbut. $addbut, "", '"we/category"', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(495, $this->banner->CategoryIDs, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 
 		return $cats->get();
 	}
@@ -646,7 +645,7 @@ var perms={
 		$datefilter2 = we_html_tools::getDateInput2("dateFilter2%s", ($this->FilterDateEnd == -1 ? time() : $this->FilterDateEnd), false, "dmy", "top.content.setHot(); we_cmd('switchPage','" . $this->page . "');", $class);
 
 		$content = '
-<table class="default">
+<table class="default" style="padding-bottom:10px;">
 	<tr><td colspan="2" style="padding-bottom:5px;">' . $datefilterCheck . '</td></tr>
 	<tr><td colspan="2">
 	<table class="default">
@@ -691,7 +690,7 @@ var perms={
 		$table = we_html_tools::htmlDialogBorder3(650, 0, $rows, $headline, $class);
 		$delbut = we_html_button::create_button(we_html_button::DELETE, "javascript:top.content.setHot();we_cmd('delete_stat')");
 
-		return $content . we_html_tools::getPixel(2, 10) . $table .  "<br/>" . $delbut;
+		return $content . $table . "<br/>" . $delbut;
 	}
 
 	function formBanner($leftsize = 120){
@@ -729,7 +728,7 @@ var perms={
 	function formCustomer(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_customers')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_customer\\',top.allIDs);','','','',1)");
-		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "del_customer", $delallbut. $addbut, "", '"we/customer"', CUSTOMER_TABLE);
+		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 		return $obj->get();
 	}
 

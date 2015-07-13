@@ -538,14 +538,14 @@ function submitForm() {
 			<tr height="25">
 				<td class="defaultfont" width="86" valign="top" height="25">' . ($field === 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
 				<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field === 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
-				<td width="20" height="25">' . we_html_tools::getPixel(34, 15) . '</td>
+				<td width="20" height="25"></td>
 				<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText[$field] . '</td>
-				<td height="25">' . we_html_tools::getPixel(14, 15) . '</td>
+				<td height="25" width="14"></td>
 				<td width="14" class="defaultfont" align="right" height="25">
 					<div id="div_Calendar_' . $field . '">' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '</div>
 					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
 				</td>
-				<td height="25">' . we_html_tools::getPixel(10, 15) . '</td>
+				<td height="25" width="10"></td>
 				<td width="102" valign="top" height="25">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
 				<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
 			</tr>';
@@ -561,10 +561,10 @@ function submitForm() {
 				<td width="14" class="defaultfont" align="right" valign="top" height="5"></td>
 				<td height="5"></td>
 				<td width="102" valign="top" height="5"></td>
-				<td width="30" height="5">' . we_html_tools::getPixel(30, 5) . '</td>
+				<td width="30" height="5"></td>
 			</tr>
 			<tr height="1">
-				<td class="defaultfont" valign="top" colspan="9" bgcolor="grey" height="1">' . we_html_tools::getPixel(14, 1) . '</td>
+				<td class="defaultfont" valign="top" colspan="9" bgcolor="grey" height="1"></td>
 			</tr>
 			<tr>
 				<td class="defaultfont" width="86" valign="top"></td>
@@ -575,7 +575,7 @@ function submitForm() {
 				<td width="14" class="defaultfont" align="right" valign="top"></td>
 				<td></td>
 				<td width="102" valign="top"></td>
-				<td width="30">' . we_html_tools::getPixel(30, 5) . '</td>
+				<td width="30"></td>
 			</tr>' . $customerFieldTable . '
 			<tr>
 				<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
@@ -1159,7 +1159,7 @@ function CalendarChanged(calObject) {
 			<table class="default">
 			<tr>
 			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange" => "selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
-			<td>' . we_html_tools::getPixel(10, 1) . '</td>
+			<td width="10"></td>
 			<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 			</tr>
 			<tr>
@@ -1183,7 +1183,7 @@ function CalendarChanged(calObject) {
 						'html' => '
 			<table class="default">
 				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, we_base_request::_(we_base_request::RAW, 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
-					<td>' . we_html_tools::getPixel(10, 1) . '</td>
+					<td></td>
 					<td>' . $searchBut . '</td>
 				</tr>
 			</table>

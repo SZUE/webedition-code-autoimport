@@ -701,7 +701,6 @@ handle_event("previous");');
 
 			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('openNavigationDirselector','" . $wecmdenc1 . "','','" . $wecmdenc2 . "');");
 
-			$attribs = array("id" => "navigation_table");
 			$yuiSuggest->setAcId("NaviPath");
 			$yuiSuggest->setContentType("folder");
 			$yuiSuggest->setInput("v[navigation_dir]", (isset($v["navigation_dir"]) ? $v["navigation_dir"] : id_to_path($rootDirID)));
@@ -715,13 +714,12 @@ handle_event("previous");');
 
 			$docPath = $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 
-			$dir_table = new we_html_table($attribs, 2, 2);
+			$dir_table = new we_html_table(array("id" => "navigation_table",'style'=>'margin-left:20px;'), 2, 1);
 			if((isset($v["import_navigation"]) && !$v["import_navigation"])){
 				$dir_table->setStyle('display', 'none');
 			}
-			$dir_table->setCol(0, 0, null, we_html_tools::getPixel(20, 1));
-			$dir_table->setCol(0, 1, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[navigation_desc]'), we_html_tools::TYPE_ALERT, 390));
-			$dir_table->setCol(1, 1, null, $docPath);
+			$dir_table->setCol(0, 0, null, we_html_tools::htmlAlertAttentionBox(g_l('import', '[navigation_desc]'), we_html_tools::TYPE_ALERT, 390));
+			$dir_table->setCol(1, 0, null, $docPath);
 
 			$tbl_extra->setCol(3, 0, null, $dir_table->getHtml());
 

@@ -969,12 +969,7 @@ function setLocation(loc){
 	}
 
 	function getHTMLBackupStep2(){
-		$content = '';
-
-		$table = new we_html_table(array('class' => 'default defaultfont'), 4, 1);
-
-		$table->setCol(0, 0, null, g_l('backup', '[finish]'));
-		$table->setCol(1, 0, null, we_html_tools::getPixel(5, 20));
+		$content = we_html_element::htmlDiv(array('style' => 'padding-bottom:20px;'), g_l('backup', '[finish]'));
 
 		if($_SESSION['weS']['weBackupVars']['options']['export2send']){
 			$_down = $_SESSION['weS']['weBackupVars']['backup_file'];
@@ -982,18 +977,14 @@ function setLocation(loc){
 //Note: we show a link for external download - do we need this?
 				$_link = getServerUrl(true) . str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down);
 
-				$table->setCol(2, 0, array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
-					we_html_element::htmlA(array('href' => $_link, 'download' => basename($down)), g_l('backup', '[download_file]'))
+				$content.=we_html_element::htmlDiv(array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
+						we_html_element::htmlA(array('href' => $_link, 'download' => basename($_down)), g_l('backup', '[download_file]'))
 				);
 			} else {
-				$table->setCol(2, 0, null, g_l('backup', '[download_failed]'));
+				$content.=we_html_element::htmlDiv(array(), g_l('backup', '[download_failed]'));
 			}
 		}
 
-
-		$table->setCol(3, 0, null, we_html_tools::getPixel(5, 5));
-
-		$content.=$table->getHtml();
 
 		$do_import_after_backup = (!empty($_SESSION['weS']['weBackupVars']['options']['do_import_after_backup'])) ? 1 : 0;
 		$js = we_html_element::jsElement('
@@ -1547,10 +1538,9 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 			$text.=g_l('backup', '[unspecified_error]');
 		}
 
-		$table = new we_html_table(array("class" => "default defaultfont"), 3, 1);
+		$table = new we_html_table(array("class" => "default defaultfont withSpace"), 2, 1);
 		$table->setCol(0, 0, null, g_l('backup', '[finish_error]'));
 		$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => 45, "rows" => 7), $text));
-		$table->setCol(2, 0, null, we_html_tools::getPixel(400, 5));
 		return $table->getHtml();
 	}
 
@@ -1569,10 +1559,9 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 				$text .= g_l('backup', '[warning]') . ' [' . ++$k . ']: ' . $v . "\n";
 			}
 
-			$table = new we_html_table(array("class" => "default defaultfont"), 3, 1);
+			$table = new we_html_table(array("class" => "default defaultfont withSpace"), 2, 1);
 			$table->setCol(0, 0, null, g_l('backup', '[finish_warning]'));
 			$table->setCol(1, 0, null, we_html_element::htmlTextArea(array("name" => "text_errors", "cols" => 45, "rows" => 7), $text));
-			$table->setCol(2, 0, null, we_html_tools::getPixel(400, 5));
 			return $table->getHtml();
 		}
 		return "";

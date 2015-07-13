@@ -298,17 +298,15 @@ function changeit(value, rowNr){
 		$out = '<table class="default" id="defSearch" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'none' : 'block') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:switchSearch(1)", false) . '</td>
-	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
+	<td width="100%"></td>
 </tr>
 </table>
 <table class="default" id="advSearch" width="550" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 <tr>
 	<td class="weDocListSearchHeadline">' . g_l('versions', '[weSearch]') . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
 	<td>' . we_html_button::create_button(we_html_button::DIRDOWN, "javascript:switchSearch(0)", false) . '</td>
-	<td width="100%">' . we_html_tools::getPixel(10, 2) . '</td>
+	<td width="100%"></td>
 </tr>
 </table>
 <table id="advSearch2" border="0" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
@@ -384,10 +382,7 @@ function changeit(value, rowNr){
 		}
 
 		$out .= '</tbody></table>
-<table class="default" id="advSearch3" style="margin-left:20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
-	<tr>
-		<td colspan="4">' . we_html_tools::getPixel(20, 10) . '</td>
-	</tr>
+<table class="default" id="advSearch3" style="margin:10px 0px 20px 20px;display:' . ($this->searchclass->mode ? 'block' : 'none') . ';">
 	<tr>
 		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 		<td width="155"></td>
@@ -395,7 +390,7 @@ function changeit(value, rowNr){
 		<td></td>
 	</tr>
 	</table>
-	<div style="border-top: 1px solid #AFB0AF;margin-top:20px;clear:both;"></div>' .
+	<div style="border-top: 1px solid #AFB0AF;clear:both;"></div>' .
 			we_html_element::jsElement("calendarSetup(" . $this->searchclass->height . ");");
 
 		return $out;
@@ -424,10 +419,7 @@ function changeit(value, rowNr){
 			we_html_tools::hidden("order", $order) .
 			we_html_tools::hidden("mode", $mode) .
 			we_html_tools::hidden("height", $height) .
-			'<table class="default">
-<tr>
-	<td>' . we_html_tools::getPixel(1, 20) . '</td>
-</tr>
+			'<table class="default" style="margin-top:20px;margin-bottom:12px;">
 <tr id="beschreibung_print" class="defaultfont">
 	<td>
 	<strong>' . g_l('versions', '[versions]') . ':</strong><br/>
@@ -446,9 +438,6 @@ function changeit(value, rowNr){
 	<td>' . $this->getNextPrev($foundItems) . '</td>
 	<td id="print" class="defaultfont">' . we_html_tools::getPixel(
 				10, 12) . '<a href="javascript:printScreen();">' . g_l('versions', '[printPage]') . '</a></td>
-</tr>
-<tr>
-	<td colspan="12">' . we_html_tools::getPixel(1, 12) . '</td>
 </tr>
 </table>';
 	}

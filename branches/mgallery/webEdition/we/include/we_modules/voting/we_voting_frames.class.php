@@ -99,10 +99,10 @@ class we_voting_frames extends we_modules_frame{
 
 		/* $table = new we_html_table(array("width" => '100%', 'class' => 'default'), 3, 1);
 
-		  $table->setCol(0, 0, array("valign" => "top", "class" => "small"), we_html_tools::getPixel(15, 2) .
+		  $table->setCol(0, 0, array("valign" => "top", "class" => "small"),
 		  we_html_element::htmlB(
 		  g_l('modules_voting', ($this->View->voting->IsFolder ? '[group]' : '[voting]')) . ':&nbsp;' . $this->View->voting->Text .
-		  we_html_tools::getPixel(1, 19)
+
 		  )
 		  ); */
 
@@ -141,19 +141,12 @@ class we_voting_frames extends we_modules_frame{
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
 
-		$table2 = new we_html_table(array('class' => 'default', "width" => 300), 1, 2);
-		$table2->setRow(0, array("valign" => "middle"));
-		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(5, 5));
-		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING')))
-		);
-
-
 		return $this->getHTMLDocument(
 				we_html_element::jsElement('
 					function we_save() {
 						top.content.we_cmd("save_voting");
 					}') .
-				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $table2->getHtml())
+				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING'))))
 				)
 		);
 	}

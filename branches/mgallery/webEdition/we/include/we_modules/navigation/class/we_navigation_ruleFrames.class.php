@@ -154,15 +154,13 @@ class we_navigation_ruleFrames{
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$formTable = '<table class="default">
-<tr><td width="200">' . we_html_tools::getPixel(200, 1) . '</td></tr>
 <tr id="trFolderID">
 	<td class="weMultiIconBoxHeadline" valign="top">' . g_l('navigation', '[rules][rule_folder]') . '</td>
 	<td colspan="5">' . $weAcSelector . '</td>
 </tr>
 <tr id="trDoctypeID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_doctype]') . '</td>
-	<td>' . we_html_tools::htmlSelect(
-				'DoctypeID', $docTypes, 1, 0, false, array("style" => "width: 275px;")) . '</td>
+	<td>' . we_html_tools::htmlSelect('DoctypeID', $docTypes, 1, 0, false, array("style" => "width: 275px;")) . '</td>
 </tr>';
 
 		if(defined('OBJECT_TABLE')){

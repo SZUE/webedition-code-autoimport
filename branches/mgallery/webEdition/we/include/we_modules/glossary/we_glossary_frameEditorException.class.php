@@ -43,17 +43,6 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 					. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $cmdid . '"') . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', "100%", self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false)));
 	}
 
-	function Footer($weGlossaryFrames){
-		$table2 = new we_html_table(array('class' => 'default'), 1, 2);
-		$table2->setRow(0, array("valign" => "middle"));
-		$table2->setCol(0, 0, array("nowrap" => null), we_html_tools::getPixel(10, 20));
-		$table2->setCol(0, 1, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_exception')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
-
-		$form = we_html_element::htmlForm(array(), $table2->getHtml());
-
-		return self::buildFooter($weGlossaryFrames, $form);
-	}
-
 	function getHTMLTabProperties($weGlossaryFrames){
 
 		$parts = array();

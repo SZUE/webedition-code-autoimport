@@ -505,6 +505,7 @@ optgroup.lvl2{
 	margin: 0px;
 	padding: 0px;
 	background-color: #EDEDED;
+	overflow: hidden;
 }
 
 .weEditorBody {
@@ -960,6 +961,9 @@ table.default th{
 table.withSpace tr td{
 	padding-bottom: 5px;
 }
+table.withBigSpace tr td{
+	padding-bottom: 12px;
+}
 
 table.customer table{
 	padding-bottom:10px;
@@ -1279,7 +1283,7 @@ div.collection-content{
 	float:left;
 }
 .multiiconleft span.fileicon{
-		margin-left:20px;
+	margin-left:20px;
 }
 
 .largeicons span.fileicon{

@@ -505,18 +505,18 @@ weSearch.g_l = {
 				we_html_button::create_button(we_html_button::BACK, "javascript:weSearch.back(" . $anzahl . ");") :
 				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)
 			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			'</td><td width="10"></td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ?
 				$we_search_anzahl :
 				$searchstart + $anzahl
 			) .
-			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>' .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td width="10"></td><td>' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
 				//bt_back
 				we_html_button::create_button(we_html_button::NEXT, "javascript:weSearch.next(" . $anzahl . ");") :
 				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)
 			) .
-			'</td><td>' . we_html_tools::getPixel(10, 2) . '</td><td>';
+			'</td><td width="10"></td><td>';
 
 		$pages = array();
 		if($anzahl){

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_object_createTemplate extends we_template {
+class we_object_createTemplate extends we_template{
 
 	function formDirChooser($width = "", $rootDirID = 0, $table = TEMPLATES_TABLE, $Pathname = "ParentPath", $IDName = "ParentID", $cmd = ""){
 		if(!$table){
@@ -35,8 +35,7 @@ class we_object_createTemplate extends we_template {
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','')");
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden($idname, 0), //$myid
-				we_html_tools::getPixel(20, 4), $button);
+		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden($idname, 0), $button);
 	}
 
 	protected function formExtension2(){

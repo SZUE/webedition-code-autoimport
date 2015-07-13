@@ -97,8 +97,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			'</td>
 			</tr>
 			</table>
-			<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
-			'</div>
+			<div style="border-top: 1px solid #AFB0AF;margin:10px 0;clear:both;"></div></div>
 				</div>';
 
 		echo $jsGUI->getResponse('reload', $uniqid, $content) .
@@ -163,8 +162,7 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 				'</td>
 				</tr>
 				</table>
-				<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
-				'</div>
+				<div style="border-top: 1px solid #AFB0AF;margin:10px 0px;clear:both;"></div></div>
 				</div>';
 
 			echo $jsGUI->getResponse('add', $uniqid, $content, $afterid);

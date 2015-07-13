@@ -78,16 +78,12 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		echo $we_doc->getEmptyDefaultFields() . we_html_multiIconBox::_getBoxStart("100%", $uniquename) .
 		$jsGUI->getContainer(array()) .
 		'<div id="' . $uniquename . '_div">
- <table style="margin-left:30px;" class="default">
+ <table style="margin-left:30px;margin-bottom:15px;" class="default">
  <tr>
  <td valign="top"></td>
  <td class="defaultfont">' .
 		we_html_button::create_button("fa:btn_add_field,fa-plus,fa-lg fa-square-o", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . "');") .
 		'</td>
- </tr>
- <tr>
- <td>' . we_html_tools::getPixel(0, 15) . '</td>
- <td></td>
  </tr>
  </table>
  </div>' .
@@ -115,8 +111,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			'</td>
 		</tr>
 		</table>
-		<div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div>' . we_html_tools::getPixel(2, 10) .
-			'</div>';
+		<div style="border-top: 1px solid #AFB0AF;margin:10px 0px;clear:both;"></div>' . '</div>';
 			$js.='classEntry.add(document, \'' . $uniqid . '\', null);';
 		}
 		echo we_html_element::jsElement($js .

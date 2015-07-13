@@ -166,14 +166,12 @@ this.selectedIndex = 0;' .
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$anz = count($headline);
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ' style="width:' . $w . 'px;' . $style . '" class="default">
-		<tr>
-		<td width="8" class="boxHeader"></td>';
+		<tr>';
 		// HEADLINE
 		for($f = 0; $f < $anz; $f++){
 			$out .= '<td class="' . $class . ' boxHeader">' . $headline[$f]["dat"] . '</td>';
 		}
-		$out .= '<td width="8" class="boxHeader"></td>
-				</tr>';
+		$out .= '</tr>';
 
 		//CONTENT
 		foreach($content as $c){
@@ -184,7 +182,7 @@ this.selectedIndex = 0;' .
 		if($buttons){
 			$_table = new we_html_table(array('class' => 'default'), 3, 1, array(
 				array(array('colspan' => 2), $out),
-				array(array('align' => 'right','style'=>'margin-top:5px;'), $buttons),
+				array(array('align' => 'right', 'style' => 'margin-top:5px;'), $buttons),
 			));
 			return $_table->getHtml();
 		}
@@ -193,28 +191,28 @@ this.selectedIndex = 0;' .
 
 	private static function htmlDialogBorder4Row($content, $class = 'middlefont', $bgColor = ''){
 		$anz = count($content);
-		$out = '<td style="border-bottom: 1px solid silver;background-color:white;">' . self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+		$out = '';
 
 		for($f = 0; $f < $anz; $f++){
 			$bgcol = $bgColor ? : ((!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : "white");
-			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f != 0) ? "border-left:1px solid silver;" : "") . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' .
+			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f == 0) ? '' : "border-left:1px solid silver;" ) . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' .
 				(isset($content[$f]["align"]) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' .
 				(isset($content[$f]["height"]) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' .
 				(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
 				'</td>';
 		}
-		$out .= '<td style="border-bottom: 1px solid silver;background-color:white;">' . self::getPixel(8, isset($content[0]["height"]) ? $content[0]["height"] : 1) . '</td>';
+
 		return $out;
 	}
 
 	static function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
 		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . 'style="width:' . $w . 'px;' . $style . '" class="default">
-		<tr><td width="8" class="boxHeader"></td>';
+		<tr>';
 		// HEADLINE
 		foreach($headline as $h){
 			$out .= '<td class="' . $class . ' boxHeader">' . $h["dat"] . '</td>';
 		}
-		$out .= '<td width="8" class="boxHeader"></td></tr>';
+		$out .= '</tr>';
 
 		//CONTENT
 		foreach($content as $c){
@@ -225,7 +223,7 @@ this.selectedIndex = 0;' .
 		if($buttons){
 			$_table = new we_html_table(array("class" => 'default'), 3, 1, array(
 				array(array("colspan" => 2), $out),
-				array(array("align" => "right",'style'=>'padding-top:5px;'), $buttons)
+				array(array("align" => "right", 'style' => 'padding-top:5px;'), $buttons)
 			));
 			return $_table->getHtml();
 		}
@@ -732,10 +730,7 @@ this.selectedIndex = 0;' .
 
 		if($img && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
-			$content->setCol(0, 0, array('valign' => 'top', 'style' => 'padding:10px;'), we_html_element::htmlImg(
-					array(
-						'src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1]
-			)));
+			$content->setCol(0, 0, array('valign' => 'top', 'style' => 'padding:10px;'), we_html_element::htmlImg(array('src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1])));
 		}
 
 		$content->setCol(0, ($img ? 1 : 0), array('class' => 'defaultfont', 'style' => 'padding:10px;'), $text);

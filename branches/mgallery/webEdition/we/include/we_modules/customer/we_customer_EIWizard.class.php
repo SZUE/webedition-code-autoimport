@@ -1735,15 +1735,12 @@ document.we_form.filter_count.value="' . $count . '";');
 			$c++;
 		}
 
-		$table->addRow();
-		$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::getPixel(5, 5));
-
 		$plus = we_html_button::create_button(we_html_button::PLUS, "javascript:filter_cmd('add_filter')");
 		$trash = we_html_button::create_button(we_html_button::TRASH, "javascript:filter_cmd('del_filter')");
 
 		$c++;
 		$table->addRow();
-		$table->setCol($c, 0, array("colspan" => $colspan), $plus . $trash);
+		$table->setCol($c, 0, array("colspan" => $colspan,'style'=>'padding-top:5px;'), $plus . $trash);
 
 		return $js .
 			//(array("name"=>"filter_count","value"=>$count)).

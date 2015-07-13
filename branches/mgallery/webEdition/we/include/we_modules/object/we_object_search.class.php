@@ -156,7 +156,7 @@ function toggleShowVisible(c) {
 				$out .= '
 <tr>
 	<td>' . $checkbox . '</td>
-	<td>' . we_html_tools::getPixel(5, 2) . '</td>
+	<td style="width:5px;"></td>
 	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $exws[$i] . '\')" class="middlefont" title="' . $p . '">' . we_util_Strings::shortenPath($p, $we_extraWsLength) . '</a><td>
 </tr>';
 			}

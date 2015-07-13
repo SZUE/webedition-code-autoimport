@@ -535,14 +535,14 @@ class we_class_folder extends we_folder{
 				$out .= '
 <tr>
 	<td class="defaultfont">' . g_l('global', '[search]') . '</td>
-	<td width="50">' . we_html_tools::getPixel(5, 2) . '</td>'
+	<td width="50"></td>'
 					//<td>'.$this->searchclass->getFields("objsearchField[".$i."]",1,$this->searchclass->objsearchField[$i],$this->Path).'</td> #4076 orig
 					. '<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
-	<td width="50">' . we_search_base::getLocationMeta("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td style="width:10px;"></td>
+	<td style="width:50px;">' . we_search_base::getLocationMeta("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
+	<td style="width:10px;"></td>
 	<td>' . we_html_tools::htmlSelect('objsearch[' . $i . ']', $values, 1, $this->searchclass->objsearch[$i]) . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td style="width:10px;"></td>
 	<td align="right">' . $button . '</td>
 </tr>';
 			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i], 0, 4) === "date"){
@@ -571,31 +571,31 @@ class we_class_folder extends we_folder{
 				$out .= '
 <tr>
 	<td class="defaultfont">' . g_l('global', '[search]') . '</td>
-	<td>' . we_html_tools::getPixel(5, 2) . '</td>
+	<td style="width:5px;"></td>
 	<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, $this->searchclass->objsearchField[$i], $this->ClassPath) . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td style="width:10px;"></td>
 	<td>' . we_search_base::getLocationDate("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td style="width:10px;"></td>
 	<td>' . we_html_tools::htmlTextInput('objsearch[' . $i . '][year]', 4, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['year']) ? $this->searchclass->objsearch[$i]['year'] : date("Y")), 4) . ' - ' .
 					we_html_tools::htmlSelect('objsearch[' . $i . '][month]', $month, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['month']) ? $this->searchclass->objsearch[$i]['month'] : date("m"))) . ' - ' .
 					we_html_tools::htmlSelect('objsearch[' . $i . '][day]', $day, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['day']) ? $this->searchclass->objsearch[$i]['day'] : date("d"))) . ' &nbsp;' .
 					we_html_tools::htmlSelect('objsearch[' . $i . '][hour]', $hour, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['hour']) ? $this->searchclass->objsearch[$i]['hour'] : date("H"))) . ' : ' .
 					we_html_tools::htmlSelect('objsearch[' . $i . '][minute]', $minute, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i"))) .
 					'</td>
-	<td>' . we_html_tools::getPixel(10, 2) . '</td>
+	<td style="width:10px;"></td>
 	<td align="right">' . $button . '</td>
 </tr>';
 			} else {
 				$out .= '
 <tr>
 	<td class="defaultfont">' . g_l('global', '[search]') . '</td>
-	<td>' . we_html_tools::getPixel(1, 2) . '</td>
+	<td></td>
 	<td>' . $this->searchclass->getFields("objsearchField[" . $i . "]", 1, (isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) ? $this->searchclass->objsearchField[$i] : ""), $this->ClassPath) . '</td>
-	<td>' . we_html_tools::getPixel(1, 2) . '</td>
+	<td></td>
 	<td>' . we_search_base::getLocation("objlocation[" . $i . "]", (isset($this->searchclass->objlocation[$i]) ? $this->searchclass->objlocation[$i] : '')) . '</td>
-	<td>' . we_html_tools::getPixel(1, 2) . '</td>
+	<td></td>
 	<td>' . we_html_tools::htmlTextInput("objsearch[" . $i . "]", 30, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]) ? $this->searchclass->objsearch[$i] : ''), "", "", "text", 200) . '</td>
-	<td>' . we_html_tools::getPixel(1, 2) . '</td>
+	<td></td>
 	<td align="right">' . $button . '</td>
 </tr>';
 			}
@@ -662,10 +662,8 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichloeschen]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") . '</td>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[loesch]') : "") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[loesch]') : "") . '</td>
 			</tr>
 			</table>
 		</td>
@@ -674,10 +672,8 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_publish,fa-lg fa-sun-o", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichveroeffentlichen]') . "'))document.we_form.elements.do.value='publish';we_cmd('reload_editpage');") . '</td>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[veroeffentlichen]') : "") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[veroeffentlichen]') : "") . '</td>
 			</tr>
 			</table>
 		</td>
@@ -686,10 +682,8 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_unpublish,fa-lg fa-moon-o", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichparken]') . "'))document.we_form.elements.do.value='unpublish';we_cmd('reload_editpage');") . '</td>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[parken]') : "") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[parken]') : "") . '</td>
 			</tr>
 			</table>
 		</td>
@@ -698,10 +692,8 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::SEARCH, "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichsearchable]') . "'))document.we_form.elements.do.value='searchable';we_cmd('reload_editpage');") . '</td>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[searchable]') : "") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[searchable]') : "") . '</td>
 			</tr>
 			</table>
 		</td>
@@ -710,10 +702,8 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fas:btn_function_unsearchable,fa-ban,fa-search", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichunsearchable]') . "'))document.we_form.elements.do.value='unsearchable';we_cmd('reload_editpage');") . '</td>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[unsearchable]') : "") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[unsearchable]') : "") . '</td>
 			</tr>
 			</table>
 		</td>
@@ -722,10 +712,8 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopychar]') . "'))document.we_form.elements.do.value='copychar';we_cmd('reload_editpage');") . '</td>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copychar]') : "") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copychar]') : "") . '</td>
 			</tr>
 			</table>
 		</td>
@@ -734,10 +722,8 @@ class we_class_folder extends we_folder{
 		<td colspan="2" style="margin-bottom:12px;">
 			<table class="default">
 			<tr>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopyws]') . "'))document.we_form.elements.do.value='copyws';we_cmd('reload_editpage');") . '</td>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copyws]') : "") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copyws]') : "") . '</td>
 			</tr>
 			</table>
 		</td>
@@ -746,10 +732,8 @@ class we_class_folder extends we_folder{
 		<td colspan="2">
 			<table class="default">
 			<tr>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
 				<td class="small">' . (permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("fa:btn_function_copy,fa-lg fa-copy", "javascript: if(confirm('" . g_l('modules_objectClassfoldersearch', '[wirklichcopytid]') . "'))document.we_form.elements.do.value='copytid';we_cmd('reload_editpage');") . '</td>
-				<td>' . we_html_tools::getPixel(5, 1) . '</td>
-				<td class="small">&nbsp;' . g_l('modules_objectClassfoldersearch', '[copytid]') : "") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_objectClassfoldersearch', '[copytid]') : "") . '</td>
 			</tr>
 			</table>
 		</td>

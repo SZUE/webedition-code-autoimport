@@ -76,4 +76,10 @@ function setTab(tab) {
 		return $weGlossaryFrames->getHTMLDocument($body);
 	}
 
+	function Footer($weGlossaryFrames){
+		$form = we_html_element::htmlForm(array(), we_html_button::create_button(we_html_button::SAVE, "javascript:top.opener.top.we_cmd('save_exception')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY'))));
+
+		return self::buildFooter($weGlossaryFrames, $form);
+	}
+
 }

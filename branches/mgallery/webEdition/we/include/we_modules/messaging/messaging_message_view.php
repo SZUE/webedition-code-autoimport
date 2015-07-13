@@ -68,9 +68,8 @@ echo we_html_tools::getHtmlTop() .
 				"space" => 140
 			),
 			array("headline" => g_l('modules_messaging', '[status]'),
-				"html" => '<table class="default"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td><td>' . we_html_tools::getPixel(20, 2) .
-				(($messaging->selected_message['hdrs']['status'] < 100) ? '<td>' . we_html_button::create_button(
-								"percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
+				"html" => '<table class="default"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td>'.
+				($messaging->selected_message['hdrs']['status'] < 100 ? '<td>' . we_html_button::create_button("percent100", "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				"noline" => 1,
 				"space" => 140
 			),
@@ -135,7 +134,7 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 	echo we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_messaging', (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? '[type_todo]' : '[type_message]')));
+	we_html_multiIconBox::getHTML("weMessageView", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_messaging', (isset($messaging->selected_message['hdrs']['ClassName']) && $messaging->selected_message['hdrs']['ClassName'] === 'we_todo' ? '[type_todo]' : '[type_message]')));
 	?>
 </body>
 </html>

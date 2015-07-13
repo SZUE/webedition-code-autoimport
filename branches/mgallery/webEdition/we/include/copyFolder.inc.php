@@ -52,10 +52,10 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 			we_html_forms::checkbox(1, 0, "DoNotCopyFolders", g_l('copyFolder', '[object_copy_no_folders]')) .
 			'&nbsp;<br/>' . g_l('copyFolder', '[sameName_headline]') . '<br/>' .
 			we_html_tools::htmlAlertAttentionBox(g_l('copyFolder', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
-			we_html_tools::getPixel(200, 10) .
-			we_html_forms::radiobutton("overwrite", 0, "OverwriteObjects", g_l('copyFolder', '[sameName_overwrite]')) .
-			we_html_forms::radiobutton("rename", 0, "OverwriteObjects", g_l('copyFolder', '[sameName_rename]')) .
-			we_html_forms::radiobutton("nothing", 1, "OverwriteObjects", g_l('copyFolder', '[sameName_nothing]')) .
+			we_html_element::htmlDiv(array('style' => 'margin-top:10px;'), we_html_forms::radiobutton("overwrite", 0, "OverwriteObjects", g_l('copyFolder', '[sameName_overwrite]')) .
+				we_html_forms::radiobutton("rename", 0, "OverwriteObjects", g_l('copyFolder', '[sameName_rename]')) .
+				we_html_forms::radiobutton("nothing", 1, "OverwriteObjects", g_l('copyFolder', '[sameName_nothing]'))
+			) .
 			$hidden;
 	} else {
 		$content = '<table class="default" width="500"><tr><td>' . we_html_forms::checkbox(

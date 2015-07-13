@@ -1246,7 +1246,7 @@ _multiEditorreload = true;';
 	}
 
 	function formGroupData(){
-		$_tableObj = new we_html_table(array(), 5, 1);
+		$_tableObj = new we_html_table(array(), 3, 1);
 
 		$_username = $this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].setPathName(this.value); parent.frames[0].setTitlePath();"');
 		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
@@ -1269,10 +1269,8 @@ _multiEditorreload = true;';
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$_tableObj->setCol(0, 0, null, $_username);
-		$_tableObj->setCol(1, 0, null, we_html_tools::getPixel(560, 4));
-		$_tableObj->setCol(2, 0, null, we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
-		$_tableObj->setCol(3, 0, null, we_html_tools::getPixel(560, 10));
-		$_tableObj->setCol(4, 0, null, we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
+		$_tableObj->setCol(1, 0, array('style' => 'padding-top:5px;'), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
+		$_tableObj->setCol(2, 0, array('style' => 'padding-top:10px;'), we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
 
 		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){switch_button_state(\'edit\', \'enabled\');}else{switch_button_state(\'edit\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
@@ -1311,13 +1309,12 @@ _multiEditorreload = true;';
 	function formUserData(){
 		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 
-		$_tableObj = new we_html_table(array(), 12, 2, array(
+		$_tableObj = new we_html_table(array('class' => 'withBigSpace'), 12, 2, array(
 			array(array(null, $this->getUserfield('Salutation', 'salutation'))),
 			array(
 				array(null, $this->getUserfield('First', 'first_name')),
 				array(null, $this->getUserfield('Second', 'second_name'))
 			),
-			array(array(array('colspan' => 2), we_html_tools::getPixel(560, 20))),
 			array(
 				array(null, $this->getUserfield('Address', 'address')),
 				array(null, $this->getUserfield('HouseNo', 'houseno'))
@@ -1330,7 +1327,6 @@ _multiEditorreload = true;';
 				array(null, $this->getUserfield('State', 'state')),
 				array(null, $this->getUserfield('Country', 'country'))
 			),
-			array(array(array('colspan' => 2), we_html_tools::getPixel(560, 20))),
 			array(
 				array(null, $this->getUserfield('Tel_preselection', 'tel_pre')),
 				array(null, $this->getUserfield('Telephone', 'telephone'))
@@ -1343,8 +1339,6 @@ _multiEditorreload = true;';
 				array(null, $this->getUserfield('Handy', 'mobile')),
 				array(null, $this->getUserfield('Email', 'email'))
 			),
-			array(
-				array(array('colspan' => 2), we_html_tools::getPixel(520, 4))),
 			array(
 				array(array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')))
 			)
@@ -1507,7 +1501,7 @@ function toggleRebuildPerm(disabledOnly) {';
 		$button_default = we_html_button::create_button('default', 'javascript:' . $defaultjs);
 		$parts[] = array(
 			'headline' => '',
-			'html' => $button_default. $button_uncheckall. $button_checkall,
+			'html' => $button_default . $button_uncheckall . $button_checkall,
 			'space' => 0
 		);
 
@@ -1724,12 +1718,11 @@ function delElement(elvalues,elem) {
 		$_settings = array();
 
 		// Create checkboxes
-		$_table = new we_html_table(array('class' => 'default'), 3, 1);
+		$_table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 //FIXME: where is the difference between force_glossary_check + force_glossary_action?!
 
 		$_table->setCol(0, 0, null, we_html_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name . '_Preference_force_glossary_check', g_l('prefs', '[force_glossary_check]'), 'false', 'defaultfont', "top.content.setHot()"));
-		$_table->setCol(1, 0, null, we_html_tools::getPixel(1, 5));
-		$_table->setCol(2, 0, null, we_html_forms::checkbox(1, $this->Preferences['force_glossary_action'], $this->Name . "_Preference_force_glossary_action", g_l('prefs', '[force_glossary_action]'), "false", "defaultfont", "top.content.setHot()"));
+		$_table->setCol(1, 0, null, we_html_forms::checkbox(1, $this->Preferences['force_glossary_action'], $this->Name . "_Preference_force_glossary_action", g_l('prefs', '[force_glossary_action]'), "false", "defaultfont", "top.content.setHot()"));
 
 		// Build dialog if user has permission
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -1964,7 +1957,7 @@ function show_seem_chooser(val) {
 
 		// Build final HTML code
 		$_seem_html = new we_html_table(array('class' => 'default'), 2, 1);
-		$_seem_html->setCol(0, 0, array('class' => 'defaultfont'), $_start_type->getHtml() . we_html_tools::getPixel(200, 1));
+		$_seem_html->setCol(0, 0, array('class' => 'defaultfont'), $_start_type->getHtml());
 		$_seem_html->setCol(1, 0, null, $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
 
 		if(permissionhandler::hasPerm('CHANGE_START_DOCUMENT')){
@@ -2056,12 +2049,10 @@ function show_seem_chooser(val) {
 		$_window_current_dimension_table->setCol(0, 1, null, we_html_button::create_button("apply_current_dimension", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientWidth" : "top.opener.top.window.outerWidth") . ";document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = " . (we_base_browserDetect::isIE() ? "top.opener.top.document.body.clientHeight;" : "top.opener.top.window.outerHeight;"), true, 210));
 
 		// Build final HTML code
-		$_window_html = new we_html_table(array('class' => 'default'), 5, 1);
+		$_window_html = new we_html_table(array('class' => 'default withBigSpace'), 3, 1);
 		$_window_html->setCol(0, 0, null, $_window_max_code);
-		$_window_html->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
-		$_window_html->setCol(2, 0, null, $_window_specify_code . $_window_specify_table->getHtml());
-		$_window_html->setCol(3, 0, null, we_html_tools::getPixel(1, 10));
-		$_window_html->setCol(4, 0, null, $_window_current_dimension_table->getHtml());
+		$_window_html->setCol(1, 0, null, $_window_specify_code . $_window_specify_table->getHtml());
+		$_window_html->setCol(2, 0, null, $_window_current_dimension_table->getHtml());
 
 		// Build dialog
 		$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), "space" => 200);
@@ -2069,9 +2060,9 @@ function show_seem_chooser(val) {
 		// Create predefined window dimension buttons
 		$_window_predefined_table = new we_html_table(array("align" => "right"), 3, 1);
 
-		$_window_predefined_table->setCol(0, 0, null, we_html_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';", true).
+		$_window_predefined_table->setCol(0, 0, null, we_html_button::create_button("res_800", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '800';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '600';", true) .
 			we_html_button::create_button("res_1024", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1024';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '768';", true));
-		$_window_predefined_table->setCol(2, 0, null, we_html_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true). we_html_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true));
+		$_window_predefined_table->setCol(2, 0, null, we_html_button::create_button("res_1280", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true) . we_html_button::create_button("res_1600", "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true));
 
 		$_window_predefined_table->setCol(1, 0, null, we_html_tools::getPixel(1, 10));
 

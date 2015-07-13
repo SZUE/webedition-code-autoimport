@@ -138,18 +138,10 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				self::getHTMLPrevNext($Search) .
 				self::getHTMLSearchResult($weGlossaryFrames, $Search, $Type) .
 				self::getHTMLPrevNext($Search, true) :
-				'<table class="default">
-		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . '</td>
-			<td>' . we_html_tools::getPixel(632, 12) . '</td>
-		</tr>
+				'<table class="default" style="margin:12px 5px;">
 		<tr>
 			<td>' . we_html_tools::getPixel(5, 1) . '</td>
 			<td class="defaultfont">' . g_l('modules_glossary', '[no_entries_found]') . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . '</td>
-			<td>' . we_html_tools::getPixel(632, 12) . '</td>
 		</tr>
 		</table>');
 
@@ -172,7 +164,6 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	}
 
 	function Footer($weGlossaryFrames){
-
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 
@@ -292,7 +283,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 					break;
 			}
 			$temp[] = array(
-				'dat' => $Search->getField('Published') > 0 ? str_replace(" - ", "<br />", date(g_l('date', '[format][default]'), $Search->getField('Published'))) : "-",
+				'dat' => $Search->getField('Published') > 0 ? str_replace(" - ", "<br/>", date(g_l('date', '[format][default]'), $Search->getField('Published'))) : "-",
 				'height' => 25,
 				'align' => 'center',
 				'bgcolor' => '#ffffff',
@@ -326,7 +317,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				"selectAll" => 0,
 				"do" => ""
 			)) . '
-		<table width="637" class="default">
+		<table width="637" class="default" style="margin-bottom:12px;">
 		<tr>
 			<td width="80"></td>
 			<td width="157"></td>
@@ -337,21 +328,15 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary', '[search]') . '</td>
 			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, we_base_request::_(we_base_request::RAW, 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
-			<td>' . we_html_tools::getPixel(18, 2) . '</td>
+			<td></td>
 			<td>' . $button . '</td>
 		</tr>
 		<tr>
-			<td colspan="5">' . we_html_tools::getPixel(18, 12) . '</td>
-		</tr>
-		<tr>
-			<td class="defaultgray">' . g_l('modules_glossary', '[view]') . '</td>
+			<td class="defaultgray" style="padding-top:12px;">' . g_l('modules_glossary', '[view]') . '</td>
 			<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
 			<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL, 'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
-			<td>' . we_html_tools::getPixel(18, 2) . '</td>
+			<td></td>
 			<td>' . $newButton . '</td>
-		</tr>
-		<tr>
-			<td colspan="5">' . we_html_tools::getPixel(18, 12) . '</td>
 		</tr>
 		</table>';
 	}
@@ -376,18 +361,11 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array("onchange" => "jump(this.value);"));
 
 		return '
-		<table class="default">
+		<table class="default withBigSpace" style="margin:12px 0px 12px 5px;">
 		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . '</td>
-			<td>' . we_html_tools::getPixel(195, 12) . '</td>
-			<td>' . we_html_tools::getPixel(437, 12) . '</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . '</td>
 			<td>' . ($extended && (permissionhandler::hasPerm("DELETE_GLOSSARY") || permissionhandler::hasPerm("NEW_GLOSSARY")) ? we_html_button::create_button("selectAll", "javascript: AllItems();") : "") . '</td>
 			<td align="right"><table class="default">
 				<tr>
-					<td></td>
 					<td>' . $prev . '</td>
 					<td>' . we_html_tools::getPixel(10, 2) . '</td>
 					<td class="defaultfont"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global', '[from]') . ' ' . $sum . '</b></td>
@@ -397,11 +375,6 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 					<td>' . $select . '</td>
 				</tr>
 				</table></td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . '</td>
-			<td>' . we_html_tools::getPixel(195, 12) . '</td>
-			<td>' . we_html_tools::getPixel(437, 12) . '</td>
 		</tr>
 		' .
 			($extended ?
@@ -418,11 +391,6 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			</td>
 		<tr>
 		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . '</td>
-			<td>' . we_html_tools::getPixel(195, 12) . '</td>
-			<td>' . we_html_tools::getPixel(437, 12) . '</td>
-		</tr>
-		<tr>
 			<td colspan="3">
 				<table class="default">
 				<tr>
@@ -433,11 +401,6 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				</tr>
 				</table>
 			</td>
-		</tr>
-		<tr>
-			<td>' . we_html_tools::getPixel(5, 1) . '</td>
-			<td>' . we_html_tools::getPixel(195, 12) . '</td>
-			<td>' . we_html_tools::getPixel(437, 12) . '</td>
 		</tr>
 		<tr>
 			<td colspan="3">

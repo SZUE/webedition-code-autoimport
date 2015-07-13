@@ -41,7 +41,6 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 	}
 
 	function Footer($weGlossaryFrames){
-
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 
