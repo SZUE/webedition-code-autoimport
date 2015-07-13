@@ -113,8 +113,8 @@ echo we_html_tools::getHtmlTop() .
 	function we_cmd() {
 		switch (arguments[0]) {
 			case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
-				if(top.content.tree.window.doClick) {
-					top.content.tree.window.doClick(arguments[1], arguments[2], arguments[3]);//TODO: check this adress
+				if(top.content.tree.doClick) {
+					top.content.tree.doClick(arguments[1], arguments[2], arguments[3]);//TODO: check this adress
 				}
 				break;
 			default: // not needed yet
