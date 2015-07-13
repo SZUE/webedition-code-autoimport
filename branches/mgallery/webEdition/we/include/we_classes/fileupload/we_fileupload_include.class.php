@@ -157,7 +157,7 @@ class we_fileupload_include extends we_fileupload_base{
 		return '
 <table class="default"><tbody><tr>
 	<td valign="bottom" width="2"></td>
-	<td valign="middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image" valign="top"></div>div class="progress_image_bg" style="width:' . $this->internalProgress['width'] . 'px;height:10px;" id="' . $this->name . '_progress_image_bg" valign="top"></div></td>
+	<td valign="middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image" valign="top"></div><div class="progress_image_bg" style="width:' . $this->internalProgress['width'] . 'px;height:10px;" id="' . $this->name . '_progress_image_bg" valign="top"></div></td>
 	<td valign="bottom" width="8"></td>
 	<td class="small" style="color:#006699;font-weight:bold">
 		<span id="span_' . $this->name . '_progress_text">0%</span><span class="small" id="span_' . $this->name . '_progress_more_text" style="color:#006699;font-weight:bold"></span>
