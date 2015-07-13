@@ -276,7 +276,7 @@ var phpdata={
 	fieldSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $_metadata_fields, 1, '', false, array('class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)')))) . '",
 	modeSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $_metadata_modes, 1, 'none', false, array('class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)')))) . '",
 	addPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, __we_new_id__)'))) . '",
-	trashButton:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(' + newID + ')") . '\',
+	trashButton:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_new_id__)") . '\',
 	proposalInp:"' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '",
 	delPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:delProposition(this)'))) . '"
 };') .
