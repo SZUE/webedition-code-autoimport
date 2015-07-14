@@ -136,7 +136,7 @@ weSearch = {
 				break;
 			case this.we_const.SEARCH_DOCS:
 			case this.we_const.SEARCH_MEDIA:
-				top.console.debug(this.conf.editorBodyFrame.document.we_form.elements);
+				//top.console.debug(this.conf.editorBodyFrame.document.we_form.elements);
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 					if (table === 'searchForText' + this.conf.whichsearch || table === 'searchForTitle' + this.conf.whichsearch || table === 'searchForContent' + this.conf.whichsearch) {
@@ -146,10 +146,15 @@ weSearch = {
 						}
 					}
 				}
-				top.console.debug('cl', Checks.length);
+
+				//top.console.debug('cl', Checks.length);
 				if (Checks.length === 0) {
-					top.console.debug('not checked', this.g_l.nothingCheckedTmplDoc);
-					top.we_showMessage(this.g_l.nothingCheckedTmplDoc, this.we_const.WE_MESSAGE_ERROR, window);
+					//FIXME: dirty fix => allow to search without searchForXX when no searchFieldsMediaSearch[0] is empty
+					if(this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value){
+						top.we_showMessage(this.g_l.nothingCheckedTmplDoc, this.we_const.WE_MESSAGE_ERROR, window);
+					} else {
+						Checks[0] = '';
+					}
 				}
 				break;
 			case this.we_const.SEARCH_TMPL:
@@ -292,6 +297,12 @@ weSearch = {
 		this.getMainWindow().we_cmd('editCat', id);
 	},
 	setOrder: function (order, whichSearch) {
+		//FIXME: ordering media search does not work yet
+		if(whichSearch === 'MediaSearch'){
+			alert('ordering columns temporarily disabled');
+			return;
+		}
+		
 		var columns = ['Text', 'SiteTitle', 'CreationDate', 'ModDate'],
 						deleteArrow, arrow, foo;
 
