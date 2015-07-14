@@ -31,7 +31,7 @@ class we_listview_collection extends we_listview_document{
 
 	public function __construct($ID/* $name, $rows, $offset, $order, $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, $searchable, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID */){
 
-		parent::__construct('', 9999, 0, 'VFILE', false, 0, 0, 0, 0, 0, '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0,$ID, '', '', '', '');
+		parent::__construct('', 9999, 0, 'VFILE', false, 0, 0, 0, 0, 0, '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, $ID, '', '', '', '');
 	}
 
 }

@@ -136,6 +136,7 @@ we/include/we_tools/navigation/class/weNavigationRuleFrames.php
 we/include/we_tools/navigation/class/weNavigationRuleControl.class.php
 we/include/we_tools/navigation/class/weNavigationRule.class.php
 we/include/we_tools/navigation/class/weNavigationItems.class.php
+we/include/we_tools/navigation/class/weNavigationItem.class.php
 we/include/we_tools/navigation/class/weNavigationFrames.class.php
 we/include/we_tools/navigation/class/we_navigationDirSelector.php
 we/include/we_tools/navigation/class/weNavigation.class.php

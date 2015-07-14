@@ -87,7 +87,6 @@ echo $tab_header;
 			top.content.hot = "0";
 			current = tool;
 			top.content.location.replace('tools_content.php?tool=' + tool);
-
 		}
 
 	}
