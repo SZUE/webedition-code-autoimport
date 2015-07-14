@@ -100,7 +100,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		$modelid = we_base_request::_(we_base_request::INT, 'modelid');
 
 		$body = we_html_element::htmlIFrame('left', $this->frameset . "?pnt=left" . ($modelid ? '&modelid=' . $modelid : ''), 'position:absolute;top:0px;bottom:0px;left:0px;width:200px;', '', '', false) .
-			we_html_element::htmlIFrame('right', $this->frameset . "?pnt=right" . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'position:absolute;top:0px;bottom:0px;left:200px;right:0px;', '', '', true);
+			we_html_element::htmlIFrame('right', $this->frameset . "?pnt=right" . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'position:absolute;top:0px;bottom:0px;left:200px;right:0px;', '', '', !($this instanceof we_search_frames));
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
 	}
 
