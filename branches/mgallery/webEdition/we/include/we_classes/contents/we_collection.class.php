@@ -376,7 +376,9 @@ weCollectionEdit.blankItem.grid = '" . str_replace(array("'"), "\'", str_replace
 weCollectionEdit.collectionArr = [" . rtrim($jsItemsArr, ',') . "];
 weCollectionEdit.view = '" . $this->view . "';
 weCollectionEdit.gridItemDimensions = " . json_encode($this->gridItemDimensions) . ";
-weCollectionEdit.storage = {};" .
+weCollectionEdit.storage = {};
+weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . ";
+" .
 			$jsStorageItems;
 
 		return we_html_element::jsElement($this->jsFormCollection) .
@@ -419,7 +421,7 @@ weCollectionEdit.storage = {};" .
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
-		$yuiSuggest->setInput($textname, $item['path'], array('title' => $item['path']));
+		$yuiSuggest->setInput($textname, $item['path'], array('title' => $item['path'] . ' (ID: ' . $item['id'] . ')'));
 		$yuiSuggest->setResult($idname, $item['id']);
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);
@@ -440,6 +442,7 @@ weCollectionEdit.storage = {};" .
 				'id' => 'previweDiv_' . $index,
 				'class' => 'previewDiv',
 				'style' => "background-image:url('" . $item['icon']['url'] . "');",
+				'title' => $item['path'] . ' (ID: ' . $item['id'] . ')'
 				), '');
 		$rowHtml->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
 		$rowHtml->setCol(0, 1, array('class' => 'colPreview'), $imgDiv);
@@ -599,7 +602,7 @@ weCollectionEdit.storage = {};" .
 				'id' => 'grid_item_' . $index,
 				'class' => 'gridItem'
 				), we_html_element::htmlDiv(array(
-					'title' => $item['path'],
+					'title' => $item['path'] . ' (ID: ' . $item['id'] . ')',
 					'class' => 'divContent',
 					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < $this->iconSizes[$this->itemsPerRow] ? 'background-size:auto;' : ''),
 					'draggable' => 'true',
@@ -620,7 +623,7 @@ weCollectionEdit.storage = {};" .
 	}
 
 	private function getJsStrorageItem($item){
-		return "weCollectionEdit.storage['item_" . $item['id'] . "'] = " . json_encode($item) . ";\n";
+		return $item['id'] == -1 ? '' : "weCollectionEdit.storage['item_" . $item['id'] . "'] = " . json_encode($item) . ";\n";
 	}
 
 	private function getEmptyItem(){
@@ -633,22 +636,22 @@ weCollectionEdit.storage = {};" .
 			'elements' => array(
 				'attrib_title' => array(
 					'Dat' => '',
-					'state' => self::CLASS_NO,
-					'write' => 0
+					'state' => self::CLASS_NONE,
+					'write' => ''
 				),
 				'attrib_alt' => array(
 					'Dat' => '',
-					'state' => self::CLASS_NO,
-					'write' => 0
+					'state' => self::CLASS_NONE,
+					'write' => ''
 				), 'meta_title' => array(
 					'Dat' => '',
-					'state' => self::CLASS_NO,
-					'write' => 0
+					'state' => self::CLASS_NONE,
+					'write' => ''
 				),
 				'meta_description' => array(
 					'Dat' => '',
-					'state' => self::CLASS_NO,
-					'write' => 0
+					'state' => self::CLASS_NONE,
+					'write' => ''
 				),
 				'custom' => array(
 					'type' => '',
@@ -700,7 +703,7 @@ weCollectionEdit.storage = {};" .
 			foreach($items as $k => $v){
 				$c = 0;
 				foreach($elements as $name){
-					$items[$k]['elements'][$name]['write'] = $items[$k]['elements'][$name]['Dat'] && $c++ < 2 ? $items[$k]['elements'][$name]['Dat'] : '';
+					$items[$k]['elements'][$name]['write'] = $items[$k]['elements'][$name]['Dat'] && in_array($items[$k]['ct'], $hasMeta) && $c++ < 2 ? $items[$k]['elements'][$name]['Dat'] : '';
 					switch($name){
 						case 'attrib_title':
 							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
@@ -712,11 +715,11 @@ weCollectionEdit.storage = {};" .
 							break;
 						case 'meta_title':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? g_l('weClass', '[Title]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[Title]') . ': ' . g_l('weClass', '[collection][notSet]'));
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] && in_array($items[$k]['ct'], $hasMeta) ? g_l('weClass', '[Title]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[Title]') . ': ' . g_l('weClass', '[collection][notSet]'));
 							break;
 						case 'meta_description':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? g_l('weClass', '[Description]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[Description]') . ': ' . g_l('weClass', '[collection][notSet]'));//
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] && in_array($items[$k]['ct'], $hasMeta) ? g_l('weClass', '[Description]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[Description]') . ': ' . g_l('weClass', '[collection][notSet]'));//
 							break;
 						default:
 							$fieldname = 'custom';

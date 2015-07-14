@@ -320,50 +320,27 @@ weCollectionEdit = {
 		var t = scope ? scope : this,
 			el = elem ? t.getItem(elem) : null,
 			div, newItem, cmd1, cmd2, cmd3, blank, elPreview,
-			id = item && item.id ? item.id : -1,
-			path = item && item.path ? item.path : '',
-			ct = item && item.ct ? item.ct : '',
-			name = item && item.name ? item.name : '*',
-			ext = item && item.ext ? item.ext : 'txt',
-			iconSrc = item && item.icon ? item.icon.url : '',
-			sizeX = item && item.icon ? item.icon.sizeX : 0,
-			sizeY = item && item.icon ? item.icon.sizeY : 0,
-			color = color ? color : false,
+			color = color ? color : false;
 
-			attrib_title = item && item.elements.attrib_title.Dat ? item.elements.attrib_title.Dat : '',
-			attrib_title_s = item && item.elements.attrib_title ? item.elements.attrib_title.state : 'we-state-none',
-			attrib_title_w = item && item.elements.attrib_title ? item.elements.attrib_title.write : '',
-
-			attrib_alt = item && item.elements.attrib_alt.Dat ? item.elements.attrib_alt.Dat : '',
-			attrib_alt_s = item && item.elements.attrib_alt ? item.elements.attrib_alt.state : 'we-state-none',
-			attrib_alt_w = item && item.elements.attrib_alt ? item.elements.attrib_alt.write : '',
-
-			meta_title = item && item.elements.meta_title.Dat ? item.elements.meta_title.Dat : '',
-			meta_title_s = item && item.elements.meta_title ? item.elements.meta_title.state : 'we-state-none',
-			meta_title_w = item && item.elements.meta_title ? item.elements.meta_title.write : '',
-
-			meta_desc = item && item.elements.meta_description.Dat ? item.elements.meta_description.Dat : '',
-			meta_desc_s = item && item.elements.meta_description ? item.elements.meta_description.state : 'we-state-none',
-			meta_desc_w = item && item.elements.meta_description ? item.elements.meta_description.write : '';
-
+		item = item ? item : this.storage['item_-1'];
 		repaint = repaint || false;
 		++t.maxIndex;
 
-		if(id && !this.storage['item_' + id]){
-			this.storage['item_' + id] = item;
+		if(item.id && !this.storage['item_' + item.id]){
+			this.storage['item_' + item.id] = item;
 		}
 
 		div = document.createElement("div");
-		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, id).replace(/##PATH##/g, path).
-				replace(/##CT##/g, ct).replace(/##ICONURL##/g, iconSrc.replace('%2F', '/')).
-				replace(/##ATTRIB_TITLE##/g, attrib_title).replace(/##S_ATTRIB_TITLE##/g, attrib_title_s).
-				replace(/##ATTRIB_ALT##/g, attrib_alt).replace(/##S_ATTRIB_ALT##/g, attrib_alt_s).
-				replace(/##META_TITLE##/g, meta_title).replace(/##S_META_TITLE##/g, meta_title_s).
-				replace(/##META_DESC##/g, meta_desc).replace(/##S_META_DESC##/g, meta_desc_s);
+		blank = t.blankItem[t.view].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
+				replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, item.icon['url'].replace('%2F', '/')).
+				replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
+				replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
+				replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
+				replace(/##META_DESC##/g, item.elements.meta_description.Dat).replace(/##S_META_DESC##/g, item.elements.meta_description.state);
 
 		if(t.view === 'list'){
-			blank = blank.replace(/##W_ATTRIB_TITLE##/g, attrib_title_w).replace(/##W_ATTRIB_ALT##/g, attrib_alt_w).
-				replace(/##W_META_TITLE##/g, meta_title_w).replace(/##W_META_DESC##/g, meta_desc_w);
+			blank = blank.replace(/##W_ATTRIB_TITLE##/g, item.elements.attrib_title.write).replace(/##W_ATTRIB_ALT##/g, item.elements.attrib_alt.write).
+				replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write);
 	
 			//TODO: list fallback!
 			//cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
@@ -371,14 +348,14 @@ weCollectionEdit = {
 			//blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, cmd2);
 			div.innerHTML = blank;
 
-			if(ct !== 'image/*' && id !== -1){
+			if(item.ct !== 'image/*' && item.id !== -1){
 				elPreview = div.getElementsByClassName('previewDiv')[0];
-				elPreview.innerHTML = getTreeIcon(ct, false, ext);
+				elPreview.innerHTML = getTreeIcon(item.ct, false, item.ext);
 				elPreview.style.background = 'transparent';
 				elPreview.style.display = 'block';
 			}
 		} else {
-			if(id === -1){
+			if(item.id === -1){
 				cmd1 = weCmdEnc(weCollectionEdit.gridBtnCmds[0].replace(/##INDEX##/g, t.maxIndex));
 				cmd3 = weCmdEnc(weCollectionEdit.gridBtnCmds[2].replace(/##INDEX##/g, t.maxIndex));
 				blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, '').replace(/##CMD3##/g, cmd3).replace(/##SHOWBTN##/g, 'block');
@@ -386,11 +363,11 @@ weCollectionEdit = {
 				blank = blank.replace(/##SHOWBTN##/g, 'none');
 			}
 			div.innerHTML = blank;
-			div.getElementsByClassName('divContent')[0].style.backgroundSize = Math.max(sizeX, sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
+			div.getElementsByClassName('divContent')[0].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 
-			if(ct !== 'image/*' && id !== -1){
+			if(item.ct !== 'image/*' && item.id !== -1){
 				elPreview = div.getElementsByClassName('divInner')[0];
-				elPreview.innerHTML = getTreeIcon(ct, false, ext) + '<div class="divTitle defaultfont" style="font-size:' + this.gridItemDimension.font + 'px;">' + name + ext + '</div>';
+				elPreview.innerHTML = getTreeIcon(item.ct, false, item.ext) + '<div class="divTitle defaultfont" style="font-size:' + this.gridItemDimension.font + 'px;">' + item.name + item.ext + '</div>';
 					//<div class="divTitle defaultfont" style="font-size:10px;">Titel: ' + propDesc + '</div>';
 				elPreview.getElementsByTagName('SPAN')[0].style.fontSize = this.gridItemDimension.icon + 'px';
 				elPreview.style.background = 'transparent';
@@ -522,11 +499,7 @@ weCollectionEdit = {
 		this.numSpan.innerHTML = this.collectionNum;
 
 		if(val !== -1){
-			if(this.view === 'grid'){
 				this.insertItem(ct.lastChild, true);
-			} else {
-				this.insertItem(ct.lastChild, true);
-			}
 		}
 
 		if(!this.collectionName){

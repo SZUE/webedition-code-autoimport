@@ -1123,6 +1123,7 @@ div.collection-content{
 	background-position: center center;
 	background-size: contain;
 	text-align: center;
+	cursor: default;
 }
 
 .collection-content .listItem .previewDiv span{
@@ -1178,6 +1179,7 @@ div.collection-content{
 	background-position: center center;
 	background-size: contain;
 	vertical-align: middle;
+	cursor: move;
 }
 
 .collection-content .gridItem .divContent div.divInner{
@@ -1218,6 +1220,7 @@ div.collection-content{
 	opacity: 0.6;
 	display: none;
 	padding: 6px 0 0 0;
+	cursor: default;
 }
 
 .collection-content .gridItem div.toolbarLeft{
