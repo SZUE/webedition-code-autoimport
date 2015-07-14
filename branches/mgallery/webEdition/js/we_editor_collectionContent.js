@@ -165,14 +165,16 @@ weCollectionEdit = {
 		this.reindexAndRetrieveCollection();
 	},
 
-	addListenersToItem: function(view, elem){
+	addListenersToItem: function(view, elem, isItemEmpty){
 		var t = this, item, input, ctrls, space;
 
 		//TODO: grab elems by getElementByClassName instead of counting children...
 		if(this.view === 'grid'){
 			item = elem.firstChild;
-			item.addEventListener('mouseover', function(){t.overMouse('item', view, item);}, false);
-			item.addEventListener('mouseout', function(){t.outMouse('item', view, item);}, false);
+			if(!isItemEmpty){
+				item.addEventListener('mouseover', function(){t.overMouse('item', view, item);}, false);
+				item.addEventListener('mouseout', function(){t.outMouse('item', view, item);}, false);
+			}
 			ctrls = item.lastChild;
 			ctrls.addEventListener('mouseover', function(){t.overMouse('btns', view, ctrls);}, false);
 			ctrls.addEventListener('mouseout', function(){t.outMouse('btns', view, ctrls);}, false);
@@ -348,6 +350,14 @@ weCollectionEdit = {
 			//blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, cmd2);
 			div.innerHTML = blank;
 
+			if(item.id === -1){
+				var inners = div.getElementsByClassName('innerDiv');
+				for(var i = 0; i < inners.length; i++){
+					inners[i].style.display = 'none';
+				}
+				div.getElementsByClassName('btn_edit')[0].disabled = 1;
+			}
+
 			if(item.ct !== 'image/*' && item.id !== -1){
 				elPreview = div.getElementsByClassName('previewDiv')[0];
 				elPreview.innerHTML = getTreeIcon(item.ct, false, item.ext);
@@ -382,7 +392,7 @@ weCollectionEdit = {
 
 		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
 		newItem.firstChild.style.backgroundColor = color;
-		t.addListenersToItem(t.view, newItem);
+		t.addListenersToItem(t.view, newItem, (item.id === -1));
 
 		if(repaint){
 			t.reindexAndRetrieveCollection();
