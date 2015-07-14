@@ -64,7 +64,7 @@ class we_chooser_multiDir{
 		switch($lineNr){
 			case 0:
 				return '<tr>
-	<td class="chooserFileIcon" data-contenttype="'.$this->Record['ContentType'].'"></td>
+	<td class="chooserFileIcon" data-contenttype="' . $this->Record['ContentType'] . '"></td>
 	<td class="' . $this->css . '">' . $this->Record['Path'] . '</td>
 	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:if(window._EditorFrame!==undefined){_EditorFrame.setEditorIsHot(true);}" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :

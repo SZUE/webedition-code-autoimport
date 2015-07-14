@@ -296,9 +296,8 @@ function setTab(tab) {
 			),
 			array(
 				'headline' => '',
-				'html' => $this->getHTMLChooser(
-					g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table style="margin-left:' . $this->_width_size . 'px;"><tr><td>' . we_html_multiIconBox::getJS() . we_html_multiIconBox::_getButton(
-					$uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
+				'html' => $this->getHTMLChooser(g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.' . $this->topFrame . '.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table><tr><td>' . we_html_multiIconBox::getJS() .
+				we_html_multiIconBox::_getButton(					$uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
 						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 					g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
 					g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
@@ -979,16 +978,10 @@ function onSelectionClassChangeJS(value) {
 						''
 					)
 				) . ($this->Model->IsFolder ?
-					we_html_element::htmlDiv(
-						array(
-						'id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')
-						), we_html_multiIconBox::getHTML('', '100%', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
+					we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', '100%', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
 					''
 				) . ((defined('CUSTOMER_TABLE')) ?
-					we_html_element::htmlDiv(
-						array(
-						'id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')
-						), we_html_multiIconBox::getHTML('', '100%', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
+					we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', '100%', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
 					''
 				);
 		}
@@ -1594,16 +1587,11 @@ function ' . $prefix . 'setLinkSelection(value){
 		$_input_width = 70;
 		$_img_props = new we_html_table(array('cellpadding' => 5), 4, 5);
 
-		$_img_props->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('Attributes[icon_width]', 5, $this->Model->getAttribute('icon_width'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_width]')));
-		$_img_props->setCol(0, 1, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('Attributes[icon_height]', 5, $this->Model->getAttribute('icon_height'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_height]')));
-		$_img_props->setCol(0, 2, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('Attributes[icon_border]', 5, $this->Model->getAttribute('icon_border'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_border]')));
-		$_img_props->setCol(0, 3, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('Attributes[icon_hspace]', 5, $this->Model->getAttribute('icon_hspace'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_hspace]')));
-		$_img_props->setCol(0, 4, array(), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('Attributes[icon_vspace]', 5, $this->Model->getAttribute('icon_vspace'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_vspace]')));
+		$_img_props->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_width]', 5, $this->Model->getAttribute('icon_width'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_width]')));
+		$_img_props->setCol(0, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_height]', 5, $this->Model->getAttribute('icon_height'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_height]')));
+		$_img_props->setCol(0, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_border]', 5, $this->Model->getAttribute('icon_border'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_border]')));
+		$_img_props->setCol(0, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_hspace]', 5, $this->Model->getAttribute('icon_hspace'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_hspace]')));
+		$_img_props->setCol(0, 4, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_vspace]', 5, $this->Model->getAttribute('icon_vspace'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', $_input_width), g_l('navigation', '[icon_vspace]')));
 		$_img_props->setCol(1, 0, array('colspan' => 5), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
 					'Attributes[icon_align]', array(
@@ -1618,16 +1606,8 @@ function ' . $prefix . 'setLinkSelection(value){
 					'baseline' => 'Baseline',
 					'absbottom' => 'Abs Bottom'
 					), 1, $this->Model->getAttribute('icon_align'), false, array('style' => 'width: ' . ($this->_width_size - 50) . 'px;')), g_l('navigation', '[icon_align]')));
-		$_img_props->setCol(2, 0, array(
-			'colspan' => 5
-			), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput(
-					'Attributes[icon_alt]', 5, $this->Model->getAttribute('icon_alt'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 50)), g_l('navigation', '[icon_alt]')));
-		$_img_props->setCol(3, 0, array(
-			'colspan' => 5
-			), we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput(
-					'Attributes[icon_title]', 5, $this->Model->getAttribute('icon_title'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 50)), g_l('navigation', '[icon_title]')));
+		$_img_props->setCol(2, 0, array('colspan' => 5), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_alt]', 5, $this->Model->getAttribute('icon_alt'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 50)), g_l('navigation', '[icon_alt]')));
+		$_img_props->setCol(3, 0, array('colspan' => 5), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_title]', 5, $this->Model->getAttribute('icon_title'), '', 'onchange="' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 50)), g_l('navigation', '[icon_title]')));
 
 		return $_img_props->getHTML();
 	}

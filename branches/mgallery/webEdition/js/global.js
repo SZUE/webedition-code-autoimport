@@ -140,7 +140,7 @@ function getTreeIcon(contentType, open, extension) {
 function setIconOfDocClass(classname) {
 	var elements = document.getElementsByClassName(classname);
 	for (var i = 0; i < elements.length; i++) {
-		elements[i].innerHTML = getTreeIcon(elements[i].getAttribute("data-contenttype"), false);
+		elements[i].innerHTML = getTreeIcon(elements[i].getAttribute("data-contenttype"), false, elements[i].getAttribute("data-extension"));
 	}
 }
 
