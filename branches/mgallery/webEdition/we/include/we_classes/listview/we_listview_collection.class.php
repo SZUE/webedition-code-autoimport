@@ -29,9 +29,12 @@
  */
 class we_listview_collection extends we_listview_document{
 
-	public function __construct($ID/* $name, $rows, $offset, $order, $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, $searchable, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID */){
+	public function __construct($name, $rows, $offset, $order, $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, $searchable, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID){
+		$this->joins = array(' JOIN ' . FILELINK_TABLE . ' fl ON ' . FILE_TABLE . '.ID=fl.remObj');
+		$this->orderWhere = array('fl.ID=' . $id . ' AND fl.DocumentTable="tblVFile" AND fl.type="collection"');
+		$this->table = VFILE_TABLE;
 
-		parent::__construct('', 9999, 0, 'VFILE', false, 0, 0, 0, 0, 0, '', 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, $ID, '', '', '', '');
+		parent::__construct($name, $rows, $offset, $order? : 'VFILE', $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, $searchable, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID);
 	}
 
 }

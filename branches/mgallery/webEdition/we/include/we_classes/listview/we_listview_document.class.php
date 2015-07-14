@@ -41,6 +41,9 @@ class we_listview_document extends we_listview_base{
 	var $languages = ''; //string of Languages, separated by ,
 	var $numorder = false; // #3846
 	public $triggerID = 0;
+	protected $joins = array();
+	protected $orderWhere = array();
+	protected $table = FILE_TABLE;
 
 	/**
 	 *
@@ -77,6 +80,9 @@ class we_listview_document extends we_listview_base{
 		$this->subfolders = $subfolders;
 		$this->customers = $customers;
 		$this->customerArray = array();
+		if($this->table == VFILE_TABLE){
+			$id = $this->id = 0;
+		}
 
 		$calendar_select = $calendar_where = '';
 
@@ -118,7 +124,7 @@ class we_listview_document extends we_listview_base{
 		$this->triggerID = $triggerID;
 		$random = false;
 
-		$order = $joins = $orderWhere = array();
+		$order = array();
 		$tmpOrder = explode(',', $this->order);
 		foreach($tmpOrder as $ord){
 			switch(trim($ord)){
@@ -145,18 +151,13 @@ class we_listview_document extends we_listview_base{
 					$order[] = 'RANDOM';
 				case '':
 					break;
-				case 'VFILE'://FIXME: temporary Hack
-					$joins[] = ' JOIN ' . FILELINK_TABLE . ' fl ON ' . FILE_TABLE . '.ID=fl.remObj';
+				case 'VFILE':
 					$order[] = 'fl.position';
-					$orderWhere[] = 'fl.ID=' . $id . ' AND fl.DocumentTable="tblVFile" AND fl.type="collection"';
-					//reset id-queries
-					$this->id = 0;
-					$id = 0;
 					break;
 				default:
 					$cnt = count($order);
-					$joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
-					$orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name="' . $this->DB_WE->escape($ord) . '"';
+					$this->joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
+					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name="' . $this->DB_WE->escape($ord) . '"';
 					if($this->search){
 						$order[] = 'ranking';
 					}
@@ -165,8 +166,8 @@ class we_listview_document extends we_listview_base{
 			}
 		}
 		$orderstring = $order ? ' ORDER BY ' . implode(',', $order) : '';
-		$joinstring = implode('', $joins);
-		$orderwhereString = implode(' AND ', $orderWhere) . ($orderWhere ? ' AND ' : '');
+		$joinstring = implode('', $this->joins);
+		$orderwhereString = implode(' AND ', $this->orderWhere) . ($this->orderWhere ? ' AND ' : '');
 
 		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
 

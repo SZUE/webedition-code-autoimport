@@ -180,11 +180,11 @@ function we_tag_listview($attribs){
 					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' || $we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;
 
 					/**
-					* Fix #9694
-					* attention: we can not check $we_lv_langguagesdoc instanceof we_objectFile
-					* $we_lv_langguagesdoc is always instance of webEditionDocument because
-					* we need an webEdition Document to show webEdition object detail pages
-					*/
+					 * Fix #9694
+					 * attention: we can not check $we_lv_langguagesdoc instanceof we_objectFile
+					 * $we_lv_langguagesdoc is always instance of webEditionDocument because
+					 * we need an webEdition Document to show webEdition object detail pages
+					 */
 					$we_lv_pageID = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj']->ID : $we_lv_langguagesdoc->ID;
 					$we_lv_linktype = isset($GLOBALS['we_obj']) ? 'tblObjectFile' : 'tblFile';
 			}
@@ -246,12 +246,12 @@ function we_tag_listview($attribs){
 			}
 			$GLOBALS['lv'] = new we_banner_listview($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
 			break;
-        case 'shopVariant': // TODO: Remove in webEdition 7 - for backwords compatibility since FR# 8556
+		case 'shopVariant': // TODO: Remove in webEdition 7 - for backwords compatibility since FR# 8556
 			if(!defined('SHOP_TABLE')){
 				echo modulFehltError('Shop', __FUNCTION__ . ' type="shopVariant"');
 				return;
 			}
-        case 'variant':
+		case 'variant':
 			$defaultname = weTag_getAttribute('defaultname', $attribs, '', we_base_request::STRING);
 			$docId = weTag_getAttribute('documentid', $attribs, 0, we_base_request::INT);
 			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT)? : (is_object($GLOBALS['lv']) ? intval($GLOBALS['lv']->f('WE_ID')) : 0);
@@ -265,6 +265,10 @@ function we_tag_listview($attribs){
 //$parentid="' . $parentid . '";
 			$GLOBALS['lv'] = new we_listview_category($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $parentid, $categoryids, $cols, ($parentidname ? $parentidname : ''), $hidedirindex);
 			break;
+		case 'collection':
+			$GLOBALS['lv'] = new we_listview_collection($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);
+			break;
+
 		default:
 	}
 //prevent error if $GLOBALS["we_lv_array"] is no array

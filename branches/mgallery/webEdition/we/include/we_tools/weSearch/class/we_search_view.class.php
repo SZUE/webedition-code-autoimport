@@ -552,45 +552,36 @@ weSearch.g_l = {
 
 	function getSearchDialogOptions($whichSearch){
 
-		$_table = new we_html_table(
-			array(
-			'width' => 500,
-			'height' => 50
-			), 5, 2);
-
+		$_table = new we_html_table(array('style' => 'width:500px',), 3, 2);
+		$row = 0;
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
-				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextDocSearch ? true : false, "searchForTextDocSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleDocSearch ? true : false, "searchForTitleDocSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentDocSearch ? true : false, "searchForContentDocSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_TMPL :
-				$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextTmplSearch ? true : false, "searchForTextTmplSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForContentTmplSearch ? true : false, "searchForContentTmplSearch", g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_MEDIA :
-				//$_table->setCol(0, 0, array('style' => 'padding-top: 10px'), we_html_tools::htmlAlertAttentionBox('Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.', we_html_tools::TYPE_INFO, 440));
+				//$_table->setCol($row++, 0, array('style' => 'padding-top: 10px'), we_html_tools::htmlAlertAttentionBox('Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.', we_html_tools::TYPE_INFO, 440));
 
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForMetaMediaSearch ? true : false, "searchForMetaMediaSearch", 'In Metadaten', false, 'defaultfont', '')); //FIXME: G_L()
-				//$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForMetaMediaSearch ? true : false, "searchForMetaMediaSearch", 'In Metadaten', false, 'defaultfont', '')); //FIXME: G_L()
+				//$_table->setCol($row++, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 				return $_table->getHtml();
 		}
-		$_table->setCol(4, 0, array('style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
-		$_table->setCol(4, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$_table->setCol($row, 0, array('style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
+		$_table->setCol($row++, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
 
 	function getSearchDialogMediaType($whichSearch){
-		$_table = new we_html_table(
-			array(
-			'width' => 500,
-			'height' => 50
-			), 7, 3);
-
+		$_table = new we_html_table(array('style' => 'width:400px',), 7, 2);
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
 				/*
@@ -601,13 +592,11 @@ weSearch.g_l = {
 						'searchFieldsMediaSearch[' . $n . ']' => 'ContentType',
 						'searchMediaSearch[' . $n . ']' => 1,
 						'locationMediaSearch[' . $n++ . ']' => 'IN')) .
-					we_html_forms::checkboxWithHidden($this->Model->searchForImageMediaSearch ? true : false, "searchForImageMediaSearch", 'Bilder', false, 'defaultfont', ''));
+					we_html_forms::checkboxWithHidden($this->Model->searchForImageMediaSearch ? true : false, "searchForImageMediaSearch", 'Bilder', false, 'defaultfont withSpace', ''));
 				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForAudioMediaSearch ? true : false, "searchForAudioMediaSearch", 'Audio', false, 'defaultfont', ''));
-				$_table->setCol(0, 2, array(), we_html_tools::getPixel(100, 10));
 				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->searchForVideoMediaSearch ? true : false, "searchForVideoMediaSearch", 'Video', false, 'defaultfont', ''));
 				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForPdfMediaSearch ? true : false, "searchForOtherMediaSearch", 'Sonstige Medien-Dateien', false, 'defaultfont', '', false));
-				$_table->setCol(1, 2, array(), we_html_tools::getPixel(100, 10));
-				$_table->setCol(2, 0, array('colspan' => '3'), we_html_tools::getPixel(10, 10));
+
 
 				break;
 			default:
@@ -620,22 +609,21 @@ weSearch.g_l = {
 	function getSearchDialogFilter($whichSearch){
 		$_table = new we_html_table(
 			array(
-			'width' => 500,
-			'height' => 50
-			), 7, 4);
+			'width' => 400,
+			), 4, 4);
 
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
 				$n = 2;
 
-				$_table->setCol(3, 0, array(), 'Verwendungsstatus: ');
-				$_table->setCol(3, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
+				$_table->setCol(0, 0, array(), 'Verwendungsstatus: ');
+				$_table->setCol(0, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsUsed',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(0 => 'alle', 1 => 'nur benutzte Medien', 2 => 'nur unbenutzte Medien'), 1, isset($this->Model->searchMediaSearch[$n++]) ? $this->Model->searchMediaSearch[$n++] : '', false, array(), 'value', 220));
 
-				$_table->setCol(4, 0, array(), 'Schutz: ');
-				$_table->setCol(4, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
+				$_table->setCol(1, 0, array(), 'Schutz: ');
+				$_table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFieldsMediaSearch[' . $n . ']' => 'IsProtected',
 						'locationMediaSearch[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('searchMediaSearch[' . $n . ']', array(0 => 'alle', 1 => 'nur geschützte Medien', 2 => 'nur ungeschützte Medien'), 1, isset($this->Model->searchMediaSearch[$n++]) ? $this->Model->searchMediaSearch[$n++] : '', false, array(), 'value', 220));
@@ -645,9 +633,8 @@ weSearch.g_l = {
 			default:
 				return;
 		}
-		$_table->setCol(5, 0, array('colspan' => 4), $this->getSearchDialogOptFields($whichSearch));
-		$_table->setCol(6, 0, array('colspan' => 3, 'style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
-		$_table->setCol(6, 3, array(), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$_table->setCol(2, 0, array('colspan' => 4), $this->getSearchDialogOptFields($whichSearch));
+		$_table->setCol(3, 3, array(), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -770,46 +757,30 @@ weSearch.g_l = {
 			unset($_SESSION['weS']['weSearch']["checkWhich"]);
 		}
 
-		$_table = new we_html_table(
-			array(
-			'width' => 550,
-			'height' => 50
-			), 4, 3);
+		$_table = new we_html_table(array('style' => 'width:550px',), 4, 3);
 
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$_table->setCol(
-				0, 0, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
+			$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[FILE_TABLE] ? true : false, 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
 		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-			$_table->setCol(
-				1, 0, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
+			$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[TEMPLATES_TABLE] ? true : false, 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
-				$_table->setCol(
-					0, 1, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
+				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[OBJECT_FILES_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-				$_table->setCol(
-					1, 1, array(), we_html_forms::checkboxWithHidden(
-						$this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
+				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[OBJECT_TABLE] ? true : false, 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
 		if(permissionhandler::hasPerm('SEE_VERSIONS')){
-			$_table->setCol(
-				0, 2, array(), we_html_forms::checkboxWithHidden(
-					$this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
+			$_table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
-		$_table->setCol(2, 2, array(
-			'align' => 'right'
-			), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$_table->setCol(2, 2, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}

@@ -28,7 +28,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'phpinfo'){
 
 function getInfoTable($_infoArr, $name){
 
-	$_table = new we_html_table(array("width" => 500, "style" => "width: 500px;", "spellspacing" => 2), 1, 2);
+	$_table = new we_html_table(array("style" => "width: 500px;", "spellspacing" => 2), 1, 2);
 	$_i = 0;
 
 	foreach($_infoArr as $_k => $_v){
