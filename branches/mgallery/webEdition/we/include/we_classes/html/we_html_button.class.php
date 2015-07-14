@@ -264,8 +264,17 @@ abstract class we_html_button{
 	 * @return     string
 	 */
 	static function create_button_table($buttons, $gap = 10, $attribs = ''){
+		if(is_array($attribs)){
+			$attr = '';
+			foreach($attribs as $k => $v){
+				$attr .= ' ' . $k . '="' . $v . '"';
+			}
+		} else {
+			$attr = $attribs;
+		}
+		
 		//FIMXE: change all calls to this function => remove
-		return ($attribs ? '<span ' . $attribs . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
+		return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
 		// Get number of buttons
 		$_count_button = count($buttons);
 
@@ -318,8 +327,8 @@ abstract class we_html_button{
 		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
 			'style' => 'border-style:none; padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . 'border-spacing:0px;float:' . $align . ';'
-			);
-			
+		);
+
 		if(is_array($attribs) && count($attribs) > 0){
 			array_merge($attr, $attribs);
 		}
