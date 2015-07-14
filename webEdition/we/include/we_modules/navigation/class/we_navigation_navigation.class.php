@@ -657,7 +657,7 @@ class we_navigation_navigation extends weModelBase{
 				$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=Ordn-1 WHERE (Ordn BETWEEN ' . $this->Ordn . ' AND ' . $newPos . ') AND ParentID=' . $this->ParentID . ' AND ID!=' . $this->ID);
 			}
 
-			$this->Ordn =$newPos;
+			$this->Ordn = $newPos;
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 		}
@@ -693,6 +693,33 @@ class we_navigation_navigation extends weModelBase{
 		}
 
 		return false;
+	}
+
+	function getTableIdForItem(){
+		if($this->IsFolder){
+			switch($this->FolderSelection){
+				case self::STYPE_URLLINK:
+					return array('', 0);
+				case self::STPYE_OBJLINK:
+					return array(OBJECT_FILES_TABLE, $this->LinkID);
+				default:
+					return array(FILE_TABLE, $this->LinkID);
+			}
+		}
+
+		switch($this->SelectionType){
+			case self::STYPE_URLLINK:
+				return array('', 0);
+			case self::STPYE_CATEGORY:
+			case self::STPYE_CATLINK:
+				if($this->LinkSelection === self::LSELECTION_EXTERN){
+					return array('', 0);
+				}
+				return array(FILE_TABLE, $this->UrlID);
+			case self::STPYE_CLASS:
+			case self::STPYE_OBJLINK:
+				return array(OBJECT_FILES_TABLE, $this->LinkID);
+		}
 	}
 
 	function getHref(&$storage, $id = 0){
@@ -805,7 +832,7 @@ class we_navigation_navigation extends weModelBase{
 		return $_path;
 	}
 
-		function findCharset($pid){
+	function findCharset($pid){
 		$_charset = '';
 		$_count = 0;
 		$_db = new DB_WE();

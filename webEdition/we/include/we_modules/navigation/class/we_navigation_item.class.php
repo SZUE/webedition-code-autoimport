@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * simplified representation of the navigation item
  */
 class we_navigation_item{
-
 	var $id;
 	var $icon;
 	var $docid;
@@ -43,7 +41,9 @@ class we_navigation_item{
 	static $currentPosition = array();
 	var $current = false;
 	var $containsCurrent = false;
-	private $visible = true;
+	private $visible = -1;
+	private $linkValid = true;
+	private $customerAccess = true;
 	var $CurrentOnUrlPar;
 	var $CurrentOnAnker;
 	var $currentOnCat;
@@ -99,34 +99,24 @@ class we_navigation_item{
 		$this->customers = $customers;
 		switch($this->table){
 			case FILE_TABLE:
-				list($path) = explode((strpos($this->href, '#') !== false && strpos($this->href, '?') === false ? '#' : '?'), $this->href);
-
-				$id = path_to_id($path, FILE_TABLE);
-				if($id){
-					$this->visible = (f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0'));
-				}
-				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES){
-					$mypath = id_to_path($this->docid, FILE_TABLE);
-					$mypath_parts = pathinfo($mypath);
-					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = ( f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
-					}
-				}
+				//in case the docid is 0, we assume this a structural element, which has an "valid link"
+				$this->linkValid = (!$this->docid) || ( f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
 				break;
-
 			// #6916
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$this->visible = (f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
-
-				if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES){
-					$mypath = id_to_path($this->docid, OBJECT_FILES_TABLE);
-					$mypath_parts = pathinfo($mypath);
-					if(in_array($mypath_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->visible = (f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
-					}
-				}
+				$this->linkValid = (f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
 				break;
+			default:
+				//this is external url, or anything we can't test for
+				$this->linkValid = true;
 		}
+	}
+
+	function __wakeup(){
+		//need to reset customer access if the object was serialized (in cache)
+		$this->customerAccess = true;
+		$this->visible = -1;
+		//leave linkValid, since on publish the cache is regenerated
 	}
 
 	function addItem(&$item){
@@ -239,25 +229,46 @@ class we_navigation_item{
 	}
 
 	public function isVisible(){
-		if($this->visible == false){
-			return false;
+		if($this->visible != -1){
+			//item is determined
+			return $this->visible;
 		}
+		$this->visible = $this->linkValid;
 
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
 			$_filter = new we_navigation_customerFilter();
 			$_filter->initByNavItem($this);
-			$this->visible = $_filter->customerHasAccess();
-			return ($this->visible);
+			$this->customerAccess = $_filter->customerHasAccess();
+			$this->visible &=$this->customerAccess;
 		}
-		return true;
+		return $this->visible;
 	}
 
 	function writeItem(&$weNavigationItems, $depth = false){
 		if(!isset(self::$currentPosition[$this->level])){
 			self::$currentPosition[$this->level] = 0;
 		}
-		if(!($depth === false || $this->level <= $depth) || !$this->isVisible()){
+		if(!($depth === false || $this->level <= $depth)){
 			return '';
+		}
+		if(!$this->isVisible()){
+			if($this->type == 'item' || !$this->customerAccess){
+				//in case of an item, if this is not visible, we are finished
+				//or if the folder/root is protected by customer access
+				return '';
+			}
+			//in case of folder: check if there are visible subelements
+			$vsub = false;
+			//FIXME: we check only one level
+			foreach($this->items as $item){
+				if($item->isVisible()){
+					$vsub = true;
+					break;
+				}
+			}
+			if(!$vsub){
+				return '';
+			}
 		}
 		$GLOBALS['weNavigationItemArray'][] = &$this;
 		//use this since items might be invisible
@@ -278,10 +289,10 @@ class we_navigation_item{
 		// name
 		if($fieldname){
 			$val = (isset($this->$fieldname) && $this->$fieldname ?
-							$this->$fieldname :
-							(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
-									$this->attributes[$fieldname] :
-									''));
+					$this->$fieldname :
+					(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
+						$this->attributes[$fieldname] :
+						''));
 			return ($fieldname === 'title' ? oldHtmlspecialchars($val) : $val);
 		}
 
@@ -293,8 +304,8 @@ class we_navigation_item{
 				$attribs['attributes'] = $_compl;
 				$attribs = $this->getNavigationFieldAttributes($attribs);
 				return ($_compl === 'image' ?
-								getHtmlTag('img', $attribs) :
-								(isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text));
+						getHtmlTag('img', $attribs) :
+						(isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text));
 			}
 			return '';
 		}
@@ -336,12 +347,12 @@ class we_navigation_item{
 						foreach($useFields as $field){
 							if(isset($this->$field) && $this->$field != ''){
 								$attribs[$field] = ($field === 'title' ?
-												oldHtmlspecialchars($this->$field) :
-												$this->$field);
+										oldHtmlspecialchars($this->$field) :
+										$this->$field);
 							} elseif(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
 								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
-												$this->attributes[$field] :
-												oldHtmlspecialchars($this->attributes[$field]));
+										$this->attributes[$field] :
+										oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -421,12 +432,12 @@ if (window.screen) {
 		}
 
 		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((isset($this->attributes['popup_status']) && $this->attributes['popup_status']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar']) ? 'yes' : 'no') . '\';' .
-				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
+			'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars']) ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar']) ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable']) ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location']) ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar']) ? 'yes' : 'no') . '\';' .
+			"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, array(
 			'name', 'target', 'onClick', 'onclick'
