@@ -107,6 +107,10 @@ class we_navigation_cache{
 	 * Used on upgrade to remove all navigation entries
 	 */
 	static function clean($force = false){
+		if(file_exists(WE_CACHE_PATH . 'cleannav')){
+			unlink(WE_CACHE_PATH . 'cleannav');
+			$force = true;
+		}
 		if($force){
 			foreach(glob(WE_CACHE_PATH . 'navigation_*') as $file){
 				unlink(WE_CACHE_PATH . $file);
