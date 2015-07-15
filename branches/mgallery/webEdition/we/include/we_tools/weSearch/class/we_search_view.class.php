@@ -1644,14 +1644,14 @@ weSearch.g_l = {
 										))
 								), 'colgroup' => '</colgroup>
 											<col style="text-align:left;"/>
-											<col style="width:30px;text-align:left;"/>
+											<col style="width:40px;text-align:left;"/>
 											<col style="width:70px;text-align:left;"/>
 											<col style="width:45px;text-align:left;"/>
 											<col style="width:45px;text-align:left;"/>
 											<col style="width:45px;text-align:left;"/>
 											<col style="width:90px;text-align:left;"/>
 											<col style="width:90px;text-align:left;"/>
-											<col style="width:40px;text-align:left;"/>
+											<col style="width:50px;text-align:left;"/>
 											</colgroup>'
 							)
 						)),

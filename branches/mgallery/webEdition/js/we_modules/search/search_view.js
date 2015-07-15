@@ -796,7 +796,7 @@ weSearch = {
 		else {
 			Check = confirm("you really want to delete them?\n=> coming soon...");
 			if (Check == true) {
-				this.publishDocsAjax(whichSearch);
+				//this.publishDocsAjax(whichSearch);
 			}
 		}
 	},
