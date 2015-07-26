@@ -161,24 +161,21 @@ class we_customer_customer extends weModelBase{
 		if(!isset($this->persistent_slots)){
 			return;
 		}
-		$orderedarray = $this->persistent_slots;
-		$sortarray = ($mysort ? makeArrayFromCSV($mysort) : range(0, count($orderedarray) - 1));
+		$sortarray = ($mysort ? makeArrayFromCSV($mysort) : range(0, count($this->persistent_slots) - 1));
 
-		if(count($sortarray) != count($orderedarray)){
-
-			if(count($sortarray) == count($orderedarray) - 1){
+		if(count($sortarray) != count($this->persistent_slots)){
+			if(count($sortarray) == count($this->persistent_slots) - 1){
 				$sortarray[] = max($sortarray) + 1;
 			} else {
-				$sortarray = range(0, count($orderedarray) - 1);
+				$sortarray = range(0, count($this->persistent_slots) - 1);
 			}
 		}
-		$orderedarray = array_combine($sortarray, $orderedarray);
+		$orderedarray = array_combine($sortarray, $this->persistent_slots);
 		ksort($orderedarray);
 
 		$branche = array();
 		foreach($orderedarray as $per){
-			$var_value = ((!$this->isnew && isset($this->$per)) ? $var_value = $this->$per : null);
-
+			$var_value = (isset($this->$per) ? $this->$per : null);
 			$field = $this->transFieldName($per, $branche);
 
 			if($field != $per){

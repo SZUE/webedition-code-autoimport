@@ -221,7 +221,7 @@ function we_cmd(){
 				if($saveOk){
 					$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), array('>' => '&gt;', '<' => '&lt;'));
 					$js = ($newone ? '
-var attribs = {;
+var attribs = {
 	id:"' . $this->customer->ID . '",
 	typ:"item",
 	parentid:"0",
@@ -260,9 +260,7 @@ var attribs = {;
 
 				break;
 			case 'switchPage':
-
 				break;
-
 			case 'show_admin':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
 				we_html_element::jsElement('
@@ -612,8 +610,6 @@ self.close();');
 				}
 			}
 		}
-
-
 		if(we_base_request::_(we_base_request::STRING, 'pnt') === 'sort_admin'){
 			$counter = we_base_request::_(we_base_request::INT, 'counter');
 
