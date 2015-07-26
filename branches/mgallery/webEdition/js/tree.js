@@ -181,6 +181,7 @@ function clearItems() {
 				treeData[ind] = treeData[ind + 1];
 				ind++;
 			}
+			ai--;
 			treeData.len[treeData.len] = null;
 			treeData.len--;
 		}

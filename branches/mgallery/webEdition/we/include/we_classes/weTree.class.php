@@ -113,6 +113,7 @@ frames={
 
 	function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
+			$this->customJSFile() .
 			we_html_element::jsElement('
 var frames={
 	"top":' . $this->topFrame . ',
@@ -124,7 +125,7 @@ var we_scrollY = [];
 				$this->getJSDrawTree() .
 				$this->getJSContainer() .
 				$this->getJSStartTree()
-			) . $this->customJSFile();
+		);
 	}
 
 	function customJSFile(){
@@ -254,16 +255,16 @@ function draw(startEntry,zweigEintrag){
 	}
 
 	function getJSLoadTree(array $treeItems){
-		$js = 'var attribs;';
+		$js = '';
 		foreach($treeItems as $item){
-			$js.='if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
-				. "attribs={";
+			$js.='if(' . $this->topFrame . '.indexOfEntry("' . $item['id'] . '")<0){' .
+				$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			foreach($item as $k => $v){
-				$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
+				$js.= strtolower($k) . ':' .  ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
 						intval($v) :
 						'\'' . addslashes($v) . '\'') . ',';
 			}
-			$js.='};' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
+			$js.='}));
 			}';
 		}
 		$js.=$this->topFrame . '.drawTree();';

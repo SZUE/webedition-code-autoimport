@@ -91,7 +91,7 @@ function startTree(){
 						$v = g_l('date', '[month][long][' . $months[$v] . ']');
 					}
 				}
-				$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
+				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
 						intval($v) :
 						'\'' . addslashes(stripslashes(str_replace(array("\n", "\r", '\''), '', $v))) . '\'') .
 					',';
@@ -205,7 +205,7 @@ function startTree(){
 
 		$select = $grouparr = $orderarr = array();
 
-		$total = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE );
+		$total = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE);
 
 		foreach($sort_defs as $c => $sortdef){
 			if(!empty($sortdef['function'])){
@@ -263,7 +263,7 @@ function startTree(){
 					'id' => str_replace("\'", '*****quot*****', $gid),
 					'parentid' => $old,
 					'path' => '',
-					'text' => $gname . ' ('. $groupTotal . '/' . '<abbr title="' . g_l('modules_customer', '[all]') . ' ' . g_l('modules_customer', '[customer_data]') . '">' . $total . '</abbr>)',
+					'text' => $gname . ' (' . $groupTotal . '/' . '<abbr title="' . g_l('modules_customer', '[all]') . ' ' . g_l('modules_customer', '[customer_data]') . '">' . $total . '</abbr>)',
 					'contentType' => 'folder',
 					'isfolder' => 1,
 					'typ' => 'group',

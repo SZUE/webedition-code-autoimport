@@ -35,14 +35,13 @@ function in_array(arr,item){
 		if(arr[i]==item) return true;
 	}
 	return false;
-}
-var attribs;' .
+}' .
 			$this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
 
 		foreach($treeItems as $item){
 
-			$js.='if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
-				. 'attribs={';
+			$js.='if(' . $this->topFrame . '.indexOfEntry("' . $item['id'] . '")<0){'.
+$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			$elems = '';
 			foreach($item as $k => $v){
 				$elems.='"' . strtolower($k) . '":' .
@@ -53,8 +52,7 @@ var attribs;' .
 ' :
 						'\'' . $v . '\',');
 			}
-			$js.=rtrim($elems, ',') . '};' .
-				$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
+			$js.=rtrim($elems, ',') . '}));
 					}';
 		}
 		$js.=$this->topFrame . '.treeData.setstate(' . $this->topFrame . '.treeData.tree_states["select"]);' .

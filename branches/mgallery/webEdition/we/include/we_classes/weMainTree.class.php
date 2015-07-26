@@ -111,19 +111,18 @@ if(weWindow.treeData){
 	}
 
 	function getJSLoadTree(array $treeItems){
-		$js = 'var attribs;';
+		$js = '';
 
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
-				$js.= 'if(' . $this->topFrame . ".indexOfEntry('" . $item["id"] . "')<0){"
-					. "attribs={";
+				$js.= 'if(' . $this->topFrame . '.indexOfEntry("' . $item['id'] . '")<0){' .
+					$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
 				foreach($item as $k => $v){
-					$js.='"' . strtolower($k) . '":' . ($v === 1 || $v === 0 || $v === true || $v === 'true' || $v === 'false' || $v === false ?
+					$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
 							intval($v) :
 							'\'' . addslashes($v) . '\'') . ',';
 				}
-
-				$js.='};' . $this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));
+				$js.='}));
 					}';
 			}
 		}

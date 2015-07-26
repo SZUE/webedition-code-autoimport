@@ -207,10 +207,14 @@ class we_base_request{
 				return;
 			case self::URL:
 				$urls = parse_url(urldecode($var));
-				$urls['host'] = (function_exists('idn_to_ascii') ? idn_to_ascii($urls['host']) : $urls['host']);
+				if(!empty($urls['host'])){
+					$urls['host'] = (function_exists('idn_to_ascii') ? idn_to_ascii($urls['host']) : $urls['host']);
+				}
 				$url = filter_var(self::unparse_url($urls), FILTER_SANITIZE_URL);
 				$urls = parse_url($url);
-				$urls['host'] = (function_exists('idn_to_utf8') ? idn_to_utf8($urls['host']) : $urls['host']);
+				if(!empty($urls['host'])){
+					$urls['host'] = (function_exists('idn_to_utf8') ? idn_to_utf8($urls['host']) : $urls['host']);
+				}
 				$var = self::unparse_url($urls);
 				return;
 			case self::STRINGC:

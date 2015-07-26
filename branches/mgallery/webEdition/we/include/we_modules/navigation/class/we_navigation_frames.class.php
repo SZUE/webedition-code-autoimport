@@ -241,12 +241,11 @@ function setTab(tab) {
 	function getHTMLGeneral(){
 		$_table = new we_html_table(
 			array('class' => 'default',
-			'width' => 300,
 			'style' => 'margin-top: 5px;'
 			), 1, 3);
 
 		$_parentid = (!empty($this->Model->Text) && !empty($this->Model->ID) ?
-				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db) :
+				f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), '', $this->db) :
 				(we_base_request::_(we_base_request::STRING, 'presetFolder') ?
 					$this->Model->ParentID :
 					(($wq = we_navigation_navigation::getWSQuery()) ?
