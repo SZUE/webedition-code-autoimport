@@ -66,7 +66,7 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 
 		$db->query('SELECT ' . $elem . ', abs(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' WHERE ' . $where . ' ORDER BY Ordn, isNr DESC,Nr,Text ' . ($segment ? 'LIMIT ' . $offset . ',' . $segment : ''));
 
-		while($db->next_record()){
+		while($db->next_record(MYSQL_ASSOC)){
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
@@ -76,15 +76,13 @@ class we_navigation_treeDataSource extends we_tool_treeDataSource{
 				'order' => intval($db->f('Ordn')),
 				'published' => $db->f('Depended') ? 0 : 1,
 				'disabled' => in_array($db->f('Path'), $parentpaths) ? 1 : 0,
-				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
+				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
 			);
 
 			$fileds = array();
 
 			foreach($db->Record as $k => $v){
-				if(!is_numeric($k)){
-					$fileds[strtolower($k)] = $v;
-				}
+				$fileds[strtolower($k)] = $v;
 			}
 
 			if($db->f('IsFolder') == 0){
