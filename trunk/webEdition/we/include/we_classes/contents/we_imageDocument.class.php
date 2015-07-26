@@ -340,6 +340,16 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	 */
 	function getHtml($dyn = false, $inc_href = true, $pathOnly = false){
 		$_data = $this->getElement('data');
+		$only = $this->getElement('only');
+		if($this->getElement('pathonly')){
+			$only = 'path';
+		}
+		switch($only){
+			case'id':
+				return $this->ID;
+			case 'path':
+				return $this->Path;
+		}
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
 			switch($this->getElement('LinkType')){
 				case we_base_link::TYPE_INT:
@@ -479,11 +489,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 //  If needed - js output for rollover.
 
-			if(isset($attribs['only'])){
+			if($only){
 				return (array_key_exists($attribs['only'], $attribs) ? $attribs[$attribs['only']] : '');
-			}
-			if(isset($attribs['pathonly']) && $attribs['pathonly']){
-				return $attribs['src'];
 			}
 
 			if((isset($href) && $href) && $inc_href){ //  use link with rollover
