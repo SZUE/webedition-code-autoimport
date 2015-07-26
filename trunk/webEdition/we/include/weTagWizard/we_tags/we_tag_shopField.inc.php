@@ -25,16 +25,16 @@ $aslanguage = new weTagData_selectAttribute('aslanguage', weTagData_selectAttrib
 
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('checkbox', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
-	new weTagDataOption('choice', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
-	new weTagDataOption('country', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
-	new weTagDataOption('hidden', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
-	new weTagDataOption('language', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
-	new weTagDataOption('print', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $ascountry, $aslanguage, $xml)),
-	new weTagDataOption('radio', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
-	new weTagDataOption('select', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
-	new weTagDataOption('textarea', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
-	new weTagDataOption('textinput', false, array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('checkbox', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('choice', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('country', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('hidden', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('language', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('print', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $ascountry, $aslanguage, $xml)),
+	new weTagDataOption('radio', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('select', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('textarea', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
+	new weTagDataOption('textinput', false, '', array($name, $ref, $shopname, $value, $values, $checked, $add, $xml)),
 	)
 	, false, '');
 
