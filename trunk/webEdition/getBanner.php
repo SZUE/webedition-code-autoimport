@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,7 +23,10 @@
  */
 define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
+if(!defined('BANNER_TABLE')){
+	//do nothing if deactivated
+	return;
+}
 
 $id = we_base_request::_(we_base_request::INT, 'id', 0);
 $bid = we_base_request::_(we_base_request::INT, 'bid', 0);
@@ -36,7 +38,7 @@ $width = we_base_request::_(we_base_request::INT, 'width', 0);
 $bannerclick = we_base_request::_(we_base_request::URL, 'bannerclick', WEBEDITION_DIR . 'bannerclick.php');
 $referer = we_base_request::_(we_base_request::RAW, 'referer', '');
 $type = we_base_request::_(we_base_request::STRING, 'type', '');
-$cats = we_base_request::_(we_base_request::RAW, 'cats', '');
+$cats = we_base_request::_(we_base_request::INTLIST, 'cats', '');
 $dt = we_base_request::_(we_base_request::RAW, 'dt', '');
 $link = we_base_request::_(we_base_request::BOOL, 'link', 1);
 $bannername = we_base_request::_(we_base_request::RAW, 'bannername', '');

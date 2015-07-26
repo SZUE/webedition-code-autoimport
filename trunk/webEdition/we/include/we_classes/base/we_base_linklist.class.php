@@ -73,16 +73,15 @@ class we_base_linklist{
 
 	function getID($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		return isset($cur["id"]) ? $cur["id"] : null;
+		return isset($cur['id']) ? $cur['id'] : null;
 	}
 
 	function getObjID($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		return isset($cur["obj_id"]) ? $cur["obj_id"] : "";
+		return isset($cur['obj_id']) ? $cur['obj_id'] : "";
 	}
 
 	function getLink(){
-		//$id = $this->getID($nr);
 		switch($this->getType()){
 			case we_base_link::TYPE_INT:
 				return $this->getUrl();
@@ -96,8 +95,9 @@ class we_base_linklist{
 					unset($GLOBALS['we_link_not_published']);
 				}
 				return $link;
+			default:
+				return '';
 		}
-		return '';
 	}
 
 	function getHref($nr = -1){
@@ -120,10 +120,8 @@ class we_base_linklist{
 		return isset($cur["title"]) ? $cur["title"] : "";
 	}
 
-	function getLinktag($link = "", $tagAttr = ""){
-		if(!$link){
-			$link = $this->getLink();
-		}
+	function getLinktag($link = '', $tagAttr = ''){
+		$link = $link? : $this->getLink();
 		$target = $this->getTarget();
 		$attribs = $this->getAttribs();
 		$anchor = $this->getAnchor();
