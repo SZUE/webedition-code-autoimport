@@ -25,6 +25,11 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
+
+$mode = $_SESSION['weS']['we_mode'];
+$uid = $_SESSION['user']['ID'];
+session_write_close();
+
 if(!isset($aCols) || count($aCols) < 5){
 	$aCols = explode(';', $aProps[3]);
 }
@@ -45,17 +50,17 @@ $doctable = $where = $_users_where = $workspace = array();
 
 switch($iDate){
 	case 1 :
-		$where[] = 'ModDate >=CURDATE()';
+		$where[] = 'ModDate=CURDATE()';
 		break;
 	case 2 :
-		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 WEEK)';
+		$where[] = 'ModDate>=(CURDATE()-INTERVAL 1 WEEK)';
 		break;
 	case 3 :
-		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 MONTH)';
+		$where[] = 'ModDate>=(CURDATE()-INTERVAL 1 MONTH)';
 		break;
 	default:
 	case 4 :
-		$where[] = 'ModDate >=(CURDATE()-INTERVAL 1 YEAR)';
+		$where[] = 'ModDate>=(CURDATE()-INTERVAL 1 YEAR)';
 		break;
 }
 $iNumItems = $aCols[2];
@@ -86,7 +91,7 @@ $db = $GLOBALS['DB_WE'];
 
 $aUsers = array_filter(array_map('intval', (permissionhandler::hasPerm('EDIT_MFD_USER') ?
 			makeArrayFromCSV($aCols[4]) :
-			array($_SESSION['user']['ID']))));
+			array($uid))));
 
 if($aUsers){
 	$aUsers = implode(',', $aUsers);
@@ -115,10 +120,10 @@ if(defined('OBJECT_FILES_TABLE') && $bTypeObj && permissionhandler::hasPerm('CAN
 	}
 	$workspace[OBJECT_FILES_TABLE] = implode(' OR ', $paths);
 }
-if(defined('TEMPLATES_TABLE') && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+if(defined('TEMPLATES_TABLE') && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 }
-if(defined('OBJECT_TABLE') && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+if(defined('OBJECT_TABLE') && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 }
 
@@ -126,13 +131,14 @@ if($doctable){
 	$where[] = 'DocumentTable IN(' . implode(',', $doctable) . ')';
 }
 
-if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
+if($mode == we_base_constants::MODE_SEE){
 	$where[] = ' ContentType!="folder" ';
 }
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
 $tables = $data = array();
-$db->query('SELECT h.DID,h.UserName,h.DocumentTable,DATE_FORMAT(h.ModDate,"' . g_l('date', '[format][mysql]') . '") AS MDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' h LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $_SESSION['user']['ID'] . ' WHERE (h.DID,h.DocumentTable,h.ModDate) IN (SELECT DID,DocumentTable,MAX(ModDate) FROM ' . HISTORY_TABLE . ' ' . $where . ' GROUP BY DID,DocumentTable ORDER BY ModDate DESC) ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
+
+$db->query('SELECT h.DID,(SELECT UserName FROM '.HISTORY_TABLE.' WHERE MAX(h.ModDate)=ModDate AND DID=h.DID AND h.DocumentTable=DocumentTable) AS UserName,h.DocumentTable,DATE_FORMAT(h.ModDate,"' . g_l('date', '[format][mysql]') . '") AS MDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' h LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $uid . ' ' . $where . '  GROUP BY DID,DocumentTable ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
 
 while($db->next_record(MYSQL_ASSOC)){
 	$tables[$db->f('DocumentTable')][] = $db->f('DID');

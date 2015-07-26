@@ -25,7 +25,8 @@
 class rpcGetRssCmd extends rpcCmd{
 
 	function execute(){
-
+		//close session, we don't need it anymore
+		session_write_close();
 		$sRssUri = we_base_request::_(we_base_request::URL, 'we_cmd', '', 0);
 		$sCfgBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 1); //note binary content
 		$bCfgTitle = (bool) $sCfgBinary{0};

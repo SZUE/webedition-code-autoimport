@@ -24,16 +24,16 @@
 var tinyEditors = {};
 var tinyEditorsInPopup = {};
 
-/* Re-/Initialize TinyMCE: 
+/* Re-/Initialize TinyMCE:
  * param (object) confObject: initialize Tiny instance using confObject
  *
- * If there is allready an instance applied to the textarea defined in confObject 
+ * If there is allready an instance applied to the textarea defined in confObject
  * this editor will be removed and re-initialized
  */
-function tinyMceInitialize(confObject){
-	if (typeof tinyMCE === 'object'){
-		if (typeof confObject === 'object'){
-			if (tinyMCE.get(confObject.elements)){
+function tinyMceInitialize(confObject) {
+	if (typeof tinyMCE === 'object') {
+		if (typeof confObject === 'object') {
+			if (tinyMCE.get(confObject.elements)) {
 				tinyMCE.execCommand('mceRemoveControl', false, confObject.elements);
 			}
 			tinyMCE.init(confObject);
@@ -42,7 +42,7 @@ function tinyMceInitialize(confObject){
 }
 
 function TinyWrapper(fieldname) {
-	if(!(this instanceof TinyWrapper)){
+	if (!(this instanceof TinyWrapper)) {
 		return new TinyWrapper(fieldname);
 	}
 
@@ -60,26 +60,26 @@ function TinyWrapper(fieldname) {
 		return _isInlineedit;
 	};
 
-	this.getEditor = function(tryPopup){
+	this.getEditor = function (tryPopup) {
 		var _tryPopup = typeof tryPopup === "undefined" ? false : tryPopup;
-		if(tryPopup && this.getEditorInPopup() !== "undefined"){
+		if (tryPopup && this.getEditorInPopup() !== "undefined") {
 			return this.getEditorInPopup();
 		}
 
 		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : "undefined");
 	};
 
-	this.getEditorInPopup = function(){
-		if(typeof tinyEditorsInPopup[_fn] !== "undefined"){
-			try{
+	this.getEditorInPopup = function () {
+		if (typeof tinyEditorsInPopup[_fn] !== "undefined") {
+			try {
 				tinyEditorsInPopup[_fn].getContent();
 				return tinyEditorsInPopup[_fn];
-			} 
-			catch(err){
+			}
+			catch (err) {
 				delete tinyEditorsInPopup[_fn];
 				return "undefined";
 			}
-		} else{
+		} else {
 			return "undefined";
 		}
 	};
@@ -91,13 +91,13 @@ function TinyWrapper(fieldname) {
 		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));
 	};
 
-	this.getIFrame = function(){
-		var frame_id  = this.getId() + '_ifr';
+	this.getIFrame = function () {
+		var frame_id = this.getId() + '_ifr';
 
-		if(typeof tinymce !== "undefined" && tinymce.DOM){
-			try{
+		if (typeof tinymce !== "undefined" && tinymce.DOM) {
+			try {
 				return tinymce.DOM.get(frame_id) !== null ? tinymce.DOM.get(frame_id) : "undefined";
-			} catch(e){
+			} catch (e) {
 				return "undefined";
 			}
 		} else {
@@ -105,64 +105,64 @@ function TinyWrapper(fieldname) {
 		}
 	}
 
-	this.getContent = function(forcePopup){
+	this.getContent = function (forcePopup) {
 		var _forcePopup = typeof forcePopup === "undefined" ? false : forcePopup;
-		if(!_isInlineedit){
-			if(_forcePopup){
-				try{
+		if (!_isInlineedit) {
+			if (_forcePopup) {
+				try {
 					return tinyEditorsInPopup[_fn].getContent();
-				} catch(err){
+				} catch (err) {
 					//console.log("No Editor \'" + _fn + "\' in Popup found!");
 				}
 			}
-			try{
+			try {
 				return document.getElementById(tinyEditors[_fn]).value;
-			} catch(err){
+			} catch (err) {
 				//console.log("No Editor \'" + _fn + "\' found!");
 			}
-		} else{
-			try{
+		} else {
+			try {
 				return tinyEditors[_fn].getContent();
-			} catch(err){
+			} catch (err) {
 				//console.log("No Editor \'" + _fn + "\' found!");
 			}
 		}
 	};
 
-	this.setContent = function(cnt){
-		if(!_isInlineedit){
-			try{
+	this.setContent = function (cnt) {
+		if (!_isInlineedit) {
+			try {
 				document.getElementById(tinyEditors[_fn]).value = cnt;
 				document.getElementById("div_wysiwyg_" + tinyEditors[_fn]).innerHTML = cnt;
-			} catch(err){
+			} catch (err) {
 				//console.log("No Editor \'" + _fn + "\' found!");
 			}
-			try{
+			try {
 				tinyEditorsInPopup[_fn].setContent(cnt);
-			} catch(err){
+			} catch (err) {
 				//console.log("No Editor \'" + _fn + "\' in Popup found!");
 			}
-		} else{
-			try{
+		} else {
+			try {
 				tinyEditors[_fn].setContent(cnt);
-			} catch(err){
+			} catch (err) {
 				//console.log("No Editor \'" + _fn + "\' found!");
 			}
 		}
 	};
 
-	this.on = function(sEvtObj, func){
-			var editor = this.getEditor(true);
-			try{
-				editor["on" + sEvtObj].add(func);
-			} catch(e){
-				console.log("unable to add event");
-			}
+	this.on = function (sEvtObj, func) {
+		var editor = this.getEditor(true);
+		try {
+			editor["on" + sEvtObj].add(func);
+		} catch (e) {
+			console.log("unable to add event");
+		}
 	};
 
-	this.getParam = function(param){
-		if(this.getEditor(true) !== "undefined"){
-			if(typeof this.getEditor().settings[param] == "undefined"){
+	this.getParam = function (param) {
+		if (this.getEditor(true) !== "undefined") {
+			if (typeof this.getEditor().settings[param] == "undefined") {
 				console.log("function getParam(): The parameter you tried to derive is not defined: " + param);
 				return "undefined";
 			}
@@ -171,4 +171,43 @@ function TinyWrapper(fieldname) {
 		console.log("Editor not available");
 		return "undefined";
 	};
+}
+
+function tinyMCECallRegisterDialog(win, action) {
+	if (top.isRegisterDialogHere !== undefined) {
+		try {
+			top.weRegisterTinyMcePopup(win, action);
+		} catch (err) {
+		}
+	} else {
+		if (top.opener.isRegisterDialogHere !== undefined) {
+			try {
+				top.opener.weRegisterTinyMcePopup(win, action);
+			} catch (err) {
+			}
+		} else {
+			try {
+				top.opener.tinyMCECallRegisterDialog(win, action);
+			} catch (err) {
+			}
+		}
+	}
+}
+function weWysiwygSetHiddenTextSync() {
+	weWysiwygSetHiddenText();
+	setTimeout(weWysiwygSetHiddenTextSync, 500);
+}
+
+function weWysiwygSetHiddenText(arg) {
+	//FIXME: where is weWysiwygIsIntialized set????
+	try {
+		if (weWysiwygIsIntialized) {
+			for (var i = 0; i < we_wysiwygs.length; i++) {
+				we_wysiwygs[i].setHiddenText(arg);
+			}
+		} else {
+		}
+	} catch (e) {
+		// Nothing
+	}
 }

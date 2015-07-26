@@ -64,7 +64,7 @@ class rpcCmdShell{
 
 		if(include_once($_cmdfile)){
 			$_obj = new $_classname($this);
-			$_obj->rpcCmd($this);
+			$_obj->executeRpcCmd($this);
 
 			$this->Status = $_obj->getStatus();
 
