@@ -693,7 +693,7 @@ class we_document extends we_root{
 		if($this->isMoved()){
 			we_base_file::deleteLocalFile($this->getSitePath(true));
 		}
-		return we_base_file::checkAndMakeFolder(dirname($this->getSitePath()),true) && we_base_file::save($this->getSitePath(), $doc);
+		return we_base_file::checkAndMakeFolder(dirname($this->getSitePath()), true) && we_base_file::save($this->getSitePath(), $doc);
 	}
 
 	protected function i_writeMainDir($doc){
@@ -747,17 +747,24 @@ class we_document extends we_root{
 		}
 		switch($type){
 			case 'img':
+				if(!$val && isset($attribs['id'])){
+					$val = $attribs['id'];
+				}
+
 				$img = new we_imageDocument(false);
 
 				if(isset($attribs['name'])){
 					$img->Name = $attribs['name'];
 				}
 
-				if(!$val && isset($attribs['id'])){
-					$val = $attribs['id'];
-				}
-
 				$img->initByID($val, FILE_TABLE);
+
+				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
+					case 'path':
+						return $img->Path;
+					case 'id':
+						return $img->ID;
+				}
 
 				$altField = $img->Name . we_imageDocument::ALT_FIELD;
 				$titleField = $img->Name . we_imageDocument::TITLE_FIELD;
@@ -809,7 +816,7 @@ class we_document extends we_root{
 						$img->setElement('name', $img->getElement('name'), 'attrib');
 					}
 				}
-				return $img->getHtml(false, true, $pathOnly);
+				return $img->getHtml(false, true);
 			case 'binary':
 				$bin = new we_otherDocument();
 				if(isset($attribs['name'])){
@@ -819,7 +826,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$bin->initByID($val, FILE_TABLE);
-				return array($bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, (isset($bin->elements['filesize']) ? $bin->elements['filesize']['dat'] : ''));
+				return array($bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, $bin->getElement('filesize'));
 			case 'video':
 				$video = new we_document_video();
 				if(isset($attribs['name'])){
