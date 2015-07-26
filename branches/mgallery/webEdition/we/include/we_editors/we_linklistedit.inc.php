@@ -593,17 +593,17 @@ if($ok && $cmd === "edit_link_at_class"){
 		<td>' . $_select_type . '</td>
 	</tr>
 	<tr id="ext_tr" style="display:' . (($type == we_base_link::TYPE_EXT) ? "table-row" : "none") . ';">
-		<td height="35" valign="top"><div style="margin-top:1px;">' . $extLink . '</div></td>
+		<td height="35" style="vertical-align:top"><div style="margin-top:1px;">' . $extLink . '</div></td>
 	</tr>
 	<tr id="int_tr" style="display:' . (($type == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
-		<td height="35" valign="top">' . $intLink . '</td>
+		<td height="35" style="vertical-align:top">' . $intLink . '</td>
 	</tr>
 	<tr id="mail_tr" style="display:' . (($type == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td height="35" valign="top"><div style="margin-top:2px;">' . $emailLink . '</div></td>
+		<td height="35" style="vertical-align:top"><div style="margin-top:2px;">' . $emailLink . '</div></td>
 	</tr>
 ' . (defined('OBJECT_TABLE') ? '
 	<tr id="obj_tr" style="display:' . (($type == we_base_link::TYPE_OBJ) ? "table-row" : "none") . ';">
-		<td height="35" valign="top">' . $objLink . '</td>
+		<td height="35" style="vertical-align:top">' . $objLink . '</td>
 	</tr>
 ' : '') . '
 </table>',

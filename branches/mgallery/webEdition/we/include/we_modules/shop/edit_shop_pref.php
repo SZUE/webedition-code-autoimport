@@ -128,7 +128,7 @@ $_row = 0;
 //we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, array(), false, array('id' => 'weShopVatCountry'), 200)
 
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][use_shopCats]'));
-$_htmlTable->setCol($_row, 1, array('style'=>'width:10px;'));
+$_htmlTable->setCol($_row, 1, array('style' => 'width:10px;'));
 $yesno = array(0 => 'false', 1 => 'true');
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('categorymode', $yesno, 1, $categorymode, false, array("id" => "categorymode", "onchange" => "document.getElementById('shop_holders_location').style.display = (this.value == 1 ? '' : 'none'); document.getElementById('shop_holders_location_br').style.display = (this.value == 1 ? '' : 'none');")));
 $_htmlTable->setRow($_row, array('id' => 'shop_holders_location_br', 'style' => 'display:' . ($categorymode ? '' : 'none')));
@@ -140,8 +140,8 @@ $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelectCountry('shoploc
 $_htmlTable->setCol($_row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[waehrung]'));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlTextInput('waehr', 6, $feldnamen[0]));
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[mwst]'));
-$_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont','style'=>'padding-bottom:5px;'), we_html_tools::htmlTextInput('mwst', 6, $feldnamen[1]) . '&nbsp;%');
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[mwst]'));
+$_htmlTable->setCol($_row++, 2, array('class' => 'defaultfont', 'style' => 'padding-bottom:5px;'), we_html_tools::htmlTextInput('mwst', 6, $feldnamen[1]) . '&nbsp;%');
 $_htmlTable->setCol($_row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), we_html_tools::TYPE_INFO, "100%", false, 100));
 
 $list = array('german' => 'german', 'english' => 'english', 'french' => 'french', 'swiss' => 'swiss');
@@ -190,18 +190,18 @@ if(($fields = we_unserialize($_entry))){
 	t_e('unsupported Shop-Settings found');
 }
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][customerFields]'));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][customerFields]'));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, array(), 'value', 280));
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
 $_htmlTable->setColContent($_row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields), 5), implode(',', $fields['orderCustomerFields']), true, array(), 'value', 280));
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][CountryField]'));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][CountryField]'));
 
 $countrySelect = we_class::htmlSelect('stateField', $selectFields, 1, $CLFields['stateField']);
 $countrySelectISO = we_html_forms::checkboxWithHidden($CLFields['stateFieldIsISO'], 'stateFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 
-$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'valign' => 'top'), g_l('modules_shop', '[preferences][LanguageField]'));
+$_htmlTable->setCol($_row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][LanguageField]'));
 $languageSelect = we_class::htmlSelect('languageField', $selectFields, 1, $CLFields['languageField']);
 $languageSelectISO = we_html_forms::checkboxWithHidden($CLFields['languageFieldIsISO'], 'languageFieldIsISO', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont");
 $_htmlTable->setColContent($_row++, 2, $languageSelect . '<br/>' . $languageSelectISO);

@@ -35,7 +35,7 @@ $createNavigation = we_html_button::create_button('new_item', "javascript:we_cmd
 $createNavigationGroup = we_html_button::create_button('new_folder', "javascript:we_cmd('module_navigation_new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm('EDIT_NAVIGATION'));
 $content = $createNavigation . '<br/>' . $createNavigationGroup;
 
-$_starttable->setCol($_row++, 0, array("align" => "center"), $content);
+$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
 
 echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
  (isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "");

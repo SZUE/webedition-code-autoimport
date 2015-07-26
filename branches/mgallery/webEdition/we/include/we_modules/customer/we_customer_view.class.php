@@ -955,7 +955,7 @@ self.close();');
 
 				$format = (isset($format) ? $format : g_l('weEditorInfo', '[date_format]'));
 
-				return we_html_tools::getDateInput2('we_date_' . $field . '%s', $value, false, $format, '', "weSelect", false, $this->settings->getSettings('start_year')) ;
+				return we_html_tools::getDateInput2('we_date_' . $field . '%s', $value, false, $format, '', "weSelect", false, $this->settings->getSettings('start_year'));
 			case 'password':
 				return we_html_tools::htmlTextInput($field, 32, $value, 32, 'onchange="top.content.setHot();" style="width:240px;" autocomplete="off" ', 'password');
 			case 'img':
@@ -968,10 +968,10 @@ self.close();');
 				return '
 <table class="weEditTable">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $img->getHtml() . we_html_element::htmlHidden($field, $imgId) . '</td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $img->getHtml() . we_html_element::htmlHidden($field, $imgId) . '</td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' .
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' .
 					we_html_button::create_button('fa:btn_select_image,fa-lg fa-exchange,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image', '" . $imgId . "', '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','','" . $wecmdenc3 . "','', '', '" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true) . we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';refreshForm();", true) .
 					'</td>
 	</tr>
@@ -985,7 +985,7 @@ self.close();');
 	private function getCommonTable(array $common, $isAll){
 		$table = new we_html_table(array('width' => 500, 'height' => 50, 'class' => 'customer'), 1, 2);
 		$c = 0;
-		$table->setRow(0, array('valign' => 'top'));
+		$table->setRow(0, array('style' => 'vertical-align:top'));
 		foreach($common as $pk => $pv){
 			if($this->customer->isInfoDate($pk)){
 				$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
@@ -1027,7 +1027,7 @@ self.close();');
 			}
 			if(++$c % 2 == 0){
 				$table->addRow();
-				$table->setRow($c / 2, array('valign' => 'top'));
+				$table->setRow($c / 2, array('style' => 'vertical-align:top'));
 			}
 		}
 		return array(
@@ -1040,7 +1040,7 @@ self.close();');
 	private function getOtherTable(array $other, $isAll){
 		$table = new we_html_table(array('width' => 500, 'height' => 50, 'class' => 'customer'), 1, 2);
 		$c = 0;
-		$table->setRow(0, array('valign' => 'top'));
+		$table->setRow(0, array('style' => 'vertical-align:top'));
 		foreach($other as $k => $v){
 			$isEncField = $this->settings->retriveFieldAdd($k, 'encrypt');
 			$control = $this->getHTMLFieldControl($k, $v, $isEncField);
@@ -1048,7 +1048,7 @@ self.close();');
 				$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable($control, $k . ($isEncField ? $this->getEncryptionHandling($k, $v != '') : '')));
 				if(++$c % 2 == 0){
 					$table->addRow();
-					$table->setRow($c / 2, array('valign' => 'top'));
+					$table->setRow($c / 2, array('style' => 'vertical-align:top'));
 				}
 			}
 		}
@@ -1172,7 +1172,7 @@ self.close();');
 
 					$table = new we_html_table(array("width" => 500, "height" => 50, "class" => 'customer'), 1, 2);
 					$c = 0;
-					$table->setRow(0, array("valign" => "top"));
+					$table->setRow(0, array('style' => 'vertical-align:top;'));
 					foreach($branch as $k => $v){
 						$isEncField = $this->settings->retriveFieldAdd($bk . '_' . $k, 'encrypt');
 						$control = $this->getHTMLFieldControl($bk . '_' . $k, $v, $isEncField);
@@ -1183,7 +1183,7 @@ self.close();');
 
 						if(++$c % 2 == 1){
 							$table->addRow();
-							$table->setRow($c / 2, array("valign" => "top"));
+							$table->setRow($c / 2, array('style' => 'vertical-align:top;'));
 						}
 					}
 					$parts[] = array(

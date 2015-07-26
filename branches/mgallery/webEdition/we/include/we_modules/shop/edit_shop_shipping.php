@@ -231,7 +231,7 @@ $parts = array(
 	<tr>
 		<td>' . we_class::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 280) . '</td>
 		<td width="10"></td>
-		<td valign="top">'
+		<td style="vertical-align:top">'
 		. we_html_button::create_button("new_entry", 'javascript:we_cmd(\'newEntry\');') .
 		'<div style="margin:5px;"></div>' .
 		we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete\')') .

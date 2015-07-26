@@ -25,7 +25,7 @@
 function printHeaderHTML($ret){
 	return '
 		<table class="selectorHeaderTable">
-			<tr valign="middle">
+			<tr style="vertical-align:middle">
 				<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
 				<td class="lookin"><select name="lookin" id="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
 						<option value="/">/</option>
@@ -76,7 +76,7 @@ function printFooterTable($ret, $filter, $currentName){
 				</tr>' : '') . '
 			<tr>
 				<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
-				<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, we_base_request::_(we_base_request::FILE, "currentName"), "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
+				<td class="defaultfont" style="text-align:left">' . we_html_tools::htmlTextInput("fname", 24, we_base_request::_(we_base_request::FILE, "currentName"), "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
 			</tr>
 		</table>
 		<div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>

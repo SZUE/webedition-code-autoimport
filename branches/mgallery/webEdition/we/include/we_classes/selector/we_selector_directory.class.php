@@ -249,7 +249,7 @@ top.selectIt();';
 	protected function printHeaderTable($extra = '', $append = false){
 		return '
 <table class="selectorHeaderTable">
-	<tr valign="middle">
+	<tr style="vertical-align:middle">
 		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
 		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select>' .
 			((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
@@ -573,7 +573,7 @@ top.selectFile(top.currentID);
 							$thumbpath = $result['Path'];
 						}
 
-						$out .= "<tr><td valign='middle' class='image' height='160' align='center' bgcolor='#EDEEED'><a href='" . $result['Path'] . "' target='_blank' align='center'><img src='" . $thumbpath . "' border='0' id='previewpic'></a></td></tr>" .
+						$out .= "<tr><td style='vertical-align:middle;text-align:center;' class='image' height='160' bgcolor='#EDEEED'><a href='" . $result['Path'] . "' target='_blank' style='text-align:center'><img src='" . $thumbpath . "' border='0' id='previewpic'></a></td></tr>" .
 							$previewDefauts . "
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]') . ": </td><td>" . $imagesize[0] . " x " . $imagesize[1] . " px </td></tr>
 <tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[filesize]') . ": </td><td>" . $filesize . "</td></tr>";

@@ -77,7 +77,7 @@ class we_selector_category extends we_selector_file{
 	protected function printHeaderTable(){
 		return '
 <table class="selectorHeaderTable">
-	<tr valign="middle">
+	<tr style="vertical-align:middle">
 		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
 		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select></td>
 		<td>' . we_html_button::create_button("root_dir", "javascript:top.setRootDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
@@ -360,7 +360,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 <table id="footer">
 	<tr>
 		<td class="defaultfont description">' . g_l('fileselector', '[catname]') . '</td>
-		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
+		<td class="defaultfont" style="text-align:left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
 	</tr>
 </table><div id="footerButtons">' . ($okBut ? we_html_button::position_yes_no_cancel($okBut, null, $cancelbut) : $cancelbut) . '</div>';
 	}

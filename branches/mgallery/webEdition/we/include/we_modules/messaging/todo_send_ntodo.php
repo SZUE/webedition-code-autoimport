@@ -94,17 +94,17 @@ if (opener && opener.top && opener.top.content) {
 	$res['err'] = array_map('oldHtmlspecialchars', $res['err']);
 
 
-	$tbl = '<table align="center" cellpadding="7" cellspacing="3">
+	$tbl = '<table style="text-align:center" cellpadding="7" cellspacing="3">
 		    <tr>
-		      <td class="defaultfont" valign="top">' . $s_action . ':</td>
+		      <td class="defaultfont" style="vertical-align:top">' . $s_action . ':</td>
 		      <td class="defaultfont"><ul><li>' . (empty($res['ok']) ? g_l('modules_messaging', '[nobody]') : implode("</li>\n<li>", $res['ok'])) . '</li></ul></td>
 		    </tr>
 		    ' . (empty($res['failed']) ? '' : '<tr>
-		        <td class="defaultfont" valign="top">' . $n_action . ':</td>
+		        <td class="defaultfont" style="vertical-align:top">' . $n_action . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode("</li>\n<li>", $res['failed']) . '</li></ul></td>
 		    </tr>') .
 		(empty($res['err']) ? '' : '<tr>
-		        <td class="defaultfont" valign="top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
+		        <td class="defaultfont" style="vertical-align:top">' . g_l('modules_messaging', '[occured_errs]') . ':</td>
 		        <td class="defaultfont"><ul><li>' . implode('</li><li>', $res['err']) . '</li></ul></td>
 		    </tr>') . '
 	    </table>

@@ -38,7 +38,7 @@ $_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3)
 
 include(WE_MODULES_PATH . $mod . "/mod_home.inc.php"); // $content should be defined in mod_home.inc.php
 
-$_starttable->setCol($_row++, 0, array("align" => "center"), $content);
+$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
 
 echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
  (isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "");

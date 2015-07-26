@@ -54,7 +54,7 @@ function getDateSelector($_label, $_name, $_btn){
 function getNoteList($_sql, $bDate, $bDisplay){
 	global $DB_WE;
 	$DB_WE->query($_sql);
-	$_notes = '<table width="100%" class="default">';
+	$_notes = '<table style="width:100%;padding:0px 5px;" class="default">';
 	$_rcd = 0;
 	$_fields = array(
 		'ID',
@@ -115,13 +115,9 @@ function getNoteList($_sql, $bDate, $bDisplay){
 				break;
 		}
 		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
-		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
-		<td width="15" height="20" valign="middle" nowrap><i class="fa fa-dot-circle-o" style="color:' . $color . '"></i></td>
-		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
-		<td width="60" valign="middle" class="middlefont" align="center">' . $showDate . '</td>
-		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
-		<td valign="middle" class="middlefont">' . CheckAndConvertISObackend($showTitle) . '</td>
-		<td width="5">' . we_html_tools::getPixel(5, 1) . '</td>
+		<td style="width:15px;height:20px;vertical-align:middle" nowrap><i class="fa fa-dot-circle-o" style="color:' . $color . '"></i></td>
+		<td style="width:60px;padding-left:5px;vertical-align:middle;text-align:center" class="middlefont">' . $showDate . '</td>
+		<td style="padding-left:5px;vertical-align:middle" class="middlefont">' . CheckAndConvertISObackend($showTitle) . '</td>
 		</tr>';
 		$_rcd++;
 	}
@@ -227,12 +223,8 @@ $oTblValidity->setCol(0, 0, null, getDateSelector(g_l('cockpit', '[from]'), "f_V
 $oTblValidity->setCol(0, 1, null, we_html_tools::getPixel(10, 1));
 $oTblValidity->setCol(0, 2, null, getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until"));
 $oTblPeriod = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 2);
-$oTblPeriod->setCol(0, 0, array(
-	"class" => "middlefont"
-	), $sctValid);
-$oTblPeriod->setCol(0, 1, array(
-	"align" => "right"
-	), $oTblValidity->getHTML());
+$oTblPeriod->setCol(0, 0, array("class" => "middlefont"), $sctValid);
+$oTblPeriod->setCol(0, 1, array("style" => "text-align:right"), $oTblValidity->getHTML());
 
 // Edit note prio settings
 $rdoPrio = array(
@@ -261,12 +253,12 @@ $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button
 // Edit note dialog
 $oTblProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 9, 2);
 $oTblProps->setCol(0, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[valid]') . '&nbsp;');
-$oTblProps->setCol(0, 1, array("colspan" => 2, "align" => "right"), $oTblPeriod->getHTML());
+$oTblProps->setCol(0, 1, array("colspan" => 2, "style" => "text-align:right"), $oTblPeriod->getHTML());
 $oTblProps->setCol(2, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[prio]'));
 $oTblProps->setCol(2, 1, null, $oTblPrio->getHTML());
 $oTblProps->setCol(4, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[title]'));
 $oTblProps->setCol(4, 1, null, we_html_tools::htmlTextInput("props_title", 255, "", 255, "", "text", "100%", 0));
-$oTblProps->setCol(6, 0, array("class" => "middlefont", "valign" => "top", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[note]'));
+$oTblProps->setCol(6, 0, array("class" => "middlefont", 'style' => 'vertical-align:top;padding-bottom:8px;'), g_l('cockpit', '[note]'));
 $oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea(array(
 		'name' => 'props_text',
 		'id' => 'previewCode',
@@ -277,9 +269,7 @@ $oTblProps->setCol(8, 0, array("colspan" => 3), $buttons);
 
 // Button: add note
 $oTblBtnProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
-$oTblBtnProps->setCol(0, 0, array(
-	"align" => "right"
-	), we_html_button::create_button("fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o", "javascript:displayNote();", false, 0, 0));
+$oTblBtnProps->setCol(0, 0, array("style" => "text-align:"), we_html_button::create_button("fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o", "javascript:displayNote();", false, 0, 0));
 
 // Table with the note list
 $oPad = new we_html_table(

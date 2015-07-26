@@ -218,14 +218,14 @@ foreach($output as $n => $v){
 				$n = replace_bad_str($n);
 				$n2 = replace_bad_str($n2);
 				$we_txt .= $n . '[' . $n2 . ']: ' . $foo . "\n" . ($foo ? '' : "\n");
-				$we_html .= '<tr><td align="right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
+				$we_html .= '<tr><td style="text-align:right"><b>' . $n . '[' . $n2 . ']:</b></td><td>' . $foo . '</td></tr>';
 			}
 		}
 	} else {
 		$foo = replace_bad_str($v);
 		$n = replace_bad_str($n);
 		$we_txt .= $n . ': ' . $foo . "\n" . ($foo ? '' : "\n");
-		$we_html .= '<tr><td valign="top" align="right"><b>' . $n . ':</b></td><td>' . ($n === 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';
+		$we_html .= '<tr><td style="vertical-align:top;text-align:right"><b>' . $n . ':</b></td><td>' . ($n === 'email' ? '<a href="mailto:' . $foo . '">' . $foo . '</a>' : nl2br($foo)) . '</td></tr>';
 	}
 }
 

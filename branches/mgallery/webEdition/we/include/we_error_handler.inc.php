@@ -199,27 +199,27 @@ function display_error_message($type, $message, $file, $line, $skipBT = false){
 	}
 
 	// Build the error table
-	echo '<br /><table align="center" bgcolor="#FFFFFF" cellpadding="4" style="border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
-		<tr bgcolor="#f7f7f7" valign="top">
+	echo '<br /><table bgcolor="#FFFFFF" cellpadding="4" style="text-align:center;border: 1px solid #265da6;" width="95%"><colgroup><col width="10%"/><col width="90%" /></colgroup>
+		<tr bgcolor="#f7f7f7" style="vertical-align:top">
 			<td colspan="2" style="border-bottom: 1px solid #265da6;">An error occurred while executing this script.</td>
 		</tr>
-	<tr valign="top">
+	<tr style="vertical-align:top">
 		<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Error type:</td>
 		<td style="border-bottom: 1px solid #265da6;"><i>' . translate_error_type($type) . '</i></td>
 	</tr>
-	<tr valign="top">
+	<tr style="vertical-align:top">
 			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Error message:</td>
 			<td style="border-bottom: 1px solid #265da6;"><i><pre>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $message) . '</pre></i></td>
 	</tr>
-	<tr valign="top">
+	<tr style="vertical-align:top">
 			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Script name:</td>
 			<td style="border-bottom: 1px solid #265da6;"><i>' . str_replace($_SERVER['DOCUMENT_ROOT'], "", $file) . '</i></td>
 	</tr>
-	<tr valign="top">
+	<tr style="vertical-align:top">
 			<td style="white-space:nowrap;border-bottom: 1px solid #265da6; border-right: 1px solid #265da6;text-weight:bold;">Line number:</td>
 			<td style="border-bottom: 1px solid #265da6;"><i>' . $line . '</i></td>
 	</tr>
-	<tr valign="top">
+	<tr style="vertical-align:top">
 			<td style="white-space:nowrap;border-right: 1px solid #265da6;text-weight:bold;">Backtrace</td>
 			<td>' . str_replace(array("\r", "\n"), '', nl2br($detailedError)) . '</td>
 	</tr>

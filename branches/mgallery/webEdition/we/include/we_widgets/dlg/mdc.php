@@ -149,7 +149,7 @@ function getHTMLCategory(){
 				'style' => 'width:420px;height:60px;border:#AAAAAA solid 1px;margin-bottom:5px;'
 	)));
 
-	$table->setCol(4, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:removeAllCats()') . $addbut);
+	$table->setCol(4, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:removeAllCats()') . $addbut);
 
 	return $table->getHtml() . we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 		we_html_element::jsElement($variant_js);

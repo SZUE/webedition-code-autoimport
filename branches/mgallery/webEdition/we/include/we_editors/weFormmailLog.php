@@ -66,7 +66,7 @@ if(permissionhandler::hasPerm('administrator')){
 				we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . "?start=" . ($start - $count)) : //bt_back
 				we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 			) .
-			 '</td><td align="center" class="defaultfont" width="120" style="padding-right:20px;"><b>' . ($start + 1) . "&nbsp;-&nbsp;" .
+			 '</td><td class="defaultfont" width="120" style="text-align:center;padding-right:20px;"><b>' . ($start + 1) . "&nbsp;-&nbsp;" .
 			min($num_all, $start + $count) .
 			"&nbsp;" . g_l('global', '[from]') . " " . ($num_all) . "</b></td><td>" .
 			($next < $num_all ?

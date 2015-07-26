@@ -386,7 +386,7 @@ function changeit(value, rowNr){
 	<tr>
 		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 		<td width="155"></td>
-		<td width="188" align="right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:search(true);") . '</td>
+		<td width="188" style="text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:search(true);") . '</td>
 		<td></td>
 	</tr>
 	</table>
@@ -669,12 +669,12 @@ function changeit(value, rowNr){
 		return '
 <table border="0" style="background-color:#fff;" width="100%" cellpadding="5">
 <tr>
-	<td valign="top" style="width:15px;border-bottom:1px solid #AFB0AF;">' . we_html_tools::getPixel(15, 1) . '</td>
-	<td valign="top" style="width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
-	<td valign="top" style="width:15em;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
-	<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
-	<td valign="top" style="width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
-	<td valign="top" style="width:auto;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[3]["dat"] . '</td>
+	<td style="vertical-align:top;width:15px;border-bottom:1px solid #AFB0AF;">' . we_html_tools::getPixel(15, 1) . '</td>
+	<td style="vertical-align:top;width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
+	<td style="vertical-align:top;width:15em;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
+	<td style="vertical-align:top;width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
+	<td style="vertical-align:top;width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
+	<td style="vertical-align:top;width:auto;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[3]["dat"] . '</td>
 </tr>
 </table>
 <div id="scrollContent" style="background-color:#fff;width:100%">' .
@@ -702,19 +702,19 @@ function changeit(value, rowNr){
 
 	private static function tblListRow($content){
 		//$anz = count($content) - 1;
-		return '<td valign="top" style="width:15px;"></td>
-<td valign="top" style="width:110px;height:30px;" class="middlefont">' . ((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
-<td valign="top" style="width:15em;" class="middlefont">' . ((!empty($content[1]["dat"])) ? $content[1]["dat"] : "&nbsp;") . '</td>
-<td valign="top" style="width:120px;" class="middlefont">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</td>
-<td valign="top" style="width:120px;" class="middlefont">' . ((!empty($content[4]["dat"])) ? $content[4]["dat"] : "&nbsp;") . '</td>
-<td valign="top" rowspan="2" style="line-height:20px;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[3]["dat"])) ? $content[3]["dat"] : "&nbsp;") . '</td>
+		return '<td style="vertical-align:top;width:15px;"></td>
+<td style="vertical-align:top;width:110px;height:30px;" class="middlefont">' . ((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
+<td style="vertical-align:top;width:15em;" class="middlefont">' . ((!empty($content[1]["dat"])) ? $content[1]["dat"] : "&nbsp;") . '</td>
+<td style="vertical-align:top;width:120px;" class="middlefont">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</td>
+<td style="vertical-align:top;width:120px;" class="middlefont">' . ((!empty($content[4]["dat"])) ? $content[4]["dat"] : "&nbsp;") . '</td>
+<td rowspan="2" style="vertical-align:top;line-height:20px;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[3]["dat"])) ? $content[3]["dat"] : "&nbsp;") . '</td>
 </tr>
 <tr>
 <td style="width:15px;border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(15, 1) . '</td>
-<td valign="top" colspan="2" style="width:220px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[5]["dat"]) ) ? $content[5]["dat"] : "&nbsp;") . ((!empty($content[7]["dat"])) ? $content[7]["dat"] : "&nbsp;") . '</td>
-<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[6]["dat"])) ? $content[6]["dat"] : "&nbsp;") . '</td>
-<td valign="top" style="width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(120, 1) . '</td>
-<td valign="top" style="width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont"></td>';
+<td colspan="2" style="vertical-align:top;width:220px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[5]["dat"]) ) ? $content[5]["dat"] : "&nbsp;") . ((!empty($content[7]["dat"])) ? $content[7]["dat"] : "&nbsp;") . '</td>
+<td style="vertical-align:top;width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[6]["dat"])) ? $content[6]["dat"] : "&nbsp;") . '</td>
+<td style="vertical-align:top;width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(120, 1) . '</td>
+<td style="vertical-align:top;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont"></td>';
 	}
 
 	public function getHTMLforVersions($content){

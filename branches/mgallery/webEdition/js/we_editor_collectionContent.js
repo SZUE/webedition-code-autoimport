@@ -178,24 +178,31 @@ weCollectionEdit = {
 			ctrls = item.lastChild;
 			ctrls.addEventListener('mouseover', function(){t.overMouse('btns', view, ctrls);}, false);
 			ctrls.addEventListener('mouseout', function(){t.outMouse('btns', view, ctrls);}, false);
-			space = elem.childNodes[1];
-			space.addEventListener('drop', function(e){t.dropOnItem('space', view, e, space);}, false);
-			space.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
-			space.addEventListener('dragenter', function(e){t.enterDrag('space', view, e, space);}, false);
-			space.addEventListener('dragleave', function(e){t.leaveDrag('space', view, e, space);}, false);
+
+			if(this.isDragAndDrop){
+				space = elem.childNodes[1];
+				space.addEventListener('drop', function(e){t.dropOnItem('space', view, e, space);}, false);
+				space.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
+				space.addEventListener('dragenter', function(e){t.enterDrag('space', view, e, space);}, false);
+				space.addEventListener('dragleave', function(e){t.leaveDrag('space', view, e, space);}, false);
+			}
 		} else {
 			item = elem;
 			input = document.getElementById('yuiAcInputItem_' + item.id.substr(10));
 			input.addEventListener('mouseover', function(){item.draggable=false;});
 			input.addEventListener('mouseout', function(){item.draggable=true;});
 		}
-		item.addEventListener('dragleave', function(e){t.leaveDrag('item', view, e, item);}, false);
-		item.addEventListener('drop', function(e){t.dropOnItem('item', view, e, item);}, false);
-		item.addEventListener('dragenter', function(e){t.enterDrag('item', view, e, item);}, false);
-		item.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
-		item.addEventListener('dragstart', function(e){t.startMoveItem(e, view);}, false);
-		item.addEventListener('dragend', function(e){t.dragEnd(e);}, false);
 
+		if(this.isDragAndDrop){
+			item.draggable = true;
+			item.style.cursor = 'move';
+			item.addEventListener('dragleave', function(e){t.leaveDrag('item', view, e, item);}, false);
+			item.addEventListener('drop', function(e){t.dropOnItem('item', view, e, item);}, false);
+			item.addEventListener('dragenter', function(e){t.enterDrag('item', view, e, item);}, false);
+			item.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
+			item.addEventListener('dragstart', function(e){t.startMoveItem(e, view);}, false);
+			item.addEventListener('dragend', function(e){t.dragEnd(e);}, false);
+		}
 	},
 
 	doClickUp: function(elem){
@@ -345,9 +352,12 @@ weCollectionEdit = {
 				replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write);
 	
 			//TODO: list fallback!
-			//cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
-			//cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
-			//blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, cmd2);
+			if(item.id === -1){
+				cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
+				cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
+				cmd3 = weCmdEnc(weCollectionEdit.selectorCmds[2].replace(/##INDEX##/g, t.maxIndex));
+			}
+			blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, cmd2).replace(/##CMD3##/g, cmd3);
 			div.innerHTML = blank;
 
 			if(item.id === -1){
@@ -356,6 +366,9 @@ weCollectionEdit = {
 					inners[i].style.display = 'none';
 				}
 				div.getElementsByClassName('btn_edit')[0].disabled = 1;
+				div.getElementsByClassName('divBtnSelect')[0].style.display  = 'block';
+			} else {
+				div.getElementsByClassName('previewDiv')[0].innerHTML = '';
 			}
 
 			if(item.ct !== 'image/*' && item.id !== -1){
@@ -590,11 +603,12 @@ weCollectionEdit = {
 				if(this.view === 'grid'){
 					switch(type){
 						case 'item':
-							var c = this.ct[this.view],
-								index;
+							var c = this.ct[this.view];
+
+							this.dd.counter++;
 							for(var i = 0; i < c.childNodes.length; i++){
-								//el.firstChild.style.border = '1px solid #006db8';
-								//el.firstChild.style.backgroundColor = 'white';
+								c.childNodes[i].firstChild.border = '1px solid #006db8';
+								c.childNodes[i].firstChild.style.backgroundColor = '#ffffff';
 							}
 							break;
 						case 'space':
@@ -630,7 +644,6 @@ weCollectionEdit = {
 					}
 					switch(type){
 						case 'item':
-
 							if(data[0] === 'dragFolder'){
 								el.style.border = '1px dotted #ffff00';
 								el.firstChild.style.backgroundColor = '#ffffee';
@@ -662,7 +675,7 @@ weCollectionEdit = {
 		}
 	},
 			
-	leaveDrag: function(type, view, evt, elem){
+	leaveDrag: function(type, view, evt, elem){ // TODO: use dd.counter for grid too
 		if(this.view === 'list'){
 			this.dd.counter--;
 			if(this.dd.counter === 0){
@@ -676,8 +689,11 @@ weCollectionEdit = {
 				case 'dragFolder':
 					switch(type){
 						case 'item':
-							elem.style.border = '1px solid #006db8';
-							elem.style.backgroundColor = '#ffffff';
+							this.dd.counter--;
+							if(this.dd.counter === 0){
+								elem.style.border = '1px solid #006db8';
+								elem.style.backgroundColor = '#ffffff';
+							}
 							break;
 						case 'space':
 							this.hideSpace(elem);

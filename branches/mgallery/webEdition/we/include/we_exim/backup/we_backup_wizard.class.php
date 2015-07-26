@@ -1073,7 +1073,7 @@ function startStep(){
 		$head = STYLESHEET;
 		$body = '';
 
-		$table = new we_html_table(array('class' => 'default', "align" => "right"), 1, 3);
+		$table = new we_html_table(array('class' => 'default', "style" => "text-align:right"), 1, 3);
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
 			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', '[working]'));

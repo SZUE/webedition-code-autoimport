@@ -1053,7 +1053,9 @@ abstract class we_root extends we_class{
 
 	protected function i_getLangLinks(){
 		we_loadLanguageConfig();
-		$langkeys = array_keys(getWeFrontendLanguagesForBackend());
+		$_languages = getWeFrontendLanguagesForBackend();
+		$langkeys = array_keys($_languages);
+		$langkeys = array_keys($_languages);
 		if(LANGLINK_SUPPORT){
 			$isFolder = $this instanceof we_folder;
 			$isObject = (defined('OBJECT_FILES_TABLE') ? $this->Table == OBJECT_FILES_TABLE || $this->Table == OBJECT_TABLE : false);
@@ -1071,6 +1073,9 @@ abstract class we_root extends we_class{
 		foreach($langkeys as $langkey){
 			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
 		}
+		foreach($langkeys as $langkey){
+			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
+		}
 	}
 
 	private function getLinkReplaceArray(){
@@ -1084,58 +1089,58 @@ abstract class we_root extends we_class{
 		}
 		//don't stress index:
 		$replace = $this->getLinkReplaceArray();
-		$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
 		foreach($this->elements as $k => $v){
 			if($this->i_isElement($k)){
 				if((!isset($v['type']) || $v['type'] != 'vars') && (!empty($v['dat']) || !empty($v['bdid']) || !empty($v['ffname']) )){
 
+					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
 					$data = array();
 					foreach($tableInfo as $t){
 						$fieldName = $t['name'];
-						if($fieldName === 'ID' || ($k === 'data' && $this->isBinary())){
-							continue;
-						}
 						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
+						if($k === 'data' && $this->isBinary()){
+							break;
+						}
 						if($fieldName === 'Dat' && !empty($v['ffname'])){
 							$v['type'] = 'formfield';
 							$val = serialize($v);
 							// Artjom garbage fix
 						}
 
-						switch(isset($v['type']) ? $v['type'] : ''){
-							case '':
+						if(!isset($v['type']) || !$v['type']){
 							$v['type'] = 'txt';
-								break;
-							case 'date':
-							$val = sprintf('%016d', $val);
-								break;
 						}
+						if($v['type'] === 'date'){
+							$val = sprintf('%016d', $val);
+						}
+						if($fieldName != 'ID'){
 							$data[$fieldName] = is_array($val) ? serialize($val) : $val;
 						}
-					if(!$data){
-						continue;
 					}
+					if($data){
+						$data = we_database_base::arraySetter($data);
 						$key = $v['type'] . '_' . $k;
 						if(isset($replace[$key])){
 							$cid = $replace[$key];
-						$data['ID'] = $cid;
+							$data.=',ID=' . $cid;
 							unset($replace[$key]);
 						} else {
 							$cid = 0;
 						}
-					$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . we_database_base::arraySetter($data));
+						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
 						$cid = $cid ? : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
 						if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 									'DID' => $this->ID,
 									'CID' => $cid,
 									'Name' => $k,
-								'Type' => $v['type'],
+									'Type' => $v["type"],
 									'DocumentTable' => stripTblPrefix($this->Table)
 								))
 							)){
 							//this should never happen
 							return false;
+						}
 					}
 				}
 			}

@@ -129,10 +129,10 @@ function we_tag_img($attribs){
 		$id = $id? : '';
 		$out = '
 <table class="weEditTable padding2 spacing2">
-	<tr><td class="weEditmodeStyle" colspan="2" align="center">' . $out . '<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" /></td></tr>' .
+	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $out . '<input onchange="_EditorFrame.setEditorIsHot(true);" type="hidden" name="' . $fname . '" value="' . $id . '" /></td></tr>' .
 				($showinputs ? //  only when wanted
 						'
-	<tr><td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
+	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center;width: 180px;">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[alt_kurz]') . ':&nbsp;</td>
@@ -160,7 +160,7 @@ function we_tag_img($attribs){
 				}
 				$thumbnails .= '</select>';
 				$out .= '
-	<tr><td class="weEditmodeStyle" align="center" colspan="2" style="width: 180px;">
+	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center;width: 180px;">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td class="weEditmodeStyle" style="color: black; font-size: 12px; font-family: ' . g_l('css', '[font_family]') . ';">' . g_l('weClass', '[thumbnails]') . ':&nbsp;</td>
@@ -170,7 +170,7 @@ function we_tag_img($attribs){
 			}
 		}
 		$out .= '
-	<tr><td class="weEditmodeStyle" colspan="2" align="center">';
+	<tr><td class="weEditmodeStyle" colspan="2" style="text-align:center">';
 
 		$_editButton = ($id ?
 						//	show edit_image_button

@@ -86,7 +86,7 @@ if($weFileupload->processFileRequest()){
 	$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 	$buttonsTable = new we_html_table(array('class' => 'default','style' => 'width:100%;'), 1, 2);
 	$buttonsTable->setCol(0, 0, array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
-	$buttonsTable->setCol(0, 1, array('align' => 'right'), $buttons);
+	$buttonsTable->setCol(0, 1, array('style' => 'text-align:right'), $buttons);
 
 	$content = '<table class="default">' .
 			($maxsize ? ('<tr><td style="padding-bottom:10px;">' . $weFileupload->getHtmlAlertBoxes() . '</td></tr>') : '') . '

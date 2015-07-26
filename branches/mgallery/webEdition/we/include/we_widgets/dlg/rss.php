@@ -52,7 +52,7 @@ function htmlClipElement($smalltext, $text, $content){
 	');
 
 	$oClip = new we_html_table(array('class' => 'default'), 1, 3);
-	$oClip->setCol(0, 0, array("width" => 21, "valign" => "top", "align" => "right", "id" => "btn_" . $unique), we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();'));
+	$oClip->setCol(0, 0, array("width" => 21, 'style' => 'vertical-align:top;text-align:right', "id" => "btn_" . $unique), we_html_button::create_button(we_html_button::DIRRIGHT, 'javascript:clip_' . $unique . '();'));
 	$oClip->setCol(0, 1, array("width" => 10, "nowrap" => "nowrap"));
 	$oClip->setCol(0, 2, null, we_html_element::htmlSpan(array(
 			"id" => $unique,
@@ -92,10 +92,8 @@ $oBtnNewFeed->setCol(0, 4, null, $btnDeleteTopRssFeed);
 $oNewFeed = new we_html_table(array("width" => 390, 'class' => 'default'), 3, 1);
 $oNewFeed->setCol(
 	0, 0, null, $oRemTopFeeds . we_html_element::htmlBr() . $oIptNewTitle . we_html_element::htmlBr() . $oIptNewUri);
-$oNewFeed->setCol(1, 0, array('style'=>'width:5px;'));
-$oNewFeed->setCol(2, 0, array(
-	"align" => "right"
-	), $oBtnNewFeed->getHTML());
+$oNewFeed->setCol(1, 0, array('style' => 'width:5px;'));
+$oNewFeed->setCol(2, 0, array("style" => "text-align:right"), $oBtnNewFeed->getHTML());
 
 $rssUri = $oIptUri . we_html_element::htmlBr() . $oTblSctRss . we_html_element::htmlBr() . htmlClipElement(
 		g_l('cockpit', '[show_edit_toprssfeeds]'), g_l('cockpit', '[hide_edit_toprssfeeds]'), $oNewFeed->getHTML());
@@ -119,14 +117,14 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 
 $oRssContR = new we_html_table(array("height" => "100%", 'class' => 'default'), 2, 3);
 $oRssContR->setCol(0, 0, array(
-	"valign" => "middle", "class" => "defaultfont"
+	'style' => 'vertical-align:middle;', "class" => "defaultfont"
 	), g_l('cockpit', '[limit_entries]'));
-$oRssContR->setCol(0, 1, array('style'=>'width:5px;'));
+$oRssContR->setCol(0, 1, array('style' => 'width:5px;'));
 $oRssContR->setCol(0, 2, array(
-	"valign" => "middle"
+	'style' => 'vertical-align:middle;'
 	), $oSctNumEntries->getHTML());
 $oRssContR->setCol(1, 0, array(
-	"colspan" => 3, "valign" => "bottom"
+	"colspan" => 3, 'style' => 'vertical-align:bottom;'
 	), $oChbxContPubDate . $oChbxContCategory);
 
 $oSelectRssCont = new we_html_table(array('class' => 'default'), 1, 2);
@@ -134,7 +132,7 @@ $oSelectRssCont->setCol(0, 0, array(
 	"width" => 165
 	), $oChbxContTitle . $oChbxContLink . $oChbxContDesc . $oChbxContEnc);
 $oSelectRssCont->setCol(0, 1, array(
-	"height" => "100%", "valign" => "top"
+	"height" => "100%", 'style' => 'vertical-align:top;'
 	), $oRssContR->getHTML());
 
 $rssConf = $oRemRssConf . we_html_element::htmlBr() . htmlClipElement(
@@ -161,7 +159,7 @@ $oTitleTb->setCol(1, 0, array(
 $oEditTb = new we_html_table(array('class' => 'default'), 6, 2);
 $oEditTb->setCol(0, 0, array("width" => 165), $oChbxTb[0]);
 $oEditTb->setCol(1, 0, array(
-	"width" => 165, "valign" => "top"
+	"width" => 165, 'style' => 'vertical-align:top;'
 	), $oChbxTb[1]);
 $oEditTb->setCol(1, 1, array(
 	"width" => 165

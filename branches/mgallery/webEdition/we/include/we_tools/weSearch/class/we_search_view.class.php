@@ -127,7 +127,6 @@ class we_search_view{
 
 	function processCommands(){
 		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid');
-		t_e('x');
 		switch(($cmd = we_base_request::_(we_base_request::STRING, 'cmd', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))){
 			case 'tool_weSearch_new' :
 			case 'tool_weSearch_new_forDocuments' :
@@ -570,12 +569,12 @@ weSearch.g_l = {
 				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTextMediaSearch ? true : false, "searchForTextMediaSearch", g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForTitleMediaSearch ? true : false, "searchForTitleMediaSearch", g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
 				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden($this->Model->searchForMetaMediaSearch ? true : false, "searchForMetaMediaSearch", 'In Metadaten', false, 'defaultfont', '')); //FIXME: G_L()
-				//$_table->setCol($row++, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+				//$_table->setCol($row++, 1, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 				return $_table->getHtml();
 		}
 		$_table->setCol($row, 0, array('style' => 'padding-right:20px;'), we_html_tools::getPixel(380, 10));
-		$_table->setCol($row++, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$_table->setCol($row++, 1, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -780,7 +779,7 @@ weSearch.g_l = {
 			$_table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden($this->Model->search_tables_advSearch[VERSIONS_TABLE] ? true : false, 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
-		$_table->setCol(2, 2, array('align' => 'right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$_table->setCol(2, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $_table->getHtml();
 	}
@@ -2078,7 +2077,7 @@ weSearch.g_l = {
 <tr>
 <td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinputAdvSearch();") . '</td>
 <td>' . we_html_tools::getPixel(10, 10) . '</td>
-<td colspan="7" align="right"></td>
+<td colspan="7" style="text-align:right"></td>
 </tr>
 </table></div>' .
 			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
@@ -2268,7 +2267,7 @@ weSearch.g_l = {
 <tr>
  <td>' . we_html_button::create_button(we_html_button::ADD, "javascript:weSearch.newinputAdvSearch();") . '</td>
  <td>' . we_html_tools::getPixel(10, 10) . '</td>
- <td colspan="7" align="right"></td>
+ <td colspan="7" style="text-align:right"></td>
 </tr>
 </table></div>' .
 			we_html_element::jsElement("weSearch.calendarSetup(" . $this->searchclass->height . ");");
@@ -2322,8 +2321,8 @@ weSearch.g_l = {
 </colgroup>'
 			) .
 			'<tr style="height:20px;">
-	<td style="">&nbsp;</td>
-	<td style="">&nbsp;</td>';
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>';
 
 		for($f = 0; $f < $anz; $f++){
 			$out .= '<td  class="' . $class . '">' . $headline[$f]["dat"] . '</td>';
@@ -2366,7 +2365,7 @@ weSearch.g_l = {
 				}
 				return $out . '</tbody></table>';
 			case self::VIEW_ICONS:
-				$out = '<table class="default" width="100%"><tr><td align="center">';
+				$out = '<table class="default" width="100%"><tr><td style="text-align:center">';
 
 				for($m = 0; $m < $x; $m++){
 					$out .= $whichSearch !== self::SEARCH_MEDIA ? ('<div style="float:left;width:180px;height:100px;margin:20px 0px 0px 20px;z-index:1;">' .
@@ -2396,27 +2395,27 @@ weSearch.g_l = {
 					<table style="font-size:10px;margin-left:150px;width:200px;display:inline-table;">
 					<tr>
 					<td colspan="2" style="font-size:12px;padding-bottom:2em;">' . $content[$n][9]["dat"] . '</td></tr>
-					<tr><td valign="top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
-					<tr><td valign="top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
+					<tr><td style="vertical-align:top">' . g_l('searchtool', '[idDiv]') . ': </td><td>' . $content[$n][16]["dat"] . '</td></tr>
+					<tr><td style="vertical-align:top">' . g_l('searchtool', '[dateityp]') . ': </td><td>' . $content[$n][8]["dat"] . '</td></tr>';
 			switch($content[$n][12]["dat"]){
 				case we_base_ContentTypes::IMAGE:
-					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
+					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[aufloesung]') . ': </td><td>' . $content[$n][7]["dat"] . '</td></tr>';
 				//no break;
 				case we_base_ContentTypes::APPLICATION:
-					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
+					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[groesse]') . ': </td><td>' . $content[$n][6]["dat"] . '</td></tr>';
 					break;
 				case we_base_ContentTypes::WEDOCUMENT:
-					$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[template]') . ': ' . '</td>
+					$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[template]') . ': ' . '</td>
 							<td>' . $content[$n][14]["dat"] . '</td></tr>';
 					break;
 			}
-			$outDivs .= '<tr><td valign="top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
-					<tr><td valign="top">' . g_l('searchtool', '[created]') . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
-					<tr><td valign="top">' . g_l('searchtool', '[modified]') . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
+			$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[creator]') . ': </td><td>' . $content[$n][13]["dat"] . '</td></tr>
+					<tr><td style="vertical-align:top">' . g_l('searchtool', '[created]') . ': </td><td>' . $content[$n][3]["dat"] . '</td></tr>
+					<tr><td style="vertical-align:top">' . g_l('searchtool', '[modified]') . ': </td><td>' . $content[$n][4]["dat"] . '</td></tr></table>
 
 				<div style="padding:0px 0px 6px 15px;width:360px;">';
 			if($content[$n][11]["dat"]){
-				$outDivs .= '<table class="default" style="font-size:10px;"><tr><td valign="top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
+				$outDivs .= '<table class="default" style="font-size:10px;"><tr><td style="vertical-align:top">' . g_l('searchtool', '[beschreibung]') . ':</td><td>' . we_html_tools::getPixel(
 						15, 5) . '</td><td>' .
 					we_base_util::shortenPath($content[$n][11]["dat"], 150) .
 					'</td></tr></table>';
@@ -2508,9 +2507,9 @@ weSearch.g_l = {
 	private static function tblListRowIconView($content, $class, $i, $whichSearch){
 		return '<table width="100%" class="default ' . $class . '">
 <tr>
-	<td width="75" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+	<td width="75" style="vertical-align:top;text-align:center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((!empty($content[0]["dat"])) ? $content[0]["dat"] : "&nbsp;") . '</td>
-		<td width="105" valign="top" style="line-height:20px;">
+		<td width="105" style="vertical-align:top;line-height:20px;">
 		<div style="padding-bottom:2em;">' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</div>
 		<span>' . ((!empty($content[1]["dat"])) ? $content[1]["dat"] : "&nbsp;") . '</span></td>
 </tr></table>';
@@ -2519,12 +2518,12 @@ weSearch.g_l = {
 	private static function tblListRowMediaIconView($content, $class, $i, $whichSearch){
 		return '<table width="100%" class="default ' . $class . '">
 <tr>
-	<td width="100%" valign="top" align="center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
+	<td width="100%" style="vertical-align:top;text-align:center" onmouseover="showImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\',1)" onmouseout="hideImageDetails(\'ImgDetails_' . $i . '_' . $whichSearch . '\')">' .
 			((!empty($content[5]["dat"])) ? $content[5]["dat"] : "&nbsp;") .
 			'</td>
 </tr>
 <tr>
-		<td width="100%" valign="top" style="line-height:20px;text-align:center">
+		<td width="100%" style="vertical-align:top;line-height:20px;text-align:center">
 		<span>' . ((!empty($content[2]["dat"])) ? $content[2]["dat"] : "&nbsp;") . '</span>
 </tr></table>';
 	}

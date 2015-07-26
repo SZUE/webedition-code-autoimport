@@ -8,7 +8,7 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   CreatorID int(11) unsigned NOT NULL default '0',
   ModifierID int(11) unsigned NOT NULL default '0',
   CreationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  ModDate TIMESTAMP NOT NULL,
+  ModDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   RestrictOwners tinyint(1) unsigned NOT NULL default '0',
   Owners varchar(255) NOT NULL default '',
   OwnersReadOnly text NOT NULL,

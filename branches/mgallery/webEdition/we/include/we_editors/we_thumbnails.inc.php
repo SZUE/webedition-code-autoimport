@@ -250,8 +250,8 @@ function init() {
 			// Create thumbnails list
 			$_thumbnails_table = new we_html_table(array('class' => 'default'), 1, 2);
 
-			$_thumbnails_table->setCol(0, 0, array( 'style'=>"padding-right:10px;"), we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
-			$_thumbnails_table->setCol(0, 1, array('valign' => 'top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') .we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
+			$_thumbnails_table->setCol(0, 0, array('style' => "padding-right:10px;"), we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
+			$_thumbnails_table->setCol(0, 1, array('style' => 'vertical-align:top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
 
 			// Build dialog
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);
@@ -275,7 +275,7 @@ function init() {
 
 			$_thumbnail_specify_table = new we_html_table(array('class' => 'default withSpace'), 3, 2);
 
-			$_thumbnail_specify_table->setCol(0, 0, array('class' => 'defaultfont','style'=>'padding-right:10px;'), g_l('thumbnails', '[width]') . ':');
+			$_thumbnail_specify_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('thumbnails', '[width]') . ':');
 			$_thumbnail_specify_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('thumbnails', '[height]') . ':');
 			$_thumbnail_specify_table->setCol(2, 0, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_text_cell'), g_l('thumbnails', '[quality]') . ':');
 
@@ -291,7 +291,7 @@ function init() {
 
 			$_thumbnail_option_table = new we_html_table(array('class' => 'default withSpace'), 4, 1);
 
-			$_thumbnail_option_table->setCol(0, 0,null, we_html_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '', ($_thumbnail_ratio == -1)));
+			$_thumbnail_option_table->setCol(0, 0, null, we_html_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '', ($_thumbnail_ratio == -1)));
 			$_thumbnail_option_table->setCol(1, 0, null, we_html_forms::checkbox(1, (($_thumbnail_maximize == -1 || $_thumbnail_maximize == 0) ? false : true), 'Maxsize', g_l('thumbnails', '[maximize]'), false, 'defaultfont', '', ($_thumbnail_maximize == -1)));
 			$_thumbnail_option_table->setCol(2, 0, null, we_html_forms::checkbox(1, (($_thumbnail_interlace == -1 || $_thumbnail_interlace == 0) ? false : true), 'Interlace', g_l('thumbnails', '[interlace]'), false, 'defaultfont', '', ($_thumbnail_interlace == -1)));
 			$_thumbnail_option_table->setCol(3, 0, null, we_html_forms::checkbox(1, (($_thumbnail_fitinside == -1 || $_thumbnail_fitinside == 0) ? false : true), 'Fitinside', 'Fit inside', false, 'defaultfont', '', ($_thumbnail_fitinside == -1)));

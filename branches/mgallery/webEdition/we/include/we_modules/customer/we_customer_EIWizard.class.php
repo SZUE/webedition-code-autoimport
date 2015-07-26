@@ -253,7 +253,7 @@ class we_customer_EIWizard{
 
 					break;
 				case self::TYPE_CSV:
-					$fileformattable = new we_html_table(array('style'=>'margin-top:10px;'), 4, 1);
+					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 4, 1);
 
 					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
@@ -272,7 +272,7 @@ class we_customer_EIWizard{
 
 			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", "space" => 0, "noline" => 1);
 
-			$table = we_html_element::htmlDiv(array('class' => 'default','style'=>'margin-left:20px;'), we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", $this->topFrame . ".export_to='" . self::EXPORT_SERVER . "'"));
+			$table = we_html_element::htmlDiv(array('class' => 'default', 'style' => 'margin-left:20px;'), we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", $this->topFrame . ".export_to='" . self::EXPORT_SERVER . "'"));
 			$parts[] = array("space" => $_space, "noline" => 1,
 				"headline" => $table,
 				"html" =>
@@ -617,8 +617,8 @@ class we_customer_EIWizard{
 		//$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 		$tmptable->setCol(0, 0, array(), $fileUploader->getHtmlAlertBoxes());
 
-		//$tmptable->setCol(2, 0, array("valign" => "middle"), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
-		$tmptable->setCol(1, 0, array("valign" => "middle"), $fileUploader->getHTML());
+		//$tmptable->setCol(2, 0, array('style'=>'vertical-align:middle;'), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
+		$tmptable->setCol(1, 0, array('style' => 'vertical-align:middle;'), $fileUploader->getHTML());
 
 		$table = new we_html_table(array('class' => 'default withSpace'), 2, 2);
 		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont", "switchImportFrom(this)"));
@@ -967,7 +967,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLExportFooter($step = 1){
-		$content = new we_html_table(array('class' => 'default', "width" => 575, "align" => "right"), 1, 2);
+		$content = new we_html_table(array('class' => 'default', "width" => 575, "style" => "text-align:right"), 1, 2);
 
 		if($step == 1){
 			$buttons = we_html_button::position_yes_no_cancel(
@@ -996,7 +996,7 @@ class we_customer_EIWizard{
 					we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=export_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 			);
 		}
-		$content->setCol(0, 1, array("align" => "right"), $buttons);
+		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ''), we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
@@ -1010,7 +1010,7 @@ class we_customer_EIWizard{
 	}
 
 	function getHTMLImportFooter($step = 1){
-		$content = new we_html_table(array('class' => 'default', "width" => 575, "align" => "right"), 1, 2);
+		$content = new we_html_table(array('class' => 'default', "width" => 575, "style" => "text-align:right"), 1, 2);
 
 		switch($step){
 			case "1":
@@ -1055,7 +1055,7 @@ class we_customer_EIWizard{
 						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';"), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 				);
 		}
-		$content->setCol(0, 1, array("align" => "right"), $buttons);
+		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ""), we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
@@ -1740,7 +1740,7 @@ document.we_form.filter_count.value="' . $count . '";');
 
 		$c++;
 		$table->addRow();
-		$table->setCol($c, 0, array("colspan" => $colspan,'style'=>'padding-top:5px;'), $plus . $trash);
+		$table->setCol($c, 0, array("colspan" => $colspan, 'style' => 'padding-top:5px;'), $plus . $trash);
 
 		return $js .
 			//(array("name"=>"filter_count","value"=>$count)).

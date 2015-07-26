@@ -250,7 +250,7 @@ function setScrollTo(){
 			$advsearch->setCol($c, 0, array(), $branch->getHtml());
 			$advsearch->setCol($c, 1, array(), $field->getHtml());
 			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, array(), "value", 60));
-			$advsearch->setCol($c, 3, array("width" => 190), "<table class='default'><tr><td>" . $value_i . $value_date_i . "</td><td id='dpzell_$i' style='display:none; padding-left:5px;' align='right'>$btnDatePicker</td></tr></table>");
+			$advsearch->setCol($c, 3, array("width" => 190), "<table class='default'><tr><td>" . $value_i . $value_date_i . "</td><td id='dpzell_$i' style='display:none; padding-left:5px;text-align:right'>$btnDatePicker</td></tr></table>");
 			++$c;
 		}
 
@@ -260,7 +260,7 @@ function setScrollTo(){
 		);
 
 		$search->setCol(1, 0, array(), we_html_element::htmlHidden("count", $count) . $advsearch->getHtml());
-		$search->setCol(3, 0, array("align" => "right", "colspan" => $colspan, 'style' => 'padding-top:5px;'), "<table class='default'><tr><td>" .
+		$search->setCol(3, 0, array("colspan" => $colspan, 'style' => 'text-align:right;padding-top:5px;'), "<table class='default'><tr><td>" .
 			we_html_element::htmlDiv(array("class" => "defaultgray"), g_l('modules_customer', '[simple_search]')) .
 			we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:we_cmd('switchToSimple')") .
 			$search_but

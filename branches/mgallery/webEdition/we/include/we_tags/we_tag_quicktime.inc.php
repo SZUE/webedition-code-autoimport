@@ -61,7 +61,7 @@ function we_tag_quicktime($attribs){
 		<td class="weEditmodeStyle">' . $out . '<input type="hidden" name="' . $fname . '" value="' . $GLOBALS['we_doc']->getElement($name, "bdid") . '"/></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" align="center">' . $button . $clear_button . '</td></tr></table>';
+		<td class="weEditmodeStyle" style="text-align:center">' . $button . $clear_button . '</td></tr></table>';
 	}
 	//	When in SEEM - Mode add edit-Button to tag - textarea
 	return $out;

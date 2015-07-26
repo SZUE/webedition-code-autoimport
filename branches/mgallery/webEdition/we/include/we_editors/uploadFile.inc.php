@@ -138,7 +138,7 @@ if($weFileupload->processFileRequest()){
 	);
 	$buttonsTable = new we_html_table(array('class' => 'default', 'style' => 'width:100%;'), 1, 2);
 	$buttonsTable->setCol(0, 0, array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
-	$buttonsTable->setCol(0, 1, array('align' => 'right'), $_buttons);
+	$buttonsTable->setCol(0, 1, array('style' => 'text-align:right'), $_buttons);
 	$_buttons = $buttonsTable->getHtml();
 	?>
 

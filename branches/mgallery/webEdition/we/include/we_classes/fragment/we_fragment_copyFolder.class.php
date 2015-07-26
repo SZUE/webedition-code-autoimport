@@ -714,7 +714,7 @@ function fsubmit(e) {
 					'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
 
-		$table->setCol(4, 0, array('colspan' => 2, 'align' => 'right', 'style'=>'padding-top:5px;'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
+		$table->setCol(4, 0, array('colspan' => 2, 'style'=>'text-align:right;padding-top:5px;'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . $js;
 	}

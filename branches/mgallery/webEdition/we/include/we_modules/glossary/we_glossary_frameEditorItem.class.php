@@ -202,7 +202,7 @@ function submitForm() {
 
 		$col = 0;
 		$table2 = new we_html_table(array('class' => 'default'), 1, 6);
-		$table2->setRow(0, array("valign" => "middle"));
+		$table2->setRow(0, array('style' => 'vertical-align:middle;'));
 		if($ShowUnpublish){
 			$table2->setCol(0, $col++, array("nowrap" => null), $UnpublishButton);
 		}

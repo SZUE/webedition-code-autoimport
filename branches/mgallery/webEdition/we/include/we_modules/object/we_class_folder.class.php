@@ -543,7 +543,7 @@ class we_class_folder extends we_folder{
 	<td style="width:10px;"></td>
 	<td>' . we_html_tools::htmlSelect('objsearch[' . $i . ']', $values, 1, $this->searchclass->objsearch[$i]) . '</td>
 	<td style="width:10px;"></td>
-	<td align="right">' . $button . '</td>
+	<td style="text-align:right">' . $button . '</td>
 </tr>';
 			} elseif(isset($this->searchclass->objsearchField) && is_array($this->searchclass->objsearchField) && isset($this->searchclass->objsearchField[$i]) && substr($this->searchclass->objsearchField[$i], 0, 4) === "date"){
 				$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), 'DefaultValues', $this->DB_WE));
@@ -583,7 +583,7 @@ class we_class_folder extends we_folder{
 					we_html_tools::htmlSelect('objsearch[' . $i . '][minute]', $minute, 1, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]['minute']) ? $this->searchclass->objsearch[$i]['minute'] : date("i"))) .
 					'</td>
 	<td style="width:10px;"></td>
-	<td align="right">' . $button . '</td>
+	<td style="text-align:right">' . $button . '</td>
 </tr>';
 			} else {
 				$out .= '
@@ -596,7 +596,7 @@ class we_class_folder extends we_folder{
 	<td></td>
 	<td>' . we_html_tools::htmlTextInput("objsearch[" . $i . "]", 30, (isset($this->searchclass->objsearch) && is_array($this->searchclass->objsearch) && isset($this->searchclass->objsearch[$i]) ? $this->searchclass->objsearch[$i] : ''), "", "", "text", 200) . '</td>
 	<td></td>
-	<td align="right">' . $button . '</td>
+	<td style="text-align:right">' . $button . '</td>
 </tr>';
 			}
 		}
@@ -608,7 +608,7 @@ class we_class_folder extends we_folder{
 <tr>
 	<td colspan="2"></td>
 	<td colspan="3">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
-	<td colspan="4" align="right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:sub();") . '</td>
+	<td colspan="4" style="text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:sub();") . '</td>
 </tr>
 </form>
 </table>';
@@ -649,14 +649,14 @@ class we_class_folder extends we_folder{
 	<table class="default">
 	<tr>
 		<td class="defaultgray" style="margin-bottom:12px;">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
-		<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
+		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	</table>' .
 			we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '
 	<table class="default">
 	<tr>
 		<td style="margin-bottom:12px;margin-top:12px;">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button("selectAllObjects", "javascript: " . $javascriptAll) : "") . '</td>
-		<td align="right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
+		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	<tr>
 		<td colspan="2" style="margin-bottom:12px;">

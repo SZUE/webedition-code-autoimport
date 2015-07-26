@@ -28,7 +28,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET)
 	echo '
 <table width="100%" class="default defaultfont">
 <tr><td colspan="2"><strong>' . sprintf(g_l('moduleActivation', '[headline]'), $GLOBALS['moduleName']) . '</strong></td></tr>
-<tr><td valign="top"><img src="' . IMAGE_DIR . "alert.gif" . '" /></td><td class="defaultfont">' . g_l('moduleActivation', '[content]') . '</td></tr>
+<tr><td style="vertical-align:top"><img src="' . IMAGE_DIR . "alert.gif" . '" /></td><td class="defaultfont">' . g_l('moduleActivation', '[content]') . '</td></tr>
 </table>';
 	?>
 </body>

@@ -68,7 +68,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		$fileselect = '
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
-			<div style="">
+			<div>
 				<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 26px">
 					<input class="fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : '') . '" type="file" id="' . $this->name . '" name="fileselect[]" multiple="multiple" />
 					' . $butBrowse . '
@@ -111,7 +111,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 				<div id="div_rowButtons_WEFORMNUM">
 					<table class="default"><tbody><tr>
 							<td style="width:6em;text-align:right;margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</td>
-							<td align="middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
+							<td style="text-align:middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
 							<td>
 								<div class="fileInputWrapper" style="vertical-align: bottom; display: inline-block;">
 									<input class="fileInput fileInputList fileInputHidden" type="file" id="fileInput_uploadFiles_WEFORMNUM" name="" />
@@ -125,7 +125,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 				</div>
 				<div style="display: none" id="div_rowProgress_WEFORMNUM">
 					<table class="default"><tbody><tr>
-						<td valign="middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" valign="top"></div><div class="progress_image_bg" style="width:90px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" valign="top"></div></td>
+						<td style="vertical-align:middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" style="vertical-align:top"></div><div class="progress_image_bg" style="width:90px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" style="vertical-align:top"></div></td>
 						<td class="small" style="width:3em;color:#006699;font-weight:bold;margin-left:8px;" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</td>
 						<td><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
 					</tr></tbody></table>

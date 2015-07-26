@@ -121,7 +121,7 @@ function we_cmd() {
 
 		if($headline){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, array('align' => 'right', 'class' => 'header_shop'), '<span style="margin-left:15px">' . $headline . '</span>');
+			$iconBarTable->setCol(0, $c++, array('style' => 'text-align:right', 'class' => 'header_shop'), '<span style="margin-left:15px">' . $headline . '</span>');
 		}
 
 		$body = we_html_element::htmlBody(array('id' => 'iconBar', 'marginwidth' => 0, 'topmargin' => 5, 'marginheight' => 5, 'leftmargin' => 0), $iconBarTable->getHTML());

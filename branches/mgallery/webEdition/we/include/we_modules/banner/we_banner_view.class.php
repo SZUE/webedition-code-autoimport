@@ -675,7 +675,7 @@ var perms={
 				array("dat" => g_l('modules_banner', '[all]')),
 				array("dat" => $GLOBALS["lv"]->getAllviews()),
 				array("dat" => $GLOBALS["lv"]->getAllclicks()),
-				array("dat" => $GLOBALS["lv"]->getAllrate() . "%", "align" => "right")
+				array("dat" => $GLOBALS["lv"]->getAllrate() . "%", "style" => "text-align:right")
 			)
 		);
 		while($GLOBALS["lv"]->next_record()){
@@ -683,7 +683,7 @@ var perms={
 				array("dat" => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f("WE_PATH") . '" target="_blank">') . $GLOBALS["lv"]->f("WE_PATH") . ($GLOBALS["lv"]->f("page") ? '' : '</a>'), FILE_TABLE),
 				array("dat" => $GLOBALS["lv"]->f("views")),
 				array("dat" => $GLOBALS["lv"]->f("clicks")),
-				array("dat" => $GLOBALS["lv"]->f("rate") . "%", "align" => "right")
+				array("dat" => $GLOBALS["lv"]->f("rate") . "%", "style" => "text-align:right")
 			);
 		}
 

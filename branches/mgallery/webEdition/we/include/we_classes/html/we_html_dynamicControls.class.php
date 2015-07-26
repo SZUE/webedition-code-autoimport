@@ -289,7 +289,7 @@ function toggle_all() {
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-<tr valign="middle" bgcolor="' . $bgcolor . '" style="line-height:24px;">
+<tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
 	<td width="30" nowrap style="padding-left:5px;">
 		<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
@@ -431,7 +431,7 @@ function toggle_all() {
 
 				// Continue building header of group
 				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr valign="middle" bgcolor="' . $bgcolor . '" style="line-height:24px;">
+					<tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
 						<td width="30" nowrap style="padding-left:5px;">
 							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
 
@@ -477,7 +477,7 @@ function toggle_all() {
 					}
 					$_contentTable[$main_titles[$_groups_key]] .= '
 <tr>
-	<td valign="top" align="left" style="padding-bottom:15px;"><span  id="headline_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</span></td>
+	<td style="text-align:left;vertical-align:top;padding-bottom:15px;"><span  id="headline_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</span></td>
 	<td class="defaultfont">' . $c["html"] . '</td>
 </tr>';
 					if($i < (count($multiboxes[$_groups_key]) - 1) && (!isset($c["noline"]))){

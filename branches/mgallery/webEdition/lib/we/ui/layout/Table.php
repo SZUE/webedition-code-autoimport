@@ -263,12 +263,9 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 							$colspan = abs($this->_cellAttributes[$row][$col]['colspan']);
 						}
 						$attribs = $this->_cellAttributes[$row][$col];
-						if(!isset($attribs['valign'])){
-							$attribs['valign'] = 'top';
-						}
 						$html .= getHtmlTag('td', $attribs, '', false, true);
 					} else {
-						$html .= '<td valign="top">';
+						$html .= '<td style="vertical-align:top">';
 					}
 					if(isset($this->_cellHTML[$row][$col])){
 						$html .= $this->_cellHTML[$row][$col];

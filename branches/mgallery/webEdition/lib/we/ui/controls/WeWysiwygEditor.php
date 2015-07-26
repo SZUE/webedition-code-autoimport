@@ -463,7 +463,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 
 		$this->_layouttableObj = new we_ui_layout_Table();
 		$this->_layouttableObj->setWidth($this->getWidth());
-		$this->_layouttableObj->setCellAttributes(array('align' => 'right'), 1);
+		$this->_layouttableObj->setCellAttributes(array('style' => 'text-align:right'), 1);
 		$this->_labelObj = new we_ui_controls_Label();
 		$this->_labelObj->setId($this->getId() . '_Label');
 		$this->_labelObj->setText($this->getLabelText());

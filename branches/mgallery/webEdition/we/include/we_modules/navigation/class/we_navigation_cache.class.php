@@ -113,7 +113,7 @@ class we_navigation_cache{
 		}
 		if($force){
 			foreach(glob(WE_CACHE_PATH . 'navigation_*') as $file){
-				unlink(WE_CACHE_PATH . $file);
+				unlink($file);
 			}
 		}
 	}

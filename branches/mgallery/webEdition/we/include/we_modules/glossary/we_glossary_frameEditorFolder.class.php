@@ -68,7 +68,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 				"html" => '<table width="550" class="default defaultfont">
 						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[' . $key . '_description]') . '</td></tr>
 						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td></tr>
-						<tr><td align="right">' . $button . '</td></tr>
+						<tr><td style="text-align:right">' . $button . '</td></tr>
 						</table>',
 				"space" => 120);
 		}

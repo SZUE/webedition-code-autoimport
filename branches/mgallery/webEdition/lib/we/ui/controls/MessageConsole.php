@@ -109,7 +109,7 @@ EOS;
 <div>
 	<table>
 	<tr>
-		<td valign="middle">
+		<td style="vertical-align:middle">
 		<span class="$headerClass" id="messageConsoleMessage$this->_consoleName" style="display: none;">--</span>
 		</td>
 		<td>

@@ -99,7 +99,7 @@ class we_voting_frames extends we_modules_frame{
 
 		/* $table = new we_html_table(array("width" => '100%', 'class' => 'default'), 3, 1);
 
-		  $table->setCol(0, 0, array("valign" => "top", "class" => "small"),
+		  $table->setCol(0, 0, array('style'=>'vertical-align:top", "class" => "small"),
 		  we_html_element::htmlB(
 		  g_l('modules_voting', ($this->View->voting->IsFolder ? '[group]' : '[voting]')) . ':&nbsp;' . $this->View->voting->Text .
 
@@ -273,7 +273,7 @@ class we_voting_frames extends we_modules_frame{
 		$cmd1 = "document.forms[0].elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_owner',top.allPaths,top.allIsFolder);");
-		$table->setCol(2, 0, array('colspan' => 2, 'align' => 'right'), we_html_element::htmlHiddens(array(
+		$table->setCol(2, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_element::htmlHiddens(array(
 				$idname => '',
 				$textname => '')) .
 			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "',''," . $cmd1 . ",'" . $wecmdenc5 . "','','',1);")
@@ -527,7 +527,7 @@ class we_voting_frames extends we_modules_frame{
 		$table = new we_html_table(array('id' => 'RestrictIPDiv', 'style' => 'display: ' . ($this->View->voting->RestrictIP ? 'block' : 'none') . ';'), 2, 1);
 		$table->setCol(0, 0, array('style' => 'padding-left:10px;'), we_html_element::htmlDiv(array('id' => 'iptable', 'class' => 'blockWrapper', 'style' => 'width: ' . ($this->_width_size - 10) . 'px; height: 60px; border: #AAAAAA solid 1px;padding: 5px;')));
 
-		$table->setCol(1, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); removeAll()") .
+		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); removeAll()") .
 			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); newIp()")
 		);
 
@@ -951,7 +951,7 @@ function refreshTexts(){
 					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) .
-				we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
+				we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 				($next > 0 ?
@@ -1081,7 +1081,7 @@ function refreshTexts(){
 					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) .
-				we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
+				we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 				($next > 0 ?
@@ -1195,7 +1195,7 @@ function refreshTexts(){
 					we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
 					we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 				) .
-				we_html_tools::getPixel(23, 1) . "</td><td align='center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
+				we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 				($size - $next) .
 				"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 				($next > 0 ?

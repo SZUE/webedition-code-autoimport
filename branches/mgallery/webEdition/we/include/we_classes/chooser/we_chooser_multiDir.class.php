@@ -125,7 +125,7 @@ class we_chooser_multiDir{
 
 		return '<table class="default" width="' . $this->width . '">
 <tr><td><div class="multichooser">' . $out . '</div></td></tr>
-' . ($this->addbut ? '<tr><td align="right" style="padding-top:5px;">' . $this->addbut . '</td></tr>' : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
+' . ($this->addbut ? '<tr><td style="text-align:right;padding-top:5px;">' . $this->addbut . '</td></tr>' : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
 	}
 
 }

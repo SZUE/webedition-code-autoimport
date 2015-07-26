@@ -257,16 +257,15 @@ function writeBody(d) {
 													'</tr>' :
 													'')
 									/*)*/;
-
 					for (i = 0; i < entries.length; i++) {
 						var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true;"';
 						var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 						body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
 										'<td class="selector selectoricon">' + getTreeIcon('we/category') + '</td>' +
-													/*'<td class="selectoricon">' + getTreeIcon(entries[i].isFolder ? 'folder' : 'we/category') + '</td>'*/ +
-										(we_editCatID == entries[i].ID ?
+										/*'<td class="selectoricon">' + getTreeIcon(entries[i].isFolder ? 'folder' : 'we/category') + '</td>'*/
+										((we_editCatID !== undefined && we_editCatID == entries[i].ID) ?
 														'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-														'<td class="selector filename"' + (we_editCatID ? '' : '') + ' title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
+														'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
 														) +
 										'</td></tr>';
 					}

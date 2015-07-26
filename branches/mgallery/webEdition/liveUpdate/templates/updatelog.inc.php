@@ -95,9 +95,9 @@ if($this->Data['allEntries']){ // entries exist
 			}
 
 			$content .= '<tr' . $classStr . '>
-		<td valign="top">' . $logEntry['date'] . '</td>
+		<td style="vertical-align:top">' . $logEntry['date'] . '</td>
 		<td>' . $logEntry['action'] . '</td>
-		<td valign="top">' . $logEntry['version'] . '</td>
+		<td style="vertical-align:top">' . $logEntry['version'] . '</td>
 	</tr>';
 		}
 

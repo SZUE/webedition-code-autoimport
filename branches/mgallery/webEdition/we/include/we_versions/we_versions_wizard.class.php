@@ -71,32 +71,14 @@ abstract class we_versions_wizard{
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_html_table(array('class' => 'default'), 1, 4);
-			$content2->setCol(0, 0, array(
-				"id" => "prev",
-				"style" => "display:table-cell; padding-left:10px;",
-				"align" => "right"
-				), $prevButton);
-			$content2->setCol(0, 1, array(
-				"id" => "nextCell",
-				"style" => "display:table-cell; padding-left:10px;",
-				"align" => "right"
-				), $nextButton);
-			$content2->setCol(0, 2, array(
-				"id" => "refresh", "style" => "display:none; padding-left:10px;", "align" => "right"
-				), $refreshButton);
-			$content2->setCol(0, 3, array(
-				"id" => "cancel",
-				"style" => "display:table-cell; padding-left:10px;",
-				"align" => "right"
-				), $cancelButton);
+			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;text-align:right"), $prevButton);
+			$content2->setCol(0, 1, array("id" => "nextCell", "style" => "display:table-cell; padding-left:10px;text-align:right"), $nextButton);
+			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton);
+			$content2->setCol(0, 3, array("id" => "cancel", "style" => "display:table-cell; padding-left:10px;text-align:right"), $cancelButton);
 
 			$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
-			$content->setCol(0, 0, array(
-				"id" => "progr", "style" => "display:none", "align" => "left"
-				), $pb);
-			$content->setCol(0, 1, array(
-				"align" => "right"
-				), $content2->getHtml());
+			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none;text-align:left"), $pb);
+			$content->setCol(0, 1, array("style" => "text-align:right"), $content2->getHtml());
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
@@ -895,9 +877,9 @@ set_button_state(false);';
 		foreach($docIds as $k => $v){
 			$out .= '
 <tr class="defaultfont">
-	<td align="center">' . $k . '</td>
-	<td align="center">' . we_base_util::shortenPath($v['Path'], 55) . '</td>
-	<td align="center">' . $v['ContentType'] . '</td>
+	<td style="text-align:center">' . $k . '</td>
+	<td style="text-align:center">' . we_base_util::shortenPath($v['Path'], 55) . '</td>
+	<td style="text-align:center">' . $v['ContentType'] . '</td>
 </tr>';
 		}
 		$out .= '</table>
@@ -1019,9 +1001,9 @@ set_button_state(false);';
 		foreach($docIds as $k => $v){
 			$out .= '
 <tr class="defaultfont">
-	<td align="center">' . $k . '</td>
-	<td align="center">' . we_base_util::shortenPath($v['Path'], 55) . '</td>
-	<td align="center">' . $v['ContentType'] . '</td>
+	<td style="text-align:center">' . $k . '</td>
+	<td style="text-align:center">' . we_base_util::shortenPath($v['Path'], 55) . '</td>
+	<td style="text-align:center">' . $v['ContentType'] . '</td>
 </tr>';
 		}
 		$out .= '</table>

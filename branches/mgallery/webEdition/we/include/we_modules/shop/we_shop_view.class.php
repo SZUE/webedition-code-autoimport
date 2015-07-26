@@ -489,19 +489,19 @@ function submitForm() {
 			if(isset($_customer['Forename'])){
 				$customerFieldTable .='
 		<tr height="25">
-			<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_customer', '[Forname]') . ':</td>
-			<td class="defaultfont" valign="top" width="40" height="25"></td>
+			<td class="defaultfont" width="86" style="vertical-align:top" height="25">' . g_l('modules_customer', '[Forname]') . ':</td>
+			<td class="defaultfont" style="vertical-align:top" width="40" height="25"></td>
 			<td width="20" height="25"></td>
-			<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Forename'] . '</td>
+			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $_customer['Forename'] . '</td>
 		</tr>';
 			}
 			if(isset($_customer['Surname'])){
 				$customerFieldTable .='
 		<tr height="25">
-			<td class="defaultfont" width="86" valign="top" height="25">' . g_l('modules_customer', '[Surname]') . ':</td>
-			<td class="defaultfont" valign="top" width="40" height="25"></td>
+			<td class="defaultfont" width="86" style="vertical-align:top" height="25">' . g_l('modules_customer', '[Surname]') . ':</td>
+			<td class="defaultfont" style="vertical-align:top" width="40" height="25"></td>
 			<td width="20" height="25"></td>
-			<td class="defaultfont" valign="top" colspan="6" height="25">' . $_customer['Surname'] . '</td>
+			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $_customer['Surname'] . '</td>
 		</tr>';
 			}
 
@@ -521,10 +521,10 @@ function submitForm() {
 					}
 					$customerFieldTable .='
 		<tr height="25">
-			<td class="defaultfont" width="86" valign="top" height="25">' . $key . ':</td>
-			<td class="defaultfont" valign="top" width="40" height="25"></td>
+			<td class="defaultfont" width="86" style="vertical-align:top" height="25">' . $key . ':</td>
+			<td class="defaultfont" style="vertical-align:top" width="40" height="25"></td>
 			<td width="20" height="25"></td>
-			<td class="defaultfont" valign="top" colspan="6" height="25">' . $value . '</td>
+			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $value . '</td>
 		</tr>';
 				}
 			}
@@ -536,45 +536,45 @@ function submitForm() {
 					$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field, 4), $_REQUEST[$field]);
 					$orderDataTable .= '
 			<tr height="25">
-				<td class="defaultfont" width="86" valign="top" height="25">' . ($field === 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
-				<td class="defaultfont" valign="top" width="40" height="25"><b>' . ($field === 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
+				<td class="defaultfont" width="86" style="vertical-align:top" height="25">' . ($field === 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
+				<td class="defaultfont" style="vertical-align:top" width="40" height="25"><b>' . ($field === 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
 				<td width="20" height="25"></td>
 				<td width="98" class="defaultfont" height="25">' . $weShopStatusMails->FieldsText[$field] . '</td>
 				<td height="25" width="14"></td>
-				<td width="14" class="defaultfont" align="right" height="25">
+				<td width="14" class="defaultfont" style="text-align:right" height="25">
 					<div id="div_Calendar_' . $field . '">' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '</div>
 					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
 				</td>
 				<td height="25" width="10"></td>
-				<td width="102" valign="top" height="25">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
+				<td width="102" style="vertical-align:top" height="25">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
 				<td width="300" height="25"  class="defaultfont">' . $EMailhandler . '</td>
 			</tr>';
 				}
 			}
 			$orderDataTable .= '
 			<tr height="5">
-				<td class="defaultfont" width="86" valign="top" height="5"></td>
-				<td class="defaultfont" valign="top" height="5" width="40"></td>
+				<td class="defaultfont" width="86" style="vertical-align:top" height="5"></td>
+				<td class="defaultfont" style="vertical-align:top" height="5" width="40"></td>
 				<td height="5" width="20"></td>
-				<td width="98" class="defaultfont" valign="top" height="5"></td>
+				<td width="98" class="defaultfont" style="vertical-align:top" height="5"></td>
 				<td height="5"></td>
-				<td width="14" class="defaultfont" align="right" valign="top" height="5"></td>
+				<td width="14" class="defaultfont" style="text-align:right;vertical-align:top" height="5"></td>
 				<td height="5"></td>
-				<td width="102" valign="top" height="5"></td>
+				<td width="102" style="vertical-align:top" height="5"></td>
 				<td width="30" height="5"></td>
 			</tr>
 			<tr height="1">
-				<td class="defaultfont" valign="top" colspan="9" bgcolor="grey" height="1"></td>
+				<td class="defaultfont" style="vertical-align:top" colspan="9" bgcolor="grey" height="1"></td>
 			</tr>
 			<tr>
-				<td class="defaultfont" width="86" valign="top"></td>
-				<td class="defaultfont" valign="top" width="40"></td>
+				<td class="defaultfont" width="86" style="vertical-align:top"></td>
+				<td class="defaultfont" style="vertical-align:top" width="40"></td>
 				<td width="20"></td>
-				<td width="98" class="defaultfont" valign="top"></td>
+				<td width="98" class="defaultfont" style="vertical-align:top"></td>
 				<td></td>
-				<td width="14" class="defaultfont" align="right" valign="top"></td>
+				<td width="14" class="defaultfont" style="text-align:right;vertical-align:top"></td>
 				<td></td>
-				<td width="102" valign="top"></td>
+				<td width="102" style="vertical-align:top"></td>
 				<td width="30"></td>
 			</tr>' . $customerFieldTable . '
 			<tr>
@@ -869,13 +869,13 @@ function submitForm() {
 
 			foreach($customCartFields as $key => $value){
 				$customCartFieldsTable .= '<tr>
-						<td class="defaultfont" valign="top"><b>' . $key . ':</b></td>
+						<td class="defaultfont" style="vertical-align:top"><b>' . $key . ':</b></td>
 						<td>' . $pixelImg . '</td>
-						<td class="defaultfont" valign="top">' . nl2br($value) . '</td>
+						<td class="defaultfont" style="vertical-align:top">' . nl2br($value) . '</td>
 						<td>' . $pixelImg . '</td>
-						<td valign="top">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
+						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
 						<td>' . $pixelImg . '</td>
-						<td valign="top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
+						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
 					</tr>
 					<tr>
 						<td height="10"></td>
@@ -1160,7 +1160,7 @@ function CalendarChanged(calObject) {
 			<tr>
 			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange" => "selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
 			<td width="10"></td>
-			<td valign="top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
+			<td style="vertical-align:top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 			</tr>
 			<tr>
 				<td class="small">' . sprintf(g_l('modules_shop', '[add_article][entry_x_to_y_from_z]'), $start_entry, $end_entry, $AMOUNT_ARTICLES) . '</td>

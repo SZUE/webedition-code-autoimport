@@ -703,7 +703,7 @@ function doUnload() {
 		$_tableObj->setCol(3, 1, null, $_createWePages);
 		$_tableObj->setCol(3, 2, null, $_others);
 		$_tableObj->setCol(4, 1, null, $_wePagesOptionButton);
-		$_tableObj->setCol(4, 2, array("valign" => "top"), $_quicktime);
+		$_tableObj->setCol(4, 2, array('style' => 'vertical-align:top;'), $_quicktime);
 		$_tableObj->setCol(5, 0, null, we_html_tools::getPixel(20, 1));
 		$_tableObj->setCol(5, 1, null, we_html_tools::getPixel(200, 1));
 		$_tableObj->setCol(5, 2, null, we_html_tools::getPixel(180, 1));
@@ -735,10 +735,10 @@ function doUnload() {
 		);
 
 		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 410) .
-			we_html_tools::getPixel(200, 10) .
-			we_html_forms::radiobutton("overwrite", ($this->sameName === "overwrite"), "sameName", g_l('importFiles', '[sameName_overwrite]')) .
-			we_html_forms::radiobutton("rename", ($this->sameName === "rename"), "sameName", g_l('importFiles', '[sameName_rename]')) .
-			we_html_forms::radiobutton("nothing", ($this->sameName === "nothing"), "sameName", g_l('importFiles', '[sameName_nothing]'));
+			we_html_element::htmlDiv(array('style' => 'margin-top:10px;'), we_html_forms::radiobutton("overwrite", ($this->sameName === "overwrite"), "sameName", g_l('importFiles', '[sameName_overwrite]')) .
+				we_html_forms::radiobutton("rename", ($this->sameName === "rename"), "sameName", g_l('importFiles', '[sameName_rename]')) .
+				we_html_forms::radiobutton("nothing", ($this->sameName === "nothing"), "sameName", g_l('importFiles', '[sameName_nothing]'))
+		);
 
 		$parts[] = array(
 			"headline" => g_l('importFiles', '[sameName_headline]'),
@@ -913,8 +913,7 @@ function doUnload() {
 
 		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
-		$table->setCol(0, 1, array(
-			"align" => "right"
+		$table->setCol(0, 1, array("style" => "text-align:right"
 			), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10));
 
 

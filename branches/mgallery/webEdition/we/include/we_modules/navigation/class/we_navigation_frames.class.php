@@ -191,7 +191,7 @@ function setTab(tab) {
 		/*
 		  $table = new we_html_table(array("style" => 'width:100%;margin-top:3px;', 'class' => 'default'), 1, 1);
 
-		  $table->setCol(0, 0, array("valign" => "top", "class" => "small"),
+		  $table->setCol(0, 0, array('style'=>'vertical-align:top", "class" => "small"),
 		  we_html_element::htmlB(
 		  g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) .
 		  ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) .
@@ -862,7 +862,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			<td height="10"></td>
 		<tr>
 		<tr>
-			<td align="right">' .
+			<td style="text-align:right">' .
 			we_html_button::create_button(we_html_button::REFRESH, 'javascript: showPreview();') .
 			we_html_button::create_button(
 				'reset', 'javascript: document.getElementById("previewCode").value = "' . str_replace(array("\r\n", "\n"), '\n', addslashes(we_navigation_navigation::defaultPreviewCode)) . '"; showPreview();')
@@ -1131,8 +1131,8 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 				)
 			)
 		);
-		$table->setCol(2, 0, array('align' => 'left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]')));
-		$table->setCol(2, 1, array('align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
+		$table->setCol(2, 0, array('style' => 'text-align:left'), we_html_forms::checkboxWithHidden($this->Model->CatAnd, "CatAnd", g_l('navigation', '[catAnd]')));
+		$table->setCol(2, 1, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . $js . we_html_element::jsElement('
 function removeAllCats(){

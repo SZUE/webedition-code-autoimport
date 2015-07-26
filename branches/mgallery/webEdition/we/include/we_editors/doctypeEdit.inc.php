@@ -376,7 +376,7 @@ function disableLangDefault(allnames, allvalues, deselect) {
 
 		$buttons = ($we_doc->ID ?
 				we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_docType', '" . $we_transaction . "')"), "", $cancelbut) :
-				'<div align="right">' . $cancelbut . '</div>');
+				'<div style="text-align:right">' . $cancelbut . '</div>');
 
 
 		echo we_html_multiIconBox::getJS() .

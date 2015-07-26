@@ -303,17 +303,17 @@ function we_tag_sessionField($attribs, $content){
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' .
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' .
 					$imgTag . '
 			<input type="hidden" name="s[' . $name . ']" value="' . $_SESSION['webuser']['imgtmp'][$name]["id"] . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
 		</td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;">

@@ -64,15 +64,15 @@ echo we_html_tools::getHtmlTop('sideBar') .
 					<tr><?php
 						if($icon){
 							?>
-							<td class="defaultfont" valign="top" width="52" style="padding-top:5px;"><?php echo $icon; ?></td>
-							<td class="defaultfont" valign="top">
+							<td class="defaultfont" style="vertical-align:top;width:52px;padding-top:5px;"><?php echo $icon; ?></td>
+							<td class="defaultfont" style="vertical-align:top">
 								<strong><?php echo $headline; ?></strong><br />
 								<?php echo $text['text']; ?>
 							</td>
 							<?php
 						} else {
 							?>
-							<td class="defaultfont" valign="top" colspan="2" style="padding-top:5px;">
+							<td class="defaultfont" style="vertical-align:top;padding-top:5px;" colspan="2">
 								<strong><?php echo $headline; ?></strong><br />
 								<br />
 								<?php echo $text['text']; ?>

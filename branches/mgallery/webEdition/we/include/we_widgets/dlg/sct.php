@@ -129,7 +129,7 @@ $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'
 
 $oPool = new we_html_table(array("width" => 420, 'class' => 'default'), 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
-$oPool->setCol(0, 1, array("align" => "center", "valign" => "middle"), we_html_element::htmlA(
+$oPool->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle;'), we_html_element::htmlA(
 		array(
 		"href" => "#",
 		"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
@@ -151,7 +151,7 @@ $oPool->setCol(0, 1, array("align" => "center", "valign" => "middle"), we_html_e
 		), '<i class="fa fa-lg fa-caret-down"></i>'
 ));
 $oPool->setCol(0, 2, null, $oSctList21->getHTML());
-$oPool->setCol(1, 0, array("align" => "right", "colspan" => 3, 'style' => 'padding-top:5px;'), $oBtnDelete);
+$oPool->setCol(1, 0, array("colspan" => 3, 'style' => 'text-align:center;padding-top:5px;'), $oBtnDelete);
 
 $content = $oShortcutsRem . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
 		$oSctPool->getHTML(), g_l('cockpit', '[select_buttons]'), "left", "defaultfont") . we_html_element::htmlBr() . $oPool->getHTML();

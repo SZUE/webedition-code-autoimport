@@ -356,7 +356,7 @@ class we_dialog_image extends we_dialog_base{
 
 		$srctable = '<table class="default" style="margin-bottom:4px;">
 <colgroup><col style="width:100px;"/><col style="width:10px;"/></colgroup>
-	<tr><td class="defaultgray" valign="top">' . g_l('wysiwyg', '[image_url]') . '</td><td>' . $extSrc . '</td></tr>';
+	<tr><td class="defaultgray" style="vertical-align:top">' . g_l('wysiwyg', '[image_url]') . '</td><td>' . $extSrc . '</td></tr>';
 		if($intSrc){
 			$srctable .= '<tr><td></td><td style="padding-top:4px;">' . $intSrc . '</td></tr>' .
 				($thumbnails ? '<tr><td></td><td style="padding-top:4px;">' . $thumbnails . '</td></tr>' : '');

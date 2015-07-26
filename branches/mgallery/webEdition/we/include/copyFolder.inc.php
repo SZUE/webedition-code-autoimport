@@ -37,7 +37,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$pb->addText("&nbsp;", 0, "pbar1");
 	$pbHTML = $pb->getHTML() . $pb->getJSCode();
 
-	$buttons = '<table class="default" width="300"><tr><td align="left" id="pbTd" style="display:none;">' . $pbHTML . '</td><td align="right">' .
+	$buttons = '<table class="default" width="300"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pbHTML . '</td><td style="text-align:right">' .
 		we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 		'</td></tr></table>';
 
@@ -63,7 +63,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 			'<div id="imTemp" style="display:block">' .
 			we_html_forms::checkbox(1, 0, 'CreateMasterTemplate', g_l('copyFolder', '[create_new_masterTemplates]'), false, "defaultfont", "", 1) .
 			we_html_forms::checkbox(1, 0, 'CreateIncludedTemplate', g_l('copyFolder', '[create_new_includedTemplates]'), false, "defaultfont", "", 1) .
-			'</div></td><td valign="top">' .
+			'</div></td><td style="vertical-align:top">' .
 			we_html_forms::checkbox(1, 0, 'CreateDoctypes', g_l('copyFolder', '[create_new_doctypes]')) .
 			'</td></tr>
 					<tr><td colspan="2" style="padding:2px 0px;">' . we_fragment_copyFolder::formCreateTemplateDirChooser() . '</td></tr>

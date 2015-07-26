@@ -228,10 +228,7 @@ class we_collection extends we_root{
 		);
 		$mimeTable = new we_html_table(array('class' => 'collection_props-mime default'), 1, 3);
 		$mimeTable->setCol(0, 0, array(), $mimeListFrom);
-		$mimeTable->setCol(
-			0, 1, array(
-			"align" => "center", "valign" => "middle"
-			), we_html_element::htmlA(array(
+		$mimeTable->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle'), we_html_element::htmlA(array(
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('mimeListFrom'),document.getElementById('mimeListTo'),true, 'document');return false;"
 				), '<i class="fa fa-lg fa-caret-right"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
@@ -266,9 +263,7 @@ class we_collection extends we_root{
 
 		$classTable = new we_html_table(array("class" => 'collection_props-classes default'), 1, 3);
 		$classTable->setCol(0, 0, null, $classListFrom);
-		$classTable->setCol(
-			0, 1, array(
-			"align" => "center", "valign" => "middle"
+		$classTable->setCol(			0, 1, array('style' => 'text-align:center;vertical-align:middle'
 			), we_html_element::htmlA(array(
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('classListFrom'),document.getElementById('classListTo'),true, 'object');return false;"
@@ -328,7 +323,7 @@ class we_collection extends we_root{
 		$yuiSuggest = &weSuggest::getInstance();
 		$index = 0;
 		$rows = $divs = '';
-		$jsItems = "\n";
+		$jsStorageItems = "\n";
 		$jsItemsArr = '';
 
 		foreach($items as $item){
@@ -341,13 +336,13 @@ class we_collection extends we_root{
 			}
 
 			/*
-			$index++;
-			if($this->view === 'grid'){
-				$divs .= $this->makeGridItem($item, $index, count($items));
-			} else {
-				$rows .= $this->makeListItem($item, $index, $yuiSuggest, count($items), true);
-			}
-			 * 
+			  $index++;
+			  if($this->view === 'grid'){
+			  $divs .= $this->makeGridItem($item, $index, count($items));
+			  } else {
+			  $rows .= $this->makeListItem($item, $index, $yuiSuggest, count($items), true);
+			  }
+			 *
 			 */
 			$jsStorageItems .= $this->getJsStrorageItem($item, ++$index);
 			$jsItemsArr .= $item['id'] . ',';
@@ -358,7 +353,7 @@ class we_collection extends we_root{
 			'id' => '##ID##',
 			'path' => '##PATH##',
 			'type' => '##CT##',
-			'icon' => array('url' => '##ICONURL##'),
+			'icon' => array('url' => '##ICONURL##', 'sizeX' => 200, 'sizeY' => 200),
 			'elements' => array(
 				'attrib_title' => array('Dat' => '##ATTRIB_TITLE##', 'state' => '##S_ATTRIB_TITLE##', 'write' => '##W_ATTRIB_TITLE##'),
 				'attrib_alt' => array('Dat' => '##ATTRIB_ALT##', 'state' => '##S_ATTRIB_ALT##', 'write' => '##W_ATTRIB_ALT##'),
@@ -369,6 +364,7 @@ class we_collection extends we_root{
 		);
 
 		$this->jsFormCollection .= "
+weCollectionEdit.isDragAndDrop = " . (self::isDragAndDrop() ? 1 : 0) . ";
 weCollectionEdit.gridItemDimension = " . json_encode($this->gridItemDimensions[$this->itemsPerRow]) . ";
 weCollectionEdit.maxIndex = " . count($items) . ";
 weCollectionEdit.blankItem.list = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->makeListItem($placeholders, '##INDEX##', $yuiSuggest, 1, true, true))) . "';
@@ -381,6 +377,9 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 " .
 			$jsStorageItems;
 
+		//TODO: make reasonable texts here...
+		$attentionText = self::isDragAndDrop() ? 'Drag n\' drop enabled in this browser' : (we_base_browserDetect::isOpera() ? 'Drag n\' drop is not yet optimized for Opera 12: temporarily disabled!' : 'sorry, no drag n\' drop in your browse');
+
 		return we_html_element::jsElement($this->jsFormCollection) .
 			we_html_element::htmlHiddens(array(
 				'we_' . $this->Name . '_view' => $this->view,
@@ -388,7 +387,8 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collection-head'), g_l('weClass', '[collection][collectionTitle]')) .
-			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][attentionBox]'), we_html_tools::TYPE_INFO, 680)) .
+			//we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][attentionBox]'), we_html_tools::TYPE_INFO, 680)) .
+			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox($attentionText, we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('class' => 'collection-toolbar'), $toolbar->getHtml()) .
 			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
 			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')));
@@ -399,19 +399,22 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$idname = 'we_' . $this->Name . '_ItemID_' . $index;
 		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "document.we_form.elements['" . $textname . "'].value";
-		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);opener.weCollectionEdit.repaintAndRetrieveCsv();";
+		//$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);opener.weCollectionEdit.reindexAndRetrieveCollection();";
+		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{opener._EditorFrame.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(" . $index . ", opener._EditorFrame.getContentEditor().document.we_form.elements['" . $idname . "'].value);} catch(e){}";
+
 
 		if($noSelectorAutoInit){
-			$this->jsFormCollection .= 'weCollectionEdit.selectorCmds = ["' . $wecmd1 . '","' . $wecmd2 . '"];';
+			$this->jsFormCollection .= 'weCollectionEdit.selectorCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];';
 			$wecmdenc1 = '##CMD1##';
 			$wecmdenc2 = '##CMD2##';
+			$wecmdenc3 = '##CMD3##';
 		} else {
 			$wecmdenc1 = we_base_request::encCmd($wecmd1);
 			$wecmdenc2 = we_base_request::encCmd($wecmd2);
+			$wecmdenc3 = we_base_request::encCmd($wecmd3);
 		}
-		$wecmdenc3 = we_base_request::encCmd($wecmd3);
 
-		//$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
 		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems(this);", true, 52, 22, '', '', false, false, '', false, '');
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22, '', '', ($item['id'] === -1), false, '', false, '', 'btn_edit');
 
@@ -443,7 +446,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				'class' => 'previewDiv',
 				'style' => "background-image:url('" . $item['icon']['url'] . "');",
 				'title' => $item['path'] . ' (ID: ' . $item['id'] . ')'
-				), '');
+				), we_html_element::htmlDiv(array('class' => 'divBtnSelect'), $selectButton));
 		$rowHtml->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
 		$rowHtml->setCol(0, 1, array('class' => 'colPreview'), $imgDiv);
 
@@ -451,27 +454,27 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$rowInnerTable->setCol(0, 0, array('colspan' => 1), $yuiSuggest->getHTML());
 
 		$attrTitle = we_html_element::htmlDiv(array(
-			'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_title']['Dat'] ? ' div_' . $item['elements']['attrib_title']['state'] : ''),
-			'title' => ($item['elements']['attrib_title']['Dat'])
-		), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i> ' . $item['elements']['attrib_title']['write']);
+				'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_title']['Dat'] ? ' div_' . $item['elements']['attrib_title']['state'] : ''),
+				'title' => ($item['elements']['attrib_title']['Dat'])
+				), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i> ' . $item['elements']['attrib_title']['write']);
 		$attrAlt = we_html_element::htmlDiv(array(
-			'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_alt']['Dat'] ? ' div_' . $item['elements']['attrib_alt']['state'] : ''),
-			'title' => ($item['elements']['attrib_alt']['Dat'])
-		), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i> ' . $item['elements']['attrib_alt']['write']);
+				'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_alt']['Dat'] ? ' div_' . $item['elements']['attrib_alt']['state'] : ''),
+				'title' => ($item['elements']['attrib_alt']['Dat'])
+				), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i> ' . $item['elements']['attrib_alt']['write']);
 		$metaTitle = we_html_element::htmlDiv(array(
-			'class' => 'innerDiv defaultfont' . ($item['elements']['meta_title']['Dat'] ? ' div_' . $item['elements']['meta_title']['state'] : ''),
-			'title' => ($item['elements']['meta_title']['Dat'])
-		), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i> ' . $item['elements']['meta_title']['write']);
+				'class' => 'innerDiv defaultfont' . ($item['elements']['meta_title']['Dat'] ? ' div_' . $item['elements']['meta_title']['state'] : ''),
+				'title' => ($item['elements']['meta_title']['Dat'])
+				), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i> ' . $item['elements']['meta_title']['write']);
 		$metaDesc = we_html_element::htmlDiv(array(
-			'class' => 'innerDiv defaultfont' . ($item['elements']['meta_description']['Dat'] ? ' div_' . $item['elements']['meta_description']['state'] : ''), 
-			'title' => ($item['elements']['meta_description']['Dat'])
-		), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i> ' . $item['elements']['meta_description']['write']);
+				'class' => 'innerDiv defaultfont' . ($item['elements']['meta_description']['Dat'] ? ' div_' . $item['elements']['meta_description']['state'] : ''),
+				'title' => ($item['elements']['meta_description']['Dat'])
+				), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i> ' . $item['elements']['meta_description']['write']);
 
 		$rowInnerTable->setCol(1, 0, array(), $attrTitle . $attrAlt . $metaTitle . $metaDesc);
 		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $rowInnerTable->getHtml());
 		$rowHtml->setCol(0, 3, array('class' => 'colControls weMultiIconBoxHeadline'), $rowControlls);
 
-		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'true'), $rowHtml->getHtml());
+		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'), $rowHtml->getHtml());
 	}
 
 	/*
@@ -565,47 +568,47 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 
 		$trashButton = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
-		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['ct'] . "');", true, 27, 22);
+		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
 		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
 		// TODO: make fn for attribs: same structure as in list
 		$toolbar = we_html_element::htmlDiv(array('class' => 'toolbarLeft weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .
 			we_html_element::htmlDiv(array(
-					'class' => 'toolbarAttribs',
-					'style' => 'display:' . ($this->itemsPerRow > 5 ? 'none' : 'block')
-					), we_html_element::htmlDiv(array(
-						'class' => 'toolbarAttr',
-						'title' => $item['elements']['attrib_title']['Dat']
-						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i>') .
-					we_html_element::htmlDiv(array(
-						'class' => 'toolbarAttr',
-						'title' => $item['elements']['attrib_alt']['Dat'],
-						), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>') .
-					we_html_element::htmlDiv(array(
-						'class' => 'toolbarAttr',
-						'title' => $item['elements']['meta_title']['Dat'],
-						), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i>') .
-					we_html_element::htmlDiv(array(
-						'class' => 'toolbarAttr',
-						'title' => $item['elements']['meta_description']['Dat']
-						), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i>')
-				) . we_html_element::htmlDiv(array(
-					'class' => 'toolbarBtns',
-					), $editButton . $trashButton);
+				'class' => 'toolbarAttribs',
+				'style' => 'display:' . ($this->itemsPerRow > 5 ? 'none' : 'block')
+				), we_html_element::htmlDiv(array(
+					'class' => 'toolbarAttr',
+					'title' => $item['elements']['attrib_title']['Dat']
+					), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i>') .
+				we_html_element::htmlDiv(array(
+					'class' => 'toolbarAttr',
+					'title' => $item['elements']['attrib_alt']['Dat'],
+					), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>') .
+				we_html_element::htmlDiv(array(
+					'class' => 'toolbarAttr',
+					'title' => $item['elements']['meta_title']['Dat'],
+					), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i>') .
+				we_html_element::htmlDiv(array(
+					'class' => 'toolbarAttr',
+					'title' => $item['elements']['meta_description']['Dat']
+					), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i>')
+			) . we_html_element::htmlDiv(array(
+				'class' => 'toolbarBtns',
+				), $editButton . $trashButton);
 		//);
 
 		$displayBtnEdit = $item['id'] === -1 ? 'block' : ($item['id'] === '##ID##' ? '##SHOWBTN##' : 'none');
 
 		return we_html_element::htmlDiv(array(
 				//TODO: set dimensions by JS
-				'style' => 'width:' . $this->iconSizes[$this->itemsPerRow] . 'px;height:' . $this->iconSizes[$this->itemsPerRow] . 'px;',
+				'style' => 'width:' . $this->gridItemDimensions[$this->itemsPerRow]['item'] . 'px;height:' . $this->gridItemDimensions[$this->itemsPerRow]['item'] . 'px;',
 				'id' => 'grid_item_' . $index,
 				'class' => 'gridItem'
 				), we_html_element::htmlDiv(array(
 					'title' => $item['path'] . ' (ID: ' . $item['id'] . ')',
 					'class' => 'divContent',
-					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < $this->iconSizes[$this->itemsPerRow] ? 'background-size:auto;' : ''),
-					'draggable' => 'true',
+					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < $this->gridItemDimensions[$this->itemsPerRow]['item'] ? 'background-size:auto;' : ''),
+					'draggable' => 'false',
 					), we_html_element::htmlDiv(array(
 						'class' => 'divInner',
 						'style' => 'display:' . $displayBtnEdit
@@ -689,7 +692,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 						break;
 					case 'Title':
 					case 'Description':
-						$fieldname = 'meta_' . strtolower ($this->DB_WE->f('Name'));
+						$fieldname = 'meta_' . strtolower($this->DB_WE->f('Name'));
 						break;
 					default:
 						$fieldname = 'custom';
@@ -711,7 +714,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 							break;
 						case 'attrib_alt':
 							$items[$k]['elements'][$name]['state'] = $items[$k]['ct'] !== 'image/*' ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? g_l('weClass', '[collection][attr_alt]') .': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[collection][attr_alt]') . ': ' . g_l('weClass', '[collection][notSet]'));
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] ? g_l('weClass', '[collection][attr_alt]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[collection][attr_alt]') . ': ' . g_l('weClass', '[collection][notSet]'));
 							break;
 						case 'meta_title':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
@@ -719,7 +722,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 							break;
 						case 'meta_description':
 							$items[$k]['elements'][$name]['state'] = !in_array($items[$k]['ct'], $hasMeta) ? self::CLASS_NONE : ($items[$k]['elements'][$name]['Dat'] ? self::CLASS_YES : self::CLASS_NO);
-							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] && in_array($items[$k]['ct'], $hasMeta) ? g_l('weClass', '[Description]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[Description]') . ': ' . g_l('weClass', '[collection][notSet]'));//
+							$items[$k]['elements'][$name]['Dat'] = $items[$k]['elements'][$name]['Dat'] && in_array($items[$k]['ct'], $hasMeta) ? g_l('weClass', '[Description]') . ': ' . $items[$k]['elements'][$name]['Dat'] : ($items[$k]['elements'][$name]['state'] === self::CLASS_NONE ? '' : g_l('weClass', '[Description]') . ': ' . g_l('weClass', '[collection][notSet]')); //
 							break;
 						default:
 							$fieldname = 'custom';
@@ -777,6 +780,27 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 		$this->fileCollection .= '-1,';
 		$this->objectCollection .= '-1,';
+	}
+
+	protected function i_getPersistentSlotsFromDB($felder = '*'){  // FIXME: throw out when CreationDate and ModDate are migrated to MySQL timestamp in all tables
+		parent::i_getPersistentSlotsFromDB($felder);
+
+		$this->CreationDate = strtotime($this->CreationDate);
+		$this->ModDate = strtotime($this->ModDate);
+	}
+
+	protected function i_savePersistentSlotsToDB(){ // FIXME: throw out when CreationDate and ModDate are migrated to MySQL timestamp in all tables
+		if(($key = array_search('CreationDate', $this->persistent_slots)) !== false){
+			unset($this->persistent_slots[$key]);
+		}
+		$modDateTmp = $this->ModDate;
+		$this->ModDate = date('Y-m-d H:i:s', $this->ModDate);
+		$ret = parent::i_savePersistentSlotsToDB();
+
+		$this->ModDate = $modDateTmp;
+		$this->persistent_slots[] = 'CreationDate';
+
+		return $ret;
 	}
 
 	function writeCollectionToDB($collection){// FIXME: is there a standard function called by some parent to save non-persistent data?
@@ -890,7 +914,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		$resultIDsCsv = '';
 
-		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ',' .  $nameField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
+		$this->DB_WE->query('SELECT ID,ParentID,Path,ContentType,Extension' . $classField . ',' . $nameField . ' FROM ' . addTblPrefix($this->remTable) . ' WHERE ' . ($recursion === 0 ? 'ID' : 'ParentID') . ' IN (' . implode(',', $IDs) . ') ' . $whereType . 'AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ') ORDER BY Path ASC');
 		while($this->DB_WE->next_record()){
 			$data = $this->DB_WE->getRecord();
 			if(($recursive || $recursion === 0) && $data['ContentType'] === 'folder' && !isset($foldersDone[$data['ID']])){
@@ -898,7 +922,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				$foldersDone[] = $data['ID'];
 			}
 
-			
+
 			if($data['ContentType'] !== 'folder'){
 				//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== 'folder'){
 				//IMI:TEST ==> get icon from some fn!!
@@ -943,6 +967,12 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 
 		return $result;
+	}
+
+	private static function isDragAndDrop(){
+		return !((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10) ||
+			(we_base_browserDetect::isSafari() && intval(we_base_browserDetect::getBrowserVersion()) < 7) ||
+			(we_base_browserDetect::isOpera()));
 	}
 
 }

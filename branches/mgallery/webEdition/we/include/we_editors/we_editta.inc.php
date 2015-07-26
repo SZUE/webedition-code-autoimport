@@ -85,9 +85,9 @@ $forbidphp = we_html_tools::htmlSelect("forbidphp", $onOffVals, 1, $selected, fa
 $table = '<table class="default">
 	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" align="right">wysiwyg&nbsp;</td><td>' . $wysiwyg . '</td>
-		<td class="defaultfont" align="right">forbidphp&nbsp;</td><td>' . $forbidphp . '</td>
-		<td class="defaultfont" align="right">forbidhtml&nbsp;</td><td>' . $forbidhtml . '</td>
+		<td class="defaultfont" style="text-align:right">wysiwyg&nbsp;</td><td>' . $wysiwyg . '</td>
+		<td class="defaultfont" style="text-align:right">forbidphp&nbsp;</td><td>' . $forbidphp . '</td>
+		<td class="defaultfont" style="text-align:right">forbidhtml&nbsp;</td><td>' . $forbidhtml . '</td>
 	</tr>
 </table>';
 $parts = array(
@@ -108,9 +108,9 @@ $removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOff
 $table = '<table class="default">
 	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" align="right">xml&nbsp;</td><td>' . $xml . '</td>
-		<td class="defaultfont" align="right"></td><td></td>
-		<td class="defaultfont" align="right">removefirstparagraph&nbsp;</td><td>' . $removefirstparagraph . '</td>
+		<td class="defaultfont" style="text-align:right">xml&nbsp;</td><td>' . $xml . '</td>
+		<td class="defaultfont" style="text-align:right"></td><td></td>
+		<td class="defaultfont" style="text-align:right">removefirstparagraph&nbsp;</td><td>' . $removefirstparagraph . '</td>
 	</tr>
 </table>';
 
@@ -131,9 +131,9 @@ $showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, fa
 $table = '<table class="default">
 	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" align="right">inlineedit&nbsp;</td><td>' . $inlineedit . '</td>
-		<td class="defaultfont" align="right"></td><td></td>
-		<td class="defaultfont" align="right">showmenus&nbsp;</td><td>' . $showmenus . '</td>
+		<td class="defaultfont" style="text-align:right">inlineedit&nbsp;</td><td>' . $inlineedit . '</td>
+		<td class="defaultfont" style="text-align:right"></td><td></td>
+		<td class="defaultfont" style="text-align:right">showmenus&nbsp;</td><td>' . $showmenus . '</td>
 	</tr>
 </table>';
 
@@ -149,14 +149,14 @@ $table = '<table class="default">
 	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" align="right" style="padding-bottom:6px;">width&nbsp;</td><td>' . we_html_tools::htmlTextInput('width', 24, $we_doc->getElement($name . "width"), 5, '', 'number', 60, 0) . '</td>
-		<td class="defaultfont" align="right">height&nbsp;</td><td>' . we_html_tools::htmlTextInput('height', 24, $we_doc->getElement($name . "height"), 5, '', 'number', 60, 0) . '</td>
-		<td class="defaultfont" align="right">bgcolor&nbsp;</td><td>' . we_html_tools::htmlTextInput('bgcolor', 24, $we_doc->getElement($name . "bgcolor"), 20, '', 'text', 60, 0) . '</td>
-		<td class="defaultfont" align="right"></td><td></td>
+		<td class="defaultfont" style="text-align:right;padding-bottom:6px;">width&nbsp;</td><td>' . we_html_tools::htmlTextInput('width', 24, $we_doc->getElement($name . "width"), 5, '', 'number', 60, 0) . '</td>
+		<td class="defaultfont" style="text-align:right">height&nbsp;</td><td>' . we_html_tools::htmlTextInput('height', 24, $we_doc->getElement($name . "height"), 5, '', 'number', 60, 0) . '</td>
+		<td class="defaultfont" style="text-align:right">bgcolor&nbsp;</td><td>' . we_html_tools::htmlTextInput('bgcolor', 24, $we_doc->getElement($name . "bgcolor"), 20, '', 'text', 60, 0) . '</td>
+		<td class="defaultfont" style="text-align:right"></td><td></td>
 	</tr>
 	<tr>
-		<td class="defaultfont" align="right">class&nbsp;</td><td>' . we_html_tools::htmlTextInput('class', 24, $we_doc->getElement($name . "class"), 20, '', 'text', 60, 0) . '</td>
-		<td class="defaultfont" align="right"></td><td></td>
+		<td class="defaultfont" style="text-align:right">class&nbsp;</td><td>' . we_html_tools::htmlTextInput('class', 24, $we_doc->getElement($name . "class"), 20, '', 'text', 60, 0) . '</td>
+		<td class="defaultfont" style="text-align:right"></td><td></td>
 	</tr>
 </table>';
 
@@ -171,7 +171,7 @@ $parts[] = array(
 $table = '<table class="default">
 	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), array('style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" style="vertical-align:top;text-align:right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), array('style' => "width:415px;height:50px")) . '</td>
 	</tr>
 </table>';
 
@@ -188,10 +188,10 @@ $select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::get
 $table = '<table class="default">
 	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" style="padding-bottom:10px;" valign="top" align="right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" style="padding-bottom:10px;vertical-align:top;text-align:right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" style="vertical-align:top;text-align:right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
 	</tr>
 </table>';
 
@@ -205,7 +205,7 @@ $parts[] = array(
 $table = '<table class="default">
 	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->getElement($name . "tinyparams"), 1024, '', 'text', 350, 0) . '</td>
+		<td class="defaultfont" style="vertical-align:top;text-align:right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->getElement($name . "tinyparams"), 1024, '', 'text', 350, 0) . '</td>
 	</tr>
 </table>';
 
@@ -219,7 +219,7 @@ $parts[] = array(
 $table = '<table class="default">
 	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">templates&nbsp;</td>
+		<td class="defaultfont" style="vertical-align:top;text-align:right">templates&nbsp;</td>
 		<td colspan="5">' . we_html_tools::htmlTextInput('templates', 24, $we_doc->getElement($name . "templates"), 1024, '', 'text', 350, 0) . '</td>
 	</tr>
 </table>';

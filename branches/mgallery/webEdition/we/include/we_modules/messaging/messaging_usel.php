@@ -281,13 +281,13 @@ if($maxsel){
         <td rowspan="3"><select name="usel_addrbook" size="7" style="width:210px" multiple>
             </select>
         </td>
-        <td valign="bottom">' . we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:add_toaddr()") . '</td>
+        <td style="vertical-align:bottom">' . we_html_button::create_button("fa:btn_direction_left,fa-lg fa-caret-left", "javascript:add_toaddr()") . '</td>
         <td rowspan="3"><select name="usel_currentsel" size="7" style="width:210px" multiple>
             </select>
         </td>
       </tr>
       <tr>
-	<td valign="top">' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:add_addr2sel()") . '</td>
+	<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:add_addr2sel()") . '</td>
       </tr>
       <tr>
 	<td>' . we_html_button::create_button(we_html_button::DELETE, "javascript:rm_addrbook_entry();") . '</td>

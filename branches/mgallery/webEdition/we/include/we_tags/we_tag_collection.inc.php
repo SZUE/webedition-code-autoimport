@@ -19,7 +19,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_collection($attribs, $content){
-	return '<?php global $lv;' . we_tag_tagParser::printTag('collection', $attribs) . ';?>' . $content . '<?php we_post_tag_listview();?>';
+	include_once('we_tag_repeat.inc.php');
+	return '<?php global $lv;
+if(' . we_tag_tagParser::printTag('collection', $attribs) . '){?>' . we_parse_tag_repeat(array(), $content) . '<?php } we_post_tag_listview();?>';
 }
 
 function we_tag_collection($attribs){
@@ -68,7 +70,7 @@ function we_tag_collection($attribs){
 				<td class="weEditmodeStyle"><?php echo $delbutton; ?></td>
 			</tr>
 		</table><?php
-		return;
+		return false;
 		//FIXME: add sth. to the stack, we need an extra element in editmode
 	}
 
@@ -80,4 +82,5 @@ function we_tag_collection($attribs){
 	}
 
 	$GLOBALS['we_lv_array'][] = clone($GLOBALS['lv']);
+	return true;
 }

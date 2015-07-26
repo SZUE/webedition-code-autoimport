@@ -80,7 +80,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		'<div id="' . $uniquename . '_div">
  <table style="margin-left:30px;margin-bottom:15px;" class="default">
  <tr>
- <td valign="top"></td>
+ <td style="vertical-align:top"></td>
  <td class="defaultfont">' .
 		we_html_button::create_button("fa:btn_add_field,fa-plus,fa-lg fa-square-o", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . "');") .
 		'</td>
@@ -103,7 +103,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
 			'</table>
 		</td>
-		<td width="150" class = "defaultfont" valign="top">' .
+		<td width="150" class = "defaultfont" style="vertical-align:top">' .
 			we_html_button::create_button("fa:btn_add_field,fa-plus,fa-lg fa-square-o", "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .
 			we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier) .
 			we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier) .

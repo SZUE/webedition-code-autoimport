@@ -101,7 +101,7 @@ top.close();
 		/*
 		  $trash = '<table class="default">
 		  <tbody>
-		  <tr><td class="defaultfont" align="left" colspan="1"></td></tr>
+		  <tr><td class="defaultfont" style="text-align:left" colspan="1"></td></tr>
 		  <tr style="height:1px"><td colspan="1">&nbsp;</td></tr>
 		  <tr style="height:1px"><td colspan="1"></td></tr>
 		  <tr><td style="padding-left:12px;">' . $btnTrash . '

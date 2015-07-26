@@ -141,16 +141,16 @@ function we_tag_userInput($attribs, $content){
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
 			<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
@@ -228,13 +228,13 @@ function we_tag_userInput($attribs, $content){
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left"><input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left"><input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>
@@ -309,16 +309,16 @@ function we_tag_userInput($attribs, $content){
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $quicktimeTag . '
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $quicktimeTag . '
 			<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;">
@@ -395,16 +395,16 @@ function we_tag_userInput($attribs, $content){
 
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="center">' . $imgTag . '
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
 			<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" align="left">
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
 			<table class="weEditTable padding0 spacing0 border0">
 				<tr>
 					<td style="padding-right: 5px;"><input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/></td>

@@ -186,7 +186,7 @@ if($_SESSION['weS']['we_data'][$cmd3][0]["ID"]){
 							<td><we:back>back</we:back></td>
 						</we:ifBack>
 						<we:ifNext>
-							<td align="right"><we:next>next</we:next></td>
+							<td style="text-align:right"><we:next>next</we:next></td>
 						</we:ifNext>
 					</tr>
 				</table></p>

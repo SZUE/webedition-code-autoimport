@@ -84,14 +84,14 @@ abstract class we_rebuild_wizard{
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
 			$content2 = new we_html_table(array("class" => 'default'), 1, 4);
-			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $prevButton);
-			$content2->setCol(0, 1, array("id" => "next", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $nextButton);
-			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;", "align" => "right"), $refreshButton);
-			$content2->setCol(0, 3, array("id" => "cancel", "style" => "display:table-cell; padding-left:10px;", "align" => "right"), $cancelButton);
+			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;text-align:right"), $prevButton);
+			$content2->setCol(0, 1, array("id" => "next", "style" => "display:table-cell; padding-left:10px;text-align:right"), $nextButton);
+			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton);
+			$content2->setCol(0, 3, array("id" => "cancel", "style" => "display:table-cell; padding-left:10px;text-align:right"), $cancelButton);
 
 			$content = new we_html_table(array("width" => "100%"), 1, 2);
-			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none;padding-left:1em;", "align" => "left"), $pb);
-			$content->setCol(0, 1, array("align" => "right"), $content2->getHtml());
+			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none;padding-left:1em;text-align:left"), $pb);
+			$content->setCol(0, 1, array("style" => "text-align:right"), $content2->getHtml());
 		}
 
 
@@ -437,7 +437,7 @@ abstract class we_rebuild_wizard{
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:document.we_form.btype[2].checked=true;we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22);
 		$butTable = $delallbut. $addbut;
-		$upperTable = '<table class="default" width="495"><tr><td align="left">' . $catAndCheck . '</td><td align="right">' . $butTable . '</td></tr></table>';
+		$upperTable = '<table class="default" width="495"><tr><td style="text-align:left">' . $catAndCheck . '</td><td style="text-align:right">' . $butTable . '</td></tr></table>';
 
 		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', '"we/category"', CATEGORY_TABLE);
 		return g_l('global', '[categorys]') . '<br/><br/>' . $cats->get();

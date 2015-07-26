@@ -49,7 +49,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 <table id="footer">
 	<tr>
 		<td class="defaultfont description">' . g_l('navigation', '[name]') . '</td>
-		<td class="defaultfont" align="left"><div id="showDiv" style="width:100%; height:2.2ex; background-color: #dce6f2; border: #AAAAAA solid 1px;"></div><div style="display:none;">' . we_html_tools::htmlTextInput('fname', 24, $this->values['Text'], '', 'style="width:100%" readonly="readonly"') . '</div></td>
+		<td class="defaultfont" style="text-align:left"><div id="showDiv" style="width:100%; height:2.2ex; background-color: #dce6f2; border: #AAAAAA solid 1px;"></div><div style="display:none;">' . we_html_tools::htmlTextInput('fname', 24, $this->values['Text'], '', 'style="width:100%" readonly="readonly"') . '</div></td>
 	</tr>
 </table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}

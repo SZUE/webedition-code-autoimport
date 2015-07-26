@@ -206,19 +206,19 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				array(
 					'dat' => '<input type="checkbox" name="ID[]" value="' . $Search->getField('ID') . '" />',
 					'height' => 25,
-					'align' => 'center',
+					'style' => 'text-align:center',
 					'bgcolor' => '#ffffff',
 				),
 				array(
 					'dat' => $show,
 					'height' => 25,
-					'align' => 'center',
+					'style' => 'text-align:center',
 					'bgcolor' => '#ffffff',
 				),
 				array(
 					'dat' => '<a href="javascript://" onclick="' . $weGlossaryFrames->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
 					'height' => 25,
-					'align' => 'left',
+					'style' => 'text-align:left',
 					'bgcolor' => '#ffffff',
 				)
 			);
@@ -231,7 +231,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 					$temp[3] = array(
 						'dat' => ($Search->getField('Title') ? oldHtmlspecialchars($Search->getField('Title')) : "-"),
 						'height' => 25,
-						'align' => 'left',
+						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
 					);
 					break;
@@ -267,13 +267,13 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 					$temp[3] = array(
 						'dat' => $mode,
 						'height' => 25,
-						'align' => 'left',
+						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
 					);
 					$temp[4] = array(
 						'dat' => $url,
 						'height' => 25,
-						'align' => 'left',
+						'style' => 'text-align:left',
 						'bgcolor' => '#ffffff',
 					);
 					break;
@@ -281,13 +281,13 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			$temp[] = array(
 				'dat' => $Search->getField('Published') > 0 ? str_replace(" - ", "<br/>", date(g_l('date', '[format][default]'), $Search->getField('Published'))) : "-",
 				'height' => 25,
-				'align' => 'center',
+				'style' => 'text-align:center',
 				'bgcolor' => '#ffffff',
 			);
 			$temp[] = array(
 				'dat' => $Search->getField('ModDate') > 0 ? str_replace(" - ", "<br />", date(g_l('date', '[format][default]'), $Search->getField('ModDate'))) : "-",
 				'height' => 25,
-				'align' => 'center',
+				'style' => 'text-align:center',
 				'bgcolor' => '#ffffff',
 			);
 			$content[] = $temp;
@@ -360,7 +360,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		<table class="default withBigSpace" style="margin:12px 0px 12px 5px;">
 		<tr>
 			<td>' . ($extended && (permissionhandler::hasPerm("DELETE_GLOSSARY") || permissionhandler::hasPerm("NEW_GLOSSARY")) ? we_html_button::create_button("selectAll", "javascript: AllItems();") : "") . '</td>
-			<td align="right"><table class="default">
+			<td style="text-align:right"><table class="default">
 				<tr>
 					<td>' . $prev . '</td>
 					<td class="defaultfont" style="padding-left:10px;"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global', '[from]') . ' ' . $sum . '</b></td>

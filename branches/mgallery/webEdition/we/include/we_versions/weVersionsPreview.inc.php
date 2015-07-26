@@ -104,7 +104,7 @@ function doNotShowFields($k){
 		'modifications',
 		'IP',
 		'Browser',
-		'Icon',//FIXME: remove in 7.0
+		'Icon', //FIXME: remove in 7.0
 		'CreationDate',
 		'Path',
 		'ClassName',
@@ -200,9 +200,9 @@ $contentDiff = '<div style="margin-left:25px;" id="top">' . g_l('versions', '[Ve
 			<tr>
 			<td style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;">' . we_html_tools::getPixel(30, 15) . '
 			</td>
-	  		<td class="defaultfont" align="left" style="border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;"><strong>' . g_l('versions', '[VersionNew]') . '</strong></td>' .
+	  		<td class="defaultfont" style="text-align:left;border-bottom:1px solid #B8B8B7;background-color:#BCBBBB;"><strong>' . g_l('versions', '[VersionNew]') . '</strong></td>' .
 	(empty($oldDoc) ? '' :
-		'<td class="defaultfont" align="left" style="border-left:1px solid #B8B8B7;background-color:#BCBBBB;border-bottom:1px solid #B8B8B7;"><strong>' . g_l('versions', '[VersionOld]') . '</strong></td>') .
+		'<td class="defaultfont" style="text-align:left;border-left:1px solid #B8B8B7;background-color:#BCBBBB;border-bottom:1px solid #B8B8B7;"><strong>' . g_l('versions', '[VersionOld]') . '</strong></td>') .
 	'</tr>';
 
 foreach($newDoc as $k => $v){
@@ -251,7 +251,7 @@ $contentDiff .= '</table>';
 
 $contentDiff .= '<table style="width:95%;background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 		<tr>
-		<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[contentElementsMod]') . '</strong>' .
+		<td colspan="3" style="text-align:left;padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[contentElementsMod]') . '</strong>' .
 	'</td></tr>';
 if($newDoc['documentElements']){
 	$newDocElements = we_unserialize((substr_compare($newDoc['documentElements'], 'a%3A', 0, 4) == 0 ?
@@ -359,7 +359,7 @@ $contentDiff .= '</table>' .
 //scheduler
 	'<table style="width:95%;background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 <tr>
-	<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[schedulerMod]') . '</strong></td>
+	<td colspan="3" style="text-align:left;padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[schedulerMod]') . '</strong></td>
 </tr>';
 
 if($newDoc['documentScheduler']){
@@ -471,7 +471,7 @@ $contentDiff .= '</table>' .
 //customfilter
 	'<table style="width:95%;background-color:#F5F5F5;margin:15px 15px 15px 25px;border-left:1px solid #B8B8B7;border-right:1px solid #B8B8B7;">
 <tr>
-	<td align="left" colspan="3" style="padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[customerMod]') . '</strong></td>
+	<td colspan="3" style="text-align:left;padding:5px;background-color:#BCBBBB;" class="defaultfont"><strong>' . g_l('versions', '[customerMod]') . '</strong></td>
 </tr>';
 
 if($newDoc['documentCustomFilter']){
@@ -647,7 +647,7 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 	</div>
 
 	<div class="editfooter">
-		<div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div>
+		<div style="text-align:right;padding: 10px 10px 0 0;"><?php echo $_button; ?></div>
 	</div>
 </body>
 </html>

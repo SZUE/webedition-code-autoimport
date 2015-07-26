@@ -95,7 +95,7 @@ function setTab(tab) {
 
 		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px', 'class' => 'default'), 1, 1);
 
-		$table->setCol(0, 0, array("valign" => "top", "class" => "small", 'style' => 'padding-left:15px;'), we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text)
+		$table->setCol(0, 0, array("class" => "small", 'style' => 'vertical-align:top;padding-left:15px;'), we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text)
 		);
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
@@ -144,7 +144,7 @@ function setTab(tab) {
 
 		$col = 0;
 		$table2 = new we_html_table(array('style' => 'margin-top:10px;', 'class' => 'default', "width" => 210), 1, 5);
-		$table2->setRow(0, array("valign" => "middle"));
+		$table2->setRow(0, array('style' => 'vertical-align:middle;'));
 		$table2->setCol(0, $col++, array("nowrap" => null), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()"));
 
 		if($this->View->export->IsFolder == 0){
@@ -277,7 +277,7 @@ function closeAllType(){
 			$seltype['classname'] = g_l('export', '[classname]');
 		}
 
-		$table->setCol(0, 0,array('style'=>'padding-bottom:5px;'), we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, array('onchange' => "closeAllType();toggle(this.value);' . $this->topFrame . '.hot=1;"), 'value', $this->_width_size));
+		$table->setCol(0, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, array('onchange' => "closeAllType();toggle(this.value);' . $this->topFrame . '.hot=1;"), 'value', $this->_width_size));
 		$table->setCol(1, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => $this->topFrame . '.hot=1;'), 'value', $this->_width_size) .
 			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, ($this->_width_size - 120), 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
@@ -291,7 +291,7 @@ function closeAllType(){
 		$selectionTypeHtml = $table->getHTML();
 
 		$table = new we_html_table(array('class' => 'default'), 3, 1);
-		$table->setCol(0, 0,array('style'=>'padding-bottom:5px;'), we_html_tools::htmlSelect('Selection', array('auto' => g_l('export', '[auto_selection]'), "manual" => g_l('export', '[manual_selection]')), 1, $this->View->export->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');' . $this->topFrame . '.hot=1;'), 'value', $this->_width_size));
+		$table->setCol(0, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlSelect('Selection', array('auto' => g_l('export', '[auto_selection]'), "manual" => g_l('export', '[manual_selection]')), 1, $this->View->export->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');' . $this->topFrame . '.hot=1;'), 'value', $this->_width_size));
 		$table->setCol(1, 0, array('id' => 'auto', 'style' => ($this->View->export->Selection === 'auto' ? 'display:block' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, $this->_width_size) .
 			$selectionTypeHtml
 		);
@@ -350,7 +350,7 @@ function closeAllType(){
 
 		$parts[] = array(
 			"headline" => g_l('export', '[export_depth]'),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, $this->_width_size) . '<br/>' . we_html_element::htmlLabel(array('style'=>'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; " . $this->topFrame . ".hot=1;}\"", "text", 50),
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, $this->_width_size) . '<br/>' . we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; " . $this->topFrame . ".hot=1;}\"", "text", 50),
 			"space" => $this->_space_size
 		);
 

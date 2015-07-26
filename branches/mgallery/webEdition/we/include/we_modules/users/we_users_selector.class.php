@@ -122,7 +122,7 @@ top.parentID = "' . $this->values["ParentID"] . '";';
 <table id="footer">
 	<tr>
 		<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
-		<td class="defaultfont" align="left">' . we_html_tools::htmlTextInput("fname", 24, isset($this->values["Text"]) ? $this->values["Text"] : '', "", 'style="width:100%" readonly="readonly"') . '</td>
+		<td class="defaultfont" style="text-align:left">' . we_html_tools::htmlTextInput("fname", 24, isset($this->values["Text"]) ? $this->values["Text"] : '', "", 'style="width:100%" readonly="readonly"') . '</td>
 	</tr>
 </table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}

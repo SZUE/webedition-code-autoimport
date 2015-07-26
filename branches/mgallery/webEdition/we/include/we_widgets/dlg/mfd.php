@@ -61,7 +61,7 @@ $sUsrContent = '<table class="default" width="300"><tr><td>' . we_html_element::
 		array("class" => "multichooser"), $content) . we_html_element::htmlHiddens(array(
 		"UserNameTmp" => "",
 		"UserIDTmp" => ""
-	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td align="right" style="padding-top:1em;">' .
+	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td style="text-align:right;padding-top:1em;">' .
 		we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", ($users ? false : true)) .
 		we_html_button::create_button(we_html_button::ADD, "javascript:opener.getUser('we_users_selector','top.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements[\"UserIDTmp\"].value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);") .
 		'</td></tr>' : '') . '</table>';
@@ -90,7 +90,7 @@ $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['
 		'<input type="hidden" name="chbx_type" value="0"/>');
 
 $oDbTableType = new we_html_table(array('class' => 'default'), 1, 3);
-$oDbTableType->setCol(0, 0, array('style'=>'padding-right:10px;'), $oChbxDocs . $oChbxTmpl);
+$oDbTableType->setCol(0, 0, array('style' => 'padding-right:10px;'), $oChbxDocs . $oChbxTmpl);
 $oDbTableType->setCol(0, 2, null, $oChbxObjs . $oChbxCls);
 
 $oSctDate = new we_html_select(array("name" => "sct_date", "size" => 1, "class" => "defaultfont", "onchange" => ""));
@@ -119,8 +119,8 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 $oSctNumEntries->selectOption($iAmountEntries);
 
 $oSelMaxEntries = new we_html_table(array("height" => "100%", 'class' => 'default'), 1, 3);
-$oSelMaxEntries->setCol(0, 0, array("valign" => "middle", "class" => "defaultfont",'style'=>'padding-right:5px;'), g_l('cockpit', '[max_amount_entries]'));
-$oSelMaxEntries->setCol(0, 2, array("valign" => "middle"), $oSctNumEntries->getHTML());
+$oSelMaxEntries->setCol(0, 0, array("class" => "defaultfont", 'style' => 'vertical-align:middle;padding-right:5px;'), g_l('cockpit', '[max_amount_entries]'));
+$oSelMaxEntries->setCol(0, 2, array('style' => 'vertical-align:middle;'), $oSctNumEntries->getHTML());
 
 $show = $oSelMaxEntries->getHTML() . we_html_tools::getPixel(1, 5) . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;
 

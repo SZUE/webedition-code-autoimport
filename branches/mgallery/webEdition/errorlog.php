@@ -41,7 +41,7 @@ function getInfoTable($infoArr){
 		}
 	}
 
-	$ret = '<table class="error" align="center">
+	$ret = '<table class="error">
   <colgroup>
   <col width="10%"/>
   <col width="90%" />
@@ -74,14 +74,14 @@ function getNavButtons($size, $pos, $id){
 		we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)) .
 		we_html_button::create_button(we_html_button::BACK, $_SERVER['SCRIPT_NAME'] . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1))
 		.
-		'</td><td align="center">' .
+		'</td><td style="text-align:center">' .
 		we_html_button::create_button("export", $_SERVER['SCRIPT_NAME'] . '?function=export&ID=' . $id, true, 0, 0) .
 		we_html_button::create_button(we_html_button::DELETE, $_SERVER['SCRIPT_NAME'] . '?function=delete&ID=' . $id, true, 0, 0) .
-		'</td><td align="right">' .
+		'</td><td style="text-align:right">' .
 		we_html_button::create_button(we_html_button::NEXT, $_SERVER['SCRIPT_NAME'] . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
 		we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $_SERVER['SCRIPT_NAME'] . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
 		we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $_SERVER['SCRIPT_NAME'] . '?function=last', true) .
-		'</td></tr><tr><td colspan="3" align="center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
+		'</td></tr><tr><td colspan="3" style="text-align:center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
 		'</td></table>';
 }
 

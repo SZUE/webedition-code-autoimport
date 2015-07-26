@@ -714,7 +714,7 @@ handle_event("previous");');
 
 			$docPath = $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 
-			$dir_table = new we_html_table(array("id" => "navigation_table",'style'=>'margin-left:20px;'), 2, 1);
+			$dir_table = new we_html_table(array("id" => "navigation_table", 'style' => 'margin-left:20px;'), 2, 1);
 			if((isset($v["import_navigation"]) && !$v["import_navigation"])){
 				$dir_table->setStyle('display', 'none');
 			}
@@ -1110,7 +1110,7 @@ HTS;
 		$_tblRow = 0;
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLServer);
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
-		$importLocs->setCol($_tblRow++, 0, array('style'=>'padding-top:4px;'), $rdoLLocal);
+		$importLocs->setCol($_tblRow++, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
@@ -1207,7 +1207,7 @@ HTS;
 
 		$docCategories = $this->formCategory2('doc', isset($v['docCategories']) ? $v['docCategories'] : '');
 		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$docCats->setCol(0, 0, array('valign' => 'top', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[categories]'));
 		$docCats->setCol(0, 1, array(), $docCategories);
 		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
 		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
@@ -1255,14 +1255,14 @@ HTS;
 		}
 
 		$objClass = new we_html_table(array('class' => 'default'), 2, 2);
-		$objClass->setCol(0, 0, array('valign' => 'top', 'class' => 'defaultgray'), g_l('import', '[class]'));
+		$objClass->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[class]'));
 		$objClass->setCol(0, 1, array(), $CLselect->getHTML());
 		$objClass->setCol(1, 0, array(), we_html_tools::getPixel(130, 10));
 		$objClass->setCol(1, 1, array(), we_html_tools::getPixel(150, 10));
 
 		$objCategories = $this->formCategory2('obj', isset($v['objCategories']) ? $v['objCategories'] : '');
 		$objCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$objCats->setCol(0, 0, array('valign' => 'top', 'class' => 'defaultgray'), g_l('import', '[categories]'));
+		$objCats->setCol(0, 0, array('style' => 'vertical-align:top', 'class' => 'defaultgray'), g_l('import', '[categories]'));
 		$objCats->setCol(0, 1, array(), $objCategories);
 		$objCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
 		$objCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
@@ -1275,8 +1275,8 @@ HTS;
 		$objects->setCol(3, 1, array(), $objCats->getHTML());
 
 		$specifyDoc = new we_html_table(array('class' => 'default'), 1, 2);
-		$specifyDoc->setCol(0, 1, array('valign' => 'bottom'), we_html_forms::checkbox(3, (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0), 'chbxIsDynamic', g_l('import', '[isDynamic]'), true, 'defaultfont', "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
-		$specifyDoc->setCol(0, 0, array('style'=>'padding-right:20px;'), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('v[we_Extension]', (isset($v['we_Extension']) ? $v['we_Extension'] : '.html'), we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT), 100), g_l('import', '[extension]')));
+		$specifyDoc->setCol(0, 1, array('style' => 'vertical-align:bottom'), we_html_forms::checkbox(3, (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0), 'chbxIsDynamic', g_l('import', '[isDynamic]'), true, 'defaultfont', "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
+		$specifyDoc->setCol(0, 0, array('style' => 'padding-right:20px;'), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('v[we_Extension]', (isset($v['we_Extension']) ? $v['we_Extension'] : '.html'), we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT), 100), g_l('import', '[extension]')));
 
 		$parts = array(
 			array(
@@ -1671,9 +1671,9 @@ function handle_event(evt) {
 		// Filename selector.
 		$fn = new we_html_table(array('class' => 'default'), 3, 2);
 		$fn->setCol(0, 0, array('colspan' => 2), we_html_forms::radiobutton(0, (!isset($v['rdo_filename']) ? true : ($v['rdo_filename'] == 0) ? true : false), 'v[rdo_filename]', g_l('import', '[auto]'), true, 'defaultfont', "self.document.we_form.elements['v[pfx_fn]'].value=0;"));
-		$fn->setCol(1, 0, array('style'=>'padding-left:25px;'), $asocPfx->getHTML());
-		$fn->setCol(2, 0, array('colspan' => 2,'style'=>'padding-top:5px;'), we_html_forms::radiobutton(1, (!isset($v['rdo_filename']) ? false : ($v['rdo_filename'] == 1) ? true : false), "v[rdo_filename]", g_l('import', '[asgnd]'), true, "defaultfont", "self.document.we_form.elements['v[pfx_fn]'].value=1;"));
-		$fn->setCol(4, 0, array('style'=>'padding-left:25px;'), $asgndFld->getHTML());
+		$fn->setCol(1, 0, array('style' => 'padding-left:25px;'), $asocPfx->getHTML());
+		$fn->setCol(2, 0, array('colspan' => 2, 'style' => 'padding-top:5px;'), we_html_forms::radiobutton(1, (!isset($v['rdo_filename']) ? false : ($v['rdo_filename'] == 1) ? true : false), "v[rdo_filename]", g_l('import', '[asgnd]'), true, "defaultfont", "self.document.we_form.elements['v[pfx_fn]'].value=1;"));
+		$fn->setCol(4, 0, array('style' => 'padding-left:25px;'), $asgndFld->getHTML());
 
 		$parts = array(
 			array(
@@ -1868,7 +1868,7 @@ function handle_event(evt) {
 		$_tblRow = 0;
 		$importLocs->setCol($_tblRow++, 0, array(), $rdoLServer);
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromServer);
-		$importLocs->setCol($_tblRow++, 0, array('style'=>'padding-top:4px;'), $rdoLLocal);
+		$importLocs->setCol($_tblRow++, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
 
 		//FIXME: delete condition and else branch when new uploader is stable
 		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
@@ -2259,7 +2259,7 @@ HTS;
 
 		$docCategories = $this->formCategory2("doc", isset($v["docCategories"]) ? $v["docCategories"] : "");
 		$docCats = new we_html_table(array('class' => 'default'), 2, 2);
-		$docCats->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', '[categories]'));
+		$docCats->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[categories]'));
 		$docCats->setCol(0, 1, array(), $docCategories);
 		$docCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
 		$docCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
@@ -2299,7 +2299,7 @@ HTS;
 			}
 
 			$objClass = new we_html_table(array('class' => 'default'), 2, 2);
-			$objClass->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', '[class]'));
+			$objClass->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[class]'));
 			$objClass->setCol(0, 1, array(), $CLselect->getHTML());
 			$objClass->setCol(1, 0, array(), we_html_tools::getPixel(130, 10));
 			$objClass->setCol(1, 1, array(), we_html_tools::getPixel(150, 10));
@@ -2329,7 +2329,7 @@ HTS;
 			$objSeaPu->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(isset($v["obj_publish"]) ? $v["obj_publish"] : true, 'v[obj_publish]', g_l('buttons_global', '[publish][value]'), false, 'defaultfont'));
 			$objCategories = $this->formCategory2("obj", isset($v["objCategories"]) ? $v["objCategories"] : "");
 			$objCats = new we_html_table(array('class' => 'default'), 2, 2);
-			$objCats->setCol(0, 0, array("valign" => "top", "class" => "defaultgray"), g_l('import', '[categories]'));
+			$objCats->setCol(0, 0, array('style' => 'vertical-align:top;', "class" => "defaultgray"), g_l('import', '[categories]'));
 			$objCats->setCol(0, 1, array(), $objCategories);
 			$objCats->setCol(1, 0, array(), we_html_tools::getPixel(130, 1));
 			$objCats->setCol(1, 1, array(), we_html_tools::getPixel(150, 1));
@@ -2343,8 +2343,8 @@ HTS;
 		}
 
 		$specifyDoc = new we_html_table(array('class' => 'default'), 1, 2);
-		$specifyDoc->setCol(0, 1, array("valign" => "bottom"), we_html_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import', '[isDynamic]'), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
-		$specifyDoc->setCol(0, 0, array('style'=>'padding-right:20px;'), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT), 100), g_l('import', '[extension]')));
+		$specifyDoc->setCol(0, 1, array('style' => 'vertical-align:bottom;'), we_html_forms::checkbox(3, (isset($v["is_dynamic"]) ? $v["is_dynamic"] : 0), "chbxIsDynamic", g_l('import', '[isDynamic]'), true, "defaultfont", "this.form.elements['v[is_dynamic]'].value=this.checked? 1 : 0; switchExt();"));
+		$specifyDoc->setCol(0, 0, array('style' => 'padding-right:20px;'), we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup("v[we_Extension]", (isset($v["we_Extension"]) ? $v["we_Extension"] : ".html"), we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT), 100), g_l('import', '[extension]')));
 
 		if((file_exists($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]) && is_readable($_SERVER['DOCUMENT_ROOT'] . $v["import_from"]))){
 			$parts = array(
@@ -2625,10 +2625,10 @@ function handle_event(evt) {
 		// Filename selector.
 		$fn = new we_html_table(array('class' => 'default'), 5, 1);
 		$fn->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(0, (!isset($v["rdo_filename"]) ? true : ($v["rdo_filename"] == 0) ? true : false), "v[rdo_filename]", g_l('import', '[auto]'), true, "defaultfont", "self.document.we_form.elements['v[pfx_fn]'].value=0;"));
-		$fn->setCol(1, 0, array('style'=>'padding-left:25px;'), $asocPfx->getHTML());
+		$fn->setCol(1, 0, array('style' => 'padding-left:25px;'), $asocPfx->getHTML());
 		$fn->setCol(2, 0, array("height" => 5), "");
 		$fn->setCol(3, 0, array("colspan" => 2), we_html_forms::radiobutton(1, (!isset($v["rdo_filename"]) ? false : ($v["rdo_filename"] == 1) ? true : false), "v[rdo_filename]", g_l('import', '[asgnd]'), true, "defaultfont", "self.document.we_form.elements['v[pfx_fn]'].value=1;"));
-		$fn->setCol(4, 0, array('style'=>'padding-left:25px;'), $asgndFld->getHTML());
+		$fn->setCol(4, 0, array('style' => 'padding-left:25px;'), $asgndFld->getHTML());
 
 		$parts = array(
 			array(

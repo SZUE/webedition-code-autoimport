@@ -31,9 +31,9 @@ abstract class we_editor_footer{
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 3);
 
 		//	spaceholder
-		$_messageTbl->setColContent(0, 0, '<i class="fa fa-2x fa-lock" style="color:red;margin-right:5px;"></i>');
+		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), sprintf(g_l('alert', '[file_locked_footer]'), $_username));
-		$_messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include') ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();")));
+		$_messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();")));
 
 		echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET) . we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
 	}
@@ -41,8 +41,8 @@ abstract class we_editor_footer{
 	static function fileInWorkspace(){
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 3);
 //	spaceholder
-		$_messageTbl->setColContent(0, 0, '<span class="fa-stack"><i class="fa fa-folder fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x" style="color:red;"></i></span>');
-		$_messageTbl->setCol(0, 1, array('class' => 'defaultfont'), g_l('alert', '[' . FILE_TABLE . '][not_im_ws]'));
+		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
+		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), g_l('alert', '[' . FILE_TABLE . '][not_im_ws]'));
 
 
 		$_head = we_html_element::htmlHead(we_html_element::jsElement('top.toggleBusy(0);'));
@@ -55,7 +55,7 @@ abstract class we_editor_footer{
 	static function fileNoSave(){
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
 //	spaceholder
-		$_messageTbl->setColContent(0, 0, '<span class="fa-stack"><i class="fa fa-save fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x" style="color:red;"></i></span>');
+		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), g_l('alert', '[file_no_save_footer]'));
 
 
@@ -68,7 +68,7 @@ abstract class we_editor_footer{
 	static function fileIsRestricted($we_doc){
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
 //	spaceholder
-		$_messageTbl->setColContent(0, 0, '<span class="fa-stack"><i class="fa fa-user fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x" style="color:red;"></i></span>');
+		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))));
 
 

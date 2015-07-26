@@ -138,8 +138,8 @@ abstract class we_tool_frames extends we_modules_frame{
 		$menu = $jmenu->getCode();
 
 		$table = new we_html_table(array("width" => "100%", "class" => 'default'), 1, 2);
-		$table->setCol(0, 0, array("align" => "left", "valign" => "top"), $menu);
-		$table->setCol(0, 1, array("align" => "right", "valign" => "top"), we_main_headermenu::createMessageConsole('toolFrame'));
+		$table->setCol(0, 0, array('style' => 'text-align:left;vertical-align:top'), $menu);
+		$table->setCol(0, 1, array('style' => 'text-align:right;vertical-align:top;'), we_main_headermenu::createMessageConsole('toolFrame'));
 
 		$body = we_html_element::htmlBody(array('id' => 'toolMenu'), $table->getHtml());
 
@@ -189,9 +189,9 @@ function setTab(tab) {
 
 ' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;'));
 
-		/*$table = new we_html_table(array("width" => '100%', "class" => 'default'), 3, 1);
+		/* $table = new we_html_table(array("width" => '100%', "class" => 'default'), 3, 1);
 
-		$table->setCol(1, 0, array("valign" => "top", "class" => "small",'style'=>'p'), we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>'));*/
+		  $table->setCol(1, 0, array("class" => "small",'style'=>'p'), we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>')); */
 
 		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(array("id" => "eHeaderBody", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .

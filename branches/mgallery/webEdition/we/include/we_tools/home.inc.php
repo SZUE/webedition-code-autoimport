@@ -28,7 +28,7 @@ $_row = 0;
 $_starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), $title);
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
-$_starttable->setCol($_row++, 0, array("align" => "center"), $content);
+$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
 
 echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
  (isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "");

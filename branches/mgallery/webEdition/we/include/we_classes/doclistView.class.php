@@ -181,7 +181,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	<tr>
 		<td width="215">' . we_html_button::create_button(we_html_button::ADD, "javascript:newinput();") . '</td>
 		<td width="155"></td>
-		<td width="188" align="right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:search(true);") . '</td>
+		<td width="188" style="text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:search(true);") . '</td>
 		<td></td>
 	</tr>
 </table>' .

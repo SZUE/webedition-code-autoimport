@@ -1101,7 +1101,7 @@ div.collection-content{
 	margin: 4px 0 0 0;
 	border: 1px solid #006db8;
 	background-color: #f5f5f5;
-	cursor: move;
+	cursor: default;
 }
 
 .collection-content .listItem td.colNum{
@@ -1124,6 +1124,11 @@ div.collection-content{
 	background-size: contain;
 	text-align: center;
 	cursor: default;
+}
+
+.collection-content .listItem .previewDiv div.divBtnSelect{
+	padding: 28px 0 0 0;
+	display: none;
 }
 
 .collection-content .listItem .previewDiv span{
@@ -1179,7 +1184,7 @@ div.collection-content{
 	background-position: center center;
 	background-size: contain;
 	vertical-align: middle;
-	cursor: move;
+	cursor: default;
 }
 
 .collection-content .gridItem .divContent div.divInner{

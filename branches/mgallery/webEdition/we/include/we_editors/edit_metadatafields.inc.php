@@ -207,7 +207,7 @@ function build_dialog($selected_setting = 'ui'){
 <tr id="metadataRow_' . $key . '">
 	<td width="210" style="padding-right:5px;">' . we_html_tools::htmlTextInput('metadataTag[' . $key . ']', 24, $value['tag'], 255, "", "text", 205) . '</td>
 	<td width="200">' . we_html_tools::htmlSelect('metadataType[' . $key . ']', $_metadata_types, 1, $value['type'], false, array('class' => "defaultfont", "onchange" => "toggleType(this, " . $key . ")")) . '</td>
-	<td align="right" width="30">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $_i . ")") . '</td>
+	<td style="text-align:right" width="30">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $_i . ")") . '</td>
 </tr>
 <tr id="metadataRow2_' . $key . '">
 	<td style="padding-bottom:6px;padding-right:5px;">
@@ -233,20 +233,20 @@ function build_dialog($selected_setting = 'ui'){
 					foreach($_defined_values[$value['tag']] as $proposal){
 						$_adv_row .= '<tr>
 						<td width="15%"></td>
-						<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][' . $i++ . ']', 24, $proposal, 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
+						<td style="text-align:left">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][' . $i++ . ']', 24, $proposal, 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
 						<td width="25">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
 					</tr>';
 					}
 				} else {
 					$_adv_row .= '<tr>
 					<td width="15%"></td>
-					<td align="left" style="">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, '', 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
+					<td style="text-align:left">' . we_html_tools::htmlTextInput('metadataProposal[' . $key . '][0]', 24, '', 255, ($value['mode'] === 'auto' ? 'disabled="1"' : ''), "text", 310) . '</td>
 					<td width="25">' . we_html_button::create_button(we_html_button::TRASH, "javascript:delProposition(this)") . '</td>
 				</tr>';
 				}
 				$_adv_row .= '<tr>
-				<td align="right" width="15%"></td>
-				<td align="left" style="">' . we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, ' . $key . ')') . '</td>
+				<td style="text-align:right" width="15%"></td>
+				<td style="text-align:left">' . we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, ' . $key . ')') . '</td>
 				<td width="25"></td>
 			</tr>
 		</table>

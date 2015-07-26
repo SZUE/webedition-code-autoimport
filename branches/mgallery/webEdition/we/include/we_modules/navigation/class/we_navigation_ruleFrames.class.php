@@ -76,7 +76,7 @@ class we_navigation_ruleFrames{
 				'space' => 200,
 				'html' => weSuggest::getYuiFiles() . '<table class="default">
 										<tr><td>' . we_html_tools::htmlSelect('navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
-											<td valign="top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
+											<td style="vertical-align:top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
 											</td>
 										</tr>
 										</table>'
@@ -155,7 +155,7 @@ class we_navigation_ruleFrames{
 
 		$formTable = '<table class="default">
 <tr id="trFolderID">
-	<td class="weMultiIconBoxHeadline" valign="top">' . g_l('navigation', '[rules][rule_folder]') . '</td>
+	<td class="weMultiIconBoxHeadline" style="vertical-align:top">' . g_l('navigation', '[rules][rule_folder]') . '</td>
 	<td colspan="5">' . $weAcSelector . '</td>
 </tr>
 <tr id="trDoctypeID">
@@ -194,7 +194,7 @@ class we_navigation_ruleFrames{
 		}
 		$formTable .= '
 <tr id="trCategories">
-	<td style="width: 200px;" valign="top" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_categories]') . '</td>
+	<td style="width: 200px;vertical-align:top" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_categories]') . '</td>
 	<td colspan="4">
 		' . $this->getHTMLCategory() . '
 	</td>
@@ -362,7 +362,7 @@ function we_cmd(){
 					'style' => 'width: 380px; height: 80px; border: #AAAAAA solid 1px;'
 		)));
 
-		$table->setCol(1, 0, array('colspan' => 2, 'align' => 'right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
+		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_html_element::jsElement('
 							function removeAllCats(){

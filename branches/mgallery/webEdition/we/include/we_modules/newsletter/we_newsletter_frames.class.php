@@ -299,7 +299,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		$table2 = new we_html_table(array('class' => 'default', "width" => 300), 1, 5);
 		if($mode == 0){
-			$table2->setRow(0, array("valign" => "middle"));
+			$table2->setRow(0, array('style' => 'vertical-align:middle;'));
 
 			$table2->setCol(0, 0, array("nowrap" => null), ((permissionhandler::hasPerm("NEW_NEWSLETTER") || permissionhandler::hasPerm("EDIT_NEWSLETTER")) ?
 					we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()") :
@@ -680,7 +680,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$gml_table = new we_html_table(array('class' => 'default withSpace', "width" => 538), 4, 2);
 		$gml_table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[global_mailing_list]'));
 		$gml_table->setCol(2, 0, array(), $this->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
-		$gml_table->setCol(2, 1, array('align' => 'right'), $deselect);
+		$gml_table->setCol(2, 1, array('style' => 'text-align:right'), $deselect);
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array("name" => "we_form"), $this->View->getHiddens() .
 					we_html_tools::htmlDialogLayout(
@@ -723,7 +723,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 		$headline = str_replace(" ", "&nbsp;", $headline);
 
 		return '<table class="default" style="margin:' . $height . 'px 0 ' . $height . 'px 24px;">' . ($headline ? '<tr>
-		<td valign="top" class="defaultgray">' . $headline . '</td>
+		<td style="vertical-align:top" class="defaultgray">' . $headline . '</td>
 		<td>' . $content . '</td>
 	</tr>
 </table>' : '
@@ -885,12 +885,12 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		// 1. ROW: select status
 		$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array("onchange" => "weShowMailsByStatus(this.value, $group);", 'id' => 'weViewByStatus'), "value", 150);
-		$table->setCol(0, 0, array("valign" => "middle", "colspan" => 3, "class" => "defaultfont"), $selectStatus);
+		$table->setCol(0, 0, array('style' => 'vertical-align:middle;', "colspan" => 3, "class" => "defaultfont"), $selectStatus);
 
 		// 2. ROW: Mail list with handling buttons
-		$table->setCol(1, 0, array("valign" => "top"), $this->View->newsletter->htmlSelectEmailList("we_recipient" . $group, $arr, 10, "", false, 'style="width:' . (self::def_width - 110) . 'px; height:140px" id="we_recipient' . $group . '"', "value", 600));
-		$table->setCol(1, 1, array("valign" => "middle", 'style' => 'width:10px;'));
-		$table->setCol(1, 2, array("valign" => "top"), $buttons_table->getHtml());
+		$table->setCol(1, 0, array('style' => 'vertical-align:top;'), $this->View->newsletter->htmlSelectEmailList("we_recipient" . $group, $arr, 10, "", false, 'style="width:' . (self::def_width - 110) . 'px; height:140px" id="we_recipient' . $group . '"', "value", 600));
+		$table->setCol(1, 1, array('style' => 'vertical-align:middle;width:10px;'));
+		$table->setCol(1, 2, array('style' => 'vertical-align:top;'), $buttons_table->getHtml());
 
 		// 3. ROW: Buttons for email import and export
 		$importbut = we_html_button::create_button("import", "javascript:we_cmd('set_import'," . $group . ")");
@@ -1562,8 +1562,8 @@ self.focus();
 		$buttons_table->setCol(3, 0, array(), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:deleteallBlack()"));
 
 		$table = new we_html_table(array('class' => 'default'), 5, 3);
-		$table->setCol(0, 0, array("valign" => "middle"), we_html_tools::htmlSelect("blacklist_sel", $arr, 10, "", false, array('style' => "width:388px"), "value", 600));
-		$table->setCol(0, 1, array("valign" => "top", 'style' => 'padding-left:15px;'), $buttons_table->getHtml());
+		$table->setCol(0, 0, array('style' => 'vertical-align:middle;'), we_html_tools::htmlSelect("blacklist_sel", $arr, 10, "", false, array('style' => "width:388px"), "value", 600));
+		$table->setCol(0, 1, array('style' => 'vertical-align:top;padding-left:15px;'), $buttons_table->getHtml());
 
 		$importbut = we_html_button::create_button("import", "javascript:set_import(1)");
 		$exportbut = we_html_button::create_button("export", "javascript:set_export(1)");
@@ -1636,7 +1636,7 @@ self.focus();
 		$buttons = $cancel . $upload;
 		$footerTable = new we_html_table(array('class' => 'default', 'style' => 'width:100%;'), 1, 2);
 		$footerTable->setCol(0, 0, $attribs = array(), we_html_element::htmlDiv(array('id' => 'progressbar', 'style' => 'display:none;padding-left:10px')));
-		$footerTable->setCol(0, 1, $attribs = array('align' => 'right'), $buttons);
+		$footerTable->setCol(0, 1, $attribs = array('style' => 'text-align:right'), $buttons);
 
 		$js = $this->View->getJSProperty() .
 			we_html_element::jsElement('
@@ -1645,8 +1645,8 @@ self.focus();
 
 		$table = new we_html_table(array('class' => 'default withBigSpace'), 2, 1);
 		$table->setCol(0, 0, array("style" => "padding-right:30px"), $weFileupload->getHtmlAlertBoxes());
-		//$table->setCol(2, 0, array("valign" => "middle"), we_html_element::htmlInput(array('name' => 'we_File', 'TYPE' => 'file', 'size' => 35)));
-		$table->setCol(1, 0, array("valign" => "middle"), $weFileupload->getHTML());
+		//$table->setCol(2, 0, array('style'=>'vertical-align:middle"), we_html_element::htmlInput(array('name' => 'we_File', 'TYPE' => 'file', 'size' => 35)));
+		$table->setCol(1, 0, array('style' => 'vertical-align:middle;'), $weFileupload->getHTML());
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_element::htmlCenter(
 						$this->View->getHiddens() .
@@ -1934,7 +1934,7 @@ function postSelectorSelect(wePssCmd) {
 				we_html_button::create_button(we_html_button::BACK, "javascript:document.we_form.offset.value=" . ($offset - $numRows) . ";submitForm('edit_file');") :
 				we_html_button::create_button(we_html_button::BACK, "#", false, 100, 22, "", "", true));
 
-		$nextprev->setCol(0, 0, array('style'=>'padding-right:10px;'), $colcontent);
+		$nextprev->setCol(0, 0, array('style' => 'padding-right:10px;'), $colcontent);
 
 
 		if(($anz - $offset) < $numRows){
@@ -1951,7 +1951,7 @@ function postSelectorSelect(wePssCmd) {
 				$anz;
 		}
 
-		$nextprev->setCol(0, 2, array("class" => "defaultfont",'style'=>'padding-right:10px;'), we_html_element::htmlB($colcontent));
+		$nextprev->setCol(0, 2, array("class" => "defaultfont", 'style' => 'padding-right:10px;'), we_html_element::htmlB($colcontent));
 
 
 		$colcontent = (($offset + $numRows) < $anz ?
@@ -1967,11 +1967,11 @@ function postSelectorSelect(wePssCmd) {
 
 			$nextprev->addCol(3);
 
-			$nextprev->setCol(0, 5, array("class" => "defaultfont",'style'=>'padding-left:20px;'), we_html_element::htmlB(g_l('modules_newsletter', '[show]')) . " " . we_html_tools::htmlTextInput("numRows", 5, $numRows)
+			$nextprev->setCol(0, 5, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), we_html_element::htmlB(g_l('modules_newsletter', '[show]')) . " " . we_html_tools::htmlTextInput("numRows", 5, $numRows)
 			);
 			$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array("onchange" => 'listFile();'), "value", 150);
-			$nextprev->setCol(0, 6, array("class" => "defaultfont",'style'=>'padding-left:20px;'), $selectStatus);
-			$nextprev->setCol(0, 7, array("class" => "defaultfont",'style'=>'padding-left:20px;'), $add
+			$nextprev->setCol(0, 6, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), $selectStatus);
+			$nextprev->setCol(0, 7, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), $add
 			);
 
 			$out = $nextprev->getHtml() .
@@ -1993,7 +1993,7 @@ function postSelectorSelect(wePssCmd) {
 				}
 			}
 
-			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", "align" => "center", 'style' => "padding-bottom:2em;"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2) .
+			$out = we_html_element::htmlDiv(array("class" => "middlefontgray", 'style' => "text-align:center;padding-bottom:2em;"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2) .
 				we_html_button::create_button(we_html_button::PLUS, "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 		}
 
@@ -2135,8 +2135,8 @@ self.focus();
 		$pb->setStudLen(400);
 		$pb->addText(g_l('modules_newsletter', '[sending]'), 0, "title");
 
-		$_footer = '<table width="580" class="default"><tr><td align="left">' .
-			$pb->getHTML() . '</td><td align="right">' .
+		$_footer = '<table width="580" class="default"><tr><td style="text-align:left">' .
+			$pb->getHTML() . '</td><td style="text-align:right">' .
 			we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();") .
 			'</td></tr></table>';
 

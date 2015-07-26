@@ -589,9 +589,9 @@ class we_object extends we_document{
 			case we_base_constants::WE_EDITPAGE_WORKSPACE:
 				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
-				return 'we_editors/we_editor_info_object.inc.php';
+				return 'we_modules/object/we_editor_info_object.inc.php';
 			case we_base_constants::WE_EDITPAGE_CONTENT:
-				return 'we_editors/we_editor_contentobject.inc.php';
+				return 'we_modules/object/we_editor_contentobject.inc.php';
 			default:
 				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;

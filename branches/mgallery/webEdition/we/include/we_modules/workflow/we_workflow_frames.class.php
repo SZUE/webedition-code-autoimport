@@ -128,7 +128,7 @@ function we_save() {
 }');
 
 		$table2 = new we_html_table(array('class' => 'default', 'width' => 300), 1, 2);
-		//$table2->setRow(0, array('valign' => 'middle'));
+		//$table2->setRow(0, array('style'=>'vertical-align:middle'));
 		$table2->setCol(0, 0, array('nowrap' => null), we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
 		$table2->setCol(0, 1, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
 

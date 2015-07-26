@@ -109,7 +109,7 @@ foreach($shortcuts as $sctCol){
 							"height" => 34,
 							"border" => 0
 				))) . '</td>';
-			$sSctOut .= '<td valign="middle">' . we_html_element::htmlA(
+			$sSctOut .= '<td style="vertical-align:middle">' . we_html_element::htmlA(
 					array(
 					"href" => "javascript:" . $js[$_label],
 					"class" => "middlefont",
@@ -123,7 +123,7 @@ foreach($shortcuts as $sctCol){
 }
 
 $sc = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
-$sc->setCol(0, 0, array("align" => "center", "valign" => "top"), $sSctOut);
+$sc->setCol(0, 0, array('style' => 'text-align:center;vertical-align:top;'), $sSctOut);
 
 if(!isset($aProps)){
 	we_html_tools::protect();

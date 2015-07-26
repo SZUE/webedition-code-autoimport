@@ -82,7 +82,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 				}
 
 
-				$table->setCol($c, 2, array('align' => 'right'), $edit. $trash);
+				$table->setCol($c, 2, array('style' => 'text-align:right'), $edit. $trash);
 
 				$c++;
 
@@ -96,7 +96,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 
 		if($this->addbut){
 			$table2->addRow(1);
-			$table2->setCol(1, 0, array("align" => "right", 'style'=>"padding-top:2px;"), $this->addbut);
+			$table2->setCol(1, 0, array('style'=>"text-align:right;padding-top:2px;"), $this->addbut);
 		}
 
 		return $table2->getHtml() . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');

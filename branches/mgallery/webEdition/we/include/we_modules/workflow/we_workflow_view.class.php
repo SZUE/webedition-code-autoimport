@@ -274,14 +274,14 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 					'align' => 'center',
 				),
 				array(
-					'dat' => '<table><tr valign="top"><td>' . we_html_forms::radiobutton(1, $sv->stepCondition ? 1 : 0, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td><td style="padding-left:5px;">' . we_html_forms::radiobutton(0, $sv->stepCondition ? 0 : 1, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td></tr></table>',
+					'dat' => '<table><tr style="vertical-align:top"><td>' . we_html_forms::radiobutton(1, $sv->stepCondition ? 1 : 0, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td><td style="padding-left:5px;">' . we_html_forms::radiobutton(0, $sv->stepCondition ? 0 : 1, $this->uid . "_step" . $counter . "_and", "", false, "defaultfont", "top.content.setHot();") . '</td></tr></table>',
 					'height' => '',
 					'align' => '',
 				),
 				array(
 					'dat' => '<table class="default" style="margin-top:5px;">
-	<tr valign="middle"><td class="middlefont" style="padding-bottom:1em;">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, '', 'min="0" step="0.016" onchange="top.content.setHot();"', 'number') . '</td></tr>
-	<tr valign="top"><td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td></tr>
+	<tr style="vertical-align:middle"><td class="middlefont" style="padding-bottom:1em;">' . we_html_tools::htmlTextInput($this->uid . "_step" . $counter . "_Worktime", 15, $sv->Worktime, '', 'min="0" step="0.016" onchange="top.content.setHot();"', 'number') . '</td></tr>
+	<tr style="vertical-align:top"><td class="middlefont">' . we_html_forms::checkboxWithHidden($sv->timeAction == 1, $this->uid . "_step" . $counter . "_timeAction", g_l('modules_workflow', '[go_next]'), false, "middlefont", "top.content.setHot();") . '</td></tr>
 </table>',
 					'height' => '',
 					'align' => '',
@@ -312,11 +312,11 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 				$content[$counter][$counter1 + 3] = array(
 					'dat' => '<table class="default" style="margin-top:1ex;">
-						<tr valign="middle"><td>' . $yuiSuggest->getHTML() . '</td>
+						<tr style="vertical-align:middle"><td>' . $yuiSuggest->getHTML() . '</td>
 						</tr></table>
 						<table class="default">
-						<tr valign="top">
-						<td class="middlefont" align="right">' . we_html_forms::checkboxWithHidden($tv->Mail, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Mail", g_l('modules_workflow', '[send_mail]'), false, "middlefont", "top.content.setHot();") . '</td>
+						<tr style="vertical-align:top">
+						<td class="middlefont" style="text-align:right">' . we_html_forms::checkboxWithHidden($tv->Mail, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Mail", g_l('modules_workflow', '[send_mail]'), false, "middlefont", "top.content.setHot();") . '</td>
 						<td class="middlefont" style="padding-left:20px;">' . we_html_forms::checkboxWithHidden($tv->Edit, $this->uid . "_task_" . $counter . "_" . $counter1 . "_Edit", g_l('modules_workflow', '[edit]'), false, "middlefont", "top.content.setHot();") . '</td>
 						</tr></table>',
 					'height' => '',
@@ -337,14 +337,14 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
 			weSuggest::getYuiFiles() .
 			'	<table style="margin-right:30px;">
-				<tr valign="top">
+				<tr style="vertical-align:top">
 					<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>
 					<td><table class="default" style="margin-top:3px;">
 						<tr><td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()", true, 30) . '</td>
 						</tr>
 						</table></td>
 				</tr>
-				<tr valign="top">
+				<tr style="vertical-align:top">
 					<td colspan="2" nowrap>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
 				</table>' .
 			$yuiSuggest->getYuiJs() .
@@ -355,7 +355,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	}
 
 	function getTypeTableHTML($head, $values, $ident = 0, $textalign = "left", $textclass = "defaultfont"){
-		$out = '<table class="default">' . ($head ? '<tr><td class="' . trim($textclass) . '" align="' . trim($textalign) . '" colspan="2">' . $head . '</td></tr>' : '');
+		$out = '<table class="default">' . ($head ? '<tr><td class="' . trim($textclass) . '" style="text-align:' . trim($textalign) . '" colspan="2">' . $head . '</td></tr>' : '');
 		foreach($values as $val){
 			$out.='<tr><td class="' . trim($textclass) . '" style="padding-left:' . $ident . 'px;">' . $val . '</td></tr>';
 		}
@@ -368,7 +368,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		if($headline){
 			return '<table class="default" style="margin:15px 0px 15px 24px;">
 			<tr>
-				<td valign="top" class="defaultgray">' . $headline . '</td>
+				<td style="vertical-align:top" class="defaultgray">' . $headline . '</td>
 				<td>' . $content . '</td>
 			</tr>
 </table>';
@@ -1174,12 +1174,12 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			) .
 			'</td><td></tr></table>';
 
-		$buttonsTable = '<table width="100%" class="default"><tr><td>' . $nextprev . '</td><td align="right">' . we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();") . '</td></tr></table>';
+		$buttonsTable = '<table width="100%" class="default"><tr><td>' . $nextprev . '</td><td style="text-align:right">' . we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();") . '</td></tr></table>';
 
 
 		return ($logs ?
 				we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, 300, $content, $headlines), '', $buttonsTable) :
-				we_html_tools::htmlDialogLayout('<div style="width:500px" class="middlefontgray" align="center" style="text-align:center">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
+				we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefontgray">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
 	}
 
 	function getLogQuestion(){

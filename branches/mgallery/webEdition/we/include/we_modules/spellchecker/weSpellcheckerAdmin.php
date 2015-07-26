@@ -78,11 +78,11 @@ $js = $we_tabs->getHeader();
 $table = new we_html_table(array('width' => 380, 'style' => 'margin: 5px;'), 3, 5);
 
 $table->setRow(0, array('style' => 'background-color: silver;font-weight: bold;'), 5);
-$table->setCol(0, 0, array('valign' => 'top', 'class' => 'small', 'style' => 'color: white;'), g_l('modules_spellchecker', '[default]'));
-$table->setCol(0, 1, array('valign' => 'top', 'class' => 'small'), g_l('modules_spellchecker', '[dictionary]'));
-$table->setCol(0, 2, array('valign' => 'top', 'class' => 'small'), g_l('modules_spellchecker', '[active]'));
-$table->setCol(0, 3, array('valign' => 'top', 'class' => 'small'), g_l('modules_spellchecker', '[refresh]'));
-$table->setCol(0, 4, array('valign' => 'top', 'class' => 'small'), g_l('modules_spellchecker', '[delete]'));
+$table->setCol(0, 0, array('class' => 'small', 'style' => 'vertical-align:top;color: white;'), g_l('modules_spellchecker', '[default]'));
+$table->setCol(0, 1, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[dictionary]'));
+$table->setCol(0, 2, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[active]'));
+$table->setCol(0, 3, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[refresh]'));
+$table->setCol(0, 4, array('style' => 'vertical-align:top', 'class' => 'small'), g_l('modules_spellchecker', '[delete]'));
 
 $_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 
@@ -94,11 +94,11 @@ while(false !== ($entry = $_dir->read())){
 
 		$_name = str_replace('.zip', '', $entry);
 
-		$table->setCol($_i, 0, array('valign' => 'top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
-		$table->setCol($_i, 1, array('valign' => 'top', 'class' => 'defaultfont'), $_name);
-		$table->setCol($_i, 2, array('valign' => 'top', 'align' => 'right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
-		$table->setCol($_i, 3, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");'));
-		$table->setCol($_i, 4, array('valign' => 'top', 'align' => 'right'), we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
+		$table->setCol($_i, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
+		$table->setCol($_i, 1, array('style' => 'vertical-align:top', 'class' => 'defaultfont'), $_name);
+		$table->setCol($_i, 2, array('style' => 'vertical-align:top;text-align:right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
+		$table->setCol($_i, 3, array('style' => 'vertical-align:top;text-align:right'), we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");'));
+		$table->setCol($_i, 4, array('style' => 'vertical-align:top;text-align:right'), we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
 	}
 }
 $_dir->close();
@@ -115,7 +115,7 @@ $_tab_1 = we_html_tools::htmlDialogLayout('
 		<div id="dictSelector" style="display: none; width: 400px; height: 220px;background-color: silver;">
 			<div id="appletPanel"></div>
 		</div>
-		<div id="addButt">' . we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit()"). we_html_button::create_button(we_html_button::ADD, "javascript:showDictSelector();") . '</div>
+		<div id="addButt">' . we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit()") . we_html_button::create_button(we_html_button::ADD, "javascript:showDictSelector();") . '</div>
 	</div>
 	 ', '', '');
 
@@ -165,7 +165,6 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 <param name="dictionary" value="' . (isset($_SESSION['weS']['dictLang']) ? $_SESSION['weS']['dictLang'] : 'Deutsch') . '"/>
 <param name="debug" value="off"><param name="user" value="' . $_username . '@' . $_SERVER['SERVER_NAME'] . '"/>
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') : '0') . '"/>');
-
 ?>
 
 <script type="text/javascript"><!--
@@ -223,7 +222,7 @@ echo $js .
 
 	</div>
 
-	<div class="editfooter"><div align="right" style="padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
+	<div class="editfooter"><div style="text-align:right;padding: 10px 10px 0 0;"><?php echo $_button; ?></div></div>
 
 
 	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="<?php echo WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>

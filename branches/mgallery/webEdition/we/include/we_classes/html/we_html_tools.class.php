@@ -88,7 +88,7 @@ abstract class we_html_tools{
 			}
 		}
 		return '<table class="default">' .
-			($text ? '<tr><td class="' . trim($textclass) . '" ' . ($abstand ? 'style="margin-bottom:' . $abstand . 'px;"' : '') . ' align="' . trim($textalign) . '" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
+			($text ? '<tr><td class="' . trim($textclass) . '" style="' . ($abstand ? 'margin-bottom:' . $abstand . 'px;' : '') . 'text-align:' . trim($textalign) . ';" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
 			'<tr>' . $elemOut . '</tr></table>';
 	}
 
@@ -160,7 +160,7 @@ this.selectedIndex = 0;' .
 				array(
 					"html" => $content, "headline" => "", "space" => 0
 				)
-				), $marginLeft, ($buttons ? '<div align="right" style="margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
+				), $marginLeft, ($buttons ? '<div style="text-align:right;margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
@@ -182,7 +182,7 @@ this.selectedIndex = 0;' .
 		if($buttons){
 			$_table = new we_html_table(array('class' => 'default'), 3, 1, array(
 				array(array('colspan' => 2), $out),
-				array(array('align' => 'right', 'style' => 'margin-top:5px;'), $buttons),
+				array(array('style' => 'text-align:right;margin-top:5px;'), $buttons),
 			));
 			return $_table->getHtml();
 		}
@@ -195,9 +195,9 @@ this.selectedIndex = 0;' .
 
 		for($f = 0; $f < $anz; $f++){
 			$bgcol = $bgColor ? : ((!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : "white");
-			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f == 0) ? '' : "border-left:1px solid silver;" ) . 'border-bottom: 1px solid silver;background-color:' . $bgcol . ';" ' .
-				(isset($content[$f]["align"]) ? 'align="' . $content[$f]["align"] . '"' : "") . ' ' .
-				(isset($content[$f]["height"]) ? 'height="' . $content[$f]["height"] . '"' : "") . '>' .
+			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f == 0) ? '' : "border-left:1px solid silver;" ) . 'border-bottom: 1px solid silver;background-color:' . $bgcol . '; ' .
+				(isset($content[$f]["align"]) ? 'text-align:' . $content[$f]["align"].';' : '') . ' ' .
+				(isset($content[$f]["height"]) ? 'height:' . $content[$f]["height"] . 'px;' : '') . '">' .
 				(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
 				'</td>';
 		}
@@ -223,7 +223,7 @@ this.selectedIndex = 0;' .
 		if($buttons){
 			$_table = new we_html_table(array("class" => 'default'), 3, 1, array(
 				array(array("colspan" => 2), $out),
-				array(array("align" => "right", 'style' => 'padding-top:5px;'), $buttons)
+				array(array('style' => 'text-align:right;padding-top:5px;'), $buttons)
 			));
 			return $_table->getHtml();
 		}
@@ -727,7 +727,7 @@ this.selectedIndex = 0;' .
 
 		if($img && file_exists($_SERVER['DOCUMENT_ROOT'] . $img)){
 			$size = getimagesize($_SERVER['DOCUMENT_ROOT'] . $img);
-			$content->setCol(0, 0, array('valign' => 'top', 'style' => 'padding:10px;'), we_html_element::htmlImg(array('src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1])));
+			$content->setCol(0, 0, array('style' => 'vertical-align:top;padding:10px;'), we_html_element::htmlImg(array('src' => $img, 'border' => 0, 'width' => $size[0], 'height' => $size[1])));
 		}
 
 		$content->setCol(0, ($img ? 1 : 0), array('class' => 'defaultfont', 'style' => 'padding:10px;'), $text);
@@ -813,7 +813,7 @@ function clip_' . $unique . '(){
 			}
 		}
 
-		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;" valign="top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td valign="top" align="right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
+		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;vertical-align:top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td style="vertical-align:top;text-align:right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';
 	}
 
 	public static function setHttpCode($status){

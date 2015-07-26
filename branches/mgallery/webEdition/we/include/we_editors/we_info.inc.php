@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -33,15 +32,15 @@ $_middlePart = ($_widthTotal - (2 * $_space));
 $_logoPart = 140;
 
 $_credits = '<br /><span style="line-height:160%">' .
-		g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
-		g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
+	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
+	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
 
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
 	$we_version .= ((defined('WE_VERSION_NAME') && WE_VERSION_NAME != '') ? WE_VERSION_NAME : WE_VERSION) . ' (' . WE_VERSION .
-			((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')' .
-			((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
-			((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
+		((defined('WE_SVNREV') && WE_SVNREV != '0000') ? ', SVN-Revision: ' . WE_SVNREV : '') . ')' .
+		((defined('WE_VERSION_SUPP') && WE_VERSION_SUPP != '') ? ' ' . g_l('global', '[' . WE_VERSION_SUPP . ']') : '') .
+		((defined('WE_VERSION_SUPP_VERSION') && WE_VERSION_SUPP_VERSION != 0) ? WE_VERSION_SUPP_VERSION : '');
 }
 
 if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
@@ -94,7 +93,7 @@ if(is_readable($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php')){
 	$_table->setCol($_actRow++, 0, array("class" => "defaultfont small", 'style' => 'padding-top:10px'), $_agency);
 }
 
-	$loginRow = 0;
+$loginRow = 0;
 
 if(!empty($GLOBALS["loginpage"])){
 	$_loginTable = new we_html_table(array("style" => "border-style:none; padding:0px;border-spacing:0px;"), 4, 2);
@@ -116,10 +115,10 @@ if(!empty($GLOBALS["loginpage"])){
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
 			$_modetable->setCol(0, 0, array(), '');
-			$_modetable->setCol(0, 1, array("align" => "right", "valign" => "bottom", "rowspan" => 2), (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
+			$_modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
 		} else {
 			$_modetable->setCol(0, 0, array(), we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
-			$_modetable->setCol(0, 1, array("align" => "right", "valign" => "bottom", "rowspan" => 2), we_html_element::htmlHidden("mode", "normal") . $loginButton);
+			$_modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), we_html_element::htmlHidden("mode", "normal") . $loginButton);
 		}
 	} else { //	normal login
 		if(WE_SEEM){
@@ -140,15 +139,12 @@ if(!empty($GLOBALS["loginpage"])){
 		// if button is between these radio boces, they can not be reachable with <tab>
 		$_modetable->setCol(0, 0, array(), '<table class="default">
 		<tr><td>' . $we_login_type . '</td></tr>' .
-				'<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
-				'</td></tr>
+			'<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
+			'</td></tr>
 		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', '[start_mode_seem_acronym]') . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
-				'</td></tr>
+			'</td></tr>
 		</table>');
-		$_modetable->setCol(0, 1, array(
-			'align' => 'right',
-			'valign' => 'bottom',
-			'rowspan' => 3), $loginButton);
+		$_modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom', 'rowspan' => 3), $loginButton);
 	}
 
 	//	16th
@@ -163,7 +159,7 @@ if(!empty($GLOBALS["loginpage"])){
 	$_table->setCol($_actRow++, 0, array("class" => "small", 'style' => 'padding-top:15px;padding-bottom:5px;'), g_l('global', '[loginok]'));
 
 	//	11th back button
-	$_table->setCol($_actRow++, 0, array("width" => $_middlePart, "class" => "small", "align" => "right", 'style' => 'padding-bottom:15px'), we_html_button::create_button("back_to_login", WEBEDITION_DIR . "index.php?r=$r"));
+	$_table->setCol($_actRow++, 0, array("width" => $_middlePart, "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'), we_html_button::create_button("back_to_login", WEBEDITION_DIR . "index.php?r=$r"));
 }
 
 if($isInfoScreen){

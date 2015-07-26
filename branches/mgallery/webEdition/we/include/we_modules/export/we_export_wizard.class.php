@@ -992,7 +992,7 @@ function setState(a) {
 
 		$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
-		$content->setCol(0, 1, array("align" => "right"), $buttons);
+		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ""), we_html_element::htmlBody(array("class" => "weDialogButtonsBody", 'style' => 'overflow:hidden;'), we_html_element::htmlForm(array(
 						"name" => "we_form",

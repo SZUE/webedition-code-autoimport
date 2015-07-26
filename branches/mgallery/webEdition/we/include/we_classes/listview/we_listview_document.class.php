@@ -44,6 +44,7 @@ class we_listview_document extends we_listview_base{
 	protected $joins = array();
 	protected $orderWhere = array();
 	protected $table = FILE_TABLE;
+	protected $group = '';
 
 	/**
 	 *
@@ -72,7 +73,6 @@ class we_listview_document extends we_listview_base{
 	 */
 	function __construct($name, $rows, $offset, $order, $desc, $docType, $cats, $catOr, $casesensitive, $workspaceID, $contentTypes, $cols, $searchable, $condition, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $subfolders, $customers, $id, $languages, $numorder, $hidedirindex, $triggerID){
 		parent::__construct($name, $rows, $offset, $order, $desc, $cats, $catOr, $workspaceID, $cols, $calendar, $datefield, $date, $weekstart, $categoryids, $customerFilterType, $id);
-
 		$this->docType = trim($docType);
 		$this->casesensitive = $casesensitive;
 		$this->contentTypes = $contentTypes;
@@ -83,6 +83,8 @@ class we_listview_document extends we_listview_base{
 		if($this->table == VFILE_TABLE){
 			$id = $this->id = 0;
 		}
+
+		$this->group.=($this->group ? ',' : '') . FILE_TABLE . '.ID';
 
 		$calendar_select = $calendar_where = '';
 
@@ -278,8 +280,8 @@ class we_listview_document extends we_listview_base{
 			$ws_where . ' AND ' .
 			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 ' .
 			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
-			(($dt != "#NODOCTYPE#") ? (" AND " . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
-			' ' . $sql_tail . $calendar_where . ' GROUP BY ID ' . $orderstring .
+			(($dt != "#NODOCTYPE#") ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') .
+			' ' . $sql_tail . $calendar_where . ' GROUP BY ' . $this->group . ' ' . $orderstring .
 			$limit
 		);
 
@@ -322,7 +324,7 @@ class we_listview_document extends we_listview_base{
 			(($dt != '#NODOCTYPE#') ? (' AND ' . FILE_TABLE . '.DocType=' . intval($dt)) : '') . ' ' .
 			$sql_tail .
 			$calendar_where .
-			' GROUP BY ID ' . $orderstring);
+			' GROUP BY ' . $this->group . ' ' . $orderstring);
 
 		$this->anz_all = $this->DB_WE->num_rows();
 		if($calendar != ''){

@@ -188,7 +188,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	function formDocTypeTempl(){
 		return '
 <table class="default">
-	<tr><td class="defaultfont" align="left" style="padding-bottom:2px;">' . $this->formDocType2(388, $this->Published) . '</td></tr>
+	<tr><td class="defaultfont" style="text-align:left;padding-bottom:2px;">' . $this->formDocType2(388, $this->Published) . '</td></tr>
 	<tr><td>' . $this->formIsSearchable() . '</td></tr>
 	<tr><td>' . $this->formInGlossar() . '</td></tr>
 </table>';

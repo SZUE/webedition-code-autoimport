@@ -52,7 +52,7 @@ var ajaxCallbackDetails = {
 function openDetails(id) {
 	currentId = id;
 	var dataContent = document.getElementById("dataContent_"+id+"");
-	dataContent.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td align=\'center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
+	dataContent.innerHTML = "<table border=\'0\' width=\'100%\' height=\'100%\'><tr><td style=\'text-align:center\'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 	var otherdataContents = document.getElementsByName("dataContent");
 	for(var i=0;i<otherdataContents.length;i++) {
 		if(otherdataContents[i].id != "dataContent_"+id+""){
@@ -198,7 +198,7 @@ function back(id) {
 		$out = '';
 		$anz = count($content);
 		if($anz){
-			$out .= '<div align="center" width="100%"><table width="100%" class="default middlefont">';
+			$out .= '<div style="text-align:center" width="100%"><table width="100%" class="default middlefont">';
 //		$out .= '<thead>';
 //		$out .= '<tr>';
 //		$out .= '<th style="width:150px;">';
@@ -233,7 +233,7 @@ function back(id) {
 
 			$out .= '</table></div>';
 		} else {
-			$out = '<div align="center" width="100%">' . g_l('logging', '[notfound]') . '</div>';
+			$out = '<div style="text-align:center" width="100%">' . g_l('logging', '[notfound]') . '</div>';
 		}
 
 		return $out;
@@ -293,15 +293,15 @@ function back(id) {
 						$showNumber++;
 					}
 					$out .= '<tr id="' . $name . '" name="' . $name . '" style="display:' . $display . ';">
-					<td align="left">' . $m . '.</td><td align="left">' .
-						$v['documentID'] . '</td><td align="left">' .
-						we_base_util::shortenPath($v['Text'], 18) . '</td><td align="left">' .
-						we_base_util::shortenPath($v['Path'], 40) . '</td><td align="left">' .
-						$v['Version'] . '</td><td align="left">' .
+					<td style="text-align:left">' . $m . '.</td><td style="text-align:left">' .
+						$v['documentID'] . '</td><td style="text-align:left">' .
+						we_base_util::shortenPath($v['Text'], 18) . '</td><td style="text-align:left">' .
+						we_base_util::shortenPath($v['Path'], 40) . '</td><td style="text-align:left">' .
+						$v['Version'] . '</td><td style="text-align:left">' .
 						$v['ContentType'] . '</td></tr>';
 				}
 				$out .= '<tr style="background-color:#dddddd;">
-				<td style="border-top:1px solid #BBBAB9;padding:3px 5px 3px 3px;" align="right" colspan="6">
+				<td style="border-top:1px solid #BBBAB9;padding:3px 5px 3px 3px;text-align:right" colspan="6">
 				<span id="startNumber_' . $logId . '">' . ($start + 1) . '</span> - <span id="showNumber_' . $logId . '">' . $showNumber . '</span> <span>' . g_l('logging', '[of]') . '</span> <span style="margin-right:20px;">' . $anzGesamt . '</span>' .
 					(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_' . $logId . '" href="#" onclick="showAll(' . $logId . ');">' . g_l('logging', '[all]') . '</a></span>' : '') .
 					'<span style="margin-right:5px;"><a title="' . g_l('logging', '[back]') . '" href="#" onclick="back(' . $logId . ');"><i class="fa fa-caret-left" id="back_' . $logId . '" style="display:none;border:2px solid #DDD;"/></a></span>' .

@@ -352,7 +352,7 @@ function uploadFinished() {
 					'onchange' => "checkFileinput();"
 			)) . $but;
 
-		$fileinput = '<table><tr><td valign="top" class="weMultiIconBoxHeadline">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td style="padding-left:35px;">' . $fileinput . '</td></tr></table>';
+		$fileinput = '<table><tr><td style="vertical-align:top" class="weMultiIconBoxHeadline">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td style="padding-left:35px;">' . $fileinput . '</td></tr></table>';
 
 		$form_content = str_replace("WEFORMNUM", 0, $this->_getHiddens("buttons", $this->step) . str_replace("WE_FORM_NUM", 1, $fileinput));
 		$formhtml = we_html_element::htmlForm(
@@ -554,9 +554,7 @@ function next() {
 
 		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
-		$table->setCol(0, 1, array(
-			"align" => "right"
-			), we_html_element::htmlDiv(array(
+		$table->setCol(0, 1, array("styke" => "text-align:right"), we_html_element::htmlDiv(array(
 				'id' => 'normButton'
 				), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) .
 			we_html_element::htmlDiv(
@@ -566,7 +564,7 @@ function next() {
 
 		if($this->step == 3){
 			$table->setCol(0, 0, null, '');
-			$table->setCol(0, 1, array("align" => "right"), we_html_element::htmlDiv(array(
+			$table->setCol(0, 1, array("style" => "text-align:right"), we_html_element::htmlDiv(array(
 					'id' => 'normButton'
 					), we_html_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
 		}
@@ -916,8 +914,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 					'class' => 'blockWrapper',
 					'style' => 'width: ' . ($_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
-		$table->setCol(1, 0, array(
-			'colspan' => 2, 'align' => 'right'
+		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'
 			), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut
 		);
 
