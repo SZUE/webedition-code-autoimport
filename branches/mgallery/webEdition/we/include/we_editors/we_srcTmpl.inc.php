@@ -283,7 +283,7 @@ $maineditor = '<div id="editorDiv" style="margin-left: 20px;margin-right: 20px;"
 	'<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFont"] == 1) ? ' font-family: ' . $_SESSION['prefs']['editorFontname'] . '; font-size: ' . $_SESSION['prefs']['editorFontsize'] . 'px;' : '') .
 	'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
 	'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' .
-	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ' onchange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
+	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ' onchange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="return wedoKeyDown(this,event.keyCode);"') . '>'
 	. oldHtmlspecialchars($code) . '</textarea>';
 switch($_SESSION['prefs']['editorMode']){
 	case 'java':
@@ -293,7 +293,7 @@ switch($_SESSION['prefs']['editorMode']){
 
 $maineditor .= '<table class="default" id="srtable">
 	    <tr>
-<td align="left" class="defaultfont">' .
+<td style="text-align:left" class="defaultfont">' .
 	($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '
 <input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button(we_html_button::SEARCH, 'javascript:cmSearch(null);') . '</div>
 <input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button("replace", 'javascript:cmReplace(null);') . '</div>' .
@@ -301,7 +301,7 @@ $maineditor .= '<table class="default" id="srtable">
 		'</div>' : ''
 	) . '
 					</td>
-					<td align="right" class="defaultfont">' .
+					<td style="text-align:right" class="defaultfont">' .
 	we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;') .
 	($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button("fa:reindent,fa-lg fa-indent", 'javascript:reindent();') . '</div>' : '') .
 	'</td></tr></table></div>';
@@ -360,8 +360,8 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	<tr><td style="padding-bottom:5px;">' . $groupselect . '</td></tr>
 	<tr>
 		<td id="tagSelectCol" style="padding-bottom:5px;width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
-		<td id="spacerCol" style="width: 50px;" align="center">' . $editTagbut . '</td>
-		<td id="tagAreaCol" style="width: 100%;" align="right">' . we_html_element::htmlTextArea(array(
+		<td id="spacerCol" style="width: 50px;text-align:center">' . $editTagbut . '</td>
+		<td id="tagAreaCol" style="width: 100%;text-align:right">' . we_html_element::htmlTextArea(array(
 		'name' => 'we_' . $we_doc->Name . '_TagWizardCode',
 		'id' => 'tag_edit_area',
 		'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
@@ -373,7 +373,7 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	<tr>
 		<td id="tagSelectColButtons" style="width: 250px;"></td>
 		<td id="spacerColButtons" style="width: 50px;"></td>
-		<td id="tagAreaColButtons" style="width: 100%;" align="right">
+		<td id="tagAreaColButtons" style="width: 100%;text-align:right">
 			<table class="default">
 			<tr>
 			<td style="padding-right:10px;">' . $selectallbut . '</td>

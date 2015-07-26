@@ -244,8 +244,7 @@ abstract class we_root extends we_class{
 					"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .
 					we_html_tools::hidden($textname, $path, array('id' => $textname)) .
 					we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => '1')),
-					"valign" => "top",
-					"style" => "height  : 10px"), g_l('weClass', '[dir]'), 'left', 'defaultfont'
+					'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]'), 'left', 'defaultfont'
 			);
 		}
 
@@ -359,7 +358,7 @@ abstract class we_root extends we_class{
 
 		$content = '<table class="default" style="width:500px;">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
-' . ($canChange ? '<tr><td align="right"  style="padding-top:2px;">' . $delallbut. $addbut . '</td></tr>' : "") . '</table>' . we_html_element::jsElement('setIconOfDocClass(\'userIcon\');');
+' . ($canChange ? '<tr><td style="text-align:right;padding-top:2px;">' . $delallbut . $addbut . '</td></tr>' : "") . '</table>' . we_html_element::jsElement('setIconOfDocClass(\'userIcon\');');
 
 		return we_html_tools::htmlFormElementTable($content, g_l('weClass', '[otherowners]'), 'left', 'defaultfont');
 	}
@@ -635,7 +634,7 @@ abstract class we_root extends we_class{
 <table class="default" style="margin-top:2px;">' .
 				$_headline . '
 	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
-	<tr><td class="defaultfont" align="left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
+	<tr><td class="defaultfont" style="text-align:left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
 <br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
 		} else {
@@ -1054,9 +1053,7 @@ abstract class we_root extends we_class{
 
 	protected function i_getLangLinks(){
 		we_loadLanguageConfig();
-		$_languages = getWeFrontendLanguagesForBackend();
-		$langkeys = array_keys($_languages);
-		$langkeys = array_keys($_languages);
+		$langkeys = array_keys(getWeFrontendLanguagesForBackend());
 		if(LANGLINK_SUPPORT){
 			$isFolder = $this instanceof we_folder;
 			$isObject = (defined('OBJECT_FILES_TABLE') ? $this->Table == OBJECT_FILES_TABLE || $this->Table == OBJECT_TABLE : false);
@@ -1074,9 +1071,6 @@ abstract class we_root extends we_class{
 		foreach($langkeys as $langkey){
 			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
 		}
-		foreach($langkeys as $langkey){
-			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
-		}
 	}
 
 	private function getLinkReplaceArray(){
@@ -1090,58 +1084,58 @@ abstract class we_root extends we_class{
 		}
 		//don't stress index:
 		$replace = $this->getLinkReplaceArray();
+		$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
 		foreach($this->elements as $k => $v){
 			if($this->i_isElement($k)){
 				if((!isset($v['type']) || $v['type'] != 'vars') && (!empty($v['dat']) || !empty($v['bdid']) || !empty($v['ffname']) )){
 
-					$tableInfo = $this->DB_WE->metadata(CONTENT_TABLE);
 					$data = array();
 					foreach($tableInfo as $t){
 						$fieldName = $t['name'];
-						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
-						if($k === 'data' && $this->isBinary()){
-							break;
+						if($fieldName === 'ID' || ($k === 'data' && $this->isBinary())){
+							continue;
 						}
+						$val = isset($v[strtolower($fieldName)]) ? $v[strtolower($fieldName)] : '';
 						if($fieldName === 'Dat' && !empty($v['ffname'])){
 							$v['type'] = 'formfield';
 							$val = serialize($v);
 							// Artjom garbage fix
 						}
 
-						if(!isset($v['type']) || !$v['type']){
+						switch(isset($v['type']) ? $v['type'] : ''){
+							case '':
 							$v['type'] = 'txt';
-						}
-						if($v['type'] === 'date'){
+								break;
+							case 'date':
 							$val = sprintf('%016d', $val);
+								break;
 						}
-						if($fieldName != 'ID'){
 							$data[$fieldName] = is_array($val) ? serialize($val) : $val;
 						}
+					if(!$data){
+						continue;
 					}
-					if($data){
-						$data = we_database_base::arraySetter($data);
 						$key = $v['type'] . '_' . $k;
 						if(isset($replace[$key])){
 							$cid = $replace[$key];
-							$data.=',ID=' . $cid;
+						$data['ID'] = $cid;
 							unset($replace[$key]);
 						} else {
 							$cid = 0;
 						}
-						$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . $data);
+					$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . we_database_base::arraySetter($data));
 						$cid = $cid ? : $this->DB_WE->getInsertId();
 						$this->elements[$k]['id'] = $cid; // update Object itself
 						if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 									'DID' => $this->ID,
 									'CID' => $cid,
 									'Name' => $k,
-									'Type' => $v["type"],
+								'Type' => $v['type'],
 									'DocumentTable' => stripTblPrefix($this->Table)
 								))
 							)){
 							//this should never happen
 							return false;
-						}
 					}
 				}
 			}

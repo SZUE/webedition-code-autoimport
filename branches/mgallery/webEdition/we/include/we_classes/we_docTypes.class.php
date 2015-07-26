@@ -163,7 +163,7 @@ class we_docTypes extends we_class{
 	public function formDocTypeHeader(){
 		return '
 <table class="default">
-	<tr valign="top">
+	<tr style="vertical-align:top">
 		<td style="padding-right:20px;">' . $this->formDocTypes2() . '</td>
 		<td><div style="padding-bottom:10px;">' . we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')") . '</div>' . we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')") . '</td>
 	</tr>
@@ -248,7 +248,7 @@ class we_docTypes extends we_class{
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, $this->ParentID);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth($width - (we_base_browserDetect::isIE() ? 0 : 10));
+		$yuiSuggest->setWidth($width - 10);
 		$yuiSuggest->setSelectButton($button);
 
 		return $yuiSuggest->getHTML();
