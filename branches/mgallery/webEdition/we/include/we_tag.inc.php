@@ -431,7 +431,7 @@ function we_getInputRadioField($name, $value, $itsValue, $atts){
 	//  This function replaced fnc: we_getRadioField
 	$atts['type'] = 'radio';
 	$atts['name'] = $name;
-	$atts['value'] = oldHtmlspecialchars($itsValue);
+	$atts['value'] = oldHtmlspecialchars($itsValue, -1, 'ISO-8859-1', false);
 	if($value == $itsValue){
 		$atts['checked'] = 'checked';
 	}
@@ -488,11 +488,12 @@ function we_getSelectField($name, $value, $values, $attribs = array(), $addMissi
 	$content = '';
 	$isin = 0;
 	foreach($options as $option){
+		$opt = oldHtmlspecialchars($option, -1, 'ISO-8859-1', false);
 		if($option == $value){
-			$content .= getHtmlTag('option', array('value' => $option, 'selected' => 'selected'), $option, true);
+			$content .= getHtmlTag('option', array('value' => $opt, 'selected' => 'selected'), $opt, true);
 			$isin = 1;
 		} else {
-			$content .= getHtmlTag('option', array('value' => $option), $option, true);
+			$content .= getHtmlTag('option', array('value' => $opt), $opt, true);
 		}
 	}
 	if((!$isin) && $addMissing && $value != ''){

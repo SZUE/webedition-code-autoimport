@@ -773,17 +773,24 @@ class we_document extends we_root{
 		}
 		switch($type){
 			case 'img':
+				if(!$val && isset($attribs['id'])){
+					$val = $attribs['id'];
+				}
+
 				$img = new we_imageDocument(false);
 
 				if(isset($attribs['name'])){
 					$img->Name = $attribs['name'];
 				}
 
-				if(!$val && isset($attribs['id'])){
-					$val = $attribs['id'];
-				}
-
 				$img->initByID($val, FILE_TABLE);
+
+				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
+					case 'path':
+						return $img->Path;
+					case 'id':
+						return $img->ID;
+				}
 
 				$altField = $img->Name . we_imageDocument::ALT_FIELD;
 				$titleField = $img->Name . we_imageDocument::TITLE_FIELD;
@@ -835,7 +842,7 @@ class we_document extends we_root{
 						$img->setElement('name', $img->getElement('name'), 'attrib');
 					}
 				}
-				return $img->getHtml(false, true, $pathOnly);
+				return $img->getHtml(false, true);
 			case 'binary':
 				$bin = new we_otherDocument();
 				if(isset($attribs['name'])){

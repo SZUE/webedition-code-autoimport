@@ -133,15 +133,24 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 		}
 	}
 
-	if(!$id && !$path){
+	if(
+		(!$id && !$path) ||
+		$GLOBALS['WE_MAIN_DOC']->ID == $id//don't include same id
+	){
 		return '';
 	}
 
 	if($id){
-		if($GLOBALS['WE_MAIN_DOC']->ID == $id || //don't include same id
-			$GLOBALS['we_doc']->ContentType != we_base_ContentTypes::WEDOCUMENT //don't include any unknown document
-		){
-			return '';
+		switch($GLOBALS['we_doc']->ContentType){
+			case we_base_ContentTypes::WEDOCUMENT:
+				break; //don't include any unknown document
+			case $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE:
+				if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW ||
+					$GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE){
+					break;
+				}
+			default:
+				return '';
 		}
 		$tmp = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id) . ' AND Published>0', null);
 		$realPath = $tmp ? $tmp['Path'] : '';

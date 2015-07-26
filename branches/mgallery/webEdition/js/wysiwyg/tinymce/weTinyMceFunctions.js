@@ -50,7 +50,7 @@ function TinyWrapper(fieldname) {
 
 	var _fn = fieldname;
 	var _isInlineedit = typeof tinyEditors[_fn] === "object";
-	var _id = _isInlineedit ? tinyEditors[_fn].id : (tinyEditors[_fn] === undefined ? "undefined" : tinyEditors[_fn]);
+	var _id = _isInlineedit ? tinyEditors[_fn].id : (tinyEditors[_fn] === undefined ? undefined : tinyEditors[_fn]);
 
 	this.getFieldName = function () {
 		return _fn;
@@ -70,10 +70,10 @@ function TinyWrapper(fieldname) {
 			}
 			catch (err) {
 				delete tinyEditorsInPopup[_fn];
-				return "undefined";
+				return undefined;
 			}
 		} else {
-			return "undefined";
+			return undefined;
 		}
 	};
 
@@ -83,15 +83,15 @@ function TinyWrapper(fieldname) {
 			return this.getEditorInPopup();
 		}
 
-		return tinyEditors[_fn] === undefined ? "undefined" : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : "undefined");
+		return tinyEditors[_fn] === undefined ? undefined : (typeof tinyEditors[_fn] === "object" ? tinyEditors[_fn] : undefined);
 	};
 
 
 	this.getTextarea = function () {
-		return tinyEditors[_fn] === undefined ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById(tinyEditors[_fn]));
+		return tinyEditors[_fn] === undefined ? undefined : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById(tinyEditors[_fn]));
 	};
 	this.getDiv = function () {
-		return tinyEditors[_fn] === undefined ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));
+		return tinyEditors[_fn] === undefined ? undefined : (typeof tinyEditors[_fn] === "object" ? undefined : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));
 	};
 
 	this.getIFrame = function () {
@@ -99,14 +99,14 @@ function TinyWrapper(fieldname) {
 
 		if (tinymce !== undefined && tinymce.DOM) {
 			try {
-				return tinymce.DOM.get(frame_id) !== null ? tinymce.DOM.get(frame_id) : "undefined";
+				return tinymce.DOM.get(frame_id) !== null ? tinymce.DOM.get(frame_id) : undefined;
 			} catch (e) {
-				return "undefined";
+				return undefined;
 			}
 		} else {
-			return "undefined";
+			return undefined;
 		}
-	};
+	}
 
 	this.getContent = function (forcePopup) {
 		var _forcePopup = forcePopup === undefined ? false : forcePopup;
@@ -158,15 +158,15 @@ function TinyWrapper(fieldname) {
 	};
 
 	this.getParam = function (param) {
-		if (this.getEditor(true) !== "undefined") {
+		if (this.getEditor(true) !== undefined) {
 			if (this.getEditor().settings[param] === undefined) {
 				console.log("function getParam(): The parameter you tried to derive is not defined: " + param);
-				return "undefined";
+				return undefined;
 			}
 			return this.getEditor().settings[param];
 		}
 		console.log("Editor not available");
-		return "undefined";
+		return undefined;
 	};
 }
 

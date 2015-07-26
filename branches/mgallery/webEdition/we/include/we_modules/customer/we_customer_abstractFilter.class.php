@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  */
 abstract class we_customer_abstractFilter{
 	/*	 * no filter */
-
 	const OFF = 0;
 	/*	 * all logged in users */
 	const ALL = 1;
@@ -179,11 +177,12 @@ abstract class we_customer_abstractFilter{
 				$invalidFields[] = $_filter['field'];
 				continue;
 			}
-			if($flag && $_filter['logic'] === 'AND'){
+			if($flag && (trim($_filter['logic']) === 'AND')){
 				$hasPermission&=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
 			} else {
 				if($hasPermission){
-					break;
+					$flag = true;
+					continue;
 				}
 				$hasPermission = self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
 			}

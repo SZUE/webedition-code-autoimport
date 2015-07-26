@@ -1069,7 +1069,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 					$attribs = array(
 						"wysiwyg" => "on",
 						"width" => 430,
-						"height" => 200,
+						"height" => 400,
 						"rows" => 10,
 						"cols" => 40,
 						"cols" => 40,

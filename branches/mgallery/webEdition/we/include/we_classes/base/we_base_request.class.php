@@ -162,7 +162,7 @@ class we_base_request{
 				$mail = trim(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var));
 				if(!preg_match('-("[\S\s]+"\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 					//if format didn't match, filter the whole var as one address
-					$regs = array_merge(array('',''), explode('@', $mail, 2));
+					$regs = array_merge(array('', ''), explode('@', $mail, 2));
 					if(!isset($regs[3])){
 						$mail = '';
 						continue;
@@ -206,10 +206,12 @@ class we_base_request{
 				}
 				return;
 			case self::URL:
-				$var = urldecode($var);
-				$var = (function_exists('idn_to_ascii') ? idn_to_ascii($var) : $var);
-				$var = filter_var($var, FILTER_SANITIZE_URL);
-				$var = (function_exists('idn_to_ascii') ? idn_to_utf8($var) : $var);
+				$urls = parse_url(urldecode($var));
+				$urls['host'] = (function_exists('idn_to_ascii') ? idn_to_ascii($urls['host']) : $urls['host']);
+				$url = filter_var(self::unparse_url($urls), FILTER_SANITIZE_URL);
+				$urls = parse_url($url);
+				$urls['host'] = (function_exists('idn_to_utf8') ? idn_to_utf8($urls['host']) : $urls['host']);
+				$var = self::unparse_url($urls);
 				return;
 			case self::STRINGC:
 			case self::STRING://strips tags
@@ -381,6 +383,19 @@ class we_base_request{
 	 */
 	public static function encCmd($str){
 		return ($str ? 'WECMDENC_' . urlencode(base64_encode($str)) : '');
+	}
+
+	private static function unparse_url($parsed_url){
+		$scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+		$host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
+		$port = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+		$user = isset($parsed_url['user']) ? $parsed_url['user'] : '';
+		$pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
+		$pass = ($user || $pass) ? "$pass@" : '';
+		$path = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+		$query = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+		$fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
+		return "$scheme$user$pass$host$port$path$query$fragment";
 	}
 
 }

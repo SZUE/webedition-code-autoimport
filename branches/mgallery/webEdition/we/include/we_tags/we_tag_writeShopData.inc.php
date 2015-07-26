@@ -134,7 +134,6 @@ function we_tag_writeShopData($attribs){
 				$first = true;
 				$DB_WE->unlock();
 			}
-
 			if(isset($GLOBALS['weEconda'])){
 				$GLOBALS['weEconda']['emosBasket'] .= "
                     if(emosBasketPageArray === undefined) var emosBasketPageArray = [];
