@@ -76,7 +76,7 @@ function we_tag_ifRegisteredUser($attribs){
 
 		if($ret && $cfilter && defined('CUSTOMER_TABLE')){
 			if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
-				$ret &= ( $GLOBALS['we_doc']->documentCustomerFilter->accessForVisitor($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->ContentType, true) == we_customer_documentFilter::ACCESS);
+				$ret &= ( $GLOBALS['we_doc']->documentCustomerFilter->accessForVisitor($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->ContentType, true) === we_customer_documentFilter::ACCESS);
 			} else {
 				//access depends on $allowNoFilter
 				return $allowNoFilter;
@@ -84,16 +84,16 @@ function we_tag_ifRegisteredUser($attribs){
 		}
 
 		return $ret;
-	} else {
-		//we are not logged in!
-		if($cfilter && defined('CUSTOMER_TABLE')){
-			if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
-				//not logged in - no filter can match
-				return false;
-			}
-			//not logged in - but "allow all users" is set - return depends on allowNoFilter
-			return $allowNoFilter;
-		}
 	}
+	//we are not logged in!
+	if($cfilter && defined('CUSTOMER_TABLE')){
+		if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
+			//not logged in - no filter can match
+			return false;
+		}
+		//not logged in - but "allow all users" is set - return depends on allowNoFilter
+		return $allowNoFilter;
+	}
+
 	return false;
 }
