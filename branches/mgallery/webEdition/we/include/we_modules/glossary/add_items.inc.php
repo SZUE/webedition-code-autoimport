@@ -169,10 +169,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 		?>
 		<script type="text/javascript"><!--
-
 			top.opener.top.toggleBusy();
-
-
 			function setDialog() {
 
 		<?php

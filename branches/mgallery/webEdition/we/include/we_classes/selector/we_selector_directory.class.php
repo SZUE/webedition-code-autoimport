@@ -484,33 +484,7 @@ top.selectFile(top.currentID);
 		$out = we_html_tools::getHtmlTop() .
 			STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
-			we_html_element::jsElement('
-
-	function setInfoSize() {
-		infoSize = document.body.clientHeight;
-		if(infoElem=document.getElementById("info")) {
-			infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0 )+"px";
-		}
-	}
-	function openToEdit(tab,id,contentType){
-		if(top.opener && top.opener.top.weEditorFrameController) {
-			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		}
-	}
-	var weCountWriteBC = 0;
-	function weWriteBreadCrumb(BreadCrumb){
-	//FIXME: this function should not need a timeout - check
-		if(top.document.getElementById("fspath")){
-			top.document.getElementById("fspath").innerHTML = BreadCrumb;
-		}else if(weCountWriteBC<10){
-			setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
-		}
-		weCountWriteBC++;
-	}') .
+			we_html_element::jsScript(JS_DIR . 'selectors/preview.js') .
 			'</head>
 <body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
 		if(!empty($result['ContentType'])){
@@ -518,7 +492,7 @@ top.selectFile(top.currentID);
 				case FILE_TABLE:
 				case VFILE_TABLE:
 					if($result['ContentType'] == we_base_ContentTypes::FOLDER){
-						$query = $this->db->query('SELECT ID, Text, IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
+						$query = $this->db->query('SELECT ID,Text,IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
 						$folderFolders = $folderFiles = array();
 						while($this->db->next_record()){
 							if($this->db->f('IsFolder')){

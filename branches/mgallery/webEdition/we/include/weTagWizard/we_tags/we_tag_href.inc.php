@@ -1,3 +1,4 @@
+
 <?php
 //NOTE you are inside the constructor of weTagData.class.php
 
@@ -21,5 +22,6 @@ $this->Attributes = array(
 	new weTagData_textAttribute('user', false, 'users'),
 	new weTagData_textAttribute('rootdir', false, ''),
 	new weTagData_selectorAttribute('startid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, ''),
-	new weTagData_selectAttribute('cfilter', weTagData_selectAttribute::getTrueFalse(), false, '')
+	new weTagData_selectAttribute('cfilter', weTagData_selectAttribute::getTrueFalse(), false, ''),
+	new weTagData_selectAttribute('only', array(new weTagDataOption('id'),), false, ''),
 );

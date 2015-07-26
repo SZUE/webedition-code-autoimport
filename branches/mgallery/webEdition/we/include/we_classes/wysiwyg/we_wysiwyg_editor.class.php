@@ -251,37 +251,7 @@ class we_wysiwyg_editor{
 			define('WE_WYSIWG_HEADER_REG', 1);
 		}
 
-		return we_html_element::cssElement('
-table.mceToolbar{
-	float:left;
-}
-
-td.mceToolbar{
-	padding-right:3px;
-}
-
-.tbButtonWysiwygBorder {
-	border: 1px solid #006DB8;
-	margin: 0px;
-	padding:4px;
-	text-align: left;
-	text-decoration: none;
-	position: relative;
-	overflow: auto;
-	height: auto;
-	width: auto;
-}
-.tbButtonWysiwygBorder {
-	border: 1px solid #006DB8;
-	margin: 0px;
-	padding:4px;
-	text-align: left;
-	text-decoration: none;
-	position: relative;
-	height: auto;
-	width:25px;
-	background-color: #F5F5F5;
-}') .
+		return we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/toolbar.css') .
 			we_html_element::jsScript(TINYMCE_SRC_DIR . 'tiny_mce.js') .
 			($loadDialogRegistry ? we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') : '') .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceFunctions.js');
@@ -530,7 +500,7 @@ td.mceToolbar{
 		$height = (is_numeric($height) ? "'" . $height . "'" : intval($height) . '/100*screen.availHeight');
 
 		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "'," . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
-			'" . $this->outsideWE . "'," . $width . "," . $tbheight . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
+			'" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
 			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "');", true, 25);
 	}
 
@@ -950,7 +920,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	//fullscreen_new_window: true,
 	editor_css : "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",
 	content_css : "' . CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . CSS_DIR . 'wysiwyg/tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
-	popup_css_add : "' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.php' : '') . '",
+	popup_css_add : "' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css' : '') . '",
 	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options
@@ -1234,7 +1204,7 @@ tinyMCE.PluginManager.load = function(n, u, cb, s) {
 		};
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
-') .getHtmlTag('textarea', array(
+') . getHtmlTag('textarea', array(
 				'wrap' => "off",
 				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in; height:' . round(we_base_util::convertUnits($this->height) / 96, 3) . 'in;',
 				'id' => $this->name,

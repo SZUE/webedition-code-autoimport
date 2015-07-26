@@ -243,17 +243,10 @@ if(!$we_doc->getElement('data')){
 			we_base_ContentTypes::inst()->getDefaultCode($we_doc->ContentType))
 	);
 }
-echo we_html_tools::getHtmlTop('', '', 'frameset');
+echo we_html_tools::getHtmlTop('', '', 'frameset') .
+ we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js');
 ?>
-<script type="text/javascript">
-	<!--
-	var unlock = false;
-	var scrollToVal = 0;
-	var editorScrollPosTop = 0;
-	var editorScrollPosLeft = 0;
-	var weAutoCompetionFields = [];
-	var openedInEditor = true;
-
+<script type="text/javascript"><!--
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 	_EditorFrame.initEditorFrameData(
 					{
@@ -268,37 +261,6 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 					}
 	);
 
-	function we_cmd() {
-		if (!unlock) {
-			var args = [];
-			for (var i = 0; i < arguments.length; i++)
-			{
-				args.push(arguments[i]);
-			}
-			if (top.we_cmd) {
-				top.we_cmd.apply(this, args);
-			}
-		}
-	}
-
-	function closeAllModalWindows() {
-		try {
-			var _editor1 = self.frames[1];
-			var _editor2 = self.frames[2];
-			if (_editor1.jsWindow_count) {
-				for (i = 0; i < _editor1.jsWindow_count; i++) {
-					eval("_editor1.jsWindow" + i + "Object.close()");
-				}
-			}
-			if (_editor2.jsWindow_count) {
-				for (i = 0; i < _editor2.jsWindow_count; i++) {
-					eval("_editor2.jsWindow" + i + "Object.close()");
-				}
-			}
-		} catch (e) {
-
-		}
-	}
 
 	function doUnload() {
 		closeAllModalWindows();
@@ -309,7 +271,6 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 			}
 <?php } ?>
 	}
-
 
 <?php if(!$we_doc->ID){ ?>
 		if (top.Tree && top.Tree.treeData && top.Tree.treeData.table != "<?php echo $we_Table; ?>") {
@@ -322,23 +283,14 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 	if (top.treeData && (top.treeData.state == top.treeData.tree_states["select"] || top.treeData.state == top.treeData.tree_states["selectitem"])) {
 		top.we_cmd("exit_delete");
 	}
-	//	SEEM
-	//	With this var we can see, if the document is opened via webEdition
-	//	or just opened in the bm_content Frame, p.ex javascript location.replace or reload or sthg..
-	//	we must check, if the tab is switched ... etc.
-	var openedWithWE = 1;
 
 <?php
 if(isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "edit_document_with_parameters"){
 	echo 'var parameters = "' . $parastr . '";';
 }
 
-
 if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 	?>
-		function setOpenedWithWE(val) {
-			openedWithWE = val;
-		}
 
 		function checkDocument() {
 			loc = null;

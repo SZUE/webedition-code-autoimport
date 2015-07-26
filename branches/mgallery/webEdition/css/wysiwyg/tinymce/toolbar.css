@@ -1,10 +1,9 @@
-<?php
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 9174 $
+ * $Author: mokraemer $
+ * $Date: 2015-01-31 02:11:28 +0100 (Sa, 31. Jan 2015) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -21,32 +20,33 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-header("Content-type: text/css");
-echo (we_base_browserDetect::isMAC()) ? "
-.mceActionPanel #replaceBtn{
-position:absolute;
-right: 325px;
+table.mceToolbar{
+	float:left;
 }
 
-.mceActionPanel #replaceAllBtn, .mceActionPanel #apply{
-position:absolute;
-right: 220px;
+td.mceToolbar{
+	padding-right:3px;
 }
 
-.mceActionPanel #insert{
-position:absolute;
-right: 10px;
+.tbButtonWysiwygBorder {
+	border: 1px solid #006DB8;
+	margin: 0px;
+	padding:4px;
+	text-align: left;
+	text-decoration: none;
+	position: relative;
+	overflow: auto;
+	height: auto;
+	width: auto;
 }
-
-.mceActionPanel #cancel{
-position:absolute;
-right: 115px;
+.tbButtonWysiwygBorder {
+	border: 1px solid #006DB8;
+	margin: 0px;
+	padding:4px;
+	text-align: left;
+	text-decoration: none;
+	position: relative;
+	height: auto;
+	width:25px;
+	background-color: #F5F5F5;
 }
-
-.mceActionPanel #action{
-position:absolute;
-right: 230px;
-}
-" : "/* no special position for buttons on WIN/Linux */"
-;

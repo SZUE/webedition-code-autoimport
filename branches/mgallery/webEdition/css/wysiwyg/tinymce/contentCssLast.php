@@ -23,6 +23,7 @@
  */
 /* last included stylesheet: visualaid- and body-background (if attibute not empty in we:textarea) must not be overwritten by document-css */
 
+define('NO_SESS', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 header("Content-type: text/css");
 $bgcol = we_base_request::_(we_base_request::STRING, 'tinyMceBackgroundColor');

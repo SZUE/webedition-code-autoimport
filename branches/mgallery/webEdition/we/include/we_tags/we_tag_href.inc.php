@@ -33,8 +33,6 @@ function we_tag_href($attribs){
 	$reload = weTag_getAttribute('reload', $attribs, false, we_base_request::BOOL);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE);
 //	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
-
-
 	$file = weTag_getAttribute('file', $attribs, true, we_base_request::BOOL);
 	$directory = weTag_getAttribute('directory', $attribs, false, we_base_request::BOOL);
 	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
@@ -47,42 +45,29 @@ function we_tag_href($attribs){
 	$nint = $name . we_base_link::MAGIC_INT_LINK;
 	$nintID = $name . we_base_link::MAGIC_INT_LINK_ID;
 	$nintPath = $name . we_base_link::MAGIC_INT_LINK_PATH;
+	$extPath = '';
+	$int = ($type == we_base_link::TYPE_EXT ? false : ($type == we_base_link::TYPE_INT || $GLOBALS['we_doc']->getElement($nint)) ? $GLOBALS['we_doc']->getElement($nint) : false);
+	$intPath = $ct = '';
+
+	if($int){
+		$intID = $GLOBALS['we_doc']->getElement($nintID, 'bdid')? : intval(weTag_getAttribute('startid', $attribs, 0, we_base_request::INT));
+		if($intID){
+			if(($foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID)))){
+				$intPath = $foo['Path'];
+				$ct = $foo['ContentType'];
+			}
+		}
+		$href = $intPath;
+		$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
+		$path_parts = pathinfo($href);
+		if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+			$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
+		}
+	} else {
+		$intID = 0;
 // we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
-	$extPath = oldHtmlspecialchars(html_entity_decode($GLOBALS['we_doc']->getElement($name)));
-
-	switch($type){
-		default:
-		case '':
-		case we_base_link::TYPE_INT:
-		case we_base_link::TYPE_ALL:
-			$int = ($type == we_base_link::TYPE_INT || $GLOBALS['we_doc']->getElement($nint) != '') ? $GLOBALS['we_doc']->getElement($nint) : false;
-			$intID = $GLOBALS['we_doc']->getElement($nintID, 'bdid');
-			$intPath = $ct = '';
-			if(!$intID){
-				$intID = intval(weTag_getAttribute('startid', $attribs, 0, we_base_request::INT));
-			}
-			if($intID){
-				if(($foo = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID)))){
-					$intPath = $foo['Path'];
-					$ct = $foo['ContentType'];
-				}
-			}
-
-			if($int){
-				$href = $intPath;
-				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
-				$path_parts = pathinfo($href);
-				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-					$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
-				}
-				break;
-			}
-//no break;
-		case we_base_link::TYPE_EXT:
-			$int = false;
-			$href = $extPath;
-			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
-			break;
+		$href = $extPath = oldHtmlspecialchars(html_entity_decode($GLOBALS['we_doc']->getElement($name)));
+		$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 	}
 
 	if(!$GLOBALS['we_editmode']){
@@ -94,6 +79,11 @@ function we_tag_href($attribs){
 					return '';
 				}
 			}
+		}
+
+		switch(weTag_getAttribute('only', $attribs, '', we_base_request::STRING)){
+			case 'id':
+				return intval($intID);
 		}
 		if($int && $intID && !$include && !isset($attribs['isInternal'])){
 			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
@@ -126,35 +116,38 @@ function we_tag_href($attribs){
 	$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
 
 	$size = 5 * intval(weTag_getAttribute('size', $attribs, 20, we_base_request::INT));
-
-	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $intID_elem_Name . "'].value");
+	$cmd1 = "document.we_form.elements['" . $intID_elem_Name . "'].value";
+	$wecmdenc1 = we_base_request::encCmd($cmd1);
 	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $intPath_elem_Name . "'].value");
 	$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL ? "opener.document.we_form.elements['" . $int_elem_Name . "'][0].checked = true;" : '') . (($include || $reload) ? "opener.setScrollTo(); opener.top.we_cmd('reload_editpage');" : ""));
 	if(($directory && $file) || $file){
-		$but = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_document', document.forms[0].elements['" . $intID_elem_Name . "'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','', '" . $rootdirid . "', '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
+		$but = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_document', " . cmd1 . ", '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','', '" . $rootdirid . "', '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");");
 		$but2 = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'" . $ext_elem_Name . "\\'].value', '" . (($directory && $file) ? "filefolder" : '') . "', document.forms[0].elements['" . $ext_elem_Name . "'].value, 'opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL ? "opener.document.we_form.elements[\'" . $int_elem_Name . "\'][1].checked = true;" : '') . "','" . $rootdir . "')") : '';
 	} else {
-		$but = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_directory', document.forms[0].elements['" . $intID_elem_Name . "'].value, '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','', '" . $rootdirid . "');");
+		$but = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('we_selector_directory', " . cmd1 . ", '" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','', '" . $rootdirid . "');");
 		$but2 = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'" . $ext_elem_Name . "\\'].value', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['" . $ext_elem_Name . "'].value, 'opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL ? " opener.document.we_form.elements[\'" . $int_elem_Name . "\'][1].checked = true;" : '') . "','" . $rootdir . "')") : '';
 	}
-	$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(document.forms[0].elements['" . $intID_elem_Name . "'].value){top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.forms[0].elements['" . $intID_elem_Name . "'].value,'');}");
+	$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(" . cmd1 . "){top.weEditorFrameController.openDocument('" . FILE_TABLE . "', " . cmd1 . ",'');}");
 	$trashbut2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);", true);
-	if($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT){
-		$yuiSuggest = &weSuggest::getInstance();
-		$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), $rootdir);
-		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
-		$yuiSuggest->setInput($intPath_elem_Name, $intPath);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult($intID_elem_Name, $intID);
-		$yuiSuggest->setSelector($directory ? weSuggest::DirSelector : weSuggest::DocSelector);
-		$yuiSuggest->setTable(FILE_TABLE);
-		$yuiSuggest->setWidth($size);
+
+	switch($type){
+		case we_base_link::TYPE_ALL:
+		case we_base_link::TYPE_INT:
+			$yuiSuggest = &weSuggest::getInstance();
+			$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), $rootdir);
+			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
+			$yuiSuggest->setInput($intPath_elem_Name, $intPath);
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(1);
+			$yuiSuggest->setResult($intID_elem_Name, $intID);
+			$yuiSuggest->setSelector($directory ? weSuggest::DirSelector : weSuggest::DocSelector);
+			$yuiSuggest->setTable(FILE_TABLE);
+			$yuiSuggest->setWidth($size);
 	}
 
 	return
-			'<table class="weEditTable padding0 spacing2">' .
-			($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
+		'<table class="weEditTable padding0 spacing2">' .
+		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_INT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(1, $int, $int_elem_Name, $span . g_l('tags', '[int_href]') . ':</span>') : $span . g_l('tags', '[int_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="1" />' ) . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' . $yuiSuggest->getHTML() . '</td>
@@ -162,22 +155,22 @@ function we_tag_href($attribs){
 	<td class="weEditmodeStyle">' . $open . '</td>
 	<td class="weEditmodeStyle">' . $trashbut . '</td>
 	</tr>' : '') .
-			($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
+		($type == we_base_link::TYPE_ALL || $type == we_base_link::TYPE_EXT ? '
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' .
-					getHtmlTag('input', array_merge(removeAttribs($attribs, array('onkeydown', 'onKeyDown')), array(
-						'style' => 'width:' . ($size) . 'px;',
-						'onchange' => ($type == we_base_link::TYPE_ALL ? 'this.form.elements[\'' . $int_elem_Name . '\'][1].checked=true;' : ''),
-						'type' => "text",
-						'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
-						'placeholder' => "http://example.org",
-						'value' => $extPath
-					)))
-					. '</td>
+			getHtmlTag('input', array_merge(removeAttribs($attribs, array('onkeydown', 'onKeyDown')), array(
+				'style' => 'width:' . ($size) . 'px;',
+				'onchange' => ($type == we_base_link::TYPE_ALL ? 'this.form.elements[\'' . $int_elem_Name . '\'][1].checked=true;' : ''),
+				'type' => "text",
+				'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
+				'placeholder' => "http://example.org",
+				'value' => $extPath
+			)))
+			. '</td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>
 </tr>' : '') . '
 </table>' .
-			($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
+		($include && $include_path && file_exists($include_path) ? '<?php include("' . $include_path . '"); ?>' : '');
 }
