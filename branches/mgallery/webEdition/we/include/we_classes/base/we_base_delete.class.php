@@ -28,7 +28,7 @@ abstract class we_base_delete{
 		if($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE)){
 			return true;
 		}
-		return (f('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE  ID=' . intval($id)) ?
+		return (f('SELECT IsFolder FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($id)) ?
 						self::checkDeleteFolder($id, $table) :
 						self::checkDeleteFile($id, $table));
 	}

@@ -25,10 +25,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 if(isset($_SESSION['weS']['move_files_nok']) && is_array($_SESSION['weS']['move_files_nok'])){
-	$table = new we_html_table(array('style' => 'margin:10px;', "class" => "default defaultfont"), 0, 2);
+	$table = new we_html_table(array('style' => 'margin:10px;', "class" => "default defaultfont"), 1, 2);
 	foreach($_SESSION['weS']['move_files_nok'] as $i => $data){
 		$table->addRow();
-		$table->setCol($i, 0, array('style'=>'padding-top:2px;'), (isset($data["ContentType"]) ? we_html_element::jsElement('document.write(getTreeIcon("' . $data["ContentType"] . '"))') : ''));
+		$table->setCol($i, 0, array('style' => 'padding-top:2px;'), (isset($data["ContentType"]) ? we_html_element::jsElement('document.write(getTreeIcon("' . $data["ContentType"] . '"))') : ''));
 		$table->setCol($i, 1, null, str_replace($_SERVER['DOCUMENT_ROOT'], "", $data["path"]));
 	}
 }

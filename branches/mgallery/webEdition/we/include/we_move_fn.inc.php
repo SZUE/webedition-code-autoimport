@@ -60,8 +60,8 @@ function parentChecked(start){
 
 function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){
 	// check if entry is a folder
-	$row = getHash('SELECT Path, Text, IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE  ID=' . intval($id), $DB_WE);
-	if(!$row || $row['IsFolder']){
+	$row = getHash('SELECT Path,Text,IsFolder FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+	if(!$row /* || $row['IsFolder'] */){
 		return -1;
 	}
 
@@ -108,7 +108,7 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 	}
 	if($targetDirectoryID){
 		$row = getHash('SELECT IsFolder,Path,ID FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($targetDirectoryID), $DB_WE);
-		if(!$row || !$row["IsFolder"]){
+		if(!$row /* || !$row["IsFolder"] */){
 			return false;
 		}
 		$newPath = $row['Path'];
@@ -142,22 +142,18 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 				$fileName = $row['Text'];
 				$oldPath = $row['Path'];
 				$isPublished = ($row['Published'] ? true : false);
-				$isFolder = ($row["IsFolder"] ? true : false);
-				$item = array('ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'ContentType' => $row['ContentType']);
+				$isFolder = ($row['IsFolder'] ? true : false);
 				if(!$row ||
-					$isFolder ||
-					//check if it is save to move
-					!file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath) ||
-					!file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath) ||
+					/* $isFolder || */
 					// move document file
-					!we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . '/' . $fileName) ||
+					(file_exists($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $oldPath, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $newPath . '/' . $fileName)) ||
 					// move published document file
-					($isPublished && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . '/' . $fileName))){
-					$notMovedItems[] = $item;
+					(($isPublished || $isFolder) && file_exists($_SERVER['DOCUMENT_ROOT'] . $oldPath) && !we_base_file::moveFile($_SERVER['DOCUMENT_ROOT'] . $oldPath, $_SERVER['DOCUMENT_ROOT'] . $newPath . '/' . $fileName))){
+					$notMovedItems[] = array('ID' => $id, 'Text' => $fileName, 'Path' => $oldPath, 'ContentType' => $row['ContentType']);
 					continue;
 				}
 
-				if(we_versions_version::CheckPreferencesCtypes($row['ContentType'])){
+				if(!$isFolder && we_versions_version::CheckPreferencesCtypes($row['ContentType'])){
 					$version = new we_versions_version();
 					if(!we_versions_version::versionExists($id, $table)){
 						$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);
@@ -173,7 +169,7 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 				$DB_WE->query('UPDATE ' . $DB_WE->escape($table) . ' SET ' . we_database_base::arraySetter(array(
 						'ParentID' => intval($parentID),
 						'Path' => $newPath . '/' . $fileName
-					)) . "' WHERE ID=" . intval($id));
+					)) . ' WHERE ID=' . intval($id));
 
 				continue;
 
@@ -181,9 +177,9 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 //FIME: check no classfolder (top level element is moved)
 				// get information about the object which has to be moved
-				$row = getHash('SELECT TableID,Path,Text,IsFolder,ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND ID=' . intval($id), $DB_WE);
+				$row = getHash('SELECT TableID,Path,Text,IsFolder,IsClassFolder,ContentType FROM ' . OBJECT_FILES_TABLE . ' WHERE IsClassFolder=0 AND ID=' . intval($id), $DB_WE);
 
-				if(!$row || $isFolder){
+				if(!$row || $row['IsClassFolder']){
 					$notMovedItems[] = array(
 						'ID' => $id,
 						'Text' => ($row ? $row['Text'] : ''),
@@ -198,7 +194,7 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 				$isFolder = $row['IsFolder'] == 1;
 
 
-				if(we_versions_version::CheckPreferencesCtypes($row['ContentType'])){
+				if(!$isFolder && we_versions_version::CheckPreferencesCtypes($row['ContentType'])){
 					$version = new we_versions_version();
 					if(!we_versions_version::versionExists($id, $table)){
 						$object = we_exim_contentProvider::getInstance($row['ContentType'], $id, $table);

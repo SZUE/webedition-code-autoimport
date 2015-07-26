@@ -732,13 +732,13 @@ abstract class we_class{
 				} elseif($LDID < 0){
 					foreach($orig as $origrow){
 						if($origrow['DLocale'] == $locale){
-							$this->DB_WE->query('SELECT ID FROM ' . LANGLINK_TABLE . ' WHERE  DID=' . intval($origrow['DID']) . ' AND DLocale="' . $this->DB_WE->escape($locale) . '" AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . ($isobject ? 1 : 0));
+							$this->DB_WE->query('SELECT ID FROM ' . LANGLINK_TABLE . ' WHERE DID=' . intval($origrow['DID']) . ' AND DLocale="' . $this->DB_WE->escape($locale) . '" AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . ($isobject ? 1 : 0));
 							if(($ids = $this->DB_WE->getAll(true))){
 								$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ') AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 							}
 						}
 						if($origrow['Locale'] == $locale){
-							$this->DB_WE->query('SELECT ID FROM ' . LANGLINK_TABLE . ' WHERE  LDID=' . intval($origrow['LDID']) . ' AND Locale="' . $this->DB_WE->escape($locale) . '" AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . ($isobject ? 1 : 0));
+							$this->DB_WE->query('SELECT ID FROM ' . LANGLINK_TABLE . ' WHERE LDID=' . intval($origrow['LDID']) . ' AND Locale="' . $this->DB_WE->escape($locale) . '" AND DocumentTable="' . $this->DB_WE->escape($type) . '" AND IsObject=' . ($isobject ? 1 : 0));
 							if(($ids = $this->DB_WE->getAll(true))){
 								$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET LDID=0 WHERE ID IN(' . implode(',', $ids) . ') AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 							}

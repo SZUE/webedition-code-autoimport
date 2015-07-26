@@ -48,11 +48,12 @@ class we_html_table extends we_html_baseCollection{
 	}
 
 	public function setTableContent(array $content = null){
-		if($content){
-			foreach($content as $rowNo => $rowContent){
-				foreach($rowContent as $colNo => $col){
-					$this->setCol($rowNo, $colNo, $col[0], $col[1]);
-				}
+		if(!$content){
+			return;
+		}
+		foreach($content as $rowNo => $rowContent){
+			foreach($rowContent as $colNo => $col){
+				$this->setCol($rowNo, $colNo, $col[0], $col[1]);
 			}
 		}
 	}
