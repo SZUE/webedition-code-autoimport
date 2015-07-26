@@ -26,37 +26,46 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 
 	function execute(){
 		$resp = new rpcResponse();
-		$cmd0 = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 0);
-		$pathid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
-		if($cmd0 &&
-				($folder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) &&
-				($path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 2)) &&
-				$pathid &&
-				(strpos($path, $cmd0) === false || strpos($path, $cmd0) > 0)
+		$targetFolder = we_base_request::_(we_base_request::FILE, 'we_cmd', false, 0);
+		$sourceFolderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
+
+		if($targetFolder &&
+			($targetFolderID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1)) &&
+			($sourceFolder = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 2)) &&
+			$sourceFolderID &&
+			(strpos($sourceFolder, $targetFolder) === false || strpos($sourceFolder, $targetFolder) > 0)
 		){
 
 			$db = $GLOBALS['DB_WE'];
-			$path = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $pathid);
-			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($path) . '/%" ORDER BY IsFolder DESC, Path');
+			$sourceFolder = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $sourceFolderID);
+			$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($sourceFolder) . '/%" ORDER BY IsFolder DESC, Path ASC');
 			$result = $db->getAll();
 
-			$folders = array($folder);
-			$mapedId = array($pathid => $folder);
+			$folders = array($targetFolderID);
+			$mapedId = array($sourceFolderID => array($targetFolderID, $targetFolder));
 			$itemsQuery = array();
 
 			foreach($result as $row){
 				$querySet = array();
 				foreach($row as $key => $val){
 					switch($key){
-						case "ID" :
+						case 'ID' :
 							$querySet[] = 'DEFAULT';
 							break;
-						case "Path" :
-							$path = str_replace($path, $cmd0, $val);
-							$querySet[] = '"' . $db->escape($path) . '"';
+						case 'Path' :
+							$oldparent = $row['ParentID'];
+							if(!isset($mapedId[$oldparent])){
+								t_e('Parentid not found');
+							}
+							$newPath = $mapedId[$oldparent][1] . '/' . $row['Text'];
+							$querySet[] = '"' . $db->escape($newPath) . '"';
+							/* SELECT n.ID,n.Path,CONCAT(COALESCE(np.Path,""),"/",n.Text) FROM `tblnavigation` n left join tblnavigation np ON n.ParentID=np.ID WHERE n.Path!=CONCAT(COALESCE(np.Path,""),"/",n.Text) */
 							break;
-						case "ParentID" :
-							$querySet [] = (isset($mapedId[$val]) ? intval($mapedId[$val]) : 0);
+						case 'ParentID' :
+							if(!isset($mapedId[$val])){
+								t_e('Parentid not found');
+							}
+							$querySet [] = (isset($mapedId[$val]) ? intval($mapedId[$val][0]) : 0);
 							break;
 						default :
 							$querySet [] = '"' . $db->escape($val) . '"';
@@ -65,8 +74,8 @@ class rpcCopyNavigationFolderCmd extends rpcCmd{
 				$querySet = '(' . implode(',', $querySet) . ')';
 				if($row['IsFolder']){
 					$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $querySet);
-					$mapedId[$row['ID']] = $db->getInsertId();
-					$folders[] = $mapedId[$row['ID']];
+					$mapedId[$row['ID']] = array($db->getInsertId(), $newPath);
+					$folders[] = $mapedId[$row['ID']][0];
 				} else {
 					$itemsQuery[] = $querySet;
 				}
