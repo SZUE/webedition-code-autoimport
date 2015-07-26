@@ -113,15 +113,9 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function checkReplaceDocRoot($content){
-		if($this->replaceDocRootNeeded()){
-			$content = str_replace(array(
-				'$_SERVER[\'DOCUMENT_ROOT\']',
-				"\$_SERVER[\"DOCUMENT_ROOT\"]",
-				'$GLOBALS[\'DOCUMENT_ROOT\']',
-				"\$GLOBALS[\"DOCUMENT_ROOT\]",
-					), '"' . LIVEUPDATE_SOFTWARE_DIR . '"', $content);
-		}
-		return $content;
+	return ($this->replaceDocRootNeeded() ?
+					preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT' . '_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+									$content);
 	}
 
 	/**
