@@ -50,9 +50,15 @@ function TinyWrapper(fieldname) {
 	var _isInlineedit = typeof tinyEditors[_fn] === "object";
 	var _id = _isInlineedit ? tinyEditors[_fn].id : (typeof tinyEditors[_fn] === "undefined" ? "undefined" : tinyEditors[_fn]);
 
-	this.getFieldName = function(){return _fn;};
-	this.getId = function(){return _id;};
-	this.getIsInlineedit = function(){return _isInlineedit;};
+	this.getFieldName = function () {
+		return _fn;
+	};
+	this.getId = function () {
+		return _id;
+	};
+	this.getIsInlineedit = function () {
+		return _isInlineedit;
+	};
 
 	this.getEditor = function(tryPopup){
 		var _tryPopup = typeof tryPopup === "undefined" ? false : tryPopup;
@@ -78,8 +84,12 @@ function TinyWrapper(fieldname) {
 		}
 	};
 
-	this.getTextarea = function(){return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById(tinyEditors[_fn]));};
-	this.getDiv = function(){return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));};
+	this.getTextarea = function () {
+		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById(tinyEditors[_fn]));
+	};
+	this.getDiv = function () {
+		return typeof tinyEditors[_fn] === "undefined" ? "undefined" : (typeof tinyEditors[_fn] === "object" ? "undefined" : document.getElementById("div_wysiwyg_" + tinyEditors[_fn]));
+	};
 
 	this.getIFrame = function(){
 		var frame_id  = this.getId() + '_ifr';
