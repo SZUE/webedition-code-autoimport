@@ -112,7 +112,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 				}
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$elem .=',Published,IsClassFolder';
+				$elem .=',Published,IsClassFolder,IF(Published!=0 && Published<ModDate,-1,Published) AS isPublished';
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 					$elem .=',st.DID IS NOT NULL AS inSchedule';
 					$queryTable.=' LEFT JOIN ' . SCHEDULE_TABLE . ' st ON (st.DID=ID AND st.ClassName="we_objectFile" AND st.Active=1)';

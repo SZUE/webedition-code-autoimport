@@ -53,7 +53,7 @@ switch($we_doc->userHasAccess()){
 		we_editor_footer::fileInWorkspace();
 		exit();
 
-	case we_root::USER_NO_PERM : //	access is restricted and user has no permission
+		case we_root::USER_NO_PERM : //	access is restricted and user has no permission
 		we_editor_footer::fileIsRestricted($we_doc);
 		exit;
 

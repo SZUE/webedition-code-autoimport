@@ -42,8 +42,7 @@ function we_tag_writeShopData($attribs){
 		}
 	}
 
-	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
-	$shopname = $shopname ? : $name;
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING)? : $name;
 	$pricename = weTag_getAttribute('pricename', $attribs, '', we_base_request::STRING);
 	$shipping = weTag_getAttribute('shipping', $attribs, '', we_base_request::FLOAT);
 	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, we_base_request::BOOL);
@@ -57,7 +56,6 @@ function we_tag_writeShopData($attribs){
 		$weShopVatRule = we_shop_vatRule::getShopVatRule();
 		$calcVat = $weShopVatRule->executeVatRule($_customer);
 	}
-
 
 	// Check for Shop being set
 	if(isset($GLOBALS[$shopname])){
@@ -79,15 +77,14 @@ function we_tag_writeShopData($attribs){
 			WE_SHOP_PREFS_TABLE => 'read',
 			SETTINGS_TABLE => 'read'
 		));
-		$orderID = intval(f('SELECT MAX(IntOrderID) AS max FROM ' . SHOP_TABLE, 'max', $DB_WE)) + 1;
+		$orderID = intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $DB_WE)) + 1;
 
 		$totPrice = 0;
-
 		$articleCount = 0;
+		$first = false;
 
 		foreach($shoppingItems as $shoppingItem){
-			$preis = ((isset($shoppingItem['serial']['we_' . $pricename])) ? $shoppingItem['serial']['we_' . $pricename] : $shoppingItem['serial'][$pricename]);
-			$preis = we_base_util::std_numberformat($preis);
+			$preis = we_base_util::std_numberformat((isset($shoppingItem['serial']['we_' . $pricename])) ? $shoppingItem['serial']['we_' . $pricename] : $shoppingItem['serial'][$pricename]);
 			$totPrice += $preis * $shoppingItem['quantity'];
 
 			// foreach article we must determine the correct tax-rate
@@ -126,8 +123,16 @@ function we_tag_writeShopData($attribs){
 						'strSerial' => serialize($shoppingItem['serial']),
 				))))){
 
+				$DB_WE->unlock();
+				t_e('error during write shop data contents of basket', $shoppingItems);
 				echo 'Data Insert Failed';
 				return;
+			}
+
+			if(!$first){
+				//all critical data is set, unlock tables again
+				$first = true;
+				$DB_WE->unlock();
 			}
 
 			if(isset($GLOBALS['weEconda'])){
@@ -145,8 +150,6 @@ function we_tag_writeShopData($attribs){
 			}
 			$articleCount++;
 		}
-		//all critical data is set, unlock tables again
-		$DB_WE->unlock();
 		$basket->setOrderID($orderID);
 
 		// second part: add cart fields to table order.
