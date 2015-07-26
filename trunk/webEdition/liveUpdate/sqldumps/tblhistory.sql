@@ -10,7 +10,7 @@ CREATE TABLE ###TBLPREFIX###tblhistory (
 	UID int(11) unsigned NOT NULL default '0',
   PRIMARY KEY (DID,DocumentTable,UID),
 	KEY perUser (UID,DocumentTable,ModDate),
-	KEY moddate (ModDate)
+	KEY moddate (DocumentTable,ModDate)
 ) ENGINE=MyISAM;
 
 /* query separator */
