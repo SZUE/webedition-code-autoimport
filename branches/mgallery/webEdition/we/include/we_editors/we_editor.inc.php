@@ -374,52 +374,9 @@ if(
 				exit(' ContentType Missing !!! ');
 			}
 			$saveTemplate = true;
-			if($we_doc->i_pathNotValid()){
-				$we_responseText = sprintf(g_l('weClass', '[notValidFolder]'), $we_doc->Path);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_filenameEmpty()){
-				$we_responseText = g_l('weEditor', '[' . $we_doc->ContentType . '][filename_empty]');
+			if(($we_responseText = $we_doc->checkFieldsOnSave())){
 				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				$saveTemplate = false;
-			} else if(!$we_doc->i_canSaveDirinDir()){
-				$we_responseText = g_l('weEditor', '[pfolder_notsave]');
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_sameAsParent()){
-				$we_responseText = g_l('weEditor', '[folder_save_nok_parent_same]');
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_fileExtensionNotValid()){
-				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][we_filename_notValid]'), $we_doc->Path);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_filenameNotValid()){
-				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][we_filename_notValid]'), $we_doc->Path);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_descriptionMissing()){
-				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][we_description_missing]'), $we_doc->Path);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_filenameNotAllowed()){
-				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][we_filename_notAllowed]'), $we_doc->Path);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_filenameDouble()){
-				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_path_exists]'), $we_doc->Path);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_urlDouble()){
-				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][we_objecturl_exists]'), $we_doc->Url);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if(!$we_doc->i_checkPathDiffAndCreate()){
-				$we_responseText = sprintf(g_l('weClass', '[notValidFolder]'), $we_doc->Path);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if(($n = $we_doc->i_check_requiredFields())){
-				$we_responseText = sprintf(g_l('weEditor', '[required_field_alert]'), $n);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if($we_doc->i_scheduleToBeforeNow()){
-				$we_responseText = g_l('modules_schedule', '[toBeforeNow]');
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if(($n = $we_doc->i_hasDoubbleFieldNames())){
-				$we_responseText = sprintf(g_l('weEditor', '[doubble_field_alert]'), $n);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			} else if(!$we_doc->i_areVariantNamesValid()){
-				$we_responseText = g_l('weEditor', '[variantNameInvalid]');
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 			} else {
 				$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');'; // save/ rename a document
 				if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){

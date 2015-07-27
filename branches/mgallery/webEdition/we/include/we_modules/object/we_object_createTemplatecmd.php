@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -53,18 +52,7 @@ $GLOBALS['we_doc']->elements['data']['dat'] = $_SESSION['weS']['content'];
 $GLOBALS['we_doc']->elements['data']['type'] = 'txt';
 unset($_SESSION['weS']['content']);
 
-if($GLOBALS['we_doc']->i_filenameEmpty()){
-	$we_responseText = g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][filename_empty]');
-} else if($GLOBALS['we_doc']->i_sameAsParent()){
-	$we_responseText = g_l('weEditor', '[folder_save_nok_parent_same]');
-} else if($GLOBALS['we_doc']->i_filenameNotValid()){
-	$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][we_filename_notValid]'), $GLOBALS['we_doc']->Path);
-} else if($GLOBALS['we_doc']->i_filenameNotAllowed()){
-	$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][we_filename_notAllowed]'), $GLOBALS['we_doc']->Path);
-} else if($GLOBALS['we_doc']->i_filenameDouble()){
-	$we_responseText = sprintf(g_l('weEditor', '[' . $GLOBALS['we_doc']->ContentType . '][response_path_exists]'), $GLOBALS['we_doc']->Path);
-}
-if(isset($we_responseText)){
+if(($we_responseText = $GLOBALS['we_doc']->checkFieldsOnSave())){
 	echo we_html_element::jsElement(we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR));
 	require_once(WE_OBJECT_MODULE_PATH . 'we_object_createTemplate.inc.php');
 } else {

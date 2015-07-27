@@ -408,7 +408,7 @@ function setScrollY() {
  }
  */
 function makeNewEntry(attribs) {
-	if (tab && treeData.table != tab) {
+	if (table && treeData.table != table) {
 		return;
 	}
 	var pos = indexOfEntry(attribs.parentid);
@@ -422,7 +422,6 @@ function makeNewEntry(attribs) {
 		}
 
 		treeData.addSort(new node(attribs));
-
 		drawTree();
 	}
 }

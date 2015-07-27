@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();// FIXME: use perms
+we_html_tools::protect(); // FIXME: use perms
 $collection = new we_collection();
 $collection->we_new();
 
@@ -51,15 +51,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	$collection->IsDuplicates = we_base_request::_(we_base_request::INT, 'we_' . $name . 'IsDuplicates', 1);
 	$collection->InsertRecursive = 1;
 
-
-	if($collection->i_pathNotValid()){
-		$jsMessage = sprintf(g_l('weClass', '[notValidFolder]'), $collection->Path);
-		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
-	} else if($collection->i_filenameNotValid()){
-		$jsMessage = sprintf(g_l('weEditor', '[' . $collection->ContentType . '][we_filename_notValid]'), $collection->Path);
-		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
-	} else if($collection->i_filenameDouble()){
-		$jsMessage = sprintf(g_l('weEditor', '[' . $collection->ContentType . '][response_path_exists]'), $collection->Path);
+	if(($jsMessage = $collection->checkFieldsOnSave())){
 		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 	} else {
 		$saveSuccess = $collection->we_save();
@@ -75,11 +67,10 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	}
 }
 
-echo we_html_tools::getHtmlTop('Neue Sammlung'/* FIXME: missing title */, '', '',
-		STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('Neue Sammlung'/* FIXME: missing title */, '', '', STYLESHEET .
+	we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsElement('
 var name = "' . $collection->Name . '";
 var _EditorFrame = {};
 _EditorFrame.setEditorIsHot = function(){};
@@ -148,15 +139,12 @@ $content = we_html_element::htmlHidden('dosave', 0) .
 	)) .
 	we_html_multiIconBox::getHTML(
 		'weNewCollection', 500, $parts, 30, we_html_button::position_yes_no_cancel(
-			we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'),
-			'',
-			we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
+			we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, 'Neue Sammlung anlegen', '', '', 'scroll'
-	);
+);
 
 echo we_html_element::htmlBody(
-		array('class' => 'weDialogBody',
-			'onload' => 'window.focus();'
-		),
-		we_html_element::htmlForm(array('method' => 'post'), $content)
-	) . '</html>';
+	array('class' => 'weDialogBody',
+	'onload' => 'window.focus();'
+	), we_html_element::htmlForm(array('method' => 'post'), $content)
+) . '</html>';

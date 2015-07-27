@@ -305,52 +305,38 @@ top.makeNewFolder = true;' .
 top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if(!$txt){
-			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(substr($txt, -1) === '.'){ // neue Version f�r 4333 testet auf "." am ende, analog zu i_filenameNotAllowed in we_root
-			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(preg_match('-[<>?":|\\/*]-', $txt)){ // Test auf andere verbotene Zeichen
-			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(we_base_request::_(we_base_request::INT, 'id', 0) == 0 && strtolower($txt) === 'webedition'){
-			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][we_filename_notAllowed]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else {
-			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
-					new we_class_folder() :
-					new we_folder());
+		$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
+				new we_class_folder() :
+				new we_folder());
 
-			$folder->we_new();
-			$folder->setParentID($this->dir);
-			$folder->Table = $this->table;
-			$folder->Text = $txt;
-			$folder->CreationDate = time();
-			$folder->ModDate = time();
-			$folder->Filename = $txt;
-			$folder->Published = time();
-			$folder->Path = $folder->getPath();
-			$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '';
-			$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '';
-			$this->db->query('SELECT ID FROM ' . $this->table . ' WHERE Path="' . $folder->Path . '"');
-			if($this->db->next_record()){
-				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
-				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} elseif(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
-				$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
-				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} else {
-				$folder->we_save();
-				echo 'var ref;
+		$folder->we_new();
+		$folder->setParentID($this->dir);
+		$folder->Table = $this->table;
+		$folder->Text = $txt;
+		$folder->CreationDate = time();
+		$folder->ModDate = time();
+		$folder->Filename = $txt;
+		$folder->Published = time();
+		$folder->Path = $folder->getPath();
+		$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '';
+		$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '';
+		if(($msg = $folder->checkFieldsOnSave())){
+			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
+		} else {
+			$folder->we_save();
+			echo 'var ref;
 if(top.opener.top.makeNewEntry){
 	ref = top.opener.top;
 }else if(top.opener.top.opener){
 	ref = top.opener.top.opener.top;
 }
 ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});' .
-				($this->canSelectDir ? '
+			($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
-			}
 		}
+
 
 
 		echo
@@ -408,46 +394,37 @@ top.we_editDirID=' . $this->we_editDirID . ';' .
 top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
-		if($txt === ''){
-			echo we_message_reporting::getShowMessageCall(g_l('weEditor', '[folder][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else {
-			$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
-					new we_class_folder() :
-					new we_folder());
 
-			$folder->initByID($this->we_editDirID, $this->table);
-			$folder->Text = $txt;
-			$folder->ModDate = time();
-			$folder->Filename = $txt;
-			$folder->Published = time();
-			$folder->Path = $folder->getPath();
-			$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
-			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "' AND ID != " . intval($this->we_editDirID));
-			if($this->db->next_record()){
-				$we_responseText = sprintf(g_l('weEditor', '[folder][response_path_exists]'), $folder->Path);
-				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} elseif(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
-				$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
-				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-			} elseif(in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
-				if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
-					$folder->we_save();
-					echo 'var ref;
+		$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
+				new we_class_folder() :
+				new we_folder());
+
+		$folder->initByID($this->we_editDirID, $this->table);
+		$folder->Text = $txt;
+		$folder->ModDate = time();
+		$folder->Filename = $txt;
+		$folder->Published = time();
+		$folder->Path = $folder->getPath();
+		$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
+		if(($msg = $folder->checkFieldsOnSave())){
+			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
+		} elseif(in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
+			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
+				$folder->we_save();
+				echo 'var ref;
 if(top.opener.top.makeNewEntry){
 ref = top.opener.top;
 }else if(top.opener.top.opener){
 ref = top.opener.top.opener.top;
 }
 ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '",table:"' . $this->table . '"});' .
-					($this->canSelectDir ? '
+				($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
-				}
 			}
 		}
-
 
 		echo
 		$this->printCmdAddEntriesHTML() .
