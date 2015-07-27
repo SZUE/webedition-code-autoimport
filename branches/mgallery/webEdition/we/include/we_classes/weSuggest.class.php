@@ -221,13 +221,6 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 						$fildsObj .=",
 							'checkValues':'" . $additionalFields . "'";
 					}
-
-
-					/* 				$onBlur .= <<<HTS
-					  YAHOO.autocoml.doSafariOnTextfieldBlur_$i= function(e) {
-					  YAHOO.autocoml.doOnTextfieldBlur(1,1,$i);
-					  };
-					  HTS; */
 				}
 				// EOF loop fields
 
@@ -247,8 +240,6 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 	}
 
 	function getHTML(){
-
-
 		$inputId = $this->inputId ? : 'yuiAcInput' . $this->acId;
 		$resultId = $this->resultId ? : 'yuiAcResult' . $this->acId;
 		$containerWidth = $this->containerWidth ? : $this->width;

@@ -51,7 +51,7 @@ abstract class we_html_multiIconBox{
 			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '');
 
 			if($i == $foldAtNr && $foldAtNr < count($content)){ // only if the folded items contain stuff.
-				$out .= we_html_element::htmlSpan(array('style' => 'margin-left:' . $marginLeft . 'px;'), we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');" . ($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')) .
+				$out .= we_html_element::htmlSpan(array('style' => 'margin-left:' . $marginLeft . 'px;','class'=>'btn_direction_weMultibox_table'), self::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes($foldDown) . "','" . addslashes($foldRight) . "');" . ($delegate ? : "" ), ($displayAtStartup ? 'down' : 'right'), g_l('global', '[openCloseBox]')) .
 						'<span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes($foldDown) . '\',\'' . addslashes($foldRight) . '\');' . ($delegate ? : "" ) . '">' . ($displayAtStartup ? $foldDown : $foldRight) . '</span>'
 					) .
 					'<br/><table id="table_' . $uniqname . '" width="100%" class="default" style="' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>';

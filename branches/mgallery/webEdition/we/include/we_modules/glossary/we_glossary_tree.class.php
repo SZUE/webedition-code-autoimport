@@ -112,6 +112,7 @@ treeData.frames=frames;
 				'offset' => 0,
 				'published' => 1,
 				'cmd' => 'glossary_view_type',
+				'contentType' => 'folder'
 			);
 		}
 
