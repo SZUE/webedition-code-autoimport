@@ -623,10 +623,25 @@ class we_folder extends we_root{
 		if($ret == -1){
 			$ret = array('full' => array(), 'url' => array(), 'full_host' => array(), 'url_host' => array(),);
 			$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!="" ORDER BY Path DESC');
+			$lastRules = array();
 			while($db->next_record(MYSQL_NUM)){
-				$host = trim(preg_replace('-(http://|https://)-', '', $db->f(1)), '/');
-				$ret['full_host']['${1}' . '//' . $host . '${4}'] = $ret['full']['${1}' . ($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '${4}'] = '-((href\s*=|src\s*=|action\s*=|location\s*=|content\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';
-				$ret['url_host']['//' . $host . '${1}'] = $ret['url'][($_SERVER['SERVER_NAME'] == $host ? '' : '//' . $host) . '${1}'] = '-^' . preg_quote($db->f(0), '-') . '(/.*)-';
+				$host = trim(str_replace(array('https://', 'http://'), '', $db->f(1)), '/');
+				$rep1 = '-((href\s*=|src\s*=|action\s*=|location\s*=|content\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';
+				$rep2 = '-^' . preg_quote($db->f(0), '-') . '(/.*)-';
+				if($_SERVER['SERVER_NAME'] == $host){
+					//this must be at the end, since duplicate replacements may need to match the original string
+					$lastRules['full']['${1}${4}'] = $rep1;
+					$lastRules['url']['${1}'] = $rep2;
+				} else {
+					$ret['full']['${1}//' . $host . '${4}'] = $rep1;
+					$ret['url']['//' . $host . '${1}'] = $rep2;
+				}
+				$ret['full_host']['${1}' . '//' . $host . '${4}'] = $rep1;
+				$ret['url_host']['//' . $host . '${1}'] = $rep2;
+			}
+			if($lastRules){
+				$ret['full'] = array_merge($ret['full'], $lastRules['full']);
+				$ret['url'] = array_merge($ret['url'], $lastRules['url']);
 			}
 		}
 		return $ret[($onlyUrl ? 'url' : 'full') . ($hostMatch ? '_host' : '')];
