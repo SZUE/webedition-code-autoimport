@@ -53,8 +53,10 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	function Body($weGlossaryFrames){
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
+		$yuiSuggest = &weSuggest::getInstance();
 
-		$out = we_html_element::jsElement('
+		$out = weSuggest::getYuiFiles() .
+			we_html_element::jsElement('
 var table = "' . GLOSSARY_TABLE . '";
 
 function toggle(id){
@@ -186,7 +188,8 @@ function submitForm() {
 				($weGlossaryFrames->View->Glossary->getAttribute('mode') === "category" ?
 					'showLinkModeCategory("' . ($weGlossaryFrames->View->Glossary->getAttribute('modeCategory') ? : "intern") . '");' :
 					'')
-		);
+			) . $yuiSuggest->getYuiJs();
+
 
 		return self::buildBody($weGlossaryFrames, $out);
 	}
@@ -386,12 +389,21 @@ function we_save() {
 		} else {
 			$_linkPath = $_linkID = $_internParameter = "";
 		}
-
-		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][InternLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][InternLinkID]', $_linkID), $_button);
+		$yuiSuggest = &weSuggest::getInstance();
+		$yuiSuggest->setAcId('docPath');
+		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
+		$yuiSuggest->setInput('link[Attributes][InternLinkPath]', $_linkPath);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(1);
+		$yuiSuggest->setSelectButton($_button);
+		$yuiSuggest->setResult('link[Attributes][InternLinkID]', $_linkID);
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
+		$yuiSuggest->setTable(FILE_TABLE);
+		$yuiSuggest->setWidth(400);
 
 		return '<div id="mode_intern" style="display: none;">'
 			. '<table class="default">
-	<tr><td style="padding:2px 0px;">' . $selector . '</td></tr>
+	<tr><td style="padding:2px 0px;">' . $yuiSuggest->getHTML() . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
 	<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][InternParameter]', 58, $_internParameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 </table></div>';
@@ -432,13 +444,24 @@ function we_save() {
 		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
-		$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][ObjectLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][ObjectLinkID]', $_linkID), $_button);
+
+		 $yuiSuggest = &weSuggest::getInstance();
+		$yuiSuggest->setAcId('objPathLink');
+		  $yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
+		  $yuiSuggest->setInput('link[Attributes][ObjectLinkPath]', $_linkPath);
+		  $yuiSuggest->setMaxResults(10);
+		  $yuiSuggest->setMayBeEmpty(1);
+		  $yuiSuggest->setSelectButton($_button);
+		  $yuiSuggest->setResult('link[Attributes][ObjectLinkID]', $_linkID);
+		  $yuiSuggest->setSelector(weSuggest::DocSelector);
+		  $yuiSuggest->setTable(OBJECT_FILES_TABLE);
+		  $yuiSuggest->setWidth(400);
 
 		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
 		return '<div id="mode_object" style="display: none;">
 	<table class="default">
-			<tr><td style="padding:2px 0px;">' . $selector . '</td></tr>
+			<tr><td style="padding:2px 0px;">' . $yuiSuggest->getHTML() . '</td></tr>
 	</table>
 	<div id="ObjectWorkspaceID" style="display: block;">
 		<table class="default">
