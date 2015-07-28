@@ -190,7 +190,7 @@ class we_folder extends we_root{
 		return true;
 	}
 
-	function i_sameAsParent(){
+	protected function i_sameAsParent(){
 		if($this->ID){
 			$db = new DB_WE();
 			$pid = $this->ParentID;
@@ -354,11 +354,11 @@ class we_folder extends we_root{
 		$this->Text = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 	}
 
-	function i_filenameDouble(){
+	protected function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE Path="' . $this->DB_WE->escape($this->Path) . '" AND ID!=' . intval($this->ID) . ' LIMIT 1', '', $this->DB_WE);
 	}
 
-	function i_filenameEmpty(){
+	protected function i_filenameEmpty(){
 		$fn = ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? $this->Filename : $this->Text;
 		return ($fn === '');
 	}

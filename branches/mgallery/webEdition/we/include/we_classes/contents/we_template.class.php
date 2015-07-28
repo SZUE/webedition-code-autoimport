@@ -356,7 +356,7 @@ we_templateInit();?>';
 		return we_base_file::save($this->getRealPath(), $doc);
 	}
 
-	function i_filenameNotAllowed(){
+	protected function i_filenameNotAllowed(){
 		return false;
 	}
 

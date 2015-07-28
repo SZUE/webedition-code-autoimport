@@ -306,7 +306,7 @@ class we_document extends we_root{
 	 * internal functions
 	 */
 
-	function getParentIDFromParentPath(){
+	protected function getParentIDFromParentPath(){
 		$f = new we_folder();
 		return ($f->initByPath($this->ParentPath) ? $f->ID : -1);
 	}
@@ -756,7 +756,7 @@ class we_document extends we_root{
 		$this->setElement('data', $value);
 	}
 
-	function i_filenameDouble(){
+	protected function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Filename='" . escape_sql_query($this->Filename) . "' AND Extension='" . escape_sql_query($this->Extension) . "' AND ID != " . intval($this->ID), "", $this->DB_WE);
 	}
 

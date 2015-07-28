@@ -39,7 +39,7 @@ class we_collection extends we_root{
 	protected $objectCollection = '';
 	protected $jsFormCollection = '';
 	protected $insertPrefs;
-	private $tmpFoldersDone = array();
+	//private $tmpFoldersDone = array();
 	protected $view = 'grid';
 	private $gridItemDimensions = array(
 		2 => array('item' => 400, 'icon' => 56, 'font' => 30),
@@ -220,12 +220,8 @@ class we_collection extends we_root{
 			}
 		}
 		$this->remCT = $tmpRemCT;
-		$mimeListFrom = we_html_tools::htmlSelect(
-				'mimeListFrom', $unselectedMime, 13, '', true, array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');"), 'value', 184
-		);
-		$mimeListTo = we_html_tools::htmlSelect(
-				'mimeListTo', $selectedMime, 13, '', true, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"), 'value', 184
-		);
+		$mimeListFrom = we_html_tools::htmlSelect('mimeListFrom', $unselectedMime, 13, '', true, array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');"), 'value', 184);
+		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"), 'value', 184);
 		$mimeTable = new we_html_table(array('class' => 'collection_props-mime default'), 1, 3);
 		$mimeTable->setCol(0, 0, array(), $mimeListFrom);
 		$mimeTable->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle'), we_html_element::htmlA(array(
@@ -254,16 +250,14 @@ class we_collection extends we_root{
 				}
 			}
 		}
-		$classListFrom = we_html_tools::htmlSelect(
-				'classListFrom', $unselectedClasses, max(count($allClasses), 5), '', true, array("id" => "classListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListFrom'],this.form['classListTo'],true, 'object');"), 'value', 184
-		);
-		$classListTo = we_html_tools::htmlSelect(
-				'classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array("id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');"), 'value', 184
-		);
+		$classListFrom = we_html_tools::htmlSelect('classListFrom', $unselectedClasses, max(count($allClasses), 5), '', true, array("id" => "classListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListFrom'],this.form['classListTo'],true, 'object');"), 'value', 184);
+		$classListTo = we_html_tools::htmlSelect('classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array("id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');"), 'value', 184);
 
 		$classTable = new we_html_table(array("class" => 'collection_props-classes default'), 1, 3);
 		$classTable->setCol(0, 0, null, $classListFrom);
-		$classTable->setCol(			0, 1, array('style' => 'text-align:center;vertical-align:middle'
+		//FIXME: why a tags, if onclick is used????
+
+		$classTable->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle'
 			), we_html_element::htmlA(array(
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('classListFrom'),document.getElementById('classListTo'),true, 'object');return false;"
@@ -414,7 +408,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			$wecmdenc3 = we_base_request::encCmd($wecmd3);
 		}
 
-		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . addTblPrefix($this->remTable) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
 		$addFromTreeButton = we_html_button::create_button("fa:btn_select_files,fa-plus,fa-plus, fa-lg fa-file-o", "javascript:weCollectionEdit.doClickAddItems(this);", true, 52, 22, '', '', false, false, '', false, '');
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22, '', '', ($item['id'] === -1), false, '', false, '', 'btn_edit');
 
@@ -734,7 +728,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		return $items;
 	}
 
-	function i_filenameDouble(){
+	protected function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Text='" . escape_sql_query($this->Text) . "' AND ID != " . intval($this->ID), "", $this->DB_WE);
 	}
 
@@ -782,7 +776,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$this->objectCollection .= '-1,';
 	}
 
-	protected function i_getPersistentSlotsFromDB($felder = '*'){  // FIXME: throw out when CreationDate and ModDate are migrated to MySQL timestamp in all tables
+	protected function i_getPersistentSlotsFromDB($felder = '*'){ // FIXME: throw out when CreationDate and ModDate are migrated to MySQL timestamp in all tables
 		parent::i_getPersistentSlotsFromDB($felder);
 
 		$this->CreationDate = strtotime($this->CreationDate);

@@ -737,13 +737,13 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->setTemplatePath();
 	}
 
-	function i_scheduleToBeforeNow(){
+	protected function i_scheduleToBeforeNow(){
 		return false;
 //FIXME: check
 		//return (defined('SCHEDULE_TABLE') && ($this->To < time() && $this->ToOk));
 	}
 
-	function i_areVariantNamesValid(){
+	protected function i_areVariantNamesValid(){
 		$variationFields = we_base_variants::getAllVariationFields($this);
 
 		if(!empty($variationFields)){

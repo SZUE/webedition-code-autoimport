@@ -821,7 +821,7 @@ abstract class we_root extends we_class{
 
 	}
 
-	function getParentIDFromParentPath(){
+	protected function getParentIDFromParentPath(){
 		return 0;
 	}
 
@@ -1158,31 +1158,31 @@ abstract class we_root extends we_class{
 		$this->ParentPath = $this->getParentPath();
 	}
 
-	function i_areVariantNamesValid(){
+	protected function i_areVariantNamesValid(){
 		return true;
 	}
 
-	function i_canSaveDirinDir(){
+	protected function i_canSaveDirinDir(){
 		return true;
 	}
 
-	function i_sameAsParent(){
+	protected function i_sameAsParent(){
 		return false;
 	}
 
-	function i_filenameEmpty(){
+	protected function i_filenameEmpty(){
 		return ($this->Filename === '');
 	}
 
-	function i_pathNotValid(){
+	protected function i_pathNotValid(){
 		return strpos($this->ParentPath, '..') !== false || ($this->ParentPath && $this->ParentPath{0} != '/');
 	}
 
-	function i_filenameNotValid(){
+	protected function i_filenameNotValid(){
 		return we_base_file::we_filenameNotValid($this->Filename, $this->getElement('Charset') != 'UTF-8');
 	}
 
-	function i_filenameNotAllowed(){
+	protected function i_filenameNotAllowed(){
 		if($this->Table == FILE_TABLE && $this->ParentID == 0 && strtolower($this->Filename . (isset($this->Extension) ? $this->Extension : '')) === 'webedition'){
 			return true;
 		}
@@ -1192,7 +1192,7 @@ abstract class we_root extends we_class{
 		return false;
 	}
 
-	function i_fileExtensionNotValid(){
+	protected function i_fileExtensionNotValid(){
 		if(isset($this->Extension)){
 			$ext = ltrim($this->Extension, '.');
 
@@ -1201,11 +1201,11 @@ abstract class we_root extends we_class{
 		return false;
 	}
 
-	function i_filenameDouble(){
+	protected function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . $this->DB_WE->escape($this->Filename) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
-	function i_urlDouble(){
+	protected function i_urlDouble(){
 		return false;
 	}
 
@@ -1239,14 +1239,10 @@ abstract class we_root extends we_class{
 				return false;
 			}
 
-
 			$this->ParentID = $this->getParentIDFromParentPath();
 			$this->Path = $this->getPath();
 		}
-		if($this->ParentID == -1){
-			return false;
-		}
-		return true;
+		return ($this->ParentID != -1);
 	}
 
 	function i_correctDoublePath(){
@@ -1276,11 +1272,11 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	function i_check_requiredFields(){
+	protected function i_check_requiredFields(){
 		return ''; // overwrite
 	}
 
-	function i_scheduleToBeforeNow(){
+	protected function i_scheduleToBeforeNow(){
 		return false; // overwrite
 	}
 
@@ -1288,7 +1284,7 @@ abstract class we_root extends we_class{
 		return false; // overwrite
 	}
 
-	function i_hasDoubbleFieldNames(){
+	protected function i_hasDoubbleFieldNames(){
 		return false;
 	}
 
@@ -1514,6 +1510,41 @@ abstract class we_root extends we_class{
 //FIXME: make abstract
 	public function getPropertyPage(){
 
+	}
+
+	public function checkFieldsOnSave(){
+		if($this->i_pathNotValid()){
+			return sprintf(g_l('weClass', '[notValidFolder]'), $this->Path);
+		} else if($this->i_filenameEmpty()){
+			return g_l('weEditor', '[' . $this->ContentType . '][filename_empty]');
+		} else if(!$this->i_canSaveDirinDir()){
+			return g_l('weEditor', '[pfolder_notsave]');
+		} else if($this->i_sameAsParent()){
+			return g_l('weEditor', '[folder_save_nok_parent_same]');
+		} else if($this->i_fileExtensionNotValid()){
+			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_filename_notValid]'), $this->Path);
+		} else if($this->i_filenameNotValid()){
+			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_filename_notValid]'), $this->Path);
+		} else if($this->i_descriptionMissing()){
+			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_description_missing]'), $this->Path);
+		} else if($this->i_filenameNotAllowed()){
+			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_filename_notAllowed]'), $this->Path);
+		} else if($this->i_filenameDouble()){
+			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][response_path_exists]'), $this->Path);
+		} else if($this->i_urlDouble()){
+			return sprintf(g_l('weEditor', '[' . $this->ContentType . '][we_objecturl_exists]'), $this->Url);
+		} else if(!$this->i_checkPathDiffAndCreate()){
+			return sprintf(g_l('weClass', '[notValidFolder]'), $this->Path);
+		} else if(($n = $this->i_check_requiredFields())){
+			return sprintf(g_l('weEditor', '[required_field_alert]'), $n);
+		} else if($this->i_scheduleToBeforeNow()){
+			return g_l('modules_schedule', '[toBeforeNow]');
+		} else if(($n = $this->i_hasDoubbleFieldNames())){
+			return sprintf(g_l('weEditor', '[doubble_field_alert]'), $n);
+		} else if(!$this->i_areVariantNamesValid()){
+			return g_l('weEditor', '[variantNameInvalid]');
+		}
+		return false;
 	}
 
 }

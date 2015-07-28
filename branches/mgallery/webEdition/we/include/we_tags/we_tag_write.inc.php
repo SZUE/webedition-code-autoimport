@@ -126,6 +126,7 @@ function we_tag_write($attribs){
 			$GLOBALS['we_' . $type . '_write_ok'] = true;
 			checkAndCreateBinary($name, ($type === 'document' ? 'we_document' : 'we_object'));
 
+			//FIXME: we should probably use checkFieldsOnSave?!
 			$GLOBALS['we_' . $type][$name]->i_checkPathDiffAndCreate();
 			if(!$objname){
 				$GLOBALS['we_' . $type][$name]->i_correctDoublePath();

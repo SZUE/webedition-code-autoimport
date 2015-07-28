@@ -2111,11 +2111,11 @@ class we_object extends we_document{
 		// do nothing here!
 	}
 
-	function i_filenameEmpty(){
+	protected function i_filenameEmpty(){
 		return ($this->Text === '');
 	}
 
-	function i_filenameNotValid(){
+	protected function i_filenameNotValid(){
 		static $allowedReplace = array(
 			'%ID%',
 			'%d%',
@@ -2143,11 +2143,11 @@ class we_object extends we_document{
 		return (preg_match('/[^\w\-.]/', $this->Text));
 	}
 
-	function i_filenameNotAllowed(){
+	protected function i_filenameNotAllowed(){
 		return false;
 	}
 
-	function i_filenameDouble(){
+	protected function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . $this->Table . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Text="' . $this->DB_WE->escape($this->Text) . '" AND ID!=' . intval($this->ID), '', $this->DB_WE);
 	}
 
@@ -2155,7 +2155,7 @@ class we_object extends we_document{
 		return true;
 	}
 
-	function i_hasDoubbleFieldNames(){
+	protected function i_hasDoubbleFieldNames(){
 		$sort = $this->getElement('we_sort');
 		$count = $this->getElement('Sortgesamt');
 		$usedNames = array();

@@ -437,7 +437,7 @@ class we_objectFile extends we_document{
 		$this->setTypeAndLength();
 	}
 
-	function i_check_requiredFields(){
+	protected function i_check_requiredFields(){
 		foreach($this->DefArray as $n => $v){
 			if(is_array($v) && !empty($v['required'])){
 				list($type, $name) = explode('_', $n, 2);
@@ -481,7 +481,7 @@ class we_objectFile extends we_document{
 		return '';
 	}
 
-	function i_areVariantNamesValid(){
+	protected function i_areVariantNamesValid(){
 		$variationFields = we_base_variants::getAllVariationFields($this);
 
 		if(!empty($variationFields)){
@@ -2112,7 +2112,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function i_pathNotValid(){
+	protected function i_pathNotValid(){
 		return parent::i_pathNotValid() || $this->ParentID == 0 || $this->ParentPath === '/' || strpos($this->Path, $this->RootDirPath) !== 0;
 	}
 
@@ -2629,23 +2629,23 @@ class we_objectFile extends we_document{
 // do nothing here!
 	}
 
-	function i_filenameEmpty(){
+	protected function i_filenameEmpty(){
 		return ($this->Text === '');
 	}
 
-	function i_filenameNotValid(){
+	protected function i_filenameNotValid(){
 		return preg_match('/[^a-z0-9\._\-]/i', $this->Text);
 	}
 
-	function i_filenameNotAllowed(){
+	protected function i_filenameNotAllowed(){
 		return false;
 	}
 
-	function i_filenameDouble(){
+	protected function i_filenameDouble(){
 		return f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . " AND Text='" . $this->DB_WE->escape($this->Text) . "' AND ID!=" . intval($this->ID), '', $this->DB_WE);
 	}
 
-	function i_urlDouble(){
+	protected function i_urlDouble(){
 		$this->setUrl();
 		$db = new DB_WE();
 
@@ -2656,7 +2656,7 @@ class we_objectFile extends we_document{
 		return true;
 	}
 
-	function i_scheduleToBeforeNow(){
+	protected function i_scheduleToBeforeNow(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && ($this->To < time() && $this->ToOk));
 	}
 
