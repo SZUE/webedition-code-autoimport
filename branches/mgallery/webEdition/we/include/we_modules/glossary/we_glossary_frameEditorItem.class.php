@@ -444,18 +444,17 @@ function we_save() {
 		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
-
-		 $yuiSuggest = &weSuggest::getInstance();
+		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId('objPathLink');
-		  $yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
-		  $yuiSuggest->setInput('link[Attributes][ObjectLinkPath]', $_linkPath);
-		  $yuiSuggest->setMaxResults(10);
-		  $yuiSuggest->setMayBeEmpty(1);
-		  $yuiSuggest->setSelectButton($_button);
-		  $yuiSuggest->setResult('link[Attributes][ObjectLinkID]', $_linkID);
-		  $yuiSuggest->setSelector(weSuggest::DocSelector);
-		  $yuiSuggest->setTable(OBJECT_FILES_TABLE);
-		  $yuiSuggest->setWidth(400);
+		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
+		$yuiSuggest->setInput('link[Attributes][ObjectLinkPath]', $_linkPath);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(1);
+		$yuiSuggest->setSelectButton($_button);
+		$yuiSuggest->setResult('link[Attributes][ObjectLinkID]', $_linkID);
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
+		$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+		$yuiSuggest->setWidth(400);
 
 		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
