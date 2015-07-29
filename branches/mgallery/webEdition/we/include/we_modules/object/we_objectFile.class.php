@@ -872,17 +872,28 @@ class we_objectFile extends we_document{
 				$myid ? $ob->getFieldsHTML(false, true) : '</div>';
 		}
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
+		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "');");
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $pid . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')') .
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('" . $cmd1 . "','" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $pid . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')') .
 			(($_but = $myid ? $editObjectButton : $editObjectButtonDis) ? $_but : '') .
 			(($_but = $myid ? $openCloseButton : $openCloseButtonDis) ? $_but : '') .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "')");
 
+		$yuiSuggest = &weSuggest::getInstance();
+		$yuiSuggest->setAcId($textname . we_base_file::getUniqueId(), '/' . $name);
+		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
+		$yuiSuggest->setInput($textname, $path);
+		$yuiSuggest->setMaxResults(10);
+		$yuiSuggest->setMayBeEmpty(1);
+		$yuiSuggest->setResult($idname, $myid);
+		$yuiSuggest->setSelector(weSuggest::DocSelector);
+		$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+		$yuiSuggest->setWidth($inputWidth);
+
 		return we_html_tools::htmlFormElementTable(
-				$this->htmlTextInput($textname, 30, $path, '', ' readonly', "text", $inputWidth, 0), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . (!empty($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", we_html_element::htmlHidden($idname, $myid), $button) .
+				$yuiSuggest->getHTML(), '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]["required"] ? "*" : "") . '</span>' . ($npubl ? '' : ' <span style="color:red">' . g_l('modules_object', '[not_published]') . '</span>') . (!empty($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) ? self::formatDescription($this->DefArray[we_object::QUERY_PREFIX . $ObjectID]['editdescription']) : we_html_element::htmlBr() ), "left", "defaultfont", $button) .
 			$objectpreview;
 	}
 
@@ -1083,7 +1094,6 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($n, parent::getHrefByArray($hrefArr));
 		}
 
-		$type = isset($attribs['hreftype']) ? $attribs['hreftype'] : '';
 		$directory = (isset($attribs['hrefdirectory']) && $attribs['hrefdirectory'] === 'true') ? false : true;
 		$file = (isset($attribs['hreffile']) && $attribs['hreffile'] === 'false') ? false : true;
 
@@ -1102,7 +1112,7 @@ class we_objectFile extends we_document{
 		$intPath_elem_Name = 'we_' . $this->Name . '_href[' . $nintPath . ']';
 		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']';
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
-		switch($type){
+		switch(isset($attribs['hreftype']) ? $attribs['hreftype'] : ''){
 			case we_base_link::TYPE_INT:
 				$out = self::hrefRow($intID_elem_Name, $intID, $intPath_elem_Name, $intPath, $attr, $int_elem_Name, false, true, '', $file, $directory);
 				break;
@@ -1129,12 +1139,22 @@ class we_objectFile extends we_document{
 					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
 					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0);")
 				);
+			$yuiSuggest = &weSuggest::getInstance();
+			$yuiSuggest->setAcId($int_elem_Name . we_base_file::getUniqueId());
+			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
+			$yuiSuggest->setInput($Path_elem_Name, $path, array('onchange' => ($showRadio ? "document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "")));
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(1);
+			$yuiSuggest->setResult($intID_elem_Name, $intID);
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
+			$yuiSuggest->setTable(FILE_TABLE);
+			$yuiSuggest->setWidth(200);
 		} else {
 			$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
-			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['" . $Path_elem_Name . "'].value");
+			$cmd1 = "document.forms[0].elements['" . $Path_elem_Name . "'].value";
 			$wecmdenc4 = we_base_request::encCmd("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][1].checked=true;" : ""));
 			$but = (!permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "'," . $cmd1 . ",'" . $wecmdenc4 . "')")
+					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $cmd1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "'," . we_base_request::encCmd($cmd1) . ",'" . $wecmdenc4 . "')")
 					));
 		}
 
@@ -1144,8 +1164,8 @@ class we_objectFile extends we_document{
 				'<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />'
 			) . '<td>' .
 			($intID_elem_Name ?
-				'<input type="hidden" name="' . $intID_elem_Name . '" value="' . $intID . '"><input type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' readonly="readonly" />' :
-				'<input' . ($showRadio ? ' onchange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
+				$yuiSuggest->getHTML() :
+				'<input' . ($showRadio ? ' onchange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" style="width:200px" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
 			) . '
 	</td>
 	<td>' . $but . '</td>
@@ -1435,8 +1455,8 @@ class we_objectFile extends we_document{
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "');opener._EditorFrame.setEditorIsHot(true);");
 
-		$content .= we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["flashmovie_$name"]['defaultdir']) ? $this->DefArray["flashmovie_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["flashmovie_$name"]['rootdir']) ? $this->DefArray["flashmovie_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::FLASH . "')").
-				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "')");
+		$content .= we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["flashmovie_$name"]['defaultdir']) ? $this->DefArray["flashmovie_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["flashmovie_$name"]['rootdir']) ? $this->DefArray["flashmovie_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::FLASH . "')") .
+			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "')");
 		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["flashmovie_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["flashmovie_$name"]['editdescription']) ? self::formatDescription($this->DefArray["flashmovie_$name"]['editdescription']) : we_html_element::htmlBr()) . $content;
 	}
 
@@ -1454,8 +1474,8 @@ class we_objectFile extends we_document{
 
 		return '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray["quicktime_" . $name]["required"] ? "*" : "") . "</span>" . (!empty($this->DefArray["quicktime_$name"]['editdescription']) ? self::formatDescription($this->DefArray["quicktime_$name"]['editdescription']) : we_html_element::htmlBr()) .
 			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' . $img->getHtml() .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["quicktime_$name"]['defaultdir']) ? $this->DefArray["quicktime_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["quicktime_$name"]['rootdir']) ? $this->DefArray["quicktime_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::QUICKTIME . "')").
-				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "',quicktime_" . $name . "')");
+			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["quicktime_$name"]['defaultdir']) ? $this->DefArray["quicktime_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["quicktime_$name"]['rootdir']) ? $this->DefArray["quicktime_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::QUICKTIME . "')") .
+			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "',quicktime_" . $name . "')");
 	}
 
 	public function getDefaultValueArray(){

@@ -48,8 +48,10 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 		}
 	}
 }
+$yuiSuggest = &weSuggest::getInstance();
 
-echo we_html_tools::getHtmlTop('', $charset, 5);
+echo we_html_tools::getHtmlTop('', $charset, 5) .
+ weSuggest::getYuiFiles();
 if($GLOBALS['we_doc']->CSS){
 	$cssArr = makeArrayFromCSV($GLOBALS['we_doc']->CSS);
 	foreach($cssArr as $cs){
@@ -94,7 +96,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td>
 	</tr>
 	</table>
-</div>' ;
+</div>';
 				$js.='objectEntry.add(document, \'' . $part['name'] . '\', null);';
 			}
 			echo we_html_element::jsElement($js);
@@ -104,7 +106,8 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 			}
 			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false));
 		}
-		echo we_html_element::htmlHidden("we_complete_request", 1);
+		echo we_html_element::htmlHidden("we_complete_request", 1) .
+		$yuiSuggest->getYuiJs();
 		?>
 	</form>
 </body>
