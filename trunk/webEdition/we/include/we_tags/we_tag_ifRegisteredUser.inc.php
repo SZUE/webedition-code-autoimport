@@ -35,7 +35,7 @@ function we_tag_ifRegisteredUser($attribs){
 	$matchType = weTag_getAttribute('matchType', $attribs, 'one', we_base_request::STRING);
 
 	//return true only on registered users - or if cfilter is set to "no filter"
-	if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered']){
+	if(!empty($_SESSION['webuser']['registered'])){
 		$ret = true;
 
 		if($ret && $userid){
@@ -45,11 +45,11 @@ function we_tag_ifRegisteredUser($attribs){
 			$ret &= ( in_array($_SESSION['webuser']['ID'], $userid));
 		}
 		if($ret && $permission){
-			$ret &= isset($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]) && $_SESSION['webuser']['registered'];
+			$ret &=!empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]);
 			if(!$ret){
 				return false;
 			}
-			if($match){
+			if($match !== ''){
 				$perm = explode(',', $_SESSION['webuser'][$permission]);
 				switch($matchType){
 					case 'one':
@@ -75,7 +75,7 @@ function we_tag_ifRegisteredUser($attribs){
 		}
 
 		if($ret && $cfilter && defined('CUSTOMER_TABLE')){
-			if(isset($GLOBALS['we_doc']->documentCustomerFilter) && $GLOBALS['we_doc']->documentCustomerFilter){
+			if(!empty($GLOBALS['we_doc']->documentCustomerFilter)){
 				$ret &= ( $GLOBALS['we_doc']->documentCustomerFilter->accessForVisitor($GLOBALS['we_doc']->ID, $GLOBALS['we_doc']->ContentType, true) === we_customer_documentFilter::ACCESS);
 			} else {
 				//access depends on $allowNoFilter
