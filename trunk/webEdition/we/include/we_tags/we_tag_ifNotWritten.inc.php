@@ -23,5 +23,23 @@ function we_parse_tag_ifNotWritten($attribs, $content){
 }
 
 function we_tag_ifNotWritten($attribs){
-	return !we_tag('ifWritten', $attribs);
+	$type = (weTag_getAttribute('type', $attribs, '', we_base_request::STRING)? : weTag_getAttribute('var', $attribs, 'document', we_base_request::STRING))? : weTag_getAttribute('doc', $attribs, 'document', we_base_request::STRING);
+	switch($type){
+		case 'customer':
+			switch(weTag_getAttribute('onerror', $attribs, 'all', we_base_request::STRING)){
+				default:
+				case 'all':
+					return !empty($GLOBALS['ERROR']['saveRegisteredUser']);
+				case 'nousername':
+					return isset($GLOBALS['ERROR']['saveRegisteredUser']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_USER_EMPTY;
+				case 'nopassword':
+					return isset($GLOBALS['ERROR']['saveRegisteredUser']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_FIELD_NOT_SET;
+				case 'userexists':
+					return isset($GLOBALS['ERROR']['saveRegisteredUser']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_USER_EXISTS;
+			}
+
+			break;
+		default:
+			return !we_tag('ifWritten', $attribs);
+	}
 }
