@@ -347,7 +347,7 @@ function entry(ID,icon,text,isFolder,path,modDate,contentType,published,title) {
 		}
 
 		if($this->filter != we_base_ContentTypes::TEMPLATE && $this->filter != "object" && $this->filter != "objectFile" && $this->filter != we_base_ContentTypes::WEDOCUMENT){
-			$tmp = ((in_workspace($this->dir, get_ws($this->table))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
+			$tmp = ((in_workspace($this->dir, get_ws($this->table, false, true))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
 			$ret.= 'if(top.fsheader.' . $tmp . 'NewFileBut){top.fsheader.' . $tmp . 'NewFileBut();}';
 		}
 

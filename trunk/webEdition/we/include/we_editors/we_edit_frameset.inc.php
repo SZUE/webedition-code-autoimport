@@ -140,7 +140,7 @@ if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== fa
 
 
 if($we_doc->ID){
-	if(($ws = get_ws($we_Table))){
+	if(($ws = get_ws($we_Table, false, true))){
 		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			switch($we_Table){
 				case TEMPLATES_TABLE: //	different workspace. for template
@@ -300,7 +300,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 		closeAllModalWindows();
 
 <?php if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ ?>
-			if (!unlock && (!top.opener ||top.opener.win)) {	//	login to super easy edit mode
+			if (!unlock && (!top.opener || top.opener.win)) {	//	login to super easy edit mode
 				unlock = true;
 			}
 <?php } ?>

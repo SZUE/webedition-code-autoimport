@@ -226,7 +226,7 @@ function makeArrayFromCSV($csv){
  * @param type $sep
  * @return string
  */
-function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
+function makeCSVFromArray(array $arr, $prePostKomma = false, $sep = ','){
 	if(!$arr){
 		return '';
 	}
@@ -238,7 +238,7 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 			$a = str_replace($sep, '###komma###', $a);
 		}
 	}
-	$out = implode($sep, $arr);
+$out = implode($sep, $arr);
 	if($prePostKomma){
 		$out = $sep . $out . $sep;
 	}
