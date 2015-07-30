@@ -166,7 +166,7 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable(self::htmlTextArea(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $rows, $cols, $this->getElement($name), $attribs), $text, $textalign, $textclass);
 	}
 
-	function formSelectFromArray($elementtype, $name, $vals, $text, $size = 1, $multiple = false, array $attribs = array()){
+	function formSelectFromArray($elementtype, $name, array $vals, $text, $size = 1, $multiple = false, array $attribs = array()){
 		$pop = $this->htmlSelect('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $vals, $size, ($elementtype ? $this->getElement($name) : $this->$name), $multiple, $attribs);
 		return we_html_tools::htmlFormElementTable($pop, $text, 'left', 'defaultfont');
 	}

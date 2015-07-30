@@ -796,7 +796,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function getMetaFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
-		$vals = ($variant ? $attribs['meta'] : $this->DefArray['meta_' . $name]);
+		$vals = ($variant ? $attribs['meta'] : $this->DefArray['meta_' . $name]['meta']);
 		$element = $this->getElement($name);
 		if(!$editable){
 			return $this->getPreviewView($name, isset($vals[$element]) ? $vals[$element] : '');
