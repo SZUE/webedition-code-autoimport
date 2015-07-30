@@ -34,12 +34,12 @@ class we_backup_delete extends we_fragment_base{
 	function init(){
 		if(isset($_SESSION['weS']['backup_delete']) && $_SESSION['weS']['backup_delete']){
 
-			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . FILE_TABLE . " ORDER BY IsFolder, Plen DESC;");
+			$this->db->query('SELECT Icon,Path FROM ' . FILE_TABLE . ' ORDER BY IsFolder, CHAR_LENGTH(Path) DESC');
 			while($this->db->next_record()){
 				$this->alldata[] = $_SERVER['DOCUMENT_ROOT'] . $this->db->f("Path") . "," . $this->db->f("Icon");
 				$this->alldata[] = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $this->db->f("Path") . "," . $this->db->f("Icon");
 			}
-			$this->db->query("SELECT Icon,Path, CHAR_LENGTH(Path) as Plen FROM " . TEMPLATES_TABLE . " ORDER BY IsFolder, Plen DESC;");
+			$this->db->query('SELECT Icon,Path FROM ' . TEMPLATES_TABLE . ' ORDER BY IsFolder, CHAR_LENGTH(Path) DESC');
 			while($this->db->next_record()){
 				$this->alldata[] = TEMPLATES_PATH . '/' . preg_replace('/\.tmpl$/i', '.php', $this->db->f("Path")) . "," . $this->db->f("Icon");
 			}

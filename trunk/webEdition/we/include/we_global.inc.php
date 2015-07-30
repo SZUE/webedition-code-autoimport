@@ -226,7 +226,7 @@ function makeArrayFromCSV($csv){
  * @param type $sep
  * @return string
  */
-function makeCSVFromArray(array $arr, $prePostKomma = false, $sep = ','){
+function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 	if(!$arr){
 		return '';
 	}
