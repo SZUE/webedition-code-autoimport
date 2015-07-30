@@ -29,7 +29,7 @@ switch($we_ContentType){
 	case we_base_ContentTypes::IMAGE;
 	case we_base_ContentTypes::VIDEO:
 	case we_base_ContentTypes::AUDIO:
-		$allowedContentTypes = implode(',',we_base_ContentTypes::inst()->getRealContentTypes($we_ContentType));
+		$allowedContentTypes = implode(',', we_base_ContentTypes::inst()->getRealContentTypes($we_ContentType));
 		break;
 	case we_base_ContentTypes::APPLICATION;
 		$allowedContentTypes = '';
@@ -48,7 +48,7 @@ if($weFileupload->processFileRequest()){
 
 	$pid = we_base_request::_(we_base_request::INT, 'pid', 0);
 	$parts = array();
-	$we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
+	$we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE, false, true), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
 			g_l('alert', '[upload_targetDir_notallowed]') :
 			'');
 	if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes === '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
@@ -192,14 +192,14 @@ if($weFileupload->processFileRequest()){
 				?>
 				var ref;
 				if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top;
+					ref = opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top.opener.top;
+					ref = opener.top.opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
-				ref = opener.top.opener.top.opener.top.opener.top;
+					ref = opener.top.opener.top.opener.top.opener.top;
 				}
 				if (ref.makeNewEntry) {
-				ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
+					ref.makeNewEntry(<?php echo '"' . $we_doc->Icon . '", "' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
 				}
 				<?php
 			}
