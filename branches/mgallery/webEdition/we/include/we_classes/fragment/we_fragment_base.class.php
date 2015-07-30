@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,7 +30,6 @@
  * longer than the timeout of some servers
  */
 class we_fragment_base{
-
 	/**
 	 * Number of all tasks.
 	 * @var        int
@@ -99,19 +97,18 @@ class we_fragment_base{
 		}
 		//FIXME: make this DB entries; create method for early creation, since the whole data might be too much for memory!
 		$filename = WE_FRAGMENT_PATH . $this->name;
-		$this->currentTask = we_base_request::_(we_base_request::INT, "fr_" . $this->name . "_ct", 0);
+		$this->currentTask = we_base_request::_(we_base_request::INT, 'fr_' . $this->name . '_ct', 0);
 		if(file_exists($filename) && $this->currentTask){
 			$ser = we_base_file::load($filename);
 			if(!$ser){
-				exit("Could not read: " . $filename);
+				exit('Could not read: ' . $filename);
 			}
 			$this->alldata = we_unserialize($ser);
 		} else {
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();
-			$ser = serialize($this->alldata);
-			if(!we_base_file::save($filename, $ser)){
-				exit("Could not write: " . $filename);
+			if(!we_base_file::save($filename, gzcompress(serialize($this->alldata), 6))){
+				exit('Could not write: ' . $filename);
 			}
 		}
 		$this->numberOfTasks = count($this->alldata);
@@ -121,7 +118,7 @@ class we_fragment_base{
 			if($i > 0){
 				$this->currentTask++; // before: currentTask was incremented with $i;
 			}
-				if($this->currentTask == $this->numberOfTasks){
+			if($this->currentTask == $this->numberOfTasks){
 
 				unlink($filename);
 				$this->finish();
@@ -139,7 +136,7 @@ class we_fragment_base{
 	 *
 	 * @param      array $attributes
 	 */
-	function printBodyTag($attributes = ""){
+	function printBodyTag($attributes = ''){
 		$nextTask = $this->currentTask + $this->taskPerFragment;
 		$attr = "";
 		if($attributes){
@@ -147,7 +144,7 @@ class we_fragment_base{
 				$attr .= " $k=\"$v\"";
 			}
 		}
-		$tail = "";//FIXME: make this a post request
+		$tail = ""; //FIXME: make this a post request
 		foreach($_REQUEST as $i => $v){
 			if(is_array($v)){
 				foreach($v as $k => $av){
@@ -158,7 +155,7 @@ class we_fragment_base{
 			}
 		}
 
-		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . "?fr_" . rawurlencode($this->name) . "_ct=" . ($nextTask) . $tail . "';";
+		$onload = "document.location='" . $_SERVER['SCRIPT_NAME'] . '?fr_' . rawurlencode($this->name) . '_ct=' . ($nextTask) . $tail . "';";
 
 		if($this->pause){
 			$onload = "setTimeout('" . addslashes($onload) . "'," . $this->pause . ");";
@@ -178,7 +175,7 @@ class we_fragment_base{
 	 */
 	function printJSReload(){
 		$nextTask = $this->currentTask + $this->taskPerFragment;
-		$tail = "";//FIXME: make this a post request
+		$tail = ""; //FIXME: make this a post request
 		foreach($_REQUEST as $i => $v){
 			if(is_array($v)){
 				foreach($v as $k => $av){

@@ -296,7 +296,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	private function xformTemplatePopup($width = 50){
-		$ws = get_ws(TEMPLATES_TABLE);
+		$ws = get_ws(TEMPLATES_TABLE,false,true);
 
 		$hash = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
 		$TID = $hash['TemplateID'];
@@ -307,8 +307,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$temps = array_filter(explode(',', $tlist));
 		} else {
 			$temps = array();
-			$wsArray = explode(',', $ws);
-			foreach($wsArray as $wid){
+			foreach($ws as $wid){
 				pushChilds($temps, $wid, TEMPLATES_TABLE, 0, $this->DB_WE);
 			}
 		}

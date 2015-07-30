@@ -234,10 +234,7 @@ class we_objectFile extends we_document{
 		$cnt = 1;
 		$all = array();
 		$slash = PHP_INT_MAX;
-		$ws = get_ws(OBJECT_FILES_TABLE);
-		if(intval($ws) == 0){
-			$ws = 0;
-		}
+		$ws = get_ws(OBJECT_FILES_TABLE, false, true);
 		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
 		while($db->next_record()){
 			$all[$db->f('Path')] = $db->f('ID');
@@ -301,12 +298,9 @@ class we_objectFile extends we_document{
 			$this->TableID = count($ac) ? $ac[0] : 0;
 		}
 		$foo = getHash('SELECT Workspaces,DefaultWorkspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		$def_ws = isset($foo['DefaultWorkspaces']) ? $foo['DefaultWorkspaces'] : '';
-		$owsCSV = isset($foo['Workspaces']) ? $foo['Workspaces'] : '';
-		$otmplsCSV = isset($foo['Templates']) ? $foo['Templates'] : '';
-		$owsCSVArray = makeArrayFromCSV($owsCSV);
-		$defwsCSVArray = makeArrayFromCSV($def_ws);
-		$otmplsCSVArray = makeArrayFromCSV($otmplsCSV);
+		$defwsCSVArray = makeArrayFromCSV(isset($foo['DefaultWorkspaces']) ? $foo['DefaultWorkspaces'] : '');
+		$owsCSVArray = makeArrayFromCSV(isset($foo['Workspaces']) ? $foo['Workspaces'] : '');
+		$otmplsCSVArray = makeArrayFromCSV(isset($foo['Templates']) ? $foo['Templates'] : '');
 		$this->Workspaces = '';
 		$this->Templates = '';
 		$this->ExtraWorkspaces = '';
@@ -1496,10 +1490,8 @@ class we_objectFile extends we_document{
 	}
 
 	public function getPossibleWorkspaces($ClassWs, $all = false){
-		if(!$ClassWs){
-			$ClassWs = f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
-		}
-		$userWs = get_ws(FILE_TABLE);
+		$ClassWs = $ClassWs ? : f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
+		$userWs = get_ws(FILE_TABLE,false,true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
@@ -1526,9 +1518,8 @@ class we_objectFile extends we_document{
 			}
 		} else {
 // alle UserWs, welche sich in einem der ClassWs befinden zur�ckgeben
-			$userWsArr = makeArrayFromCSV($userWs);
 			$out = array();
-			foreach($userWsArr as $ws){
+			foreach($userWs as $ws){
 				if(in_workspace($ws, $ClassWs, FILE_TABLE, $this->DB_WE)){
 					$out[] = $ws;
 				}

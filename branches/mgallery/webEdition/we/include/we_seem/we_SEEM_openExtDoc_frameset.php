@@ -28,17 +28,17 @@ $_text = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1); // Path
 $param = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 $_url = $_text . $param; // + Parameters
 
-if(!isset($_url) || (substr($_url, 0, 7) != "http://" && substr($_url, 0, 8) != "https://")){
+if(!$_url || (substr($_url, 0, 7) != 'http://' && substr($_url, 0, 8) != 'https://')){
 
 	$serveradress = getServerUrl();
 
-	$_url = (!isset($_url) || $_url{0} != "/" ?
-			$serveradress . "/" . $_url :
+	$_url = (!$_url || $_url{0} != '/' ?
+			$serveradress . '/' . $_url :
 			$serveradress . $_url);
 }
 //  extract the path to the file without parameters for file_exists -> we_SEEM_openExtDoc_content.php
 $arr = parse_url($_url);
-$newUrl = $arr["scheme"] . "://" . $arr["host"] . ( isset($arr["port"]) ? (":" . $arr["port"]) : "" ) . (isset($arr["path"]) ? $arr["path"] : "" );
+$newUrl = $arr['scheme'] . '://' . $arr['host'] . ( isset($arr['port']) ? (':' . $arr['port']) : '' ) . (isset($arr['path']) ? $arr['path'] : '' );
 
 
 //	we also need some functionality here to check if the location of the doc was cahnged
@@ -48,16 +48,14 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 
-	_EditorFrame.initEditorFrameData(
-					{
-						"EditorType": "none_webedition",
-						"EditorDocumentText": "<?php echo $arr["path"] ?>",
-						"EditorDocumentPath": "<?php echo $newUrl; ?>",
-						"EditorContentType": "none_webedition",
-						"EditorUrl": "<?php echo $_text; ?>",
-						"EditorDocumentParameters": "<?php echo $param; ?>"
-					}
-	);
+	_EditorFrame.initEditorFrameData({
+		EditorType: "none_webedition",
+		EditorDocumentText: "<?php echo $arr["path"] ?>",
+		EditorDocumentPath: "<?php echo $newUrl; ?>",
+		EditorContentType: "none_webedition",
+		EditorUrl: "<?php echo $_text; ?>",
+		EditorDocumentParameters: "<?php echo $param; ?>"
+	});
 
 	function checkDocument() {
 
@@ -84,17 +82,15 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 			//	If the document is editable with webedition, it will be replaced
 			//	Location not known - empty top and footer
 
-			_EditorFrame.initEditorFrameData(
-							{
-								"EditorType": "none_webedition",
-								"EditorContentType": "none_webedition",
-								"EditorDocumentText": "Unknown",
-								"EditorDocumentPath": "Unknown"
-							}
-			);
+			_EditorFrame.initEditorFrameData({
+				EditorType: "none_webedition",
+				EditorContentType: "none_webedition",
+				EditorDocumentText: "Unknown",
+				EditorDocumentPath: "Unknown"
+			});
 
 			extDocHeader.location = "about:blank";
-			extDocFooter.location = "<?php echo WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php" ?>";
+			extDocFooter.location = "<?php echo WEBEDITION_DIR . 'we/include/we_seem/we_SEEM_openExtDoc_footer.php' ?>";
 		}
 	}
 	//-->
@@ -108,6 +104,4 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 	we_html_element::htmlIFrame('extDocFooter', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php"), 'position:absolute;bottom:0px;left:0px;right:0px;height:40px;', '', '', false);
 	?>
 </body>
-
-
 </html>

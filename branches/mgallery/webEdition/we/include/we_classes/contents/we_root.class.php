@@ -1405,8 +1405,7 @@ abstract class we_root extends we_class{
 
 		if($this->userHasPerms()){ //	access to doc is not restricted, check workspaces of user
 			if($GLOBALS['we_doc']->ID){ //	userModule installed
-				$ws = get_ws($GLOBALS['we_doc']->Table);
-				if($ws){ //	doc has workspaces
+				if(($ws = get_ws($GLOBALS['we_doc']->Table, false, true))){ //	doc has workspaces
 					if(!(in_workspace($GLOBALS['we_doc']->ID, $ws, $GLOBALS['we_doc']->Table, $GLOBALS['DB_WE']))){
 						return self::FILE_NOT_IN_USER_WORKSPACE;
 					}

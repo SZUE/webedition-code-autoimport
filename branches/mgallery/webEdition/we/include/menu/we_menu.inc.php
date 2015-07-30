@@ -804,9 +804,9 @@ while($GLOBALS['DB_WE']->next_record()){
 
 if(defined('OBJECT_TABLE')){
 	// object from which class
-	$ac = implode(',', we_users_util::getAllowedClasses($GLOBALS['DB_WE']));
+	$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 	if($ac){
-		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . $ac . ') ' : '') . 'ORDER BY Text');
+		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . implode(',', $ac) . ') ' : '') . 'ORDER BY Text');
 		$pre = '1010200_';
 		$nr = 0;
 		while($GLOBALS['DB_WE']->next_record()){
@@ -829,7 +829,7 @@ we_base_moduleInfo::orderModuleArray($allModules);
 
 //$moduleList = 'schedpro|';
 $pre = '3000000_';
-$nr=0;
+$nr = 0;
 foreach($allModules as $m){
 	if(we_base_moduleInfo::showModuleInMenu($m['name'])){
 		// workarround (old module names) for not installed Modules WIndow
@@ -837,7 +837,7 @@ foreach($allModules as $m){
 		  $moduleList .= 'customerpro|';
 		  }
 		  $moduleList .= $m['name'] . '|'; */
-		$we_menu[$pre.($nr++)] = array(
+		$we_menu[$pre . ($nr++)] = array(
 			'text' => $m['text'] . '&hellip;',
 			'parent' => 3000000,
 			'cmd' => $m['name'] . '_edit_ifthere',

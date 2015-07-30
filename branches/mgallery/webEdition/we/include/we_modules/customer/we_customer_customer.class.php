@@ -40,6 +40,8 @@ class we_customer_customer extends weModelBase{
 	const PWD_NOT_MATCH = 2;
 	const PWD_NO_SUCH_USER = 3;
 	const PWD_TOKEN_INVALID = 4;
+	const PWD_USER_EMPTY = 5;
+	const PWD_USER_EXISTS = 5;
 
 	//properties
 	var $ID;
