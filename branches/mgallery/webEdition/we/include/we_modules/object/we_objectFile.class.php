@@ -826,6 +826,8 @@ class we_objectFile extends we_document{
 		if(($tmp = getHash('SELECT Path,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), $db))){
 			$path = $tmp['Path'];
 			$npubl = $tmp['Published'];
+		} else {
+			$npubl = 1;
 		}
 		if($path === ''){
 			$myid = 0;

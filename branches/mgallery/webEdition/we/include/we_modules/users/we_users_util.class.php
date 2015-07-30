@@ -218,7 +218,7 @@ abstract class we_users_util{
 		$db = ($db ? : new DB_WE());
 		$out = array();
 		//FIXME: why do we need the Workspaces of documents do determine allowed classes??
-		$ws = get_ws(FILE_TABLE, $db);
+		$ws = get_ws(FILE_TABLE, false, true);
 		$ofWs = get_ws(OBJECT_FILES_TABLE, false, true);
 		$ofWsArray = id_to_path($ofWs, OBJECT_FILES_TABLE, $db, false, true);
 

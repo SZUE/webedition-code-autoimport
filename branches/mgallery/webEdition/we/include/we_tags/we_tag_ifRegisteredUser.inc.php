@@ -45,11 +45,11 @@ function we_tag_ifRegisteredUser($attribs){
 			$ret &= ( in_array($_SESSION['webuser']['ID'], $userid));
 		}
 		if($ret && $permission){
-			$ret &= !empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]);
+			$ret &=!empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$permission]);
 			if(!$ret){
 				return false;
 			}
-			if($match){
+			if($match !== ''){
 				$perm = explode(',', $_SESSION['webuser'][$permission]);
 				switch($matchType){
 					case 'one':

@@ -131,54 +131,18 @@ class weSuggest{
 			we_html_element::jsScript(JS_DIR . 'weSuggest.js');
 	}
 
-	/**
-	 * This function generates the individual js code for the autocomletion
-	 *
-	 * @return String
-	 */
-	function getYuiJs(){
-		/**
-		 * @todo 	1. value
-		 * 			2. table
-		 * 			3. contenttype
-		 * 			4. ?
-		 * 			5. id
-		 */
-		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
-		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
-
-		if(is_array($this->inputfields) && empty($this->inputfields)){
-			return;
-		}
-
-		$safariEventListener = '';
-		$initVars = '
-YAHOO.autocoml.width= ' . $this->width . ';
-YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
-YAHOO.autocoml.selfType="' . $weSelfContentType . '";
-YAHOO.autocoml.selfID="' . $weSelfID . '";
-			';
-		// WORKSPACES
-		$weFieldWS = array();
-		// AC-FIEDS BY ID
-		$fildsById = array();
-		// AC-FIEDS
-		$fildsObj = '';
-		$firstDone = false;
-
+	//use this, if you need to add fields dynamically
+	public function getyuiAcFields(){
+		$fildsObj = array();
 
 		// loop fields
 		for($i = 0; $i < count($this->inputfields); $i++){
 			if(!$this->noAutoInits[$i]){
-				//FIXME: do we need this for safari any more?
-				$safariEventListener .= "YAHOO.util.Event.addListener('" . $this->inputfields[$i] . "','blur',YAHOO.autocoml.doSafariOnTextfieldBlur_$i);";
 				//$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
 				$weWorkspacePathArray = id_to_path(get_ws($this->tables[$i]), $this->tables[$i], null, false, true);
-				$weFieldWS[] = '[' . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . ']';
+				//$weFieldWS[] = '[' . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . ']';
 
-				$fildsById[] = "	'" . $this->inputfields[$i] . "':$i";
-				$fildsObj .=
-					($firstDone ? ',' : '') . "{
+				$current = "{
 				'id' : '" . $this->inputfields[$i] . "',
 				'container': '" . $this->containerfields[$i] . "',
 				'old': document.getElementById('" . $this->inputfields[$i] . "').value,
@@ -201,16 +165,16 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					if($this->setOnSelectFields[$i]){
-						$fildsObj .=",
+						$current .=",
 	'fields_id': ['" . implode('\',\'', $this->setOnSelectFields[$i]) . '\']' . ",
 	'fields_val': [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
 					}
 				}
 				if($this->_doOnItemSelect[$i]){
-					$fildsObj .=',itemSelect:function(param1,param2,param,params){' . $this->_doOnItemSelect[$i] . '}';
+					$current .=',itemSelect:function(param1,param2,param,params){' . $this->_doOnItemSelect[$i] . '}';
 				}
 				if($this->_doOnTextfieldBlur[$i]){
-					$fildsObj .=',blur:function(){' . $this->_doOnTextfieldBlur[$i] . '}';
+					$current .=',blur:function(){' . $this->_doOnTextfieldBlur[$i] . '}';
 				}
 				if(!empty($this->checkFieldsValues[$i])){
 					$additionalFields = "";
@@ -218,25 +182,58 @@ YAHOO.autocoml.selfID="' . $weSelfID . '";
 						for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
 							$additionalFields .= ($j > 0 ? "," : "") . str_replace('-', '_', $this->setOnSelectFields[$i][$j]);
 						}
-						$fildsObj .=",
+						$current .=",
 							'checkValues':'" . $additionalFields . "'";
 					}
 				}
 				// EOF loop fields
 
-				$fildsObj .= " }";
-				$firstDone = true;
+				$current .= "}";
+				$fildsObj[$this->inputfields[$i]] = $current;
 			}
 		}
+		return $fildsObj;
+	}
 
-		return we_html_element::jsElement("
-						$initVars
-						YAHOO.autocoml.yuiAcFieldsById = {" . implode(',', $fildsById) . "};
-						YAHOO.autocoml.yuiAcFields = [$fildsObj];
+	/**
+	 * This function generates the individual js code for the autocomletion
+	 *
+	 * @return String
+	 */
+	function getYuiJs(){
+		/**
+		 * @todo 	1. value
+		 * 			2. table
+		 * 			3. contenttype
+		 * 			4. ?
+		 * 			5. id
+		 */
+		$weSelfContentType = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ContentType)) ? $GLOBALS['we_doc']->ContentType : '';
+		$weSelfID = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID)) ? $GLOBALS['we_doc']->ID : '';
 
-					YAHOO.util.Event.addListener(this, 'load', YAHOO.autocoml.init);
-					{$this->preCheck}"
-		);
+		if(is_array($this->inputfields) && empty($this->inputfields)){
+			return;
+		}
+
+		// WORKSPACES
+		//$weFieldWS = array();
+		// AC-FIEDS
+		$fildsObj = $this->getyuiAcFields();
+		// AC-FIEDS BY ID
+		$fildsById = array();
+		foreach(array_keys($fildsObj) as $i => $key){
+			$fildsById[] = '"' . $key . '":' . $i;
+		}
+
+		return we_html_element::jsElement('
+YAHOO.autocoml.width= ' . $this->width . ';
+YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+YAHOO.autocoml.selfType="' . $weSelfContentType . '";
+YAHOO.autocoml.selfID="' . $weSelfID . '";
+YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};
+YAHOO.autocoml.yuiAcFields = [' . implode(',', $fildsObj) . '];
+YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
+				$this->preCheck);
 	}
 
 	function getHTML(){
