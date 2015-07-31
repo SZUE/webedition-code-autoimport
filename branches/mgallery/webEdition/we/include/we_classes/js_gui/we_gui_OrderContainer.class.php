@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weOrderContainer{
+class we_gui_OrderContainer{
 	// private Target Frame
 	var $targetFrame = "";
 	// private containerId
@@ -60,7 +60,7 @@ class weOrderContainer{
 // end: getContainer
 
 	function getCmd($mode, $uniqueid = false, $afterid = false){
-		$prefix = $this->targetFrame . "." . $this->containerId;
+		$prefix = 'container';
 		$afterid = ($afterid ? "'" . $afterid . "'" : "null");
 
 		switch(strtolower($mode)){
@@ -92,10 +92,8 @@ class weOrderContainer{
 
 // end: getCmd
 
-	function getResponse($mode, $uniqueid, $string = "", $afterid = false){
-
-		$cmd = $this->getCmd($mode, $uniqueid, $afterid);
-		if(!$cmd){
+	function getResponse($mode, $uniqueid, $string = "", $afterid = false, $js = ''){
+		if(!($cmd = $this->getCmd($mode, $uniqueid, $afterid))){
 			return "";
 		}
 
@@ -103,8 +101,12 @@ class weOrderContainer{
 				'<' . $this->containerType . ' id="' . $this->containerId . '" style="display: none;">'
 				. $string
 				. '</' . $this->containerType . '>' : '') .
-			we_html_element::jsElement($cmd .
-				$this->getDisableButtonJS());
+			we_html_element::jsElement('
+var targetF=' . $this->targetFrame . ';
+var container=targetF.' . $this->containerId . ';' .
+				$cmd .
+				$this->getDisableButtonJS() .
+				$js);
 	}
 
 // end: getResponse
@@ -112,18 +114,18 @@ class weOrderContainer{
 	function getDisableButtonJS(){
 
 		return '
-for(i=0; i < ' . $this->targetFrame . '.' . $this->containerId . '.position.length; i++) {
-	id = ' . $this->targetFrame . '.' . $this->containerId . '.position[i];
+for(i=0; i < container.position.length; i++) {
+	id = container.position[i];
 	id = id.replace(/entry_/, "");
-	' . $this->targetFrame . '.weButton.enable("btn_direction_up_" + id);
-	' . $this->targetFrame . '.weButton.enable("btn_direction_down_" + id);
-		if(i == 0) {
-			' . $this->targetFrame . '.weButton.disable("btn_direction_up_" + id);
-		}
-		if(i+1 == ' . $this->targetFrame . '.' . $this->containerId . '.position.length) {
-			' . $this->targetFrame . '.weButton.disable("btn_direction_down_" + id);
-		}
-	}';
+	targetF.weButton.enable("btn_direction_up_" + id);
+	targetF.weButton.enable("btn_direction_down_" + id);
+	if(i == 0) {
+		targetF.weButton.disable("btn_direction_up_" + id);
+	}
+	if(i+1 == container.position.length) {
+		targetF.weButton.disable("btn_direction_down_" + id);
+	}
+}';
 	}
 
 }

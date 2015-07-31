@@ -226,7 +226,7 @@ class weSuggest{
 		}
 
 		return we_html_element::jsElement('
-YAHOO.autocoml.width= ' . $this->width . ';
+YAHOO.autocoml.width= ' . intval($this->width) . ';
 YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
 YAHOO.autocoml.selfType="' . $weSelfContentType . '";
 YAHOO.autocoml.selfID="' . $weSelfID . '";
@@ -236,7 +236,7 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 				$this->preCheck);
 	}
 
-	function getHTML(){
+	function getHTML($reset = true){
 		$inputId = $this->inputId ? : 'yuiAcInput' . $this->acId;
 		$resultId = $this->resultId ? : 'yuiAcResult' . $this->acId;
 		$containerWidth = $this->containerWidth ? : $this->width;
@@ -272,25 +272,27 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 					'')
 		);
 
+		if($reset){
+			$this->contentType = we_base_ContentTypes::FOLDER;
+			$this->mayBeEmpty = 1;
+			$this->label = '';
+			$this->containerWidth = '';
+			$this->containerWidthForAll = 0;
+			$this->selector = self::DirSelector; //FIXME:self::Dirselector??
+			$this->table = FILE_TABLE;
+			$this->width = 280;
+			$this->doOnItemSelect = '';
+			$this->doOnTextfieldBlur = '';
+		}
 		$this->acId = '';
-		$this->containerWidth = '';
-		$this->containerWidthForAll = 0;
-		$this->contentType = we_base_ContentTypes::FOLDER;
-		$this->label = '';
 		$this->maxResults = 20;
-		$this->mayBeEmpty = 1;
 		$this->resultName = '';
 		$this->resultValue = '';
 		$this->resultId = '';
 		$this->selectButton = '';
-		$this->selector = 'Dir'; //FIXME:self::Dirselector??
 		$this->trashButton = '';
 		$this->openButton = '';
 		$this->createButton = '';
-		$this->table = FILE_TABLE;
-		$this->width = 280;
-		$this->doOnItemSelect = '';
-		$this->doOnTextfieldBlur = '';
 		return $html;
 	}
 

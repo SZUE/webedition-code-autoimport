@@ -898,6 +898,7 @@ class we_objectFile extends we_document{
 		$objects = isset($temp['objects']) ? $temp['objects'] : array();
 		$max = intval($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]['max']);
 		$show = (($max == 0) || ($max >= count($objects)) ? count($objects) : $max);
+		$isSEEM = (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE);
 
 		if(!$show && !$editable){
 			return $this->getPreviewView($name, '');
@@ -912,42 +913,42 @@ class we_objectFile extends we_document{
 
 			$text = '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]["required"] ? "*" : "") . '</span>' . (!empty($this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription']) ? self::formatDescription($this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription']) : we_html_element::htmlBr() );
 			$content = we_html_tools::htmlFormElementTable('', $text);
+			list($rootDir, $rootDirPath) = getHash('SELECT oft.ID,oft.Path FROM ' . OBJECT_FILES_TABLE . ' oft LEFT JOIN ' . OBJECT_TABLE . ' ot ON oft.Path=ot.Path WHERE oft.IsClassFolder=1 AND ot.ID=' . intval($classid), $db, MYSQL_NUM);
+
+			$inputWidth = ($isSEEM ? 346 : 411);
+			$editObjectButtonDis = ($isSEEM ? we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "", true, 44, 22, "", "", true) : '');
+			$openCloseButtonDis = ($isSEEM ? we_html_tools::getPixel(21, 1) : '');
+
+			$editObjectButton = $openCloseButton = $reloadEntry = '';
+
+			$yuiSuggest = &weSuggest::getInstance();
+			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(1);
+			$yuiSuggest->setSelector(weSuggest::DocSelector);
+			$yuiSuggest->setTable(OBJECT_FILES_TABLE);
+			$yuiSuggest->setWidth($inputWidth);
 
 			for($f = 0; $f < $show; $f++){
 				$textname = 'we_' . $this->Name . '_txt[' . $name . '_path' . $f . ']';
 				$idname = 'we_' . $this->Name . '_' . self::TYPE_MULTIOBJECT . '[' . $name . '_default' . $f . ']';
 
-				$rootDir = f('SELECT oft.ID FROM ' . OBJECT_FILES_TABLE . ' oft LEFT JOIN ' . OBJECT_TABLE . ' ot ON oft.Path=ot.Path WHERE oft.IsClassFolder=1 AND ot.ID=' . intval($classid), '', $db);
 				$path = $this->getElement('we_object_' . $name . '_path');
 				if(($myid = intval($objects[$f]))){
 					$path = $path ? : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), '', $db);
 				}
 
-				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-
-					$ob = new we_objectFile();
-					$ob->initByID($myid, OBJECT_FILES_TABLE);
-					$ob->DefArray = $ob->getDefaultValueArray();
+				if($isSEEM){
+					/* $ob = new we_objectFile();
+					  $ob->initByID($myid, OBJECT_FILES_TABLE);
+					  $ob->DefArray = $ob->getDefaultValueArray(); */
 					$uniq = md5(uniqid(__FUNCTION__, true));
 
 					$editObjectButton = we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
-					$editObjectButtonDis = we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "", true, 44, 22, "", "", true);
-
-					$inputWidth = 346;
 
 					$openCloseButton = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "right", g_l('global', '[openCloseBox]'));
-					$openCloseButtonDis = we_html_tools::getPixel(21, 1);
 
 					$reloadEntry = "opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "');";
-				} else {
-					$editObjectButton = '';
-					$editObjectButtonDis = '';
-					$inputWidth = 411;
-
-					$openCloseButton = '';
-					$openCloseButtonDis = '';
-
-					$reloadEntry = '';
 				}
 				$alerttext = g_l('modules_object', '[multiobject_recursion]');
 				$cmd1 = "document.we_form.elements['" . $idname . "'].value";
@@ -966,16 +967,18 @@ class we_objectFile extends we_document{
 				$buttontable = $selectObject .
 					($myid ? $editObjectButton : $editObjectButtonDis) .
 					($myid ? $openCloseButton : $openCloseButtonDis) .
-					we_html_element::htmlHidden($idname, $myid) .
 					((count($objects) < $max || $max == "" || $max == 0) ? $plusbut : $plusbutDis) .
 					($f > 0 ? $upbut : $upbutDis ) .
 					($f < count($objects) - 1 ? $downbut : $downbutDis) .
 					$trashbut;
 
-				$content .= we_html_tools::htmlFormElementTable(
-						$this->htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', 'text', $inputWidth), '', 'left', 'defaultfont', $buttontable);
+				$yuiSuggest->setAcId($textname . we_base_file::getUniqueId(), $rootDirPath);
+				$yuiSuggest->setInput($textname, $path);
+				$yuiSuggest->setResult($idname, $myid);
 
-				if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $myid){
+				$content .= we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(false), '', 'left', 'defaultfont', $buttontable);
+
+				if($isSEEM && $myid){
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
 					$ob->DefArray = $ob->getDefaultValueArray();
@@ -1491,7 +1494,7 @@ class we_objectFile extends we_document{
 
 	public function getPossibleWorkspaces($ClassWs, $all = false){
 		$ClassWs = $ClassWs ? : f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
-		$userWs = get_ws(FILE_TABLE,false,true);
+		$userWs = get_ws(FILE_TABLE, false, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben

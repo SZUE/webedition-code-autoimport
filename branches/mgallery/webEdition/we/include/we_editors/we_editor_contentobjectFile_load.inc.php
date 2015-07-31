@@ -32,7 +32,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we
 
 $identifier = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
-$jsGUI = new weOrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
+$jsGUI = new we_gui_OrderContainer("_EditorFrame.getContentEditor()", "objectEntry");
 
 $we_doc = new we_objectFile();
 
@@ -74,52 +74,53 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 </head>
 
 <body><?php
-switch($cmd){
-	case "object_reload_entry_at_object":
-	case 'object_up_meta_at_object':
-	case 'object_down_meta_at_object':
-	case 'object_insert_meta_at_object':
-	case 'object_delete_meta_at_object':
-	case 'object_change_objectlink':
-	case 'object_remove_image_at_object':
-	case 'object_delete_link_at_object':
-	case 'object_change_link_at_object':
-		$temp = explode("_", $identifier);
-		$type = array_shift($temp);
-		$name = implode("_", $temp);
+	switch($cmd){
+		case "object_reload_entry_at_object":
+		case 'object_up_meta_at_object':
+		case 'object_down_meta_at_object':
+		case 'object_insert_meta_at_object':
+		case 'object_delete_meta_at_object':
+		case 'object_change_objectlink':
+		case 'object_remove_image_at_object':
+		case 'object_delete_link_at_object':
+		case 'object_change_link_at_object':
+			$temp = explode("_", $identifier);
+			$type = array_shift($temp);
+			$name = implode("_", $temp);
 
-		$db = new DB_WE();
-		$table = OBJECT_FILES_TABLE;
-		switch($cmd){
-			case 'object_insert_meta_at_object':
-				$we_doc->addMetaToObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
-				break;
-			case "object_delete_meta_at_object":
-				$we_doc->removeMetaFromObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
-				break;
-			case "object_down_meta_at_object":
-				$we_doc->downMetaAtObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
-				break;
-			case "object_up_meta_at_object":
-				$we_doc->upMetaAtObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
-				break;
-			case "object_change_objectlink":
-				$we_doc->i_getLinkedObjects();
-				break;
-			case "object_remove_image_at_object":
-				$we_doc->remove_image($name);
-				break;
-			case "object_delete_link_at_object":
-				if(isset($we_doc->elements[$name])){
-					unset($we_doc->elements[$name]);
-				}
-				break;
-			case "object_change_link_at_object":
-				$we_doc->changeLink($name);
-				break;
-		}
+			$db = new DB_WE();
+			$table = OBJECT_FILES_TABLE;
+			switch($cmd){
+				case 'object_insert_meta_at_object':
+					$we_doc->addMetaToObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
+					break;
+				case "object_delete_meta_at_object":
+					$we_doc->removeMetaFromObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
+					break;
+				case "object_down_meta_at_object":
+					$we_doc->downMetaAtObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
+					break;
+				case "object_up_meta_at_object":
+					$we_doc->upMetaAtObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
+					break;
+				case "object_change_objectlink":
+					$we_doc->i_getLinkedObjects();
+					break;
+				case "object_remove_image_at_object":
+					$we_doc->remove_image($name);
+					break;
+				case "object_delete_link_at_object":
+					if(isset($we_doc->elements[$name])){
+						unset($we_doc->elements[$name]);
+					}
+					break;
+				case "object_change_link_at_object":
+					$we_doc->changeLink($name);
+					break;
+			}
 
-		$content = '
+
+			$content = '
 <div id="' . $identifier . '">
 	<a name="f' . $identifier . '"></a>
 	<table class="default" width="100%">
@@ -131,16 +132,30 @@ switch($cmd){
 	<tr><td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>
 	</table>
 </div>';
+			$yuiSuggest = &weSuggest::getInstance();
+			$fildsObj = $yuiSuggest->getyuiAcFields();
+			// AC-FIEDS BY ID
+			$fildsById = array();
+			foreach(array_keys($fildsObj) as $i => $key){
+				$fildsById[] = '"' . $key . '":' . $i;
+			}
 
-		echo $jsGUI->getResponse('reload', $identifier, $content);
+			//FIXME: this will kill all other fields. we nee code to append & delete the following fields
+			$js = '';/*
+targetF.YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};
+targetF.YAHOO.autocoml.yuiAcFields = [' . implode(',', $fildsObj) . '];
+targetF.YAHOO.autocoml.init();
+';*/
 
-		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		break;
+			echo $jsGUI->getResponse('reload', $identifier, $content, false, $js);
 
-	default:
-		break;
-}
-?>
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
+			break;
+
+		default:
+			break;
+	}
+	?>
 
 </body>
 

@@ -30,7 +30,7 @@ $cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0);
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1);
 $id = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 2);
 
-$jsGUI = new weOrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
+$jsGUI = new we_gui_OrderContainer('_EditorFrame.getContentEditor()', 'classEntry');
 
 $we_doc = new we_object();
 
