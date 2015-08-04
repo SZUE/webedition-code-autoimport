@@ -238,7 +238,7 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 			$a = str_replace($sep, '###komma###', $a);
 		}
 	}
-$out = implode($sep, $arr);
+	$out = implode($sep, $arr);
 	if($prePostKomma){
 		$out = $sep . $out . $sep;
 	}
@@ -1234,7 +1234,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
  * @param bool $numeric forces data to be treated as numeric (not assotiative) array - no position data will be used
  * @return string serialized data
  */
-function we_serialize(array $array, $target, $numeric = false){
+function we_serialize(array $array, $target = 'serialize', $numeric = false){
 	switch($target){
 		//remove defined after php 5.3 support ends
 		case 'json':

@@ -36,7 +36,6 @@ abstract class we_base_country{
 		$file = WE_INCLUDES_PATH . 'country/' . $langcode . '.inc.php';
 		if(!file_exists($file)){
 		//	echo 'no file' . $file;
-
 			return false;
 		}
 

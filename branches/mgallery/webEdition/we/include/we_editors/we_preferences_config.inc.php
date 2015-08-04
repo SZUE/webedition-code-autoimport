@@ -72,7 +72,7 @@ $GLOBALS['configs'] = array(
 		'WE_PHP_DEFAULT' => array('Default setting for php attribute', we_base_request::BOOL, false),
 		'COMMANDS_DEFAULT' => array('Default setting for commands attribute', we_base_request::STRING, ''),
 		'REMOVEFIRSTPARAGRAPH_DEFAULT' => array('Default setting for removeparagraph attribute', we_base_request::BOOL, false),
-		'HIDENAMEATTRIBINWEIMG_DEFAULT' => array('Default setting for hide name attribute in weimg output', we_base_request::BOOL, false),
+		'HIDENAMEATTRIBINWEIMG_DEFAULT' => array('Default setting for hide name attribute in weimg output', we_base_request::BOOL, true),
 		'HIDENAMEATTRIBINWEFORM_DEFAULT' => array('Default setting for hide name attribute in weform output', we_base_request::BOOL, false),
 		'REPLACEACRONYM' => array('Remove unsupported html5 acronym tag', we_base_request::BOOL, false),
 // we_css
@@ -80,7 +80,7 @@ $GLOBALS['configs'] = array(
 // hooks
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', we_base_request::BOOL, false),
 // xhtml
-		'XHTML_DEFAULT' => array('Default setting for xml attribute', we_base_request::BOOL, false),
+		'XHTML_DEFAULT' => array('Default setting for xml attribute', we_base_request::BOOL, true),
 		'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
 		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', we_base_request::BOOL, false),
 //system
