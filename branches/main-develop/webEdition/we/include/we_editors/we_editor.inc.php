@@ -522,7 +522,7 @@ if(
 						$wf_flag = false;
 						$wasNew = (intval($we_doc->ID) == 0) ? true : false;
 						$wasPubl = (isset($we_doc->Published) && $we_doc->Published) ? true : false;
-						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != 'object' && $we_doc->ContentType != 'objectFile' && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table), $we_doc->Table)){
+						if(!permissionhandler::hasPerm('ADMINISTRATOR') && $we_doc->ContentType != 'object' && $we_doc->ContentType != 'objectFile' && !in_workspace($we_doc->ParentID, get_ws($we_doc->Table, false, true), $we_doc->Table)){
 							$we_responseText = g_l('alert', '[' . FILE_TABLE . '][not_im_ws]');
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 
@@ -568,7 +568,7 @@ if(
 									}
 								} elseif($we_doc->we_publish()){
 									if(defined('WORKFLOW_TABLE') && (we_workflow_utility::inWorkflow($we_doc->ID, $we_doc->Table))){
-											we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '');
+										we_workflow_utility::removeDocFromWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '');
 									}
 									$we_responseText .= ' - ' . sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_ok]'), $we_doc->Path);
 									$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;

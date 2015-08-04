@@ -23,6 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifWritten($attribs){
-	$type = (weTag_getAttribute('type', $attribs)? : weTag_getAttribute('var', $attribs, 'document'))? : weTag_getAttribute('doc', $attribs, 'document');
-	return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok']);
+	$type = (weTag_getAttribute('type', $attribs, '', we_base_request::STRING)? : weTag_getAttribute('var', $attribs, 'document', we_base_request::STRING))? : weTag_getAttribute('doc', $attribs, 'document', we_base_request::STRING);
+	switch($type){
+		case 'customer':
+			return empty($GLOBALS['ERROR']['saveRegisteredUser']);
+		default:
+			return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok']);
+	}
 }

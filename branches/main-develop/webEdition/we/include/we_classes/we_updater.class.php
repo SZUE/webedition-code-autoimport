@@ -437,6 +437,31 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		$last = $now;
 	}
 
+	public static function removeObsoleteFiles($path){
+		$path = $path ? : WEBEDITION_PATH . 'liveUpdate/includes/';
+		if(is_file($path . 'del.files')){
+			$all = array();
+			if($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES)){
+				$delFiles = array();
+				foreach($all as $cur){
+					if(file_exists(WEBEDITION_PATH . $cur)){
+						if(is_file(WEBEDITION_PATH . $cur)){
+							$delFiles[] = $cur;
+							unlink(WEBEDITION_PATH . $cur);
+						} elseif(is_dir(WEBEDITION_PATH . $cur)){
+							$delFiles[] = 'Folder: ' . $cur;
+							we_util_File::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
+						}
+					}
+				}
+			}
+			unlink($path . 'del.files');
+			file_put_contents($path . 'deleted.files', ($all ? "Deleted Files: " . count($delFiles) . "\n\n" . implode("\n", $delFiles) : "File del.files empty"));
+		}
+
+		return true;
+	}
+
 	public static function doUpdate(){
 		$db = new DB_WE();
 		self::meassure('start');
@@ -467,6 +492,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		self::meassure('fixHistory');
 		self::replayUpdateDB();
 		self::meassure('replayUpdateDB');
+		self::removeObsoleteFiles();
 	}
 
 }

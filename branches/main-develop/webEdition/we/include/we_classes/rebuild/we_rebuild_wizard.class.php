@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -54,8 +53,8 @@ abstract class we_rebuild_wizard{
 		$pb = $WE_PB->getHTML();
 
 		$js = $WE_PB->getJSCode() .
-				we_html_element::jsElement(
-						'function showRefreshButton() {
+			we_html_element::jsElement(
+				'function showRefreshButton() {
 				  prevBut = document.getElementById("prev");
 				  nextBut = document.getElementById("next");
 				  refrBut = document.getElementById("refresh");
@@ -97,12 +96,12 @@ abstract class we_rebuild_wizard{
 
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead(
-								we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
-								STYLESHEET .
-								($dc ? '' : we_html_button::create_state_changer()) . $js) .
-						we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
-						)
+				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
+					STYLESHEET .
+					($dc ? '' : we_html_button::create_state_changer()) . $js) .
+				we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+				)
 		);
 	}
 
@@ -122,97 +121,95 @@ abstract class we_rebuild_wizard{
 	 */
 	static function getStep0(){
 		$dws = get_def_ws();
-		$btype = we_base_request::_(we_base_request::STRING, 'btype', "rebuild_all");
+		$btype = we_base_request::_(we_base_request::STRING, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::STRING, 'categories', '');
-		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::STRING, "doctypes", ''), true);
+		$doctypes = makeCSVFromArray(we_base_request::_(we_base_request::STRING, 'doctypes', ''), true);
 		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', ($dws ? : ''));
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$tmptable = false; //we_base_request::_(we_base_request::INT, 'tmptable', 0);
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', ($dws ? : ''));
-		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::INT, "thumbs", ''), true);
+		$thumbs = makeCSVFromArray(we_base_request::_(we_base_request::INT, 'thumbs', ''), true);
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 		$metaFolders = we_base_request::_(we_base_request::STRING, 'metaFolders', ($dws ? : ''));
-		$metaFields = we_base_request::_(we_base_request::RAW, "_field", array());
+		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 
-		if(($type = we_base_request::_(we_base_request::STRING, "type"))){
+		if(($type = we_base_request::_(we_base_request::STRING, 'type'))){
 
-		} elseif(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD")){
-			$type = "rebuild_documents";
-		} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("REBUILD_OBJECTS")){
-			$type = "rebuild_objects";
-		} else if(permissionhandler::hasPerm("REBUILD_INDEX")){
-			$type = "rebuild_index";
-		} else if(permissionhandler::hasPerm("REBUILD_THUMBS")){
-			$type = "rebuild_thumbnails";
-		} else if(permissionhandler::hasPerm("REBUILD_NAVIGATION")){
-			$type = "rebuild_navigation";
-		} else if(permissionhandler::hasPerm("REBUILD_META")){
-			$type = "rebuild_metadata";
+		} elseif(permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD')){
+			$type = 'rebuild_documents';
+		} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('REBUILD_OBJECTS')){
+			$type = 'rebuild_objects';
+		} else if(permissionhandler::hasPerm('REBUILD_INDEX')){
+			$type = 'rebuild_index';
+		} else if(permissionhandler::hasPerm('REBUILD_THUMBS')){
+			$type = 'rebuild_thumbnails';
+		} else if(permissionhandler::hasPerm('REBUILD_NAVIGATION')){
+			$type = 'rebuild_navigation';
+		} else if(permissionhandler::hasPerm('REBUILD_META')){
+			$type = 'rebuild_metadata';
 		} else {
 			$type = '';
 		}
 
-
-
 		$parts = array(
 			array(
-				"headline" => "",
-				"html" => we_html_forms::radiobutton("rebuild_documents", ($type === "rebuild_documents" && (permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD"))), "type", g_l('rebuild', '[documents]'), true, "defaultfont", "setNavStatDocDisabled()", (!(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD"))), g_l('rebuild', '[txt_rebuild_documents]'), 0, 495),
-				"space" => 0
+				'headline' => '',
+				'html' => we_html_forms::radiobutton('rebuild_documents', ($type === 'rebuild_documents' && (permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD'))), 'type', g_l('rebuild', '[documents]'), true, 'defaultfont', 'setNavStatDocDisabled()', (!(permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD'))), g_l('rebuild', '[txt_rebuild_documents]'), 0, 495),
+				'space' => 0
 			)
 		);
 
 		if(defined('OBJECT_FILES_TABLE')){
 
 			$parts[] = array(
-				"headline" => "",
-				"html" => we_html_forms::radiobutton("rebuild_objects", ($type === "rebuild_objects" && permissionhandler::hasPerm("REBUILD_OBJECTS")), "type", g_l('rebuild', '[rebuild_objects]'), true, "defaultfont", "setNavStatDocDisabled()", (!permissionhandler::hasPerm("REBUILD_OBJECTS")), g_l('rebuild', '[txt_rebuild_objects]'), 0, 495),
-				"space" => 0
+				'headline' => '',
+				'html' => we_html_forms::radiobutton('rebuild_objects', ($type === 'rebuild_objects' && permissionhandler::hasPerm('REBUILD_OBJECTS')), 'type', g_l('rebuild', '[rebuild_objects]'), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_OBJECTS')), g_l('rebuild', '[txt_rebuild_objects]'), 0, 495),
+				'space' => 0
 			);
 		}
 
 		$parts[] = array(
-			"headline" => "",
-			"html" => we_html_forms::radiobutton("rebuild_index", ($type === "rebuild_index" && permissionhandler::hasPerm("REBUILD_INDEX")), "type", g_l('rebuild', '[rebuild_index]'), true, "defaultfont", "setNavStatDocDisabled()", (!permissionhandler::hasPerm("REBUILD_INDEX")), g_l('rebuild', '[txt_rebuild_index]'), 0, 495),
-			"space" => 0
+			'headline' => '',
+			'html' => we_html_forms::radiobutton('rebuild_index', ($type === 'rebuild_index' && permissionhandler::hasPerm('REBUILD_INDEX')), 'type', g_l('rebuild', '[rebuild_index]'), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_INDEX')), g_l('rebuild', '[txt_rebuild_index]'), 0, 495),
+			'space' => 0
 		);
 
 		$parts[] = array(
-			"headline" => "",
-			"html" => we_html_forms::radiobutton("rebuild_thumbnails", ($type === "rebuild_thumbnails" && permissionhandler::hasPerm("REBUILD_THUMBS")), "type", g_l('rebuild', '[thumbnails]'), true, "defaultfont", "setNavStatDocDisabled()", (we_base_imageEdit::gd_version() == 0 || (!permissionhandler::hasPerm("REBUILD_THUMBS"))), g_l('rebuild', '[txt_rebuild_thumbnails]'), 0, 495),
-			"space" => 0
+			'headline' => '',
+			'html' => we_html_forms::radiobutton('rebuild_thumbnails', ($type === 'rebuild_thumbnails' && permissionhandler::hasPerm('REBUILD_THUMBS')), 'type', g_l('rebuild', '[thumbnails]'), true, 'defaultfont', 'setNavStatDocDisabled()', (we_base_imageEdit::gd_version() == 0 || (!permissionhandler::hasPerm('REBUILD_THUMBS'))), g_l('rebuild', '[txt_rebuild_thumbnails]'), 0, 495),
+			'space' => 0
 		);
 
 		$_navRebuildHTML = '<div>' .
-				we_html_forms::radiobutton("rebuild_navigation", ($type === "rebuild_navigation" && permissionhandler::hasPerm("REBUILD_NAVIGATION")), "type", g_l('rebuild', '[navigation]'), false, "defaultfont", "setNavStatDocDisabled()", !permissionhandler::hasPerm("REBUILD_NAVIGATION"), g_l('rebuild', '[txt_rebuild_navigation]'), 0, 495) .
-				'</div><div style="padding:10px 20px;">' .
-				we_html_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', '[rebuildStaticAfterNaviCheck]'), false, 'defaultfont', '', true, g_l('rebuild', '[rebuildStaticAfterNaviHint]'), 0, 475) .
-				'</div>';
+			we_html_forms::radiobutton('rebuild_navigation', ($type === 'rebuild_navigation' && permissionhandler::hasPerm('REBUILD_NAVIGATION')), 'type', g_l('rebuild', '[navigation]'), false, 'defaultfont', 'setNavStatDocDisabled()', !permissionhandler::hasPerm('REBUILD_NAVIGATION'), g_l('rebuild', '[txt_rebuild_navigation]'), 0, 495) .
+			'</div><div style="padding:10px 20px;">' .
+			we_html_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', '[rebuildStaticAfterNaviCheck]'), false, 'defaultfont', '', true, g_l('rebuild', '[rebuildStaticAfterNaviHint]'), 0, 475) .
+			'</div>';
 
 		$parts[] = array(
-			"headline" => "",
-			"html" => $_navRebuildHTML,
-			"space" => 0
+			'headline' => '',
+			'html' => $_navRebuildHTML,
+			'space' => 0
 		);
 
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
 		$_rebuildMetaDisabled = true;
 		foreach($metaDataFields as $md){
-			if($md['importFrom'] !== ""){
+			if($md['importFrom'] !== ''){
 				$_rebuildMetaDisabled = false;
 				break;
 			}
 		}
 
 		$parts[] = array(
-			"headline" => "",
-			"html" => we_html_forms::radiobutton("rebuild_metadata", ($type === "rebuild_metadata" && permissionhandler::hasPerm("REBUILD_META")), "type", g_l('rebuild', '[metadata]'), true, "defaultfont", "setNavStatDocDisabled()", (!permissionhandler::hasPerm("REBUILD_META")) || $_rebuildMetaDisabled, g_l('rebuild', '[txt_rebuild_metadata]'), 0, 495),
-			"space" => 0
+			'headline' => '',
+			'html' => we_html_forms::radiobutton('rebuild_metadata', ($type === 'rebuild_metadata' && permissionhandler::hasPerm('REBUILD_META')), 'type', g_l('rebuild', '[metadata]'), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_META')) || $_rebuildMetaDisabled, g_l('rebuild', '[txt_rebuild_metadata]'), 0, 495),
+			'space' => 0
 		);
 
-		$allbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm("REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm("REBUILD_META"));
+		$allbutdisabled = !(permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD') || permissionhandler::hasPerm('REBUILD_OBJECTS') || permissionhandler::hasPerm('REBUILD_INDEX') || permissionhandler::hasPerm('REBUILD_THUMBS') || permissionhandler::hasPerm('REBUILD_META'));
 
 
 		$js = 'window.onload = function(){top.focus();}
@@ -265,7 +262,7 @@ abstract class we_rebuild_wizard{
 			set_button_state(' . ($allbutdisabled ? 1 : 0) . ');';
 
 		$js .=
-				'function setNavStatDocDisabled() {
+			'function setNavStatDocDisabled() {
 		var radio = document.getElementById("type");
 		var check = document.getElementById("rebuildStaticAfterNavi");
 		var checkLabel = document.getElementById("label_rebuildStaticAfterNavi");
@@ -273,10 +270,10 @@ abstract class we_rebuild_wizard{
 		checkLabel.style.color = radio.checked ? "" : "grey";
 	}';
 
-		$dthidden = "";
+		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		foreach($doctypesArray as $k => $v){
-			$dthidden .= we_html_element::htmlHidden(array("name" => "doctypes[$k]", "value" => $v));
+			$dthidden .= we_html_element::htmlHidden(array('name' => "doctypes[$k]", "value" => $v));
 		}
 
 		$thumbsHidden = "";
@@ -347,7 +344,6 @@ abstract class we_rebuild_wizard{
 		$currentTask = we_base_request::_(we_base_request::INT, "fr_" . $taskname . "_ct", 0);
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 
-
 		$js = 'function set_button_state() {
 				if(top.wizbusy && top.wizbusy.switch_button_state){
 					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "back_enabled", "enabled");
@@ -358,7 +354,7 @@ abstract class we_rebuild_wizard{
 			}
 			set_button_state();';
 		if(!(file_exists($taskFilename) && $currentTask)){
-			switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
+			switch(we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents')){
 				case 'rebuild_documents':
 					$data = we_rebuild_base::getDocuments($btype, $categories, $catAnd, $doctypes, $folders, $maintable, false, $templateID);
 					break;
@@ -479,7 +475,7 @@ abstract class we_rebuild_wizard{
 	private static function formThumbs($thumbs){
 		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
 		$Thselect = g_l('rebuild', '[thumbnails]') . "<br/>" . we_html_tools::getPixel(1, 3) . "<br/>" .
-				'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
+			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		while($GLOBALS['DB_WE']->next_record()){
@@ -493,8 +489,8 @@ abstract class we_rebuild_wizard{
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
 		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '"')) .
-				we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
-				'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>' . "\n";
+			we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
+			'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>' . "\n";
 
 		$selAllBut = we_html_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
 		$deselAllBut = we_html_button::create_button("deselectAll", "javascript:we_cmd('deselect_all_fields');");
@@ -507,10 +503,10 @@ abstract class we_rebuild_wizard{
 		}
 
 		$_html .= we_html_button::create_button_table(
-						array(
-					$selAllBut,
-					$deselAllBut
-						), 10, array('style' => 'margin:10px 0 20px 0;')
+				array(
+				$selAllBut,
+				$deselAllBut
+				), 10, array('style' => 'margin:10px 0 20px 0;')
 		);
 
 		$_html .= we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));
@@ -539,18 +535,18 @@ abstract class we_rebuild_wizard{
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty', 0);
 
 
-		$ws = get_ws(FILE_TABLE, true);
-		if($ws && strpos($ws, (',0,')) !== true && (!$folders)){
+		$ws = get_ws(FILE_TABLE, false, true);
+		if($ws && !in_array(0, $ws) && (!$folders)){
 			$folders = get_def_ws(FILE_TABLE);
 		}
 
 		$all_content = (permissionhandler::hasPerm('ADMINISTRATOR') ?
-						we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
-						'');
+				we_html_forms::checkbox(1, $maintable, 'maintable', g_l('rebuild', '[rebuild_maintable]'), false, 'defaultfont', 'document.we_form.btype[0].checked=true;') :
+				'');
 
 		$filter_content = we_rebuild_wizard::formCategory($categories, $catAnd) . '<br/>' . we_html_tools::getPixel(2, 5) . '<br/>' .
-				we_rebuild_wizard::formDoctypes($doctypes) . '<br/>' . we_html_tools::getPixel(2, 10) . '<br/>' .
-				we_rebuild_wizard::formFolders($folders);
+			we_rebuild_wizard::formDoctypes($doctypes) . '<br/>' . we_html_tools::getPixel(2, 10) . '<br/>' .
+			we_rebuild_wizard::formFolders($folders);
 
 		$filter_content = we_html_forms::radiobutton('rebuild_filter', ($btype === 'rebuild_filter' && permissionhandler::hasPerm('REBUILD_FILTERD') || ($btype === 'rebuild_all' && (!permissionhandler::hasPerm('REBUILD_ALL')) && permissionhandler::hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
 
@@ -618,13 +614,12 @@ abstract class we_rebuild_wizard{
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd', 0);
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty', 0);
 
-		$ws = get_ws(FILE_TABLE, true);
+		$ws = get_ws(FILE_TABLE, false, true);
 
 		// check if folers are in Workspace of User
 
 		if($ws && $folders){
 			$newFolders = array();
-			//$wsArray = makeArrayFromCSV($ws);
 			$foldersArray = makeArrayFromCSV($folders);
 			foreach($foldersArray as $folder){
 				if(in_workspace($folder, $ws)){
@@ -634,14 +629,14 @@ abstract class we_rebuild_wizard{
 			$folders = makeCSVFromArray($newFolders);
 		}
 
-		if($ws && strpos($ws, (',0,')) !== true && ($thumbsFolders == '' || $thumbsFolders == '0')){
+		if($ws && !in_array(0, $ws) && ($thumbsFolders == '' || $thumbsFolders == '0')){
 			$thumbsFolders = get_def_ws(FILE_TABLE);
 		}
 		$parts = array();
 
 		$content = we_rebuild_wizard::formThumbs($thumbs) .
-				'<br/>' . we_html_tools::getPixel(2, 15) . '<br/>' .
-				we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
+			'<br/>' . we_html_tools::getPixel(2, 15) . '<br/>' .
+			we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
 
 		$parts[] = array(
 			'headline' => '',
@@ -706,8 +701,8 @@ abstract class we_rebuild_wizard{
 		}
 
 		$content = we_rebuild_wizard::formMetadata($metaFields, $onlyEmpty) .
-				we_html_element::htmlBr() . we_html_tools::getPixel(2, 15) . we_html_element::htmlBr() .
-				we_rebuild_wizard::formFolders($metaFolders, true, 520);
+			we_html_element::htmlBr() . we_html_tools::getPixel(2, 15) . we_html_element::htmlBr() .
+			we_rebuild_wizard::formFolders($metaFolders, true, 520);
 
 
 
@@ -755,10 +750,10 @@ abstract class we_rebuild_wizard{
 		$step = we_base_request::_(we_base_request::INT, 'step');
 		$resp = we_base_request::_(we_base_request::STRING, 'responseText');
 		$tail = ($btype ? '&amp;btype=' . rawurlencode($btype) : '') .
-				($type ? '&amp;type=' . rawurlencode($type) : '') .
-				($tid ? '&amp;templateID=' . $tid : '') .
-				($step ? '&amp;step=' . $step : '') .
-				($resp ? '&amp;responseText=' . rawurlencode($resp) : '');
+			($type ? '&amp;type=' . rawurlencode($type) : '') .
+			($tid ? '&amp;templateID=' . $tid : '') .
+			($step ? '&amp;step=' . $step : '') .
+			($resp ? '&amp;responseText=' . rawurlencode($resp) : '');
 
 		$taskname = md5(session_id() . '_rebuild');
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
@@ -768,24 +763,24 @@ abstract class we_rebuild_wizard{
 
 		if($tail){
 			$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', "onload" => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';")
-							, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-									, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-									we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+						we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			));
 		} else {
 			$height = (we_base_browserDetect::isFF() ? 60 : 40);
 			$body = we_html_element::htmlBody(array('style' => 'background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
-							, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-									, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:' . $height . 'px;left:0px;right:0px;overflow: hidden') .
-									we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:' . $height . 'px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-									we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
+						, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:' . $height . 'px;left:0px;right:0px;overflow: hidden') .
+						we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:' . $height . 'px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+						we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			));
 		}
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead(
-								we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) . STYLESHEET
-						) . $body);
+				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) . STYLESHEET
+				) . $body);
 	}
 
 	/**
@@ -796,7 +791,7 @@ abstract class we_rebuild_wizard{
 	 */
 	static function getPage2Js($folders = 'folders'){
 		return
-				'function handle_event(what){
+			'function handle_event(what){
 				f = document.we_form;
 				switch(what){
 					case "previous":
@@ -970,16 +965,16 @@ abstract class we_rebuild_wizard{
 			return '';
 		}
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-						we_html_element::htmlHead(
-								we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
-								STYLESHEET .
-								($contents[0] ?
-										we_html_element::jsScript(JS_DIR . 'windows.js') .
-										we_html_element::jsElement($contents[0]) : '')) .
-						we_html_element::htmlBody(array(
-							"class" => "weDialogBody"
-								), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])
-						)
+				we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead(g_l('rebuild', '[rebuild]')) .
+					STYLESHEET .
+					($contents[0] ?
+						we_html_element::jsScript(JS_DIR . 'windows.js') .
+						we_html_element::jsElement($contents[0]) : '')) .
+				we_html_element::htmlBody(array(
+					"class" => "weDialogBody"
+					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])
+				)
 		);
 	}
 

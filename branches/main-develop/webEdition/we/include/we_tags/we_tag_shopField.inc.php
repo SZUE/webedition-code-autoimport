@@ -39,13 +39,13 @@ function we_tag_shopField($attribs){
 	}
 
 	$values = weTag_getAttribute("values", $attribs, '', we_base_request::RAW); // select, choice
-	$value = weTag_getAttribute("value", $attribs, '', we_base_request::RAW); // checkbox
+	$value = oldHtmlspecialchars(weTag_getAttribute('value', $attribs, '', we_base_request::RAW), -1, 'ISO-8859-1', false); // checkbox
 	$checked = weTag_getAttribute("checked", $attribs, false, we_base_request::BOOL); // checkbox
 
 	if($checked && ($foo = attributFehltError($attribs, "value", __FUNCTION__))){
 		return $foo;
 	}
-	$mode = weTag_getAttribute("mode", $attribs, '', we_base_request::STRING);
+	$mode = weTag_getAttribute('mode', $attribs, '', we_base_request::STRING);
 
 	$fieldname = ($reference === 'article' ? WE_SHOP_ARTICLE_CUSTOM_FIELD : WE_SHOP_CART_CUSTOM_FIELD) . '[' . $name . ']';
 	$savedVal = '';

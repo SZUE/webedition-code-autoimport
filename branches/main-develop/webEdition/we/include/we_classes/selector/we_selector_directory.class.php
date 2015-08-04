@@ -334,7 +334,7 @@ function enableNewFolderBut(){
 			return true;
 		}
 		if(!$showAll){
-			if(!in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
+			if(!in_workspace(intval($this->dir), get_ws($this->table, false, true), $this->table, $this->db)){
 				return false;
 			}
 		}
@@ -570,7 +570,7 @@ top.clearEntries();' .
 		$this->printCmdAddEntriesHTML() .
 		$this->printCMDWriteAndFillSelectorHTML() .
 		'top.fsheader.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
-		if(in_workspace(intval($this->dir), get_ws($this->table), $this->table, $this->db)){
+		if(in_workspace(intval($this->dir), get_ws($this->table, false, true), $this->table, $this->db)){
 			if($this->id == 0){
 				$this->path = '/';
 			}
@@ -720,7 +720,7 @@ var old=0;');
 	}
 
 	function printRenameFolderHTML(){
-		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
+		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table, false, true), $this->table, $this->db)){
 			echo '<script type="text/javascript"><!--
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
@@ -761,7 +761,7 @@ top.clearEntries();';
 				if(preg_match('-[<>?":|\\/*]-', $folder->Filename)){
 					$we_responseText = sprintf(g_l('weEditor', '[folder][we_filename_notValid]'), $folder->Path);
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
-				} else if(in_workspace($this->we_editDirID, get_ws($this->table), $this->table, $this->db)){
+				} else if(in_workspace($this->we_editDirID, get_ws($this->table, false, true), $this->table, $this->db)){
 					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 						$folder->we_save();
 						echo 'var ref;

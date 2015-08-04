@@ -238,7 +238,7 @@ function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
 			$a = str_replace($sep, '###komma###', $a);
 		}
 	}
-	$out = implode($sep, $arr);
+$out = implode($sep, $arr);
 	if($prePostKomma){
 		$out = $sep . $out . $sep;
 	}
