@@ -1721,7 +1721,7 @@ class we_object extends we_document{
 		$var_flip = array_flip(g_l('modules_object', '[url]'));
 
 		$select2 = "";
-		if(($anz = $this->getElement("DefaultanzahlUrl"))){
+		if(($anz = $this->getElement("DefaultanzahlUrl")) >= 0){ //Fix #9964 0 is an corret value!
 
 			$allFields = array_merge(self::$urlUnique, self::$urlFields);
 			$this->DefaultUrl = "";
