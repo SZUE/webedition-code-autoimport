@@ -143,7 +143,7 @@ if(($doct = we_base_request::_(we_base_request::INT, 'we_cmd', false, 8)) !== fa
 
 
 if($we_doc->ID){
-	if(($ws = get_ws($we_Table, false, true))){
+	if(($ws = get_ws($we_Table, true))){
 		if(!(in_workspace($we_doc->ID, $ws, $we_Table, $DB_WE))){
 			switch($we_Table){
 				case TEMPLATES_TABLE: //	different workspace. for template

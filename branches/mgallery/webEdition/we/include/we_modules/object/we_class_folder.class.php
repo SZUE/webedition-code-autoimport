@@ -184,7 +184,7 @@ class we_class_folder extends we_folder{
 		$parents = array(0, $this->ID);
 		we_getParentIDs(FILE_TABLE, $this->ID, $parents);
 		$this->setClassProp();
-		$ParentsCSV = makeCSVFromArray($parents, true);
+		$ParentsCSV = implode(',', $parents);
 		if($this->ID){
 			$_disabled = false;
 			$_disabledNote = '';

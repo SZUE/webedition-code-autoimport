@@ -93,7 +93,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	protected function setDefaultDirAndID($setLastDir){
 		$this->dir = $this->startID ? : ($setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0);
 		$ws = get_ws($this->table, true);
-		if($ws && strpos($ws, ("," . $this->dir . ",")) !== true){
+		if($ws && in_array($this->dir ,$ws)){
 			$this->dir = "";
 		}
 		$this->id = $this->dir;
@@ -159,7 +159,7 @@ top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}'
 			return true;
 		}
 		if(!$showAll){
-			if(!in_workspace(intval($this->dir), get_ws($this->table, false, true), $this->table, $this->db)){
+			if(!in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
 				return false;
 			}
 		}
@@ -270,7 +270,7 @@ top.clearEntries();' .
 		$this->printCmdAddEntriesHTML() .
 		$this->printCMDWriteAndFillSelectorHTML() .
 		'top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
-		if(in_workspace(intval($this->dir), get_ws($this->table, false, true), $this->table, $this->db)){
+		if(in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db)){
 			if($this->id == 0){
 				$this->path = '/';
 			}
@@ -375,7 +375,7 @@ options.userCanMakeNewFolder=' . intval($this->userCanMakeNewFolder) . ';
 	}
 
 	function printRenameFolderHTML(){
-		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table, false, true), $this->table, $this->db)){
+		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			echo '<script type="text/javascript"><!--
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
@@ -408,7 +408,7 @@ top.clearEntries();';
 		$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
 		if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(in_workspace($this->we_editDirID, get_ws($this->table, false, true), $this->table, $this->db)){
+		} elseif(in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;

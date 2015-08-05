@@ -163,8 +163,8 @@ class we_objectFile extends we_document{
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
 			$_REQUEST['we_ui_' . $formname . '_Category'] = (is_array($_REQUEST['we_ui_' . $formname . '_Category']) ?
-					makeCSVFromArray($_REQUEST['we_ui_' . $formname . '_Category'], true) :
-					makeCSVFromArray(makeArrayFromCSV($_REQUEST['we_ui_' . $formname . '_Category']), true));
+					implode(',', $_REQUEST['we_ui_' . $formname . '_Category']) :
+					implode(',', array_filter(explode(',', $_REQUEST['we_ui_' . $formname . '_Category']))));
 		}
 		foreach($wof->persistent_slots as $slotname){
 			if($slotname != 'categories' && ($tmp = we_base_request::_(we_base_request::RAW, 'we_ui_' . $formname . '_' . $slotname)) !== false){
@@ -234,7 +234,7 @@ class we_objectFile extends we_document{
 		$cnt = 1;
 		$all = array();
 		$slash = PHP_INT_MAX;
-		$ws = get_ws(OBJECT_FILES_TABLE, false, true);
+		$ws = get_ws(OBJECT_FILES_TABLE, true);
 		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
 		while($db->next_record()){
 			$all[$db->f('Path')] = $db->f('ID');
@@ -1494,7 +1494,7 @@ class we_objectFile extends we_document{
 
 	public function getPossibleWorkspaces($ClassWs, $all = false){
 		$ClassWs = $ClassWs ? : f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
-		$userWs = get_ws(FILE_TABLE, false, true);
+		$userWs = get_ws(FILE_TABLE, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
@@ -1574,8 +1574,8 @@ class we_objectFile extends we_document{
 			}
 		}
 
-		$this->Workspaces = makeCSVFromArray($newArr, true);
-		$this->Templates = makeCSVFromArray($newTmpls, true);
+		$this->Workspaces = implode(',', $newArr);
+		$this->Templates = implode(',', $newTmpls);
 
 		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
 		$newArr = array();
@@ -1583,7 +1583,7 @@ class we_objectFile extends we_document{
 			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE))
 				$newArr[] = $id;
 		}
-		$this->ExtraWorkspaces = makeCSVFromArray($newArr, true);
+		$this->ExtraWorkspaces = implode(',', $newArr);
 
 		$arr = makeArrayFromCSV($this->Workspaces);
 		foreach($arr as $nr => $id){
@@ -1614,10 +1614,10 @@ class we_objectFile extends we_document{
 
 		$mwsp = id_to_path($wsID, FILE_TABLE, $this->DB_WE);
 
-		$tarr = makeArrayFromCSV($foo["Templates"]);
-		$warr = makeArrayFromCSV($foo["Workspaces"]);
-		$pos = array_search($wsID, $warr);
-		if($pos == ""){
+		$tarr = explode(',', $foo["Templates"]);
+		$warr = explode(',', $foo["Workspaces"]);
+
+		if(($pos = array_search($wsID, $warr)) === false){
 			foreach($warr as $wsi){
 				$wsp = id_to_path($wsi, FILE_TABLE, $this->DB_WE);
 				if(substr($mwsp, 0, strlen($wsp)) == $wsp){
@@ -1640,8 +1640,8 @@ class we_objectFile extends we_document{
 				$workspaces[] = $id;
 				$tid = $this->getTemplateFromWs($id);
 				$templates[] = $tid;
-				$this->Workspaces = makeCSVFromArray($workspaces, true);
-				$this->Templates = makeCSVFromArray($templates, true);
+				$this->Workspaces = implode(',', $workspaces);
+				$this->Templates = implode(',', $templates);
 			}
 		}
 	}
@@ -1662,7 +1662,7 @@ class we_objectFile extends we_document{
 			$tempArr[] = $ws;
 		}
 
-		$this->Workspaces = makeCSVFromArray($tempArr, true);
+		$this->Workspaces = implode(',', $tempArr);
 
 		$tempArr = array();
 
@@ -1670,7 +1670,7 @@ class we_objectFile extends we_document{
 			$tempArr[] = $t;
 		}
 
-		$this->Templates = makeCSVFromArray($tempArr, true);
+		$this->Templates = implode(',', $tempArr);
 	}
 
 	function ws_from_class(){
@@ -1729,8 +1729,8 @@ class we_objectFile extends we_document{
 			$ExtraWorkspaces[] = $id;
 			$tid = $this->getTemplateFromWs($id);
 			$extraTemplates[] = $tid;
-			$this->ExtraWorkspaces = makeCSVFromArray($ExtraWorkspaces, true);
-			$this->ExtraTemplates = makeCSVFromArray($extraTemplates, true);
+			$this->ExtraWorkspaces = implode(',', $ExtraWorkspaces);
+			$this->ExtraTemplates = implode(',', $extraTemplates);
 		}
 	}
 
@@ -1750,7 +1750,7 @@ class we_objectFile extends we_document{
 			$tempArr[] = $ws;
 		}
 
-		$this->ExtraWorkspaces = makeCSVFromArray($tempArr, true);
+		$this->ExtraWorkspaces = implode(',', $tempArr);
 
 		$tempArr = array();
 
@@ -1758,7 +1758,7 @@ class we_objectFile extends we_document{
 			$tempArr[] = $t;
 		}
 
-		$this->ExtraTemplates = makeCSVFromArray($tempArr, true);
+		$this->ExtraTemplates = implode(',', $tempArr);
 	}
 
 	function getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, $mode = 0){
@@ -2104,7 +2104,7 @@ class we_objectFile extends we_document{
 					$newWs[] = $wsID;
 				}
 			}
-			$this->Workspaces = makeCSVFromArray($newWs, true);
+			$this->Workspaces = implode(',', $newWs);
 		}
 		if($this->ExtraWorkspaces){
 			$ws = makeArrayFromCSV($this->ExtraWorkspaces);
@@ -2114,7 +2114,7 @@ class we_objectFile extends we_document{
 					$newWs[] = $wsID;
 				}
 			}
-			$this->ExtraWorkspaces = makeCSVFromArray($newWs, true);
+			$this->ExtraWorkspaces = implode(',', $newWs, true);
 		}
 		if($this->ExtraWorkspacesSelected){
 			$ws = makeArrayFromCSV($this->ExtraWorkspacesSelected);
@@ -2124,7 +2124,7 @@ class we_objectFile extends we_document{
 					$newWs[] = $wsID;
 				}
 			}
-			$this->ExtraWorkspacesSelected = makeCSVFromArray($newWs, true);
+			$this->ExtraWorkspacesSelected = implode(',', $newWs);
 		}
 	}
 
@@ -2713,7 +2713,7 @@ class we_objectFile extends we_document{
 					$newews[] = $ws;
 				}
 			}
-			$this->ExtraWorkspacesSelected = makeCSVFromArray($newews, true);
+			$this->ExtraWorkspacesSelected = implode(',', $newews);
 		}
 		if(!$this->wasUpdate){
 			$this->CreatorID = $this->CreatorID ? : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0);

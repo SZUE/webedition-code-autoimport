@@ -341,7 +341,7 @@ function getStatusContol() {
 							}
 						}
 
-						$this->newsletter->groups[$ngroup]->Customers = makeCSVFromArray($arr, true);
+						$this->newsletter->groups[$ngroup]->Customers = implode(',', $arr);
 					}
 				}
 				break;
@@ -358,7 +358,7 @@ function getStatusContol() {
 								array_splice($arr, $k, 1);
 							}
 						}
-						$this->newsletter->groups[$ngroup]->Customers = makeCSVFromArray($arr, true);
+						$this->newsletter->groups[$ngroup]->Customers = implode(',', $arr);
 					}
 				}
 				break;
@@ -380,8 +380,7 @@ function getStatusContol() {
 				if(($ngroup = we_base_request::_(we_base_request::STRING, 'ngroup')) !== false){
 					$arr = explode(',', $this->newsletter->groups[$ngroup]->Extern);
 					if(($nfile = we_base_request::_(we_base_request::FILE, "nfile")) !== false){
-						$pos = array_search($nfile, $arr);
-						if($pos !== false){
+						if(($pos = array_search($nfile, $arr)) !== false){
 							unset($arr[$pos]);
 						}
 						$this->newsletter->groups[$ngroup]->Extern = implode(',', $arr);

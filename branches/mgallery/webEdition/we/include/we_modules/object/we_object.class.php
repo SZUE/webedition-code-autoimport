@@ -1456,7 +1456,7 @@ class we_object extends we_document{
 				$users[] = $id;
 			}
 		}
-		$this->setElement($name . "users", makeCSVFromArray($users, true));
+		$this->setElement($name . "users", implode(',', $users));
 	}
 
 	function del_user_from_field($id, $name){
@@ -1546,25 +1546,17 @@ class we_object extends we_document{
 	}
 
 	function add_user($id){
-		$users = makeArrayFromCSV($this->Users);
 		$ids = is_array($id) ? $id : explode(',', $id);
-		foreach($ids as $id){
-			if($id && (!in_array($id, $users))){
-				$users[] = $id;
-			}
-		}
-		$this->Users = makeCSVFromArray($users, true);
+		$this->Users = implode(',', array_unique(array_filter(explode(',', $this->Users)) + $ids, SORT_NUMERIC));
 	}
 
 	function del_user($id){
-		$users = makeArrayFromCSV($this->Users);
-		if(in_array($id, $users)){
-			$pos = array_search($id, $users);
-			if($pos !== false || $pos == '0'){
-				array_splice($users, $pos, 1);
-			}
+		$users = array_filter(explode(',', $this->Users));
+		if(($pos = array_search($id, $users)) == false){
+			return;
 		}
-		$this->Users = makeCSVFromArray($users, true);
+		unset($users[$pos]);
+		$this->Users = implode(',', $users);
 	}
 
 	function add_css(array $id){
@@ -1576,11 +1568,12 @@ class we_object extends we_document{
 	}
 
 	function del_css($id){
-		$css = makeArrayFromCSV($this->CSS);
-		if(($pos = array_search($id, $css)) !== false){
-			unset($css[$pos]);
+		$css = explode(',', $this->CSS);
+		if(($pos = array_search($id, $css)) === false){
+			return;
 		}
-		$this->CSS = makeCSVFromArray($css, true);
+		unset($css[$pos]);
+		$this->CSS = implode(',', $css);
 	}
 
 	private function getImageHTML($name, $defaultname, $i = 0){
@@ -1843,9 +1836,9 @@ class we_object extends we_document{
 			}
 		}
 
-		$this->Workspaces = makeCSVFromArray($newArr, true);
-		$this->Templates = makeCSVFromArray($_newTmplArr, true);
-		$this->DefaultWorkspaces = makeCSVFromArray($_newDefaultArr, true);
+		$this->Workspaces = implode(',', $newArr);
+		$this->Templates = implode(',', $_newTmplArr);
+		$this->DefaultWorkspaces = implode(',', $_newDefaultArr);
 
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('object_add_workspace',top.allIDs);");
 		$button = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
@@ -1915,20 +1908,14 @@ class we_object extends we_document{
 	}
 
 	function changeTempl_ob($nr, $id){
-		$arr = makeArrayFromCSV($this->Templates);
+		$arr = explode(',', $this->Templates);
 		$arr[$nr] = $id;
 
-		$this->Templates = makeCSVFromArray($arr, true);
+		$this->Templates = implode(',', $arr);
 	}
 
 	function add_workspace(array $ids){
-		$workspaces = makeArrayFromCSV($this->Workspaces);
-		foreach($ids as $id){
-			if(strlen($id) && (!in_array($id, $workspaces))){
-				$workspaces[] = $id;
-			}
-		}
-		$this->Workspaces = makeCSVFromArray($workspaces, true);
+		$this->Workspaces = implode(',', array_unique(array_filter(explode(',', $this->Workspaces)) + $ids, SORT_NUMERIC));
 	}
 
 	function del_workspace($id){
@@ -1951,9 +1938,9 @@ class we_object extends we_document{
 			}
 		}
 
-		$this->Workspaces = makeCSVFromArray($workspaces, true);
-		$this->DefaultWorkspaces = makeCSVFromArray($defaultWorkspaces, true);
-		$this->Templates = makeCSVFromArray($Templates, true);
+		$this->Workspaces = implode(',', $workspaces);
+		$this->DefaultWorkspaces = implode(',', $defaultWorkspaces);
+		$this->Templates = implode(',', $Templates);
 	}
 
 	public function we_initSessDat($sessDat){

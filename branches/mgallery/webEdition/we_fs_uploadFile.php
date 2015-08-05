@@ -48,7 +48,7 @@ if($weFileupload->processFileRequest()){
 
 	$pid = we_base_request::_(we_base_request::INT, 'pid', 0);
 	$parts = array();
-	$we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE, false, true), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
+	$we_alerttext = (!in_workspace($pid, get_ws(FILE_TABLE, true), FILE_TABLE, $GLOBALS['DB_WE']) || isset($_FILES['we_uploadedFile']) && !permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission(getContentTypeFromFile($_FILES['we_uploadedFile']['name']))) ?
 			g_l('alert', '[upload_targetDir_notallowed]') :
 			'');
 	if((!$we_alerttext) && isset($_FILES['we_uploadedFile']) && $_FILES['we_uploadedFile']['type'] && (($allowedContentTypes === '') || (!(strpos($allowedContentTypes, $_FILES['we_uploadedFile']['type']) === false)))){
@@ -128,7 +128,7 @@ if($weFileupload->processFileRequest()){
 				}
 				if(($thumbs = we_base_request::_(we_base_request::INT, 'Thumbnails'))){
 					$we_doc->Thumbs = (is_array($thumbs) ?
-							makeCSVFromArray($thumbs, true) :
+							implode(',', $thumbs) :
 							$thumbs);
 				}
 				$we_doc->Table = we_base_request::_(we_base_request::TABLE, 'tab');
@@ -222,7 +222,7 @@ if($weFileupload->processFileRequest()){
 				<input type="hidden" name="table" value="<?php echo we_base_request::_(we_base_request::TABLE, 'tab'); ?>" />
 				<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
 				<input type="hidden" name="ct" value="<?php echo $we_ContentType; ?>" />
-	<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', '[import_File_from_hd_title]'), "", 620); ?>
+				<?php echo we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('newFile', '[import_File_from_hd_title]'), "", 620); ?>
 			</form></div>
 	</body>
 	</html>

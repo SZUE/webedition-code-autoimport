@@ -218,7 +218,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 					'remTable' => stripTblPrefix(FILE_TABLE),
 					'position' => 0,
 					'isTemp' => 0
-				)));
+			)));
 		}
 	}
 
@@ -348,7 +348,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 					array_splice($arr, $k, 1);
 				}
 			}
-			$this->blocks[$bk]->Groups = makeCSVFromArray($arr, true);
+			$this->blocks[$bk]->Groups = implode(',', $arr);
 		}
 		array_splice($this->groups, $group, 1);
 	}

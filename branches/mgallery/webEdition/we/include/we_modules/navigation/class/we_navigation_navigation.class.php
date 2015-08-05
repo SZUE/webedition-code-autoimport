@@ -276,9 +276,9 @@ class we_navigation_navigation extends weModelBase{
 			$_cus_paths = $this->Customers;
 			$_bl_paths = $this->BlackList;
 			$_wl_paths = $this->WhiteList;
-			$this->WhiteList = makeCSVFromArray($this->WhiteList, true);
-			$this->BlackList = makeCSVFromArray($this->BlackList, true);
-			$this->Customers = makeCSVFromArray($this->Customers, true);
+			$this->WhiteList = implode(',', $this->WhiteList);
+			$this->BlackList = implode(',', $this->BlackList);
+			$this->Customers = implode(',', $this->Customers);
 			$this->CustomerFilter = we_serialize($this->CustomerFilter);
 		} else {
 			$_cus_paths = array();
@@ -680,7 +680,7 @@ class we_navigation_navigation extends weModelBase{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -692,7 +692,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;

@@ -355,7 +355,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 			}
 		}
 	}
-	return $asArray ? $foo : makeCSVFromArray($foo, $prePostKomma);
+	return $asArray ? $foo : implode(',', $foo);
 }
 
 function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
@@ -432,13 +432,13 @@ function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database
 	}
 }
 
-function get_ws($table = FILE_TABLE, $prePostKomma = false, $asArray = false){
+function get_ws($table = FILE_TABLE, $asArray = false){
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return $asArray ? array() : '';
 		}
 		if($_SESSION['user']['workSpace'] && !empty($_SESSION['user']['workSpace'][$table])){
-			return $asArray ? $_SESSION['user']['workSpace'][$table] : makeCSVFromArray($_SESSION['user']['workSpace'][$table], $prePostKomma);
+			return $asArray ? $_SESSION['user']['workSpace'][$table] : implode(',', $_SESSION['user']['workSpace'][$table]);
 		}
 	}
 	return $asArray ? array() : '';
@@ -512,8 +512,8 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 	return ' AND (' . implode(' OR ', $wsQuery) . ')';
 }
 
-function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
-	if(!get_ws($table, $prePostKomma)){ // WORKARROUND
+function get_def_ws($table = FILE_TABLE){
+	if(!get_ws($table)){ // WORKARROUND
 		return '';
 	}
 	if(permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -521,10 +521,10 @@ function get_def_ws($table = FILE_TABLE, $prePostKomma = false){
 	}
 
 	$foo = f('SELECT workSpaceDef FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', new DB_WE());
-	$ws = makeCSVFromArray(implode(',', $foo), $prePostKomma);
+	$ws = implode(',', explode(',', $foo));
 
 	if(!$ws){
-		$wsA = makeArrayFromCSV(get_ws($table, $prePostKomma));
+		$wsA = explode(',', get_ws($table));
 		return ($wsA ? $wsA[0] : '');
 	}
 	return $ws;

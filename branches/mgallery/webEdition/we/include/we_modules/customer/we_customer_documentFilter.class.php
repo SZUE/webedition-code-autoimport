@@ -110,9 +110,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 */
 	private static function getFilterByDbHash($hash){
 		$f = we_unserialize($hash['filter']);
-		return new self(
-			intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f) ? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList'])
-		);
+		return new self(intval($hash['modelId']), $hash['modelType'], $hash['modelTable'], intval($hash['accessControlOnTemplate']), intval($hash['errorDocNoLogin']), intval($hash['errorDocNoAccess']), intval($hash['mode']), makeArrayFromCSV($hash['specificCustomers']), is_array($f) ? $f : array(), makeArrayFromCSV($hash['whiteList']), makeArrayFromCSV($hash['blackList']));
 	}
 
 	/**
@@ -301,10 +299,10 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 						'errorDocNoLogin' => $_docCustomerFilter->getErrorDocNoLogin(),
 						'errorDocNoAccess' => $_docCustomerFilter->getErrorDocNoAccess(),
 						'mode' => $_docCustomerFilter->getMode(),
-						'specificCustomers' => ($_specificCustomers ? makeCSVFromArray($_specificCustomers, true) : ''),
+						'specificCustomers' => ($_specificCustomers ? implode(',', $_specificCustomers) : ''),
 						'filter' => ($_filter ? we_serialize($_filter) : ''),
-						'whiteList' => ($_whiteList ? makeCSVFromArray($_whiteList, true) : ''),
-						'blackList' => ($_blackList ? makeCSVFromArray($_blackList, true) : ''),
+						'whiteList' => ($_whiteList ? implode(',', $_whiteList) : ''),
+						'blackList' => ($_blackList ? implode(',', $_blackList) : ''),
 					))
 				);
 			}

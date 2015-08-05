@@ -944,7 +944,7 @@ function selectCategories() {
 	for(var i=0;i<categories_edit.itemCount;i++){
 		cats.push(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+i].value);
 	}
-	categories_edit.form.categories.value=makeCSVFromArray(cats);
+	categories_edit.form.categories.value=cats.join(",");
 }');
 	}
 

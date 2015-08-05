@@ -198,7 +198,7 @@ function exit_open() {
 			case we_base_ContentTypes::WEDOCUMENT:
 				break;
 			default:
-				$tmp = ((in_workspace($this->dir, get_ws($this->table, false, true))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
+				$tmp = ((in_workspace($this->dir, get_ws($this->table, true))) && $this->userCanMakeNewFile) ? 'enable' : 'disable';
 				$ret.= 'if(top.' . $tmp . 'NewFileBut){top.' . $tmp . 'NewFileBut();}';
 		}
 

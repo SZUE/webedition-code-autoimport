@@ -144,8 +144,7 @@ abstract class we_object_listviewBase extends we_listview_base{
 			if($useTable2){
 				$from[] = $p['table2'];
 			}
-			if(in_array($n, $orderArr)){
-				$pos = array_search($n, $orderArr);
+			if(($pos = array_search($n, $orderArr)) !== false){
 				$ordertmp[$pos] = '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
 			$cond = preg_replace("/([\!\=%&\(\*\+\.\/<>|~ ])$n([\!\=%&\)\*\+\.\/<>|~ ])/", '$1' . $p['table'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);

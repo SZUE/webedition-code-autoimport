@@ -314,7 +314,7 @@ new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);');
 								$sortarray = range(0, count($orderedarray) - 1);
 							}
 						}
-						$this->settings->setEditSort(makeCSVFromArray($sortarray, true));
+						$this->settings->setEditSort(implode(',', $sortarray));
 						$this->settings->save();
 
 						$js = '
@@ -347,7 +347,7 @@ close();';
 				if($sortarray[count($sortarray) - 1] == ''){
 					array_pop($sortarray);
 				}
-				$this->settings->setEditSort(makeCSVFromArray($sortarray, true));
+				$this->settings->setEditSort(implode(',', $sortarray));
 				$this->settings->save();
 
 				$ber = '';
@@ -364,7 +364,7 @@ close();';
 			case 'reset_edit_order':
 				$orderedarray = $this->customer->persistent_slots;
 				$sortarray = range(0, count($orderedarray) - 1);
-				$this->settings->setEditSort(makeCSVFromArray($sortarray, true));
+				$this->settings->setEditSort(implode(',', $sortarray));
 				$this->settings->save();
 				break;
 			case 'move_field_up':

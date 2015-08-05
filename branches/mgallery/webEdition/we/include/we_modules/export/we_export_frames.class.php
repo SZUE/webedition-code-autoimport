@@ -745,7 +745,7 @@ function closeAllType(){
 							$arr[] = $id;
 						}
 					}
-					$this->View->export->Categorys = makeCSVFromArray($arr, true);
+					$this->View->export->Categorys = implode(',', $arr);
 				}
 				break;
 			case 'del_cat':
@@ -756,7 +756,7 @@ function closeAllType(){
 							array_splice($arr, $k, 1);
 						}
 					}
-					$this->View->export->Categorys = makeCSVFromArray($arr, true);
+					$this->View->export->Categorys = implode(',', $arr);
 				}
 				break;
 			case 'del_all_cats':

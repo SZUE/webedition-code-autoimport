@@ -142,9 +142,9 @@ class we_imageDocument extends we_binaryDocument{
 				}
 			}
 
-			$this->Thumbs = makeCSVFromArray($thumbs, true);
+			$this->Thumbs = implode(',', $thumbs);
 		} else {
-			$thumbs = makeArrayFromCSV($this->Thumbs);
+			$thumbs = implode(',', $this->Thumbs);
 		}
 		return $thumbs;
 	}
@@ -179,7 +179,7 @@ class we_imageDocument extends we_binaryDocument{
 			}
 		}
 
-		$this->Thumbs = makeCSVFromArray($thumbsArray, true);
+		$this->Thumbs = implode(',', $thumbsArray);
 		$this->DocChanged = true;
 	}
 
@@ -199,7 +199,7 @@ class we_imageDocument extends we_binaryDocument{
 			}
 		}
 
-		$this->Thumbs = makeCSVFromArray($newArray, true);
+		$this->Thumbs = implode(',', $newArray);
 		$this->DocChanged = true;
 	}
 
@@ -236,12 +236,10 @@ class we_imageDocument extends we_binaryDocument{
 
 	private function checkDisableEditpages(){
 		if($this->isSvg()){
-			$pos = array_search(we_base_constants::WE_EDITPAGE_IMAGEEDIT, $this->EditPageNrs);
-			if($pos !== false){
+			if(($pos = array_search(we_base_constants::WE_EDITPAGE_IMAGEEDIT, $this->EditPageNrs)) !== false){
 				unset($this->EditPageNrs[$pos]);
 			}
-			$pos = array_search(we_base_constants::WE_EDITPAGE_THUMBNAILS, $this->EditPageNrs);
-			if($pos !== false){
+			if(($pos = array_search(we_base_constants::WE_EDITPAGE_THUMBNAILS, $this->EditPageNrs)) !== false){
 				unset($this->EditPageNrs[$pos]);
 			}
 		}

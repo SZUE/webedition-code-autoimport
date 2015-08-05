@@ -513,9 +513,10 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			case 'del_cat':
 				$arr = $this->workflowDef->Categories;
 				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
-					if(($pos = array_search($cat, $arr)) !== false){
-						unset($arr[$pos]);
+					if(($pos = array_search($cat, $arr)) === false){
+						break;
 					}
+					unset($arr[$pos]);
 					$this->workflowDef->Categories = $arr;
 				}
 				break;
@@ -536,10 +537,11 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			case 'del_objcat':
 				$arr = $this->workflowDef->ObjCategories;
 				if(($cat = we_base_request::_(we_base_request::INT, 'wcat'))){
-					if(($pos = array_search($cat, $arr)) !== false){
-						unset($arr[$pos]);
-						$this->workflowDef->ObjCategories = $arr;
+					if(($pos = array_search($cat, $arr)) === false){
+						break;
 					}
+					unset($arr[$pos]);
+					$this->workflowDef->ObjCategories = $arr;
 				}
 				break;
 			case 'del_all_objcats':
@@ -559,10 +561,11 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			case 'del_folder':
 				$arr = $this->workflowDef->Folders;
 				if(($id = we_base_request::_(we_base_request::INT, 'wfolder')) !== false){
-					if(($pos = array_search($id, $arr)) !== false){
-						unset($arr[$pos]);
-						$this->workflowDef->Folders = $arr;
+					if(($pos = array_search($id, $arr)) === false){
+						break;
 					}
+					unset($arr[$pos]);
+					$this->workflowDef->Folders = $arr;
 				}
 				break;
 			case 'del_all_folders':
@@ -582,10 +585,11 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			case 'del_object_file_folder':
 				$arr = $this->workflowDef->ObjectFileFolders;
 				if(($id = we_base_request::_(we_base_request::INT, 'woffolder')) !== false){
-					if(($pos = array_search($id, $arr)) !== false){
-						unset($arr[$pos]);
-						$this->workflowDef->ObjectFileFolders = $arr;
+					if(($pos = array_search($id, $arr)) === false){
+						break;
 					}
+					unset($arr[$pos]);
+					$this->workflowDef->ObjectFileFolders = $arr;
 				}
 				break;
 			case 'del_all_object_file_folders':
@@ -601,10 +605,11 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			case 'del_object':
 				$arr = $this->workflowDef->Objects;
 				if(($id = we_base_request::_(we_base_request::INT, 'wobject'))){
-					if(($pos = array_search($id, $arr)) !== false){
-						unset($arr[$pos]);
-						$this->workflowDef->Objects = $arr;
+					if(($pos = array_search($id, $arr)) === false){
+						break;
 					}
+					unset($arr[$pos]);
+					$this->workflowDef->Objects = $arr;
 				}
 				break;
 			case 'del_all_objects':

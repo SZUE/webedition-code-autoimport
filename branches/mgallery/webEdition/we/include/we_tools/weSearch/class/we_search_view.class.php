@@ -1158,7 +1158,7 @@ weSearch.g_l = {
 				$this->searchclass->settable($_table);
 
 				if(!defined('OBJECT_TABLE') || (defined('OBJECT_TABLE') && $_table != OBJECT_TABLE)){
-					$workspaces = makeArrayFromCSV(get_ws($_table, true));
+					$workspaces = get_ws($_table, true);
 				}
 
 				for($i = 0; $i < count($searchFields); $i++){
@@ -1324,9 +1324,9 @@ weSearch.g_l = {
 					}
 
 					if($_table == VERSIONS_TABLE){
-						$workspacesTblFile = makeArrayFromCSV(get_ws(FILE_TABLE, true));
+						$workspacesTblFile = get_ws(FILE_TABLE, true);
 						if(defined('OBJECT_FILES_TABLE')){
-							$workspacesObjFile = makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE, true));
+							$workspacesObjFile = get_ws(OBJECT_FILES_TABLE, true);
 						}
 					}
 

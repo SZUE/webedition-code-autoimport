@@ -379,25 +379,18 @@ abstract class we_root extends we_class{
 	}
 
 	function add_owner($id){
-		$owners = makeArrayFromCSV($this->Owners);
 		$ids = is_array($id) ? $id : explode(',', $id);
-		foreach($ids as $id){
-			if($id && (!in_array($id, $owners))){
-				$owners[] = $id;
-			}
-		}
-		$this->Owners = makeCSVFromArray($owners, true);
+		$this->Owners = implode(',', array_unique(array_filter(explode(',', $this->Owners)) + $ids, SORT_NUMERIC));
 	}
 
 	function del_owner($id){
-		$owners = makeArrayFromCSV($this->Owners);
-		if(in_array($id, $owners)){
-			$pos = array_search($id, $owners);
-			if($pos !== false || $pos == '0'){
-				array_splice($owners, $pos, 1);
-			}
+		$owners = array_filter(explode(',', $this->Owners));
+		if(($pos = array_search($id, $owners)) === false){
+			return;
 		}
-		$this->Owners = makeCSVFromArray($owners, true);
+
+		unset($owners[$pos]);
+		$this->Owners = implode(',', $owners);
 	}
 
 	/**
@@ -1405,7 +1398,7 @@ abstract class we_root extends we_class{
 
 		if($this->userHasPerms()){ //	access to doc is not restricted, check workspaces of user
 			if($GLOBALS['we_doc']->ID){ //	userModule installed
-				if(($ws = get_ws($GLOBALS['we_doc']->Table, false, true))){ //	doc has workspaces
+				if(($ws = get_ws($GLOBALS['we_doc']->Table, true))){ //	doc has workspaces
 					if(!(in_workspace($GLOBALS['we_doc']->ID, $ws, $GLOBALS['we_doc']->Table, $GLOBALS['DB_WE']))){
 						return self::FILE_NOT_IN_USER_WORKSPACE;
 					}

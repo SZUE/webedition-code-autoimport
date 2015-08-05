@@ -149,8 +149,8 @@ function we_tag_write($attribs){
 				foreach($workspaces as $wsId){
 					$tmplArray[] = $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId);
 				}
-				$GLOBALS['we_' . $type][$name]->Workspaces = makeCSVFromArray($workspaces, true);
-				$GLOBALS['we_' . $type][$name]->Templates = makeCSVFromArray($tmplArray, true);
+				$GLOBALS['we_' . $type][$name]->Workspaces = implode(',', $workspaces);
+				$GLOBALS['we_' . $type][$name]->Templates = implode(',', $tmplArray);
 			}
 
 			$GLOBALS['we_' . $type][$name]->Path = $GLOBALS['we_' . $type][$name]->getPath();

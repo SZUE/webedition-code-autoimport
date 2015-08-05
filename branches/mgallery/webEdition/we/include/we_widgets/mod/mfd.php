@@ -107,7 +107,7 @@ if($aUsers){
 if(defined('FILE_TABLE') && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$paths = array();
-	foreach(makeArrayFromCSV(get_ws(FILE_TABLE)) as $id){
+	foreach(get_ws(FILE_TABLE, true) as $id){
 		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, FILE_TABLE)) . '%")';
 	}
 	$workspace[FILE_TABLE] = implode(' OR ', $paths);
@@ -115,7 +115,7 @@ if(defined('FILE_TABLE') && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOC
 if(defined('OBJECT_FILES_TABLE') && $bTypeObj && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$paths = array();
-	foreach(makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE)) as $id){
+	foreach(get_ws(OBJECT_FILES_TABLE, true) as $id){
 		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, OBJECT_FILES_TABLE)) . '%")';
 	}
 	$workspace[OBJECT_FILES_TABLE] = implode(' OR ', $paths);
@@ -138,7 +138,7 @@ $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
 $tables = $data = array();
 
-$db->query('SELECT h.DID,(SELECT UserName FROM '.HISTORY_TABLE.' WHERE MAX(h.ModDate)=ModDate AND DID=h.DID AND h.DocumentTable=DocumentTable) AS UserName,h.DocumentTable,DATE_FORMAT(h.ModDate,"' . g_l('date', '[format][mysql]') . '") AS MDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' h LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $uid . ' ' . $where . '  GROUP BY DID,DocumentTable ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
+$db->query('SELECT h.DID,(SELECT UserName FROM ' . HISTORY_TABLE . ' WHERE MAX(h.ModDate)=ModDate AND DID=h.DID AND h.DocumentTable=DocumentTable) AS UserName,h.DocumentTable,DATE_FORMAT(h.ModDate,"' . g_l('date', '[format][mysql]') . '") AS MDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' h LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $uid . ' ' . $where . '  GROUP BY DID,DocumentTable ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
 
 while($db->next_record(MYSQL_ASSOC)){
 	$tables[$db->f('DocumentTable')][] = $db->f('DID');

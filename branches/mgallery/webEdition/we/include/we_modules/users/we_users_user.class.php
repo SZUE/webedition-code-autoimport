@@ -587,37 +587,37 @@ class we_users_user{
 		if(empty($this->workSpace)){
 			$_uws = get_ws(FILE_TABLE, true);
 			if(!empty($_uws)){
-				$this->workSpace = $_uws;
-				$this->workspaces[FILE_TABLE] = makeArrayFromCSV($_uws);
+				$this->workSpace = implode(',', $_uws);
+				$this->workspaces[FILE_TABLE] = $_uws;
 			}
 		}
 		if(empty($this->workSpaceTmp)){
 			$_uws = get_ws(TEMPLATES_TABLE, true);
 			if(!empty($_uws)){
-				$this->workSpaceTmp = $_uws;
-				$this->workspaces[TEMPLATES_TABLE] = makeArrayFromCSV($_uws);
+				$this->workSpaceTmp = implode(',', $_uws);
+				$this->workspaces[TEMPLATES_TABLE] = $_uws;
 			}
 		}
 		if(empty($this->workSpaceNav)){
 			$_uws = get_ws(NAVIGATION_TABLE, true);
 			if(!empty($_uws)){
-				$this->workSpaceNav = makeArrayFromCSV($_uws);
-				$this->workspaces[NAVIGATION_TABLE] = makeArrayFromCSV($_uws);
+				$this->workSpaceNav = implode(',', $_uws);
+				$this->workspaces[NAVIGATION_TABLE] = $_uws;
 			}
 		}
 
 		if(defined('OBJECT_FILES_TABLE') && empty($this->workSpaceObj)){
 			$_uws = get_ws(OBJECT_FILES_TABLE, true);
 			if(!empty($_uws)){
-				$this->workSpaceObj = makeArrayFromCSV($_uws);
-				$this->workspaces[OBJECT_FILES_TABLE] = makeArrayFromCSV($_uws);
+				$this->workSpaceObj = implode(',', $_uws);
+				$this->workspaces[OBJECT_FILES_TABLE] = $_uws;
 			}
 		}
 		if(defined('NEWSLETTER_TABLE') && empty($this->workSpaceNwl)){
 			$_uws = get_ws(NEWSLETTER_TABLE, true);
 			if(!empty($_uws)){
-				$this->workSpaceNwl = makeArrayFromCSV($_uws);
-				$this->workspaces[NEWSLETTER_TABLE] = makeArrayFromCSV($_uws);
+				$this->workSpaceNwl = implode(',', $_uws);
+				$this->workspaces[NEWSLETTER_TABLE] = $_uws;
 			}
 		}
 	}

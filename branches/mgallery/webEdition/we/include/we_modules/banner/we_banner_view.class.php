@@ -324,7 +324,7 @@ var perms={
 							$arr[] = $id;
 						}
 					}
-					$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
+					$this->banner->CategoryIDs = implode(',', $arr);
 				}
 				break;
 			case "del_cat":
@@ -335,7 +335,7 @@ var perms={
 							array_splice($arr, $k, 1);
 						}
 					}
-					$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
+					$this->banner->CategoryIDs = implode(',', $arr);
 				}
 				break;
 			case "del_all_cats":
@@ -349,7 +349,7 @@ var perms={
 							$arr[] = $id;
 						}
 					}
-					$this->banner->FileIDs = makeCSVFromArray($arr, true);
+					$this->banner->FileIDs = implode(',', $arr);
 				}
 				break;
 			case "del_file":
@@ -359,7 +359,7 @@ var perms={
 					if($k !== false){
 						unset($arr[$k]);
 					}
-					$this->banner->FileIDs = makeCSVFromArray($arr, true);
+					$this->banner->FileIDs = implode(',', $arr);
 				}
 				break;
 			case "del_all_files":
@@ -373,7 +373,7 @@ var perms={
 							$arr[] = $id;
 						}
 					}
-					$this->banner->FolderIDs = makeCSVFromArray($arr, true);
+					$this->banner->FolderIDs = implode(',', $arr);
 				}
 				break;
 			case "add_customer":
@@ -384,7 +384,7 @@ var perms={
 							$arr[] = $id;
 						}
 					}
-					$this->banner->Customers = makeCSVFromArray($arr, true);
+					$this->banner->Customers = implode(',', $arr);
 				}
 				break;
 			case "del_customer":
@@ -395,7 +395,7 @@ var perms={
 							array_splice($arr, $k, 1);
 						}
 					}
-					$this->banner->Customers = makeCSVFromArray($arr, true);
+					$this->banner->Customers = implode(',', $arr);
 				}
 				break;
 			case "del_all_customers":
@@ -409,7 +409,7 @@ var perms={
 							array_splice($arr, $k, 1);
 						}
 					}
-					$this->banner->FolderIDs = makeCSVFromArray($arr, true);
+					$this->banner->FolderIDs = implode(',', $arr);
 				}
 				break;
 			case "del_all_folders":
@@ -520,7 +520,7 @@ var perms={
 		$this->banner->Customers = we_base_request::_(we_base_request::RAW, "Customers", $this->banner->Customers);
 
 		if(($ids = we_base_request::_(we_base_request::INT, "DoctypeIDs")) !== false){
-			$this->banner->DoctypeIDs = makeCSVFromArray($ids, true);
+			$this->banner->DoctypeIDs = implode(',', $ids);
 		}
 
 		foreach($this->banner->persistents as $val => $type){

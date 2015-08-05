@@ -198,11 +198,10 @@ class we_document extends we_root{
 			$_id = path_to_id($_path, NAVIGATION_TABLE);
 			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
-
-				if(in_array($_path, $NoDelNavis)){
-					$pos = array_search($_path, $NoDelNavis);
-					array_splice($NoDelNavis, $pos, 1);
+				if(($pos = array_search($_path, $NoDelNavis)) === false){
+					continue;
 				}
+				unset($NoDelNavis[$pos]);
 			}
 		}
 		$navis->setDisabledDelItems($NoDelNavis, g_l('navigation', '[NoDeleteFromDocument]'));
@@ -216,24 +215,17 @@ class we_document extends we_root{
 	}
 
 	function addCat(array $ids){
-		$cats = makeArrayFromCSV($this->Category);
-		foreach($ids as $id){
-			if($id && (!in_array($id, $cats))){
-				$cats[] = $id;
-			}
-		}
-		$this->Category = makeCSVFromArray($cats, true);
+		$this->Category = implode(',', array_unique(array_filter(explode(',', $this->Category)) + $ids, SORT_NUMERIC));
 	}
 
 	function delCat($id){
-		$cats = makeArrayFromCSV($this->Category);
-		if(in_array($id, $cats)){
-			$pos = array_search($id, $cats);
-			if($pos !== false || $pos == '0'){
-				array_splice($cats, $pos, 1);
-			}
+		$cats = array_filter(explode(',', $this->Category));
+		if(($pos = array_search($id, $cats) === false)){
+			return;
 		}
-		$this->Category = makeCSVFromArray($cats, true);
+
+		unset($cats[$pos]);
+		$this->Category = implode(',', $cats);
 	}
 
 	function addNavi($id, $text, $parentid, $ordn){
@@ -274,16 +266,14 @@ class we_document extends we_root{
 	function delNavi($path){
 		$path = urldecode($path); //Bug #3816
 		$navis = $this->getNavigationItems();
-		if(in_array($path, $navis)){
-			$pos = array_search($path, $navis);
-			if($pos !== false || $pos == 0){
-				$_id = path_to_id($path, NAVIGATION_TABLE);
-				$_naviItem = new we_navigation_navigation($_id);
-				if(!$_naviItem->hasAnyChilds()){
-					$_naviItem->delete();
-					array_splice($navis, $pos, 1);
-				}
-			}
+		if(($pos = array_search($path, $navis)) === false){
+			return;
+		}
+		$_id = path_to_id($path, NAVIGATION_TABLE);
+		$_naviItem = new we_navigation_navigation($_id);
+		if(!$_naviItem->hasAnyChilds()){
+			$_naviItem->delete();
+			unset($navis[$pos]);
 		}
 	}
 
@@ -294,10 +284,10 @@ class we_document extends we_root{
 			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
 				$_naviItem->delete();
-				if(in_array($_path, $navis)){
-					$pos = array_search($_path, $navis);
-					array_splice($navis, $pos, 1);
+				if(($pos = array_search($_path, $navis)) === false){
+					continue;
 				}
+				unset($navis[$pos]);
 			}
 		}
 	}
@@ -493,7 +483,7 @@ class we_document extends we_root{
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
 				if(!isset($GLOBALS['WE_IS_DYN'])){
-					if(($ws = get_ws($this->Table, false, true))){
+					if(($ws = get_ws($this->Table, true))){
 						$this->setParentID(intval($ws[0]));
 					}
 				}
@@ -1376,22 +1366,21 @@ class we_document extends we_root{
 	}
 
 	function add_schedcat($id, $nr){
-		$cats = makeArrayFromCSV($this->schedArr[$nr]['CategoryIDs']);
-		if(!in_array($id, $cats)){
-			$cats[] = $id;
+		$cats = array_filter(explode(',', $this->schedArr[$nr]['CategoryIDs']));
+		if(in_array($id, $cats)){
+			return;
 		}
-		$this->schedArr[$nr]['CategoryIDs'] = makeCSVFromArray($cats, true);
+		$cats[] = $id;
+		$this->schedArr[$nr]['CategoryIDs'] = implode(',', $cats);
 	}
 
 	function delete_schedcat($id, $nr){
-		$cats = makeArrayFromCSV($this->schedArr[$nr]['CategoryIDs']);
-		if(in_array($id, $cats)){
-			$pos = array_search($id, $cats);
-			if($pos !== false || $pos == '0'){
-				array_splice($cats, $pos, 1);
-			}
+		$cats = array_filter(explode(',', $this->schedArr[$nr]['CategoryIDs']));
+		if(($pos = array_search($id, $cats)) === false){
+			return;
 		}
-		$this->schedArr[$nr]['CategoryIDs'] = makeCSVFromArray($cats, true);
+		unset($cats[$pos]);
+		$this->schedArr[$nr]['CategoryIDs'] = implode(',', $cats);
 	}
 
 // returns the next date when the document gets published

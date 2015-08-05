@@ -136,24 +136,17 @@ class we_docTypes extends we_class{
 	}
 
 	public function addCat(array $ids){
-		$cats = makeArrayFromCSV($this->Category);
-		foreach($ids as $id){
-			if($id && (!in_array($id, $cats))){
-				$cats[] = $id;
-			}
-		}
-		$this->Category = makeCSVFromArray($cats, true);
+		$this->Category = implode(',', array_unique(array_filter(explode(',', $this->Category)) + $ids, SORT_NUMERIC));
 	}
 
 	public function delCat($id){
-		$cats = makeArrayFromCSV($this->Category);
-		if(in_array($id, $cats)){
-			$pos = array_search($id, $cats);
-			if($pos !== false || $pos == '0'){
-				array_splice($cats, $pos, 1);
-			}
+		$cats = array_filter(explode(',', $this->Category));
+		if(($pos = array_search($id, $cats) === false)){
+			return;
 		}
-		$this->Category = makeCSVFromArray($cats, true);
+
+		unset($cats[$pos]);
+		$this->Category = implode(',', $cats);
 	}
 
 	/*
@@ -310,7 +303,7 @@ function switchExt(){
 		$db = $db ? : new DB_WE();
 
 		$paths = array();
-		$ws = get_ws(FILE_TABLE, false, true);
+		$ws = get_ws(FILE_TABLE, true);
 		if(!$ws){
 			return array(
 				'join' => '',

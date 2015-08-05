@@ -296,7 +296,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	private function xformTemplatePopup($width = 50){
-		$ws = get_ws(TEMPLATES_TABLE,false,true);
+		$ws = get_ws(TEMPLATES_TABLE, true);
 
 		$hash = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
 		$TID = $hash['TemplateID'];

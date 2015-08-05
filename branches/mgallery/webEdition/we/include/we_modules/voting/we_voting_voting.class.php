@@ -211,10 +211,10 @@ class we_voting_voting extends weModelBase{
 		$oldid = $this->ID;
 
 		$this->Owners = array_unique($this->Owners);
-		$this->Owners = makeCSVFromArray($this->Owners, true);
+		$this->Owners = implode(',', $this->Owners);
 
 		$this->BlackList = array_unique($this->BlackList);
-		$this->BlackList = makeCSVFromArray($this->BlackList, true);
+		$this->BlackList = implode(',', $this->BlackList);
 
 		parent::save(false, true);
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -30,7 +29,6 @@ define('DATE_FORMAT', 'Y-m-d H:i:s');
 define('DATE_ONLY_FORMAT', 'Y-m-d');
 
 class we_customer_settings{
-
 	private $db;
 	public $customer;
 	public $properties = array();
@@ -158,7 +156,7 @@ class we_customer_settings{
 		} else {
 			$orderedarray = $this->customer->persistent_slots;
 			$sortarray = range(0, count($orderedarray) - 1);
-			$this->EditSort = makeCSVFromArray($sortarray, true);
+			$this->EditSort = implode(',', $sortarray);
 		}
 
 
@@ -315,7 +313,7 @@ class we_customer_settings{
 		$this->FieldAdds[$fieldName][$addName] = $value;
 	}
 
-	function retriveFieldAdd($fieldName, $addName, $default=''){
+	function retriveFieldAdd($fieldName, $addName, $default = ''){
 		return isset($this->FieldAdds[$fieldName][$addName]) ? $this->FieldAdds[$fieldName][$addName] : $default;
 	}
 
