@@ -644,7 +644,6 @@ class we_objectFile extends we_document{
 					if($checkVariants){
 						$variantdata = $arr;
 					}
-					break;
 				default:
 					$tableInfo2[] = $arr;
 			}

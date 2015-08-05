@@ -1226,7 +1226,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		$json = $json ? : new Services_JSON();
 		return (array) $json->decode($string);
 	}
-	if(preg_match('|^\d(,\d)*$|', $string)){
+	if(preg_match('|^\d+(,\d+)*$|', $string)){
 		return explode(',', $string);
 	}
 	if(!$quiet){
