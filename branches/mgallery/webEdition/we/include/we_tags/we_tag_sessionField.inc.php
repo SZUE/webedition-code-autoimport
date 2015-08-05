@@ -153,7 +153,7 @@ function we_tag_sessionField($attribs, $content){
 				$newAtts['name'] = 's[' . $name . ']';
 
 				$optionsAr = explode(',', weTag_getAttribute('options', $attribs, '', we_base_request::RAW));
-				$isin = false;
+				$isin = 0;
 				$options = '';
 				foreach($optionsAr as $cur){
 					if($cur == $orgVal){

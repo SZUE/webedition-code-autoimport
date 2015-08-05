@@ -1226,6 +1226,10 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		$json = $json ? : new Services_JSON();
 		return (array) $json->decode($string);
 	}
+		static $json = null;
+		$json = $json ? : new Services_JSON();
+		return (array)$json->decode($string);
+	}
 	if(!$quiet){
 		t_e('unable to decode', $string);
 	}
@@ -1258,7 +1262,7 @@ function we_serialize($array, $target = 'serialize', $numeric = false){
 			}
 		default:
 		case 'serialize':
-			return we_serialize($numeric ? array_values($array) : $array);
+			return serialize($numeric ? array_values($array) : $array);
 	}
 }
 

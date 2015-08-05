@@ -312,8 +312,8 @@ function switchExt(){
 		}
 		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR){
 			return array(
-				'join' => 'LEFT JOIN ' . FILE_TABLE . ' f ON CONCAT(f.Path,"/") LIKE CONCAT(dtf.Path,"/%")',
-				'where' => 'ISNULL(dtf.ID) OR (f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1) ORDER BY dt.DocType'
+				'join' => 'LEFT JOIN ' . FILE_TABLE . ' f ON (CONCAT(f.Path,"/") LIKE CONCAT(dtf.Path,"/%") AND f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1 )',
+				'where' => 'ISNULL(dtf.ID) OR !ISNULL(f.ID) ORDER BY dt.DocType'
 			);
 		}
 

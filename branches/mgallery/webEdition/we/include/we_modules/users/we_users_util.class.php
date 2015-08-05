@@ -218,27 +218,27 @@ abstract class we_users_util{
 		$db = ($db ? : new DB_WE());
 		$out = array();
 		//FIXME: why do we need the Workspaces of documents do determine allowed classes??
-		$ws = get_ws(FILE_TABLE, true);
+//		$ws = get_ws(FILE_TABLE, true);
 		$ofWs = get_ws(OBJECT_FILES_TABLE, true);
 		$ofWsArray = id_to_path($ofWs, OBJECT_FILES_TABLE, $db, false, true);
 		$db->query('SELECT ID,Workspaces,Path FROM ' . OBJECT_TABLE);
 
 		foreach($db->getAll() as $result){
-			if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$result['Workspaces']) || (in_workspace($result['Workspaces'], $ws, FILE_TABLE, $GLOBALS['DB_WE'], true))){
-				if(!$ofWs || permissionhandler::hasPerm('ADMINISTRATOR')){
-					$out[] = $result['ID'];
-				} else {
-					$path = $result['Path'] . '/';
+			//if(!$ws || permissionhandler::hasPerm('ADMINISTRATOR') || (!$result['Workspaces']) || (in_workspace($result['Workspaces'], $ws, FILE_TABLE, $GLOBALS['DB_WE'], true))){
+			if(!$ofWs || permissionhandler::hasPerm('ADMINISTRATOR')){
+				$out[] = $result['ID'];
+			} else {
+				$path = $result['Path'] . '/';
 
 // object Workspace check
-					foreach($ofWsArray as $w){
-						if($w == $result['Path'] || (strlen($w) >= strlen($path) && substr($w, 0, strlen($path)) == ($path))){
-							$out[] = $result['ID'];
-							break;
-						}
+				foreach($ofWsArray as $w){
+					if($w == $result['Path'] || (strlen($w) >= strlen($path) && substr($w, 0, strlen($path)) == ($path))){
+						$out[] = $result['ID'];
+						break;
 					}
 				}
 			}
+			//}
 		}
 
 		return $out;
