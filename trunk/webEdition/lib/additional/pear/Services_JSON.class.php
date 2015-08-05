@@ -309,7 +309,7 @@ class Services_JSON{
 				$ascii = '';
 				$strlen_var = $this->strlen8($var);
 //WE-change!
-				if($this->use & SERVICES_JSON_USE_NO_CHARSET_CONVERSION){
+				if($this->use & self::SERVICES_JSON_USE_NO_CHARSET_CONVERSION){
 					return '"' . $var . '"';
 				}
 				/*
