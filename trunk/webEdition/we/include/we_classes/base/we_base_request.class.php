@@ -89,10 +89,10 @@ class we_base_request{
 				$var = $var || $var === '0' ? implode(',', array_map('intval', explode(',', $var))) : $default;
 				return;
 			case self::SERIALIZED:
-				$var = unserialize($var);
+				$var = we_unserialize($var);
 				return;
 			case self::SERIALIZED_KEEP:
-				$var = serialize(unserialize($var));
+				$var = serialize(we_unserialize($var));
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
