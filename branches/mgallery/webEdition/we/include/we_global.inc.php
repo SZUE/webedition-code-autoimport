@@ -1226,10 +1226,6 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		$json = $json ? : new Services_JSON();
 		return (array) $json->decode($string);
 	}
-		static $json = null;
-		$json = $json ? : new Services_JSON();
-		return (array)$json->decode($string);
-	}
 	if(!$quiet){
 		t_e('unable to decode', $string);
 	}
