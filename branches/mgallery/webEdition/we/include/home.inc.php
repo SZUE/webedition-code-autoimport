@@ -47,8 +47,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 					$aDat[count($aDat) - 1][] = $aShiftWidget;
 				}
 			}
-			we_base_preferences::setUserPref('cockpit_dat', serialize($aDat));
-			we_base_preferences::setUserPref('cockpit_rss', serialize($aTrf));
+			we_base_preferences::setUserPref('cockpit_dat', we_serialize($aDat, 'json'));
+			we_base_preferences::setUserPref('cockpit_rss', we_serialize($aTrf, 'json'));
 		}
 		$iDatLen = count($aDat);
 	} else {
@@ -56,8 +56,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		$_SESSION['prefs']['cockpit_amount_columns'] = $iDefCols;
 
 		we_base_preferences::setUserPref('cockpit_amount_columns', $iDefCols);
-		we_base_preferences::setUserPref('cockpit_dat', serialize($aCfgProps));
-		we_base_preferences::setUserPref('cockpit_rss', serialize($aTopRssFeeds));
+		we_base_preferences::setUserPref('cockpit_dat', we_serialize($aCfgProps, 'json'));
+		we_base_preferences::setUserPref('cockpit_rss', we_serialize($aTopRssFeeds, 'json'));
 		$aDat = $aCfgProps;
 		$aTrf = $aTopRssFeeds;
 		$iDatLen = count($aDat);

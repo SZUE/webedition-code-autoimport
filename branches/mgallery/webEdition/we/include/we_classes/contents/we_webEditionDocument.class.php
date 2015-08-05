@@ -641,7 +641,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if(!$resave){
 			$hy = we_unserialize(we_base_preferences::getUserPref('History'));
 			$hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
-			we_base_preferences::setUserPref('History', serialize($hy));
+			we_base_preferences::setUserPref('History', we_serialize($hy));
 		}
 		return $out;
 	}
@@ -1023,7 +1023,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		}
 		$tmp = $this->getElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME);
 		if(is_array($tmp)){
-			$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, serialize($tmp), 'variant');
+			$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, we_serialize($tmp), 'variant');
 			return ($this->hasVariants = !empty($tmp));
 		}
 		$_vars = we_unserialize($tmp);

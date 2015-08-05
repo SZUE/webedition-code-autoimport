@@ -320,10 +320,10 @@ class we_import_updater extends we_exim_XMLExIm{
 					debug2($ev);
 				}
 				if(isset($ev["dat"])){
-					$dat = we_unserialize($ev["dat"], '');
+					$dat = we_unserialize($ev['dat'], '');
 					if(is_array($dat)){
 						$this->updateArray($dat);
-						$object->elements[$ek]["dat"] = serialize($dat);
+						$object->elements[$ek]['dat'] = we_serialize($dat);
 					} elseif(isset($object->ContentType)){
 						switch($object->ContentType){
 							case we_base_ContentTypes::WEDOCUMENT:
@@ -399,7 +399,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			unset($object->SerializedArray[$d]);
 		}
 		$object->SerializedArray = array_merge($object->SerializedArray, $new);
-		$object->DefaultValues = serialize($object->SerializedArray);
+		$object->DefaultValues = we_serialize($object->SerializedArray);
 	}
 
 	private function updateDocType(we_docTypes &$object){

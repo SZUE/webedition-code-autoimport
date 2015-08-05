@@ -1156,17 +1156,17 @@ class we_versions_version{
 				break;
 			case 'documentElements':
 				if(isset($document['elements']) && is_array($document['elements'])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["elements"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(gzcompress(we_serialize($document["elements"]), 9)) . '\'');
 				}
 				break;
 			case 'documentScheduler':
 				if(isset($document['schedArr']) && is_array($document['schedArr'])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["schedArr"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(gzcompress(we_serialize($document["schedArr"]), 9)) . '\'');
 				}
 				break;
 			case 'documentCustomFilter':
 				if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(serialize($document["documentCustomerFilter"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(gzcompress(we_serialize($document["documentCustomerFilter"]), 9)) . '\'');
 				}
 				break;
 			case 'timestamp':
@@ -1278,10 +1278,10 @@ class we_versions_version{
 											foreach($newData as $k => $vl){
 												if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
 													if(isset($vl['dat'])){
-														$vl['dat'] = is_array($vl['dat']) ? serialize($vl['dat']) : $vl['dat'];
+														$vl['dat'] = is_array($vl['dat']) ? we_serialize($vl['dat']) : $vl['dat'];
 													}
 													if(isset($lastEntryField[$k]['dat'])){
-														$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
+														$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? we_serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
 													}
 													$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
 													if(!empty($_diff) && isset($_diff['dat'])){
@@ -1302,10 +1302,10 @@ class we_versions_version{
 													$_tmpArr1 = array();
 													$_tmpArr2 = array();
 													foreach($vl as $_k => $_v){
-														$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+														$_tmpArr1[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 													}
 													foreach($lastEntryField[$k] as $_k => $_v){
-														$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+														$_tmpArr2[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 													}
 													$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 													if(!empty($_diff)){
@@ -1321,10 +1321,10 @@ class we_versions_version{
 											$_tmpArr1 = array();
 											$_tmpArr2 = array();
 											foreach($document["documentCustomerFilter"] as $_k => $_v){
-												$_tmpArr1[$_k] = is_array($_v) ? serialize($_v) : $_v;
+												$_tmpArr1[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 											}
 											foreach($lastEntryField as $_k => $_v){
-												$_tmpArr2[$_k] = is_array($_v) ? serialize($_v) : $_v;
+												$_tmpArr2[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
 											}
 											$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
 											if(!empty($_diff)){
@@ -2096,7 +2096,7 @@ class we_versions_version{
 
 		foreach($_arr as $key => $val){
 			//$val = (is_array($val) || is_object($val)) ? self::objectToArray($val) : $val;
-			$arr[$key] = (is_array($val) ? self::objectToArray($val) : (is_object($val) ? serialize($val) : $val));
+			$arr[$key] = (is_array($val) ? self::objectToArray($val) : (is_object($val) ? we_serialize($val) : $val));
 		}
 
 		return $arr;

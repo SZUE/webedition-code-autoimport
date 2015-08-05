@@ -472,7 +472,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					return $this->options['target_encoding'];
 				}
 				if(self::isSerialized($value)){
-					$usv = unserialize($value);
+					$usv = we_unserialize($value);
 					if(is_array($usv)){
 						foreach($usv as &$av){
 							if($this->options['xml_encoding'] === 'ISO-8859-1'){
@@ -481,7 +481,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$av = utf8_decode($av);
 							}
 						}
-						$sv = serialize($usv);
+						$sv = we_serialize($usv);
 						return $sv;
 					}
 					return $value;
@@ -560,7 +560,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 							$readonly_new[$newkey] = $value;
 						}
 					}
-					$object->OwnersReadOnly = serialize($readonly_new);
+					$object->OwnersReadOnly = we_serialize($readonly_new);
 				}
 			}
 		} else {

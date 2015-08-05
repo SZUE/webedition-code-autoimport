@@ -91,7 +91,7 @@ class we_folder extends we_root{
 			$this->searchclassFolder = $this->searchclassFolder_class;
 		} else {
 			$this->searchclassFolder = new we_search_search();
-			$this->searchclassFolder_class = serialize($this->searchclassFolder);
+			$this->searchclassFolder_class = we_serialize($this->searchclassFolder);
 		}
 		$this->searchclassFolder->initSearchData();
 	}
@@ -331,7 +331,7 @@ class we_folder extends we_root{
 
 			if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' .
 					we_database_base::arraySetter(array(
-						'DocumentObject' => ($DocumentObject ? serialize($DocumentObject) : ''),
+						'DocumentObject' => ($DocumentObject ? we_serialize($DocumentObject) : ''),
 					)) .
 					' WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1')){
 				return false;

@@ -74,7 +74,7 @@ class we_class_folder extends we_folder{
 			$this->searchclass = $this->searchclass_class;
 		} else {
 			$this->searchclass = new we_object_search();
-			$this->searchclass_class = serialize($this->searchclass);
+			$this->searchclass_class = we_serialize($this->searchclass);
 		}
 
 		if(empty($this->EditPageNr)){
@@ -851,7 +851,7 @@ EOF;
 			$_SESSION['weS']['we_objectSearch'][$this->ID] = array();
 		}
 		$_SESSION['weS']['we_objectSearch'][$this->ID] = serialize(array(
-			'Serialized' => serialize($this->searchclass),
+			'Serialized' => we_serialize($this->searchclass),
 			'SearchStart' => $this->SearchStart,
 			'GreenOnly' => $this->GreenOnly,
 			'Order' => $this->Order,

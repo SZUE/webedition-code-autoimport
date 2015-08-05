@@ -70,8 +70,8 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 
 	// check if field exists
 	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'strDateiname' => "edit_shop_properties",
-			'strFelder' => serialize($fields)
+			'strDateiname' => 'edit_shop_properties',
+			'strFelder' => we_serialize($fields)
 	)));
 
 	$CLFields['stateField'] = we_base_request::_(we_base_request::RAW, 'stateField', '-');
@@ -80,7 +80,7 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 	$CLFields['languageFieldIsISO'] = we_base_request::_(we_base_request::RAW, 'languageFieldIsISO', 0);
 
 	// check if field exists
-	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(serialize($CLFields)) . '"');
+	$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strDateiname="shop_CountryLanguage", strFelder = "' . $DB_WE->escape(we_serialize($CLFields)) . '"');
 	// Update Country Field in weShopVatRule
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 	$weShopVatRule->stateField = $CLFields['stateField'];

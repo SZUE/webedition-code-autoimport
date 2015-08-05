@@ -185,7 +185,7 @@ class we_binaryDocument extends we_document{
 		$text = "";
 		$this->resetElements();
 		while((list($k, $v) = $this->nextElement(''))){
-			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) === 'a:') ? unserialize($v["dat"]) : "";
+			$foo = (isset($v["dat"]) && substr($v["dat"], 0, 2) === 'a:') ? we_unserialize($v["dat"]) : "";
 			if(!is_array($foo)){
 				if(isset($v["type"]) && $v["type"] === 'txt'){
 					$text .= ' ' . (isset($v["dat"]) ? $v["dat"] : '');

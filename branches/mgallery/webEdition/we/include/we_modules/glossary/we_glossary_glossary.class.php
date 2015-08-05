@@ -247,7 +247,7 @@ class we_glossary_glossary extends weModelBase{
 
 		// serialize all needed attributes
 		foreach($this->_Serialized as $Attribute){
-			$this->$Attribute = serialize($this->$Attribute);
+			$this->$Attribute = we_serialize($this->$Attribute);
 		}
 
 		if(!$this->ID){

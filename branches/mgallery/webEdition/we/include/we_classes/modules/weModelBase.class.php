@@ -95,7 +95,7 @@ class weModelBase{
 		foreach($this->persistent_slots as $key => $val){
 			$val = ($isAdvanced ? $key : $val);
 			if(isset($this->{$val})){
-				$sets[$val] = is_array($this->{$val}) ? serialize($this->{$val}) : $this->{$val};
+				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}) : $this->{$val};
 			}
 		}
 		$where = $this->getKeyWhere();

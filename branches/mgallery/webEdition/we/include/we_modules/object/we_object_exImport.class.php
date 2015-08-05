@@ -327,7 +327,7 @@ class we_object_exImport extends we_object{
 		$type = $this->getFieldPrefix($name);
 		$this->SerializedArray[$type . '_' . $newname] = $this->SerializedArray[$type . '_' . $name];
 		unset($this->SerializedArray[$type . '_' . $name]);
-		$this->DefaultValues = serialize($this->SerializedArray);
+		$this->DefaultValues = we_serialize($this->SerializedArray);
 		$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $type . '_' . $name . ' ' . $type . '_' . $newname . ' ' . $this->switchtypes2($type));
 		unset($this->elements);
 		$this->i_savePersistentSlotsToDB();
@@ -339,7 +339,7 @@ class we_object_exImport extends we_object{
 		$defaultArr = $this->getDefaultArray($name, $type, $default);
 		$this->SerializedArray = we_unserialize($this->DefaultValues);
 		$this->SerializedArray[$type . '_' . $name] = $defaultArr;
-		$this->DefaultValues = serialize($this->SerializedArray);
+		$this->DefaultValues = we_serialize($this->SerializedArray);
 		if(isset($this->strOrder)){
 			$arrOrder = explode(',', $this->strOrder);
 			$arrOrder[] = max($arrOrder) + 1;
@@ -377,7 +377,7 @@ class we_object_exImport extends we_object{
 			}
 		}
 		if($isfound){
-			$this->DefaultValues = serialize($this->SerializedArray);
+			$this->DefaultValues = we_serialize($this->SerializedArray);
 			$arrOrder = explode(',', $this->strOrder);
 
 			unset($arrOrder[array_search(max($arrOrder), $arrOrder)]);
@@ -425,7 +425,7 @@ class we_object_exImport extends we_object{
 			}
 			$this->SerializedArray[$newtype . '_' . $name] = $defaultArr;
 		}
-		$this->DefaultValues = serialize($this->SerializedArray);
+		$this->DefaultValues = we_serialize($this->SerializedArray);
 
 		if(!empty($this->isModifyFieldNoSave)){
 			return true;

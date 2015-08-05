@@ -533,7 +533,7 @@ abstract class we_export_functions{
 									}
 								}
 							}
-						} else if(substr($we_doc->elements[$k]["dat"], 0, 2) === "a:" && is_array(unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
+						} else if(substr($we_doc->elements[$k]["dat"], 0, 2) === "a:" && is_array(we_unserialize($we_doc->elements[$k]["dat"]))){ // is a we:link field
 							$_tag_name = self::correctTagname($k, "link", $_tag_counter);
 							$_file .= self::formatOutput($_tag_name, self::formatOutput("", $we_doc->getFieldByVal($we_doc->elements[$k]["dat"], "link"), "cdata"), $format, 2, $cdata);
 

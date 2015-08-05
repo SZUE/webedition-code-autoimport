@@ -83,7 +83,7 @@ class we_shop_shippingControl{
 		return $DB_WE->query('REPLACE INTO ' . WE_SHOP_PREFS_TABLE . ' SET ' .
 						we_database_base::arraySetter(array(
 							'strDateiname' => 'weShippingControl',
-							'strFelder' => serialize($this)
+							'strFelder' => we_serialize($this)
 		)));
 	}
 

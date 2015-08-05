@@ -1624,9 +1624,9 @@ self.close();');
 			while($go){
 				$tmp = array_slice($buffer, $offset, $this->settings["send_step"]);
 				if(!empty($tmp)){
-					$offset+=$this->settings["send_step"];
+					$offset+=$this->settings['send_step'];
 					$groups++;
-					$this->saveToCache(serialize($tmp), $emailcache . "_$groups");
+					$this->saveToCache(we_serialize($tmp, 'json'), $emailcache . "_$groups");
 				} else {
 					$go = false;
 				}

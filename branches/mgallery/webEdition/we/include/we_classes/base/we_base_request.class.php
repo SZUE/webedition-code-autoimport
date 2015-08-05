@@ -137,6 +137,7 @@ class we_base_request{
 			case self::EMAILLISTA:
 			case self::EMAILLIST:
 				//FIXME we need to improve this for "test, x" <a@b.de>, "test2, x" <b@d.de>
+				//preg_match_all('/("[\S\s]+"\s*|[^,"<>@]*\s+|)<?([^@<>,]*)@([a-zA-Z\d.-]+)>?/', $mail, $regs,PREG_SET_ORDER);
 				$mails = array_map('trim', explode(',', str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var)));
 				$regs = array();
 				foreach($mails as &$mail){

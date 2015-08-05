@@ -243,11 +243,11 @@ class we_navigation_navigation extends weModelBase{
 
 		$this->Text = self::encodeSpecChars($this->Text);
 		$_paths = $this->Categories;
-		$this->Categories = makeCSVFromArray(weConvertToIds($this->Categories, CATEGORY_TABLE), true);
+		$this->Categories = implode(',', weConvertToIds($this->Categories, CATEGORY_TABLE));
 
 		$_preSort = $this->Sort;
 		if(is_array($this->Sort)){
-			$this->Sort = $this->Sort ? serialize($this->Sort) : '';
+			$this->Sort = $this->Sort ? we_serialize($this->Sort) : '';
 		}
 		$this->setPath();
 
@@ -279,7 +279,7 @@ class we_navigation_navigation extends weModelBase{
 			$this->WhiteList = makeCSVFromArray($this->WhiteList, true);
 			$this->BlackList = makeCSVFromArray($this->BlackList, true);
 			$this->Customers = makeCSVFromArray($this->Customers, true);
-			$this->CustomerFilter = serialize($this->CustomerFilter);
+			$this->CustomerFilter = we_serialize($this->CustomerFilter);
 		} else {
 			$_cus_paths = array();
 			$_bl_paths = array();
@@ -454,7 +454,7 @@ class we_navigation_navigation extends weModelBase{
 
 	function saveField($name, $serialize = false){
 		$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-				$name => ($serialize ? serialize($this->$name) : $this->$name)
+				$name => ($serialize ? we_serialize($this->$name) : $this->$name)
 			)) . ' WHERE ID=' . intval($this->ID));
 		return $this->db->affected_rows();
 	}
@@ -680,7 +680,7 @@ class we_navigation_navigation extends weModelBase{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -692,7 +692,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;

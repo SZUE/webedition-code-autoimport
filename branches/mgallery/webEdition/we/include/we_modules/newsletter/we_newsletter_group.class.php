@@ -104,7 +104,7 @@ class we_newsletter_group extends we_newsletter_base{
 				}
 			}
 
-			$this->Filter = serialize($this->aFilter);
+			$this->Filter = we_serialize($this->aFilter);
 		}
 	}
 

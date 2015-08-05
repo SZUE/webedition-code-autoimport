@@ -63,7 +63,7 @@ function we_isFieldNotEmpty($attribs){
 			}
 			return false;
 		case 'multiobject':
-			$data = unserialize((isset($GLOBALS['lv']) ?
+			$data = we_unserialize((isset($GLOBALS['lv']) ?
 					$GLOBALS['lv']->f($orig_match) :
 					$GLOBALS['we_doc']->getElement($orig_match)));
 
@@ -94,7 +94,7 @@ function we_isFieldNotEmpty($attribs){
 				case 'we_object_listview':
 				case 'we_object_listviewMultiobject':
 				case 'we_object_tag':
-					$hrefArr = $GLOBALS['lv']->f($match) ? unserialize($GLOBALS['lv']->f($match)) : array();
+					$hrefArr = $GLOBALS['lv']->f($match) ? we_unserialize($GLOBALS['lv']->f($match)) : array();
 					if(!$hrefArr){
 						return false;
 					}
@@ -126,7 +126,7 @@ function we_isFieldNotEmpty($attribs){
 
 			break; //see return of function
 		default :
-			$_tmp = @unserialize($GLOBALS['lv']->f($match));
+			$_tmp = we_unserialize($GLOBALS['lv']->f($match));
 			if(is_array($_tmp)){
 				return count($_tmp) > 0;
 			}

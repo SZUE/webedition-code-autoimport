@@ -30,7 +30,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 		return $foo;
 	}
 	$useListsArray = isset($_REQUEST['we_use_lists__']);
-	$confirmID=we_base_request::_(we_base_request::STRING, 'confirmID', 0);
+	$confirmID = we_base_request::_(we_base_request::STRING, 'confirmID', 0);
 	$isSubscribe = isset($_REQUEST['we_subscribe_email__']) || $confirmID;
 	$isUnsubscribe = isset($_REQUEST['we_unsubscribe_email__']);
 	$doubleoptin = weTag_getAttribute('doubleoptin', $attribs, false, we_base_request::BOOL);
@@ -423,7 +423,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 
 					if($updateCustomerFields){
-						$__db->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $__db->escape(serialize($customerFields)) . '" WHERE tool="webadmin" AND pref_name="FieldAdds"');
+						$__db->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $__db->escape(we_serialize($customerFields, 'json')) . '" WHERE tool="webadmin" AND pref_name="FieldAdds"');
 					}
 
 					if($_customerFieldPrefs['customer_html_field'] != 'ID'){

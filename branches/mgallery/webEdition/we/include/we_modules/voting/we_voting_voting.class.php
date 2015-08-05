@@ -190,14 +190,14 @@ class we_voting_voting extends weModelBase{
 		  $_new_QASet = $this->QASet;
 		 */
 		if($with_scores || $this->ID == 0){
-			$this->Scores = serialize($this->Scores);
+			$this->Scores = we_serialize($this->Scores);
 		} elseif(we_base_request::_(we_base_request::BOOL, 'updateScores')){
 			$ic = we_base_request::_(we_base_request::INT, 'item_count');
 			for($_xcount = 0; $_xcount < $ic; $_xcount++){
 				if(($tmp = we_base_request::_(we_base_request::FLOAT, 'scores_' . $_xcount))){
 					$temp[$_xcount] = $tmp;
 				}
-				$this->Scores = serialize($temp);
+				$this->Scores = we_serialize($temp);
 			}
 		} else {
 			$temp = $this->Scores;
@@ -226,7 +226,7 @@ class we_voting_voting extends weModelBase{
 	}
 
 	function saveField($name, $serialize = false){
-		$field = ($serialize ? serialize($this->$name) : $this->$name);
+		$field = ($serialize ? we_serialize($this->$name) : $this->$name);
 		return $this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . $this->db->escape($name) . '="' . $this->db->escape($field) . '" WHERE ID=' . intval($this->ID) . ';');
 	}
 
@@ -477,7 +477,7 @@ class we_voting_voting extends weModelBase{
 		if($mySuccessorID <= 0){
 			$mySuccessorID = '';
 		}
-		$addfieldsdata = (is_array($addfields) && $addfields ? serialize($addfields) : '');
+		$addfieldsdata = (is_array($addfields) && $addfields ? we_serialize($addfields) : '');
 
 		if($this->Log){
 			$this->logVoting($ret, $votingsession, $answerID, $answertext, $mySuccessorID, $addfieldsdata);

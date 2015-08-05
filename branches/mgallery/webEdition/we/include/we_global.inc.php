@@ -1219,7 +1219,12 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		return ($ret === false ? $default : $ret);
 	}
 	if(preg_match('|^[{\[].*[}\]]$|', $string)){
-		return json_decode($string, true);
+		if(mb_check_encoding($string, 'UTF-8')){
+			return json_decode($string, true);
+		}
+		static $json = null;
+		$json = $json ? : new Services_JSON();
+		return (array) $json->decode($string);
 	}
 	if(!$quiet){
 		t_e('unable to decode', $string);
@@ -1234,14 +1239,26 @@ function we_unserialize($string, $default = array(), $quiet = false){
  * @param bool $numeric forces data to be treated as numeric (not assotiative) array - no position data will be used
  * @return string serialized data
  */
-function we_serialize(array $array, $target = 'serialize', $numeric = false){
+function we_serialize($array, $target = 'serialize', $numeric = false){
+	if(!$array){
+		return '';
+	}
 	switch($target){
 		//remove defined after php 5.3 support ends
 		case 'json':
-			return ($array ? json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0)) : '');
+			if(!is_object($array)){
+				//we don't encode objects as json!
+				$ret = json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0));
+				if($ret){
+					return $ret;
+				}
+				static $json = null;
+				$json = $json? : new Services_JSON(SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+				return $json->encode($numeric ? array_values($array) : $array, false);
+			}
 		default:
 		case 'serialize':
-			return ($array ? serialize($numeric ? array_values($array) : $array) : '');
+			return we_serialize($numeric ? array_values($array) : $array);
 	}
 }
 

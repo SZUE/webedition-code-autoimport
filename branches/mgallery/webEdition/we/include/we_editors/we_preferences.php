@@ -242,7 +242,7 @@ _multiEditorreload = true;';
 			return;
 
 		case 'editorCodecompletion':
-			$_SESSION['prefs'][$settingname] = is_array($settingvalue) ? serialize($settingvalue) : '';
+			$_SESSION['prefs'][$settingname] = is_array($settingvalue) ? we_serialize($settingvalue,'json') : '';
 			return;
 		case 'editorFontname':
 		case 'editorFontsize':

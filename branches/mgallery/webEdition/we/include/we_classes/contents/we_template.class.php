@@ -741,7 +741,7 @@ we_templateInit();?>';
 		$this->Extension = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::TEMPLATE);
 		if($updateCode){
 			$this->_updateCompleteCode(true);
-			$this->setElement('allVariants', serialize($this->readAllVariantFields($this->getElement('completeData'))), 'variants');
+			$this->setElement('allVariants', we_serialize($this->readAllVariantFields($this->getElement('completeData'))), 'variants');
 		} else {
 			$this->doUpdateCode = false;
 		}

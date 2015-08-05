@@ -54,7 +54,7 @@ class we_xml_browser extends we_xml_parser{
 		if(!is_dir(dirname($cache))){
 			we_base_file::createLocalFolder(dirname($cache));
 		}
-		if(we_base_file::save($cache, serialize($this->nodes))){
+		if(we_base_file::save($cache, we_serialize($this->nodes))){
 			we_base_file::insertIntoCleanUp($cache, $expire);
 		}
 	}

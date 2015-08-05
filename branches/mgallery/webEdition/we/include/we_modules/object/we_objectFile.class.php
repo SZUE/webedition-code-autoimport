@@ -421,7 +421,7 @@ class we_objectFile extends we_document{
 										$temp['objects'][] = $val;
 									}
 								}
-								$this->setElement($name, serialize($temp));
+								$this->setElement($name, we_serialize($temp));
 							}
 						}
 					}
@@ -998,7 +998,7 @@ class we_objectFile extends we_document{
 				'max' => $max,
 				'objects' => $objects,
 			);
-			$this->setElement($name, serialize($new), 'multiobject');
+			$this->setElement($name, we_serialize($new), 'multiobject');
 
 			return $content;
 		}
@@ -1028,7 +1028,7 @@ class we_objectFile extends we_document{
 			'max' => $max,
 			'objects' => $objects,
 		);
-		$this->setElement($name, serialize($new), 'multiobject');
+		$this->setElement($name, we_serialize($new), 'multiobject');
 
 		return $content;
 	}
@@ -2719,8 +2719,7 @@ class we_objectFile extends we_document{
 			$this->CreatorID = $this->CreatorID ? : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0);
 		}
 
-		$data = array();
-		$regs = array();
+		$data = $regs = array();
 		foreach($tableInfo as $cur){
 			$regs = explode('_', $cur['name'], 2);
 			if(count($regs) > 1){
@@ -2730,7 +2729,7 @@ class we_objectFile extends we_document{
 				} else {
 					$name = ($regs[0] == self::TYPE_OBJECT ? ('we_object_' . $name) : $name);
 					$val = $this->getElement($name);
-					$data[$cur['name']] = is_array($val) ? serialize($val) : $val;
+					$data[$cur['name']] = is_array($val) ? we_serialize($val) : $val;
 				}
 			}
 		}
@@ -2820,7 +2819,7 @@ class we_objectFile extends we_document{
 
 				foreach($hrefs as $k => $v){
 					$href = array_merge($empty, $v);
-					$this->setElement($k, serialize($href), self::TYPE_HREF);
+					$this->setElement($k, we_serialize($href), self::TYPE_HREF);
 				}
 			}
 
@@ -2852,7 +2851,7 @@ class we_objectFile extends we_document{
 				}
 
 				foreach($multiobjects as $realName => $data){
-					$this->setElement($realName, serialize($data), 'multiobject');
+					$this->setElement($realName, we_serialize($data), 'multiobject');
 				}
 			}
 		}
@@ -2955,7 +2954,7 @@ class we_objectFile extends we_document{
 			'max' => $old['max'],
 			'objects' => $objects,
 		);
-		$this->setElement($name, serialize($new));
+		$this->setElement($name, we_serialize($new));
 	}
 
 	function upMetaAtObject($name, $i){
@@ -2969,7 +2968,7 @@ class we_objectFile extends we_document{
 			'max' => $old['max'],
 			'objects' => $objects,
 		);
-		$this->setElement($name, serialize($new));
+		$this->setElement($name, we_serialize($new));
 	}
 
 	function addMetaToObject($name, $pos){
@@ -2988,7 +2987,7 @@ class we_objectFile extends we_document{
 			'max' => $old['max'],
 			'objects' => $objects,
 		);
-		$this->setElement($name, serialize($new));
+		$this->setElement($name, we_serialize($new));
 	}
 
 	function removeMetaFromObject($name, $nr){
@@ -3005,7 +3004,7 @@ class we_objectFile extends we_document{
 			'max' => $old['max'],
 			'objects' => $objects,
 		);
-		$this->setElement($name, serialize($new));
+		$this->setElement($name, we_serialize($new));
 	}
 
 	function checkAndCorrectParent(){
@@ -3145,7 +3144,7 @@ class we_objectFile extends we_document{
 
 	//FIMXE: remove, but needed, since objects still serialize links
 	function changeLink($name){
-		$this->setElement($name, serialize($_SESSION['weS']['WE_LINK']));
+		$this->setElement($name, we_serialize($_SESSION['weS']['WE_LINK']));
 		unset($_SESSION['weS']['WE_LINK']);
 	}
 

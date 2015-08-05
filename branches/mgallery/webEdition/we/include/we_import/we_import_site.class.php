@@ -334,7 +334,7 @@ function doUnload() {
 				'valueTemplateParentID' => we_base_request::_(we_base_request::INT, 'templateParentID', 0),
 		));
 		// update session
-		$_SESSION['prefs']['siteImportPrefs'] = serialize($data);
+		$_SESSION['prefs']['siteImportPrefs'] = we_serialize($data);
 		// update DB
 		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_SESSION["user"]["ID"]) . ',`key`="siteImportPrefs",`value`="' . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . '"');
 		return $this->_getHtmlPage('', we_html_element::jsElement('parent.close();'));

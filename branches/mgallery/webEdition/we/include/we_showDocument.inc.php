@@ -57,7 +57,7 @@ if(we_base_request::_(we_base_request::BOOL, 'vers_we_obj')){
 	$f = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . 'tmpSavedObj.txt';
 	$_REQUEST['vers_we_obj'] = false;
 	$tempFile = we_base_file::load($f);
-	$obj = unserialize($tempFile);
+	$obj = we_unserialize($tempFile);
 	$we_doc = $obj;
 
 // deal with customerFilter

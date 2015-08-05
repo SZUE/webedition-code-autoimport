@@ -36,7 +36,7 @@ class we_versions_log extends we_versions_logBase{
 
 	function saveVersionsLog($logArray, $action = ""){
 		$this->typ = $action;
-		$this->data = serialize($logArray);
+		$this->data = we_serialize($logArray);
 		$this->saveLog();
 	}
 

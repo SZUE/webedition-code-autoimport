@@ -337,13 +337,13 @@ class we_shop_statusMails{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(serialize($this)) . '",strDateiname="weShopStatusMails"')){
+		if($DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(we_serialize($this)) . '",strDateiname="weShopStatusMails"')){
 			$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $DB_WE);
 			if($strFelder !== ''){
 				$CLFields = we_unserialize($strFelder);
 				$CLFields['languageField'] = $this->LanguageData['languageField'];
 				$CLFields['languageFieldIsISO'] = $this->LanguageData['languageFieldIsISO'];
-				$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(serialize($CLFields)) . '", strDateiname ="shop_CountryLanguage"');
+				$DB_WE->query('REPLACE ' . WE_SHOP_PREFS_TABLE . ' SET strFelder="' . $DB_WE->escape(we_serialize($CLFields)) . '", strDateiname ="shop_CountryLanguage"');
 			}
 			return true;
 		}

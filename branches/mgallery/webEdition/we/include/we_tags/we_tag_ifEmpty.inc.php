@@ -66,7 +66,7 @@ function we_isNotEmpty($attribs){
 				// were some PHP notices that had no effect on the output of the function
 				// remark holeg: when it is a serialized array, the function looks if it is not empty
 				if(is_array(
-								$arr = unserialize($doc->getElement($match)))){
+								$arr = we_unserialize($doc->getElement($match)))){
 					return !empty($arr);
 				}
 			}

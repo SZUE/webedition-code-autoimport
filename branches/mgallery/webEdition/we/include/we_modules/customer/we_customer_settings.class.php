@@ -207,10 +207,10 @@ class we_customer_settings{
 
 	function save(){
 		//FIXME: make Fieldadds more fields in DB
-		$this->properties['FieldAdds'] = serialize($this->FieldAdds);
-		$this->properties['SortView'] = serialize($this->SortView);
+		$this->properties['FieldAdds'] = we_serialize($this->FieldAdds);
+		$this->properties['SortView'] = we_serialize($this->SortView);
 		$this->properties['EditSort'] = $this->EditSort;
-		$this->properties['Prefs'] = serialize($this->Prefs);
+		$this->properties['Prefs'] = we_serialize($this->Prefs);
 
 		foreach($this->properties as $key => $value){
 			$this->db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="webadmin",pref_value="' . $this->db->escape($value) . '",pref_name="' . $key . '"');

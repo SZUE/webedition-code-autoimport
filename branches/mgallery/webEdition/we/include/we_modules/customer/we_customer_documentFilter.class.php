@@ -302,7 +302,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 						'errorDocNoAccess' => $_docCustomerFilter->getErrorDocNoAccess(),
 						'mode' => $_docCustomerFilter->getMode(),
 						'specificCustomers' => ($_specificCustomers ? makeCSVFromArray($_specificCustomers, true) : ''),
-						'filter' => ($_filter ? serialize($_filter) : ''),
+						'filter' => ($_filter ? we_serialize($_filter) : ''),
 						'whiteList' => ($_whiteList ? makeCSVFromArray($_whiteList, true) : ''),
 						'blackList' => ($_blackList ? makeCSVFromArray($_blackList, true) : ''),
 					))

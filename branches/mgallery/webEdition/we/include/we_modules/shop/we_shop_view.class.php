@@ -403,7 +403,7 @@ function submitForm() {
 					$tmpDoc = we_unserialize($this->db->f('strSerial'));
 					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
 
-					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(serialize($tmpDoc)) . '" WHERE IntID=' . $article);
+					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc)) . '" WHERE IntID=' . $article);
 				}
 			}
 		}
@@ -1056,7 +1056,7 @@ function CalendarChanged(calObject) {
 							'DateShipping' => $row['DateShipping'],
 							'Datepayment' => $row['Datepayment'],
 							'IntPayment_Type' => $row['IntPayment_Type'],
-							'strSerial' => serialize($serialDoc),
+							'strSerial' => we_serialize($serialDoc),
 							'strSerialOrder' => $_strSerialOrder
 					))));
 				} else {
@@ -1271,7 +1271,7 @@ function CalendarChanged(calObject) {
 				$serialOrder[WE_SHOP_CALC_VAT] = we_base_request::_(we_base_request::INT, 'pay', 0);
 
 				// update all orders with this orderId
-				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
+				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
 					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_calculateVat_success]');
 					$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 				} else {
@@ -1291,7 +1291,7 @@ function CalendarChanged(calObject) {
 					unset($serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']]);
 
 					// update all orders with this orderId
-					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
+					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
 						$alertMessage = sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']);
 						$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 					} else {
@@ -1372,7 +1372,7 @@ function CalendarChanged(calObject) {
 					$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = $_REQUEST['cartfieldvalue'];
 
 					// update all orders with this orderId
-					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
+					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
 						//TODO: check JS-adress!!
 						$jsCmd = 'top.opener.top.content.tree.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");' .
 							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
@@ -1463,7 +1463,7 @@ function CalendarChanged(calObject) {
 					$serialOrder[WE_SHOP_SHIPPING]['vatRate'] = $_REQUEST['weShipping_vatRate'];
 
 					// update all orders with this orderId
-					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($serialOrder))){
+					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
 						$alertMessage = g_l('modules_shop', '[edit_order][js_saved_shipping_success]');
 						$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 					} else {
@@ -1602,7 +1602,7 @@ function CalendarChanged(calObject) {
 				$_orderData[WE_SHOP_CART_CUSTOMER_FIELD] = $_customer;
 
 
-				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', serialize($_orderData))){
+				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($_orderData))){
 					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_customer_success]');
 					$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 				} else {
@@ -1683,7 +1683,7 @@ var attribs = {
 			default:
 		}
 
-		$_SESSION['weS']['raw_session'] = serialize($this->raw);
+		$_SESSION['weS']['raw_session'] = we_serialize($this->raw);
 	}
 
 	function processVariables(){

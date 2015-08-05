@@ -513,7 +513,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 								if($this->mustChange($path)){
 									$pathTo = $this->getNewPath($path);
 									$link['id'] = path_to_id($pathTo, FILE_TABLE, $DB_WE);
-									$we_doc->setElement($k, serialize($link), 'link');
+									$we_doc->setElement($k, we_serialize($link), 'link');
 								}
 							}
 						} else { // its a normal  text field

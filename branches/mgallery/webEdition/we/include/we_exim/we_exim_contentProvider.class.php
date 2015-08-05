@@ -382,7 +382,7 @@ class we_exim_contentProvider{
 						$defvalues[$fieldname]['length'] = ($cur['len'] > 255) ? 255 : $cur['len'];
 					}
 				}
-				$object->DefaultValues = serialize($defvalues);
+				$object->DefaultValues = we_serialize($defvalues);
 				break;
 			// fix ends -----------------------------------------------------------
 
@@ -403,7 +403,7 @@ class we_exim_contentProvider{
 				continue;
 			}
 			if(self::needSerialize($object, $classname, $v)){
-				$content = serialize($content);
+				$content = we_serialize($content);
 				$coding = array(self::CODING_ATTRIBUTE => self::CODING_SERIALIZE);
 			} else {
 				$content = (isset($object->$v) ? $object->$v : '');
@@ -523,7 +523,7 @@ class we_exim_contentProvider{
 			case self::CODING_ENCODE:
 				return self::decode($data);
 			case self::CODING_SERIALIZE:
-				return unserialize($data);
+				return we_unserialize($data);
 			case self::CODING_NONE:
 			default:
 				return $data;

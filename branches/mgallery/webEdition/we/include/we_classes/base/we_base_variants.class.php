@@ -120,7 +120,7 @@ abstract class we_base_variants{
 		// now create element for the model
 		// just overwrite new values ...
 		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['type'] = 'variant';
-		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] = ($save ? serialize($variationElement) : $variationElement);
+		$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] = ($save ? we_serialize($variationElement) : $variationElement);
 	}
 
 	/**

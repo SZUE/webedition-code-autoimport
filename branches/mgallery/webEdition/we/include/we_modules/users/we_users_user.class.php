@@ -531,7 +531,7 @@ class we_users_user{
 				$permissions[$k] = $v;
 			}
 		}
-		$this->Permissions = serialize($permissions);
+		$this->Permissions = we_serialize($permissions);
 	}
 
 	function loadWorkspaces(){
@@ -580,7 +580,7 @@ class we_users_user{
 			$this->workSpaceNwl = implode(',', $this->workspaces[NEWSLETTER_TABLE]);
 		}
 		if(defined('CUSTOMER_TABLE')){
-			$this->workSpaceCust = $this->workspaces[CUSTOMER_TABLE] ? serialize($this->workspaces[CUSTOMER_TABLE]) : '';
+			$this->workSpaceCust = $this->workspaces[CUSTOMER_TABLE] ? we_serialize($this->workspaces[CUSTOMER_TABLE]) : '';
 		}
 
 		// if no workspaces are set, take workspaces from creator

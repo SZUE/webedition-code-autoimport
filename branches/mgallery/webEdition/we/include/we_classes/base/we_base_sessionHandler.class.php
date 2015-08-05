@@ -122,7 +122,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 					'lockid' => $lock ? $this->id : '',
 					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
 						/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-						  -				'tmp' => serialize($_SESSION), */
+						  -				'tmp' => we_serialize($_SESSION), */
 		)));
 		return true;
 	}

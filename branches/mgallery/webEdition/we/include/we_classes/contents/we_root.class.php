@@ -187,12 +187,12 @@ abstract class we_root extends we_class{
 			if(!is_object($bb)){
 				$save[0][$slot] = $bb;
 			} else {//FIXME: will this ever be restored???
-				$save[0][$slot . '_class'] = serialize($bb);
+				$save[0][$slot . '_class'] = we_serialize($bb);
 			}
 		}
 		// save weDocumentCustomerFilter in Session
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
-			$save[3] = serialize($this->documentCustomerFilter);
+			$save[3] = we_serialize($this->documentCustomerFilter);
 		}
 	}
 
@@ -1015,7 +1015,7 @@ abstract class we_root extends we_class{
 						$this->i_set_PersistentSlot($regs[1], $v);
 					}
 				} else if($n === 'we_owners_read_only'){
-					$this->OwnersReadOnly = serialize($v);
+					$this->OwnersReadOnly = we_serialize($v, 'json');
 				}
 			}
 			foreach($dates as $k => $v){
@@ -1103,7 +1103,7 @@ abstract class we_root extends we_class{
 						}
 						if($fieldName === 'Dat' && !empty($v['ffname'])){
 							$v['type'] = 'formfield';
-							$val = serialize($v);
+							$val = we_serialize($v);
 							// Artjom garbage fix
 						}
 
@@ -1114,7 +1114,7 @@ abstract class we_root extends we_class{
 							$val = sprintf('%016d', $val);
 						}
 						if($fieldName != 'ID'){
-							$data[$fieldName] = is_array($val) ? serialize($val) : $val;
+							$data[$fieldName] = is_array($val) ? we_serialize($val) : $val;
 						}
 					}
 					if($data){

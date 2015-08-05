@@ -45,7 +45,7 @@ abstract class we_temporaryDocument{
 		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET ' .
 			we_database_base::arraySetter(array(
 				'DocumentID' => $documentID,
-				'DocumentObject' => ($document ? serialize($document) : ''),
+				'DocumentObject' => ($document ? we_serialize($document) : ''),
 				'Active' => 1,
 				'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
 				'DocTable' => stripTblPrefix($table))));
@@ -61,7 +61,7 @@ abstract class we_temporaryDocument{
 	static function resave($documentID, $table, $document, we_database_base $db){
 		return $db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' .
 				we_database_base::arraySetter(array(
-					'DocumentObject' => ($document ? serialize($document) : ''),
+					'DocumentObject' => ($document ? we_serialize($document) : ''),
 					'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
 				)) .
 				' WHERE DocumentID=' . intval($documentID) . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');

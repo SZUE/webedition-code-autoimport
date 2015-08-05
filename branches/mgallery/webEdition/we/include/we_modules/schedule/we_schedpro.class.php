@@ -715,7 +715,7 @@ function checkFooter(){
 						'Was' => $s['task'],
 						'ClassName' => $object->ClassName,
 						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
-						'Schedpro' => serialize($s),
+						'Schedpro' => we_serialize($s),
 						'Type' => $s['type'],
 						'Active' => $s['active']
 				)))){

@@ -221,7 +221,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				'ApplyFilter' => $_applyFilter,
 				'AllCustomers' => $_allCustomers,
 				'Customers' => makeCSVFromArray($filterObj->getSpecificCustomers(), true),
-				'CustomerFilter' => serialize($filterObj->getFilter()),
+				'CustomerFilter' => we_serialize($filterObj->getFilter()),
 				'BlackList' => makeCSVFromArray($filterObj->getBlackList(), true),
 				'WhiteList' => makeCSVFromArray($filterObj->getWhiteList(), true)
 			)) .

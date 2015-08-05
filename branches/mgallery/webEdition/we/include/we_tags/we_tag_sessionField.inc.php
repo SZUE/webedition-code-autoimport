@@ -152,15 +152,15 @@ function we_tag_sessionField($attribs, $content){
 				$newAtts = removeAttribs($newAtts, array('maxlength'));
 				$newAtts['name'] = 's[' . $name . ']';
 
-				$optionsAr = makeArrayFromCSV(weTag_getAttribute('options', $attribs, '', we_base_request::RAW));
-				$isin = 0;
+				$optionsAr = explode(',', weTag_getAttribute('options', $attribs, '', we_base_request::RAW));
+				$isin = false;
 				$options = '';
-				for($i = 0; $i < count($optionsAr); $i++){
-					if($optionsAr[$i] == $orgVal){
-						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($optionsAr[$i]), 'selected' => 'selected'), $optionsAr[$i], true);
-						$isin = 1;
+				foreach($optionsAr as $cur){
+					if($cur == $orgVal){
+						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($cur), 'selected' => 'selected'), $cur, true);
+						$isin = true;
 					} else {
-						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($optionsAr[$i])), $optionsAr[$i], true);
+						$options .= getHtmlTag('option', array('value' => oldHtmlspecialchars($cur)), $cur, true);
 					}
 				}
 				if(!$isin){
