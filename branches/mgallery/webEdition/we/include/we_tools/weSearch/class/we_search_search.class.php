@@ -724,30 +724,21 @@ class we_search_search extends we_search_base{
 			$types = array(
 				FILE_TABLE => g_l('global', '[documents]'),
 				TEMPLATES_TABLE => g_l('global', '[templates]'),
-				OBJECT_FILES_TABLE => g_l('global', '[objects]'),
-				OBJECT_TABLE => g_l('searchtool', '[classes]'),
-				VFILE_TABLE => g_l('global', '[vfile]'),
+				defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE' => g_l('global', '[objects]'),
+				defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE' => g_l('searchtool', '[classes]'),
+				defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE' => g_l('global', '[vfile]'),
 				CATEGORY_TABLE => g_l('global', '[categorys]'),
-				NEWSLETTER_TABLE => g_l('javaMenu_moduleInformation', '[newsletter][text]'),
-				BANNER_TABLE => g_l('javaMenu_moduleInformation', '[banner][text]'),
-				CUSTOMER_TABLE => g_l('javaMenu_moduleInformation', '[customer][text]'),
-				GLOSSARY_TABLE => g_l('javaMenu_moduleInformation', '[glossary][text]'),
+				defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE' => g_l('javaMenu_moduleInformation', '[newsletter][text]'),
+				defined('BANNER_TABLE') ? BANNER_TABLE : 'BANNER_TABLE' => g_l('javaMenu_moduleInformation', '[banner][text]'),
+				defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE' => g_l('javaMenu_moduleInformation', '[customer][text]'),
+				defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : 'GLOSSARY_TABLE' => g_l('javaMenu_moduleInformation', '[glossary][text]'),
 				NAVIGATION_TABLE => g_l('javaMenu_moduleInformation', '[navigation][text]'),
 			);
 
-			$mediaArr = array(
-				$types[FILE_TABLE] => array(),
-				$types[OBJECT_FILES_TABLE] => array(),
-				$types[VFILE_TABLE] => array(),
-				$types[TEMPLATES_TABLE] => array(),
-				$types[OBJECT_TABLE] => array(),
-				$types[CATEGORY_TABLE] => array(),
-				$types[NAVIGATION_TABLE] => array(),
-				$types[CUSTOMER_TABLE] => array(),
-				$types[NEWSLETTER_TABLE] => array(),
-				$types[GLOSSARY_TABLE] => array(),
-				$types[BANNER_TABLE] => array(),
-			);
+			$mediaArr = array();
+			foreach(array_keys($types) as $key){
+				$mediaArr[$key] = array();
+			}
 
 			while($db->next_record()){
 				$rec = $db->getRecord();

@@ -1760,6 +1760,7 @@ weSearch.g_l = {
 	}
 
 	function getHtmlIconThmubnail($file, $smallSize = 64, $bigSize = 140){
+		$urlPopup = $url = '';
 		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
