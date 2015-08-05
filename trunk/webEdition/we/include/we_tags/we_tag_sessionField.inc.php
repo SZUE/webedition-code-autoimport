@@ -161,7 +161,7 @@ function we_tag_sessionField($attribs, $content){
 				$newAtts = removeAttribs($newAtts, array('maxlength'));
 				$newAtts['name'] = 's[' . $name . ']';
 
-				$optionsAr = makeArrayFromCSV(weTag_getAttribute('options', $attribs, '', we_base_request::RAW));
+				$optionsAr = explode(',', weTag_getAttribute('options', $attribs, '', we_base_request::RAW));
 				$isin = 0;
 				$options = '';
 				for($i = 0; $i < count($optionsAr); $i++){
