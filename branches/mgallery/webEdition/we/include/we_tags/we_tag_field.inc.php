@@ -277,7 +277,7 @@ function we_tag_field($attribs){
 
 		case 'multiobject':
 			$temp = we_unserialize($GLOBALS['lv']->f($name));
-			$out = (isset($temp['objects']) && !empty($temp['objects']) ? implode(',', $temp['objects']) : '');
+			$out = is_array($temp) ? (!empty($temp['objects']) ? implode(',', $temp['objects']) : implode(',', $temp)) : '';
 			break;
 		case 'country' :
 			$lang = weTag_getAttribute('outputlanguage', $attribs, '', we_base_request::STRING);

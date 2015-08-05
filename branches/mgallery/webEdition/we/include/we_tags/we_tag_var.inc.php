@@ -60,14 +60,12 @@ function we_tag_var($attribs){
 			break;
 		case 'multiobject' :
 			$data = we_unserialize($doc->getField($attribs, $type, true));
-			return (!empty($data['objects']) ? implode(',', $data['objects']) : '');
-
+			return is_array($data) ? (!empty($data['objects']) ? implode(',', $data['objects']) : implode(',', $data)) : '';
 		case 'property' :
 			$return = (isset($GLOBALS['we_obj']) ?
 					$GLOBALS['we_obj']->$name_orig :
 					$doc->$name_orig);
 			break;
-
 		case 'shopVat' :
 			if(defined('SHOP_TABLE')){
 				if(!we_shop_category::isCategoryMode()){

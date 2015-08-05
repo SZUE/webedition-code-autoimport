@@ -335,9 +335,9 @@ function we_submit(){
 		);
 
 		return we_html_tools::getHtmlTop(g_l('export', '[wizard_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
-							"pnt" => "body",
-							"step" => 2,
-							"art" => ($this->exportVars["extype"] === "csv" ? "objects" : "docs"))) .
+							'pnt' => "body",
+							'step' => 2,
+							'art' => ($this->exportVars["extype"] === 'csv' ? 'objects' : 'docs'))) .
 						we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[step1]'))
 					)
 				)
@@ -431,10 +431,10 @@ function we_cmd(){
 				$this->footerFrame . '.location="' . $this->frameset . '?pnt=footer&step=2";');
 
 		$parts = array(
-			array("headline" => "", "html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != "objects" ? true : false)), "art", g_l('export', '[documents]'), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => 1)
+			array("headline" => "", "html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont", $this->topFrame . ".art='docs'"), "space" => $_space, "noline" => 1)
 		);
 		if(defined('OBJECT_FILES_TABLE')){
-			$parts[] = array("headline" => "", "html" => we_html_forms::radiobutton("objects", ($art === "objects" ? true : ($art != "docs" ? true : false)), "art", g_l('export', '[objects]'), true, "defaultfont", $this->topFrame . ".art='objects'"), "space" => $_space, "noline" => 1);
+			$parts[] = array("headline" => "", "html" => we_html_forms::radiobutton("objects", ($art === 'objects' ? true : ($art != 'docs')), "art", g_l('export', '[objects]'), true, "defaultfont", $this->topFrame . ".art='objects'"), "space" => $_space, "noline" => 1);
 		}
 
 		$hiddens = we_html_element::htmlHiddens(array(
@@ -453,9 +453,9 @@ function we_cmd(){
 	private function getHTMLStep3(){
 		$art = $this->exportVars["art"];
 
-		$js = ($art === "objects" && defined('OBJECT_FILES_TABLE') ?
+		$js = ($art === 'objects' && defined('OBJECT_FILES_TABLE') ?
 				we_html_element::jsElement($this->topFrame . '.table="' . OBJECT_FILES_TABLE . '";') :
-				($art == "docs" ?
+				($art == 'docs' ?
 					we_html_element::jsElement($this->topFrame . '.table="' . FILE_TABLE . '";') :
 					'')
 			);

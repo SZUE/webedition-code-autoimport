@@ -947,8 +947,8 @@ class we_object extends we_document{
 				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
 				$count = 0;
 				while($count < count($all)){
-					if($all[$count]["table_name"] != OBJECT_FILES_TABLE && $all[$count]["table_name"] != OBJECT_FILES_TABLE){
-						if(preg_match('/^(.+)_(\d+)$/', $all[$count]["table_name"], $regs)){
+					if($all[$count]['table_name'] != OBJECT_FILES_TABLE && $all[$count]['table_name'] != OBJECT_FILES_TABLE){
+						if(preg_match('/^(.+)_(\d+)$/', $all[$count]['table_name'], $regs)){
 							if(($path = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($regs[2]), '', $this->DB_WE))){
 								$vals[$regs[2]] = $path;
 							}

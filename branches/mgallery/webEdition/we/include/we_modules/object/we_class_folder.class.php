@@ -452,12 +452,11 @@ class we_class_folder extends we_folder{
 							break;
 						case we_objectFile::TYPE_MULTIOBJECT:
 							$temp = we_unserialize($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
-							if($temp && !empty($temp['objects'])){
-								$objects = $temp['objects'];
-								$class = $temp['class'];
+							$objects = isset($temp['objects']) ? $temp['objects'] : $temp;
+							if($objects){
 								$content[$f][$i + 5]['dat'] = '<ul>';
 								foreach($objects as $id){
-									$content[$f][$i + 5]['dat'] .= '<li><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" class="defaultfont" title="' . f("SELECT OF_Path FROM " . OBJECT_X_TABLE . intval($class) . " WHERE OF_ID='" . $id . "'", "", $this->DB_WE) . '">' . we_base_util::shortenPath(f('SELECT OF_Path FROM ' . OBJECT_X_TABLE . intval($class) . ' WHERE OF_ID=' . intval($id), '', $this->DB_WE), $we_obectPathLength) . '.</a></li>';
+									$content[$f][$i + 5]['dat'] .= '<li><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $id . ',\'objectFile\');" class="defaultfont" title="' . f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $id, '', $this->DB_WE) . '">' . we_base_util::shortenPath(f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE OF_ID=' . intval($id), '', $this->DB_WE), $we_obectPathLength) . '.</a></li>';
 								}
 								$content[$f][$i + 5]['dat'] .= '</ul>';
 							} else {

@@ -66,18 +66,14 @@ function we_isFieldNotEmpty($attribs){
 			$data = we_unserialize((isset($GLOBALS['lv']) ?
 					$GLOBALS['lv']->f($orig_match) :
 					$GLOBALS['we_doc']->getElement($orig_match)));
-
-			if(isset($data['objects']) && is_array($data['objects']) && !empty($data['objects'])){
-				$test = array_count_values($data['objects']);
-				return (count($test) > 1 || (count($test) == 1 && !isset($test[''])));
-			}
-			return false;
+			$objects = array_filter(isset($data['objects']) ? $data['objects'] : $data);
+			return !empty($objects);
 		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
 			if($GLOBALS['lv'] instanceof we_listview_document){ // listview/document with objects included using we:object
 				return (bool) $GLOBALS['lv']->f($match);
 			}
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
-			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($match) . '"', 'ID', $GLOBALS['DB_WE']);
+			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($match) . '"');
 			return (bool) $GLOBALS['lv']->f('we_object_' . $objectid);
 		case 'checkbox' :
 		case 'binary' :

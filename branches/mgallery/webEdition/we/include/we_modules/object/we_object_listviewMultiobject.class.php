@@ -72,31 +72,20 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 				$data = we_unserialize($GLOBALS['we_doc']->getElement($name));
 			}
 		}
-
-		if(!$data){
-			return;
-		}
-		// remove not set values
-		$empty = array_keys($data['objects'], "");
-		$objects = array();
-		foreach($data['objects'] as $key => $val){
-			if(!in_array($key, $empty)){
-				$objects[] = $val;
-			}
-		}
+		$objects = isset($data['objects']) ? $data['objects'] : $data;
 		if(!$objects){
 			return;
 		}
 		$this->objects = $objects;
-
-		$this->classID = intval($data['class']);
+		//FIXME: can we use defaultsArray?!
+		$this->classID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID IN (' . implode(',', $objects) . ') LIMIT 1');
 		$this->triggerID = $triggerID;
 		$this->condition = $condition;
 		$this->searchable = $searchable;
 		$this->docID = $docID; //Bug #3720
 
-		$this->condition = $this->condition ? : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : '');
-		$this->languages = $languages ? : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : '');
+		$this->condition = $this->condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 

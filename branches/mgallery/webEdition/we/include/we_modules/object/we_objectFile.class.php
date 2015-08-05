@@ -411,17 +411,7 @@ class we_objectFile extends we_document{
 							$n = ($type == self::TYPE_OBJECT ? 'we_object_' . $name : (isset($name) ? $name : ''));
 							$this->setElement($n, isset($field['default']) ? $field['default'] : '', $type, 'dat', (isset($field['autobr']) && $field['autobr'] === 'on' ? 'on' : 'off'));
 							if($type == self::TYPE_MULTIOBJECT){
-								$temp = array(
-									'class' => $field['class'],
-									'max' => $field['max'],
-									'objects' => array(),
-								);
-								if(is_array($field['meta'])){
-									foreach($field['meta'] as $val){
-										$temp['objects'][] = $val;
-									}
-								}
-								$this->setElement($name, we_serialize($temp));
+								$this->setElement($name, is_array($field['meta']) ? implode(',', $field['meta']) : '', 'multiobject');
 							}
 						}
 					}
@@ -441,19 +431,8 @@ class we_objectFile extends we_document{
 						break;
 					case self::TYPE_MULTIOBJECT:
 						$temp = we_unserialize($this->getElement($name));
-						$_array = isset($temp['objects']) ? $temp['objects'] : array();
-						if(count($_array) === 0){
-							$val = 0;
-						} else {
-							$_empty = true;
-							foreach($_array as $tmp){
-								if($tmp){
-									$_empty = false;
-									break;
-								}
-							}
-							$val = ($_empty ? 0 : 1);
-						}
+						$_array = array_filter(isset($temp['objects']) ? $temp['objects'] : $temp);
+						$val = !empty($_array);
 						break;
 					case self::TYPE_CHECKBOX:
 						$val = $this->getElement($name);
@@ -464,11 +443,19 @@ class we_objectFile extends we_document{
 					default:
 						$val = $this->geFieldValue($name, $type);
 				}
-				if((strlen($val) == 0) || (($type == self::TYPE_OBJECT || $type == self::TYPE_MULTIOBJECT || $type == self::TYPE_CHECKBOX || $type == self::TYPE_IMG) && ($val == '0'))){
-					if($type == self::TYPE_OBJECT){
-						$name = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($name), '', $this->DB_WE);
-					}
-					return $name;
+				switch($val ? $type : '_empty_'){
+					case self::TYPE_OBJECT:
+						$name = ($val == '0' ? f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($name), '', $this->DB_WE) : $name);
+					case self::TYPE_MULTIOBJECT:
+					case self::TYPE_CHECKBOX:
+					case self::TYPE_IMG:
+						if($val != '0'){
+							break;
+						}
+					//no break
+					case '_empty_':
+						return $name;
+					default:
 				}
 			}
 		}
@@ -635,18 +622,25 @@ class we_objectFile extends we_document{
 
 		$tableInfo = $db->metadata(OBJECT_X_TABLE . $tableID);
 		$tableInfo2 = array();
+		//FIXME: this is not going to work ever - the name is "input_name"
 		foreach($tableInfo as $arr){
-			switch($arr['name']){
-				case self::TYPE_INPUT . '_':
-				case self::TYPE_TEXT . '_':
-				case self::TYPE_INT . '_':
-				case self::TYPE_FLOAT . '_':
-				case self::TYPE_DATE . '_':
-				case self::TYPE_IMG . '_':
+			$names = explode('_', $arr['name']);
+			switch($names[0]){
+				case 'variant':
+					if($names[1] != we_base_constants::WE_VARIANTS_ELEMENT_NAME){
+						$tableInfo2[] = $arr;
+						break;
+					}
+				//no break
+				case self::TYPE_INPUT:
+				case self::TYPE_TEXT:
+				case self::TYPE_INT:
+				case self::TYPE_FLOAT:
+				case self::TYPE_DATE:
+				case self::TYPE_IMG:
 				case we_object::QUERY_PREFIX:
-				case self::TYPE_MULTIOBJECT . '_':
-				case self::TYPE_META . '_':
-				case 'variant_' . we_base_constants::WE_VARIANTS_ELEMENT_NAME :
+				case self::TYPE_MULTIOBJECT:
+				case self::TYPE_META:
 					if($checkVariants){
 						$variantdata = $arr;
 					}
@@ -895,9 +889,9 @@ class we_objectFile extends we_document{
 
 	private function getMultiObjectFieldHTML($type, $name, array $attribs, $editable = true){
 		$temp = we_unserialize($this->getElement($name, 'dat'));
-		$objects = isset($temp['objects']) ? $temp['objects'] : array();
+		$objects = isset($temp['objects']) ? $temp['objects'] : $temp;
 		$max = intval($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]['max']);
-		$show = (($max == 0) || ($max >= count($objects)) ? count($objects) : $max);
+		$show = min(($max? : PHP_INT_MAX), count($objects));
 		$isSEEM = (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE);
 
 		if(!$show && !$editable){
@@ -911,7 +905,7 @@ class we_objectFile extends we_document{
 		if($editable){
 			$f = 1;
 
-			$text = '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]["required"] ? "*" : "") . '</span>' . (!empty($this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription']) ? self::formatDescription($this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription']) : we_html_element::htmlBr() );
+			$text = '<span class="weObjectPreviewHeadline">' . $name . ($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]['required'] ? '*' : '') . '</span>' . (!empty($this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription']) ? self::formatDescription($this->DefArray[self::TYPE_MULTIOBJECT . "_$name"]['editdescription']) : we_html_element::htmlBr() );
 			$content = we_html_tools::htmlFormElementTable('', $text);
 			list($rootDir, $rootDirPath) = getHash('SELECT oft.ID,oft.Path FROM ' . OBJECT_FILES_TABLE . ' oft LEFT JOIN ' . OBJECT_TABLE . ' ot ON oft.Path=ot.Path WHERE oft.IsClassFolder=1 AND ot.ID=' . intval($classid), $db, MYSQL_NUM);
 
@@ -967,7 +961,7 @@ class we_objectFile extends we_document{
 				$buttontable = $selectObject .
 					($myid ? $editObjectButton : $editObjectButtonDis) .
 					($myid ? $openCloseButton : $openCloseButtonDis) .
-					((count($objects) < $max || $max == "" || $max == 0) ? $plusbut : $plusbutDis) .
+					(empty($max) || (count($objects) < $max) ? $plusbut : $plusbutDis) .
 					($f > 0 ? $upbut : $upbutDis ) .
 					($f < count($objects) - 1 ? $downbut : $downbutDis) .
 					$trashbut;
@@ -989,16 +983,11 @@ class we_objectFile extends we_document{
 				}
 			}
 
-			$content .= (count($objects) < $max || empty($max) ?
+			$content .= (empty($max) || count($objects) < $max ?
 					we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f - 1) . "')") :
 					we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '#', true, 21, 22, "", "", true));
 
-			$new = array(
-				'class' => $classid,
-				'max' => $max,
-				'objects' => $objects,
-			);
-			$this->setElement($name, we_serialize($new), 'multiobject');
+			$this->setElement($name, implode(',', $objects), 'multiobject');
 
 			return $content;
 		}
@@ -1023,12 +1012,7 @@ class we_objectFile extends we_document{
 			}
 		}
 
-		$new = array(
-			'class' => $classid,
-			'max' => $max,
-			'objects' => $objects,
-		);
-		$this->setElement($name, we_serialize($new), 'multiobject');
+		$this->setElement($name, implode(',', $objects), 'multiobject');
 
 		return $content;
 	}
@@ -2833,25 +2817,19 @@ class we_objectFile extends we_document{
 				$this->resetElements();
 				$multiobjects = array();
 				while((list($k, $v) = $this->nextElement(self::TYPE_MULTIOBJECT))){
-					$old = $v['dat']{0} == 'a' ? we_unserialize($v['dat'], '') : '';
-					if(is_array($old) && isset($old['class'])){
-						$multiobjects[$k] = array(
-							'class' => $old['class'],
-							'max' => $old['max'],
-							'objects' => array(),
-						);
-					}
+					$multiobjects[$k] = array();
 				}
 
 				$match = array();
 				foreach($_REQUEST['we_' . $this->Name . '_' . self::TYPE_MULTIOBJECT] as $k => $val){
 					if(preg_match('|^(.+)_default(.+)$|', $k, $match)){
-						$multiobjects[$match[1]]['objects'][$match[2]] = $val;
+						$multiobjects[$match[1]][$match[2]] = $val;
 					}
 				}
 
 				foreach($multiobjects as $realName => $data){
-					$this->setElement($realName, we_serialize($data), 'multiobject');
+					ksort($data, SORT_NUMERIC);
+					$this->setElement($realName, implode(',', $data), 'multiobject');
 				}
 			}
 		}
@@ -2945,36 +2923,27 @@ class we_objectFile extends we_document{
 
 	function downMetaAtObject($name, $i){
 		$old = we_unserialize($this->getElement($name));
-		$objects = $old['objects'];
+		$objects = isset($old['objects']) ? $old['objects'] : $old;
 		$temp = $objects[($i + 1)];
 		$objects[($i + 1)] = $objects[$i];
 		$objects[$i] = $temp;
-		$new = array(
-			'class' => $old['class'],
-			'max' => $old['max'],
-			'objects' => $objects,
-		);
-		$this->setElement($name, we_serialize($new));
+
+		$this->setElement($name, implode(',', $objects), 'multiobject');
 	}
 
 	function upMetaAtObject($name, $i){
 		$old = we_unserialize($this->getElement($name));
-		$objects = $old['objects'];
+		$objects = isset($old['objects']) ? $old['objects'] : $old;
 		$temp = $objects[($i - 1)];
 		$objects[($i - 1)] = $objects[$i];
 		$objects[$i] = $temp;
-		$new = array(
-			'class' => $old['class'],
-			'max' => $old['max'],
-			'objects' => $objects,
-		);
-		$this->setElement($name, we_serialize($new));
+		$this->setElement($name, implode(',', $objects), 'multiobject');
 	}
 
 	function addMetaToObject($name, $pos){
 		$amount = 1;
 		$old = we_unserialize($this->getElement($name));
-		$objects = $old['objects'];
+		$objects = isset($old['objects']) ? $old['objects'] : $old;
 		for($i = count($objects) + $amount - 1; 0 <= $i; $i--){
 			if(($pos + $amount) < $i){
 				$objects[$i] = $objects[($i - $amount)];
@@ -2982,29 +2951,19 @@ class we_objectFile extends we_document{
 				$objects[$i] = '';
 			}
 		}
-		$new = array(
-			'class' => $old['class'],
-			'max' => $old['max'],
-			'objects' => $objects,
-		);
-		$this->setElement($name, we_serialize($new));
+		$this->setElement($name, implode(',', $objects), 'multiobject');
 	}
 
 	function removeMetaFromObject($name, $nr){
 		$old = we_unserialize($this->getElement($name));
-		$objects = $old['objects'];
+		$objects = isset($old['objects']) ? $old['objects'] : $old;
 		for($i = 0; $i < count($objects) - 1; $i++){
 			if($i >= $nr){
 				$objects[$i] = $objects[($i + 1)];
 			}
 		}
 		unset($objects[$i]);
-		$new = array(
-			'class' => $old['class'],
-			'max' => $old['max'],
-			'objects' => $objects,
-		);
-		$this->setElement($name, we_serialize($new));
+		$this->setElement($name, implode(',', $objects), 'multiobject');
 	}
 
 	function checkAndCorrectParent(){

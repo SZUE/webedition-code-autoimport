@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -80,11 +79,8 @@ function we_isVarNotEmpty($attribs){
 					$attribs['name'] = $match;
 					$attribs['_name_orig'] = $match_orig;
 					$data = we_unserialize($doc->getField($attribs, $type, true));
-					if(!is_array($data['objects'])){
-						$data['objects'] = array();
-					}
-					$temp = new we_object_listviewMultiobject($match);
-					return (!empty($temp->Record));
+					$objects = isset($data['objects']) ? $data['objects'] : $data;
+					return (!empty($objects));
 				default :
 					$type = $doc->getElement($match, 'type');
 					$foo = $doc->getElement($match, $type === 'img' ? 'bdid' : 'dat');
