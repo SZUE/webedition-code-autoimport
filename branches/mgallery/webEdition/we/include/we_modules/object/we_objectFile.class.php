@@ -2947,7 +2947,7 @@ class we_objectFile extends we_document{
 			if(($pos + $amount) < $i){
 				$objects[$i] = $objects[($i - $amount)];
 			} else if($pos < $i && $i <= ($pos + $amount)){
-				$objects[$i] = '';
+				$objects[$i] = 0;
 			}
 		}
 		$this->setElement($name, implode(',', $objects), 'multiobject');

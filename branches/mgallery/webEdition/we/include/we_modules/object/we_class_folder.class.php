@@ -452,7 +452,7 @@ class we_class_folder extends we_folder{
 							break;
 						case we_objectFile::TYPE_MULTIOBJECT:
 							$temp = we_unserialize($this->searchclass->f($type[$i + 5] . '_' . $head[$i + 5]['dat']));
-							$objects = isset($temp['objects']) ? $temp['objects'] : $temp;
+							$objects = array_filter(isset($temp['objects']) ? $temp['objects'] : $temp);
 							if($objects){
 								$content[$f][$i + 5]['dat'] = '<ul>';
 								foreach($objects as $id){

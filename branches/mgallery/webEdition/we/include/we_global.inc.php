@@ -1208,12 +1208,13 @@ function getMysqlVer($nodots = true){
 }
 
 function we_unserialize($string, $default = array(), $quiet = false){
-	if(!$string){
-		return $default;
-	}
-	if($string[0] === 'x'){
+	if($string && $string[0] === 'x'){
 		$string = gzuncompress($string);
 	}
+	if($string === ''){
+		return $default;
+	}
+
 	if(preg_match('|^[asO]:\d+:|', $string)){
 		$ret = unserialize($string);
 		return ($ret === false ? $default : $ret);
