@@ -39,17 +39,17 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
 			$back = $this->getBackBut();
 			$ok = we_html_button::create_button(we_html_button::OK, "javascript:weCheckAcFields()");
-			$okBut = $back ? $back. $ok : $ok;
+			$okBut = $back ? $back . $ok : $ok;
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
 			$okBut = $back && $next ?
-				$back. $next :
+				$back . $next :
 				($back ? : $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
-			$okBut = $back && $ok ? $back. $ok : ($back ? : $ok);
+			$okBut = $back && $ok ? $back . $ok : ($back ? : $ok);
 		}
 
 		return we_html_button::position_yes_no_cancel($okBut, '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();'));
@@ -101,7 +101,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['objHref'] = '';
 					$match = array();
 					preg_match('|(subject=([^&]*)&?)?(cc=([^&]*)&?)?(bcc=([^&]*)&?)?|', $this->args['param'], $match);
-					$this->args['mailsubject'] = isset($match[2]) ? $match[2] : '';
+					$this->args['mailsubject'] = isset($match[2]) ? urldecode($match[2]) : '';
 					$this->args['mailcc'] = isset($match[4]) ? $match[4] : '';
 					$this->args['mailbcc'] = isset($match[6]) ? $match[6] : '';
 					break;
@@ -207,7 +207,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$this->args['rev'] = $rev;
 		$match = array();
 		preg_match('|(subject=([^&]*)&?)?(cc=([^&]*)&?)?(bcc=([^&]*)&?)?|', $this->args['param'], $match);
-		$this->args['mailsubject'] = isset($match[2]) ? $match[2] : '';
+		$this->args['mailsubject'] = isset($match[2]) ? urldecode($match[2]) : '';
 		$this->args['mailcc'] = isset($match[4]) ? $match[4] : '';
 		$this->args['mailbcc'] = isset($match[6]) ? $match[6] : '';
 	}
@@ -269,7 +269,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->initByObjectID($objID, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 				case we_base_link::TYPE_MAIL:
-					$mailhref = $this->getHttpVar(we_base_request::EMAIL, 'mailHref'); //FIXME mail?
+					$mailhref = $this->getHttpVar(we_base_request::STRING, 'mailHref'); //FIXME mail?
 					$this->initByMailHref($mailhref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 			}
@@ -579,7 +579,7 @@ function weDoCheckAcFields(){
 		if(!empty($param)){
 			$tmp = array();
 			parse_str($param, $tmp);
-			$param = '?' . http_build_query($tmp, null, '&');
+			$param = '?' . http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
 		}
 		// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
 		$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
@@ -596,8 +596,7 @@ function weDoCheckAcFields(){
 			if(!empty($args['mail_bcc'])){
 				$query['bcc'] = $args['mail_bcc'];
 			}
-
-			$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query));
+			$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query, null, '&', PHP_QUERY_RFC3986));
 
 			$tmpClass = $args['class'];
 			foreach($args as &$val){
