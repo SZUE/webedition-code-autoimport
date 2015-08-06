@@ -319,7 +319,6 @@ abstract class we_rebuild_base{
 		//FIXME: add permission
 		$data = array();
 		//FIXME: add classes and templates
-
 		//FIXME: pack this queries into the loop too
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,ModDate,Published FROM ' . FILE_TABLE . ' WHERE
 			ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::CSS . '","' . we_base_ContentTypes::JS . '")

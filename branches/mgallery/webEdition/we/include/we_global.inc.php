@@ -1208,7 +1208,7 @@ function getMysqlVer($nodots = true){
 }
 
 function we_unserialize($string, $default = array(), $quiet = false){
-	if($string && $string[0] === 'x'){
+	if($string && is_string($string) && $string[0] === 'x'){
 		$string = gzuncompress($string);
 	}
 	if($string === ''){
@@ -1216,7 +1216,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 	}
 
 	if(preg_match('|^[asO]:\d+:|', $string)){
-		$ret = unserialize($string);
+		$ret = @unserialize($string);
 		return ($ret === false ? $default : $ret);
 	}
 	if(preg_match('|^[{\[].*[}\]]$|', $string)){

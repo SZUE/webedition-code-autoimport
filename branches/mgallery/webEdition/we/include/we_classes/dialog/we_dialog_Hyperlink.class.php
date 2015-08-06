@@ -227,7 +227,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function initByHttp(){
 		parent::initByHttp();
-		$href = $this->getHttpVar(we_base_request::URL, 'href');
+		$href = $this->getHttpVar(we_base_request::RAW, 'href');
 		$target = $this->getHttpVar(we_base_request::STRING, 'target');
 		$param = $this->getHttpVar(we_base_request::STRING, 'param');
 		$anchor = $this->getHttpVar(we_base_request::STRING, 'anchor');
@@ -250,8 +250,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			}
 		}
 
-		$class = $this->getHttpVar(we_base_request::STRING, "class");
-		$type = $this->getHttpVar(we_base_request::STRING, "type");
+		$class = $this->getHttpVar(we_base_request::STRING, 'class');
+		$type = $this->getHttpVar(we_base_request::STRING, 'type');
 		if($href){
 			$this->initByHref($href, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 		} else if($type){
@@ -269,7 +269,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->initByObjectID($objID, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 				case we_base_link::TYPE_MAIL:
-					$mailhref = $this->getHttpVar(we_base_request::STRING, 'mailHref'); //FIXME mail?
+					$mailhref = $this->getHttpVar(we_base_request::EMAIL, 'mailHref'); //FIXME mail?
 					$this->initByMailHref($mailhref, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 					break;
 			}
@@ -533,7 +533,7 @@ var g_l={
 	wysiwyg_none:"' . g_l('wysiwyg', '[none]') . '"
 };
 var consts={
-	TYPE_INT:"' . TYPE_INT . '"
+	TYPE_INT:"' . we_base_link::TYPE_INT . '"
 };
 var dirs = {
 	WEBEDITION_DIR:"' . WEBEDITION_DIR . '"

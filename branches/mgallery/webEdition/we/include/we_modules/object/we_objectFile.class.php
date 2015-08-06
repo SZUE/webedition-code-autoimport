@@ -2150,11 +2150,12 @@ class we_objectFile extends we_document{
 		if(!$this->TriggerID){
 			$this->TriggerID = f('SELECT TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE);
 			if(!$this->TriggerID){
-				$this->TriggerID = $foo["DefaultTriggerID"];
+				$this->TriggerID = $foo['DefaultTriggerID'];
 			}
 		}
 		$_resaveWeDocumentCustomerFilter = true;
 		$this->correctWorkspaces();
+		$this->correctMultiObject();
 
 		if(!$skipHook){
 			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
@@ -2372,7 +2373,7 @@ class we_objectFile extends we_document{
 		$old = $this->Published;
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
-		if($saveinMainDB && !we_root::we_save()){
+		if(!($saveinMainDB ? we_root::we_save(true) : $this->we_save($DoNotMark))){
 			return false;
 		}
 		if($DoNotMark){
@@ -3218,6 +3219,15 @@ class we_objectFile extends we_document{
 		}
 		echo we_html_multiIconBox::getJS() .
 		we_html_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);
+	}
+
+	private function correctMultiObject(){
+		$this->resetElements();
+		while((list($k, $v) = $this->nextElement(self::TYPE_MULTIOBJECT))){
+			$old = we_unserialize($this->getElement($k));
+			$objects = isset($old['objects']) ? $old['objects'] : $old;
+			$this->setElement($k, implode(',', $objects), 'multiobject');
+		}
 	}
 
 }

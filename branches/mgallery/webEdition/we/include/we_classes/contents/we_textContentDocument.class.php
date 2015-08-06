@@ -298,7 +298,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		$this->oldCategory = f('SELECT Category FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
 
-		if($saveinMainDB && !we_root::we_save(true)){
+		if(!($saveinMainDB ? we_root::we_save(true) : $this->we_save($DoNotMark))){
 			return false; // calls the root function, so the document will be saved in main-db but it will not be written!
 		}
 

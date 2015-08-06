@@ -107,7 +107,7 @@ class we_fragment_base{
 		} else {
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();
-			if(!we_base_file::save($filename, gzcompress(we_serialize($this->alldata,'json'), 6))){
+			if(!we_base_file::save($filename, we_serialize($this->alldata,'json'))){
 				exit('Could not write: ' . $filename);
 			}
 		}

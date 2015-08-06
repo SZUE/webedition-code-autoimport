@@ -119,12 +119,12 @@ abstract class we_rebuild_wizard{
 		$dws = get_def_ws();
 		$btype = we_base_request::_(we_base_request::STRING, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::STRING, 'categories', '');
-		$doctypes = implode(',', we_base_request::_(we_base_request::STRING, 'doctypes', ''));
+		$doctypes = implode(',', we_base_request::_(we_base_request::STRING, 'doctypes', array()));
 		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', ($dws ? : ''));
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$tmptable = false; //we_base_request::_(we_base_request::INT, 'tmptable', 0);
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', ($dws ? : ''));
-		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', ''));
+		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', array()));
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 		$metaFolders = we_base_request::_(we_base_request::STRING, 'metaFolders', ($dws ? : ''));
 		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
@@ -333,11 +333,11 @@ abstract class we_rebuild_wizard{
 	static function getStep2(){
 		$btype = we_base_request::_(we_base_request::STRING, "btype", "rebuild_all");
 		$categories = we_base_request::_(we_base_request::INTLIST, "categories", "");
-		$doctypes = implode(',', we_base_request::_(we_base_request::INT, "doctypes", ''));
+		$doctypes = implode(',', we_base_request::_(we_base_request::INT, "doctypes", array()));
 		$folders = we_base_request::_(we_base_request::INTLIST, "folders", "");
 		$maintable = we_base_request::_(we_base_request::BOOL, "maintable", 0);
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, "thumbsFolders", "");
-		$thumbs = implode(',', we_base_request::_(we_base_request::STRING, "thumbs", ''));
+		$thumbs = implode(',', we_base_request::_(we_base_request::STRING, "thumbs", array()));
 		$catAnd = we_base_request::_(we_base_request::BOOL, "catAnd");
 		$templateID = we_base_request::_(we_base_request::INT, "templateID", 0);
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, "metaFolders", (get_def_ws() ? : ""));
