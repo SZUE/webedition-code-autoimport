@@ -100,7 +100,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['objHref'] = '';
 					$match = array();
 					preg_match('|(subject=([^&]*)&?)?(cc=([^&]*)&?)?(bcc=([^&]*)&?)?|', $this->args['param'], $match);
-					$this->args['mailsubject'] = isset($match[2]) ? $match[2] : '';
+					$this->args['mailsubject'] = isset($match[2]) ? urldecode($match[2]) : '';
 					$this->args['mailcc'] = isset($match[4]) ? $match[4] : '';
 					$this->args['mailbcc'] = isset($match[6]) ? $match[6] : '';
 					break;
@@ -206,7 +206,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$this->args['rev'] = $rev;
 		$match = array();
 		preg_match('|(subject=([^&]*)&?)?(cc=([^&]*)&?)?(bcc=([^&]*)&?)?|', $this->args['param'], $match);
-		$this->args['mailsubject'] = isset($match[2]) ? $match[2] : '';
+		$this->args['mailsubject'] = isset($match[2]) ? urldecode($match[2]) : '';
 		$this->args['mailcc'] = isset($match[4]) ? $match[4] : '';
 		$this->args['mailbcc'] = isset($match[6]) ? $match[6] : '';
 	}
@@ -226,7 +226,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function initByHttp(){
 		parent::initByHttp();
-		$href = $this->getHttpVar(we_base_request::URL, 'href');
+		$href = $this->getHttpVar(we_base_request::RAW, 'href');
 		$target = $this->getHttpVar(we_base_request::STRING, 'target');
 		$param = $this->getHttpVar(we_base_request::STRING, 'param');
 		$anchor = $this->getHttpVar(we_base_request::STRING, 'anchor');
@@ -241,16 +241,16 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		if($href && (strpos($href, "?") !== false || strpos($href, "#") !== false)){
 			$urlparts = parse_url($href);
 
-			if((!$param) && isset($urlparts["query"]) && $urlparts["query"]){
+			if((!$param) && !empty($urlparts["query"])){
 				$param = $urlparts["query"];
 			}
-			if((!$anchor) && isset($urlparts["fragment"]) && $urlparts["fragment"]){
+			if((!$anchor) && !empty($urlparts["fragment"])){
 				$anchor = $urlparts["fragment"];
 			}
 		}
 
-		$class = $this->getHttpVar(we_base_request::STRING, "class");
-		$type = $this->getHttpVar(we_base_request::STRING, "type");
+		$class = $this->getHttpVar(we_base_request::STRING, 'class');
+		$type = $this->getHttpVar(we_base_request::STRING, 'type');
 		if($href){
 			$this->initByHref($href, $target, $class, $param, $anchor, $lang, $hreflang, $title, $accesskey, $tabindex, $rel, $rev);
 		} else if($type){
