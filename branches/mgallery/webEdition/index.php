@@ -69,7 +69,7 @@ function getValueLoginMode($val){
 	}
 }
 
-function printHeader($login, $status = 200){
+function printHeader($login, $status = 200, $js = ''){
 	header('Expires: ' . gmdate('D, d.m.Y H:i:s') . ' GMT');
 	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 	header('Pragma: public');
@@ -140,7 +140,8 @@ function showMessage(message, prio, win){
 				break;
 		}
 	}
-}') .
+}' .
+		$js) .
 	'</head>';
 }
 
@@ -288,7 +289,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	/*	 * ***********************************************************************
 	 * GENERATE NEEDED JAVASCRIPTS
 	 * *********************************************************************** */
-
+$headerjs='';
 	switch($login){
 		case LOGIN_OK:
 			$httpCode = 200;
@@ -317,7 +318,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 					$_body_javascript = 'alert("automatic redirect disabled");';
 				}
 			} else {
-				$_body_javascript .= 'function open_we() {
+				$headerjs = 'function open_we() {
 			var aw=' . (!empty($_SESSION['prefs']['weWidth']) ? $_SESSION['prefs']['weWidth'] : 8000) . ';
 			var ah=' . (!empty($_SESSION['prefs']['weHeight']) ? $_SESSION['prefs']['weHeight'] : 6000) . ';
 			win = new jsWindow("' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(__FILE__, true)) . '", -1, -1, aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
@@ -348,6 +349,6 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 
 	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable));
 
-	printHeader($login, (isset($httpCode) ? $httpCode : 401));
+	printHeader($login, (isset($httpCode) ? $httpCode : 401),$headerjs);
 	echo we_html_element::htmlBody(array('id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }
