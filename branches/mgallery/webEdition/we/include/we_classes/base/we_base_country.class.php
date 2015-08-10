@@ -35,7 +35,7 @@ abstract class we_base_country{
 	private static function loadLang($langcode){
 		$file = WE_INCLUDES_PATH . 'country/' . $langcode . '.inc.php';
 		if(!file_exists($file)){
-		//	echo 'no file' . $file;
+			//	echo 'no file' . $file;
 			return false;
 		}
 
@@ -46,6 +46,7 @@ abstract class we_base_country{
 	}
 
 	public static function getTranslation($countrykey, $type, $langcode){
+		list($langcode) = explode('_', strtolower($langcode), 2);
 		if(!isset(self::$last[$langcode]) && !self::loadLang($langcode)){
 			return '';
 		}
@@ -53,6 +54,7 @@ abstract class we_base_country{
 	}
 
 	public static function getTranslationList($type, $langcode){
+		list($langcode) = explode('_', strtolower($langcode), 2);
 		if(!isset(self::$last[$langcode]) && !self::loadLang($langcode)){
 			return array();
 		}
@@ -60,6 +62,7 @@ abstract class we_base_country{
 	}
 
 	public static function dateformat($langcode, DateTime $date, $format){
+		list($langcode) = explode('_', strtolower($langcode), 2);
 		if(!isset(self::$last[$langcode]) && !self::loadLang($langcode)){
 			return '';
 		}
