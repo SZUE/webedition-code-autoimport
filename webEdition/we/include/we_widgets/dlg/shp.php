@@ -122,20 +122,20 @@ if($sType === "0000"){
 	$sType = "1111";
 }
 
-if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_SEE_CUSTOMER")){
+if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm("EDIT_CUSTOMER") || permissionhandler::hasPerm("NEW_CUSTOMER"))){
 	$oChbxCustomer = we_html_forms::checkbox(
-			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][cnt_new_customer]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{1}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][cnt_new_customer]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm("EDIT_CUSTOMER") || permissionhandler::hasPerm("NEW_CUSTOMER"))), $description = "", $type = 0, $width = 0);
 } else {
 	$oChbxCustomer = "";
 }
 
-if(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")){
+if(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm("NEW_SHOP_ARTICLE") || permissionhandler::hasPerm("DELETE_SHOP_ARTICLE") || permissionhandler::hasPerm("EDIT_SHOP_ORDER") || permissionhandler::hasPerm("DELETE_SHOP_ORDER") || permissionhandler::hasPerm("EDIT_SHOP_PREFS"))){ 
 	$oChbxOrders = we_html_forms::checkbox(
-			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm("CAN_SEE_SHOP")), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{0}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][cnt_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm("NEW_SHOP_ARTICLE") || permissionhandler::hasPerm("DELETE_SHOP_ARTICLE") || permissionhandler::hasPerm("EDIT_SHOP_ORDER") || permissionhandler::hasPerm("DELETE_SHOP_ORDER") || permissionhandler::hasPerm("EDIT_SHOP_PREFS"))), $description = "", $type = 0, $width = 0);
 	$oChbxAverageOrder = we_html_forms::checkbox(
-			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{2}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][revenue_order]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm("NEW_SHOP_ARTICLE") || permissionhandler::hasPerm("DELETE_SHOP_ARTICLE") || permissionhandler::hasPerm("EDIT_SHOP_ORDER") || permissionhandler::hasPerm("DELETE_SHOP_ORDER") || permissionhandler::hasPerm("EDIT_SHOP_PREFS"))), $description = "", $type = 0, $width = 0);
 	$oChbxTarget = we_html_forms::checkbox(
-			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm('CAN_SEE_SHOP')), $description = "", $type = 0, $width = 0);
+			$value = 0, $checked = $sType{3}, $name = "chbx_type", $text = g_l('cockpit', '[shop_dashboard][revenue_target]'), $uniqid = true, $class = "defaultfont", $onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm("NEW_SHOP_ARTICLE") || permissionhandler::hasPerm("DELETE_SHOP_ARTICLE") || permissionhandler::hasPerm("EDIT_SHOP_ORDER") || permissionhandler::hasPerm("DELETE_SHOP_ORDER") || permissionhandler::hasPerm("EDIT_SHOP_PREFS"))), $description = "", $type = 0, $width = 0);
 
 	//$revenueTarget = we_html_forms::textinput($value = "",$name = "input_revenueTarget", $text = "Umsatzziel", $uniqid = true, $class = "defaultfont",$onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm('CAN_SEE_SHOP'), $description = "", $type = 0, $width = 255);
 } else {
