@@ -1257,7 +1257,7 @@ function we_serialize($array, $target = 'serialize', $numeric = false){
 					return $ret;
 				}
 				static $json = null;
-				$json = $json? : new Services_JSON(SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+				$json = $json? : new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
 				return $json->encode($numeric ? array_values($array) : $array, false);
 			}
 		default:

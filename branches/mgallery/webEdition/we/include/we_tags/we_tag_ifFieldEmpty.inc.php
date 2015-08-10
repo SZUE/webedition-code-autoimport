@@ -122,7 +122,7 @@ function we_isFieldNotEmpty($attribs){
 
 			break; //see return of function
 		default :
-			$_tmp = we_unserialize($GLOBALS['lv']->f($match));
+			$_tmp = we_unserialize($GLOBALS['lv']->f($match), '', true);
 			if(is_array($_tmp)){
 				return count($_tmp) > 0;
 			}
