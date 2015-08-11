@@ -102,7 +102,7 @@ class we_listview_document extends we_listview_base{
 		$langArray = $this->languages ? array_filter(array_map('trim', explode(',', $this->languages))) : '';
 
 		$where_lang = ($this->languages ?
-				' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query',$this->languages)) . '") ' :
+				' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query', $this->languages)) . '") ' :
 				'');
 
 		if(stripos($this->order, ' desc') !== false){//was #3849
@@ -118,7 +118,7 @@ class we_listview_document extends we_listview_base{
 
 		$order = array();
 		$tmpOrder = explode(',', $this->order);
-		foreach($tmpOrder as $cnt=>$ord){
+		foreach($tmpOrder as $ord){
 			switch(trim($ord)){
 				case 'we_id':
 					$order[] = FILE_TABLE . '.ID' . ($this->desc ? ' DESC' : '');
@@ -147,7 +147,7 @@ class we_listview_document extends we_listview_base{
 					$order[] = 'fl.position';
 					break;
 				default:
-					//FIXME: this is really no good idea!
+					$cnt = count($this->joins);
 					$this->joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
 					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name="' . $this->DB_WE->escape($ord) . '"';
 					if($this->search){
@@ -191,12 +191,12 @@ class we_listview_document extends we_listview_base{
 
 		if($this->search){
 			if($this->workspaceID){
-				$workspaces = explode(',', $this->workspaceID);
 				$cond = array();
-				foreach($workspaces as $wid){
-					$workspace = id_to_path($wid, FILE_TABLE, $this->DB_WE);
+				$workspaces = array_map('escape_sql_query', id_to_path(explode(',', $this->workspaceID), FILE_TABLE, $this->DB_WE));
+				$cond[] = INDEX_TABLE . '.Workspace IN("' . implode('","', $workspaces) . '")';
+
+				foreach($workspaces as $workspace){
 					$cond[] = INDEX_TABLE . '.Workspace LIKE "' . $workspace . '/%"';
-					$cond[] = INDEX_TABLE . '.Workspace="' . $this->DB_WE->escape($workspace) . '"';
 				}
 				$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
 			}
@@ -215,30 +215,27 @@ class we_listview_document extends we_listview_base{
 						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($bed));
 					}
 					if($not){
-						$bedingungen3_sql[] = ' NOT (' . implode($klammer, ' OR ') . ')';
+						$bedingungen_sql[] = ' NOT (' . implode(' OR ', $klammer) . ')';
 					} else {
-						$bedingungen_sql[] = '(' . implode($klammer, ' OR ') . ')';
+						$bedingungen_sql[] = '(' . implode(' OR ', $klammer) . ')';
 					}
 				} else {
 					$klammer = array();
 					foreach($spalten as $v){
 						$klammer[] = sprintf("%s LIKE '%%%s%%'", $v, addslashes($v1));
 					}
-					$bed2 = '(' . implode($klammer, ' OR ') . ')';
+					$bed2 = '(' . implode(' OR ', $klammer) . ')';
 					$ranking .= '-' . $bed2;
 					$bedingungen2_sql[] = $bed2;
 				}
 			}
 
-			if(isset($bedingungen_sql) && count($bedingungen_sql) > 0){
-				$bedingung_sql1 = ' ( ' . implode(' AND ', $bedingungen_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' AND ' . implode(' AND ', $bedingungen3_sql)) : '') . ' ) ';
-			} else if(isset($bedingungen2_sql) && count($bedingungen2_sql) > 0){
-				$bedingung_sql2 = ' ( ( ' . implode(' OR ', $bedingungen2_sql) . (isset($bedingungen3_sql) && count($bedingungen3_sql) ? (' ) AND ' . implode(' AND ', $bedingungen3_sql)) : ' ) ') . ' ) ';
-			} else if(isset($bedingungen3_sql) && count($bedingungen3_sql) > 0){
-				$bedingung_sql2 = implode(' AND ', $bedingungen3_sql);
+			if(isset($bedingungen2_sql) && $bedingungen2_sql){
+				$bedingung_sql = ' ( ( ' . implode(' OR ', $bedingungen2_sql) . (isset($bedingungen_sql) && $bedingungen_sql ? (' ) AND ' . implode(' AND ', $bedingungen_sql)) : ' ) ') . ' ) ';
+			} else if(isset($bedingungen_sql) && $bedingungen_sql){
+				$bedingung_sql = implode(' AND ', $bedingungen_sql);
 			}
 
-			$bedingung_sql = (isset($bedingung_sql1) ? $bedingung_sql1 : $bedingung_sql2);
 
 			$extraSelect = ',' . ($random ? ' RAND() as RANDOM ' : $ranking . ' AS ranking ') . $calendar_select;
 			$limit = (($this->maxItemsPerPage > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
@@ -247,12 +244,12 @@ class we_listview_document extends we_listview_base{
 				$workspaces = explode(',', $this->workspaceID);
 				if($this->subfolders){ // all entries with given parentIds
 					$cond = array();
-					foreach($workspaces as $wid){
-						$workspace = id_to_path($wid, FILE_TABLE, $this->DB_WE);
+					$workspacePaths = id_to_path($workspaces, FILE_TABLE, $this->DB_WE);
+					foreach($workspacePaths as $workspace){
 						$cond[] = 'Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
 					}
-					$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ' . implode(' OR ', $cond));
-					$workspaces = array_unique(array_merge($workspaces, $this->DB_WE->getAll(true)));
+					$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE IsFolder=1 AND (' . implode(' OR ', $cond) . ')');
+					$workspaces = array_unique($workspaces + $this->DB_WE->getAll(true));
 				}
 				$ws_where = ' AND (ParentID IN (' . implode(', ', $workspaces) . '))';
 			}
