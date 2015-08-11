@@ -79,7 +79,7 @@ function we_tag_listview($attribs){
 
 	$we_lv_numorder = we_base_request::_(we_base_request::BOOL, 'we_lv_numorder_' . $name, weTag_getAttribute('numorder', $attribs, false, we_base_request::BOOL));
 	$id = weTag_getAttribute('id', $attribs, '', we_base_request::STRING);
-	$cond = weTag_getAttribute('condition', $attribs, '', we_base_request::RAW);
+	$cond = weTag_getAttribute('condition', $attribs, '', we_base_request::RAW)? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
 	if($cond && $cond{0} != '$' && isset($GLOBALS[$cond])){
 		$cond = $GLOBALS[$cond];
 	}

@@ -35,7 +35,6 @@ class we_listview_document extends we_listview_base{
 	var $contentTypes = '';
 	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
-	var $defaultCondition = '';
 	var $subfolders = true; // regard subfolders
 	var $customers = '';
 	var $languages = ''; //string of Languages, separated by ,
@@ -92,8 +91,7 @@ class we_listview_document extends we_listview_base{
 			$this->fetchCalendar($condition, $calendar_select, $calendar_where);
 		}
 
-		$this->defaultCondition = $condition;
-		$this->condition = $condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $condition;
 
 		$cond_where = // #3763
 			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ?
@@ -101,19 +99,11 @@ class we_listview_document extends we_listview_base{
 				'');
 
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
+		$langArray = $this->languages ? array_filter(array_map('trim', explode(',', $this->languages))) : '';
 
-		if($this->languages != ''){
-			$where_lang = ' AND (';
-			$langArray = makeArrayFromCSV($this->languages);
-			$where_lang .= FILE_TABLE . '.Language = "" ';
-			for($i = 0; $i < count($langArray); $i++){
-				$where_lang .= ' OR ' . FILE_TABLE . '.Language = "' . $langArray[$i] . '" ';
-			}
-
-			$where_lang .= ' ) ';
-		} else {
-			$where_lang = '';
-		}
+		$where_lang = ($this->languages ?
+				' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query',$this->languages)) . '") ' :
+				'');
 
 		if(stripos($this->order, ' desc') !== false){//was #3849
 			$this->order = str_ireplace(' desc', '', $this->order);
@@ -128,7 +118,7 @@ class we_listview_document extends we_listview_base{
 
 		$order = array();
 		$tmpOrder = explode(',', $this->order);
-		foreach($tmpOrder as $ord){
+		foreach($tmpOrder as $cnt=>$ord){
 			switch(trim($ord)){
 				case 'we_id':
 					$order[] = FILE_TABLE . '.ID' . ($this->desc ? ' DESC' : '');
@@ -157,7 +147,7 @@ class we_listview_document extends we_listview_base{
 					$order[] = 'fl.position';
 					break;
 				default:
-					$cnt = count($order);
+					//FIXME: this is really no good idea!
 					$this->joins[] = ' LEFT JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID LEFT JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
 					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.Name="' . $this->DB_WE->escape($ord) . '"';
 					if($this->search){

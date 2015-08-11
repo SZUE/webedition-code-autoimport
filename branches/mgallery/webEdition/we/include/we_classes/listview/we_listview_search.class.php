@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -32,7 +31,6 @@
  *
  */
 class we_listview_search extends we_listview_base{
-
 	var $docType = ''; /* doctype string */
 	var $class = 0; /* ID of a class. Search only in Objects of this class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
@@ -68,7 +66,7 @@ class we_listview_search extends we_listview_base{
 		$this->hidedirindex = $hidedirindex;
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 
-		$where_lang = ($this->languages ? ' AND Language IN ("' . implode('","', makeArrayFromCSV($this->languages)) . '") ' : '');
+		$where_lang = ($this->languages ? ' AND Language IN ("' . implode('","', array_map('escape_sql_query',array_filter(array_map('trim', explode(',', $this->languages))))) . '") ' : '');
 
 		// correct order
 		$orderArr = array();
@@ -148,7 +146,7 @@ class we_listview_search extends we_listview_base{
 		foreach(preg_split('/ +/', $this->search) as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
 				$bAND[] = (preg_match('|^-|', $v1) ? 'NOT ' : '') .
-						$spalte . ' LIKE "%' . preg_replace('|^[-\+]|', '', $v1) . '%"';
+					$spalte . ' LIKE "%' . preg_replace('|^[-\+]|', '', $v1) . '%"';
 			} else {
 				$bOR[] = $spalte . ' LIKE "%' . $v1 . '%"';
 			}
@@ -173,17 +171,17 @@ class we_listview_search extends we_listview_base{
 		}
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-						we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
-						'');
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
+				'');
 
 		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;
 		$this->DB_WE->query('SELECT 1 FROM ' . INDEX_TABLE . $where);
 		$this->anz_all = $this->DB_WE->num_rows();
 
 		$this->DB_WE->query(
-				'SELECT Category,ID,ID AS DID,ID AS OID,ClassID,Text,Workspace,WorkspaceID,Title,Description,Path,Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
-				'FROM ' . INDEX_TABLE .
-				$where . ' ORDER BY ranking DESC ' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
+			'SELECT Category,ID,ID AS DID,ID AS OID,ClassID,Text,Workspace,WorkspaceID,Title,Description,Path,Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
+			'FROM ' . INDEX_TABLE .
+			$where . ' ORDER BY ranking DESC ' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
@@ -194,21 +192,21 @@ class we_listview_search extends we_listview_base{
 				$objecttriggerid = ($this->triggerID ? : ($objectdaten ? $objectdaten['TriggerID'] : 0));
 
 				$path_parts = ($objecttriggerid ?
-								pathinfo(id_to_path($objecttriggerid)) :
-								pathinfo($_SERVER['SCRIPT_NAME'])
-						);
+						pathinfo(id_to_path($objecttriggerid)) :
+						pathinfo($_SERVER['SCRIPT_NAME'])
+					);
 
 				$pidstr = ($this->DB_WE->Record['WorkspaceID'] ? '?pid=' . intval($this->DB_WE->Record['WorkspaceID']) : '');
 
 				if(NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$this->DB_WE->Record['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
-							($objectdaten['Url'] ?
-									'/' . $objectdaten['Url'] . $pidstr :
-									'/?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
+						($objectdaten['Url'] ?
+							'/' . $objectdaten['Url'] . $pidstr :
+							'/?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
 				} else {
 					$this->DB_WE->Record['WE_PATH'] = ($objectdaten && $objectdaten['Url'] ?
-									($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objectdaten['Url'] . $pidstr :
-									$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
+							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $objectdaten['Url'] . $pidstr :
+							$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $this->DB_WE->Record['ID'] . str_replace('?', '&amp;', $pidstr));
 				}
 				$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'];
 				$this->DB_WE->Record['we_WE_URL'] = $objectdaten ? $objectdaten['Url'] : '';

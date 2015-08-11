@@ -84,7 +84,7 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		$this->searchable = $searchable;
 		$this->docID = $docID; //Bug #3720
 
-		$this->condition = $this->condition ? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
+		$this->condition = $this->condition;
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
@@ -92,7 +92,7 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		$_obxTable = OBJECT_X_TABLE . $this->classID;
 
 		$where_lang = ($this->languages ?
-				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', explode(',', $this->languages)) . '")' :
+				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query',array_filter(array_map('trim', explode(',',  $this->languages))))) . '")' :
 				'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){

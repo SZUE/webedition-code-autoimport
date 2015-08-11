@@ -67,7 +67,7 @@ class we_object_listview extends we_object_listviewBase{
 		$this->customers = $customers;
 		$this->customerArray = array();
 
-		$this->condition = $condition ? : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : '');
+		$this->condition = $condition;
 		$this->languages = $languages ? : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : '');
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
@@ -75,7 +75,7 @@ class we_object_listview extends we_object_listviewBase{
 		$_obxTable = OBJECT_X_TABLE . $this->classID;
 
 		$where_lang = ($this->languages ?
-				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', explode(',', $this->languages)) . '")' :
+				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query',array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
 				'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){

@@ -51,7 +51,7 @@ class we_customer_listview extends we_listview_base{
 		parent::__construct($name, $rows, $offset, $order, $desc, '', false, 0, $cols);
 
 		$this->docID = $docID;
-		$this->condition = $condition ? : (isset($GLOBALS["we_lv_condition"]) ? $GLOBALS["we_lv_condition"] : "");
+		$this->condition = $condition;
 
 		$this->Path = ($this->docID ?
 				id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :

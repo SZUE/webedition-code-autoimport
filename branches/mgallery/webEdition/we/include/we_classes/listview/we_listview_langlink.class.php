@@ -35,7 +35,6 @@ class we_listview_langlink extends we_listview_base{
 	var $linkType = '';
 	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
-	var $defaultCondition = '';
 	var $customerFilterType = false; // shall we control customer-filter?
 	var $subfolders = true; // regard subfolders
 	var $customers = '';
