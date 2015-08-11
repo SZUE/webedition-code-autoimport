@@ -563,7 +563,7 @@ var weFileUpload = (function () {
 
 				if (s) {
 					this.setInternalProgress(100, i);
-					getElementById(_.fieldName + '_progress_image').className = 'progress_finished';
+					document.getElementById(_.fieldName + '_progress_image').className = 'progress_finished';
 				} else {
 					document.getElementById(_.fieldName + '_progress_image' + p).className = 'progress_failed';
 				}

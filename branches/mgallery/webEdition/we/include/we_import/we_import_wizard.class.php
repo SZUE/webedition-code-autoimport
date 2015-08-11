@@ -625,7 +625,7 @@ handle_event("previous");');
 
 			$docPath = weSuggest::getYuiFiles() . $yuiSuggest->getHTML();
 
-			$dir_table = new we_html_table(array('id' => 'doc_table', 'style' => 'margin-left:20px;'), 3, 1);
+			$dir_table = new we_html_table(array('id' => 'doc_table', 'style' => 'margin-left:20px;'), 3, 2);
 			if((isset($v['import_docs']) && !$v['import_docs'])){
 				$dir_table->setStyle('display', 'none');
 			}
