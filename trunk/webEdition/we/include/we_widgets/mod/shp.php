@@ -33,10 +33,10 @@ if(!isset($aCols[5])){
 }
 
 $sKPIs = $aCols[0] ? : array();
-$bOrders = isset($sKPIs[0]) && $sKPIs[0] ? true : false;
-$bCustomer = isset($sKPIs[1]) && $sKPIs[1] ? true : false;
-$bAverageOrder = isset($sKPIs[2]) && $sKPIs[2] ? true : false;
-$bTarget = isset($sKPIs[3]) && $sKPIs[3] ? true : false;
+$bOrders = !empty($sKPIs[0]);
+$bCustomer = !empty($sKPIs[1]);
+$bAverageOrder = !empty($sKPIs[2]);
+$bTarget = !empty($sKPIs[3]);
 
 $iDate = intval($aCols[1]);
 $sRevenueTarget = intval($aCols[2]);
@@ -60,22 +60,22 @@ switch($iDate){
 		break;
 	case 3 : //dieser monat
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) AND MONTH(DateOrder) = MONTH(CURDATE()))';
-		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(NOW()) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()))';
+		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(CURDATE()) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()))';
 		$interval = g_l('cockpit', '[this_month]');
 		break;
 	case 4 : //letzter monat
-		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(NOW()-INTERVAL 1 MONTH) AND MONTH(DateOrder) = MONTH(NOW()-INTERVAL 1 MONTH))';
-		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(NOW()-INTERVAL 1 MONTH) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()-INTERVAL 1 MONTH))';
+		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()-INTERVAL 1 MONTH) AND MONTH(DateOrder) = MONTH(CURDATE()-INTERVAL 1 MONTH))';
+		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(CURDATE()-INTERVAL 1 MONTH) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()-INTERVAL 1 MONTH))';
 		$interval = g_l('cockpit', '[last_month]');
 		break;
 	case 5 : //dieses jahr
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()))';
-		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(NOW()))';
+		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()))';
 		$interval = g_l('cockpit', '[this_year]');
 		break;
 	case 6 : //letztes jahr
 		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) - 1)';
-		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = (YEAR(NOW())-1))';
+		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = (YEAR(CURDATE())-1))';
 		$interval = g_l('cockpit', '[last_year]');
 		break;
 }
@@ -168,7 +168,7 @@ if(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm("NEW_SHOP_ARTICL
 	}
 }
 
-if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm("EDIT_CUSTOMER") || permissionhandler::hasPerm("NEW_CUSTOMER"))){
+if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')){
 	$queryCustomer = ' FROM ' . CUSTOMER_TABLE . '	WHERE ' . $timestampCustomer;
 
 	if(($maxRowsCustomer = f('SELECT COUNT(1) ' . $queryCustomer))){
@@ -303,7 +303,7 @@ if($bTarget){
 
 			addLoadEvent( function() {
 				var options;
-				var widgetDoc = typeof widgetFrame !== 'undefined' ? widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
+	var widgetDoc = window.widgetFrame !== undefined ? window.widgetFrame.document : " . ($isRefresh ? 'parent.document' : 'document') . ";
 
 				// Draw the gauge using custom settings
 				options = {
