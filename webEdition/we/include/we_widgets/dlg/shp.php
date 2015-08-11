@@ -41,8 +41,8 @@ function init(){
 	_fo=document.forms[0];
 	_oCsv_=opener.gel(_sObjId+'_csv')
 	_sInitCsv_=_oCsv_.value;
-	_oSctDate=_fo.elements['sct_date'];
-	_fo.elements['revenueTarget'].value=_sInitNum;
+	_oSctDate=_fo.elements.sct_date;
+	_fo.elements.revenueTarget.value=_sInitNum;
 	initPrefs();
 	//alert('form: ' + _fo.name);
 }
@@ -59,12 +59,12 @@ function getBinary(postfix){
 
 
 function getCsv(){
-	return getBinary('type')+';'+_oSctDate.selectedIndex+';'+_fo.elements['revenueTarget'].value;
+	return getBinary('type')+';'+_oSctDate.selectedIndex+';'+_fo.elements.revenueTarget.value;
 }
 
 function refresh(bRender){
 	if(bRender)_sLastPreviewCsv=getCsv();
-	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,document.forms[0].elements['revenueTarget'].value,'','',_sObjId,_sShpInc);
+	opener.rpc(getBinary('type'),_oSctDate.selectedIndex,document.forms[0].elements.revenueTarget.value,'','',_sObjId,_sShpInc);
 }
 
 function save(){
@@ -110,9 +110,7 @@ function exit_close(){
 	}
 	exitPrefs();
 	self.close();
-}
-
-";
+}";
 
 // Typ block
 while(strlen($sType) < 4){
@@ -139,9 +137,7 @@ if(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm("NEW_SHOP_ARTICL
 
 	//$revenueTarget = we_html_forms::textinput($value = "",$name = "input_revenueTarget", $text = "Umsatzziel", $uniqid = true, $class = "defaultfont",$onClick = "", $disabled = !(defined('WE_SHOP_MODULE_DIR') && permissionhandler::hasPerm('CAN_SEE_SHOP'), $description = "", $type = 0, $width = 255);
 } else {
-	$oChbxOrders = "";
-	$oChbxAverageOrder = "";
-	$oChbxTarget = "";
+	$oChbxOrders = $oChbxAverageOrder = $oChbxTarget = "";
 }
 
 $oDbTableType = new we_html_table(array(
