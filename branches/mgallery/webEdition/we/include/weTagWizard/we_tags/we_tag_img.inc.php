@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -8,7 +7,14 @@ $this->Groups[] = 'input_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_textAttribute('name', false, '');
-$this->Attributes[] = new weTagData_choiceAttribute('only', array(new weTagDataOption('width', false, ''), new weTagDataOption('height', false, ''), new weTagDataOption('alt', false, ''), new weTagDataOption('src', false, '')), false, true, '');
+$this->Attributes[] = new weTagData_choiceAttribute('only', array(
+	new weTagDataOption('width', false, ''),
+	new weTagDataOption('height', false, ''),
+	new weTagDataOption('alt', false, ''),
+	new weTagDataOption('src', false, ''),
+	new weTagDataOption('id', false, ''),
+	new weTagDataOption('path', false, ''),
+	), false, true, '');
 if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, 'image/*', false, '');
 }

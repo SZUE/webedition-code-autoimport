@@ -252,109 +252,102 @@ if(!empty($_REQUEST['email'])){
 	}
 }
 
-$email = (!empty($_REQUEST['email'])) ?
-	$_REQUEST['email'] :
-	((!empty($_REQUEST['from'])) ?
-		$_REQUEST['from'] :
-		WE_DEFAULT_EMAIL);
+$email = preg_replace("/(\\n+|\\r+)/", '', (!empty($_REQUEST['email'])) ?
+		$_REQUEST['email'] :
+		((!empty($_REQUEST['from'])) ?
+			$_REQUEST['from'] :
+			WE_DEFAULT_EMAIL));
 
-$subject = we_base_request::_(we_base_request::STRING, 'subject', WE_DEFAULT_SUBJECT);
-$charset = str_replace(array("\n", "\r"), '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET']));
+$subject = preg_replace("/(\\n+|\\r+)/", '', we_base_request::_(we_base_request::STRING, 'subject', WE_DEFAULT_SUBJECT));
+$charset = preg_replace("/(\\n+|\\r+)/", '', str_replace(array("\n", "\r"), '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET'])));
 $recipient = (!empty($_REQUEST['recipient'])) ? $_REQUEST['recipient'] : '';
-$from = (!empty($_REQUEST['from'])) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL;
-
+$from = preg_replace("/(\\n+|\\r+)/", '', (!empty($_REQUEST['from'])) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL);
 $mimetype = we_base_request::_(we_base_request::STRING, 'mimetype', '');
+$fromMail = preg_replace("/(\\n+|\\r+)/", '', (we_base_request::_(we_base_request::BOOL, 'forcefrom') ? $from : $email));
 
 $wasSent = false;
 
-if($recipient){
-	$subject = preg_replace("/(\\n+|\\r+)/", '', $subject);
-	$charset = preg_replace("/(\\n+|\\r+)/", '', $charset);
-	$fromMail = preg_replace("/(\\n+|\\r+)/", '', (we_base_request::_(we_base_request::BOOL, 'forcefrom') ? $from : $email));
-	$email = preg_replace("/(\\n+|\\r+)/", '', $email);
-	$from = preg_replace("/(\\n+|\\r+)/", '', $from);
+if(!$recipient){
+	print_error(g_l('global', '[email_no_recipient]'));
+}
 
-	contains_bad_str($email);
-	contains_bad_str($from);
-	contains_bad_str($fromMail);
-	contains_bad_str($subject);
-	contains_bad_str($charset);
+contains_bad_str($email);
+contains_bad_str($from);
+contains_bad_str($fromMail);
+contains_bad_str($subject);
+contains_bad_str($charset);
 
-	if(!we_check_email($fromMail)){
+if(!we_check_email($fromMail)){
+	print_error(g_l('global', '[email_invalid]'));
+}
+
+$recipients = makeArrayFromCSV($recipient);
+$senderForename = we_base_request::_(we_base_request::STRING, 'forename', '');
+$senderSurname = we_base_request::_(we_base_request::STRING, 'surname', '');
+$sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
+
+$phpmail = new we_util_Mailer('', $subject, $sender);
+$phpmail->setCharSet($charset);
+
+$recipientsList = array();
+
+foreach($recipients as $recipientID){
+	$recipient = preg_replace("/(\\n+|\\r+)/", '', (is_numeric($recipientID) ?
+			f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID)) :
+			// backward compatible
+			$recipientID)
+	);
+
+	if(!$recipient){
+		print_error(g_l('global', '[email_no_recipient]'));
+	}
+	if(!we_check_email($recipient)){
 		print_error(g_l('global', '[email_invalid]'));
 	}
 
-	$recipients = makeArrayFromCSV($recipient);
-	$senderForename = we_base_request::_(we_base_request::STRING, 'forename', '');
-	$senderSurname = we_base_request::_(we_base_request::STRING, 'surname', '');
-	$sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $senderSurname . '<' . $fromMail . '>' : $fromMail);
+	if(we_check_email($recipient) && check_recipient($recipient)){
+		$recipientsList[] = $recipient;
+	} else {
+		print_error(g_l('global', '[email_recipient_invalid]'));
+	}
+}
 
-	$phpmail = new we_util_Mailer('', $subject, $sender);
-	$phpmail->setCharSet($charset);
-
-	$recipientsList = array();
-
-	foreach($recipients as $recipientID){
-
-		$recipient = preg_replace("/(\\n+|\\r+)/", '', (is_numeric($recipientID) ?
-				f('SELECT Email FROM ' . RECIPIENTS_TABLE . ' WHERE ID=' . intval($recipientID), 'Email', $GLOBALS['DB_WE']) :
-				// backward compatible
-				$recipientID)
-		);
-
-		if(!$recipient){
-			print_error(g_l('global', '[email_no_recipient]'));
+if($recipientsList){
+	foreach($_FILES as $file){
+		if(!empty($file['tmp_name'])){
+			$tempName = TEMP_PATH . $file['name'];
+			move_uploaded_file($file['tmp_name'], $tempName);
+			$phpmail->doaddAttachment($tempName);
 		}
-		if(!we_check_email($recipient)){
+	}
+	$phpmail->addAddressList($recipientsList);
+	if($mimetype === 'text/html'){
+		$phpmail->addHTMLPart($we_html);
+	} else {
+		$phpmail->addTextPart($we_txt);
+	}
+	$phpmail->buildMessage();
+	if($phpmail->Send()){
+		$wasSent = true;
+	}
+}
+
+if((!empty($_REQUEST['confirm_mail'])) && FORMMAIL_CONFIRM){
+	if($wasSent){
+		// validation
+		if(!we_check_email($email)){
 			print_error(g_l('global', '[email_invalid]'));
 		}
-
-		if(we_check_email($recipient) && check_recipient($recipient)){
-			$recipientsList[] = $recipient;
-		} else {
-			print_error(g_l('global', '[email_recipient_invalid]'));
-		}
-	}
-
-	if($recipientsList){
-		foreach($_FILES as $file){
-			if(!empty($file['tmp_name'])){
-				$tempName = TEMP_PATH . $file['name'];
-				move_uploaded_file($file['tmp_name'], $tempName);
-				$phpmail->doaddAttachment($tempName);
-			}
-		}
-		$phpmail->addAddressList($recipientsList);
+		$phpmail = new we_util_Mailer($email, $subject, $from);
+		$phpmail->setCharSet($charset);
 		if($mimetype === 'text/html'){
-			$phpmail->addHTMLPart($we_html);
+			$phpmail->addHTMLPart($we_html_confirm);
 		} else {
-			$phpmail->addTextPart($we_txt);
+			$phpmail->addTextPart($we_txt_confirm);
 		}
 		$phpmail->buildMessage();
-		if($phpmail->Send()){
-			$wasSent = true;
-		}
+		$phpmail->Send();
 	}
-
-	if((!empty($_REQUEST['confirm_mail'])) && FORMMAIL_CONFIRM){
-		if($wasSent){
-			// validation
-			if(!we_check_email($email)){
-				print_error(g_l('global', '[email_invalid]'));
-			}
-			$phpmail = new we_util_Mailer($email, $subject, $from);
-			$phpmail->setCharSet($charset);
-			if($mimetype === 'text/html'){
-				$phpmail->addHTMLPart($we_html_confirm);
-			} else {
-				$phpmail->addTextPart($we_txt_confirm);
-			}
-			$phpmail->buildMessage();
-			$phpmail->Send();
-		}
-	}
-} else {
-	print_error(g_l('global', '[email_no_recipient]'));
 }
 
 ok_page($subject);

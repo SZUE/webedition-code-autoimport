@@ -975,7 +975,11 @@ function setLocation(loc){
 			$_down = $_SESSION['weS']['weBackupVars']['backup_file'];
 			if(is_file($_SESSION['weS']['weBackupVars']['backup_file'])){
 //Note: we show a link for external download - do we need this?
-				$_link = getServerUrl(true) . str_replace($_SERVER['DOCUMENT_ROOT'], '', $_down);
+
+				$_link = WEBEDITION_PATH . 'showTempFile.php?' . http_build_query(array(
+						'file' => str_replace(WEBEDITION_DIR, '', $_down),
+						'binary' => 1
+				));
 
 				$content.=we_html_element::htmlDiv(array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
 						we_html_element::htmlA(array('href' => $_link, 'download' => basename($_down)), g_l('backup', '[download_file]'))

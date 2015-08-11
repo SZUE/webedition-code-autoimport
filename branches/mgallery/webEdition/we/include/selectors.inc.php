@@ -199,7 +199,7 @@ switch($class){
 		$fs = new we_selector_document($id, $table, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::RAW, 'order', ''), 0, we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::RAW, 'we_FolderText', ''), $filter, $rootDirID, $open_doc ? ($table == (defined('FILE_TABLE') ? FILE_TABLE : 'FF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') : ($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') : false)) : false, $multiple, $canSelectDir);
 		break;
 	case 'we_selector_directory':
-		if(($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2))){
+		if(($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2))){
 			$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 			$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 			$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
@@ -226,7 +226,7 @@ switch($class){
 		$fs = new we_selector_delete($id, $table);
 		break;
 	case 'we_selector_file':
-		if(($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2))){
+		if(($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2))){
 			$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 			$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 			$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
