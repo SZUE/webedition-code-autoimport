@@ -618,7 +618,7 @@ abstract class we_root extends we_class{
 			foreach($_languages as $langkey => $lang){
 				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
 				$LDID = !empty($this->LangLinks[$langkey]['id']) && $this->LangLinks[$langkey]['id'] !== -1 ? $this->LangLinks[$langkey]['id'] : 0;
-				$path = $LDID ? $this->LangLinks[$langkey]['ipath'] : '';
+				$path = $LDID ? $this->LangLinks[$langkey]['path'] : '';
 
 				$htmlzw.= '<div id="' . $divname . '" ' . ($this->Language == $langkey ? ' style="display:none" ' : '') . '>' . $this->formInputLangLink($lang, $langkey, $LDID, $path) . '</div>';
 				$langkeys[] = $langkey;
