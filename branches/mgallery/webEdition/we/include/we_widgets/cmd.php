@@ -27,7 +27,6 @@ we_html_tools::protect();
 $cmd1 = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 1);
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case 'save' :
-		t_e('call');
 		we_base_preferences::setUserPref('cockpit_dat', $cmd1);
 		we_base_preferences::setUserPref('cockpit_rss', we_base_request::_(we_base_request::SERIALIZED_KEEP, 'we_cmd', '', 2));
 		break;
