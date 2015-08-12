@@ -697,7 +697,7 @@ we_templateInit();?>';
 					// if path is set - look for the id of the template
 					if(!empty($att['path'])){
 						// get id of template
-						$templId = path_to_id($att['path'], TEMPLATES_TABLE);
+						$templId = path_to_id($att['path'], TEMPLATES_TABLE, $GLOBALS['DB_WE']);
 						if($templId){
 							$att['id'] = $templId;
 						} elseif(!isset($att['id'])){

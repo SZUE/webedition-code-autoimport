@@ -199,6 +199,6 @@ function we_tag_include($attribs){//FIXME: include doesn't work in editmode - ch
 
 	return 'we_setBackVar(' . $we_unique . ');' .
 		$content .
-		($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path)), 'include') . '\';' : '') .
+		($isSeemode && $seeMode && ($id || $path) ? 'echo \'' . we_SEEM::getSeemAnchors(($id ? : path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE'])), 'include') . '\';' : '') .
 		'we_resetBackVar(' . $we_unique . ');';
 }

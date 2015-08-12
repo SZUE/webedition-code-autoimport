@@ -361,7 +361,7 @@ class we_navigation_item{
 						}
 						break;
 					case 'image' :
-						$_iconid = path_to_id($this->icon, FILE_TABLE);
+						$_iconid = path_to_id($this->icon, FILE_TABLE, $GLOBALS['DB_WE']);
 						if($_iconid){
 							$attribs['src'] = $this->icon;
 							$useFields = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title');

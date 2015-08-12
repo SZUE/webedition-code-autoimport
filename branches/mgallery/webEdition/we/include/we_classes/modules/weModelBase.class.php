@@ -87,7 +87,7 @@ class weModelBase{
 	/**
 	 * save entry in database
 	 */
-	function save($force_new = false, $isAdvanced = false){
+	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
 		$sets = array();
 		if($force_new){
 			$this->isnew = true;
@@ -95,7 +95,7 @@ class weModelBase{
 		foreach($this->persistent_slots as $key => $val){
 			$val = ($isAdvanced ? $key : $val);
 			if(isset($this->{$val})){
-				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}) : $this->{$val};
+				$sets[$val] = is_array($this->{$val}) ? we_serialize($this->{$val}, ($jsonSer ? 'json' : 'serialize')) : $this->{$val};
 			}
 		}
 		$where = $this->getKeyWhere();
@@ -154,7 +154,7 @@ class weModelBase{
 					'remTable' => stripTblPrefix(FILE_TABLE),
 					'position' => 0,
 					'isTemp' => 0
-				)));
+			)));
 		}
 	}
 

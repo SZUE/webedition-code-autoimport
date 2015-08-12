@@ -57,7 +57,7 @@ class we_import_files{
 				// bugfix Workarround #700
 				$cats[] = (is_numeric($cat) ?
 						$cat :
-						path_to_id($cat, CATEGORY_TABLE));
+						path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
 			}
 			$_REQUEST['categories'] = implode(',', $cats);
 			$this->categories = $cats;

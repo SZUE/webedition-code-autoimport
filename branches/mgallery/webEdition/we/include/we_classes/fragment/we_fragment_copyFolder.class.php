@@ -36,15 +36,15 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 		$CreateTemplateInFolderID = we_base_request::_(we_base_request::INT, 'CreateTemplateInFolderID', 0);
 		$OverwriteCategories = we_base_request::_(we_base_request::BOOL, 'OverwriteCategories', false);
-		$newCategories = array();
+		$vals = array();
 		foreach($_REQUEST as $name => $val){
 			if(!is_array($val)){
 				if(preg_match('%^me(.*)variant0_me(.*)_item%i', $name)){
-					$newCategories[] = path_to_id($val, CATEGORY_TABLE);
+					$vals[] = $val;
 				}
 			}
 		}
-		$newCategories = implode(',', $newCategories);
+		$newCategories = path_to_id($vals, CATEGORY_TABLE, $GLOBALS['DB_WE']);
 
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
 			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
@@ -705,7 +705,7 @@ function fsubmit(e) {
 			'class' => 'default',
 			), 5, 2);
 
-		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100, 'style'=>'padding-top:5px;'), g_l('copyFolder', '[categories]'));
+		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100, 'style' => 'padding-top:5px;'), g_l('copyFolder', '[categories]'));
 		$table->setCol(1, 1, array('class' => 'defaultfont'), we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
 		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(
 				array(
@@ -714,7 +714,7 @@ function fsubmit(e) {
 					'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
 
-		$table->setCol(4, 0, array('colspan' => 2, 'style'=>'text-align:right;padding-top:5px;'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
+		$table->setCol(4, 0, array('colspan' => 2, 'style' => 'text-align:right;padding-top:5px;'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . $js;
 	}

@@ -112,7 +112,7 @@ abstract class we_navigation_dynList{
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$_cats = array();
 		foreach($categories as $cat){
-			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE));
+			$cat = is_numeric($cat) ? $cat : $_db->escape(path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
 			$_cats[] = 'FIND_IN_SET('.$cat.',Category)'; //bug #6729
 		}
 

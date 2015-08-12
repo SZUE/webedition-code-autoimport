@@ -165,7 +165,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$object->Path = we_base_file::clearPath($object->Path);
 
 					//fix Path if there is a conflict
-					$id = path_to_id($object->Path, $object->Table);
+					$id = path_to_id($object->Path, $object->Table, $GLOBALS['DB_WE']);
 
 					if($id){
 						if($this->options["handle_collision"] === "replace" ||
@@ -324,7 +324,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$newid = f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' t WHERE t.Name="' . escape_sql_query($newname) . '"', '', new DB_WE());
 					break;
 				default:
-					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . "/" . $newname), $object->Table);
+					$newid = path_to_id(we_base_file::clearPath(dirname($object->Path) . '/' . $newname), $object->Table, FILE_TABLE, $GLOBALS['DB_WE']);
 			}
 		} while($newid);
 		$this->renameObject($object, $newname);
@@ -542,7 +542,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 					$newowners[] = $own;
 				}
 			}
-			$object->Owners = implode(',',$newowners);
+			$object->Owners = implode(',', $newowners);
 			if(isset($object->OwnersReadOnly)){
 				$readonly = we_unserialize($object->OwnersReadOnly);
 				$readonly_new = array();
@@ -739,7 +739,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		foreach($patharr as $elem){
 			if($elem != '' && $elem != '/'){
 				$mkpath .= '/' . $elem;
-				$id = path_to_id($mkpath, $table);
+				$id = path_to_id($mkpath, $table, $GLOBALS['DB_WE']);
 				if(!$id){
 					$new = new we_folder();
 					$new->Text = $elem;

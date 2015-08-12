@@ -48,7 +48,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		foreach($this->PatternSearch->doc_patterns["path"] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $path){
-					$include = path_to_id($path);
+					$include = path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE']);
 					$this->addToDepArray($level, $include);
 				}
 			}
@@ -84,7 +84,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 					foreach($match[2] as $external){
 						$path = $this->isPathLocal($external);
 						if($path && $path != '/'){
-							$id = path_to_id($path);
+							$id = path_to_id($path, FILE_TABLE, $GLOBALS['DB_WE']);
 							$this->addToDepArray($level, $id, (!empty($id) ? '' : 'weBinary'));
 						}
 					}
@@ -334,7 +334,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 				}
 				if(preg_match('|we_object_[0-9]+_path|', $key)){
 					if(isset($value['dat'])){
-						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE), 'objectFile');
+						$this->addToDepArray($level, path_to_id($value['dat'], OBJECT_FILES_TABLE, $GLOBALS['DB_WE']), 'objectFile');
 					}
 				}
 

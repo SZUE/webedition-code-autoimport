@@ -299,36 +299,17 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 	return false;
 }
 
-function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null){
-	//FIXME: make them all use $db at call
-	if($path === '/'){
-		return 0;
+function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $asArray = false){
+	if(empty($path)){
+		return $asArray ? array() : '';
+	}
+	if(!is_array($path)){
+		$path = array($path);
 	}
 	$db = ($db ? : new DB_WE());
-	return intval(f('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '" LIMIT 1', '', $db));
-}
-
-function weConvertToIds($paths, $table){
-	if(!is_array($paths)){
-		return array();
-	}
-	$paths = array_unique($paths);
-	$ids = array();
-	foreach($paths as $p){
-		$ids[] = path_to_id($p, $table);
-	}
-	return $ids;
-}
-
-function path_to_id_ct($path, $table, &$contentType){
-	if($path === '/'){
-		return 0;
-	}
-	$db = new DB_WE();
-	$res = getHash('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '"', $db);
-	$contentType = isset($res['ContentType']) ? $res['ContentType'] : null;
-
-	return intval(isset($res['ID']) ? $res['ID'] : 0);
+	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path IN ("' . implode('","', array_map('escape_sql_query', array_map('trim', $path))) . '")');
+	$ret = (in_array('/', $path) ? array(0) : array()) + $db->getAll(true);
+	return $asArray ? $ret : implode(',', $ret);
 }
 
 function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $prePostKomma = false, $asArray = false, $endslash = false, $isPublished = false){

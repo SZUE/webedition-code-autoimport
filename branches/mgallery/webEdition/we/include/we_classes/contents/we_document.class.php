@@ -187,7 +187,7 @@ class we_document extends we_root{
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('module_navigation_edit_navi',0)", true, 100, 22, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $this->ID && $this->Published) ? false : true, false);
 
 		if(permissionhandler::hasPerm('EDIT_NAVIGATION') && $isSee){
-			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, 0, 0, "", "", (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
+			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:if(confirm('" . g_l('navigation', '[dellall_question]') . "')) we_cmd('delete_all_navi')", true, 0, 0, '', '', (permissionhandler::hasPerm('EDIT_NAVIGATION') && $navItems) ? false : true);
 		} else {
 			$delallbut = '';
 		}
@@ -195,7 +195,7 @@ class we_document extends we_root{
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
 		foreach($NoDelNavis as $_path){
-			$_id = path_to_id($_path, NAVIGATION_TABLE);
+			$_id = path_to_id($_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
 			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
 				if(($pos = array_search($_path, $NoDelNavis)) === false){
@@ -236,9 +236,8 @@ class we_document extends we_root{
 			}
 			$_ord = ($ordn === 'end' ? -1 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
-			$_ppath = id_to_path($parentid, NAVIGATION_TABLE);
-			$_new_path = rtrim($_ppath, '/') . '/' . $text;
-			$id = $id? : path_to_id($_new_path, NAVIGATION_TABLE);
+			$new_path = rtrim(id_to_path($parentid, NAVIGATION_TABLE), '/') . '/' . $text;
+			$id = $id? : path_to_id($new_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
 
 			$_naviItem = new we_navigation_navigation($id);
 
@@ -246,7 +245,7 @@ class we_document extends we_root{
 			$_naviItem->ParentID = $parentid;
 			$_naviItem->LinkID = $this->ID;
 			$_naviItem->Text = $text;
-			$_naviItem->Path = $_new_path;
+			$_naviItem->Path = $new_path;
 			if(NAVIGATION_ENTRIES_FROM_DOCUMENT){
 				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
 				$_naviItem->SelectionType = we_navigation_navigation::STPYE_DOCLINK;
@@ -269,7 +268,7 @@ class we_document extends we_root{
 		if(($pos = array_search($path, $navis)) === false){
 			return;
 		}
-		$_id = path_to_id($path, NAVIGATION_TABLE);
+		$_id = path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
 		$_naviItem = new we_navigation_navigation($_id);
 		if(!$_naviItem->hasAnyChilds()){
 			$_naviItem->delete();
@@ -280,7 +279,7 @@ class we_document extends we_root{
 	function delAllNavi(){
 		$navis = $this->getNavigationItems();
 		foreach($navis as $_path){
-			$_id = path_to_id($_path, NAVIGATION_TABLE);
+			$_id = path_to_id($_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
 			$_naviItem = new we_navigation_navigation($_id);
 			if(!$_naviItem->hasAnyChilds()){
 				$_naviItem->delete();

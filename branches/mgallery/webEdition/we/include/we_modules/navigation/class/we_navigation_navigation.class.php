@@ -243,16 +243,16 @@ class we_navigation_navigation extends weModelBase{
 
 		$this->Text = self::encodeSpecChars($this->Text);
 		$_paths = $this->Categories;
-		$this->Categories = implode(',', weConvertToIds($this->Categories, CATEGORY_TABLE));
+		$this->Categories = path_to_id($this->Categories, CATEGORY_TABLE, $this->db);
 
 		$_preSort = $this->Sort;
 		if(is_array($this->Sort)){
-			$this->Sort = $this->Sort ? we_serialize($this->Sort) : '';
+			$this->Sort = $this->Sort ? we_serialize($this->Sort, 'json') : '';
 		}
 		$this->setPath();
 
 		if($order){
-			$_ord_count = f('SELECT COUNT(ID) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
+			$_ord_count = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 			if($this->ID == 0){
 				$this->Ordn = $_ord_count;
 			} else {
@@ -269,28 +269,20 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_preAttrib = $this->Attributes;
 		if(is_array($this->Attributes)){
-			$this->Attributes = serialize(array_filter($this->Attributes));
+			$this->Attributes = we_serialize(array_filter($this->Attributes), 'json');
 		}
 
 		if(defined('CUSTOMER_TABLE') && $this->LimitAccess){
-			$_cus_paths = $this->Customers;
-			$_bl_paths = $this->BlackList;
-			$_wl_paths = $this->WhiteList;
+			$save = array($this->Customers, $this->BlackList, $this->WhiteList);
 			$this->WhiteList = implode(',', $this->WhiteList);
 			$this->BlackList = implode(',', $this->BlackList);
 			$this->Customers = implode(',', $this->Customers);
-			$this->CustomerFilter = we_serialize($this->CustomerFilter);
 		} else {
-			$_cus_paths = array();
-			$_bl_paths = array();
-			$_wl_paths = array();
-			$this->Customers = '';
-			$this->WhiteList = '';
-			$this->BlackList = '';
-			$this->CustomerFilter = '';
+			$save = array(array(), array(), array());
+			$this->Customers = $this->WhiteList = $this->BlackList = $this->CustomerFilter = '';
 		}
 
-		if(($res = parent::save(false, true))){
+		if(($res = parent::save(false, true, true))){
 			$this->registerMediaLinks();
 		}
 
@@ -310,10 +302,7 @@ class we_navigation_navigation extends weModelBase{
 		$this->Attributes = $_preAttrib;
 
 		if(defined('CUSTOMER_TABLE')){
-			$this->Customers = $_cus_paths;
-			$this->WhiteList = $_wl_paths;
-			$this->BlackList = $_bl_paths;
-			$this->CustomerFilter = we_unserialize($this->CustomerFilter);
+			list($this->Customers, $this->BlackList, $this->WhiteList) = $save;
 		}
 		$this->Name = $this->Text;
 		if(!$rebuild){
@@ -680,7 +669,7 @@ class we_navigation_navigation extends weModelBase{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -692,7 +681,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;

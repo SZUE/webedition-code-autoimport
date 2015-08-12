@@ -2408,14 +2408,14 @@ HTS;
 		$tid = we_base_request::_(we_base_request::INT, 'v', 0, 'we_TemplateID');
 		$tname = we_base_request::_(we_base_request::FILE, 'v', '', 'we_TemplateName');
 		if($tname && !$tid){
-			$_REQUEST["v"]['we_TemplateID'] = path_to_id($tname, TEMPLATES_TABLE);
+			$_REQUEST["v"]['we_TemplateID'] = path_to_id($tname, TEMPLATES_TABLE, $GLOBALS['DB_WE']);
 		}
 
-		$v = we_base_request::_(we_base_request::STRING, "v");
+		$v = we_base_request::_(we_base_request::STRING, 'v');
 
-		$records = we_base_request::_(we_base_request::RAW, "records", array());
-		$we_flds = we_base_request::_(we_base_request::STRING, "we_flds", array());
-		$attrs = we_base_request::_(we_base_request::STRING, "attrs", array());
+		$records = we_base_request::_(we_base_request::RAW, 'records', array());
+		$we_flds = we_base_request::_(we_base_request::STRING, 'we_flds', array());
+		$attrs = we_base_request::_(we_base_request::STRING, 'attrs', array());
 
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . we_base_request::_(we_base_request::FILE, 'v', '', "import_from");
 		if(file_exists($csvFile) && is_readable($csvFile)){

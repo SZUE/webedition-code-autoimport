@@ -30,7 +30,7 @@ $_input_size = 440;
 
 $_path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
 
-$_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE) : 0;
+$_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']) : 0;
 
 $_navi = new we_navigation_navigation($_id);
 

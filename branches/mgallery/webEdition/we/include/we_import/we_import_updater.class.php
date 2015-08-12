@@ -34,7 +34,7 @@ class we_import_updater extends we_exim_XMLExIm{
 
 	public function updateObject(/* we_document */ &$object){ //FIXME: imported types are not of type we_document
 		if($this->debug){
-			t_e("Updating object", $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
+			t_e('Updating object', $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
 		}
 
 		$this->Patterns = new we_exim_searchPatterns();
@@ -71,13 +71,13 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 
 		if($this->debug){
-			t_e("Updating TemplateID property");
+			t_e('Updating TemplateID property');
 		}
 		if(!empty($object->TemplateID)){
 			$ref = $this->RefTable->getRef(
 				array(
-					"OldID" => $object->TemplateID,
-					"ContentType" => we_base_ContentTypes::TEMPLATE
+					'OldID' => $object->TemplateID,
+					'ContentType' => we_base_ContentTypes::TEMPLATE
 				)
 			);
 			if($ref){
@@ -91,8 +91,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				);
 				if($ref && isset($ref->OldTemplatePath)){
 					$tpath = we_base_file::clearPath(preg_replace('|^.+' . ltrim(TEMPLATES_DIR, '/') . '|i', '', $ref->OldTemplatePath));
-					$id = path_to_id($tpath, TEMPLATES_TABLE);
-					if($id){
+					if(($id = path_to_id($tpath, TEMPLATES_TABLE, $GLOBALS['DB_WE']))){
 						$object->TemplateID = $id;
 					}
 				}
@@ -117,7 +116,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 
 		if($this->debug){
-			t_e("Updating Category property");
+			t_e('Updating Category property');
 		}
 		if(isset($object->Category) && $object->ClassName != "we_category"){
 			$cats = makeArrayFromCSV($object->Category);
@@ -227,7 +226,7 @@ class we_import_updater extends we_exim_XMLExIm{
 								$objid = $objref->ID;
 								$objpath = $objref->Path;
 							} else {
-								$objid = path_to_id($objpath, OBJECT_FILES_TABLE);
+								$objid = path_to_id($objpath, OBJECT_FILES_TABLE, $GLOBALS['DB_WE']);
 							}
 							if($objid){
 								$del_elements[] = $regs[1];
@@ -408,7 +407,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 		// quick fix for fsw
 		if(!empty($object->ParentPath)){
-			$_new_id = path_to_id($object->ParentPath);
+			$_new_id = path_to_id($object->ParentPath, FILE_TABLE, $GLOBALS['DB_WE']);
 			if($_new_id){
 				$object->ParentID = $_new_id;
 			} else {
@@ -593,7 +592,7 @@ class we_import_updater extends we_exim_XMLExIm{
 						continue;
 					}
 					if($include == 0 && $table == NAVIGATION_TABLE){
-						$_new_id = path_to_id($this->options['navigation_path'], NAVIGATION_TABLE);
+						$_new_id = path_to_id($this->options['navigation_path'], NAVIGATION_TABLE, $GLOBALS['DB_WE']);
 						$source = str_replace($match[1][$k] . $match[2][$k] . $match[3][$k], $match[1][$k] . $_new_id . $match[3][$k], $source);
 					} else {
 						$ref = $this->RefTable->getRef(

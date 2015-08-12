@@ -100,7 +100,7 @@ function we_tag_href($attribs){
 		$rootdir = id_to_path($rootdir, FILE_TABLE);
 	} else {
 		$rootdir = ($rootdir === '/' ? $rootdir : rtrim($rootdir, '/'));
-		$rootdirid = path_to_id($rootdir, FILE_TABLE);
+		$rootdirid = path_to_id($rootdir, FILE_TABLE, $GLOBALS['DB_WE']);
 	}
 // Bug Fix #7045
 	if($rootdir === '/'){

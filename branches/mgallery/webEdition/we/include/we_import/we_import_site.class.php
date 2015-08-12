@@ -53,6 +53,7 @@ class we_import_site{
 	var $degrees = 0;
 	var $_postProcess;
 	var $excludeddirs = array(WEBEDITION_DIR, WE_THUMBNAIL_DIRECTORY);
+	private static $DB = null;
 
 	/**
 	 * Constructor of Class
@@ -61,7 +62,7 @@ class we_import_site{
 	 * @return we_import_site
 	 */
 	public function __construct(){
-		$wsa = makeArrayFromCSV(get_def_ws());
+		$wsa = explode(',', get_def_ws());
 		$ws = ($wsa ? $wsa[0] : 0);
 		$this->from = we_base_request::_(we_base_request::FILE, 'from', (!empty($_SESSION['prefs']['import_from']) ? $_SESSION['prefs']['import_from'] : $this->from));
 		$_SESSION['prefs']['import_from'] = $this->from;
@@ -1246,9 +1247,9 @@ function doUnload() {
 					for($z = 0; $z < count($regs2[1]); $z++){
 						$attribs[$regs2[1][$z]] = $regs2[2][$z];
 					}
-					if(isset($attribs["rel"]) && $attribs["rel"] === 'stylesheet'){
-						if(!empty($attribs["href"])){
-							$id = path_to_id($attribs["href"]);
+					if(isset($attribs['rel']) && $attribs['rel'] === 'stylesheet'){
+						if(!empty($attribs['href'])){
+							$id = path_to_id($attribs['href'], FILE_TABLE, $GLOBALS['DB_WE']);
 							$tag = '<we:css id="' . $id . '" xml="true" ' . ((!empty($attribs["media"])) ? ' pass_media="' . $attribs["media"] . '"' : '') . '/>';
 							$templateCode = str_replace($regs[0][$i], $tag, $templateCode);
 						}
@@ -1390,6 +1391,14 @@ function doUnload() {
 		$we_doc->setTemplateID($templateId);
 	}
 
+	private static function path_to_id_ct($path, $table, we_database_base $db){
+		if($path === '/'){
+			return array(0, '');
+		}
+		$res = getHash('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '"', $db);
+		return ($res? : array(0, null));
+	}
+
 	/**
 	 * converts an external  link (src or href) into an internal
 	 * @param $href string
@@ -1397,12 +1406,11 @@ function doUnload() {
 	 * @static
 	 */
 	private static function _makeInternalLink($href){
-		$ct = '';
-		$id = path_to_id_ct($href, FILE_TABLE, $ct);
-		if(substr($ct, 0, 5) === "text/"){
+		list($id, $ct) = self::path_to_id_ct($href, FILE_TABLE, self::$DB);
+		if(substr($ct, 0, 5) === 'text/'){
 			$href = we_base_link::TYPE_INT_PREFIX . $id;
 		} elseif($ct == we_base_ContentTypes::IMAGE){
-			if(strpos($href, "?") === false){
+			if(strpos($href, '?') === false){
 				$href .= '?id=' . $id;
 			}
 		}
@@ -1526,48 +1534,55 @@ function doUnload() {
 	 */
 	public static function postprocessFile($path, $sourcePath, $destinationDirID){
 		$we_docSave = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : null;
+		self::$DB = self::$DB? : new DB_WE();
 
 		// preparing Paths
-		$path = str_replace("\\", "/", $path); // change windoof backslashes to slashes
-		$sourcePath = str_replace("\\", "/", $sourcePath); // change windoof backslashes to slashes
+		$path = str_replace('\\', '/', $path); // change windoof backslashes to slashes
+		$sourcePath = str_replace('\\', '/', $sourcePath); // change windoof backslashes to slashes
 		$sizeofdocroot = strlen(rtrim($_SERVER['DOCUMENT_ROOT'], '/')); // make sure that no ending slash is there
 		$sizeofsourcePath = strlen(rtrim($sourcePath, '/')); // make sure that no ending slash is there
 		$destinationDir = id_to_path($destinationDirID);
-		if($destinationDir === "/"){
-			$destinationDir = "";
+		if($destinationDir === '/'){
+			$destinationDir = '';
 		}
 		$destinationPath = $destinationDir . substr($path, $sizeofdocroot + $sizeofsourcePath);
-		$id = path_to_id($destinationPath);
-		$GLOBALS["we_doc"] = new we_webEditionDocument();
-		$GLOBALS["we_doc"]->initByID($id);
+		$id = path_to_id($destinationPath, FILE_TABLE, self::$DB);
+		$GLOBALS['we_doc'] = new we_webEditionDocument();
+		$GLOBALS['we_doc']->initByID($id);
 
 		// we need to get the name of the fields which needs to processed
 		foreach($GLOBALS['we_doc']->elements as $fieldname => $element){
-			if($fieldname != "Title" && $fieldname != "Description" && $fieldname != "Keywords" && $fieldname != "Charset"){
-				switch($element["type"]){
-					case "txt" :
-						$GLOBALS['we_doc']->elements[$fieldname]["dat"] = self::_external_to_internal($element["dat"]);
-						break;
-				}
+			switch($fieldname){
+				case 'Title':
+				case 'Description':
+				case 'Keywords':
+				case 'Charset':
+					break;
+				default:
+					switch($element["type"]){
+						case "txt" :
+							$GLOBALS['we_doc']->elements[$fieldname]["dat"] = self::_external_to_internal($element['dat']);
+							break;
+					}
 			}
 		}
 		//save and publish
-		if(!$GLOBALS["we_doc"]->we_save()){
-			$GLOBALS["we_doc"] = $we_docSave;
+		if(!$GLOBALS['we_doc']->we_save()){
+			$GLOBALS['we_doc'] = $we_docSave;
 			return array(
-				"filename" => $_FILES['we_File']["name"],
-				"error" => "save_error"
+				'filename' => $_FILES['we_File']['name'],
+				'error' => 'save_error'
 			);
 		}
-		if(!$GLOBALS["we_doc"]->we_publish()){
-			$GLOBALS["we_doc"] = $we_docSave;
+		if(!$GLOBALS['we_doc']->we_publish()){
+			$GLOBALS['we_doc'] = $we_docSave;
 			return array(
-				"filename" => $_FILES['we_File']["name"],
-				"error" => "publish_error"
+				'filename' => $_FILES['we_File']['name'],
+				'error' => 'publish_error'
 			);
 		}
 
-		$GLOBALS["we_doc"] = $we_docSave;
+		$GLOBALS['we_doc'] = $we_docSave;
 		return array();
 	}
 

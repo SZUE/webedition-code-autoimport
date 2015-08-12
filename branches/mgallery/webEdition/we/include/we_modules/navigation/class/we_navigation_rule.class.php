@@ -100,16 +100,7 @@ class we_navigation_rule extends weModelBase{
 				}
 			}
 
-			$categoryIds = array();
-
-			foreach($_categories as $cat){
-				if(($path = path_to_id($cat, CATEGORY_TABLE))){
-					$categoryIds[] = $path;
-				}
-			}
-			$categoryIds = array_unique($categoryIds);
-
-			$this->Categories = ($categoryIds ? ',' . implode(',', $categoryIds) . ',' : '');
+			$this->Categories = path_to_id($_categories, CATEGORY_TABLE, $GLOBALS['DB_WE']);
 		}
 
 		if(is_array($this->persistent_slots)){
@@ -122,4 +113,5 @@ class we_navigation_rule extends weModelBase{
 
 		$this->isnew = ($this->ID == 0);
 	}
+
 }
