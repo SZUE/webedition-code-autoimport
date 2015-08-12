@@ -47,8 +47,8 @@ function applyOnEnter(evt) {
 }
 function closeOnEscape() {
 	top.exit_close();
-
 }
+
 function in_array(needle, haystack) {
 	for (var i = 0; i < haystack.length; i++) {
 		if (haystack[i] == needle) {

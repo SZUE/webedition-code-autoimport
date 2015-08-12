@@ -373,11 +373,6 @@ class we_class_folder extends we_folder{
 
 			$f = 0;
 			while($this->searchclass->next_record()){
-				/*
-				  $out .= "<pre>".sizeof($this->searchclass->Record);
-				  print_r($this->searchclass->Record);
-				  $out .= "</pre>";
-				 */
 				if($f == 0){
 					$i = 0;
 					$regs = array();

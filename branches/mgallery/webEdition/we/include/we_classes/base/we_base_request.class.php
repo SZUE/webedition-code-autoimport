@@ -92,7 +92,7 @@ class we_base_request{
 				$var = we_unserialize($var);
 				return;
 			case self::SERIALIZED_KEEP:
-				$var = serialize(we_unserialize($var));
+				//$var = serialize(we_unserialize($var));
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?

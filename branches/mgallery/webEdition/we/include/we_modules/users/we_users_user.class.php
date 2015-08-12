@@ -380,9 +380,9 @@ class we_users_user{
 		$this->savePersistentSlotsInDB();
 		$this->createAccount();
 		if($oldpath != '' && $oldpath != '/'){
-			$this->DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . " WHERE Path LIKE '" . $this->DB_WE->escape($oldpath) . "%'");
+			$this->DB_WE->query('SELECT ID,username FROM ' . USER_TABLE . ' WHERE Path LIKE "' . $this->DB_WE->escape($oldpath) . '%"');
 			while($this->DB_WE->next_record()){
-				$db_tmp->query('UPDATE ' . USER_TABLE . " SET Path='" . $this->getPath($this->DB_WE->f("ID")) . "' WHERE ID=" . $this->DB_WE->f("ID"));
+				$db_tmp->query('UPDATE ' . USER_TABLE . ' SET Path="' . $this->getPath($this->DB_WE->f('ID')) . '" WHERE ID=' . $this->DB_WE->f('ID'));
 			}
 		}
 		$this->savePreferenceSlotsInDB($isnew);
@@ -526,12 +526,12 @@ class we_users_user{
 
 	function savePermissions(){
 		$permissions = array();
-		foreach($this->permissions_slots as $key => $val){
+		foreach($this->permissions_slots as $val){
 			foreach($val as $k => $v){
 				$permissions[$k] = $v;
 			}
 		}
-		$this->Permissions = we_serialize($permissions);
+		$this->Permissions = we_serialize($permissions, 'json');
 	}
 
 	function loadWorkspaces(){
@@ -879,7 +879,7 @@ _multiEditorreload = true;';
 						$_SESSION['prefs']['editorSizeOpt'] = 1;
 					}
 
-					if(!$GLOBALS['editor_reloaded']){
+					if(empty($GLOBALS['editor_reloaded'])){
 						$GLOBALS['editor_reloaded'] = true;
 
 						$save_javascript .= '
@@ -982,7 +982,6 @@ _multiEditorreload = true;';
 	}
 
 	function preserveState($tab, $sub_tab){
-
 		switch($tab){
 			case self::TAB_DATA:
 				foreach($this->persistent_slots as $name => $type){
@@ -2481,7 +2480,10 @@ function resetTabs(){
 			$old = array('userID' => $id);
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 			foreach($GLOBALS['configs']['user'] as $key => $vals){
-				$old[$key] = $vals[1];
+				//only write config data, if data is read! otherwise we overwrite some settings
+				if(isset($data[$key])){
+					$old[$key] = $vals[1];
+				}
 			}
 		} else {
 			$old = self::readPrefs($id, $db);

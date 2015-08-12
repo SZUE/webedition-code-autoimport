@@ -202,7 +202,7 @@ $GLOBALS['configs'] = array(
 		//current url for rss feed
 		'cockpit_rss_feed_url' => array(we_base_request::STRING, ''),
 		'editorMode' => array(we_base_request::STRING, 'codemirror2'),
-		'editorCodecompletion' => array(we_base_request::STRING, serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1))),
+		'editorCodecompletion' => array(we_base_request::STRING, we_serialize(array('WE' => 1, 'htmlTag' => 1, 'html5Tag' => 1), 'json')),
 		'editorCommentFontcolor' => array(we_base_request::STRING, null),
 		'editorDocuintegration' => array(we_base_request::BOOL, true),
 		'editorFont' => array(we_base_request::BOOL, ''),
@@ -263,7 +263,7 @@ $GLOBALS['configs'] = array(
 		'DB_USER' => array('Username to access the database', '', 'root', true),
 		'DB_PASSWORD' => array('Password to access the database', '', 'root', true),
 		'TBL_PREFIX' => array('Prefix of tables in database for this webEdition.', '', ''),
-		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, (defined('DB_CHARSET')?DB_CHARSET:'')),
+		'DB_CHARSET' => array('Charset of tables in database for this webEdition.', we_base_request::STRING, (defined('DB_CHARSET') ? DB_CHARSET : '')),
 		'DB_COLLATION' => array('Collation of tables in database for this webEdition.', '', ''),
 		'WE_LANGUAGE' => array('Original language of this version of webEdition, used for login-screen', '', 'English'),
 		'WE_BACKENDCHARSET' => array('Original backend charset of this version of webEdition, used for login-screen', '', 'UTF-8'),

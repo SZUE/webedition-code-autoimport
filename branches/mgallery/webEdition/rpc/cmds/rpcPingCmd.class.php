@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
+
 class rpcPingCmd extends rpcCmd{
 
 	function execute(){
@@ -44,8 +44,7 @@ class rpcPingCmd extends rpcCmd{
 		$resp->setData('users', $users_online->getUsers());
 		$resp->setData('num_users', $users_online->getNumUsers());
 
-		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs
-		$aDat = we_unserialize($aDatTblPref);
+		$aDat = we_unserialize(we_base_preferences::getUserPref('cockpit_dat')); // array as saved in the prefs
 		foreach($aDat as $d){
 			foreach($d as $aProps){
 				if($aProps[0] === 'mfd'){

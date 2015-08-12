@@ -26,7 +26,7 @@ include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'utils/prototypes.js') .
+ we_html_element::jsScript(JS_DIR . 'global.js') .
  we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
  STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'home.css');
@@ -35,11 +35,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
 	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd') === 'reset_home') ? true : false;
 	if(!$bResetProps && $iLayoutCols){
-
-		$aDatTblPref = we_base_preferences::getUserPref('cockpit_dat'); // array as saved in the prefs
-		$aTrf = we_base_preferences::getUserPref('cockpit_rss');
-		$aDat = we_unserialize($aDatTblPref)? : $aCfgProps;
-		$aTrf = we_unserialize($aTrf)? : $aTopRssFeeds;
+		$aDat = we_unserialize(we_base_preferences::getUserPref('cockpit_dat'))? : $aCfgProps;
+		$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss'))? : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
