@@ -82,7 +82,7 @@ class we_navigation_cache{
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		we_base_file::save(self::getNavigationFilename($id), gzdeflate(we_serialize($_naviItemes->items,'json'), 9));
+		we_base_file::save(self::getNavigationFilename($id), gzcompress(we_serialize($_naviItemes->items,'json'), 9));
 	}
 
 	static function getCacheFromFile($parentid){

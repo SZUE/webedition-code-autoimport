@@ -205,7 +205,7 @@ abstract class we_textContentDocument extends we_textDocument{
 				parent::we_load($from);
 				break;
 			case we_class::LOAD_TEMP_DB:
-				$sessDat = we_unserialize(we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE));
+				$sessDat = we_temporaryDocument::load($this->ID, $this->Table, $this->DB_WE);
 				if($sessDat){
 					$this->i_initSerializedDat($sessDat);
 					$this->i_getPersistentSlotsFromDB(self::primaryDBFiels);
