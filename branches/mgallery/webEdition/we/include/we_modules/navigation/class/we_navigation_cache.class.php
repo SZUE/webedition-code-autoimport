@@ -52,30 +52,31 @@ class we_navigation_cache{
 		}
 	}
 
-	static function cacheNavigationTree($id){
-		we_navigation_cache::cacheNavigationBranch($id);
-		//weNavigationCache::cacheRootNavigation();
-	}
+	/* unused
+	  static function cacheNavigationTree($id){
+	  we_navigation_cache::cacheNavigationBranch($id);
+	  //weNavigationCache::cacheRootNavigation();
+	  }
 
-	static function cacheNavigationBranch($id){
-		$_id = $id;
-		$_c = 0;
-		$db = new DB_WE();
-		while($_id != 0){
-			self::cacheNavigation($_id);
-			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', $db);
-			$_c++;
-			if($_c > 99999){
-				break;
-			}
-		}
-	}
+	  static function cacheNavigationBranch($id){
+	  $_id = $id;
+	  $_c = 0;
+	  $db = new DB_WE();
+	  while($_id != 0){
+	  self::cacheNavigation($_id);
+	  $_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', $db);
+	  $_c++;
+	  if($_c > 99999){
+	  break;
+	  }
+	  }
+	  }
 
-	static function cacheNavigation($id){
-		$_naviItemes = new we_navigation_items();
-		$_naviItemes->initById($id);
-		self::saveCacheNavigation($id, $_naviItemes);
-	}
+	  static function cacheNavigation($id){
+	  $_naviItemes = new we_navigation_items();
+	  $_naviItemes->initById($id);
+	  self::saveCacheNavigation($id, $_naviItemes);
+	  } */
 
 	static function delCacheNavigationEntry($id){
 		we_base_file::delete(self::getNavigationFilename($id));
@@ -87,22 +88,19 @@ class we_navigation_cache{
 	}
 
 	static function getCacheFromFile($parentid){
-		$_cache = self::getNavigationFilename($parentid);
-
-		if(file_exists($_cache)){
-			$data = we_base_file::load($_cache);
-			//FIXME: we change this, as we don't support old navigation caches
-			return $data ? we_unserialize($data[0] === 'x' ? gzuncompress($data) : gzinflate($data)) : array();
-		}
-		return false;
+		return (file_exists(($_cache = self::getNavigationFilename($parentid))) ?
+				we_unserialize(we_base_file::load($_cache)) :
+				false);
 	}
 
 	static function getCachedRule(){//FIXME: this file is never written!
-		$_cache = WE_CACHE_PATH . 'rules.php';
-		if(file_exists($_cache)){
-			return we_base_file::load($_cache);
-		}
-		return false;
+		return (file_exists(($_cache = WE_CACHE_PATH . 'navigation_rules.php')) ?
+				we_unserialize(we_base_file::load($_cache)) :
+				false);
+	}
+
+	static function saveRules($rules){//FIXME: this file is never written!
+		return we_base_file::save(WE_CACHE_PATH . 'navigation_rules.php', we_serialize($rules, 'serialize', false, 9));
 	}
 
 	/**

@@ -73,99 +73,110 @@ class we_navigation_items{
 		));
 	}
 
-	function initByNavigationObject($showRoot = true){
-		$this->items = array();
-		$navigation = $_SESSION['weS']['navigation_session'];
+	/* unused
+	  function initByNavigationObject($showRoot = true){
+	  $this->items = array();
+	  $navigation = $_SESSION['weS']['navigation_session'];
 
-		$this->rootItem = $navigation->ID;
+	  $this->rootItem = $navigation->ID;
 
-// set defaultTemplates
-		$this->setDefaultTemplates();
+	  // set defaultTemplates
+	  $this->setDefaultTemplates();
 
-		$this->readItemsFromDb($this->rootItem);
-		list($table, $linkid) = $navigation->getTableIdForItem();
-		$this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $linkid, $table, $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), ($showRoot ? we_base_ContentTypes::FOLDER : 'root'), $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
+	  $this->readItemsFromDb($this->rootItem);
+	  list($table, $linkid) = $navigation->getTableIdForItem();
+	  $this->items['id' . $navigation->ID] = new we_navigation_item($navigation->ID, $linkid, $table, $navigation->Text, $navigation->Display, $navigation->getHref($navigation->SelectionType, $navigation->LinkID, $navigation->Url, $navigation->Parameter, $navigation->WorkspaceID), ($showRoot ? we_base_ContentTypes::FOLDER : 'root'), $this->id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
 
-		$items = $navigation->getDynamicPreview($this->Storage);
+	  $items = $navigation->getDynamicPreview($this->Storage);
 
-		$_new_items = $this->getStaticSavedDynamicItems($navigation);
+	  $_new_items = $this->getStaticSavedDynamicItems($navigation);
 
-// fetch the new items in item array
-		$_depended = array();
-		foreach($items as $k => $v){
-			if($v['depended'] == 1 && $v['parentid'] == $navigation->ID){
-				$_depended[] = $k;
-			}
+	  // fetch the new items in item array
+	  $_depended = array();
+	  foreach($items as $k => $v){
+	  if($v['depended'] == 1 && $v['parentid'] == $navigation->ID){
+	  $_depended[] = $k;
+	  }
+	  }
+
+	  $i = 0;
+	  foreach($_new_items as $_new){
+	  if(isset($_depended[$i])){
+	  $items[$_depended[$i]] = $_new;
+	  } else {
+	  $items[] = $_new;
+	  }
+	  $i++;
+	  }
+
+	  $_all = count($items) - count($_depended) + count($_new_items);
+	  $items = array_splice($items, 0, $_all);
+	  foreach($items as $_item){
+	  $this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
+	  if(isset($this->items['id' . $_item['parentid']])){
+	  $this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
+	  }
+	  }
+	  }
+
+	  private function getStaticSavedDynamicItems(we_navigation_navigation $_nav, $rules = false){
+	  $items = array();
+	  $dyn_items = $_nav->getDynamicEntries();
+	  if(is_array($dyn_items)){
+	  foreach($dyn_items as $_dyn){
+
+	  $href = id_to_path($_dyn['id']);
+	  $items[] = array(
+	  'id' => $_dyn['id'],
+	  'text' => !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
+	  'display' => !empty($_dyn['display']) ? $_dyn['display'] : '',
+	  'name' => !empty($_dyn['field']) ? $_dyn['field'] : (!empty($_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
+	  'docid' => $_dyn['id'],
+	  'table' => (($_nav->SelectionType == we_navigation_navigation::STPYE_CLASS || $_nav->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
+	  'href' => $href,
+	  'type' => 'item',
+	  'parentid' => $_nav->ID,
+	  'workspaceid' => $_nav->WorkspaceID,
+	  'icon' => isset($this->Storage['ids'][$_nav->IconID]) ? $this->Storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),
+	  'attributes' => $_nav->Attributes,
+	  'limitaccess' => $_nav->LimitAccess,
+	  'customers' => self::getCustomerData($_nav),
+	  'depended' => 1
+	  );
+
+	  if($rules){
+	  $items[(count($items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
+	  'defined_' . ($_dyn['field'] ? : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $href, false);
+	  }
+	  }
+	  }
+	  return $items;
+	  } */
+
+	private function initRulesFromDB(){
+		$newRules = we_navigation_ruleControl::getAllNavigationRules();
+
+		foreach($newRules as $rule){
+			$this->currentRules[] = $rule;
 		}
-
-		$i = 0;
-		foreach($_new_items as $_new){
-			if(isset($_depended[$i])){
-				$items[$_depended[$i]] = $_new;
-			} else {
-				$items[] = $_new;
-			}
-			$i++;
-		}
-
-		$_all = count($items) - count($_depended) + count($_new_items);
-		$items = array_splice($items, 0, $_all);
-		foreach($items as $_item){
-			$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '');
-			if(isset($this->items['id' . $_item['parentid']])){
-				$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
-			}
-		}
+		we_navigation_cache::saveRules($this->currentRules);
 	}
 
-	private function getStaticSavedDynamicItems(we_navigation_navigation $_nav, $rules = false){
-		$items = array();
-		$dyn_items = $_nav->getDynamicEntries();
-		if(is_array($dyn_items)){
-			foreach($dyn_items as $_dyn){
-
-				$href = id_to_path($_dyn['id']);
-				$items[] = array(
-					'id' => $_dyn['id'],
-					'text' => !empty($_dyn['field']) ? $_dyn['field'] : $_dyn['text'],
-					'display' => !empty($_dyn['display']) ? $_dyn['display'] : '',
-					'name' => !empty($_dyn['field']) ? $_dyn['field'] : (!empty($_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
-					'docid' => $_dyn['id'],
-					'table' => (($_nav->SelectionType == we_navigation_navigation::STPYE_CLASS || $_nav->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
-					'href' => $href,
-					'type' => 'item',
-					'parentid' => $_nav->ID,
-					'workspaceid' => $_nav->WorkspaceID,
-					'icon' => isset($this->Storage['ids'][$_nav->IconID]) ? $this->Storage['ids'][$_nav->IconID] : id_to_path($_nav->IconID),
-					'attributes' => $_nav->Attributes,
-					'limitaccess' => $_nav->LimitAccess,
-					'customers' => self::getCustomerData($_nav),
-					'depended' => 1
-				);
-
-				if($rules){
-					$items[(count($items) - 1)]['currentRule'] = we_navigation_rule::getWeNavigationRule(
-							'defined_' . ($_dyn['field'] ? : $_dyn['text']), $_nav->ID, $_nav->SelectionType, $_nav->FolderID, $_nav->DocTypeID, $_nav->ClassID, $_nav->CategoryIDs, $_nav->WorkspaceID, $href, false);
-				}
-			}
-		}
-		return $items;
-	}
-
-	function loopAllRules(){
+	private function loopAllRules(){
 		if(!$this->hasCurrent){
-// add defined rules
-			$newRules = we_navigation_ruleControl::getAllNavigationRules();
-
-			foreach($newRules as $rule){
-				$this->currentRules[] = $rule;
-			}
-
 			$this->checkCurrent();
 		}
 	}
 
-	function initFromCache($parentid = 0, $showRoot = true){
+	public function init($parentid = 0, $showRoot = true){
+		if(!$this->initFromCache($parentid, $showRoot)){
+			//make sure we use cache next time!
+			$this->initById($parentid, $showRoot);
+			we_navigation_cache::saveCacheNavigation($parentid, $this);
+		}
+	}
+
+	private function initFromCache($parentid = 0, $showRoot = true){
 		$this->rootItem = $parentid;
 		$this->setDefaultTemplates();
 
@@ -183,11 +194,11 @@ class we_navigation_items{
 		if(is_object($this->items['id' . $parentid])){
 			$this->items['id' . $parentid]->type = !$showRoot || $parentid == 0 ? 'root' : we_base_ContentTypes::FOLDER;
 		}
-		$navigationRulesStorage = we_navigation_cache::getCachedRule();
-		if($navigationRulesStorage !== false){
-			$this->currentRules = we_unserialize($navigationRulesStorage);
+		$this->currentRules = we_navigation_cache::getCachedRule();
+		if($this->currentRules === false){
+			$this->currentRules = array();
+			$this->initRulesFromDB();
 		}
-		unset($navigationRulesStorage);
 
 		foreach($this->items as &$_item){
 			if(is_object($_item) && method_exists($_item, 'isCurrent')){
@@ -199,19 +210,13 @@ class we_navigation_items{
 		return true;
 	}
 
-	function initById($parentid = 0, $showRoot = true){
+	private function initById($parentid = 0, $showRoot = true){
 		$this->items = array();
 		$this->rootItem = intval($parentid);
-
 		$_navigation = new we_navigation_navigation();
-
 		$this->readItemsFromDb($this->rootItem);
-
 		$_item = $this->getItemFromPool($parentid);
-
-		$_navigation->initByRawData($_item ? : array(
-				'ID' => 0, 'Path' => '/'
-		));
+		$_navigation->initByRawData($_item ? : array('ID' => 0, 'Path' => '/'));
 
 // set defaultTemplates
 		$this->setDefaultTemplates();
@@ -222,9 +227,8 @@ class we_navigation_items{
 		$items = $_navigation->getDynamicPreview($this->Storage, true);
 
 		foreach($items as $_item){
-
 			if($_item['id']){
-				if(!empty($_item['name']) ){
+				if(!empty($_item['name'])){
 					$_item['text'] = $_item['name'];
 				}
 				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '', $_item['currentoncat'], $_item['catparam']);
@@ -242,6 +246,7 @@ class we_navigation_items{
 			}
 		}
 
+		$this->initRulesFromDB();
 		$this->loopAllRules();
 
 //make avail in cache
