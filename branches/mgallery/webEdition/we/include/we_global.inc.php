@@ -1243,7 +1243,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
  * @param bool $numeric forces data to be treated as numeric (not assotiative) array - no position data will be used
  * @return string serialized data
  */
-function we_serialize($array, $target = 'serialize', $numeric = false){
+function we_serialize($array, $target = 'serialize', $numeric = false, $compression = 0){
 	if(!$array){
 		return '';
 	}
@@ -1254,16 +1254,19 @@ function we_serialize($array, $target = 'serialize', $numeric = false){
 				//we don't encode objects as json!
 				$ret = json_encode($numeric ? array_values($array) : $array, (defined('JSON_UNESCAPED_UNICODE') ? JSON_UNESCAPED_UNICODE : 0));
 				if($ret){
-					return $ret;
+					break;
 				}
 				static $json = null;
 				$json = $json? : new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
-				return $json->encode($numeric ? array_values($array) : $array, false);
+				$ret = $json->encode($numeric ? array_values($array) : $array, false);
+				break;
 			}
 		default:
 		case 'serialize':
-			return serialize($numeric ? array_values($array) : $array);
+			$ret = serialize($numeric ? array_values($array) : $array);
+			break;
 	}
+	return $compression ? gzcompress($ret, $compression) : $ret;
 }
 
 if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4

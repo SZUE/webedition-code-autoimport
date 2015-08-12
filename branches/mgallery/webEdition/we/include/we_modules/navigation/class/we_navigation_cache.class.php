@@ -82,7 +82,8 @@ class we_navigation_cache{
 	}
 
 	static function saveCacheNavigation($id, $_naviItemes){
-		we_base_file::save(self::getNavigationFilename($id), gzcompress(we_serialize($_naviItemes->items,'json'), 9));
+		//FIMXE:	currently we need the classes, so we are unable to serialize as json!
+		we_base_file::save(self::getNavigationFilename($id), we_serialize($_naviItemes->items, 'serialize', false, 9));
 	}
 
 	static function getCacheFromFile($parentid){
@@ -90,6 +91,7 @@ class we_navigation_cache{
 
 		if(file_exists($_cache)){
 			$data = we_base_file::load($_cache);
+			//FIXME: we change this, as we don't support old navigation caches
 			return $data ? we_unserialize($data[0] === 'x' ? gzuncompress($data) : gzinflate($data)) : array();
 		}
 		return false;

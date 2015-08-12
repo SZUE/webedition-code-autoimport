@@ -392,7 +392,7 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
-		if(!mail(WE_ERROR_MAIL_ADDRESS, 'webEdition: ' . $ttype . ' (' . $_caller . ') [' . $_SERVER['SERVER_NAME'] . ']', $_detailedError)){
+		if(!mail(WE_ERROR_MAIL_ADDRESS, $ttype .': '.$_SERVER['SERVER_NAME']. '(webEdition)', $_detailedError)){
 			if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
 				echo 'Cannot log error! Could not send e-mail: <pre>' . $_detailedError . '</pre>';
 			}

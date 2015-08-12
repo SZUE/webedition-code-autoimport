@@ -1156,17 +1156,17 @@ class we_versions_version{
 				break;
 			case 'documentElements':
 				if(isset($document['elements']) && is_array($document['elements'])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(we_serialize($document["elements"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document["elements"], false, 9)) . '\'');
 				}
 				break;
 			case 'documentScheduler':
 				if(isset($document['schedArr']) && is_array($document['schedArr'])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(we_serialize($document["schedArr"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document["schedArr"], false, 9)) . '\'');
 				}
 				break;
 			case 'documentCustomFilter':
 				if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"])){
-					$entry = sql_function('x\'' . bin2hex(gzcompress(we_serialize($document["documentCustomerFilter"]), 9)) . '\'');
+					$entry = sql_function('x\'' . bin2hex(we_serialize($document["documentCustomerFilter"], false, 9)) . '\'');
 				}
 				break;
 			case 'timestamp':
