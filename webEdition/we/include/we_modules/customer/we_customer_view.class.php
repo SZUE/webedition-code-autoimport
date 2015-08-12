@@ -1448,7 +1448,7 @@ failure: function(o) {
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>'. g_l('modules_object', '[class]') .'</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 					while($DB_WE->next_record()){
 						$objectStr.='<tr>
-							<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
+							<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
 							<td>' . $DB_WE->f('ID') . '</td>
 							<td title="'. g_l('modules_object', '[class_id]') . ': ' . $DB_WE->f('TableID') . '">' . f('SELECT Text FROM ' . OBJECT_FILES_TABLE . ' WHERE ContentType="'. we_base_ContentTypes::FOLDER .'" AND TableID='. intval($DB_WE->f('TableID'))) . '</td>
 							<td title="' . $DB_WE->f('Path') . '">' . we_util_Strings::shortenPath($DB_WE->f('Text'), 50) . '</td>
@@ -1482,7 +1482,7 @@ failure: function(o) {
 							'</tr>';
 					while($DB_WE->next_record()){
 						$documentStr.='<tr>' .
-							'<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
+							'<td>' . we_html_button::create_button('image:btn_edit_edit', "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
 							'<td>' . $DB_WE->f('ID') . '</td>' .
 							'<td title="' . $DB_WE->f('Path') . '">' . we_util_Strings::shortenPath($DB_WE->f('Text'), 50) . '</td>' .
 							'<td class="' .
