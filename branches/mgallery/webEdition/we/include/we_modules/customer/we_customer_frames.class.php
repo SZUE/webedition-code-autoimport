@@ -396,6 +396,7 @@ function setTab(tab) {
 
 		$select = new we_html_select(array('name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => 'opener.' . $this->topFrame . ".we_cmd('customer_edit',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
 
+		$foundItems=0;
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);
 			$foundItems = 0;

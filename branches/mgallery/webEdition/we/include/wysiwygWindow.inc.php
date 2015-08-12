@@ -51,10 +51,9 @@ $fields = array(
 	'isInPopup' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 22),
 	'isInFrontend' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 23),
 	'templates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 24),
-	'formats' => '',
+	'formats' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 25),
 	'imagestarid' => 0,
 	'galleryTemplates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 27),
-
 );
 
 
@@ -152,7 +151,7 @@ top.close();');
 			}
 
 			$e = new we_wysiwyg_editor(
-				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], ''/* $fields['formats'] */, 0 /*imagestartid */, $fields['galleryTemplates']
+				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['imagestartid'], $fields['galleryTemplates']
 			);
 
 
