@@ -155,7 +155,7 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('object', false, '', array($name, $categories, $catOr, $rows, $cols, $order_object, $desc, $offset, $classid, $condition, $triggerid, $languages, $searchable, $workspaceID_object, $cfilter, $docid, $customers, $id, $calendar, $predefinedSQL, $categoryids, $objectseourls, $hidedirindex), array()),
 	new weTagDataOption('multiobject', false, '', array($name, $categories, $catOr, $rows, $cols, $order_object, $desc, $offset, $classid, $condition, $triggerid, $languages, $searchable, $cfilter, $calendar, $objectseourls, $hidedirindex), array()),
 	new weTagDataOption('banner', false, 'banner', array($name, $rows, $cols, $order_banner, $custBanner), array()),
-	new weTagDataOption('shopVariant', false, '', array($name, $defaultname, $documentid, $objectid, $objectseourls, $hidedirindex), array()),
+	new weTagDataOption('variant', false, '', array($name, $defaultname, $documentid, $objectid, $objectseourls, $hidedirindex), array()),
 	new weTagDataOption('customer', false, 'customer', array($name, $rows, $cols, $order_customer, $desc, $offset, $condition, $docid), array()),
 	new weTagDataOption('onlinemonitor', false, 'customer', array($name, $rows, $cols, $order_onlinemonitor, $desc, $offset, $condition, $docid, $lastaccesslimit, $lastloginlimit), array()),
 	new weTagDataOption('languagelink', false, '', array($name, $rows, $cols, $order_languagelink, $desc, $offset, $pagelanguage, $showself, $objectseourls, $hidedirindex), array()),
