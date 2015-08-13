@@ -2527,7 +2527,10 @@ top.content.hloaded=1;') .
 			$old = array('userID' => $id);
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 			foreach($GLOBALS['configs']['user'] as $key => $vals){
-				$old[$key] = $vals[1];
+				//only write config data, if data is read! otherwise we overwrite some settings
+				if(isset($data[$key])){
+					$old[$key] = $vals[1];
+				}
 			}
 		} else {
 			$old = self::readPrefs($id, $db);

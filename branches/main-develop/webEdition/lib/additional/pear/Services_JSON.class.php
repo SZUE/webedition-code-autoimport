@@ -117,6 +117,10 @@ define('SERVICES_JSON_USE_TO_JSON', 64);
  * </code>
  */
 class Services_JSON{
+	/** WE-change!
+	 * Behavior switch for Services_JSON::encode()
+	 */
+	const SERVICES_JSON_USE_NO_CHARSET_CONVERSION = 128;
 
 	/**
 	 * constructs a new JSON instance
@@ -245,8 +249,11 @@ class Services_JSON{
 	 * @return   mixed   JSON string representation of input var or an error if a problem occurs
 	 * @access   public
 	 */
-	function encode($var){
+	function encode($var, $withHeader = true){
+		//WE-change!
+		if($withHeader){
 		header('Content-type: application/json');
+		}
 		return $this->encodeUnsafe($var);
 	}
 
@@ -301,7 +308,10 @@ class Services_JSON{
 				// STRINGS ARE EXPECTED TO BE IN ASCII OR UTF-8 FORMAT
 				$ascii = '';
 				$strlen_var = $this->strlen8($var);
-
+//WE-change!
+				if($this->use & self::SERVICES_JSON_USE_NO_CHARSET_CONVERSION){
+					return '"' . $var . '"';
+				}
 				/*
 				 * Iterate over every character in the string,
 				 * escaping with a slash or encoding to UTF-8 where necessary
