@@ -1384,13 +1384,15 @@ var weFileUpload = (function () {
 					fd.append('quality', sf.quality.value);
 					*/
 
-					if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts && this.isGdOk && !this.EDIT_IMAGES_CLIENTSIDE) {
+					if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts && this.isGdOk) {
+						if(!this.EDIT_IMAGES_CLIENTSIDE){
+							fd.append('width', sf.width.value);
+							fd.append('height', sf.height.value);
+							fd.append('widthSelect', sf.widthSelect.value);
+							fd.append('heightSelect', sf.heightSelect.value);
+							fd.append('keepRatio', sf.keepRatio.value);
+						}
 						fd.append('thumbs', sf.thumbs.value);
-						fd.append('width', sf.width.value);
-						fd.append('height', sf.height.value);
-						fd.append('widthSelect', sf.widthSelect.value);
-						fd.append('heightSelect', sf.heightSelect.value);
-						fd.append('keepRatio', sf.keepRatio.value);
 						fd.append('quality', sf.quality.value);
 						fd.append('degrees', sf.degrees.value);
 					}
