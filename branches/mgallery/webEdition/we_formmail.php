@@ -313,9 +313,14 @@ foreach($recipients as $recipientID){
 }
 
 if($recipientsList){
+	$maxFilesize = we_base_request::_(we_base_request::INT, 'MAX_FILE_SIZE', 0);
+
 	foreach($_FILES as $file){
 		if(!empty($file['tmp_name'])){
 			$tempName = TEMP_PATH . $file['name'];
+			if($maxFilesize && filesize($file['tmp_name']) > $maxFilesize){
+				error_page();
+			}
 			move_uploaded_file($file['tmp_name'], $tempName);
 			$phpmail->doaddAttachment($tempName);
 		}

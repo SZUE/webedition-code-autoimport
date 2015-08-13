@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -24,8 +23,8 @@
  * PHP email transport class
  *
  */
+//FIXME: this class is used in WE & uses Zend!!!
 class we_util_Mailer extends Zend_Mail{
-
 	/**
 	 * Type of Message, either text/html or text/plain
 	 *
@@ -133,9 +132,9 @@ class we_util_Mailer extends Zend_Mail{
 				//this should set return-path
 				$suhosin = extension_loaded('suhosin');
 				$_sender = $sender ? $this->parseEmailUser($sender) : '';
-				$tr = ($_sender && !empty($_sender['email'])  && !$suhosin ?
-								new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
-								new Zend_Mail_Transport_Sendmail());
+				$tr = ($_sender && !empty($_sender['email']) && !$suhosin ?
+						new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
+						new Zend_Mail_Transport_Sendmail());
 
 				Zend_Mail::setDefaultTransport($tr);
 				break;
@@ -267,8 +266,8 @@ class we_util_Mailer extends Zend_Mail{
 								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
 							}
 							$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
-									((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
-									((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
+								((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
+								((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
 							$attachmentpath = $this->basedir . $directory . $filename;
 							$attachmentpath = str_replace('//', '/', $attachmentpath);
 							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
@@ -320,15 +319,15 @@ class we_util_Mailer extends Zend_Mail{
 	public function parseHtml2TextPart($html){
 
 		$this->AltBody = trim(strip_tags(
-						preg_replace(array(
+				preg_replace(array(
 			'-<br[^>]*>-s',
 			'-<(ul|ol)[^>]*>-s',
 			'-<(head|title|style|script)[^>]*>.*?</\1>-s'
-								), array(
+					), array(
 			"\n",
 			"\n\n",
 			''
-								), strtr($html, array(
+					), strtr($html, array(
 			"\n" => '',
 			"\r" => '',
 			'</h1>' => "\n\n",
@@ -342,8 +341,8 @@ class we_util_Mailer extends Zend_Mail{
 			'</li>' => "\n",
 			'&lt;' => '<',
 			'&gt;' => '>',
-										)
-						))
+						)
+				))
 		));
 	}
 
@@ -380,17 +379,15 @@ class we_util_Mailer extends Zend_Mail{
 	 */
 	public function doaddAttachment($attachmentpath){
 		if($attachmentpath){
-			$binarydata = we_base_file::load($attachmentpath);
-			$at = new Zend_Mime_Part($binarydata);
+			$filename = basename($attachmentpath);
+			$ext= pathinfo($filename, PATHINFO_EXTENSION);
+
+			$at = new Zend_Mime_Part(we_base_file::load($attachmentpath));
 			$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
 			$at->encoding = Zend_Mime::ENCODING_BASE64;
-			$filename = basename($attachmentpath);
 			$at->id = md5($filename);
 			$at->filename = $filename;
-			$fileParts = pathinfo($filename);
-			$ext = $fileParts['extension'];
 			$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
-
 			$this->addAttachment($at);
 		}
 	}
@@ -438,17 +435,6 @@ class we_util_Mailer extends Zend_Mail{
 		$this->Encoding = $val;
 	}
 
-	/**
-	  public function setFrom($val = 'root@localhost')
-	  {
-	  $this->From = $val;
-	  }
-
-	  public function setFromName($val = 'Root User')
-	  {
-	  $this->FromName = $val;
-	  }
-	 */
 	public function setSender($val){
 		$this->Sender = $val;
 	}
@@ -478,7 +464,7 @@ class we_util_Mailer extends Zend_Mail{
 	public function Send(){
 		try{
 			$t = parent::send();
-		}catch(Zend_Exception $e){
+		} catch (Zend_Exception $e){
 			t_e('warning', 'Error while sending mail: ', $e);
 			return false;
 		}
@@ -532,15 +518,15 @@ class we_util_Mailer extends Zend_Mail{
 		//remove css/js code
 		$html = preg_replace('|<script.*</script>|', '', preg_replace('|<style.*/[ ]*style>|', '', $html));
 		$this->addTextPart(
-				trim(
-						strip_tags(
-								strtr($html, array(
+			trim(
+				strip_tags(
+					strtr($html, array(
 			'&nbsp;' => ' ',
 			'<br />' => "\n",
 			'<br/>' => "\n")
-								)
-						)
+					)
 				)
+			)
 		);
 	}
 
