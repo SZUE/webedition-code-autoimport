@@ -159,32 +159,36 @@ var weFileUpload = (function () {
 		};
 
 		function AbstractController() {
-
 			this.outer = null;
 			this.fileselectOnclick = function () {
 			};
 
 			this.fileSelectHandler = function (e) {
-				var selectedFiles = e.target.files || e.dataTransfer.files,
-								l = selectedFiles.length || 0,
-								that = _.controller;
+				var files = e.target.files || e.dataTransfer.files;
+				var l = files.length || 0;
 
 				if (l) {
 					_.sender.resetParams();//inc: clear array first
-					for (var f, i = 0; i < l; i++) {
-						if (!_.utils.contains(_.sender.preparedFiles, selectedFiles[i])) {
-							f = that.prepareFile(selectedFiles[i]);
-							_.sender.preparedFiles.push(f);
-							_.view.addFile(f, _.sender.preparedFiles.length);
-						}
-					}
+
 					if (e.type === 'drop') {
 						e.stopPropagation();
 						e.preventDefault();
 						e.target.className = 'we_file_drag';
 						_.controller.fileselectOnclick();
 					}
+
+					_.controller.selectedFiles = [];
+					for (var i = 0; i < l; i++) {
+						if (!_.utils.contains(_.sender.preparedFiles, files[i])) {
+							_.controller.selectedFiles[i] = files[i];
+						}
+					}
+					_.controller.prepareFilesAndAdd();
 				}
+			};
+
+			this.prepareFilesAndAdd = function (){
+				_.controller.prepareNextFileAndAdd();
 			};
 
 			this.fileDragHover = function (e) {
@@ -193,37 +197,144 @@ var weFileUpload = (function () {
 				e.target.className = (e.type === 'dragover' ? 'we_file_drag we_file_drag_hover' : 'we_file_drag');
 			};
 
-			this.prepareFile = function (f, isUploadable) {
-				var type = f.type ? f.type : 'text/plain',
-								u = isUploadable || true,
-								isTypeOk = _.utils.checkFileType(type, f.name),
-								isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false,
-								errorMsg = [
-									_.utils.gl.errorNoFileSelected,
-									_.utils.gl.errorFileSize,
-									_.utils.gl.errorFileType,
-									_.utils.gl.errorFileSizeType
-								];
+			this.prepareNextFileAndAdd = function (isUploadable) {
+				if(_.controller.selectedFiles.length === 0){
+					return;
+				}
 
-				return {
-					file: f,
-					type: type,
-					isUploadable: isTypeOk && isSizeOk && u, //maybe replace uploadConditionOk by this
-					isTypeOk: isTypeOk,
-					isSizeOk: isSizeOk,
-					uploadConditionsOk: isTypeOk && isSizeOk,
-					error: errorMsg[isSizeOk && isTypeOk ? 0 : (!isSizeOk && isTypeOk ? 1 : (isSizeOk && !isTypeOk ? 2 : 3))],
-					fileNum: 0,
-					dataArray: null,
-					currentPos: 0,
-					size: f.size,
-					partNum: 0,
-					totalParts: Math.ceil(f.size / _.sender.chunkSize),
-					lastChunkSize: f.size % _.sender.chunkSize,
-					currentWeightFile: 0,
-					mimePHP: 'none',
-					fileNameTemp: ''
+				var f = _.controller.selectedFiles.shift(),
+					fileObj = {
+						file: f,
+						fileNum: 0,
+						dataArray: null,
+						currentPos: 0,
+						partNum: 0,
+						currentWeightFile: 0,
+						mimePHP: 'none',
+						fileNameTemp: ''
+					},
+					type = f.type ? f.type : 'text/plain',
+					u = isUploadable || true,//??
+					errorMsg = [
+						_.utils.gl.errorNoFileSelected,
+						_.utils.gl.errorFileSize,
+						_.utils.gl.errorFileType,
+						_.utils.gl.errorFileSizeType
+					],
+					transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types;
+					fileObj.type = type;
+
+				if (_.sender.EDIT_IMAGES_CLIENTSIDE && _.sender.transformAll.doTrans && transformables.indexOf(fileObj.type) !== -1) {
+					_.controller.scaleImageAndAdd(fileObj);
+					return;
+				} else {
+					fileObj.isTypeOk = _.utils.checkFileType(type, f.name);
+					fileObj.isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false;
+					fileObj.isUploadable = fileObj.isTypeOk && fileObj.isSizeOk && u; //maybe replace uploadConditionOk by this
+					fileObj.uploadConditionsOk = fileObj.isTypeOk && fileObj.isSizeOk;
+					fileObj.error = errorMsg[fileObj.isSizeOk && fileObj.isTypeOk ? 0 : (!fileObj.isSizeOk && fileObj.isTypeOk ? 1 : (fileObj.isSizeOk && !fileObj.isTypeOk ? 2 : 3))];
+					fileObj.size = f.size;
+					fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
+					fileObj.lastChunkSize = f.size % _.sender.chunkSize;
+
+					_.sender.preparedFiles.push(fileObj);
+					_.view.addFile(fileObj, _.sender.preparedFiles.length);
+					_.controller.prepareNextFileAndAdd();
+				}
+
+			};
+			
+			/*
+			this.prepareFile = function (f, isUploadable) {
+				var fileObj = {
+						file: f,
+						fileNum: 0,
+						dataArray: null,
+						currentPos: 0,
+						partNum: 0,
+						currentWeightFile: 0,
+						mimePHP: 'none',
+						fileNameTemp: ''
+					},
+					type = f.type ? f.type : 'text/plain',
+					u = isUploadable || true,
+					isTypeOk = _.utils.checkFileType(type, f.name),
+					isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false,
+					errorMsg = [
+						_.utils.gl.errorNoFileSelected,
+						_.utils.gl.errorFileSize,
+						_.utils.gl.errorFileType,
+						_.utils.gl.errorFileSizeType
+					];
+
+				var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
+				if (_.sender.EDIT_IMAGES_CLIENTSIDE && _.sender.transformAll.doTrans && transformables.indexOf(f.type) !== -1) {
+					fileObj = this.scaleImage(fileObj);
+					top.console.debug("do transform", fileObj);
+				} else {
+					fileObj.type = type;
+					fileObj.isUploadable = isTypeOk && isSizeOk && u; //maybe replace uploadConditionOk by this
+					fileObj.isTypeOk = isTypeOk;
+					fileObj.isSizeOk = isSizeOk;
+					fileObj.uploadConditionsOk = isTypeOk && isSizeOk;
+					fileObj.error = errorMsg[isSizeOk && isTypeOk ? 0 : (!isSizeOk && isTypeOk ? 1 : (isSizeOk && !isTypeOk ? 2 : 3))];
+					fileObj.size = f.size;
+					fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
+					fileObj.lastChunkSize = f.size % _.sender.chunkSize;
+				}
+
+				return fileObj;
+			};
+			*/
+
+			this.scaleImageAndAdd = function(fileObj){
+				var reader = new FileReader();
+
+				reader.onloadend = function () {
+					var tempImg = new Image(),
+						ratio = 1;
+
+					tempImg.src = reader.result;
+					tempImg.onload = function () {
+						if(_.sender.transformAll.width){
+							ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
+						} else if(_.sender.transformAll.height){
+							ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
+						}
+						ratio = ratio < 1 ? ratio : 1;
+
+						/* var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
+						var canv = document.createElement('canvas');
+						canv.width = tempImg.width;
+						canv.height = tempImg.height;
+						canv.getContext('2d').drawImage(tempImg, 0, 0);
+						var resulting_canvas = _.utils.downScaleCanvas(canv, ratio);
+						canv = null;
+						resulting_canvas.toBlob(function (blob) {
+								var arrayBufferNew = null;
+								var fr = new FileReader();
+								fr.onload = function (e) {
+									arrayBufferNew = this.result;
+									fileObj.dataArray = new Uint8Array(arrayBufferNew);
+									_.sender.preparedFiles.push(fileObj);
+									_.view.addFile(fileObj, _.sender.preparedFiles.length);
+									_.controller.prepareNextFileAndAdd();
+								};
+								fileObj.size = blob.size;
+								fileObj.totalParts = Math.ceil(blob.size / _.sender.chunkSize);
+								fileObj.lastChunkSize = blob.size % _.sender.chunkSize;
+								//TODO: check the following flags again
+								fileObj.isUploadable = true;
+								fileObj.isTypeOk = true;
+								fileObj.isSizeOk = true;
+								fileObj.uploadConditionsOk = true;
+								
+								fr.readAsArrayBuffer(blob);
+							}, "image/jpeg", 1.0
+						);
+					};
 				};
+				reader.readAsDataURL(fileObj.file);
 			};
 
 			this.setWeButtonState = function (btn, enable, isFooter) {
@@ -283,6 +394,7 @@ var weFileUpload = (function () {
 			};
 
 			//new client side image editing
+			/*
 			this.transformAndSendFile = function (cur) {
 				top.console.debug(this.transformAll);
 				var reader = new FileReader();
@@ -299,7 +411,7 @@ var weFileUpload = (function () {
 						}
 						ratio = ratio < 1 ? ratio : 1;
 
-						/* var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
+						// var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
 						var canv = document.createElement('canvas');
 						canv.width = tempImg.width;
 						canv.height = tempImg.height;
@@ -307,11 +419,11 @@ var weFileUpload = (function () {
 						var resulting_canvas = _.utils.downScaleCanvas(canv, ratio);
 						var canvas = resulting_canvas;
 
-						/* var 2: K3N @ http://stackoverflow.com/questions/17861447/html5-canvas-drawimage-how-to-apply-antialiasing */
+						// var 2: K3N @ http://stackoverflow.com/questions/17861447/html5-canvas-drawimage-how-to-apply-antialiasing
 
 
-						/* var 3: simple resize + rotation */
- 						/*
+						// var 3: simple resize + rotation
+
 						var MAX_WIDTH = 600;
 						var MAX_HEIGHT = 600;
 						var tempW = tempImg.width;
@@ -354,8 +466,6 @@ var weFileUpload = (function () {
 						}
 						ctx.rotate(-Math.PI * deg / 180);
 						ctx.drawImage(tempImg, x, y, tempW, tempH);
-						*/
-
 
 						canvas.toBlob(function (blob) {
 								var arrayBufferNew = null;
@@ -378,10 +488,11 @@ var weFileUpload = (function () {
 				};
 				reader.readAsDataURL(cur.file);
 			};
+			*/
 
 			this.sendNextFile = function () {
 				var cur, fr = null, cnt,
-								that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+					that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
 
 				if (this.uploadFiles.length > 0) {
 					this.currentFile = cur = this.uploadFiles.shift();
@@ -395,12 +506,12 @@ var weFileUpload = (function () {
 							if (_.view.elems.fileSelect && _.view.elems.fileSelect.value) {
 								_.view.elems.fileSelect.value = '';
 							}
-
 							var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
 
 							//clientside editing disabled!
 							if (this.EDIT_IMAGES_CLIENTSIDE && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1) {//TODO: && !cur.doTrans!!)
-								_.sender.transformAndSendFile(cur);
+								that.sendNextChunk(true);
+								//_.sender.transformAndSendFile(cur);
 							} else {
 								fr = new FileReader();
 								fr.onload = function (e) {
@@ -957,7 +1068,7 @@ var weFileUpload = (function () {
 				}
 				this.uploadFiles = [this.preparedFiles[0]];
 				this.totalFiles = 1;
-				this.totalWeight = this.preparedFiles[0].file.size;//size?
+				this.totalWeight = this.preparedFiles[0].size;//size?
 				this.currentWeight = 0;
 				return true;
 			};
@@ -1212,7 +1323,7 @@ var weFileUpload = (function () {
 							this.preparedFiles[i].fileNum = c++;
 							this.uploadFiles.push(this.preparedFiles[i]);
 							this.mapFiles.push(i);
-							this.totalWeight += this.preparedFiles[i].file.size;//size?
+							this.totalWeight += this.preparedFiles[i].size;//size?
 							document.getElementById('div_rowButtons_' + i).style.display = 'none';
 							document.getElementById('div_rowProgress_' + i).style.display = '';
 						}
@@ -1642,7 +1753,7 @@ var weFileUpload = (function () {
 				if (typeof this.preparedFiles[0] === 'object' && this.preparedFiles[0] !== null && this.preparedFiles[0].isUploadable) {
 					this.preparedFiles[0].fileNum = 0;
 					this.uploadFiles.push(this.preparedFiles[0]);
-					this.totalWeight = this.preparedFiles[0].file.size;//size?
+					this.totalWeight = this.preparedFiles[0].size;//size?
 				}
 
 				this.totalFiles = this.uploadFiles.length;
