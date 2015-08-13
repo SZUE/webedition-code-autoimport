@@ -59,7 +59,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 			'text' => $translate->_('New Entry'),
 			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})',
 			'type' => 'onClick',
-			'disabled' => !we_core_Permissions::hasPerm($perm),
+			'disabled' => ! permissionhandler::hasPerm($perm),
 			'width' => 200
 		));
 		$perm = 'GENTOC_APP_' . strtoupper($appName);
@@ -67,7 +67,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 			'text' => $translate->_('Regenetrate TOC'),
 			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_gentoc"})',
 			'type' => 'onClick',
-			'disabled' => !we_core_Permissions::hasPerm($perm),
+			'disabled' => !permissionhandler::hasPerm($perm),
 			'width' => 200,
 			'top' => '10px;',
 			'style' => 'margin-bottom:10px;'
@@ -83,7 +83,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 				'text' => $translate->_('Install') . ' ' . $dieApp['classname'] . ' ' . $dieApp['version'],
 				'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_localInstall' . $i . '"})',
 				'type' => 'onClick',
-				'disabled' => !we_core_Permissions::hasPerm($perm),
+				'disabled' => !permissionhandler::hasPerm($perm),
 				'width' => 200,
 				'top' => '10px;',
 				'style' => 'margin-top:10px;'

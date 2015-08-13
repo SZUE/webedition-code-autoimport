@@ -321,7 +321,7 @@ abstract class we_base_file{
 
 // check for directories: create it if we could no write into it:
 		if(!mkdir($path, $mod, $recursive)){
-			t_e('warning', "Could not create local Folder at 'we_util_File/checkAndMakeFolder()': '" . $path . "'");
+			t_e('warning', "Could not create local Folder at '" . __FUNCTION__ . "': '" . $path . "'");
 			umask($umask);
 			return false;
 		}

@@ -38,15 +38,5 @@ td.mceToolbar{
 	overflow: auto;
 	height: auto;
 	width: auto;
-}
-.tbButtonWysiwygBorder {
-	border: 1px solid #006DB8;
-	margin: 0px;
-	padding:4px;
-	text-align: left;
-	text-decoration: none;
-	position: relative;
-	height: auto;
-	width:25px;
 	background-color: #F5F5F5;
 }

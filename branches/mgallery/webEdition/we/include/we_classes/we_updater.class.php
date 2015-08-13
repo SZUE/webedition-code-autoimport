@@ -274,8 +274,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 	public static function removeObsoleteFiles($path){
 		$path = $path ? : WEBEDITION_PATH . 'liveUpdate/includes/';
 		if(is_file($path . 'del.files')){
-			$all = array();
-			if($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES)){
+			if(($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES))){
 				$delFiles = array();
 				foreach($all as $cur){
 					if(file_exists(WEBEDITION_PATH . $cur)){
@@ -284,7 +283,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 							unlink(WEBEDITION_PATH . $cur);
 						} elseif(is_dir(WEBEDITION_PATH . $cur)){
 							$delFiles[] = 'Folder: ' . $cur;
-							we_util_File::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
+							we_base_file::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
 						}
 					}
 				}

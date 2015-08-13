@@ -848,7 +848,7 @@ class liveUpdateFunctions{
 							unlink(WEBEDITION_PATH . $cur);
 						} elseif(is_dir(WEBEDITION_PATH . $cur)){
 							$delFiles[] = 'Folder: ' . $cur;
-							we_util_File::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
+							we_base_file::deleteLocalFolder(WEBEDITION_PATH . $cur, false);
 						}
 					}
 				}
@@ -862,7 +862,7 @@ class liveUpdateFunctions{
 
 	function removeDirOnlineInstaller(){
 		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
-			we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
+			we_base_file::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
 		}
 
 		return true;
