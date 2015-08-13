@@ -61,7 +61,6 @@ class we_selector_query{
 	 * @return void
 	 */
 	function queryTable($search, $table, array $types, $limit = null){
-		$search = strtr($search, array('[' => '\\[', ']' => '\\]'));
 		$userExtraSQL = $this->getUserExtraQuery($table);
 
 		switch($table){

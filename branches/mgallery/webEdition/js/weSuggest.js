@@ -107,7 +107,7 @@ YAHOO.autocoml = {
 							failure: function (o) {
 								YAHOO.autocoml.ajaxFailure(o, i);
 							}
-						}, 'protocol=text&cmd=SelectorGetSelectedId&we_cmd[1]=' + YAHOO.autocoml.newInputVal[i] + '&we_cmd[2]=' + YAHOO.autocoml.yuiAcFields[i].table + '&we_cmd[3]=' + YAHOO.autocoml.yuiAcFields[i].cTypes + '&we_cmd[4]=' + YAHOO.autocoml.yuiAcFields[i].checkValues + '&we_cmd[5]=' + i);
+						}, 'protocol=text&cmd=SelectorGetSelectedId&we_cmd[1]=' + encodeURIComponent(YAHOO.autocoml.newInputVal[i]) + '&we_cmd[2]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].table) + '&we_cmd[3]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].cTypes) + '&we_cmd[4]=' + encodeURIComponent(YAHOO.autocoml.yuiAcFields[i].checkValues) + '&we_cmd[5]=' + i);
 						if (x === y && y === 0) {
 							//call from timeout
 						} else {

@@ -27,7 +27,7 @@ class rpcSelectorGetSelectedIdView extends rpcView{
 	function getResponse($response){
 
 		header('Content-type: text/plain');
-		$suggests = $response->getData("data");
+		$suggests = $response->getData('data');
 		if(is_array($suggests) && isset($suggests[0]['ID'])){
 			$status = "response";
 			$html = ' "id": "' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4) . '", "value": "' . $suggests[0]['ID'] . '"' .
