@@ -35,7 +35,6 @@ class we_listview_search extends we_listview_base{
 	var $class = 0; /* ID of a class. Search only in Objects of this class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
-	var $ClassName = __CLASS__;
 	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;
@@ -171,7 +170,7 @@ class we_listview_search extends we_listview_base{
 		}
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName) :
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this) :
 				'');
 
 		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;

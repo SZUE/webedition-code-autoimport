@@ -29,8 +29,6 @@
  *
  */
 class we_banner_listview extends we_listview_base{
-
-	var $ClassName = __CLASS__;
 	var $allviews = 0;
 	var $allclicks = 0;
 	var $UseFilter = 0;
@@ -143,10 +141,6 @@ class we_banner_listview extends we_listview_base{
 		$this->Record["rate"] = round($this->Record["views"] ? (100 * ($this->Record["clicks"] / $this->Record["views"])) : 0, 1);
 		$this->count++;
 		return true;
-	}
-
-	function f($key){
-		return $this->Record[$key];
 	}
 
 	function getAllviews(){

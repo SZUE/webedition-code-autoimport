@@ -31,7 +31,6 @@ class we_listview_document extends we_listview_base{
 	var $docType = ''; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
-	var $ClassName = __CLASS__;
 	var $contentTypes = '';
 	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
@@ -175,7 +174,7 @@ class we_listview_document extends we_listview_base{
 			}
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
-			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, 0, $id);
+			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, 0, $id);
 		}
 
 		if($this->customers && $this->customers !== '*'){
@@ -375,10 +374,6 @@ class we_listview_document extends we_listview_base{
 			return true;
 		}
 		return false;
-	}
-
-	function f($key){
-		return isset($this->Record[$key]) ? $this->Record[$key] : '';
 	}
 
 	function makeConditionSql($cond){

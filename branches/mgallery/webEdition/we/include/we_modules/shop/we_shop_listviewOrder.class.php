@@ -28,7 +28,6 @@
  *
  */
 class we_shop_listviewOrder extends we_listview_base{
-	var $ClassName = __CLASS__;
 	var $condition = '';
 	var $Path = '';
 	var $docID = 0;

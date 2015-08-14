@@ -30,7 +30,6 @@
 //FIXME: is this class not ~ listview_object? why is this not the base class???
 class we_object_listviewMultiobject extends we_object_listviewBase{
 	var $objects = ''; /* Comma sepearated list of all objetcs to show in this listview */
-	var $ClassName = __CLASS__;
 
 	/**
 	 * @desc    constructor of class
@@ -125,7 +124,7 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 				we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, "OF_Category", $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this->ClassName, $this->classID) :
+				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) :
 				'');
 
 		if($sqlParts["tables"]){

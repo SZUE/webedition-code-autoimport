@@ -28,10 +28,11 @@
  */
 class we_listview_variants extends we_listview_base{
 	var $Record = array();
-	var $ClassName = __CLASS__;
 	var $VariantData = array();
 	var $Position = 0;
+	//old code compatibility
 	var $Id = 0;
+	public $id = 0;
 	var $ObjectId = 0;
 	var $DefaultName = 'default';
 	var $Model = null;
@@ -40,52 +41,44 @@ class we_listview_variants extends we_listview_base{
 	var $objectseourls = false;
 
 	function __construct($name, $rows, $defaultname, $documentid, $objectid, $offset, $hidedirindex, $objectseourls, $triggerID){
-
 		parent::__construct($name, $rows, $offset);
+
+		$this->DefaultName = $defaultname;
+		$this->hidedirindex = $hidedirindex;
+		$this->objectseourls = $objectseourls;
+		$this->triggerID = $triggerID;
 
 		// we have to init a new document and look for the given field
 		// get id of given document and check if it is a document or an objectfile
 		if($documentid){
-			$this->Id = $documentid;
+			$this->id = $documentid;
 
-			$doc = new we_webEditionDocument();
-			$doc->initByID($this->Id);
+			$this->Model = new we_webEditionDocument();
+			$this->Model->initByID($this->id);
 		} else if($objectid && defined('OBJECT_TABLE')){
-
 			$this->IsObjectFile = true;
-
-			$this->Id = $objectid;
-
-			$doc = new we_objectFile();
-			$doc->initByID($this->Id, OBJECT_FILES_TABLE);
+			$this->id = $objectid;
+			$this->Model = new we_objectFile();
+			$this->Model->initByID($this->id, OBJECT_FILES_TABLE);
 			// check if its a document or a objectFile
 		} elseif($GLOBALS['we_doc'] instanceof we_objectFile){ // is an objectFile can this happen??!
-			$this->Id = $GLOBALS['we_doc']->ID;
+			$this->id = $GLOBALS['we_doc']->ID;
 			$this->IsObjectFile = true;
-			$doc = $GLOBALS['we_doc'];
+			$this->Model = $GLOBALS['we_doc'];
 		} elseif(isset($GLOBALS['we_obj'])){
-			$this->Id = $GLOBALS['we_obj']->ID;
+			$this->id = $GLOBALS['we_obj']->ID;
 			$this->IsObjectFile = true;
-			$doc = $GLOBALS['we_obj'];
+			$this->Model = $GLOBALS['we_obj'];
 		} else {
-			$this->Id = $GLOBALS['we_doc']->ID;
-			$doc = $GLOBALS['we_doc'];
+			$this->id = $GLOBALS['we_doc']->ID;
+			$this->Model = $GLOBALS['we_doc'];
 		}
+		$this->id = $this->id;
 
 		// store model in listview object
-		$this->Model = $doc;
-
-		$this->DefaultName = $defaultname;
-
-		$variantData = we_base_variants::getVariantData($this->Model, $this->DefaultName);
-
-		$this->VariantData['Record'] = $variantData;
-
+		$this->VariantData['Record'] = we_base_variants::getVariantData($this->Model, $this->DefaultName);
 		$this->anz_all = count($this->VariantData['Record']);
 		$this->anz = min($this->rows, $this->anz_all);
-		$this->hidedirindex = $hidedirindex;
-		$this->objectseourls = $objectseourls;
-		$this->triggerID = $triggerID;
 	}
 
 	function next_record(){
@@ -112,11 +105,11 @@ class we_listview_variants extends we_listview_base{
 				$varUrl = $ret['WE_VARIANT'] = '';
 			}
 
-			$ret['WE_ID'] = $this->Id;
+			$ret['WE_ID'] = $this->id;
 			$path_parts = pathinfo($this->IsObjectFile ? $GLOBALS['we_doc']->Path : $this->Model->Path);
 			if($this->IsObjectFile){ // objectFile
 				if($this->objectseourls && show_SeoLinks()){
-					$Url = f("SELECT Url from " . OBJECT_FILES_TABLE . " WHERE ID=" . $this->Id, 'Url', $this->DB_WE);
+					$Url = f('SELECT Url FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->id, '', $this->DB_WE);
 					if($Url != ''){
 						$ret['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
 							( show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
@@ -124,14 +117,14 @@ class we_listview_variants extends we_listview_base{
 							) . '/' . $Url . ($varUrl ? "?$varUrl" : '');
 					} else {
 						$ret['WE_PATH'] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '') :
-								$GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? '&amp;' . $varUrl : '')
+								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $this->id . ($varUrl ? "&amp;$varUrl" : '') :
+								$GLOBALS['we_doc']->Path . '?we_objectID=' . $this->id . ($varUrl ? '&amp;' . $varUrl : '')
 							);
 					}
 				} elseif(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$ret['WE_PATH'] = $GLOBALS['we_doc']->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
 				} else {
-					$ret['WE_PATH'] = $GLOBALS['we_doc']->Path . "?we_objectID=" . $this->Id . ($varUrl ? "&amp;$varUrl" : '');
+					$ret['WE_PATH'] = $GLOBALS['we_doc']->Path . '?we_objectID=' . $this->id . ($varUrl ? "&amp;$varUrl" : '');
 				}
 			} else // webEdition Document
 
@@ -146,10 +139,6 @@ class we_listview_variants extends we_listview_base{
 			return true;
 		}
 		return false;
-	}
-
-	function f($key){
-		return (isset($this->Record[$key]) ? $this->Record[$key] : '');
 	}
 
 }

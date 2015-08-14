@@ -31,7 +31,6 @@ class we_listview_category extends we_listview_base{
 	var $parentID = 0;
 	var $catID = 0;
 	var $variant = 'default';
-	var $ClassName = __CLASS__;
 	var $hidedirindex = false;
 
 	/**
@@ -85,8 +84,6 @@ class we_listview_category extends we_listview_base{
 
 	function next_record(){
 		if($this->DB_WE->next_record()){
-			$count = $this->count;
-
 			$this->Record = array(
 				'WE_PATH' => $this->DB_WE->f('Path'),
 				'WE_TITLE' => $this->DB_WE->f('Title'),
@@ -115,10 +112,6 @@ class we_listview_category extends we_listview_base{
 			return true;
 		}
 		return false;
-	}
-
-	function f($key){
-		return isset($this->Record[$key]) ? $this->Record[$key] : '';
 	}
 
 }

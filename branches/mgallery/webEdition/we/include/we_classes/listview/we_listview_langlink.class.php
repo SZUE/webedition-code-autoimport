@@ -31,7 +31,6 @@ class we_listview_langlink extends we_listview_base{
 	var $docType = ''; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
 	var $foundlinks = array();
-	var $ClassName = __CLASS__;
 	var $linkType = '';
 	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
@@ -280,10 +279,6 @@ class we_listview_langlink extends we_listview_base{
 		}
 
 		return false;
-	}
-
-	function f($key){
-		return isset($this->Record[$key]) ? $this->Record[$key] : '';
 	}
 
 }

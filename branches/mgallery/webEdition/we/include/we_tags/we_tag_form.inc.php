@@ -81,7 +81,7 @@ function we_tag_form($attribs){
 						'value' => (
 						isset($GLOBALS['lv']->classID) || (isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_object_tag) ?
 							we_shop_shop::OBJECT :
-							(isset($GLOBALS['lv']->ID) ?
+							($GLOBALS['lv'] instanceof we_listview_document ?
 								we_shop_shop::DOCUMENT :
 								($GLOBALS['we_doc'] instanceof we_objectFile) ?
 									we_shop_shop::OBJECT :
@@ -100,8 +100,8 @@ function we_tag_form($attribs){
 							(isset($GLOBALS['lv']) ?
 								($GLOBALS['lv'] instanceof we_object_tag ?
 									$GLOBALS['lv']->f('WE_ID') :
-									(isset($GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1]) && $GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] != '' ?
-										$GLOBALS['lv']->IDs[$GLOBALS['lv']->count - 1] :
+									($GLOBALS['lv'] instanceof we_listview_document && ($lastE = end($GLOBALS['lv']->IDs)) ?
+										$lastE :
 										$GLOBALS['we_doc']->ID)
 								) :
 								$GLOBALS['we_doc']->ID)

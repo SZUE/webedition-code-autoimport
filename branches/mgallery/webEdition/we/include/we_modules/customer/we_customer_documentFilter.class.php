@@ -159,12 +159,12 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 *
 	 * @return string
 	 */
-	function getConditionForListviewQuery($filter, $classname, $classID = 0, $ids = ''){
+	function getConditionForListviewQuery($filter, we_listview_base $obj, $classID = 0, $ids = ''){
 		if($filter === 'off' || $filter === 'false' || $filter === false || $filter === 'all' || $filter === ''){
 			return '';
 		}
 		if(!self::customerIsLogedIn()){ //we don't show any documents with an customerfilter
-			if($classname === 'we_listview_search'){ // search
+			if($obj instanceof we_listview_search){ // search
 				//FIXME: changed tblINDEX!
 				return ' AND ( (ClassID=0 AND ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '"))' .
 					' OR ( ClassID>0 AND ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")) )';
@@ -176,9 +176,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		}
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
-		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($classname, $filter, $classID, $ids);
+		$_restrictedFilesForCustomer = self::_getFilesWithRestrictionsOfCustomer($obj, $filter, $classID, $ids);
 
-		if($classname === 'we_listview_search'){ // search
+		if($obj instanceof we_listview_search){ // search
 			$_queryTail = array();
 			// build query from restricted files, regard search and normal listview
 			foreach($_restrictedFilesForCustomer as $tab => $_fileArray){
@@ -354,7 +354,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * @param we_listview_document $listview
 	 * @return array
 	 */
-	private static function _getFilesWithRestrictionsOfCustomer($classname, $filter, $classID, $ids){
+	private static function _getFilesWithRestrictionsOfCustomer(we_listview_base $obj, $filter, $classID, $ids){
 		//FIXME: this will query ALL documents with restrictions - this is definately not what we want!
 		$_cid = !empty($_SESSION['webuser']['registered']) && $_SESSION['webuser']['ID'] ? $_SESSION['webuser']['ID'] : 0;
 		//cache result
@@ -364,7 +364,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$_specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($_cid,specificCustomers)) ";
 
 		// detect all files/objects with restrictions
-		switch($classname){
+		switch(get_class($obj)){
 			case 'we_listview_search':
 				$_queryForIds = 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType!="folder" AND (' . $listQuery . ' OR ' . $_specificCustomersQuery . ')';
 				break;
