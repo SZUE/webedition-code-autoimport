@@ -63,7 +63,7 @@ class we_shop_view{
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
 		// grep the last element from the year-set, wich is the current year
-		$this->db->query('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd');
+		$this->db->query('SELECT DATE_FORMAT(MAX(DateOrder),"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' LIMIT 1');
 		while($this->db->next_record()){
 			$strs = array($this->db->f("DateOrd"));
 			$yearTrans = end($strs);
@@ -362,7 +362,7 @@ function submitForm() {
 		}
 
 		// Get Customer data
-		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
+		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid.' LIMIT 1', '', $this->db);
 
 		if(($fields = we_unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
 			// we have an array with following syntax:
@@ -1717,7 +1717,7 @@ var attribs = {
 	}
 
 	private function getOrderCustomerData($orderId, array $strFelder = array()){
-		$hash = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId), $this->db);
+		$hash = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId).' LIMIT 1', $this->db);
 		$customerId = $hash['IntCustomerID'];
 		$tmp = $hash['strSerialOrder'];
 		// get Customer
@@ -1744,7 +1744,7 @@ var attribs = {
 	}
 
 	private function getFieldFromOrder($bid, $field){
-		return f('SELECT ' . $this->db->escape($field) . ' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), $field, $this->db);
+		return f('SELECT ' . $this->db->escape($field) . ' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid).' LIMIT 1', $field, $this->db);
 	}
 
 	private function updateFieldFromOrder($orderId, $fieldname, $value){

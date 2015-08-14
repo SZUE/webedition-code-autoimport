@@ -313,7 +313,6 @@ class we_shop_Basket{
 	 * @param string $variant
 	 */
 	function Set_Item($id, $quantity = 1, $type = "w", $variant = '', $customFields = array()){
-
 		if(($key = $this->getShoppingItemIndex($id, $type, $variant, $customFields))){ // item already in cart
 			if($quantity > 0){
 				$this->ShoppingItems[$key]['quantity'] = $quantity;
@@ -332,9 +331,7 @@ class we_shop_Basket{
 	 * @param integer $cart_amount
 	 */
 	function Set_Cart_Item($cart_id, $cart_amount){
-
 		if(isset($this->ShoppingItems[$cart_id])){
-
 			$item = $this->ShoppingItems[$cart_id];
 			$this->Set_Item($item['id'], $cart_amount, $item['type'], $item['variant'], $item['customFields']);
 		}
@@ -349,7 +346,6 @@ class we_shop_Basket{
 	 * @return mixed
 	 */
 	function getShoppingItemIndex($id, $type = we_shop_shop::DOCUMENT, $variant = '', $customFields = array()){
-
 		foreach($this->ShoppingItems as $index => $item){
 			if($item['id'] == $id && $item['type'] == $type && $item['variant'] == $variant && $customFields == $item['customFields']){
 				return $index;

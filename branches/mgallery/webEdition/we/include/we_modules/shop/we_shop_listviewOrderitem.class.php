@@ -62,11 +62,19 @@ class we_shop_listviewOrderitem extends we_listview_base{
 		}
 		// und nun sind alle anderen kaputt und werden repariert
 		$this->condition = strtr($this->condition, array(
-			'OrderIntID' => 'IntOrderID',
-			'CustomerIntID' => 'IntCustomerID',
-			'ArticleIntID' => 'IntArticleID',
+			'OrderIntID' => 'OrderID',
+			'CustomerIntID' => 'CustomerID',
+			'ArticleIntID' => 'ArticleID',
+			'IntOrderID' => 'IntOrderID', //prevents accidential replacements
+			'OrderID' => 'IntOrderID',
+			'IntCustomerID' => 'IntCustomerID', //prevents accidential replacements
+			'CustomerID' => 'IntCustomerID',
+			'IntArticleID' => 'IntArticleID', //prevents accidential replacements
+			'ArticleID' => 'IntArticleID',
+			'IntQuantity' => 'IntQuantity', //prevents accidential replacements
 			'Quantity' => 'IntQuantity',
-			'Payment_Type' => 'IntPayment_Type',
+			'IntPayment_Type' => 'IntPayment_Type', //prevents accidential replacements
+			'Payment_Type' => 'IntPayment_Type'
 		));
 
 		$this->Path = ($this->docID ? id_to_path($this->docID, FILE_TABLE, $this->DB_WE) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : ''));
@@ -86,7 +94,7 @@ class we_shop_listviewOrderitem extends we_listview_base{
 				case 'ArticleID':
 				case 'Quantity':
 				case 'Payment_Type':
-					$this->order = 'Int' . $this->order;
+					$this->order = 'Int' . trim($this->order);
 			}
 
 			$orderstring = ' ORDER BY ' . $this->order;

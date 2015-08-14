@@ -44,7 +44,7 @@ class we_shop_frames extends we_modules_frame{
 		$extraHead = $this->Tree->getJSTreeCode();
 
 		if(($bid = we_base_request::_(we_base_request::INT, 'bid')) === -1){
-			$bid = intval(f('SELECT IntOrderID FROM ' . SHOP_TABLE . ' ORDER BY IntID DESC', '', $this->db));
+			$bid = intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $this->db));
 		}
 
 		$extraUrlParams = $bid > 0 ? '&bid=' . $bid : '&top=1&home=1';
@@ -83,7 +83,7 @@ function we_cmd() {
 //	$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
 		$data = getHash("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $this->db);
 
-		$headline = $data ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $data["IntOrderID"] . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $data["IntOrderID"], $data["orddate"]) . '</a>' : '';
+		$headline = $data ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $data['IntOrderID'] . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $data['IntOrderID'], $data['orddate']) . '</a>' : '';
 
 /// config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
@@ -216,7 +216,7 @@ function we_cmd() {
 
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 
-		$hash = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") AS d FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, $DB_WE);
+		$hash = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") AS d FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid . ' LIMIT 1', $DB_WE);
 		if($hash){
 			$cid = $hash['IntCustomerID'];
 			$cdat = $hash['d'];
@@ -274,7 +274,7 @@ function setTab(tab) {
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
 // grep the last element from the year-set, wich is the current year
-		$yearTrans = f('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd DESC LIMIT 1', 'DateOrd', $this->db);
+		$yearTrans = f('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd DESC LIMIT 1', '', $this->db);
 
 
 		$we_tabs = new we_tabs();

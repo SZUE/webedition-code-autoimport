@@ -111,7 +111,7 @@ function we_tag_writeShopData($attribs){
 			$shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] = $shopCategory ? : 0;
 
 			if(!$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
-					we_database_base::arraySetter((array(
+					we_database_base::arraySetter(array(
 						'IntArticleID' => intval($shoppingItem['id']),
 						'IntQuantity' => abs($shoppingItem['quantity']),
 						'Price' => $preis,
@@ -121,7 +121,7 @@ function we_tag_writeShopData($attribs){
 						'DateShipping' => 0,
 						'Datepayment' => 0,
 						'strSerial' => we_serialize($shoppingItem['serial']),
-				))))){
+				)))){
 
 				$DB_WE->unlock();
 				t_e('error during write shop data contents of basket', $shoppingItems);
@@ -133,19 +133,6 @@ function we_tag_writeShopData($attribs){
 				//all critical data is set, unlock tables again
 				$first = true;
 				$DB_WE->unlock();
-			}
-			if(isset($GLOBALS['weEconda'])){
-				$GLOBALS['weEconda']['emosBasket'] .= "
-                    if(emosBasketPageArray === undefined) var emosBasketPageArray = [];
-                    emosBasketPageArray[$articleCount] = [];
-                    emosBasketPageArray[$articleCount][0]='" . $shoppingItem['id'] . "';
-                    emosBasketPageArray[$articleCount][1]='" . rawurlencode($shoppingItem['serial'][WE_SHOP_TITLE_FIELD_NAME]) . "';
-                    emosBasketPageArray[$articleCount][2]='$preis';
-                    emosBasketPageArray[$articleCount][3]='';
-                    emosBasketPageArray[$articleCount][4]='" . $shoppingItem['quantity'] . "';
-                    emosBasketPageArray[$articleCount][5]='NULL';
-                    emosBasketPageArray[$articleCount][6]='NULL';
-                    emosBasketPageArray[$articleCount][7]='NULL';";
 			}
 			$articleCount++;
 		}
@@ -179,32 +166,10 @@ function we_tag_writeShopData($attribs){
 			$cartField[WE_SHOP_CALC_VAT] = $calcVat; // add flag to shop, if vats shall be used
 		}
 
-		if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' set strSerialOrder="' . $DB_WE->escape(we_serialize($cartField)) . '" WHERE intOrderID="' . $orderID . '"')){
+		if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' SET strSerialOrder="' . $DB_WE->escape(we_serialize($cartField, 'json')) . '" WHERE intOrderID=' . intval($orderID))){
 			return;
 		}
 		//}
-		if(isset($GLOBALS['weEconda'])){
-			/*
-			 * first get the prefs for country, city, address by shop default settings and shop payment settings
-			 */
-			$shopDefaultPrefs = we_unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"'));
-			if(is_set($shopDefaultPrefs['stateField'])){ // check for array
-				$fieldCountry = $shopDefaultPrefs['stateField'];
-				$emosBillingCountry = $_SESSION['webuser'][$fieldCountry];
-			}
-			$shopPaymentPrefs = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="payment_details"'));
-			if(isset($shopPaymentPrefs[2]) && isset($shopPaymentPrefs[3]) && isset($shopPaymentPrefs[4])){
-				$emosBillingCity = substr($_SESSION['webuser'][$shopPaymentPrefs[3]], 0, 1) . "/" . substr($_SESSION['webuser'][$shopPaymentPrefs[3]], 0, 2) . "/" . $_SESSION['webuser'][$shopPaymentPrefs[4]] . "/" . $_SESSION['webuser'][$shopPaymentPrefs[3]];
-				//$emosBillingStreet = $_SESSION['webuser'][$shopPaymentPrefs[2]];
-			}
-			$GLOBALS['weEconda']['emosBilling'] .= "
-                if(emosBillingPageArray === undefined) var emosBillingPageArray = [];
-                emosBillingPageArray [0]='" . $orderID . "';
-                emosBillingPageArray [1]='" . md5($_SESSION["webuser"]["ID"]) . "';
-                emosBillingPageArray [2]='" . rawurlencode($emosBillingCountry) . "/" . rawurlencode($emosBillingCity) . "';
-                emosBillingPageArray [3]='" . $totPrice . "';
-                			";
-		}
 		$doc = we_getDocForTag('top');
 		$lang = substr($doc->Language, 0, 2);
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
