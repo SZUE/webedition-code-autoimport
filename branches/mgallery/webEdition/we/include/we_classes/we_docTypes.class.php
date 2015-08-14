@@ -241,7 +241,7 @@ class we_docTypes extends we_class{
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($idname, $this->ParentID);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth($width - (we_base_browserDetect::isIE() ? 0 : 10));
+		$yuiSuggest->setWidth($width - 10);
 		$yuiSuggest->setSelectButton($button);
 
 		return $yuiSuggest->getHTML();

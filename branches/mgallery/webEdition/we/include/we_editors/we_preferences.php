@@ -966,7 +966,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput('newconf[weHeight]', 6, (get_value('sizeOpt') ? get_value('weHeight') : ''), 4, (get_value('sizeOpt') == 0 ? 'disabled="disabled"' : ""), "number", 60));
 
 			// Build apply current window dimension
-			$_window_current_dimension_table = we_html_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientWidth" : "parent.opener.top.window.outerWidth") . ";document.getElementsByName('newconf[weHeight]')[0].value = " . (we_base_browserDetect::isIE() ? "parent.opener.top.document.body.clientHeight;" : "parent.opener.top.window.outerHeight;"), true);
+			$_window_current_dimension_table = we_html_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = parent.opener.top.window.outerWidth;document.getElementsByName('newconf[weHeight]')[0].value = parent.opener.top.window.outerHeight;", true);
 
 			// Build final HTML code
 			$_window_html = new we_html_table(array('class' => 'default'), 5, 1);

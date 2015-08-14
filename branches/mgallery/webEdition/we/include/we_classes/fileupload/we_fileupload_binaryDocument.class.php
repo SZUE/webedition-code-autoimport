@@ -124,35 +124,22 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 
 	public function getCss(){
 
-		return self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
-/* FIXME: we should not overwrite .we_file_drag here! */
-div.we_file_drag{
-	width: 300px;
-	margin: 1em 0.2em 0px 0.1em;
-	height: 116px;
-	border: dotted 2px gray;
-	border-radius: 0px;
-	box-shadow: none;
-}
-div.we_file_drag_binDoc{
-	margin: 1px 0 10px 1px;
-}
-.fileInputIE10{
-	left: 0px;
-}');
+		return /* self::isFallback() || self::isLegacyMode() ? '' : */we_html_element::cssLink(CSS_DIR . 'we_fileupload.css');
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
-		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? true : false;
-		$width = $isIE10 ? array('input' => 84, 'button' => 168) : array('input' => 170, 'button' => 170);
+		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
+
+		//FIXME: this should be static in css
+		$width = $isIE10 ? 84 : 170;
 		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
-		$btnBrowse = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width['button'], we_html_button::HEIGHT, '', '', false, false, '_btn');
-		$btnUpload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $this->getJsBtnCmd('upload'), true, $width['button'], 22, "", "", true, false, "_btn", true);
-		$btnReset = we_html_button::create_button("reset", 'javascript:we_FileUpload.reset()', true, $width['button'], 22, "", "", true, false, "_btn", true);
-		$btnCancel = we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_FileUpload.cancelUpload()', true, $width['button'], 22, "", "", false, false, "_btn", true);
+		$btnBrowse = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 170, we_html_button::HEIGHT, '', '', false, false, '_btn');
+		$btnUpload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $this->getJsBtnCmd('upload'), true, 170, 22, "", "", true, false, "_btn", true);
+		$btnReset = we_html_button::create_button("reset", 'javascript:we_FileUpload.reset()', true, 170, 22, "", "", true, false, "_btn", true);
+		$btnCancel = we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_FileUpload.cancelUpload()', true, 170, 22, "", "", false, false, "_btn", true);
 		$fileInput = we_html_element::htmlInput(array(
-				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
+				'class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
 				'style' => 'width:' . $width['input'] . 'px;',
 				'type' => 'file',
 				'name' => $this->name,
@@ -161,14 +148,14 @@ div.we_file_drag_binDoc{
 		);
 		$fileInput .=!$isIE10 ? '' :
 			we_html_element::htmlInput(array(
-				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
+				'class' => 'fileInput fileInputHidden fileInputIE10',
 				'style' => 'width:' . $width['input'] . 'px; left:' . $width['input'] . 'px;',
 				'type' => 'file',
 				'name' => $this->name . '_x2',
 				'id' => $this->name . '_x2',
 				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
-		$divFileInput = we_html_element::htmlDiv(array('id' => 'div_we_File_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'height:26px;margin-top:18px;width:' . ($width['button'] + 4) . 'px;'), $fileInput . $btnBrowse);
+		$divFileInput = we_html_element::htmlDiv(array('id' => 'div_we_File_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'height:26px;margin-top:18px;width:174px;'), $fileInput . $btnBrowse);
 		$divBtnReset = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:26px;margin-top:18px;display:none;'), $btnReset);
 		$divBtnUpload = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'), $btnUpload);
 		$divBtnCancel = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top:16px;display:none;'), $btnCancel);
@@ -189,8 +176,7 @@ div.we_file_drag_binDoc{
 		$btnUploadLegacy = we_html_button::create_button(we_html_button::UPLOAD, "javascript:we_cmd('editor_uploadFile', 'legacy')", true, 150, 22, "", "", false, false, "_legacy_btn", true);
 		$divBtnUploadLegacy = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUploadLegacy', 'style' => 'margin:0px 0 16px 0;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . ';'), $btnUploadLegacy);
 
-		$leftMarginTop = we_base_browserDetect::isIE() ? 4 : (we_base_browserDetect::isChrome() ? 3 : 0);
-		$divFileInfo = we_html_element::htmlDiv(array('style' => 'margin-top: ' . $leftMarginTop . 'px'), $fs . '<br />' . $ft . '<br />' . $md);
+		$divFileInfo = we_html_element::htmlDiv(array('style' => 'margin-top: 0px'), $fs . '<br />' . $ft . '<br />' . $md);
 
 		//TODO: clean out css and use more we_html_element
 		$divDropzone = !(self::isFallback() || self::isLegacyMode()) ? ('
@@ -232,8 +218,8 @@ div.we_file_drag_binDoc{
 				$divDropzone .
 				($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '') . '
 						</div>'
-			) . '
-					<div id="div_fileupload_right_legacy" style="text-align:right;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . '">' .
+			) .
+			'<div id="div_fileupload_right_legacy" style="text-align:right;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . '">' .
 			$thumbnailBig . '
 					</div>
 				</td>

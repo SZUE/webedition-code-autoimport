@@ -61,9 +61,6 @@ div.we_fileInputWrapper{
 .fileInputList{
 	width: 24px;
 }
-.fileInputIE10{
-	left: -202px;
-}
 .fileInputHidden {
 	opacity: 0;
 }
@@ -77,4 +74,13 @@ div.dropzone_right{
 .dropzone_right img{
 	max-height: 100px;
 	max-width: 100px;
+}
+
+div.we_file_drag{
+	width: 300px;
+	margin: 1em 0.2em 0px 0.1em;
+	height: 116px;
+	border: dotted 2px gray;
+	border-radius: 0px;
+	box-shadow: none;
 }

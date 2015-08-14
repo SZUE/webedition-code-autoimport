@@ -805,9 +805,7 @@ function clip_' . $unique . '(){
 
 		if(strpos($width, '%') === false){
 			$width = intval($width);
-			if($width > 10 && (!we_base_browserDetect::isIE() || (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() >= 10))){
-				$width -= 10;
-			}
+			$width -= ($width > 10 ? 10 : 0);
 		}
 
 		return $js . '<div style="background-color:#dddddd;padding:5px;white-space:normal;' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '"><table border="0" width="100%"><tr>' . ($icon ? '<td width="30" style="padding-right:10px;vertical-align:top">' . $icon . '</td>' : '') . '<td class="middlefont" ' . ($clip > 0 ? 'id="td_' . $unique . '"' : '') . '>' . $text . '</td>' . ($clip > 0 ? '<td style="vertical-align:top;text-align:right" id="btn_' . $unique . '"><button class="weBtn" onclick="clip_' . $unique . '();"><i class="fa fa-lg fa-caret-right"></i></button><td>' : '') . '</tr></table></div>';

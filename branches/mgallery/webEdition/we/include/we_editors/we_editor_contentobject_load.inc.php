@@ -133,7 +133,6 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 	}
 
 	switch($cmd){
-
 		case 'object_insert_entry_at_class':
 			if($id != false){
 				$after = array_pop(explode('_', $id));

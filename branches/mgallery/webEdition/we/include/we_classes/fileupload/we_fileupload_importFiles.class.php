@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_importFiles extends we_fileupload_base{
-	private $jsRequirementsOk = false;//obsolete
+	private $jsRequirementsOk = false; //obsolete
 	protected $dimensions = array(
 		'width' => 400,
 		'dragHeight' => 30,
@@ -54,6 +54,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 	}
 
 	public function getHTML($hiddens = ''){
+		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 		$alert = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 520, false, 20));
@@ -62,21 +63,21 @@ class we_fileupload_importFiles extends we_fileupload_base{
 			array("headline" => "", "html" => $alert, "space" => 0)
 		);
 
-		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
+		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
 				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 278, we_html_button::HEIGHT, '', '', false, false, '_btn'));
-		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
+		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 		$fileselect = '
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
 			<div>
 				<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align: top; display: inline-block; height: 26px">
-					<input class="fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : '') . '" type="file" id="' . $this->name . '" name="fileselect[]" multiple="multiple" />
+					<input class="fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : '') . '" type="file" id="' . $this->name . '" name="fileselect[]" multiple="multiple" />
 					' . $butBrowse . '
 				</div>
 				<div style="vertical-align: top; display: inline-block; height: 22px">
 					' . $butReset . '
 				</div>
-				<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" ' . ((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;"') . '>' . g_l('importFiles', '[dragdrop_text]') . '</div>
+				<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" ' . ($isIE10 || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;"') . '>' . g_l('importFiles', '[dragdrop_text]') . '</div>
 			</div>
 		</form>
 		</div>

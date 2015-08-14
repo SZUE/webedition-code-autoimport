@@ -853,7 +853,7 @@ self.close();');
 				$cnt = count($defs);
 				$i = 0;
 				foreach($defs as $def){
-					$attribs = array('type' => 'checkbox', 'name' => $field . '_multi_' . ($i++), 'value' => $def, (we_base_browserDetect::isIE() ? 'onclick' : 'onchange') => 'setMultiSelectData(\'' . $field . '\',' . $cnt . ');');
+					$attribs = array('type' => 'checkbox', 'name' => $field . '_multi_' . ($i++), 'value' => $def, 'onclick' => 'setMultiSelectData(\'' . $field . '\',' . $cnt . ');');
 					if(in_array($def, $values)){
 						$attribs['checked'] = 'checked';
 					}

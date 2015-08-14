@@ -145,22 +145,22 @@ abstract class we_fileupload_base{
 
 			return '<div id="div_alert">' .
 				we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_ALERT, $width) .
-			'</div>';
+				'</div>';
 		} else {
 			if(self::isFallback()){
 
 				return '<div id="div_alert">' .
 					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
-				'<div style="margin-top: 4px"></div>' .
+					'<div style="margin-top: 4px"></div>' .
 					we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
-				'</div>';
+					'</div>';
 			} else {
 				$size = $isSizeReady ? $maxSize : (intval($maxSize !== -1 ? $maxSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0)));
 				$text = $size ? sprintf(g_l('newFile', '[size_limit_set_to]'), $size) : g_l('newFile', '[no_size_limit]');
 
 				return '<div id="div_alert">' .
 					we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, $width) .
-				'</div>';
+					'</div>';
 			}
 		}
 	}
@@ -170,11 +170,12 @@ abstract class we_fileupload_base{
 	}
 
 	public function getCss(){
-		return self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
+		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . (
+			self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssElement('
 			div.we_file_drag{
 				padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
 				height: ' . $this->dimensions['dragHeight'] . 'px;
-			}');
+			}'));
 	}
 
 	public function getJs(){
@@ -216,22 +217,23 @@ we_FileUpload.init({
 
 	protected function _getJsGl(){
 		return '{
-					dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
-					sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
-					sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
-					typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
-					typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
-					errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
-					errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
-					errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
-					errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
-					uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
-					cancelled : "' . g_l('importFiles', '[cancelled]') . '",
-					doImport : "' . g_l('importFiles', '[do_import]') . '",
-					file : "' . g_l('importFiles', '[file]') . '",
-					btnClose : "' . g_l('button', '[close][value]') . '",
-					btnCancel : "' . g_l('button', '[cancel][value]') . '",
-					btnUpload : "' . g_l('button', '[upload][value]') . '"
-				}';
+	dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
+	sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
+	sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
+	typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
+	typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
+	errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
+	errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
+	errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
+	errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
+	uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
+	cancelled : "' . g_l('importFiles', '[cancelled]') . '",
+	doImport : "' . g_l('importFiles', '[do_import]') . '",
+	file : "' . g_l('importFiles', '[file]') . '",
+	btnClose : "' . g_l('button', '[close][value]') . '",
+	btnCancel : "' . g_l('button', '[cancel][value]') . '",
+	btnUpload : "' . g_l('button', '[upload][value]') . '"
+}';
 	}
+
 }

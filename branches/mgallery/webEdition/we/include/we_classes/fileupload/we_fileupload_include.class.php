@@ -108,20 +108,23 @@ class we_fileupload_include extends we_fileupload_base{
 
 	//TODO: split and move selector to base
 	public function getHTML(){
-		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? we_html_button::create_button('browse', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
-			we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, ($this->dimensions['width'] - 110), we_html_button::HEIGHT, '', '', false, false, '_btn'));
+		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
+		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 84, we_html_button::HEIGHT, '', '', false, false, '_btn') :
+				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, ($this->dimensions['width'] - 110), we_html_button::HEIGHT, '', '', false, false, '_btn'));
 
-		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
+		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 
 		$fileInput = we_html_element::htmlInput(array(
-				'class' => 'fileInput fileInputHidden' . (we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11 ? ' fileInputIE10' : ''),
+				'class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
 				'type' => 'file',
 				'name' => $this->name,
 				'id' => $this->name,
 				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
 
-		return !(self::isFallback() || self::isLegacyMode()) ? ('
+		return (self::isFallback() || self::isLegacyMode()) ?
+			( we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name))) :
+			('
 <div id="div_' . $this->name . '_legacy" style="display:none">' . we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name . '_legacy', 'id' => $this->name . '_legacy')) . '</div>
 <div id="div_' . $this->name . '" style="float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;">
 	<div>
@@ -148,8 +151,7 @@ class we_fileupload_include extends we_fileupload_base{
 			we_html_tools::hidden('weFileCt', '') .
 			we_html_tools::hidden('weIsUploadComplete', 0) .
 			we_html_tools::hidden('weIsUploading', 1) .
-			we_html_tools::hidden('weIsFileInLegacy', 0)) : (
-			we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name)));
+			we_html_tools::hidden('weIsFileInLegacy', 0));
 	}
 
 	//FIXME: base intarnal progress on we_progress
@@ -195,7 +197,7 @@ class we_fileupload_include extends we_fileupload_base{
 	}
 
 	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
-		$win = $contentName ? 'top.' . $contentName . '.': '';
+		$win = $contentName ? 'top.' . $contentName . '.' : '';
 		$callback = $btn === 'upload' ? ($callback ? : 'document.forms[0].submit()') : 'top.close()';
 		$call = $win . 'we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
 
@@ -238,7 +240,7 @@ class we_fileupload_include extends we_fileupload_base{
 						if(($mime = we_base_util::getMimeType('', $tempPath . $tempName, we_base_util::MIME_BY_HEAD))){
 							//IMPORTANT: finfo_file returns text/plain where FILE returns ""!
 							if($mime !== $fileCt){
-									//t_e("Mime type determined by finfo_file differ from type detemined by JS File", $mime, $fileCt);
+								//t_e("Mime type determined by finfo_file differ from type detemined by JS File", $mime, $fileCt);
 							} else {
 								$error = !$this->_checkFileType($mime, $fileName) ? 'mime_or extension_not_ok_error' : '';
 							}

@@ -202,7 +202,7 @@ function we_getCodeMirror2Code(){
 				''
 			) .
 			we_html_element::cssElement(
-				(false &&$GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
+				(false && $GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE && $_SESSION['prefs']['editorTooltipsIDs'] ?
 					we_getCSSIds() : '') . '
 .weSelfClose:hover:after,
 .cm-weSelfClose:hover:after,
@@ -283,7 +283,7 @@ $maineditor = '<div id="editorDiv" style="margin-left: 20px;margin-right: 20px;"
 	'<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFont"] == 1) ? ' font-family: ' . $_SESSION['prefs']['editorFontname'] . '; font-size: ' . $_SESSION['prefs']['editorFontsize'] . 'px;' : '') .
 	'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
 	'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' .
-	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ' onchange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown="return wedoKeyDown(this,event.keyCode);"' : 'onkeypress="return wedoKeyDown(this,event.keyCode);"')) . '>'
+	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ' onchange="_EditorFrame.setEditorIsHot(true);" ' . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="return wedoKeyDown(this,event.keyCode);"') . '>'
 	. oldHtmlspecialchars($code) . '</textarea>';
 switch($_SESSION['prefs']['editorMode']){
 	case 'java':
@@ -362,11 +362,11 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 		<td id="tagSelectCol" style="padding-bottom:5px;width: 250px;">' . $tagselect . $CodeWizard->getSelect() . $CodeWizard->getSelect('custom') . '</td>
 		<td id="spacerCol" style="width: 50px;text-align:center">' . $editTagbut . '</td>
 		<td id="tagAreaCol" style="width: 100%;text-align:right">' . we_html_element::htmlTextArea(array(
-		'name' => 'we_' . $we_doc->Name . '_TagWizardCode',
-		'id' => 'tag_edit_area',
-		'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
-		'class' => 'defaultfont'
-		), $we_doc->TagWizardCode) . '</td>
+			'name' => 'we_' . $we_doc->Name . '_TagWizardCode',
+			'id' => 'tag_edit_area',
+			'style' => 'width:400px; height:100px;' . (($_SESSION["prefs"]["editorFont"] == 1) ? " font-family: " . $_SESSION["prefs"]["editorFontname"] . "; font-size: " . $_SESSION["prefs"]["editorFontsize"] . "px;" : ""),
+			'class' => 'defaultfont'
+			), $we_doc->TagWizardCode) . '</td>
 	</tr>
 </table>
 <table id="wizardTableButtons" class="default defaultfont">
