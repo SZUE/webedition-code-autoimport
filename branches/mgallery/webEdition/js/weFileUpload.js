@@ -289,6 +289,7 @@ var weFileUpload = (function () {
 
 			this.scaleImageAndAdd = function(fileObj){
 				var reader = new FileReader();
+				var pos = _.view.addFileBusy(fileObj, _.sender.preparedFiles.length);
 
 				reader.onloadend = function () {
 					var tempImg = new Image(),
@@ -296,42 +297,39 @@ var weFileUpload = (function () {
 
 					tempImg.src = reader.result;
 					tempImg.onload = function () {
+						var canvas = document.createElement('canvas'),
+							transformedCanvas, uInt8Array;
+
 						if(_.sender.transformAll.width){
 							ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
 						} else if(_.sender.transformAll.height){
 							ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
 						}
 						ratio = ratio < 1 ? ratio : 1;
+top.console.debug(_.sender.transformAll.quality / 10);
+						canvas.width = tempImg.width;
+						canvas.height = tempImg.height;
+						canvas.getContext('2d').drawImage(tempImg, 0, 0);//TODO: rotate here
 
 						/* var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
-						var canv = document.createElement('canvas');
-						canv.width = tempImg.width;
-						canv.height = tempImg.height;
-						canv.getContext('2d').drawImage(tempImg, 0, 0);
-						var resulting_canvas = _.utils.downScaleCanvas(canv, ratio);
-						canv = null;
-						resulting_canvas.toBlob(function (blob) {
-								var arrayBufferNew = null;
-								var fr = new FileReader();
-								fr.onload = function (e) {
-									arrayBufferNew = this.result;
-									fileObj.dataArray = new Uint8Array(arrayBufferNew);
-									_.sender.preparedFiles.push(fileObj);
-									_.view.addFile(fileObj, _.sender.preparedFiles.length);
-									_.controller.prepareNextFileAndAdd();
-								};
-								fileObj.size = blob.size;
-								fileObj.totalParts = Math.ceil(blob.size / _.sender.chunkSize);
-								fileObj.lastChunkSize = blob.size % _.sender.chunkSize;
-								//TODO: check the following flags again
-								fileObj.isUploadable = true;
-								fileObj.isTypeOk = true;
-								fileObj.isSizeOk = true;
-								fileObj.uploadConditionsOk = true;
-								
-								fr.readAsArrayBuffer(blob);
-							}, "image/jpeg", 1.0
-						);
+						transformedCanvas = _.utils.downScaleCanvas(canvas, ratio);
+						canvas = null;
+
+						uInt8Array = _.utils.dataURLToUInt8Array(transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.quality / 10));// TODO: use real type and quality
+						fileObj.dataArray = uInt8Array;
+						fileObj.size = uInt8Array.length;
+						fileObj.totalParts = Math.ceil(fileObj.size / _.sender.chunkSize);
+						fileObj.lastChunkSize = fileObj.size % _.sender.chunkSize;
+						//TODO: check the following flags again
+						fileObj.isUploadable = true;
+						fileObj.isTypeOk = true;
+						fileObj.isSizeOk = true;
+						fileObj.uploadConditionsOk = true;
+
+						_.sender.preparedFiles.push(fileObj);
+						_.view.delFileBusy();
+						_.view.addFile(fileObj, _.sender.preparedFiles.length);
+						_.controller.prepareNextFileAndAdd();
 					};
 				};
 				reader.readAsDataURL(fileObj.file);
@@ -511,7 +509,6 @@ var weFileUpload = (function () {
 							//clientside editing disabled!
 							if (this.EDIT_IMAGES_CLIENTSIDE && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1) {//TODO: && !cur.doTrans!!)
 								that.sendNextChunk(true);
-								//_.sender.transformAndSendFile(cur);
 							} else {
 								fr = new FileReader();
 								fr.onload = function (e) {
@@ -675,6 +672,12 @@ var weFileUpload = (function () {
 			this.repaintGUI = function (arg) {
 			};
 
+			this.addFileBusy = function (fileObj) {
+			};
+
+			this.delFileBusy = function (pos) {
+			};
+
 			//TODO: adapt these progress fns to standard progressbars
 			this.setInternalProgressText = function (name, text, index) {
 				var p = typeof index === 'undefined' || index === false ? '' : '_' + index;
@@ -811,8 +814,7 @@ var weFileUpload = (function () {
 				// next weight is weight of current source point within next target's point.
 				var crossX = false; // does scaled px cross its current px right border ?
 				var crossY = false; // does scaled px cross its current px bottom border ?
-				var sBuffer = cv.getContext('2d').
-				getImageData(0, 0, sw, sh).data; // source buffer 8 bit rgba
+				var sBuffer = cv.getContext('2d').getImageData(0, 0, sw, sh).data; // source buffer 8 bit rgba
 				var tBuffer = new Float32Array(4 * sw * sh); // target buffer Float32 rgb
 				var sR = 0, sG = 0,  sB = 0; // source's current point r,g,b
 				// untested !
@@ -903,6 +905,7 @@ var weFileUpload = (function () {
 				} // end for sy
 
 				// create result canvas
+					//TODO: try to get uInt8Array directly!!
 				var resCV = document.createElement('canvas');
 				resCV.width = tw;
 				resCV.height = th;
@@ -920,6 +923,22 @@ var weFileUpload = (function () {
 				// writing result to canvas.
 				resCtx.putImageData(imgRes, 0, 0);
 				return resCV;
+			};
+
+			this.dataURLToUInt8Array = function(dataURL) {
+				var BASE64_MARKER = ';base64,',
+					parts = dataURL.split(BASE64_MARKER),
+					//contentType = parts[0].split(':')[1],
+					raw = window.atob(parts[1]),
+					rawLength = raw.length,
+					uInt8Array = new Uint8Array(rawLength);
+
+				for (var i = 0; i < rawLength; ++i) {
+					uInt8Array[i] = raw.charCodeAt(i);
+				}
+
+				return uInt8Array;
+				//return new Blob([uInt8Array], {type: contentType});
 			};
 		}
 
@@ -1373,30 +1392,18 @@ var weFileUpload = (function () {
 				fd.append('thumbs', sf.thumbs.value);
 
 				var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
-				//clientside editing disabled!
-				//if (true || cur.partNum === cur.totalParts && this.isGdOk && transformables.indexOf(cur.type) === -1) {//transformables are transformed by js
-					/*
-					fd.append('width', sf.width.value);
-					fd.append('height', sf.height.value);
-					fd.append('widthSelect', sf.widthSelect.value);
-					fd.append('heightSelect', sf.heightSelect.value);
-					fd.append('keepRatio', sf.keepRatio.value);
-					fd.append('quality', sf.quality.value);
-					*/
-
-					if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts && this.isGdOk) {
-						if(!this.EDIT_IMAGES_CLIENTSIDE){
-							fd.append('width', sf.width.value);
-							fd.append('height', sf.height.value);
-							fd.append('widthSelect', sf.widthSelect.value);
-							fd.append('heightSelect', sf.heightSelect.value);
-							fd.append('keepRatio', sf.keepRatio.value);
-						}
-						fd.append('thumbs', sf.thumbs.value);
-						fd.append('quality', sf.quality.value);
-						fd.append('degrees', sf.degrees.value);
+				if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts && this.isGdOk) {
+					if(!this.EDIT_IMAGES_CLIENTSIDE){
+						fd.append('width', sf.width.value);
+						fd.append('height', sf.height.value);
+						fd.append('widthSelect', sf.widthSelect.value);
+						fd.append('heightSelect', sf.heightSelect.value);
+						fd.append('keepRatio', sf.keepRatio.value);
 					}
-				//}
+					fd.append('thumbs', sf.thumbs.value);
+					fd.append('quality', sf.quality.value);
+					fd.append('degrees', sf.degrees.value);
+				}
 
 				return fd;
 			};
@@ -1466,12 +1473,20 @@ var weFileUpload = (function () {
 				this.appendRow(f, _.sender.preparedFiles.length - 1);
 			};
 
+			this.addFileBusy = function (fileObj) {
+				//top.console.debug('add busy imp');
+			};
+
+			this.delFileBusy = function (pos) {
+				//top.console.debug('del busy imp');
+			};
+
 			this.appendRow = function (f, index) {
 				var div,
-								row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
-								replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
-								replace(/FILENAME/g, (f.file.name)).
-								replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
+				row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
+					replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
+					replace(/FILENAME/g, (f.file.name)).
+					replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
 				weAppendMultiboxRow(row, '', 0, 0, 0, -1);
 
