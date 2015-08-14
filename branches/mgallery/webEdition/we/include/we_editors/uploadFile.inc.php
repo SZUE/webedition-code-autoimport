@@ -142,7 +142,7 @@ if($weFileupload->processFileRequest()){
 	$_buttons = $buttonsTable->getHtml();
 	?>
 
-	<script type="text/javascript"><!--
+	<script><!--
 	<?php
 	if($we_alerttext){
 		echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);

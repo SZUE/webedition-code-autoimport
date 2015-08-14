@@ -115,7 +115,7 @@ $currentID = str_replace('\\', '/', $currentID);
 $rootDir = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 5);
 $selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	var rootDir = "<?php echo $rootDir; ?>";
 	var currentID = "<?php echo $currentID; ?>";
 	var currentDir = "<?php echo str_replace($rootDir, '', $currentDir); ?>";

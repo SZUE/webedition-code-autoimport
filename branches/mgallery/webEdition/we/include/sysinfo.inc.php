@@ -300,7 +300,7 @@ $_parts[] = array(
 );
 echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'));
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	function closeOnEscape() {
 		return true;
 	}

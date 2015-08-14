@@ -234,7 +234,7 @@ var perms={
 
 	function getJSProperty(){
 		?>
-		<script type="text/javascript"><!--
+		<script><!--
 			var g_l = {
 				'deleteStatConfirm': "<?php echo g_l('modules_banner', '[deleteStatConfirm]'); ?>"
 			};

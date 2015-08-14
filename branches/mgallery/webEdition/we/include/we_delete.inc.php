@@ -391,7 +391,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	exit();
 }
 ?>
-<script type="text/javascript"><!--
+<script><!--
 <?php
 if($wecmd0 != "delete_single_document"){ // no select mode in delete_single_document
 	switch($table){

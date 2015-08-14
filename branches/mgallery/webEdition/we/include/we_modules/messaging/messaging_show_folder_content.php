@@ -79,7 +79,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		}
 		?></table><?php
 		?>
-  <script type="text/javascript"><!--
+  <script><!--
 	var k;
 
 		for (k = 0; k < parent.entries_selected.length; k++) {

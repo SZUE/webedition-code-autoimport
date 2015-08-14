@@ -80,7 +80,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 		we_html_tools::protect();
 
 		echo we_html_tools::getHtmlTop() .
-		'<script type="text/javascript"><!--
+		'<script><!--
 top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
@@ -131,7 +131,7 @@ top.selectFile(top.currentID);
 		we_html_tools::protect();
 
 		echo we_html_tools::getHtmlTop() .
-		'<script type="text/javascript"><!--
+		'<script><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);

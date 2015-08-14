@@ -77,7 +77,7 @@ class we_voting_dirSelector extends we_selector_directory{
 	function printCreateFolderHTML(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
-		'<script type="text/javascript"><!--
+		'<script><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
@@ -152,7 +152,7 @@ top.selectFile(top.currentID);
 	function printDoRenameFolderHTML(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
-		'<script type="text/javascript"><!--
+		'<script><!--
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);

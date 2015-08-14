@@ -33,7 +33,7 @@ $messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[folder_settings]'));
 ?>
-<script type="text/javascript"><!--
+<script><!--
 <?php
 $mode = we_base_request::_(we_base_request::STRING, 'mode');
 if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_folder_settings'){

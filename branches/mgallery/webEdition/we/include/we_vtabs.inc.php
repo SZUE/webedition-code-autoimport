@@ -66,7 +66,7 @@ $vtab = array(
 		++$i;
 	}
 	?>
-	<script type="text/javascript"><!--
+	<script><!--
 		function setActiveTab(no) {
 			var allTabs = document.getElementById("vtab").getElementsByTagName("div");
 			for (var i = 0; i < allTabs.length; i++) {

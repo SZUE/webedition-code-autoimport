@@ -36,7 +36,7 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]') . ' - Update Status') .
  STYLESHEET;
 ?>
-<script type="text/javascript"><!--
+<script><!--
 function do_confirm() {
 		document.update_todo_form.submit();
 	}

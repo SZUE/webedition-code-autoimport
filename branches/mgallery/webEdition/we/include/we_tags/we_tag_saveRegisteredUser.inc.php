@@ -73,7 +73,7 @@ function we_tag_saveRegisteredUser($attribs){
 				// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
 				we_tag_saveRegisteredUser_keepInput();
 
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf(($userexists ? : g_l('modules_customer', '[username_exists]')), $username), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(($userexists ? : g_l('modules_customer', '[username_exists]')), $username), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 		} else { // Password oder Username leer!
 			// Eingabe in Session schreiben, damit die eingegebenen Werte erhalten bleiben!
@@ -84,10 +84,10 @@ function we_tag_saveRegisteredUser($attribs){
 			if(strlen($username) == 0){
 				$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_USER_EMPTY;
 
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($userempty ? : g_l('modules_customer', '[username_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($userempty ? : g_l('modules_customer', '[username_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 			} else if(strlen($password) == 0){
 				$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_FIELD_NOT_SET;
-				echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(($passempty ? : g_l('modules_customer', '[password_empty]')), we_message_reporting::WE_MESSAGE_FRONTEND));
 			}
 		}
 	} else if($uid == $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
@@ -96,7 +96,7 @@ function we_tag_saveRegisteredUser($attribs){
 
 		if(f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $GLOBALS['DB_WE']->escape($weUsername) . '" AND ID!=' . intval($_SESSION['webuser']['ID']))){
 			$userexists = $userexists ? : g_l('modules_customer', '[username_exists]');
-			echo getHtmlTag('script', array('type' => 'text/javascript'), we_message_reporting::getShowMessageCall(sprintf($userexists, $weUsername), we_message_reporting::WE_MESSAGE_FRONTEND));
+			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf($userexists, $weUsername), we_message_reporting::WE_MESSAGE_FRONTEND));
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_USER_EXISTS;
 		} elseif(isset($_REQUEST['s'])){// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
 			$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));

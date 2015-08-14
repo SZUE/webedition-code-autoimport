@@ -30,7 +30,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
  we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
 ?>
-<script  type="text/javascript"><!--
+<script><!--
 
 	var ajaxURL = "<?php echo WEBEDITION_DIR; ?>rpc/rpc.php";
 	var weRpcFailedCnt = 0;

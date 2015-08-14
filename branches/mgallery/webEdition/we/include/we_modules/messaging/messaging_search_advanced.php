@@ -45,7 +45,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save')){
 	<?php
 } else {
 	?>
-	<script type="text/javascript"><!--
+	<script><!--
 		function save_settings() {
 			document.search_adv.submit();
 		}

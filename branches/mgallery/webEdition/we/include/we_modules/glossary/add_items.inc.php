@@ -168,7 +168,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 		echo we_html_element::jsScript(JS_DIR . 'keyListener.js');
 		?>
-		<script type="text/javascript"><!--
+		<script><!--
 			top.opener.top.toggleBusy();
 			function setDialog() {
 
@@ -246,7 +246,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				$Modes['dictionary'] = g_l('modules_glossary', '[to_dictionary]');
 				?>
 				<?php echo we_html_element::jsScript(JS_DIR . 'weCombobox.js'); ?>
-				<script type="text/javascript"><!--
+				<script><!--
 			Combobox = new weCombobox();
 
 					function init() {

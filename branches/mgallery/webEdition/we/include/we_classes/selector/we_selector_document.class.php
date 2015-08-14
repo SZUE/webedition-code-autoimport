@@ -294,7 +294,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	}
 
 	function printNewDocumentHTML(){
-		echo '<script type="text/javascript"><!--
+		echo '<script><!--
 top.clearEntries();
 top.makeNewDocument = true;' .
 		$this->printCmdAddEntriesHTML() .

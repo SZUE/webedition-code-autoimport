@@ -96,7 +96,6 @@ abstract class we_html_element{
 	public static function jsScript($name, $onload = ''){
 		$attribs = array(
 			'src' => self::getUnCache($name),
-			'type' => 'text/javascript',
 		);
 		if($onload){
 			$attribs['onload'] = $onload;
@@ -113,7 +112,6 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function jsElement($content = '', array $attribs = array()){
-		$attribs['type'] = 'text/javascript';
 		if(strpos($content, '<!--') === FALSE){
 			$content = "<!--\n" . trim($content, " \n") . "\n//-->\n";
 		}

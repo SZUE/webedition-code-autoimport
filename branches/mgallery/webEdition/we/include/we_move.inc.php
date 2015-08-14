@@ -147,7 +147,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
  $script .
  weSuggest::getYuiFiles();
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	top.treeData.setstate(top.treeData.tree_states["select"]);
 	if (top.treeData.table != "<?php echo $table; ?>") {
 		top.treeData.table = "<?php echo $table; ?>";

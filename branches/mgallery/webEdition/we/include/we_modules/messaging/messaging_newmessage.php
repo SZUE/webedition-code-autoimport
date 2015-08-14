@@ -39,7 +39,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
  we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
 
-<script type="text/javascript"><!--
+<script><!--
 	rcpt_sel = [];
 
 	function update_rcpts() {

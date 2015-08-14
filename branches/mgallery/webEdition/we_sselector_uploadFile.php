@@ -97,7 +97,7 @@ if($weFileupload->processFileRequest()){
 
 	$content = we_html_tools::htmlDialogLayout($content, g_l('newFile', '[import_File_from_hd_title]'), $buttonsTable->getHTML());
 	?>
-	<script type="text/javascript"><!--
+	<script><!--
 	<?php if(isset($_FILES['we_uploadFile']) && (!$we_alerttext)){ ?>
 			opener.top.fscmd.selectFile('<?php echo $_FILES['we_uploadFile']['name']; ?>');
 			opener.top.fscmd.selectDir();

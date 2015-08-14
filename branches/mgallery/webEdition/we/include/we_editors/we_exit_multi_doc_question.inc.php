@@ -45,7 +45,7 @@ $ctLngs = implode(',', $ctLngs);
 $untitled = g_l('global', '[untitled]');
 
 print <<< EOFEOF
-<script type="text/javascript"><!--
+<script><!--
 var ctLngs = {$ctLngs};
 var g_l={
 	untitled:"$untitled"

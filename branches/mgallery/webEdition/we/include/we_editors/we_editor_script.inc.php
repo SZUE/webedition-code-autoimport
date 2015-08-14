@@ -37,7 +37,7 @@ echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
 ');
 we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	var we_transaction = "<?php echo we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0); ?>";
 	var _oldparentid = <?php echo isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->ParentID) : 0; ?>;
 	var docName = "<?php echo isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Name : ''; ?>";

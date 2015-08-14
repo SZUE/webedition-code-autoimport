@@ -113,7 +113,7 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
  STYLESHEET;
 ?>
-<script type="text/javascript"><!--
+<script><!--
 <?php
 echo we_tool_lookup::getJsCmdInclude($jsCmd) .
  we_message_reporting::jsString();
@@ -295,7 +295,7 @@ foreach($jsCmd as $cur){
 	echo we_html_element::jsScript($cur);
 }
 ?>
-<script type="text/javascript"><!--
+<script><!--
 top.weSidebar = weSidebar;
 	function we_cmd() {
 	var url = "/webEdition/we_cmd.php?";

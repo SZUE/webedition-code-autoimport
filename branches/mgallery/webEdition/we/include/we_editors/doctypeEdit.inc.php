@@ -154,7 +154,7 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 ?>
-<script type="text/javascript"><!--
+<script><!--
 <?php
 if($we_show_response){
 	echo $we_JavaScript . ';';

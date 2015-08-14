@@ -26,7 +26,7 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	function revertToPublished() {
 		if (confirm("<?php echo addslashes(g_l('weEditorInfo', '[revert_publish_question]')); ?>")) {
 			top.we_cmd("revert_published");

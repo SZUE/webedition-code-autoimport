@@ -48,7 +48,7 @@ $buttons = we_html_button::position_yes_no_cancel(
 );
 $content = '<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">' . oldHtmlspecialchars($we_fileData) . '</textarea>';
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	function setSize() {
 		var ta = document.getElementById("editFile");
 		ta.style.width = (document.body.offsetWidth - 60) + "px";

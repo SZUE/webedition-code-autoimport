@@ -43,7 +43,7 @@ if($ok){
 	if($type === "js"){
 		$code = we_html_element::jsElement('
 r = Math.random();
-document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?r="+r+"&amp;bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;type=js&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '&amp;page=' . rawurlencode($page) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : "")+"\"><" + "/script>");
+document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;type=js&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '&amp;page=' . rawurlencode($page) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : "")+"\"><" + "/script>");
 
 ') . '<noscript><a href="' . $clickscript . '?u=' . md5(uniqid('', true)) . '&amp;bannername=' . rawurlencode($tagname) . '&amp;page=' . rawurlencode($page) . '" target="' . $target . '"><img src="' . $getscript . '?bannername=' . rawurlencode($tagname) . '&amp;paths=' . rawurlencode($paths) . '&amp;page=' . rawurlencode($page) . '&amp;bannerclick=' . rawurlencode($clickscript) . '&amp;c=1" border="0" alt="" width="' . $width . '" height="' . $height . '" /></a></noscript>';
 	} else {
@@ -66,7 +66,7 @@ document.write ("<" + "script type=\"text/javascript\" src=\"' . $getscript . '?
 }
 ?>
 
-<script type="text/javascript"><!--
+<script><!--
 	function checkForm(f) {
 		if (f.tagname.value == "") {
 <?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_tagname_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>

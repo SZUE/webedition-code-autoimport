@@ -72,7 +72,7 @@ $tab_header = $we_tabs->getHeader();
 
 echo $tab_header;
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	var current = "<?php echo $tool; ?>";
 	function openTool(tool) {
 		if (top.content.hot == "1") {

@@ -90,7 +90,7 @@ top.unselectAllFiles();') . '
 
 function printFramesetJSFunctioWriteBody(){
 ob_start();
-?><script type="text/javascript"><!--
+?><script><!--
 			function writeBody(d) {
 					var body = (top.we_editDirID?
 									'<input type="hidden" name="what" value="' + top.consts.DORENAMEFOLDER + '" />' +
@@ -135,7 +135,7 @@ ob_start();
 
 function printFramesetJSFunctionQueryString(){
 ?>
-<script type="text/javascript">
+<script>
 <!--
 	function queryString(what, id, o, we_editDirID){
 	if (!o) o = top.order;
@@ -150,7 +150,7 @@ function printFramesetJSFunctionQueryString(){
 
 protected function printFramesetJSFunctionEntry(){
 <?php echo '?>'; ?>
-<script type="text/javascript">
+<script>
 <!--
 	function addEntry(id, icon, txt, folder, pth) {
 	entries.push({
@@ -183,7 +183,7 @@ function printCreateFolderHTML(){
 echo we_html_tools::getHtmlTop();
 we_html_tools::protect();
 
-print we_html_element('<script type="text/javascript">
+print we_html_element('<script>
 <!--
 	top.clearEntries(); ';
 					$this - > FolderText = rawurldecode($this - > FolderText);
@@ -247,7 +247,7 @@ function printDoRenameFolderHTML(){
 echo we_html_tools::getHtmlTop();
 we_html_tools::protect();
 
-echo '<script type="text/javascript"><!--
+echo '<script><!--
 					top.clearEntries();
 					';
 					$this - > FolderText = rawurldecode($this - > FolderText);
@@ -304,7 +304,7 @@ echo '</head><body></body></html>';
 function printFramesetSelectFileHTML(){
 
 ?>
-<script type="text/javascript">
+<script>
 <!--
 					function selectFile(id){
 					if (id){

@@ -36,7 +36,7 @@ if(!$cmd || $cmd != "save_last"){
 
 	echo we_html_element::jsScript(JS_DIR.'selectors/sselector_cmd.js');
 	?>
-	<script type="text/javascript"><!--
+	<script><!--
 		function setDir(dir) {
 			var a = top.document.getElementById("lookin").options;
 			if (a.length - 2 > -1) {

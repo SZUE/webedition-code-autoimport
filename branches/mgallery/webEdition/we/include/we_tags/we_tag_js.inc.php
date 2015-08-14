@@ -34,7 +34,6 @@ function we_tag_js($attribs){
 	}
 	$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
 
-	$attribs['type'] = 'text/javascript';
 	$attribs['src'] = $url . '?m=' . $row['Published'];
 
 	//	prepare $attribs for output:

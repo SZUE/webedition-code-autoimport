@@ -2456,7 +2456,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	$doSave = true;
 }
 ?>
-<script type="text/javascript"><!--
+<script><!--
 					var hot = false;
 	var g_l = {
 		'language_already_exists': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')); ?>',

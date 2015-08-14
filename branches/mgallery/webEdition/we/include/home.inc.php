@@ -60,7 +60,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		$iDatLen = count($aDat);
 	}
 	?>
-	<script type="text/javascript"><!--
+	<script><!--
 		top.cockpitFrame = top.weEditorFrameController.getActiveDocumentReference();
 		var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 		_EditorFrame.initEditorFrameData(

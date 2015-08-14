@@ -167,7 +167,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 <param name="udSize" value="' . (is_file(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') ? filesize(WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict') : '0') . '"/>');
 ?>
 
-<script type="text/javascript"><!--
+<script><!--
 	var activ_tab = 1;
 	var appletActiv = false;
 	var g_l = {

@@ -25,7 +25,7 @@ echo we_html_tools::getHtmlTop();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 1);
 ?>
 
-<script type="text/javascript"><!--
+<script><!--
 	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $we_transaction; ?>");
 	var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
 

@@ -62,7 +62,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	return $yuiSuggest->getHTML();
 }
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	var dirs = {
 		WEBEDITION_DIR: "<?php echo WEBEDITION_DIR; ?>",
 	};

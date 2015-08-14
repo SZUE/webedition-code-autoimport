@@ -27,7 +27,7 @@ echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
  we_html_element::jsScript(JS_DIR . 'we_colors2.js');
 $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 ?>
-<script type="text/javascript"><!--
+<script><!--
 
 	function setColor() {
 <?php if($isA){ ?>
@@ -61,7 +61,7 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 					echo we_html_tools::htmlDialogLayout('<table class="default">
 	<tr>
 		<td><table class="colorTable" class="default">
-<script type="text/javascript"><!--
+<script><!--
 var z=0;
 for ( col in we_color2 ){
 	if(z == 0){

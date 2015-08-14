@@ -40,7 +40,7 @@ var table="' . USER_TABLE . '";'
 
 //FIXME: make the js code equal to *_tree.js
 ?>
-<script type="text/javascript"><!--
+<script><!--
 function loadData() {
 		treeData.clear();
 

@@ -246,7 +246,7 @@ if(!$we_doc->getElement('data')){
 echo we_html_tools::getHtmlTop('', '', 'frameset') .
  we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js');
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 	_EditorFrame.initEditorFrameData(
 					{

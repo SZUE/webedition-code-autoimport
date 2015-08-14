@@ -26,7 +26,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 ?>
-<script type="text/javascript">
+<script>
 	top.toggleBusy(0);
 	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 	_EditorFrame.setEditorIsLoading(false);

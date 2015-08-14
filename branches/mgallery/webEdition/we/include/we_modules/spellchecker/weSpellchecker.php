@@ -58,7 +58,7 @@ if($editname !== false){
 	$_mode = 'tinyMce';
 }
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	var mode = "<?php echo $_mode; ?>";
 	var editname = "<?php echo $editname; ?>";
 	var g_l = {

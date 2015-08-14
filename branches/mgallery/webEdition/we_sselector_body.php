@@ -40,7 +40,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 $nf = we_base_request::_(we_base_request::RAW, 'nf');
 $sid = we_base_request::_(we_base_request::RAW, "sid");
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	function setScrollTo() {
 		parent.scrollToVal = pageYOffset;
 	}
@@ -274,7 +274,7 @@ var i = 0;';
 	<?php
 	if($nf === "new_folder" || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
 		?>
-		<script type="text/javascript"><!--
+		<script><!--
 		document.we_form.elements.txt.focus();
 			document.we_form.elements.txt.select();
 	<?php if($nf === "rename_folder" || $nf === "rename_file"){ ?>

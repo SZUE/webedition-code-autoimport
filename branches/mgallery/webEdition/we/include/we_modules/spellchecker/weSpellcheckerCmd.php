@@ -214,8 +214,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 	default:
 }
 ?>
-<script type="text/javascript" ><!--
-
+<script><!--
 	function dispatch(cmd) {
 		document.dispatcherForm.elements["cmd[0]"].value = cmd;
 		for (var i = 1; i < arguments.length; i++) {

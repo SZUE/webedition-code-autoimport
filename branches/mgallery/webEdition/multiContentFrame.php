@@ -39,7 +39,7 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::cssLink(CSS_DIR . 'multiEditor/multiEditor.css');
 
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	function startMultiEditor() {
 		we_cmd('start_multi_editor'<?php echo $_cmd_string; ?>);
 	}

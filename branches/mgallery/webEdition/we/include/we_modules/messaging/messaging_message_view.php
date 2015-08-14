@@ -47,7 +47,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	function todo_markdone() {
 		top.content.cmd.location = '<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
 			}

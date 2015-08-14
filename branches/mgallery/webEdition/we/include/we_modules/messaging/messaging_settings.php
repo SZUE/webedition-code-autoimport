@@ -46,7 +46,7 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_settings' && ($
 	}
 }
 ?>
-<script type="text/javascript"><!--
+<script><!--
 function save() {
 		document.settings.submit();
 	}

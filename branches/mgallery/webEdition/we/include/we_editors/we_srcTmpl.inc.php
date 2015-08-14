@@ -41,7 +41,7 @@ if(!isset($_SESSION['weS']['we_wrapcheck'])){
 //FIXME: make real js files out of this!
 echo we_html_multiIconBox::getJS();
 ?>
-<script type="text/javascript"><!--
+<script><!--
 	var docName = "<?php echo $we_doc->Name; ?>";
 	var docCharSet = "<?php echo ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']); ?>";
 	var editorHighlightCurrentLine =<?php echo intval($_SESSION['prefs']['editorHighlightCurrentLine']); ?>;

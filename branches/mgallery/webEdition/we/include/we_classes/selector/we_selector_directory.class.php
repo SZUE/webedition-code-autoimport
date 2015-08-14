@@ -265,7 +265,7 @@ top.selectIt();';
 	}
 
 	function printSetDirHTML(){
-		echo '<script type="text/javascript"><!--
+		echo '<script><!--
 top.clearEntries();' .
 		$this->printCmdAddEntriesHTML() .
 		$this->printCMDWriteAndFillSelectorHTML() .
@@ -289,7 +289,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	}
 
 	function printNewFolderHTML(){
-		echo '<script type="text/javascript"><!--
+		echo '<script><!--
 top.clearEntries();
 top.makeNewFolder = true;' .
 		$this->printCmdAddEntriesHTML() .
@@ -301,7 +301,7 @@ top.makeNewFolder = true;' .
 	function printCreateFolderHTML(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
-		'<script type="text/javascript"><!--
+		'<script><!--
 top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
@@ -376,7 +376,7 @@ options.userCanMakeNewFolder=' . intval($this->userCanMakeNewFolder) . ';
 
 	function printRenameFolderHTML(){
 		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
-			echo '<script type="text/javascript"><!--
+			echo '<script><!--
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
 			$this->printCmdAddEntriesHTML() .
@@ -390,7 +390,7 @@ top.we_editDirID=' . $this->we_editDirID . ';' .
 	function printDoRenameFolderHTML(){
 		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
-		'<script type="text/javascript"><!--
+		'<script><!--
 top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;

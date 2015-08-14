@@ -33,7 +33,7 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 		sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
 	);
 ?>
-<script type="text/javascript"><!--
+<script><!--
 
 	// functions for keyBoard Listener
 	function applyOnEnter() {
