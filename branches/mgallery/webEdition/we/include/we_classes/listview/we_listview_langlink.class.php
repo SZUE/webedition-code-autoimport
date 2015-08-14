@@ -234,12 +234,12 @@ class we_listview_langlink extends we_listview_base{
 
 				if($this->objectseourls && $link['Url'] != '' && show_SeoLinks()){
 					$WE_PATH = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+						($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
 							'' :
 							$path_parts['filename'] . '/') .
 						$link['Url'];
 				} else {
-					$WE_PATH = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+					$WE_PATH = ($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
 							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
 							$_SERVER['SCRIPT_NAME']) .
 						'?we_objectID=' . $link['LDID'];

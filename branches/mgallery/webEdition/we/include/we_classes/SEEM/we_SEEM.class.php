@@ -606,11 +606,11 @@ abstract class we_SEEM{
 		//FIXME: does this work for SEO Url's???
 		$db = ($db ? : new DB_WE());
 		$docPath = $db->escape(trim($docPath));
-		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && substr($docPath, - 1) === '/'){
+		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && substr($docPath, -1) === '/'){
 			$indexFileNames = array_map('trim', explode(',', $db->escape(NAVIGATION_DIRECTORYINDEX_NAMES)));
 			$docPath = $docPath . implode('","' . $docPath, $indexFileNames);
 		}
-		$id = f('SELECT ID FROM ' . $db->escape($tbl ? : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', 'ID', $db);
+		$id = f('SELECT ID FROM ' . $db->escape($tbl ? : FILE_TABLE) . ' WHERE Path IN ("' . $docPath . '") LIMIT 1', '', $db);
 		return $id ? : -1;
 	}
 
@@ -1004,8 +1004,8 @@ abstract class we_SEEM{
 		}
 
 		//find out what anchor is needed by examining context
-		if(isset($GLOBALS['lv']) && isset($GLOBALS['lv']->ClassName) && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
-			if($GLOBALS['lv']->ClassName === 'we_object_listview'){
+		if(isset($GLOBALS['lv']) && $GLOBALS['we_doc']->InWebEdition && $GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
+			if($GLOBALS['lv'] instanceof we_object_listview){
 				return '<a href="' . $GLOBALS['lv']->f('WE_ID') . '" seem="object"></a>';
 			}
 			if((isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == we_base_ContentTypes::IMAGE)){

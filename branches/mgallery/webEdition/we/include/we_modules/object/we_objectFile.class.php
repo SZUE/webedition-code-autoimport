@@ -3049,7 +3049,7 @@ class we_objectFile extends we_document{
 
 			if($hidedirindex && !(!empty($GLOBALS['we_editmode']) || !empty($GLOBALS['WE_MAIN_EDITMODE']) )){
 				$path_parts = pathinfo($path);
-				if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if(seoIndexHide($path_parts['basename'])){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 			}
@@ -3061,7 +3061,7 @@ class we_objectFile extends we_document{
 
 				if($objectdaten['Url']){
 					return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+						($hidedirindex && seoIndexHide($path_parts['basename']) ?
 							'' :
 							$path_parts['filename'] . '/' ) .
 						$objectdaten['Url'] . $pidstr;

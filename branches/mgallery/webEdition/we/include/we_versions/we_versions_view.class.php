@@ -66,7 +66,7 @@ var transaction="' . $GLOBALS['we_transaction'] . '";
 var doc={
 ID:' . intval($GLOBALS['we_doc']->ID) . ',
 Table:"' . $GLOBALS['we_doc']->Table . '",
-ClassName:"' . $GLOBALS['we_doc']->ClassName . '",
+ClassName:"' . get_class($GLOBALS['we_doc']) . '",
 Text:"' . $GLOBALS['we_doc']->Text . '",
 };
 

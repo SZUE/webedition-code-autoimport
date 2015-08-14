@@ -112,23 +112,23 @@ class we_listview_variants extends we_listview_base{
 					$Url = f('SELECT Url FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->id, '', $this->DB_WE);
 					if($Url != ''){
 						$ret['WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') .
-							( show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
+							( $this->hidedirindex && seoIndexHide($path_parts['basename']) ?
 								'' : '/' . $path_parts['filename']
 							) . '/' . $Url . ($varUrl ? "?$varUrl" : '');
 					} else {
-						$ret['WE_PATH'] = (show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . "?we_objectID=" . $this->id . ($varUrl ? "&amp;$varUrl" : '') :
+						$ret['WE_PATH'] = ($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
+								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . '?we_objectID=' . $this->id . ($varUrl ? "&amp;$varUrl" : '') :
 								$GLOBALS['we_doc']->Path . '?we_objectID=' . $this->id . ($varUrl ? '&amp;' . $varUrl : '')
 							);
 					}
-				} elseif(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				} elseif($this->hidedirindex && seoIndexHide($path_parts['basename'])){
 					$ret['WE_PATH'] = $GLOBALS['we_doc']->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? "?$varUrl" : '');
 				} else {
 					$ret['WE_PATH'] = $GLOBALS['we_doc']->Path . '?we_objectID=' . $this->id . ($varUrl ? "&amp;$varUrl" : '');
 				}
 			} else // webEdition Document
 
-			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+			if($this->hidedirindex && seoIndexHide($path_parts['basename'])){
 				$ret['WE_PATH'] = $this->Model->Path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . ($varUrl ? '?' . $varUrl : '');
 			} else {
 				$ret['WE_PATH'] = $this->Model->Path . ($varUrl ? '?' . $varUrl : '');

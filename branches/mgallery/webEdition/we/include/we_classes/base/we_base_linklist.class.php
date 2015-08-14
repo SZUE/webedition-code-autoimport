@@ -211,10 +211,10 @@ class we_base_linklist{
 			$this->cache[$id] = getHash('SELECT IsDynamic,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->db);
 		}
 		$row = $this->cache[$id];
-		if(isset($row['Path']) && $this->hidedirindex){
-			$path_parts = pathinfo($row["Path"]);
-			if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-				$row["Path"] = ($path_parts['dirname'] != DIRECTORY_SEPARATOR ? $path_parts['dirname'] : '') . DIRECTORY_SEPARATOR;
+		if($this->hidedirindex && isset($row['Path'])){
+			$path_parts = pathinfo($row['Path']);
+			if(seoIndexHide($path_parts['basename'])){
+				$row['Path'] = ($path_parts['dirname'] != DIRECTORY_SEPARATOR ? $path_parts['dirname'] : '') . DIRECTORY_SEPARATOR;
 			}
 		}
 

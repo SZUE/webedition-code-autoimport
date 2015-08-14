@@ -1109,7 +1109,7 @@ class we_document extends we_root{
 				}
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db);
 				$path_parts = pathinfo($path);
-				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+				if($hidedirindex && seoIndexHide($path_parts['basename'])){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
 				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition || f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db)){
@@ -1532,7 +1532,7 @@ class we_document extends we_root{
 				$foo = isset($allDocs[$reg[2]]) ? $allDocs[$reg[2]] : '';
 				if($foo && $foo['Path']){
 					$path_parts = pathinfo($foo['Path']);
-					if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					if(WYSIWYGLINKS_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename'])){
 						$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
 					$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);

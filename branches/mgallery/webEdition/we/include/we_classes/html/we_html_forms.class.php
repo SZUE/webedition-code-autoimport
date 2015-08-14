@@ -222,7 +222,7 @@ abstract class we_html_forms{
 			if(stripos($name, "we_ui") === false){//we are in backend
 				$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $e->parseInternalImageSrc($value));
 				$previewDivContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
-					isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ClassName != 'we_objectFile' && $GLOBALS['we_doc']->ClassName != 'we_object' ?
+					isset($GLOBALS['we_doc']) && !($GLOBALS['we_doc'] instanceof we_objectFile) && !($GLOBALS['we_doc'] instanceof we_object) ?
 						$GLOBALS['we_doc']->getField($attribs) :
 						we_document::parseInternalLinks($value, 0)
 					)

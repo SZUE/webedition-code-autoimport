@@ -91,7 +91,7 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 		$_obxTable = OBJECT_X_TABLE . $this->classID;
 
 		$where_lang = ($this->languages ?
-				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query',array_filter(array_map('trim', explode(',',  $this->languages))))) . '")' :
+				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
 				'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
@@ -203,21 +203,19 @@ class we_object_listviewMultiobject extends we_object_listviewBase{
 				$this->DB_WE->Record($this->Record[$this->count]);
 				$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?we_objectID=' . $this->DB_WE->Record['OF_ID'];
 				$path_parts = pathinfo($this->Path);
-				if($this->objectseourls && $this->DB_WE->Record['OF_Url'] != '' && show_SeoLinks()){
+				if($this->objectseourls && $this->DB_WE->Record['OF_Url'] && show_SeoLinks()){
 					if(!$this->triggerID && $this->DB_WE->Record['OF_TriggerID'] != 0){
 						$path_parts = pathinfo(id_to_path($this->DB_WE->f('OF_TriggerID')));
 					}
-					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+					if($this->hidedirindex && seoIndexHide($path_parts['basename'])){
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->DB_WE->Record['OF_Url'];
 					} else {
 						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->DB_WE->Record['OF_Url'];
 					}
+				} elseif($this->hidedirindex && seoIndexHide($path_parts['basename'])){
+					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $this->DB_WE->Record['OF_ID'];
 				} else {
-					if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && $this->hidedirindex && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
-						$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $this->DB_WE->Record['OF_ID'];
-					} else {
-						$this->DB_WE->Record['we_WE_PATH'] = $this->Path . '?we_objectID=' . $this->DB_WE->Record['OF_ID'];
-					}
+					$this->DB_WE->Record['we_WE_PATH'] = $this->Path . '?we_objectID=' . $this->DB_WE->Record['OF_ID'];
 				}
 				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f('OF_TriggerID')));
 				$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');

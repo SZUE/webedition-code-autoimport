@@ -69,12 +69,12 @@ function we_tag_a($attribs, $content){
 		$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 		$url = (!$row ? '' : $row['Path'] . ($row['IsFolder'] ? '/' : ''));
 		$path_parts = pathinfo($url);
-		if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && TAGLINKS_DIRECTORYINDEX_HIDE && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
+		if($hidedirindex && TAGLINKS_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename'])){
 			$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 		}
 	}
 
-	if((!$url) && ($GLOBALS['WE_MAIN_DOC']->ClassName != 'we_template')){
+	if((!$url) && !($GLOBALS['WE_MAIN_DOC'] instanceof we_template)){
 		return ($GLOBALS['we_editmode'] ? parseError('in we:a attribute id not exists!') : '');
 	}
 

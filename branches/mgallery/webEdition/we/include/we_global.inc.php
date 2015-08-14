@@ -1117,6 +1117,10 @@ function show_SeoLinks(){
 		);
 }
 
+function seoIndexHide($basename){
+	return show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($basename, array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)));
+}
+
 function we_TemplateExit($param = 0){
 	if(!empty($GLOBALS['FROM_WE_SHOW_DOC'])){
 		exit($param);

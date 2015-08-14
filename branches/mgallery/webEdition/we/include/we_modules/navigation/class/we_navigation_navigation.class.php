@@ -669,7 +669,7 @@ class we_navigation_navigation extends weModelBase{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -681,7 +681,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
@@ -748,6 +748,7 @@ class we_navigation_navigation extends weModelBase{
 					$_path = ($_path === '/' ? '' : $_path);
 					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
 						$path_parts = pathinfo($_path);
+						//FIXME: can we use seoIndexHide($path_parts['basename'])??
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
 								'' : $path_parts['filename'] . '/'
@@ -799,6 +800,7 @@ class we_navigation_navigation extends weModelBase{
 					$_path = ($_path === '/' ? '' : $_path);
 					if(NAVIGATION_OBJECTSEOURLS && !empty($objecturl)){
 						$path_parts = pathinfo($_path);
+						//FIXME: can we use seoIndexHide($path_parts['basename'])??
 						$_path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
 							(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
 								'' : $path_parts['filename'] . '/'
@@ -819,6 +821,7 @@ class we_navigation_navigation extends weModelBase{
 
 		$_path = str_replace(array('&amp;', '&'), array('&', '&amp;'), $_path);
 
+		//FIXME: can we use seoIndexHide($path_parts['basename'])??
 		if(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && $this->LinkSelection != self::LSELECTION_EXTERN && $this->SelectionType != self::STYPE_URLLINK){ //Fix #8353
 			$dirindexnames = array_map('trim', explode(',', '/' . str_replace(',', ',/', NAVIGATION_DIRECTORYINDEX_NAMES)));
 			return str_replace($dirindexnames, '/', $_path);

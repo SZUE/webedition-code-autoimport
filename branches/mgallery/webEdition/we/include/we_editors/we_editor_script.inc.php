@@ -42,7 +42,7 @@ we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
 	var _oldparentid = <?php echo isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->ParentID) : 0; ?>;
 	var docName = "<?php echo isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Name : ''; ?>";
 	var docTable = "<?php echo isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Table : ''; ?>";
-	var docClass = "<?php echo isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->ClassName : ''; ?>";
+	var docClass = "<?php echo isset($GLOBALS['we_doc']) ? get_class($GLOBALS['we_doc']) : ''; ?>";
 	var hasCustomerFilter =<?php echo intval(isset($GLOBALS['we_doc']) && defined('CUSTOMER_TABLE') && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)); ?>;
 	var hasGlossary =<?php echo intval(defined('GLOSSARY_TABLE') && isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE)); ?>;
 
