@@ -225,7 +225,28 @@ var weFileUpload = (function () {
 					fileObj.type = type;
 
 				if (_.sender.EDIT_IMAGES_CLIENTSIDE && _.sender.transformAll.doTrans && transformables.indexOf(fileObj.type) !== -1) {
-					_.controller.scaleImageAndAdd(fileObj);
+					fileObj.exif = {};
+
+					/* ExifReader */
+					var reader = new FileReader();
+					reader.onload = function (event) {
+						var exif, tags = {};
+
+						try {
+							exif = new ExifReader();
+							exif.load(event.target.result);
+							// The MakerNote tag can be really large. Remove it to lower memory usage.
+							exif.deleteTag('MakerNote');
+							tags = exif.getAllTags();
+							fileObj.exif = tags;
+							_.controller.scaleImageAndAdd(fileObj);
+						} catch (error) {
+							_.controller.scaleImageAndAdd(fileObj);
+							//alert(error);
+						}
+					};
+					reader.readAsArrayBuffer(fileObj.file.slice(0, 128 * 1024));
+					/* END */
 					return;
 				} else {
 					fileObj.isTypeOk = _.utils.checkFileType(type, f.name);
@@ -243,7 +264,7 @@ var weFileUpload = (function () {
 				}
 
 			};
-			
+
 			/*
 			this.prepareFile = function (f, isUploadable) {
 				var fileObj = {
@@ -298,6 +319,9 @@ var weFileUpload = (function () {
 					tempImg.src = reader.result;
 					tempImg.onload = function () {
 						var canvas = document.createElement('canvas'),
+							ctx = canvas.getContext("2d"),
+							deg = _.sender.transformAll.degrees,
+							x = 0, y = 0,
 							transformedCanvas, uInt8Array;
 
 						if(_.sender.transformAll.width){
@@ -306,10 +330,47 @@ var weFileUpload = (function () {
 							ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
 						}
 						ratio = ratio < 1 ? ratio : 1;
-top.console.debug(_.sender.transformAll.quality / 10);
+
 						canvas.width = tempImg.width;
 						canvas.height = tempImg.height;
-						canvas.getContext('2d').drawImage(tempImg, 0, 0);//TODO: rotate here
+
+						// correct landscape using exif data
+						if(fileObj.exif.Orientation && fileObj.exif.Orientation.value !== 1){
+							switch(fileObj.exif.Orientation.value) {
+								case 3:
+									deg += 180;
+									break;
+								case 6:
+									deg += 270;
+									break;
+								case 8:
+									deg += 90;
+									break;
+									
+							}
+						}
+						deg = deg > 360 ? deg - 360 : deg;
+
+						// prepare rotation
+						switch (deg) {
+							case 90:
+								canvas.width = tempImg.height;
+								canvas.height = tempImg.width;
+								x = -tempImg.width;
+								break;
+							case 270:
+								canvas.width = tempImg.height;
+								canvas.height = tempImg.width;
+								y = -tempImg.height;
+								break;
+							case 180:
+								x = -tempImg.width;
+								y = -tempImg.height;
+								break;
+							default:
+						}
+						ctx.rotate(-Math.PI * deg / 180);
+						ctx.drawImage(tempImg, x, y, tempImg.width, tempImg.height);
 
 						/* var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
 						transformedCanvas = _.utils.downScaleCanvas(canvas, ratio);
@@ -1375,7 +1436,7 @@ top.console.debug(_.sender.transformAll.quality / 10);
 
 			this.appendMoreData = function (fd) {
 				var sf = document.we_startform,
-								cur = this.currentFile;
+					cur = this.currentFile;
 
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
@@ -1399,10 +1460,12 @@ top.console.debug(_.sender.transformAll.quality / 10);
 						fd.append('widthSelect', sf.widthSelect.value);
 						fd.append('heightSelect', sf.heightSelect.value);
 						fd.append('keepRatio', sf.keepRatio.value);
+						fd.append('quality', sf.quality.value);
+						fd.append('degrees', sf.degrees.value);
+					} else {
+						fd.append('exif', JSON.stringify(cur.exif));
 					}
 					fd.append('thumbs', sf.thumbs.value);
-					fd.append('quality', sf.quality.value);
-					fd.append('degrees', sf.degrees.value);
 				}
 
 				return fd;

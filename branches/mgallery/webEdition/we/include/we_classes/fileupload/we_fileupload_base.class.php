@@ -189,6 +189,7 @@ abstract class we_fileupload_base{
 		$this->callback = strpos($this->callback, 'WECMDENC_') !== false ? base64_decode(urldecode(substr($this->callback, 9))) : $this->callback;
 
 		return self::isFallback() || self::isLegacyMode() ? '' : (we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
+			we_html_element::jsScript('/webEdition/lib/additional/ExifReader/ExifReader.js') .
 			we_html_element::jsElement('
 we_FileUpload = new weFileUpload("' . $this->type . '");
 we_FileUpload.init({
