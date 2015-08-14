@@ -196,7 +196,7 @@ this.selectedIndex = 0;' .
 		for($f = 0; $f < $anz; $f++){
 			$bgcol = $bgColor ? : ((!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : "white");
 			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f == 0) ? '' : "border-left:1px solid silver;" ) . 'border-bottom: 1px solid silver;background-color:' . $bgcol . '; ' .
-				(isset($content[$f]["align"]) ? 'text-align:' . $content[$f]["align"].';' : '') . ' ' .
+				(isset($content[$f]["align"]) ? 'text-align:' . $content[$f]["align"] . ';' : '') . ' ' .
 				(isset($content[$f]["height"]) ? 'height:' . $content[$f]["height"] . 'px;' : '') . '">' .
 				(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
 				'</td>';
@@ -680,7 +680,7 @@ this.selectedIndex = 0;' .
 			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
 			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
 			we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
-			self::htmlMetaCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
+			self::htmlMetaCtCharset(($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
 			we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
 			we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
@@ -689,12 +689,9 @@ this.selectedIndex = 0;' .
 			we_html_element::jsScript(JS_DIR . 'global.js');
 	}
 
-	static function htmlMetaCtCharset($content, $charset){
+	static function htmlMetaCtCharset($charset){
 		$GLOBALS['we']['PageCharset'] = $charset;
-		return we_html_element::htmlMeta(array(
-				'http-equiv' => 'content-type',
-				'content' => $content . '; charset=' . $charset
-		));
+		return we_html_element::htmlMeta(array('charset' => $charset));
 	}
 
 	static function headerCtCharset($content, $charset, $skipsent = false){

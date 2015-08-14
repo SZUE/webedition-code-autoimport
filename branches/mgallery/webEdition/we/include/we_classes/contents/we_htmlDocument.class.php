@@ -57,7 +57,7 @@ class we_htmlDocument extends we_textContentDocument{
 	function getDocumentCode(){
 		$code = $this->getElement('data');
 		if(($cs = $this->getElement('Charset'))){
-			$code = preg_replace('|<meta http-equiv="Content-Type" content=".*>|i', we_html_tools::htmlMetaCtCharset('text/html', $cs), $code);
+			$code = preg_replace('/<meta http-equiv="Content-Type" content=".*>|<meta charset=".*>/i', we_html_tools::htmlMetaCtCharset($cs), $code);
 		}
 		return $code;
 	}

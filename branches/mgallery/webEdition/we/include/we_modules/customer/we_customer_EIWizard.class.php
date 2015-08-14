@@ -316,7 +316,7 @@ class we_customer_EIWizard{
 					we_html_element::htmlA(array("href" => $this->frameset . "?pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename, 'download' => $filename), g_l('modules_customer', '[download]'))
 			);
 			return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js .
-					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=" . $this->frameset . "?pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
+					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . $this->frameset . "?pnt=eibody&art=" . self::ART_EXPORT . "&step=5&exportfile=" . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 							we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
 						)
 					)

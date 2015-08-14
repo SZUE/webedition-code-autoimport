@@ -748,7 +748,7 @@ function setState(a) {
 		unset($_SESSION['weS']['exportVars_session']);
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET .
-				we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; URL=" . $this->frameset . "?pnt=body&step=50&exportfile=" . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', '[step10]'))
+				we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . $this->frameset . "?pnt=body&step=50&exportfile=" . $filename)), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', '[step10]'))
 				)
 		);
 	}

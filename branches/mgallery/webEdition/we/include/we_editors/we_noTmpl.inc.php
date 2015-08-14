@@ -31,7 +31,7 @@ echo we_html_element::htmlDocType();
 			echo STYLESHEET;
 		}
 		if($we_doc->getElement('Charset')){
-			echo we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement('Charset'));
+			echo we_html_tools::htmlMetaCtCharset($we_doc->getElement('Charset'));
 		}
 		if($we_doc->getElement('Keywords')){
 			?>
@@ -60,7 +60,7 @@ echo we_html_element::htmlDocType();
 					($we_doc->getElement('Keywords') ?
 						we_html_element::htmlMeta(array('name' => 'keywords', 'content' => $we_doc->getElement("Keywords"))) : '') .
 					($we_doc->getElement('Charset') ?
-						we_html_tools::htmlMetaCtCharset('text/html', $we_doc->getElement('Charset')) : '') .
+						we_html_tools::htmlMetaCtCharset($we_doc->getElement('Charset')) : '') .
 					($we_doc->getElement('Description') ?
 						we_html_element::htmlMeta(array('name' => 'description', 'content' => $we_doc->getElement("Description"))) : '');
 

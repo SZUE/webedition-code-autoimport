@@ -76,10 +76,11 @@ class we_base_ContentTypes{
 				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_HTML',
-				'DefaultCode' => '<html>
+				'DefaultCode' => '<!doctype html>
+<html>
 	<head>
 		<title></title>
-		<meta http-equiv="Content-Type" content="text/html; charset="' . $charset . '">
+		<meta charset="' . $charset . '">
 	</head>
 	<body>
 	</body>

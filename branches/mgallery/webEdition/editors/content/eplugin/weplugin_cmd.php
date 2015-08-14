@@ -156,6 +156,6 @@ if(isset($_we_transaction)){
 
 echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
 	we_html_element::htmlHead(
-		we_html_tools::htmlMetaCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET'])
+		we_html_tools::htmlMetaCtCharset($GLOBALS['WE_BACKENDCHARSET'])
 	) .
 	we_html_element::htmlBody(array('style' => 'background-color:white'), $out));

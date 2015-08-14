@@ -282,7 +282,7 @@ EOS;
 			// add <header> tag
 			'<head>' .
 			// add meta tag for charset if not empty
-			($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset('text/html', $this->getCharset()) . "\n" : '') .
+			($this->getCharset() !== '' ? we_html_tools::htmlMetaCtCharset($this->getCharset()) . "\n" : '') .
 			// add title tag if not empty
 			($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' . "\n" : '');
 

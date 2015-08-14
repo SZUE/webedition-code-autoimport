@@ -283,7 +283,7 @@ function doUnload() {
 				case 'Charset' :
 					$values[] = array(
 						'name' => $name,
-						'pre' => '<meta http-equiv="content-type" content="text/html;charset=',
+						'pre' => '<meta charset="',
 						'post' => '">'
 					);
 					break;
@@ -1233,8 +1233,10 @@ function doUnload() {
 				if(preg_match('/charset=([^ "\']+)/is', $attr[1], $cs)){
 					$charset = $cs[1];
 				}
+			}elseif(preg_match('/<meta [^>]*charset="([^"]*)"[^/]*>/is', $content, $regs)){
+				$charset = $regs[1];
 			}
-			$templateCode = preg_replace('/<meta [^>]*http-equiv="content-type"[^>]*>/is', '<we:charset defined="' . $charset . '">' . $charset . '</we:charset>', $templateCode);
+			$templateCode = preg_replace('/<meta [^>]*(http-equiv="content-type"|charset=)[^>]*>/is', '<we:charset defined="' . $charset . '">' . $charset . '</we:charset>', $templateCode);
 		}
 
 		// replace external css (link rel=stylesheet)
