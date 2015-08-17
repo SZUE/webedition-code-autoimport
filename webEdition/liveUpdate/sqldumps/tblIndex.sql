@@ -38,7 +38,7 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
   PRIMARY KEY (ID,WorkspaceID,ClassID),
-	UNIQUE `documents` (`ID`, `ClassID`, `Doctype`),
+	UNIQUE search (ID,ClassID,Doctype),
 	KEY wsp (Workspace),
 	FULLTEXT Text (Text)
 ) ENGINE=MyISAM;
