@@ -47,7 +47,7 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
 ###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
 
 /* query separator */
-###ONKEYFAILED(documents,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD UNIQUE `documents` (`ID`, `ClassID`, `Doctype`);###
+###ONKEYFAILED(search,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD UNIQUE search (ID,ClassID,Doctype);###
 
 /* query separator */
 ###UPDATEONLY###DROP TABLE IF EXISTS ###TBLPREFIX###tblIndex_Backup;
