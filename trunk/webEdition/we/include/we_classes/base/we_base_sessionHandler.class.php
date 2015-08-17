@@ -120,9 +120,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 					'session_id' => sql_function('x\'' . $sessID . '\''),
 					'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
 					'lockid' => $lock ? $this->id : '',
-					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-						/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-						  -				'tmp' => serialize($_SESSION), */
+					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),/*
+					'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+					'tmp' => isset($_SESSION)?we_serialize($_SESSION,'serialize'):'', */
 		)));
 		return true;
 	}
