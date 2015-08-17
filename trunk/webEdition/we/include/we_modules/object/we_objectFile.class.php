@@ -1531,7 +1531,7 @@ class we_objectFile extends we_document{
 
 	public function getPossibleWorkspaces($ClassWs, $all = false){
 		$ClassWs = $ClassWs ? : f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
-		$userWs = get_ws(FILE_TABLE,false,true);
+		$userWs = get_ws(FILE_TABLE, false, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
@@ -2241,7 +2241,7 @@ class we_objectFile extends we_document{
 			if(!we_root::we_save(true)){
 				return false;
 			}
-			if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
+			if(!$resave && we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
 				we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 			}
 		}
@@ -2416,7 +2416,9 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
+		if(!$DoNotMark){
+			we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
+		}
 		//if($oldUrl != $this->Url || !$wasPublished || $this->oldCategory != $this->Category){
 		//FIXME: changes of customerFilter are missing here
 		$this->rewriteNavigation();
