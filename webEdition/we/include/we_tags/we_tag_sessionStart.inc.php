@@ -94,9 +94,8 @@ function we_tag_sessionStart($attribs){
 			}
 		}
 	}
-	$onlinemonitor = weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL);
 
-	if($onlinemonitor && isset($_SESSION['webuser']['registered'])){
+	if(!empty($_SESSION['webuser']['registered']) && weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL)){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<DATE_SUB(NOW(), INTERVAL 1 HOUR)');
 		$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs, '', we_base_request::STRING);
 		$doc = we_getDocForTag(weTag_getAttribute('monitordoc', $attribs, '', we_base_request::STRING), false);
@@ -122,6 +121,10 @@ function we_tag_sessionStart($attribs){
 				'WebUserGroup' => $WebUserGroup,
 				'WebUserDescription' => '',
 		)));
+	}
+	//remove sessions consisting only of webuser[registered]
+	if(!empty($_SESSION['webuser']) && count($_SESSION['webuser']) == 1){
+		unset($_SESSION['webuser']);
 	}
 	return '';
 }
