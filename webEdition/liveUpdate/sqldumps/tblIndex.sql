@@ -38,13 +38,16 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
   PRIMARY KEY (ID,WorkspaceID,ClassID),
-	KEY search (ID,ClassID),
+	UNIQUE `documents` (`ID`, `ClassID`, `Doctype`),
 	KEY wsp (Workspace),
 	FULLTEXT Text (Text)
 ) ENGINE=MyISAM;
 
 /* query separator */
 ###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
+
+/* query separator */
+###ONKEYFAILED(documents,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD UNIQUE `documents` (`ID`, `ClassID`, `Doctype`);###
 
 /* query separator */
 ###UPDATEONLY###DROP TABLE IF EXISTS ###TBLPREFIX###tblIndex_Backup;
