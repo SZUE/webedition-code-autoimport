@@ -206,17 +206,13 @@ function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
  * @return type
  */
 function makeArrayFromCSV($csv){
-	$csv = trim(str_replace('\\,', '###komma###', $csv), ',');
+	$csv = trim($csv, ',');
 
 	if($csv === ''){
 		return array();
 	}
 
-	$foo = explode(',', $csv);
-	foreach($foo as &$f){
-		$f = trim(str_replace('###komma###', ',', $f));
-	}
-	return $foo;
+	return explode(',', $csv);
 }
 
 /**

@@ -321,10 +321,10 @@ class we_objectFile extends we_document{
 		unset($processedWs);
 
 		if($this->Workspaces){
-			$this->Workspaces = ',' . $this->Workspaces;
+			$this->Workspaces = trim($this->Workspaces, ',');
 		}
 		if($this->Templates){
-			$this->Templates = ',' . $this->Templates;
+			$this->Templates = trim($this->Templates, ',');
 		}
 	}
 
@@ -1584,7 +1584,7 @@ class we_objectFile extends we_document{
 			}
 			$addbut = we_html_tools::htmlSelect($textname, $foo, 1, '', false, array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_workspace\',this.options[this.selectedIndex].value);'));
 		}
-		$obj = new we_chooser_multiDirAndTemplate(450, $this->Workspaces, 'object_del_workspace', $addbut, get_ws(FILE_TABLE), $this->Templates, "we_" . $this->Name . "_Templates", $ts, get_ws(TEMPLATES_TABLE));
+		$obj = new we_chooser_multiDirAndTemplate(450, $this->Workspaces, 'object_del_workspace', $addbut, get_ws(FILE_TABLE), $this->Templates, 'we_' . $this->Name . '_Templates', $ts, get_ws(TEMPLATES_TABLE));
 
 // Bug Fix #207
 		$obj->isEditable = true; //$this->userIsCreator();
@@ -1982,7 +1982,7 @@ class we_objectFile extends we_document{
 			return true;
 		}
 
-		$ws = array_unique(array_merge(makeArrayFromCSV($this->Workspaces), makeArrayFromCSV($this->ExtraWorkspacesSelected)));
+		$ws = array_unique(array_merge(explode(',', $this->Workspaces), explode(',', $this->ExtraWorkspacesSelected)));
 
 		if(!$ws){
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -1993,8 +1993,8 @@ class we_objectFile extends we_document{
 						'WorkspaceID' => 0,
 						'Category' => $this->Category,
 						'ClassID' => $this->TableID,
-						'Title' => $this->getElement("Title"),
-						'Description' => $this->getElement("Description"),
+						'Title' => $this->getElement('Title'),
+						'Description' => $this->getElement('Description'),
 						'Path' => $this->Text,
 						'Language' => $this->Language
 			)));
