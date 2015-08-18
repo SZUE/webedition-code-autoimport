@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $isInfoScreen = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "info";
-
 //	build table for login screen.
 $_widthTotal = 432;
 $_space = 15;
@@ -31,9 +30,57 @@ $_middlePart = ($_widthTotal - (2 * $_space));
 // widths of loginTable
 $_logoPart = 140;
 
-$_credits = '<br /><span style="line-height:160%">' .
-	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
-	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span><br/>';
+echo we_html_element::cssElement('
+#mainTable{
+	border-style:none;
+	padding:20px ' . $_space . 'px ' . (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "info" ? '50px' : '20px') . ';
+	border-spacing:0px;
+	background-color:#EBEBEB;
+	width:' . $_widthTotal . 'px;' .
+	(isset($GLOBALS['loginpage']) ? '
+		margin-left: auto;
+		margin-right: auto;
+		text-align:left;
+		box-shadow: 5px 5px 5px #555555;
+		border-radius:10px;' :
+		'') . '
+}
+
+#versionSpec{
+	font-family: monospace;
+	font-size:22pt;
+	position:relative;
+	top:-25px;
+	left:200px;
+	text-align:left;
+	font-weight:bolder;
+	color:red;
+	transform: rotate(-35deg);
+	transform-origin: 0% 0%;
+}
+
+#credits{
+	line-height:160%;
+	padding-top:2ex;
+}
+
+.row5{
+	padding-top:5px;
+}
+
+.row10{
+	padding-top:10px
+}
+
+.plainTable{
+	border-style:none;
+	padding:0px;
+	border-spacing:0px;
+}
+
+');
+
+
 
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
@@ -71,36 +118,36 @@ if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
 			break;
 	}
 }
-$botpad = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "info" ? '50px' : '20px');
-$_table = new we_html_table(array(
-	"style" => "border-style:none; padding:20px " . $_space . "px " . $botpad . ";border-spacing:0px;background-color:#EBEBEB;width:" . $_widthTotal . 'px;' . (isset($GLOBALS['loginpage']) ? 'margin-left: auto; margin-right: auto;text-align:left;box-shadow: 5px 5px 5px #555555;border-radius:10px;' : '')), 8, 1);
+$_table = new we_html_table(array('id' => 'mainTable'), 8, 1);
 $_actRow = 0;
 //	First row with background
-$_table->setCol($_actRow++, 0, array("style" => 'text-align:center;'), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><img src="' . IMAGE_DIR . 'webedition.svg"/></a>' . (isset($extra) ? '<div style="font-family: monospace;font-size:22pt;position:relative;top:-25px;left:200px;text-align:left;font-weight:bolder;color:red;transform: rotate(-35deg);transform-origin: 0% 0%;">' . $extra . '</div>' : ''));
+$_table->setCol($_actRow++, 0, array("style" => 'text-align:center;'), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><img src="' . IMAGE_DIR . 'webedition.svg"/></a>' . (isset($extra) ? '<div id="versionSpec">' . $extra . '</div>' : ''));
 
 if($we_version){
 //	3rd Version
-	$_table->setCol($_actRow++, 0, array("class" => "small", 'style' => 'padding-top:5px'), "Version: " . $we_version);
+	$_table->setCol($_actRow++, 0, array("class" => 'small row5'), "Version: " . $we_version);
 }
 
 
 //	5th credits
-$_table->setCol($_actRow++, 0, array("class" => "defaultfont small", 'style' => 'padding-top:5px'), $_credits);
+$_table->setCol($_actRow++, 0, array("class" => "defaultfont small row5"), '<div id="credits">' .
+	g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a><br/>' .
+	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span>');
 
 //	7th agency
 if(is_readable($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php')){
 	include_once($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php');
-	$_table->setCol($_actRow++, 0, array("class" => "defaultfont small", 'style' => 'padding-top:10px'), $_agency);
+	$_table->setCol($_actRow++, 0, array("class" => "defaultfont small row10"), $_agency);
 }
 
 $loginRow = 0;
 
 if(!empty($GLOBALS["loginpage"])){
-	$_loginTable = new we_html_table(array("style" => "border-style:none; padding:0px;border-spacing:0px;"), 4, 2);
+	$_loginTable = new we_html_table(array("class" => "plainTable"), 4, 2);
 
 	$_loginTable->setCol($loginRow++, 0, array("class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
-	$_loginTable->setCol($loginRow++, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" style="width: 250px;" ', 'text', 0, 0));
-	$_loginTable->setCol($loginRow++, 0, array("class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
+	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" style="width: 250px;" ', 'text', 0, 0));
+	$_loginTable->setCol($loginRow++, 0, array("class" => "small row5"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
 	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" style="width: 250px;" ', 'password', 0, 0));
 
 
@@ -109,7 +156,7 @@ if(!empty($GLOBALS["loginpage"])){
 
 
 	//	mode-table
-	$_modetable = new we_html_table(array("style" => 'border-style:none; padding:0px;border-spacing:0px;', "width" => $_middlePart), 1, 3);
+	$_modetable = new we_html_table(array('class' => 'plainTable', "style" => 'width:' . $_middlePart . 'px;'), 1, 3);
 
 	$loginButton = we_html_button::create_button("fat:login,fa-lg fa-sign-in", "form:loginForm");
 	if(!WE_SEEM){ //	deactivate See-Mode
@@ -159,7 +206,7 @@ if(!empty($GLOBALS["loginpage"])){
 	$_table->setCol($_actRow++, 0, array("class" => "small", 'style' => 'padding-top:15px;padding-bottom:5px;'), g_l('global', '[loginok]'));
 
 	//	11th back button
-	$_table->setCol($_actRow++, 0, array("width" => $_middlePart, "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'), we_html_button::create_button("back_to_login", WEBEDITION_DIR . "index.php?r=$r"));
+	$_table->setCol($_actRow++, 0, array("width" => $_middlePart, "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'), we_html_button::create_button("back_to_login", WEBEDITION_DIR . 'index.php?r=' . $r));
 }
 
 if($isInfoScreen){
