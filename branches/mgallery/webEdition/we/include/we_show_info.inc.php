@@ -21,9 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . we_html_element::cssLink(CSS_DIR . 'infoScreen.css'));
 ?>
-<body style="background-color:#EBEBEB;margin: 0px 0px 0px 0px;text-align:center;" onblur="self.close()" onclick="self.close()" onload="self.focus();">
+<body id="infoScreen" style="background-color:#EBEBEB;margin: 0px 0px 0px 0px;text-align:center;" onblur="self.close()" onclick="self.close()" onload="self.focus();">
 	<?php
 	include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
 	?>

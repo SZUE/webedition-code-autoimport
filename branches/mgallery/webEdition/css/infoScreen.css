@@ -1,0 +1,41 @@
+#mainTable {
+	border-style:none;
+	padding:20px 15px 50px;
+	border-spacing:0px;
+	background-color:#EBEBEB;
+	width: 432px;
+}
+
+#versionSpec{
+	font-family: monospace;
+	font-size:22pt;
+	position:relative;
+	top:-25px;
+	left:200px;
+	text-align:left;
+	font-weight:bolder;
+	color:red;
+	transform: rotate(-35deg);
+	transform-origin: 0% 0%;
+}
+
+#credits{
+	line-height:160%;
+	padding-top:2ex;
+}
+
+.row5{
+	padding-top:5px;
+}
+
+.row10{
+	padding-top:10px
+}
+
+.plainTable{
+	border-style:none;
+	padding:0px;
+	border-spacing:0px;
+}
+
+.spaceTable { padding-top:15px;padding-bottom:5px; }

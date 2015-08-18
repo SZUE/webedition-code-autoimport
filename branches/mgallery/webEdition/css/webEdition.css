@@ -30,11 +30,7 @@ body{
 	margin: 0px;
 	letter-spacing: normal ! important;
 }
-#loginScreen{
-	background-color:#386AAB;
-	height:100%;
-}
-/*login/info-screen*/
+
 img.multiIcon{
 	height:64px;
 	width:64px;
