@@ -2189,7 +2189,7 @@ class we_objectFile extends we_document{
 			if(!we_root::we_save(true)){
 				return false;
 			}
-			if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
+			if(!$resave && we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
 				we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 			}
 		}
@@ -2399,7 +2399,9 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
+		if(!$DoNotMark){
+			we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
+		}
 		//if($oldUrl != $this->Url || !$wasPublished || $this->oldCategory != $this->Category){
 		//FIXME: changes of customerFilter are missing here
 		$this->rewriteNavigation();

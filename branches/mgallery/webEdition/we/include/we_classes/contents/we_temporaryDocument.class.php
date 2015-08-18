@@ -41,7 +41,7 @@ abstract class we_temporaryDocument{
 	 */
 	static function save($documentID, $table, $document, we_database_base $db){
 		$documentID = intval($documentID);
-		$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=0 WHERE DocumentID=' . $documentID . ' AND Active=1 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
+		$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=0 WHERE DocumentID=' . $documentID . ' AND Active=1 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		$ret = $db->query('INSERT INTO ' . TEMPORARY_DOC_TABLE . ' SET ' .
 			we_database_base::arraySetter(array(
 				'DocumentID' => $documentID,
@@ -50,10 +50,10 @@ abstract class we_temporaryDocument{
 				'UnixTimestamp' => sql_function('UNIX_TIMESTAMP()'),
 				'DocTable' => stripTblPrefix($table))));
 		if($ret){
-			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
+			$db->query('DELETE FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . $documentID . ' AND Active=0 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		} else {
 			//reset to current version
-			$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=1 WHERE DocumentID=' . $documentID . ' AND Active=0 AND  DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
+			$db->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET Active=1 WHERE DocumentID=' . $documentID . ' AND Active=0 AND DocTable="' . $db->escape(stripTblPrefix($table)) . '"');
 		}
 		return $ret;
 	}
