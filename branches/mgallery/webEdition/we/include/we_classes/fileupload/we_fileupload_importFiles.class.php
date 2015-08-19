@@ -85,6 +85,13 @@ class we_fileupload_importFiles extends we_fileupload_base{
 
 		$topParts[] = array("headline" => g_l('importFiles', '[select_files]'), "html" => $fileselect, "space" => 130);
 
+		// TODO: throw out inline css and use we_html_element
+		$messageLayer = '
+			<div id="we_fileUpload_messageBg" style="display:none;position:absolute;top:0; left:0; right:0; bottom:0; background-color:gray;opacity: 0.8;"></div>
+			<div id="we_fileUpload_message" style="display:none;padding: 20px; background-color:white; width: 400px; height: 180px;position:absolute; top:70px;left:100px;opacity:1.0">
+			<p>Please wait: <span id="we_fileUpload_messageNr"></span> images left to process</p><p>(add progressbar here)</p></div>
+		';
+
 		$content = we_html_element::htmlDiv(
 				array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(
 					array(
@@ -93,7 +100,8 @@ class we_fileupload_importFiles extends we_fileupload_base{
 					"method" => "post"
 					), $hiddens) .
 				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", "100%", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
-				'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", "100%", array(), 30, "", -1, "", "", "", "") . '</div>'
+				'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", "100%", array(), 30, "", -1, "", "", "", "") . '</div>' .
+				$messageLayer
 		);
 
 		return we_html_element::htmlBody(array("class" => "weDialogBody"), $content);
@@ -111,7 +119,7 @@ class we_fileupload_importFiles extends we_fileupload_base{
 			<td>
 				<div id="div_rowButtons_WEFORMNUM">
 					<table class="default"><tbody><tr>
-							<td style="width:6em;text-align:right;margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</td>
+							<td class="weFileUploadEntry_size" style="width:6em;text-align:right;margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</td>
 							<td style="text-align:middle"><img style="visibility:hidden;" width="14" height="18" src="/webEdition/images/alert_tiny.gif" id="alert_img_WEFORMNUM" title=""></td>
 							<td>
 								<div class="fileInputWrapper" style="vertical-align: bottom; display: inline-block;">

@@ -164,7 +164,7 @@ var weFileUpload = (function () {
 			};
 
 			this.fileSelectHandler = function (e) {
-				var files = e.target.files || e.dataTransfer.files;
+				var files = _.controller.selectedFiles = e.target.files || e.dataTransfer.files;
 				var l = files.length || 0;
 
 				if (l) {
@@ -177,95 +177,31 @@ var weFileUpload = (function () {
 						_.controller.fileselectOnclick();
 					}
 
+					/*
 					_.controller.selectedFiles = [];
 					for (var i = 0; i < l; i++) {
 						if (!_.utils.contains(_.sender.preparedFiles, files[i])) {
-							_.controller.selectedFiles[i] = files[i];
+							_.controller.selectedFiles.push(files[i]);
+							
 						}
 					}
-					_.controller.prepareFilesAndAdd();
-				}
-			};
+					*/
 
-			this.prepareFilesAndAdd = function (){
-				_.controller.prepareNextFileAndAdd();
-			};
-
-			this.fileDragHover = function (e) {
-				e.stopPropagation();
-				e.preventDefault();
-				e.target.className = (e.type === 'dragover' ? 'we_file_drag we_file_drag_hover' : 'we_file_drag');
-			};
-
-			this.prepareNextFileAndAdd = function (isUploadable) {
-				if(_.controller.selectedFiles.length === 0){
-					return;
-				}
-
-				var f = _.controller.selectedFiles.shift(),
-					fileObj = {
-						file: f,
-						fileNum: 0,
-						dataArray: null,
-						currentPos: 0,
-						partNum: 0,
-						currentWeightFile: 0,
-						mimePHP: 'none',
-						fileNameTemp: ''
-					},
-					type = f.type ? f.type : 'text/plain',
-					u = isUploadable || true,//??
-					errorMsg = [
-						_.utils.gl.errorNoFileSelected,
-						_.utils.gl.errorFileSize,
-						_.utils.gl.errorFileType,
-						_.utils.gl.errorFileSizeType
-					],
-					transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types;
-					fileObj.type = type;
-
-				if (_.sender.EDIT_IMAGES_CLIENTSIDE && _.sender.transformAll.doTrans && transformables.indexOf(fileObj.type) !== -1) {
-					fileObj.exif = {};
-
-					/* ExifReader */
-					var reader = new FileReader();
-					reader.onload = function (event) {
-						var exif, tags = {};
-
-						try {
-							exif = new ExifReader();
-							exif.load(event.target.result);
-							// The MakerNote tag can be really large. Remove it to lower memory usage.
-							exif.deleteTag('MakerNote');
-							tags = exif.getAllTags();
-							fileObj.exif = tags;
-							_.controller.scaleImageAndAdd(fileObj);
-						} catch (error) {
-							_.controller.scaleImageAndAdd(fileObj);
-							//alert(error);
+					_.sender.imageFilesNotProcessed = [];
+					for(var f, i = 0; i < l; i++){
+						if(!_.utils.contains(_.sender.preparedFiles, _.controller.selectedFiles[i])){
+							f = _.controller.prepareFile(_.controller.selectedFiles[i]);
+							_.sender.preparedFiles.push(f);
+							_.view.addFile(f, _.sender.preparedFiles.length);
 						}
-					};
-					reader.readAsArrayBuffer(fileObj.file.slice(0, 128 * 1024));
-					/* END */
-					return;
-				} else {
-					fileObj.isTypeOk = _.utils.checkFileType(type, f.name);
-					fileObj.isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false;
-					fileObj.isUploadable = fileObj.isTypeOk && fileObj.isSizeOk && u; //maybe replace uploadConditionOk by this
-					fileObj.uploadConditionsOk = fileObj.isTypeOk && fileObj.isSizeOk;
-					fileObj.error = errorMsg[fileObj.isSizeOk && fileObj.isTypeOk ? 0 : (!fileObj.isSizeOk && fileObj.isTypeOk ? 1 : (fileObj.isSizeOk && !fileObj.isTypeOk ? 2 : 3))];
-					fileObj.size = f.size;
-					fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
-					fileObj.lastChunkSize = f.size % _.sender.chunkSize;
-
-					_.sender.preparedFiles.push(fileObj);
-					_.view.addFile(fileObj, _.sender.preparedFiles.length);
-					_.controller.prepareNextFileAndAdd();
+					}
+					
+					if(this.EDIT_IMAGES_CLIENTSIDE){
+						_.controller.processImages();
+					}
 				}
-
 			};
 
-			/*
 			this.prepareFile = function (f, isUploadable) {
 				var fileObj = {
 						file: f,
@@ -277,6 +213,8 @@ var weFileUpload = (function () {
 						mimePHP: 'none',
 						fileNameTemp: ''
 					},
+					transformables = ['image/jpeg', 'image/gif', 'image/png'],//TODO: add all transformable types
+					//TODO: make this OK-stuff more concise
 					type = f.type ? f.type : 'text/plain',
 					u = isUploadable || true,
 					isTypeOk = _.utils.checkFileType(type, f.name),
@@ -288,30 +226,172 @@ var weFileUpload = (function () {
 						_.utils.gl.errorFileSizeType
 					];
 
-				var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
-				if (_.sender.EDIT_IMAGES_CLIENTSIDE && _.sender.transformAll.doTrans && transformables.indexOf(f.type) !== -1) {
-					fileObj = this.scaleImage(fileObj);
-					top.console.debug("do transform", fileObj);
-				} else {
-					fileObj.type = type;
-					fileObj.isUploadable = isTypeOk && isSizeOk && u; //maybe replace uploadConditionOk by this
-					fileObj.isTypeOk = isTypeOk;
-					fileObj.isSizeOk = isSizeOk;
-					fileObj.uploadConditionsOk = isTypeOk && isSizeOk;
-					fileObj.error = errorMsg[isSizeOk && isTypeOk ? 0 : (!isSizeOk && isTypeOk ? 1 : (isSizeOk && !isTypeOk ? 2 : 3))];
-					fileObj.size = f.size;
-					fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
-					fileObj.lastChunkSize = f.size % _.sender.chunkSize;
+				fileObj.type = type;
+				fileObj.isUploadable = isTypeOk && isSizeOk && u; //maybe replace uploadConditionOk by this
+				fileObj.isTypeOk = isTypeOk;
+				fileObj.isSizeOk = isSizeOk;
+				fileObj.uploadConditionsOk = isTypeOk && isSizeOk;
+				fileObj.error = errorMsg[isSizeOk && isTypeOk ? 0 : (!isSizeOk && isTypeOk ? 1 : (isSizeOk && !isTypeOk ? 2 : 3))];
+				fileObj.size = f.size;
+				fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
+				fileObj.lastChunkSize = f.size % _.sender.chunkSize;
+
+				if(transformables.indexOf(f.type) !== -1) {
+					_.sender.imageFilesNotProcessed.push(fileObj);
 				}
 
 				return fileObj;
 			};
-			*/
 
-			this.scaleImageAndAdd = function(fileObj){
+			this.processImages = function (){
+				_.view.setImageEditMessage();
+				_.controller.processNextImage();
+			};
+
+			this.processNextImage = function () { 
+				if(_.sender.imageFilesNotProcessed.length === 0){
+					// unlock GUI
+					_.view.unsetImageEditMessage();
+					return;
+				}
+
+				_.view.repaintImageEditMessage();
+
+				var fileObj = _.sender.imageFilesNotProcessed.shift(),
+					transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types;
+
+				if (transformables.indexOf(fileObj.type) !== -1) {
+					fileObj.exif = {};
+
+					/* ExifReader */
+					// we allways extract exif data: to check orientation (and fix it if neccessary)
+					var reader = new FileReader();
+					reader.onload = function (event) {
+						var exif, tags = {};
+
+						try {
+							exif = new ExifReader();
+							exif.load(event.target.result);
+							// The MakerNote tag can be really large. Remove it to lower memory usage.
+							exif.deleteTag('MakerNote');
+							fileObj.exif = exif.getAllTags();
+						} catch (error) {
+							top.console.debug('failed');
+						}
+
+						//_.controller.transformImage(fileObj);
+						/* START TRANSFORM IMAGE*/
+						var innerReader = new FileReader();
+						innerReader.onloadend = function () {
+							var tempImg = new Image(),
+								ratio = 1;
+
+							tempImg.src = innerReader.result;
+							tempImg.onload = function () {
+								var canvas = document.createElement('canvas'),
+									ctx = canvas.getContext("2d"),
+									deg = _.sender.transformAll.degrees,
+									x = 0, y = 0,
+									transformedCanvas;
+
+								if(_.sender.transformAll.width){
+									ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
+								} else if(_.sender.transformAll.height){
+									ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
+								} else {
+									ratio = 1;
+								}
+								ratio = ratio > 0 && ratio < 1 ? ratio : 1;
+
+								// correct landscape using exif data
+								if(fileObj.exif.Orientation && fileObj.exif.Orientation.value !== 1){
+									switch(fileObj.exif.Orientation.value) {
+										case 3:
+											deg += 180;
+											break;
+										case 6:
+											deg += 270;
+											break;
+										case 8:
+											deg += 90;
+											break;
+
+									}
+								}
+								deg = deg > 360 ? deg - 360 : deg;
+
+								if(_.sender.transformAll.doTrans || deg !== 0){ 
+									canvas.width = tempImg.width;
+									canvas.height = tempImg.height;
+									
+									// prepare rotation
+									switch (deg) {
+										case 90:
+											canvas.width = tempImg.height;
+											canvas.height = tempImg.width;
+											x = -tempImg.width;
+											break;
+										case 270:
+											canvas.width = tempImg.height;
+											canvas.height = tempImg.width;
+											y = -tempImg.height;
+											break;
+										case 180:
+											x = -tempImg.width;
+											y = -tempImg.height;
+											break;
+										default:
+									}
+								} else {
+									// we use canvas only to downscale preview image
+									canvas.width = 100;
+									canvas.height = (100 / canvas.width) * tempImg.height;
+								}
+								ctx.rotate(-Math.PI * deg / 180);
+								ctx.drawImage(tempImg, x, y, tempImg.width, tempImg.height);// TODO: when not transformed use smaller width/height!
+
+								/* var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
+								top.console.debug(_.sender.transformAll);
+								transformedCanvas = ratio !== 1 ? _.utils.downScaleCanvas(canvas, ratio) : canvas;
+								canvas = null;
+
+								fileObj.dataURL = transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.doTrans ? _.sender.transformAll.quality / 10 : 1);
+								if(_.sender.transformAll.doTrans || deg !== 0){
+									fileObj.dataArray = _.utils.dataURLToUInt8Array(fileObj.dataURL);
+									fileObj.size = fileObj.dataArray.length;
+								} else {
+									// send original image
+									fileObj.dataArray = null;
+									fileObj.size = fileObj.file.size;
+								}
+
+								fileObj.totalParts = Math.ceil(fileObj.size / _.sender.chunkSize);
+								fileObj.lastChunkSize = fileObj.size % _.sender.chunkSize;
+								//TODO: check the following flags again
+								fileObj.isUploadable = true;
+								fileObj.isTypeOk = true;
+								fileObj.isSizeOk = true;
+								fileObj.uploadConditionsOk = true;
+
+								_.view.repaintEntry(fileObj);
+								_.controller.processNextImage();
+							};
+						};
+						innerReader.readAsDataURL(fileObj.file);
+						/* END */
+					};
+					reader.readAsArrayBuffer(fileObj.file.slice(0, 128 * 1024));
+					/* END */
+					return;
+				} else {
+					_.controller.processNextImage();
+				}
+			};
+
+			//TODO: maybe reintegrate into fn processNextImage()
+			/*
+			this.transformImage = function(fileObj){
 				var reader = new FileReader();
-				var pos = _.view.addFileBusy(fileObj, _.sender.preparedFiles.length);
-
 				reader.onloadend = function () {
 					var tempImg = new Image(),
 						ratio = 1;
@@ -372,13 +452,13 @@ var weFileUpload = (function () {
 						ctx.rotate(-Math.PI * deg / 180);
 						ctx.drawImage(tempImg, x, y, tempImg.width, tempImg.height);
 
-						/* var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
+						// var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
 						transformedCanvas = _.utils.downScaleCanvas(canvas, ratio);
 						canvas = null;
 
-						uInt8Array = _.utils.dataURLToUInt8Array(transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.quality / 10));// TODO: use real type and quality
-						fileObj.dataArray = uInt8Array;
-						fileObj.size = uInt8Array.length;
+						fileObj.dataURL = transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.quality / 10);
+						fileObj.dataArray = _.utils.dataURLToUInt8Array(fileObj.dataURL);
+						fileObj.size = fileObj.dataArray.length;
 						fileObj.totalParts = Math.ceil(fileObj.size / _.sender.chunkSize);
 						fileObj.lastChunkSize = fileObj.size % _.sender.chunkSize;
 						//TODO: check the following flags again
@@ -387,13 +467,17 @@ var weFileUpload = (function () {
 						fileObj.isSizeOk = true;
 						fileObj.uploadConditionsOk = true;
 
-						_.sender.preparedFiles.push(fileObj);
-						_.view.delFileBusy();
-						_.view.addFile(fileObj, _.sender.preparedFiles.length);
-						_.controller.prepareNextFileAndAdd();
+						_.view.repaintEntry(fileObj);
+						_.controller.processNextImage();
 					};
 				};
 				reader.readAsDataURL(fileObj.file);
+			};
+			*/
+
+			this.fileDragHover = function (e) { 
+				e.preventDefault();
+				e.target.className = (e.type === 'dragover' ? 'we_file_drag we_file_drag_hover' : 'we_file_drag');
 			};
 
 			this.setWeButtonState = function (btn, enable, isFooter) {
@@ -426,6 +510,7 @@ var weFileUpload = (function () {
 			this.isUploading = false;
 			this.isCancelled = false;
 			this.preparedFiles = [];
+			this.imageFilesNotProcessed = [];
 			this.uploadFiles = [];
 			this.currentFile = -1;
 			this.totalFiles = 0;
@@ -443,7 +528,7 @@ var weFileUpload = (function () {
 				quality: 0.8,
 				degrees: 0
 			};
-			this.EDIT_IMAGES_CLIENTSIDE = true;
+			this.EDIT_IMAGES_CLIENTSIDE = false;
 
 			this.resetParams = function () {
 			};
@@ -568,7 +653,7 @@ var weFileUpload = (function () {
 							var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
 
 							//clientside editing disabled!
-							if (this.EDIT_IMAGES_CLIENTSIDE && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1) {//TODO: && !cur.doTrans!!)
+							if (false && this.EDIT_IMAGES_CLIENTSIDE && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1) {//TODO: && !cur.doTrans!!)
 								that.sendNextChunk(true);
 							} else {
 								fr = new FileReader();
@@ -730,13 +815,19 @@ var weFileUpload = (function () {
 				html: ''
 			};
 
+			this.setImageEditMessage = function (){
+			};
+
+			this.unsetImageEditMessage = function (){
+			};
+
+			this.repaintImageEditMessage = function(){
+			};
+
 			this.repaintGUI = function (arg) {
 			};
 
-			this.addFileBusy = function (fileObj) {
-			};
-
-			this.delFileBusy = function (pos) {
+			this.repaintEntry = function (obj){
 			};
 
 			//TODO: adapt these progress fns to standard progressbars
@@ -966,7 +1057,6 @@ var weFileUpload = (function () {
 				} // end for sy
 
 				// create result canvas
-					//TODO: try to get uInt8Array directly!!
 				var resCV = document.createElement('canvas');
 				resCV.width = tw;
 				resCV.height = th;
@@ -1531,17 +1621,46 @@ var weFileUpload = (function () {
 			this.htmlFileRow = '';
 			this.nextTitleNr = 1;
 			this.isUploadEnabled = false;
+			this.messageWindow = null;
 
 			this.addFile = function (f, index) {
 				this.appendRow(f, _.sender.preparedFiles.length - 1);
 			};
-
-			this.addFileBusy = function (fileObj) {
-				//top.console.debug('add busy imp');
+			
+			this.repaintEntry = function (fileObj){
+				fileObj.entry.getElementsByClassName('weFileUploadEntry_size')[0].innerHTML = (fileObj.isSizeOk ? _.utils.computeSize(fileObj.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');//style.backgroundColor = 'orange';
 			};
 
-			this.delFileBusy = function (pos) {
-				//top.console.debug('del busy imp');
+			this.setImageEditMessage = function (){
+				document.getElementById('we_fileUpload_messageBg').style.display = 'block';
+				document.getElementById('we_fileUpload_message').style.display = 'block';
+
+				/* Popup-JS is blocked too
+				var l = window.screenX + 200, 
+				t = window.screenY + 200, x = 17;
+				this.messageWindow = window.open('', 'popwin', "left = " + l + ", top = " + t + ", width = 320, height = 210,  toolbar = no, location = no, directories = no, status = no, menubar = no, scrollbars = no, resizable = no");
+				var content = "<!DOCTYPE html><html><head>";
+				content += "<title>Example</title>";
+				content += '<link href="/webEdition/lib/additional/fontawesome/css/font-awesome.min.css?e453b0856c5227f6105a807a734c492c" rel="styleSheet" type="text/css">';
+				content += "</head><body bgcolor=”#ccc”>";
+				content += "<p>Any HTML will work, just make sure to escape \"quotes\",";
+				content += 'or use single-quotes instead.</p>';
+				content += "<p>You can even pass parameters… (" + x + ")</p>";
+				content += '<span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>';
+				content += "</body></html>";
+				this.messageWindow.document.open();
+				this.messageWindow.document.write(content);
+				this.messageWindow.document.close();
+				*/
+			};
+
+			this.unsetImageEditMessage = function (){
+				document.getElementById('we_fileUpload_messageBg').style.display = 'none';
+				document.getElementById('we_fileUpload_message').style.display = 'none';
+			};
+			
+			this.repaintImageEditMessage = function(){
+				document.getElementById('we_fileUpload_messageNr').innerHTML = _.sender.imageFilesNotProcessed.length;
 			};
 
 			this.appendRow = function (f, index) {
@@ -1552,10 +1671,16 @@ var weFileUpload = (function () {
 					replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
 				weAppendMultiboxRow(row, '', 0, 0, 0, -1);
+				f.entry = document.getElementById('div_uploadFiles_' + index);
 
 				div = document.getElementById('div_upload_files');
 				div.scrollTop = div.scrollHeight;
 				document.getElementById('fileInput_uploadFiles_' + index).addEventListener('change', _.controller.replaceSelectionHandler, false);
+				
+				var el = document.getElementById('div_rowButtons_' + index);
+				//el.style.backgroundSize = 'contain';
+				//el.style.backgroundImage = "url(" + f.dataURL + ")";
+				
 				this.elems.extProgressDiv.style.display = 'none';
 				_.controller.setWeButtonText('cancel', 'cancel');
 
