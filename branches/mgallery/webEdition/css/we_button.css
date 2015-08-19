@@ -66,7 +66,7 @@ button.weBtn:active{
 
 button.weBtn[disabled]{
 	color:grey !important;
-	background: linear-gradient(to bottom, #F4F4F4, #E9E9E9 50%, #DEDEDE 50%,#D9D9D9);
+	background: #dedede;
 }
 
 button.weBtn i.fa-moreicon {
