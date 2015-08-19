@@ -196,7 +196,7 @@ var weFileUpload = (function () {
 						}
 					}
 					
-					if(this.EDIT_IMAGES_CLIENTSIDE){
+					if(_.sender.EDIT_IMAGES_CLIENTSIDE){
 						_.controller.processImages();
 					}
 				}
@@ -528,7 +528,7 @@ var weFileUpload = (function () {
 				quality: 0.8,
 				degrees: 0
 			};
-			this.EDIT_IMAGES_CLIENTSIDE = false;
+			this.EDIT_IMAGES_CLIENTSIDE = false; 
 
 			this.resetParams = function () {
 			};
