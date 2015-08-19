@@ -1,5 +1,5 @@
 #loginScreen{
-	background-color:#386AAB;
+	background-color:#F1F1F1;
 	height:100%;
 }
 
@@ -7,13 +7,13 @@
 	border-style:none;
 	padding:20px 15px 20px;
 	border-spacing:0px;
-	background-color:#EBEBEB;
+	background-color:#FFFFFF;
 	width: 432px;
-		margin-left: auto;
-		margin-right: auto;
-		text-align:left;
-		box-shadow: 5px 5px 5px #555555;
-		border-radius:10px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align:left;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+	border-radius: 0;
 }
 
 #versionSpec{
