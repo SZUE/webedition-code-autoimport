@@ -304,7 +304,7 @@ function we_save() {
 
 	protected function getHTMLTreeFooter(){
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("bgcolor" => "white", "class" => "editfooter", "marginwidth" => 5, "marginheight" => 0, "leftmargin" => 5, "topmargin" => 0), '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>')
+				we_html_element::htmlBody(array('style' => "background-color:white;margin:0px 5px;", "class" => "editfooter"), '<div id="infoField" class="defaultfont"></div>')
 		);
 	}
 

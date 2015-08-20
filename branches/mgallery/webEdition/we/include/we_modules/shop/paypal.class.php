@@ -74,7 +74,7 @@ class paypal_class{
 	var $ipn_data = array();		 // array contains the POST values for IPN
 	var $fields = array();			// array holds the fields to submit to paypal
 
-	function paypal_class(){
+	function __construct(){
 
 		// initialization constructor.  Called when class is created.
 		//$this->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr'; //testing
@@ -224,10 +224,11 @@ class paypal_class{
 		$text = '[' . date('m/d/Y g:i A') . '] - ';
 
 		// Success or failure being logged?
-		if($success)
+		if($success){
 			$text .= "SUCCESS!\n";
-		else
+		}else{
 			$text .= 'FAIL: ' . $this->last_error . "\n";
+		}
 
 		// Log the POST variables
 		$text .= "IPN POST Vars from Paypal:\n";

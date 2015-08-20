@@ -28,7 +28,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 </div>
 <div id="treeFrameDiv">
 	<div id="bm_treeheaderDiv">
-		<iframe frameBorder="0" src="about:blank" name="treeheader" style="border:0px;width:100%;height:100%;overflow: hidden;"></iframe>
+		<iframe frameBorder="0" src="about:blank" name="treeheader"></iframe>
 	</div>
 	<div id="bm_mainDiv">
 		<?php
@@ -37,10 +37,10 @@ $table = isset($table) ? $table : FILE_TABLE;
 		?>
 	</div>
 	<div id="bm_searchField">
-		<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>
+		<div id="infoField" class="defaultfont"></div>
 		<form name="we_form" onsubmit="top.we_cmd('tool_weSearch_edit', document.we_form.keyword.value, top.treeData.table);
 				return false;">
-			<div id="search" style="margin: 10px 0 0 10px;">
+			<div id="search">
 				<?php
 				echo we_html_tools::htmlTextInput('keyword', 10, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', '', 'search', '120px') .
 				we_html_button::create_button(we_html_button::SEARCH, "javascript:top.we_cmd('tool_weSearch_edit',document.we_form.keyword.value, top.treeData.table);", true);

@@ -145,7 +145,7 @@ onunload=function() {
 		}
 		?>
 		<div>
-			<div style="float:left;" >
+			<div id="weMainMenu">
 				<?php
 				if($jmenu){
 					echo $jmenu->getCode();

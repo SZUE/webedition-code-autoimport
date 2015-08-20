@@ -317,7 +317,7 @@ abstract class we_base_variants{
 <tr>
 		<td>' . $model->getFieldHTML(we_base_constants::WE_VARIANTS_PREFIX . $i, 'input', array(), true, true) . '</td>
 		<td>
-			<table class="defaultgray" style="text-align:right" width="120">
+			<table class="defaultgray" style="text-align:right;width:120px">
 				<tr>
 					<td>' . $plusBut . '</td>
 					<td>' . $upbut . '</td>

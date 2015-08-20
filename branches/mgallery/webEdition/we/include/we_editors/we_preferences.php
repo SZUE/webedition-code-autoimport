@@ -2180,7 +2180,6 @@ function checkAll(val) {
 
 			$_versions_time_days = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_DAYS]',
-				'style' => '',
 				'class' => 'weSelect'
 				)
 			);
@@ -2195,7 +2194,6 @@ function checkAll(val) {
 
 			$_versions_time_weeks = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_WEEKS]',
-				'style' => '',
 				'class' => 'weSelect')
 			);
 			$_versions_time_weeks->addOption(-1, '');
@@ -2208,7 +2206,6 @@ function checkAll(val) {
 
 			$_versions_time_years = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_YEARS]',
-				'style' => '',
 				'class' => 'weSelect'
 				)
 			);
@@ -2225,7 +2222,6 @@ function checkAll(val) {
 
 			$_versions_time_days_tmpl = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_DAYS_TMPL]',
-				'style' => '',
 				'class' => 'weSelect'
 				)
 			);
@@ -2240,7 +2236,6 @@ function checkAll(val) {
 
 			$_versions_time_weeks_tmpl = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_WEEKS_TMPL]',
-				'style' => '',
 				'class' => 'weSelect')
 			);
 			$_versions_time_weeks_tmpl->addOption(-1, '');
@@ -2252,7 +2247,6 @@ function checkAll(val) {
 
 			$_versions_time_years_tmpl = new we_html_select(array(
 				'name' => 'newconf[VERSIONS_TIME_YEARS_TMPL]',
-				'style' => '',
 				'class' => 'weSelect'
 				)
 			);

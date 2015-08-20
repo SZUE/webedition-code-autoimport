@@ -218,20 +218,14 @@ function modifyLayoutCols(iCols) {
 		var oTbl = gel('le_tblWidgets');
 		var oRow = gel('rowWidgets');
 		for (var i = 1; i <= iAppendCols; i++) {
-			var oSpacer = document.createElement('TD');
-			oSpacer.setAttribute('id', 'spacer_' + (_iLayoutCols + (i - 1)));
-			oSpacer.setAttribute('style', 'width:5px;');
-			oSpacerTxt = document.createTextNode(' ');
 			var oCell = document.createElement('TD');
 			oCell.setAttribute('id', 'c_' + (_iLayoutCols + i));
 			oCell.setAttribute('class', 'cls_' + (_iLayoutCols + i) + '_collapse');
 			var oWildcard = document.createElement('DIV');
 			oWildcard.setAttribute('class', 'wildcard');
+			oWildcard.setAttribute('style', 'margin-rigth:5px');
 			oCell.appendChild(oWildcard);
-			oSpacer.appendChild(oSpacerTxt);
-			oRow.appendChild(oSpacer);
 			oRow.appendChild(oCell);
-			gel('spacer_' + (_iLayoutCols + (i - 1))).style.width = "5px";
 		}
 		_iLayoutCols += iAppendCols;
 		le_dragInit(oTbl);
@@ -253,10 +247,6 @@ function modifyLayoutCols(iCols) {
 			}
 			var oRemoveCol = gel('c_' + i);
 			oRemoveCol.parentNode.removeChild(oRemoveCol);
-			var oSpacer = gel('spacer_' + (i - 1));
-			if (oSpacer) {
-				oSpacer.parentNode.removeChild(oSpacer);
-			}
 		}
 		_iLayoutCols -= iRemoveCols;
 		le_dragInit(gel('le_tblWidgets'));
@@ -754,7 +744,7 @@ var ajaxCallback = {
  * Old ajax functions using an iframe
  */
 function rpc() {
-
+	//FIXME: remove this!
 	if (!document.createElement) {
 		return true;
 	}

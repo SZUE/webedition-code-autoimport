@@ -249,27 +249,16 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 
 		$html = we_html_tools::htmlFormElementTable(
 				array(
-				"text" => $resultField . $autoSuggest,
-				'style' => 'vertical-align:top;height:10px;'), $this->label, 'left', 'defaultfont', (
-				$this->selectButton ?
-					array("text" => $this->selectButton, 'style' => 'vertical-align:top') :
-					''
+				"text" => $resultField . $autoSuggest), $this->label, 'left', 'defaultfont', (
+				$this->selectButton ? : ''
 				), (
-				$this->additionalButton ?
-					array("text" => $this->additionalButton, 'style' => 'vertical-align:top;') :
-					''
+				$this->additionalButton ? : ''
 				), (
-				$this->trashButton ?
-					array("text" => $this->trashButton, 'style' => 'vertical-align:top') :
-					''
+				$this->trashButton ? : ''
 				), (
-				$this->openButton ?
-					array("text" => $this->openButton, 'style' => 'vertical-align:top') :
-					''
+				$this->openButton ? : ''
 				), (
-				$this->createButton ?
-					array("text" => $this->createButton, 'style' => 'vertical-align:top') :
-					'')
+				$this->createButton ? : '')
 		);
 
 		if($reset){

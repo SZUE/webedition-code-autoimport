@@ -210,10 +210,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		}
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
 			$s2 .
-			we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>';
-		if($iDatLen > $iCurrCol){
-			$s1 .= '<td id="spacer_' . $iCurrCol . '" style="width: 5px;"></td>';
-		}
+			we_html_element::htmlDiv(array("class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')), '') . '</td>';
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
@@ -222,8 +219,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
-	$oTblWidgets = new we_html_table(array("class" => 'default', "height" => "98%"), 1, 1);
-	$oTblWidgets->setCol(0, 0, array('style' => 'vertical-align:top;width:100%;text-align:left'), we_html_element::htmlDiv(
+	$oTblWidgets = new we_html_table(array("class" => 'default'), 1, 1);
+	$oTblWidgets->setCol(0, 0, array(), we_html_element::htmlDiv(
 			array("id" => "modules"), '<table id="le_tblWidgets"><tr id="rowWidgets">' . $s1 . '</tr></table>')
 	);
 
@@ -254,7 +251,8 @@ function isHot(){
 	return false;
 }
 
-function closeAllModalWindows(){}
+function closeAllModalWindows(){
+}
 
 var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 _EditorFrame.initEditorFrameData(
@@ -277,5 +275,6 @@ _EditorFrame.initEditorFrameData(
 					we_html_button::create_button("preferences", "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
 				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
 }
+//FIXME: remove iframe
 ?>
 <iframe id="RSIFrame" name="RSIFrame" style="border:0px;width:1px;height:1px; visibility:hidden"></iframe></html>

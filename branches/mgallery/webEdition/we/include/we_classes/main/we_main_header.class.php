@@ -38,13 +38,14 @@ class we_main_header{
 	static function pbody($SEEM_edit_include){
 		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
 		?>
-		<div style="position:absolute;top:0px;bottom:0px;left:0px;right:<?php echo $msg ? 60 : 0 ?>px;"><?php
+		<div id="weMainHeader" <?php echo ($msg ? 'style="right:60px"' : ''); ?>><?php
 			we_main_headermenu::pbody();
 			?>
 		</div>
 		<?php if($msg){ ?>
-			<div id="msgheadertable"><?php we_messaging_headerMsg::pbody();?></div>
-		<?php }
+			<div id="msgheadertable"><?php we_messaging_headerMsg::pbody(); ?></div>
+		<?php
+		}
 	}
 
 }

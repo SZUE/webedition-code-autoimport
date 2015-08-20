@@ -92,6 +92,15 @@ div.le_widget:first-child{
 	left:45px;
 	z-index:3;
 }
+#widgets > table{
+	height:98%;
+}
+
+#widgets > table > tr >td{
+	vertical-align:top;
+	width:100%;
+	text-align:left
+}
 
 #le_tblWidgets{
 	table-layout:fixed;

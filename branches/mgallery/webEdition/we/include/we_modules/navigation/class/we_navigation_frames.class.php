@@ -73,7 +73,7 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLTreeFooter(){
-		return '<div id="infoField" style="margin:5px; display: none;" class="defaultfont"></div>';
+		return '<div id="infoField" class="defaultfont"></div>';
 	}
 
 	function getHTMLCmd(){

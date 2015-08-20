@@ -156,7 +156,7 @@ class we_docTypes extends we_class{
 	public function formDocTypeHeader(){
 		return '
 <table class="default">
-	<tr style="vertical-align:top">
+	<tr>
 		<td style="padding-right:20px;">' . $this->formDocTypes2() . '</td>
 		<td><div style="padding-bottom:10px;">' . we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')") . '</div>' . we_html_button::create_button('delete_doctype', "javascript:we_cmd('deleteDocType', '" . $this->ID . "')") . '</td>
 	</tr>

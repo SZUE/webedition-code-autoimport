@@ -179,7 +179,7 @@ function we_tag_paypal($attribs){
 
 				$i = 0;
 				$summit = 0;
-				foreach($shoppingItems as $key => $item){
+				foreach($shoppingItems as $item){
 					$i++; //  loop through basket
 
 					$p->add_field('business', $paypalEmail);

@@ -40,8 +40,7 @@ we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 ?>
 </head>
 
-<body onload="messageConsoleWindow.init();" onunload="messageConsoleWindow.remove();" class="weDialogBody" style="overflow:hidden;">
-
+<body onload="messageConsoleWindow.init();" onunload="messageConsoleWindow.remove();" class="weDialogBody">
 	<div id="headlineDiv">
 		<div class="weDialogHeadline">
 <?php echo g_l('messageConsole', '[headline]') ?>
