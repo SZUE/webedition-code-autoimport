@@ -448,8 +448,7 @@ function we_tag_userInput($attribs, $content){
 
 		case 'textarea' :
 			//$attribs['inlineedit'] = "true"; // bugfix: 7276
-			$pure = weTag_getAttribute("pure", $attribs, false, we_base_request::BOOL);
-			if($pure){
+			if(weTag_getAttribute("pure", $attribs, false, we_base_request::BOOL)){
 				$atts = removeAttribs($attribs, array(
 					'wysiwyg',
 					'commands',
