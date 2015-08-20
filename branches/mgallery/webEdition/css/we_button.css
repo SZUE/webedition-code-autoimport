@@ -25,7 +25,7 @@
 .weBtn{
 	height:22px ! important;
 	width:auto;
-	background-color:darkgrey;
+	background-color:darkgrey ! important;
 	cursor:pointer;
 	border-width: 0px;
 	border-collapse: collapse;
@@ -40,15 +40,15 @@ button.weBtn img{
 }
 
 button.weBtn{
-	color:#ffffff;
-	border-radius: 0;
-	background: #164f94;
+	color:black;
+	border-radius: 4px;
+	background: linear-gradient(to bottom, #F3F7FC, #E9F0FB 50%, #DCE8F8 50%,#D8E4F9);
 	font-family: verdana, arial, helvetica;
 	font-size: 10px ! important;
 	text-align: center;
 	padding-left: 0.5em !important;
 	padding-right: 0.5em !important;
-	box-shadow: 0;
+	box-shadow: 2px 2px 2px #555555;
 	margin-left:0.5em;
 	margin-right:0.5em;
 	margin-bottom: 1ex;
@@ -66,7 +66,7 @@ button.weBtn:active{
 
 button.weBtn[disabled]{
 	color:grey !important;
-	background: #dedede;
+	background: linear-gradient(to bottom, #F4F4F4, #E9E9E9 50%, #DEDEDE 50%,#D9D9D9);
 }
 
 button.weBtn i.fa-moreicon {
