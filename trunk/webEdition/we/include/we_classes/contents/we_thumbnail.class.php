@@ -429,7 +429,10 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function getOutputPath($withDocumentRoot = false, $unique = false){
-		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') . $this->outputPath . ((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath) : time()) : '');
+		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') .
+			$this->outputPath .
+			((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath) : time()) :
+				'');
 	}
 
 	/**
