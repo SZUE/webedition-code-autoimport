@@ -1244,24 +1244,35 @@ function getMysqlVer($nodots = true){
 }
 
 function we_unserialize($string, $default = array(), $quiet = false){
+	//already unserialized
+	if(is_array($string)){
+		return $string;
+	}
+	//no content, return default
 	if(!$string){
 		return $default;
 	}
+	//compressed?
 	if($string[0] === 'x'){
 		$string = gzuncompress($string);
 	}
+	//std-serialized data by php
 	if(preg_match('|^[asO]:\d+:|', $string)){
 		$ret = unserialize($string);
 		return ($ret === false ? $default : $ret);
 	}
+	//json data
 	if(preg_match('|^[{\[].*[}\]]$|', $string)){
+		//maybe we should just do it & check if it failed
 		if(mb_check_encoding($string, 'UTF-8')){
-		return json_decode($string, true);
-	}
+			return json_decode($string, true);
+		}
+		//non UTF-8 json decode
 		static $json = null;
 		$json = $json ? : new Services_JSON();
-		return (array)$json->decode($string);
+		return (array) $json->decode($string);
 	}
+	//data is really not serialized!
 	if(!$quiet){
 		t_e('unable to decode', $string);
 	}

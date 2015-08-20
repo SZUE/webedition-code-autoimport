@@ -183,7 +183,7 @@ function we_tag_writeShopData($attribs){
 			$cartField[WE_SHOP_CALC_VAT] = $calcVat; // add flag to shop, if vats shall be used
 		}
 
-		if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' set strSerialOrder="' . $DB_WE->escape(serialize($cartField)) . '" WHERE intOrderID="' . $orderID . '"')){
+		if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' set strSerialOrder="' . $DB_WE->escape(serialize($cartField)) . '" WHERE intOrderID=' . intval($orderID))){
 			return;
 		}
 		//}
