@@ -39,7 +39,6 @@ function orderBy($a, $b){
 }
 
 function getTitleLinkObj($text, $orderKey){
-
 	$_href = $_SERVER['SCRIPT_NAME'] .
 		'?typ=' . $GLOBALS['typeObj'] .
 		'&orderBy=' . $orderKey .
@@ -71,19 +70,16 @@ function getTitleLinkDoc($text, $orderKey){
 	$arrow = '<i class="fa fa-sort fa-lg"></i>';
 
 	if($GLOBALS['orderBy'] == $orderKey){
-
-		if(we_base_request::_(we_base_request::BOOL, 'orderDesc')){
-			$arrow = ' <i class="fa fa-sort-desc fa-lg"></i>';
-		} else {
-			$arrow = ' <i class="fa fa-sort-asc fa-lg"></i>';
-		}
+		$arrow = ' <i class="fa fa-lg fa-sort-' . (we_base_request::_(we_base_request::BOOL, 'orderDesc') ?
+				'desc' :
+				'asc') .
+			'"></i>';
 	}
 
 	return '<a href="' . $_href . '">' . $text . '</a>' . $arrow;
 }
 
 function getPagerLinkDoc(){
-
 	return $_SERVER['SCRIPT_NAME'] .
 		'?typ=' . $GLOBALS['typeDoc'] .
 		'&orderBy=' . $GLOBALS['orderBy'] .
@@ -92,8 +88,6 @@ function getPagerLinkDoc(){
 }
 
 /* * ************ fuction for orders  ************** */
-
-
 
 we_html_tools::protect();
 
@@ -106,12 +100,9 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 <body class="weEditorBody" onload="self.focus();" onunload="">
 <form>';
 
-
-
-
 /* * ************ some config  ************** */
-$feldnamen = explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
-$waehr = "&nbsp;" . oldHtmlspecialchars($feldnamen[0]);
+$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
+$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 
 //determine more than just one class-ID
@@ -156,39 +147,29 @@ if(isset($daten)){
 	function array_select($arr_value, $select_name, $label){ // function for a selectbox for the purpose of selecting a class
 		$shopConfig = !empty($GLOBALS['feldnamen']) ?
 			$GLOBALS['feldnamen'] :
-			explode("|", f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . " WHERE strDateiname='shop_pref'"));
+			explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"'));
 
 		$fe = (isset($shopConfig[3]) ?
-				explode(",", $shopConfig[3]) : //determine more than just one class-ID
-				array(0));
+				array_map('intval', array_filter(explode(',', $shopConfig[3]))) : //determine more than just one class-ID
+				array());
 
 		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
 
-		$menu = '<label for="' . $select_name . '">' . $label . '</label>' . "\n";
-		$menu .= '<select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">' . "\n";
+		$menu = '<label for="' . $select_name . '">' . $label . '</label><select name="' . $select_name . '" onchange="document.location.href=\'' . $_SERVER['SCRIPT_NAME'] . '?typ=object&ViewClass=\' + this.options[this.selectedIndex].value ">';
 
-		foreach($fe as $val){
-			if($val != ''){
-				$optionLabel = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID = ' . intval($val), 'Text', $GLOBALS['DB_WE']);
-				$menu .= '<option value="' . $val . '"' . (($val == $selVal) ? ' selected="selected"' : '') . '>' . $optionLabel . '</option>' . "\n";
+		if($fe){
+			$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' WHERE ID IN (' . implode(',', $fe) . ')');
+			foreach($GLOBALS['DB_WE']->getAllFirst(false) as $id => $val){
+				$menu .= '<option value="' . $id . '"' . (($id == $selVal) ? ' selected="selected"' : '') . '>' . $val . '</option>';
 			}
 		}
-		$menu .= '</select>' . "\n";
-		$menu .= '<input type="hidden" name="typ" value="object" />';
+		$menu .= '</select><input type="hidden" name="typ" value="object" />';
 
 		return $menu;
 	}
 
-	/*	 * ************ selectbox function ************** */
-
-	$selClass = array_select($val, "ViewClass", g_l('modules_shop', '[classSel]')); // displays a selectbox for the purpose of selecting a class..
-
-
-
-	/*	 * ******** START PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
-
 	switch(we_base_request::_(we_base_request::STRING, 'typ')){
-		case "object": //start output object
+		case 'object': //start output object
 			$orderBy = $DB_WE->escape(we_base_request::_(we_base_request::STRING, 'orderBy', 'obTitle'));
 			$entries = 0;
 			$count_expression = $from_expression = $where_expression = "";
@@ -197,6 +178,9 @@ if(isset($daten)){
 
 				foreach($fe as $clId){
 					$clId = intval($clId);
+					if(!$clId){
+						continue;
+					}
 					if($fe_count > 0){
 						$count_expression .= ' + ';
 						$from_expression .= ', ';
@@ -204,33 +188,33 @@ if(isset($daten)){
 					}
 					$count_expression .= 'COUNT(DISTINCT ' . OBJECT_X_TABLE . $clId . '.OF_ID)';
 					$from_expression .= OBJECT_X_TABLE . $clId;
-					$where_expression .= OBJECT_X_TABLE . $clId . '.OF_ID !=0';
+					$where_expression .= OBJECT_X_TABLE . $clId . '.OF_ID!=0';
 					$fe_count++;
 				}
 			} else {
 				$classid = intval($classid);
+				if($classid){
+					continue;
+				}
 				$count_expression = 'COUNT(' . OBJECT_X_TABLE . $classid . '.OF_ID)';
 				$from_expression = OBJECT_X_TABLE . $classid;
-				$where_expression = OBJECT_X_TABLE . $classid . ".OF_ID!=0";
+				$where_expression = OBJECT_X_TABLE . $classid . '.OF_ID!=0';
 			}
-			$DB_WE->query('SELECT ' . $count_expression . ' AS dbEntries FROM ' . $from_expression . ' WHERE ' . $where_expression);
-			while($DB_WE->next_record()){ // Pager: determine the number of records;
-				$entries += $DB_WE->f("dbEntries");
-			}
+			$DB_WE->query('SELECT ' . $count_expression . ' FROM ' . $from_expression . ' WHERE ' . $where_expression);
+			$entries += array_sum($DB_WE->getAll(true)); // Pager: determine the number of records;
 			$active_page = we_base_request::_(we_base_request::RAW, 'page', 0); // Pager: determine the current page
 			$docType2 = we_base_ContentTypes::OBJECT_FILE; // Pager: determine the current page
 			$typeAlias = we_base_ContentTypes::OBJECT; // Pager: determine the current page
-			if(!isset($classSelectTable)){
-				$classSelectTable = "";
-			}
+			$classSelectTable = (isset($classSelectTable) ? $classSelectTable : '');
 			if($entries != 0){ // Pager: Number of records not empty?
 				$topInfo = ($entries > 0 ? $entries : g_l('modules_shop', '[noRecord]'));
-
-				$classid = abs(we_base_request::_(we_base_request::INT, "ViewClass")); // gets the value from the selectbox;
+				$classid = abs(we_base_request::_(we_base_request::INT, 'ViewClass')); // gets the value from the selectbox;
 
 				$classSelectTable .= '<table width="600">
     <tr>
-        <td colspan="2" class="defaultfont">' . $selClass . '</td>
+        <td colspan="2" class="defaultfont">' .
+					// displays a selectbox for the purpose of selecting a class..
+					array_select($val, 'ViewClass', g_l('modules_shop', '[classSel]')) . '</td>
     </tr>
 </table>';
 				$parts[] = array(
@@ -239,27 +223,15 @@ if(isset($daten)){
 				);
 
 				// :: then do the query for objects
-//FIXME: is there any reason, why we load the whole table?!
 				$DB_WE->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS obTitle,o.OF_ID AS obID,of.CreationDate AS cDate,of.Published AS cPub,of.ModDate AS cMob
-                    FROM ' . OBJECT_X_TABLE . $classid . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID
-                    WHERE IsFolder=0
-                    ORDER BY o.OF_ID'); // get the shop-objects from DB;
+FROM ' . OBJECT_X_TABLE . $classid . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID
+WHERE IsFolder=0
+ORDER BY o.OF_ID'); // get the shop-objects from DB;
 				// build the table
-				$orderRows = array();
-
-				while($DB_WE->next_record()){
-					// for the articlelist, we need also all these article, so sve them in array
-					$orderRows[] = array(
-						'articleArray' => array(), //unserialize($DB_WE->f('strSerial')),
-						// save all data in array
-						'obTitle' => $DB_WE->f('obTitle'), // also for ordering
-						'obID' => $DB_WE->f('obID'), // also for ordering
-						'cDate' => $DB_WE->f('cDate'), // also for ordering
-						'cPub' => $DB_WE->f('cPub'), // also for ordering
-						'cMob' => $DB_WE->f('cMob'), // also for ordering
-						//'type' => "Objekt",       // also for ordering
-						'orderArray' => array(),
-					);
+				$orderRows = $DB_WE->getAll();
+				// we need functionalitty to order these
+				if(we_base_request::_(we_base_request::BOOL, 'orderBy')){
+					usort($orderRows, 'orderBy');
 				}
 
 				// build the headline
@@ -271,28 +243,20 @@ if(isset($daten)){
 					array('dat' => getTitleLinkObj(g_l('modules_shop', '[artMod]'), 'cMob')),
 				);
 
-				// we need functionalitty to order these
-
-				if(we_base_request::_(we_base_request::BOOL, 'orderBy')){
-					usort($orderRows, 'orderBy');
-				}
-
-				if(!isset($content)){
-					$content = array();
-				}
+				$content = array();
 
 				for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
 					$isPublished = $orderRows[$i]['cPub'] > 0 ? true : false;
-					$publishedStylePre = $isPublished ? "" : '<span style="color: red">';
-					$publishedStylePost = $isPublished ? "" : '</span>';
-					$publishedLinkStyle = $isPublished ? "" : ' style="color: red"';
+					$publishedStylePre = $isPublished ? '<span>' : '<span style="color: red">';
 
-					$content[$nr][0]['dat'] = '<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\' ,\'' . $orderRows[$i]['obID'] . '\',\'' . $docType2 . '\');");"' . $publishedLinkStyle . '>' . substr($orderRows[$i]['obTitle'], 0, 25) . ".." . '</a>';
-					$content[$nr][1]['dat'] = $publishedStylePre . $orderRows[$i]['obID'] . $publishedStylePost;
-					//$content[$nr][2]['dat'] = $orderRows[$i]['type'];
-					$content[$nr][2]['dat'] = $publishedStylePre . ($orderRows[$i]['cDate'] > 0 ? date("d.m.Y - H:m:s", $orderRows[$i]['cDate']) : "") . $publishedStylePost;
-					$content[$nr][3]['dat'] = $orderRows[$i]['cPub'] > 0 ? date("d.m.Y - H:m:s", $orderRows[$i]['cPub']) : "";
-					$content[$nr][4]['dat'] = $publishedStylePre . ($orderRows[$i]['cMob'] > 0 ? date("d.m.Y - H:m:s", $orderRows[$i]['cMob']) : "") . $publishedStylePost;
+					$content[] = array(
+						array('dat' => '<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\' ,\'' . $orderRows[$i]['obID'] . '\',\'' . $docType2 . '\');");">' . $publishedStylePre . substr($orderRows[$i]['obTitle'], 0, 25) . '..</span></a>'),
+						array('dat' => $publishedStylePre . $orderRows[$i]['obID'] . '</span>'),
+						//$content[$nr][2]['dat'] = $orderRows[$i]['type'];
+						array('dat' => $publishedStylePre . ($orderRows[$i]['cDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cDate']) : "") . '</span>'),
+						array('dat' => $orderRows[$i]['cPub'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cPub']) : ''),
+						array('dat' => $publishedStylePre . ($orderRows[$i]['cMob'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cMob']) : "") . '</span>')
+					);
 				}
 
 				$parts[] = array(
@@ -303,14 +267,10 @@ if(isset($daten)){
 
 				// now the pager class at last:
 				// Pager: Zweite Linkliste zeigen
-
-				$pager = we_shop_pager::getStandardPagerHTML(getPagerLinkObj(), $actPage, $nrOfPage, count($orderRows));
-
 				$parts[] = array(
-					'html' => $pager,
+					'html' => we_shop_pager::getStandardPagerHTML(getPagerLinkObj(), $actPage, $nrOfPage, count($orderRows)),
 					'space' => 0
 				);
-
 
 				echo we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			} else { // if there is an empty result form the object table
@@ -328,12 +288,8 @@ if(isset($daten)){
 				echo we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
 			}
 
-			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR AN OBJECT *********** */
-
-
-			/*			 * ******** START PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */
 			break;
-		case "document": //start output doc
+		case 'document': //start output doc
 			$orderBy = we_base_request::_(we_base_request::RAW, 'orderBy', 'sql');
 			$entries = f('SELECT COUNT(Name) FROM ' . LINK_TABLE . ' WHERE Name="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '"'); // Pager: determine the number of records;
 			$active_page = we_base_request::_(we_base_request::RAW, 'page', 0); // Pager: determine the number of records;
@@ -343,25 +299,12 @@ if(isset($daten)){
 			if($entries){ // Pager: Number of records not empty?
 				$topInfo = ($entries ? : g_l('modules_shop', '[noRecord]'));
 				// :: then do the query for documents
-				$DB_WE->query(
-					'SELECT c.dat AS sqlDat,l.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod
-            FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
-					' WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" ORDER BY dd'); // get the shop-documents from DB;
-				// build the table
-				$orderRows = array();
-				while($DB_WE->next_record()){
-					// for the articlelist, we need also all these article, so sve them in array
-					$orderRows[] = array(
-						'articleArray' => array(), //unserialize($DB_WE->f('strSerial')),
-						// save all data in array
-						'sql' => $DB_WE->f('sqlDat'), // also for ordering
-						'dd' => $DB_WE->f('dd'), // also for ordering
-						'dDate' => $DB_WE->f('dDate'), // also for ordering
-						'dPub' => $DB_WE->f('dPub'), // also for ordering
-						'dMod' => $DB_WE->f('dMod'), // also for ordering
-						//'type'] = "Doc";       // also for ordering
-						'orderArray' => array()
-					);
+				$DB_WE->query('SELECT c.dat AS sql,l.DID AS dd,f.CreationDate AS dDate,f.Published AS dPub,f.ModDate AS dMod FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" ORDER BY dd'); // get the shop-documents from DB;
+				// for the articlelist, we need also all these article, so save them in array
+				$orderRows = $DB_WE->getAll();
+				// we need functionalitty to order these
+				if(we_base_request::_(we_base_request::BOOL, 'orderBy')){
+					usort($orderRows, 'orderBy');
 				}
 				$typeAlias = "document";
 				// build the headline
@@ -374,28 +317,18 @@ if(isset($daten)){
 					array('dat' => getTitleLinkDoc(g_l('modules_shop', '[artMod]'), 'dMod')),
 				);
 
-				// we need functionalitty to order these
-
-				if(we_base_request::_(we_base_request::BOOL, 'orderBy')){
-					usort($orderRows, 'orderBy');
-				}
-
+				$content = array();
 				for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
 					$isPublished = $orderRows[$i]['dPub'] > 0 ? true : false;
-					$publishedStylePre = $isPublished ? '' : '<span style="color: red">';
-					$publishedStylePost = $isPublished ? '' : '</span>';
-					$publishedLinkStyle = $isPublished ? '' : ' style="color: red"';
+					$publishedStylePre = $isPublished ? '<span>' : '<span style="color: red">';
 					$content[$nr] = array(
-						array('dat' => $publishedStylePre . ('<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . FILE_TABLE . '\' ,\'' . $orderRows[$i]['dd'] . '\',\'' . $docType . '\');");"' . $publishedLinkStyle . '>' . substr($orderRows[$i]['sql'], 0, 25) . ".." . '</a>') . $publishedStylePost),
-						array('dat' => $publishedStylePre . ($orderRows[$i]['dd'])),
+						array('dat' => '<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . FILE_TABLE . '\' ,\'' . $orderRows[$i]['dd'] . '\',\'' . $docType . '\');");">' . $publishedStylePre . substr($orderRows[$i]['sql'], 0, 25) . '..</span></a>'),
+						array('dat' => $publishedStylePre . ($orderRows[$i]['dd']) . '</span>'),
 						//$content[$nr][2]['dat'] = $orderRows[$i]['type'];
-						array('dat' => $publishedStylePre . ($orderRows[$i]['dDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dDate']) : '') . $publishedStylePost),
+						array('dat' => $publishedStylePre . ($orderRows[$i]['dDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dDate']) : '') . '</span>'),
 						array('dat' => $orderRows[$i]['dPub'] > 0 ? date("d.m.Y - H:m:s", $orderRows[$i]['dPub']) : ""),
-						array('dat' => $publishedStylePre . ($orderRows[$i]['dMod'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dMod']) : '') . $publishedStylePost),
+						array('dat' => $publishedStylePre . ($orderRows[$i]['dMod'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dMod']) : '') . '</span>'),
 					);
-				}
-				if(!isset($content)){
-					$content = array();
 				}
 				$parts[] = array(
 					'html' => we_html_tools::htmlDialogBorder3(670, 100, $content, $headline),
@@ -403,10 +336,8 @@ if(isset($daten)){
 					'noline' => true
 				);
 
-				$pager = we_shop_pager::getStandardPagerHTML(getPagerLinkDoc(), $actPage, $nrOfPage, count($orderRows));
-
 				$parts[] = array(
-					'html' => $pager,
+					'html' => we_shop_pager::getStandardPagerHTML(getPagerLinkDoc(), $actPage, $nrOfPage, count($orderRows)),
 					'space' => 0
 				);
 
@@ -416,7 +347,7 @@ if(isset($daten)){
 			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */
 			break;
 		default:
-			echo "Die von Ihnen gewünschte Seite kann nicht angezeigt werden!";
+			echo 'Die von Ihnen gewünschte Seite kann nicht angezeigt werden!';
 	}
 }
 ?>

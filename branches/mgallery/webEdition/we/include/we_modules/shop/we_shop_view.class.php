@@ -317,8 +317,8 @@ function submitForm() {
 
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
 
-		// Get Country and Lanfield Data
-		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', 'strFelder', $this->db);
+		// Get Country and Langfield Data
+		$strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_CountryLanguage"', '', $this->db);
 		$this->CLFields = (we_unserialize($strFelder)? : array(
 				'stateField' => '-',
 				'stateFieldIsISO' => 0,
@@ -327,7 +327,7 @@ function submitForm() {
 		));
 
 		// config
-		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', 'strFelder', $this->db));
+		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $this->db));
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 		$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
@@ -362,7 +362,7 @@ function submitForm() {
 		}
 
 		// Get Customer data
-		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid.' LIMIT 1', '', $this->db);
+		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid . ' LIMIT 1', '', $this->db);
 
 		if(($fields = we_unserialize(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="edit_shop_properties"', '', $this->db)))){
 			// we have an array with following syntax:
@@ -394,15 +394,9 @@ function submitForm() {
 			} else if(($anz = we_base_request::_(we_base_request::FLOAT, 'anzahl')) !== false){
 				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs($anz) . ' WHERE IntID=' . $article);
 			} else if(isset($_REQUEST['vat'])){
-
-				$this->db->query('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article);
-
-				if($this->db->num_rows() == 1){
-					$this->db->next_record();
-
-					$tmpDoc = we_unserialize($this->db->f('strSerial'));
+				$tmpDoc = we_unserialize(f('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article, '', $this->db));
+				if($tmpDoc){
 					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
-
 					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc)) . '" WHERE IntID=' . $article);
 				}
 			}
@@ -421,7 +415,7 @@ function submitForm() {
 				$format[] = 'DATE_FORMAT(' . $field . ',"' . $db . '") AS ' . $field;
 			}
 
-			$this->db->query('SELECT IntID, IntCustomerID, IntArticleID, strSerial, strSerialOrder, IntQuantity, Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid', 0));
+			$this->db->query('SELECT IntID,IntCustomerID,IntArticleID,strSerial,strSerialOrder,IntQuantity,Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid', 0));
 
 			// loop through all articles
 			while($this->db->next_record()){
@@ -445,13 +439,13 @@ function submitForm() {
 			}
 			if(!isset($ArticleId)){
 				echo we_html_element::jsElement('parent.parent.getElementById(iconbar).location.reload();') . '
-			</head>
-			<body class="weEditorBody" onunload="doUnload()">
-			<table width="300">
-		      <tr>
-			<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop', '[orderDoesNotExist]') . "</span>", g_l('modules_shop', '[loscht]')) . '</td>
-		      </tr>
-		      </table></html>';
+</head>
+<body class="weEditorBody" onunload="doUnload()">
+<table width="300">
+	<tr>
+		<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop', '[orderDoesNotExist]') . '</span>', g_l('modules_shop', '[loscht]')) . '</td>
+	</tr>
+</table></body></html>';
 				exit;
 			}
 			//
@@ -1009,16 +1003,12 @@ function CalendarChanged(calObject) {
 								if(is_array($fieldData) && count($fieldData) == 2){
 									$customFieldsTmp[trim($fieldData[0])] = trim($fieldData[1]);
 								}
-								unset($fieldData);
 							}
 						}
-						unset($fields);
 					}
 
 					$variant = strip_tags($_REQUEST[we_base_constants::WE_VARIANT_REQUEST]);
 					$serialDoc = we_shop_Basket::getserial($id, ($isObj ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT), $variant, $customFieldsTmp);
-
-					unset($customFieldsTmp);
 
 					// shop vats must be calculated
 					$orderArray = we_unserialize($_strSerialOrder);
@@ -1073,9 +1063,7 @@ function CalendarChanged(calObject) {
 				$searchBut = we_html_button::create_button(we_html_button::SEARCH, 'javascript:searchArticles();');
 
 				// first get all shop documents
-				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID' .
-					' WHERE l.Name = "' . WE_SHOP_TITLE_FIELD_NAME . '"
-							AND l.DocumentTable!="tblTemplates" ' .
+				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" AND l.DocumentTable!="tblTemplates" ' .
 					(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
 						' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 						'')
@@ -1089,8 +1077,7 @@ function CalendarChanged(calObject) {
 					// now get all shop objects
 					foreach($this->classIds as $_classId){
 						$_classId = intval($_classId);
-						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId
-							FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' .
+						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' .
 							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
 								' WHERE ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
 								'')
@@ -1100,7 +1087,6 @@ function CalendarChanged(calObject) {
 							$shopArticles[$this->db->f('objectId') . '_' . we_shop_shop::OBJECT] = $this->db->f('shopTitle') . ' [' . g_l('modules_shop', '[isObj]') . ': ' . $this->db->f('objectId') . ']';
 						}
 					}
-					unset($_classId);
 				}
 
 				// <<< determine which articles should be shown ...
@@ -1225,8 +1211,6 @@ function CalendarChanged(calObject) {
 						'noline' => 1
 					);
 
-					unset($model);
-
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[anzahl]'),
 						'space' => 100,
@@ -1248,13 +1232,7 @@ function CalendarChanged(calObject) {
 						'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
 						'noline' => 1
 					);
-
-					unset($id);
-					unset($type);
-					unset($variantData);
-					unset($model);
 				}
-
 
 				echo we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
 				'</form>
@@ -1264,10 +1242,7 @@ function CalendarChanged(calObject) {
 				break;
 
 			case 'payVat':
-
-				$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-
-				$serialOrder = we_unserialize($strSerialOrder);
+				$serialOrder = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
 				$serialOrder[WE_SHOP_CALC_VAT] = we_base_request::_(we_base_request::INT, 'pay', 0);
 
 				// update all orders with this orderId
@@ -1278,16 +1253,11 @@ function CalendarChanged(calObject) {
 					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_calculateVat_error]');
 					$alertType = we_message_reporting::WE_MESSAGE_ERROR;
 				}
-				unset($serialOrder);
-				unset($strSerialOrder);
 				break;
 
 			case 'delete_shop_cart_custom_field':
 				if(!empty($_REQUEST['cartfieldname'])){
-
-					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-
-					$serialOrder = we_unserialize($strSerialOrder);
+					$serialOrder = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
 					unset($serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']]);
 
 					// update all orders with this orderId
@@ -1299,8 +1269,6 @@ function CalendarChanged(calObject) {
 						$alertType = we_message_reporting::WE_MESSAGE_ERROR;
 					}
 				}
-				unset($strSerialOrder);
-				unset($serialOrder);
 				break;
 
 			case 'edit_shop_cart_custom_field':
@@ -1327,12 +1295,8 @@ function CalendarChanged(calObject) {
 				$val = '';
 
 				if(!empty($_REQUEST['cartfieldname'])){
-
-					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-					$serialOrder = we_unserialize($strSerialOrder);
-
+					$serialOrder = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
 					$val = $serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] ? : '';
-
 					$fieldHtml = $_REQUEST['cartfieldname'] . '<input type="hidden" name="cartfieldname" id="cartfieldname" value="' . $_REQUEST['cartfieldname'] . '" />';
 				} else {
 					$fieldHtml = we_html_tools::htmlTextInput('cartfieldname', 24, '', '', 'id="cartfieldname"');
@@ -1353,21 +1317,13 @@ function CalendarChanged(calObject) {
 					)
 				);
 
-				echo we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]'));
-				unset($saveBut);
-				unset($cancelBut);
-				unset($parts);
-				unset($val);
-				unset($fieldHtml);
-				echo '</form></body></html>';
+				echo we_html_multiIconBox::getHTML('', '100%', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]')) .
+				'</form></body></html>';
 				exit;
 
 			case 'save_shop_cart_custom_field':
-
 				if(!empty($_REQUEST['cartfieldname'])){
-
-					$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-					$serialOrder = we_unserialize($strSerialOrder);
+					$serialOrder = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
 					$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = htmlentities($_REQUEST['cartfieldvalue']);
 					$serialOrder[WE_SHOP_CART_CUSTOM_FIELD][$_REQUEST['cartfieldname']] = $_REQUEST['cartfieldvalue'];
 
@@ -1385,8 +1341,6 @@ function CalendarChanged(calObject) {
 
 				echo we_html_element::jsElement($jsCmd . 'window.close();') .
 				'</head><body></body></html>';
-				unset($serialOrder);
-				unset($strSerialOrder);
 				exit;
 
 			case 'edit_shipping_cost':
@@ -1397,22 +1351,16 @@ function CalendarChanged(calObject) {
 					$shippingVats[$shopVat->vat] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 				}
 
-				unset($shopVat);
-				unset($shopVats);
 				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 
-				$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
+				$serialOrder = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
 
-				if($strSerialOrder){
-
-					$serialOrder = we_unserialize($strSerialOrder);
-
+				if($serialOrder){
 					$shippingCost = $serialOrder[WE_SHOP_SHIPPING]['costs'];
 					$shippingIsNet = $serialOrder[WE_SHOP_SHIPPING]['isNet'];
 					$shippingVat = $serialOrder[WE_SHOP_SHIPPING]['vatRate'];
 				} else {
-
 					$shippingCost = '0';
 					$shippingIsNet = '1';
 					$shippingVat = '19';
@@ -1451,12 +1399,9 @@ function CalendarChanged(calObject) {
 				break;
 
 			case 'save_shipping_cost':
-
-				$strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-				$serialOrder = we_unserialize($strSerialOrder);
+				$serialOrder = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
 
 				if($serialOrder){
-
 					$weShippingCosts = str_replace(',', '.', $_REQUEST['weShipping_costs']);
 					$serialOrder[WE_SHOP_SHIPPING]['costs'] = $weShippingCosts;
 					$serialOrder[WE_SHOP_SHIPPING]['isNet'] = $_REQUEST['weShipping_isNet'];
@@ -1472,8 +1417,6 @@ function CalendarChanged(calObject) {
 					}
 				}
 
-				unset($strSerialOrder);
-				unset($serialOrder);
 				break;
 
 			case 'edit_order_customer'; // edit data of the saved customer.
@@ -1551,9 +1494,8 @@ function CalendarChanged(calObject) {
 							);
 						} elseif((isset($this->CLFields['languageField']) && !empty($this->CLFields['languageFieldIsISO']) && $k == $this->CLFields['languageField'])){
 							$frontendL = $GLOBALS['weFrontendLanguages'];
-							foreach($frontendL as $lc => &$lcvalue){
-								$lccode = explode('_', $lcvalue);
-								$lcvalue = $lccode[0];
+							foreach($frontendL as &$lcvalue){
+								list($lcvalue) = explode('_', $lcvalue);
 							}
 							unset($countryvalue);
 							$languageselect = new we_html_select(array('name' => "weCustomerOrder[$k]", 'size' => 1, 'style' => '{width:280;}', 'class' => 'wetextinput'));
@@ -1595,12 +1537,8 @@ function CalendarChanged(calObject) {
 
 			case 'save_order_customer':
 				// just get this order and save this userdata in there.
-				$_strSerialOrder = $this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder');
-
-				$_orderData = we_unserialize($_strSerialOrder);
-				$_customer = $_REQUEST['weCustomerOrder'];
-				$_orderData[WE_SHOP_CART_CUSTOMER_FIELD] = $_customer;
-
+				$_orderData = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
+				$_orderData[WE_SHOP_CART_CUSTOMER_FIELD] = $_REQUEST['weCustomerOrder'];
 
 				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($_orderData))){
 					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_customer_success]');
@@ -1609,11 +1547,6 @@ function CalendarChanged(calObject) {
 					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_customer_error]');
 					$alertType = we_message_reporting::WE_MESSAGE_ERROR;
 				}
-
-				unset($upQuery);
-				unset($_customer);
-				unset($_orderData);
-				unset($_strSerialOrder);
 				break;
 		}
 	}
@@ -1717,7 +1650,7 @@ var attribs = {
 	}
 
 	private function getOrderCustomerData($orderId, array $strFelder = array()){
-		$hash = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId).' LIMIT 1', $this->db);
+		$hash = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId) . ' LIMIT 1', $this->db);
 		$customerId = $hash['IntCustomerID'];
 		$tmp = $hash['strSerialOrder'];
 		// get Customer
@@ -1744,7 +1677,7 @@ var attribs = {
 	}
 
 	private function getFieldFromOrder($bid, $field){
-		return f('SELECT ' . $this->db->escape($field) . ' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid).' LIMIT 1', $field, $this->db);
+		return f('SELECT ' . $this->db->escape($field) . ' FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid) . ' LIMIT 1', '', $this->db);
 	}
 
 	private function updateFieldFromOrder($orderId, $fieldname, $value){
