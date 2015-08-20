@@ -154,7 +154,7 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 
 	function formProperties(){
 		return '<table class="default propertydualtable">
-	<tr style="vertical-align:top">
+	<tr>
 		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origwidth") . '</td>
 		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"", "origheight") . '</td>
 		<td>' . $this->formSelectElement(155, "scale", array(
@@ -167,17 +167,17 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 				), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')
 			) . '</td>
 	</tr>
-	<tr style="vertical-align:top">
+	<tr>
 		<td>' . $this->formInput2(155, "hspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . $this->formInput2(155, "vspace", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 		<td>' . $this->formInput2(155, "name", 10, "attrib", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
 	</tr>
-	<tr style="vertical-align:top">
+	<tr>
 		<td>' . $this->formSelectElement(155, "autoplay", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . $this->formSelectElement(155, "controller", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . $this->formColor(155, "bgcolor", 25, "attrib") . '</td>
 	</tr>
-	<tr style="vertical-align:top">
+	<tr>
 		<td>' . $this->formSelectElement(155, "volume", array("100" => "", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . $this->formSelectElement(155, "hidden", array("true" => g_l('global', '[true]'), "" => g_l('global', '[false]')), "attrib", 1, array('onchange' => "_EditorFrame.setEditorIsHot(true);")) . '</td>
 		<td>' . $this->formSelectElement(155, "loop", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => "_EditorFrame.setEditorIsHot(true);")) . '</td>
@@ -187,14 +187,9 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 
 	function formOther(){
 		return '<table class="default">
-	<tr style="vertical-align:top">
-		<td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-	<tr style="vertical-align:top">
-		<td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td>
-	</tr>
-</table>
-';
+	<tr><td>' . $this->formInputField("txt", "Pluginspage", "Pluginspage", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td><tr>
+	<tr><td>' . $this->formInputField("txt", "Codebase", "Codebase", 24, 388, "", "onchange=\"_EditorFrame.setEditorIsHot(true);\"") . '</td></tr>
+</table>';
 	}
 
 	function getThumbnail($width = 150, $height = 100){

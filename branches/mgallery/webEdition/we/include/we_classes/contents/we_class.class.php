@@ -260,7 +260,7 @@ abstract class we_class{
 				), $attribs), 'value', $width);
 
 		if($precode || $postcode){
-			$pop = '<table class="default"><tr>' . ($precode ? ('<td style="padding-right:' . $gap . 'px;">' . $precode . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td style="padding-left:' . $gap . 'px;">' . $postcode . '</td>') : '') . '</tr></table>';
+			$pop = '<table class="default"><tr>' . ($precode ? ('<td style="padding-right:' . $gap . 'px;">' . $precode . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}
 		return ($multiple ? we_html_element::htmlHidden($myname, $selectedIndex) : '') . we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
@@ -280,7 +280,7 @@ abstract class we_class{
 
 		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, array_merge(array('onchange' => $onChange), $attribs), 'value', $width);
 		if($precode || $postcode){
-			$pop = '<table class="default"><tr>' . ($precode ? ('<td style="padding-right:' . $gap . 'px;">' . $precode . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td style="padding-left:' . $gap . 'px;">' . $postcode . '</td>') : '') . '</tr></table>';
+			$pop = '<table class="default"><tr>' . ($precode ? ('<td style="padding-right:' . $gap . 'px;">' . $precode . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}
 		return we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}

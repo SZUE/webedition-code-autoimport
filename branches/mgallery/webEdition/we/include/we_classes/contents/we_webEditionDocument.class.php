@@ -206,7 +206,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		return '
 <table class="default">
-	<tr><td colspan="3" class="defaultfont" style="text-align:left;padding-bottom:4px;">' . $this->formDocType2(388, ($this->Published > 0)) . '</td></tr>
+	<tr><td colspan="3" class="defaultfont" style="text-align:left;padding-bottom:4px;">' . $this->formDocType(($this->Published > 0)) . '</td></tr>
 	<tr><td colspan="3" class="defaultfont" style="text-align:left;padding-bottom:4px;">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td></tr>
 	<tr><td colspan="3">
 			<table class="default">

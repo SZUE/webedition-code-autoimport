@@ -49,4 +49,3 @@ $table = isset($table) ? $table : FILE_TABLE;
 		</form>
 	</div>
 </div>
-
