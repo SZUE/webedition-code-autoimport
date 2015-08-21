@@ -153,10 +153,10 @@ class we_navigation_navigation extends weModelBase{
 			'LimitAccess' => we_base_request::INT,
 			'AllCustomers' => we_base_request::INT,
 			'ApplyFilter' => we_base_request::INT,
-			'Customers' => we_base_request::RAW,
+			'Customers' => we_base_request::INTLIST,
 			'CustomerFilter' => we_base_request::RAW,
-			'BlackList' => we_base_request::RAW,
-			'WhiteList' => we_base_request::RAW,
+			'BlackList' => we_base_request::INTLIST,
+			'WhiteList' => we_base_request::INTLIST,
 			'UseDocumentFilter' => we_base_request::BOOL,
 		);
 
@@ -192,13 +192,13 @@ class we_navigation_navigation extends weModelBase{
 
 			if(defined('CUSTOMER_TABLE')){
 				if(!is_array($this->Customers)){
-					$this->Customers = makeArrayFromCSV($this->Customers);
+					$this->Customers = explode(',', $this->Customers);
 				}
 				if(!is_array($this->BlackList)){
-					$this->BlackList = makeArrayFromCSV($this->BlackList);
+					$this->BlackList = explode(',', $this->BlackList);
 				}
 				if(!is_array($this->WhiteList)){
-					$this->WhiteList = makeArrayFromCSV($this->WhiteList);
+					$this->WhiteList = explode(',', $this->WhiteList);
 				}
 
 				$this->CustomerFilter = we_unserialize($this->CustomerFilter);
@@ -495,14 +495,12 @@ class we_navigation_navigation extends weModelBase{
 
 			$_navigation->ParentID = $this->ID;
 			$_navigation->Selection = self::SELECTION_STATIC;
-
 			$_navigation->SelectionType = ($this->SelectionType == self::STPYE_DOCTYPE ? self::STPYE_DOCLINK : ($this->SelectionType == self::STPYE_CATEGORY ? self::STPYE_CATLINK : self::STPYE_OBJLINK));
 			$_navigation->LinkID = $_item['id'];
 			$_navigation->Ordn = isset($_items[$_k]) ? $_items[$_k]['Ordn'] : $_k;
 			$_navigation->Depended = 1;
 			$_navigation->Text = $_item['field'] ? : $_item['text'];
 			$_navigation->IconID = $this->IconID;
-
 			$_navigation->Url = $this->Url;
 			$_navigation->UrlID = $this->UrlID;
 			$_navigation->CatParameter = $this->CatParameter;
@@ -536,24 +534,21 @@ class we_navigation_navigation extends weModelBase{
 	}
 
 	function hasDynChilds(){
-		if(!$this->ID){
-			return false;
-		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db);
+		return ($this->ID ?
+				f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=1 LIMIT 1', '', $this->db) :
+				false);
 	}
 
 	function hasAnyChilds(){
-		if(!$this->ID){
-			return false;
-		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db);
+		return ($this->ID ?
+				f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' LIMIT 1', '', $this->db) :
+				false);
 	}
 
 	function hasIndependentChilds(){
-		if(!$this->ID){
-			return false;
-		}
-		return f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db);
+		return ($this->ID ?
+				f('SELECT 1 FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' AND Depended=0 LIMIT 1', '', $this->db) :
+				false);
 	}
 
 	function getDynamicPreview(array &$storage, $rules = false){
@@ -669,7 +664,7 @@ class we_navigation_navigation extends weModelBase{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -681,7 +676,7 @@ class we_navigation_navigation extends weModelBase{
 		}
 		$_num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($_num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
@@ -918,11 +913,11 @@ class we_navigation_navigation extends weModelBase{
 			return '';
 		}
 		// #5836: Use function get_ws()
-		$_wrkNavi = makeArrayFromCSV($ws);
+		$_wrkNavi = id_to_path(expolode(',', $ws), NAVIGATION_TABLE);
 
 		$_condition = array();
-		foreach($_wrkNavi as $_value){
-			$_condition[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape(id_to_path($_value, NAVIGATION_TABLE)) . '/%"';
+		foreach($_wrkNavi as $nav){
+			$_condition[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($nav) . '/%"';
 		}
 		return ' AND (ID IN(' . implode(',', $_wrkNavi) . ') OR (' . implode(' OR ', $_condition) . '))';
 	}

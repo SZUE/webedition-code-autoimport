@@ -26,11 +26,11 @@ function we_tag_ifCaptcha($attribs){
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$formname = weTag_getAttribute('formname', $attribs, '', we_base_request::STRING);
 
-	if(($checkM = we_base_request::_(we_base_request::STRINGC, $name))){
+	if(($checkM = we_base_request::_(we_base_request::STRING, $name))){
 		if($formname && ($check = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname, '', $name))){
 			return we_captcha_captcha::check($check);
 		}
-		if(($check = we_base_request::_(we_base_request::STRINGC, 'we_ui_we_global_form', '', $name))){
+		if(($check = we_base_request::_(we_base_request::STRING, 'we_ui_we_global_form', '', $name))){
 			return we_captcha_captcha::check($check);
 		}
 		return we_captcha_captcha::check($checkM);

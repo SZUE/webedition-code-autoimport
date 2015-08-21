@@ -296,7 +296,7 @@ class we_class_folder extends we_folder{
 	}
 
 	function searchFields(){
-		$order = we_base_request::_(we_base_request::RAW, 'Order', (isset($this->Order) ? $this->Order : 'OF_PATH'));
+		$order = we_base_request::_(we_base_request::STRING, 'Order', (isset($this->Order) ? $this->Order : 'OF_PATH'));
 		if(stripos($order, "ModDate") === 0 || stripos($order, "OF_Published") === 0){
 			$order = 'OF_PATH';
 		}

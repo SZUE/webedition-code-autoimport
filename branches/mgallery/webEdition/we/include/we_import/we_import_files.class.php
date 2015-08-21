@@ -62,7 +62,7 @@ class we_import_files{
 			$_REQUEST['categories'] = implode(',', $cats);
 			$this->categories = $cats;
 		} else {
-			$this->categories = we_base_request::_(we_base_request::RAW, "categories", $this->categories);
+			$this->categories = we_base_request::_(we_base_request::INTLIST, 'categories', $this->categories);
 		}
 
 		$this->importToID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1) ? : we_base_request::_(we_base_request::INT, "importToID", $this->importToID);
@@ -72,7 +72,7 @@ class we_import_files{
 		$this->imgsSearchable = we_base_request::_(we_base_request::INT, "imgsSearchable", $this->imgsSearchable);
 		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
 		$this->cmd = we_base_request::_(we_base_request::RAW, "cmd", $this->cmd);
-		$this->thumbs = we_base_request::_(we_base_request::RAW, "thumbs", $this->thumbs);
+		$this->thumbs = we_base_request::_(we_base_request::INTLIST, 'thumbs', $this->thumbs);
 		$this->width = we_base_request::_(we_base_request::INT, "width", $this->width);
 		$this->height = we_base_request::_(we_base_request::INT, "height", $this->height);
 		$this->widthSelect = we_base_request::_(we_base_request::STRING, "widthSelect", $this->widthSelect);
@@ -223,7 +223,7 @@ function uploadFinished() {
 				$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
 				$Thselect = g_l('importFiles', '[thumbnails]') . "<br/><br/>" . '<select class="defaultfont" name="thumbs_tmp" size="5" multiple style="width: 260px" onchange="this.form.thumbs.value=\'\';for(var i=0;i<this.options.length;i++){if(this.options[i].selected){this.form.thumbs.value +=(this.options[i].value+\',\');}};this.form.thumbs.value=this.form.thumbs.value.replace(/^(.+),$/,\'$1\');">' . "\n";
 
-				$thumbsArray = makeArrayFromCSV($this->thumbs);
+				$thumbsArray = explode(',', $this->thumbs);
 				while($GLOBALS['DB_WE']->next_record()){
 					$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array(
 							$GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
@@ -837,25 +837,25 @@ function next() {
 
 	function _getHiddens(){
 		return we_html_element::htmlHiddens(array(
-				"we_cmd[0]" => "import_files",
-				"cmd" => "buttons",
-				"step" => 1,
-				"weFormNum" => 0,
-				"weFormCount" => 0,
-				"importToID" => $this->importToID,
-				"sameName" => $this->sameName,
-				"thumbs" => $this->thumbs,
-				"width" => $this->width,
-				"height" => $this->height,
-				"widthSelect" => $this->widthSelect,
-				"heightSelect" => $this->heightSelect,
-				"keepRatio" => $this->keepRatio,
-				"degrees" => $this->degrees,
-				"quality" => $this->quality,
-				"categories" => $this->categories,
-				"imgsSearchable" => $this->imgsSearchable,
-				"importMetadata" => $this->importMetadata,
-				//"callBack" => $this->callBack
+				'we_cmd[0]' => 'import_files',
+				'cmd' => 'buttons',
+				'step' => 1,
+				'weFormNum' => 0,
+				'weFormCount' => 0,
+				'importToID' => $this->importToID,
+				'sameName' => $this->sameName,
+				'thumbs' => $this->thumbs,
+				'width' => $this->width,
+				'height' => $this->height,
+				'widthSelect' => $this->widthSelect,
+				'heightSelect' => $this->heightSelect,
+				'keepRatio' => $this->keepRatio,
+				'degrees' => $this->degrees,
+				'quality' => $this->quality,
+				'categories' => $this->categories,
+				'imgsSearchable' => $this->imgsSearchable,
+				'importMetadata' => $this->importMetadata,
+				//'callBack' => $this->callBack
 		));
 	}
 

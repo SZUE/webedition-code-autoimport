@@ -765,7 +765,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 
 				$this->workflowDef->steps[$skey]->tasks[$tkey]->userID = we_base_request::_(we_base_request::INT, $this->uid . '_task_' . $skey . '_' . $tkey . '_userid', $this->workflowDef->steps[$skey]->tasks[$tkey]->userID);
 
-				$this->workflowDef->steps[$skey]->tasks[$tkey]->username = we_base_request::_(we_base_request::STRINGC, $this->uid . '_task_' . $skey . '_' . $tkey . '_usertext', $this->workflowDef->steps[$skey]->tasks[$tkey]->username); //FIXME: this is a path to a user
+				$this->workflowDef->steps[$skey]->tasks[$tkey]->username = we_base_request::_(we_base_request::STRING, $this->uid . '_task_' . $skey . '_' . $tkey . '_usertext', $this->workflowDef->steps[$skey]->tasks[$tkey]->username); //FIXME: this is a path to a user
 
 				$this->workflowDef->steps[$skey]->tasks[$tkey]->Edit = we_base_request::_(we_base_request::BOOL, $this->uid . '_task_' . $skey . '_' . $tkey . '_Edit', $this->workflowDef->steps[$skey]->tasks[$tkey]->Edit);
 

@@ -81,7 +81,7 @@ class we_newsletter_view extends we_modules_view{
 				'ncmd' => (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter'),
 				'we_cmd[0]' => 'show_newsletter',
 				'nid' => (isset($predefs['nid']) ? $predefs['nid'] : $this->newsletter->ID),
-				'pnt' => (isset($predefs['pnt']) ? $predefs['pnt'] : we_base_request::_(we_base_request::RAW, 'pnt')),
+				'pnt' => (isset($predefs['pnt']) ? $predefs['pnt'] : we_base_request::_(we_base_request::STRING, 'pnt')),
 				'page' => (isset($predefs['page']) ? $predefs['page'] : $this->page),
 				'gview' => (isset($predefs['gview']) ? $predefs['gview'] : 0),
 				'hm' => (isset($predefs['hm']) ? $predefs['hm'] : 0),

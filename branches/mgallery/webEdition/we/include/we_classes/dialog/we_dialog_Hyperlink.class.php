@@ -227,7 +227,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function initByHttp(){
 		parent::initByHttp();
-		$href = $this->getHttpVar(we_base_request::RAW, 'href');
+		$href = $this->getHttpVar(we_base_request::URL, 'href');
 		$target = $this->getHttpVar(we_base_request::STRING, 'target');
 		$param = $this->getHttpVar(we_base_request::STRING, 'param');
 		$anchor = $this->getHttpVar(we_base_request::STRING, 'anchor');

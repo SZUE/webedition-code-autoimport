@@ -604,7 +604,7 @@ function we_cmd() {
 			case "new_alias":
 				return $this->new_alias();
 			case "search":
-				echo we_html_element::jsElement('top.content.editor.edbody.location="' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd=' . we_base_request::_(we_base_request::STRINGC, "kwd") . '";');
+				echo we_html_element::jsElement('top.content.editor.edbody.location="' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd=' . we_base_request::_(we_base_request::STRING, "kwd") . '";');
 				return;
 			case "new_user":
 				return $this->new_user();

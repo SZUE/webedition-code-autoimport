@@ -329,7 +329,7 @@ function changeit(value, rowNr){
 		}
 		if(isset($_REQUEST['location']) && is_array($_REQUEST['location'])){
 			foreach($_REQUEST['searchFields'] as $k => $v){
-				$r3[] = we_base_request::_(we_base_request::RAW, 'location', "disabled", $k);
+				$r3[] = we_base_request::_(we_base_request::STRING, 'location', "disabled", $k);
 			}
 		}
 
@@ -405,12 +405,12 @@ function changeit(value, rowNr){
 			10 => 10, 25 => 25, 50 => 50, 100 => 100
 		);
 
-		$order = we_base_request::_(we_base_request::RAW, 'we_cmd', $this->searchclass->order, 'order');
+		$order = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->searchclass->order, 'order');
 		$mode = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchclass->mode, 'mode');
 		$height = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchclass->height, 'height');
 		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchclass->anzahl, 'anzahl');
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $GLOBALS['we_transaction'], 'we_transaction');
-		$Text = we_base_request::_(we_base_request::RAW, 'text', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Text : '');
+		$Text = we_base_request::_(we_base_request::STRING, 'text', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Text : '');
 		$ID = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->ID : 0);
 		$Path = we_base_request::_(we_base_request::FILE, 'path', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '/');
 
@@ -648,7 +648,7 @@ function changeit(value, rowNr){
 	 * @return string
 	 */
 	private function getSortImage($for){
-		$order = we_base_request::_(we_base_request::RAW, 'order', $this->searchclass->order);
+		$order = we_base_request::_(we_base_request::STRING, 'order', $this->searchclass->order);
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){

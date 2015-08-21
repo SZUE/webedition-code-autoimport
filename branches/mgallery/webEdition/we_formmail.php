@@ -182,13 +182,13 @@ if(!empty($_REQUEST['email'])){//fixme: note this mail can be in "abc" <cc@de.de
 
 $output = array();
 
-$removeArr = array_map('trim', array_filter(explode(',', we_base_request::_(we_base_request::STRINGC, 'we_remove'))));
+$removeArr = array_map('trim', array_filter(explode(',', we_base_request::_(we_base_request::STRING, 'we_remove'))));
 $we_reserved = array_merge(array('from', 'we_remove', 'captchaname', 'we_mode', 'charset', 'required', 'order', 'ok_page', 'error_page', 'captcha_error_page', 'mail_error_page', 'recipient', 'subject', 'mimetype', 'confirm_mail', 'pre_confirm', 'post_confirm', 'MAX_FILE_SIZE', session_name(), 'cookie', 'recipient_error_page', 'forcefrom'), $removeArr);
 
 $we_txt = '';
 $we_html = '<table>';
 
-if(($_order = we_base_request::_(we_base_request::RAW, 'order', ''))){
+if(($_order = we_base_request::_(we_base_request::STRING, 'order', ''))){
 	$we_orderarray = explode(',', $_order);
 
 	foreach($we_orderarray as $cur){

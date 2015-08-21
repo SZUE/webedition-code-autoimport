@@ -367,7 +367,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 	}
 
 	private static function getSortImage($for){
-		$order = we_base_request::_(we_base_request::RAW, 'order', $GLOBALS['we_doc']->searchclassFolder->order);
+		$order = we_base_request::_(we_base_request::STRING, 'order', $GLOBALS['we_doc']->searchclassFolder->order);
 
 		if(strpos($order, $for) === 0){
 			if(strpos($order, 'DESC')){

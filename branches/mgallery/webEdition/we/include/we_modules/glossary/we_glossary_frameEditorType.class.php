@@ -73,15 +73,15 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Offset = we_base_request::_(we_base_request::INT, 'Offset', 0);
 		$Order = we_base_request::_(we_base_request::STRING, 'Order', 'Text');
 		$Sort = we_base_request::_(we_base_request::STRING, 'Sort', 'ASC');
-		$Where = "Language = '" . $Language . "' AND Type = '" . $Type . "'";
-		if(($kw = strtolower(we_base_request::_(we_base_request::RAW, 'Keyword')))){
+		$Where = 'Language="' . $Language . '" AND Type="' . $Type . '"';
+		if(($kw = escape_sql_query(strtolower(we_base_request::_(we_base_request::STRING, 'Keyword'))))){
 			$Where .= " AND ("
-				. "lcase(Text) LIKE '%" . $kw . "%' OR "
-				. "lcase(Title) LIKE '%" . $kw . "%' OR "
-				. "lcase(Description) LIKE '%" . $kw . "%')";
+				. 'lcase(Text) LIKE "%' . $kw . '%" OR '
+				. 'lcase(Title) LIKE "%' . $kw . '%" OR '
+				. 'lcase(Description) LIKE "%' . $kw . '%")';
 		}
 		if(we_base_request::_(we_base_request::BOOL, 'GreenOnly')){
-			$Where .= " AND Published > 0";
+			$Where .= ' AND Published>0';
 		}
 
 		$Search = new we_glossary_search(GLOSSARY_TABLE);
@@ -96,37 +96,36 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$_js .= $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_type&cmdid=' . $cmdid . '";
 						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_type&cmdid=' . $cmdid . '";
-		function AllItems(){
-			if(document.we_form.selectAll.value == 0) {
-				temp = true;
-				document.we_form.selectAll.value = 1;
-			} else {
-				temp = false;
-				document.we_form.selectAll.value = 0;
-			}
-			for (var x = 0; x< document.we_form.elements.length; x++) {
-				var y = document.we_form.elements[x];
-				if(y.name == \'ID[]\') {
-					y.checked = temp;
-				}
-			}
+function AllItems(){
+	if(document.we_form.selectAll.value == 0) {
+		temp = true;
+		document.we_form.selectAll.value = 1;
+	} else {
+		temp = false;
+		document.we_form.selectAll.value = 0;
+	}
+	for (var x = 0; x< document.we_form.elements.length; x++) {
+		var y = document.we_form.elements[x];
+		if(y.name == \'ID[]\') {
+			y.checked = temp;
 		}
-		function SubmitForm() {
-			document.we_form.submit();
-		}
-		function next() {
-			document.we_form.Offset.value = parseInt(document.we_form.Offset.value) + ' . $Rows . ';
-			SubmitForm();
-		}
-		function prev() {
-			document.we_form.Offset.value = parseInt(document.we_form.Offset.value) - ' . $Rows . ';
-			SubmitForm();
-		}
-		function jump(val) {
-			document.we_form.Offset.value = val;
-			SubmitForm();
-		}
-		';
+	}
+}
+function SubmitForm() {
+	document.we_form.submit();
+}
+function next() {
+	document.we_form.Offset.value = parseInt(document.we_form.Offset.value) + ' . $Rows . ';
+	SubmitForm();
+}
+function prev() {
+	document.we_form.Offset.value = parseInt(document.we_form.Offset.value) - ' . $Rows . ';
+	SubmitForm();
+}
+function jump(val) {
+	document.we_form.Offset.value = val;
+	SubmitForm();
+}';
 
 		$js = we_html_element::jsElement($_js);
 
@@ -323,7 +322,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		</tr>
 		<tr>
 			<td class="defaultgray">' . g_l('modules_glossary', '[search]') . '</td>
-			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, we_base_request::_(we_base_request::RAW, 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
+			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, we_base_request::_(we_base_request::STRING, 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
 			<td></td>
 			<td>' . $button . '</td>
 		</tr>

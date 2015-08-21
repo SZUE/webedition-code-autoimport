@@ -31,7 +31,7 @@ function we_tag_categorySelect($attribs, $content){
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE);
 	$firstentry = weTag_getAttribute('firstentry', $attribs, '', we_base_request::STRING);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
-	$indent = weTag_getAttribute('indent', $attribs, '', we_base_request::RAW);
+	$indent = weTag_getAttribute('indent', $attribs, '', we_base_request::RAW_CHECKED);
 	$multiple = weTag_getAttribute('multiple', $attribs, false, we_base_request::BOOL);
 
 	$catIDs = weTag_getAttribute('catIDs', $attribs, -1, we_base_request::INTLIST);

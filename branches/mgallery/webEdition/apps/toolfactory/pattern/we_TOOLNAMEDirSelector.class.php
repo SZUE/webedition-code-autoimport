@@ -189,7 +189,7 @@ print we_html_element('<script>
 					$this - > FolderText = rawurldecode($this - > FolderText);
 					$txt = '';
 					if (we_base_request::_(we_base_request::BOOL, 'we_FolderText_tmp')){
-	$txt = rawurldecode(we_base_request::_(we_base_request::RAW, 'we_FolderText_tmp'));
+	$txt = rawurldecode(we_base_request::_(we_base_request::STRING, 'we_FolderText_tmp'));
 	}
 	if ($txt == ''){
 	echo we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);

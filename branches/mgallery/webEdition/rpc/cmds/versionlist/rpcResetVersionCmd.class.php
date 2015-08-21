@@ -25,7 +25,7 @@
 class rpcResetVersionCmd extends rpcCmd{
 
 	function execute(){
-		$id = we_base_request::_(we_base_request::STRINGC, 'id');
+		$id = we_base_request::_(we_base_request::STRING, 'id');
 
 		we_html_tools::protect();
 

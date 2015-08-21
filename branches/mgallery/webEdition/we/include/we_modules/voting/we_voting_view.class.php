@@ -644,7 +644,7 @@ setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('modules_voting', 
 		$icount = we_base_request::_(we_base_request::INT, 'item_count');
 		if($qname && $vcount && $aname && $icount){
 			for($i = 0; $i < $vcount; $i++){
-				if(($quest = we_base_request::_(we_base_request::STRINGC, $qname . '_variant' . $i . '_' . $qname . '_item0')) !== false){
+				if(($quest = we_base_request::_(we_base_request::STRING, $qname . '_variant' . $i . '_' . $qname . '_item0')) !== false){
 					$set = array(
 						'question' => addslashes($quest),
 						'answers' => array(),

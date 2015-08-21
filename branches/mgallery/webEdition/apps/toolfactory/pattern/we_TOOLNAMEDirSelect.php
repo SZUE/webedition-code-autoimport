@@ -9,6 +9,6 @@ $fs = new we_<?php echo $TOOLNAME; ?>DirSelector(we_base_request::_(we_base_requ
 							isset($JSCommand) ? $JSCommand : we_base_request::_(we_base_request::RAW,'we_cmd','',4),
 							isset($order) ? $order : we_base_request::_(we_base_request::STRING,'order',''),
 							isset($we_editDirID) ? $we_editDirID : we_base_request::_(we_base_request::INT,'we_editDirID',0),
-							isset($we_FolderText) ? $we_FolderText : we_base_request::_(we_base_request::RAW,'we_FolderText',''));
+							isset($we_FolderText) ? $we_FolderText : we_base_request::_(we_base_request::STRING,'we_FolderText',''));
 
 $fs->printHTML(we_base_request::_(we_base_request::STRING,'what',we_fileselector::FRAMESET);

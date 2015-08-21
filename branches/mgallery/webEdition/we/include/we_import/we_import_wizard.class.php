@@ -2518,14 +2518,14 @@ function handle_event(evt) {
 		}
 
 		if(file_exists($csvFile) && is_readable($csvFile)){
-			switch(we_base_request::_(we_base_request::STRING, 'v', '', "csv_enclosed")){
-				case "double_quote":
+			switch(we_base_request::_(we_base_request::STRING, 'v', '', 'csv_enclosed')){
+				case 'double_quote':
 					$encl = '"';
 					break;
-				case "single_quote":
+				case 'single_quote':
 					$encl = "'";
 					break;
-				case "none":
+				case 'none':
 					$encl = '';
 					break;
 			}
@@ -2533,7 +2533,7 @@ function handle_event(evt) {
 			$cp = new we_import_CSV;
 
 			$cp->setData($data);
-			$cp->setDelim(we_base_request::_(we_base_request::RAW, 'v', '', "csv_seperator"));
+			$cp->setDelim(we_base_request::_(we_base_request::RAW_CHECKED, 'v', '', 'csv_seperator'));
 			$cp->setEnclosure($encl);
 			$cp->setFromCharset($encoding);
 			$cp->parseCSV();

@@ -23,10 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_search($attribs){
-
 	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
-	$value = weTag_getAttribute('value', $attribs, '', we_base_request::RAW);
+	$value = weTag_getAttribute('value', $attribs, '', we_base_request::STRING);
 
 	$searchValue = str_replace(array('"', '\\"',), '', trim(we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $name, $value)));
 	$attsHidden = array(

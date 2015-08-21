@@ -58,8 +58,8 @@ foreach($tbls as $table){
 		$wfDocsCSV = $myWfDocsCSV = '';
 	}
 
-	$offset = we_base_request::_(we_base_request::INT, "offset", 0);
-	$order = we_base_request::_(we_base_request::RAW, "order", "ModDate DESC");
+	$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
+	$order = we_base_request::_(we_base_request::STRING, 'order', "ModDate DESC");
 
 	#### get workspace query ###
 

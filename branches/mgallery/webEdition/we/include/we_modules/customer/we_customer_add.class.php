@@ -209,7 +209,7 @@ function setScrollTo(){
 				$search_arr['branch_' . $i] = we_base_request::_(we_base_request::STRING, 'branch_' . $i);
 				$search_arr['field_' . $i] = we_base_request::_(we_base_request::STRING, 'field_' . $i);
 				$search_arr['operator_' . $i] = we_base_request::_(we_base_request::INT, 'operator_' . $i);
-				$search_arr['value_' . $i] = we_base_request::_(we_base_request::STRINGC, 'value_' . $i);
+				$search_arr['value_' . $i] = we_base_request::_(we_base_request::STRING, 'value_' . $i);
 			}
 		}
 

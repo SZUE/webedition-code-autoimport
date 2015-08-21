@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,11 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-define("CSV_DELIMITER", ";");
-define("CSV_ENCLOSE", "");
-define("CSV_LINEEND", "windows");
-define("THE_CHARSET", "UTF-8");
-
 class we_customer_EIWizard{
 	var $frameset;
 	var $db;
@@ -36,6 +32,10 @@ class we_customer_EIWizard{
 	var $footerFrame = "top.footer";
 	var $exim_number = 5;
 
+	const CSV_DELIMITER = ';';
+	const CSV_ENCLOSE = '';
+	const CSV_LINEEND = 'windows';
+	const THE_CHARSET = 'UTF-8';
 	const SELECTION_MANUAL = 'manual';
 	const SELECTION_FILTER = 'filter';
 	const TYPE_CSV = 'csv'; //fixme: MOVE TO we_import_functions (name it TYPE_CSV)
@@ -200,9 +200,9 @@ class we_customer_EIWizard{
 		$path = we_base_request::_(we_base_request::FILE, "path", "/");
 		$cdata = we_base_request::_(we_base_request::INT, "cdata", true);
 
-		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
-		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
-		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+		$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", self::CSV_DELIMITER);
+		$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", self::CSV_ENCLOSE);
+		$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", self::CSV_LINEEND);
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames", true);
 
 		switch(we_base_request::_(we_base_request::STRING, "selection")){
@@ -369,10 +369,10 @@ class we_customer_EIWizard{
 				$xml_from = we_base_request::_(we_base_request::RAW, 'xml_from', 0);
 				$xml_to = we_base_request::_(we_base_request::RAW, 'xml_to', 1);
 				$dataset = we_base_request::_(we_base_request::RAW, 'dataset', '');
-				$csv_delimiter = we_base_request::_(we_base_request::RAW, 'csv_delimiter', CSV_DELIMITER);
-				$csv_enclose = we_base_request::_(we_base_request::RAW, 'csv_enclose', CSV_ENCLOSE);
-				$csv_lineend = we_base_request::_(we_base_request::RAW, 'csv_lineend', CSV_LINEEND);
-				$the_charset = we_base_request::_(we_base_request::RAW, 'the_charset', THE_CHARSET);
+				$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_delimiter', self::CSV_DELIMITER);
+				$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_enclose', self::CSV_ENCLOSE);
+				$csv_lineend = we_base_request::_(we_base_request::STRING, 'csv_lineend', self::CSV_LINEEND);
+				$the_charset = we_base_request::_(we_base_request::STRING, 'the_charset', self::THE_CHARSET);
 
 				$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
 
@@ -457,9 +457,9 @@ class we_customer_EIWizard{
 
 				$customers = we_base_request::_(we_base_request::INTLIST, "customers", "");
 
-				$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
-				$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
-				$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
+				$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", self::CSV_DELIMITER);
+				$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", self::CSV_ENCLOSE);
+				$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", self::CSV_LINEEND);
 				$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames", true);
 
 				$filter_count = we_base_request::_(we_base_request::INT, "filter_count", 0);
@@ -824,12 +824,12 @@ class we_customer_EIWizard{
 		$filename = we_base_request::_(we_base_request::FILE, "filename", "");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
 		$dataset = we_base_request::_(we_base_request::RAW, "dataset", "");
-		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
-		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
-		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
-		$the_charset = we_base_request::_(we_base_request::RAW, "the_charset", THE_CHARSET);
+		$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", self::CSV_DELIMITER);
+		$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", self::CSV_ENCLOSE);
+		$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", self::CSV_LINEEND);
+		$the_charset = we_base_request::_(we_base_request::STRING, "the_charset", self::THE_CHARSET);
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
-		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
+		$same = we_base_request::_(we_base_request::STRING, 'same', 'rename');
 
 		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", "");
 		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", "");
@@ -1118,12 +1118,12 @@ function doNext(){
 	private function getExportCode(){
 		$file_format = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 		$file_name = we_base_request::_(we_base_request::FILE, "filename", date('Y-m-d'));
-		$export_to = we_base_request::_(we_base_request::RAW, "export_to", self::EXPORT_SERVER);
+		$export_to = we_base_request::_(we_base_request::STRING, "export_to", self::EXPORT_SERVER);
 		$path = ($export_to == self::EXPORT_SERVER ? we_base_request::_(we_base_request::FILE, "path", "") : rtrim(TEMP_DIR, '/'));
 		$cdata = we_base_request::_(we_base_request::INT, "cdata", 0);
-		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", "");
-		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", "");
-		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
+		$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", "");
+		$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", "");
+		$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", "");
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
 
 		switch(we_base_request::_(we_base_request::STRING, "selection")){
@@ -1214,9 +1214,9 @@ function doNext(){
 			$hiddens.=we_html_element::htmlHidden("cdata", $cdata);
 		}
 		if($file_format == self::TYPE_CSV){
-			$csv_delimiter = we_base_request::_(we_base_request::RAW, 'csv_delimiter', '');
-			$csv_enclose = we_base_request::_(we_base_request::RAW, 'csv_enclose', '');
-			$csv_lineend = we_base_request::_(we_base_request::RAW, 'csv_lineend', '');
+			$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_delimiter', '');
+			$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, 'csv_enclose', '');
+			$csv_lineend = we_base_request::_(we_base_request::STRING, 'csv_lineend', '');
 			$csv_fieldnames = we_base_request::_(we_base_request::BOOL, 'csv_fieldnames', true);
 
 			$hiddens.=
@@ -1348,18 +1348,18 @@ function doNext(){
 
 	private function getImportCode(){
 		$filename = we_base_request::_(we_base_request::FILE, "filename", "");
-		$import_from = we_base_request::_(we_base_request::RAW, "import_from", "");
+		$import_from = we_base_request::_(we_base_request::STRING, "import_from", "");
 		$type = we_base_request::_(we_base_request::RAW, "type", "");
 		$xml_from = we_base_request::_(we_base_request::RAW, "xml_from", "");
 		$xml_to = we_base_request::_(we_base_request::RAW, "xml_to", "");
 		$dataset = we_base_request::_(we_base_request::RAW, "dataset", "");
-		$csv_delimiter = we_base_request::_(we_base_request::RAW, "csv_delimiter", CSV_DELIMITER);
-		$csv_enclose = we_base_request::_(we_base_request::RAW, "csv_enclose", CSV_ENCLOSE);
-		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
-		$the_charset = we_base_request::_(we_base_request::RAW, "the_charset", THE_CHARSET);
+		$csv_delimiter = we_base_request::_(we_base_request::RAW_CHECKED, "csv_delimiter", self::CSV_DELIMITER);
+		$csv_enclose = we_base_request::_(we_base_request::RAW_CHECKED, "csv_enclose", self::CSV_ENCLOSE);
+		$csv_lineend = we_base_request::_(we_base_request::STRING, "csv_lineend", self::CSV_LINEEND);
+		$the_charset = we_base_request::_(we_base_request::STRING, "the_charset", self::THE_CHARSET);
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames", true);
 
-		$same = we_base_request::_(we_base_request::RAW, "same", "rename");
+		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
 
 		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", array());
 		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", array());
@@ -1417,7 +1417,7 @@ function doNext(){
 		$fcount = we_base_request::_(we_base_request::INT, "fcount", "");
 		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", array());
 		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", array());
-		$same = we_base_request::_(we_base_request::RAW, "same", "rename");
+		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
 		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
 		if(we_customer_EI::importCustomers(array(

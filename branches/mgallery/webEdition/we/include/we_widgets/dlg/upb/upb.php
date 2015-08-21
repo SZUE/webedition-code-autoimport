@@ -27,7 +27,7 @@ $aProps = array(
 	0,
 	0,
 	0,
-	we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 0)
+	we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
 );
 require_once('../../mod/upb.php');
 

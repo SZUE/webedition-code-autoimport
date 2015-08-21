@@ -79,9 +79,9 @@ class we_import_site{
 		$this->other = we_base_request::_(we_base_request::BOOL, 'other', $this->other);
 		$this->maxSize = we_base_request::_(we_base_request::INT, 'maxSize', $this->maxSize);
 		$this->step = we_base_request::_(we_base_request::INT, 'step', $this->step);
-		$this->sameName = we_base_request::_(we_base_request::RAW, 'sameName', $this->sameName);
+		$this->sameName = we_base_request::_(we_base_request::STRING, 'sameName', $this->sameName);
 		$this->importMetadata = we_base_request::_(we_base_request::BOOL, 'importMetadata', $this->importMetadata);
-		$this->thumbs = ($thumbs = we_base_request::_(we_base_request::RAW, 'thumbs')) !== false ? implode(',', $thumbs) : $this->thumbs;
+		$this->thumbs = ($thumbs = we_base_request::_(we_base_request::INT, 'thumbs')) !== false ? implode(',', $thumbs) : $this->thumbs;
 		$this->width = we_base_request::_(we_base_request::INT, 'width', $this->width);
 		$this->height = we_base_request::_(we_base_request::INT, 'height', $this->height);
 		$this->widthSelect = we_base_request::_(we_base_request::BOOL, 'widthSelect', $this->widthSelect);

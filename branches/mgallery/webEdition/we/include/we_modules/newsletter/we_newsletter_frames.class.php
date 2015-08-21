@@ -1302,7 +1302,7 @@ window.onload=extraInit;');
 
 	function getHTMLEmailEdit(){
 		$type = we_base_request::_(we_base_request::INT, 'etyp', 0);
-		$htmlmail = we_base_request::_(we_base_request::RAW, 'htmlmail', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db));
+		$htmlmail = we_base_request::_(we_base_request::STRING, 'htmlmail', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db));
 		$id = we_base_request::_(we_base_request::INT, 'eid', 0);
 		$email = we_base_request::_(we_base_request::EMAIL, 'email', '');
 		$group = we_base_request::_(we_base_request::STRING, 'grp', '');
@@ -1702,13 +1702,13 @@ self.focus();
 	 * @return String
 	 */
 	function getHTMLEditFile($open_file = ""){
-		$out = "";
+		$out = '';
 		$content = array();
 
-		$order = we_base_request::_(we_base_request::RAW, "order", "");
+		$order = we_base_request::_(we_base_request::STRING, "order", "");
 		for($i = 0; $i < 14; $i = $i + 2){
 			$sorter_code[$i] = "<br/>" . ($order == $i ?
-					we_html_element::htmlInput(array("type" => "radio", "value" => $i, "name" => "order", "checked" => true, "onclick" => "submitForm('edit_file')")) . "&darr;" :
+					we_html_element::htmlInput(array('type' => "radio", "value" => $i, "name" => "order", "checked" => true, "onclick" => "submitForm('edit_file')")) . "&darr;" :
 					we_html_element::htmlInput(array("type" => "radio", "value" => $i, "name" => "order", "onclick" => "submitForm('edit_file')")) . "&darr;"
 				);
 			$sorter_code[$i + 1] = ($order == $i + 1 ?
@@ -1746,54 +1746,43 @@ self.focus();
 		$anz = count($emails);
 		$endRow = min($offset + $numRows, $anz);
 
-		function cmp0($a, $b){
-			return strnatcasecmp($a[0], $b[0]);
-		}
-
-		function cmp1($a, $b){
-			return strnatcasecmp($a[1], $b[1]);
-		}
-
-		function cmp2($a, $b){
-			return strnatcasecmp($a[2], $b[2]);
-		}
-
-		function cmp3($a, $b){
-			return strnatcasecmp($a[3], $b[3]);
-		}
-
-		function cmp4($a, $b){
-			return strnatcasecmp($a[4], $b[4]);
-		}
-
-		function cmp5($a, $b){
-			return strnatcasecmp($a[5], $b[5]);
-		}
-
 		switch($order){
 			case 2:
 			case 3:
-				uasort($emails, "cmp0");
+				uasort($emails, function ($a, $b){
+					return strnatcasecmp($a[0], $b[0]);
+				});
 				break;
 			case 4:
 			case 5:
-				uasort($emails, "cmp1");
+				uasort($emails, function ($a, $b){
+					return strnatcasecmp($a[1], $b[1]);
+				});
 				break;
 			case 6:
 			case 7:
-				uasort($emails, "cmp2");
+				uasort($emails, function ($a, $b){
+					return strnatcasecmp($a[2], $b[2]);
+				});
 				break;
 			case 8:
 			case 9:
-				uasort($emails, "cmp3");
+				uasort($emails, function ($a, $b){
+					return strnatcasecmp($a[3], $b[3]);
+				});
 				break;
 			case 10:
 			case 11:
-				uasort($emails, "cmp4");
+				uasort($emails, function ($a, $b){
+					return strnatcasecmp($a[4], $b[4]);
+				}
+				);
 				break;
 			case 12:
 			case 13:
-				uasort($emails, "cmp5");
+				uasort($emails, function ($a, $b){
+					return strnatcasecmp($a[5], $b[5]);
+				});
 				break;
 		}
 
@@ -1875,7 +1864,6 @@ function editEmailFile(eid,email,htmlmail,salutation,title,firstname,lastname){
 }
 
 function setAndSave(eid,email,htmlmail,salutation,title,firstname,lastname){
-
 	var fr=document.we_form;
 	fr.nrid.value=eid;
 	fr.email.value=email;
@@ -1884,11 +1872,8 @@ function setAndSave(eid,email,htmlmail,salutation,title,firstname,lastname){
 	fr.title.value=title;
 	fr.firstname.value=firstname;
 	fr.lastname.value=lastname;
-
 	fr.ncmd.value="save_email_file";
-
 	submitForm("edit_file");
-
 }
 
 function listFile(){
@@ -1901,7 +1886,6 @@ function listFile(){
 	fr.firstname.value="";
 	fr.lastname.value="";
 	fr.offset.value=0;
-
 	submitForm("edit_file");
 }
 
@@ -1926,8 +1910,6 @@ function postSelectorSelect(wePssCmd) {
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()");
 		$edit = we_html_button::create_button(we_html_button::SAVE, "javascript:listFile()");
-
-
 		$nextprev = new we_html_table(array('class' => 'default'), 1, 4);
 
 		$colcontent = ($offset ?

@@ -272,7 +272,7 @@ new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);');
 				$field = we_base_request::_(we_base_request::STRING, 'field');
 				$field_name = we_base_request::_(we_base_request::STRING, 'name');
 				$field_type = we_base_request::_(we_base_request::STRING, 'field_type');
-				$field_default = we_base_request::_(we_base_request::STRINGC, 'field_default');
+				$field_default = we_base_request::_(we_base_request::STRING, 'field_default');
 				$field_encrypt = we_base_request::_(we_base_request::BOOL, 'field_encrypt');
 
 
@@ -525,7 +525,7 @@ self.close();');
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRINGC, "keyword") . '";
+				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
 						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);');
 				break;
 			case 'show_customer_settings':
@@ -545,7 +545,7 @@ self.close();');
 				break;
 			case 'save_settings':
 				foreach($this->settings->getAllSettings() as $k => $v){
-					$set = we_base_request::_(we_base_request::STRINGC, $k);
+					$set = we_base_request::_(we_base_request::STRING, $k);
 					if($set !== false){
 						$this->settings->setSettings($k, $set);
 					}
@@ -585,18 +585,18 @@ self.close();');
 					case 'LoginDenied':
 						if(we_base_request::_(we_base_request::BOOL, 'LoginDenied')){
 							$this->customer->LoginDenied = 1;
-						} elseif(we_base_request::_(we_base_request::STRINGC, 'Username')){
+						} elseif(we_base_request::_(we_base_request::STRING, 'Username')){
 							$this->customer->LoginDenied = 0;
 						}
 						break;
 					case 'Password':
-						$pw = we_base_request::_(we_base_request::RAW, 'Password');
+						$pw = we_base_request::_(we_base_request::RAW_CHECKED, 'Password');
 						if($pw && $pw != we_customer_customer::NOPWD_CHANGE){//keep old pwd
 							$this->customer->Password = we_customer_customer::cryptPassword($pw);
 						}
 						break;
 					default:
-						if(($v = we_base_request::_(we_base_request::STRINGC, $varname)) !== false){
+						if(($v = we_base_request::_(we_base_request::STRING, $varname)) !== false){
 							$isEncField = $this->settings->retriveFieldAdd($varname, 'encrypt');
 							if($isEncField){
 								if($v != we_customer_customer::ENCRYPTED_DATA){

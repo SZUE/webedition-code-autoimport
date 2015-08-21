@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive('navigation') && we_users_util::canEditModule('navigation') ? array('EDIT_NAVIAGTION_RULES') : array(false);
 we_html_tools::protect($protect);
 
-$what = we_base_request::_(we_base_request::RAW, "pnt", "frameset");
+$what = we_base_request::_(we_base_request::STRING, 'pnt', 'frameset');
 $weFrame = new we_navigation_ruleFrames();
 $weFrame->Controller->processVariables();
 $weFrame->Controller->processCommands();

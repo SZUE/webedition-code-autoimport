@@ -76,7 +76,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 	function printDoDelEntryHTML(){
 		we_html_tools::protect();
 		$js = '';
-		if(($del = we_base_request::_(we_base_request::RAW, "todel"))){
+		if(($del = we_base_request::_(we_base_request::INT, "todel"))){
 			$_SESSION['weS']['todel'] = $del;
 			$js = we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 top.opener.top.we_cmd("del_frag", "' . $del . '");

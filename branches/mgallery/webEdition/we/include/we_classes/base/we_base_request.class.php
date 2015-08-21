@@ -51,7 +51,6 @@ class we_base_request{
 	const EMAILLIST = 'emailL';
 	const EMAILLISTA = 'emailLA';
 //only temporary
-	const STRINGC = 'stringC';
 	const RAW_CHECKED = 'rawC';
 	// the following types do not sanitize, so they will allow spaces,...
 	const WEFILE = 'wefile';
@@ -218,7 +217,7 @@ class we_base_request{
 				}
 				$var = self::unparse_url($urls);
 				return;
-			case self::STRINGC:
+			case self::STRING:
 			case self::STRING://strips tags
 				$var = filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 				return;
@@ -298,7 +297,7 @@ class we_base_request{
 			  break;
 			  case self::CMD://this must change&is ok!
 			  case self::RAW_CHECKED:
-			  case self::STRINGC:
+			  case self::STRING:
 			  case self::STRING_LIST:
 			  case self::INTLISTA:
 			  //we didn't change anything.

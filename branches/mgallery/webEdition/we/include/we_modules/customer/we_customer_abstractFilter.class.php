@@ -255,7 +255,7 @@ abstract class we_customer_abstractFilter{
 		while(true){
 			if(($field = we_base_request::_(we_base_request::STRING, 'filterSelect_' . $count))){
 
-				if(trim(($val = we_base_request::_(we_base_request::STRINGC, 'filterValue_' . $count)))){
+				if(trim(($val = we_base_request::_(we_base_request::STRING, 'filterValue_' . $count)))){
 					$filter[] = array(
 						'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) === 'OR' ? ' OR ' : ' AND '),
 						'field' => $field,
@@ -283,7 +283,7 @@ abstract class we_customer_abstractFilter{
 		$customers = array();
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
 				$customers[] = $val;
 				$i++;
 			} else {
@@ -306,7 +306,7 @@ abstract class we_customer_abstractFilter{
 
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
 				$blackList[] = $val;
 				$i++;
 			} else {
@@ -328,7 +328,7 @@ abstract class we_customer_abstractFilter{
 		$whiteList = array();
 		$i = 0;
 		while(true){
-			if(($val = we_base_request::_(we_base_request::STRINGC, $name . '_variant0_' . $name . '_item' . $i))){
+			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
 				$whiteList[] = $val;
 				$i++;
 			} else {

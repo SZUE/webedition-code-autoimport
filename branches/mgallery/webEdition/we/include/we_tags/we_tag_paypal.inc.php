@@ -159,7 +159,7 @@ function we_tag_paypal($attribs){
 
 // if there is not action variable, set the default action of 'process'
 
-		switch(we_base_request::_(we_base_request::RAW, 'action', 'process')){
+		switch(we_base_request::_(we_base_request::STRING, 'action', 'process')){
 
 			case 'process': // Process and order
 				// There should be no output at this point.  To process the POST data,

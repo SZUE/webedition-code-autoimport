@@ -40,8 +40,8 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->setElement($name . 'xml', (we_base_request::_(we_base_request::BOOL, 'xml') ? 'on' : 'off'));
 	$we_doc->setElement($name . 'dhtmledit', (we_base_request::_(we_base_request::BOOL, 'dhtmledit') ? 'on' : 'off'));
 	$we_doc->setElement($name . 'showmenus', (we_base_request::_(we_base_request::BOOL, 'showmenus') ? 'on' : 'off'));
-	$we_doc->setElement($name . 'commands', we_base_request::_(we_base_request::STRINGC, 'commands'));
-	$we_doc->setElement($name . 'contextmenu', we_base_request::_(we_base_request::STRINGC, 'contextmenu'));
+	$we_doc->setElement($name . 'commands', we_base_request::_(we_base_request::STRING, 'commands'));
+	$we_doc->setElement($name . 'contextmenu', we_base_request::_(we_base_request::STRING, 'contextmenu'));
 	$we_doc->setElement($name . 'height', we_base_request::_(we_base_request::INT, 'height', 50));
 	$we_doc->setElement($name . 'width', we_base_request::_(we_base_request::INT, 'width', 200));
 	$we_doc->setElement($name . 'bgcolor', we_base_request::_(we_base_request::STRING, 'bgcolor', ''));

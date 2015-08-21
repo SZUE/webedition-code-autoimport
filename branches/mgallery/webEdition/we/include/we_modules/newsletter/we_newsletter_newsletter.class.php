@@ -84,10 +84,10 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			'Sender' => we_base_request::EMAIL,
 			'Reply' => we_base_request::EMAIL,
 			'Test' => we_base_request::EMAIL,
-			'Step' => we_base_request::RAW,
-			'Offset' => we_base_request::RAW,
+			'Step' => we_base_request::INT,
+			'Offset' => we_base_request::INT,
 			'IsFolder' => we_base_request::BOOL,
-			'Charset' => we_base_request::RAW,
+			'Charset' => we_base_request::STRING,
 			'isEmbedImages' => we_base_request::BOOL,
 		);
 		$this->Charset = $GLOBALS['WE_BACKENDCHARSET'];

@@ -42,7 +42,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
 if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 	$addrbook = array();
 	$t_arr = array();
-	$addrbook_arr = we_base_request::_(we_base_request::STRINGC, 'addrbook_arr');
+	$addrbook_arr = we_base_request::_(we_base_request::STRING, 'addrbook_arr');
 	if($addrbook_arr != ''){
 		$t_arr = explode("\t", $addrbook_arr);
 	}

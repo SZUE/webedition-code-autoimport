@@ -33,7 +33,7 @@ $actPage = we_base_request::_(we_base_request::INT, 'actPage', 0);
 function orderBy($a, $b){
 	static $ob = false;
 	if($ob === false){
-		$ob = we_base_request::_(we_base_request::STRINGC, 'orderBy');
+		$ob = we_base_request::_(we_base_request::STRING, 'orderBy');
 	}
 	return ($a[$ob] >= $b[$ob] ? !we_base_request::_(we_base_request::BOOL, 'orderDesc') : we_base_request::_(we_base_request::BOOL, 'orderDesc'));
 }

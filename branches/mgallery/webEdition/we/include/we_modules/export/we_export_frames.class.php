@@ -769,7 +769,7 @@ function closeAllType(){
 
 		$hiddens = we_html_element::htmlHiddens(array(
 				"Categorys" => $this->View->export->Categorys,
-				"cat" => we_base_request::_(we_base_request::RAW, "cat", "")));
+				"cat" => we_base_request::_(we_base_request::RAW, 'cat', "")));
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));

@@ -90,12 +90,12 @@ class we_banner_banner extends we_banner_base{
 			'bannerIntID' => we_base_request::INT,
 			'maxShow' => we_base_request::INT,
 			'maxClicks' => we_base_request::INT,
-			'IsDefault' => we_base_request::RAW,
-			'clickPrice' => we_base_request::RAW,
-			'showPrice' => we_base_request::RAW,
+			'IsDefault' => we_base_request::BOOL,
+			'clickPrice' => we_base_request::FLOAT,
+			'showPrice' => we_base_request::FLOAT,
 			'IsFolder' => we_base_request::BOOL,
-			'Path' => we_base_request::STRINGC,
-			'IntHref' => we_base_request::RAW,
+			'Path' => we_base_request::STRING,
+			'IntHref' => we_base_request::URL,
 			'FileIDs' => we_base_request::INTLIST,
 			'FolderIDs' => we_base_request::INTLIST,
 			'CategoryIDs' => we_base_request::INTLIST,
@@ -107,7 +107,7 @@ class we_banner_banner extends we_banner_base{
 			'IsActive' => we_base_request::BOOL,
 			'clicks' => we_base_request::INT,
 			'views' => we_base_request::INT,
-			'Customers' => we_base_request::RAW,
+			'Customers' => we_base_request::INTLIST,
 			'TagName' => we_base_request::RAW,
 			'weight' => we_base_request::INT,
 		);
@@ -161,7 +161,7 @@ class we_banner_banner extends we_banner_base{
 		$retVal = parent::save();
 
 		//if($retVal){
-			$this->registerMediaLinks();
+		$this->registerMediaLinks();
 		//}
 	}
 
@@ -201,7 +201,7 @@ class we_banner_banner extends we_banner_base{
 					'remTable' => stripTblPrefix(FILE_TABLE),
 					'position' => 0,
 					'isTemp' => 0
-				)));
+			)));
 		}
 	}
 
@@ -422,13 +422,13 @@ class we_banner_banner extends we_banner_base{
 	}
 
 	public static function customerOwnsBanner($customerID, $bannerID, we_database_base $db){
-		$res = getHash('SELECT Customers,ParentID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bannerID), $db);
-		if(strstr($res["Customers"], "," . $customerID . ",") != false){
-			return true;
-		}
-		return ($res["ParentID"] ?
-				self::customerOwnsBanner($customerID, $res["ParentID"], $db) :
-				false);
+		$res = getHash('SELECT FIND_IN_SET(' . $customerID . ',Customers) AS found,ParentID FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($bannerID), $db);
+		return ($res['found'] ?
+				true :
+				($res['ParentID'] ?
+					self::customerOwnsBanner($customerID, $res["ParentID"], $db) :
+					false)
+			);
 	}
 
 }

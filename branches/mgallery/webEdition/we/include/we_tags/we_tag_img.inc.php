@@ -74,7 +74,7 @@ function we_tag_img($attribs){
 	// images can now have custom attribs
 	if(!$GLOBALS['we_editmode'] || !(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reload_editpage' &&
 			($name == we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)) &&
-			we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 2) === 'change_image') &&
+			we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) === 'change_image') &&
 			isset($GLOBALS['we_doc']->elements[$altField])){ // if no other image is selected.
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);
@@ -88,7 +88,7 @@ function we_tag_img($attribs){
 	} elseif(isset($GLOBALS['we_doc'])){
 		$alt = $GLOBALS['we_doc']->getElement($altField);
 		$title = $GLOBALS['we_doc']->getElement($titleField);
-		if(we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 2) === 'change_image'){
+		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) === 'change_image'){
 			//in case of changed images give them priority to already set text
 			$tagAttribs['alt'] = (!empty($tagAttribs['alt']) ? $tagAttribs['alt'] : $alt);
 			$tagAttribs['title'] = (!empty($tagAttribs['title']) ? $tagAttribs['title'] : $title);

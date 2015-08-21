@@ -894,7 +894,7 @@ function showPreview() {
 	}
 
 	function getHTMLProperties($preselect = ''){
-		$tabNr = we_base_request::_(we_base_request::STRINGC, 'tabnr', 1); //FIXME: due to preview - fix this as a better tab-name; replace 1-3 with consts
+		$tabNr = we_base_request::_(we_base_request::STRING, 'tabnr', 1); //FIXME: due to preview - fix this as a better tab-name; replace 1-3 with consts
 
 		if($this->Model->IsFolder == 0 && $tabNr != 1 && $tabNr != 3){
 			$tabNr = 1;

@@ -69,7 +69,7 @@ class we_newsletter_block extends we_newsletter_base{
 			'Groups' => we_base_request::INTLIST,
 			'Type' => we_base_request::INT,
 			'LinkID' => we_base_request::INT,
-			'Field' => we_base_request::STRINGC, //can be numeric or not, seems that paths can be transfered this way.
+			'Field' => we_base_request::STRING, //can be numeric or not, seems that paths can be transfered this way.
 			'Source' => we_base_request::RAW,
 			'Html' => we_base_request::RAW,
 			'Pack' => we_base_request::RAW,

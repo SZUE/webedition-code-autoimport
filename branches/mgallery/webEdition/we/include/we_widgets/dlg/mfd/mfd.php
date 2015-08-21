@@ -25,7 +25,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$aCols = we_base_request::_(we_base_request::STRINGC, 'we_cmd');
+$aCols = we_base_request::_(we_base_request::STRING, 'we_cmd');
 require_once('../../mod/mfd.php');
 
 $sJsCode = "

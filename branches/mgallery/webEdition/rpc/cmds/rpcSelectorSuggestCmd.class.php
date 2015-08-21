@@ -33,7 +33,7 @@ class rpcSelectorSuggestCmd extends rpcCmd{
 		}
 
 		$selectorSuggest = new we_selector_query();
-		$contentTypes = explode(",", we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3));
+		$contentTypes = explode(",", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
 		$cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
 		$cmd5 = we_base_request::_(we_base_request::INT, 'we_cmd', '', 5);
 		if($cmd4 && $cmd5){

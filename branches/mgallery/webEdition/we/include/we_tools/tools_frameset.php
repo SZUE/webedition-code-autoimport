@@ -45,7 +45,7 @@ switch($tool){
 
 
 if($tool === "weSearch"){
-	if(($cmd1 = we_base_request::_(we_base_request::STRINGC, 'we_cmd', false, 1))){
+	if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1))){
 		$_SESSION['weS']['weSearch']['keyword'] = $cmd1;
 	}
 	//look which search is active

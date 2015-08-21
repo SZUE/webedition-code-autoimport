@@ -24,7 +24,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
-$aCols = explode(';', isset($aProps) ? $aProps[3] : we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 0));
+$aCols = explode(';', isset($aProps) ? $aProps[3] : we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
 $_disableNew = true;
 $_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
 if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){

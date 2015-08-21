@@ -96,7 +96,7 @@ class we_versions_search{
 							}
 							break;
 						case "timestamp":
-							if(($loc = we_base_request::_(we_base_request::RAW, 'location', '', $k)) && ($search = we_base_request::_(we_base_request::STRING, 'search', '', $k))){
+							if(($loc = we_base_request::_(we_base_request::STRING, 'location', '', $k)) && ($search = we_base_request::_(we_base_request::STRING, 'search', '', $k))){
 
 								$date = explode('.', $search);
 								$day = $date[0];

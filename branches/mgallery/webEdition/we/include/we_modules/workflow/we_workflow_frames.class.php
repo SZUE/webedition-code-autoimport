@@ -57,11 +57,11 @@ class we_workflow_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
-		if(we_base_request::_(we_base_request::BOOL, "home")){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
 		}
 
-		$page = we_base_request::_(we_base_request::INT, "page", 0);
+		$page = we_base_request::_(we_base_request::INT, 'page', 0);
 		$text = we_base_request::_(we_base_request::RAW, 'txt', g_l('modules_workflow', '[new_workflow]'));
 
 		$we_tabs = new we_tabs();

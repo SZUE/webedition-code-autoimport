@@ -28,7 +28,7 @@ class rpcGetRssCmd extends rpcCmd{
 		//close session, we don't need it anymore
 		session_write_close();
 		$sRssUri = we_base_request::_(we_base_request::URL, 'we_cmd', '', 0);
-		$sCfgBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 1); //note binary content
+		$sCfgBinary = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1); //note binary content
 		$bCfgTitle = (bool) $sCfgBinary{0};
 		$bCfgLink = (bool) $sCfgBinary{1};
 		$bCfgDesc = (bool) $sCfgBinary{2};
@@ -50,7 +50,7 @@ class rpcGetRssCmd extends rpcCmd{
 				$iNumItems = 50;
 				break;
 		}
-		$sTbBinary = we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 3); //binary
+		$sTbBinary = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3); //binary
 		$bTbLabel = (bool) $sTbBinary{0};
 		$bTbTitel = (bool) $sTbBinary{1};
 		$bTbDesc = (bool) $sTbBinary{2};

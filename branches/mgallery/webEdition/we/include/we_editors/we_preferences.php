@@ -432,7 +432,7 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 				$host = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyhost");
 				$port = we_base_request::_(we_base_request::INT, 'newconf', '', "proxyport");
 				$user = we_base_request::_(we_base_request::STRING, 'newconf', '', "proxyuser");
-				$pass = we_base_request::_(we_base_request::RAW, 'newconf', '', "proxypass");
+				$pass = we_base_request::_(we_base_request::RAW_CHECKED, 'newconf', '', "proxypass");
 				we_base_preferences::setConfigContent('proxysettings', '<?php
 	define(\'WE_PROXYHOST\', "' . $host . '");
 	define(\'WE_PROXYPORT\', ' . $port . ');

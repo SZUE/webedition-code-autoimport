@@ -108,15 +108,15 @@ abstract class we_versions_wizard{
 
 		$version_delete = array(
 			'delete_date' => we_base_request::_(we_base_request::RAW, 'delete_date', ''),
-			'delete_hours' => we_base_request::_(we_base_request::RAW, 'delete_hours', 0),
-			'delete_minutes' => we_base_request::_(we_base_request::RAW, 'delete_minutes', 0),
-			'delete_seconds' => we_base_request::_(we_base_request::RAW, 'delete_seconds', 0),
+			'delete_hours' => we_base_request::_(we_base_request::INT, 'delete_hours', 0),
+			'delete_minutes' => we_base_request::_(we_base_request::INT, 'delete_minutes', 0),
+			'delete_seconds' => we_base_request::_(we_base_request::INT, 'delete_seconds', 0),
 		);
 		$version_reset = array(
 			'reset_date' => we_base_request::_(we_base_request::RAW, 'reset_date', ''),
-			'reset_hours' => we_base_request::_(we_base_request::RAW, 'reset_hours', 0),
-			'reset_minutes' => we_base_request::_(we_base_request::RAW, 'reset_minutes', 0),
-			'reset_seconds' => we_base_request::_(we_base_request::RAW, 'reset_seconds', 0),
+			'reset_hours' => we_base_request::_(we_base_request::INT, 'reset_hours', 0),
+			'reset_minutes' => we_base_request::_(we_base_request::INT, 'reset_minutes', 0),
+			'reset_seconds' => we_base_request::_(we_base_request::INT, 'reset_seconds', 0),
 		);
 
 		foreach($version->contentTypes as $k){
@@ -212,9 +212,7 @@ set_button_state(false);';
 	 * @return string
 	 */
 	static function getStep1(){
-		$type = we_base_request::_(we_base_request::RAW, "type", self::DELETE_VERSIONS);
-
-		switch($type){
+		switch(we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS)){
 			case self::DELETE_VERSIONS:
 				return self::getDelete1();
 			case self::RESET_VERSIONS:
@@ -224,13 +222,13 @@ set_button_state(false);';
 
 	static function getDelete1(){
 		$version = new we_versions_version();
-		$type = we_base_request::_(we_base_request::RAW, "type", self::DELETE_VERSIONS);
+		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
 		$versions_delete_all = we_base_request::_(we_base_request::BOOL, "version_delete_all");
 		$version_delete_date = we_base_request::_(we_base_request::RAW, "delete_date", "");
-		$version_delete_hours = we_base_request::_(we_base_request::RAW, "delete_hours", 0);
-		$version_delete_minutes = we_base_request::_(we_base_request::RAW, "delete_minutes", 0);
-		$version_delete_seconds = we_base_request::_(we_base_request::RAW, "delete_seconds", 0);
+		$version_delete_hours = we_base_request::_(we_base_request::INT, "delete_hours", 0);
+		$version_delete_minutes = we_base_request::_(we_base_request::INT, "delete_minutes", 0);
+		$version_delete_seconds = we_base_request::_(we_base_request::INT, "delete_seconds", 0);
 
 		$content = "";
 		foreach($version->contentTypes as $k){
@@ -261,7 +259,7 @@ set_button_state(false);';
 		);
 
 
-		$versions_delete_date = we_html_tools::getDateSelector("delete_date", "_1", $version_delete_date);
+		$versions_delete_date = we_html_tools::getDateSelector('delete_date', '_1', $version_delete_date);
 
 		$reset_hours = new we_html_select(
 			array(
@@ -326,7 +324,7 @@ set_button_state(false);';
 			'space' => 0
 		);
 
-		$clearDate = we_html_button::create_button("reset", "javascript:document.getElementById('delete_date').value='';", true, 0, 0, "", "", "", false);
+		$clearDate = we_html_button::create_button('reset', "javascript:document.getElementById('delete_date').value='';", true, 0, 0, "", "", "", false);
 
 
 		$parts[] = array(
@@ -731,20 +729,20 @@ set_button_state(false);';
 		}
 
 		$version_delete['delete_date'] = we_base_request::_(we_base_request::RAW, "delete_date", "");
-		$version_delete['delete_hours'] = we_base_request::_(we_base_request::RAW, "delete_hours", 0);
-		$version_delete['delete_minutes'] = we_base_request::_(we_base_request::RAW, "delete_minutes", 0);
-		$version_delete['delete_seconds'] = we_base_request::_(we_base_request::RAW, "delete_seconds", 0);
+		$version_delete['delete_hours'] = we_base_request::_(we_base_request::INT, "delete_hours", 0);
+		$version_delete['delete_minutes'] = we_base_request::_(we_base_request::INT, "delete_minutes", 0);
+		$version_delete['delete_seconds'] = we_base_request::_(we_base_request::INT, "delete_seconds", 0);
 
 		$version_reset['reset_date'] = we_base_request::_(we_base_request::RAW, "reset_date", "");
-		$version_reset['reset_hours'] = we_base_request::_(we_base_request::RAW, "reset_hours", 0);
-		$version_reset['reset_minutes'] = we_base_request::_(we_base_request::RAW, "reset_minutes", 0);
-		$version_reset['reset_seconds'] = we_base_request::_(we_base_request::RAW, "reset_seconds", 0);
+		$version_reset['reset_hours'] = we_base_request::_(we_base_request::INT, "reset_hours", 0);
+		$version_reset['reset_minutes'] = we_base_request::_(we_base_request::INT, "reset_minutes", 0);
+		$version_reset['reset_seconds'] = we_base_request::_(we_base_request::INT, "reset_seconds", 0);
 
 		$def = (we_base_request::_(we_base_request::STRING, 'type') === 'reset_versions');
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
-		$taskname = md5(session_id() . "_version_wizard");
-		$currentTask = we_base_request::_(we_base_request::RAW, "fr_" . $taskname . "_ct", 0);
+		$taskname = md5(session_id() . '_version_wizard');
+		$currentTask = we_base_request::_(we_base_request::RAW, 'fr_' . $taskname . '_ct', 0);
 		$taskFilename = FRAGMENT_LOCATION . $taskname;
 
 		$js = "";
@@ -781,13 +779,13 @@ set_button_state(false);';
 	static function getDelete2(){
 		$version = new we_versions_version();
 
-		$type = we_base_request::_(we_base_request::RAW, "type", self::DELETE_VERSIONS);
+		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
 		$version_delete = array(
 			'delete_date' => we_base_request::_(we_base_request::RAW, "delete_date", ""),
-			'delete_hours' => we_base_request::_(we_base_request::RAW, "delete_hours", 0),
-			'delete_minutes' => we_base_request::_(we_base_request::RAW, "delete_minutes", 0),
-			'delete_seconds' => we_base_request::_(we_base_request::RAW, "delete_seconds", 0),
+			'delete_hours' => we_base_request::_(we_base_request::INT, "delete_hours", 0),
+			'delete_minutes' => we_base_request::_(we_base_request::INT, "delete_minutes", 0),
+			'delete_seconds' => we_base_request::_(we_base_request::INT, "delete_seconds", 0),
 		);
 
 		foreach($version->contentTypes as $k){
@@ -811,57 +809,53 @@ set_button_state(false);';
 
 		$parts = array();
 
-		$whereCt = "";
+		$whereCtA = array();
 		foreach($version_delete as $k => $v){
-			if($k != "all" && $k != "delete_date" && $k != "delete_hours" && $k != "delete_minutes" && $k != "delete_seconds"){
-				if($v){
-					if($whereCt != ''){
-						$whereCt .= ',';
+			switch($k){
+				case 'all':
+				case 'delete_date':
+				case 'delete_hours':
+				case 'delete_minutes':
+				case 'delete_seconds':
+					break;
+				default:
+					if($v){
+						$whereCtA[] = '"' . $k . '"';
 					}
-					$whereCt .= "'" . $k . "'";
-				}
 			}
 		}
-		$whereCt = ($whereCt ? " ContentType IN (" . $whereCt . ")" : '1');
+		$whereCt = ($whereCt ? ' ContentType IN (' . implode(',', $whereCtA) . ')' : '1');
 
-		$cont = array();
-		$docIds = array();
-		$_SESSION['weS']['versions']['deleteWizardWhere'] = $whereCt . " AND " . $timestampWhere;
-		$GLOBALS['DB_WE']->query("SELECT ID,documentID,documentTable,Text,Path,ContentType,binaryPath,timestamp,version FROM " . VERSIONS_TABLE . " WHERE " . $whereCt . " AND " . $timestampWhere . ' ORDER BY ID');
+		$cont = $docIds = array();
+		$_SESSION['weS']['versions']['deleteWizardWhere'] = $whereCt . ' AND ' . $timestampWhere;
+		$GLOBALS['DB_WE']->query('SELECT ID,documentID,documentTable,Text AS text,Path AS path,ContentType,binaryPath,timestamp,version FROM ' . VERSIONS_TABLE . ' WHERE ' . $whereCt . ' AND ' . $timestampWhere . ' ORDER BY ID');
 		$_SESSION['weS']['versions']['logDeleteIds'] = array();
-		while($GLOBALS['DB_WE']->next_record()){
-			if(!in_array($GLOBALS['DB_WE']->f("documentID"), $docIds)){
-				$docIds[$GLOBALS['DB_WE']->f("documentID")]["Path"] = $GLOBALS['DB_WE']->f("Path");
-				$docIds[$GLOBALS['DB_WE']->f("documentID")]["ContentType"] = $GLOBALS['DB_WE']->f("ContentType");
+		while($GLOBALS['DB_WE']->next_record(MYSQL_ASSOC)){
+			if(!in_array($GLOBALS['DB_WE']->f('documentID'), $docIds)){
+				$docIds[$GLOBALS['DB_WE']->f('documentID')] = array(
+					'Path' => $GLOBALS['DB_WE']->f('path'),
+					'ContentType' => $GLOBALS['DB_WE']->f('ContentType')
+				);
 			}
 
-			$cont[] = array(
-				"ID" => $GLOBALS['DB_WE']->f("ID"),
-				"documentID" => $GLOBALS['DB_WE']->f("documentID"),
-				"version" => $GLOBALS['DB_WE']->f("version"),
-				"text" => $GLOBALS['DB_WE']->f("Text"),
-				"path" => $GLOBALS['DB_WE']->f("Path"),
-				"table" => $GLOBALS['DB_WE']->f("documentTable"),
-				"contentType" => $GLOBALS['DB_WE']->f("ContentType"),
-				"timestamp" => $GLOBALS['DB_WE']->f("timestamp")
-			);
+			$cont[] = $GLOBALS['DB_WE']->getRecord();
 			$_SESSION['weS']['versions']['logDeleteIds'][$GLOBALS['DB_WE']->f('ID')] = array(
-				'Text' => $GLOBALS['DB_WE']->f('Text'),
+				'Text' => $GLOBALS['DB_WE']->f('text'),
 				'ContentType' => $GLOBALS['DB_WE']->f('ContentType'),
-				'Path' => $GLOBALS['DB_WE']->f('Path'),
+				'Path' => $GLOBALS['DB_WE']->f('path'),
 				'Version' => $GLOBALS['DB_WE']->f('version'),
 				'documentID' => $GLOBALS['DB_WE']->f('documentID'),
 			);
-			if($GLOBALS['DB_WE']->f("binaryPath") != ""){
-				$_SESSION['weS']['versions']['deleteWizardbinaryPath'][] = $GLOBALS['DB_WE']->f("binaryPath");
+			if($GLOBALS['DB_WE']->f('binaryPath')){
+				$_SESSION['weS']['versions']['deleteWizardbinaryPath'][] = $GLOBALS['DB_WE']->f('binaryPath');
 			}
 		}
 
 		$out = '<div style="width:520px;">' .
 			g_l('versions', '[step2_txt1]');
 
-		if($timestamp != ""){
-			$date = date("d.m.y - H:i:s", $timestamp);
+		if($timestamp){
+			$date = date('d.m.y - H:i:s', $timestamp);
 			$out .= sprintf(g_l('versions', '[step2_txt2_delete]'), $date);
 		}
 		$out .= g_l('versions', '[step2_txt3]') .
@@ -911,10 +905,10 @@ set_button_state(false);';
 		$_SESSION['weS']['versions']['logResetIds'] = array();
 
 		$version_reset = array(
-			'reset_date' => we_base_request::_(we_base_request::RAW, "reset_date", ""),
-			'reset_hours' => we_base_request::_(we_base_request::RAW, "reset_hours", 0),
-			'reset_minutes' => we_base_request::_(we_base_request::RAW, "reset_minutes", 0),
-			'reset_seconds' => we_base_request::_(we_base_request::RAW, "reset_seconds", 0),
+			'reset_date' => we_base_request::_(we_base_request::STRING, "reset_date", ""),
+			'reset_hours' => we_base_request::_(we_base_request::INT, "reset_hours", 0),
+			'reset_minutes' => we_base_request::_(we_base_request::INT, "reset_minutes", 0),
+			'reset_seconds' => we_base_request::_(we_base_request::INT, "reset_seconds", 0),
 		);
 
 		foreach(we_versions_version::getContentTypesVersioning() as $k){
@@ -924,8 +918,8 @@ set_button_state(false);';
 		$def = (we_base_request::_(we_base_request::STRING, 'type') === 'reset_versions');
 		$version_reset['reset_doPublish'] = we_base_request::_(we_base_request::BOOL, 'reset_doPublish', $def);
 
-		if($version_reset['reset_date'] != ""){
-			$date = explode(".", we_base_request::_(we_base_request::STRING, "reset_date"));
+		if($version_reset['reset_date']){
+			$date = explode('.', $version_reset['reset_date']);
 			$day = intval($date[0]);
 			$month = intval($date[1]);
 			$year = intval($date[2]);
@@ -933,9 +927,9 @@ set_button_state(false);';
 			$minutes = $version_reset['reset_minutes'];
 			$seconds = $version_reset['reset_seconds'];
 			$timestamp = mktime($hour, $minutes, $seconds, $month, $day, $year);
-			$timestampWhere = " timestamp< '" . intval($timestamp) . "' ";
+			$timestampWhere = ' timestamp<' . $timestamp . ' ';
 		} else {
-			$timestamp = "";
+			$timestamp = 0;
 			$timestampWhere = 1;
 		}
 
@@ -967,7 +961,7 @@ set_button_state(false);';
 
 		$cont = $docIds = array();
 
-		$_SESSION['weS']['versions']['query'] = 'SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM ' . VERSIONS_TABLE . ' WHERE timestamp<=' . intval($timestamp) . ($w ? ' AND (' . implode(' OR ', $w) . ') ' : '') . ' GROUP BY documentTable,documentID ORDER BY version DESC';
+		$_SESSION['weS']['versions']['query'] = 'SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM ' . VERSIONS_TABLE . ' WHERE timestamp<=' . $timestamp . ($w ? ' AND (' . implode(' OR ', $w) . ') ' : '') . ' GROUP BY documentTable,documentID ORDER BY version DESC';
 		$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
 		while($GLOBALS['DB_WE']->next_record()){
 			if(!in_array($GLOBALS['DB_WE']->f("documentID"), $docIds)){

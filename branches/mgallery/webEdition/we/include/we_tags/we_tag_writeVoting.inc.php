@@ -42,7 +42,7 @@ function we_tag_writeVoting($attribs){
 			if(!isset($_voting[$id]) || !is_array($_voting[$id])){
 				$_voting[$id] = array();
 			}
-			if(($dat = we_base_request::_(we_base_request::STRINGC, $value)) !== false && $dat !== ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
+			if(($dat = we_base_request::_(we_base_request::STRING, $value)) !== false && $dat !== ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
 				$_voting[$id][] = $dat;
 			}
 		}

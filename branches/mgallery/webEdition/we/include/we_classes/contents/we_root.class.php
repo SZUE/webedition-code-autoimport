@@ -965,7 +965,7 @@ abstract class we_root extends we_class{
 				}
 				break;
 			case 'save_document':
-				if(we_base_request::_(we_base_request::STRINGC, 'we_cmd', '', 7) === 'save_document'){
+				if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7) === 'save_document'){
 					return true;
 				}
 				break;

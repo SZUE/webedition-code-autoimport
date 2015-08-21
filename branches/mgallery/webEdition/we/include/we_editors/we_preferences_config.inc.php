@@ -100,8 +100,8 @@ $GLOBALS['configs'] = array(
 		'SMTP_SERVER' => array('SMTP_SERVER', we_base_request::STRING, 'localhost'),
 		'SMTP_PORT' => array('SMTP server port', we_base_request::INT, 25),
 		'SMTP_AUTH' => array('SMTP authentication', we_base_request::BOOL, false),
-		'SMTP_USERNAME' => array('SMTP username', we_base_request::STRINGC, ''),
-		'SMTP_PASSWORD' => array('SMTP password', we_base_request::RAW, ''),
+		'SMTP_USERNAME' => array('SMTP username', we_base_request::STRING, ''),
+		'SMTP_PASSWORD' => array('SMTP password', we_base_request::RAW_CHECKED, ''),
 		'SMTP_ENCRYPTION' => array('SMTP encryption', we_base_request::STRING, 0),
 //formmail stuff
 		'FORMMAIL_CONFIRM' => array('Flag if formmail confirm function should be work', we_base_request::BOOL, true), //this is restricted to admin
@@ -126,7 +126,7 @@ $GLOBALS['configs'] = array(
 		'NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH' => array('Flag if NAV- rules should be evaluated even after a first match', we_base_request::BOOL, false),
 //SEO stuff
 		'NAVIGATION_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Nav-output', we_base_request::BOOL, false),
-		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRINGC, 'index.php,index.html'),
+		'NAVIGATION_DIRECTORYINDEX_NAMES' => array('Comma seperated list such as index.php,index.html', we_base_request::STRING, 'index.php,index.html'),
 		'WYSIWYGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in Wysiwyg-editor output', we_base_request::BOOL, false),
 		'TAGLINKS_DIRECTORYINDEX_HIDE' => array('Flag if directoy-index files should be hidden in tag output', we_base_request::BOOL, false),
 		'OBJECTSEOURLS_LOWERCASE' => array('Flag if object SEO-URLs save in lower or camelcase', we_base_request::BOOL, false),
@@ -254,7 +254,7 @@ $GLOBALS['configs'] = array(
 	'conf' => array(
 		//description,request-type if any, default, encode
 		'HTTP_USERNAME' => array('if used password protection to the webEdition directory, the username', we_base_request::STRING, '', true),
-		'HTTP_PASSWORD' => array('if used password protection to the webEdition directory, the password', we_base_request::RAW, '', true),
+		'HTTP_PASSWORD' => array('if used password protection to the webEdition directory, the password', we_base_request::RAW_CHECKED, '', true),
 		'DB_CONNECT' => array('Mode how to access the database: mysqli_connect, mysqli_pconnect, deprecated: connect, pconnect', we_base_request::STRING, ''),
 		'DB_SET_CHARSET' => array('connection charset to db', we_base_request::STRING, 'utf8'),
 		//note these settings are user-settings, not changed by request/frontend
@@ -275,7 +275,7 @@ $GLOBALS['configs'] = array(
 		'proxyhost' => array(we_base_request::URL, ''),
 		'proxyport' => array(we_base_request::INT, 0),
 		'proxyuser' => array(we_base_request::STRING, ''),
-		'proxypass' => array(we_base_request::RAW, ''),
+		'proxypass' => array(we_base_request::RAW_CHECKED, ''),
 		'active_integrated_modules' => array(we_base_request::STRING, ''),
 		'DB_CONNECT' => array(we_base_request::STRING, ''),
 		'useauth' => array(we_base_request::BOOL, false), //pseudo element

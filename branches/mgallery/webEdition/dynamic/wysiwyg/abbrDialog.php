@@ -41,8 +41,8 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 	$Glossary = new we_glossary_glossary();
 	$Glossary->Language = we_base_request::_(we_base_request::STRING, 'language');
 	$Glossary->Type = we_glossary_glossary::TYPE_ABBREVATION;
-	$Glossary->Text = trim(we_base_request::_(we_base_request::RAW, 'text'));
-	$Glossary->Title = trim(we_base_request::_(we_base_request::RAW, 'we_dialog_args', '', 'title'));
+	$Glossary->Text = trim(we_base_request::_(we_base_request::STRING, 'text'));
+	$Glossary->Title = trim(we_base_request::_(we_base_request::STRING, 'we_dialog_args', '', 'title'));
 	$Glossary->Published = time();
 	$Glossary->setAttribute('lang', we_base_request::_(we_base_request::STRING, 'we_dialog_args', '', 'lang'));
 	$Glossary->setPath();
