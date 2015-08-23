@@ -1518,7 +1518,7 @@ class we_versions_version{
 			'modifications' => 1,
 			'modifierID' => isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '',
 			'IP' => $_SERVER['REMOTE_ADDR'],
-			'Browser' => $_SERVER['HTTP_USER_AGENT'],
+			'Browser' => isset($_SERVER['HTTP_USER_AGENT']) ? : '',
 			'active' => 1,
 			'fromScheduler' => $this->IsScheduler(),
 		));
