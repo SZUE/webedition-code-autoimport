@@ -28,7 +28,7 @@ function we_tag_ifRegisteredUser($attribs){
 	}
 
 	$permission = weTag_getAttribute('permission', $attribs, '', we_base_request::STRING);
-	$match = array_filter(weTag_getAttribute('match', $attribs, '', we_base_request::STRING_LIST));
+	$match = array_filter(weTag_getAttribute('match', $attribs, array(), we_base_request::STRING_LIST));
 	$cfilter = weTag_getAttribute('cfilter', $attribs, false, we_base_request::BOOL);
 	$allowNoFilter = weTag_getAttribute('allowNoFilter', $attribs, false, we_base_request::BOOL);
 	$userid = weTag_getAttribute('userid', $attribs, array(), we_base_request::INTLISTA);
@@ -49,7 +49,7 @@ function we_tag_ifRegisteredUser($attribs){
 			if(!$ret){
 				return false;
 			}
-			if($match !== ''){
+			if($match){
 				$perm = explode(',', $_SESSION['webuser'][$permission]);
 				switch($matchType){
 					case 'one':
