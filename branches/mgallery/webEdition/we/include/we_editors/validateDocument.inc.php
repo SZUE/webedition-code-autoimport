@@ -141,6 +141,6 @@ echo STYLESHEET . we_html_element::jsElement('
  '</head>' .
  we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), '<form name="we_form">'
 	. we_html_tools::hidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
-	. we_html_multiIconBox::getHTML('weDocValidation', "100%", $parts, 20, '', -1, '', '', false) .
+	. we_html_multiIconBox::getHTML('weDocValidation', $parts, 20, '', -1, '', '', false) .
 	'</form>') .
  '</html>';

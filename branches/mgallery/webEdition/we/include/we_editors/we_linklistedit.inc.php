@@ -707,7 +707,7 @@ if($ok && $cmd === "edit_link_at_class"){
 				"we_transaction" => $we_transaction,
 				"we_field" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)
 			)) .
-			we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
+			we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
 			$yuiSuggest->getYuiJs();
 			?>
 		</form>

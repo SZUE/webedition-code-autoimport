@@ -151,7 +151,7 @@ function jump(val) {
 			),
 		);
 
-		$out = we_html_element::htmlDiv(array('id' => 'tab1'), we_html_multiIconBox::getHTML('', "100%", $parts, 30, '', -1, '', '', false));
+		$out = we_html_element::htmlDiv(array('id' => 'tab1'), we_html_multiIconBox::getHTML('', $parts, 30, '', -1, '', '', false));
 
 		$content = $js . $out;
 

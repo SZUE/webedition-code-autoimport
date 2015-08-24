@@ -234,7 +234,7 @@ echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]')) .
 <?php
 echo we_html_multiIconBox::getJS() .
  we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
- we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
+ we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, "", "", "", "auto"));
 ?>
 	</div>
 </body>

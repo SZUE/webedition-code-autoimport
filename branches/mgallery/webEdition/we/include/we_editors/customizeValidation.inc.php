@@ -114,6 +114,6 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 		$parts[] = array('headline' => g_l('validation', '[active]'), 'html' => we_html_tools::htmlSelect('active', array(0 => 'false', 1 => 'true'), 1, $selectedService->active) . '<br /><span class="small">' . g_l('validation', '[desc][active]') . '</span>', 'space' => 150);
 	}
 
-	echo '<form name="we_form" onsubmit="return false;">' . we_html_multiIconBox::getHTML('weDocValidation', '100%', $parts, 30, we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', (empty($services))), we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
+	echo '<form name="we_form" onsubmit="return false;">' . we_html_multiIconBox::getHTML('weDocValidation', $parts, 30, we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'customValidationService\',\'saveService\');', true, 100, 22, '', '', (empty($services))), we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('validation', '[adjust_service]'))
 	. '</form>' .
 	'</body></html>';

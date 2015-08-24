@@ -192,11 +192,11 @@ class we_collection extends we_root{
 	public function getPropertyPage(){
 		echo we_html_multiIconBox::getJS() .
 		we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
-		we_html_multiIconBox::getHTML('weOtherDocProp', '100%', array(
+		we_html_multiIconBox::getHTML('PropertyPage', array(
 			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
 			array('icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => 140),
 			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
-			, 20);
+		);
 	}
 
 	function formContent($fixedRemTable = false){
@@ -269,7 +269,7 @@ class we_collection extends we_root{
 		$classTable->setCol(0, 2, null, $classListTo);
 
 		$selRemTable = $fixedRemTable && $this->remTable ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->remTable) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->remTable], 'width' => 382)) :
-			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'width: 388px; margin-top: 5px;'), 'value', 388);
+			we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->remTable, false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value');
 
 
 		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'));

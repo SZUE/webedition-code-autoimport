@@ -57,7 +57,7 @@ function create_dialog($name, array $content, $expand = -1, $show_text = '', $hi
 	$_output = ($expand != -1 ? we_html_multiIconBox::getJS() : '');
 
 	// Return HTML code of dialog
-	return $_output . we_html_multiIconBox::getHTML($name, '100%', $content, 30, '', $expand, $show_text, $hide_text);
+	return $_output . we_html_multiIconBox::getHTML($name, $content, 30, '', $expand, $show_text, $hide_text);
 }
 
 function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){

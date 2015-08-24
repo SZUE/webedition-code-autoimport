@@ -295,7 +295,7 @@ function uploadFinished() {
 		$wepos = weGetCookieVariable("but_weimportfiles");
 		$content = we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML(
-				"weimportfiles", "99%", $parts, 30, "", $foldAt, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('importFiles', '[step1]'));
+				"weimportfiles", $parts, 30, "", $foldAt, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('importFiles', '[step1]'));
 		$startsrceen = we_html_element::htmlDiv(
 				array(
 				"id" => "start"
@@ -375,7 +375,7 @@ function uploadFinished() {
 					"name" => "we_startform",
 					"method" => "post"
 					), $this->_getHiddens()) .
-				we_html_multiIconBox::getHTML("uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'))
+				we_html_multiIconBox::getHTML("uploadFiles", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'))
 		);
 
 		$body = we_html_element::htmlBody(
@@ -416,7 +416,7 @@ function uploadFinished() {
 				array(
 				"action" => WEBEDITION_DIR . "we_cmd.php", "name" => "we_startform", "method" => "post"
 				), we_html_element::htmlHidden('step', 3) . we_html_multiIconBox::getHTML(
-					"uploadFiles", "100%", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step3]')))// bugfix 1001
+					"uploadFiles", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step3]')))// bugfix 1001
 		;
 
 		$body = we_html_element::htmlBody(array(

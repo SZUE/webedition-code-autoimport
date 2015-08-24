@@ -84,7 +84,7 @@ echo STYLESHEET . we_html_element::cssElement('
 			}
 			$parts[] = array("headline" => g_l('weClass', '[download]'), "html" => $link, "space" => 120);
 
-			echo we_html_multiIconBox::getHTML('weOtherDocPrev', '100%', $parts, 20);
+			echo we_html_multiIconBox::getHTML('weOtherDocPrev', $parts, 20);
 		}
 		echo we_html_element::htmlHidden("we_complete_request", 1);
 		?>

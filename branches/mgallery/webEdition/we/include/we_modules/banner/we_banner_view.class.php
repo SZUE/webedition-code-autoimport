@@ -184,7 +184,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		}
 
 		$out.= we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML($itsname, "100%", $parts, 30, "", $znr, $openText, $closeText, ($wepos === "down")) .
+			we_html_multiIconBox::getHTML($itsname, $parts, 30, "", $znr, $openText, $closeText, ($wepos === "down")) .
 			'</form>' .
 			$yuiSuggest->getYuiJs() .
 			'</body></html>';
@@ -735,7 +735,7 @@ var perms={
 	function formPath($leftsize = 120){
 		return '<table class="default">
 	<tr><td style="padding-bottom:10px;">' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($this->uid . "_Text", 37, $this->banner->Text, "", 'style="width:388px" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.setPathName(this.value); parent.edheader.setTitlePath()"'), g_l('modules_banner', '[name]')) . '</td></tr>
-	<tr><td>' . $this->formDirChooser(388, BANNER_TABLE, $this->banner->ParentID, $this->uid . "_ParentID", g_l('modules_banner', '[group]'), "", "PathGroup") . '</td></tr>
+	<tr><td>' . $this->formDirChooser(0, BANNER_TABLE, $this->banner->ParentID, $this->uid . "_ParentID", g_l('modules_banner', '[group]'), "", "PathGroup") . '</td></tr>
 </table>';
 	}
 

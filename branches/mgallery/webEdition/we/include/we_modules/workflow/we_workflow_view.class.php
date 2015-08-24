@@ -147,7 +147,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 					);
 					//	Workflow-Type
 					$content .= $this->getHiddensFormOverviewPage() .
-						we_html_multiIconBox::getHTML('workflowProperties', '100%', $parts, 30);
+						we_html_multiIconBox::getHTML('workflowProperties', $parts, 30);
 					break;
 				case self::PAGE_OVERVIEW:
 					$content .= $this->getHiddensFormPropertyPage() .
@@ -903,7 +903,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
 		}
 	}') .
-			we_html_multiIconBox::getHTML('', '100%', $_parts, 30);
+			we_html_multiIconBox::getHTML('', $_parts, 30);
 	}
 
 	function getObjectInfo(){
@@ -992,7 +992,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			'</head>
 		<body class="weEditorBody" onunload="doUnload()">
 				<form name="we_form">' . we_class::hiddenTrans() . '<table cellpadding="6">' .
-			we_html_multiIconBox::getHTML('', '100%', $_parts, 30) .
+			we_html_multiIconBox::getHTML('', $_parts, 30) .
 			'</form></body></html>';
 	}
 

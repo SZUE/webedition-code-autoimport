@@ -112,10 +112,10 @@ function startTree(){
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		if(($param = we_base_request::_(we_base_request::INT, 'msg_param'))){
 			switch($param){
-				case self::TYPE_TODO:
+				case we_messaging_frames::TYPE_TODO:
 					$f = $this->messaging->get_inbox_folder('we_todo');
 					break;
-				case self::TYPE_MESSAGE:
+				case we_messaging_frames::TYPE_MESSAGE:
 					$f = $this->messaging->get_inbox_folder('we_message');
 					break;
 			}

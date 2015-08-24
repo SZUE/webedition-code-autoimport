@@ -256,9 +256,7 @@ abstract class we_root extends we_class{
 		}
 
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged . str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged . str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
 
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
@@ -298,7 +296,7 @@ abstract class we_root extends we_class{
 		return getHtmlTag('input', $_attribs);
 	}
 
-	function formCreator($canChange, $width = 388){
+	function formCreator($canChange){
 		if(!$this->CreatorID){
 			$this->CreatorID = 0;
 		}
@@ -310,7 +308,7 @@ abstract class we_root extends we_class{
 		$textname = 'wetmp_' . $this->Name . '_CreatorID';
 		$idname = 'we_' . $this->Name . '_CreatorID';
 
-		$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', ' readonly', '', $width);
+		$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', ' readonly', '');
 		$idfield = we_html_element::htmlHidden($idname, $this->CreatorID);
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
@@ -367,7 +365,7 @@ abstract class we_root extends we_class{
 		$canChange = ((!$this->ID) || we_users_util::isUserInUsers($_SESSION['user']['ID'], $GLOBALS['we_doc']->CreatorID));
 
 		return '<table class="default">
-<tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER'), 388) . '</td></tr>
+<tr><td class="defaultfont" style="padding-bottom:2px;">' . $this->formCreator($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_OWNER')) . '</td></tr>
 <tr><td>' . $this->formRestrictOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' .
 			($this->RestrictOwners ?
 				'<tr><td style="padding-top:2px;">' . $this->formOwners($canChange && permissionhandler::hasPerm('CHANGE_DOCUMENT_PERMISSION')) . '</td></tr>' : '') .
@@ -445,16 +443,16 @@ abstract class we_root extends we_class{
 			$this->Filename = $this->Filename ? : current($vals);
 			$filenameinput = $this->formSelectFromArray('', 'Filename', array_combine($vals, $vals), g_l('weClass', '[filename]'));
 		} else {
-			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 388, 255, 'onchange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
+			$filenameinput = $this->formInputField('', 'Filename', g_l('weClass', '[filename]'), 30, 0, 255, 'onchange="_EditorFrame.setEditorIsHot(true);if(self.pathOfDocumentChanged){pathOfDocumentChanged();}"');
 		}
-		return $disable ? ('<span class="defaultfont">' . $this->Path . '</span>') : '
+		return $disable ? ($this->Path) : '
 <table class="default">
 	<tr>
 		<td style="padding-bottom:4px;">' . $filenameinput . '</td>
 		<td></td>
 		<td>' . $this->formExtension2() . '</td>
 	</tr>
-	<tr><td colspan="3">' . $this->formDirChooser(388, 0, '', 'ParentPath', 'ParentID', '', true, $disablePath) . '</td></tr>
+	<tr><td colspan="3">' . $this->formDirChooser(0, 0, '', 'ParentPath', 'ParentID', '', true, $disablePath) . '</td></tr>
 </table>';
 	}
 
@@ -596,7 +594,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setResult($idname, $myid);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(388);
+		$yuiSuggest->setWidth(0);
 		$yuiSuggest->setSelectButton($button);
 		$yuiSuggest->setTrashButton($trashButton);
 		$yuiSuggest->setOpenButton($openbutton);
@@ -626,7 +624,7 @@ abstract class we_root extends we_class{
 			return '
 <table class="default" style="margin-top:2px;">' .
 				$_headline . '
-	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);_EditorFrame.setEditorIsHot(true);"), "value") . '</td></tr>
 	<tr><td class="defaultfont" style="text-align:left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
 <br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
@@ -634,7 +632,7 @@ abstract class we_root extends we_class{
 			return '
 <table class="default" style="margin-top:2px;">' .
 				$_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value", 508) . '</td></tr>
+	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);", 'onchange' => "_EditorFrame.setEditorIsHot(true);"), "value") . '</td></tr>
 </table>';
 		}
 	}

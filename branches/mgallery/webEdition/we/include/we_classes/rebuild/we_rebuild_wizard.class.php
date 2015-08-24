@@ -290,7 +290,7 @@ abstract class we_rebuild_wizard{
 			$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $_key . ']', $_val);
 		}
 
-		return array($js, we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('rebuild', '[rebuild]')) .
+		return array($js, we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('rebuild', '[rebuild]')) .
 			$dthidden .
 			$thumbsHidden .
 			$metaFieldsHidden .
@@ -591,7 +591,7 @@ abstract class we_rebuild_wizard{
 				$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $_key . ']', $_val);
 			}
 		}
-		return array(we_rebuild_wizard::getPage2Js(), we_html_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_documents]')) .
+		return array(we_rebuild_wizard::getPage2Js(), we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_documents]')) .
 			$thumbsHidden .
 			$metaFieldsHidden .
 			we_html_element::htmlHiddens(array(
@@ -664,7 +664,7 @@ abstract class we_rebuild_wizard{
 		foreach($metaFields as $_key => $_val){
 			$metaFieldsHidden .= we_html_element::htmlHidden("_field[$_key]", $_val);
 		}
-		return array(we_rebuild_wizard::getPage2Js('thumbsFolders'), we_html_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_thumbnails]')) .
+		return array(we_rebuild_wizard::getPage2Js('thumbsFolders'), we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_thumbnails]')) .
 			$dthidden .
 			$metaFieldsHidden .
 			we_html_element::htmlHiddens(array(
@@ -736,7 +736,7 @@ abstract class we_rebuild_wizard{
 		for($i = 0; $i < count($thumbsArray); $i++){
 			$thumbsHidden .= we_html_element::htmlHidden('thumbs[' . $i . ']', $thumbsArray[$i]);
 		}
-		return array(we_rebuild_wizard::getPage2Js('metaFolders'), we_html_multiIconBox::getHTML('', '100%', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_metadata]')) .
+		return array(we_rebuild_wizard::getPage2Js('metaFolders'), we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_metadata]')) .
 			$dthidden .
 			$thumbsHidden .
 			we_html_element::htmlHiddens(array(

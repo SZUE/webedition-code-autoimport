@@ -967,19 +967,19 @@ function onSelectionClassChangeJS(value) {
 					we_html_element::htmlHiddens(array(
 						'IsFolder' => (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0),
 						'presetFolder' => we_base_request::_(we_base_request::STRING, 'presetFolder', ''))) .
-					we_html_multiIconBox::getHTML('', '100%', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
+					we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30, '', -1, '', '', false, $preselect) .
 					($this->Model->IsFolder ?
-						we_html_multiIconBox::getHTML('', '100%', $this->getHTMLPropertiesGroup(), 30, '', -1, '', '', false, $preselect) :
-						we_html_multiIconBox::getHTML('', '100%', $this->getHTMLPropertiesItem(), 30, '', -1, '', '', false, $preselect)) .
+						we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesGroup(), 30, '', -1, '', '', false, $preselect) :
+						we_html_multiIconBox::getHTML('', $this->getHTMLPropertiesItem(), 30, '', -1, '', '', false, $preselect)) .
 					(($this->Model->Selection == we_navigation_navigation::SELECTION_STATIC || $this->Model->IsFolder) ?
 						$this->getHTMLAttributes() :
 						''
 					)
 				) . ($this->Model->IsFolder ?
-					we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', '100%', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
+					we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
 					''
 				) . ((defined('CUSTOMER_TABLE')) ?
-					we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', '100%', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
+					we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
 					''
 				);
 		}
@@ -1239,8 +1239,7 @@ function selectItem() {
 				), we_html_element::htmlForm(
 					array(
 					"name" => "we_form", "onsubmit" => "return false"
-					), we_html_multiIconBox::getHTML(
-						'', '100%', $_parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
+					), we_html_multiIconBox::getHTML('', $_parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
 
 		return $this->getHTMLDocument($_body, we_html_element::jsElement($_js));
 	}
@@ -1338,8 +1337,7 @@ function selectItem() {
 				), we_html_element::htmlForm(
 					array(
 					'name' => 'we_form', 'onsubmit' => 'return false'
-					), we_html_multiIconBox::getHTML(
-						'', '100%', $_parts, 30, '<div style="float:right;">' . we_html_button::create_button(
+					), we_html_multiIconBox::getHTML('', $_parts, 30, '<div style="float:right;">' . we_html_button::create_button(
 							'close', 'javascript:self.close();') . '</div>', -1, '', '', false, g_l('navigation', '[dyn_selection]'))));
 
 		return $this->getHTMLDocument($_body, '');
@@ -1578,7 +1576,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		);
 
 		$wepos = weGetCookieVariable("but_weNaviAttrib");
-		return we_html_multiIconBox::getHTML('weNaviAttrib', '100%', $_parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), ($wepos === 'down'));
+		return we_html_multiIconBox::getHTML('weNaviAttrib', $_parts, 30, '', 0, g_l('navigation', '[more_attributes]'), g_l('navigation', '[less_attributes]'), ($wepos === 'down'));
 	}
 
 	function getHTMLImageAttributes(){

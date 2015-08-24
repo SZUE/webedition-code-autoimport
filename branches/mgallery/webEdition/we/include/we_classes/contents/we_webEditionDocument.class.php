@@ -207,7 +207,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return '
 <table class="default">
 	<tr><td colspan="3" class="defaultfont" style="text-align:left;padding-bottom:4px;">' . $this->formDocType(($this->Published > 0)) . '</td></tr>
-	<tr><td colspan="3" class="defaultfont" style="text-align:left;padding-bottom:4px;">' . $this->formTemplatePopup(388, ($this->Published > 0)) . '</td></tr>
+	<tr><td colspan="3" class="defaultfont" style="text-align:left;padding-bottom:4px;">' . $this->formTemplatePopup(($this->Published > 0)) . '</td></tr>
 	<tr><td colspan="3">
 			<table class="default">
 				<tr>
@@ -250,7 +250,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$yuiSuggest->setResult($idname, $myid);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
-		$yuiSuggest->setWidth(388);
+		$yuiSuggest->setWidth(0);
 		$yuiSuggest->setSelectButton($button);
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		$yuiSuggest->setDoOnTextfieldBlur("if(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')){ top.we_cmd('reload_editpage')}");
@@ -259,7 +259,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	// creates the Template PopupMenue
-	private function formTemplatePopup($leftsize, $disable){
+	private function formTemplatePopup($disable){
 		if($this->DocType){
 			$templateFromDoctype = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($this->DocType) . ' LIMIT 1', '', $this->DB_WE);
 		}
@@ -273,7 +273,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			if($this->DocType){
 				return ($templateFromDoctype ?
-						$this->xformTemplatePopup(388) :
+						$this->xformTemplatePopup(0) :
 						we_html_tools::htmlFormElementTable($path, g_l('weClass', '[template]'), 'left', 'defaultfont')
 					);
 			}
@@ -1094,7 +1094,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$wepos = weGetCookieVariable('but_weDocProp');
 
 		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('weDocProp', '100%', array(
+		we_html_multiIconBox::getHTML('PropertyPage', array(
 			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
 			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => 140),
 			array('icon' => 'meta.gif', 'headline' => g_l('weClass', '[metainfo]'), 'html' => $this->formMetaInfos(), 'space' => 140),
@@ -1102,7 +1102,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			array('icon' => 'navi.gif', 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation(), 'space' => 140),
 			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyWeDoc]'), 'html' => $this->formCopyDocument(), 'space' => 140),
 			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140)
-			), 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'));
+			), 0, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'));
 	}
 
 }

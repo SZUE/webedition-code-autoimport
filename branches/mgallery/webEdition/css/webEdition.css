@@ -31,9 +31,22 @@ body{
 	letter-spacing: normal ! important;
 }
 
+.multiIcon{
+	padding-top:10px;
+}
+
 img.multiIcon{
 	height:64px;
 	width:64px;
+	margin:0px 20px;
+}
+.multiIconRight{
+	display: inline-block;
+}
+.multiiconleft{
+	display: inline-block;
+}
+.multiiconleft span.fileicon{
 	margin-left:20px;
 }
 
@@ -1310,17 +1323,20 @@ div.collection-content{
 	color: gray;
 }
 
-.multiiconleft{
-	float:left;
-}
-.multiiconleft span.fileicon{
-	margin-left:20px;
-}
-
 .largeicons span.fileicon{
 	font-size: 32px;
 }
 
 .largeicons span.fileicon .we-icon i {
 	bottom: -0.3ex;
+}
+
+#PropertyPage input,
+#PropertyPage select{
+	width:30em;
+}
+
+#PropertyPage input[type="checkbox"],
+#PropertyPage input[type="radio"]{
+	width:auto;
 }

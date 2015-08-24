@@ -291,7 +291,7 @@ openFolders["' . TEMPLATES_TABLE . '"]="";
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
 							"pnt" => "body",
 							"step" => 1)) .
-						we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))
 					)
 				)
 		);
@@ -338,7 +338,7 @@ function we_submit(){
 							'pnt' => "body",
 							'step' => 2,
 							'art' => ($this->exportVars["extype"] === 'csv' ? 'objects' : 'docs'))) .
-						we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[step1]'))
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('export', '[step1]'))
 					)
 				)
 		);
@@ -417,7 +417,7 @@ function we_cmd(){
 
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . $js . weSuggest::getYuiFiles(), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
+						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
 					) . $yuiSuggest->getYuiJs()
 				)
 		);
@@ -444,7 +444,7 @@ function we_cmd(){
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 //we_html_element::htmlInput(array("type" => "text","name" => "selectedItems")).
-						we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
+						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[step2]'))
 					)
 				)
 		);
@@ -548,7 +548,7 @@ function we_submit(){
 							"selTempl" => '',
 							"selObjs" => (isset($_SESSION['weS']['exportVars_session']["selObjs"]) ? $_SESSION['weS']['exportVars_session']["selObjs"] : ""),
 							"selClasses" => (isset($_SESSION['weS']['exportVars_session']["selClasses"]) ? $_SESSION['weS']['exportVars_session']["selClasses"] : ""))) .
-						we_html_multiIconBox::getHTML("", 530, $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('export', '[title]'))
 					)
 				)
 		);
@@ -654,7 +654,7 @@ function setState(a) {
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
 							"pnt" => "body",
 							"step" => 7)) .
-						we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[options]'))
+						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[options]'))
 					)
 				)
 		);
@@ -732,7 +732,7 @@ function setState(a) {
 							"pnt" => "load",
 							"cmd" => "export",
 							"step" => 7)) .
-						we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('export', '[step3]'))
+						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[step3]'))
 					)
 				)
 		);

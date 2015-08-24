@@ -388,7 +388,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 	);
 }
 
-echo we_html_multiIconBox::getHTML('revenues', '100%', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
+echo we_html_multiIconBox::getHTML('revenues', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
 ?>
 </form>
 </body>

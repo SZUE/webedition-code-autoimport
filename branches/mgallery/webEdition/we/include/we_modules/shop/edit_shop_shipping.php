@@ -303,8 +303,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 	);
 }
 
-echo we_html_multiIconBox::getHTML(
-	'weShipping', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+echo we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
 		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
 ) . '

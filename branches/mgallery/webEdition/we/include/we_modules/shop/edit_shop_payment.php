@@ -159,5 +159,5 @@ echo '
 
 
 <form name="we_form" method="post" style="margin-top:16px;">
-' . we_html_multiIconBox::getHTML('', '100%', $Parts, 30, $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'auto') . '</form>
+' . we_html_multiIconBox::getHTML('', $Parts, 30, $_buttons, -1, '', '', false, g_l('modules_shop', '[paymentP]'), '', '', 'auto') . '</form>
 </body></html>';

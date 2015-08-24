@@ -76,7 +76,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 		echo we_class::hiddenTrans();
 
 		if($_editMode){
-			echo we_html_multiIconBox::_getBoxStart("100%", g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
+			echo we_html_multiIconBox::_getBoxStart(g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
 			$jsGUI->getContainer() .
 			we_html_multiIconBox::_getBoxEnd();
 			$js = '';
@@ -104,7 +104,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 				$_msg = '';
 			}
-			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false));
+			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30, '', -1, '', '', false));
 		}
 		echo we_html_element::htmlHidden("we_complete_request", 1) .
 		$yuiSuggest->getYuiJs();

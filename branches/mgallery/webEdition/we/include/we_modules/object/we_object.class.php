@@ -2429,7 +2429,7 @@ class we_object extends we_document{
 			);
 		}
 		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', '100%', $parts, 30, '', -1, '', '', false);
+		we_html_multiIconBox::getHTML('PropertyPage', $parts, 0, '', -1, '', '', false);
 	}
 
 }

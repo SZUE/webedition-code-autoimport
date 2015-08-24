@@ -288,7 +288,7 @@ function we_save() {
 		);
 
 		return $this->View->getCommonHiddens($hiddens) .
-			we_html_multiIconBox::getHTML('', '100%', $this->getHTMLGeneral(), 30);
+			we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30);
 	}
 
 	function getHTMLLeft(){

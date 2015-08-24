@@ -224,7 +224,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 	}
 
 	echo we_html_multiIconBox::getJS() .
-	we_html_multiIconBox::getHTML('', '100%', $parts, 20, '', -1, '', '', false);
+	we_html_multiIconBox::getHTML('', $parts, 20, '', -1, '', '', false);
 	?>
 </body>
 </html>

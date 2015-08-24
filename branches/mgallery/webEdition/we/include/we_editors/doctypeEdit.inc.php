@@ -377,7 +377,7 @@ function disableLangDefault(allnames, allvalues, deselect) {
 
 
 		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
+		we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
 		$yuiSuggest->getYuiJs();
 		?>
 	</form>

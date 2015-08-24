@@ -170,7 +170,7 @@ $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javasc
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML("sctProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[shortcuts]'));
+$sTblWidget = we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML("sctProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[shortcuts]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', STYLESHEET .
 	we_html_element::jsElement($jsPrefs . "

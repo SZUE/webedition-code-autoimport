@@ -1294,7 +1294,7 @@ _multiEditorreload = true;';
 			)
 		);
 
-		return we_html_multiIconBox::getHTML('', '100%', $parts, 30);
+		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
 	function getUserfield($name, $lngkey, $type = 'text', $maxlen = 255, $noNull = false, $attribs = ''){
@@ -1415,7 +1415,7 @@ _multiEditorreload = true;';
 			'space' => 120
 		);
 
-		return we_html_multiIconBox::getHTML('', '100%', $parts, 30);
+		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
 	/**
@@ -1534,7 +1534,7 @@ showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
 			);
 		}
 
-		return we_html_multiIconBox::getHTML('', '100%', $parts, 30) . we_html_element::jsElement($javascript);
+		return we_html_multiIconBox::getHTML('', $parts, 30) . we_html_element::jsElement($javascript);
 	}
 
 	function formWorkspace(){
@@ -1684,7 +1684,7 @@ function delElement(elvalues,elem) {
 
 
 		return $content .
-			we_html_multiIconBox::getHTML('', '100%', $parts, 30);
+			we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
 	function formPreferences($branch = ''){
@@ -1704,7 +1704,7 @@ function delElement(elvalues,elem) {
 			//'editor' => $this->formPreferencesEditor(),
 		);
 
-		return we_html_multiIconBox::getHTML('', '100%', array(
+		return we_html_multiIconBox::getHTML('', array(
 				array(
 					'headline' => '',
 					'html' => $dynamic_controls->fold_multibox_groups($groups, $titles, $multiboxes, $branch),
@@ -2224,7 +2224,7 @@ function show_seem_chooser(val) {
 			)
 		);
 
-		return we_html_multiIconBox::getHTML('', '100%', $parts, 30);
+		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
 	function formInherits($name, $value, $title, $onClick = ''){

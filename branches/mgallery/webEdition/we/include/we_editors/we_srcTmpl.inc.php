@@ -398,7 +398,7 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 		parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();">
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
 		echo we_class::hiddenTrans() .
-		'<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">' . $maineditor . (isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", "100%", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
+		'<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">' . $maineditor . (isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
 		we_html_element::htmlHidden('we_complete_request', 1) .
 		(isset($groupJs) ?
 			we_html_element::jsElement('tagGroups = {' . $groupJs . '};' . (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '')) :

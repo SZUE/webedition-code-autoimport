@@ -27,7 +27,7 @@ we_html_tools::protect();
 if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
 	$table = new we_html_table(array('style' => 'margin:10px;', 'class' => 'defaultfont default'), 1, 2);
 	foreach($_SESSION['weS']['delete_files_nok'] as $i => $data){
-		$table->setCol($i, 0, array('style'=>'padding-top:2px;'), (isset($data["ContentType"]) ? we_html_element::jsElement('document.write(getTreeIcon("' . $data["ContentType"] . '"))') : ""));
+		$table->setCol($i, 0, array('style' => 'padding-top:2px;'), (isset($data["ContentType"]) ? we_html_element::jsElement('document.write(getTreeIcon("' . $data["ContentType"] . '"))') : ""));
 		$table->setCol($i, 1, null, str_replace($_SERVER['DOCUMENT_ROOT'], "", $data["path"]));
 		$table->addRow();
 	}
@@ -52,7 +52,7 @@ unset($_SESSION['weS']['delete_files_info']);
 $buttons = new we_html_table(array('class' => 'default defaultfont', "style" => "text-align:right"), 1, 1);
 $buttons->setCol(0, 0, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();"));
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-			we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons->getHtml())
+			we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
 		)
 	)
 );

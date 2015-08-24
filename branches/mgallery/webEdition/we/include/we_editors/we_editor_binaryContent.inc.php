@@ -32,7 +32,7 @@ echo STYLESHEET .
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans() .
 		we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("weImgProp", "100%", array(
+		we_html_multiIconBox::getHTML("weImgProp", array(
 			array(
 				"icon" => "upload.gif",
 				"headline" => "",

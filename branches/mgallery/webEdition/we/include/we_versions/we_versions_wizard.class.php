@@ -197,7 +197,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
+			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[versioning]')) .
 			$hiddenFields .
 			we_html_element::htmlHiddens(array(
 				"fr" => "body",
@@ -438,7 +438,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
 			we_html_element::htmlHiddens(array(
 				"fr" => "body",
 				"type" => $type,
@@ -689,8 +689,7 @@ set_button_state(false);';
 
 		return array(
 			$js,
-			we_html_multiIconBox::getHTML(
-				"", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 1 " . g_l('versions', '[of]') . " 2") .
 			we_html_element::htmlHiddens(array(
 				"fr" => "body",
 				"type" => $type,
@@ -889,7 +888,7 @@ set_button_state(false);';
 
 		return array(
 			self::getPage2Js(!empty($cont), 'delete'),
-			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[delete_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
 			we_html_element::htmlHiddens(array(
 				"fr" => "body",
@@ -1013,7 +1012,7 @@ set_button_state(false);';
 
 		return array(
 			self::getPage2Js(!empty($cont), "reset"),
-			we_html_multiIconBox::getHTML("", "100%", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
+			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('versions', '[reset_versions]') . " - " . g_l('versions', '[step]') . " 2 " . g_l('versions', '[of]') . " 2") .
 			$hiddenFields .
 			we_html_element::htmlHiddens(array(
 				"fr" => "body",

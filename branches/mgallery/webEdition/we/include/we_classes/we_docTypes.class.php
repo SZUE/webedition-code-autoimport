@@ -182,7 +182,7 @@ class we_docTypes extends we_class{
 		<td style="padding-right:20px;">' . $this->formSubDir(300) . '</td>
 		<td>' . $this->formExtension(200) . '</td>
 	</tr>
-	<tr><td colspan="3" style="padding:5px 0px;">' . $this->formTemplatePopup(521) . '</td></tr>
+	<tr><td colspan="3" style="padding:5px 0px;">' . $this->formTemplatePopup() . '</td></tr>
 	<tr>
 		<td>' . $this->formIsDynamic() . '</td>
 		<td>' . $this->formIsSearchable() . '</td>

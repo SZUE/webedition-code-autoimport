@@ -231,7 +231,7 @@ class we_import_wizard extends we_import_wizardBase{
 						break;
 				}
 			}",
-			we_html_multiIconBox::getHTML("", "100%", $parts, 30, "", -1, "", "", false, g_l('import', '[title]'))
+			we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('import', '[title]'))
 		);
 	}
 
@@ -428,7 +428,7 @@ function handle_event(evt) {
 
 		$wepos = weGetCookieVariable('but_wxml');
 		$znr = -1;
-		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[wxml_import]'));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[wxml_import]'));
 		return array($functions, $content);
 	}
 
@@ -775,7 +775,7 @@ handle_event("previous");');
 						'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_path]'), we_html_tools::TYPE_ALERT, 530),
 						'space' => 0)
 				);
-				$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
+				$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', -1, '', '', false, g_l('import', '[warning]'));
 				return array($functions, $content);
 			}
 
@@ -808,7 +808,7 @@ handle_event("previous");');
 		}
 		$wepos = weGetCookieVariable('but_wxml');
 		$znr = -1;
-		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', ($we_valid ? '[import_options]' : '[wxml_import]')));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', ($we_valid ? '[import_options]' : '[wxml_import]')));
 		return array($functions, $content);
 	}
 
@@ -839,7 +839,7 @@ function handle_event(evt) {
 				'html' => we_html_element::htmlDiv(array('class' => 'blockWrapper', 'style' => 'width: 520px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
 				'space' => 0)
 		);
-		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
+		$content = $hdns . we_html_multiIconBox::getHTML(we_import_functions::TYPE_WE_XML, $parts, 30, '', -1, '', '', false, g_l('import', '[log]'));
 
 		return array($functions, $content);
 	}
@@ -1309,7 +1309,7 @@ HTS;
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 			$hdns .
 			we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
+			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[gxml_import]'));
 
 		return array($functions, $content);
 	}
@@ -1465,7 +1465,7 @@ function handle_event(evt) {
 
 		$content = $hdns .
 			we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[select_data_set]'));
+			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[select_data_set]'));
 
 		return array($functions, $content);
 	}
@@ -1722,7 +1722,7 @@ function handle_event(evt) {
 
 		$content = $hdns .
 			we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML('xml', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[assign_record_fields]'));
+			we_html_multiIconBox::getHTML('xml', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[assign_record_fields]'));
 
 		return array($functions, $content);
 	}
@@ -1935,7 +1935,7 @@ function handle_event(evt) {
 				'v[collision]' => (isset($v['collision'])) ? $v['collision'] : 'rename',
 				'v[csv_terminated]' => (isset($v['csv_terminated'])) ? $v['csv_terminated'] : ''));
 
-		$content.= we_html_multiIconBox::getHTML('csv', '100%', $parts, 30, '', -1, '', '', false, g_l('import', '[csv_import]'));
+		$content.= we_html_multiIconBox::getHTML('csv', $parts, 30, '', -1, '', '', false, g_l('import', '[csv_import]'));
 
 		return array($functions, $content);
 	}
@@ -2399,7 +2399,7 @@ HTS;
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
 			$hdns .
-			we_html_multiIconBox::getHTML('csv', "100%", $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'));
+			we_html_multiIconBox::getHTML('csv', $parts, 30, "", -1, "", "", false, g_l('import', '[csv_import]'));
 
 		return array($functions, $content);
 	}
@@ -2678,7 +2678,7 @@ function handle_event(evt) {
 
 		$content = $hdns .
 			we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML('csv', '100%', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[assign_record_fields]'));
+			we_html_multiIconBox::getHTML('csv', $parts, 30, '', $znr, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]'), ($wepos === 'down'), g_l('import', '[assign_record_fields]'));
 
 		return array($functions, $content);
 	}

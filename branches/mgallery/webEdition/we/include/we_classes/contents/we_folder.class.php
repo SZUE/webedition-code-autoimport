@@ -389,10 +389,9 @@ class we_folder extends we_root{
 	}
 
 	function formPath(){
-		$ws = get_ws($this->Table);
+		$ws = get_ws($this->Table, true);
 		if(intval($this->ParentID) == 0 && $ws){
-			$wsa = makeArrayFromCSV($ws);
-			$this->ParentID = $wsa[0];
+			$this->ParentID = $ws[0];
 			$this->ParentPath = id_to_path($this->ParentID, $this->Table, $this->DB_WE);
 		}
 
@@ -403,17 +402,17 @@ class we_folder extends we_root{
 		return (!$userCanChange ? '<table class="default"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
 				'<table class="default">
 <colgroup><col style="width:20px;"/><col style="width:20px;"/><col style="width:100px;"/></colgroup>
-	<tr><td class="defaultfont" style="padding-bottom:10px;">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
-	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(388) . '</td></tr>' .
+	<tr><td class="defaultfont" style="padding-bottom:10px;">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[filename]'), 50, 0, 255, 'onchange=_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();') . '</td><td></td><td></td></tr>
+	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(0) . '</td></tr>' .
 				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ? '
 	<tr><td colspan="3" class="defaultfont" style="padding-top:4px;">' . $this->formTriggerDocument() . '</td></tr>
 	<tr><td colspan="3">
-		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 					we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					</table></td></tr>' :
 					'') .
 				($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
-	<tr><td class="defaultfont" style="padding-top:10px;">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 388, 255, 'onchange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
+	<tr><td class="defaultfont" style="padding-top:10px;">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 0, 255, 'onchange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
 ' : '')) .
 			'</table>';
 	}
@@ -421,7 +420,7 @@ class we_folder extends we_root{
 	function formChangeOwners(){
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					</table>';
 	}
@@ -429,7 +428,7 @@ class we_folder extends we_root{
 	function formChangeLanguage(){
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
 					</table>';
 	}
@@ -448,7 +447,7 @@ class we_folder extends we_root{
 					"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
 				, true, 100, 22, "", "", !empty($_disabledNote));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
 					</table>';
 	}
@@ -660,8 +659,8 @@ class we_folder extends we_root{
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
-				$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), "space" => 140, "noline" => 1);
-				$parts[] = array("headline" => g_l('weClass', '[grant_language]'), "html" => $this->formChangeLanguage(), "space" => 140, "forceRightHeadline" => 1);
+				$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), "noline" => 1, 'space' => 140);
+				$parts[] = array("headline" => g_l('weClass', '[grant_language]'), "html" => $this->formChangeLanguage(), 'space' => 140, "forceRightHeadline" => true);
 			} else if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
 				$parts[] = array("icon" => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), "space" => 140);
 			}
@@ -669,20 +668,18 @@ class we_folder extends we_root{
 
 		if($this->Table == FILE_TABLE && permissionhandler::hasPerm('CAN_COPY_FOLDERS') ||
 			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && permissionhandler::hasPerm("CAN_COPY_OBJECTS"))){
-			$parts[] = array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), "space" => 140);
+			$parts[] = array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), 'space' => 140);
 		}
 
-		if($this->Table == FILE_TABLE ||
-			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
-			$parts[] = array("icon" => "user.gif", "headline" => g_l('weClass', '[owners]')
-				, "html" => $this->formCreatorOwners() . "<br/>", 'space' => 140, "noline" => 1);
+		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
+			$parts[] = array("icon" => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners() . "<br/>", "noline" => 1, 'space' => 140);
 			if(permissionhandler::hasPerm("ADMINISTRATOR")){
 				$parts[] = array("headline" => g_l('modules_users', '[grant_owners]'), "html" => $this->formChangeOwners(), "space" => 140, "forceRightHeadline" => 1);
 			}
 		}
 
 		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('weDirProp', '100%', $parts, 20);
+		we_html_multiIconBox::getHTML('PropertyPage', $parts);
 	}
 
 }

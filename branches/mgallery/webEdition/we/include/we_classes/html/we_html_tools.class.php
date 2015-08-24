@@ -156,7 +156,7 @@ this.selectedIndex = 0;' .
 	}
 
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
-		return we_html_multiIconBox::getHTML('', $width, array(
+		return we_html_multiIconBox::getHTML('', array(
 				array(
 					"html" => $content, "headline" => "", "space" => 0
 				)

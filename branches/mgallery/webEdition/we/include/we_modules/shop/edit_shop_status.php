@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -202,7 +201,7 @@ unset($lcvalue);
 foreach($frontendL as $langkey){
 	$tabDokumente->addRow();
 	$i++;
-	$tabDokumente->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('languages', '['.$langkey.']') . ' (' . $langkey . ')');
+	$tabDokumente->setCol($i, 0, array("class" => "defaultfont", "style" => "font-weight:bold", "nowrap" => "nowrap"), g_l('languages', '[' . $langkey . ']') . ' (' . $langkey . ')');
 	foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 		$tabDokumente->setCol($i, $fieldkey + 1, array("class" => "defaultfont", "nowrap" => "nowrap"), we_class::htmlTextInput('FieldsDocuments[' . $langkey . '][' . $fieldname . ']', 15, $weShopStatusMails->FieldsDocuments[$langkey][$fieldname]));
 	}
@@ -230,8 +229,7 @@ echo we_html_element::jsElement($jsFunction) .
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
- we_html_multiIconBox::getHTML(
-	'weShopStatusMails', 700, $parts, 30, we_html_button::position_yes_no_cancel(
+ we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
 		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[statusmails][box_headline]'), '', '', 'scroll'
 ) . '</form>

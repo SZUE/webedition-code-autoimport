@@ -106,7 +106,7 @@ function do_confirm() {
 
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_confirm();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.window.close()")
 		);
-		echo we_html_multiIconBox::getHTML("todoStatusUpdate", "100%", $parts, 30, $buttons, -1, "", "", false, $heading);
+		echo we_html_multiIconBox::getHTML("todoStatusUpdate", $parts, 30, $buttons, -1, "", "", false, $heading);
 		?>
 	</form>
 </body>

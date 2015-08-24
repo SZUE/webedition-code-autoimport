@@ -233,7 +233,7 @@ $parts[] = array(
 $cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 $okbut = we_html_button::create_button(we_html_button::OK, "javascript:okFn();");
 $buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancel_button);
-$out .= we_html_multiIconBox::getHTML("", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->getElement($name) . '" - ' . g_l('modules_object', '[attributes]')) .
+$out .= we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", "", g_l('modules_object', '[textarea_field]') . ' "' . $we_doc->getElement($name) . '" - ' . g_l('modules_object', '[attributes]')) .
 		'</form></body></html>';
 
 echo $out;

@@ -446,7 +446,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					);
 					$Parts[] = $Part;
 
-					echo we_html_multiIconBox::getHTML('weMultibox', "100%", $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
+					echo we_html_multiIconBox::getHTML('weMultibox', $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
 
 //
 // --> Finish Step

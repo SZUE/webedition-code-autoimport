@@ -447,20 +447,16 @@ function doUnload() {
 			array(
 				"headline" => "", "html" => $_html, "space" => 0
 		));
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:if(checkForm()){document.we_form.submit();}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
 		$bodyhtml = '<body class="weDialogBody">
 					<iframe style="position:absolute;top:-2000px;" src="about:blank" id="iloadframe" name="iloadframe" width="400" height="200"></iframe>
 					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '" target="iloadframe">' .
 			we_html_element::htmlHiddens(array(
 				"we_cmd[0]" => "siteImportSaveWePageSettings",
-				"ok" => 1)) . we_html_multiIconBox::getJS();
-
-		$okbutton = we_html_button::create_button(we_html_button::OK, "javascript:if(checkForm()){document.we_form.submit();}");
-		$cancelbutton = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()");
-		$buttons = we_html_button::position_yes_no_cancel($okbutton, null, $cancelbutton);
-		$bodyhtml .= we_html_multiIconBox::getHTML(
-				"", "100%", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', '[importSettingsWePages]'));
-		$bodyhtml .= '</form></body>';
+				"ok" => 1)) . we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', '[importSettingsWePages]')) .
+			'</form></body>';
 
 		$js = we_html_element::jsElement('
 	function checkForm(){
@@ -820,9 +816,6 @@ function doUnload() {
 		}
 
 		$wepos = weGetCookieVariable("but_wesiteimport");
-		$content = we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML(
-				"wesiteimport", "100%", $parts, 30, "", $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML();
 
 		$content = we_html_element::htmlForm(
 				array(
@@ -830,7 +823,8 @@ function doUnload() {
 				"name" => "we_form",
 				"method" => "post",
 				"target" => "siteimportcmd"
-				), $content);
+				), we_html_multiIconBox::getJS() .
+				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, "", $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML());
 
 		$body = we_html_element::htmlBody(array(
 				"class" => "weDialogBody", "onunload" => "doUnload();"
@@ -1233,7 +1227,7 @@ function doUnload() {
 				if(preg_match('/charset=([^ "\']+)/is', $attr[1], $cs)){
 					$charset = $cs[1];
 				}
-			}elseif(preg_match('/<meta [^>]*charset="([^"]*)"[^/]*>/is', $content, $regs)){
+			} elseif(preg_match('/<meta [^>]*charset="([^"]*)"[^/]*>/is', $content, $regs)){
 				$charset = $regs[1];
 			}
 			$templateCode = preg_replace('/<meta [^>]*(http-equiv="content-type"|charset=)[^>]*>/is', '<we:charset defined="' . $charset . '">' . $charset . '</we:charset>', $templateCode);

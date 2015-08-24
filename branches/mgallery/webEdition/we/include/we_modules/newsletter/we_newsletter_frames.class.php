@@ -1123,7 +1123,7 @@ window.onload=extraInit;');
 			$counter++;
 		}
 
-		return we_html_multiIconBox::getHTML("newsletter_header", "100%", $parts, 30, "", -1, "", "", false);
+		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30, "", -1, "", "", false);
 	}
 
 	function getHTMLNewsletterGroups(){
@@ -1149,7 +1149,7 @@ window.onload=extraInit;');
 
 			$wepos = weGetCookieVariable("but_newsletter_group_box_$i");
 
-			$out.= we_html_multiIconBox::getHTML("newsletter_group_box_$i", "100%", $parts, 30, "", 0, "", "", (($wepos === "down") || ($count < 2 ? true : false)), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
+			$out.= we_html_multiIconBox::getHTML("newsletter_group_box_$i", $parts, 30, "", 0, "", "", (($wepos === "down") || ($count < 2 ? true : false)), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
 				we_html_element::htmlBr() . '<div style="margin-right:30px;">' . $buttons . '</div>';
 		}
 
@@ -1220,7 +1220,7 @@ window.onload=extraInit;');
 			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), "space" => 140, "noline" => 1);
 		}
 
-		return we_html_multiIconBox::getHTML("newsletter_header", "100%", $parts, 30, "", -1, "", "", false) .
+		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30, "", -1, "", "", false) .
 			we_html_element::htmlBr();
 	}
 
@@ -1289,7 +1289,7 @@ window.onload=extraInit;');
 					$this->View->getHiddensMailingPage() .
 					$this->View->getHiddensContentPage() .
 					we_html_element::htmlHiddens(array("fromPage" => 3, "blockid" => 0)) .
-					we_html_multiIconBox::getHTML('', "100%", $this->getHTMLReporting(), 30, '', -1, '', '', false) .
+					we_html_multiIconBox::getHTML('', $this->getHTMLReporting(), 30, '', -1, '', '', false) .
 					$this->weAutoCompleter->getYuiJs();
 		}
 

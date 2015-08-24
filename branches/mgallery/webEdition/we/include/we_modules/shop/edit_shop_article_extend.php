@@ -272,7 +272,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 					'space' => 0
 				);
 
-				echo we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
+				echo we_html_multiIconBox::getHTML("revenues", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			} else { // if there is an empty result form the object table
 				$parts = array(
 					array(
@@ -285,7 +285,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 				);
 
 
-				echo we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
+				echo we_html_multiIconBox::getHTML("revenues", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), g_l('modules_shop', '[noRecord]')));
 			}
 
 			break;
@@ -341,7 +341,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 					'space' => 0
 				);
 
-				echo we_html_multiIconBox::getHTML("revenues", "100%", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
+				echo we_html_multiIconBox::getHTML("revenues", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			}
 
 			/*			 * ******** END PROCESS THE OUTPUT IF OPTED FOR A DOCUMENT *********** */

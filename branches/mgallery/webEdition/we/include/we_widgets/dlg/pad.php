@@ -144,5 +144,4 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
 		), we_html_element::htmlForm(
 			array(
 			"onsubmit" => "return false;"
-			), we_html_multiIconBox::getHTML(
-				"padProps", "100%", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));
+			), we_html_multiIconBox::getHTML(				"padProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));

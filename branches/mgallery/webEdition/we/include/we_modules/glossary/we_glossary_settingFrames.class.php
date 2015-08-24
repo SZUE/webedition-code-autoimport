@@ -68,7 +68,7 @@ class we_glossary_settingFrames{
 		return
 			'<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">
 	' . we_html_tools::hidden('cmd', 'save_glossary_setting') . '
-	' . we_html_multiIconBox::getHTML('GlossaryPreferences', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+	' . we_html_multiIconBox::getHTML('GlossaryPreferences', $parts, 30, we_html_button::position_yes_no_cancel(
 					we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();'), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();')), -1, '', '', false, g_l('modules_glossary', '[menu_settings]')) . '
 	</form>';
 	}

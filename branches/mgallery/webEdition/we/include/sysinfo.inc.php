@@ -328,7 +328,7 @@ echo STYLESHEET;
 	<div id="info" style="display: block;">
 		<?php
 		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', 700, $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+		we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
 		?>
 	</div>
 	<div id="more" style="display:none;">
@@ -346,7 +346,7 @@ echo STYLESHEET;
 			),
 		);
 
-		echo we_html_multiIconBox::getHTML('', '100%', $_parts, 30, $buttons, -1, '', '', false);
+		echo we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false);
 		?>
 	</div>
 </body>

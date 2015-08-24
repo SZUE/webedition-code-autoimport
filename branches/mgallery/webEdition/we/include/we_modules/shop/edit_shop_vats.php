@@ -325,8 +325,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsEleme
 	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . "
 	</head>
 <body class=\"weDialogBody\" onload='window.focus();addListeners();'>" .
- we_html_multiIconBox::getHTML(
-	'weShopVates', "100%", $parts, 30, we_html_button::position_yes_no_cancel(
+ we_html_multiIconBox::getHTML(	'weShopVates', $parts, 30, we_html_button::position_yes_no_cancel(
 		'', '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 ) . '

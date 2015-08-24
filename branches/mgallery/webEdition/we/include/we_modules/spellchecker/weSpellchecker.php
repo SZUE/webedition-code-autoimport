@@ -156,7 +156,7 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 
 	<input name="' . ($_mode === 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $editname . '" type="hidden" />
 	<div id="mainPanel">' .
-	we_html_multiIconBox::getHTML('', "100%", $_parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
+	we_html_multiIconBox::getHTML('', $_parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
 	</div>
 	</form>' .
 	$_applet .

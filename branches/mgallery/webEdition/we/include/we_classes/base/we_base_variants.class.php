@@ -583,7 +583,7 @@ abstract class we_base_variants{
 		}
 		$GLOBALS['we_editmode'] = true;
 
-		echo we_html_multiIconBox::getHTML('', '100%', ($isObject ? self::getVariantsEditorMultiBoxArrayObjectFile($we_doc) : self::getVariantsEditorMultiBoxArray($we_doc)), 30, '', -1, '', '', false);
+		echo we_html_multiIconBox::getHTML('', ($isObject ? self::getVariantsEditorMultiBoxArrayObjectFile($we_doc) : self::getVariantsEditorMultiBoxArray($we_doc)), 30, '', -1, '', '', false);
 	}
 
 }

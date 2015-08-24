@@ -1190,7 +1190,7 @@ self.close();');
 				}
 		}
 
-		return we_html_multiIconBox::getHTML('', 680, $parts, 30);
+		return we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
 }

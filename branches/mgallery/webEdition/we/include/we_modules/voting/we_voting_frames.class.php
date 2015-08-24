@@ -730,12 +730,12 @@ function refreshTexts(){
 
 		');
 
-		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
+		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
 			(!$this->View->voting->IsFolder ?
 				(
-				we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
-				we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) .
-				we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == 4 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', "100%", $this->getHTMLTab4(), 30, '', -1, '', '', false, $preselect))
+				we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) .
+				we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) .
+				we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == 4 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab4(), 30, '', -1, '', '', false, $preselect))
 				) : '') .
 			$this->getHTMLVariant();
 
@@ -981,7 +981,7 @@ function refreshTexts(){
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 				we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);
@@ -1111,7 +1111,7 @@ function refreshTexts(){
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 				we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);
@@ -1225,7 +1225,7 @@ function refreshTexts(){
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", "100%", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close, null), -1, '', '', false, g_l('modules_voting', '[voting]'), "", 558) .
 				we_html_element::jsElement("self.focus();")
 		);
 		return $this->getHTMLDocument($body);

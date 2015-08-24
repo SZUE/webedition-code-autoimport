@@ -333,8 +333,7 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsEleme
 <body class="weDialogBody" onload="window.focus(); addListeners();">
 	<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .
- we_html_multiIconBox::getHTML(
-	'weShopCategories', 700, $parts, 30, we_html_button::position_yes_no_cancel(
+ we_html_multiIconBox::getHTML(	'weShopCategories', $parts, 30, we_html_button::position_yes_no_cancel(
 		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[shopcats][title_editorShopCats]'), '', '', 'scroll'
 ) . '</form>

@@ -100,7 +100,7 @@ echo STYLESHEET .
 					"space" => 0
 				);
 			}
-			echo we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML('', '100%', $parts, 20) .
+			echo we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML('', $parts, 20) .
 			we_html_element::htmlHidden("we_complete_request", 1);
 			?>
 		</table>

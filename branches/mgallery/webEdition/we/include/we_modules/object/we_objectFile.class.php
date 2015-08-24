@@ -574,7 +574,7 @@ class we_objectFile extends we_document{
 		return '
 			<table class="default">
 				' . $_headline . '
-				<tr><td>' . $this->htmlTextInput($inputName, 24, $this->Charset) . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
+				<tr><td>' . $this->htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
 			</table>';
 	}
 
@@ -3220,7 +3220,7 @@ class we_objectFile extends we_document{
 			);
 		}
 		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("weOjFileProp", "100%", $parts, 30);
+		we_html_multiIconBox::getHTML('PropertyPage', $parts);
 	}
 
 	private function correctMultiObject(){
