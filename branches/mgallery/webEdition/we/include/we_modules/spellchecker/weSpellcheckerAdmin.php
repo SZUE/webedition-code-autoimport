@@ -40,10 +40,11 @@ $l_param = array(
 	'l_finished' => g_l('modules_spellchecker', '[end]'),
 	'upload_size' => getUploadMaxFilesize(),
 	'upload_url' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php',
+	'scid' => ''
 );
 
 // ----------------------
-if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
+/*if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
 	$l_param['scid'] = session_id();
 	$_tmp_dir = WE_SPELLCHECKER_MODULE_PATH . '/tmp';
 	if(!is_dir($_tmp_dir)){
@@ -56,7 +57,7 @@ if(we_base_browserDetect::isMAC() && we_base_browserDetect::isGecko()){
 	}
 } else {
 	$l_param['scid'] = '';
-}
+}*/
 // -------------------------------
 
 $l_params = '';

@@ -427,7 +427,7 @@ if($ok && $cmd === "edit_link_at_class"){
 
 		$wecmdenc1 = we_base_request::encCmd('document.we_form.href.value');
 		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.href.value, '')") : "";
-		$butspace = (we_base_browserDetect::isSafari() ? 8 : 10);
+		$butspace = 10;
 		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", 'placeholder="user@example.com"', "text", 300);
 

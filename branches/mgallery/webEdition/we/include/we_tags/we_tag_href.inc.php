@@ -113,7 +113,7 @@ function we_tag_href($attribs){
 	$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
 	$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''), true);
-	$span = '<span style="color: black;font-size:' . ((we_base_browserDetect::isMAC()) ? "11px" : ((we_base_browserDetect::isUNIX()) ? "13px" : "12px")) . ';font-family:' . g_l('css', '[font_family]') . ';">';
+	$span = '<span class="defaultfont" style="color: black;">';
 
 	$size = 5 * intval(weTag_getAttribute('size', $attribs, 20, we_base_request::INT));
 	$cmd1 = "document.we_form.elements['" . $intID_elem_Name . "'].value";

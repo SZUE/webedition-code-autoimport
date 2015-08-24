@@ -69,12 +69,6 @@ onunload=function() {
 
 	static function getCssForCssMenu(){
 		$arr = array(WEBEDITION_DIR . 'css/menu/pro_drop_1.css');
-		switch(we_base_browserDetect::inst()->getBrowser()){
-			case we_base_browserDetect::CHROME:
-			case we_base_browserDetect::SAFARI:
-				$arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_safari.css';
-				break;
-		}
 		if(we_base_browserDetect::inst()->isMAC()){
 			$arr[] = WEBEDITION_DIR . 'css/menu/pro_drop_mac.css';
 		}
