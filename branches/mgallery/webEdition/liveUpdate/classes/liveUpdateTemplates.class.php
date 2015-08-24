@@ -89,7 +89,6 @@ class liveUpdateTemplates{
 	 * @return string
 	 */
 	static function getHtml($headline, $content, $header = '', $buttons = '', $contentWidth = 550, $contentHeight = 400){
-
 		return we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']) . we_html_element::htmlDocType() . '<html><head>' .
 			liveUpdateTemplates::getHtmlHead() .
 			$header . '</head><body>' .
