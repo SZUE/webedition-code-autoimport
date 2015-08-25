@@ -302,31 +302,26 @@ class we_objectFile extends we_document{
 		$defwsCSVArray = makeArrayFromCSV(isset($foo['DefaultWorkspaces']) ? $foo['DefaultWorkspaces'] : '');
 		$owsCSVArray = makeArrayFromCSV(isset($foo['Workspaces']) ? $foo['Workspaces'] : '');
 		$otmplsCSVArray = makeArrayFromCSV(isset($foo['Templates']) ? $foo['Templates'] : '');
-		$this->Workspaces = '';
-		$this->Templates = '';
+		$this->Workspaces = array();
+		$this->Templates = array();
 		$this->ExtraWorkspaces = '';
 		$this->ExtraTemplates = '';
 		$processedWs = array();
 
 // loop throgh all default workspaces
-		foreach($defwsCSVArray as $_defWs){
+		foreach($defwsCSVArray as $i => $_defWs){
 // loop through each object workspace
-			foreach($owsCSVArray as $i => $ows){
+			foreach($owsCSVArray as $ows){
 				if((!in_array($_defWs, $processedWs)) && in_workspace($_defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
-					$processedWs = array($_defWs);
-					$this->Workspaces .= $_defWs . ',';
-					$this->Templates .= $otmplsCSVArray[$i] . ',';
+					$processedWs[] = $_defWs;
+					$this->Workspaces[] = $_defWs;
+					$this->Templates[] = $otmplsCSVArray[$i];
 				}
 			}
 		}
-		unset($processedWs);
 
-		if($this->Workspaces){
-			$this->Workspaces = ',' . $this->Workspaces;
-		}
-		if($this->Templates){
-			$this->Templates = ',' . $this->Templates;
-		}
+		$this->Workspaces = implode(',', $this->Workspaces);
+		$this->Templates = implode(',', $this->Templates);
 	}
 
 	function setRootDirID($doit = false){
