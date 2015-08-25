@@ -194,8 +194,8 @@ abstract class we_html_forms{
 
 		$value = self::removeBrokenInternalLinksAndImages($value);
 
-		$width = $width ? : (abs($cols) ? (abs($cols) * 5.5) : 520);
-		$height = $height ? : (abs($rows) ? (abs($rows) * 8) : 400);
+		$width = max($width ? : intval($cols) * 5.5, 520);
+		$height = max($height ? : intval($rows) * 8, 400);
 
 		if($wysiwyg){
 			if(!$showmenues){
