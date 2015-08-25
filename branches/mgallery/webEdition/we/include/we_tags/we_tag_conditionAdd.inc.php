@@ -64,7 +64,7 @@ function we_tag_conditionAdd($attribs){
 			break;
 		case 'request' :
 			if($var && isset($_REQUEST[$var])){
-				$value = $_REQUEST[$var];
+				$value = we_base_request::_(we_base_request::HTML, $var);
 			}
 			break;
 		default :

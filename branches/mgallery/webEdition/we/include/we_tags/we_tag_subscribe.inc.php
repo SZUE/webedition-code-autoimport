@@ -40,12 +40,12 @@ function we_tag_subscribe($attribs){
 			$newAttribs['name'] = 'we_subscribe_list__[' . $nr . ']';
 			$newAttribs['value'] = $nr;
 
-			if($checked || (isset($_REQUEST["we_subscribe_list__"]) && in_array($nr, $_REQUEST["we_subscribe_list__"]))){
+			if($checked || (($list = we_base_request::_(we_base_request::HTML, "we_subscribe_list__")) && in_array($nr, $list))){
 				$newAttribs['checked'] = 'checked';
 			}
 
 			return getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_use_lists__', 'value' => 1, 'xml' => $xml)) .
-					getHtmlTag('input', $newAttribs);
+				getHtmlTag('input', $newAttribs);
 
 		case "listSelect":
 			if($values){
@@ -55,12 +55,12 @@ function we_tag_subscribe($attribs){
 				$options = '';
 				$vals = makeArrayFromCSV($values);
 				foreach($vals as $i => $v){
-					$options .= ((isset($_REQUEST["we_subscribe_list__"]) && in_array($i, $_REQUEST["we_subscribe_list__"])) ?
-									getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), oldHtmlspecialchars($v)) :
-									getHtmlTag('option', array('value' => $i), oldHtmlspecialchars($v)));
+					$options .= (($list = we_base_request::_(we_base_request::HTML, "we_subscribe_list__")) && in_array($i, $list) ?
+							getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), oldHtmlspecialchars($v)) :
+							getHtmlTag('option', array('value' => $i), oldHtmlspecialchars($v)));
 				}
 				return getHtmlTag('input', array('type' => 'hidden', 'name' => 'we_use_lists__', 'value' => 1, 'xml' => $xml)) .
-						getHtmlTag('select', $newAttribs, $options, true);
+					getHtmlTag('select', $newAttribs, $options, true);
 			}
 			return '';
 
@@ -69,7 +69,7 @@ function we_tag_subscribe($attribs){
 			$newAttribs['name'] = 'we_subscribe_html__';
 			$newAttribs['type'] = 'checkbox';
 			$newAttribs['value'] = 1;
-			if((isset($_REQUEST["we_subscribe_html__"]) && ($_REQUEST["we_subscribe_html__"] == 1 || $_REQUEST["we_subscribe_html__"] === 'on') ) || $checked){
+			if($checked || we_base_request::_(we_base_request::BOOL, "we_subscribe_html__")){
 				$newAttribs['checked'] = 'checked';
 			}
 			return getHtmlTag('input', $newAttribs);
@@ -96,48 +96,42 @@ function we_tag_subscribe($attribs){
 			$newAttribs['type'] = 'text';
 			$newAttribs['name'] = 'we_subscribe_firstname__';
 
-			$newAttribs['value'] = we_base_request::_(we_base_request::RAW, "we_subscribe_firstname__", $value);
+			$newAttribs['value'] = we_base_request::_(we_base_request::HTML, "we_subscribe_firstname__", $value);
 
 			return getHtmlTag('input', $newAttribs);
 
 		case "salutation":
-
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$name = 'we_subscribe_salutation__';
-				$value = we_base_request::_(we_base_request::STRING, "we_subscribe_salutation__", $value);
+				$value = we_base_request::_(we_base_request::HTML, 'we_subscribe_salutation__', $value);
 				return we_getSelectField($name, $value, $values, $newAttribs, true); //same function like <we:sessionField type="select">
-			} else {
-				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
-				$newAttribs['name'] = 'we_subscribe_salutation__';
-				$newAttribs['type'] = 'text';
-				$newAttribs['value'] = we_base_request::_(we_base_request::STRING, "we_subscribe_salutation__", $value);
-
-				return getHtmlTag('input', $newAttribs);
 			}
+			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
+			$newAttribs['name'] = 'we_subscribe_salutation__';
+			$newAttribs['type'] = 'text';
+			$newAttribs['value'] = we_base_request::_(we_base_request::HTML, 'we_subscribe_salutation__', $value);
+
+			return getHtmlTag('input', $newAttribs);
 
 		case "title":
 			if($values){
 				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'maxlength', 'checked'));
 				$name = 'we_subscribe_title__';
-				$value = we_base_request::_(we_base_request::STRING, "we_subscribe_title__", $value);
+				$value = we_base_request::_(we_base_request::HTML, "we_subscribe_title__", $value);
 				return we_getSelectField($name, $value, $values, $newAttribs, true); //same function like <we:sessionField type="select">
-			} else {
-				$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
-				$newAttribs['name'] = 'we_subscribe_title__';
-				$newAttribs['type'] = 'text';
-				$newAttribs['value'] = we_base_request::_(we_base_request::STRING, "we_subscribe_title__", $value);
-
-				return getHtmlTag('input', $newAttribs); // '<input type="text" name="we_subscribe_title__"'.($attr ? " $attr" : "").($value ? ' value="'.oldHtmlspecialchars($value).'"' : '').($xml ? ' /' : '').' />';
 			}
+			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
+			$newAttribs['name'] = 'we_subscribe_title__';
+			$newAttribs['type'] = 'text';
+			$newAttribs['value'] = we_base_request::_(we_base_request::HTML, "we_subscribe_title__", $value);
 
+			return getHtmlTag('input', $newAttribs);
 		case "lastname":
 			$newAttribs = removeAttribs($attribs, array('name', 'type', 'value', 'values'));
-
 			$newAttribs['type'] = 'text';
 			$newAttribs['name'] = 'we_subscribe_lastname__';
-			$newAttribs['value'] = we_base_request::_(we_base_request::STRING, "we_subscribe_lastname__", $value);
-
+			$newAttribs['value'] = we_base_request::_(we_base_request::HTML, "we_subscribe_lastname__", $value);
 			return getHtmlTag('input', $newAttribs);
 
 		case "email":

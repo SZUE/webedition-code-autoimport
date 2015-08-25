@@ -63,20 +63,20 @@ function we_tag_linkToSeeMode($attribs){
 			if($q && we_users_user::comparePasswords($q['UseSalt'], $_SESSION['webuser']['Username'], $q['passwd'], $_SESSION['webuser']['Password'])){// customer is also a user
 				unset($q);
 				$retStr = getHtmlTag(
-								'form', array(
-							'method' => 'post',
-							'name' => 'startSeeMode_' . $type . '_' . $id,
-							'target' => '_parent',
-							'action' => WEBEDITION_DIR . 'loginToSuperEasyEditMode.php'
-								), getHtmlTag('input', array('type' => 'hidden', 'name' => 'username', 'value' => $_SESSION["webuser"]["Username"], 'xml' => $xml)) .
-								getHtmlTag('input', array('type' => 'hidden', 'name' => 'type', 'value' => $type, 'xml' => $xml)) .
-								getHtmlTag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id, 'xml' => $xml)) .
-								getHtmlTag('input', array('type' => 'hidden', 'name' => 'path', 'value' => $_SERVER['HTTP_REQUEST_URI'], 'xml' => $xml))
-						) .
-						getHtmlTag('a', array(
-							'href' => 'javascript:document.forms[\'startSeeMode_' . $type . '_' . $id . '\'].submit();',
-							'xml' => $xml
-								), $value);
+						'form', array(
+						'method' => 'post',
+						'name' => 'startSeeMode_' . $type . '_' . $id,
+						'target' => '_parent',
+						'action' => WEBEDITION_DIR . 'loginToSuperEasyEditMode.php'
+						), getHtmlTag('input', array('type' => 'hidden', 'name' => 'username', 'value' => $_SESSION["webuser"]["Username"], 'xml' => $xml)) .
+						getHtmlTag('input', array('type' => 'hidden', 'name' => 'type', 'value' => $type, 'xml' => $xml)) .
+						getHtmlTag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id, 'xml' => $xml)) .
+						getHtmlTag('input', array('type' => 'hidden', 'name' => 'path', 'value' => $_SERVER['HTTP_REQUEST_URI'], 'xml' => $xml))
+					) .
+					getHtmlTag('a', array(
+						'href' => 'javascript:document.forms[\'startSeeMode_' . $type . '_' . $id . '\'].submit();',
+						'xml' => $xml
+						), $value);
 			} else { //	customer is no user
 				return "<!-- ERROR: CUSTOMER IS NO USER! -->";
 			}

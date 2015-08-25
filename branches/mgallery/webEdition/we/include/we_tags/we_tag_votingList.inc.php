@@ -45,7 +45,7 @@ function we_tag_votingList($attribs){
 	$version = weTag_getAttribute("version", $attribs, 1, we_base_request::INT);
 	$offset = weTag_getAttribute("offset", $attribs, 0, we_base_request::INT);
 	$_type = weTag_getAttribute('_type', $attribs, '', we_base_request::STRING);
-	$start = (!empty($_REQUEST['_we_vl_start_' . $name])) ? abs($_REQUEST['_we_vl_start_' . $name]) : 0;
+	$start = max(intval(we_base_request::_(we_base_request::INT, '_we_vl_start_' . $name, 0)), 0);
 
 	switch($_type){
 		case 'start':

@@ -34,8 +34,8 @@ function _getMails($to){
 					$we_recipient[] = $_SESSION['webuser'][$mail];
 				}
 			} else if(isset($_REQUEST[$mail]) && strpos($_REQUEST[$mail], '@') !== false){ //email to friend test
-				if(we_check_email($_REQUEST[$mail])){
-					$we_recipient[] = $_REQUEST[$mail];
+				if(we_check_email(($mail = we_base_request::_(we_base_request::EMAIL, $mail)))){
+					$we_recipient[] = $mail;
 				}
 			}
 		} else {

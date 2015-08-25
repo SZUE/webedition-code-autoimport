@@ -28,8 +28,8 @@ function we_tag_newsletterSwitch(){
 	}
 //html=false, text=true
 
-	if(isset($_REQUEST['we_set_newsletterFormat']) && $GLOBALS['we_doc']->InWebEdition){
-		$GLOBALS['we_doc']->setEditorPersistent('newsletterFormat', (bool) $_REQUEST['we_set_newsletterFormat']);
+	if(($val = we_base_request::_(we_base_request::BOOL, 'we_set_newsletterFormat', -1)) !== -1 && $GLOBALS['we_doc']->InWebEdition){
+		$GLOBALS['we_doc']->setEditorPersistent('newsletterFormat', $val);
 	}
 
 	$val = (bool) $GLOBALS['we_doc']->getEditorPersistent('newsletterFormat');

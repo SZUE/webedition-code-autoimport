@@ -552,7 +552,7 @@ function we_tag_ifNotEmpty($attribs){
 }
 
 function we_tag_ifReturnPage(){
-	return we_base_request::_(we_base_request::RAW_CHECKED, 'we_returnpage') !== false;
+	return we_base_request::_(we_base_request::RAW, 'we_returnpage') !== false;
 }
 
 function we_tag_ifWebEdition(){

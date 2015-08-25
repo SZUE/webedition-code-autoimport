@@ -49,7 +49,7 @@ function we_tag_sessionStart($attribs){
 		return '';
 	}
 
-	if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
+	if($GLOBALS['we_doc']->InWebEdition && we_base_request::_(we_base_request::BOOL, 'we_set_registeredUser')){
 		$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
 	}
 
