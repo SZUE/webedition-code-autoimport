@@ -40,7 +40,7 @@ function we_tag_subscribe($attribs){
 			$newAttribs['name'] = 'we_subscribe_list__[' . $nr . ']';
 			$newAttribs['value'] = $nr;
 
-			if($checked || (isset($_REQUEST["we_subscribe_list__"]) && in_array($nr, $_REQUEST["we_subscribe_list__"]))){
+			if($checked || (($list = we_base_request::_(we_base_request::HTML, "we_subscribe_list__")) && in_array($nr, $list))){
 				$newAttribs['checked'] = 'checked';
 			}
 
@@ -55,7 +55,7 @@ function we_tag_subscribe($attribs){
 				$options = '';
 				$vals = makeArrayFromCSV($values);
 				foreach($vals as $i => $v){
-					$options .= ((isset($_REQUEST["we_subscribe_list__"]) && in_array($i, $_REQUEST["we_subscribe_list__"])) ?
+					$options .= (($list = we_base_request::_(we_base_request::HTML, "we_subscribe_list__")) && in_array($i, $list) ?
 							getHtmlTag('option', array('value' => $i, 'selected' => 'selected'), oldHtmlspecialchars($v)) :
 							getHtmlTag('option', array('value' => $i), oldHtmlspecialchars($v)));
 				}
@@ -69,7 +69,7 @@ function we_tag_subscribe($attribs){
 			$newAttribs['name'] = 'we_subscribe_html__';
 			$newAttribs['type'] = 'checkbox';
 			$newAttribs['value'] = 1;
-			if((isset($_REQUEST["we_subscribe_html__"]) && ($_REQUEST["we_subscribe_html__"] == 1 || $_REQUEST["we_subscribe_html__"] === 'on') ) || $checked){
+			if($checked || we_base_request::_(we_base_request::BOOL, "we_subscribe_html__")){
 				$newAttribs['checked'] = 'checked';
 			}
 			return getHtmlTag('input', $newAttribs);
