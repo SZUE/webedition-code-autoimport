@@ -48,10 +48,8 @@ function we_tag_bannerSelect($attribs){
 	foreach($res as $record){
 		if((!defined('CUSTOMER_TABLE')) || (!$customer) || ($customer && defined('CUSTOMER_TABLE') && isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] &&
 			we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $record['ID'], $GLOBALS['DB_WE']))){
-			if(!isset($_REQUEST[$name])){
-				$_REQUEST[$name] = $record['Path'];
-			}
-			$options .= ($_REQUEST[$name] == $record['Path'] ?
+			$rName = we_base_request::_(we_base_request::HTML, $name, $record['Path']);
+			$options .= ($rName == $record['Path'] ?
 					getHtmlTag('option', array('value' => $record['Path'], 'selected' => 'selected'), $showpath ? $record['Path'] : $record['Text']) :
 					getHtmlTag('option', array('value' => $record['Path']), $showpath ? $record['Path'] : $record['Text']));
 		}

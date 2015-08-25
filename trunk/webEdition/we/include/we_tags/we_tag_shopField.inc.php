@@ -52,7 +52,7 @@ function we_tag_shopField($attribs){
 	$isFieldForCheckBox = false;
 
 	if($reference === 'article'){ // name depends on value
-		$savedVal = (!$shopname) ? we_base_request::_(we_base_request::STRING, WE_SHOP_ARTICLE_CUSTOM_FIELD, '', $name) : '';
+		$savedVal = (!$shopname) ? we_base_request::_(we_base_request::HTML, WE_SHOP_ARTICLE_CUSTOM_FIELD, '', $name) : '';
 		// does not exist here - we are only in article - custom fields are not stored on documents
 
 		if(isset($GLOBALS['lv']) && ($tmpVal = we_tag('field', array('name' => $name)))){

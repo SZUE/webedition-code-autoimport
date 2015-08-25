@@ -36,7 +36,7 @@ function we_tag_saveRegisteredUser($attribs){
 	we_base_util::convertDateInRequest($_REQUEST['s'], false);
 
 	$uid = we_base_request::_(we_base_request::INT, 's', false, 'ID');
-	$username = trim(we_base_request::_(we_base_request::STRINGC, 's', '', 'Username'));
+	$username = trim(we_base_request::_(we_base_request::STRING, 's', '', 'Username'));
 	$password = we_base_request::_(we_base_request::RAW, 's', false, 'Password');
 	//register new User
 	if(($uid === false || $uid <= 0) && (!isset($_SESSION['webuser']['ID'])) && $registerallowed && (!isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered'])){ // neuer User
@@ -242,7 +242,7 @@ function we_saveCustomerImages(){
 function we_tag_saveRegisteredUser_keepInput(){
 	if(isset($_REQUEST['s'])){
 		$registered = $_SESSION['webuser']['registered'];
-		$_SESSION['webuser'] = $_REQUEST['s'];
+		$_SESSION['webuser'] = we_base_request::_(we_base_request::HTML, 's');
 		//never set ID + Password
 		if(isset($_SESSION['webuser']['ID'])){
 			unset($_SESSION['webuser']['ID']);

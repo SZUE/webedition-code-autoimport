@@ -29,7 +29,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__))){
 		return $foo;
 	}
-	$useListsArray = isset($_REQUEST['we_use_lists__']);
+	$useListsArray = we_base_request::_(we_base_request::BOOL, 'we_use_lists__');
 
 	$isSubscribe = isset($_REQUEST['we_subscribe_email__']) || isset($_REQUEST['confirmID']);
 	$isUnsubscribe = isset($_REQUEST['we_unsubscribe_email__']);
@@ -64,17 +64,17 @@ function we_tag_addDelNewsletterEmail($attribs){
 				}
 				break;
 		}
-	} elseif(isset($_REQUEST['we_subscribe_list__']) && is_array($_REQUEST['we_subscribe_list__'])){
+	} elseif(isset($_REQUEST['we_subscribe_list__']) && is_array(($subList = we_base_request::_(we_base_request::HTML, 'we_subscribe_list__')))){
 		switch($type){
 			case 'customer':
 				$tmpAbos = weTag_getAttribute('mailingList', $attribs, '', we_base_request::STRING_LIST);
-				foreach($_REQUEST['we_subscribe_list__'] as $nr){
+				foreach($subList as $nr){
 					$abos[] = $fieldGroup . '_' . $tmpAbos[intval($nr)];
 				}
 				break;
 			default:
 				$tmpPaths = weTag_getAttribute('path', $attribs, array(), we_base_request::FILELISTA);
-				foreach($_REQUEST['we_subscribe_list__'] as $nr){
+				foreach($subList as $nr){
 					$paths[] = $tmpPaths[intval($nr)];
 				}
 				break;
@@ -96,7 +96,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 	if($isSubscribe){
 		$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_SUCCESS;
 		$err = we_newsletter_base::STATUS_SUCCESS;
-		$f = getNewsletterFields(we_base_request::_(we_base_request::STRING, 'confirmID', 0), $err, we_base_request::_(we_base_request::EMAIL, 'mail', '')); //FIXME: use data from above
+		$f = getNewsletterFields(we_base_request::_(we_base_request::HTML, 'confirmID', 0), $err, we_base_request::_(we_base_request::EMAIL, 'mail', '')); //FIXME: use data from above
 		// Setting Globals FOR WE-Tags
 		$GLOBALS['WE_NEWSLETTER_EMAIL'] = isset($f['subscribe_mail']) ? $f['subscribe_mail'] : '';
 		$GLOBALS['WE_SALUTATION'] = isset($f['subscribe_salutation']) ? $f['subscribe_salutation'] : '';
@@ -284,14 +284,12 @@ function we_tag_addDelNewsletterEmail($attribs){
 								$we_recipientCC[] = $_SESSION['webuser'][$cc];
 							}
 						} else if(isset($_REQUEST[$cc]) && strpos($_REQUEST[$cc], '@') !== false){ //email to friend test
-							if(we_check_email($_REQUEST[$cc])){
-								$we_recipientCC[] = $_REQUEST[$cc];
+							if(we_check_email(($cc = we_base_request::_(we_base_request::EMAIL, $cc)))){
+								$we_recipientCC[] = $cc;
 							}
 						}
-					} else {
-						if(we_check_email($cc)){
-							$we_recipientCC[] = $cc;
-						}
+					} elseif(we_check_email($cc)){
+						$we_recipientCC[] = $cc;
 					}
 				}
 				$we_recipientBCC = array();
@@ -302,14 +300,12 @@ function we_tag_addDelNewsletterEmail($attribs){
 								$we_recipientBCC[] = $_SESSION['webuser'][$bcc];
 							}
 						} else if(isset($_REQUEST[$bcc]) && strpos('@', $_REQUEST[$bcc]) !== false){ //email to friend test
-							if(we_check_email($_REQUEST[$bcc])){
-								$we_recipientBCC[] = $_REQUEST[$bcc];
+							if(we_check_email(($bcc = we_base_request::_(we_base_request::EMAIL, $bcc)))){
+								$we_recipientBCC[] = $bcc;
 							}
 						}
-					} else {
-						if(we_check_email($bcc)){
-							$we_recipientBCC[] = $bcc;
-						}
+					} elseif(we_check_email($bcc)){
+						$we_recipientBCC[] = $bcc;
 					}
 				}
 				$phpmail = new we_util_Mailer($f['subscribe_mail'], $subject, $from, $from);
@@ -498,7 +494,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 
 function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 	$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_SUCCESS;
-	$unsubscribe_mail = strtolower(preg_replace("|[\r\n,]|", '', trim($_REQUEST['we_unsubscribe_email__'])));
+	$unsubscribe_mail = strtolower(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::EMAIL, 'we_unsubscribe_email__')));
 	$GLOBALS['WE_NEWSLETTER_EMAIL'] = $unsubscribe_mail;
 	if(!we_check_email($unsubscribe_mail)){
 		$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_EMAIL_INVALID; // E-Mail ungueltig
@@ -596,7 +592,6 @@ function we_unsubscribeNL($db, $customer, $_customerFieldPrefs, $abos, $paths){
 }
 
 function getNewsletterFields($confirmid, &$errorcode, $mail = ''){
-	$request = $_REQUEST;
 	$errorcode = we_newsletter_base::STATUS_SUCCESS;
 	if($confirmid){
 		$_h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID="' . $GLOBALS['DB_WE']->escape($confirmid) . '" AND LOWER(subscribe_mail)="' . $GLOBALS['DB_WE']->escape(strtolower($mail)) . '"');
@@ -606,7 +601,7 @@ function getNewsletterFields($confirmid, &$errorcode, $mail = ''){
 		return $_h;
 	}
 
-	$subscribe_mail = trim(preg_replace("|[\r\n,]|", '', trim($request['we_subscribe_email__'])));
+	$subscribe_mail = trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::EMAIL, 'we_subscribe_email__')));
 	if(!$subscribe_mail){
 		$errorcode = we_newsletter_base::STATUS_EMAIL_INVALID;
 		return array();
@@ -620,10 +615,10 @@ function getNewsletterFields($confirmid, &$errorcode, $mail = ''){
 	return array(
 		'subscribe_mail' => $subscribe_mail,
 		'subscribe_html' => we_base_request::_(we_base_request::BOOL, 'we_subscribe_html__'),
-		'subscribe_salutation' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::STRING, 'we_subscribe_salutation__', ''))),
-		'subscribe_title' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::STRING, 'we_subscribe_title__', ''))),
-		'subscribe_firstname' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::STRING, 'we_subscribe_firstname__', ''))),
-		'subscribe_lastname' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::STRING, 'we_subscribe_lastname__', '')))
+		'subscribe_salutation' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_salutation__', ''))),
+		'subscribe_title' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_title__', ''))),
+		'subscribe_firstname' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_firstname__', ''))),
+		'subscribe_lastname' => trim(preg_replace("|[\r\n,]|", '', we_base_request::_(we_base_request::HTML, 'we_subscribe_lastname__', '')))
 	);
 }
 

@@ -220,7 +220,8 @@ class we_base_request{
 				$var = filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 				return;
 			case self::STRING_LIST:
-				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES))));
+				//in lists, we don't accept quotes
+				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING))));
 				return;
 			case self::HTML:
 				$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
