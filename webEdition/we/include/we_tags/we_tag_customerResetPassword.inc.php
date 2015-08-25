@@ -19,12 +19,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function checkPwds(){
-	$pwd = we_base_request::_(we_base_request::STRING, 's', '', 'Password');
+	$pwd = we_base_request::_(we_base_request::RAW, 's', '', 'Password');
 	if(!$pwd){
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_FIELD_NOT_SET;
 		return false;
 	}
-	if($pwd != we_base_request::_(we_base_request::STRING, 's', '', 'Password2')){
+	if($pwd != we_base_request::_(we_base_request::RAW, 's', '', 'Password2')){
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_NOT_MATCH;
 		return false;
 	}

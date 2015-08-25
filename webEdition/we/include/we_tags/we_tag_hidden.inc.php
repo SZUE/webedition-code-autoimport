@@ -36,7 +36,7 @@ function we_tag_hidden($attribs){
 			$value = $_SESSION[$name];
 			break;
 		case 'request' :
-			$value = filterXss(we_base_util::rmPhp(we_base_request::_(we_base_request::RAW, $name, '')));
+			$value = we_base_request::_(we_base_request::HTML, $name, '');
 			break;
 		default :
 			$value = isset($GLOBALS[$name]) ? $GLOBALS[$name] : '';

@@ -94,8 +94,8 @@ function we_tag_listview($attribs){
 
 	$orderid = weTag_getAttribute('orderid', $attribs, 0, we_base_request::INT);
 
-	$we_lv_languages = we_base_request::_(we_base_request::RAW, 'we_lv_languages_' . $name, weTag_getAttribute('languages', $attribs, '', we_base_request::STRING));
-	$we_lv_pagelanguage = we_base_request::_(we_base_request::RAW, 'we_lv_pagelanguage_' . $name, weTag_getAttribute('pagelanguage', $attribs, '', we_base_request::STRING));
+	$we_lv_languages = we_base_request::_(we_base_request::HTML, 'we_lv_languages_' . $name, weTag_getAttribute('languages', $attribs, '', we_base_request::STRING));
+	$we_lv_pagelanguage = we_base_request::_(we_base_request::HTML, 'we_lv_pagelanguage_' . $name, weTag_getAttribute('pagelanguage', $attribs, '', we_base_request::STRING));
 	$showself = weTag_getAttribute('showself', $attribs, false, we_base_request::BOOL);
 
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
@@ -103,7 +103,7 @@ function we_tag_listview($attribs){
 	$customers = weTag_getAttribute('customers', $attribs); // csv value of Ids
 	$casesensitive = weTag_getAttribute('casesensitive', $attribs, false, we_base_request::BOOL);
 	$customer = weTag_getAttribute('customer', $attribs, false, we_base_request::BOOL);
-	$we_lv_ct = we_base_request::_(we_base_request::RAW, 'we_lv_ct_' . $name, weTag_getAttribute('contenttypes', $attribs, '', we_base_request::STRING));
+	$we_lv_ct = we_base_request::_(we_base_request::HTML, 'we_lv_ct_' . $name, weTag_getAttribute('contenttypes', $attribs, '', we_base_request::STRING));
 
 	$cols = weTag_getAttribute('cols', $attribs, '', we_base_request::INT);
 	$we_lv_se = we_base_request::_(we_base_request::BOOL, 'we_lv_se_' . $name, weTag_getAttribute('searchable', $attribs, true, we_base_request::BOOL));
