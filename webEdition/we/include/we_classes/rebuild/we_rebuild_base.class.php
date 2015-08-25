@@ -177,7 +177,7 @@ abstract class we_rebuild_base{
 	 * @param boolean $maintable if the main table should be rebuilded
 	 * @param boolean $tmptable if the tmp table should be rebuilded
 	 */
-	public static function getAllDocuments($maintable, $tmptable){
+	private static function getAllDocuments($maintable, $tmptable){
 		if(!permissionhandler::hasPerm('REBUILD_ALL')){
 			return array();
 		}
@@ -205,6 +205,7 @@ abstract class we_rebuild_base{
 				'path' => $GLOBALS['DB_WE']->f('Path'),
 				'it' => 0);
 		}
+		/* why do we make an rebuild of navi table?
 		$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
 			$data[] = array(
@@ -224,7 +225,7 @@ abstract class we_rebuild_base{
 			'tt' => $tmptable,
 			'path' => $GLOBALS['DB_WE']->f('Path'),
 			'it' => 0
-		);
+		);*/
 
 		return $data;
 	}
