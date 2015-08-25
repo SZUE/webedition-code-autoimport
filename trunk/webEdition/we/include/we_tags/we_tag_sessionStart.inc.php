@@ -193,7 +193,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 			$_SESSION['webuser']['registered'] = true;
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
 
-			if($persistentlogins && isset($_REQUEST['s']['AutoLogin']) && $_REQUEST['s']['AutoLogin'] && $_SESSION['webuser']['AutoLoginDenied'] != 1){
+			if($persistentlogins && !empty($_REQUEST['s']['AutoLogin']) && $_SESSION['webuser']['AutoLoginDenied'] != 1){
 				$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
