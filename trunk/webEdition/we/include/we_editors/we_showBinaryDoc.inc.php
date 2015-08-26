@@ -97,6 +97,6 @@ if(($tid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3))){ // create
 		exit();
 	}
 }
-
+session_write_close();
 readfile($dataPath);
 exit();

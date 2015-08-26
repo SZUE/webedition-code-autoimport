@@ -26,6 +26,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) === 'download'){
 	$file = (file_exists($_SERVER['DOCUMENT_ROOT'] . $we_doc->Path) ? $_SERVER['DOCUMENT_ROOT'] . $we_doc->Path : $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . $we_doc->Path);
 	$_filename = $we_doc->Filename . $we_doc->Extension;
 	if(file_exists($file)){
+		session_write_close();
 		header("Pragma: public");
 		header("Expires: 0");
 		header("Cache-control: private, max-age=0, must-revalidate");
@@ -42,7 +43,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) === 'download'){
 
 echo we_html_tools::getHtmlTop() .
  (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
-		we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
+	we_html_element::jsElement('parent.frames[0].we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", "' . $we_doc->ID . '");') : ''
 ) .
  we_html_element::jsScript(JS_DIR . 'windows.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');

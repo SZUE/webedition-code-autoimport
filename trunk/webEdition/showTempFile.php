@@ -20,6 +20,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
+session_write_close();
 $filename = WEBEDITION_PATH . we_base_request::_(we_base_request::FILE, 'file');
 $keepBin = we_base_request::_(we_base_request::BOOL, 'binary');
 if(strpos($filename, WE_INCLUDES_PATH) !== false){

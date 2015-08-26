@@ -313,12 +313,10 @@ class we_customer_EIWizard{
 				array("headline" => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', "space" => $_space)
 			);
 			$js = we_html_element::jsElement(
-					 $this->bodyFrame . '.document.we_form.step.value--;
+					$this->bodyFrame . '.document.we_form.step.value--;
 	' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();'
-
-
-				); //FIXME: disable next button
+			); //FIXME: disable next button
 		}
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 					we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
@@ -373,6 +371,7 @@ class we_customer_EIWizard{
 
 			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
+				session_write_close();
 				$_size = filesize(TEMP_PATH . $_filename);
 
 				header("Pragma: public");
@@ -1675,7 +1674,7 @@ function formDirChooser() {
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_customer":
 				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
-				$customers= array_unique(array_merge($customers,we_base_request::_(we_base_request::INTLISTA, "cus", array())));
+				$customers = array_unique(array_merge($customers, we_base_request::_(we_base_request::INTLISTA, "cus", array())));
 				break;
 			case "del_customer":
 				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());

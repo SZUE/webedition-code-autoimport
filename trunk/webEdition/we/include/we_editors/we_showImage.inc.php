@@ -24,7 +24,8 @@
  */
 $we_doc = new we_imageDocument();
 $we_doc->we_initSessDat($_SESSION['weS']['we_data'][we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)]);
+session_write_close();
 
-header("Content-Type: " . $we_doc->getElement("type"));
-$dataPath = $we_doc->getElement("data");
+header('Content-Type: ' . $we_doc->getElement('type'));
+$dataPath = $we_doc->getElement('data');
 readfile($dataPath);
