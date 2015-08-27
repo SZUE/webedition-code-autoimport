@@ -355,7 +355,7 @@ function getStatusContol() {
 					if(($ncust = we_base_request::_(we_base_request::STRING, "ncustomer") ) !== false){
 						foreach($arr as $k => $v){
 							if($v == $ncust){
-								array_splice($arr, $k, 1);
+								unset($arr[$k]);
 							}
 						}
 						$this->newsletter->groups[$ngroup]->Customers = implode(',', $arr);
@@ -854,7 +854,7 @@ self.close();');
 				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file, 2) : array());
 
 				if($nrid){
-					array_splice($emails, $nrid, 1);
+					unset($emails[$nrid]);
 					$emails_out = '';
 					foreach($emails as $email){
 						$emails_out.=implode(',', $email) . "\n";

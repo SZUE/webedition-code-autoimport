@@ -160,7 +160,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			$groups = makeArrayFromCSV($block->Groups);
 			foreach($groups as $k => $v){
 				if($v > $count_group){
-					array_splice($groups, $k);
+					unset($groups[$k]);
 				}
 			}
 			$block->Groups = implode(',', $groups);
@@ -313,7 +313,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			if($id == $k){
 				$v->delete();
 				$v = new we_newsletter_block();
-				array_splice($this->blocks, $id, 1);
+				unset($this->blocks[$id]);
 			}
 		}
 	}
@@ -345,12 +345,12 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			}
 			foreach($arr as $k => $v){
 				if($v == -1){
-					array_splice($arr, $k, 1);
+					unset($arr[$k]);
 				}
 			}
 			$this->blocks[$bk]->Groups = implode(',', $arr);
 		}
-		array_splice($this->groups, $group, 1);
+		unset($this->groups[$group]);
 	}
 
 	/**

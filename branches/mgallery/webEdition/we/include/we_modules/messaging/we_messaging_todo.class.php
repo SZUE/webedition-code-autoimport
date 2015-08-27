@@ -429,7 +429,7 @@ class we_messaging_todo extends we_messaging_proto{
 				u.First LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR
 				u.Second LIKE "%' . $this->DB_WE->escape($criteria['searchterm']) . '%" OR ';
 
-				array_splice($criteria['search_fields'], $sf_uoff, 1);
+				unset($criteria['search_fields'][$sf_uoff]);
 			}
 
 			foreach($criteria['search_fields'] as $sf){

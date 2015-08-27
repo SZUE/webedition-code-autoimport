@@ -426,7 +426,8 @@ this.selectedIndex = 0;' .
 
 	static function hidden($name, $value, $attribs = null){
 		$attribs['name'] = $name;
-		$attribs['value'] = strpos($value, '') !== false ? oldHtmlspecialchars($value) : $value;
+		$attribs['type'] = 'hidden';
+		$attribs['value'] = strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value;
 		return getHtmlTag('input', $attribs);
 	}
 

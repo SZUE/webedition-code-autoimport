@@ -318,14 +318,14 @@ class we_customer_settings{
 	}
 
 	function removeFieldAdd($fieldName){
-		we_base_util::new_array_splice($this->FieldAdds, $fieldName);
+		unset($this->FieldAdds[$fieldName]);
 	}
 
 	function renameFieldAdds($old, $new){
 		foreach($this->FieldAdds as $k => $v){
 			if($k == $old){
 				$tmp = $this->FieldAdds[$k];
-				we_base_util::new_array_splice($this->FieldAdds, $k);
+				unset($this->FieldAdds[$k]);
 				$this->FieldAdds[$new] = $tmp;
 			}
 		}

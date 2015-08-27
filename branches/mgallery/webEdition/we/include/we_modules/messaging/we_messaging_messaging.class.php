@@ -116,7 +116,7 @@ class we_messaging_messaging extends we_class{
 			$this->used_msgobjs_names[] = $objname;
 
 			if(!isset($c->msgclass_type) || $c->msgclass_type == we_messaging_email::TYPE_SEND_RECEIVE){
-				$this->available_folders = array_merge($this->available_folders, $c->get_available_folders());
+				$this->available_folders = $this->available_folders + $c->get_available_folders();
 			}
 		}
 
@@ -273,7 +273,7 @@ class we_messaging_messaging extends we_class{
 		$results['ok'] = $ret['ok'];
 		$results['failed'] = $ret['failed'];
 
-		array_splice($this->selected_set, self::array_ksearch('ID', $this->selected_message['ID'], $this->selected_set), 1);
+		unset($this->selected_set[self::array_ksearch('ID', $this->selected_message['ID'], $this->selected_set)]);
 		$this->selected_message = array();
 
 		return $results;
@@ -391,8 +391,8 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function get_subfolder_count($id){
-		$classname = $this->available_folders[self::array_ksearch('ID', $id, $this->available_folders)]['ClassName'];
-		return (!empty($classname) ? $this->used_msgobjs[$classname]->get_subfolder_count($id) : -1);
+		$classname = $this->available_folders[$id]['ClassName'];
+		return ($classname ? $this->used_msgobjs[$classname]->get_subfolder_count($id) : -1);
 	}
 
 	function set_search_settings($search_fields, $search_folder_ids){
@@ -406,10 +406,9 @@ class we_messaging_messaging extends we_class{
 			}
 		}
 
-		//$tmp = self::array_get_kvals('ID', $this->available_folders);
 		if(isset($search_folder_ids)){
 			foreach($search_folder_ids as $elem){
-				if(in_array($elem, self::array_get_kvals('ID', $this->available_folders))){
+				if(isset($this->available_folders[$elem])){
 					$this->search_folder_ids[] = $elem;
 				}
 			}
@@ -479,7 +478,7 @@ class we_messaging_messaging extends we_class{
 						'strID' => $elem[1],
 						'strAlias' => $elem[2],
 						/* 'strFirstname',
-						 'strSurname' */
+						  'strSurname' */
 						)
 				));
 			}
@@ -489,17 +488,11 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function get_folder_info($fid){
-		$t = isset($this->available_folders[self::array_ksearch('ID', $fid, $this->available_folders)]) ? $this->available_folders[self::array_ksearch('ID', $fid, $this->available_folders)] : NULL;
-		return isset($t) ? $t : NULL;
+		return isset($this->available_folders[$fid]) ? $this->available_folders[$fid] : NULL;
 	}
 
 	function get_folder($fid){
-		$idx = self::array_ksearch('ID', $fid, $this->available_folders);
-		if($idx > -1){
-			$t = $this->available_folders[$idx];
-			return isset($t) ? $t : NULL;
-		}
-		return NULL;
+		return isset($this->available_folders[$fid]) ? $this->available_folders[$fid] : null;
 	}
 
 	function get_inbox_folder($classname){
@@ -508,31 +501,29 @@ class we_messaging_messaging extends we_class{
 		if(!isset($this->used_msgobjs[$classname])){
 			return NULL;
 		}
-
-		while(($c = self::array_ksearch('obj_type', we_messaging_proto::FOLDER_INBOX, $this->available_folders, $c)) != -1 && $this->available_folders[$c]['ClassName'] != $classname){
-			$c++;
-			if($c > 100){
-				return NULL;
+		foreach($this->available_folders as $folder){
+			if($folder['obj_type'] == we_messaging_proto::FOLDER_INBOX && $folder['ClassName'] == $classname){
+				return $folder;
 			}
 		}
-		return isset($this->available_folders[$c]) ? $this->available_folders[$c] : NULL;
+		return null;
 	}
 
 	function get_addresses(){
 		$this->DB_WE->query('SELECT strMsgType, strID, strAlias FROM ' . MSG_ADDRBOOK_TABLE . ' WHERE UserID=' . intval($this->userid));
-		return $this->DB_WE->getAll(false,MYSQL_NUM);
+		return $this->DB_WE->getAll(false, MYSQL_NUM);
 	}
 
 	function get_available_folders(){
 		$this->available_folders = array();
 
 		foreach($this->used_msgobjs as $val){
-			$this->available_folders = array_merge($this->available_folders, $val->get_available_folders());
+			$this->available_folders = $this->available_folders + $val->get_available_folders();
 		}
 	}
 
 	function get_message_count($folderid){
-		$classname = $this->available_folders[self::array_ksearch('ID', $folderid, $this->available_folders)]['ClassName'];
+		$classname = $this->available_folders[$folderid]['ClassName'];
 		return ($classname ?
 				$this->used_msgobjs[$classname]->get_count($folderid) :
 				-1);
@@ -550,7 +541,7 @@ class we_messaging_messaging extends we_class{
 
 		$s_hash = array();
 		foreach($nids as $f_id){
-			$cn = $this->available_folders[self::array_ksearch('ID', $f_id, $this->available_folders)]['ClassName'];
+			$cn = $this->available_folders[$f_id]['ClassName'];
 			if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 				$s_hash[$cn][] = (string) $f_id;
 			} else {
@@ -563,8 +554,8 @@ class we_messaging_messaging extends we_class{
 			if($mo_ret['res'] == 1){
 				$ret['ids'] = array_merge($ret['ids'], $mo_ret["ids"]);
 				foreach($mo_ret['ids'] as $id){
-					if(($ind = self::array_ksearch('ID', $id, $this->available_folders)) != -1){
-						array_splice($this->available_folders, $ind, 1);
+					if(isset($this->available_folders[$id])){
+						unset($this->available_folders[$id]);
 					}
 				}
 			}
@@ -714,7 +705,7 @@ class we_messaging_messaging extends we_class{
 					}
 				} else {
 					foreach($this->search_folder_ids as $sfolder){
-						$cn = $this->available_folders[self::array_ksearch('ID', $sfolder, $this->available_folders)]['ClassName'];
+						$cn = $this->available_folders[$sfolder]['ClassName'];
 						if(isset($s_hash[$cn]) && is_array($s_hash[$cn])){
 							$s_hash[$cn][] = $sfolder;
 						} else {
@@ -738,8 +729,8 @@ class we_messaging_messaging extends we_class{
 
 				//		$this->ids_selected = array();
 				//		echo "ID=$id<br/>\n";
-				if(self::array_ksearch('ID', $id, $this->available_folders) != "-1"){
-					$o = $this->used_msgobjs[$this->available_folders[self::array_ksearch('ID', $id, $this->available_folders)]['ClassName']];
+				if(isset($this->available_folders[$id])){
+					$o = $this->used_msgobjs[$this->available_folders[$id]['ClassName']];
 				} else {
 					$o = null;
 				}
@@ -816,7 +807,6 @@ class we_messaging_messaging extends we_class{
 	}
 
 	function create_folder($name, $parent_id, $type){
-
 		/* Sanity Checks */
 		if(!$type || !isset($this->used_msgobjs[$type])){
 			return array(1, g_l('modules_messaging', '[msg_type_not_found]'));
@@ -829,12 +819,13 @@ class we_messaging_messaging extends we_class{
 		$parent_id = $parent_id == -1 ? 0 : $parent_id;
 
 		//FIXME: Parent-check must be done by $type object;
-		if($parent_id != 0 && !in_array($parent_id, self::array_get_kvals('ID', $this->available_folders))){
+		if($parent_id != 0 && !isset($this->available_folders[$parent_id])){
 			return array(-1, g_l('modules_messaging', '[no_parent_folder]'));
 		}
 
 		if(($id = $this->used_msgobjs[$type]->create_folder($name, $parent_id)) != -1){
-			$this->available_folders[] = array('ID' => $id,
+			$this->available_folders[] = array(
+				'ID' => $id,
 				'ParentID' => $parent_id,
 				'ClassName' => $type,
 				'Name' => $name);
@@ -866,9 +857,8 @@ class we_messaging_messaging extends we_class{
 		}
 
 		if($this->used_msgobjs[$f['ClassName']]->modify_folder($fid, $folder_name, $parent_folder)){
-			$ind = self::array_ksearch('ID', $fid, $this->available_folders);
-			$this->available_folders[$ind]['Name'] = $folder_name;
-			$this->available_folders[$ind]['ParentID'] = $parent_folder;
+			$this->available_folders[$fid]['Name'] = $folder_name;
+			$this->available_folders[$fid]['ParentID'] = $parent_folder;
 			$ret[] = 1;
 			$ret[] = g_l('modules_messaging', '[folder_modified]');
 		} else {
@@ -978,7 +968,7 @@ class we_messaging_messaging extends we_class{
 	function print_select_search_folders(){
 		$out = '';
 		foreach($this->available_folders as $key => $val){
-			$out .= '<option value="' . $val['ID'] . '"' . (in_array($val['ID'], $this->search_folder_ids) ? ' selected' : '') . '>' . $val['Name'] . "</option>\n";
+			$out .= '<option value="' . $key . '"' . (in_array($key, $this->search_folder_ids) ? ' selected' : '') . '>' . $val['Name'] . "</option>\n";
 		}
 		return $out;
 	}

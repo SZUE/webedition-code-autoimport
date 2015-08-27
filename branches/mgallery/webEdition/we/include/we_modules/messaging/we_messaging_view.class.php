@@ -190,7 +190,7 @@ function submitForm() {
 				';
 
 				$aid = $this->messaging->Folder_ID;
-				$idx = we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders);
+				$idx = isset($this->messaging->available_folders[$aid]) ? $aid : -1;
 				if($idx > -1){
 					$js_out .= '
 					top.content.updateEntry({id:'.$aid.',parentid: -1, text:"' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});';

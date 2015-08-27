@@ -413,7 +413,7 @@ abstract class we_export_functions{
 	static function remove_from_check_array($check_array, $tagname){
 		for($i = 0; $i < count($check_array); $i++){
 			if(isset($check_array[$i]) && $check_array[$i] == $tagname){
-				array_splice($check_array, $i, 1);
+				unset($check_array[$i]);
 			}
 		}
 

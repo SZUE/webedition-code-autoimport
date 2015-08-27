@@ -491,10 +491,6 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				$attribs['title'] = $this->getElement('Title');
 			}
 
-			if(($this->getElement('alt') === '')){ //  always use alt-Text -> can be empty
-				$attribs['alt'] = ' ';
-			}
-
 			while((list($k, $v) = $this->nextElement('attrib'))){
 				if(!in_array($k, $filter)){
 					if(!empty($v['dat'])){

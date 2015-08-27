@@ -39,7 +39,7 @@ class we_net_rpc_JsonRpc{
 				$jsonRequest = file_get_contents('php://input');
 				$phpObj = Zend_Json::decode($jsonRequest);
 			} catch (Zend_Json_Exception $e){
-				exit("JSON-RPC request expected; unexpected data received: " . $e->getMessage());
+				exit('JSON-RPC request expected; unexpected data received: ' . $e->getMessage());
 			}
 		} else {
 			/*
@@ -58,7 +58,7 @@ class we_net_rpc_JsonRpc{
 			 * This request was not issued with JSON-RPC so echo the error rather than
 			 * issuing a JsonRpcError response.
 			 */
-			exit("JSON-RPC request expected; id, service, method or params missing<br/>");
+			exit('JSON-RPC request expected; id, service, method or params missing<br/>');
 		}
 
 		/*

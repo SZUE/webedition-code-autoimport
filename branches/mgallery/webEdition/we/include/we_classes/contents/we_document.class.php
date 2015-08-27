@@ -1302,7 +1302,7 @@ class we_document extends we_root{
 	}
 
 	function del_schedule($nr){
-		array_splice($this->schedArr, $nr, 1);
+		unset($this->schedArr[$nr]);
 	}
 
 	protected function i_setElementsFromHTTP(){
@@ -1471,7 +1471,7 @@ class we_document extends we_root{
 
 			$ind = array_search(we_base_constants::WE_EDITPAGE_VARIANTS, $this->EditPageNrs);
 			if(!empty($ind)){
-				array_splice($this->EditPageNrs, $ind, 1);
+				unset($this->EditPageNrs[$ind]);
 			}
 		}
 	}

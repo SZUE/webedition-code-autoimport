@@ -332,7 +332,7 @@ var perms={
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->CategoryIDs = implode(',', $arr);
@@ -392,7 +392,7 @@ var perms={
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->Customers = implode(',', $arr);
@@ -406,7 +406,7 @@ var perms={
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->FolderIDs = implode(',', $arr);

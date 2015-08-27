@@ -387,7 +387,9 @@ abstract class we_base_util{
 	 *
 	 *
 	 * @return         none
-	 */
+	@deprecated
+	 *
+	 *  */
 	public static function new_array_splice(&$a, $start, $len = 1){
 		$ks = array_keys($a);
 		$k = array_search($start, $ks);

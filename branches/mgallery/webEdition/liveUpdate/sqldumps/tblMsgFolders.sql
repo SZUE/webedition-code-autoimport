@@ -1,10 +1,12 @@
+###UPDATEDROPCOL(account_id,###TBLPREFIX###tblMsgFolders)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblMsgFolders (
   ID int(11) unsigned NOT NULL auto_increment,
   ParentID int(11) unsigned default NULL,
   UserID int(11) unsigned NOT NULL default '0',
-  account_id int(11) unsigned default NULL,
-  msg_type tinyint(4) unsigned NOT NULL default '0',
-  obj_type tinyint(4) unsigned NOT NULL default '0',
+  msg_type tinyint(1) unsigned NOT NULL default '0',
+  obj_type tinyint(1) unsigned NOT NULL default '0',
   Name varchar(255) NOT NULL default '',
   sortItem varchar(255) default NULL,
   sortOrder varchar(5) default NULL,
