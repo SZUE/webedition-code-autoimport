@@ -442,17 +442,9 @@ this.selectedIndex = 0;' .
 	}
 
 	static function hidden($name, $value, $attribs = null){
-		$attribute = '';
-		if(isset($attribs) && is_array($attribs)){
-			foreach($attribs as $key => $val){
-				$attribute .= $key . '="' . $val . '" ';
-			}
-		} if(XHTML_DEFAULT){
-			$tagende = '/>';
-		} else {
-			$tagende = '>';
-		}
-		return '<input type="hidden" value="' . $value . '" name="' . $name . '" ' . $attribute . $tagende;
+		$attribs['name'] = $name;
+		$attribs['value'] = strpos($value, '') !== false ? oldHtmlspecialchars($value) : $value;
+		return getHtmlTag('input', $attribs);
 	}
 
 	static function we_getDayPos($format){
