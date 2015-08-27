@@ -652,6 +652,7 @@ function closeAllType(){
 
 			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
+				session_write_close();
 				$_size = filesize(TEMP_PATH . $_filename);
 
 				header("Pragma: public");
@@ -670,6 +671,7 @@ function closeAllType(){
 		} else {
 			header("Location: " . $this->frameset . "?pnt=cmd&cmd=error=upload_failed");
 		}
+		exit();
 	}
 
 	function getHTMLCmd(){

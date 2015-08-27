@@ -142,7 +142,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'jslocation' => we_base_request::_(we_base_request::BOOL, 'jslocation'),
 		'img_id' => we_base_request::_(we_base_request::INT, 'img_id', 0),
 		'img_src' => we_base_request::_(we_base_request::URL, 'img_src', ''),
-		'text' => we_base_request::_(we_base_request::HTML, 'text'),
+		'text' => we_base_request::_(we_base_request::STRING, 'text'),
 		'type' => ($type == we_base_link::TYPE_MAIL) ? we_base_link::TYPE_INT : $type,
 		'ctype' => we_base_request::_(we_base_request::STRING, 'ctype'),
 		'width' => we_base_request::_(we_base_request::UNIT, 'width', ''),
@@ -206,65 +206,72 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	  $link['nr'] = 0;
 	  $linklist = serialize(array($link));
 	  } */
+} elseif($nr > -1){
+	$ll = new we_base_linklist($we_doc->getElement($name));
+	$href = $ll->getHref($nr);
+	if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
+		$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
+		$href = '';
+		$type = we_base_link::TYPE_MAIL;
+	} else {
+		$type = $ll->getType($nr);
+		$type = $type ? : we_base_link::TYPE_INT;
+		$emaillink = '';
+	}
+	$anchor = $ll->getAnchor($nr);
+	$accesskey = $ll->getAccesskey($nr);
+	$lang = $ll->getLang($nr);
+	$rel = $ll->getRel($nr);
+	$rev = $ll->getRev($nr);
+	$hreflang = $ll->getHrefLang($nr);
+	$tabindex = $ll->getTabindex($nr);
+	$params = $ll->getParams($nr);
+	$title = $ll->getTitle($nr);
+	$attribs = $ll->getAttribs($nr);
+	$text = $ll->getText($nr);
+	$target = $ll->getTarget($nr);
+	$jswin = $ll->getJsWinAttrib($nr, 'jswin');
+	$jscenter = $ll->getJsWinAttrib($nr, 'jscenter');
+	$jsposx = $ll->getJsWinAttrib($nr, 'jsposx');
+	$jsposy = $ll->getJsWinAttrib($nr, 'jsposy');
+	$jswidth = $ll->getJsWinAttrib($nr, 'jswidth');
+	$jsheight = $ll->getJsWinAttrib($nr, 'jsheight');
+	$jsstatus = $ll->getJsWinAttrib($nr, 'jsstatus');
+	$jsscrollbars = $ll->getJsWinAttrib($nr, 'jsscrollbars');
+	$jsmenubar = $ll->getJsWinAttrib($nr, 'jsmenubar');
+	$jstoolbar = $ll->getJsWinAttrib($nr, 'jstoolbar');
+	$jsresizable = $ll->getJsWinAttrib($nr, 'jsresizable');
+	$jslocation = $ll->getJsWinAttrib($nr, 'jslocation');
+
+	//added for #7269
+	$bcc = $ll->getBcc($nr);
+	$cc = $ll->getCc($nr);
+	$subject = $ll->getSubject($nr);
+
+	$id = $ll->getID($nr);
+	$obj_id = $ll->getObjID($nr);
+	$href_obj = $ll->getHrefObj($nr);
+	$img_id = $ll->getImageID($nr);
+	$img_src = $ll->getImageSrc($nr);
+	$width = $ll->getImageAttrib($nr, 'width');
+	$height = $ll->getImageAttrib($nr, 'height');
+	$border = $ll->getImageAttrib($nr, 'border');
+	$hspace = $ll->getImageAttrib($nr, 'hspace');
+	$vspace = $ll->getImageAttrib($nr, 'vspace');
+	$align = $ll->getImageAttrib($nr, 'align');
+	$alt = $ll->getImageAttrib($nr, 'alt');
+	$img_title = $ll->getImageAttrib($nr, 'img_title');
+	$href_int = $ll->getHrefInt($nr);
+	$src_int = $ll->getImageSrcInt($nr);
+	$ctype = $ll->getCType($nr);
 } else {
-	if($nr > -1){
-		$ll = new we_base_linklist($we_doc->getElement($name));
-		$href = $ll->getHref($nr);
-		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
-			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
-			$href = '';
-			$type = we_base_link::TYPE_MAIL;
-		} else {
-			$type = $ll->getType($nr);
-			$type = $type ? : we_base_link::TYPE_INT;
-			$emaillink = '';
-		}
-		$anchor = $ll->getAnchor($nr);
-		$accesskey = $ll->getAccesskey($nr);
-		$lang = $ll->getLang($nr);
-		$rel = $ll->getRel($nr);
-		$rev = $ll->getRev($nr);
-		$hreflang = $ll->getHrefLang($nr);
-		$tabindex = $ll->getTabindex($nr);
-		$params = $ll->getParams($nr);
-		$title = $ll->getTitle($nr);
-		$attribs = $ll->getAttribs($nr);
-		$text = $ll->getText($nr);
-		$target = $ll->getTarget($nr);
-		$jswin = $ll->getJsWinAttrib($nr, 'jswin');
-		$jscenter = $ll->getJsWinAttrib($nr, 'jscenter');
-		$jsposx = $ll->getJsWinAttrib($nr, 'jsposx');
-		$jsposy = $ll->getJsWinAttrib($nr, 'jsposy');
-		$jswidth = $ll->getJsWinAttrib($nr, 'jswidth');
-		$jsheight = $ll->getJsWinAttrib($nr, 'jsheight');
-		$jsstatus = $ll->getJsWinAttrib($nr, 'jsstatus');
-		$jsscrollbars = $ll->getJsWinAttrib($nr, 'jsscrollbars');
-		$jsmenubar = $ll->getJsWinAttrib($nr, 'jsmenubar');
-		$jstoolbar = $ll->getJsWinAttrib($nr, 'jstoolbar');
-		$jsresizable = $ll->getJsWinAttrib($nr, 'jsresizable');
-		$jslocation = $ll->getJsWinAttrib($nr, 'jslocation');
-
-		//added for #7269
-		$bcc = $ll->getBcc($nr);
-		$cc = $ll->getCc($nr);
-		$subject = $ll->getSubject($nr);
-
-		$id = $ll->getID($nr);
-		$obj_id = $ll->getObjID($nr);
-		$href_obj = $ll->getHrefObj($nr);
-		$img_id = $ll->getImageID($nr);
-		$img_src = $ll->getImageSrc($nr);
-		$width = $ll->getImageAttrib($nr, 'width');
-		$height = $ll->getImageAttrib($nr, 'height');
-		$border = $ll->getImageAttrib($nr, 'border');
-		$hspace = $ll->getImageAttrib($nr, 'hspace');
-		$vspace = $ll->getImageAttrib($nr, 'vspace');
-		$align = $ll->getImageAttrib($nr, 'align');
-		$alt = $ll->getImageAttrib($nr, 'alt');
-		$img_title = $ll->getImageAttrib($nr, 'img_title');
-		$href_int = $ll->getHrefInt($nr);
-		$src_int = $ll->getImageSrcInt($nr);
-		$ctype = $ll->getCType($nr);
+	$link = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
+	$link = ($link ? : array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+	$href = isset($link['href']) ? $link['href'] : '';
+	if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
+		$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
+		$href = '';
+		$type = we_base_link::TYPE_MAIL;
 	} else {
 		$link = (we_unserialize($we_doc->getElement($name))? :
 				array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
@@ -290,10 +297,10 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$title = isset($link['title']) ? $link['title'] : '';
 		$target = isset($link['target']) ? $link['target'] : '';
 
-		//added for #7269
-		$bcc = isset($link['bcc']) ? $link['bcc'] : '';
-		$cc = isset($link['cc']) ? $link['cc'] : '';
-		$subject = isset($link['subject']) ? $link['subject'] : '';
+	//added for #7269
+	$bcc = isset($link['bcc']) ? $link['bcc'] : '';
+	$cc = isset($link['cc']) ? $link['cc'] : '';
+	$subject = isset($link['subject']) ? $link['subject'] : '';
 
 		$jswin = !empty($link['jswin']) ? : '';
 		$jscenter = isset($link['jscenter']) ? $link['jscenter'] : '';
@@ -327,6 +334,8 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$src_int = $img_id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($img_id)) : '';
 		$ctype = isset($link['ctype']) ? $link['ctype'] : '';
 	}
+	$src_int = $img_id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($img_id)) : '';
+	$ctype = isset($link['ctype']) ? $link['ctype'] : '';
 }
 
 echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset')) .

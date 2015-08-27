@@ -487,7 +487,7 @@ class we_navigation_items{
 		$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
 		while($_db->next_record()){
 			$_tmpItem = $_db->getRecord();
-			$_tmpItem["Name"] = $_tmpItem["Text"];
+			$_tmpItem['Name'] = $_tmpItem['Text'];
 			$this->Storage['items'][] = $_tmpItem;
 
 			if($_db->Record['IsFolder'] == 1 && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STPYE_DOCLINK)){
