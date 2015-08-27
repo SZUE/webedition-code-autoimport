@@ -146,13 +146,13 @@ if(!$notfound){
 	$_SERVER['SCRIPT_NAME'] = $display;
 	we_html_tools::setHttpCode(200);
 
-	include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $display);
+	include(WEBEDITION_PATH . '../' . $display);
 
 	exit;
 } elseif($error404doc){
 	we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
 	if(($doc = id_to_path($error404doc, FILE_TABLE))){
-		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $doc);
+		include(WEBEDITION_PATH . '../' . $doc);
 	}
 	exit;
 }

@@ -150,7 +150,7 @@ function wetagsessionHandleFailedLogin(){
 			$_SESSION['webuser']['loginfailed'] = we_users_user::MAX_LOGIN_COUNT_REACHED;
 			unset($_REQUEST['s']);
 			if(($path = id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE))){
-				include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $path);
+				include(WEBEDITION_PATH . '../' . $path);
 				exit();
 			}
 		}
