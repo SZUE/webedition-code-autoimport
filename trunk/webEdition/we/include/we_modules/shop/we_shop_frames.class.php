@@ -318,20 +318,20 @@ class we_shop_frames extends we_modules_frame{
 		<?php
 // echo "menuDaten.add(new dirEntry('folder.gif','aaaa',0, 'Article',0,'','',".(($k>0)?1:0)."));";
 
-		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
+		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		while($this->db->next_record()){
 			//added for #6786
 			$style = 'color:black;font-weight:bold;';
 
-			if($this->db->f('DateCustomA') != '' || $this->db->f('DateCustomB') != '' || $this->db->f('DateCustomC') != '' || $this->db->f('DateCustomD') != '' || $this->db->f('DateCustomE') != '' || $this->db->f('DateCustomF') != '' || $this->db->f('DateCustomG') != '' || $this->db->f('DateCustomH') != '' || $this->db->f('DateCustomI') != '' || $this->db->f('DateCustomJ') != '' || $this->db->f('DateConfirmation') != '' || ($this->db->f('DateShipping') != '0000-00-00 00:00:00' && $this->db->f('DateShipping') != '')){
+			if($this->db->f('DateCustomA') || $this->db->f('DateCustomB') || $this->db->f('DateCustomC') || $this->db->f('DateCustomD') || $this->db->f('DateCustomE') || $this->db->f('DateCustomF') || $this->db->f('DateCustomG') || $this->db->f('DateCustomH') || $this->db->f('DateCustomI') || $this->db->f('DateCustomJ') || $this->db->f('DateConfirmation') || ($this->db->f('DateShipping') != '0000-00-00 00:00:00' && $this->db->f('DateShipping'))){
 				$style = 'color:red;';
 			}
 
-			if($this->db->f('DatePayment') != '0000-00-00 00:00:00' && $this->db->f('DatePayment') != ''){
+			if($this->db->f('DatePayment') != '0000-00-00 00:00:00' && $this->db->f('DatePayment')){
 				$style = 'color:#006699;';
 			}
 
-			if($this->db->f('DateCancellation') != '' || $this->db->f('DateFinished') != ''){
+			if($this->db->f('DateCancellation') || $this->db->f('DateFinished')){
 				$style = 'color:black;';
 			}
 

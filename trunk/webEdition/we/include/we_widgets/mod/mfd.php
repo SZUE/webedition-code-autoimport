@@ -50,17 +50,17 @@ $doctable = $where = $_users_where = $workspace = array();
 
 switch($iDate){
 	case 1 :
-		$where[] = 'ModDate=CURDATE()';
+		$where[] = 'h.ModDate=CURDATE()';
 		break;
 	case 2 :
-		$where[] = 'ModDate>=(CURDATE()-INTERVAL 1 WEEK)';
+		$where[] = 'h.ModDate>=(CURDATE()-INTERVAL 1 WEEK)';
 		break;
 	case 3 :
-		$where[] = 'ModDate>=(CURDATE()-INTERVAL 1 MONTH)';
+		$where[] = 'h.ModDate>=(CURDATE()-INTERVAL 1 MONTH)';
 		break;
 	default:
 	case 4 :
-		$where[] = 'ModDate>=(CURDATE()-INTERVAL 1 YEAR)';
+		$where[] = 'h.ModDate>=(CURDATE()-INTERVAL 1 YEAR)';
 		break;
 }
 $iNumItems = $aCols[2];
@@ -101,90 +101,94 @@ if($aUsers){
 		$db->query('SELECT ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND (Path REGEXP "^(' . implode('/|', $folders) . '/)" OR ID IN (' . $aUsers . '))');
 		$aUsers = implode(',', $db->getAll(true));
 	}
-	$where[] = 'UID IN (' . $aUsers . ')';
+	$where[] = 'h.UID IN (' . $aUsers . ')';
 }
+
+$join = array();
+$tables = array();
+$admin = permissionhandler::hasPerm('ADMINISTRATOR');
 
 if(defined('FILE_TABLE') && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$paths = array();
-	foreach(makeArrayFromCSV(get_ws(FILE_TABLE)) as $id){
-		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, FILE_TABLE)) . '%")';
+	$t = stripTblPrefix(FILE_TABLE);
+	foreach(get_ws(FILE_TABLE, false, true) as $id){
+		$paths[] = 'f.Path LIKE ("' . $db->escape(id_to_path($id, FILE_TABLE)) . '%")';
 	}
-	$workspace[FILE_TABLE] = implode(' OR ', $paths);
+	$join[] = FILE_TABLE . ' f ON (h.DocumentTable="' . $t . '" AND f.ID=h.DID ' . ($paths ? ' AND (' . implode(' OR ', $paths) . ')' : '') .
+		($admin ? '' : ' AND (f.RestrictOwners=0 OR(f.RestrictOwners=1 AND (f.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',f.Owners))))') .
+		')';
+	$tables[] = 'f';
 }
 if(defined('OBJECT_FILES_TABLE') && $bTypeObj && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$paths = array();
-	foreach(makeArrayFromCSV(get_ws(OBJECT_FILES_TABLE)) as $id){
-		$paths[] = 'Path LIKE ("' . $db->escape(id_to_path($id, OBJECT_FILES_TABLE)) . '%")';
+	$t = stripTblPrefix(OBJECT_FILES_TABLE);
+	foreach(get_ws(OBJECT_FILES_TABLE, false, true) as $id){
+		$paths[] = 'of.Path LIKE ("' . $db->escape(id_to_path($id, OBJECT_FILES_TABLE)) . '%")';
 	}
-	$workspace[OBJECT_FILES_TABLE] = implode(' OR ', $paths);
+	$join[] = OBJECT_FILES_TABLE . ' of ON (h.DocumentTable="' . $t . '" AND of.ID=h.DID ' . ($paths ? ' AND (' . implode(' OR ', $paths) . ')' : '') .
+		($admin ? '' : ' AND (of.RestrictOwners=0 OR(of.RestrictOwners=1 AND (of.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',of.Owners))))') .
+		')';
+	$tables[] = 'of';
 }
 if(defined('TEMPLATES_TABLE') && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
+	$join[] = TEMPLATES_TABLE . ' t ON (h.DocumentTable="tblTemplates" AND t.ID=h.DID' .
+		($admin ? '' : ' AND (t.RestrictOwners=0 OR(t.RestrictOwners=1 AND (t.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',t.Owners))))') .
+		')';
+	$tables[] = 't';
 }
 if(defined('OBJECT_TABLE') && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
+	$join[] = OBJECT_TABLE . ' o ON (h.DocumentTable="tblObject" AND o.ID=h.DID' .
+		($admin ? '' : ' AND (o.RestrictOwners=0 OR(o.RestrictOwners=1 AND (o.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',o.Owners))))') .
+		')';
+	$tables[] = 'o';
 }
 
 if($doctable){
-	$where[] = 'DocumentTable IN(' . implode(',', $doctable) . ')';
+	$where[] = 'h.DocumentTable IN(' . implode(',', $doctable) . ')';
 }
 
 if($mode == we_base_constants::MODE_SEE){
 	$where[] = ' ContentType!="folder" ';
 }
+
 $where = ($where ? ' WHERE ' . implode(' AND ', $where) : '');
 
-$tables = $data = array();
-
-$db->query('SELECT h.DID,(SELECT UserName FROM '.HISTORY_TABLE.' WHERE MAX(h.ModDate)=ModDate AND DID=h.DID AND h.DocumentTable=DocumentTable) AS UserName,h.DocumentTable,DATE_FORMAT(h.ModDate,"' . g_l('date', '[format][mysql]') . '") AS MDate,!ISNULL(l.ID) AS isOpen FROM ' . HISTORY_TABLE . ' h LEFT JOIN ' . LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=DocumentTable AND l.UserID!=' . $uid . ' ' . $where . '  GROUP BY DID,DocumentTable ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems + 30));
-
-while($db->next_record(MYSQL_ASSOC)){
-	$tables[$db->f('DocumentTable')][] = $db->f('DID');
-	$data[$db->f('DocumentTable')][$db->f('DID')] = $db->getRecord();
-}
-
-$queries = array();
-foreach($tables as $ctable => $ids){
-	$table = addTblPrefix($ctable);
-	$paths = ((!permissionhandler::hasPerm('ADMINISTRATOR') || ($table != TEMPLATES_TABLE && (defined('OBJECT_TABLE') ? ($table != OBJECT_TABLE) : true))) && isset($workspace[$table]) ?
-			$workspace[$table] : '');
-
-	$queries[] = '(SELECT ID,Path,Icon,Text,ContentType,ModDate,CreatorID,Owners,RestrictOwners,"' . $ctable . '" AS ctable FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', $ids) . ')' . ($paths ? (' AND (' . $paths . ')') : '') . ')';
-}
+$db->query('SELECT h.DID,
+(SELECT UserName FROM ' . HISTORY_TABLE . ' hh WHERE MAX(h.ModDate)=hh.ModDate AND hh.DID=h.DID AND h.DocumentTable=hh.DocumentTable) AS UserName,
+h.DocumentTable AS ctable,
+DATE_FORMAT(h.ModDate,"' . g_l('date', '[format][mysql]') . '") AS MDate,
+!ISNULL(l.ID) AS isOpen,
+COALESCE(' . implode('.ID,', $tables) . '.ID) AS ID,
+COALESCE(' . implode('.Path,', $tables) . '.Path) AS Path,
+COALESCE(' . implode('.Icon,', $tables) . '.Icon) AS Icon,
+COALESCE(' . implode('.Text,', $tables) . '.Text) AS Text,
+COALESCE(' . implode('.ContentType,', $tables) . '.ContentType) AS ContentType,
+COALESCE(' . implode('.ModDate,', $tables) . '.ModDate) AS ModDate
+FROM ' . HISTORY_TABLE . ' h
+LEFT JOIN ' .
+	LOCK_TABLE . ' l ON l.ID=DID AND l.tbl=h.DocumentTable AND l.UserID!=' . $uid . ($join ? ' LEFT JOIN ' . implode(' LEFT JOIN ', $join) : '') . '
+' . $where . '
+GROUP BY h.DID,h.DocumentTable
+ORDER BY ModDate DESC LIMIT 0,' . ($iMaxItems));
 
 $lastModified = '<table style="width:100%">';
 
-$j = 0;
+while($db->next_record(MYSQL_ASSOC) /* && $j < $iMaxItems */){
+	$file = $db->getRecord();
 
-if($queries){
-	$admin = permissionhandler::hasPerm('ADMINISTRATOR');
-	$db->query(implode(' UNION ', $queries) . ' ORDER BY ModDate DESC', true);
-	while($db->next_record(MYSQL_ASSOC) && $j < $iMaxItems){
-		$file = $db->getRecord();
-		$hist = $data[$db->f('ctable')][$db->f('ID')];
-
-		$table = addTblPrefix($db->f('ctable'));
-
-		$show = ($table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && ($table == OBJECT_FILES_TABLE)) ?
-				$admin || we_history::userHasPerms($file['CreatorID'], $file['Owners'], $file['RestrictOwners']) :
-				true);
-
-		if($show){
-			$isOpen = $hist['isOpen'];
-			$lastModified .= '<tr><td style="width:20px;height:20px;padding-right:4px;" nowrap><img style="max-width:20px;max-height:20px" src="' . TREE_ICON_DIR . $file['Icon'] . '" />' . '</td>' .
-				'<td style="vertical-align: middle;" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
-				($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
-				$file['Path'] . ($isOpen ? '' : '</a>') .
-				'</td>' .
-				($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $hist['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-				($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $hist['MDate'] . '</td>' : '') .
-				'</tr>';
-
-			$j++;
-		}
-	}
+	$isOpen = $file['isOpen'];
+	$lastModified .= '<tr><td style="width:20px;height:20px;padding-right:4px;" nowrap><img style="max-width:20px;max-height:20px" src="' . TREE_ICON_DIR . $file['Icon'] . '" />' . '</td>' .
+		'<td style="vertical-align: middle;" class="middlefont" ' . ($isOpen ? 'style="color:red;"' : '') . '>' .
+		($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:top.weEditorFrameController.openDocument(\'' . addTblPrefix($db->f('ctable')) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
+		$file['Path'] . ($isOpen ? '' : '</a>') .
+		'</td>' .
+		($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
+		($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $file['MDate'] . '</td>' : '') .
+		'</tr>';
 }
 
 $lastModified .= '</table>';
