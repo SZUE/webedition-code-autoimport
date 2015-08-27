@@ -1681,7 +1681,7 @@ function formDirChooser() {
 				if(($id = we_base_request::_(we_base_request::INT, "cus"))){
 					foreach($customers as $k => $v){
 						if($v == $id){
-							array_splice($customers, $k, 1);
+							unset($customers[$k]);
 						}
 					}
 				}

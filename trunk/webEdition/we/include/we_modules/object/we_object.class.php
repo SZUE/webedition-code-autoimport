@@ -1549,7 +1549,7 @@ class we_object extends we_document{
 		if(in_array($id, $users)){
 			$pos = array_search($id, $users);
 			if($pos !== false || $pos == '0'){
-				array_splice($users, $pos, 1);
+				unset($users[$pos]);
 			}
 		}
 		$this->Users = makeCSVFromArray($users, true);

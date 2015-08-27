@@ -807,7 +807,7 @@ function closeAllType(){
 				if(($cat = we_base_request::_(we_base_request::INT, "cat"))){
 					foreach($arr as $k => $v){
 						if($v == $cat){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->View->export->Categorys = makeCSVFromArray($arr, true);

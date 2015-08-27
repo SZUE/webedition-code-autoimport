@@ -528,7 +528,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
@@ -588,7 +588,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->Customers = makeCSVFromArray($arr, true);
@@ -602,7 +602,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->FolderIDs = makeCSVFromArray($arr, true);

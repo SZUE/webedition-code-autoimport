@@ -195,7 +195,7 @@ class we_messaging_message extends we_messaging_proto{
 		u.First LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR
 		u.Second LIKE "%' . escape_sql_query($criteria['searchterm']) . '%" OR ';
 
-				array_splice($criteria['search_fields'], $sf_uoff, 1);
+				unset($criteria['search_fields'][$sf_uoff]);
 			}
 
 			foreach($criteria['search_fields'] as $sf){
