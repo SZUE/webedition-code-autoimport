@@ -11,7 +11,7 @@
 				}
 				var wehref = "";
 				if (a.dom.getParent(c.getNode(), 'A') !== null) {
-					wehref = a.dom.getParent(c.getNode(), 'A').href;
+					wehref = a.dom.getParent(c.getNode(), 'A').getAttribute('HREF');
 				};
 				a.windowManager.open({
 					file: b + "/../../../../we_tinymce/linkDialog.php?we_dialog_args[editor]=tinyMce&we_dialog_args[href]=" + encodeURIComponent(wehref) + "&we_dialog_args[cssclasses]=" + a.getParam('weClassNames_urlEncoded') + "&we_dialog_args[isFrontend]=" + a.getParam('weIsFrontend'),
