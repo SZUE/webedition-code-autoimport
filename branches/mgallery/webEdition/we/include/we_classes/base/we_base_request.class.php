@@ -173,7 +173,6 @@ class we_base_request{
 				$var = (filter_var($regs[2] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
 						$regs[1] . $regs[2] . '@' . $regs[3] :
 						'');
-
 				return;
 			case self::WEFILELIST:
 			case self::WEFILELISTA:
@@ -226,7 +225,7 @@ class we_base_request{
 				$var = array_filter(array_map('trim', explode(',', filter_var($var, FILTER_SANITIZE_STRING))));
 				return;
 			case self::HTML:
-				$var = filter_var($var, FILTER_SANITIZE_SPECIAL_CHARS);
+				$var = filter_var(htmlspecialchars_decode($var), FILTER_SANITIZE_SPECIAL_CHARS);
 				return;
 			case self::JS://for information!
 			case self::RAW:

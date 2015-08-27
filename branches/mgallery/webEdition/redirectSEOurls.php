@@ -34,7 +34,7 @@ if(!empty($GLOBALS['we_editmode'])){
 $urlLookingFor = (!empty($_SERVER['REDIRECT_URL']) && !strpos($_SERVER['REDIRECT_URL'], ltrim(WEBEDITION_DIR, "/"))) ?
 	urldecode($_SERVER['REDIRECT_URL']) :
 	(!empty($_SERVER['REQUEST_URI']) && !strpos($_SERVER['REQUEST_URI'], ltrim(WEBEDITION_DIR, "/")) ?
-		parse_url(urldecode($_SERVER['REQUEST_URI']),PHP_URL_PATH) :
+		parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) :
 		'');
 
 if(!$urlLookingFor){
@@ -59,18 +59,17 @@ define('WE_REDIRECTED_SEO', $urlLookingFor);
  * third check: part-1-of-seo-url/part-2-of-seo-url --> we get the object
  * and so one
  */
-
 $urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
-	strtr(urlencode($urlLookingFor), array('%2F' => '/', '//' => '/')) :
-	strtr($urlLookingFor, array('//' => '/'))
+		strtr(urlencode($urlLookingFor), array('%2F' => '/', '//' => '/')) :
+		strtr($urlLookingFor, array('//' => '/'))
 	);
 
 while($urlLookingFor){// first we try to get the object
 	if(($object = getHash('SELECT ID,TriggerID,Url FROM ' . OBJECT_FILES_TABLE . ' WHERE Published>0 AND Url LIKE "' . $GLOBALS['DB_WE']->escape($urlLookingFor) . '" LIMIT 1'))){
 		/**
-		* we check if the given URL and DB Url are identical
-		* if not we redirect to the DB url to avoid dublicate content
-		*/
+		 * we check if the given URL and DB Url are identical
+		 * if not we redirect to the DB url to avoid dublicate content
+		 */
 		if($object['Url'] !== $urlLookingFor){
 			header("Location: " . str_replace($urlLookingFor, $object['Url'], WE_REDIRECTED_SEO), true, 301);
 			exit;
@@ -82,23 +81,23 @@ while($urlLookingFor){// first we try to get the object
 }
 
 /**
-* now we try to get the trigger document
-*/
+ * now we try to get the trigger document
+ */
 if(is_array($object) && $object['ID']){
 	$triggerDocPath = false;
 	if($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))){
 		$triggerDocPath = id_to_path($object['TriggerID'], FILE_TABLE);
-	}elseif(NAVIGATION_DIRECTORYINDEX_NAMES){//fallback: now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
+	} elseif(NAVIGATION_DIRECTORYINDEX_NAMES){//fallback: now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
 		$docPathOfUrl = str_replace($urlLookingFor, '', WE_REDIRECTED_SEO); //cut the known seo-url from object of the whole URL
 		$dirIndexArray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
 		foreach($dirIndexArray as $dirIndex){
-			if(($triggerID = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND IsDynamic=1 AND Path="' . $GLOBALS['DB_WE']->escape($docPathOfUrl.$dirIndex) . '" LIMIT 1')))){
+			if(($triggerID = intval(f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Published>0 AND IsDynamic=1 AND Path="' . $GLOBALS['DB_WE']->escape($docPathOfUrl . $dirIndex) . '" LIMIT 1')))){
 				$triggerDocPath = id_to_path($triggerID, FILE_TABLE);
 				break;
 			}
-		}		
+		}
 	}
-	
+
 	if($triggerDocPath){// now we hav an object and an trigger document
 		//remove all cookies from Request String if set (if not, cookies are exposed on listviews etc & max interfer with given Cookies)
 		if(stristr('C', ini_get('request_order') ? : ini_get('variables_order'))){
@@ -122,11 +121,11 @@ if(is_array($object) && $object['ID']){
 		$_REQUEST = isset($_REQUEST) ? array_merge($_REQUEST, $urlQueryString) : $urlQueryString;
 		$_REQUEST['we_objectID'] = $object['ID'];
 		$_REQUEST['we_oid'] = $object['ID'];
-		
+
 		$_SERVER['SCRIPT_NAME'] = $triggerDocPath;
 
 		we_html_tools::setHttpCode(200);
-		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_SERVER['SCRIPT_NAME']);
+		include(WEBEDITION_PATH . '../' . $_SERVER['SCRIPT_NAME']);
 		exit;
 	}
 }
@@ -139,8 +138,8 @@ if(ERROR_DOCUMENT_NO_OBJECTFILE){
 	if(FORCE404REDIRECT){
 		header("Location: " . ($path = id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE)));
 		exit;
-	}else{
-		include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE));
+	} else {
+		include(WEBEDITION_PATH . '../' . id_to_path(ERROR_DOCUMENT_NO_OBJECTFILE, FILE_TABLE));
 	}
 }
 

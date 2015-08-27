@@ -349,7 +349,7 @@ class we_thumbnail{
 			we_base_file::createLocalFolder($_thumbdir);
 		}
 		$quality = max(10, min(100, intval($this->thumbQuality) * 10));
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? : $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? : WEBEDITION_PATH . '../' . $this->imagePath, $this->outputFormat, WEBEDITION_PATH . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -393,7 +393,7 @@ class we_thumbnail{
 	 */
 	public static function getThumbDirectory($realpath = false){
 		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '$1', (WE_THUMBNAIL_DIRECTORY ? : '_thumbnails_')), '/');
-		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') . $dir;
+		return ($realpath ? WEBEDITION_PATH . '../' : '') . $dir;
 	}
 
 	/**
@@ -425,9 +425,9 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function getOutputPath($withDocumentRoot = false, $unique = false){
-		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') .
+		return ($withDocumentRoot ? WEBEDITION_PATH . '../' : '') .
 			$this->outputPath .
-			((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath) : time()) :
+			((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime(WEBEDITION_PATH . '../' . $this->outputPath) : time()) :
 				'');
 	}
 
@@ -601,7 +601,7 @@ class we_thumbnail{
 	 */
 	private function checkAndGetImageSizeIfNeeded(){
 		if(!($this->imageWidth && $this->imageHeight)){
-			$arr = $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath);
+			$arr = $this->getimagesize(WEBEDITION_PATH . '../' . $this->imagePath);
 			if(count($arr) >= 2){
 				$this->imageWidth = $arr[0];
 				$this->imageHeight = $arr[1];
@@ -616,7 +616,7 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getBinaryData(){
-		$this->imageData = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath);
+		$this->imageData = we_base_file::load(WEBEDITION_PATH . '../' . $this->imagePath);
 	}
 
 	public static function deleteByThumbID($id){

@@ -58,7 +58,7 @@ function we_tag_href($attribs){
 			}
 		}
 		$href = $intPath;
-		$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
+		$include_path = $href ? WEBEDITION_PATH . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 		$path_parts = pathinfo($href);
 		if($hidedirindex && seoIndexHide($path_parts['basename'])){
 			$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
@@ -67,7 +67,7 @@ function we_tag_href($attribs){
 		$intID = 0;
 // we have to use a html_entity_decode first in case a user has set &amp, &uuml; by himself
 		$href = $extPath = oldHtmlspecialchars(html_entity_decode($GLOBALS['we_doc']->getElement($name)));
-		$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
+		$include_path = $href ? WEBEDITION_PATH . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 	}
 
 	if(!$GLOBALS['we_editmode']){

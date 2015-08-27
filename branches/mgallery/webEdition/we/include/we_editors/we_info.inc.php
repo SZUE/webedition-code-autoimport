@@ -85,8 +85,8 @@ $_table->setCol($_actRow++, 0, array("class" => "defaultfont small row5"), '<div
 	g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b></span>');
 
 //	7th agency
-if(is_readable($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php')){
-	include_once($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'agency.php');
+if(is_readable(WEBEDITION_PATH . 'agency.php')){
+	include_once(WEBEDITION_PATH . 'agency.php');
 	$_table->setCol($_actRow++, 0, array("class" => "defaultfont small row10"), $_agency);
 }
 

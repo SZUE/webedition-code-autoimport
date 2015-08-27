@@ -116,7 +116,7 @@ class we_imageDocument extends we_binaryDocument{
 			}
 			// we have to calculate the path, because maybe the document was renamed
 			//$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
-			return we_thumbnail::getimagesize($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
+			return we_thumbnail::getimagesize(WEBEDITION_PATH . '../' . (($useOldPath && $this->OldPath) ? $this->OldPath : $this->Path));
 		} else if(($tmp = $this->getElement('data'))){
 			$arr = we_thumbnail::getimagesize($tmp);
 		}
@@ -398,16 +398,16 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 
 			// we need to create a thumbnail - check if image exists
-			if(($thumbname = $this->getElement('thumbnail')) && ($img_path && file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $img_path))){
+			if(($thumbname = $this->getElement('thumbnail')) && ($img_path && file_exists(WEBEDITION_PATH . '../' . $img_path))){
 				$thumbObj = new we_thumbnail();
 				if($thumbObj->initByThumbName($thumbname, $this->ID, $this->Filename, $this->Path, $this->Extension, 0, 0)){
 					$img_path = $thumbObj->getOutputPath();
 
 					if($thumbObj->isOriginal()){
 //						$create = false;
-					} elseif((!$thumbObj->isOriginal()) && file_exists($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $img_path) &&
+					} elseif((!$thumbObj->isOriginal()) && file_exists(WEBEDITION_PATH . '../' . $img_path) &&
 						// open a file
-						intval(filectime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $img_path)) > intval($thumbObj->getDate())){
+						intval(filectime(WEBEDITION_PATH . '../' . $img_path)) > intval($thumbObj->getDate())){
 //						$create = false;
 						//picture created after thumbnail definition was changed, so all is up-to-date
 					} else {
