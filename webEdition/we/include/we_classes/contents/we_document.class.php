@@ -234,7 +234,7 @@ class we_document extends we_root{
 
 				if(in_array($_path, $NoDelNavis)){
 					$pos = array_search($_path, $NoDelNavis);
-					array_splice($NoDelNavis, $pos, 1);
+					unset($NoDelNavis[$pos]);
 				}
 			}
 		}
@@ -263,7 +263,7 @@ class we_document extends we_root{
 		if(in_array($id, $cats)){
 			$pos = array_search($id, $cats);
 			if($pos !== false || $pos == '0'){
-				array_splice($cats, $pos, 1);
+				unset($cats[$pos]);
 			}
 		}
 		$this->Category = makeCSVFromArray($cats, true);
@@ -314,7 +314,7 @@ class we_document extends we_root{
 				$_naviItem = new we_navigation_navigation($_id);
 				if(!$_naviItem->hasAnyChilds()){
 					$_naviItem->delete();
-					array_splice($navis, $pos, 1);
+					unset($navis[$pos]);
 				}
 			}
 		}
@@ -329,7 +329,7 @@ class we_document extends we_root{
 				$_naviItem->delete();
 				if(in_array($_path, $navis)){
 					$pos = array_search($_path, $navis);
-					array_splice($navis, $pos, 1);
+					unset($navis[$pos]);
 				}
 			}
 		}
@@ -1296,7 +1296,7 @@ class we_document extends we_root{
 	}
 
 	function del_schedule($nr){
-		array_splice($this->schedArr, $nr, 1);
+		unset($this->schedArr[$nr]);
 	}
 
 	protected function i_setElementsFromHTTP(){
@@ -1370,8 +1370,8 @@ class we_document extends we_root{
 		$cats = makeArrayFromCSV($this->schedArr[$nr]['CategoryIDs']);
 		if(in_array($id, $cats)){
 			$pos = array_search($id, $cats);
-			if($pos !== false || $pos == '0'){
-				array_splice($cats, $pos, 1);
+			if($pos !== false){
+				unset($cats[$pos]);
 			}
 		}
 		$this->schedArr[$nr]['CategoryIDs'] = makeCSVFromArray($cats, true);
@@ -1466,7 +1466,7 @@ class we_document extends we_root{
 
 			$ind = array_search(we_base_constants::WE_EDITPAGE_VARIANTS, $this->EditPageNrs);
 			if(!empty($ind)){
-				array_splice($this->EditPageNrs, $ind, 1);
+				unset($this->EditPageNrs[$ind]);
 			}
 		}
 	}

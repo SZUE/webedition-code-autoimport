@@ -231,10 +231,10 @@ function we_cmd(){
 				';
 
 				$aid = $this->messaging->Folder_ID;
-				$idx = we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders);
+				$idx = isset($this->messaging->available_folders[$aid]) ? $aid : -1;
 				if($idx > -1){
 					$js_out .= 'aid = ' . $aid . ';
-					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", -1, 1);';
+					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[$aid]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", -1, 1);';
 				}
 
 				return we_html_element::jsElement($js_out) . $this->update_treeview();
@@ -257,7 +257,7 @@ top.content.editor.edbody.entries_selected = [];
 				$aid = $this->messaging->Folder_ID;
 				$js_out = '
 					aid = ' . $aid . ';
-					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid, '') . ')", -1, 1);
+					top.content.updateEntry(aid, -1, "' . $this->messaging->available_folders[$aid]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", -1, 1);
 				';
 				return we_html_element::jsElement($js_out);
 			case 'update_treeview':
@@ -310,7 +310,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 	new top.content.dirEntry(
 		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
 		"' . $folder['ID'] . '","' . $folder['ParentID'] . '",
-		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
+		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID']) . ')",
 		false,
 		"parent_Folder",
 		"' . MESSAGES_TABLE . '",
@@ -324,7 +324,7 @@ top.content.menuDaten.add(new top.content.self.rootEntry(0,"root","root"));';
 		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '.gif",
 		"' . $folder['ID'] . '",
 		"' . $folder['ParentID'] . '",
-		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID'], '') . ')",
+		"' . $folder['Name'] . ' - (' . $this->messaging->get_message_count($folder['ID']) . ')",
 			"leaf_Folder",
 		"' . MESSAGES_TABLE . '",
 		"' . ($folder['ClassName'] === 'we_todo' ? 'todo_folder' : 'msg_folder') . '"
@@ -418,7 +418,7 @@ if (top.content.editor.edbody.msg_mfv.messaging_messages_overview) {
 	private function update_treeview(){
 		$tmp = '';
 		foreach($this->messaging->available_folders as $f){
-			$tmp.='top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $this->messaging->get_message_count($f['ID'], '') . ')", -1, 1);';
+			$tmp.='top.content.updateEntry(' . $f['ID'] . ', ' . $f['ParentID'] . ', "' . $f['Name'] . ' - (' . $this->messaging->get_message_count($f['ID']) . ')", -1, 1);';
 		}
 		$tmp.='top.content.drawEintraege();';
 		return we_html_element::jsElement($tmp);

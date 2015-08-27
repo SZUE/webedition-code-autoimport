@@ -385,7 +385,7 @@ abstract class we_root extends we_class{
 		if(in_array($id, $owners)){
 			$pos = array_search($id, $owners);
 			if($pos !== false || $pos == '0'){
-				array_splice($owners, $pos, 1);
+				unset($owners[$pos]);
 			}
 		}
 		$this->Owners = makeCSVFromArray($owners, true);

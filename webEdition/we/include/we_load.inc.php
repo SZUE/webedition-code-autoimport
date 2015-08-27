@@ -31,7 +31,7 @@ $offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
 
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder"){
 	$openDirs = array_flip(makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]));
-	we_base_util::new_array_splice($openDirs, $parentFolder, 1);
+	unset($openDirs[$parentFolder]);
 	$openDirs = array_keys($openDirs);
 	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = makeCSVFromArray($openDirs);
 } else {

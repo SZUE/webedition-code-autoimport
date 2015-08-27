@@ -550,7 +550,7 @@ class we_base_linklist{
 		foreach($namesArray as $n){
 			$GLOBALS['we_doc']->delElement($n . $name . '_TAGS_' . $realNr);
 		}
-		array_splice($this->listArray, $nr, 1);
+		unset($this->listArray[$nr]);
 	}
 
 	/* ##### private Functions##### */

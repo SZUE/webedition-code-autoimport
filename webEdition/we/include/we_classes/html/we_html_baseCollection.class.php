@@ -72,7 +72,7 @@ class we_html_baseCollection extends we_html_baseElement{
 	 * @return		void
 	 */
 	function delChild($childid){
-		array_splice($this->childs, $childid, 1);
+		unset($this->childs[$childid]);
 	}
 
 	/**
