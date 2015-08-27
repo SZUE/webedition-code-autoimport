@@ -107,7 +107,7 @@ class we_shop_listviewOrder extends we_listview_base{
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
 
-		$this->DB_WE->query('SELECT IntOrderID as OrderID, IntCustomerID as CustomerID, IntPayment_Type as Payment_Type, strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . max(100, $this->maxItemsPerPage)) : ''));
+		$this->DB_WE->query('SELECT IntOrderID AS OrderID,IntCustomerID AS CustomerID,IntPayment_Type AS Payment_Type,strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . max(100, $this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
@@ -150,7 +150,6 @@ class we_shop_listviewOrder extends we_listview_base{
 
 			//$this->DB_WE->Record['CustomerID'] = $this->DB_WE->Record['IntCustomerID'];
 			$this->DB_WE->Record['we_cid'] = $this->DB_WE->Record['CustomerID'];
-			//$this->DB_WE->Record['OrderID'] = $this->DB_WE->Record['IntOrderID'];
 			$this->DB_WE->Record['we_orderid'] = $this->DB_WE->Record['OrderID'];
 			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
 			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];

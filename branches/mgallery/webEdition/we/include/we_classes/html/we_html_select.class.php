@@ -102,7 +102,7 @@ class we_html_select extends we_html_baseCollection{
 	 */
 	function delOption($value){
 		foreach($this->childs as $k => $v){
-			if($v->attribs["value"] == $value){
+			if($v->attribs['value'] == $value){
 				$cid = $k;
 				break;
 			}
