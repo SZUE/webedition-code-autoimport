@@ -1969,9 +1969,9 @@ class we_objectFile extends we_document{
 			}
 			//remove duplicate "//" which will produce errors
 			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
-			$text = (URLENCODE_OBJECTSEOURLS) ?
-				str_replace('%2F', '/', urlencode($text)) :
-				preg_replace(array('~&szlig;~', '~&(.)dash;~', '~&(.)uml;~', '~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~&[^;]+;~', '~[^0-9a-zA-Z/._-]~',), array('ss', '-', '${1}e', '${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
+			$text = (URLENCODE_OBJECTSEOURLS ?
+					str_replace('%2F', '/', urlencode($text)) :
+					preg_replace(array('~&szlig;~', '~-*&(.)dash;-*~', '~&(.)uml;~', '~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~&[^;]+;~', '~[^0-9a-zA-Z/._-]~', '~//+~', '~--+~'), array('ss', '-', '${1}e', '${1}${3}', '', '/', '-'), htmlentities($text, ENT_COMPAT, $this->Charset)));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
