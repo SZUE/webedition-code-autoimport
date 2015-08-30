@@ -245,7 +245,7 @@ function getError($reason, $cookie = false){
 	$_error .= we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
 
 	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
-	$_layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_element::htmlCenter(we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]'))));
+	$_layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]')));
 	return $_layout;
 }
 

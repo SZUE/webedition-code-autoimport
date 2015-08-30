@@ -112,17 +112,18 @@ var container=targetF.' . $this->containerId . ';' .
 // end: getResponse
 
 	function getDisableButtonJS(){
-
+		return '';
+//FIXME: this doesn't work
 		return '
-for(i=0; i < container.position.length; i++) {
-	id = container.position[i];
+for(i=0; i < top.container.position.length; i++) {
+	id = top.container.position[i];
 	id = id.replace(/entry_/, "");
 	targetF.weButton.enable("btn_direction_up_" + id);
 	targetF.weButton.enable("btn_direction_down_" + id);
 	if(i == 0) {
 		targetF.weButton.disable("btn_direction_up_" + id);
 	}
-	if(i+1 == container.position.length) {
+	if(i+1 == top.container.position.length) {
 		targetF.weButton.disable("btn_direction_down_" + id);
 	}
 }';

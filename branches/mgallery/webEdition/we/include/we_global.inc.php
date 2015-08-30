@@ -1198,7 +1198,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		$string = gzuncompress($string);
 	}
 	//no content, return default
-	if(!$string){
+	if($string === ''){
 		return $default;
 	}
 	//std-serialized data by php

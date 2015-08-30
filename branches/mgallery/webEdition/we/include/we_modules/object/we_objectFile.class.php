@@ -822,25 +822,19 @@ class we_objectFile extends we_document{
 		}
 		$table = OBJECT_FILES_TABLE;
 
-//	editObjectFile Button
+		$editObjectButton = we_html_button::create_button(we_html_button::VIEW, ($myid ? "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');" : ''), true, 0, 0, '', '', ($myid ? false : true));
+		$inputWidth = 443;
 		if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$editObjectButton = we_html_button::create_button('fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin', "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
-			$editObjectButtonDis = we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "", true, 44, 22, "", "", true);
-			$inputWidth = 443;
-
 			$uniq = md5(uniqid(__FUNCTION__, true));
-			$openCloseButton = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "down", g_l('global', '[openCloseBox]'));
-			$openCloseButtonDis = we_html_tools::getPixel(21, 1);
+			$openCloseButton = $myid ?
+				we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "down", g_l('global', '[openCloseBox]')) :
+				we_html_tools::getPixel(21, 1);
 
 			$objectpreview = '<div id="text_' . $uniq . '"></div><div id="table_' . $uniq . '" style="display:block; padding: 10px 0px 20px 30px;">' .
 				($myid ? $ob->getFieldsHTML(0, true) : "") .
 				'</div>';
 		} else {
-			$editObjectButton = '';
-			$editObjectButtonDis = '';
 			$openCloseButton = '';
-			$openCloseButtonDis = '';
-			$inputWidth = 508;
 			$objectpreview = '';
 		}
 
@@ -860,9 +854,9 @@ class we_objectFile extends we_document{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "');");
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('" . $cmd1 . "','" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $pid . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')') .
-			(($_but = $myid ? $editObjectButton : $editObjectButtonDis) ? $_but : '') .
-			(($_but = $myid ? $openCloseButton : $openCloseButtonDis) ? $_but : '') .
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $pid . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ')') .
+			$editObjectButton .
+			($myid ? $openCloseButton : $openCloseButtonDis) .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "')");
 
 		$yuiSuggest = &weSuggest::getInstance();
@@ -903,11 +897,11 @@ class we_objectFile extends we_document{
 			$content = we_html_tools::htmlFormElementTable('', $text);
 			list($rootDir, $rootDirPath) = getHash('SELECT oft.ID,oft.Path FROM ' . OBJECT_FILES_TABLE . ' oft LEFT JOIN ' . OBJECT_TABLE . ' ot ON oft.Path=ot.Path WHERE oft.IsClassFolder=1 AND ot.ID=' . intval($classid), $db, MYSQL_NUM);
 
-			$inputWidth = ($isSEEM ? 346 : 411);
-			$editObjectButtonDis = ($isSEEM ? we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "", true, 44, 22, "", "", true) : '');
+			$inputWidth = (true || $isSEEM ? 346 : 411);
+			$editObjectButtonDis = we_html_button::create_button(we_html_button::VIEW, "", true, 0, 0, "", "", true);
 			$openCloseButtonDis = ($isSEEM ? we_html_tools::getPixel(21, 1) : '');
 
-			$editObjectButton = $openCloseButton = $reloadEntry = '';
+			$openCloseButton = $reloadEntry = '';
 
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::OBJECT_FILE);
@@ -926,16 +920,13 @@ class we_objectFile extends we_document{
 					$path = $path ? : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), '', $db);
 				}
 
+				$editObjectButton = we_html_button::create_button(we_html_button::VIEW, "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
 				if($isSEEM){
 					/* $ob = new we_objectFile();
 					  $ob->initByID($myid, OBJECT_FILES_TABLE);
 					  $ob->DefArray = $ob->getDefaultValueArray(); */
 					$uniq = md5(uniqid(__FUNCTION__, true));
-
-					$editObjectButton = we_html_button::create_button("fa:btn_edit_object,fa-lg fa-pencil,fa-lg fa-circle-thin", "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
-
 					$openCloseButton = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "right", g_l('global', '[openCloseBox]'));
-
 					$reloadEntry = "opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "');";
 				}
 				$alerttext = g_l('modules_object', '[multiobject_recursion]');

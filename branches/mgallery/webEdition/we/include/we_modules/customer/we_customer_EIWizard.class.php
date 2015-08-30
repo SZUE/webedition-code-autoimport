@@ -122,13 +122,11 @@ class we_customer_EIWizard{
 				"noline" => 1)
 		);
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
-							//("name"=>"pnt","value"=>"eibody")).
-							//array("name"=>"step","value"=>"1")).
-							$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 1)) .
-							we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step1]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
+						//("name"=>"pnt","value"=>"eibody")).
+						//array("name"=>"step","value"=>"1")).
+						$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 1)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step1]'))
 					)
 				)
 		);
@@ -178,10 +176,8 @@ class we_customer_EIWizard{
 			//' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&step="+' . $this->topFrame . '.step;
 
 		');
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_EXPORT, "step" => 2)) .
-							we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step2]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_EXPORT, "step" => 2)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step2]'))
 					)
 				)
 		);
@@ -292,12 +288,10 @@ class we_customer_EIWizard{
 	' . $this->bodyFrame . '.document.we_form.submit();'
 			); //FIXME: disable next button
 		}
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-					we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
-						//name"=>"step",""=>"4")).
-						$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 3)) .
-						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step3]'))
-					)
+		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
+					//name"=>"step",""=>"4")).
+					$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 3)) .
+					we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step3]'))
 				)
 		);
 
@@ -566,10 +560,8 @@ class we_customer_EIWizard{
 				"noline" => 1)
 		);
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 1)) .
-							we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step1]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 1)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step1]'))
 					)
 				)
 		);
@@ -632,10 +624,8 @@ class we_customer_EIWizard{
 			"noline" => 1
 		);
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $css . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "enctype" => "multipart/form-data"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 2)) .
-							we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step2]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $css . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body", "enctype" => "multipart/form-data"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 2)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step2]'))
 					)
 				)
 		);
@@ -812,10 +802,8 @@ class we_customer_EIWizard{
 		}
 
 		$_REQUEST["filename"] = $filename;
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 3)) .
-							we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step3]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 3)) .
+						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step3]'))
 					)
 				)
 		);
@@ -915,10 +903,8 @@ class we_customer_EIWizard{
 		);
 
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET . we_html_multiIconBox::getJS(), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 4)) .
-							we_html_multiIconBox::getHTML("xml", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step4]'))
-						)
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', STYLESHEET . we_html_multiIconBox::getJS(), we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 4)) .
+						we_html_multiIconBox::getHTML("xml", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step4]'))
 					)
 				)
 		);

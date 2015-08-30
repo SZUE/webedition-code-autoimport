@@ -180,12 +180,12 @@ while($db->next_record(MYSQL_ASSOC) /* && $j < $iMaxItems */){
 
 	$isOpen = $file['isOpen'];
 	$lastModified .= '<tr><td class="mfdIcon" nowrap data-contenttype="' . $file['ContentType'] . '"></td>' .
-				'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" class="middlefont">' .
-				($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:top.weEditorFrameController.openDocument(\'' . $table . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
+		'<td style="vertical-align: middle;' . ($isOpen ? 'color:red;' : '') . '" class="middlefont">' .
+		($isOpen ? '' : '<a style="color:#000000;text-decoration:none;" href="javascript:top.weEditorFrameController.openDocument(\'' . addTblPrefix($file['ctable']) . '\',' . $file['ID'] . ',\'' . $file['ContentType'] . '\');" title="' . $file['Path'] . '" >') .
 		$file['Path'] . ($isOpen ? '' : '</a>') .
 		'</td>' .
 		($bMfdBy ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $file['UserName'] . (($bDateLastMfd) ? ',' : '') . '</td>' : '') .
-				($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $file['MDate'] . '</td>' : '') .
+		($bDateLastMfd ? '<td style="padding-left:.5em;" class="middlefont" nowrap>' . $file['MDate'] . '</td>' : '') .
 		'</tr>';
 }
 

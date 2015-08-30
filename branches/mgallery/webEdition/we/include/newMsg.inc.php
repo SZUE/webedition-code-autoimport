@@ -37,8 +37,6 @@ $parts = array(
 		"noline" => 1),
 );
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlCenter(
-			we_html_multiIconBox::getHTML("", $parts, 30, '<div style="width:100%;text-align:right;">' . we_html_button::create_button(we_html_button::OK, "javascript:self.close();") . '</div>')
-		)
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_multiIconBox::getHTML("", $parts, 30, '<div style="width:100%;text-align:right;">' . we_html_button::create_button(we_html_button::OK, "javascript:self.close();") . '</div>')
 	)
 );
