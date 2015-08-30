@@ -36,6 +36,8 @@ function we_tag_ifNotWritten($attribs){
 					return isset($GLOBALS['ERROR']['saveRegisteredUser']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_FIELD_NOT_SET;
 				case 'userexists':
 					return isset($GLOBALS['ERROR']['saveRegisteredUser']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_USER_EXISTS;
+				case 'passwordRule':
+					return isset($GLOBALS['ERROR']['saveRegisteredUser']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_NOT_SUFFICIENT;
 			}
 
 			break;

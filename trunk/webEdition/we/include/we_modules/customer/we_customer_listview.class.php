@@ -65,7 +65,7 @@ class we_customer_listview extends we_listview_base{
 			$this->LastDocPath = $_SESSION['weS']['last_webEdition_document']['Path'];
 		}
 
-		if($this->desc && $this->order != '' && (!preg_match("|.+ desc$|i", $this->order))){
+		if($this->desc && $this->order != '' && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
 		}
 

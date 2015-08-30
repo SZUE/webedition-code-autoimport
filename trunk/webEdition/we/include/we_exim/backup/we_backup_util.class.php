@@ -27,7 +27,7 @@ abstract class we_backup_util{
 	static function getRealTableName($table){
 		$table = strtolower($table);
 		$match = array();
-		if(preg_match("|tblobject_([0-9]*)$|", $table, $match)){
+		if(preg_match('|tblobject_([0-9]*)$|', $table, $match)){
 			return (isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_']) ?
 					$_SESSION['weS']['weBackupVars']['tables']['tblobject_'] . $match[1] :
 					false);
@@ -41,7 +41,7 @@ abstract class we_backup_util{
 	static function getDefaultTableName($table){
 
 		$match = array();
-		if(defined('OBJECT_X_TABLE') && preg_match("|^" . OBJECT_X_TABLE . "([0-9]*)$|i", $table, $match)){
+		if(defined('OBJECT_X_TABLE') && preg_match('|^' . OBJECT_X_TABLE . '([0-9]*)$|i', $table, $match)){
 			if(isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_'])){
 				$_max = f('SELECT MAX(ID) AS MaxTableID FROM ' . OBJECT_TABLE, 'MaxTableID', new DB_WE());
 				if($match[1] <= $_max){

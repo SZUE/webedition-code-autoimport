@@ -2785,7 +2785,7 @@ self.focus();');
 	 */
 	function replacePlaceholder(&$content, &$content_plain, $customerInfos){
 		$placeholderfieldsmatches = array();
-		preg_match_all("/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/", $content, $placeholderfieldsmatches);
+		preg_match_all('/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/', $content, $placeholderfieldsmatches);
 		$placeholderfields = $placeholderfieldsmatches[1];
 		unset($placeholderfieldsmatches);
 

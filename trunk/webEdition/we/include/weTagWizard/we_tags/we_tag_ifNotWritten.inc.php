@@ -12,6 +12,7 @@ $error = new weTagData_selectAttribute('onerror', array(
 	new weTagDataOption('nousername'),
 	new weTagDataOption('nopassword'),
 	new weTagDataOption('userexists'),
+	new weTagDataOption('passwordRule'),
 	), false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
