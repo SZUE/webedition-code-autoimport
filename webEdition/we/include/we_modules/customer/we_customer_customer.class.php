@@ -43,6 +43,7 @@ class we_customer_customer extends weModelBase{
 	const PWD_TOKEN_INVALID = 4;
 	const PWD_USER_EMPTY = 5;
 	const PWD_USER_EXISTS = 5;
+	const PWD_NOT_SUFFICIENT = 6;
 
 	//properties
 	var $ID;

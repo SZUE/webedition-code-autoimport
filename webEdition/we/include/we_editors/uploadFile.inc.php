@@ -37,12 +37,12 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 	$contentType = $we_doc->ContentType;
 } else {
 	$isWeDoc = false;
-	$contentType = weRequest('raw', 'we_cmd', '', 1);
+	$contentType = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1);
 }
 
 switch($contentType){
 	case we_base_ContentTypes::IMAGE;
-		$allowedContentTypes = implode(',',we_base_ContentTypes::inst()->getRealContentTypes($contentType));
+		$allowedContentTypes = implode(',', we_base_ContentTypes::inst()->getRealContentTypes($contentType));
 		$allowedExtensions = we_base_imageEdit::IMAGE_EXTENSIONS;
 		break;
 	case we_base_ContentTypes::APPLICATION;

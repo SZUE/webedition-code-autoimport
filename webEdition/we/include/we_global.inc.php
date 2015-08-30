@@ -142,6 +142,7 @@ function oldHtmlspecialchars($string, $flags = -1, $encoding = 'ISO-8859-1', $do
  * @return mixed
  */
 function filterXss($var, $type = 'string'){
+	//t_e('deprecated', __FUNCTION__);
 	if(!is_array($var)){
 		return ($type === 'string' ? oldHtmlspecialchars(strip_tags($var)) : intval($var));
 	}
@@ -153,18 +154,11 @@ function filterXss($var, $type = 'string'){
 }
 
 /**
- * Filter an Requested variable
- * @deprecated since version 6.3.8
- */
-function weRequest($type, $name, $default = false, $index = null){
-	return we_base_request::_($type, $name, $default, $index);
-}
-
-/**
  * @deprecated since version 6.3.9
  *
  */
 function we_make_attribs($attribs, $doNotUse = ''){
+	t_e('deprecated', __FUNCTION__);
 	$attr = '';
 	$fil = explode(',', $doNotUse);
 	$fil[] = 'user';
@@ -181,17 +175,6 @@ function we_make_attribs($attribs, $doNotUse = ''){
 	return $attr;
 }
 
-//FIXME: remove in 6.5
-/* * remove in 6.5
- * @deprecated since version 6.3.7
- * @param type $perm
- * @return type
- */
-function we_hasPerm($perm){
-	t_e('deprecated', 'call of ' . __FUNCTION__);
-	return permissionhandler::hasPerm($perm);
-}
-
 function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 	$db = $db ? : new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), '', $db)) > 0){
@@ -201,7 +184,7 @@ function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
 }
 
 /**
- * @deprecated since version 6.3.8
+ * @deprecated since version 6.4.3
  * @param type $csv
  * @return type
  */
@@ -220,7 +203,7 @@ function makeArrayFromCSV($csv){
 }
 
 /**
- * @deprecated since version 6.3.8
+ * @deprecated since version 6.4.3
  * @param type $arr
  * @param type $prePostKomma
  * @param type $sep
@@ -358,6 +341,14 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $pre
 	return $asArray ? $foo : makeCSVFromArray($foo, $prePostKomma);
 }
 
+/**
+ *
+ * @param type $csv
+ * @param type $firstEntry
+ * @param we_database_base $db
+ * @return type
+ * @deprecated sicne 6.4.3
+ */
 function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db = null){
 	if(!$csv){
 		return array();
@@ -611,6 +602,7 @@ function removeHTML($val){
  * @return type
  */
 function removePHP($val){
+	t_e('deprecated', 'use of deprecated function');
 	return we_base_util::rmPhp($val);
 }
 

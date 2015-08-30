@@ -76,7 +76,7 @@ class we_net_rpc_JsonRpc{
 		 */
 
 		/* First check for legal characters */
-		if(!preg_match("/^[_.a-zA-Z0-9]+$/", $phpObj['service'])){
+		if(!preg_match('/^[_.a-zA-Z0-9]+$/', $phpObj['service'])){
 			/* There's some illegal character in the service name */
 			$error->SetError(we_net_rpc_JsonRpcError::kErrorIllegalService, "Illegal character found in service name.");
 			return $error->getError();
@@ -94,7 +94,7 @@ class we_net_rpc_JsonRpc{
 
 		/* Ensure that each component begins with a letter */
 		for($i = 0; $i < count($serviceComponents); $i++){
-			if(!preg_match("/^[a-zA-Z]/", $serviceComponents[$i])){
+			if(!preg_match('/^[a-zA-Z]/', $serviceComponents[$i])){
 				$error->SetError(we_net_rpc_JsonRpcError::kErrorIllegalService, "A service name component does not begin with a letter");
 				return $error->getError();
 				/* never gets here */
@@ -159,25 +159,6 @@ class we_net_rpc_JsonRpc{
 			case self::kAccessibilityDomain:
 				/* Determine the protocol used for the request */
 				$requestUriDomain = getServerUrl(true);
-				/*
-
-				  /* Get the Referer, up through the domain part /
-				  if (!preg_match("@(https?://[^/]*)@", $_SERVER["HTTP_REFERER"], $regs)) {
-				  /* unrecognized referer /
-				  $error->SetError(we_net_rpc_JsonRpcError::kErrorPermissionDenied, "Permission Denied ['Accessibility Domain']");
-				  return $error->getError();
-				  /* never gets here /
-				  }
-
-				  /* Retrieve the referer component /
-				  $refererDomain = $regs[1];
-				  /* Is the method accessible? /
-				  if ($refererDomain != $requestUriDomain) {
-				  /* Nope. /
-				  $error->SetError(we_net_rpc_JsonRpcError::kErrorPermissionDenied, "Permission Denied ['Accessibility Domain']");
-				  return $error->getError();
-				  }
-				 */
 				$rpcSession = new we_sdk_namespace("we_net_rpc_JsonRpc");
 
 				/* If no referer domain has yet been saved in the session */
@@ -189,12 +170,6 @@ class we_net_rpc_JsonRpc{
 
 			case self::kAccessibilitySession:
 				/* Get the Referer, up through the domain part */
-				/* 				if (!preg_match("@(https?://[^/]*)@", $_SERVER["HTTP_REFERER"], $regs)) {
-				  /* unrecognized referer /
-				  $error->SetError(we_net_rpc_JsonRpcError::kErrorPermissionDenied, "Permission Denied ['Accessibility Session']");
-				  return $error->getError();
-				  } */
-
 				/* Retrieve the referer component */
 				$refererDomain = $regs[1];
 

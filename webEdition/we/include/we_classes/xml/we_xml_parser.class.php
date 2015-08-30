@@ -152,8 +152,8 @@ class we_xml_parser{
 			return false;
 		}
 		// Check if the given parameter is a url.
-		if(preg_match("/^(((f|ht){1}tp:\/\/)" .
-				"[-a-zA-Z0-9@:%_\+.~#?&\/\/=]+)/i", $file)){
+		if(preg_match('/^(((f|ht){1}tp:\/\/)' .
+				'[-a-zA-Z0-9@:%_\+.~#?&\/\/=]+)/i', $file)){
 			// Read the content of the url.
 			$data = @implode('', @file($file));
 			if(!$data){

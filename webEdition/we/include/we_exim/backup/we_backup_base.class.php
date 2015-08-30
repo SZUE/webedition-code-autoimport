@@ -627,7 +627,7 @@ abstract class we_backup_base{
 										}
 										if(($itbl != "") && (strtolower(substr($buff, 0, 6)) === "insert")){
 											if(defined('OBJECT_X_TABLE') && substr(strtolower($itbl), 0, 10) == strtolower(OBJECT_X_TABLE)){
-												if(preg_match("|VALUES[[:space:]]*\([[:space:]]*\'?0\'?[[:space:]]*,[[:space:]]*\'?0\'?[[:space:]]*,|i", $buff)){
+												if(preg_match('|VALUES[[:space:]]*\([[:space:]]*\'?0\'?[[:space:]]*,[[:space:]]*\'?0\'?[[:space:]]*,|i', $buff)){
 													$this->dummy[] = $buff;
 												} else {
 													$this->backup_db->query($buff);
@@ -731,7 +731,7 @@ abstract class we_backup_base{
 	 */
 	private function isCreateQuery($q){
 		$m = array();
-		return (preg_match("/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_+-]+)/", $q, $m) ?
+		return (preg_match('/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_+-]+)/', $q, $m) ?
 				$m[1] : '');
 	}
 
@@ -831,7 +831,7 @@ abstract class we_backup_base{
 	 */
 	private function isInsertQuery($q){
 		$m = array();
-		return (preg_match("/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_+-]+)/", $q, $m) ? $m[1] : '');
+		return (preg_match('/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_+-]+)/', $q, $m) ? $m[1] : '');
 	}
 
 	/**
