@@ -52,7 +52,7 @@ $fields = array(
 	'isInFrontend' => we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 23),
 	'templates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 24),
 	'formats' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 25),
-	'imagestarid' => 0,
+	'imagestartid' => 0,
 	'galleryTemplates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 27),
 );
 
