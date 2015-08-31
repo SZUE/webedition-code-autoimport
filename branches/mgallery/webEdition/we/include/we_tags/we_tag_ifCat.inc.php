@@ -23,11 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifCat($attribs){
+	$categories = weTag_getAttribute('categories', $attribs, weTag_getAttribute('category', $attribs, '', we_base_request::RAW), we_base_request::RAW);
 
-	$categories = weTag_getAttribute('categories', $attribs, '', we_base_request::RAW);
-	$category = weTag_getAttribute('category', $attribs, '', we_base_request::RAW);
-
-	if(strlen($categories) == 0 && strlen($category) == 0){
+	if(!$categories){
 		if(($foo = attributFehltError($attribs, 'categories', __FUNCTION__))){
 			print($foo);
 			return false;
@@ -37,8 +35,7 @@ function we_tag_ifCat($attribs){
 	$parent = weTag_getAttribute('parent', $attribs, false, we_base_request::BOOL);
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
-	$match = $categories ? : $category;
-	$matchArray = makeArrayFromCSV($match);
+	$matchArray = makeArrayFromCSV($categories);
 
 	if($docAttr === 'listview' && isset($GLOBALS['lv'])){
 		$cat = $GLOBALS['lv']->f('wedoc_Category');
@@ -54,10 +51,8 @@ function we_tag_ifCat($attribs){
 			if(strpos($DocCatsPaths, ',' . $match . ',') !== false || strpos($DocCatsPaths, ',' . $match . '/') !== false){
 				return true;
 			}
-		} else {
-			if(!(strpos($DocCatsPaths, ',' . $match . ',') === false)){
-				return true;
-			}
+		} else if(!(strpos($DocCatsPaths, ',' . $match . ',') === false)){
+			return true;
 		}
 	}
 	return false;

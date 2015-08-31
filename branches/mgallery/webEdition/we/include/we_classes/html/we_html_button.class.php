@@ -272,7 +272,7 @@ abstract class we_html_button{
 		} else {
 			$attr = $attribs;
 		}
-		
+
 		//FIMXE: change all calls to this function => remove
 		return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
 		// Get number of buttons
@@ -326,7 +326,7 @@ abstract class we_html_button{
 		//	Create default attributes for table
 		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
-			'style' => 'border-style:none; padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . 'border-spacing:0px;float:' . $align . ';'
+			'style' => 'border-style:none; padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . ';border-spacing:0px;float:' . $align . ';'
 		);
 
 		if(is_array($attribs) && count($attribs) > 0){
