@@ -42,6 +42,7 @@ if(file_exists($filename)){
 	} else {
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename="' . ($keepBin ? $filename : basename($filename, '.gz')) . '"');
+		$isCompressed = false;
 	}
 
 	if($isCompressed){
