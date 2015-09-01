@@ -143,7 +143,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'img_id' => we_base_request::_(we_base_request::INT, 'img_id', 0),
 		'img_src' => we_base_request::_(we_base_request::URL, 'img_src', ''),
 		'text' => we_base_request::_(we_base_request::STRING, 'text'),
-		'type' => isset($type) ? $type: we_base_link::TYPE_INT,
+		'type' => isset($type) ? $type : we_base_link::TYPE_INT,
 		'ctype' => we_base_request::_(we_base_request::STRING, 'ctype'),
 		'width' => we_base_request::_(we_base_request::UNIT, 'width', ''),
 		'height' => we_base_request::_(we_base_request::UNIT, 'height', ''),
