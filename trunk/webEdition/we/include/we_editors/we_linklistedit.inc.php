@@ -91,7 +91,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	$hreflang = we_base_request::_(we_base_request::STRING, 'hreflang', '');
 	$params = we_base_request::_(we_base_request::STRING, 'params');
 	$title = we_base_request::_(we_base_request::STRING, 'title', '');
-	$type = we_base_request::_(we_base_request::STRING, 'type');
+	$type = we_base_request::_(we_base_request::STRING, 'type', we_base_link::TYPE_INT);
 
 	//	accept anchor with or without '#', when saving the link
 	$anchor = (!$anchor || $anchor{0} === '#' ? $anchor : '#' . $anchor);
@@ -143,7 +143,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'img_id' => we_base_request::_(we_base_request::INT, 'img_id', 0),
 		'img_src' => we_base_request::_(we_base_request::URL, 'img_src', ''),
 		'text' => we_base_request::_(we_base_request::STRING, 'text'),
-		'type' => isset($type) ? $type : we_base_link::TYPE_INT,
+		'type' => $type,
 		'ctype' => we_base_request::_(we_base_request::STRING, 'ctype'),
 		'width' => we_base_request::_(we_base_request::UNIT, 'width', ''),
 		'height' => we_base_request::_(we_base_request::UNIT, 'height', ''),
