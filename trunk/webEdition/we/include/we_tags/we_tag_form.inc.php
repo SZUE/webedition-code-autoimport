@@ -83,9 +83,10 @@ function we_tag_form($attribs){
 									we_shop_shop::OBJECT :
 									(isset($GLOBALS['lv']->ID) ?
 											we_shop_shop::DOCUMENT :
-											($GLOBALS['we_doc'] instanceof we_objectFile) ?
+											(isset($GLOBALS['we_obj']) ? //Fix #9949
 													we_shop_shop::OBJECT :
 													we_shop_shop::DOCUMENT
+											)
 									)
 							),
 						)) .
