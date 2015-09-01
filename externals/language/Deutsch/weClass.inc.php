@@ -31,6 +31,7 @@ $l_weClass=array(
 		'attr_alt'=>'alt-Attribut',
 		'attr_title'=>'title-Attribut',
 		'collectionTitle'=>'Inhalt der Sammlung',
+		'dblClick_to_insert'=>'Doppelklick zum Einfügen eines leeren Eintrags',
 		'filter_class'=>'Erlaubte Objekte auf folgende Klassen einschränken',
 		'filter_contenttype'=>'Erlaubte Dokumente auf folgende Typen einschränken',
 		'infoAddFiles'=>'Eingefügt: ##INS##\nAls Dubletten abgewiesen: ##REJ##\n\nWeitere Elemente können aufgrund unpassender Klassen bzw. MIME-Typen abgewiesen worden sein.',
