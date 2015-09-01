@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function checkPwds(){
+function checkPwds($pwRegex){
 	$pwd = we_base_request::_(we_base_request::RAW, 's', '', 'Password');
 	if(!$pwd){
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_FIELD_NOT_SET;
@@ -28,6 +28,11 @@ function checkPwds(){
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_NOT_MATCH;
 		return false;
 	}
+	if($pwRegex && !preg_match('/' . preg_quote($pwRegex, '/') . '/', $pwd)){
+		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_NOT_SUFFICIENT;
+		return false;
+	}
+
 	return true;
 }
 
@@ -69,8 +74,9 @@ function we_tag_customerResetPassword(array $attribs){
 //cleanup table
 	$GLOBALS['DB_WE']->query('DELETE FROM ' . PWDRESET_TABLE . ' WHERE expires<NOW()');
 
-	$required = array_unique(explode(',', weTag_getAttribute('required', $attribs, '', we_base_request::STRING)));
-	$loadFields = array_unique(explode(',', weTag_getAttribute('loadFields', $attribs, '', we_base_request::STRING)));
+	$required = array_unique(weTag_getAttribute('required', $attribs, '', we_base_request::STRING_LIST));
+	$loadFields = array_unique(weTag_getAttribute('loadFields', $attribs, '', we_base_request::STRING_LIST));
+	$pwdRegex = weTag_getAttribute('passwordRule', $attribs, '', we_base_request::RAW);
 
 //set dates
 	we_base_util::convertDateInRequest($_REQUEST['s'], false);
@@ -82,7 +88,7 @@ function we_tag_customerResetPassword(array $attribs){
 			if(count($required) < 2){
 				return parseError('For security reasons: in direct mode, attribute <b>required</b> needs at least two different fields!');
 			}
-			if(!checkPwds() || !($uid = checkRequired($required, $loadFields))){
+			if(!checkPwds($pwdRegex) || !($uid = checkRequired($required, $loadFields))){
 				return;
 			}
 
@@ -98,7 +104,7 @@ function we_tag_customerResetPassword(array $attribs){
 				return parseError('For security reasons: in email mode, attribute <b>required</b> needs at least one field!');
 			}
 			$customerEmailField = weTag_getAttribute('customerEmailField', $attribs, '', we_base_request::STRING);
-			if(($type === 'emailPassword' && !checkPwds()) || !($uid = checkRequired($required, $loadFields, $customerEmailField))){
+			if(($type === 'emailPassword' && !checkPwds($pwdRegex)) || !($uid = checkRequired($required, $loadFields, $customerEmailField))){
 				return;
 			}
 			$pwd = we_base_request::_(we_base_request::STRING, 's', '', 'Password');
@@ -129,7 +135,7 @@ function we_tag_customerResetPassword(array $attribs){
 			}
 			//if no pwd is set, check if passwords are given by request
 			if(!$data['password']){
-				if(!checkPwds()){
+				if(!checkPwds($pwdRegex)){
 					return;
 				}
 				//set password from request, pwd in db was empty

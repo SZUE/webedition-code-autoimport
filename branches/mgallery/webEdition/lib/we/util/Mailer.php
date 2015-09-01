@@ -205,7 +205,7 @@ class we_util_Mailer extends Zend_Mail{
 			$name = (isset($user['name']) ? $user['name'] : '');
 		} else {
 			$_user = array();
-			if(preg_match("/<(.)*>/", $user, $_user)){
+			if(preg_match('/<(.)*>/', $user, $_user)){
 				$email = substr($_user[0], 1, strpos($_user[0], ">") - 1);
 				$name = substr($user, 0, strpos($user, "<"));
 			} else {
@@ -242,11 +242,11 @@ class we_util_Mailer extends Zend_Mail{
 		if($this->Body){
 			if($this->isEmbedImages){
 				$binParts = $images = array();
-				preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
+				preg_match_all('/(src|background)="(.*)"/Ui', $this->Body, $images);
 				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
 
 				foreach($images[2] as $i => $url){
-					$isBinaryData = preg_match("/image\/(.*);base64,(.*)\"/Ui", $url . '"', $binParts);
+					$isBinaryData = preg_match('/image\/(.*);base64,(.*)"/Ui', $url . '"', $binParts);
 
 					if($isBinaryData){
 						if(in_array($binParts[1], $this->embedImages)){

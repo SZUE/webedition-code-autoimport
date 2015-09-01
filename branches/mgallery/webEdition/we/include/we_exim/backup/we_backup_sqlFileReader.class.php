@@ -169,7 +169,7 @@ class we_backup_sqlFileReader{
 	function isCreateQuery(&$q){
 		$m = array();
 
-		if(preg_match("/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_-]+)/", $q, $m)){
+		if(preg_match('/CREATE[[:space:]]+TABLE[[:space:]]+([a-zA-Z0-9_-]+)/', $q, $m)){
 			return $m[1];
 		}
 
@@ -185,7 +185,7 @@ class we_backup_sqlFileReader{
 	function isInsertQuery(&$q){
 		$m = array();
 
-		if(preg_match("/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_-]+)/", $q, $m)){
+		if(preg_match('/INSERT[[:space:]]+INTO[[:space:]]+([a-zA-Z0-9_-]+)/', $q, $m)){
 			return $m[1];
 		}
 

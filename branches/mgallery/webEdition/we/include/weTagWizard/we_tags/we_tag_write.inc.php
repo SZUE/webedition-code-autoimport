@@ -37,9 +37,13 @@ $onpredefinedname = new weTagData_selectAttribute('onpredefinedname', array(new 
 $workflowname = new weTagData_textAttribute('workflowname', false, '');
 $workflowuserid = new weTagData_textAttribute('workflowuserid', false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($formname, $publish, $searchable, $doctype, $tid, $categories, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $protected, $workflowname, $workflowuserid), array($doctype)),
-	new weTagDataOption('object', false, '', array($formname, $publish, $searchable, $categories, $classid, $name, $onduplicate, $onpredefinedname, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $triggerid, $parentid, $protected, $workflowname, $workflowuserid), array($classid))), false, '');
+$locales[] = new weTagDataOption('self');
+$locales[] = new weTagDataOption('top');
+$language = new weTagData_choiceAttribute('language', $locales, false, true, '');
 
-$this->Attributes = array($formname, $publish, $searchable, $doctype, $tid, $categories, $classid, $protected, $admin, $forceedit, $mail, $mailfrom, $charset, $triggerid,
+$this->TypeAttribute = new weTagData_typeAttribute('type', array(
+	new weTagDataOption('document', false, '', array($formname, $publish, $searchable, $language, $doctype, $tid, $categories, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $protected, $workflowname, $workflowuserid), array($doctype)),
+	new weTagDataOption('object', false, '', array($formname, $publish, $searchable, $language, $categories, $classid, $name, $onduplicate, $onpredefinedname, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $triggerid, $parentid, $protected, $workflowname, $workflowuserid), array($classid))), false, '');
+
+$this->Attributes = array($formname, $publish, $searchable, $language, $doctype, $tid, $categories, $classid, $protected, $admin, $forceedit, $mail, $mailfrom, $charset, $triggerid,
 	$workspaces, $parentid, $userid, $name, $onduplicate, $onpredefinedname, $workflowname, $workflowuserid);

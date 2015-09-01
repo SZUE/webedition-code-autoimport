@@ -111,13 +111,13 @@ class we_banner_listview extends we_listview_base{
 		}
 
 		if(stripos("path", $this->order) === 0){
-			usort($this->docs, (preg_match("|^path +desc|i", $this->order) ? "we_sort_banners_path_desc" : "we_sort_banners_path"));
+			usort($this->docs, (preg_match('|^path +desc|i', $this->order) ? "we_sort_banners_path_desc" : "we_sort_banners_path"));
 		} else if(stripos("clicks", $this->order) === 0){
-			usort($this->docs, (preg_match("|^clicks +desc|i", $this->order) ? "we_sort_banners_clicks_desc" : "we_sort_banners_clicks"));
+			usort($this->docs, (preg_match('|^clicks +desc|i', $this->order) ? "we_sort_banners_clicks_desc" : "we_sort_banners_clicks"));
 		} else if(stripos("views", $this->order) === 0){
-			usort($this->docs, (preg_match("|^views +desc|i", $this->order) ? "we_sort_banners_views_desc" : "we_sort_banners_views"));
+			usort($this->docs, (preg_match('|^views +desc|i', $this->order) ? "we_sort_banners_views_desc" : "we_sort_banners_views"));
 		} else if(stripos("rate", $this->order) === 0){
-			usort($this->docs, (preg_match("|^rate +desc|i", $this->order) ? "we_sort_banners_rate_desc" : "we_sort_banners_rate"));
+			usort($this->docs, (preg_match('|^rate +desc|i', $this->order) ? "we_sort_banners_rate_desc" : "we_sort_banners_rate"));
 		}
 		$this->anz_all = count($this->docs);
 		$this->anz = min($this->rows, $this->anz_all - $this->start);
