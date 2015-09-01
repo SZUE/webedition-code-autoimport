@@ -28,7 +28,7 @@ class we_selector_image extends we_selector_document{
 		$filter = 'image/*';
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $filter, $rootDirID, $open_doc, $multiple, $canSelectDir);
 	}
-
+/*
 	protected function getFrameset(){
 		return '
 <frameset rows="67,*,65,20,0" border="0"  onunload="if(top.opener && top.opener.top && top.opener.top.toggleBusy){top.opener.top.toggleBusy();}">
@@ -163,5 +163,5 @@ margin:0px;
 	d.close();
 }');
 	}
-
+ */
 }
