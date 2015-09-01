@@ -906,6 +906,14 @@ span.fileicon{
 	font-size:7px;
 	color:black;
 }
+span.fileicon ::-moz-selection{
+	color: inherit;
+	background: inherit;
+}
+span.fileicon ::selection{
+	color: inherit;
+	background: inherit;
+}
 span.fileicon .we-icon{
 	color: #164F94;
 	line-height: 1;
@@ -916,7 +924,6 @@ span.fileicon .we-icon i{
 	vertical-align:bottom;
 	left: auto;
 	right:-.5em;
-
 }
 span.fileicon .we-color{
 	color: #164F94;
@@ -1204,6 +1211,16 @@ div.collection-content{
 	position: relative;
 	float: left;
 	display: block;
+}
+
+.collection-content div.gridItem ::-moz-selection{
+	color: inherit;
+	background: inherit;
+}
+
+.collection-content div.gridItem ::selection{
+	color: inherit;
+	background: inherit;
 }
 
 .collection-content .gridItem div.divContent{

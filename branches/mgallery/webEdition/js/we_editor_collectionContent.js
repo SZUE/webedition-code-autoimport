@@ -171,10 +171,9 @@ weCollectionEdit = {
 		//TODO: grab elems by getElementByClassName instead of counting children...
 		if(this.view === 'grid'){
 			item = elem.firstChild;
-			if(!isItemEmpty){
-				item.addEventListener('mouseover', function(){t.overMouse('item', view, item);}, false);
-				item.addEventListener('mouseout', function(){t.outMouse('item', view, item);}, false);
-			}
+			item.addEventListener('mouseover', function(){t.overMouse('item', view, item);}, false);
+			item.addEventListener('mouseout', function(){t.outMouse('item', view, item);}, false);
+
 			ctrls = item.lastChild;
 			ctrls.addEventListener('mouseover', function(){t.overMouse('btns', view, ctrls);}, false);
 			ctrls.addEventListener('mouseout', function(){t.outMouse('btns', view, ctrls);}, false);
@@ -185,6 +184,7 @@ weCollectionEdit = {
 				space.addEventListener('dragover', function(e){t.allowDrop(e);}, false);
 				space.addEventListener('dragenter', function(e){t.enterDrag('space', view, e, space);}, false);
 				space.addEventListener('dragleave', function(e){t.leaveDrag('space', view, e, space);}, false);
+				space.addEventListener('dblclick', function(e){t.dblClick('space', view, e, space);}, false);
 			}
 		} else {
 			item = elem;
@@ -401,6 +401,10 @@ weCollectionEdit = {
 
 			div.firstChild.style.width = div.firstChild.style.height = t.gridItemDimension.item + 'px';
 			div.getElementsByClassName('toolbarAttribs')[0].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
+			if(item.id === -1){
+					div.getElementsByClassName('toolbarBtns')[0].removeChild(div.getElementsByClassName('toolbarBtns')[0].firstChild);
+					div.getElementsByClassName('toolbarAttribs')[0].style.display = 'none';
+			}
 		}
 
 		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
@@ -564,6 +568,15 @@ weCollectionEdit = {
 				el.style.border = '1px solid #006db8';
 				el.firstChild.style.backgroundColor = '#f5f5f5';
 				break;
+		}
+	},
+
+	dblClick: function(type, view, evt, elem){
+		switch(type){
+			case 'space':
+				this.doClickAdd(elem);
+				break;
+			default: 
 		}
 	},
 
