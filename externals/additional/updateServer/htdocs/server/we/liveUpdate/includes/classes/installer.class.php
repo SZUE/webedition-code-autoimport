@@ -665,6 +665,10 @@ class installer extends installerBase {
 			}
 		}
 
+		if(method_exists($liveUpdateFnc, "updaterDoUpdate")){
+			$liveUpdateFnc::updaterDoUpdate();
+		}
+
 		if ($success) {
 
 			$message = "<div>" . $message . "</div>";

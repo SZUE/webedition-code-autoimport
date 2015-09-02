@@ -849,6 +849,14 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return true;
 	}
 
+	function updaterDoUpdate(){
+		if(method_exists('we_updater', 'doUpdate')){
+			we_updater::doUpdate();
+		}
+
+		return true;
+	}
+
 	function removeDirOnlineInstaller(){
 		if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller')){
 			we_util_File::deleteLocalFolder($_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller', true);
