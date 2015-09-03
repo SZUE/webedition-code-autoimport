@@ -129,7 +129,7 @@ function we_tag_form($attribs){
 		case 'object' :
 		case 'document' :
 			if(!isset($_REQUEST['edit_' . $type])){
-				if(isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START']){
+				if(!empty($GLOBALS['WE_SESSION_START'])){
 					unset($_SESSION['weS']['we_' . $type . '_session_' . $formname]);
 				}
 			}
