@@ -58,7 +58,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->ContentType = we_base_ContentTypes::WEDOCUMENT;
 	}
 
-	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $wewrite = false){
+	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $docID = 0, $wewrite = false){
 		//  check if a <we:sessionStart> Tag was before
 		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
@@ -66,30 +66,29 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'] = array();
 		}
 		$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
-		$id = we_base_request::_(we_base_request::INT, 'we_editDocument_ID', 0);
 		if((!$session) || (!isset($_SESSION['weS']['we_document_session_' . $formname])) || $wewrite){
 			if($session){
 				$_SESSION['weS']['we_document_session_' . $formname] = array();
 			}
 			$GLOBALS['we_document'][$formname]->we_new();
-			if($id){
-				$GLOBALS['we_document'][$formname]->initByID($id, FILE_TABLE);
+			if($docID){
+				$GLOBALS['we_document'][$formname]->initByID($docID, FILE_TABLE);
 			} else {
 				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . '"', '', $GLOBALS['we_document'][$formname]->DB_WE);
 				$GLOBALS['we_document'][$formname]->changeDoctype($dt);
 				if($tid){
 					$GLOBALS['we_document'][$formname]->setTemplateID($tid);
 				}
-				if($categories){
-					$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-				}
+			}
+			if((!$docID || $wewrite) && $categories){
+				$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 			}
 			if($session){
 				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION['weS']['we_document_session_' . $formname]);
 			}
 		} else {
-			if($id){
-				$GLOBALS['we_document'][$formname]->initByID($id, FILE_TABLE);
+			if($docID){
+				$GLOBALS['we_document'][$formname]->initByID($docID, FILE_TABLE);
 			} elseif($session){
 				$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION['weS']['we_document_session_' . $formname]);
 			}
@@ -110,7 +109,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 
 		if(($cats = we_base_request::_(we_base_request::STRING_LIST, 'we_ui_' . $formname . '_categories')) !== false){
-			// Bug Fix #750
 			$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
 		}
 		if(($cats = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_Category')) !== false){
@@ -139,12 +137,12 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	public function makeSameNew(){
-/*		$TemplateID = $this->TemplateID;
-		$TemplatePath = $this->TemplatePath;*/
+		/* 		$TemplateID = $this->TemplateID;
+		  $TemplatePath = $this->TemplatePath; */
 		$IsDynamic = $this->IsDynamic;
 		parent::makeSameNew();
-		/*$this->TemplateID = $TemplateID;
-		$this->TemplatePath = $TemplatePath;*/
+		/* $this->TemplateID = $TemplateID;
+		  $this->TemplatePath = $TemplatePath; */
 		$this->IsDynamic = $IsDynamic;
 	}
 
@@ -315,7 +313,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	private function xformTemplatePopup($width = 50){
-		$ws = get_ws(TEMPLATES_TABLE,false,true);
+		$ws = get_ws(TEMPLATES_TABLE, false, true);
 
 		$hash = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
 		$TID = $hash['TemplateID'];
@@ -814,7 +812,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	 * 		for this document, use with tags we:hidePages and we:controlElement
 	 */
 	public function setDocumentControlElements(){
-	////FIXME: use Tagparser & save this to DB
+		////FIXME: use Tagparser & save this to DB
 		//	get code of the matching template
 		$_templateCode = $this->getTemplateCode();
 
