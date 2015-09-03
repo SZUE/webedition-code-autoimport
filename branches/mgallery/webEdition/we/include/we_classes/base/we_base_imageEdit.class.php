@@ -567,12 +567,8 @@ abstract class we_base_imageEdit{
 			$imagesize = array(0, 0);
 		}
 		if($imagesize[0] > $width || $imagesize[1] > $height){
-			$_previewDir = WE_THUMB_PREVIEW_PATH;
-			if(!file_exists($_previewDir) || !is_dir($_previewDir)){
-				we_base_file::createLocalFolder($_previewDir);
-			}
 			$_thumbSrc = ($imgID ?
-					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat) :
+					WE_THUMBNAIL_DIRECTORY . $imgID . '_' . $width . '_' . $height . '.' . strtolower($outputFormat) :
 					TEMP_DIR . ($tmpName ? : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
 			$_thumbPath = WEBEDITION_PATH . '../' . $_thumbSrc;
 
@@ -583,6 +579,11 @@ abstract class we_base_imageEdit{
 
 			if(!$_thumbExists || ($_imageCreationDate > $_thumbCreationDate)){
 				self::edit_image($_imgPath, $outputFormat, $_thumbPath, $outputQuality, $width, $height);
+			}
+			$_thumbSrc = $_SERVER['DOCUMENT_ROOT'] . $_thumbSrc;
+			if(!$imgID){
+				//keep the file for 1h
+				we_base_file::insertIntoCleanUp($_thumbSrc, 3600);
 			}
 			return $_thumbSrc;
 		}

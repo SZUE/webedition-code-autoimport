@@ -652,24 +652,6 @@ class we_thumbnail{
 				}
 			}
 		}
-		$previewDir = WE_THUMB_PREVIEW_PATH;
-		$dir_obj = @dir($previewDir);
-		if($dir_obj){
-			while(false !== ($entry = $dir_obj->read())){
-				switch($entry){
-					case '.':
-					case '..':
-						continue;
-					default:
-						if(substr($entry, 0, strlen($id) + 1) == $id . "_" || substr($entry, 0, strlen($id) + 1) == $id . '.'){
-							$filestodelete[] = $previewDir . '/' . $entry;
-						}
-				}
-			}
-		}
-		foreach($filestodelete as $p){
-			we_base_file::deleteLocalFile($p);
-		}
 	}
 
 }

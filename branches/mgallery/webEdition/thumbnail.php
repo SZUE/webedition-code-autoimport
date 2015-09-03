@@ -23,6 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
+session_write_close();
 //FIXME: send no perms img; but better an invalid picture, than access to unallowed images
 
 $imageId = we_base_request::_(we_base_request::INT, 'id', 0);
@@ -42,8 +43,7 @@ if(!in_array(strtolower($extension), $whiteList)){
 }
 
 $imageExt = substr($extension, 1);
-$thumbpath = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
-$file = $_SERVER['DOCUMENT_ROOT'] . $thumbpath;
+$file = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
 if(file_exists($file) && is_readable($file)){
 	$stat = stat($file);
 	$etag = md5($imageId . $stat['size'] . $stat['ctime'] . $stat['mtime']);

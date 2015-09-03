@@ -1764,16 +1764,11 @@ weSearch.g_l = {
 		if($file["ContentType"] == we_base_ContentTypes::IMAGE){
 			if($file["size"] > 0){
 				$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]);
-				$url = (file_exists(WE_THUMB_PREVIEW_PATH . $file["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($file["Extension"])) ?
-						WE_THUMB_PREVIEW_DIR . $file["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($file["Extension"]) :
-						WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"]
-					);
+				$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $file["docID"] . "&size=" . $smallSize . "&path=" . urlencode($file["Path"]) . "&extension=" . $file["Extension"]
+				;
 				$imageView = "<img src='" . $url . "' border='0' /></a>";
 
-				$urlPopup = (file_exists(WE_THUMB_PREVIEW_PATH . $file["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($file["Extension"])) ?
-						WE_THUMB_PREVIEW_DIR . $file["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($file["Extension"]) :
-						WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"]
-					);
+				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
 				$imageViewPopup = "<img src='" . $urlPopup . "' border='0' /></a>";
 			} else {
 				$imagesize = array(0, 0);

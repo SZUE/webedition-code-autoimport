@@ -93,7 +93,7 @@ top.parentID = "' . $this->values["ParentID"] . '";
 	protected function setDefaultDirAndID($setLastDir){
 		$this->dir = $this->startID ? : ($setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0);
 		$ws = get_ws($this->table, true);
-		if($ws && in_array($this->dir ,$ws)){
+		if($ws && in_array($this->dir, $ws)){
 			$this->dir = "";
 		}
 		$this->id = $this->dir;
@@ -514,12 +514,20 @@ top.selectFile(top.currentID);
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 						if($imagesize[0] > 150 || $imagesize[1] > 150){
 							$extension = substr($result['Extension'], 1);
-							$thumbpath = WE_THUMB_PREVIEW_DIR . $this->id . '.' . $extension;
+							$thumbpath = WE_THUMBNAIL_DIRECTORY . $this->id . '.' . $extension;
 							$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-							if(!file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) || ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
+							if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) && ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
 								//create thumb
-								we_base_imageEdit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
+								//we_base_imageEdit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
+								//remove old thumb
+								we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $thumbpath);
 							}
+							$thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
+									'id' => $this->id,
+									'size' => 150,
+									'path' => $result['Path'],
+									'extension' => $extension,
+									'size2' => 200));
 						} else {
 							$thumbpath = $result['Path'];
 						}

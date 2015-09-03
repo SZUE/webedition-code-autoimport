@@ -441,36 +441,31 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 					if($fs){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $_result[$f]["Path"]);
-						$imageView = "<img src='" . (file_exists($thumbpath = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $smallSize . '_' . $smallSize . strtolower($_result[$f]['Extension'])) ?
-								$thumbpath :
-								WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
+						$imageView = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]["docID"] . "&size=" . $smallSize . "&path=" . urlencode($_result[$f]["Path"] . "&extension=" . $_result[$f]['Extension']
 							) . "' border='0' /></a>";
 
-						$imageViewPopup = "<img src='" . (file_exists($thumbpathPopup = WE_THUMB_PREVIEW_DIR . $_result[$f]["docID"] . '_' . $bigSize . '_' . $bigSize . strtolower($_result[$f]["Extension"])) ?
-								$thumbpathPopup :
-								WEBEDITION_DIR . "thumbnail.php?id=" . $_result[$f]["docID"] . "&size=" . $bigSize . "&path=" . urlencode($_result[$f]["Path"]) . "&extension=" . $_result[$f]["Extension"]
-							) . "' border='0' /></a>";
+						$imageViewPopup = '<img src="' . WEBEDITION_DIR . 'thumbnail.php?id=' . $_result[$f]['docID'] . '&size=' . $bigSize . '&path=' . urlencode($_result[$f]['Path']) . '&extension=' . $_result[$f]['Extension'] . '" border="0" /></a>';
 					} else {
 						$imagesize = array(0, 0);
 						$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . we_base_ContentTypes::IMAGE . '"))');
 					}
 				} else {
 					$imagesize = array(0, 0);
-					$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . $_result[$f]['ContentType'] . '",false,"' . $ext . '"))');
+					$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . $_result[$f]['ContentType'] . '",false,"' . $_result[$f]['Extension'] . '"))');
 				}
 
-				$creator = $_result[$f]["CreatorID"] ? id_to_path($_result[$f]["CreatorID"], USER_TABLE, $DB_WE) : g_l('searchtool', '[nobody]');
+				$creator = $_result[$f]['CreatorID'] ? id_to_path($_result[$f]['CreatorID'], USER_TABLE, $DB_WE) : g_l('searchtool', '[nobody]');
 
-				if($_result[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT){
+				if($_result[$f]['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
 					$templateID = ($_result[$f]["Published"] >= $_result[$f]["ModDate"] && $_result[$f]["Published"] ?
-							$_result[$f]["TemplateID"] :
-							$_result[$f]["temp_template_id"]);
+							$_result[$f]['TemplateID'] :
+							$_result[$f]['temp_template_id']);
 
 					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
 						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
-							$templateText = we_base_util::shortenPath($DB_WE->f('Text'), 20) . " (ID=" . $DB_WE->f('ID') . ")";
+							$templateText = we_base_util::shortenPath($DB_WE->f('Text'), 20) . ' (ID=' . $DB_WE->f('ID') . ')';
 						}
 					}
 				} else {

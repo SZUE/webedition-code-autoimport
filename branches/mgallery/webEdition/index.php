@@ -164,6 +164,7 @@ $removePaths = array(
 	$_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller',
 	$_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller.php',
 	WEBEDITION_PATH . 'we/zendcache',
+	WEBEDITION_PATH . 'preview',
 );
 
 foreach($removePaths as $path){
@@ -222,27 +223,23 @@ if(isset($GLOBALS['userLoginDenied'])){
 }
 
 function getError($reason, $cookie = false){
-	$_error = we_html_element::htmlB($reason);
 	$_error_count = 0;
 	$tmp = ini_get('session.save_path');
 
-	if(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp))))){
-		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr();
-	}
-
-	if(!ini_get('session.use_cookies')){
-		$_error .= ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr();
-	}
-
-	if(ini_get('session.cookie_path') != '/'){
-		$_error .= ++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr();
-	}
-
-	if($cookie && $_error_count == 0){
-		$_error .= ++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr();
-	}
-
-	$_error .= we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
+	$_error = we_html_element::htmlB($reason) .
+		(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp)))) ?
+			( ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
+			'') .
+		(!ini_get('session.use_cookies') ?
+			( ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
+			'') .
+		(ini_get('session.cookie_path') != '/' ?
+			( ++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
+			'') .
+		($cookie && $_error_count == 0 ?
+			( ++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
+			'') .
+		we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
 
 	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
 	$_layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]')));
@@ -290,7 +287,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	/*	 * ***********************************************************************
 	 * GENERATE NEEDED JAVASCRIPTS
 	 * *********************************************************************** */
-$headerjs='';
+	$headerjs = '';
 	switch($login){
 		case LOGIN_OK:
 			$httpCode = 200;
@@ -350,6 +347,6 @@ $headerjs='';
 
 	$_layout = we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable));
 
-	printHeader($login, (isset($httpCode) ? $httpCode : 401),$headerjs);
+	printHeader($login, (isset($httpCode) ? $httpCode : 401), $headerjs);
 	echo we_html_element::htmlBody(array('id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
 }

@@ -43,7 +43,6 @@ define('WE_JS_TINYMCE_DIR', JS_DIR . 'wysiwyg/tinymce/');
 define('BACKUP_DIR', WEBEDITION_DIR . 'we_backup/');
 define('VERSION_DIR', WEBEDITION_DIR . 'we/versions/');
 define('LIB_DIR', WEBEDITION_DIR . 'lib/');
-define('WE_THUMB_PREVIEW_DIR', WEBEDITION_DIR . 'preview/');
 define('TINYMCE_SRC_DIR', LIB_DIR . 'additional/tinymce/');
 define('WE_USERS_MODULE_DIR', WE_MODULES_DIR . 'users/');
 
@@ -59,7 +58,6 @@ define('JS_PATH', $_SERVER['DOCUMENT_ROOT'] . JS_DIR);
 define('WE_LIB_PATH', $_SERVER['DOCUMENT_ROOT'] . LIB_DIR);
 define('WE_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_MODULES_DIR);
 define('WE_JS_MODULES_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_JS_MODULES_DIR);
-define('WE_THUMB_PREVIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_THUMB_PREVIEW_DIR);
 define('WE_USERS_MODULE_PATH', $_SERVER['DOCUMENT_ROOT'] . WE_USERS_MODULE_DIR);
 define('BACKUP_PATH', $_SERVER['DOCUMENT_ROOT'] . BACKUP_DIR);
 
