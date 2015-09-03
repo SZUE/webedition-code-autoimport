@@ -309,12 +309,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		// Initialize we_button class
 		$yuiSuggest = &weSuggest::getInstance();
 
-		$extHref = (!$this->args['extHref'] ? 'http://' : (utf8_decode(($this->args['extHref']{0} === '#') ? '' : $this->args['extHref'])));
+		$extHref = (!$this->args['extHref'] ? we_base_link::EMPTY_EXT : (utf8_decode((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref'])));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>';
 
-			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? : we_base_link::EMPTY_EXT, '', '', 'url', 300);
+			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', '', 'url', 300);
 			// E-MAIL LINK
 			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
 		} else {
@@ -330,8 +330,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
 			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref ? : we_base_link::EMPTY_EXT, '', 'onchange="if(this.value==\'\'){
-					this.value=\'http://\';
+			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? we_const.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
+if(this.value === \'\' || this.value === we_const.EMPTY_EXT){
+	checkMakeEmptyHrefExt();
 }else{
 	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
 	this.value=x[1];
@@ -389,11 +390,11 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		}
 
 		$_anchorSel = '<div id="anchorlistcontainer"></div>';
-		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onblur="checkAnchor(this)"', "text", 300);
+		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt(); checkAnchor(this)"', "text", 300);
 
 		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", $_anchorSel, '', "", "", "", 0);
 
-		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', '', 'text', 300);
+		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt();"', 'text', 300);
 
 		// CSS STYLE
 		$classSelect = $this->getClassSelect();
@@ -530,9 +531,11 @@ var classNames = ' . (!empty($this->args["cssClasses"]) ? '"' . $this->args['css
 
 var g_l={
 	anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
-	wysiwyg_none:"' . g_l('wysiwyg', '[none]') . '"
+	wysiwyg_none:"' . g_l('wysiwyg', '[none]') . '",
+	save_error_fields_value_not_valid: "'.we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')).'"
 };
 var consts={
+	EMPTY_EXT : "' . we_base_link::EMPTY_EXT . '",
 	TYPE_INT:"' . we_base_link::TYPE_INT . '"
 };
 var dirs = {
@@ -545,28 +548,7 @@ var size = {
 		height:' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
 	}
 }
-
-function weDoCheckAcFields(){
-	acStatus = YAHOO.autocoml.checkACFields();
-	acStatusType = typeof acStatus;
-	if (weAcCheckLoop > 10) {' .
-				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		weAcCheckLoop = 0;
-	} else if(acStatusType.toLowerCase() == "object") {
-		if(acStatus.running) {
-			weAcCheckLoop++;
-			setTimeout(weDoCheckAcFields,100);
-		} else if(!acStatus.valid) {' .
-				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-			weAcCheckLoop=0;
-		} else {
-			weAcCheckLoop=0;
-			document.we_form.submit();
-		}
-	} else {' .
-				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-	}
-}'
+'
 			) . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');
 	}
 

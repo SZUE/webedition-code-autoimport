@@ -19,13 +19,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_form($attribs, $content){
-	return '<?php if(!isset($GLOBALS[\'we_editmode\']) || !$GLOBALS[\'we_editmode\']){
-		printElement(' . we_tag_tagParser::printTag('form', $attribs) . ');}?>' .
-		$content .
-		'<?php if(!isset($GLOBALS[\'we_editmode\']) || !$GLOBALS[\'we_editmode\']){ echo \'</form>\';unset($GLOBALS[\'WE_FORM\']); if (isset($GLOBALS[\'we_form_action\'])) {unset($GLOBALS[\'we_form_action\']);}}?>';
+	return '<?php printElement(' . we_tag_tagParser::printTag('form', $attribs) . ');
+?>' . $content .
+		'<?php printElement(' . we_tag_tagParser::printTag('form', array('_type' => 'stop')) . ');?>';
 }
 
 function we_tag_form($attribs){
+	if(!empty($GLOBALS['we_editmode'])){
+		return'';
+	}
+	if(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING) === 'stop'){
+		unset($GLOBALS['WE_FORM']);
+		if(isset($GLOBALS['we_form_action'])){
+			unset($GLOBALS['we_form_action']);
+		}
+		return '</form>';
+	}
 	$ret = '';
 	$method = weTag_getAttribute('method', $attribs, 'post', we_base_request::STRING);
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::STRING);

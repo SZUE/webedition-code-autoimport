@@ -57,7 +57,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->ContentType = we_base_ContentTypes::WEDOCUMENT;
 	}
 
-	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $wewrite = false){
+	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $docID = 0, $wewrite = false){
 		//  check if a <we:sessionStart> Tag was before
 		$session = !empty($GLOBALS['WE_SESSION_START']);
 
@@ -65,30 +65,29 @@ class we_webEditionDocument extends we_textContentDocument{
 			$GLOBALS['we_document'] = array();
 		}
 		$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
-		$id = we_base_request::_(we_base_request::INT, 'we_editDocument_ID', 0);
 		if((!$session) || (!isset($_SESSION['weS']['we_document_session_' . $formname])) || $wewrite){
 			if($session){
 				$_SESSION['weS']['we_document_session_' . $formname] = array();
 			}
 			$GLOBALS['we_document'][$formname]->we_new();
-			if($id){
-				$GLOBALS['we_document'][$formname]->initByID($id, FILE_TABLE);
+			if($docID){
+				$GLOBALS['we_document'][$formname]->initByID($docID, FILE_TABLE);
 			} else {
 				$dt = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $GLOBALS['we_document'][$formname]->DB_WE->escape($doctype) . '"', '', $GLOBALS['we_document'][$formname]->DB_WE);
 				$GLOBALS['we_document'][$formname]->changeDoctype($dt);
 				if($tid){
 					$GLOBALS['we_document'][$formname]->setTemplateID($tid);
 				}
-				if($categories){
-					$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
-				}
+			}
+			if((!$docID || $wewrite) && $categories){
+				$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 			}
 			if($session){
 				$GLOBALS['we_document'][$formname]->saveInSession($_SESSION['weS']['we_document_session_' . $formname]);
 			}
 		} else {
-			if($id){
-				$GLOBALS['we_document'][$formname]->initByID($id, FILE_TABLE);
+			if($docID){
+				$GLOBALS['we_document'][$formname]->initByID($docID, FILE_TABLE);
 			} elseif($session){
 				$GLOBALS['we_document'][$formname]->we_initSessDat($_SESSION['weS']['we_document_session_' . $formname]);
 			}
@@ -109,7 +108,6 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 
 		if(($cats = we_base_request::_(we_base_request::STRING_LIST, 'we_ui_' . $formname . '_categories')) !== false){
-			// Bug Fix #750
 			$GLOBALS['we_document'][$formname]->Category = makeIDsFromPathCVS($cats, CATEGORY_TABLE);
 		}
 		if(($cats = we_base_request::_(we_base_request::STRING, 'we_ui_' . $formname . '_Category')) !== false){

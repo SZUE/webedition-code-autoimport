@@ -371,7 +371,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 					top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
 					top.weEditorFrameController.toggleFrames();
 	} else {
-	top.showMessage(g_l.no_editor_left, WE_MESSAGE_INFO, window);
+		top.showMessage(g_l.no_editor_left, WE_MESSAGE_INFO, window);
 	}
 	}
 

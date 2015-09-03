@@ -86,7 +86,7 @@ class we_objectFile extends we_document{
 		$this->CSS = '';
 	}
 
-	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0, $wewrite = false){
+	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0, $objID = 0, $wewrite = false){
 		$session = !empty($GLOBALS['WE_SESSION_START']);
 
 		if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
@@ -98,8 +98,8 @@ class we_objectFile extends we_document{
 				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
 			$wof->we_new();
-			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
-				$wof->initByID($id, OBJECT_FILES_TABLE);
+			if($objID){
+				$wof->initByID($objID, OBJECT_FILES_TABLE);
 				if(!$wof->TableID){
 					return false;
 				}
@@ -108,7 +108,9 @@ class we_objectFile extends we_document{
 				$wof->setRootDirID(true);
 				$wof->resetParentID();
 				$wof->restoreDefaults();
-				if(strlen($categories)){
+			}
+			if(($wewrite || !$objID)){
+				if($categories){
 					$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 					$wof->Category = $categories;
 				}
@@ -124,12 +126,13 @@ class we_objectFile extends we_document{
 				}
 			}
 
+
 			if($session){
 				$wof->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 			}
 		} else {
-			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
-				$wof->initByID($id, OBJECT_FILES_TABLE);
+			if($objID){
+				$wof->initByID($objID, OBJECT_FILES_TABLE);
 			} elseif($session){
 				$wof->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}

@@ -35,9 +35,10 @@ function checkAnchor(el) {
 }
 
 function weCheckAcFields() {
-	if (!!weFocusedField)
+	if (!!weFocusedField) {
 		weFocusedField.blur();
-	if (document.getElementById("weDialogType").value == consts.TYPE_INT) {
+	}
+	if (document.getElementById("weDialogType").value === consts.TYPE_INT) {
 		setTimeout(weDoCheckAcFields, 100);
 	} else {
 		document.we_form.submit();
@@ -98,11 +99,47 @@ function showclasss(name, val, onCh) {
 	document.writeln('<option value="">' + g_l.wysiwyg_none);
 	if (classNames !== undefined) {
 		for (var i = 0; i < classNames.length; i++) {
-			var foo = classNames[i].substring(0, 1) == "." ?
+			var foo = classNames[i].substring(0, 1) === "." ?
 							classNames[i].substring(1, classNames[i].length) :
 							classNames[i];
 			document.writeln('<option value="' + foo + '"' + ((val == foo) ? ' selected' : '') + '>.' + foo);
 		}
 	}
 	document.writeln('</select>');
+}
+
+function checkMakeEmptyHrefExt() {
+	var f = document.we_form,
+					hrefField = f.elements["we_dialog_args[extHref]"],
+					anchor = f.elements["we_dialog_args[anchor]"].value,
+					params = f.elements["we_dialog_args[param]"].value;
+
+	if ((anchor || params) && hrefField.value === consts.EMPTY_EXT) {
+		hrefField.value = "";
+	} else if (!(anchor || params) && !hrefField.value) {
+		hrefField.value = consts.EMPTY_EXT;
+	}
+
+}
+
+function weDoCheckAcFields() {
+	acStatus = YAHOO.autocoml.checkACFields();
+	acStatusType = typeof acStatus;
+	if (weAcCheckLoop > 10) {
+		top.showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+		weAcCheckLoop = 0;
+	} else if (acStatusType.toLowerCase() == "object") {
+		if (acStatus.running) {
+			weAcCheckLoop++;
+			setTimeout(weDoCheckAcFields, 100);
+		} else if (!acStatus.valid) {
+			top.showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+			weAcCheckLoop = 0;
+		} else {
+			weAcCheckLoop = 0;
+			document.we_form.submit();
+		}
+	} else {
+		top.showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+	}
 }
