@@ -329,8 +329,9 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extHref]'].value");
 			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button("select", "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onchange="if(this.value === \'\'){
-	this.value = document.getElementsByName(\'we_dialog_args[anchor]\')[0].value !== \'\' ? \'\' : \'http://\';
+			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? we_const.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
+if(this.value === \'\' || this.value === we_const.EMPTY_EXT){
+	checkMakeEmptyHrefExt();
 }else{
 	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
 	this.value=x[1];
@@ -389,16 +390,11 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		}
 
 		$_anchorSel = (isset($this->args["editor"]) && $this->args["editor"] === 'tinyMce') ? '<div id="anchorlistcontainer"></div>' : we_html_element::jsElement('showanchors("anchors","","this.form.elements[\'we_dialog_args[anchor]\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0;")');
-		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onblur="if(this.value !== \'\' && document.getElementsByName(\'we_dialog_args[extHref]\')[0].value === \'http://\'){
-	document.getElementsByName(\'we_dialog_args[extHref]\')[0].value = \'\';
-} else if(this.value === \'\' && document.getElementsByName(\'we_dialog_args[extHref]\')[0].value === \'\'){
-	document.getElementsByName(\'we_dialog_args[extHref]\')[0].value = \'http://\';
-}
-; checkAnchor(this)"', "text", 300);
+		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt(); checkAnchor(this)"', "text", 300);
 
 		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", we_html_tools::getPixel(10, 1), $_anchorSel, "", "", "", 0);
 
-		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', '', 'text', 300);
+		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt();"', 'text', 300);
 
 		// CSS STYLE
 		$classSelect = $this->args["editor"] === 'tinyMce' ? $this->getClassSelect() : we_html_element::jsElement('showclasss("we_dialog_args[class]", "' . $this->args["class"] . '", "");');
@@ -552,6 +548,11 @@ function weonsubmit() {
 
 	function getJs(){
 		return parent::getJs() . we_html_element::jsElement('
+var we_const = { //to be declared oninit when js is extracted
+	EMPTY_EXT : "' . we_base_link::EMPTY_EXT . '",
+	TYPE_INT : "' . we_base_link::TYPE_INT . '"
+};
+
 var weAcCheckLoop = 0;
 var weFocusedField;
 function setFocusedField(elem){
@@ -560,7 +561,7 @@ function setFocusedField(elem){
 
 function weCheckAcFields(){
 	if(!!weFocusedField) weFocusedField.blur();
-	if(document.getElementById("weDialogType").value=="' . we_base_link::TYPE_INT . '"){
+	if(document.getElementById("weDialogType").value === we_const.TYPE_INT){
 		setTimeout("weDoCheckAcFields()",100);
 	} else {
 		document.forms["we_form"].submit();
@@ -602,6 +603,20 @@ function checkAnchor(el){
 		setTimeout(function(){el.focus()}, 10);
 		return false;
 	}
+}
+
+function checkMakeEmptyHrefExt(){
+	var f = document.we_form,
+		hrefField = f.elements["we_dialog_args[extHref]"],
+		anchor = f.elements["we_dialog_args[anchor]"].value,
+		params = f.elements["we_dialog_args[param]"].value;
+
+	if((anchor || params) && hrefField.value === we_const.EMPTY_EXT){
+			hrefField.value = "";
+	} else if(!(anchor || params) && !hrefField.value ){
+		hrefField.value = we_const.EMPTY_EXT;
+	}
+	
 }
 
 function we_cmd() {
