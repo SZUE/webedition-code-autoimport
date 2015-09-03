@@ -46,10 +46,6 @@ class we_wysiwyg_editor{
 	private $templates = '';
 	private $fullscreen = '';
 	private $className = '';
-	private $fontnamesCSV = '';
-	private $fontnames = array();
-	private $tinyFonts = '';
-	private $formats = 'p,div,h1,h2,h3,h4,h5,h6,pre,code,blockquote,samp';
 	private $outsideWE = false;
 	private $xml = false;
 	private $removeFirstParagraph = true;
@@ -67,10 +63,39 @@ class we_wysiwyg_editor{
 	private $htmlSpecialchars = true; // in wysiwyg default was "true" (although Tag-Hilfe says "false")
 	private $contentCss = '';
 	private $isInPopup = false;
+	private $formats = '';
+	private $fontnames = '';
+	private $fontnamesCSV = '';
+	private $fontsizes = '1 (8px)=xx-small,2 (10px)=x-small,3 (12px)=small,4 (14px)=medium,5 (18px)=large,6 (24px)=x-large,7 (36px)=xx-large';// tinyMCE default!
+
+	private static $allFormats = array('p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code', 'blockquote', 'samp');
+	private static $fontstrings = array(
+		'andale mono' => "Andale Mono='andale mono','times new roman',times;",
+		'arial' => 'Arial=arial,helvetica,sans-serif;',
+		'arial black' => "Arial Black='arial black',arial,'avant garde';",
+		'book antiqua' => "Book Antiqua='book antiqua',palatino;",
+		'comic sans ms' => "Comic Sans MS='comic sans ms',sans-serif;",
+		'courier' => "Courier=courier,'courier new;'",
+		'courier new' => "Courier New='courier new',courier;",
+		'geneva' => "Geneva=geneva,arial,helvetica,sans-serif;",
+		'georgia' => "Georgia=georgia,palatino,'times new roman',times,serif;",
+		'helvetica' => "Helvetica=helvetica,arial,sans-serif;",
+		'impact' => "Impact=impact,chicago;",
+		'symbol' => "Symbol=symbol;",
+		'tahoma' => "Tahoma=tahoma,arial,helvetica,sans-serif;",
+		'terminal' => "Terminal=terminal,monaco;",
+		'times' => "Times=times,'times new roman',serif;",
+		'times new roman' => "Times New Roman='times new roman',times,serif;",
+		'trebuchet ms' => "Trebuchet MS='trebuchet ms',geneva;",
+		'verdana' => "Verdana=verdana,geneva,arial,helvetica,sans-serif;",
+		'webdings' => "Webdings=webdings;",
+		'wingdings' => "Wingdings=wingdings,'zapf dingbats';"
+	);
+	private static $allFontSizes = array('0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit');
 
 	const CONDITIONAL = true;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = ''){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $fontsizes){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
@@ -96,36 +121,28 @@ class we_wysiwyg_editor{
 		$this->buttonpos = $buttonpos;
 		$this->statuspos = $this->buttonpos != 'external' ? $this->buttonpos : 'bottom';
 		$this->outsideWE = $outsideWE;
-		$this->fontnamesCSV = $fontnames;
-		if($fontnames){
-			$fn = explode(',', $fontnames);
-			$tf = '';
-			foreach($fn as $val){
-				$tf .= $val . '=' . strtolower($val) . ';';
-			}
-			$this->tinyFonts = substr($tf, 0, -1);
-		} else {
-			$this->tinyFonts = 'Arial=arial,helvetica,sans-serif;' .
-				'Courier New=courier new,courier;' .
-				'Geneva=Geneva, Arial, Helvetica, sans-serif;' .
-				'Georgia=Georgia, Times New Roman, Times, serif;' .
-				'Tahoma=Tahoma;' .
-				'Times New Roman=Times New Roman,Times,serif;' .
-				'Verdana=Verdana, Arial, Helvetica, sans-serif;' .
-				'Wingdings=wingdings,zapf dingbats';
+
+		$this->fontnamesCSV = $fontnames ? : self::getAttributeOptions('fontnames', false, false, false);
+		$fontsArr = explode(',', $this->fontnamesCSV);
+		natsort($fontsArr);
+		foreach($fontsArr as $font){
+			$f = trim($font, ', ');
+			$this->fontnames .= (array_key_exists ($f, self::$fontstrings)) ? self::$fontstrings[$f] : ucfirst($f) . '=' . $f . ';';
 		}
+
+		$this->fontsizes = $fontsizes ? : $this->fontsizes;
 
 		if($formats){
 			$tmp = '';
-			$formatsArr = explode(',', $this->formats);
 			foreach(explode(',', $formats) as $f){
-				if(in_array(trim($f, ', '), $formatsArr)){
+				if(in_array(trim($f, ', '), self::$allFormats)){
 					$tmp .= trim($f, ', ') . ',';
 				}
 			}
-			$formats = trim($tmp, ',');
+			$this->formats = trim($tmp, ',');
+		} else {
+			$this->formats = self::getAttributeOptions('formats', false, false, false);
 		}
-		$this->formats = $formats ? : $this->formats;
 
 		if($cssClasses){
 			$cc = explode(',', $cssClasses);
@@ -226,6 +243,32 @@ class we_wysiwyg_editor{
 			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
 		}
 		return $ret;
+	}
+
+	public static function getAttributeOptions($name = '', $isTag = false, $asArray = true, $leadingEmpty = true){
+		switch($name){
+			case 'formats':
+				$options = self::$allFormats;
+				break;
+			case 'fontnames':
+				$options = array_keys(self::$fontstrings);
+				break;
+			case 'fontsizes':
+				$options = self::$allFontSizes;
+				break;
+			default:
+				return;
+		}
+
+		if($isTag){
+			foreach($options as &$opt){
+				$opt = new weTagDataOption($opt);
+			}
+			return $options;
+		}
+
+		$options = $leadingEmpty ? array('---') + $options : $options;
+		return $asArray ? $options : implode(',', $options);
 	}
 
 	static function getHeaderHTML($loadDialogRegistry = false){
@@ -495,10 +538,6 @@ td.mceToolbar{
 	}
 
 	private function getEditButtonHTML(){
-		$fns = '';
-		foreach($this->fontnames as $fn){
-			$fns .= str_replace(",", ";", $fn) . ",";
-		}
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 		$width = we_base_util::convertUnits($this->width);
@@ -508,9 +547,9 @@ td.mceToolbar{
 		$height = (is_numeric($height) ? "'" . $height . "'" : intval($height) . '/100*screen.availHeight');
 
 		return
-			we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "'," . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($fns, ',') . "',
+			we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "'," . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "',
 			'" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
-			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "');", true, 25);
+			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->fontsizes . "');", true, 25);
 	}
 
 	function parseInternalImageSrc($value){
@@ -836,7 +875,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		tinyParams : "' . urlencode($this->tinyParams) . '",
 		contextmenu : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
 		templates : "' . $this->templates . '",
-		formats : "' . $this->formats . '",
+		formats : "' . urlencode($this->formats) . '",
+		fontsizes : "' . urlencode($this->fontsizes) . '",
 	},
 	weClassNames_urlEncoded : "' . urlencode($this->cssClasses) . '",
 	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
@@ -871,7 +911,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	// Theme options
 	' . $tinyRows . '
 	theme_advanced_toolbar_location : "' . $this->buttonpos . '", //external: toolbar floating on top of textarea
-	theme_advanced_fonts: "' . $this->tinyFonts . '",
+	theme_advanced_fonts: "' . $this->fontnames . '",
+	theme_advanced_font_sizes: "' . $this->fontsizes . '",
 	theme_advanced_styles: "' . $this->tinyCssClasses . '",
 	theme_advanced_blockformats : "' . $this->formats . '",
 	theme_advanced_toolbar_align : "left",
