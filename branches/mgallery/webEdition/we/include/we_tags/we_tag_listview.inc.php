@@ -78,7 +78,7 @@ function we_tag_listview($attribs){
 	$we_lv_order = we_base_request::_(we_base_request::STRING, 'we_lv_order_' . $name, $order);
 
 	$we_lv_numorder = we_base_request::_(we_base_request::BOOL, 'we_lv_numorder_' . $name, weTag_getAttribute('numorder', $attribs, false, we_base_request::BOOL));
-	$id = weTag_getAttribute('id', $attribs, '', we_base_request::STRING);
+	$id = weTag_getAttribute('id', $attribs, false, we_base_request::INTLIST);
 	$cond = weTag_getAttribute('condition', $attribs, '', we_base_request::RAW)? : (isset($GLOBALS['we_lv_condition']) ? $GLOBALS['we_lv_condition'] : '');
 	if($cond && $cond{0} != '$' && isset($GLOBALS[$cond])){
 		$cond = $GLOBALS[$cond];
@@ -145,6 +145,9 @@ function we_tag_listview($attribs){
 
 	switch($type){
 		case 'document':
+			if($id === 0 || $id === '0'){
+				return '';
+			}
 			$GLOBALS['lv'] = new we_listview_document($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);
 			break;
 		case 'search':
@@ -155,6 +158,9 @@ function we_tag_listview($attribs){
 				echo modulFehltError('Object/DB', __FUNCTION__ . ' type="object"');
 				unset($GLOBALS['lv']);
 				return false;
+			}
+			if($id === 0 || $id === '0'){
+				return '';
 			}
 			if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($class))){
 				$GLOBALS['lv'] = new we_object_listview($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $class, $we_lv_cats, $we_lv_catOr, $cond, $triggerid, $cols, $seeMode, $we_lv_se, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $we_lv_ws, $cfilter, $docid, $customers, $id, $predefinedSQL, $we_lv_languages, $hidedirindex, $objectseourls);
