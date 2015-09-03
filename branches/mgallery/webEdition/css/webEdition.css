@@ -333,6 +333,16 @@ td.boxHeader{
 	background-color: #EEEEEE;
 }
 
+label,
+input[type="checkbox"]{
+	cursor: pointer;
+}
+
+label.disabled{
+	color:grey;
+	cursor: default;
+}
+
 .weMarkInputError,
 input:invalid {
 	background-color: #ff8888 ! important;

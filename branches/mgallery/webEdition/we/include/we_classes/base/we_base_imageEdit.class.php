@@ -568,7 +568,7 @@ abstract class we_base_imageEdit{
 		}
 		if($imagesize[0] > $width || $imagesize[1] > $height){
 			$_thumbSrc = ($imgID ?
-					WE_THUMBNAIL_DIRECTORY . $imgID . '_' . $width . '_' . $height . '.' . strtolower($outputFormat) :
+					WE_THUMBNAIL_DIRECTORY . '/' . $imgID . '_' . $width . '_' . $height . '.' . strtolower($outputFormat) :
 					TEMP_DIR . ($tmpName ? : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
 			$_thumbPath = WEBEDITION_PATH . '../' . $_thumbSrc;
 

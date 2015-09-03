@@ -514,7 +514,7 @@ top.selectFile(top.currentID);
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 						if($imagesize[0] > 150 || $imagesize[1] > 150){
 							$extension = substr($result['Extension'], 1);
-							$thumbpath = WE_THUMBNAIL_DIRECTORY . $this->id . '.' . $extension;
+							$thumbpath = WE_THUMBNAIL_DIRECTORY.'/' . $this->id . '.' . $extension;
 							$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 							if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) && ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
 								//create thumb

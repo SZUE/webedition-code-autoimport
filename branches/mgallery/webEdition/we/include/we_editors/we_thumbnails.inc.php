@@ -291,10 +291,10 @@ function init() {
 
 			$_thumbnail_option_table = new we_html_table(array('class' => 'default withSpace'), 4, 1);
 
-			$_thumbnail_option_table->setCol(0, 0, null, we_html_forms::checkbox(1, (($_thumbnail_ratio == -1 || $_thumbnail_ratio == 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '', ($_thumbnail_ratio == -1)));
-			$_thumbnail_option_table->setCol(1, 0, null, we_html_forms::checkbox(1, (($_thumbnail_maximize == -1 || $_thumbnail_maximize == 0) ? false : true), 'Maxsize', g_l('thumbnails', '[maximize]'), false, 'defaultfont', '', ($_thumbnail_maximize == -1)));
-			$_thumbnail_option_table->setCol(2, 0, null, we_html_forms::checkbox(1, (($_thumbnail_interlace == -1 || $_thumbnail_interlace == 0) ? false : true), 'Interlace', g_l('thumbnails', '[interlace]'), false, 'defaultfont', '', ($_thumbnail_interlace == -1)));
-			$_thumbnail_option_table->setCol(3, 0, null, we_html_forms::checkbox(1, (($_thumbnail_fitinside == -1 || $_thumbnail_fitinside == 0) ? false : true), 'Fitinside', 'Fit inside', false, 'defaultfont', '', ($_thumbnail_fitinside == -1)));
+			$_thumbnail_option_table->setCol(0, 0, null, we_html_forms::checkbox(1, (($_thumbnail_ratio <= 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', "if(this.checked){document.getElementById('Fitinside').disabled=true;document.getElementById('Fitinside').value=1;document.getElementById('label_Fitinside').className='disabled';}else{document.getElementById('Fitinside').disabled=false;document.getElementById('label_Fitinside').className='';}", ($_thumbnail_ratio == -1)));
+			$_thumbnail_option_table->setCol(1, 0, null, we_html_forms::checkbox(1, (($_thumbnail_maximize <= 0) ? false : true), 'Maxsize', g_l('thumbnails', '[maximize]'), false, 'defaultfont', '', ($_thumbnail_maximize == -1)));
+			$_thumbnail_option_table->setCol(2, 0, null, we_html_forms::checkbox(1, (($_thumbnail_interlace <= 0) ? false : true), 'Interlace', g_l('thumbnails', '[interlace]'), false, 'defaultfont', '', ($_thumbnail_interlace == -1)));
+			$_thumbnail_option_table->setCol(3, 0, null, we_html_forms::checkbox(1, (($_thumbnail_fitinside <= 0) ? false : true), 'Fitinside', 'Fit inside', false, 'defaultfont', '', ($_thumbnail_fitinside == -1 || $_thumbnail_ratio > 0)));
 
 			// Build final HTML code
 			$_window_html = new we_html_table(array('class' => 'default withSpace'), 2, 1);
