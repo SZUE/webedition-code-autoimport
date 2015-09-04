@@ -271,12 +271,12 @@ function weDoOk() {' .
 		return we_html_tools::htmlFormElementTable($foo, $title, "left", "defaultfont", $foo2);
 	}
 
-	function getClassSelect(){
+	function getClassSelect($style = 'width: 300px;'){
 		$clSelect = new we_html_select(array(
 			"name" => "we_dialog_args[cssclass]",
 			"id" => "we_dialog_args[cssclass]",
 			"size" => 1,
-			"style" => "width: 300px;",
+			"style" => $style,
 			'class' => 'defaultfont'
 		));
 		$clSelect->addOption("", g_l('wysiwyg', '[none]'));
