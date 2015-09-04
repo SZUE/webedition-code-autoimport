@@ -78,6 +78,11 @@ $l_wysiwyg=array(
 	'href_lang'=>'Ссылка указывает на страницу',
 	'hspace'=>'Расстояние по горизонтали',
 	'hyperlink'=>'Вставить/редактировать гиперссылку',
+	
+	'image'=>array(
+		'formatting'=>'Formatting',
+		'not_available'=>'Not available',
+	),
 	'image_url'=>'URL графики',
 	'import_text'=>'Insert Text',
 	'increasecolspan'=>'Increase column span',

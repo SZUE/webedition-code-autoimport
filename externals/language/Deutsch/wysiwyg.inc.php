@@ -78,6 +78,11 @@ $l_wysiwyg=array(
 	'href_lang'=>'Verlinkte Seite',
 	'hspace'=>'Horizontaler Abstand',
 	'hyperlink'=>'Hyperlink einfügen/bearbeiten',
+	
+	'image'=>array(
+		'formatting'=>'Formatierung',
+		'not_available'=>'Nicht verfügbar',
+	),
 	'image_url'=>'Bild URL',
 	'import_text'=>'Text einfügen',
 	'increasecolspan'=>'Spaltenspannweite erhöhen',

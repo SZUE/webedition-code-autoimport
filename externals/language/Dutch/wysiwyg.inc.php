@@ -78,6 +78,11 @@ $l_wysiwyg=array(
 	'href_lang'=>'Gekoppelde pagina',
 	'hspace'=>'Horizontale ruimte',
 	'hyperlink'=>'Voeg toe/wijzig hyperlink',
+	
+	'image'=>array(
+		'formatting'=>'Formatting',
+		'not_available'=>'Not available',
+	),
 	'image_url'=>'Afbeeldings URL',
 	'import_text'=>'Insert Text',
 	'increasecolspan'=>'Verhoog spanwijdte van kolom',

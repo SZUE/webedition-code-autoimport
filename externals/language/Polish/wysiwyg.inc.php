@@ -78,6 +78,11 @@ $l_wysiwyg=array(
 	'href_lang'=>'Zlinkowane strony',
 	'hspace'=>'Odstęp poziomy',
 	'hyperlink'=>'Hyperlink wklej/edytuj',
+	
+	'image'=>array(
+		'formatting'=>'Formatting',
+		'not_available'=>'Not available',
+	),
 	'image_url'=>'Obrazek URL',
 	'import_text'=>'Insert Text',
 	'increasecolspan'=>'Increase column span',

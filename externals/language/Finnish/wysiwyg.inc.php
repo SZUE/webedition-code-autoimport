@@ -78,6 +78,11 @@ $l_wysiwyg=array(
 	'href_lang'=>'Linkitetty sivu',
 	'hspace'=>'Väli vaakasuunnassa',
 	'hyperlink'=>'Lisää/muokkaa hyperlinkki(ä)',
+	
+	'image'=>array(
+		'formatting'=>'Formatting',
+		'not_available'=>'Not available',
+	),
 	'image_url'=>'Kuvan URL',
 	'import_text'=>'Insert Text',
 	'increasecolspan'=>'Yhdistä solut',
