@@ -559,7 +559,7 @@ td.mceToolbar{
 		if(preg_match_all('/src="(' . we_base_link::TYPE_INT_PREFIX . '|\?id=)(\\d+)(&time=\\d*)?/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]));
-				$editValue = str_ireplace('src="' . $reg[1] . $reg[2] . $reg[3], 'src="' . ($path ? ($path . '?id=' . $reg[2] . '&time=' . $t) : (ICON_DIR . 'no_image.gif')), $editValue);
+				$editValue = str_ireplace('src="' . $reg[1] . $reg[2] . (isset($reg[3]) ? $reg[3] : ''), 'src="' . ($path ? ($path . '?id=' . $reg[2] . '&time=' . $t) : (ICON_DIR . 'no_image.gif')), $editValue);
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
