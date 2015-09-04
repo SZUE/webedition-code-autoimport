@@ -1512,20 +1512,20 @@ class we_document extends we_root{
 	public static function parseInternalLinks(&$text, $pid, $path = ''){
 		$DB_WE = new DB_WE();
 		$regs = array();
-		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/(href|src)="(' . we_base_link::TYPE_INT_PREFIX . '|\?id=)(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
+				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[3]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
 
 				if($foo && $foo['Path']){
 					$path_parts = pathinfo($foo['Path']);
 					if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
-					$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
+					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . ($reg[4] ? '?' : '') . $reg[5], $text);
 				} else {
 					$text = preg_replace(array(
-						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
-						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '(\?|&|&amp;|")[^>]*>-Ui',
+						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
+						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '(\?|&|&amp;|")[^>]*>-Ui',
 						), array(
 						'$3',
 						''
