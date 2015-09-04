@@ -540,10 +540,10 @@ td.mceToolbar{
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 		$width = we_base_util::convertUnits($this->width);
-		$width = (is_numeric($width) ? "'" . $width . "'" : intval($width) . '/100*screen.availWidth');
-		//even if height in % doesn't make sense...
+		$width = (is_numeric($width) ? "'" . ($width - 0) . "'" : '(' . intval($width) . '/100*screen.availWidth) - 0'); // corrections disabled
+		//even if height in % doesn't make sense... => since 6.4.3 it makes sense in popup!
 		$height = we_base_util::convertUnits($this->height);
-		$height = (is_numeric($height) ? "'" . $height . "'" : intval($height) . '/100*screen.availHeight');
+		$height = (is_numeric($height) ? "'" . ($height - 0) . "'" : '(' . intval($height) . '/100*screen.availHeight) - 0'); // corrections disabled
 
 		return
 			we_html_button::create_button("image:btn_edit_edit", "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "'," . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" . rtrim($this->fontnamesCSV, ',') . "',
@@ -855,8 +855,16 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		weacronym : "' . $editorLangSuffix . 'weacronym"
 	},
 
+	weFullscreenState : {
+		fullscreen : false,
+		lastX : 0,
+		lastY : 0,
+		lastW : 0,
+		lastH: 0
+	},
 	weFullscrenParams : {
 		outsideWE : "' . $wefullscreenVars['outsideWE'] . '",
+		isInPopup : ' . ($this->isInPopup ? 1 : 0) . ',
 		xml : "' . $wefullscreenVars['xml'] . '",
 		removeFirstParagraph : "' . $wefullscreenVars['removeFirstParagraph'] . '",
 		baseHref : "' . urlencode($this->baseHref) . '",
@@ -980,6 +988,12 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					default:
 						//let tiny do it\'s job
 				}
+			}
+		});
+
+		ed.onPostRender.add(function(ed, cm) {
+			if(typeof top.we_doResizeOnPopup === "function"){
+				top.we_doResizeOnPopup(true);
 			}
 		});
 
