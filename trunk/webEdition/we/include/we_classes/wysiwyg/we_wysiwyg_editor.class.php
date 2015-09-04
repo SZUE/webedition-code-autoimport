@@ -66,8 +66,7 @@ class we_wysiwyg_editor{
 	private $formats = '';
 	private $fontnames = '';
 	private $fontnamesCSV = '';
-	private $fontsizes = '1 (8px)=xx-small,2 (10px)=x-small,3 (12px)=small,4 (14px)=medium,5 (18px)=large,6 (24px)=x-large,7 (36px)=xx-large';// tinyMCE default!
-
+	private $fontsizes = '1 (8px)=xx-small,2 (10px)=x-small,3 (12px)=small,4 (14px)=medium,5 (18px)=large,6 (24px)=x-large,7 (36px)=xx-large'; // tinyMCE default!
 	private static $allFormats = array('p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code', 'blockquote', 'samp');
 	private static $fontstrings = array(
 		'andale mono' => "Andale Mono='andale mono','times new roman',times;",
@@ -95,7 +94,7 @@ class we_wysiwyg_editor{
 
 	const CONDITIONAL = true;
 
-	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $fontsizes){
+	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $fontsizes = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
 		$this->restrictContextmenu = $contextmenu ? ',' . $contextmenu . ',' : '';
 		$this->createContextmenu = trim($contextmenu, " ,'") === 'none' || trim($contextmenu, " ,'") === 'false' ? false : true;
@@ -127,7 +126,7 @@ class we_wysiwyg_editor{
 		natsort($fontsArr);
 		foreach($fontsArr as $font){
 			$f = trim($font, ', ');
-			$this->fontnames .= (array_key_exists ($f, self::$fontstrings)) ? self::$fontstrings[$f] : ucfirst($f) . '=' . $f . ';';
+			$this->fontnames .= (array_key_exists($f, self::$fontstrings)) ? self::$fontstrings[$f] : ucfirst($f) . '=' . $f . ';';
 		}
 
 		$this->fontsizes = $fontsizes ? : $this->fontsizes;
@@ -557,10 +556,10 @@ td.mceToolbar{
 		$t = ($t ? : time());
 		$editValue = $value;
 		$regs = array();
-		if(preg_match_all('/src="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)/i', $editValue, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/src="(' . we_base_link::TYPE_INT_PREFIX . '|\?id=)(\\d+)(&time=\\d*)?/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[1]));
-				$editValue = str_ireplace('src="' . we_base_link::TYPE_INT_PREFIX . $reg[1], 'src="' . ($path ? $path . '?id=' . $reg[1] . '&time=' . $t : ICON_DIR . 'no_image.gif'), $editValue);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]));
+				$editValue = str_ireplace('src="' . $reg[1] . $reg[2] . $reg[3], 'src="' . ($path ? ($path . '?id=' . $reg[2] . '&time=' . $t) : (ICON_DIR . 'no_image.gif')), $editValue);
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
