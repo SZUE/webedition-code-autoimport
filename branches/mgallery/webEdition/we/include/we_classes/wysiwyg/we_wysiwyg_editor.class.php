@@ -163,7 +163,7 @@ class we_wysiwyg_editor{
 		$this->ref = preg_replace('%[^0-9a-zA-Z_]%', '', $this->name);
 		$this->hiddenValue = $value;
 		$this->isInPopup = $isInPopup;
-		$this->imageStartID = $imageStartID;
+		$this->imageStartID = intval($imageStartID);
 
 		foreach(explode(',', $galleryTemplates) as $id){
 			if($id && is_numeric(trim($id))){
@@ -843,57 +843,57 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	},
 
 	weFullscrenParams : {
-		outsideWE : "' . $wefullscreenVars['outsideWE'] . '",
-		xml : "' . $wefullscreenVars['xml'] . '",
-		removeFirstParagraph : "' . $wefullscreenVars['removeFirstParagraph'] . '",
-		baseHref : "' . urlencode($this->baseHref) . '",
-		charset : "' . $this->charset . '",
-		cssClasses : "' . urlencode($this->cssClasses) . '",
-		fontnames : "' . urlencode($this->fontnamesCSV) . '",
-		bgcolor : "' . $this->bgcol . '",
-		language : "' . $this->Language . '",
-		screenWidth : screen.availWidth-10,
-		screenHeight : screen.availHeight - 70,
-		className : "' . $this->className . '",
-		propString : "' . urlencode($this->propstring) . '",
-		contentCss : "' . urlencode($this->contentCss) . '",
-		origName : "' . urlencode($this->origName) . '",
-		tinyParams : "' . urlencode($this->tinyParams) . '",
-		contextmenu : "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
-		templates : "' . $this->templates . '",
-		formats : "' . $this->formats . '",
-		galleryTemplates : "' . $this->galleryTemplates . '"
+		outsideWE: "' . $wefullscreenVars['outsideWE'] . '",
+		xml: "' . $wefullscreenVars['xml'] . '",
+		removeFirstParagraph: "' . $wefullscreenVars['removeFirstParagraph'] . '",
+		baseHref: "' . urlencode($this->baseHref) . '",
+		charset: "' . $this->charset . '",
+		cssClasses: "' . urlencode($this->cssClasses) . '",
+		fontnames: "' . urlencode($this->fontnamesCSV) . '",
+		bgcolor: "' . $this->bgcol . '",
+		language: "' . $this->Language . '",
+		screenWidth: screen.availWidth-10,
+		screenHeight: screen.availHeight - 70,
+		className: "' . $this->className . '",
+		propString: "' . urlencode($this->propstring) . '",
+		contentCss: "' . urlencode($this->contentCss) . '",
+		origName: "' . urlencode($this->origName) . '",
+		tinyParams: "' . urlencode($this->tinyParams) . '",
+		contextmenu: "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
+		templates: "' . $this->templates . '",
+		formats: "' . $this->formats . '",
+		galleryTemplates: "' . $this->galleryTemplates . '"
 	},
-	weImageStartID : ' . $this->imageStartID . ',
-	weGalleryTemplates : "' . $this->galleryTemplates . '",
+	weImageStartID:' . intval($this->imageStartID) . ',
+	weGalleryTemplates:"' . $this->galleryTemplates . '",
 	weClassNames_urlEncoded : "' . urlencode($this->cssClasses) . '",
-	weIsFrontend : "' . ($this->isFrontendEdit ? 1 : 0) . '",
-	weWordCounter : 0,
-	weRemoveFirstParagraph : "' . ($this->removeFirstParagraph ? 1 : 0) . '",
+	weIsFrontend:"' . ($this->isFrontendEdit ? 1 : 0) . '",
+	weWordCounter:0,
+	weRemoveFirstParagraph:"' . ($this->removeFirstParagraph ? 1 : 0) . '",
 
-	language : "' . $lang . '",
-	mode : "exact",
-	elements : "' . $this->name . '",
-	theme : "advanced",
+	language: "' . $lang . '",
+	mode: "exact",
+	elements: "' . $this->name . '",
+	theme: "advanced",
 	//dialog_type : "modal",
 
-	accessibility_warnings : false,
-	relative_urls : false, //important!
-	convert_urls : false, //important!
-	//force_br_newlines : true,
-	force_p_newlines : 0, // value 0 instead of true (!) prevents adding additional lines with <p>&nbsp</p> when inlineedit="true"
-	//forced_root_block : "",
+	accessibility_warnings: false,
+	relative_urls: false, //important!
+	convert_urls: false, //important!
+	//force_br_newlines: true,
+	force_p_newlines: 0, // value 0 instead of true (!) prevents adding additional lines with <p>&nbsp</p> when inlineedit="true"
+	//forced_root_block: "",
 
-	entity_encoding : "named",
-	entities : "160,nbsp",
+	entity_encoding: "named",
+	entities: "160,nbsp",
 	element_format: "' . $this->xml . '",
-	body_class : "' . ($this->className ? $this->className . " " : "") . 'wetextarea tiny-wetextarea wetextarea-' . $this->origName . '",
+	body_class: "' . ($this->className ? $this->className . " " : "") . 'wetextarea tiny-wetextarea wetextarea-' . $this->origName . '",
 
 	//CallBacks
-	//file_browser_callback : "openWeFileBrowser",
-	//onchange_callback : "tinyMCEchanged",
+	//file_browser_callback: "openWeFileBrowser",
+	//onchange_callback: "tinyMCEchanged",
 
-	plugins : "' . $plugins . '",
+	plugins: "' . $plugins . '",
 	we_restrict_contextmenu: ' . $this->getContextmenuCommands() . ',
 
 	// Theme options
@@ -913,19 +913,19 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	plugin_preview_width : "500",
 	theme_advanced_disable : "",
 
-	extended_valid_elements : "wegallery[id|tmpl|class]",
-	custom_elements : "wegallery",
+	extended_valid_elements: "wegallery[id|tmpl|class]",
+	custom_elements: "wegallery",
 
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
-	editor_css : "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",
-	content_css : "' . CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . CSS_DIR . 'wysiwyg/tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
-	popup_css_add : "' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css' : '') . '",
+	editor_css: "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",
+	content_css: "' . CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php?' . time() . '=,' . $contentCss . CSS_DIR . 'wysiwyg/tinymce/contentCssLast.php?' . time() . '=&tinyMceBackgroundColor=' . $this->bgcol . '",
+	popup_css_add: "' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css' . (we_base_browserDetect::isMAC() ? ',' . CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css' : '') . '",
 	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options
-	skin : "o2k7",
-	skin_variant : "silver",
+	skin: "o2k7",
+	skin_variant: "silver",
 
 	' . ($this->tinyParams ? '//params from attribute tinyparams
 	' . $this->tinyParams . ',' : '') . '
