@@ -73,7 +73,6 @@ if($fields['charset'] != DEFAULT_CHARSET && $_charsets && is_array($_charsets)){
 	}
 }
 
-
 we_html_tools::headerCtCharset('text/html', $fields['charset']);
 
 if(!($fields['isInFrontend'] && $fields['empty'] === 'frontend')){
@@ -90,6 +89,20 @@ if(preg_match('%^.+_te?xt\[.+\]$%i', $fields['name'])){
 }
 
 echo we_html_tools::getHtmlTop(sprintf('', $fieldName), $fields['charset']);
+
+echo we_html_element::jsElement('
+window.addEventListener("resize", function(e){we_doResizeOnPopup()});
+
+we_c = 100;
+we_doResizeOnPopup = function(render){
+	var h = tinyMCE.DOM.get("' . $fields['name'] . '_toolbargroup").parentNode.offsetHeight;
+
+	if(render && --we_c && h < 24){
+		setTimeout(function(){top.we_doResizeOnPopup(true)}, 10);
+	}
+	tinyMCE.DOM.setStyle(tinyMCE.DOM.get("' . $fields['name'] . '_ifr"), "height", (window.innerHeight - h - 60)+"px");
+}
+	');
 
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	if(!isset($writeToFrontend)){
@@ -137,7 +150,7 @@ top.close();');
 		we_html_element::jsElement('top.focus();');
 		?>
 	</head>
-	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);">
+	<body class="weDialogBody" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" style="margin:0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;background-image:url(<?php echo IMAGE_DIR; ?>backgrounds/aquaBackground.gif);">
 		<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<input type="hidden" name="we_okpressed" value="1" />
 			<?php
@@ -147,15 +160,22 @@ top.close();');
 			}
 
 			$e = new we_wysiwyg_editor(
-				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['fontsizes']
+				$fields['name'], '100%', '100%', $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['fontsizes']
 			);
-
-
 			$cancelBut = we_html_button::create_button('cancel', "javascript:top.close()");
 			$okBut = we_html_button::create_button('ok', "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
-			echo we_wysiwyg_editor::getHeaderHTML() . $e->getHTML() .
-			'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);
+			echo we_html_element::htmlDiv(
+				array('style' => 'position:absolute;top:0;bottom:42px;left:0px;right:0px;overflow:hidden;margin:0px'),
+				we_wysiwyg_editor::getHeaderHTML() . $e->getHTML()
+			) .
+			we_html_element::htmlDiv(
+				array('style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'),
+				we_html_element::htmlDiv(
+					array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'),
+					we_html_button::position_yes_no_cancel($okBut, $cancelBut)
+				)
+			);
 			?>
 		</form>
 		<?php
