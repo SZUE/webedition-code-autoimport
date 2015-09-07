@@ -90,20 +90,6 @@ if(preg_match('%^.+_te?xt\[.+\]$%i', $fields['name'])){
 
 echo we_html_tools::getHtmlTop(sprintf('', $fieldName), $fields['charset']);
 
-echo we_html_element::jsElement('
-window.addEventListener("resize", function(e){we_doResizeOnPopup()});
-
-we_c = 100;
-we_doResizeOnPopup = function(render){
-	var h = tinyMCE.DOM.get("' . $fields['name'] . '_toolbargroup").parentNode.offsetHeight;
-
-	if(render && --we_c && h < 24){
-		setTimeout(function(){top.we_doResizeOnPopup(true)}, 10);
-	}
-	tinyMCE.DOM.setStyle(tinyMCE.DOM.get("' . $fields['name'] . '_ifr"), "height", (window.innerHeight - h - 60)+"px");
-}
-	');
-
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	if(!isset($writeToFrontend)){
 		if(preg_match('%^(.+_te?xt)\[.+\]$%i', $fields['name'])){
