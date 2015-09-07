@@ -991,11 +991,14 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			}
 		});
 
+		' . ($this->isInPopup ? ' //still no solution for relative scaling when inlineedit=true
 		ed.onPostRender.add(function(ed, cm) {
-			if(typeof top.we_doResizeOnPopup === "function"){
-				top.we_doResizeOnPopup(true);
+			window.addEventListener("resize", function(e){tinyMCE.weResizeEditor()});
+			if(typeof tinyMCE.weResizeEditor === "function"){
+				tinyMCE.weResizeEditor(true);
 			}
 		});
+		' : '') . '
 
 		ed.onInit.add(function(ed, o){
 			//TODO: clean up the mess in here!
@@ -1183,6 +1186,22 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	}
 }
 tinyMCE.addI18n(tinyMceTranslationObject);
+
+tinyMCE.weResizeLoops = 100;
+tinyMCE.weResizeEditor = function(render){
+	var h = tinyMCE.DOM.get("' . $this->name . '_toolbargroup").parentNode.offsetHeight;
+	if(render && --tinyMCE.weResizeLoops && h < 24){
+		setTimeout(function(){weResizeEditor (true)}, 10);
+	}
+
+	tinyMCE.DOM.setStyle(
+		tinyMCE.DOM.get("' . $this->name . '_ifr"),
+		"height",
+		//(tinyMCE.DOM.get("' . $this->name . '_tbl").offsetHeight - h - 30)+"px");
+		(window.innerHeight - h - 60)+"px"
+	);
+}
+
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') . getHtmlTag('textarea', array(
 				'wrap' => "off",
