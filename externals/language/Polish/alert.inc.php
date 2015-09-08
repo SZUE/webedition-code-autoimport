@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Przed dołączeniem szablonu do Workflow, należy go zapisać!\nCzy zapisać teraz szablon?',
 		'not_im_ws'=>'Szablon nie znajduje się w twoim obszarze roboczym!',
 	),
+	'tblVFile'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'tblVFiles'=>array(
 		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
 	),

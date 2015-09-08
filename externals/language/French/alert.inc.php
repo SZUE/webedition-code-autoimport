@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Avant que le modèle puisse être passé dans le Gestion de Flux, il doit être enregistré!\nEnregistrer le modèle maintenant?',
 		'not_im_ws'=>'Le modèle n`est pas dans votre éspace de travail!',
 	),
+	'tblVFile'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'tblVFiles'=>array(
 		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
 	),

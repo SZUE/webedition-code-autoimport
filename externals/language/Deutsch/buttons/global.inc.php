@@ -529,7 +529,7 @@ $l_buttons_global=array(
 	'refresh'=>array(
 		'alt'=>'Aktualisieren',
 		'value'=>'Aktualisieren',
-		'width'=>100,
+		'width'=>120,
 	),
 	'reindent'=>array(
 		'alt'=>'Code neu einrücken',

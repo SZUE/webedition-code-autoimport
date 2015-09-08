@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Bevor das Template in den Workflow gegeben werden kann, muß es gespeichert werden!\nSoll das Template jetzt gespeichert werden?',
 		'not_im_ws'=>'Die Vorlage befindet sich nicht in Ihrem Arbeitsbereich!',
 	),
+	'tblVFile'=>array(
+		'in_wf_warning'=>'Bevor die Sammlung in den Workflow gegeben werden kann, muß es gespeichert werden!\nSoll die Sammlung jetzt gespeichert werden?',
+	),
 	'tblVFiles'=>array(
 		'in_wf_warning'=>'Bevor die Sammlung in den Workflow gegeben werden kann, muß es gespeichert werden!\nSoll die Sammlung jetzt gespeichert werden?',
 	),

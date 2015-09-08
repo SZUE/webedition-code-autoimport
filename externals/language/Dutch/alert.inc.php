@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Het sjabloon moet eerst bewaard worden voordat het in de workflow geplaatst kan worden!\nWilt u het sjabloon nu bewaren?',
 		'not_im_ws'=>'Het sjabloon bevindt zich niet in uw werkgebied!',
 	),
+	'tblVFile'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'tblVFiles'=>array(
 		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
 	),

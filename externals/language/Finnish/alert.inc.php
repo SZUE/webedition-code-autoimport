@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Sivupohja täytyy tallentaa ennekuin se voidaan asettaa työnkulkuun!\nHaluatko tallentaa sivupohjan?',
 		'not_im_ws'=>'Sivupohja ei sijaitse työtilassasi!',
 	),
+	'tblVFile'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'tblVFiles'=>array(
 		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
 	),

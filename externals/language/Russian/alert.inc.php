@@ -152,6 +152,9 @@ $l_alert=array(
 		'in_wf_warning'=>'Перед передачей данного шаблона в поток его нужно сохранить!\nСохранить шаблон?',
 		'not_im_ws'=>'Данный шаблон не из Вашего рабочего пространства!',
 	),
+	'tblVFile'=>array(
+		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
+	),
 	'tblVFiles'=>array(
 		'in_wf_warning'=>'The collection has to be saved before it can be put in the workflow!\nDo you want to save the collection right now?',
 	),
