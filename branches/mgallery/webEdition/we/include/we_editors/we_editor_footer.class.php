@@ -189,6 +189,10 @@ abstract class we_editor_footer{
 			case OBJECT_TABLE:
 				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_OBJECT'));
 				break;
+			case VFILE_TABLE:
+				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_COLLECTION_FOLDER')) ||
+					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_COLLECTION'));
+				break;
 			default:
 				$hasPerm = false;
 		}

@@ -614,7 +614,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				we_html_element::htmlDiv(array(
 					'class' => 'divSpace',
 					'id' => 'grid_space_' . $index,
-					'title' => g_l('weClass', '[collection][dblClickToInsert]')
+					'title' => g_l('weClass', '[collection][dblClick_to_insert]')
 					), '') . we_html_element::htmlHidden('collectionItem_we_id', $item['id']) . we_html_element::htmlHidden('collectionItem_we_id_' . $index, $item['id'])
 		);
 		//TODO: use indexed input field only
