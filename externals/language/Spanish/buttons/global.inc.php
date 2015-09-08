@@ -399,7 +399,7 @@ $l_buttons_global=array(
 	'make_new_document'=>array(
 		'alt'=>'Crear nuevo documento',
 		'value'=>'New document',
-		'width'=>125,
+		'width'=>140,
 	),
 	'newName'=>array(
 		'alt'=>'Insertar un nuevo nombre',
@@ -509,6 +509,7 @@ $l_buttons_global=array(
 	'quit_addToCollection'=>array(
 		'alt'=>'Quit insertion mode',
 		'value'=>'Quit insertion mode',
+		'width'=>200,
 	),
 	'quit_delete'=>array(
 		'alt'=>'Finalizar modo borrar',
@@ -608,7 +609,7 @@ $l_buttons_global=array(
 	'saveversion'=>array(
 		'alt'=>'Saves the template and creates a new version',
 		'value'=>'Save Version',
-		'width'=>120,
+		'width'=>140,
 	),
 	'search'=>array(
 		'alt'=>'Buscar',
@@ -638,7 +639,7 @@ $l_buttons_global=array(
 	'startEditor'=>array(
 		'alt'=>'Iniciar Editor usando el Plugin del Editor',
 		'value'=>'Start editor',
-		'width'=>100,
+		'width'=>140,
 	),
 	'thumbnails'=>array(
 		'alt'=>'Mostrar imágenes en miniatura',

@@ -399,7 +399,7 @@ $l_buttons_global=array(
 	'make_new_document'=>array(
 		'alt'=>'Luo uusi dokumentti',
 		'value'=>'Uusi dokumentti',
-		'width'=>125,
+		'width'=>140,
 	),
 	'newName'=>array(
 		'alt'=>'Luo uusi nimi',
@@ -509,6 +509,7 @@ $l_buttons_global=array(
 	'quit_addToCollection'=>array(
 		'alt'=>'Quit insertion mode',
 		'value'=>'Quit insertion mode',
+		'width'=>200,
 	),
 	'quit_delete'=>array(
 		'alt'=>'Lopeta poistotila',
@@ -608,7 +609,7 @@ $l_buttons_global=array(
 	'saveversion'=>array(
 		'alt'=>'Saves the template and creates a new version',
 		'value'=>'Save Version',
-		'width'=>120,
+		'width'=>140,
 	),
 	'search'=>array(
 		'alt'=>'Hae',

@@ -509,6 +509,7 @@ $l_buttons_global=array(
 	'quit_addToCollection'=>array(
 		'alt'=>'Quit insertion mode',
 		'value'=>'Quit insertion mode',
+		'width'=>200,
 	),
 	'quit_delete'=>array(
 		'alt'=>'Quittter le mode `suppression`',

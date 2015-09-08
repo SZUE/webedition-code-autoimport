@@ -399,7 +399,7 @@ $l_buttons_global=array(
 	'make_new_document'=>array(
 		'alt'=>'Neues Dokument erstellen',
 		'value'=>'Neues Dokument',
-		'width'=>125,
+		'width'=>140,
 	),
 	'newName'=>array(
 		'alt'=>'Einen neuen Namen eingeben',
@@ -509,6 +509,7 @@ $l_buttons_global=array(
 	'quit_addToCollection'=>array(
 		'alt'=>'Einfüge-Modus beenden',
 		'value'=>'Einfüge-Modus beenden',
+		'width'=>200,
 	),
 	'quit_delete'=>array(
 		'alt'=>'Lösch-Modus beenden',
@@ -608,7 +609,7 @@ $l_buttons_global=array(
 	'saveversion'=>array(
 		'alt'=>'Speichert und legt eine neue Version an',
 		'value'=>'Speichere Version',
-		'width'=>120,
+		'width'=>140,
 	),
 	'search'=>array(
 		'alt'=>'Suchen',
@@ -638,7 +639,7 @@ $l_buttons_global=array(
 	'startEditor'=>array(
 		'alt'=>'Editor-Plugin starten',
 		'value'=>'Editor starten',
-		'width'=>100,
+		'width'=>140,
 	),
 	'thumbnails'=>array(
 		'alt'=>'Miniaturansichten anzeigen',
