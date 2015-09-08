@@ -740,6 +740,7 @@ class we_wysiwyg_editor{
 		$plugins = ($this->createContextmenu ? 'wecontextmenu,' : '') .
 			($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
 			($this->wePlugins ? $this->wePlugins . ',' : '') .
+			(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
 			'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
 		$height = we_base_util::convertUnits($this->height);
@@ -915,7 +916,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 	extended_valid_elements: "wegallery[id|tmpl|class]",
 	custom_elements: "wegallery",
-
+	visual : false,
 	//paste_text_use_dialog: true,
 	//fullscreen_new_window: true,
 	editor_css: "' . CSS_DIR . 'wysiwyg/tinymce/editorCss.css",
