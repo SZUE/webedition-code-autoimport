@@ -559,15 +559,15 @@ td.mceToolbar{
 		if(preg_match_all('/src="(' . we_base_link::TYPE_INT_PREFIX . '|\?id=)(\\d+)(&time=\\d*)?/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]));
-				$editValue = str_ireplace('src="' . $reg[1] . $reg[2] . (isset($reg[3]) ? $reg[3] : ''), 'src="' . ($path ? ($path . '?id=' . $reg[2] . '&time=' . $t) : (ICON_DIR . 'no_image.gif')), $editValue);
+				$editValue = str_ireplace('src="' . $reg[1] . $reg[2] . (isset($reg[3]) ? $reg[3] : ''), 'src="' . ($path ? ($path . '?id=' . $reg[2] . '&time=' . $t) : (ICON_DIR . 'no_image.gif?id=' . 0)), $editValue);
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				list($imgID, $thumbID) = explode(',', $reg[1]);
 				$thumbObj = new we_thumbnail();
-				$thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
-				$editValue = str_ireplace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[1] . '&time=' . $t, $editValue);
+				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
+				$editValue = str_ireplace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . ($imageExists ? ($thumbObj->getOutputPath() . "?thumb=" . $reg[1] . '&time=' . $t) : (ICON_DIR . 'no_image.gif?id=' . 0)), $editValue);
 				unset($thumbObj);
 			}
 		}
@@ -1190,7 +1190,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		});
 
 		// onSave (= we_save and we_publish) we reset the (tiny-internal) flag weEditorFrameIsHot to false
-		ed.onSaveContent.add(function(ed) {
+		ed.onSaveContent.add(function(ed, o) {
 			weEditorFrameIsHot = false;
 			// if is popup and we click on ok
 			if(editorLevel == "popup" && ed.isDirty()){
@@ -1198,6 +1198,25 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					weEditorFrame.setEditorIsHot(true);
 				} catch(e) {}
 			}
+
+			// and we transform image sources to we format before writing it to session!
+			var div = document.createElement("div"),
+				imgs;
+
+			div.innerHTML = o.content;
+			if(imgs = div.getElementsByTagName("IMG")){
+				var matches;
+				for(var i = 0; i < imgs.length; i++){
+					if(matches = imgs[i].src.match(/[^?]+\?id=(\d+)/)){
+						imgs[i].src = "' . we_base_link::TYPE_INT_PREFIX . '" + matches[1];
+					}
+					if(matches = imgs[i].src.match(/[^?]+\?thumb=(\d+,\d+)/)){
+						imgs[i].src = "' . we_base_link::TYPE_THUMB_PREFIX . '" + matches[1];
+					};
+				}
+				o.content = div.innerHTML;
+				div = imgs = matches = null;
+			}			
 		});
 		') . '
 	}
