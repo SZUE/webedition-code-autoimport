@@ -78,7 +78,7 @@ div.dropzone_right{
 
 div.we_file_drag{
 	width: 300px;
-	margin: 1em 0.2em 0px 0.1em;
+	margin: 0 0.2em 0px 0.1em;
 	height: 116px;
 	border: dotted 2px gray;
 	border-radius: 0px;

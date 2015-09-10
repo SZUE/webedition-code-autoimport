@@ -194,7 +194,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				</div>' .
 			we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'dropzone_right'), '') . '
 			</div>' .
-			($this->isDragAndDrop ? '<div style="position:absolute;top:11px;background:none;" class="we_file_drag" id="div_we_File_fileDrag"></div>' : '')) : '';
+			($this->isDragAndDrop ? '<div style="background:none;" class="we_file_drag" id="div_we_File_fileDrag"></div>' : '')) : '';
 
 		return (self::isFallback() || self::isLegacyMode() ? '' : $this->getJs() . $this->getCss()) . '
 			<table id="table_form_upload" class="default" width="500">
