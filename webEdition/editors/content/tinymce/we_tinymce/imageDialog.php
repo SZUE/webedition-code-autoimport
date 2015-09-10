@@ -45,9 +45,6 @@ function weDoImgCmd($args){
 	if($args["thumbnail"] && $args["fileID"]){
 		$thumbObj = new we_thumbnail();
 		$thumbObj->initByImageIDAndThumbID($args["fileID"], $args["thumbnail"]);
-		if(!file_exists($thumbObj->getOutputPath(true))){
-			$thumbObj->createThumb();
-		}
 	}
 
 	if(we_base_request::_(we_base_request::STRING, 'we_dialog_args', 'tinyMce', 'editor') != "tinyMce"){

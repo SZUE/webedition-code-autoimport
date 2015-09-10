@@ -577,12 +577,12 @@ class we_webEditionDocument extends we_textContentDocument{
 			foreach($allElements['textarea'] as $name){
 				//Bugfix for buggy tiny implementation where internal links looked like href="/img.gif?id=123" #7210
 				$value = $this->getElement($name);
-				if(preg_match_all('|src="/[^">]+\\?id=(\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
+				if(preg_match_all('@src="/[^">]+\\?id=(\\d+)([&][^">]+["]|["])@i', $value, $regs, PREG_SET_ORDER)){
 					foreach($regs as $reg){
 						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $value);
 					}
 				}
-				if(preg_match_all('|src="/[^">]+\\?thumb=(\\d+,\\d+)"|i', $value, $regs, PREG_SET_ORDER)){
+				if(preg_match_all('@src="/[^">]+\?thumb=(\d+,\d+)([&][^">]+["]|["])@i', $value, $regs, PREG_SET_ORDER)){
 					foreach($regs as $reg){
 						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $value);
 					}
