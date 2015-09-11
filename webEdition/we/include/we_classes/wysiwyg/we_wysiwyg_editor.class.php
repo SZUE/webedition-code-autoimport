@@ -556,18 +556,24 @@ td.mceToolbar{
 		$t = ($t ? : time());
 		$editValue = $value;
 		$regs = array();
-		if(preg_match_all('/src="(' . we_base_link::TYPE_INT_PREFIX . '|\?id=)(\\d+)(&time=\\d*)?/i', $editValue, $regs, PREG_SET_ORDER)){
+
+		// IMPORTANT: we process tiny content both from db and session: the latter use paths?id=xy instead of document:xy
+		if(preg_match_all('/<img [^>]*(src="(' . we_base_link::TYPE_INT_PREFIX . '|[^" >]*\?id=)(\d+)(&time=\d*|&amp;time=\d*)?")[^>]*>/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]));
-				$editValue = str_ireplace('src="' . $reg[1] . $reg[2] . (isset($reg[3]) ? $reg[3] : ''), 'src="' . ($path ? ($path . '?id=' . $reg[2] . '&time=' . $t) : (ICON_DIR . 'no_image.gif?id=' . 0)), $editValue);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[3]));
+				$editValue = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $editValue) :
+					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $editValue);
 			}
 		}
-		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '([^" ]+)/i', $editValue, $regs, PREG_SET_ORDER)){
+
+		$regs = array();
+		if(preg_match_all('/<img [^>]*(src="(' . we_base_link::TYPE_THUMB_PREFIX . '|[^" >]*\?thumb=)(\d+,\d+)(&time=\d*|&amp;time=\\d*)?")[^>]*>/i', $editValue, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				list($imgID, $thumbID) = explode(',', $reg[1]);
+				list($imgID, $thumbID) = explode(',', $reg[3]);
 				$thumbObj = new we_thumbnail();
 				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
-				$editValue = str_ireplace('src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1], 'src="' . ($imageExists ? ($thumbObj->getOutputPath() . "?thumb=" . $reg[1] . '&time=' . $t) : (ICON_DIR . 'no_image.gif?id=' . 0)), $editValue);
+				$editValue = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $editValue) :
+					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $editValue);
 				unset($thumbObj);
 			}
 		}
@@ -1060,6 +1066,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			' : '') . '
 		});
 
+		/*
 		ed.onBeforeSetContent.add(function(ed, o) { // FIXME: do this in parseInternalImageSrc() using regex
 			if(o.content.search("/webEdition/images/icons/no_image.gif") !== -1){
 				var div = document.createElement("div");
@@ -1076,6 +1083,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				div = imgs = null;
 			}
 		});
+		*/
 
 		ed.onPostProcess.add(function(ed, o) {
 			var c = document.createElement("div");
@@ -1199,6 +1207,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				} catch(e) {}
 			}
 
+			/*
 			// and we transform image sources to we format before writing it to session!
 			var div = document.createElement("div"),
 				imgs;
@@ -1216,7 +1225,8 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				}
 				o.content = div.innerHTML;
 				div = imgs = matches = null;
-			}			
+			}
+			*/
 		});
 		') . '
 	}
