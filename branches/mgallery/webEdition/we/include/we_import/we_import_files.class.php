@@ -440,10 +440,11 @@ function uploadFinished() {
 				}
 				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'][] = $error;
 			} else if($resp['success']){
-				if(!isset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'])){
-					$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] = array();
-				}
+				$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']) ? $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] : array();
+				$_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']) ? $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] : array();
+
 				$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'][] = $resp['success'];
+				$_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'][] = $resp['importedFile'];
 			}
 		}
 
@@ -466,7 +467,9 @@ function uploadFinished() {
 						$response['completed'] = we_message_reporting::getShowMessageCall(g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
 					$response['success'] = $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'];
+					$response['imported_files'] = $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'];
 					unset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']);
+					unset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']);
 				}
 			} else {
 				$response['fileNameTemp'] = $this->fileNameTemp;
@@ -825,7 +828,8 @@ function next() {
 			}
 			return array(
 				'error' => array(),
-				'success' => $we_doc->ID
+				'success' => $we_doc->ID,
+				'importedFile' => array('id' => $we_doc->ID, 'path' => $we_doc->Path)
 			);
 		} else {
 			return array(

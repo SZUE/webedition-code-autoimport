@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_image extends we_dialog_base{
+	private $weFileupload = null;
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array("type",
 		"extSrc",
@@ -50,6 +51,7 @@ class we_dialog_image extends we_dialog_base{
 		parent::__construct();
 		$this->dialogTitle = g_l('wysiwyg', '[edit_image]');
 		$this->noInternals = $noInternals;
+		$this->initFileUploader();
 	}
 
 	function initBySrc($src, $width = 0, $height = 0, $hspace = 0, $vspace = 0, $border = 0, $alt = '', $align = '', $name = '', $class = '', $title = '', $longdesc = ''){
@@ -228,12 +230,23 @@ class we_dialog_image extends we_dialog_base{
 		$this->args['ratio'] = 1;
 	}
 
+	private function initFileUploader(){
+		$this->weFileupload = new we_fileupload_include('we_File',  '', '', '', '', true, 'top.doOnImportSuccess(scope.imported_files[0]);', '', 400, true, true, 200);
+		$this->weFileupload->setIsInternalBtnUpload();
+		$this->weFileupload->setAction(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import_files&cmd=buttons&jsRequirementsOk=1&step=1&weFormNum=1&weFormCount=1');
+	}
+	
+
 	/* use parent
 	  function getFormHTML(){}
 	 */
 
 	function getFormJsOnSubmit(){
 		return ' onsubmit="return fsubmit(this)"';
+	}
+
+	function getHeaderHTML($printJS_Style = false){
+		return parent::getHeaderHTML($printJS_Style, $this->weFileupload->getJs() . $this->weFileupload->getCss());
 	}
 
 	function getDialogContentHTML(){
@@ -295,8 +308,7 @@ class we_dialog_image extends we_dialog_base{
 			}else{
 				$imageDoc->we_new();
 			}
-			$fileUpload = new we_fileupload_include('we_File');
-			$fileUploadDialog = $fileUpload->getHTML();
+			$fileUploadDialog = $this->weFileupload->getHTML();
 
 			/**
 			* thumbnail select list
@@ -390,7 +402,7 @@ class we_dialog_image extends we_dialog_base{
 		if($intSrc){
 			$srctable .= '<tr><td><div id="imageInt" '. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : ' style="display:none;"') .'>' . $intSrc . '</div></td></tr>';
 		}
-		if($fileUpload){
+		if(!we_fileupload_base::isFallback()){
 			$srctable .= '
 				<tr>
 					<td>
@@ -518,7 +530,17 @@ class we_dialog_image extends we_dialog_base{
 
 		') .
 		we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
-		weSuggest::getYuiFiles();
+		weSuggest::getYuiFiles() . we_html_element::jsElement('
+			function doOnImportSuccess(doc){
+				alert("import done: " + doc.path + " (id: " + doc.id + ")");
+				document.getElementById("imageInt").style.display="block";
+				//document.getElementById("imageExt").style.display="none;
+				document.getElementById("imageUpload").style.display="none";
+				document.getElementById("yuiAcResultImage").value = doc.id;
+				document.getElementById("yuiAcInputImage").value = doc.path;
+				imageChanged();
+			}
+		');
 	}
 
 }

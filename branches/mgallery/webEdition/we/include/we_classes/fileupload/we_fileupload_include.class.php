@@ -32,6 +32,8 @@ class we_fileupload_include extends we_fileupload_base{
 		'missingDocRoot' => false,
 		'useFilenameFromUpload' => false
 	);
+	
+	private $isInternalBtnUpload = false;
 
 	const GET_PATH_ONLY = 1;
 	const GET_NAME_ONLY = 2;
@@ -106,6 +108,14 @@ class we_fileupload_include extends we_fileupload_base{
 		$this->isDragAndDrop = $isDragAndDrop;
 	}
 
+	public function setIsInternalBtnUpload($flag = true){
+		$this->isInternalBtnUpload = $flag;
+	}
+
+	public function setIsExtraBtnReset($flag = true){
+		//$this->IsSingleBtnReset = $flag;
+	}
+
 	//TODO: split and move selector to base
 	public function getHTML(){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
@@ -113,6 +123,7 @@ class we_fileupload_include extends we_fileupload_base{
 				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, ($this->dimensions['width'] - 110), we_html_button::HEIGHT, '', '', false, false, '_btn'));
 
 		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
+		$btnUpload = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('upload', 'javascript:' . $this->getJsBtnCmd(), true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 
 		$fileInput = we_html_element::htmlInput(array(
 				'class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
@@ -133,7 +144,7 @@ class we_fileupload_include extends we_fileupload_base{
 			' . $butBrowse . '
 		</div>
 		<div style="vertical-align: top; display: inline-block; height: 22px">
-			' . $butReset . '
+			' . ($this->isInternalBtnUpload ? $btnUpload : $butReset) . '
 		</div>
 		<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', '[dragdrop_text]') . '</div>
 		<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . '"></div>

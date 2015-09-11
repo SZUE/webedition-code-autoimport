@@ -711,9 +711,9 @@ var weFileUpload = (function () {
 
 			this.sendChunk = function (part, fileName, fileCt, partSize, partNum, totalParts, fileNameTemp, fileSize) {
 				var xhr = new XMLHttpRequest(),
-								fd = new FormData(),
-								fsize = fileSize || 1,
-								that = this;
+					fd = new FormData(),
+					fsize = fileSize || 1,
+					that = this;
 
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState === 4) {
@@ -1207,7 +1207,7 @@ var weFileUpload = (function () {
 				this.form.form.elements.weFileName.value = cur.file.name;
 				this.form.form.elements.weIsUploadComplete.value = 1;
 				setTimeout(function () {
-					that.callback();
+					that.callback(resp);
 				}, 100);
 			};
 
