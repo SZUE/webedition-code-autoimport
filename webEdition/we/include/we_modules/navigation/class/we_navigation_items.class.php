@@ -222,7 +222,6 @@ class we_navigation_items{
 		$items = $_navigation->getDynamicPreview($this->Storage, true);
 
 		foreach($items as $_item){
-
 			if($_item['id']){
 				if(isset($_item['name']) && $_item['name']){
 					$_item['text'] = $_item['name'];
