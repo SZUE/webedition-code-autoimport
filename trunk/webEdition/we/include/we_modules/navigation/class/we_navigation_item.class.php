@@ -106,6 +106,9 @@ class we_navigation_item{
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$this->linkValid = (f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->docid) . ' AND Published>0'));
 				break;
+			case CATEGORY_TABLE:
+				$this->linkValid = (!$this->docid) || ( f('SELECT 1 FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->docid)));
+				break;
 			default:
 				//this is external url, or anything we can't test for
 				$this->linkValid = true;

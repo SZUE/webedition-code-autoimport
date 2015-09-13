@@ -568,6 +568,7 @@ class we_navigation_navigation extends weModelBase{
 			if($item['ParentID'] == $this->ID){
 				$_nav = new we_navigation_navigation();
 				$_nav->initByRawData($item);
+				list($table, $linkid) = $_nav->getTableIdForItem();
 				if($_nav->IsFolder || $_nav->Selection != self::SELECTION_DYNAMIC){
 					$_items[] = array(
 						'id' => $_nav->ID,
@@ -575,8 +576,8 @@ class we_navigation_navigation extends weModelBase{
 						'name' => $_nav->Text,
 						'text' => (isset($_nav->Display) && !empty($_nav->Display)) ? $_nav->Display : $_nav->Text,
 						'display' => (isset($_nav->Display) && !empty($_nav->Display)) ? $_nav->Display : "",
-						'docid' => $_nav->LinkID,
-						'table' => $_nav->IsFolder ? ($_nav->FolderSelection == self::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE) : (($_nav->SelectionType == self::STPYE_CLASS || $_nav->SelectionType == self::STPYE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE)),
+						'docid' => $linkid,
+						'table' => $table,
 						'href' => $_nav->getHref($storage['ids']),
 						'type' => $_nav->IsFolder ? we_base_ContentTypes::FOLDER : 'item',
 						'parentid' => $_nav->ParentID,
@@ -715,6 +716,7 @@ class we_navigation_navigation extends weModelBase{
 				if($this->LinkSelection === self::LSELECTION_EXTERN){
 					return array('', 0);
 				}
+
 				return array(FILE_TABLE, $this->UrlID);
 			case self::STPYE_CLASS:
 			case self::STPYE_OBJLINK:
