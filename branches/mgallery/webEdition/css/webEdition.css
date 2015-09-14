@@ -45,6 +45,7 @@ img.multiIcon{
 }
 .multiiconleft{
 	display: inline-block;
+	vertical-align: top;
 }
 .multiiconleft span.fileicon{
 	margin-left:20px;
