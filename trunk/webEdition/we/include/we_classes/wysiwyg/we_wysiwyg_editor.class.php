@@ -554,31 +554,41 @@ td.mceToolbar{
 	function parseInternalImageSrc($value){
 		static $t = 0;
 		$t = ($t ? : time());
-		$editValue = $value;
 		$regs = array();
 
 		// IMPORTANT: we process tiny content both from db and session: the latter use paths?id=xy instead of document:xy
-		if(preg_match_all('/<img [^>]*(src="(' . we_base_link::TYPE_INT_PREFIX . '|[^" >]*\?id=)(\d+)(&time=\d*|&amp;time=\d*)?")[^>]*>/i', $editValue, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/<img [^>]*(src="(' . we_base_link::TYPE_INT_PREFIX . '|[^" >]*\?id=)(\d+)[^"]*")[^>]*>/i', $value, $regs, PREG_SET_ORDER)){
+			$ids = array();
 			foreach($regs as $reg){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[3]));
-				$editValue = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $editValue) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $editValue);
+				$ids[] = intval($reg[3]);
+			}
+			$ids = array_filter($ids);
+			if($ids){
+				$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $ids) . ')');
+				$lookup = $GLOBALS['DB_WE']->getAllFirst(false);
+			} else {
+				$lookup = array();
+			}
+
+			foreach($regs as $reg){
+				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
+				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
+					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 			}
 		}
 
-		$regs = array();
-		if(preg_match_all('/<img [^>]*(src="(' . we_base_link::TYPE_THUMB_PREFIX . '|[^" >]*\?thumb=)(\d+,\d+)(&time=\d*|&amp;time=\\d*)?")[^>]*>/i', $editValue, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/<img [^>]*(src="(' . we_base_link::TYPE_THUMB_PREFIX . '|[^" >]*\?thumb=)(\d+,\d+)[^"]*")[^>]*>/i', $value, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				list($imgID, $thumbID) = explode(',', $reg[3]);
 				$thumbObj = new we_thumbnail();
 				$imageExists = $thumbObj->initByImageIDAndThumbID($imgID, $thumbID);
-				$editValue = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $editValue) :
-					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $editValue);
+				$value = $imageExists ? str_ireplace($reg[1], 'src="' . $thumbObj->getOutputPath() . "?thumb=" . $reg[3] . '&time=' . $t . '"', $value) :
+					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
 				unset($thumbObj);
 			}
 		}
 
-		return $editValue;
+		return $value;
 	}
 
 	function getToolbarRows(){

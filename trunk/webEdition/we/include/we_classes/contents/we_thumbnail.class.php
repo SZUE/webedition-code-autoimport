@@ -304,8 +304,7 @@ class we_thumbnail{
 		if(!$this->getImageData($getBinary)){
 			return false;
 		}
-		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db);
-		$_foo = $_foo ? : array(
+		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db) ? : array(
 			'ID' => 0,
 			'Width' => 0,
 			'Height' => 0,
@@ -321,7 +320,7 @@ class we_thumbnail{
 
 		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $_foo['Date']);
 
-		/* FIXME: the following code was missing here (and in several places this function is called)! 
+		/* FIXME: the following code was missing here (and in several places this function is called)!
 		 * Is this the right place to execute it? or should we move it to init() or some other place?
 		 */
 		if(($createIfNotExist && !$this->exists()) && ($this->createThumb() === we_thumbnail::BUILDERROR)){
