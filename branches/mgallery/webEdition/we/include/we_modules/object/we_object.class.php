@@ -206,6 +206,9 @@ class we_object extends we_document{
 						'class' => $this->getElement($cur . 'class'),
 						'max' => $this->getElement($cur . 'max'),
 						'cssClasses' => $this->getElement($cur . 'cssClasses'),
+						'fontnames' => $this->getElement($cur . 'fontnames'),
+						'fontsizes' => $this->getElement($cur . 'fontsizes'),
+						'formats' => $this->getElement($cur . 'formats'),
 						'tinyparams' => $this->getElement($cur . 'tinyparams'),
 						'templates' => $this->getElement($cur . 'templates'),
 						'xml' => $this->getElement($cur . 'xml'),
@@ -372,6 +375,7 @@ class we_object extends we_document{
 						if($this->issetElement($info['name'] . 'defaultkey' . $f)){
 							if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
 								$arrt[$nam]['meta'] = array();
+
 							}
 
 							$_val = $this->getElement($info['name'] . 'defaultvalue' . $f);
@@ -407,6 +411,9 @@ class we_object extends we_document{
 						'class' => $this->getElement($cur . 'class'),
 						'max' => $this->getElement($cur . 'max'),
 						'cssClasses' => $this->getElement($cur . 'cssClasses'),
+						'fontnames' => $this->getElement($cur . 'fontnames'),
+						'fontsizes' => $this->getElement($cur . 'fontsizes'),
+						'formats' => $this->getElement($cur . 'formats'),
 						'tinyparams' => $this->getElement($cur . 'tinyparams'),
 						'templates' => $this->getElement($cur . 'templates'),
 						'xml' => $this->getElement($cur . 'xml'),
@@ -1428,6 +1435,9 @@ class we_object extends we_document{
 			"commands" => $commands ? : COMMANDS_DEFAULT,
 			"contextmenu" => $this->getElement($name . "contextmenu"),
 			"classes" => $this->getElement($name . "cssClasses"),
+			"fontnames" => $this->getElement($name . "fontnames"),
+			"fontsizes" => $this->getElement($name . "fontsizes"),
+			"formats" => $this->getElement($name . "formats"),
 			"width" => 386, //$this->getElement($name."width","dat",618),
 			"height" => 52, //$this->getElement($name."height","dat",200),
 			"rows" => 3,
@@ -2021,6 +2031,9 @@ class we_object extends we_document{
 			'bgcolor' => '',
 			'class' => '',
 			'cssClasses' => '',
+			'fontnames' => '',
+			'fontsizes' => '',
+			'formats' => '',
 			'tinyparams' => '',
 			'templates' => '',
 			'xml' => '',
@@ -2046,6 +2059,7 @@ class we_object extends we_document{
 			$type = $name = '';
 			@list($type, $name) = explode('_', $info["name"], 2);
 			if($name && $type != 'OF' && $type != 'variant'){
+
 
 				$this->setElement($info["name"], $name, "dat");
 				$this->setElement("wholename" . $this->getSortIndexByValue($f), $info["name"], 'dat');

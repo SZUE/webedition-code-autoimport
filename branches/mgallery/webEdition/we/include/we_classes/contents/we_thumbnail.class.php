@@ -311,7 +311,7 @@ class we_thumbnail{
 	 * @param boolean $getBinary if set, also the binary image data will be loaded
 	 * @public
 	 */
-	public function initByImageIDAndThumbID($imageID, $thumbID, $getBinary = false){
+	public function initByImageIDAndThumbID($imageID, $thumbID, $createIfNotExist = true, $getBinary = false){
 		$this->imageID = $imageID;
 
 		if(!$this->getImageData($getBinary)){
@@ -330,6 +330,16 @@ class we_thumbnail{
 		);
 
 		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $_foo['Date']);
+
+		/* FIXME: the following code was missing here (and in several places this function is called)!
+		 * Is this the right place to execute it? or should we move it to init() or some other place?
+		 */
+		if(($createIfNotExist && !$this->exists()) && ($this->createThumb() === we_thumbnail::BUILDERROR)){
+			t_e('Error creating thumbnail for file', $this->Filename . $this->Extension);
+			return false;
+		}
+		// END
+
 		return true;
 	}
 

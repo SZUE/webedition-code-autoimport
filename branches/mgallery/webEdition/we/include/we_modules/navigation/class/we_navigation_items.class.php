@@ -182,12 +182,10 @@ class we_navigation_items{
 
 		if(isset(self::$cache[$parentid])){
 			$this->items = self::$cache[$parentid];
+		} elseif(($this->items = we_navigation_cache::getCacheFromFile($parentid)) === false){
+			$this->items = array();
+			return false;
 		} else {
-			$this->items = we_navigation_cache::getCacheFromFile($parentid);
-			if($this->items === false){
-				$this->items = array();
-				return false;
-			}
 			self::$cache[$parentid] = $this->items;
 		}
 
@@ -256,18 +254,11 @@ class we_navigation_items{
 		$this->Storage = array();
 	}
 
-	function checkCategories(array $idsRule, $idDoc){
+	private function checkCategories(array $idsRule, array $idDoc){
 		if(!$idsRule){
 			return true;
 		}
-
-		foreach($idsRule as $rule){//FIXME: is this used this way, not to check for ===0????
-			if(strpos($idDoc, ",$rule,") !== false){
-				return true;
-			}
-		}
-
-		return false;
+		return !empty(array_intersect($idDoc, $idsRule));
 	}
 
 	function setCurrent($navigationID){
@@ -276,97 +267,85 @@ class we_navigation_items{
 		}
 	}
 
-	function checkCurrent(){
+	private function checkCurrent(){
 		if(!isset($GLOBALS['WE_MAIN_DOC'])){
 			return false;
 		}
 
-		$_candidate = 0;
+		$candidate = 0;
 		$_score = 3;
 		$_len = 0;
 		$_curr_len = 0;
-		$_ponder = 0;
+		$ponder = 0;
 
 		$_isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
+		$cats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
 
 		foreach($this->currentRules as $_rule){
-			$_ponder = 4;
+			$ponder = 4;
 			$parentPath = '';
 			switch($_rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
 				case we_navigation_navigation::STPYE_DOCTYPE:
 					if($_isObject){
-						$_ponder = 999; // remove from selection
-					} else {
-						if($_rule->DoctypeID){
-							if(isset($GLOBALS['WE_MAIN_DOC']->DocType) && ($_rule->DoctypeID == $GLOBALS['WE_MAIN_DOC']->DocType)){
-								$_ponder--;
-							} else {
-								$_ponder = 999;
-							}
+						continue; // remove from selection
+					}
+					if($_rule->DoctypeID){
+						if(empty($GLOBALS['WE_MAIN_DOC']->DocType) || ($_rule->DoctypeID != $GLOBALS['WE_MAIN_DOC']->DocType)){
+							continue;
 						}
+						$ponder--;
+					}
 
-						$parentPath = $this->id2path($_rule->FolderID);
-						if($parentPath && $parentPath != '/'){
-							$parentPath .= '/';
-						}
+					$parentPath = $this->id2path($_rule->FolderID);
+					if($parentPath && $parentPath != '/'){
+						$parentPath .= '/';
 					}
 					break;
 
 				case we_navigation_navigation::STPYE_CLASS:
 					if(!$_isObject){
-						$_ponder = 999; // remove from selection
-					} else {
-						if($_rule->ClassID){
-							if($GLOBALS["WE_MAIN_DOC"]->TableID == $_rule->ClassID){
-								$_ponder--;
-							} else {
-								$_ponder = 999; // remove from selection
-							}
-						}
-
-						$parentPath = rtrim($this->id2path($_rule->WorkspaceID), '/') . '/';
+						continue; // remove from selection
 					}
+					if($_rule->ClassID){
+						if($GLOBALS["WE_MAIN_DOC"]->TableID != $_rule->ClassID){
+							continue; // remove from selection
+						}
+						$ponder--;
+					}
+
+					$parentPath = rtrim($this->id2path($_rule->WorkspaceID), '/') . '/';
 					break;
 			}
 
-			if($_ponder !== 999){
-				if(!empty($parentPath) && strpos($GLOBALS['WE_MAIN_DOC']->Path, $parentPath) === 0){
-					$_ponder--;
-					$_curr_len = strlen($parentPath);
-					if($_curr_len > $_len){
-						$_len = $_curr_len;
-						$_ponder--;
-					}
+			if(!empty($parentPath) && strpos($GLOBALS['WE_MAIN_DOC']->Path, $parentPath) === 0){
+				$ponder--;
+				$_curr_len = strlen($parentPath);
+				if($_curr_len > $_len){
+					$_len = $_curr_len;
+					$ponder--;
 				}
+			}
 
-				if(($cats = makeArrayFromCSV($_rule->Categories))){
-					if($this->checkCategories($cats, $GLOBALS['WE_MAIN_DOC']->Category)){
-						$_ponder--;
-					} else {
-						$_ponder = 999; // remove from selection
-					}
+			if(($cats = makeArrayFromCSV($_rule->Categories))){
+				if($this->checkCategories($cats, $cats)){
+					$ponder--;
+				} else {
+					continue; // remove from selection
 				}
+			}
 
-				/* go on seraching for more matches or one with higher prio (= higher ID) anyway!
-				  if($_ponder === 0){
-				  $this->setCurrent($_rule->NavigationID);
-				  return true;
-				  }
-				 * */
-
-				if($_ponder <= $_score){
-					if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
-						$this->setCurrent($_rule->NavigationID);
-					} else {
-						$_score = $_ponder;
-						$_candidate = $_rule->NavigationID;
-					}
+			if($ponder <= $_score){
+				if(NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH){
+					$this->setCurrent($_rule->NavigationID);
+				} else {
+					$_score = $ponder;
+					$candidate = $_rule->NavigationID;
 				}
 			}
 		}
 
-		if($_candidate != 0){
-			$this->setCurrent($_candidate);
+		if($candidate){
+			$this->setCurrent($candidate);
 			return true;
 		}
 
@@ -439,7 +418,7 @@ class we_navigation_items{
 		return $this->getDefaultTemplate($item);
 	}
 
-	function setDefaultTemplates(){
+	private function setDefaultTemplates(){
 // the default templates should look like this
 //			$folderTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a><ul><we:navigationEntries /></ul></li>';
 //			$itemTemplate = '<li><a href="<we:navigationField name="href">"><we:navigationField name="text"></a></li>';
@@ -450,7 +429,7 @@ class we_navigation_items{
 		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
 	}
 
-	function getDefaultTemplate($item){
+	private function getDefaultTemplate($item){
 		return $this->templates[$item->type][self::TEMPLATE_DEFAULT_LEVEL][self::TEMPLATE_DEFAULT_CURRENT][self::TEMPLATE_DEFAULT_POSITION];
 	}
 

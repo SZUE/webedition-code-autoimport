@@ -126,14 +126,12 @@ class we_navigation_item{
 		$item->position = count($this->items);
 	}
 
-	function setCurrent(we_navigation_items &$weNavigationItems, $self = true){
-		if($self){
-			$this->current = true;
-		}
+	function setCurrent(we_navigation_items &$weNavigationItems){
+		$this->current = true;
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
 			$weNavigationItems->items['id' . $this->parentid]->setCurrent($weNavigationItems);
-			$this->setContainsCurrent();
+			$this->containsCurrent = true;
 		}
 	}
 
@@ -143,20 +141,11 @@ class we_navigation_item{
 		}
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
-			//$weNavigationItems->items['id' . $this->parentid]->unsetCurrent($weNavigationItems);
 			foreach($this->items as $_i){
 				$_i->unsetCurrent($weNavigationItems);
 			}
-			$this->unsetContainsCurrent();
+			$this->containsCurrent = false;
 		}
-	}
-
-	function setContainsCurrent(){
-		$this->containsCurrent = true;
-	}
-
-	function unsetContainsCurrent(){
-		$this->containsCurrent = false;
 	}
 
 	function isCurrent(we_navigation_items $weNavigationItems){

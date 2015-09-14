@@ -53,6 +53,7 @@ $fields = array(
 	'templates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 24),
 	'formats' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 25),
 	'imagestartid' => 0,
+	'fontsizes' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 26),
 	'galleryTemplates' => we_base_request::_(we_base_request::INTLIST, 'we_cmd', '', 27),
 );
 
@@ -73,7 +74,6 @@ if($fields['charset'] != DEFAULT_CHARSET && $_charsets && is_array($_charsets)){
 		exit();
 	}
 }
-
 
 we_html_tools::headerCtCharset('text/html', $fields['charset']);
 
@@ -151,15 +151,22 @@ top.close();');
 			}
 
 			$e = new we_wysiwyg_editor(
-				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['imagestartid'], $fields['galleryTemplates']
+				$fields['name'], $fields['width'], $fields['height'], $fields['empty'], $fields['propstring'], $fields['bgcolor'], '', $fields['classname'], $fields['fontnames'], $fields['outsidewe'], $fields['xml'], $fields['removeFirstParagraph'], true, $fields['baseHref'], $fields['charset'], $fields['cssClasses'], $fields['Language'], '', true, $fields['isInFrontend'], 'top', true, $fields['documentCss'], $fields['origName'], $fields['tinyParams'], $fields['contextmenu'], true, $fields['templates'], $fields['formats'], $fields['imagestartid'], $fields['galleryTemplates'], $fields['fontsizes']
 			);
-
-
 			$cancelBut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 			$okBut = we_html_button::create_button(we_html_button::OK, "javascript:weWysiwygSetHiddenText();document.we_form.submit();");
 
-			echo we_wysiwyg_editor::getHeaderHTML() . $e->getHTML() .
-			'<div style="height:8px"></div>' . we_html_button::position_yes_no_cancel($okBut, $cancelBut);
+			echo we_html_element::htmlDiv(
+				array('style' => 'position:absolute;top:0;bottom:42px;left:0px;right:0px;overflow:hidden;margin:0px'),
+				we_wysiwyg_editor::getHeaderHTML() . $e->getHTML()
+			) .
+			we_html_element::htmlDiv(
+				array('style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'),
+				we_html_element::htmlDiv(
+					array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'),
+					we_html_button::position_yes_no_cancel($okBut, $cancelBut)
+				)
+			);
 			?>
 		</form>
 		<?php

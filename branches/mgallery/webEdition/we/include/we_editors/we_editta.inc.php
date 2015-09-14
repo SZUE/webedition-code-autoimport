@@ -47,6 +47,9 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->setElement($name . 'bgcolor', we_base_request::_(we_base_request::STRING, 'bgcolor', ''));
 	$we_doc->setElement($name . 'class', we_base_request::_(we_base_request::STRING, 'class', ''));
 	$we_doc->setElement($name . 'cssClasses', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'cssClasses', array())));
+	$we_doc->setElement($name . 'fontnames', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'fontnames', array())));
+	$we_doc->setElement($name . 'fontsizes', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'fontsizes', array())));
+	$we_doc->setElement($name . 'formats', implode(',',we_base_request::_(we_base_request::STRING_LIST, 'formats', array())));
 	$we_doc->setElement($name . 'tinyparams', we_base_request::_(we_base_request::RAW_CHECKED, 'tinyparams', ''));
 	$we_doc->setElement($name . 'templates', we_base_request::_(we_base_request::INTLIST, 'templates', ''));
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
@@ -166,21 +169,6 @@ $parts[] = array(
 	"space" => 0,
 );
 
-
-// CLASSES
-$table = '<table class="default">
-	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
-	<tr>
-		<td class="defaultfont" style="vertical-align:top;text-align:right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), array('style' => "width:415px;height:50px")) . '</td>
-	</tr>
-</table>';
-
-$parts[] = array(
-	'headline' => '',
-	'html' => $table,
-	'space' => 0,
-);
-
 // COMMANDS && CONTEXTMENU
 $select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('commands'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
 $select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
@@ -188,10 +176,7 @@ $select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::get
 $table = '<table class="default">
 	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
-		<td class="defaultfont" style="padding-bottom:10px;vertical-align:top;text-align:right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
-	</tr>
-	<tr>
-		<td class="defaultfont" style="vertical-align:top;text-align:right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
+		<td class="defaultfont" style="vertical-align:top;text-align:right">classes&nbsp;</td><td colspan="5">' . we_class::htmlTextArea("cssClasses", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), array('style' => "width:415px;height:50px")) . '</td>
 	</tr>
 </table>';
 
@@ -201,11 +186,59 @@ $parts[] = array(
 	"space" => 0,
 );
 
+// FONTNAMES
+$select = we_html_tools::htmlSelect('tmp_fontnames', we_wysiwyg_editor::getAttributeOptions('fontnames'), 1, "", false, array('onchange' => "var elem=document.we_form.fontnames; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
+$table = '<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultfont" valign="top" align="right">fontnames&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontnames', 24, $we_doc->getElement($name . 'fontnames'), 1024, '', 'text', 396, 0) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(90, 1) . '</td>
+		<td>' . we_html_tools::getPixel(395, 1) . '</td>
+	</tr>
+</table>';
+
+$table = '<table class="default">
+	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
+
+	<tr>
+		<td class="defaultfont" style="padding-bottom:10px;vertical-align:top;text-align:right">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:415px;height:50px")) . '</td>
+	</tr>
+	<tr>
+		<td class="defaultfont" style="vertical-align:top;text-align:right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), array('id' => "contextmenu", 'style' => "width:415px;height:50px")) . '</td>
+	</tr>
+
+</table>';
+
+$parts[] = array(
+	"headline" => "",
+	"html" => $table,
+	"space" => 0,
+);
+
+// CLASSES
+$table = '<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="defaultfont" valign="top" align="right">classes&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('cssClasses', 24, oldHtmlspecialchars($we_doc->getElement($name . "cssClasses")), 1024, '', 'text', 396, 0) . '</td>
+	</tr>
+	<tr>
+		<td>' . we_html_tools::getPixel(90, 1) . '</td>
+		<td>' . we_html_tools::getPixel(395, 1) . '</td>
+	</tr>
+</table>';
+
+$parts[] = array(
+	'headline' => '',
+	'html' => $table,
+	'space' => 0,
+);
+
 // TINYPARAMS
 $table = '<table class="default">
 	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
 		<td class="defaultfont" style="vertical-align:top;text-align:right">tinyparams&nbsp;</td><td colspan="5">' . we_html_tools::htmlTextInput('tinyparams', 24, $we_doc->getElement($name . "tinyparams"), 1024, '', 'text', 350, 0) . '</td>
+
 	</tr>
 </table>';
 
@@ -220,7 +253,7 @@ $table = '<table class="default">
 	<colgroup><col style="width:90px;"/><col style="width:395px;"/></colgroup>
 	<tr>
 		<td class="defaultfont" style="vertical-align:top;text-align:right">templates&nbsp;</td>
-		<td colspan="5">' . we_html_tools::htmlTextInput('templates', 24, $we_doc->getElement($name . "templates"), 1024, '', 'text', 350, 0) . '</td>
+		<td colspan="5">' . we_html_tools::htmlTextInput('templates', 24, $we_doc->getElement($name . "templates"), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
 </table>';
 

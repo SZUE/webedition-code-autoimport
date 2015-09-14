@@ -58,7 +58,7 @@ class we_dialog_image extends we_dialog_base{
 		if($src){
 			$this->args['src'] = $src;
 			$tokkens = explode('?', $src);
-			$id = '';
+			$id = false;
 			$thumb = 0;
 
 			if(count($tokkens) == 2){
@@ -74,11 +74,11 @@ class we_dialog_image extends we_dialog_base{
 				}
 			}
 
-			if($id){
+			if($id !== false){
 				$this->args["type"] = we_base_link::TYPE_INT;
 				$this->args["extSrc"] = "";
 				$this->args["fileID"] = $id;
-				$this->args["fileSrc"] = $_fileScr;
+				$this->args["fileSrc"] = $id == 0 ? '' : $_fileScr;
 				$this->args["thumbnail"] = $thumb;
 			} else {
 				$this->args["type"] = we_base_link::TYPE_EXT;

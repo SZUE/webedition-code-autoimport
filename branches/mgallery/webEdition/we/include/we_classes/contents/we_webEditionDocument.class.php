@@ -535,9 +535,30 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $fieldTypes;
 	}
 
-	function correctFields(){
+	private function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
+		$regs = array();
+		$allElements = $this->getUsedElements();
+		if(isset($allElements['textarea'])){
+			foreach($allElements['textarea'] as $name){
+				//Bugfix for buggy tiny implementation where internal links looked like href="/img.gif?id=123" #7210
+				$value = $this->getElement($name);
+				if(preg_match_all('@src="/[^">]+\\?id=(\\d+)([&][^">]+["]|["])@i', $value, $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_INT_PREFIX . $reg[1] . '"', $value);
+					}
+				}
+				if(preg_match_all('@src="/[^">]+\?thumb=(\d+,\d+)([&][^">]+["]|["])@i', $value, $regs, PREG_SET_ORDER)){
+					foreach($regs as $reg){
+						$value = str_replace($reg[0], 'src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '"', $value);
+					}
+				}
+
+				$this->setElement($name, $value);
+			}
+		}
+		//FIXME: it is better to use $this->getUsedElements - only we:input type="date" is not handled... => this will call the TP which is not desired since this method is called on save in frontend
 		$types = $this->getFieldTypes($this->getTemplateCode());
 
 		foreach($this->elements as $k => $v){

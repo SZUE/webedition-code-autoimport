@@ -52,31 +52,6 @@ class we_navigation_cache{
 		}
 	}
 
-	/* unused
-	  static function cacheNavigationTree($id){
-	  we_navigation_cache::cacheNavigationBranch($id);
-	  //weNavigationCache::cacheRootNavigation();
-	  }
-
-	  static function cacheNavigationBranch($id){
-	  $_id = $id;
-	  $_c = 0;
-	  $db = new DB_WE();
-	  while($_id != 0){
-	  self::cacheNavigation($_id);
-	  $_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', $db);
-	  $_c++;
-	  if($_c > 99999){
-	  break;
-	  }
-	  }
-	  }
-
-	  static function cacheNavigation($id){
-	  $_naviItemes = new we_navigation_items();
-	  $_naviItemes->initById($id);
-	  self::saveCacheNavigation($id, $_naviItemes);
-	  } */
 
 	static function delCacheNavigationEntry($id){
 		we_base_file::delete(self::getNavigationFilename($id));

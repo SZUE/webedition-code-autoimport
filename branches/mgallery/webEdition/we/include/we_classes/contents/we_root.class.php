@@ -969,8 +969,8 @@ abstract class we_root extends we_class{
 				break;
 		}
 
-		$regs = array();
 		if($_REQUEST){
+			$regs = array();
 			$dates = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
@@ -1009,8 +1009,9 @@ abstract class we_root extends we_class{
 					$this->OwnersReadOnly = we_serialize($v, 'json');
 				}
 			}
+			$year = date('Y');
 			foreach($dates as $k => $v){
-				$this->setElement($k, mktime($dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']), 'date');
+				$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month'] ? 1 : $dates[$k]['month']), empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? $year : $dates[$k]['year']), 'date');
 			}
 		}
 		$this->Text = $this->getText();
