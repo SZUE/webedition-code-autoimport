@@ -231,11 +231,13 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	private function initFileUploader(){
-		$this->weFileupload = new we_fileupload_include('we_File',  '', '', '', '', true, 'top.doOnImportSuccess(scope.imported_files[0]);', '', 400, true, true, 200);
-		$this->weFileupload->setIsInternalBtnUpload();
+		$this->weFileupload = new we_fileupload_include('we_File',  '', '', 'we_form', '', true, 'top.doOnImportSuccess(scope.imported_files[0]);', '', 480, true, true, 200);
+		$this->weFileupload->setIsInternalBtnUpload(true);
+		$this->weFileupload->setDimensions(array('dragWidth' => 374, 'dragHeight' => 50));
 		$this->weFileupload->setAction(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import_files&cmd=buttons&jsRequirementsOk=1&step=1&weFormNum=1&weFormCount=1');
+		$this->weFileupload->setMoreFieldsToAppend(array('imgsSearchable', 'importMetadata', 'sameName', 'importToID'));
+		$this->weFileupload->setTypeCondition('accepted', implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)));
 	}
-	
 
 	/* use parent
 	  function getFormHTML(){}
@@ -302,13 +304,6 @@ class we_dialog_image extends we_dialog_base{
 			* input for image upload
 			*/
 			$radioButtonUpload = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "we_dialog_args[type]", g_l('buttons_global','[upload][value]'), true, "defaultfont", "if(this.form.elements['we_dialog_args[type]'][1].checked){top.document.getElementById('imageInt').style.display='none';top.document.getElementById('imageExt').style.display='none';top.document.getElementById('imageUpload').style.display='block';}imageChanged();");
-			$imageDoc = new we_imageDocument();
-			if(isset($this->args['type']) && $this->args["type"] == we_base_link::TYPE_INT && isset($this->args['fileID']) && $this->args['fileID']){
-				$imageDoc->initByID($this->args['fileID']);
-			}else{
-				$imageDoc->we_new();
-			}
-			$fileUploadDialog = $this->weFileupload->getHTML();
 
 			/**
 			* thumbnail select list
@@ -329,7 +324,7 @@ class we_dialog_image extends we_dialog_base{
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[longdescid]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[longdescsrc]'].value");
 
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$but2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[longdescid]'].value='';document.we_form.elements['we_dialog_args[longdescsrc]'].value='';");
 
 			$yuiSuggest->setAcId("Longdesc");
@@ -390,7 +385,7 @@ class we_dialog_image extends we_dialog_base{
 				<option value="absbottom"' . (($this->args["align"] === "absbottom") ? "selected" : "") . '>Abs Bottom</option>
 			</select>';
 		$align = we_html_tools::htmlFormElementTable($foo, g_l('wysiwyg', '[alignment]'),'left', 'defaultfont', '', '', '', '', '', '', 0);
-		
+
 		$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect('width: 140px;'), g_l('wysiwyg', '[css_style]'),'left', 'defaultfont', '', '', '', '', '', '', 0);
 
 		$srctable = '<table class="default" style="margin-bottom:4px;">';
@@ -402,14 +397,40 @@ class we_dialog_image extends we_dialog_base{
 		if($intSrc){
 			$srctable .= '<tr><td><div id="imageInt" '. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : ' style="display:none;"') .'>' . $intSrc . '</div></td></tr>';
 		}
+
 		if(!we_fileupload_base::isFallback()){
+			$yuiSuggest = &weSuggest::getInstance();
+			$cmd1 = "document.we_form.importToID.value";
+			$wecmdenc2 = we_base_request::encCmd("document.we_form.importToDir.value");
+			$wecmdenc3 = we_base_request::encCmd();
+			$startID = IMAGESTARTID_DEFAULT ? : 0;
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "',''," . $startID . ",'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$yuiSuggest->setAcId("importToID");
+			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$yuiSuggest->setInput("importToDir", $startID ? id_to_path($startID, FILE_TABLE): '/');
+			$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
+			$yuiSuggest->setMaxResults(10);
+			$yuiSuggest->setMayBeEmpty(true);
+			$yuiSuggest->setResult("importToID", $startID);
+			$yuiSuggest->setSelector(weSuggest::DirSelector);
+			$yuiSuggest->setWidth(320);
+			$yuiSuggest->setSelectButton($but);
+
 			$srctable .= '
 				<tr>
 					<td>
 						<div id="imageUpload" '. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : ' style="display:none;"') .'>' . 
-							$fileUploadDialog . '<br/>' .
-							$imageDoc->formIsSearchable() .
-							$imageDoc->formPath() .
+							$this->weFileupload->getHTML() . '<br/> ' .
+							$yuiSuggest->getHTML() .
+							we_html_forms::checkboxWithHidden(true, 'imgsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '') .
+							we_html_forms::checkboxWithHidden(true, 'importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '') . '<br />' .
+							we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
+							we_html_element::htmlDiv(array('style' => 'margin-top:10px'), 
+								we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;') .
+								we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;') .
+								we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;')
+							) .
+							we_html_tools::hidden("sameName", 0) .
 						'</div>
 					</td>
 				</tr>';
@@ -533,6 +554,7 @@ class we_dialog_image extends we_dialog_base{
 		weSuggest::getYuiFiles() . we_html_element::jsElement('
 			function doOnImportSuccess(doc){
 				alert("import done: " + doc.path + " (id: " + doc.id + ")");
+				we_FileUpload.reset();
 				document.getElementById("imageInt").style.display="block";
 				//document.getElementById("imageExt").style.display="none;
 				document.getElementById("imageUpload").style.display="none";

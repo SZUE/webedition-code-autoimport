@@ -36,6 +36,7 @@ abstract class we_fileupload_base{
 	protected $maxUploadSizeBytes = 0;
 	protected $dimensions = array(
 		'width' => 400,
+		'dragWidth' => 300,
 		'dragHeight' => 30,
 		'alertBoxWidth' => 0,
 		'marginTop' => 0,
@@ -73,6 +74,8 @@ abstract class we_fileupload_base{
 	protected $isGdOk = true;
 	protected $fileTable = '';
 	protected $binDocProperties = array();
+	protected $isInternalBtnUpload = false; // used in we_fileupload_inc only
+	public $moreFieldsToAppend = array();
 	public static $isFallback = false;
 
 	const CHUNK_SIZE = 128;
@@ -97,6 +100,7 @@ abstract class we_fileupload_base{
 	public function setDimensions($args = array()){
 		$this->dimensions = array(
 			'width' => isset($args['width']) ? $args['width'] : $this->dimensions['width'],
+			'dragWidth' => isset($args['dragWidth']) ? $args['dragWidth'] : $this->dimensions['dragWidth'],
 			'dragHeight' => isset($args['dragHeight']) ? $args['dragHeight'] : $this->dimensions['dragHeight'],
 			'alertBoxWidth' => isset($args['alertBoxWidth']) ? $args['alertBoxWidth'] : $this->dimensions['alertBoxWidth'],
 			'marginTop' => isset($args['marginTop']) ? $args['marginTop'] : $this->dimensions['marginTop'],
@@ -175,6 +179,7 @@ abstract class we_fileupload_base{
 			div.we_file_drag{
 				padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
 				height: ' . $this->dimensions['dragHeight'] . 'px;
+				width: ' . $this->dimensions['dragWidth'] . 'px;
 			}'));
 	}
 
@@ -211,7 +216,9 @@ we_FileUpload.init({
 	htmlFileRow : \'' . $this->_getHtmlFileRow() . '\',
 	fileTable : "' . $this->fileTable . '",
 	binDocProperties : ' . json_encode($this->binDocProperties) . ',
-	disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . '
+	disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . ',
+	moreFieldsToAppend : ' . json_encode($this->moreFieldsToAppend) . ',
+	isInternalBtnUpload : ' . ($this->isInternalBtnUpload ? 'true' : 'false') . '
 });
 ') . ($this->externalProgress['create'] ? $progressbar->getJS('', true) : ''));
 	}

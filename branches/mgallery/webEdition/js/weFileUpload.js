@@ -101,6 +101,7 @@ var weFileUpload = (function () {
 					s.form.name = conf.form.name || s.form.name;
 					s.form.action = conf.form.action || s.form.action;
 				}
+				s.moreFieldsToAppend = conf.moreFieldsToAppend || [];
 				u.gl = conf.gl || u.gl;
 				v.isDragAndDrop = typeof conf.isDragAndDrop !== 'undefined' ? conf.isDragAndDrop : v.isDragAndDrop;
 				v.footerName = conf.footerName || v.footerName;
@@ -528,6 +529,7 @@ var weFileUpload = (function () {
 				quality: 0.8,
 				degrees: 0
 			};
+			this.moreFieldsToAppend = [];
 			this.EDIT_IMAGES_CLIENTSIDE = false; 
 
 			this.resetParams = function () {
@@ -1171,6 +1173,7 @@ var weFileUpload = (function () {
 		this.init = function (conf) {
 			_.init_abstract(conf);
 			_.view.uploadBtnName = conf.uploadBtnName || _.view.uploadBtnName;//disableUploadBtnOnInit
+			_.view.isInternalBtnUpload = conf.isInternalBtnUpload || _.view.isInternalBtnUpload;
 			_.view.disableUploadBtnOnInit = conf.disableUploadBtnOnInit || false;
 		};
 
@@ -1184,6 +1187,8 @@ var weFileUpload = (function () {
 			_.view.elems.progressText = document.getElementById('span_' + _.fieldName + '_progress_text');
 			_.view.elems.progressMoreText = document.getElementById('span_' + _.fieldName + '_progress_more_text');
 			_.view.elems.fileName = document.getElementById('div_' + _.fieldName + '_fileName');
+			_.view.elems.btnResetUpload = document.getElementById('div_' + _.fieldName + '_btnResetUpload');
+			_.view.elems.btnCancel = document.getElementById('div_' + _.fieldName + '_btnCancel');
 
 			_.view.repaintGUI({what: 'initGui'});
 
@@ -1197,6 +1202,16 @@ var weFileUpload = (function () {
 
 		function Sender() {
 			this.totalWeight = 0;
+
+			this.appendMoreData = function (fd) {
+				for(var i = 0; i < this.moreFieldsToAppend.length; i++){
+					if(document.we_form.elements[this.moreFieldsToAppend[i]]){
+						fd.append(this.moreFieldsToAppend[i], document.we_form.elements[this.moreFieldsToAppend[i]].value);
+					}
+				}
+
+				return fd;
+			};
 
 			this.postProcess = function (resp) {
 				var that = _.sender,
@@ -1255,6 +1270,7 @@ var weFileUpload = (function () {
 
 		function View() {
 			this.uploadBtnName = '';
+			this.isInternalBtnUpload = false;
 			this.disableUploadBtnOnInit = false;
 
 			this.addFile = function (f) {
@@ -1273,6 +1289,12 @@ var weFileUpload = (function () {
 				}
 				_.controller.setWeButtonState('reset_btn', true);
 				_.controller.setWeButtonState(_.view.uploadBtnName, f.uploadConditionsOk ? true : false, true);
+			};
+
+			this.setDisplay = function (elem, val) { // move to abstract (from binDoc too)
+				if (this.elems[elem]) {
+					this.elems[elem].style.display = val;
+				}
 			};
 
 			this.repaintGUI = function (arg) {
@@ -1319,7 +1341,11 @@ var weFileUpload = (function () {
 						}
 						_.controller.setWeButtonState('reset_btn', false);
 						_.controller.setWeButtonState('browse_harddisk_btn', false);
-						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+						if(this.isInternalBtnUpload){
+							_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+							this.setDisplay('btnResetUpload', 'none');
+							this.setDisplay('btnCancel', 'inline-block');
+						}
 						return;
 					case 'cancelUpload' :
 						//this.elems.footer['setProgressText' + this.extProgress.name]('progress_text', _.utils.gl.cancelled);
@@ -1345,8 +1371,13 @@ var weFileUpload = (function () {
 							this.elems.footer['setProgress' + this.extProgress.name](0);
 							_.view.elems.extProgressDiv.style.display = 'none';
 						}
+						_.controller.setWeButtonState('browse_harddisk_btn', true);
 						_.controller.setWeButtonState('reset_btn', false);
-						_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+						if(this.isInternalBtnUpload){
+							_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
+							this.setDisplay('btnResetUpload', 'inline-block');
+							this.setDisplay('btnCancel', 'none');
+						}
 						return;
 					default :
 						return;

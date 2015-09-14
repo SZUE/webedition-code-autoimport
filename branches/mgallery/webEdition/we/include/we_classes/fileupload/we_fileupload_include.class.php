@@ -32,8 +32,6 @@ class we_fileupload_include extends we_fileupload_base{
 		'missingDocRoot' => false,
 		'useFilenameFromUpload' => false
 	);
-	
-	private $isInternalBtnUpload = false;
 
 	const GET_PATH_ONLY = 1;
 	const GET_NAME_ONLY = 2;
@@ -95,6 +93,10 @@ class we_fileupload_include extends we_fileupload_base{
 		);
 	}
 
+	public function setMoreFieldsToAppend($fields = array()){
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, $fields);
+	}
+
 	public function setExternalProgress($isExternalProgress, $parentElemId = '', $create = false, $width = 100, $name = '', $additionalParams = array()){
 		$this->externalProgress['isExternalProgress'] = $isExternalProgress;
 		$this->externalProgress['parentElemId'] = $parentElemId;
@@ -124,6 +126,7 @@ class we_fileupload_include extends we_fileupload_base{
 
 		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
 		$btnUpload = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('upload', 'javascript:' . $this->getJsBtnCmd(), true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
+		$btnCancel = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('cancel', 'javascript:' . $this->getJsBtnCmd('cancel'), true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', false, false, '_btn'));
 
 		$fileInput = we_html_element::htmlInput(array(
 				'class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
@@ -143,10 +146,15 @@ class we_fileupload_include extends we_fileupload_base{
 			' . $fileInput . '
 			' . $butBrowse . '
 		</div>
-		<div style="vertical-align: top; display: inline-block; height: 22px">
+		<div id="div_' . $this->name . '_btnResetUpload" style="vertical-align: top; display: inline-block; height: 22px">
 			' . ($this->isInternalBtnUpload ? $btnUpload : $butReset) . '
-		</div>
-		<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', '[dragdrop_text]') . '</div>
+		</div>' .
+		($this->isInternalBtnUpload ? 
+			'<div id="div_' . $this->name . '_btnCancel" div style="vertical-align: top; display: none; height: 22px">
+			' . $btnCancel . '
+			</div>' : ''
+		) .
+		'<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', '[dragdrop_text]') . '</div>
 		<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . '"></div>
 		<div style="display:block;padding:0.6em 0 0 0.2em">
 			<div id="div_' . $this->name . '_message" style="height:26px;font-size:12px;">

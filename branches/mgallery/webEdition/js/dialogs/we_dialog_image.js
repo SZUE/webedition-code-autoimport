@@ -78,6 +78,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "we_selector_document":
 		case "we_selector_image":
+			case "we_selector_directory":
 			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
