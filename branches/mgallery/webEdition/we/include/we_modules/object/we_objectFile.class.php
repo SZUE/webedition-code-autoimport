@@ -2034,15 +2034,12 @@ class we_objectFile extends we_document{
 		if(!$type){
 			foreach(array_keys($this->DefArray) as $n){
 				$regs = explode('_', $n, 2);
-				if(isset($regs[0])){
-					$testtype = $regs[0];
-					unset($regs[0]);
-					if(isset($regs[1])){
-						$fieldname = $regs[1];
-						if($k == $fieldname){
-							$type = $testtype;
-							break;
-						}
+				$testtype = $regs[0];
+				if(isset($regs[1])){
+					$fieldname = $regs[1];
+					if($k == $fieldname){
+						$type = $testtype;
+						break;
 					}
 				}
 			}

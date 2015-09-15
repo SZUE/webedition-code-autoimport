@@ -61,7 +61,7 @@ class we_selector_file{
 	var $JSIDName;
 	protected $db;
 	var $sessionID = '';
-	protected $fields = 'ID,ParentID,Text,Path,IsFolder';
+	protected $fields = '';
 	var $values = array();
 	var $openerFormName = 'we_form';
 	protected $order = 'Text';
@@ -75,33 +75,32 @@ class we_selector_file{
 	protected $open_doc = 0;
 
 	public function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $multiple = true, $filter = '', $startID = 0){
-		if(defined('CUSTOMER_TABLE') && $table == CUSTOMER_TABLE){
-			$this->fields = str_replace('Text', 'CONCAT(Text," (",Forename," ", Surname,")") AS Text', $this->fields);
-		}
-
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
 			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
 		}
 
-		$this->order = ($order ? : $this->order);
-
 		$this->db = new DB_WE();
+		$this->order = ($order ? : $this->order);
 		$this->id = $id;
 		$this->lastDir = isset($_SESSION['weS']['we_fs_lastDir'][$table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$table]) : 0;
 //check table
 
 		$this->table = $table;
-		switch($this->table){//FIXME: are there more types with icon? category?
+		switch($this->table){
+			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
+				$this->fields = 'ID,ParentID,IsFolder,CONCAT(Text," (",Forename," ", Surname,")") AS Text,CONCAT("/",Username) AS Path';
+				break;
 			case FILE_TABLE:
 			case TEMPLATES_TABLE:
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				$this->fields.= ',ContentType';
+				$this->fields = 'ID,ParentID,Text,Path,IsFolder,ContentType';
 				break;
 			case CATEGORY_TABLE:
 				$this->fields = 'ID,ParentID,Text,Path,1 AS IsFolder';
 				break;
 			default:
+				$this->fields = 'ID,ParentID,Text,Path,IsFolder';
 		}
 
 		$this->JSIDName = $JSIDName;
@@ -222,21 +221,21 @@ var tout=null;
 var mk=null;
 
 var queryType={
-	"CMD":' . self::CMD . ',
-	"DEL":' . self::DEL . ',
-	"PROPERTIES":' . self::PROPERTIES . ',
-	"PREVIEW":' . self::PREVIEW . ',
-	"NEWFOLDER":' . self::NEWFOLDER . ',
-	"CREATEFOLDER":' . self::CREATEFOLDER . ',
-	"RENAMEFOLDER":' . self::RENAMEFOLDER . ',
-	"CREATE_CAT":' . self::CREATE_CAT . ',
-	"DO_RENAME_ENTRY":' . self::DO_RENAME_ENTRY . ',
-	"SETDIR":' . self::SETDIR . '
+	CMD:' . self::CMD . ',
+	DEL:' . self::DEL . ',
+	PROPERTIES:' . self::PROPERTIES . ',
+	PREVIEW:' . self::PREVIEW . ',
+	NEWFOLDER:' . self::NEWFOLDER . ',
+	CREATEFOLDER:' . self::CREATEFOLDER . ',
+	RENAMEFOLDER:' . self::RENAMEFOLDER . ',
+	CREATE_CAT:' . self::CREATE_CAT . ',
+	DO_RENAME_ENTRY:' . self::DO_RENAME_ENTRY . ',
+	SETDIR:' . self::SETDIR . '
 };
 
 var dirs={
-	"WEBEDITION_DIR":"' . WEBEDITION_DIR . '",
-	"ICON_DIR":"' . ICON_DIR . '"
+	WEBEDITION_DIR:"' . WEBEDITION_DIR . '",
+	ICON_DIR:"' . ICON_DIR . '"
 };
 
 var options={
