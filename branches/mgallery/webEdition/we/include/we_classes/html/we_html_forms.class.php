@@ -48,13 +48,10 @@ abstract class we_html_forms{
 
 		// Create HTML tags
 		return '
-			<table class="default" style="' . $style . '">
-				<tr>
-					<td style="' . ($description ? 'vertical-align:top;' : '') . 'padding-right:4px">
-						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' /></td>
-					<td class="' . $class . '" style="white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . '">' . $text . '</label>' . ($description ? "<br/><br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? : "") . '</td>
-				</tr>
-			</table>';
+			<span class="default" style="white-space:nowrap;' . $style . '">
+						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="vertical-align: top;outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' />
+					<div class="' . $class . '" style="display:inline-block;padding-left:4px;white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . '">' . $text . '</label>' . ($description ? "<br/><br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? : "") . '</div>
+				</span>';
 	}
 
 	/**

@@ -134,16 +134,14 @@ class we_customer_selector extends we_users_selector{
 			$this->printCMDWriteAndFillSelectorHTML() .
 			'top.' . (($this->dir) ? 'enable' : 'disable' ) . 'RootDirButs();';
 
-		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			if($this->id == 0){
 				$this->path = '/';
 			}
 			$js.= 'top.currentPath = "' . $this->path . '";
 top.currentID = "' . $this->id . '";';
-//top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-//top.parentID = "' . $this->values["ParentID"] . '";
 		$js.='top.currentDir = "' . $this->dir . '";';
 		echo we_html_element::jsElement($js);
 	}

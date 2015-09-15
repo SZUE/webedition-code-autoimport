@@ -1018,6 +1018,9 @@ table.withSpace tr td{
 table.withBigSpace tr td{
 	padding-bottom: 12px;
 }
+table.noSpace tr td{
+	padding-bottom: 0px;
+}
 
 table.customer table{
 	padding-bottom:10px;
