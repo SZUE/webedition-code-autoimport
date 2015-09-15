@@ -1481,8 +1481,7 @@ abstract class we_root extends we_class{
 	}
 
 	protected function isMoved(){
-		$this->wasMoved = ($this->OldPath && ($this->Path != $this->OldPath));
-		return $this->wasMoved;
+		return ($this->wasMoved = ($this->OldPath && ($this->Path != $this->OldPath)));
 	}
 
 	public function wasMoved(){

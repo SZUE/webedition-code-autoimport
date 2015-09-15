@@ -535,8 +535,7 @@ class we_wysiwyg_editor{
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 		$width = we_base_util::convertUnits($this->width);
 		$width = max((is_numeric($width) ? "'" . ($width - 0) . "'" : '(' . intval($width) . '/100*screen.availWidth) - 0'), self::MIN_WIDTH); // corrections disabled
-
-		//even if height in % doesn't make sense... => since 6.4.3 it makes sense in popup!	
+		//even if height in % doesn't make sense... => since 6.4.3 it makes sense in popup!
 		$height = we_base_util::convertUnits($this->height);
 		$height = max((is_numeric($height) ? "'" . ($height - 0) . "'" : '(' . intval($height) . '/100*screen.availHeight) - 0'), self::MIN_HEIGTH); // corrections disabled
 
