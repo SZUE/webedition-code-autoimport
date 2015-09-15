@@ -255,10 +255,11 @@ class we_object_exImport extends we_object{
 	function getFieldPrefix($name){
 		$this->SerializedArray = unserialize($this->DefaultValues);
 		$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
-		foreach($this->SerializedArray as $fieldname => $value){
+		foreach(array_keys($this->SerializedArray) as $fieldname){
 			$arr = explode('_', $fieldname);
 			if(!isset($arr[1]))
 				continue;
+			}
 			$fieldtype = $arr[0];
 			unset($arr[0]);
 			$fieldname = implode('_', $arr);
@@ -340,7 +341,6 @@ class we_object_exImport extends we_object{
 		$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $type . '_' . $name . ' ' . $type . '_' . $newname . ' ' . $this->switchtypes2($type));
 		unset($this->elements);
 		$this->i_savePersistentSlotsToDB();
-		;
 		$this->i_getContentData();
 	}
 
@@ -437,11 +437,9 @@ class we_object_exImport extends we_object{
 		}
 		$this->DefaultValues = serialize($this->SerializedArray);
 
-		if($this->isModifyFieldNoSave){
-			return true;
-		} else {
-			return $this->saveToDB(true);
-		}
+		return ($this->isModifyFieldNoSave ?
+				true :
+				$this->saveToDB(true));
 	}
 
 	function resetOrder(){
