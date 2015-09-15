@@ -25,9 +25,7 @@
 class we_customer_selector extends we_users_selector{
 
 	public function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $filter = '', $multiple = true){
-		$mid = (is_numeric($id) ? $id : 0);
-
-		parent::__construct($mid, CUSTOMER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
+		parent::__construct((is_numeric($id) ? $id : 0), CUSTOMER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, $rootDirID, $multiple, $filter);
 		$this->title = g_l('fileselector', '[userSelector][title]');
 		$this->canSelectDir = false;
 		$this->dir = (is_numeric($id) ? '' : $id);
@@ -113,7 +111,7 @@ class we_customer_selector extends we_users_selector{
 			if($level < $levelcount){
 				$fields = 'ID,1 AS IsFolder' . ($select ? ',' . implode(',', $select) : '') . ', COALESCE(NULLIF(@select' . $level . ',""),"' . g_l('modules_customer', '[no_value]') . '") AS Text,CONCAT("' . $pid . '",@select' . $level . ',"-|-") AS Path';
 			} else {
-				$fields = $settings->treeTextFormatSQL . ' AS Text,ID,ParentID,Path,0 AS IsFolder' . (empty($select) ? '' : ',' . implode(',', $select) );
+				$fields = $settings->treeTextFormatSQL . ' AS Text,ID,ParentID,Username AS Path,0 AS IsFolder' . (empty($select) ? '' : ',' . implode(',', $select) );
 			}
 
 			$this->db->query('SELECT ' . $fields . ' FROM ' . CUSTOMER_TABLE . ' WHERE ' .
@@ -123,7 +121,7 @@ class we_customer_selector extends we_users_selector{
 				' ORDER BY ' . implode(',', $orderarr) . we_customer_tree::getSortOrder($settings, ','));
 			return ($level < $levelcount);
 		} else {
-			$this->db->query('SELECT ID,ParentID,Path,IsFolder,' . $settings->treeTextFormatSQL . ' AS Text FROM ' . CUSTOMER_TABLE .
+			$this->db->query('SELECT ID,ParentID,Username AS Path,IsFolder,' . $settings->treeTextFormatSQL . ' AS Text FROM ' . CUSTOMER_TABLE .
 				' WHERE ' . (!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') . we_customer_tree::getSortOrder($settings));
 			//no need to search directory
 			return false;
