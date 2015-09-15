@@ -516,7 +516,7 @@ function checkFooter(){
 
 		$scheddy = array();
 
-		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Schedpro IS NULL OR Schedpro=""');
+		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Schedpro=""');
 		while($DB_WE->next_record()){
 			$s = array();
 
