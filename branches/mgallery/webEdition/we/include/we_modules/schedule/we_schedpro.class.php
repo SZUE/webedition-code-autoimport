@@ -194,7 +194,7 @@ function checkFooter(){
 			case self::CATEGORY:
 				$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('schedule_delete_all_schedcats'," . $this->nr . ")");
 				$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'schedule_add_schedcat\\',top.currentID," . $this->nr . ");')");
-				$cats = new we_chooser_multiDir(450, $this->CategoryIDs, "schedule_delete_schedcat", $delallbut. $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", $this->nr);
+				$cats = new we_chooser_multiDir(450, $this->CategoryIDs, "schedule_delete_schedcat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", $this->nr);
 				$cats->extraDelFn = 'setScrollTo();';
 				if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 					$cats->isEditable = false;
@@ -349,11 +349,17 @@ function checkFooter(){
 	}
 
 	function processSchedule($id, $schedFile, $now, we_database_base $DB_WE){
-		usort($schedFile['value'], array('we_schedpro', 'weCmpSchedLast'));
+		usort($schedFile['value'], function ($a, $b){
+			if($a['lasttime'] == $b['lasttime']){
+				return 0;
+			}
+			return ($a['lasttime'] < $b['lasttime']) ? -1 : 1;
+		}
+		);
 		$GLOBALS['we']['Scheduler_active'] = 1;
 		$doc_save = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : NULL;
 		$GLOBALS['we_doc'] = new $schedFile['ClassName']();
-		$GLOBALS['we_doc']->InitByID($id, $schedFile["table"], we_class::LOAD_SCHEDULE_DB);
+		$GLOBALS['we_doc']->InitByID($id, $schedFile['table'], we_class::LOAD_SCHEDULE_DB);
 		$callPublish = true;
 		$changeTmpDoc = false;
 		$_SESSION['weS']['versions']['fromScheduler'] = true;
@@ -416,9 +422,9 @@ function checkFooter(){
 			}
 
 			if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET expire=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND expire=' . $schedFile['Wann']);
 			} else {
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND expire=' . $schedFile['Wann']);
 			}
 		}
 
@@ -448,7 +454,7 @@ function checkFooter(){
 
 	static function trigger_schedule(){
 		//sth. to do???
-		if(!f('SELECT 1 FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1')){
+		if(!f('SELECT 1 FROM ' . SCHEDULE_TABLE . ' WHERE expire<=NOW() AND lockedUntil<NOW() AND Active=1')){
 			return;
 		}
 		$DB_WE = new DB_WE();
@@ -465,8 +471,8 @@ function checkFooter(){
 			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
 		}
 
-		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '" AND Wann=' . $rec['Wann']);
+		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE expire<=NOW() AND lockedUntil<NOW() AND Active=1 ORDER BY expire LIMIT 1', $DB_WE))){
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '" AND expire=' . $rec['expire']);
 			if($hasLock){
 				$DB_WE->unlock();
 			}
@@ -476,17 +482,17 @@ function checkFooter(){
 				$tmp = array(
 					'value' => array($s),
 					'ClassName' => $rec['ClassName'],
-					'Wann' => $rec['Wann'],
+					'Wann' => $rec['expire'],
 					'table' => $rec['ClassName'] === 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
 				);
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else {
 				//data invalid, reset & make sure this is not processed the next time
-				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND Wann=' . $rec['Wann'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '"');
+				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND expire=' . $rec['expire'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '"');
 			}
 		}
 		//cleanup old single shots
-		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE Active=0 AND Type=' . self::TYPE_ONCE . ' AND Wann<UNIX_TIMESTAMP(CURDATE()-INTERVAL 1 YEAR)');
+		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE Active=0 AND Type=' . self::TYPE_ONCE . ' AND expire<(CURDATE()-INTERVAL 1 YEAR)');
 		//make sure DB is unlocked!
 		$DB_WE->unlock();
 //reset state
@@ -717,7 +723,7 @@ function checkFooter(){
 
 			if(!$db->query('INSERT INTO ' . SCHEDULE_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'DID' => $object->ID,
-						'Wann' => $Wann,
+						'expire' => sql_function('FROM_UNIXTIME(' . $Wann . ')'),
 						'Was' => $s['task'],
 						'ClassName' => $object->ClassName,
 						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
@@ -729,13 +735,6 @@ function checkFooter(){
 			}
 		}
 		return $makeSched;
-	}
-
-	private static function weCmpSchedLast($a, $b){
-		if($a['lasttime'] == $b['lasttime']){
-			return 0;
-		}
-		return ($a['lasttime'] < $b['lasttime']) ? -1 : 1;
 	}
 
 }
