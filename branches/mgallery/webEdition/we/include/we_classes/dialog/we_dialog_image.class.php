@@ -49,7 +49,7 @@ class we_dialog_image extends we_dialog_base{
 
 	function __construct($noInternals = false){
 		parent::__construct();
-		$this->dialogTitle = g_l('wysiwyg', '[edit_image]');
+		$this->dialogTitle = g_l('wysiwyg', '[insert_image]');
 		$this->noInternals = $noInternals;
 		$this->initFileUploader();
 	}
