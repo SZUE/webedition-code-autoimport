@@ -9,5 +9,5 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   `Type` tinyint(3) unsigned NOT NULL default '0',
   Active tinyint(1) unsigned default NULL,
   PRIMARY KEY (DID,ClassName,Active,Wann,Was,`Type`),
-  KEY Wann (Wann,`lockedUntil`,Active)
+  KEY Wann (Wann,Active,`lockedUntil`)
 ) ENGINE=MyISAM;

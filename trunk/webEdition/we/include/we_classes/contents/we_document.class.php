@@ -1399,7 +1399,7 @@ class we_document extends we_root{
 				$this->schedArr = array();
 			}
 			while($this->DB_WE->next_record()){
-				$s = unserialize($this->DB_WE->f('Schedpro'));
+				$s = we_unserialize($this->DB_WE->f('Schedpro'));
 				if(is_array($s)){
 					$s['active'] = $this->DB_WE->f('Active');
 					$this->schedArr[] = $s;
