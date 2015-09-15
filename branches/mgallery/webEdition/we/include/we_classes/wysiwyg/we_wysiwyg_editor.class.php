@@ -95,6 +95,8 @@ class we_wysiwyg_editor{
 	private static $allFontSizes = array('0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit');
 
 	const CONDITIONAL = true;
+	const MIN_WIDTH = 520;
+	const MIN_HEIGTH = 400;
 
 	function __construct($name, $width, $height, $value = '', $propstring = '', $bgcol = '', $fullscreen = '', $className = '', $fontnames = '', $outsideWE = false, $xml = false, $removeFirstParagraph = true, $inlineedit = true, $baseHref = '', $charset = '', $cssClasses = '', $Language = '', $test = '', $spell = true, $isFrontendEdit = false, $buttonpos = 'top', $oldHtmlspecialchars = true, $contentCss = '', $origName = '', $tinyParams = '', $contextmenu = '', $isInPopup = false, $templates = '', $formats = '', $imageStartID = 0, $galleryTemplates = '', $fontsizes = ''){
 		$this->propstring = $propstring ? ',' . $propstring . ',' : '';
@@ -532,14 +534,13 @@ class we_wysiwyg_editor{
 		$js_function = $this->isFrontendEdit ? 'open_wysiwyg_win' : 'we_cmd';
 		$param4 = !$this->isFrontendEdit ? '' : we_base_request::encCmd('frontend');
 		$width = we_base_util::convertUnits($this->width);
-		$width = (is_numeric($width) ? "'" . ($width - 0) . "'" : '(' . intval($width) . '/100*screen.availWidth) - 0'); // corrections disabled
-		//even if height in % doesn't make sense... => since 6.4.3 it makes sense in popup!
-		$height = we_base_util::convertUnits($this->height);
-		$height = (is_numeric($height) ? "'" . ($height - 0) . "'" : '(' . intval($height) . '/100*screen.availHeight) - 0'); // corrections disabled
+		$width = max((is_numeric($width) ? "'" . ($width - 0) . "'" : '(' . intval($width) . '/100*screen.availWidth) - 0'), self::MIN_WIDTH); // corrections disabled
 
-		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "'," . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" .  rtrim($this->fontnamesCSV, ',') . "',
-			'" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "',
-			'" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->fontsizes . "');", true, 25);
+		//even if height in % doesn't make sense... => since 6.4.3 it makes sense in popup!	
+		$height = we_base_util::convertUnits($this->height);
+		$height = max((is_numeric($height) ? "'" . ($height - 0) . "'" : '(' . intval($height) . '/100*screen.availHeight) - 0'), self::MIN_HEIGTH); // corrections disabled
+
+		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" .  rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "','" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
 	}
 
 	function parseInternalImageSrc($value){
@@ -816,9 +817,9 @@ class we_wysiwyg_editor{
 		$editorLangSuffix = $editorLang === 'de' ? 'de_' : '';
 
 		$width = we_base_util::convertUnits($this->width);
-		$width = (is_numeric($width) ? round($width / 96, 3) . 'in' : $width);
+		$width = (is_numeric($width) ? round(max($width, self::MIN_WIDTH) / 96, 3) . 'in' : $width);
 		$height = we_base_util::convertUnits($this->height);
-		$height = (is_numeric($height) ? round($height / 96, 3) . 'in' : $height);
+		$height = (is_numeric($height) ? round(max($height, self::MIN_HEIGTH) / 96, 3) . 'in' : $height);
 
 		return we_html_element::jsElement(($this->fieldName ? '
 /* -- tinyMCE -- */
@@ -924,9 +925,10 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		contextmenu: "' . urlencode(trim($this->restrictContextmenu, ',')) . '",
 		templates: "' . $this->templates . '",
 		formats: "' . $this->formats . '",
-		galleryTemplates: "' . $this->galleryTemplates . '"
+		galleryTemplates: "' . $this->galleryTemplates . '",
 		formats : "' . urlencode($this->formats) . '",
 		fontsizes : "' . urlencode($this->fontsizes) . '",
+		imageStartID : ' . $this->imageStartID . '
 	},
 	weImageStartID:' . intval($this->imageStartID) . ',
 	weGalleryTemplates:"' . $this->galleryTemplates . '",
@@ -1040,6 +1042,15 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				}
 			}
 		});
+
+		' . ($this->isInPopup ? ' //still no solution for relative scaling when inlineedit=true
+		ed.onPostRender.add(function(ed, cm) {
+			window.addEventListener("resize", function(e){tinyMCE.weResizeEditor()});
+			if(typeof tinyMCE.weResizeEditor === "function"){
+				tinyMCE.weResizeEditor(true);
+			}
+		});
+		' : '') . '
 
 		ed.onDblClick.add(function(ed, e) {
 			//console.debug("Double click event: " + e.target.nodeName);
@@ -1276,43 +1287,58 @@ tinyMCE.addI18n(tinyMceTranslationObject);
 
 var TmpFn = tinyMCE.PluginManager.load;
 tinyMCE.PluginManager.load = function(n, u, cb, s) {
-			var t = this, url = u;
-			function loadDependencies() {
-				var dependencies = t.dependencies(n);
-				tinymce.each(dependencies, function(dep) {
-					var newUrl = t.createUrl(u, dep);
-					t.load(newUrl.resource, newUrl, undefined, undefined);
-				});
-				if (cb) {
-					if (s) {
-						cb.call(s);
-					} else {
-						cb.call(tinymce.ScriptLoader);
-					}
-				}
-			}
-			if (t.urls[n]){
-				return;
-			}
-			if (typeof u === "object"){
-				url = u.resource.indexOf("we") === 0 ? "' . WE_JS_TINYMCE_DIR . 'plugins/" + u.resource + u.suffix : u.prefix + u.resource + u.suffix;
-			}
-			if (url.indexOf("/") !== 0 && url.indexOf("://") == -1){
-				url = tinymce.baseURL + "/" + url;
-			}
-			t.urls[n] = url.substring(0, url.lastIndexOf("/"));
-			if (t.lookup[n]) {
-				loadDependencies();
+	var t = this, url = u;
+	function loadDependencies() {
+		var dependencies = t.dependencies(n);
+		tinymce.each(dependencies, function(dep) {
+			var newUrl = t.createUrl(u, dep);
+			t.load(newUrl.resource, newUrl, undefined, undefined);
+		});
+		if (cb) {
+			if (s) {
+				cb.call(s);
 			} else {
-				tinymce.ScriptLoader.add(url, loadDependencies, s);
+				cb.call(tinymce.ScriptLoader);
 			}
-		};
+		}
+	}
+	if (t.urls[n]){
+		return;
+	}
+	if (typeof u === "object"){
+		url = u.resource.indexOf("we") === 0 ? "' . WE_JS_TINYMCE_DIR . 'plugins/" + u.resource + u.suffix : u.prefix + u.resource + u.suffix;
+	}
+	if (url.indexOf("/") !== 0 && url.indexOf("://") == -1){
+		url = tinymce.baseURL + "/" + url;
+	}
+	t.urls[n] = url.substring(0, url.lastIndexOf("/"));
+	if (t.lookup[n]) {
+		loadDependencies();
+	} else {
+		tinymce.ScriptLoader.add(url, loadDependencies, s);
+	}
+};
+		
+tinyMCE.weResizeLoops = 100;
+tinyMCE.weResizeEditor = function(render){
+	var h = tinyMCE.DOM.get("' . $this->name . '_toolbargroup").parentNode.offsetHeight;
+	if(render && --tinyMCE.weResizeLoops && h < 24){
+		setTimeout(function(){weResizeEditor (true)}, 10);
+	}
+
+	tinyMCE.DOM.setStyle(
+		tinyMCE.DOM.get("' . $this->name . '_ifr"),
+		"height",
+		//(tinyMCE.DOM.get("' . $this->name . '_tbl").offsetHeight - h - 30)+"px");
+		(window.innerHeight - h - 60)+"px"
+	);
+}
 
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
 ') . getHtmlTag('textarea', array(
 				'wrap' => "off",
-				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . round(we_base_util::convertUnits($this->width) / 96, 3) . 'in; height:' . round(we_base_util::convertUnits($this->height) / 96, 3) . 'in;',
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height. ';',
 				'id' => $this->name,
 				'name' => $this->name,
 				'class' => 'wetextarea'

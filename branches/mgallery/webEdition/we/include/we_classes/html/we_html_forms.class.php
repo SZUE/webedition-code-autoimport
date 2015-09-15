@@ -183,29 +183,21 @@ abstract class we_html_forms{
 				weTag_getAttribute('showMenues', $attribs, true, we_base_request::BOOL) :
 				(isset($attribs['showmenues']) ?
 					weTag_getAttribute('showmenues', $attribs, true, we_base_request::BOOL) :
-					weTag_getAttribute('showmenus', $attribs, true, we_base_request::BOOL)));
-
+					weTag_getAttribute('showmenus', $attribs, true, we_base_request::BOOL))
+			);
 		$importrtf = weTag_getAttribute('importrtf', $attribs, false, we_base_request::BOOL);
 		$doc = (!empty($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ? : !empty($GLOBALS[$doc]->InWebEdition));
-
 		$inlineedit = // we are in frontend, where default is inlineedit = true
-			weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), we_base_request::BOOL);
-
-
+		weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), we_base_request::BOOL);
 		$value = self::removeBrokenInternalLinksAndImages($value);
-
-		$width = is_numeric($width) ? max($width ? : intval($cols) * 5.5, 520) : $width;
-		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, 400) : $height;
+		$width = is_numeric($width) ? max($width ? : intval($cols) * 5.5, we_wysiwyg_editor::MIN_WIDTH) : $width;
+		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGTH) : $height;
 
 		if($wysiwyg){
-
 			$commands = ($showmenues ? $commands : str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())));
 			$commands = ($hidestylemenu ? str_replace('applystyle,', '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())) : $commands);
-
-
 			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition);
-
 			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? : 'top';
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs, '', we_base_request::RAW);
@@ -217,7 +209,6 @@ abstract class we_html_forms{
 				$e = new we_wysiwyg_editor($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
 				return $out . $e->getHTML();
 			}
-
 			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
 
 			if(stripos($name, "we_ui") === false){//we are in backend

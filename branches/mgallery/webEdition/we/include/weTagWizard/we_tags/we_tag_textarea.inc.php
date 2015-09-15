@@ -44,9 +44,9 @@ $templates = new weTagData_textAttribute('templates', false, '');
 $gallerytemplates = new weTagData_textAttribute('gallerytemplates', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('wysiwyg', array(
-	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $gallerytemplates, $tinyparams, $imagestartid), array($name)),
+	new weTagDataOption('true', false, '', array($name, $cols, $rows, $autobr, $width, $height, $class, $bgcolor, $editorcss, $ignoredocumentcss, $htmlspecialchars, $commands, $contextmenu, $fontnames, $fontsizes, $formats, $abbr, $removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $gallerytemplates, $tinyparams, $imagestartid), array($name)),
 	new weTagDataOption('false', false, '', array($name, $cols, $rows, $class, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck), array($name))), false, '');
 
-$this->Attributes = array($name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, $contextmenu, $fontnames, $formats, $xml, $abbr,
+$this->Attributes = array($name, $cols, $rows, $class, $autobr, $importrtf, $width, $height, $bgcolor, $editorcss, $ignoredocumentcss, $html, $htmlspecialchars, $php, $commands, $contextmenu, $fontnames, $fontsizes, $formats, $xml, $abbr,
 	$removefirstparagraph, $inlineedit, $buttonpos, $win2iso, $classes, $spellcheck, $templates, $gallerytemplates, $tinyparams, $imagestartid);
 

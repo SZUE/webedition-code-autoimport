@@ -535,7 +535,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $fieldTypes;
 	}
 
-	private function correctFields(){
+	protected function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
 		$regs = array();
