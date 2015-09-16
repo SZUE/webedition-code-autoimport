@@ -46,13 +46,13 @@ class we_versions_view{
 
 		//add height of each input row to calculate the scrollContent-height
 		$h = 0;
-		$addinputRows = '';
+//		$addinputRows = '';
 		if($this->searchclass->mode){
 			$h += 37;
-			$addinputRows = '
-for(i=0;i<newID;i++) {
-	scrollheight = scrollheight + 26;
-}';
+			/* 		$addinputRows = '
+			  for(i=0;i<newID;i++) {
+			  scrollheight = scrollheight + 26;
+			  }'; */
 		}
 
 		return we_html_element::jsElement('
@@ -60,233 +60,28 @@ var g_l={
 	resetVersions:"' . g_l('versions', '[resetVersions]') . '",
 	mark:"' . g_l('versions', '[mark]') . '",
 	notMark:"' . g_l('versions', '[notMark]') . '",
+	deleteVersions:"' . g_l('versions', '[deleteVersions]') . '",
+	notChecked: "' . we_message_reporting::prepareMsgForJS(g_l('versions', '[notChecked]')) . '",
 };
-var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
+var rows = ' . (isset($_REQUEST['searchFields']) ? count($_REQUEST['searchFields']) - 1 : 0) . ';
 var transaction="' . $GLOBALS['we_transaction'] . '";
 var doc={
-ID:' . intval($GLOBALS['we_doc']->ID) . ',
-Table:"' . $GLOBALS['we_doc']->Table . '",
-ClassName:"' . get_class($GLOBALS['we_doc']) . '",
-Text:"' . $GLOBALS['we_doc']->Text . '",
+	ID:' . intval($GLOBALS['we_doc']->ID) . ',
+	Table:"' . $GLOBALS['we_doc']->Table . '",
+	ClassName:"' . get_class($GLOBALS['we_doc']) . '",
+	Text:"' . $GLOBALS['we_doc']->Text . '",
 };
 
-function sizeScrollContent() {
-	var elem = document.getElementById("filterTable");
-	if(elem) {
-		newID = elem.rows.length-1;
-		scrollheight = ' . $h . ';
-		' . $addinputRows . '
-
-		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
-		var scrollContent = document.getElementById("scrollContent");
-
-		var height = 240;
-		if((h - height)>0) {
-			scrollContent.style.height=(h - height)+"px";
-		}
-		if((scrollContent.offsetHeight - scrollheight)>0){
-			scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) +"px";
-		}
-	}
-}
-
-function deleteVers() {
-	var checkAll = document.getElementsByName("deleteAllVersions");
-	var checkboxes = document.getElementsByName("deleteVersion");
-	var check = false;
-
-	for(var i = 0; i < checkboxes.length; i++) {
-		if(checkboxes[i].checked) {
-			check = true;
-			break;
-		}
-	}
-
-	if(checkboxes.length==0) {
-		check = false;
-	}
-
-	if(check==false) {
-		' . we_message_reporting::getShowMessageCall(g_l('versions', '[notChecked]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-	}else {
-		Check = confirm("' . g_l('versions', '[deleteVersions]') . '");
-		if (Check == true) {
-			var checkAll = document.getElementsByName("deleteAllVersions");
-			var label = document.getElementById("label_deleteAllVersions");
-			if(checkAll[0].checked) {
-				checkAll[0].checked = false;
-				label.innerHTML = "' . g_l('versions', '[mark]') . '";
-				if(document.we_form.searchstart.value!=0) {
-					document.we_form.searchstart.value=document.we_form.searchstart.value - ' . $this->searchclass->anzahl . ';
-				}
-			}else {
-				allChecked = true;
-				var checkboxes = document.getElementsByName("deleteVersion");
-				for(var i = 0; i < checkboxes.length; i++) {
-					if(checkboxes[i].checked == false) {
-						allChecked = false;
-					}
-				}
-				if(allChecked) {
-					if(document.we_form.searchstart.value!=0) {
-						document.we_form.searchstart.value=document.we_form.searchstart.value - ' . $this->searchclass->anzahl . ';
-					}
-				}
-			}
-
-			deleteVersionAjax();
-			setTimeout(\'search(false);\', 800);
-		}
-	}
-}
-
-function newinput() {
-	var searchFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);')))) . '";
-	var locationFields = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '";
-	var search = "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-	var elem = document.getElementById("filterTable");
-	newID = elem.rows.length-1;
-	rows++;
-
-	var scrollContent = document.getElementById("scrollContent");
-	scrollContent.style.height = scrollContent.offsetHeight - 26 +"px";
-
-	if(elem){
-		var newRow = document.createElement("TR");
-			newRow.setAttribute("id", "filterRow_" + rows);
-
-			var cell = document.createElement("TD");
-			cell.innerHTML=searchFields.replace(/__we_new_id__/g,rows);
-			newRow.appendChild(cell);
-
-			 cell = document.createElement("TD");
-				 cell.setAttribute("id", "td_location["+rows+"]");
-				 cell.innerHTML=locationFields.replace(/__we_new_id__/g,rows);
-				 newRow.appendChild(cell);
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rows+"]");
-			cell.innerHTML=search.replace(/__we_new_id__/g,rows);
-			newRow.appendChild(cell);
-
-			cell = document.createElement("TD");
-			cell.setAttribute("id", "td_delButton["+rows+"]");
-			cell.innerHTML=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow('+rows+')") . '\';
-			newRow.appendChild(cell);
-
-		elem.appendChild(newRow);
-	}
-}
-
-function changeit(value, rowNr){
-			var searchFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => "changeit(this.value, __we_new_id__);")))) . '";
-			var locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-			var search = "' . addslashes(we_html_tools::htmlTextInput('search[__we_new_id__]', 24, "", "", " class=\"wetextinput\" id=\"search[__we_new_id__]\" ", "text", 190)) . '";
-
-			var row = document.getElementById("filterRow_"+rowNr);
-			var locationTD = document.getElementById("td_location["+rowNr+"]");
-			var searchTD = document.getElementById("td_search["+rowNr+"]");
-			var delButtonTD = document.getElementById("td_delButton["+rowNr+"]");
-			var location = document.getElementById("location["+rowNr+"]");
-
-			if(value=="allModsIn") {
-		if (locationTD!=null) {
-			location.disabled = true;
-		}
-			row.removeChild(searchTD);
-			if (delButtonTD!=null) {
-					row.removeChild(delButtonTD);
-			}
-
-		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-		var cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rowNr+"]");
-		cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		row.appendChild(cell);
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow('+rowNr+')") . '\';
-		row.appendChild(cell);
-		}else if(value=="timestamp") {
-		row.removeChild(locationTD);
-
-		locationFields = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation("date"), 1, "", false, array('class' => "defaultfont", 'id' => "location[__we_new_id__]")))) . '";
-
-		var cell = document.createElement("TD");
-		cell.setAttribute("id", "td_location["+rowNr+"]");
-		cell.innerHTML=locationFields.replace(/__we_new_id__/g,rowNr);
-		row.appendChild(cell);
-
-		row.removeChild(searchTD);
-
-		var innerhtml= "<table id=\"search["+rowNr+"]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>"+
-		 "<input class=\"wetextinput\" name=\"search["+rowNr+"]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search["+rowNr+"]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />"+
-		 "</td><td>&nbsp;</td><td><a href=\"#\">"+
-		 "<button id=\"date_picker_from"+rowNr+"\" class=\"weBtn\"><i class=\"fa fa-lg fa-calendar\"></i>"+
-	 "</button></a></td></tr></tbody></table>";
-
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_search["+rowNr+"]");
-	cell.innerHTML = innerhtml;
-	row.appendChild(cell);
-
-	Calendar.setup({inputField:"search["+rowNr+"]", ifFormat:"%d.%m.%Y", button:"date_picker_from"+rowNr+"", align:"Tl", singleClick:true});
-
-	if (delButtonTD!=null) {
-	row.removeChild(delButtonTD);
-	}
-
-	cell = document.createElement("TD");
-	cell.setAttribute("id", "td_delButton["+rowNr+"]");
-	cell.innerHTML = \'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow('+rowNr+')") . '\';
-		row.appendChild(cell);
-	}else if(value=="modifierID") {
-		if (locationTD!=null) {
-			location.disabled = true;
-		}
-		row.removeChild(searchTD);
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-
-		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-		var cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rowNr+"]");
-		cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		row.appendChild(cell);
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow('+rowNr+')") . '\';
-		row.appendChild(cell);
-	}else if(value=="status") {
-		if (locationTD!=null) {
-			location.disabled = true;
-		}
-		row.removeChild(searchTD);
-		if (delButtonTD!=null) {
-			row.removeChild(delButtonTD);
-		}
-
-		search = "' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '";
-
-		var cell = document.createElement("TD");
-		cell.setAttribute("id", "td_search["+rowNr+"]");
-		cell.innerHTML=search.replace(/__we_new_id__/g,rowNr);
-		row.appendChild(cell);
-
-		cell = document.createElement("TD");
-		cell.setAttribute("id", "td_delButton["+rowNr+"]");
-		cell.innerHTML=\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow('+rowNr+')") . '\';
-		row.appendChild(cell);
-	}
-}
-') . we_html_element::jsElement(JS_DIR . 'versions_view.js');
+var searchClass={
+	scrollHeight:' . $h . ',
+	anzahl:' . intval($this->searchclass->anzahl) . ',
+	searchFields: "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);')))) . '",
+	locationFields:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '",
+	search:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '",
+	trash:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_row__)") . '\',
+	searchUsers:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '",
+	searchStats:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '",
+};') . we_html_element::jsScript(JS_DIR . 'versions_view.js');
 	}
 
 	/**
@@ -436,8 +231,7 @@ function changeit(value, rowNr){
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 	<td>' . $this->getNextPrev($foundItems) . '</td>
-	<td id="print" class="defaultfont">' . we_html_tools::getPixel(
-				10, 12) . '<a href="javascript:printScreen();">' . g_l('versions', '[printPage]') . '</a></td>
+	<td id="print" class="defaultfont">' . we_html_tools::getPixel(10, 12) . '<a href="javascript:printScreen();">' . g_l('versions', '[printPage]') . '</a></td>
 </tr>
 </table>';
 	}
@@ -669,11 +463,11 @@ function changeit(value, rowNr){
 		return '
 <table border="0" style="background-color:#fff;" width="100%" cellpadding="5">
 <tr>
-	<td style="vertical-align:top;width:15px;border-bottom:1px solid #AFB0AF;">' . we_html_tools::getPixel(15, 1) . '</td>
-	<td style="vertical-align:top;width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
-	<td style="vertical-align:top;width:15em;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . we_html_tools::getPixel(110, 1) . '</td>
-	<td style="vertical-align:top;width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
-	<td style="vertical-align:top;width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . we_html_tools::getPixel(120, 1) . '</td>
+	<td style="vertical-align:top;width:15px;border-bottom:1px solid #AFB0AF;"></td>
+	<td style="vertical-align:top;width:110px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[0]["dat"] . '</td>
+	<td style="vertical-align:top;width:15em;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[1]["dat"] . '</td>
+	<td style="vertical-align:top;width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[2]["dat"] . '</td>
+	<td style="vertical-align:top;width:120px;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[4]["dat"] . '</td>
 	<td style="vertical-align:top;width:auto;border-bottom:1px solid #AFB0AF;" class="middlefont">' . $headline[3]["dat"] . '</td>
 </tr>
 </table>
@@ -710,10 +504,10 @@ function changeit(value, rowNr){
 <td rowspan="2" style="vertical-align:top;line-height:20px;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[3]["dat"])) ? $content[3]["dat"] : "&nbsp;") . '</td>
 </tr>
 <tr>
-<td style="width:15px;border-bottom:1px solid #D1D1D1;">' . we_html_tools::getPixel(15, 1) . '</td>
+<td style="width:15px;border-bottom:1px solid #D1D1D1;"></td>
 <td colspan="2" style="vertical-align:top;width:220px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[5]["dat"]) ) ? $content[5]["dat"] : "&nbsp;") . ((!empty($content[7]["dat"])) ? $content[7]["dat"] : "&nbsp;") . '</td>
 <td style="vertical-align:top;width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . ((!empty($content[6]["dat"])) ? $content[6]["dat"] : "&nbsp;") . '</td>
-<td style="vertical-align:top;width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont">' . we_html_tools::getPixel(120, 1) . '</td>
+<td style="vertical-align:top;width:120px;border-bottom:1px solid #D1D1D1;" class="middlefont"></td>
 <td style="vertical-align:top;width:auto;border-bottom:1px solid #D1D1D1;" class="middlefont"></td>';
 	}
 

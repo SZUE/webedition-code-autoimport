@@ -323,3 +323,208 @@ var ajaxCallbackResetVersion = {
 function resetVersionAjax(id, documentID, version, table) {
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + transaction);
 }
+
+
+function sizeScrollContent() {
+	var elem = document.getElementById("filterTable");
+	if (elem) {
+		newID = elem.rows.length - 1;
+		scrollheight = searchClass.scrollHeight;
+
+		var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
+		var scrollContent = document.getElementById("scrollContent");
+
+		var height = 240;
+		if ((h - height) > 0) {
+			scrollContent.style.height = (h - height) + "px";
+		}
+		if ((scrollContent.offsetHeight - scrollheight) > 0) {
+			scrollContent.style.height = (scrollContent.offsetHeight - scrollheight) + "px";
+		}
+	}
+}
+
+function deleteVers() {
+	var checkAll = document.getElementsByName("deleteAllVersions");
+	var checkboxes = document.getElementsByName("deleteVersion");
+	var check = false;
+
+	for (var i = 0; i < checkboxes.length; i++) {
+		if (checkboxes[i].checked) {
+			check = true;
+			break;
+		}
+	}
+
+	if (checkboxes.length == 0) {
+		check = false;
+	}
+
+	if (check == false) {
+		top.we_showMessage(g_l.notChecked, WE_MESSAGE_NOTICE, window);
+		return;
+	}
+	Check = confirm(g_l.deleteVersions);
+	if (Check == true) {
+		var checkAll = document.getElementsByName("deleteAllVersions");
+		var label = document.getElementById("label_deleteAllVersions");
+		if (checkAll[0].checked) {
+			checkAll[0].checked = false;
+			label.innerHTML = g_l.mark;
+			if (document.we_form.searchstart.value != 0) {
+				document.we_form.searchstart.value = document.we_form.searchstart.value - searchClass.anzahl;
+			}
+		} else {
+			allChecked = true;
+			var checkboxes = document.getElementsByName("deleteVersion");
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked == false) {
+					allChecked = false;
+				}
+			}
+			if (allChecked) {
+				if (document.we_form.searchstart.value != 0) {
+					document.we_form.searchstart.value = document.we_form.searchstart.value - searchClass.anzahl;
+				}
+			}
+		}
+
+		deleteVersionAjax();
+		setTimeout('search(false);', 800);
+	}
+}
+
+function newinput() {
+	var elem = document.getElementById("filterTable");
+	newID = elem.rows.length - 1;
+	rows++;
+
+	var scrollContent = document.getElementById("scrollContent");
+	scrollContent.style.height = scrollContent.offsetHeight - 26 + "px";
+
+	if (elem) {
+		var newRow = document.createElement("TR");
+		newRow.setAttribute("id", "filterRow_" + rows);
+
+		var cell = document.createElement("TD");
+		cell.innerHTML = searchClass.searchFields.replace(/__we_new_id__/g, rows);
+		newRow.appendChild(cell);
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_location[" + rows + "]");
+		cell.innerHTML = searchClass.locationFields.replace(/__we_new_id__/g, rows);
+		newRow.appendChild(cell);
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_search[" + rows + "]");
+		cell.innerHTML = searchClass.search.replace(/__we_new_id__/g, rows);
+		newRow.appendChild(cell);
+
+		cell = document.createElement("TD");
+		cell.setAttribute("id", "td_delButton[" + rows + "]");
+		cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rows);
+		newRow.appendChild(cell);
+
+		elem.appendChild(newRow);
+	}
+}
+
+function changeit(value, rowNr) {
+	var row = document.getElementById("filterRow_" + rowNr);
+	var locationTD = document.getElementById("td_location[" + rowNr + "]");
+	var searchTD = document.getElementById("td_search[" + rowNr + "]");
+	var delButtonTD = document.getElementById("td_delButton[" + rowNr + "]");
+	var location = document.getElementById("location[" + rowNr + "]");
+
+	switch (value) {
+		case "allModsIn":
+			if (locationTD != null) {
+				location.disabled = true;
+			}
+			row.removeChild(searchTD);
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = searchClass.search.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		case "timestamp":
+			row.removeChild(locationTD);
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_location[" + rowNr + "]");
+			cell.innerHTML = searchClass.locationFields.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			row.removeChild(searchTD);
+
+			var innerhtml = "<table id=\"search[" + rowNr + "]_cell\" class=\"default\"><tbody><tr><td></td><td></td><td>" +
+							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"55\" value=\"\" maxlength=\"10\" id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 100px;\" type=\"text\" />" +
+							"</td><td>&nbsp;</td><td><a href=\"#\">" +
+							"<button id=\"date_picker_from" + rowNr + "\" class=\"weBtn\"><i class=\"fa fa-lg fa-calendar\"></i>" +
+							"</button></a></td></tr></tbody></table>";
+
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = innerhtml;
+			row.appendChild(cell);
+
+			Calendar.setup({inputField: "search[" + rowNr + "]", ifFormat: "%d.%m.%Y", button: "date_picker_from" + rowNr + "", align: "Tl", singleClick: true});
+
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		case "modifierID":
+			if (locationTD != null) {
+				location.disabled = true;
+			}
+			row.removeChild(searchTD);
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = searchClass.searchUsers.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rowNr);
+			row.appendChild(cell);
+			break;
+		case "status":
+			if (locationTD != null) {
+				location.disabled = true;
+			}
+			row.removeChild(searchTD);
+			if (delButtonTD != null) {
+				row.removeChild(delButtonTD);
+			}
+
+			var cell = document.createElement("TD");
+			cell.setAttribute("id", "td_search[" + rowNr + "]");
+			cell.innerHTML = searchClass.searchStats.replace(/__we_new_id__/g, rowNr);
+			row.appendChild(cell);
+
+			cell = document.createElement("TD");
+			cell.setAttribute("id", "td_delButton[" + rowNr + "]");
+			cell.innerHTML = searchClass.trash.replace(/__we_row__/g, rowNr);
+			row.appendChild(cell);
+	}
+}
