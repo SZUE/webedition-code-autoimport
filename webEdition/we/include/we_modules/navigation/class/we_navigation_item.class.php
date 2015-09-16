@@ -149,18 +149,17 @@ class we_navigation_item{
 	}
 
 	function isCurrent(we_navigation_items $weNavigationItems){
-		if(isset($_SERVER['REQUEST_URI']) && ($this->CurrentOnAnker || $this->CurrentOnUrlPar || $this->currentOnCat)){
+		if(isset($_SERVER['REQUEST_URI'])){
 			$uri = parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI']));
 			$ref = parse_url(str_replace('&amp;', '&', $this->href));
 			if($uri['path'] == $ref['path']){
 				$allfound = true;
 
-				$uriarrq = array();
-				if(isset($uri['query'])){
+				$refarrq = $uriarrq = array();
+				if(!empty($uri['query'])){
 					parse_str($uri['query'], $uriarrq);
 				}
-				$refarrq = array();
-				if(isset($ref['query'])){
+				if(!empty($ref['query'])){
 					parse_str($ref['query'], $refarrq);
 				}
 
@@ -178,7 +177,6 @@ class we_navigation_item{
 					$uriarrq = $tmpUriarrq;
 					$refarrq = $tmpRefarrq;
 				}
-
 				if(($allfound &= (count($uriarrq) == count($refarrq)))){
 					foreach($refarrq as $key => $val){
 						$allfound &= isset($uriarrq[$key]) && $uriarrq[$key] == $val;
