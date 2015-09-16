@@ -25,15 +25,15 @@ if(file_exists($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/prox
 	include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/liveUpdate/includes/proxysettings.inc.php');
 }
 
+if(is_dir(WEBEDITION_PATH . 'liveUpdate/updateClient')){
+	we_base_file::deleteLocalFolder(WEBEDITION_PATH . 'liveUpdate/updateClient', true);
+}
 /*
  * Include all needed files
  */
 require_once('includes/includes.inc.php');
 we_html_tools::protect();
 
-if(is_dir(WEBEDITION_PATH . 'liveUpdate/updateClient')){
-	we_base_file::deleteLocalFolder(WEBEDITION_PATH . 'liveUpdate/updateClient', true);
-}
 
 /*
  * Deal with update_cmd
