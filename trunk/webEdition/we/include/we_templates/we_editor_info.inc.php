@@ -112,7 +112,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 		);
 
 		if($GLOBALS['we_doc']->Table != TEMPLATES_TABLE){
-			$rp = $GLOBALS['we_doc']->getRealPath();
+			$rp = realpath($GLOBALS['we_doc']->getRealPath());
 			$http = $GLOBALS['we_doc']->getHttpPath();
 
 			switch($GLOBALS['we_doc']->ContentType){

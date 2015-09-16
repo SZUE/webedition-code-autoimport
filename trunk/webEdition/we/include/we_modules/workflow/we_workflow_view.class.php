@@ -1159,7 +1159,7 @@ function checkData(){
 		//	Part - Path-information
 
 		if($this->documentDef->document->Table != TEMPLATES_TABLE && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT){
-			$rp = $this->documentDef->document->getRealPath();
+			$rp = realpath($this->documentDef->document->getRealPath());
 			$http = $this->documentDef->document->getHttpPath();
 
 			switch($this->documentDef->document->ContentType){

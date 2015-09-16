@@ -702,7 +702,7 @@ abstract class we_root extends we_class{
 	}
 
 	/** returns the Path dynamically (use it, when the class-variable Path is not set)  */
-	function getPath(){
+	public function getPath(){
 		return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . ( isset($this->Extension) ? $this->Extension : '' );
 	}
 
@@ -731,10 +731,13 @@ abstract class we_root extends we_class{
 		return false;
 	}
 
-	/* get the Real-Path of the Object (Server-Path) */
+	/* get the Real-Path of the Object (Server-Path)
+	 * @$fileaccesss bool if true, a path valid for domain replacement is given
+	 */
 
 	public function getRealPath($old = false){
-		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . ($old ? $this->OldPath : $this->getPath());
+		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : TEMPLATES_PATH) .
+			($old ? $this->OldPath : $this->getPath());
 	}
 
 	/* get the Site-Path of the Object */
