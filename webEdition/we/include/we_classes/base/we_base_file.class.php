@@ -172,7 +172,7 @@ abstract class we_base_file{
 
 			return $written == $len;
 		}
-		t_e('error writing file', $filename);
+		t_e('error writing file, unable to open file', $filename);
 		return false;
 	}
 
@@ -335,7 +335,7 @@ abstract class we_base_file{
 
 	public static function createLocalFolderByPath($completeDirPath){
 		$returnValue = true;
-		
+
 		if(self::checkAndMakeFolder($completeDirPath, true)){
 			return $returnValue;
 		}
