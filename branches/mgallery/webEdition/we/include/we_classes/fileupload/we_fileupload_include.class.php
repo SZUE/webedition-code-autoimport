@@ -154,10 +154,11 @@ class we_fileupload_include extends we_fileupload_base{
 			' . $btnCancel . '
 			</div>' : ''
 		) .
-		'<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" style="margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none') . '">' . g_l('importFiles', '[dragdrop_text]') . '</div>
+		(false ? we_html_element::htmlDiv(array('style' => 'position:relative;margin-top:0.5em;'), $this->getHtmlDropZone()) :
+			we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileDrag', 'class' => 'we_file_drag', 'style' => 'margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none')), g_l('importFiles', '[dragdrop_text]'))) . '
 		<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . '"></div>
 		<div style="display:block;padding:0.6em 0 0 0.2em">
-			<div id="div_' . $this->name . '_message" style="height:26px;font-size:12px;">
+			<div id="div_' . $this->name . '_message" style="height:26px;font-size:1em;">
 				&nbsp;
 			</div>
 			' . ($this->internalProgress['isInternalProgress'] ? '<div id="div_' . $this->name . '_progress" style="height:26px;display: none">' . $this->_getProgressHTML() . '</div>' : '') . '
@@ -165,12 +166,15 @@ class we_fileupload_include extends we_fileupload_base{
 	</div>
 </div>
 ' .
-			we_html_tools::hidden('weFileNameTemp', '') .
-			we_html_tools::hidden('weFileName', '') .
-			we_html_tools::hidden('weFileCt', '') .
-			we_html_tools::hidden('weIsUploadComplete', 0) .
-			we_html_tools::hidden('weIsUploading', 1) .
-			we_html_tools::hidden('weIsFileInLegacy', 0));
+			we_html_element::htmlHiddens(array(
+				"weFileNameTemp" => '',
+				"weFileName" => '',
+				"weFileCt" => '',
+				"weIsUploadComplete" => 0,
+				"weIsUploading" => 1,
+				'weIsFileInLegacy' => 0
+			))
+		);
 	}
 
 	//FIXME: base intarnal progress on we_progress

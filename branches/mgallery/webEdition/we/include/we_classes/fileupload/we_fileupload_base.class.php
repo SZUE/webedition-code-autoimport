@@ -139,6 +139,27 @@ abstract class we_fileupload_base{
 		return self::isFallback() || self::isLegacyMode() ? getUploadMaxFilesize(false) : $this->maxUploadSizeBytes;
 	}
 
+	protected function getHtmlDropZone($type = 'preview', $thumbnailSmall = ''){
+		if($type === 'preview'){
+			$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
+			
+			return !(self::isFallback() || self::isLegacyMode()) ? (
+				we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"),
+					we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
+					we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));')))
+				) .
+				we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')),
+					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), 
+						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
+						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
+						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type'))
+					) .
+					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
+				) .
+				($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag we_file_drag_mask'), '') : '')) : '';
+		}
+	}
+
 	public function getHtmlAlertBoxes(){
 		return self::getHtmlAlertBoxesStatic($this->dimensions['alertBoxWidth'] ? : $this->dimensions['width'], $this->maxUploadSizeMBytes, true);
 	}

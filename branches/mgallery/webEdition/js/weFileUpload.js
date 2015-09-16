@@ -1198,6 +1198,12 @@ var weFileUpload = (function () {
 		};
 
 		function Controller() {
+			/*
+			this.fileDragHover = function (e) { 
+				e.preventDefault();
+				e.target.className = (e.type === 'dragover' ? 'we_file_drag we_file_drag_mask we_file_drag_hover' : 'we_file_drag we_file_drag_mask');
+			};
+			*/
 		}
 
 		function Sender() {
@@ -1771,12 +1777,12 @@ var weFileUpload = (function () {
 
 			this.repaintGUI = function (arg) {
 				var i, j,
-								s = _.sender,
-								cur = s.currentFile,
-								fileProg = 0,
-								totalProg = 0,
-								digits = 0,
-								totalDigits = s.totalChunks > 1000 ? 2 : (s.totalChunks > 100 ? 1 : 0);
+					s = _.sender,
+					cur = s.currentFile,
+					fileProg = 0,
+					totalProg = 0,
+					digits = 0,
+					totalDigits = s.totalChunks > 1000 ? 2 : (s.totalChunks > 100 ? 1 : 0);
 
 				switch (arg.what) {
 					case 'chunkOK' :
@@ -1888,8 +1894,9 @@ var weFileUpload = (function () {
 			if (typeof conf.binDocProperties !== 'undefined') {
 				_.view.icon = getTreeIcon(conf.binDocProperties.ct);
 				_.view.binDocType = conf.binDocProperties.type || _.view.binDocType;
+			} else {
+				_.view.icon = getTreeIcon('text/plain');
 			}
-			_.view.icon = conf.icon || _.view.icon;
 		};
 
 		_.onload = function (scope) {
@@ -1935,6 +1942,11 @@ var weFileUpload = (function () {
 
 		function Controller() {
 			this.doSubmit = false;
+
+			this.fileDragHover = function (e) { 
+				e.preventDefault();
+				e.target.className = (e.type === 'dragover' ? 'we_file_drag we_file_drag_mask we_file_drag_hover' : 'we_file_drag we_file_drag_mask');
+			};
 
 			this.setEditorIsHot = function () {
 				top.weEditorFrameController.setEditorIsHot(true, top.weEditorFrameController.ActiveEditorFrameId);
@@ -2038,7 +2050,7 @@ var weFileUpload = (function () {
 
 		function View() {
 			this.uploadBtnName = '';
-			this.icon = '/webEdition/images/icons/doc.gif';
+			this.icon = '';
 			this.binDocType = 'other';
 			this.preview = null;
 			this.STATE_RESET = 0;
@@ -2057,7 +2069,7 @@ var weFileUpload = (function () {
 				this.elems.txtSize.innerHTML = sizeText;
 				this.elems.txtType.innerHTML = typeText;
 				this.setDisplay('fileDrag_state_0', 'none');
-				this.setDisplay('fileDrag_state_1', '');
+				this.setDisplay('fileDrag_state_1', 'block');
 				this.elems.dragInnerRight.innerHTML = '';
 
 				if (f.uploadConditionsOk) {
@@ -2075,8 +2087,8 @@ var weFileUpload = (function () {
 
 					reader.onload = function (e) {
 						var maxSize = 100,
-										mode = 'resize',
-										image = new Image();
+							mode = 'resize',
+							image = new Image();
 
 						image.onload = function () {
 							if (mode !== 'resize') {
@@ -2131,11 +2143,7 @@ var weFileUpload = (function () {
 					}
 				} else {
 					if (f.uploadConditionsOk) {
-						this.preview = new Image();
-						this.preview.onload = function () {
-							_.view.elems.dragInnerRight.appendChild(_.view.preview);
-						};
-						this.preview.src = this.icon;
+						this.elems.dragInnerRight.innerHTML = '<div class="largeicons" style="margin:0 0 0 30px;height:62px;width:54px;">' + this.icon + '</div>';
 						this.setGuiState(this.STATE_PREVIEW_OK);
 					} else {
 						this.elems.dragInnerRight.innerHTML = '<div style="margin:0px 0 0 30px;height:62px;width:54px;border:dotted 1px gray;padding-top:14px;text-align:center;background-color:#f9f9f9;color:#ddd;font-size:32px;font-weight:bold">!?</div>';

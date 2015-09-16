@@ -178,23 +178,23 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 
 		$divFileInfo = we_html_element::htmlDiv(array('style' => 'margin-top: 0px'), $fs . '<br />' . $ft . '<br />' . $md);
 
-		//TODO: clean out css and use more we_html_element
-		$divDropzone = !(self::isFallback() || self::isLegacyMode()) ? ('
-			<div class="we_file_drag we_file_drag_binDoc" id="div_fileupload_fileDrag_state_0" style="' . (!$this->isDragAndDrop ? 'border-color:white;' : '') . '">
-				<div style="display:table-cell;width:178px;height:116px;padding-left:4px;vertical-align:middle;color:#cccccc;font-weight:normal;font-size:' . ($this->isDragAndDrop ? 16 : 14) . 'px">' .
-			$dropText . '
-				</div>' .
-			we_html_element::htmlDiv(array('class' => 'dropzone_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));'))) . '
-			</div>
-			<div class="we_file_drag we_file_drag_binDoc" style="display:none;' . (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '') . '" id="div_fileupload_fileDrag_state_1">
-				<div id="div_upload_fileDrag_innerLeft" style="display:table-cell;width:178px;height:116px;padding-left:10px;vertical-align:middle;text-align:left;color:#333;font-weight: normal;font-size:12px">' .
-			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
-			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
-			we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type')) . '
-				</div>' .
-			we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'dropzone_right'), '') . '
-			</div>' .
-			($this->isDragAndDrop ? '<div style="background:none;" class="we_file_drag" id="div_we_File_fileDrag"></div>' : '')) : '';
+		//TODO: move as fn getDropzone(bool $isPreview){} to we_fileUpload_base
+		/*
+		$divDropzone = !(self::isFallback() || self::isLegacyMode()) ? (
+			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"),
+				we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
+				we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));')))
+			) .
+			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')),
+				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), 
+					we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
+					we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
+					we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type'))
+				) .
+				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
+			) .
+			($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag we_file_drag_mask'), '') : '')) : '';
+		*/
 
 		return (self::isFallback() || self::isLegacyMode() ? '' : $this->getJs() . $this->getCss()) . '
 			<table id="table_form_upload" class="default" width="500">
@@ -215,7 +215,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				<td width="300px">' .
 			(self::isFallback() || self::isLegacyMode() ? '' : '
 						<div id="div_fileupload_right">' .
-				$divDropzone .
+				$this->getHtmlDropZone('preview', $thumbnailSmall) .
 				($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . we_html_forms::checkbox(1, true, "import_metadata", g_l('metadata', '[import_metadata_at_upload]')) : '') . '
 						</div>'
 			) .
