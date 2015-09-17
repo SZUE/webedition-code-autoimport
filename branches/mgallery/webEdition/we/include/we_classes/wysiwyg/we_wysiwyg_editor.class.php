@@ -547,7 +547,7 @@ class we_wysiwyg_editor{
 		$t = ($t ? : time());
 		$regs = array();
 
-		// IMPORTANT: we process tiny content both from db and session: the latter use paths?id=xy instead of document:xy
+		// IMPORTANT: we process tiny content both from db and session: the latter uses paths?id=xy instead of document:xy
 		if(preg_match_all('/<img [^>]*(src="(' . we_base_link::TYPE_INT_PREFIX . '|[^" >]*\?id=)(\d+)[^"]*")[^>]*>/i', $value, $regs, PREG_SET_ORDER)){
 			$ids = array();
 			foreach($regs as $reg){
@@ -561,7 +561,7 @@ class we_wysiwyg_editor{
 				$lookup = array();
 			}
 
-			foreach($regs as $reg){
+			foreach($regs as $reg){t_e("parse", $reg, $lookup);
 				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
 				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
 					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);

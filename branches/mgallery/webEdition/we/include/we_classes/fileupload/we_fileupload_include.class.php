@@ -82,19 +82,11 @@ class we_fileupload_include extends we_fileupload_base{
 		$this->typeCondition[$field] = $tmp;
 	}
 
-	public function setCallback($callback){
-		$this->callback = $callback;
-	}
-
 	public function setInternalProgress($args = array()){
 		$this->internalProgress = array(
 			'isInternalProgress' => isset($args['isInternalProgress']) ? $args['isInternalProgress'] : $this->internalProgress['isInternalProgress'],
 			'width' => isset($args['width']) ? $args['width'] : $this->internalProgress['width'],
 		);
-	}
-
-	public function setMoreFieldsToAppend($fields = array()){
-		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, $fields);
 	}
 
 	public function setExternalProgress($isExternalProgress, $parentElemId = '', $create = false, $width = 100, $name = '', $additionalParams = array()){
@@ -129,55 +121,56 @@ class we_fileupload_include extends we_fileupload_base{
 		$btnCancel = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', we_html_button::create_button('cancel', 'javascript:' . $this->getJsBtnCmd('cancel'), true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', false, false, '_btn'));
 
 		$fileInput = we_html_element::htmlInput(array(
-				'class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
-				'type' => 'file',
-				'name' => $this->name,
-				'id' => $this->name,
-				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
+			'class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
+			'type' => 'file',
+			'name' => $this->name,
+			'id' => $this->name,
+			'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
 
-		return (self::isFallback() || self::isLegacyMode()) ?
-			( we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name))) :
-			('
-<div id="div_' . $this->name . '_legacy" style="display:none">' . we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name . '_legacy', 'id' => $this->name . '_legacy')) . '</div>
-<div id="div_' . $this->name . '" style="float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;">
-	<div>
-		<div class="we_fileInputWrapper" id="div_' . $this->name . '_fileInputWrapper" style="vertical-align:top;display:inline-block;height:26px; ">
-			' . $fileInput . '
-			' . $butBrowse . '
-		</div>
-		<div id="div_' . $this->name . '_btnResetUpload" style="vertical-align: top; display: inline-block; height: 22px">
-			' . ($this->isInternalBtnUpload ? $btnUpload : $butReset) . '
-		</div>' .
-		($this->isInternalBtnUpload ? 
-			'<div id="div_' . $this->name . '_btnCancel" div style="vertical-align: top; display: none; height: 22px">
-			' . $btnCancel . '
-			</div>' : ''
-		) .
-		(false ? we_html_element::htmlDiv(array('style' => 'position:relative;margin-top:0.5em;'), $this->getHtmlDropZone()) :
-			we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileDrag', 'class' => 'we_file_drag', 'style' => 'margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none')), g_l('importFiles', '[dragdrop_text]'))) . '
-		<div id="div_' . $this->name . '_fileName" style="height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . '"></div>
-		<div style="display:block;padding:0.6em 0 0 0.2em">
-			<div id="div_' . $this->name . '_message" style="height:26px;font-size:1em;">
-				&nbsp;
-			</div>
-			' . ($this->internalProgress['isInternalProgress'] ? '<div id="div_' . $this->name . '_progress" style="height:26px;display: none">' . $this->_getProgressHTML() . '</div>' : '') . '
-		</div>
-	</div>
-</div>
-' .
-			we_html_element::htmlHiddens(array(
-				"weFileNameTemp" => '',
-				"weFileName" => '',
-				"weFileCt" => '',
-				"weIsUploadComplete" => 0,
-				"weIsUploading" => 1,
-				'weIsFileInLegacy' => 0
-			))
-		);
+		return (self::isFallback() || self::isLegacyMode()) ? ( we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name))) :
+			(we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_legacy', 'style' => 'display:none;'),
+					we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name . '_legacy', 'id' => $this->name . '_legacy'))
+				) . 
+				we_html_element::htmlDiv(array('id' => 'div_' . $this->name, 'style' => 'float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;'),
+					we_html_element::htmlDiv(array(),
+						we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;height:26px;'),
+							$fileInput . $butBrowse
+						) .
+						we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_btnResetUpload', 'style' => 'vertical-align: top; display: inline-block; height: 22px;'),
+							($this->isInternalBtnUpload ? $btnUpload : $butReset)
+						) .
+						($this->isInternalBtnUpload ? we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_btnCancel', 'style' => 'vertical-align: top; display: none; height: 22px;'),
+								$btnCancel
+							) : ''
+						) .
+						$this->getHtmlDropZone() . $this->getHtmlFileInfo()
+					)
+				) .
+				we_html_element::htmlHiddens(array(
+					'weFileNameTemp' => '',
+					'weFileName' => '',
+					'weFileCt' => '',
+					'weIsUploadComplete' => 0,
+					'weIsUploading' => 1,
+					'weIsFileInLegacy' => 0
+				))
+			);
 	}
 
-	//FIXME: base intarnal progress on we_progress
+	protected function getHtmlDropZone(){
+		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileDrag', 'class' => 'we_file_drag', 'style' => 'margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none')), g_l('importFiles', '[dragdrop_text]'));
+	}
+
+	protected function getHtmlFileInfo(){
+		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileName', 'style' => 'height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . ';'), '') .
+			we_html_element::htmlDiv(array('style' => 'display:block;padding:0.6em 0 0 0.2em'), 
+				we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_message', 'style' => 'height:26px;font-size:1em;'), '&nbsp;') .
+				($this->internalProgress['isInternalProgress'] ? we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_progress', 'style' => 'height:26px;display:none;'), $this->_getProgressHTML()) : '')
+			);
+	}
+
+	//FIXME: base internal progress on we_progress
 	private function _getProgressHTML(){
 		return '
 <table class="default"><tbody><tr>

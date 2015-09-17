@@ -96,6 +96,8 @@ var weFileUpload = (function () {
 				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
 				s.chunkSize = typeof conf.chunkSize !== 'undefined' ? (conf.chunkSize * 1024) : s.chunkSize;
 				s.callback = conf.callback || s.callback;
+				s.location = conf.location || s.location;
+				s.dialogCallback = conf.callback || s.dialogCallback;
 				s.maxUploadSize = typeof conf.maxUploadSize !== 'undefined' ? conf.maxUploadSize : s.maxUploadSize;
 				if (typeof conf.form !== 'undefined') {
 					s.form.name = conf.form.name || s.form.name;
@@ -508,6 +510,8 @@ var weFileUpload = (function () {
 			this.callback = function () {
 				document.forms[0].submit();
 			};
+			this.location = '';
+			this.dialogCallback = null;
 			this.isUploading = false;
 			this.isCancelled = false;
 			this.preparedFiles = [];
@@ -1221,7 +1225,7 @@ var weFileUpload = (function () {
 
 			this.postProcess = function (resp) {
 				var that = _.sender,
-								cur = this.currentFile;
+					cur = this.currentFile;
 
 				this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
 				this.form.form.elements.weFileCt.value = cur.mimePHP;
@@ -1889,6 +1893,7 @@ var weFileUpload = (function () {
 
 		this.init = function (conf) {
 			_.init_abstract(conf);
+			_.sender.form.action = conf.form.action || _.sender.form.action;
 			_.view.uploadBtnName = conf.uploadBtnName || _.view.uploadBtnName;
 			_.fieldName = 'we_File';
 			if (typeof conf.binDocProperties !== 'undefined') {
@@ -1914,8 +1919,6 @@ var weFileUpload = (function () {
 					inputs[i].addEventListener('change', _.controller.fileSelectHandler, false);
 				}
 			}
-			_.sender.form.action = '/webEdition/we_cmd.php?we_cmd[0]=do_upload_file&we_cmd[1]=binaryDoc';
-
 			v.elems.fileDrag_state_0 = document.getElementById('div_fileupload_fileDrag_state_0');
 			v.elems.fileDrag_state_1 = document.getElementById('div_fileupload_fileDrag_state_1');
 			v.elems.dragInnerRight = document.getElementById('div_upload_fileDrag_innerRight');
@@ -1949,27 +1952,46 @@ var weFileUpload = (function () {
 			};
 
 			this.setEditorIsHot = function () {
-				top.weEditorFrameController.setEditorIsHot(true, top.weEditorFrameController.ActiveEditorFrameId);
+				if(top.weEditorFrameController){
+					top.weEditorFrameController.setEditorIsHot(true, top.weEditorFrameController.ActiveEditorFrameId);
+				}
 			};
 		}
 
 		function Sender() {
 			this.totalWeight = 0;
 			this.callback = null;
+			this.dialogCallback = null;
+			this.form.action = '/webEdition/we_cmd.php?we_cmd[0]=do_upload_file&we_cmd[1]=binaryDoc';
 
 			this.doOnFileFinished = function (resp) {
 			};
 
 			this.postProcess = function (resp) {
 				_.sender.preparedFiles = [];
-				_.sender.currentFile = null;
-				if (resp.status === 'success') {
-					var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 
-					window.we_cmd('update_file');
-					_EditorFrame.getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
-					this.fireCallback();
+				if(this.location === 'dialog'){
+					var cur = this.currentFile;
+
+					this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
+					this.form.form.elements.weFileCt.value = cur.mimePHP;
+					this.form.form.elements.weFileName.value = cur.file.name;
+					_.sender.currentFile = null;
+					setTimeout(function () {
+						_.sender.dialogCallback(resp);
+					}, 100);
+				} else {
+					if (resp.status === 'success') {
+						_.sender.currentFile = null;
+						if(top.weEditorFrameController){
+							window.we_cmd('update_file');
+							top.weEditorFrameController.getActiveEditorFrame().getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
+						}
+
+						this.fireCallback();
+					}
 				}
+
 			};
 
 			this.processError = function (arg) {
@@ -2018,14 +2040,15 @@ var weFileUpload = (function () {
 			};
 
 			this.appendMoreData = function (fd) {
-				var cur = this.currentFile;
-
-				fd.append('we_transaction', document.we_form.we_transaction.value);
-				fd.append('import_metadata', (typeof document.we_form.import_metadata !== 'undefined' &&
-								document.we_form.import_metadata.checked) ? 1 : 0);
-				fd.append('we_doc_ct', document.we_form.we_doc_ct.value);
-				fd.append('we_doc_ext', document.we_form.we_doc_ext.value);
-
+				for(var i = 0; i < this.moreFieldsToAppend.length; i++){
+					if(document.we_form.elements[this.moreFieldsToAppend[i][0]]){
+						if(this.moreFieldsToAppend[i][1] === 'check'){
+							fd.append(this.moreFieldsToAppend[i][0], ((document.we_form.elements[this.moreFieldsToAppend[i][0]].checked) ? 1 : 0));
+						} else {
+							fd.append(this.moreFieldsToAppend[i][0], document.we_form.elements[this.moreFieldsToAppend[i][0]].value);
+						}
+					}
+				}
 				return fd;
 			};
 

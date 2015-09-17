@@ -75,6 +75,7 @@ abstract class we_fileupload_base{
 	protected $fileTable = '';
 	protected $binDocProperties = array();
 	protected $isInternalBtnUpload = false; // used in we_fileupload_inc only
+	protected $location = '';
 	public $moreFieldsToAppend = array();
 	public static $isFallback = false;
 
@@ -97,6 +98,10 @@ abstract class we_fileupload_base{
 		$this->form['action'] = $action;
 	}
 
+	public function setCallback($callback){
+		$this->callback = $callback;
+	}
+
 	public function setDimensions($args = array()){
 		$this->dimensions = array(
 			'width' => isset($args['width']) ? $args['width'] : $this->dimensions['width'],
@@ -111,6 +116,10 @@ abstract class we_fileupload_base{
 	public function setMaxUploadSize($sizeMB = 0){
 		$this->maxUploadSizeMBytes = $sizeMB;
 		$this->maxUploadSizeBytes = $this->maxUploadSizeMBytes * 1048576;
+	}
+
+	public function setMoreFieldsToAppend($fields = array()){
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, $fields);
 	}
 
 	public function setIsDragAndDrop($isDragAndDrop = true){
@@ -137,27 +146,6 @@ abstract class we_fileupload_base{
 
 	public function getMaxUploadSize(){
 		return self::isFallback() || self::isLegacyMode() ? getUploadMaxFilesize(false) : $this->maxUploadSizeBytes;
-	}
-
-	protected function getHtmlDropZone($type = 'preview', $thumbnailSmall = ''){
-		if($type === 'preview'){
-			$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
-			
-			return !(self::isFallback() || self::isLegacyMode()) ? (
-				we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"),
-					we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
-					we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));')))
-				) .
-				we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')),
-					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), 
-						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
-						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
-						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type'))
-					) .
-					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
-				) .
-				($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag we_file_drag_mask'), '') : '')) : '';
-		}
 	}
 
 	public function getHtmlAlertBoxes(){
@@ -194,6 +182,10 @@ abstract class we_fileupload_base{
 		return '';
 	}
 
+	protected function getHtmlDropZone(){
+		return'';
+	}
+
 	public function getCss(){
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . (
 			self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssElement('
@@ -220,6 +212,7 @@ abstract class we_fileupload_base{
 we_FileUpload = new weFileUpload("' . $this->type . '");
 we_FileUpload.init({
 	fieldName : "' . $this->name . '",
+	location : "' . $this->location . '",
 	form : ' . json_encode($this->form) . ',
 	footerName : "' . $this->footerName . '",
 	uploadBtnName : "' . $this->uploadBtnName . '",
