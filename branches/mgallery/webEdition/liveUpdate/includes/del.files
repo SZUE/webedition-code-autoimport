@@ -1,4 +1,3 @@
-css/menu/pro_drop_safari.css
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2860,6 +2859,19 @@ images/pd/tb_pixel.gif
 images/pd/tb_corner_right.gif
 images/pd/tb_corner_left.gif
 images/pd/tb_close.gif
+images/pd/sct/unpublished_pages.gif
+images/pd/sct/unpublished_objects.gif
+images/pd/sct/unpublished_objects_disabled.gif
+images/pd/sct/preferences.gif
+images/pd/sct/open_document.gif
+images/pd/sct/new_template.gif
+images/pd/sct/new_object.gif
+images/pd/sct/new_object_disabled.gif
+images/pd/sct/new_document.gif
+images/pd/sct/new_directory.gif
+images/pd/sct/new_class.gif
+images/pd/sct/btn_add_image.gif
+images/pd/sct
 images/pd/prio_medium.gif
 images/pd/prio_low.gif
 images/pd/prio_high.gif
@@ -2907,6 +2919,7 @@ images/pd/arrow_up.gif
 images/pd/arrow_right.gif
 images/pd/arrow_left.gif
 images/pd/arrow_down.gif
+images/pd
 images/navigation/reload.gif
 images/navigation/next.gif
 images/navigation/home.gif
@@ -2926,6 +2939,7 @@ images/multiTabs/closeOver.gif
 images/multiTabs/close.gif
 images/multiTabs
 images/msg_white_bg.gif
+images/msg_unread.gif
 images/msg_menuapp_bg1.gif
 images/msg_fv_bg.gif
 images/modules/users/arrow_open.gif
@@ -4159,6 +4173,7 @@ editor/editor.jar
 editor
 css/we_tab_modules.css
 css/mozillamenu.php
+css/menu/pro_drop_safari.css
 css/menu/clickMenu.js
 css/menu/clickMenu_IE8.js
 css/first_steps_wizard.css.php

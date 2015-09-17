@@ -225,3 +225,10 @@ td.mdcIcon{
 #users_online td.we-user{
 	font-weight:bold;
 }
+
+td.sctFileIcon{
+	width:34px;
+	height:34px;
+	padding-right:5px;
+	padding-bottom:3px;
+}

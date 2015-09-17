@@ -95,26 +95,39 @@ $sSctOut = '';
 $_col = 0;
 
 foreach($shortcuts as $sctCol){
-	$sSctOut .= '<div class="sct_row" style="display: block; width: 100%; float: left;"><table class="default" style="width:100%;">';
+	$sSctOut .= '<div class="sct_row mediumicons" style="display: block; margin-right: 1em; float: left;"><table class="default" style="width:100%;">';
 	$iCurrSctRow = 0;
 	foreach($sctCol as $_label){
 		if(isset($js[$_label])){
-			$sSctOut .= '<tr><td style="width:34px;height:34px;padding-right:5px;padding-bottom:3px;">' . we_html_element::htmlA(
-					array(
-					"href" => "javascript:" . $js[$_label]
-					), we_html_element::htmlImg(
-						array(
-							"src" => IMAGE_DIR . 'pd/sct/' . $_label . '.gif',
-							"width" => 34,
-							"height" => 34,
-							"border" => 0
-				))) . '</td>';
-			$sSctOut .= '<td style="vertical-align:middle">' . we_html_element::htmlA(
-					array(
-					"href" => "javascript:" . $js[$_label],
-					"class" => "middlefont",
-					"style" => "font-weight:bold;text-decoration:none;"
-					), g_l('button', '[' . $_label . '][value]')) . '</td></tr>';
+			$icon = '';
+			switch($_label){
+				case 'new_directory':
+					$icon = 'folder';
+					break;
+				case 'unpublished_pages':
+				case 'open_document':
+				case 'new_document':
+					$icon = 'text/webedition';
+					break;
+				case 'unpublished_objects':
+				case 'new_object':
+					$icon = 'objectFile';
+					break;
+				case 'new_template':
+					$icon = 'text/weTmpl';
+					break;
+				case 'new_class':
+					$icon = 'object';
+					break;
+				case 'btn_add_image':
+					$icon = 'image/*';
+					break;
+				case 'preferences':
+					$icon = 'settings';
+					break;
+			}
+
+			$sSctOut .= '<tr onclick="' . $js[$_label] . '"><td class="sctFileIcon" data-contenttype="' . $icon . '"></td><td style="vertical-align:middle;font-weight:bold;" class="middlefont">' . g_l('button', '[' . $_label . '][value]') . '</tr>';
 		}
 		$iCurrSctRow++;
 	}
@@ -123,7 +136,7 @@ foreach($shortcuts as $sctCol){
 }
 
 $sc = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 1);
-$sc->setCol(0, 0, array('style' => 'text-align:center;vertical-align:top;'), $sSctOut);
+$sc->setCol(0, 0, array('style' => 'text-align:center;vertical-align:top;'), $sSctOut . we_html_element::jsElement('setIconOfDocClass("sctFileIcon");'));
 
 if(!isset($aProps)){
 	we_html_tools::protect();

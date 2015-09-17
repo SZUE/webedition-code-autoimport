@@ -1354,10 +1354,15 @@ div.collection-content{
 	color: gray;
 }
 
+.mediumicons span.fileicon{
+	font-size: 16px;
+}
+
 .largeicons span.fileicon{
 	font-size: 32px;
 }
 
+.mediumicons span.fileicon .we-icon i,
 .largeicons span.fileicon .we-icon i {
 	bottom: -0.3ex;
 }

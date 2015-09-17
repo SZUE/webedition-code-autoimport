@@ -132,6 +132,9 @@ function getTreeIcon(contentType, open, extension) {
 			return pre + '<i class="fa fa-tag fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'symlink':
 			return pre + '<i class="fa fa-link fa-stack-2x we-color"></i>' + post;
+		case 'settings':
+			return simplepre + '<i class="fa fa-list fa-stack-2x we-color"></i>' + post;
+
 		default:
 			return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
 	}
