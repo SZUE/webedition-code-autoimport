@@ -52,7 +52,7 @@
 		case "exit_users":
 		case "delete_user":
 		case "new_organization":
-<?php if(permissionhandler::hasPerm("EDIT_USER")){ ?>
+<?php if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){ ?>
 				var fo = false;
 				if (jsWindow_count) {
 					for (var k = jsWindow_count - 1; k > -1; k--) {
