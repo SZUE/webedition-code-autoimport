@@ -252,7 +252,8 @@ class we_navigation_items{
 		if(!$idsRule){
 			return true;
 		}
-		return !empty(array_intersect($idDoc, $idsRule));
+		$diff = array_intersect($idDoc, $idsRule);
+		return !empty($diff);
 	}
 
 	function setCurrent($navigationID){
