@@ -65,7 +65,7 @@ function we_tag_customer($attribs){
 		));
 
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
-		$path = f('SELECT Path FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $we_cid);
+		$path = f('SELECT Username FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $we_cid);
 		$textname = 'we_' . $GLOBALS['we_doc']->Name . '_customer[' . $name . '_path]';
 		$idname = 'we_' . $GLOBALS['we_doc']->Name . '_customer[' . $name . '#bdid]';
 		$table = CUSTOMER_TABLE;

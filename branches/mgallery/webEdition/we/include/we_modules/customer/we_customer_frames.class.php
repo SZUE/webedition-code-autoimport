@@ -153,7 +153,6 @@ class we_customer_frames extends we_modules_frame{
 		 */
 		$extraJS .= 'if(top.content.activ_tab) document.getElementById(aTabs[top.content.activ_tab]).className="tabActive"; else document.getElementById("common").className="tabActive"';
 
-		//$text = ($this->View->customer->Gruppe ? "/".$this->View->customer->Gruppe : '') . $this->View->customer->Path;
 		$text = $this->View->customer->Username;
 
 		//TODO: we have the following body in several modules!

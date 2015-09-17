@@ -188,7 +188,7 @@ class we_customer_settings{
 			}
 		}
 
-		$this->treeTextFormatSQL = 'COALESCE(NULLIF(TRIM(CONCAT("' . $this->Prefs['treetext_format'] . '")),""),Text)';
+		$this->treeTextFormatSQL = 'COALESCE(NULLIF(TRIM(CONCAT("' . $this->Prefs['treetext_format'] . '")),""),Username)';
 		$field_names = array_keys($this->customer->getFieldsDbProperties());
 
 		foreach($field_names as $fieldname){

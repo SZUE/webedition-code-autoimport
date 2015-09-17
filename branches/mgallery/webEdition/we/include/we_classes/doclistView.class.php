@@ -119,11 +119,11 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			$searchInput = we_html_tools::htmlTextInput("search[" . $i . "]", 30, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search[$i]) ? $GLOBALS['we_doc']->searchclassFolder->search[$i] : ''), "", " class=\"wetextinput\"  id=\"search[" . $i . "]\" ", "text", 190);
 
 			switch(isset($GLOBALS['we_doc']->searchclassFolder->searchFields[$i]) ? $GLOBALS['we_doc']->searchclassFolder->searchFields[$i] : ''){
-				case "Content":
-				case "Status":
-				case "Speicherart":
-				case "temp_template_id":
-				case "temp_category":
+				case 'Content':
+				case 'Status':
+				case 'Speicherart':
+				case 'temp_template_id':
+				case 'temp_category':
 					$locationDisabled = 'disabled';
 					break;
 				default:
@@ -131,38 +131,42 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			}
 
 			if(isset($GLOBALS['we_doc']->searchclassFolder->searchFields[$i])){
-				if($GLOBALS['we_doc']->searchclassFolder->searchFields[$i] === "Status"){
-					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
-				}
-				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Speicherart"){
-					$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
-				}
-				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "Published" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "CreationDate" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "ModDate"){
-					$handle = "date";
-					$searchInput = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $GLOBALS['we_doc']->searchclassFolder->search [$i]);
-				}
+				switch($GLOBALS['we_doc']->searchclassFolder->searchFields[$i]){
+					case 'Status':
+						$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFieldsStatus(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
+						break;
+					case 'Speicherart':
+						$searchInput = we_html_tools::htmlSelect("search[" . $i . "]", $GLOBALS['we_doc']->searchclassFolder->getFieldsSpeicherart(), 1, (isset($GLOBALS['we_doc']->searchclassFolder->search) && is_array($GLOBALS['we_doc']->searchclassFolder->search) && isset($GLOBALS['we_doc']->searchclassFolder->search [$i]) ? $GLOBALS['we_doc']->searchclassFolder->search [$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[' . $i . ']"));
+						break;
+					case 'Published':
+					case 'CreationDate':
+					case 'ModDate':
+						$handle = "date";
+						$searchInput = we_html_tools::getDateSelector("search[" . $i . "]", "_from" . $i, $GLOBALS['we_doc']->searchclassFolder->search [$i]);
+						break;
 
-				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "MasterTemplateID" || $GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_template_id"){
-					$_linkPath = $GLOBALS['we_doc']->searchclassFolder->search [$i];
-					$_rootDirID = 0;
+					case 'MasterTemplateID':
+					case 'temp_template_id':
+						$_linkPath = $GLOBALS['we_doc']->searchclassFolder->search [$i];
+						$_rootDirID = 0;
 
-					$cmd1 = "document.we_form.elements['searchParentID[" . $i . "]'].value";
-					$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value") . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
-					$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), $_button);
+						$cmd1 = "document.we_form.elements['searchParentID[" . $i . "]'].value";
+						$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['search[" . $i . "]'].value") . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly ', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), $_button);
 
-					$searchInput = $selector;
-				}
-				if($GLOBALS['we_doc']->searchclassFolder->searchFields [$i] === "temp_category"){
-					$_linkPath = $GLOBALS['we_doc']->searchclassFolder->search [$i];
+						$searchInput = $selector;
+						break;
+					case 'temp_category':
+						$_linkPath = $GLOBALS['we_doc']->searchclassFolder->search [$i];
+						$_rootDirID = 0;
 
-					$_rootDirID = 0;
+						$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
+						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), $_button);
 
-					$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['searchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
-					$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
-					$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 190, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('searchParentID[' . $i . ']', ""), $_button);
-
-					$searchInput = $selector;
+						$searchInput = $selector;
+						break;
 				}
 			}
 
@@ -198,7 +202,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 		$DB_WE = new DB_WE();
 		$foundItems = 0;
-		$content = $_result = $saveArrayIds = $searchText = array();
+		$_result = $saveArrayIds = $searchText = array();
 		$_SESSION['weS']['weSearch']['foundItems'] = 0;
 
 		foreach($_REQUEST['we_cmd'] as $k => $v){
@@ -227,8 +231,7 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 		$_searchstart = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->searchstart, 'searchstart');
 		$_anzahl = we_base_request::_(we_base_request::INT, 'we_cmd', $obj->searchclassFolder->anzahl, 'anzahl');
 
-		$where = '';
-		$op = ' AND ';
+		$where = array();
 		$obj->searchclassFolder->settable($table);
 
 
@@ -249,75 +252,68 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 					switch($searchField){
 						default:
-						case "Text":
+						case 'Text':
 							if(isset($searchField) && isset($location[$i])){
-								$where .= $obj->searchclassFolder->searchfor($searchString, $searchField, $location[$i], $table);
+								$where[] = $obj->searchclassFolder->searchfor($searchString, $searchField, $location[$i], $table);
 							}
-						case "Content":
-						case "Status":
-						case "Speicherart":
-						case "CreatorName":
-						case "WebUserName":
-						case "temp_category":
+						case 'Content':
+						case 'Status':
+						case 'Speicherart':
+						case 'CreatorName':
+						case 'WebUserName':
+						case 'temp_category':
 							break;
 					}
 
 					switch($searchField){
-						case "Content":
+						case 'Content':
 							$w = $obj->searchclassFolder->searchContent($searchString, $table);
-							if(!$where){
-								$where .= " AND " . ($w ? $w : '0');
-							} elseif($w != ""){
-								$where .= $op . " " . $w;
-							}
+							$where[] = ($w ? $w : '0');
 							break;
 
 						case 'Title':
 							$w = $obj->searchclassFolder->searchInTitle($searchString, $table);
-							if(!$where){
-								$where = ' AND ' . ($w ? $w : '0');
-							} elseif($w != ''){
-								$where .= $op . ' ' . $w;
-							}
+							$where[] = ($w ? $w : '0');
+
 							break;
 						case "Status":
 						case "Speicherart":
 							if($searchString != ""){
 								if($table == FILE_TABLE){
 									$w = $obj->searchclassFolder->getStatusFiles($searchString, $table);
-									$where .= $w;
+									$where[] = $w;
 								}
 							}
 							break;
-						case "CreatorName":
-						case "WebUserName":
+						case 'CreatorName':
+						case 'WebUserName':
 							if($searchString != ""){
 								$w = $obj->searchclassFolder->searchSpecial($searchString, $table, $searchField, $location[$i]);
-								$where .= $w;
+								$where[] = $w;
 							}
 							break;
-						case "temp_category":
+						case 'temp_category':
 							$w = $obj->searchclassFolder->searchCategory($searchString, $table, $searchField);
-							$where .= $w;
+							$where[] = $w;
 							break;
 					}
 				}
 			}
 
-			$where .= ' AND ParentID = ' . intval($obj->ID);
+			$where[] = 'ParentID=' . intval($obj->ID);
 
-			$whereQuery = '1 ' . $where;
 			switch($table){
 				case FILE_TABLE:
-					$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
+					$where[] = '(RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
 					break;
 				case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-					$whereQuery .= ' AND ((RestrictOwners=0 OR RestrictOwners=' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners)))';
+					$where[] = '(RestrictOwners IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Owners))';
 					break;
 				case (defined('OBJECT_TABLE') ? OBJECT_TABLE : OBJECT_TABLE):
-					$whereQuery .= 'AND ((RestrictUsers=0 OR RestrictUsers= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))) ';
+					$where[] = '(RestrictUsers IN (0,' . intval($_SESSION['user']['ID']) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',Users))';
 					break;
 			}
+			$whereQuery = implode(' AND ', $where);
 
 			$obj->searchclassFolder->setwhere($whereQuery);
 			$obj->searchclassFolder->insertInTempTable($whereQuery, $table, $obj->Path . '/');
@@ -474,15 +470,12 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 
 				$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 				$metafields = array();
-				$_fieldcount = count($_defined_fields);
-				if($_fieldcount > 6){
-					$_fieldcount = 6;
-				}
+				$_fieldcount = min(6, count($_defined_fields));
 				for($i = 0; $i < $_fieldcount; $i++){
 					$_tagName = $_defined_fields[$i]["tag"];
 
 					if(we_exim_contentProvider::isBinary($_result[$f]["docID"])){
-						$DB_WE->query("SELECT a.ID, c.Dat FROM (" . FILE_TABLE . " a LEFT JOIN " . LINK_TABLE . " b ON (a.ID=b.DID)) LEFT JOIN " . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($_result[$f]["docID"]) . " AND b.Name='" . $DB_WE->escape($_tagName) . "' AND b.DocumentTable='" . FILE_TABLE . "'");
+						$DB_WE->query('SELECT a.ID, c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (b.CID=c.ID) WHERE b.DID=' . intval($_result[$f]['docID']) . ' AND b.Name="' . $DB_WE->escape($_tagName) . '" AND b.DocumentTable="' . FILE_TABLE . '"');
 						$metafields[$_tagName] = "";
 						while($DB_WE->next_record()){
 							$metafields[$_tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);
@@ -618,10 +611,8 @@ var searchSpeicherat = "' . str_replace("\n", "\\n", addslashes(we_html_tools::h
 			$out .= we_html_tools::hidden("searchstart", $searchstart);
 		}
 
-		$out .= $select .
+		return $out . $select .
 			'</td></tr></table>';
-
-		return $out;
 	}
 
 	/**

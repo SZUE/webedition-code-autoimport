@@ -101,7 +101,7 @@ var size = {
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){
 		we_cmd("switchPage",' . $this->topFrame . '.activ_tab);
-		' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";
+		' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Username) . '";
 	}
 }' . $this->getJSSubmitFunction()) .
 			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_property.js');
@@ -178,14 +178,14 @@ function we_cmd(){
 				$this->customer = new we_customer_customer();
 				$this->settings->initCustomerWithDefaults($this->customer);
 				echo we_html_element::jsElement(
-					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
+					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
 					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
 			case 'customer_edit':
 				$this->customer = new we_customer_customer(we_base_request::_(we_base_request::INT, "cmdid"));
 				echo we_html_element::jsElement(
-					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Text) . '";' .
+					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
 					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
 				);
 				break;
@@ -232,7 +232,7 @@ var attribs = {
 							$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));' .
 							$this->topFrame . '.applySort();' :
 							$this->topFrame . '.updateEntry({id:' . $this->customer->ID . ',text:"' . $tt . '"});
-							top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $this->customer->Text . '";'
+							top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $this->customer->Username . '";'
 						);
 				} else {
 					$js = '';
@@ -240,8 +240,8 @@ var attribs = {
 
 				echo we_html_element::jsElement(
 					$js . ($saveOk ?
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_NOTICE) :
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_nok]'), addslashes($this->customer->Text)), we_message_reporting::WE_MESSAGE_ERROR)
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_ok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_NOTICE) :
+						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[customer_saved_nok]'), addslashes($this->customer->Username)), we_message_reporting::WE_MESSAGE_ERROR)
 					)
 				);
 				break;

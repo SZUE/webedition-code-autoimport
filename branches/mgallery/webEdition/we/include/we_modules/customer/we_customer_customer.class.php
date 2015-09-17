@@ -46,10 +46,10 @@ class we_customer_customer extends weModelBase{
 
 	//properties
 	var $ID;
-	var $Text;
-	var $ParentID;
-	var $IsFolder;
-	var $Path;
+//	var $Text;
+	//var $ParentID;
+	//var $IsFolder;
+//	var $Path;
 	var $Username;
 	var $Password;
 	var $LoginDenied;
@@ -60,7 +60,7 @@ class we_customer_customer extends weModelBase{
 	var $LastAccess = 0;
 	var $ModifyDate;
 	var $ModifiedBy;
-	var $protected = array('ID', 'ParentID', 'IsFolder', 'Path', 'Text', 'ModifiedBy', 'ModifyDate');
+	var $protected = array('ID', /* 'ParentID', 'IsFolder', 'Path', 'Text', */ 'ModifiedBy', 'ModifyDate');
 	var $properties = array('Username', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLoginDenied', 'AutoLogin');
 	var $udates = array('MemberSince', 'LastLogin', 'LastAccess');
 
@@ -104,10 +104,10 @@ class we_customer_customer extends weModelBase{
 	}
 
 	function save($force_new = false){
-		$this->IsFolder = 0;
-		$this->Text = $this->Username;
-		$this->Path = '/' . $this->Username;
-
+		/* 		$this->IsFolder = 0;
+		  $this->Text = $this->Username;
+		  $this->Path = '/' . $this->Username;
+		 */
 		if($this->MemberSince == 0){
 			$this->MemberSince = time();
 		}
@@ -367,7 +367,7 @@ class we_customer_customer extends weModelBase{
 	}
 
 	public static function cryptData($data, $key = SECURITY_ENCRYPTION_KEY, $keepBin = false){//Note we need 4 Bytes prefix + 16 Byte IV + 1$ = 21 Bytes. The rest is avail for data, which is hex'ed, so "half" of length is available
-		if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
+		if($data && function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 			$iv = self::cryptGetIV();
 			mcrypt_generic_init($res, hex2bin($key), $iv);
 			$data = mcrypt_generic($res, $data);

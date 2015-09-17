@@ -1505,24 +1505,7 @@ function doNext(){
 	}
 
 	function getIDs($selIDs, $table){
-		$ret = array();
-		$tmp = array();
-		foreach($selIDs as $v){
-			if($v){
-				$isfolder = f("SELECT IsFolder FROM " . $this->db->escape($table) . " WHERE ID=" . intval($v), "IsFolder", $this->db);
-				if($isfolder){
-					we_readChilds($v, $tmp, $table, false);
-				} else {
-					$tmp[] = $v;
-				}
-			}
-		}
-		foreach($tmp as $v){
-			$isfolder = f("SELECT IsFolder FROM " . $table . " WHERE ID=" . intval($v), "IsFolder", $this->db);
-			if(!$isfolder)
-				$ret[] = $v;
-		}
-		return $ret;
+		return array_filter($selIDs);
 	}
 
 	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -1675,7 +1658,7 @@ function filter_cmd(){
 document.we_form.filter_count.value="' . $count . '";');
 
 		$custfields = array();
-		$this->db->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);
+		$this->db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 		while($this->db->next_record()){
 			$fv = $this->db->f("Field");
 			switch($fv){
