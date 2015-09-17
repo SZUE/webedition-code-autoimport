@@ -39,30 +39,30 @@ function we_cmd_users(args, url) {
 			}
 			break;
 		case "new_user":
-		if(hasPerm(wePerms.NEW_USER)){
-			showNewWindow(args);
-		}else{
+			if (hasPerm(wePerms.NEW_USER)) {
+				showNewWindow(args);
+			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "save_user":
-		if(hasPerm(wePerms.SAVE_USER)){
-			showNewWindow(args);
-		}else{
+			if (hasPerm(wePerms.SAVE_USER)) {
+				showNewWindow(args);
+			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_group":
-		if(hasPerm(wePerms.NEW_GROUP)){
-			showNewWindow(args);
-		}else{
+			if (hasPerm(wePerms.NEW_GROUP)) {
+				showNewWindow(args);
+			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_alias":
-		if(hasPerm(wePerms.NEW_USER)){
-			showNewWindow(args);
-		}else{
+			if (hasPerm(wePerms.NEW_USER)) {
+				showNewWindow(args);
+			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
@@ -70,16 +70,16 @@ function we_cmd_users(args, url) {
 			showNewWindow(args);
 			break;
 		case "delete_user":
-		if(hasPerm(wePerms.DELETE_USER)){
-			showNewWindow(args);
-		}else{
+			if (hasPerm(wePerms.DELETE_USER)) {
+				showNewWindow(args);
+			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_organization":
-		if(hasPerm(wePerms.NEW_USER)){
-			showNewWindow(args);
-		}else{
+			if (hasPerm(wePerms.NEW_USER)) {
+				showNewWindow(args);
+			} else {
 				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;

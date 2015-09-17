@@ -108,7 +108,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			case VFILE_TABLE:
 				break;
 			default:
-				$rp = $GLOBALS['we_doc']->getRealPath();
+				$rp = realpath($GLOBALS['we_doc']->getRealPath());
 				$http = $GLOBALS['we_doc']->getHttpPath();
 
 				switch($GLOBALS['we_doc']->ContentType){

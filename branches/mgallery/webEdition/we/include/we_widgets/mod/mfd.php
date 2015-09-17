@@ -35,13 +35,13 @@ if(!isset($aCols) || count($aCols) < 5){
 }
 $sTypeBinary = $aCols[0];
 $pos = 0;
-$bTypeDoc = permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeDoc = defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
-$bTypeTpl = permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeTpl = defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
-$bTypeObj = permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeObj = defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
-$bTypeCls = permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
+$bTypeCls = defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && isset($sTypeBinary{$pos}) && ($sTypeBinary{$pos});
 $pos++;
 
 $iDate = intval($aCols[1]);
@@ -107,7 +107,7 @@ if($aUsers){
 $join = $tables = array();
 $admin = permissionhandler::hasPerm('ADMINISTRATOR');
 
-if(defined('FILE_TABLE') && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+if($bTypeDoc){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
 	$paths = array();
 	$t = stripTblPrefix(FILE_TABLE);
@@ -119,7 +119,7 @@ if(defined('FILE_TABLE') && $bTypeDoc && permissionhandler::hasPerm('CAN_SEE_DOC
 		')';
 	$tables[] = 'f';
 }
-if(defined('OBJECT_FILES_TABLE') && $bTypeObj && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+if($bTypeObj){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
 	$paths = array();
 	$t = stripTblPrefix(OBJECT_FILES_TABLE);
@@ -131,19 +131,24 @@ if(defined('OBJECT_FILES_TABLE') && $bTypeObj && permissionhandler::hasPerm('CAN
 		')';
 	$tables[] = 'of';
 }
-if(defined('TEMPLATES_TABLE') && $bTypeTpl && permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $mode != we_base_constants::MODE_SEE){
+if($bTypeTpl && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(TEMPLATES_TABLE) . '"';
 	$join[] = TEMPLATES_TABLE . ' t ON (h.DocumentTable="tblTemplates" AND t.ID=h.DID' .
 		($admin ? '' : ' AND (t.RestrictOwners=0 OR(t.RestrictOwners=1 AND (t.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',t.Owners))))') .
 		')';
 	$tables[] = 't';
 }
-if(defined('OBJECT_TABLE') && $bTypeCls && permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $mode != we_base_constants::MODE_SEE){
+if($bTypeCls && $mode != we_base_constants::MODE_SEE){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_TABLE) . '"';
 	$join[] = OBJECT_TABLE . ' o ON (h.DocumentTable="tblObject" AND o.ID=h.DID' .
 		($admin ? '' : ' AND (o.RestrictOwners=0 OR(o.RestrictOwners=1 AND (o.CreatorID=' . $_SESSION['user']['ID'] . ' OR FIND_IN_SET(' . $_SESSION['user']['ID'] . ',o.Owners))))') .
 		')';
 	$tables[] = 'o';
+}
+
+if(!$tables){
+	$lastModified = '';
+	return;
 }
 
 if($doctable){

@@ -172,7 +172,7 @@ abstract class we_base_file{
 
 			return $written == $len;
 		}
-		t_e('error writing file', $filename);
+		t_e('error writing file, unable to open file', $filename);
 		return false;
 	}
 

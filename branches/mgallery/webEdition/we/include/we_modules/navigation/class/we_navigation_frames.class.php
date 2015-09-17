@@ -556,8 +556,8 @@ function setTab(tab) {
 		$classID2Name = $classID2Dir = $classDirs = $classDirsJS = $classHasSubDirsJS = $classPathsJS = array();
 		$allowedClasses = we_users_util::getAllowedClasses($this->db);
 
+		$_firstClass = 0;
 		if(defined('OBJECT_TABLE') && $allowedClasses){
-			$_firstClass = 0;
 			$this->db->query('SELECT DISTINCT o.ID,o.Text,o.Path,of.ID AS classDirID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON (o.ID=of.TableID) WHERE of.IsClassFolder=1 AND o.ID IN(' . implode(',', $allowedClasses) . ')');
 			while($this->db->next_record()){
 				if(!$_firstClass){
