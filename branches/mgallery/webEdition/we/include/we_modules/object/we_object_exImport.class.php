@@ -259,13 +259,12 @@ class we_object_exImport extends we_object{
 			$arr = explode('_', $fieldname);
 			if(!isset($arr[1]))
 				continue;
-			}
-			$fieldtype = $arr[0];
-			unset($arr[0]);
-			$fieldname = implode('_', $arr);
-			if($fieldname == $name){
-				return $fieldtype;
-			}
+		}
+		$fieldtype = $arr[0];
+		unset($arr[0]);
+		$fieldname = implode('_', $arr);
+		if($fieldname == $name){
+			return $fieldtype;
 		}
 		return false;
 	}
@@ -557,41 +556,49 @@ class we_object_exImport extends we_object{
 	}
 
 	/* setter for for property isAddFieldNoSave which allows to construct Classes from within Apps */
+
 	function setIsAddFieldNoSave($isAddFieldNoSave){
 		$this->isAddFieldNoSave = $isAddFieldNoSave;
 	}
 
 	/* getter for for property isAddFieldNoSave which allows to construct Classes from within Apps */
+
 	function getIsAddFieldNoSave(){
 		return $this->isAddFieldNoSave;
 	}
 
 	/* setter for for property isModifyFieldNoSave which allows to construct Classes from within Apps */
+
 	function setIsModifyFieldNoSave($isModifyFieldNoSave){
 		$this->isModifyFieldNoSave = $isModifyFieldNoSave;
 	}
 
 	/* getter for property isModifyFieldNoSave which allows to construct Classes from within Apps */
+
 	function getIsModifyFieldNoSave(){
 		return $this->isModifyFieldNoSave;
 	}
 
 	/* setter for property isDropFieldNoSave which allows to construct Classes from within Apps */
+
 	function setIsDropFieldNoSave($isDropFieldNoSave){
 		$this->isDropFieldNoSave = $isDropFieldNoSave;
 	}
 
 	/* getter for property isDropFieldNoSave which allows to construct Classes from within Apps */
+
 	function getIsDropFieldNoSave(){
 		return $this->isDropFieldNoSave;
 	}
 
 	/* setter for property isForceDropOnSave which allows to construct Classes from within Apps */
+
 	function setIsForceDropOnSave($isForceDropOnSave){
 		$this->isForceDropOnSave = $isForceDropOnSave;
 	}
 
 	/* getter for property isForceDropOnSave which allows to construct Classes from within Apps */
+
 	function getIsForceDropOnSave(){
 		return $this->isForceDropOnSave;
 	}

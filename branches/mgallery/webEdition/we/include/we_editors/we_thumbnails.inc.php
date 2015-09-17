@@ -24,8 +24,6 @@
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 
-$reloadUrl = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs';
-
 // Check if we need to create a new thumbnail
 if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) &&
 	permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -159,69 +157,20 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Generate needed JS
 			$_needed_JavaScript_Source = '
-function in_array(haystack, needle) {
-	for (var i = 0; i < haystack.length; i++) {
-		if (haystack[i] == needle) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-function add_thumbnail() {
 	var thumbnail_names = [' . $_thumbnail_names . "];
 	var name = prompt('" . g_l('thumbnails', '[new]') . "', '');
 
-	if (name != null) {
-		if((name.indexOf('<') != -1) || (name.indexOf('>') != -1)) {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', '[name_nok]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-			return;
-		}
-
-		if (name.indexOf(\"'\") != -1 || name.indexOf(\",\") != -1) {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		} else if (name == '') {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		} else if (in_array(thumbnail_names, name)) {
-			" . we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_exists]'), we_message_reporting::WE_MESSAGE_ERROR) . "
-		} else {
-			self.location = '" . $GLOBALS['reloadUrl'] . "&newthumbnail=' +encodeURI(name);
-		}
-	}
-}
-
 function delete_thumbnail() {" .
-				((permissionhandler::hasPerm('ADMINISTRATOR')) ?
+				(permissionhandler::hasPerm('ADMINISTRATOR') ?
 					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id))) . "');
 
 		if (deletion == true) {
-			self.location = '" . $GLOBALS['reloadUrl'] . "&deletethumbnail=" . $id . "';
+			self.location = consts.reloadUrl+'&deletethumbnail=" . $id . "';
 		}" :
 					"") . "
-}
-
-function change_thumbnail() {
-	var url = '" . $GLOBALS['reloadUrl'] . "&id=' + arguments[0];
-	self.location = url;
-}
-
-function changeFormat() {
-	if(document.getElementById('Format').value == 'jpg' || document.getElementById('Format').value == 'none') {
-		document.getElementById('thumbnail_quality_text_cell').style.display='';
-		document.getElementById('thumbnail_quality_value_cell').style.display='';
-	} else {
-		document.getElementById('thumbnail_quality_text_cell').style.display='none';
-		document.getElementById('thumbnail_quality_value_cell').style.display='none';
-	}
-}
-
-function init() {
-	changeFormat();
 }";
 
-			$_needed_JavaScript = we_html_element::jsElement($_needed_JavaScript_Source) .
-				we_html_element::jsScript(JS_DIR . 'keyListener.js');
+			$_needed_JavaScript = we_html_element::jsElement($_needed_JavaScript_Source);
 
 			$_enabled_buttons = false;
 
@@ -251,7 +200,7 @@ function init() {
 			$_thumbnails_table = new we_html_table(array('class' => 'default'), 1, 2);
 
 			$_thumbnails_table->setCol(0, 0, array('style' => "padding-right:10px;"), we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
-			$_thumbnails_table->setCol(0, 1, array('style' => 'vertical-align:top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') .'<br/>'. we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
+			$_thumbnails_table->setCol(0, 1, array('style' => 'vertical-align:top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . '<br/>' . we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
 
 			// Build dialog
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);
@@ -291,10 +240,10 @@ function init() {
 
 			$_thumbnail_option_table = new we_html_table(array('class' => 'default noSpace'), 4, 1);
 
-			$_thumbnail_option_table->setCol(0, 0, null, we_html_forms::checkbox(1, (($_thumbnail_ratio <= 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '', ($_thumbnail_fitinside >0 ||$_thumbnail_ratio == -1)));
+			$_thumbnail_option_table->setCol(0, 0, null, we_html_forms::checkbox(1, (($_thumbnail_ratio <= 0) ? false : true), 'Ratio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '', ($_thumbnail_fitinside > 0 || $_thumbnail_ratio == -1)));
 			$_thumbnail_option_table->setCol(1, 0, null, we_html_forms::checkbox(1, (($_thumbnail_maximize <= 0) ? false : true), 'Maxsize', g_l('thumbnails', '[maximize]'), false, 'defaultfont', '', ($_thumbnail_maximize == -1)));
 			$_thumbnail_option_table->setCol(2, 0, null, we_html_forms::checkbox(1, (($_thumbnail_interlace <= 0) ? false : true), 'Interlace', g_l('thumbnails', '[interlace]'), false, 'defaultfont', '', ($_thumbnail_interlace == -1)));
-			$_thumbnail_option_table->setCol(3, 0, null, we_html_forms::checkbox(1, (($_thumbnail_fitinside <= 0) ? false : true), 'Fitinside', 'Fit inside', false, 'defaultfont', "document.getElementById('Ratio').disabled=this.checked;if(this.checked){document.getElementById('Ratio').value=1;document.getElementById('label_Ratio').className='disabled';}else{document.getElementById('label_Ratio').className='';}", ($_thumbnail_fitinside == -1 )));
+			$_thumbnail_option_table->setCol(3, 0, null, we_html_forms::checkbox(1, (($_thumbnail_fitinside <= 0) ? false : true), 'Fitinside', 'Fit inside', false, 'defaultfont', "document.getElementById('Ratio').disabled=this.checked;if(this.checked){document.getElementById('Ratio').value=1;document.getElementById('label_Ratio').className='disabled';}else{document.getElementById('label_Ratio').className='';}", ($_thumbnail_fitinside == -1)));
 
 			// Build final HTML code
 			$_window_html = new we_html_table(array('class' => 'default withSpace'), 2, 1);
@@ -353,71 +302,60 @@ function render_dialog(){
 }
 
 function getFooter(){
-	$_javascript = we_html_element::jsElement('
-function we_save() {
-	top.document.getElementById("thumbnails_dialog").style.display = "none";
-	top.document.getElementById("thumbnails_save").style.display = "";
-	top.document.we_form.save_thumbnails.value = "1";
-	top.document.we_form.submit();
-}');
-
 	$close = we_base_request::_(we_base_request::JS, "closecmd");
 
-	return $_javascript .
-		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();'), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:" . ($close ? $close . ';' : '') . 'top.close()'), 10, '', '', 0));
+	return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();'), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:" . ($close ? $close . ';' : '') . 'top.close()'), 10, '', '', 0));
 }
 
 function getMainDialog(){
 	// Check if we need to save settings
-	if(we_base_request::_(we_base_request::BOOL, 'save_thumbnails')){
-		$tn = we_base_request::_(we_base_request::STRING, 'thumbnail_name');
-		if((strpos($tn, "'") !== false || strpos($tn, ',') !== false)){
-			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
-					'history.back()');
-		} else {
-			save_all_values();
-			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-					"self.location = '" . $GLOBALS['reloadUrl'] . "&id=" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';");
-		}
-
-		return $save_javascript . build_dialog('saved');
-	} else {
-
-		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHiddens(array('we_cmd[0]' => 'editThumbs', 'save_thumbnails' => 0)) . render_dialog()) .
-			we_html_element::jsElement('init();');
+	if(!we_base_request::_(we_base_request::BOOL, 'save_thumbnails')){
+		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHiddens(array('we_cmd[0]' => 'editThumbs', 'save_thumbnails' => 0)) . render_dialog());
 	}
+
+	$tn = we_base_request::_(we_base_request::STRING, 'thumbnail_name');
+	if((strpos($tn, "'") !== false || strpos($tn, ',') !== false)){
+		$save_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
+			'history.back()';
+	} else {
+		save_all_values();
+		$save_javascript = we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
+			"self.location = consts.reloadUrl+'&id='" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';";
+	}
+
+	return we_html_element::jsElement($save_javascript) . build_dialog('saved');
 }
 
+echo
+we_html_element::jsElement('
+var consts={
+	reloadUrl:"' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs",
+};
+var g_l={
+	name_nok: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')) . '",
+	thumbnail_hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_hochkomma]')) . '",
+	thumbnail_empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_empty]')) . '",
+	thumbnail_exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_exists]')) . '",
+};
+	') .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+ we_html_element::jsScript(JS_DIR . 'we_thumbnails.js') .
+ STYLESHEET . '</head>';
 //  check if gd_lib is installed ...
 if(we_base_imageEdit::gd_version() > 0){
-
-	echo
-	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-	we_html_element::jsElement('
-self.focus();
-function closeOnEscape() {
-	return true;
-}
-
-function saveOnKeyBoard() {
-	window.frames[1].we_save();
-	return true;
-}') . STYLESHEET . '</head>' .
-	we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;')
+	echo we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onload' => 'init();')
 		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 			, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'weDialogBody') .
 			we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 	)) . '</html>';
-} else { //  gd_lib is not installed - show error
-	echo STYLESHEET . '</head><body class="weDialogBody">';
+	return;
+}//  gd_lib is not installed - show error
 
-
-	$parts = array(
-		array(
-			'headline' => '',
-			'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
-			'space' => 0
-		)
-	);
-	echo we_html_multiIconBox::getHTML('thumbnails', $parts, 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'));
-}
+echo '<body class="weDialogBody">' .
+ we_html_multiIconBox::getHTML('thumbnails', array(
+	array(
+		'headline' => '',
+		'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
+		'space' => 0
+	)
+	), 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'));

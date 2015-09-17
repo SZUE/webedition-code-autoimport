@@ -168,7 +168,8 @@ abstract class permissionhandler{
 					foreach($_SESSION['user']['groups'] as $nr => $_userGroup){ //	user is directly in first group
 						if(!empty($arr[$_userGroup])){ //	group not allowed
 							return false;
-						} elseif(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
+						}
+						if(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
 							return true;
 						}
 					}
