@@ -176,7 +176,7 @@ class we_tool_treeDataSource{
 				'tooltip' => ''
 			),
 			array(
-				'icon' => we_base_ContentTypes::FILE_ICON,
+				'icon' => '',
 				'id' => 2,
 				'parentid' => 1,
 				'text' => 'Custom Item',
