@@ -127,7 +127,7 @@ foreach($shortcuts as $sctCol){
 					break;
 			}
 
-			$sSctOut .= '<tr onclick="' . $js[$_label] . '"><td class="sctFileIcon" data-contenttype="' . $icon . '"></td><td style="vertical-align:middle;font-weight:bold;" class="middlefont">' . g_l('button', '[' . $_label . '][value]') . '</tr>';
+			$sSctOut .= '<tr onclick="' . $js[$_label] . '"><td class="sctFileIcon" data-contenttype="' . $icon . '"></td><td class="middlefont sctText">' . g_l('button', '[' . $_label . '][value]') . '</tr>';
 		}
 		$iCurrSctRow++;
 	}

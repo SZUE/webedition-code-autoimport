@@ -231,4 +231,11 @@ td.sctFileIcon{
 	height:34px;
 	padding-right:5px;
 	padding-bottom:3px;
+	cursor:pointer;
+}
+
+td.sctText{
+	vertical-align:middle;
+	font-weight:bold;
+	cursor:pointer;
 }
