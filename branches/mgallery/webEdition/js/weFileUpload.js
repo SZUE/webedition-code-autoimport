@@ -162,6 +162,7 @@ var weFileUpload = (function () {
 		};
 
 		function AbstractController() {
+			this.elemFileDragClasses = 'we_file_drag';
 			this.outer = null;
 			this.fileselectOnclick = function () {
 			};
@@ -176,7 +177,7 @@ var weFileUpload = (function () {
 					if (e.type === 'drop') {
 						e.stopPropagation();
 						e.preventDefault();
-						e.target.className = 'we_file_drag';
+						e.target.className = _.controller.elemFileDragClasses;
 						_.controller.fileselectOnclick();
 					}
 
@@ -354,7 +355,7 @@ var weFileUpload = (function () {
 								ctx.drawImage(tempImg, x, y, tempImg.width, tempImg.height);// TODO: when not transformed use smaller width/height!
 
 								/* var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
-								top.console.debug(_.sender.transformAll);
+								//top.console.debug(_.sender.transformAll);
 								transformedCanvas = ratio !== 1 ? _.utils.downScaleCanvas(canvas, ratio) : canvas;
 								canvas = null;
 
@@ -480,7 +481,7 @@ var weFileUpload = (function () {
 
 			this.fileDragHover = function (e) { 
 				e.preventDefault();
-				e.target.className = (e.type === 'dragover' ? 'we_file_drag we_file_drag_hover' : 'we_file_drag');
+				e.target.className = (e.type === 'dragover' ? _.controller.elemFileDragClasses + ' we_file_drag_hover' : _.controller.elemFileDragClasses);
 			};
 
 			this.setWeButtonState = function (btn, enable, isFooter) {
@@ -1202,12 +1203,6 @@ var weFileUpload = (function () {
 		};
 
 		function Controller() {
-			/*
-			this.fileDragHover = function (e) { 
-				e.preventDefault();
-				e.target.className = (e.type === 'dragover' ? 'we_file_drag we_file_drag_mask we_file_drag_hover' : 'we_file_drag we_file_drag_mask');
-			};
-			*/
 		}
 
 		function Sender() {
@@ -1944,12 +1939,8 @@ var weFileUpload = (function () {
 		};
 
 		function Controller() {
+			this.elemFileDragClasses = 'we_file_drag we_file_drag_mask';
 			this.doSubmit = false;
-
-			this.fileDragHover = function (e) { 
-				e.preventDefault();
-				e.target.className = (e.type === 'dragover' ? 'we_file_drag we_file_drag_mask we_file_drag_hover' : 'we_file_drag we_file_drag_mask');
-			};
 
 			this.setEditorIsHot = function () {
 				if(top.weEditorFrameController){
@@ -2178,13 +2169,13 @@ var weFileUpload = (function () {
 			this.setGuiState = function (state) {
 				switch (state) {
 					case this.STATE_RESET:
-						this.setDisplay('fileDrag_state_0', '');
+						this.setDisplay('fileDrag_state_0', 'block');
 						this.setDisplay('fileDrag_state_1', 'none');
-						this.setDisplay('fileInputWrapper', '');
-						if (this.isDragAndDrop && this.elems.fileDragfileDrag) {
-							this.elems.fileDrag.style.display = '';
+						this.setDisplay('fileInputWrapper', 'block');
+						if (this.isDragAndDrop && this.elems.fileDrag) {
+							this.setDisplay('fileDrag', 'block');
+							//this.elems.fileDrag.className = 'we_file_drag we_file_drag_mask';
 						}
-						this.setDisplay('fileInputWrapper', '');
 						this.setDisplay('divBtnReset', 'none');
 						this.setDisplay('divBtnUpload', '');
 						this.setDisplay('divProgressBar', 'none');
@@ -2209,7 +2200,9 @@ var weFileUpload = (function () {
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						_.controller.setWeButtonState('reset_btn', false);
 						this.setDisplay('fileInputWrapper', 'none');
-						this.setDisplay('divBtnReset', 'none');
+						if(_.sender.location !== 'dialog'){
+							this.setDisplay('divBtnReset', 'none');
+						}
 						this.setDisplay('divBtnUpload', 'none');
 						this.setDisplay('divProgressBar', '');
 						this.setDisplay('divBtnCancel', '');
@@ -2217,7 +2210,6 @@ var weFileUpload = (function () {
 							this.preview.style.opacity = 0.05;
 						}
 						_.controller.setWeButtonState('browse_harddisk_btn', false);
-						this.setDisplay('divBtnReset', 'none');
 				}
 			};
 

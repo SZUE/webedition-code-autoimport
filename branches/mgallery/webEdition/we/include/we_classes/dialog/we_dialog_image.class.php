@@ -234,7 +234,7 @@ class we_dialog_image extends we_dialog_base{
 		$this->weFileupload = new we_fileupload_binaryDocument(we_base_ContentTypes::IMAGE, '', 'dialog');
 		$this->weFileupload->setCallback('top.doOnImportSuccess(scope.imported_files[0]);');
 		//$this->weFileupload->setIsInternalBtnUpload(true);
-		$this->weFileupload->setDimensions(array('dragWidth' => 374));
+		$this->weFileupload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
 		$this->weFileupload->setAction(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import_files&cmd=buttons&jsRequirementsOk=1&step=1&weFormNum=1&weFormCount=1');
 		$this->weFileupload->setMoreFieldsToAppend(array(
 			array('imgsSearchable', 'text'), //we use checkbox width hidden
@@ -394,7 +394,7 @@ class we_dialog_image extends we_dialog_base{
 		$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect('width: 140px;'), g_l('wysiwyg', '[css_style]'),'left', 'defaultfont', '', '', '', '', '', '', 0);
 
 		$srctable = '<table class="default" style="margin-bottom:4px;">';
-		$srctable .= '<tr><td>'. ($intSrc ? $radioButtonInt : '') .'</td><td>' . $radioButtonUpload . '</td></tr>';
+		$srctable .= '<tr><td width="100%"><div style="display:inline;float:left">'. ($intSrc ? $radioButtonInt : '') .'</div><div style="display:inline;float:right">' . $radioButtonUpload . '</div></tr>';
 		$srctable .= '<tr><td>'. $radioButtonExt .'</td><td>&nbsp;</td></tr>';
 		$srctable .= '</table>';
 		$srctable .= '<table class="default" style="margin-bottom:4px;">';
@@ -429,8 +429,10 @@ class we_dialog_image extends we_dialog_base{
 						<div id="imageUpload" '. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : ' style="display:none;width:384px"') .'>' . 
 							$this->weFileupload->getHTML('', '', '', $noImage) . '<br/> ' .
 							$yuiSuggest->getHTML() .
+							'<div>' .
 							we_html_forms::checkboxWithHidden(true, 'imgsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '') .
 							we_html_forms::checkboxWithHidden(true, 'importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '') . '<br />' .
+							'</div><div style="margin:10px 0 0 0">' .
 							we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
 							we_html_element::htmlDiv(array('style' => 'margin-top:10px'), 
 								we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;') .
@@ -438,7 +440,8 @@ class we_dialog_image extends we_dialog_base{
 								we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;')
 							) .
 							we_html_tools::hidden("sameName", 0) .
-							'<div style="float:right;padding-top:10px">' . $this->weFileupload->getBtnUpload(true) . '</div>' .
+							'</div>' .
+							'<div style="float:right;padding-top:10px">' . $this->weFileupload->getDivBtnUpload(true) . '</div>' .
 						'</div>
 					</td>
 				</tr>';

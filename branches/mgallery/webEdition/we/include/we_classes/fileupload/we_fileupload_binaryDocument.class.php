@@ -136,30 +136,35 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 			}'));
 	}
 	
-	public function getBtnUpload($completeDiv = false){
-		$btnUpload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $this->getJsBtnCmd('upload'), true, 170, 22, "", "", true, false, "_btn", true);
-		if(!$completeDiv){
-
-			return $btnUpload;
-		}
-		$btnCancel = we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_FileUpload.cancelUpload()', true, 170, 22, "", "", false, false, "_btn", true);
+	public function getDivBtnUpload(){
+		$btnUpload = $this->getBtn('upload', true);
+		$btnCancel = $this->getBtn('cancel');
 		$divBtnUpload = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'), $btnUpload);
-		$divBtnCancel = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top:16px;display:none;'), $btnCancel);
+		$divBtnCancel = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top: 4px;display:none;'), $btnCancel);
 
 		return $divBtnUpload . $divBtnCancel;
+	}
+	
+	public function getBtn($type, $disabled = false, $width = 170){
+		switch($type){
+			case 'browse':
+				return we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
+			case 'reset':
+				return we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+			case 'upload':
+				return we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+			case 'cancel':
+				return we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_FileUpload.cancelUpload()', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+		}
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 
 		//FIXME: this should be static in css
-		$width['input'] = $this->location === 'dialog' ? ($this->dimensions['dragWidth'] - 4) : ($isIE10 ? 84 : 370);
-		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
+		$width['input'] = $this->location === 'dialog' ? ($this->dimensions['inputWidth'] - 4) : ($isIE10 ? 84 : 170);
+		//$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
-		$btnBrowse = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width['input'], we_html_button::HEIGHT, '', '', false, false, '_btn');
-		$btnUpload = $this->getBtnUpload();
-		$btnReset = we_html_button::create_button("reset", 'javascript:we_FileUpload.reset()', true, $width['input'], 22, "", "", true, false, "_btn", true);
-		$btnCancel = we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_FileUpload.cancelUpload()', true, 170, 22, "", "", false, false, "_btn", true);
 		$fileInput = we_html_element::htmlInput(array(
 				'class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
 				'style' => 'width:' . $width['input'] . 'px;',
@@ -177,26 +182,26 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 				'id' => $this->name . '_x2',
 				'accept' => implode(',', $this->typeCondition['accepted']['mime']))
 		);
-		$divFileInput = we_html_element::htmlDiv(array('id' => 'div_we_File_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'height:26px;margin-top:18px;width:' . ($width['input'] + 5) . 'px;'), $fileInput . $btnBrowse);
-		$divBtnReset = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:26px;margin-top:18px;display:none;'), $btnReset);
-		$divBtnUpload = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'), $btnUpload);
-		$divBtnCancel = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top:16px;display:none;'), $btnCancel);
+		$divFileInput = we_html_element::htmlDiv(array('id' => 'div_we_File_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'height:26px;margin-top:18px;width:' . ($width['input'] + 8) . 'px;'), $fileInput . $this->getBtn('browse', false, $width['input']));
+		$divBtnReset = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:26px;margin-top:18px;display:none;'), $this->getBtn('reset', false, $width['input']));
 
-		$progress = new we_progressBar(20, true);
-		$progress->setStudLen(170);
-		$progress->setProgressTextPlace(0);
+		$progress = new we_progressBar(0, true);
+		if($this->location !== 'dialog'){
+			$progress->setStudLen(170);
+			$progress->setProgressTextPlace(0);
+		} else {
+			$progress->setStudLen(200);
+		}
 		$progress->setName('_fileupload');
-		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin-top: 13px; display: none;'), $progress->getHTML());
 
 		$btnUploadLegacy = we_html_button::create_button(we_html_button::UPLOAD, "javascript:we_cmd('editor_uploadFile', 'legacy')", true, 150, 22, "", "", false, false, "_legacy_btn", true);
 		$divBtnUploadLegacy = we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUploadLegacy', 'style' => 'margin:0px 0 16px 0;display:' . (self::isFallback() || self::isLegacyMode() ? '' : 'none' ) . ';'), $btnUploadLegacy);
 		$divFileInfo = we_html_element::htmlDiv(array('style' => 'margin-top: 0px'), $fs . '<br />' . $ft . '<br />' . $md);
 
 		if($this->location === 'dialog'){
-			
+			$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'display:none;'), $progress->getHTML());
 			$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:400px'), $divFileInput . $divBtnReset);
-			
-			
+
 			return (self::isFallback() || self::isLegacyMode() ? '' : $this->getJs() . $this->getCss()) . '
 <table id="table_form_upload" class="default" width="500">
 	<tr style="vertical-align:top;">
@@ -215,7 +220,6 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 			) . '
 		</td>
 	</tr>
-	
 		<td width="300px">' .
 			(self::isFallback() || self::isLegacyMode() ? '' :
 				we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style'=>"position:relative;"),
@@ -234,14 +238,14 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	</tr>
 </table>';
 		} else {
+			$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML());
 			$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:204px'),
 					$divFileInput .
 					$divProgressbar .
-					$divBtnReset .
-					$divBtnUpload .
-					$divBtnCancel
+					$divBtnReset . 
+					$this->getDivBtnUpload()
 			);
-			
+
 			return (self::isFallback() || self::isLegacyMode() ? '' : $this->getJs() . $this->getCss()) . '
 <table id="table_form_upload" class="default" width="500">
 	<tr style="vertical-align:top;">
@@ -387,12 +391,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 			$error = 'extension_not_ok_error';
 			$response = array('status' => 'failure', 'fileNameTemp' => $fileNameTemp, 'message' => $error, 'completed' => 1, 'finished' => '');
 		}
-		/* FIXME
-		  if($mime = we_base_util::getMimeType('', TEMP_PATH . $fileNameTemp, we_base_util::MIME_BY_HEAD) && $mime !== $fileCt){
-		  $message = 'mime != weFileCT_error';
-		  $response = array('status' => 'failure', 'fileNameTemp' => $fileNameTemp, 'message' => $message, 'completed' => 1, 'finished' => '');
-		  }
-		 */
+
 		if($error){
 			echo json_encode($response);
 			return;

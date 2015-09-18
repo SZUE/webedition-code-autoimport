@@ -38,6 +38,7 @@ abstract class we_fileupload_base{
 		'width' => 400,
 		'dragWidth' => 300,
 		'dragHeight' => 30,
+		'inputWidth' => 170,
 		'alertBoxWidth' => 0,
 		'marginTop' => 0,
 		'marginBottom' => 0
@@ -107,6 +108,7 @@ abstract class we_fileupload_base{
 			'width' => isset($args['width']) ? $args['width'] : $this->dimensions['width'],
 			'dragWidth' => isset($args['dragWidth']) ? $args['dragWidth'] : $this->dimensions['dragWidth'],
 			'dragHeight' => isset($args['dragHeight']) ? $args['dragHeight'] : $this->dimensions['dragHeight'],
+			'inputWidth' => isset($args['inputWidth']) ? $args['inputWidth'] : $this->dimensions['inputWidth'],
 			'alertBoxWidth' => isset($args['alertBoxWidth']) ? $args['alertBoxWidth'] : $this->dimensions['alertBoxWidth'],
 			'marginTop' => isset($args['marginTop']) ? $args['marginTop'] : $this->dimensions['marginTop'],
 			'marginBottom' => isset($args['marginBottom']) ? $args['marginBottom'] : $this->dimensions['marginBottom']

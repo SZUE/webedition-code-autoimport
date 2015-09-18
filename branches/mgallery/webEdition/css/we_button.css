@@ -55,6 +55,10 @@ button.weBtn{
 	min-width: 2.5em;
 }
 
+button.noMarginLeft {
+	margin-left:0;
+}
+
 button.multiicon{
 	min-width: 4em;
 }
