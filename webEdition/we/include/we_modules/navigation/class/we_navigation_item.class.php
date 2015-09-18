@@ -150,19 +150,23 @@ class we_navigation_item{
 
 	function isCurrent(we_navigation_items $weNavigationItems){
 		if(isset($_SERVER['REQUEST_URI'])){
-			$uri = parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI']));
+			static $uri = null;
+			if($uri === null){
+				$uri = parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI']));
+				//due to Path replacement by URL, we use the
+				$uri['path'] = $GLOBALS['WE_MAIN_DOC']->Path;
+			}
 			$ref = parse_url(str_replace('&amp;', '&', $this->href));
 			if($uri['path'] == $ref['path']){
 				$allfound = true;
-
-				$refarrq = $uriarrq = array();
-				if(!empty($uri['query'])){
+				static $uriarrq = array();
+				$refarrq = array();
+				if(!empty($uri['query']) && !$uriarrq){
 					parse_str($uri['query'], $uriarrq);
 				}
 				if(!empty($ref['query'])){
 					parse_str($ref['query'], $refarrq);
 				}
-
 				if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
 					//remove other param tha "anchors" or catParams respectively
 					$tmpUriarrq = $tmpRefarrq = array();
