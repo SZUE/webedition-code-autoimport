@@ -46,9 +46,13 @@ function startTree(){
 	cmd:' . $this->cmdFrame . '
 	};
 	treeData.frames=frames;
-	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid=0";
-}
-';
+	if(frames.cmd===undefined){
+	//FIXME: we have too much frames, this module is not separated well
+		setTimeout("startTree()",500);
+	}else{
+		frames.cmd.location=treeData.frameset+"?pnt=cmd&pid=0&we_transaction="+we_transaction;
+	}
+}';
 	}
 
 	public static function getItems($ParentId, $Offset, $Segment, we_messaging_messaging $messaging){
@@ -127,12 +131,12 @@ function startTree(){
 var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
 
 parent.document.title = "' . $title . '";
-we_transaction = "' . $this->transaction . '";
+var we_transaction = "' . $this->transaction . '";
 var we_frameset="' . $this->frameset . '";'
-			. parent::getTree_g_l() . '
+				. parent::getTree_g_l() . '
 var table="' . MESSAGES_TABLE . '";
 g_l.save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
-g_l.Mitteilungen="'.g_l('modules_messaging', '[Mitteilungen]').'";
+g_l.Mitteilungen="' . g_l('modules_messaging', '[Mitteilungen]') . '";
 g_l.ToDo="' . g_l('modules_messaging', '[ToDo]') . '";
 g_l.Erledigt="' . g_l('modules_messaging', '[Erledigt]') . '";
 g_l.Zurueckgewiesen="' . g_l('modules_messaging', '[Zurueckgewiesen]') . '";
@@ -145,10 +149,10 @@ function cb_incstate() {
 		loaded = true;
 		loadData();
 		' . (isset($f) ?
-				'r_tree_open(' . $f['ID'] . ');
+					'r_tree_open(' . $f['ID'] . ');
 we_cmd("show_folder_content", ' . $f['ID'] . ');' :
-				'drawEintraege();'
-			) . '
+					'drawEintraege();'
+				) . '
 }');
 	}
 

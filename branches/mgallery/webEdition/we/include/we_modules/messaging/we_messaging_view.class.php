@@ -389,4 +389,8 @@ if (top.content.editor.edbody.messaging_messages_overview) {
 		return we_html_element::jsElement($tmp);
 	}
 
+	function getMessaging(){
+		return $this->messaging;
+	}
+
 }

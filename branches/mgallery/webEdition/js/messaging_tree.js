@@ -137,13 +137,10 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = "";
 	var url = "/webEdition/we_cmd.php?we_transaction=" + we_transaction + "&";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
-		}
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]) +
+						(i < (arguments.length - 1) ? "&" : '');
 	}
 
 	if (hot == "1" && arguments[0] != "messaging_start_view") {

@@ -34,7 +34,6 @@ if(!isset($we_transaction)){//FIXME: can this ever be set except register global
 }
 $transaction = $what === 'frameset' ? $we_transaction : we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request');//FIXME: is $transaction used anywhere?
 
-$weFrame = new we_messaging_frames(we_base_request::_(we_base_request::STRING, "viewclass", 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
-echo $weFrame->getHTMLDocumentHeader();
+$weFrame = new we_messaging_frames(we_base_request::_(we_base_request::STRING, 'viewclass', 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
 $weFrame->process();
 echo $weFrame->getHTML($what);

@@ -44,7 +44,7 @@ class we_messaging_frames extends we_modules_frame{
 		$this->weTransaction = &$weTransaction;
 		$this->viewclass = $viewclass;
 		$this->View = new we_messaging_view(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php", "top.content", $this->transaction, $this->weTransaction);
-		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd", $this->transaction);
+		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd", $this->weTransaction);
 	}
 
 	function getHTML($what){
@@ -107,8 +107,26 @@ class we_messaging_frames extends we_modules_frame{
 	}
 
 	function getHTMLCmd(){
-		//FIXME: here we have to add the tree code!
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), ''), $this->View->processCommands());
+
+		$head = $this->View->processCommands();
+		$tree = '';
+		if(($pid = we_base_request::_(we_base_request::INT, 'pnt')) !== false){
+
+			$offset = we_base_request::_(we_base_request::INT, "offset", 0);
+
+			$rootjs = "";
+			if(!$pid){
+				$rootjs.=
+					$this->Tree->topFrame . '.treeData.clear();' .
+					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+			}
+
+			$tree = we_html_element::jsElement(
+					$rootjs .
+					$this->Tree->getJSLoadTree(we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging()))
+			);
+		}
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $tree), $head);
 	}
 
 	function getHTMLSearch(){
@@ -216,10 +234,6 @@ class we_messaging_frames extends we_modules_frame{
 		// Check if we have to create a form or href
 		return $href ? '<a href="' . $href . '"><i class="fa fa-lg fa-' . $dir . '"></i></a>' :
 			'<i class="fa fa-lg fa-' . $dir . '"></i>';
-	}
-
-	function getJSStart(){
-		return 'function start(){}'; //tree is started somewhere else!
 	}
 
 }
