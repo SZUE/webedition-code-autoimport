@@ -29,8 +29,13 @@ function we_tag_customerResetPasswordLink(array $attribs, $content){
 	}
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$host = weTag_getAttribute('host', $attribs, getServerUrl(), we_base_request::URL);
-
-	$attribs["href"] = $host . we_tag('a', array('hrefonly' => true, 'id' => $id)) . '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['WE_token'];
+	$docPath = we_tag('a', array('hrefonly' => true, 'id' => $id));
+	
+	//Fix #10071
+	$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
+	$url = preg_replace($urlReplace, array_keys($urlReplace), $docPath, -1, $cnt);
+	
+	$attribs["href"] = $host . ($cnt ? $url : $docPath) . '?user=' . $_SESSION['webuser']['ID'] . '&token=' . $_SESSION['webuser']['WE_token'];
 
 	return (weTag_getAttribute("plain", $attribs, false, we_base_request::BOOL) ?
 					$attribs["href"] :
