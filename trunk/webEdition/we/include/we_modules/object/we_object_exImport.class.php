@@ -260,7 +260,6 @@ class we_object_exImport extends we_object{
 			if(!isset($arr[1])){
 				continue;
 			}
-		}
 		$fieldtype = $arr[0];
 		unset($arr[0]);
 		$fieldname = implode('_', $arr);
@@ -268,6 +267,7 @@ class we_object_exImport extends we_object{
 			return $fieldtype;
 		}
 		return false;
+		}
 	}
 
 	function getDefaultArray($name, $type = '', $default = ''){
