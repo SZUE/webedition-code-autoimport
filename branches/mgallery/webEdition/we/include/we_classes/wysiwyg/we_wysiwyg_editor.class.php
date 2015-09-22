@@ -1052,10 +1052,50 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		' : '') . '
 
 		ed.onDblClick.add(function(ed, e) {
-			//console.debug("Double click event: " + e.target.nodeName);
-		});
-		ed.onClick.add(function(ed, e) {
-			//console.debug("Click event: " + e.target.nodeName);
+			var openDialogsOnDblClick = true;
+
+			if(openDialogsOnDblClick){
+				if(ed.selection.getNode().nodeName === "IMG" && ed.dom.getAttrib(ed.selection.getNode(), "src", "")){
+					tinyMCE.execCommand("mceWeimage");
+				}
+				if(ed.selection.getNode().nodeName === "A" && ed.dom.getAttrib(ed.selection.getNode(), "href", "")){
+					tinyMCE.execCommand("mceWelink");
+				}
+			} else {
+				var match,
+					frameControler = editorLevel === "inline" ? top.weEditorFrameController : top.opener.top.weEditorFrameController;
+
+				if(!frameController){
+					return;
+				}
+				if (ed.selection.getNode().nodeName == "IMG" && (src = ed.dom.getAttrib(ed.selection.getNode(), "src", ""))){
+					if(match = src.match(/[^" >]*\?id=(\d+)[^" >]*/)){
+						if(match[1] && parseInt(match[1]) !== 0){
+							frameControler.openDocument("' . FILE_TABLE . '", match[1], "");
+						}
+					} else {
+						window.open(src);
+					}
+				}
+				if (ed.selection.getNode().nodeName == "A" && (href = ed.dom.getAttrib(ed.selection.getNode(), "href", ""))){
+					if(match = href.match(/(' . we_base_link::TYPE_INT_PREFIX . '|' . we_base_link::TYPE_OBJ_PREFIX . '|)(\d+)[^" >]*/)){
+						top.console.debug(match);
+						if(match[1]){
+							switch(match[1]){
+								case "' . we_base_link::TYPE_INT_PREFIX . '":
+									top.console.debug("int");
+									frameControler.openDocument("' . FILE_TABLE . '", match[2], "");
+									break;
+								case "' . we_base_link::TYPE_OBJ_PREFIX . '":
+									frameControler.openDocument("' . OBJECT_FILES_TABLE . '", match[2], "");
+									break;
+							}
+						}
+					} else {
+						window.open(href);
+					}
+				}
+			}
 		});
 
 

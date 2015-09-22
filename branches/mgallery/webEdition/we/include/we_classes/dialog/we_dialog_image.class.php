@@ -273,10 +273,11 @@ class we_dialog_image extends we_dialog_base{
 			$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
 				) : "";
+			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extSrc]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){window.open(f.value);}", true, 0, 0, '', '', true, false, '_ext', false, 'In einem neuen Browserfenster öffnen');//TODO: g_l()!!
 
 			$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "radio_type", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][2].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_EXT . "';top.document.getElementById('imageExt').style.display='block';top.document.getElementById('imageInt').style.display='none';top.document.getElementById('imageUpload').style.display='none';}imageChanged();");
-			$textInput = we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'radio_type\'][2].checked){imageChanged();}" onchange="imageChanged();"', "text", 315);
-			$extSrc = we_html_tools::htmlFormElementTable($textInput, '', "left", "defaultfont", $but, '', "", "", "", 0);
+			$textInput = we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements[\'radio_type\'][2].checked){imageChanged();}" onchange="imageChanged();if(this.value !== \'\' && this.value !== \'' . we_base_link::EMPTY_EXT . '\'){weButton[\'enable\'](\'btn_edit_ext\')}else{weButton[\'disable\'](\'btn_edit_ext\')}" ', "text", 315);
+			$extSrc = we_html_tools::htmlFormElementTable($textInput, '', "left", "defaultfont", $but, $openbutton, '', '', '', 0);
 			
 			/**
 			* input for webedition internal image files
@@ -303,6 +304,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(315);
 			$yuiSuggest->setSelectButton($but);
+			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultImage'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultImage'].value,'" . we_base_ContentTypes::IMAGE . "','" . FILE_TABLE . "'); }"));
 			$intSrc = $yuiSuggest->getHTML();
 			
 			/**
@@ -398,9 +400,9 @@ class we_dialog_image extends we_dialog_base{
 		$srctable .= '<tr><td>'. $radioButtonExt .'</td><td>&nbsp;</td></tr>';
 		$srctable .= '</table>';
 		$srctable .= '<table class="default" style="margin-bottom:4px;">';
-		$srctable .= '<tr><td><div id="imageExt" style="margin-top:2px;"'. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_EXT ? '' : ' style="display:none;"') .'>' . $extSrc . '</div></td></tr>';
+		$srctable .= '<tr><td><div id="imageExt" style="margin-top:4px;'. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_EXT ? '' : 'display:none;') . '">' . $extSrc . '</div></td></tr>';
 		if($intSrc){
-			$srctable .= '<tr><td><div id="imageInt" '. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : ' style="display:none;"') .'>' . $intSrc . '</div></td></tr>';
+			$srctable .= '<tr><td><div id="imageInt" style="margin:2px 0 2px 0;'. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : 'display:none;') . '">' . $intSrc . '</div></td></tr>';
 		}
 
 		if(!we_fileupload_base::isFallback()){
@@ -421,12 +423,11 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setWidth(320);
 			$yuiSuggest->setSelectButton($but);
 			$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="/webEdition/images/icons/no_image.gif" alt="no-image" />';
-			
 
 			$srctable .= '
 				<tr>
 					<td>
-						<div id="imageUpload" '. (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : ' style="display:none;width:384px"') .'>' . 
+						<div id="imageUpload" style="display:none;width:384px">' . 
 							$this->weFileupload->getHTML('', '', '', $noImage) . '<br/> ' .
 							$yuiSuggest->getHTML() .
 							'<div>' .
@@ -467,6 +468,7 @@ class we_dialog_image extends we_dialog_base{
 					<tr><td colspan="3" style="padding-bottom:15px;">' . $_longdesc . '</td></tr>
 				</table>
 				<div></div>'.
+				we_html_tools::hidden('we_dialog_args[name]', isset($this->args["name"]) ? $this->args["name"] : '') .
 				we_html_tools::hidden('we_dialog_args[type]', isset($this->args["type"]) ? $this->args["type"] : we_base_link::TYPE_INT) .
 				we_html_tools::hidden("imgChangedCmd", 0) . 
 				we_html_tools::hidden("wasThumbnailChange", 0) . 
