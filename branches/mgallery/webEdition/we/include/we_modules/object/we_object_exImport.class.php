@@ -254,19 +254,20 @@ class we_object_exImport extends we_object{
 
 	function getFieldPrefix($name){
 		$this->SerializedArray = we_unserialize($this->DefaultValues);
-		$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
+		//$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 		foreach(array_keys($this->SerializedArray) as $fieldname){
 			$arr = explode('_', $fieldname);
-			if(!isset($arr[1]))
+			if(!isset($arr[1])){
 				continue;
+			}
+			$fieldtype = $arr[0];
+			unset($arr[0]);
+			$fieldname = implode('_', $arr);
+			if($fieldname == $name){
+				return $fieldtype;
+			}
+			return false;
 		}
-		$fieldtype = $arr[0];
-		unset($arr[0]);
-		$fieldname = implode('_', $arr);
-		if($fieldname == $name){
-			return $fieldtype;
-		}
-		return false;
 	}
 
 	function getDefaultArray($name, $type = '', $default = ''){

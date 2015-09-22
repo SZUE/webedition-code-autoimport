@@ -18,16 +18,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-
 we_html_tools::protect();
 session_write_close();
 
 $filename = realpath(WEBEDITION_PATH . we_base_request::_(we_base_request::FILE, 'file'));
 $keepBin = we_base_request::_(we_base_request::BOOL, 'binary');
-if(strpos($filename, realpath(WE_INCLUDES_PATH)) !== false || strpos($filename, realpath(WEBEDITION_PATH)) !== false){
+if(strpos($filename, realpath(WE_INCLUDES_PATH)) !== false){
 	//nobody should read inside include directory
 	return;
 }
+
 if(!file_exists($filename)){
 	return;
 }
@@ -53,3 +53,4 @@ if($isCompressed){
 } else {
 	readfile($filename);
 }
+echo filesize($filename);
