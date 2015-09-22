@@ -237,7 +237,7 @@ class we_customer_EIWizard{
 
 				$fields_names = array("fieldname", "operator", "fieldvalue", "logic");
 				for($i = 0; $i < $filter_count; $i++){
-					$new = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "");
+					//$new = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "");
 					foreach($fields_names as $field){
 						$var = "filter_" . $field;
 						$varname = $var . "_" . $i;
@@ -249,18 +249,21 @@ class we_customer_EIWizard{
 
 				$filterarr = array();
 				foreach($filter_fieldname as $k => $v){
-					$op = $this->getOperator($filter_operator[$k]);
-					$filterarr[] = ($k ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
+					$filterarr[] = ($k ? (' ' . $filter_logic[$k-1] . ' ') : '') . $filter_fieldname[$k] . ' ' . $this->getOperator($filter_operator[$k]) . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
 				}
 
-				$this->db->query('SELECT ID FROM ' . CUSTOMER_TABLE . ($filterarr ? ' WHERE (' . implode(' ', $filterarr) . ')' : ""));
+				$this->db->query('SELECT ID FROM ' . CUSTOMER_TABLE . ($filterarr ? ' WHERE (' . implode(' ', $filterarr) . ')' : ''));
 				$customers = $this->db->getAll(true);
 		}
 		if($customers){
 			//set variables in top frame
-			$js = "";
+			$js = '';
 			$parts = array(
-				array("headline" => g_l('modules_customer', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename), "space" => $_space),
+				array(
+					'headline' => g_l('modules_customer', '[filename]'),
+					'html' => we_html_tools::htmlTextInput('filename', 						$_input_size, $filename),
+					'space' => $_space
+				),
 			);
 
 			switch($type){
