@@ -1823,20 +1823,16 @@ document.we_form.filter_count.value="' . $count . '";');
 				$filter_count = we_base_request::_(we_base_request::INT, 'filter_count', 0);
 				$filter_fieldname = $filter_operator = $filter_fieldvalue = $filter_logic = array();
 
-				$fields_names = array("fieldname", "operator", "fieldvalue", "logic");
+				$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic');
 				for($i = 0; $i < $filter_count; $i++){
 					foreach($fields_names as $field){
 						$var = "filter_" . $field;
-						$varname = $var . "_" . $i;
-						if(($val = we_base_request::_(we_base_request::STRING, $varname))){
-							${$var}[] = $val;
-						}
+						${$var}[] = we_base_request::_(we_base_request::STRING, $var . '_' . $i, 0);
 					}
 				}
-
 				$filterarr = array();
 				foreach($filter_fieldname as $k => $v){
-					$filterarr[] = ($k ? (' ' . $filter_logic[$k - 1] . ' ') : '') . $filter_fieldname[$k] . ' ' . $this->getOperator($filter_operator[$k]) . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
+					$filterarr[] = ($k ? (' ' . $filter_logic[$k] . ' ') : '') . $v . ' ' . $this->getOperator($filter_operator[$k]) . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
 				}
 
 				$this->db->query('SELECT ID FROM ' . CUSTOMER_TABLE . ($filterarr ? ' WHERE (' . implode(' ', $filterarr) . ')' : ''));
