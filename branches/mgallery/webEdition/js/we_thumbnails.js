@@ -68,6 +68,8 @@ function change_thumbnail() {
 }
 
 function add_thumbnail() {
+	var name = prompt(g_l.thumbnail_new, '');
+	
 	if (name === null) {
 		return;
 	}

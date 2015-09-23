@@ -156,10 +156,8 @@ function build_dialog($selected_setting = 'ui'){
 			$_thumbnail_names = $_thumbnail_names ? '\'' . implode('\',\'', $_thumbnail_names) . '\'' : '';
 
 			// Generate needed JS
-			$_needed_JavaScript_Source = '
-	var thumbnail_names = [' . $_thumbnail_names . "];
-	var name = prompt('" . g_l('thumbnails', '[new]') . "', '');
-
+			$_needed_JavaScript_Source = "
+var thumbnail_names = [" . $_thumbnail_names . "];
 function delete_thumbnail() {" .
 				(permissionhandler::hasPerm('ADMINISTRATOR') ?
 					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id))) . "');
@@ -336,6 +334,7 @@ var g_l={
 	thumbnail_hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_hochkomma]')) . '",
 	thumbnail_empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_empty]')) . '",
 	thumbnail_exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_exists]')) . '",
+	thumbnail_new: "' . g_l('thumbnails', '[new]') . '"
 };
 	') .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
