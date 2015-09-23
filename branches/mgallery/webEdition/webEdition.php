@@ -362,17 +362,18 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 	echo 'if(we_cmd_' . $mod . '(arguments,url)){break;}';
 }
 ?>
-	if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
-	_nextContent = nextWindow.getDocumentReference();
-					we_repl(_nextContent, url, arguments[0]);
-					// activate tab
-					top.weMultiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ');
-					// set Window Active and show it
-					top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
-					top.weEditorFrameController.toggleFrames();
-	} else {
-		top.showMessage(g_l.no_editor_left, WE_MESSAGE_INFO, window);
-	}
+		if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
+			_nextContent = nextWindow.getDocumentReference();
+			we_repl(_nextContent, url, arguments[0]);
+			// activate tab
+			var pos=(arguments[0]==="open_cockpit"?0:undefined);
+			top.weMultiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ',pos);
+			// set Window Active and show it
+			top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
+			top.weEditorFrameController.toggleFrames();
+		} else {
+			top.showMessage(g_l.no_editor_left, WE_MESSAGE_INFO, window);
+		}
 	}
 
 	}

@@ -57,7 +57,7 @@ TabView.prototype = {
 	/**
 	 * adds an new tab to the tab view
 	 */
-	addTab: function (frameId, text, title) {
+	addTab: function (frameId, text, title, pos) {
 		newtab = this.tabDummy.cloneNode(true);
 		newtab.innerHTML = newtab.innerHTML.replace(/###tabTextId###/g, "text_" + frameId);
 		newtab.innerHTML = newtab.innerHTML.replace(/###modId###/g, "mod_" + frameId);
@@ -67,7 +67,16 @@ TabView.prototype = {
 		newtab.name = "tab";
 		newtab.title = title;
 		newtab.className = "tabActive";
-		this.tabContainer.appendChild(newtab);
+		if (pos !== undefined) {
+			if (this.tabContainer.childNodes.length > pos) {
+				this.tabContainer.insertBefore(newtab, this.tabContainer.childNodes[pos]);
+			} else {
+				pos = undefined;
+			}
+		}
+		if (pos === undefined) {
+			this.tabContainer.appendChild(newtab);
+		}
 		this.setText(frameId, text);
 		this.setTitle(frameId, title);
 		this.selectTab(frameId);
