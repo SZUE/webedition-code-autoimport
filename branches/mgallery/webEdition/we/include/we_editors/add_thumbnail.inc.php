@@ -40,23 +40,21 @@ if(!($we_doc instanceof we_imageDocument)){
 	echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]')) .
 	we_html_element::jsElement('
 function select_thumbnails(sel){
-
-	var thumbs = "";
+	var thumbs = [];
 
 	for(var i=0; i<sel.options.length; i++){
 		if(sel.options[i].selected){
-			thumbs += (sel.options[i].value + ",");
+			thumbs.push(sel.options[i].value);
 		}
 	}
 
 	if(thumbs.length){
-		thumbs = "," + thumbs;
 		switch_button_state("add", "enabled");
 	}else{
 		switch_button_state("add", "disabled");
 	}
 
-	self.showthumbs.location = "' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+encodeURI(thumbs);
+	self.showthumbs.location = "' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+encodeURI(thumbs.join(","));
 
 }
 

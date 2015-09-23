@@ -87,6 +87,8 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 	function editor(){
 		switch($this->EditPageNr){
+			default:
+				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return "we_editors/we_editor_properties.inc.php";
 			case we_base_constants::WE_EDITPAGE_INFO:
@@ -109,10 +111,6 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				return 'we_editors/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return "we_editors/we_editor_versions.inc.php";
-			default:
-				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				return "we_editors/we_editor_properties.inc.php";
 		}
 	}
 

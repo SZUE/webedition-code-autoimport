@@ -154,8 +154,7 @@ class we_class_folder extends we_folder{
 
 		switch($this->EditPageNr){
 			default:
-				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
+				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			//no break
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return 'we_editors/we_editor_properties.inc.php';

@@ -373,7 +373,121 @@ abstract class we_base_imageEdit{
 		return in_array($type, $sit);
 	}
 
-	public static function edit_image($imagedata, $output_format = 'jpg', $output_filename = '', $output_quality = 75, $width = '', $height = '', $keep_aspect_ratio = true, $interlace = true, $crop_x = 0, $crop_y = 0, $crop_width = -1, $crop_height = -1, $rotate_angle = 0, $fitinside = false){
+	private static function UnsharpMask($img, $amount = 80, $radius = .5, $threshold = 3){
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////
+////                  Unsharp Mask for PHP - version 2.1.1
+////
+////    Unsharp mask algorithm by Torstein Hønsi 2003-07.
+////             thoensi_at_netcom_dot_no.
+////               Please leave this notice.
+////
+///////////////////////////////////////////////////////////////////////////////////////////////
+		// $img is an image that is already created within php using
+		// imgcreatetruecolor. No url! $img must be a truecolor image.
+		// Attempt to calibrate the parameters to Photoshop:
+		$amount = min($amount, 500) * 0.016;
+		$radius = round(min(abs($radius), 50) * 2);
+		$threshold = min($threshold, 255);
+		if($radius == 0){
+			return $img;
+		}
+		$w = imagesx($img);
+		$h = imagesy($img);
+		$imgCanvas = imagecreatetruecolor($w, $h);
+		$imgBlur = imagecreatetruecolor($w, $h);
+
+
+		// Gaussian blur matrix:
+		//
+		//    1    2    1
+		//    2    4    2
+		//    1    2    1
+		//
+		//////////////////////////////////////////////////
+
+
+		$matrix = array(
+			array(1, 2, 1),
+			array(2, 4, 2),
+			array(1, 2, 1)
+		);
+		imagecopy($imgBlur, $img, 0, 0, 0, 0, $w, $h);
+		imageconvolution($imgBlur, $matrix, 16, 0);
+
+		if($threshold > 0){
+			// Calculate the difference between the blurred pixels and the original
+			// and set the pixels
+			for($x = 0; $x < $w - 1; $x++){ // each row
+				for($y = 0; $y < $h; $y++){ // each pixel
+					$rgbOrig = ImageColorAt($img, $x, $y);
+					$rOrig = (($rgbOrig >> 16) & 0xFF);
+					$gOrig = (($rgbOrig >> 8) & 0xFF);
+					$bOrig = ($rgbOrig & 0xFF);
+
+					$rgbBlur = ImageColorAt($imgBlur, $x, $y);
+
+					$rBlur = (($rgbBlur >> 16) & 0xFF);
+					$gBlur = (($rgbBlur >> 8) & 0xFF);
+					$bBlur = ($rgbBlur & 0xFF);
+
+					// When the masked pixels differ less from the original
+					// than the threshold specifies, they are set to their original value.
+					$rNew = (abs($rOrig - $rBlur) >= $threshold) ? max(0, min(255, ($amount * ($rOrig - $rBlur)) + $rOrig)) : $rOrig;
+					$gNew = (abs($gOrig - $gBlur) >= $threshold) ? max(0, min(255, ($amount * ($gOrig - $gBlur)) + $gOrig)) : $gOrig;
+					$bNew = (abs($bOrig - $bBlur) >= $threshold) ? max(0, min(255, ($amount * ($bOrig - $bBlur)) + $bOrig)) : $bOrig;
+
+					if(($rOrig != $rNew) || ($gOrig != $gNew) || ($bOrig != $bNew)){
+						$pixCol = ImageColorAllocate($img, $rNew, $gNew, $bNew);
+						ImageSetPixel($img, $x, $y, $pixCol);
+					}
+				}
+			}
+		} else {
+			for($x = 0; $x < $w; $x++){ // each row
+				for($y = 0; $y < $h; $y++){ // each pixel
+					$rgbOrig = ImageColorAt($img, $x, $y);
+					$rOrig = (($rgbOrig >> 16) & 0xFF);
+					$gOrig = (($rgbOrig >> 8) & 0xFF);
+					$bOrig = ($rgbOrig & 0xFF);
+
+					$rgbBlur = ImageColorAt($imgBlur, $x, $y);
+
+					$rBlur = (($rgbBlur >> 16) & 0xFF);
+					$gBlur = (($rgbBlur >> 8) & 0xFF);
+					$bBlur = ($rgbBlur & 0xFF);
+
+					$rNew = ($amount * ($rOrig - $rBlur)) + $rOrig;
+					if($rNew > 255){
+						$rNew = 255;
+					} elseif($rNew < 0){
+						$rNew = 0;
+					}
+					$gNew = ($amount * ($gOrig - $gBlur)) + $gOrig;
+					if($gNew > 255){
+						$gNew = 255;
+					} elseif($gNew < 0){
+						$gNew = 0;
+					}
+					$bNew = ($amount * ($bOrig - $bBlur)) + $bOrig;
+					if($bNew > 255){
+						$bNew = 255;
+					} elseif($bNew < 0){
+						$bNew = 0;
+					}
+					$rgbNew = ($rNew << 16) + ($gNew << 8) + $bNew;
+					ImageSetPixel($img, $x, $y, $rgbNew);
+				}
+			}
+		}
+		imagedestroy($imgCanvas);
+		imagedestroy($imgBlur);
+
+		return $img;
+	}
+
+	public static function edit_image($imagedata, $output_format = 'jpg', $output_filename = '', $output_quality = 75, $width = '', $height = '', array $options = array(we_thumbnail::OPTION_RATIO, we_thumbnail::OPTION_INTERLACE), array $crop = array(0, 0), $rotate_angle = 0){
 		$output_format = strtolower($output_format);
 		if($output_format === 'jpeg'){
 			$output_format = 'jpg';
@@ -412,7 +526,7 @@ abstract class we_base_imageEdit{
 					}
 				}
 
-				$_outsize = self::calculate_image_size($_width, $_height, $width, $height, $keep_aspect_ratio, true, $fitinside);
+				$_outsize = self::calculate_image_size($_width, $_height, $width, $height, in_array(we_thumbnail::OPTION_RATIO, $options), true, in_array(we_thumbnail::OPTION_FITINSIDE, $options));
 
 				// Decide, which functions to use (depends on version of GD library)
 				$_image_create_function = (self::gd_version() >= 2.0 ? 'imagecreatetruecolor' : 'imagecreate');
@@ -424,16 +538,6 @@ abstract class we_base_imageEdit{
 
 				// Now create the image
 				$_output_gdimg = $_image_create_function($_outsize['width'], $_outsize['height']); // this image is always black
-
-				/* $GDInfo = self::gd_info();
-				  // DEBIAN EDGE FIX => crashes at imagefill, so use old Method
-				  if($GDInfo["GD Version"] === '2.0 or higher' && !function_exists("imagerotate")){
-				  // set black to transparent!
-				  if($output_format === 'gif' || $output_format === 'png'){ // transparency with gifs
-				  imagecolortransparent($_output_gdimg, imagecolorallocate($_output_gdimg, 0, 0, 0)); // set this color to transparent - done
-				  }
-				  } else {
-				 */
 				// preserve transparency of png and gif images:
 				switch($output_format){
 					case 'gif':
@@ -452,23 +556,44 @@ abstract class we_base_imageEdit{
 						break;
 					default:
 				}
-				//}
-				// Resize image
-				//if($_outsize["width"] == "1")
-				if($fitinside && $keep_aspect_ratio && $width && $height){
-					$wratio = $width / $_width;
-					$hratio = $height / $_height;
-					$ratio = max($width / $_width, $height / $_height);
-					$h = $height / $ratio;
 
-					$w = $width / $ratio;
-					if($wratio < $hratio){
-						$x = ($_width - $width / $ratio) / 2;
-						$y = 0;
+				if((in_array(we_thumbnail::OPTION_FITINSIDE, $options) || in_array(we_thumbnail::OPTION_CROP, $options)) && $width && $height){
+					if(in_array(we_thumbnail::OPTION_FITINSIDE, $options)){
+						$wratio = $width / $_width;
+						$hratio = $height / $_height;
+						$ratio = max($width / $_width, $height / $_height);
+						$h = $height / $ratio;
+						$w = $width / $ratio;
+
+						if($wratio < $hratio){
+							$x = ($_width - $w) / 2;
+							$y = 0;
+						} else {
+							$x = 0;
+							$y = ($_height - $h) / 2;
+						}
 					} else {
-						$x = 0;
-						$y = ($_height - $height / $ratio) / 2;
+						$h = $height;
+						$w = $width;
+						$x = ($_width - $w) / 2;
+						$y = ($_height - $h) / 2;
 					}
+
+					if(array_filter($crop)){
+						$_x = $x + ($w / 2); // x + origthumbwidth/2 => x-Mittelpunkt
+						$x = $_x + ($_x * $crop[0]) - ($w / 2); // Mittelpunkt + Bildfokus - origthumbwidth/2 => Neuer x-Punkt
+						if($x + $w > $_width){
+							$x = $_width - $w;
+						}
+						$x = max(0, $x);
+						$_y = $y + ($h / 2); // y + origthumbheight/2 => y-Mittelpunkt
+						$y = $_y + ($_y * $crop[1]) - ($h / 2); // Mittelpunkt + Bildfokus - origthumbheight/2 => Neuer y-Punkt
+						if($y + $h > $_height){
+							$y = $_height - $h;
+						}
+						$y = max(0, $y);
+					}
+
 					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, $x, $y, $width, $height, $w, $h);
 				} else {
 					$_image_resize_function($_output_gdimg, $_gdimg, 0, 0, 0, 0, $_outsize['width'], $_outsize['height'], $_width, $_height);
@@ -478,8 +603,24 @@ abstract class we_base_imageEdit{
 				if($output_filename != '' && file_exists($output_filename)){
 					touch($output_filename);
 				}
+				if(in_array(we_thumbnail::OPTION_GAUSSBLUR, $options)){
+					imagefilter($_output_gdimg, IMG_FILTER_GAUSSIAN_BLUR);
+				}
+				if(in_array(we_thumbnail::OPTION_GRAY, $options) || in_array(we_thumbnail::OPTION_SEPIA, $options)){
+					imagefilter($_output_gdimg, IMG_FILTER_GRAYSCALE);
+				}
+				if(in_array(we_thumbnail::OPTION_NEGATE, $options)){
+					imagefilter($_output_gdimg, IMG_FILTER_NEGATE);
+				}
+				if(in_array(we_thumbnail::OPTION_SEPIA, $options)){
+					imagefilter($_output_gdimg, IMG_FILTER_COLORIZE, 90, 60, 40);
+				}
 
-				ImageInterlace($_output_gdimg, ($interlace ? 1 : 0));
+
+				if(in_array(we_thumbnail::OPTION_UNSHARP, $options)){
+					$_output_gdimg = self::UnsharpMask($_output_gdimg);
+				}
+				ImageInterlace($_output_gdimg, (in_array(we_thumbnail::OPTION_INTERLACE, $options) ? 1 : 0));
 
 				switch($output_format){
 					case 'jpg':

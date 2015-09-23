@@ -137,3 +137,24 @@
 	background-color: black;
 	color: white;
 }
+#imgfocus_point {
+	width:0px;
+	height:0px;
+	position:absolute;
+	border:1px solid white;
+	border-radius:50%;
+	box-shadow:0 0 0 1px black;
+	z-index:10;
+}
+#imgfocus_point:before {
+	content:"";
+	display:block;
+	position:absolute;
+	left:-16px;
+	top:-16px;
+	width:30px;
+	height:30px;
+	border:1px solid white;
+	border-radius:50%;
+	box-shadow:0 0 0 1px black;
+}

@@ -30,10 +30,10 @@ $charset = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES ?
 
 we_html_tools::headerCtCharset('text/html', $charset);
 echo we_html_tools::getHtmlTop('', $charset) .
- we_html_element::jsScript(JS_DIR . 'windows.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+	STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo STYLESHEET .
- weSuggest::getYuiFiles();
+echo weSuggest::getYuiFiles();
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
@@ -44,7 +44,7 @@ echo STYLESHEET .
 		?>
 	</form>
 	<?php
-	echo 	$yuiSuggest->getYuiJs();
+	echo $yuiSuggest->getYuiJs();
 	?>
 </body>
 </html>

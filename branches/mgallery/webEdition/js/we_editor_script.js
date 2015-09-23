@@ -297,8 +297,9 @@ function we_cmd() {
 			new jsWindow(url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "image_resize":
-			if (typeof CropTool == 'object' && CropTool.triggered)
+			if (typeof CropTool === 'object' && CropTool.triggered) {
 				CropTool.drop();
+			}
 			if (hasGD) {
 				new jsWindow(url, "we_image_resize", -1, -1, 260, (gdType === "jpg" ? 250 : 190), true, false, true);
 			} else {
@@ -306,12 +307,13 @@ function we_cmd() {
 			}
 			break;
 		case "image_convertJPEG":
-			if (typeof CropTool == 'object' && CropTool.triggered)
+			if (typeof CropTool === 'object' && CropTool.triggered) {
 				CropTool.drop();
+			}
 			new jsWindow(url, "we_convert_jpg", -1, -1, 260, 160, true, false, true);
 			break;
 		case "image_rotate":
-			if (typeof CropTool == 'object' && CropTool.triggered) {
+			if (typeof CropTool === 'object' && CropTool.triggered) {
 				CropTool.drop();
 			}
 			if (canRotate) {
@@ -322,10 +324,17 @@ function we_cmd() {
 				}
 			} else {
 				top.we_showMessage(g_l.noRotate, WE_MESSAGE_ERROR, window);
-
 			}
 			break;
-
+		case "image_focus":
+			document.getElementById('imgfocus_point').style.display = "block";
+			document.getElementById('cursorVal').style.display = "block";
+			document.getElementById('weImage').style.cursor = "crosshair";
+			document.getElementById("weImage").addEventListener("click", setFocusPositionByMouse, false);
+			var hot=_EditorFrame.getEditorIsHot();
+			setFocusPositionByValue();
+			_EditorFrame.setEditorIsHot(hot);
+			break;
 		case "image_crop":
 			if (WE_EDIT_IMAGE) {
 				if (gdSupport) {

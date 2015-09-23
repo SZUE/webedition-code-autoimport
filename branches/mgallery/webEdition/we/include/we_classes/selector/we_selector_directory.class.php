@@ -517,8 +517,6 @@ top.selectFile(top.currentID);
 							$thumbpath = WE_THUMBNAIL_DIRECTORY.'/' . $this->id . '.' . $extension;
 							$created = filemtime($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
 							if(file_exists($_SERVER['DOCUMENT_ROOT'] . $thumbpath) && ($created > filemtime($_SERVER['DOCUMENT_ROOT'] . $thumbpath))){
-								//create thumb
-								//we_base_imageEdit::edit_image($_SERVER['DOCUMENT_ROOT'] . $result['Path'], $extension, $_SERVER['DOCUMENT_ROOT'] . $thumbpath, null, 150, 200);
 								//remove old thumb
 								we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $thumbpath);
 							}

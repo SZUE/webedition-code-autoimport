@@ -39,6 +39,8 @@ class we_textDocument extends we_document{
 	function editor(){
 
 		switch($this->EditPageNr){
+			default:
+				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 			case we_base_constants::WE_EDITPAGE_PROPERTIES:
 				return 'we_editors/we_editor_properties.inc.php';
 			case we_base_constants::WE_EDITPAGE_INFO:
@@ -58,10 +60,6 @@ class we_textDocument extends we_document{
 				return 'we_editors/validateDocument.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return 'we_editors/we_editor_versions.inc.php';
-			default:
-				$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PROPERTIES;
-				return 'we_editors/we_editor_properties.inc.php';
 		}
 		return $this->TemplatePath;
 	}
@@ -201,7 +199,7 @@ class we_textDocument extends we_document{
 			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 120),
 			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 120),
 			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => 120))
-			);
+		);
 	}
 
 }

@@ -135,7 +135,7 @@ class we_imageDocument extends we_binaryDocument{
 			$thumbObj = new we_thumbnail();
 
 			while($this->DB_WE->next_record()){
-				$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Ratio'), $this->DB_WE->f('Maxsize'), $this->DB_WE->f('Interlace'), false, $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
+				$thumbObj->init($this->DB_WE->f('ID'), $this->DB_WE->f('Width'), $this->DB_WE->f('Height'), $this->DB_WE->f('Options'), $this->DB_WE->f('Format'), $this->DB_WE->f('Name'), $this->ID, $this->Filename, $this->Path, $this->Extension, $this->getElement('origwidth'), $this->getElement('origheight'), $this->DB_WE->f('Quality'));
 
 				if($thumbObj->exists() && $thumbObj->getOutputPath() != $this->Path){
 					$thumbs[] = $this->DB_WE->f('ID');
@@ -297,7 +297,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 		$quality = ($quality > 10 ? 10 : max($quality, 0)) * 10;
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, $ratio);
+		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, array($ratio ? we_thumbnail::OPTION_RATIO : 0));
 		if(!$_resized_image[0]){
 			return false;
 		}
@@ -329,7 +329,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$quality = max(min($quality, 10), 0) * 10;
 
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, false, true, 0, 0, -1, -1, $rotation);
+		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, array(we_thumbnail::OPTION_INTERLACE), array(0, 0), $rotation);
 
 		if(!$_resized_image[0]){
 			return false;
@@ -381,7 +381,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 						$pid = $GLOBALS['WE_MAIN_DOC']->ParentID;
 					} else {
 						$pidCvs = f('SELECT Workspaces FROM ' . OBJECT_FILES_TABLE . ' WHERE ID = ' . intval($id), '', $this->DB_WE);
-						$foo = makeArrayFromCSV($pidCvs);
+						$foo = array_filter(explode(',', $pidCvs));
 						$pid = ($foo ? $foo[0] : 0);
 					}
 
@@ -689,7 +689,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$quality = max(min($quality, 10), 0) * 10;
 
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		we_base_imageEdit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, false);
+		we_base_imageEdit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, array(we_thumbnail::OPTION_INTERLACE));
 
 		$this->setElement('data', $dataPath);
 		$this->Extension = '.' . $type;
@@ -970,7 +970,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 										$_SESSION[$_imgDataId]['height']) && $_SESSION[$_imgDataId]['height'])){
 									$imageData = we_base_file::load($_SESSION[$_imgDataId]['serverPath']);
 									$thumb = new we_thumbnail();
-									$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], $_SESSION[$_imgDataId]['keepratio'], $_SESSION[$_imgDataId]['maximize'], false, false, '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);
+									$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], array($_SESSION[$_imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$_imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);
 
 									$imgData = '';
 									$thumb->getThumb($imgData);

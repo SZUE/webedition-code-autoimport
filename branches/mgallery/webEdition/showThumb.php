@@ -47,7 +47,6 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 
 		$useOrig = $thumbObj->isOriginal();
 
-
 		if((!$useOrig) && $we_doc->ID && ($we_doc->DocChanged == false) && file_exists($thumbObj->getOutputPath(true))){
 			$src = $thumbObj->getOutputPath(false, true);
 		} else {

@@ -33,6 +33,16 @@ class we_thumbnail{
 	const BUILDERROR = 2;
 	const NO_GDLIB_ERROR = 3;
 	const INPUTFORMAT_NOT_SUPPORTED = 4;
+	const OPTION_CROP = 'Crop';
+	const OPTION_RATIO = 'Ratio';
+	const OPTION_MAXSIZE = 'Maxsize';
+	const OPTION_INTERLACE = 'Interlace';
+	const OPTION_FITINSIDE = 'Fitinside';
+	const OPTION_UNSHARP = 'Unsharp';
+	const OPTION_GAUSSBLUR = 'GaussBlur';
+	const OPTION_NEGATE = 'Negate';
+	const OPTION_GRAY = 'Gray';
+	const OPTION_SEPIA = 'Sepia';
 
 	/**
 	 * ID of the thumbnail
@@ -59,28 +69,10 @@ class we_thumbnail{
 	private $thumbQuality = 8;
 
 	/**
-	 * Ratio (keep ratio) of the thumbnail
-	 * @var boolean
+	 * options of the thumbnail
+	 * @var array
 	 */
-	private $thumbRatio = true;
-
-	/**
-	 * Maxsize of the thumbnail
-	 * @var boolean
-	 */
-	private $thumbMaxsize = true;
-
-	/**
-	 * create thumbnail in interlaced mode
-	 * @var boolean
-	 */
-	private $thumbInterlace = true;
-
-	/**
-	 * Fitinside of the thumbnail
-	 * @var smallint
-	 */
-	private $thumbFitinside = false;
+	private $options = array();
 
 	/**
 	 * Format (jpg, png or gif) of the thumbnail
@@ -177,6 +169,8 @@ class we_thumbnail{
 	 * @var bool
 	 */
 	private $generateSmaller = false;
+	//focus point for resize
+	private $focus = array(0, 0);
 
 	/**
 	 * Constructor of class
@@ -194,9 +188,7 @@ class we_thumbnail{
 	 * @param int $thumbID
 	 * @param int $thumbWidth
 	 * @param int $thumbHeight
-	 * @param boolean $thumbRatio
-	 * @param boolean $thumbMaxsize
-	 * @param boolean $thumbInterlace
+	 * @param array/string $options
 	 * @param string $thumbFormat
 	 * @param string $thumbName
 	 * @param int $imageID
@@ -209,15 +201,12 @@ class we_thumbnail{
 	 * @param int $date
 	 * @public
 	 */
-	public function init($thumbID, $thumbWidth, $thumbHeight, $thumbRatio, $thumbMaxsize, $thumbInterlace, $thumbFitinside, $thumbFormat, $thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = "", $date = "", $thumbQuality = 8, $generateSmaller = false){
+	public function init($thumbID, $thumbWidth, $thumbHeight, $options, $thumbFormat, $thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = "", $date = "", $thumbQuality = 8, $generateSmaller = false){
 		$this->thumbID = $thumbID;
 		$this->thumbWidth = $thumbWidth;
 		$this->thumbHeight = $thumbHeight;
 		$this->thumbQuality = $thumbQuality;
-		$this->thumbRatio = trim($thumbRatio) ? $thumbRatio : 0;
-		$this->thumbMaxsize = trim($thumbMaxsize) ? $thumbMaxsize : 0;
-		$this->thumbInterlace = trim($thumbInterlace) ? $thumbInterlace : 0;
-		$this->thumbFitinside = trim($thumbFitinside) ? $thumbFitinside : 0;
+		$this->options = is_array($options) ? $options : explode(',', $options);
 		$this->thumbFormat = trim($thumbFormat);
 		$this->thumbName = $thumbName;
 		$this->imageID = $imageID;
@@ -231,6 +220,7 @@ class we_thumbnail{
 		$this->generateSmaller = $generateSmaller;
 		if($this->thumbID && $this->thumbName){
 			$this->outputFormat = $this->thumbFormat ? : (isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : 'jpg');
+			$this->getImageData(false, true);
 			$this->checkAndGetImageSizeIfNeeded();
 			$this->setOutputPath();
 			$this->calculateOutsize();
@@ -256,17 +246,14 @@ class we_thumbnail{
 			array(
 			'Width' => 0,
 			'Height' => 0,
-			'Ratio' => 0,
-			'Maxsize' => 0,
-			'Interlace' => false,
-			'Fitinside' => false,
+			'Options' => '',
 			'Format' => '',
 			'Name' => '',
 			'Date' => '',
 			'Quality' => ''
 			)
 		;
-		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $_foo['Date'], $_foo['Quality']);
+		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Options'], $_foo['Format'], $_foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $_foo['Date'], $_foo['Quality']);
 	}
 
 	/**
@@ -289,16 +276,13 @@ class we_thumbnail{
 			'ID' => 0,
 			'Width' => 0,
 			'Height' => 0,
-			'Ratio' => 0,
-			'Maxsize' => 0,
-			'Interlace' => false,
-			'Fitinside' => false,
+			'Options' => '',
 			'Format' => '',
 			'Name' => '',
 			'Date' => '',
 			'Quality' => ''
 		);
-		$this->init($_foo['ID'], $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $_foo['Date'], $_foo['Quality']);
+		$this->init($_foo['ID'], $_foo['Width'], $_foo['Height'], $_foo['Options'], $_foo['Format'], $_foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $_foo['Date'], $_foo['Quality']);
 		return ($this->thumbID && $this->thumbName);
 	}
 
@@ -317,19 +301,16 @@ class we_thumbnail{
 		if(!$this->getImageData($getBinary)){
 			return false;
 		}
-		$_foo = getHash('SELECT Width,Height,Ratio,Maxsize,Interlace,Fitinside,Format,Name,Date FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? : array(
+		$_foo = getHash('SELECT Width,Height,Options,Format,Name,Date FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? : array(
 			'Width' => 0,
 			'Height' => 0,
-			'Ratio' => 0,
-			'Maxsize' => 0,
-			'Interlace' => false,
-			'Fitinside' => false,
+			'Options' => false,
 			'Format' => '',
 			'Name' => '',
 			'Date' => '',
 		);
 
-		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $_foo['Date']);
+		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Options'], $_foo['Format'], $_foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $_foo['Date']);
 
 		/* FIXME: the following code was missing here (and in several places where this function is called)!
 		 * Is this the right place to execute it? or should we move it to init() or some other place?
@@ -372,7 +353,7 @@ class we_thumbnail{
 			we_base_file::createLocalFolder($_thumbdir);
 		}
 		$quality = max(10, min(100, intval($this->thumbQuality) * 10));
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? : WEBEDITION_PATH . '../' . $this->imagePath, $this->outputFormat, WEBEDITION_PATH . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? : WEBEDITION_PATH . '../' . $this->imagePath, $this->outputFormat, WEBEDITION_PATH . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -397,7 +378,7 @@ class we_thumbnail{
 			return self::USE_ORIGINAL;
 		}
 		$quality = $this->thumbQuality < 1 ? 10 : ($this->thumbQuality > 10 ? 100 : $this->thumbQuality * 10);
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? : $_SERVER["DOCUMENT_ROOT"] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? : $_SERVER['DOCUMENT_ROOT'] . $this->imagePath, $this->outputFormat, "", $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);
 		if($outarr[0]){
 			$thumbDataPointer = $outarr[0];
 			return self::OK;
@@ -550,13 +531,8 @@ class we_thumbnail{
 		}
 
 		// Check, if we must discard aspect ratio
-		if(!$this->thumbRatio && ($this->thumbWidth) && ($this->thumbHeight)){
-			$this->outputWidth = $this->thumbWidth;
-			$this->outputHeight = $this->thumbHeight;
-		}
-
 		// Check if it will fitinside
-		if($this->thumbFitinside && ($this->thumbWidth) && ($this->thumbHeight)){
+		if((!in_array(self::OPTION_RATIO, $this->options) || in_array(self::OPTION_FITINSIDE, $this->options) || in_array(self::OPTION_CROP, $this->options)) && ($this->thumbWidth) && ($this->thumbHeight)){
 			$this->outputWidth = $this->thumbWidth;
 			$this->outputHeight = $this->thumbHeight;
 		}
@@ -571,7 +547,7 @@ class we_thumbnail{
 	private function useOriginalSize(){
 		return ($this->generateSmaller ?
 				false :
-				($this->thumbMaxsize == false) && ($this->thumbFitinside == false) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
+				(!in_array(self::OPTION_MAXSIZE, $this->options)) && (!in_array(self::OPTION_FITINSIDE, $this->options)) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
 	}
 
 	/**
@@ -589,16 +565,25 @@ class we_thumbnail{
 	 * @return void
 	 * @private
 	 */
-	private function getImageData($getBinary = false){
+	private function getImageData($getBinary = false, $onlyFocus = false){
 		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
-			' AND l.DocumentTable="tblFile"');
+			' AND l.DocumentTable="tblFile"' . ($onlyFocus ? ' AND l.Name="focus"' : ''));
 
 		while($this->db->next_record()){
-			if($this->db->f('Name') === 'origwidth'){
-				$this->imageWidth = $this->db->f('Dat');
-			} else if($this->db->f('Name') === 'origheight'){
-				$this->imageHeight = $this->db->f('Dat');
+			switch($this->db->f('Name')){
+				case 'origwidth':
+					$this->imageWidth = $this->db->f('Dat');
+					break;
+				case 'origheight':
+					$this->imageHeight = $this->db->f('Dat');
+					break;
+				case 'focus':
+					$this->focus = we_unserialize($this->db->f('Dat'), array(0, 0));
+					break;
 			}
+		}
+		if($onlyFocus){
+			return true;
 		}
 
 		$imgdat = getHash('SELECT ID,Filename,Extension,Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->imageID), $this->db);

@@ -975,3 +975,28 @@ if (!Function.prototype.apply) {
 		return returnValue;
 	};
 }
+
+function setFocusPositionByMouse(e) {
+	var img = document.getElementById("weImage");
+	document.getElementById("x_focus").value = ((e.offsetX - img.width / 2) / (img.width / 2)).toFixed(2);
+	document.getElementById("y_focus").value = ((e.offsetY - img.height / 2) / (img.height / 2)).toFixed(2);
+	setFocusPositionByValue();
+}
+
+function setFocusPositionByValue() {
+	var x = document.getElementById("x_focus").value;
+	var y = document.getElementById("y_focus").value;
+	if (Math.abs(x) > 1) {
+		x = 0;
+	}
+	if (Math.abs(y) > 1) {
+		y = 0;
+	}
+	document.getElementById("focus").value = "[" + x + "," + y + "]";
+
+	var img = document.getElementById("weImage");
+	var imgfocus_point = document.getElementById("imgfocus_point");
+	imgfocus_point.style.left = ((img.width / 2) + (x * (img.width / 2))).toFixed(0) + "px";
+	imgfocus_point.style.top = ((img.height / 2) + (y * (img.height / 2))).toFixed(0) + "px";
+	_EditorFrame.setEditorIsHot(true);
+}
