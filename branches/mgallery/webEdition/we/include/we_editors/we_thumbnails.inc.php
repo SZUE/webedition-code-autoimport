@@ -318,7 +318,7 @@ function getMainDialog(){
 	} else {
 		save_all_values();
 		$save_javascript = we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-			"self.location = consts.reloadUrl+'&id='" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';";
+			"self.location = consts.reloadUrl+'&id=" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';";
 	}
 
 	return we_html_element::jsElement($save_javascript) . build_dialog('saved');
