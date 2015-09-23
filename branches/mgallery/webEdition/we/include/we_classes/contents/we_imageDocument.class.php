@@ -144,8 +144,9 @@ class we_imageDocument extends we_binaryDocument{
 
 			$this->Thumbs = implode(',', $thumbs);
 		} else {
-			$thumbs = implode(',', $this->Thumbs);
+			$thumbs = explode(',', trim($this->Thumbs, ','));
 		}
+
 		return $thumbs;
 	}
 
