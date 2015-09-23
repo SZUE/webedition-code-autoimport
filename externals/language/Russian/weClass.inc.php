@@ -105,6 +105,8 @@ $l_weClass=array(
 	'hspace'=>'Расстояние по горизонтали',
 	'hyperlink'=>'Гиперссылка',
 	'image'=>'Изображение',
+		'focus'=>'Set focus point',
+	),
 	'image_edit_null_not_allowed'=>'In the fields Width and Height only numbers greater than 0 are allowed!',
 	'import_ok'=>'Документы успешно импортированы!',
 	'information'=>'Справка',

@@ -105,6 +105,8 @@ $l_weClass=array(
 	'hspace'=>'HRuimte',
 	'hyperlink'=>'koppeling',
 	'image'=>'Afbeelding',
+		'focus'=>'Set focus point',
+	),
 	'image_edit_null_not_allowed'=>'In de velden Breedte en Hoogte zijn alleen nummers hoger dan 0 toegestaan!',
 	'import_ok'=>'Documenten zijn succesvol geïmporteerd!',
 	'information'=>'Informatie',

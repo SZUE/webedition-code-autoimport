@@ -105,6 +105,8 @@ $l_weClass=array(
 	'hspace'=>'Distance horizontale',
 	'hyperlink'=>'Lien',
 	'image'=>'Graphique',
+		'focus'=>'Set focus point',
+	),
 	'image_edit_null_not_allowed'=>'Dans les champs largeur et hauteur seulement les nombres plus grand que 0 sont admis !',
 	'import_ok'=>'Documents importés avec succès!',
 	'information'=>'Information',

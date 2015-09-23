@@ -105,6 +105,8 @@ $l_weClass=array(
 	'hspace'=>'Vaakasuuntainen väli',
 	'hyperlink'=>'Hyperlinkki',
 	'image'=>'Kuva',
+		'focus'=>'Set focus point',
+	),
 	'image_edit_null_not_allowed'=>'Kentissä leveys ja korkeus vain nollaa suuremmat arvot ovat sallittuja!',
 	'import_ok'=>'Dokumentit on tuotu!',
 	'information'=>'Tietoja',
