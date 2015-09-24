@@ -6,6 +6,7 @@ $l_thumbnails=array(
 	'create_thumbnails'=>'Создание иконок',
 	'crop'=>'Crop',
 	'delete_prompt'=>'Удалить иконку `%s`. Вы уверены?',
+	'description'=>'Description',
 	'fitinside'=>'Fixed Size',
 	'format'=>'Формат вывода на экран',
 	'format_gif'=>'Файл GIF',

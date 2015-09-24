@@ -6,6 +6,7 @@ $l_thumbnails=array(
 	'create_thumbnails'=>'Utwórz podgląd miniatury',
 	'crop'=>'Crop',
 	'delete_prompt'=>'Usuń podgląd miniatury `%s`! Jesteś pewien?',
+	'description'=>'Description',
 	'fitinside'=>'Fixed Size',
 	'format'=>'Format zadania',
 	'format_gif'=>'Plik GIF',

@@ -6,6 +6,7 @@ $l_thumbnails=array(
 	'create_thumbnails'=>'Luo esikatselukuvia',
 	'crop'=>'Crop',
 	'delete_prompt'=>'Poista esikatselukuva `%s`! Oletko varma?',
+	'description'=>'Description',
 	'fitinside'=>'Fixed Size',
 	'format'=>'Tallennustyyppi',
 	'format_gif'=>'GIF -tiedosto',
