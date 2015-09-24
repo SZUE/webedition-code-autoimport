@@ -149,7 +149,7 @@ abstract class we_html_forms{
 		$cssClasses = weTag_getAttribute('classes', $attribs, '', we_base_request::STRING);
 		$buttonTop = false;
 		$buttonBottom = false;
-		$editorcss = weTag_getAttribute('editorcss', $attribs, '', we_base_request::STRING);
+		$editorcss = weTag_getAttribute('editorcss', $attribs, array(), we_base_request::INTLISTA);
 		$editorcss = $editorcss ? id_to_path($editorcss, FILE_TABLE, null, false, true) : array();
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
 
@@ -275,16 +275,16 @@ abstract class we_html_forms{
 			}
 		}
 		/*
-		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\\d+)[" ]/i', $text, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){
-				list($imgID, $thumbID) = explode(',', $reg[1]);
-				$thumbObj = new we_thumbnail();
-				if(!$thumbObj->initByImageIDAndThumbID(intval($imgID), intval($thumbID))){
-					$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|i', '', $text);
-				}
-			}
-		}
-		*/
+		  if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\\d+)[" ]/i', $text, $regs, PREG_SET_ORDER)){
+		  foreach($regs as $reg){
+		  list($imgID, $thumbID) = explode(',', $reg[1]);
+		  $thumbObj = new we_thumbnail();
+		  if(!$thumbObj->initByImageIDAndThumbID(intval($imgID), intval($thumbID))){
+		  $text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|i', '', $text);
+		  }
+		  }
+		  }
+		 */
 
 		if(defined('OBJECT_TABLE')){
 			if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\\d+)[^" \?#]+\??/i', $text, $regs, PREG_SET_ORDER)){
