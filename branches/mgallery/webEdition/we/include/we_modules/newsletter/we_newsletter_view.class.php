@@ -1287,8 +1287,8 @@ self.close();');
 		$this->db->query('SELECT LinkID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . $this->newsletter->ID . ' AND Type=' . we_newsletter_block::ATTACHMENT . ($group ? ' AND FIND_IN_SET("' . $this->db->escape($group) . '",Groups)' : ''));
 
 		while($this->db->next_record()){
-			if($this->db->f("LinkID")){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . $this->db->f("LinkID"), '', $dbtmp);
+			if($this->db->f('LinkID')){
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . $this->db->f('LinkID'), '', $dbtmp);
 
 				if($path){
 					$atts[] = $_SERVER['DOCUMENT_ROOT'] . $path;

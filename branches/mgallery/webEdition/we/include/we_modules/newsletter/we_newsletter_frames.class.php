@@ -2280,7 +2280,6 @@ self.focus();');
 			}
 
 			foreach($user_blocks as $user_block){
-
 				$html_block = $this->View->getFromCache($blockcache . "_h_" . $user_block);
 				$plain_block = $this->View->getFromCache($blockcache . "_p_" . $user_block);
 

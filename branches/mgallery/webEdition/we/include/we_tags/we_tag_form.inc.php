@@ -147,9 +147,13 @@ function we_tag_form($attribs){
 				$GLOBALS['WE_FORM'] = $formname;
 				if(!$GLOBALS['we_doc']->InWebEdition){
 					if($type === 'object'){
-						we_objectFile::initObject($classid, $formname, $categories, intval($parentid));
+						$id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0);
+						if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid))){
+							we_objectFile::initObject($classid, $formname, $categories, intval($parentid), $id);
+						}
 					} else {
-						we_webEditionDocument::initDocument($formname, $tid, $doctype, $categories);
+						$id = we_base_request::_(we_base_request::INT, 'we_editDocument_ID', 0);
+						we_webEditionDocument::initDocument($formname, $tid, $doctype, $categories, $id);
 					}
 				}
 				$typetmp = (($type === 'object') ? 'Object' : 'Document');

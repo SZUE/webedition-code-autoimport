@@ -74,7 +74,7 @@ class we_object_exImport extends we_object{
 					$type = $this->switchtypes2($arr[0], $len);
 					if(!empty($type)){
 						$qarr[] = $key . $type;
-						//add index for complex queries
+//add index for complex queries
 						if($arr[0] === 'object'){
 							$indexe[] = 'KEY ' . $key . ' (' . $key . ')';
 						}
@@ -87,19 +87,19 @@ class we_object_exImport extends we_object{
 			$this->DB_WE->query('DROP TABLE IF EXISTS ' . $ctable);
 			$this->DB_WE->query('CREATE TABLE ' . $ctable . ' (' . $q . ',' . implode(',', $indexe) . ') ENGINE=MYISAM ' . we_database_base::getCharsetCollation());
 
-			//dummy eintrag schreiben
+//dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
 
 
-			// folder in object schreiben
+// folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
 				$fold = new we_class_folder();
 				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
 			}
 
-			////// resave the line O to O.....
+////// resave the line O to O.....
 			$this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET OF_ID=0');
-			////// resave the line O to O.....
+////// resave the line O to O.....
 		} else {
 			$this->SerializedArray = we_unserialize($this->DefaultValues);
 			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
@@ -122,7 +122,7 @@ class we_object_exImport extends we_object{
 
 				if(isset($tableInfo['meta'][$fieldname])){
 					$props = $tableInfo[$tableInfo['meta'][$fieldname]];
-					// the field exists
+// the field exists
 					if(!empty($fieldtype) && (strtolower($fieldtype) == strtolower($props['type']))){
 						if($len != $props['len']){
 							$alter[$fieldname] = $fieldname . $type;
@@ -146,8 +146,8 @@ class we_object_exImport extends we_object{
 				}
 			}
 
-			//FIXME: deactivated for #9899 - some elements are not present (e.g. object-references) & will be deleted therefore
-			//With $this->isForceDropOnSave drops can be activated
+//FIXME: deactivated for #9899 - some elements are not present (e.g. object-references) & will be deleted therefore
+//With $this->isForceDropOnSave drops can be activated
 			if($this->isForceDropOnSave){
 				foreach($drop as $key => $value){
 					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
@@ -254,7 +254,7 @@ class we_object_exImport extends we_object{
 
 	function getFieldPrefix($name){
 		$this->SerializedArray = we_unserialize($this->DefaultValues);
-		//$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
+//$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 		foreach(array_keys($this->SerializedArray) as $fieldname){
 			$arr = explode('_', $fieldname);
 			if(!isset($arr[1])){

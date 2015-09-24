@@ -415,7 +415,7 @@ function checkFooter(){
 					//we can't use include-tag since we don't have a document & many warnings will occur.
 					$path = id_to_path($id, FILE_TABLE, $DB_WE);
 					if($path){
-						include($_SERVER['DOCUMENT_ROOT'] . $path);
+						include(WEBEDITION_PATH . '../' . $path);
 					}
 					ob_end_clean();
 					break;

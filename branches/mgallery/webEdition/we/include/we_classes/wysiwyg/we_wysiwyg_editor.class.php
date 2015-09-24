@@ -799,7 +799,7 @@ class we_wysiwyg_editor{
 
 		$height = we_base_util::convertUnits($this->height);
 		$width = we_base_util::convertUnits($this->width);
-		if(is_numeric($height) && is_numeric($width)){
+		if(is_numeric($height) && is_numeric($width) && $width){
 			//only a simple fix
 			$this->height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
 		}

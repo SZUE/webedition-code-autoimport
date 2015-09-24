@@ -249,31 +249,28 @@ class we_util_Mailer extends Zend_Mail{
 					$isBinaryData = preg_match('/image\/(.*);base64,(.*)"/Ui', $url . '"', $binParts);
 
 					if($isBinaryData){
-						if(in_array($binParts[1], $this->embedImages)){
-							$cid = 'cid:' . $this->doaddAttachmentInline($binParts[2], true, $binParts[1]);
-						} else {
+						if(!in_array($binParts[1], $this->embedImages)){
 							continue;
 						}
+						$cid = 'cid:' . $this->doaddAttachmentInline($binParts[2], true, $binParts[1]);
 					} elseif(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
 						$fileParts = pathinfo($filename);
 						$ext = $fileParts['extension'];
 
-						if(in_array($ext, $this->embedImages)){
-							$directory = str_replace('..', '', dirname($url) . '/');
-							$directory = ($directory === '.' ? '' : $directory);
-							if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
-								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
-							}
-							$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
-								((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
-								((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
-							$attachmentpath = $this->basedir . $directory . $filename;
-							$attachmentpath = str_replace('//', '/', $attachmentpath);
-							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
-						} else {
+						if(!in_array($ext, $this->embedImages)){
 							continue;
 						}
+						$directory = str_replace('..', '', dirname($url) . '/');
+						$directory = ($directory === '.' ? '' : $directory);
+						if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
+							$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
+						}
+						$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
+							((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
+							((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
+						$attachmentpath = str_replace('//', '/', $this->basedir . $directory . $filename);
+						$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
 					}
 					$this->Body = preg_replace('/' . $images[1][$i] . '="' . preg_quote($url, '/') . '"/Ui', $images[1][$i] . '="' . $cid . '"', $this->Body);
 				}
@@ -353,11 +350,12 @@ class we_util_Mailer extends Zend_Mail{
 		if($isBinData){
 			$at = new Zend_Mime_Part(base64_decode($attachment));
 			$at->id = $at->filename = str_replace('.', '', uniqid('', true));
-			$at->type = self::get_mime_type($ext, $at->filename);
+			$at->type = self::get_mime_type($ext, '');
 		} else {
-			$at = new Zend_Mime_Part(we_base_file::load($attachment));
 			$filename = basename($attachment);
 			$rep = str_replace($_SERVER['DOCUMENT_ROOT'], '', $attachment);
+			$attachment = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], '/'), WEBEDITION_PATH . '..', $attachment);
+			$at = new Zend_Mime_Part(we_base_file::load($attachment));
 			$at->id = md5($filename);
 			$at->filename = $filename;
 			$fileParts = pathinfo($filename);
@@ -378,18 +376,20 @@ class we_util_Mailer extends Zend_Mail{
 	 * @return mime type of ext
 	 */
 	public function doaddAttachment($attachmentpath){
-		if($attachmentpath){
-			$filename = basename($attachmentpath);
-			$ext= pathinfo($filename, PATHINFO_EXTENSION);
-
-			$at = new Zend_Mime_Part(we_base_file::load($attachmentpath));
-			$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
-			$at->encoding = Zend_Mime::ENCODING_BASE64;
-			$at->id = md5($filename);
-			$at->filename = $filename;
-			$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
-			$this->addAttachment($at);
+		if(!$attachmentpath){
+			return;
 		}
+		$attachmentpath = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], '/'), WEBEDITION_PATH . '..', $attachmentpath);
+		$filename = basename($attachmentpath);
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		$binarydata = we_base_file::load($attachmentpath);
+		$at = new Zend_Mime_Part($binarydata);
+		$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
+		$at->encoding = Zend_Mime::ENCODING_BASE64;
+		$at->id = md5($filename);
+		$at->filename = $filename;
+		$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
+		$this->addAttachment($at);
 	}
 
 	/**

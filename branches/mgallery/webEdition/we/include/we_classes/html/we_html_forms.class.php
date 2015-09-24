@@ -144,7 +144,7 @@ abstract class we_html_forms{
 		$cssClasses = weTag_getAttribute('classes', $attribs, '', we_base_request::STRING);
 		$buttonTop = false;
 		$buttonBottom = false;
-		$editorcss = weTag_getAttribute('editorcss', $attribs, '', we_base_request::STRING);
+		$editorcss = weTag_getAttribute('editorcss', $attribs, array(), we_base_request::INTLISTA);
 		$editorcss = $editorcss ? id_to_path($editorcss, FILE_TABLE, null, false, true) : array();
 		$imagestartid = weTag_getAttribute('imagestartid', $attribs, 0, we_base_request::INT);
 		$galleryTemplates = weTag_getAttribute('gallerytemplates', $attribs, 0, we_base_request::INTLIST);
