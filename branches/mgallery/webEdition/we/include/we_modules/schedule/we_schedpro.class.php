@@ -422,9 +422,9 @@ function checkFooter(){
 			}
 
 			if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET expire=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND expire=' . $schedFile['Wann']);
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET `expire`=FROM_UNIXTIME(' . intval($nextWann) . ') WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`=' . $schedFile['Wann']);
 			} else {
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND expire=' . $schedFile['Wann']);
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND `expire`=' . $schedFile['Wann']);
 			}
 		}
 
@@ -454,7 +454,7 @@ function checkFooter(){
 
 	static function trigger_schedule(){
 		//sth. to do???
-		if(!f('SELECT 1 FROM ' . SCHEDULE_TABLE . ' WHERE expire<=NOW() AND lockedUntil<NOW() AND Active=1')){
+		if(!f('SELECT 1 FROM ' . SCHEDULE_TABLE . ' WHERE `expire`<=NOW() AND lockedUntil<NOW() AND Active=1')){
 			return;
 		}
 		$DB_WE = new DB_WE();
@@ -471,8 +471,8 @@ function checkFooter(){
 			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
 		}
 
-		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE expire<=NOW() AND lockedUntil<NOW() AND Active=1 ORDER BY expire LIMIT 1', $DB_WE))){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '" AND expire=' . $rec['expire']);
+		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE `expire`<=NOW() AND lockedUntil<NOW() AND Active=1 ORDER BY `expire` LIMIT 1', $DB_WE))){
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '" AND `expire`=' . $rec['expire']);
 			if($hasLock){
 				$DB_WE->unlock();
 			}
@@ -488,11 +488,11 @@ function checkFooter(){
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else {
 				//data invalid, reset & make sure this is not processed the next time
-				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND expire=' . $rec['expire'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '"');
+				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND `expire`=' . $rec['expire'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '"');
 			}
 		}
 		//cleanup old single shots
-		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE Active=0 AND Type=' . self::TYPE_ONCE . ' AND expire<(CURDATE()-INTERVAL 1 YEAR)');
+		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE Active=0 AND Type=' . self::TYPE_ONCE . ' AND `expire`<(CURDATE()-INTERVAL 1 YEAR)');
 		//make sure DB is unlocked!
 		$DB_WE->unlock();
 //reset state

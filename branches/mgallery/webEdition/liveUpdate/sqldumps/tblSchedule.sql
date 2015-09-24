@@ -8,11 +8,11 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   Schedpro text NOT NULL,
   `Type` tinyint(3) unsigned NOT NULL default '0',
   Active tinyint(1) unsigned default NULL,
-  PRIMARY KEY (DID,ClassName,Active,Wann,Was,`Type`),
-  KEY Wann (Wann,Active,`lockedUntil`)
+  PRIMARY KEY (DID,ClassName,Active,`expire`,Was,`Type`),
+  KEY Wann (`expire`,Active,`lockedUntil`)
 ) ENGINE=MyISAM;
 
 /* query separator */
-###ONCOL(Wann,###TBLPREFIX###tblSchedule) UPDATE ###TBLPREFIX###tblSchedule SET expire=FROM_UNIXTIME(Wann) WHERE expire="0000-00-00";###
+###ONCOL(Wann,###TBLPREFIX###tblSchedule) UPDATE ###TBLPREFIX###tblSchedule SET `expire`=FROM_UNIXTIME(Wann) WHERE `expire`="0000-00-00";###
 /* query separator */
 ###UPDATEDROPCOL(Wann,###TBLPREFIX###tblSchedule)###
