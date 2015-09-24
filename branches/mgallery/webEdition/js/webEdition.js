@@ -692,7 +692,7 @@ function we_cmd_base(args, url) {
 			we_cmd("we_selector_category", 0, tables.CATEGORY_TABLE, "", "", "", "", "", 1);
 			break;
 		case "editThumbs":
-			new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);
+			new jsWindow(url, "thumbnails", -1, -1, 560, 550, true, true, true);
 			break;
 		case "editMetadataFields":
 			new jsWindow(url, "metadatafields", -1, -1, 500, 550, true, true, true);

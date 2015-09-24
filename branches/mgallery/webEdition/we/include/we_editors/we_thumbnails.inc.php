@@ -122,6 +122,7 @@ function save_all_values(){
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_height', null), 'Height');
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_quality', null), 'Quality');
 		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'Format', null), 'Format');
+		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'description', null), 'description');
 		$setArray['Options'] = implode(',', we_base_request::_(we_base_request::STRING, 'Options', array()));
 
 		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'edited_id', 0));
@@ -200,40 +201,34 @@ function delete_thumbnail() {" .
 			// Build dialog
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(), 'space' => 0);
 
-			$allData = (getHash('SELECT Name,Width,Height,Quality,Format,Options FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id)? :
+			$allData = (getHash('SELECT Name,Width,Height,Quality,Format,Options,description FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id)? :
 					array(
 					'Name' => '',
 					'Width' => '',
 					'Height' => '',
 					'Quality' => '',
 					'Format' => '',
-					'Options' => ''
+					'Options' => '',
+					'description' => ''
 			));
 
 			$allData['Options'] = explode(',', $allData['Options']);
 
-			$_thumbnail_name = ($id != -1) ? $allData['Name'] : -1;
-
-			$_thumbnail_name_input = we_html_tools::htmlTextInput('thumbnail_name', 22, ($_thumbnail_name != -1 ? $_thumbnail_name : ''), 255, ($_thumbnail_name == -1 ? 'disabled="true"' : ''), 'text', 225);
-
-
+			$_thumbnail_name_input = we_html_tools::htmlTextInput('thumbnail_name', 22, ($id != -1 ? $allData['Name'] : ''), 255, ($id == -1 ? 'disabled="true"' : ''), 'text', 225);
+			$_thumbnail_description_input = we_html_tools::htmlTextInput('description', 22, ($id != -1 ? $allData['description'] : ''), 255, ($id == -1 ? 'disabled="true"' : ''), 'text', 225);
 			/*			 * ***************************************************************
 			 * PROPERTIES
 			 * *************************************************************** */
 
 			// Create specify thumbnail dimension input
-			$_thumbnail_width = ($id != -1) ? $allData['Width'] : -1;
-			$_thumbnail_height = ($id != -1) ? $allData['Height'] : -1;
 			$_thumbnail_quality = ($id != -1) ? $allData['Quality'] : -1;
-
 			$_thumbnail_specify_table = new we_html_table(array('class' => 'default'), 3, 2);
 
 			$_thumbnail_specify_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('thumbnails', '[width]') . ':');
+			$_thumbnail_specify_table->setCol(0, 1, null, we_html_tools::htmlTextInput('thumbnail_width', 6, ($id != -1 ? $allData['Width'] : ''), 4, ($id == -1 ? 'disabled="disabled"' : ''), 'text', 60));
 			$_thumbnail_specify_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('thumbnails', '[height]') . ':');
+			$_thumbnail_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput('thumbnail_height', 6, ($id != -1 ? $allData['Height'] : ''), 4, ($id == -1 ? 'disabled="disabled"' : ''), 'text', 60));
 			$_thumbnail_specify_table->setCol(2, 0, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_text_cell'), g_l('thumbnails', '[quality]') . ':');
-
-			$_thumbnail_specify_table->setCol(0, 1, null, we_html_tools::htmlTextInput('thumbnail_width', 6, ($_thumbnail_width != -1 ? $_thumbnail_width : ''), 4, ($_thumbnail_width == -1 ? 'disabled="disabled"' : ''), 'text', 60));
-			$_thumbnail_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput('thumbnail_height', 6, ($_thumbnail_height != -1 ? $_thumbnail_height : ''), 4, ($_thumbnail_height == -1 ? 'disabled="disabled"' : ''), 'text', 60));
 			$_thumbnail_specify_table->setCol(2, 1, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_value_cell'), we_base_imageEdit::qualitySelect('thumbnail_quality', $_thumbnail_quality));
 
 			// Create checkboxes for options for thumbnails
@@ -257,9 +252,9 @@ function delete_thumbnail() {" .
 			}
 
 			// Build final HTML code
-			$_window_html = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+			$_window_html = new we_html_table(array('class' => 'default withSpace'), 1, 2);
 			$_window_html->setCol(0, 0, null, $_thumbnail_specify_table->getHtml());
-			$_window_html->setCol(1, 0, null, $_thumbnail_option_table->getHtml());
+			$_window_html->setCol(0, 1, null, $_thumbnail_option_table->getHtml());
 
 
 			// OUTPUT FORMAT
@@ -271,7 +266,7 @@ function delete_thumbnail() {" .
 
 			$_thumbnail_format_select_attribs = array('name' => 'Format', 'id' => 'Format', 'class' => 'weSelect', 'style' => 'width: 225px;', 'onchange' => 'changeFormat()');
 
-			if($_thumbnail_format == -1){
+			if($id == -1){
 				$_thumbnail_format_select_attribs['disabled'] = 'true'; //#6027
 			}
 
@@ -292,7 +287,9 @@ function delete_thumbnail() {" .
 			return create_dialog('settings_predefined', g_l('thumbnails', '[thumbnails]'), array(
 				array('html' => $_thumbnails_table->getHtml(), 'space' => 0),
 				array('headline' => g_l('thumbnails', '[name]'), 'html' => $_thumbnail_name_input, 'space' => 100),
-				array('headline' => g_l('thumbnails', '[properties]'), 'html' => $_window_html->getHtml(), 'space' => 100),
+				array('headline' => g_l('thumbnails', '[description]'), 'html' => $_thumbnail_description_input, 'space' => 100),
+				array('headline' => g_l('thumbnails', '[properties]'), 'noline' => true),
+				array('html' => $_window_html->getHtml(), 'space' => 10),
 				array('headline' => g_l('thumbnails', '[format]'), 'html' => $_thumbnail_format_select->getHtml(), 'space' => 100),
 				), -1, '', '', false, $_needed_JavaScript);
 	}
