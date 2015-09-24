@@ -50,7 +50,7 @@ abstract class we_html_forms{
 		return '
 			<span class="default" style="white-space:nowrap;' . $style . '">
 						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="vertical-align: top;outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' />
-					<div class="' . $class . '" style="display:inline-block;padding-left:4px;white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . ($description ? "<br/><br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? : "") . '</div>
+					<div class="' . $class . '" style="display:inline-block;padding-left:4px;white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . ($title ? ' showhelp' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . ($description ? "<br/><br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? : "") . '</div>
 				</span>';
 	}
 

@@ -344,7 +344,7 @@ label.disabled{
 	cursor: default;
 }
 
-label[title]{
+label.showhelp[title]{
 	border-bottom: 1px dotted black;
 	cursor: help;
 }
