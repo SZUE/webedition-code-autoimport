@@ -96,7 +96,7 @@ class we_shop_vatRule{
 	public static function getShopVatRule(){
 		if(($strFelder = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopVatRule"'))){
 			//FIX old class names
-			return unserialize(strtr($strFelder, array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":')));
+			return we_unserialize(strtr($strFelder, array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":', 'O:13:"weshopvatrule"' => 'O:15:"we_shop_vatRule":')));
 		}
 		return new self('true', '', array(), array(), array(
 			array(

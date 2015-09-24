@@ -43,7 +43,10 @@ class we_shop_shippingControl{
 		$data = f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShippingControl"');
 
 		if($data){
-			$shippingControl = unserialize(strtr($data, array('O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"', 'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"')));
+			$shippingControl = unserialize(strtr($data, array('O:17:"weShippingControl"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"', 'O:10:"weShipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"',
+				'O:17:"weshippingcontrol"' => 'O:' . strlen(__CLASS__) . ':"' . __CLASS__ . '"',
+				'O:10:"weshipping"' => 'O:' . strlen('we_shop_shipping') . ':"we_shop_shipping"'
+				)));
 		if(is_object($shippingControl)){
 			$shippingControl->vatRate = we_shop_vats::getVatRateForSite($shippingControl->vatId);
 			return $shippingControl;
