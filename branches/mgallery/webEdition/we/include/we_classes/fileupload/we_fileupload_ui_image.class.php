@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_image extends we_fileupload_binaryDocument{
-	private $layout = 'vertical';
+	protected $layout = 'vertical';
 
 	public function __construct($contentType = '', $extension = '', $layout = 'vertical'){
 		$this->layout = $layout === 'horizontal' ? $layout : $this->layout;

@@ -77,6 +77,7 @@ abstract class we_fileupload_base{
 	protected $binDocProperties = array();
 	protected $isInternalBtnUpload = false; // used in we_fileupload_inc only
 	protected $location = '';
+	protected $layout = 'horizontal';
 	public $moreFieldsToAppend = array();
 	public static $isFallback = false;
 
@@ -214,7 +215,7 @@ abstract class we_fileupload_base{
 we_FileUpload = new weFileUpload("' . $this->type . '");
 we_FileUpload.init({
 	fieldName : "' . $this->name . '",
-	location : "' . $this->location . '",
+	location : "' . ($this->layout === 'vertical' ? 'dialog' : 'we_doc') . '",
 	form : ' . json_encode($this->form) . ',
 	footerName : "' . $this->footerName . '",
 	uploadBtnName : "' . $this->uploadBtnName . '",
