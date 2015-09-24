@@ -1610,7 +1610,7 @@ class we_object extends we_document{
 		$thumbdb->query('SELECT Name FROM ' . THUMBNAILS_TABLE);
 		$thumbList = $thumbdb->getAll(true);
 		if($thumbList){
-			$content .= "<br />" . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
+			$content .= '<br />' . g_l('modules_object', '[use_thumbnail_preview]') . ":<br />";
 			array_unshift($thumbList, '-');
 			$tmp = $this->getElement($name . "Thumb");
 			$currentSelection = ($tmp && isset($thumbList[$tmp]) ? $tmp : '');

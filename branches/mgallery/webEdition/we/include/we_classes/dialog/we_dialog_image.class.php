@@ -319,9 +319,9 @@ class we_dialog_image extends we_dialog_base{
 			$thumbnails = '<select id="selectThumbnail" name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);"' . ($this->getDisplayThumbsSel() === 'none' ? ' disabled="disabled"' : '') . '>';
 			$thumbnails .= '<option value="0"' . (($thumbdata == 0) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[nothumb]') . '</option>';
 
-			$this->db->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
+			$this->db->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			while($this->db->next_record()){
-				$thumbnails .= '<option value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>';
+				$thumbnails .= '<option title="' . $this->db->f('description') . '" value="' . $this->db->f("ID") . '"' . (($thumbdata == $this->db->f("ID")) ? (' selected="selected"') : "") . '>' . $this->db->f("Name") . '</option>';
 			}
 			$thumbnails .= '</select>';
 

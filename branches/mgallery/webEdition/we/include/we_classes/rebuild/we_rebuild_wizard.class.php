@@ -483,13 +483,13 @@ abstract class we_rebuild_wizard{
 	 * @param string $thumbs csv value with thumb IDs
 	 */
 	private static function formThumbs($thumbs){
-		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
+		$GLOBALS['DB_WE']->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
 		$Thselect = g_l('rebuild', '[thumbnails]') . '<br/><br/>' .
 			'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		while($GLOBALS['DB_WE']->next_record()){
-			$Thselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? ' selected' : '') . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
+			$Thselect .= '<option title="' . $GLOBALS['DB_WE']->f('description') . '" value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? ' selected' : '') . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
 		}
 		$Thselect .= '</select>';
 		return $Thselect;

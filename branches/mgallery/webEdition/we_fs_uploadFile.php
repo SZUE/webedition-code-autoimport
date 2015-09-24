@@ -162,14 +162,14 @@ if($weFileupload->processFileRequest()){
 
 	if($we_ContentType == we_base_ContentTypes::IMAGE){
 		$_thumbnails = new we_html_select(array('multiple' => 'multiple', 'name' => 'Thumbnails[]', 'id' => 'Thumbnails', 'class' => 'defaultfont', 'size' => 6, 'style' => 'width: 330px;'));
-		$DB_WE->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
+		$DB_WE->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
 		$selectedID = 0;
 		$_enabled_buttons = false;
 		while($DB_WE->next_record()){
 			$_enabled_buttons = true;
 			$_thumbnail_counter = $DB_WE->f('ID');
-			$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
+			$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'), array('title' => $DB_WE->f('description')));
 		}
 
 		$parts[] = array('headline' => '', 'html' => we_html_forms::checkbox(1, true, 'import_metadata', g_l('metadata', '[import_metadata_at_upload]')), 'space' => 0);
@@ -192,14 +192,14 @@ if($weFileupload->processFileRequest()){
 				?>
 				var ref;
 				if (opener.top.opener && opener.top.opener.top.makeNewEntry) {
-					ref = opener.top.opener.top;
+				ref = opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.makeNewEntry) {
-					ref = opener.top.opener.top.opener.top;
+				ref = opener.top.opener.top.opener.top;
 				} else if (opener.top.opener && opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener && opener.top.opener.top.opener.top.opener.top.makeNewEntry) {
-					ref = opener.top.opener.top.opener.top.opener.top;
+				ref = opener.top.opener.top.opener.top.opener.top;
 				}
 				if (ref.makeNewEntry) {
-					ref.makeNewEntry("' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
+				ref.makeNewEntry("' . $we_doc->ID . '", "' . $we_doc->ParentID . '", "' . $we_doc->Text . '", 1, "' . $we_doc->ContentType . '", "' . $we_doc->Table . '"'; ?>);
 				}
 				<?php
 			}
@@ -209,7 +209,7 @@ if($weFileupload->processFileRequest()){
 			opener.top.addEntry(<?php echo '"' . $we_doc->ID . '", "' . $we_doc->Text . '", "' . $we_doc->IsFolder . '", "' . $we_doc->Path . '"'; ?>);
 			opener.top.doClick(<?php echo $we_doc->ID; ?>, 0);
 			setTimeout(function () {
-				opener.top.selectFile(<?php echo $we_doc->ID; ?>);
+			opener.top.selectFile(<?php echo $we_doc->ID; ?>);
 			}, 200);
 		<?php } ?>
 		setTimeout(self.close, 250);

@@ -242,7 +242,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function initByThumbID($thumbID, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
-		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? :
+		$_foo = getHash('SELECT Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? :
 			array(
 			'Width' => 0,
 			'Height' => 0,
@@ -271,7 +271,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
-		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db)? :
+		$_foo = getHash('SELECT ID,Width,Height,Options,Format,Name,Date FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db)? :
 			array(
 			'ID' => 0,
 			'Width' => 0,

@@ -83,6 +83,7 @@ function remember_value(array &$setArray, $settingvalue, $settingname){
 		switch($settingname){
 			case null:
 				break;
+			case 'description':
 			case 'Name':
 				$setArray[$settingname] = $settingvalue;
 				break;
@@ -171,7 +172,7 @@ function delete_thumbnail() {" .
 			$_enabled_buttons = false;
 
 			// Build language select box
-			$_thumbnails = new we_html_select(array('name' => 'Thumbnails', 'class' => 'weSelect', 'size' => 10, 'style' => 'width: 314px;', 'onchange' => "if(this.selectedIndex > -1){change_thumbnail(this.options[this.selectedIndex].value);}"));
+			$_thumbnails = new we_html_select(array('name' => 'Thumbnails', 'class' => 'weSelect', 'size' => 8, 'style' => 'width: 314px;', 'onchange' => "if(this.selectedIndex > -1){change_thumbnail(this.options[this.selectedIndex].value);}"));
 
 			$DB_WE->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 

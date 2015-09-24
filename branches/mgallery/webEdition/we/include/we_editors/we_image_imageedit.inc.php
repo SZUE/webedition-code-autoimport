@@ -64,7 +64,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <option value="image_resize">' . g_l('weClass', '[resize]') . '&hellip;</option>
 <option value="image_rotate">' . g_l('weClass', '[rotate]') . '&hellip;</option>
 <option value="image_crop">' . g_l('weClass', '[crop]') . '&hellip;</option>
-<option value="image_focus">' . g_l('weClass', '[image][focus]') . '&hellip;</option>
+<option value="image_focus">' . g_l('weClass', '[image_focus]') . '&hellip;</option>
 </optgroup>
 <optgroup label="' . g_l('weClass', '[convert]') . '">' .
 			((in_array("jpg", $supported)) ? '<option value="image_convertJPEG">' . g_l('weClass', '[convert_jpg]') . '...</option>' : '') .
