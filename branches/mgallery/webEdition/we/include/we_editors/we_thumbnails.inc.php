@@ -234,22 +234,22 @@ function delete_thumbnail() {" .
 
 			// Create checkboxes for options for thumbnails
 			$options = array(
-				we_thumbnail::OPTION_RATIO => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_RATIO, $allData['Options'])) : -1, g_l('thumbnails', '[ratio]')),
-				we_thumbnail::OPTION_MAXSIZE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_MAXSIZE, $allData['Options'])) : -1, g_l('thumbnails', '[maximize]')),
-				we_thumbnail::OPTION_INTERLACE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_INTERLACE, $allData['Options'])) : -1, g_l('thumbnails', '[interlace]')),
-				we_thumbnail::OPTION_FITINSIDE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_FITINSIDE, $allData['Options'])) : -1, g_l('thumbnails', '[fitinside]')),
-				we_thumbnail::OPTION_CROP => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_CROP, $allData['Options'])) : -1, g_l('thumbnails', '[crop]')),
-				we_thumbnail::OPTION_UNSHARP => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_UNSHARP, $allData['Options'])) : -1, g_l('thumbnails', '[unsharp]')),
-				we_thumbnail::OPTION_GAUSSBLUR => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_GAUSSBLUR, $allData['Options'])) : -1, g_l('thumbnails', '[gauss]')),
+				we_thumbnail::OPTION_RATIO => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_RATIO, $allData['Options'])) : -1, g_l('thumbnails', '[ratio]'), g_l('thumbnails', '[ratio_desc]')),
+				we_thumbnail::OPTION_MAXSIZE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_MAXSIZE, $allData['Options'])) : -1, g_l('thumbnails', '[maximize]'), g_l('thumbnails', '[maximize_desc]')),
+				we_thumbnail::OPTION_INTERLACE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_INTERLACE, $allData['Options'])) : -1, g_l('thumbnails', '[interlace]'), g_l('thumbnails', '[interlace_desc]')),
+				we_thumbnail::OPTION_FITINSIDE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_FITINSIDE, $allData['Options'])) : -1, g_l('thumbnails', '[fitinside]'), g_l('thumbnails', '[fitinside_desc]')),
+				we_thumbnail::OPTION_CROP => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_CROP, $allData['Options'])) : -1, g_l('thumbnails', '[crop]'), g_l('thumbnails', '[crop]')),
+				we_thumbnail::OPTION_UNSHARP => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_UNSHARP, $allData['Options'])) : -1, g_l('thumbnails', '[unsharp]'), g_l('thumbnails', '[unsharp_desc]')),
+				we_thumbnail::OPTION_GAUSSBLUR => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_GAUSSBLUR, $allData['Options'])) : -1, g_l('thumbnails', '[gauss]'), g_l('thumbnails', '[gauss_desc]')),
 				we_thumbnail::OPTION_GRAY => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_GRAY, $allData['Options'])) : -1, g_l('thumbnails', '[gray]')),
-				we_thumbnail::OPTION_NEGATE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_NEGATE, $allData['Options'])) : -1, g_l('thumbnails', '[negate]')),
+				we_thumbnail::OPTION_NEGATE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_NEGATE, $allData['Options'])) : -1, g_l('thumbnails', '[negate]'), g_l('thumbnails', '[negate_desc]')),
 				we_thumbnail::OPTION_SEPIA => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_SEPIA, $allData['Options'])) : -1, g_l('thumbnails', '[sepia]')),
 			);
 
 			$_thumbnail_option_table = new we_html_table(array('class' => 'default noSpace'), 4, 2);
 			$i = 0;
 			foreach($options as $key => $val){
-				$_thumbnail_option_table->setCol($i / 2, $i++ % 2, null, we_html_forms::checkbox($key, (($val[0] <= 0) ? false : true), 'Options[' . $key . ']', $val[1], false, 'defaultfont', '', ($val[0] == -1)));
+				$_thumbnail_option_table->setCol($i / 2, $i++ % 2, null, we_html_forms::checkbox($key, (($val[0] <= 0) ? false : true), 'Options[' . $key . ']', $val[1], false, 'defaultfont', '', ($val[0] == -1), '', we_html_tools::TYPE_NONE, 0, '', '', (isset($val[2]) ? $val[2] : '')));
 			}
 
 			// Build final HTML code

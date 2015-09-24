@@ -42,7 +42,7 @@ abstract class we_html_forms{
 	 *
 	 * @return     string
 	 */
-	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = we_html_tools::TYPE_NONE, $width = 0, $html = '', $style = ''){
+	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = we_html_tools::TYPE_NONE, $width = 0, $html = '', $style = '', $title = ''){
 		// Check if we have to create a uniqe id
 		$_id = ($uniqid ? $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name);
 
@@ -50,7 +50,7 @@ abstract class we_html_forms{
 		return '
 			<span class="default" style="white-space:nowrap;' . $style . '">
 						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" style="vertical-align: top;outline: 0px;" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' />
-					<div class="' . $class . '" style="display:inline-block;padding-left:4px;white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . '">' . $text . '</label>' . ($description ? "<br/><br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? : "") . '</div>
+					<div class="' . $class . '" style="display:inline-block;padding-left:4px;white-space:nowrap;"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . ($description ? "<br/><br/>" . we_html_tools::htmlAlertAttentionBox($description, $type, $width) : "") . ($html ? : "") . '</div>
 				</span>';
 	}
 
@@ -186,7 +186,7 @@ abstract class we_html_forms{
 		$doc = (!empty($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
 		$inwebedition = ($forceinwebedition ? : !empty($GLOBALS[$doc]->InWebEdition));
 		$inlineedit = // we are in frontend, where default is inlineedit = true
-		weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), we_base_request::BOOL);
+			weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), we_base_request::BOOL);
 		$value = self::removeBrokenInternalLinksAndImages($value);
 		$width = is_numeric($width) ? max($width ? : intval($cols) * 5.5, we_wysiwyg_editor::MIN_WIDTH) : $width;
 		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGTH) : $height;
@@ -262,16 +262,16 @@ abstract class we_html_forms{
 			}
 		}
 		/*
-		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\\d+)[" ]/i', $text, $regs, PREG_SET_ORDER)){
-			foreach($regs as $reg){
-				list($imgID, $thumbID) = explode(',', $reg[1]);
-				$thumbObj = new we_thumbnail();
-				if(!$thumbObj->initByImageIDAndThumbID(intval($imgID), intval($thumbID))){
-					$text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|i', '', $text);
-				}
-			}
-		}
-		*/
+		  if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\\d+)[" ]/i', $text, $regs, PREG_SET_ORDER)){
+		  foreach($regs as $reg){
+		  list($imgID, $thumbID) = explode(',', $reg[1]);
+		  $thumbObj = new we_thumbnail();
+		  if(!$thumbObj->initByImageIDAndThumbID(intval($imgID), intval($thumbID))){
+		  $text = preg_replace('|<img[^>]+src="' . we_base_link::TYPE_THUMB_PREFIX . $reg[1] . '[^>]+>|i', '', $text);
+		  }
+		  }
+		  }
+		 */
 
 		if(defined('OBJECT_TABLE')){
 			if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\\d+)[^" \?#]+\??/i', $text, $regs, PREG_SET_ORDER)){

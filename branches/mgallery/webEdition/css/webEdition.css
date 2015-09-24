@@ -344,6 +344,11 @@ label.disabled{
 	cursor: default;
 }
 
+label[title]{
+	border-bottom: 1px dashed #CC3300;
+	cursor: help;
+}
+
 .weMarkInputError,
 input:invalid {
 	background-color: #ff8888 ! important;
