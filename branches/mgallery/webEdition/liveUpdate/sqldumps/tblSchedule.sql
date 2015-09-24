@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblSchedule (
   DID bigint(20) unsigned NOT NULL default '0',
-  expire DATETIME NOT NULL,
+  `expire` DATETIME NOT NULL,
   `lockedUntil` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Was tinyint(1) unsigned NOT NULL default '0',
   ClassName enum('we_htmlDocument','we_webEditionDocument','we_objectFile') NOT NULL,
