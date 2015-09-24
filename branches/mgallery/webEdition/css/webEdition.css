@@ -345,7 +345,7 @@ label.disabled{
 }
 
 label[title]{
-	border-bottom: 1px dashed #CC3300;
+	border-bottom: 1px dotted black;
 	cursor: help;
 }
 
