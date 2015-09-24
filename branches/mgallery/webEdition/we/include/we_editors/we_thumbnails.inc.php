@@ -238,7 +238,7 @@ function delete_thumbnail() {" .
 				we_thumbnail::OPTION_MAXSIZE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_MAXSIZE, $allData['Options'])) : -1, g_l('thumbnails', '[maximize]'), g_l('thumbnails', '[maximize_desc]')),
 				we_thumbnail::OPTION_INTERLACE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_INTERLACE, $allData['Options'])) : -1, g_l('thumbnails', '[interlace]'), g_l('thumbnails', '[interlace_desc]')),
 				we_thumbnail::OPTION_FITINSIDE => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_FITINSIDE, $allData['Options'])) : -1, g_l('thumbnails', '[fitinside]'), g_l('thumbnails', '[fitinside_desc]')),
-				we_thumbnail::OPTION_CROP => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_CROP, $allData['Options'])) : -1, g_l('thumbnails', '[crop]'), g_l('thumbnails', '[crop]')),
+				we_thumbnail::OPTION_CROP => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_CROP, $allData['Options'])) : -1, g_l('thumbnails', '[crop]'), g_l('thumbnails', '[crop_desc]')),
 				we_thumbnail::OPTION_UNSHARP => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_UNSHARP, $allData['Options'])) : -1, g_l('thumbnails', '[unsharp]'), g_l('thumbnails', '[unsharp_desc]')),
 				we_thumbnail::OPTION_GAUSSBLUR => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_GAUSSBLUR, $allData['Options'])) : -1, g_l('thumbnails', '[gauss]'), g_l('thumbnails', '[gauss_desc]')),
 				we_thumbnail::OPTION_GRAY => array(($id != -1) ? intval(in_array(we_thumbnail::OPTION_GRAY, $allData['Options'])) : -1, g_l('thumbnails', '[gray]')),
