@@ -231,7 +231,7 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	private function initFileUploader(){
-		$this->weFileupload = new we_fileupload_binaryDocument(we_base_ContentTypes::IMAGE, '', 'dialog');
+		$this->weFileupload = new we_fileupload_ui_image(we_base_ContentTypes::IMAGE, '', 'dialog');
 		$this->weFileupload->setCallback('top.doOnImportSuccess(scope.imported_files[0]);');
 		//$this->weFileupload->setIsInternalBtnUpload(true);
 		$this->weFileupload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
@@ -350,23 +350,14 @@ class we_dialog_image extends we_dialog_base{
 
 
 		$height = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] : ""), "", ' onkeypress="return IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text", 140), g_l('wysiwyg', '[height]'));
-
 		$width = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] : ""), "", ' onkeypress="return IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text", 140), g_l('wysiwyg', '[width]'));
-
-		//checkbox 'keep proportion'
 		$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
 		$ratio = we_html_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false), "we_dialog_args[ratio]", g_l('thumbnails', '[ratio]'), false, "defaultfont", $onclick);
-
 		$hspace = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[hspace]", 5, (isset($this->args["hspace"]) ? $this->args["hspace"] : ""), "", ' onkeypress="return IsDigit(event);"', "text", 140), g_l('wysiwyg', '[hspace]'));
-
 		$vspace = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[vspace]", 5, (isset($this->args["vspace"]) ? $this->args["vspace"] : ""), "", ' onkeypress="return IsDigit(event);"', "text", 140), g_l('wysiwyg', '[vspace]'));
-
 		$border = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[border]", 5, (isset($this->args["border"]) ? $this->args["border"] : ""), "", ' onkeypress="return IsDigit(event);"', "text", 140), g_l('wysiwyg', '[border]'));
-
 		$name = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[name]", 30, (isset($this->args["name"]) ? $this->args["name"] : ""), "", '', "text", 315), "Name");
-
 		$alt = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[alt]", 5, (isset($this->args["alt"]) ? $this->args["alt"] : ""), "", "", "text", 315), g_l('wysiwyg', '[altText]'));
-
 		$title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[title]", 5, (isset($this->args["title"]) ? $this->args["title"] : ""), "", "", "text", 315), g_l('global', '[title]'));
 
 		$foo = '
@@ -417,24 +408,9 @@ class we_dialog_image extends we_dialog_base{
 
 			$srctable .= '
 				<tr>
-					<td>
-						<div id="imageUpload" style="display:none;width:384px">' .
-				$this->weFileupload->getHTML('', '', '', $noImage) . '<br/> ' .
-				$yuiSuggest->getHTML() .
-				'<div>' .
-				we_html_forms::checkboxWithHidden(true, 'imgsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '') .
-				we_html_forms::checkboxWithHidden(true, 'importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '') . '<br />' .
-				'</div><div style="margin:10px 0 0 0">' .
-				we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 380) .
-				we_html_element::htmlDiv(array('style' => 'margin-top:10px'), we_html_forms::radiobutton('overwrite', false, "sameName", g_l('importFiles', '[sameName_overwrite]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;') .
-					we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;') .
-					we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.sameName.value=this.value;')
-				) .
-				we_html_tools::hidden("sameName", 0) .
-				'</div>' .
-				'<div style="float:right;padding-top:10px">' . $this->weFileupload->getDivBtnUpload(true) . '</div>' .
-				'</div>
-					</td>
+					<td>' .
+						$this->weFileupload->getHTML() .
+					'</td>
 				</tr>';
 		}
 		$srctable .= '</table>';

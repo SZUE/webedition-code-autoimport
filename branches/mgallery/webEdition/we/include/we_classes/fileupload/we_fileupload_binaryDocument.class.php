@@ -115,8 +115,7 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 	}
 
 	public function getCss(){
-		return /* self::isFallback() || self::isLegacyMode() ? '' : */we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . (
-			$this->location !== 'dialog' ? '' : we_html_element::cssElement('
+		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::cssElement('
 			div.we_file_drag{
 				width: ' . $this->dimensions['dragWidth'] . 'px;
 			}
@@ -133,9 +132,9 @@ class we_fileupload_binaryDocument extends we_fileupload_base{
 			}
 			div.filedrag_preview_right{
 				width: 160px;
-			}'));
+			}');
 	}
-	
+
 	public function getDivBtnUpload(){
 		$btnUpload = $this->getBtn('upload', true);
 		$btnCancel = $this->getBtn('cancel');

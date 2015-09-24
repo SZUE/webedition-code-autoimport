@@ -38,23 +38,18 @@ if(!isset($we_ContentType)){
 	}
 }
 
-$showDoc = !empty($GLOBALS['FROM_WE_SHOW_DOC']);
+if(isset($we_ContentType)){
+	$we_doc = we_base_ContentTypes::inst()->getObject($we_ContentType);
+}
+
 switch(isset($we_ContentType) ? $we_ContentType : ''){
-	case we_base_ContentTypes::VIDEO:
-		$we_doc = new we_document_video();
+	/*
+	case we_base_ContentTypes::WEDOCUMENT:
+		$showDoc = !empty($GLOBALS['FROM_WE_SHOW_DOC']);
+		$we_doc = new we_webEditionDocument(); //($showDoc ? new we_webEditionDocument() : new we_view_webEditionDocument());
 		break;
-	case we_base_ContentTypes::AUDIO:
-		$we_doc = new we_document_audio();
-		break;
-	case we_base_ContentTypes::FLASH:
-		$we_doc = new we_flashDocument();
-		break;
-	case we_base_ContentTypes::QUICKTIME:
-		$we_doc = new we_quicktimeDocument();
-		break;
-	case we_base_ContentTypes::IMAGE:
-		$we_doc = new we_imageDocument();
-		break;
+	* 
+	*/
 	case we_base_ContentTypes::FOLDER:
 		if(isset($we_dt)){
 			$we_doc = new $we_dt[0]['ClassName'];
@@ -62,49 +57,21 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		}
 		$we_doc = new we_folder();
 		break;
-	case we_base_ContentTypes::CLASS_FOLDER:
-		$we_doc = new we_class_folder();
-		break;
 	case 'nested_class_folder':
 		$we_doc = new we_class_folder();
 		$we_doc->IsClassFolder = 0;
 		$we_ContentType = 'folder';
-		break;
-	case we_base_ContentTypes::TEMPLATE:
-		$we_doc = new we_template();
-		break;
-	case we_base_ContentTypes::WEDOCUMENT:
-		$we_doc = new we_webEditionDocument(); //($showDoc ? new we_webEditionDocument() : new we_view_webEditionDocument());
-		break;
-	case we_base_ContentTypes::COLLECTION:
-		$we_doc = new we_collection();
-		break;
-	case we_base_ContentTypes::HTML:
-		$we_doc = new we_htmlDocument();
-		break;
-	case we_base_ContentTypes::XML:
-	case we_base_ContentTypes::JS:
-	case we_base_ContentTypes::CSS:
-	case we_base_ContentTypes::TEXT:
-	case we_base_ContentTypes::HTACESS:
-		$we_doc = new we_textDocument();
-		break;
-	case we_base_ContentTypes::APPLICATION:
-		$we_doc = new we_otherDocument();
 		break;
 	case '':
 		$we_doc = (!empty($we_dt[0]['ClassName']) && ($classname = $we_dt[0]['ClassName']) ?
 				new $classname() :
 				new we_webEditionDocument());
 		break;
-	default:
-		$classname = 'we_' . $we_ContentType;
-		if(class_exists($classname)){
-			$we_doc = new $classname();
-		} else {
-			t_e('Can NOT initialize document of type -' . $we_ContentType . '- ' . 'we_' . $we_ContentType . '.inc.php');
-			exit(1);
-		}
+	default: 
+		$we_doc = we_base_ContentTypes::inst()->getObject($we_ContentType);
+}
+if(!$we_doc){
+	exit(1);
 }
 
 if(!empty($we_ID)){
