@@ -282,7 +282,7 @@ class we_backup_XMLParser{
 			$_next_sibling_id = $this->Handle;
 		}
 
-		if($next_id != $_next_sibling_id){
+		if($_next_id != $_next_sibling_id){
 			$_return = true;
 		}
 
