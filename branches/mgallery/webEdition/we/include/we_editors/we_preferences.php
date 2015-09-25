@@ -2451,32 +2451,33 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 }
 ?>
 <script><!--
-					var hot = false;
+	var hot = false;
 	var g_l = {
-		'language_already_exists': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')); ?>',
-		'language_country_missing': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_country_missing]')); ?>',
-		'cannot_delete_default_language': '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[cannot_delete_default_language]')); ?>',
-		'max_name_recipient': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[max_name_recipient]')); ?>',
-		'recipient_exists': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[recipient_exists]')); ?>',
-		'not_entered_recipient': '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[not_entered_recipient]')); ?>',
-		'add_dictionary_question': '<?php echo g_l('prefs', '[add_dictionary_question]'); ?>',
-		'delete_recipient': '<?php echo g_l('alert', '[delete_recipient]'); ?>',
-		'recipient_new_name': '<?php echo g_l('alert', '[recipient_new_name]'); ?>',
-		'input_name': '<?php echo g_l('alert', '[input_name]'); ?>'
+		language_already_exists: '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')); ?>',
+		language_country_missing: '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_country_missing]')); ?>',
+		cannot_delete_default_language: '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[cannot_delete_default_language]')); ?>',
+		max_name_recipient: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[max_name_recipient]')); ?>',
+		recipient_exists: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[recipient_exists]')); ?>',
+		not_entered_recipient: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[not_entered_recipient]')); ?>',
+		add_dictionary_question: '<?php echo g_l('prefs', '[add_dictionary_question]'); ?>',
+		delete_recipient: '<?php echo g_l('alert', '[delete_recipient]'); ?>',
+		recipient_new_name: '<?php echo g_l('alert', '[recipient_new_name]'); ?>',
+		input_name: '<?php echo g_l('alert', '[input_name]'); ?>'
 	};
 	var modules = {
-		'SPELLCHECKER': '<?php echo intval(defined('SPELLCHECKER')); ?>'
+		SPELLCHECKER: '<?php echo intval(defined('SPELLCHECKER')); ?>'
 	};
 	var tables = {
-		'OBJECT_FILES_TABLE': '<?php echo (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''); ?>',
-		'FILE_TABLE': '<?php echo (defined('FILE_TABLE') ? FILE_TABLE : ''); ?>'
+		OBJECT_FILES_TABLE: '<?php echo (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''); ?>',
+		FILE_TABLE: '<?php echo (defined('FILE_TABLE') ? FILE_TABLE : ''); ?>'
 	};
 	var perms = {
-		'CAN_SELECT_OTHER_USERS_FILES': '<?php echo (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1); ?>'
+		CAN_SELECT_OTHER_USERS_FILES: '<?php echo (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1); ?>'
 	};
 	var contentTypes = {
-		'WEDOCUMENT': '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>'
+		WEDOCUMENT: '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>'
 	};
+	top.WE.g_l.prefs = g_l;
 	var args = "";
 	var url = "<?php echo WEBEDITION_DIR; ?> 'we_cmd.php?";
 //--></</script><?php

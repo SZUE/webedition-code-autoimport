@@ -37,7 +37,7 @@ $tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_reques
 
 // Define needed JS
 $_javascript = <<< END_OF_SCRIPT
-
+var WE=opener.WE;
 function we_cmd() {
 	//var url = "/webEdition/we/include/we_editors/we_preferences.php?";
 

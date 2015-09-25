@@ -276,11 +276,15 @@ var setPageNrCallback = {
 
 var WE={
 	consts:{
+		contentTypes:contentTypes,
+		dirs:dirs,
 		global:constants,
+		tables:tables,
+		sizes:size,
 	},
-	dirs:dirs,
-	tables:tables,
-	contentTypes:contentTypes,
+	g_l:{
+		main:g_l,
+	},
 	permissions:wePerms,
 	messageSettings:messageSettings,
 	session:{
@@ -292,10 +296,6 @@ var WE={
 		docuLang:docuLang,
 		helpLang:helpLang,
 	},
-	g_l:{
-		main:g_l,
-	},
-	sizes:size,
 	layout:{
 		//vtabs:Vtabs,
 	},
