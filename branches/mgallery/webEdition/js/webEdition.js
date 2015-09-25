@@ -300,12 +300,6 @@ function we_sbmtFrm(target, url, source) {
 
 }
 
-function we_setEditorWasLoaded(flag) {
-	// imi: console.log("we_setEditorWasLoaded: " + flag);
-	//flag = true; //uncomment to keep first weEditorWasLoaded=true for the rest of the session
-	self.weEditorWasLoaded = flag;
-}
-
 // use this to submit a cmd with post (if you have much data, which is to long for the url);  // not testet very much!!!
 function doPostCmd(cmds, target) {
 	var doc = self.postframe.document;

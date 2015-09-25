@@ -52,7 +52,7 @@ echo we_html_multiIconBox::getJS();
 //-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', 'top.we_setEditorWasLoaded(false);');
+echo we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js');
 
 function we_getCSSIds(){
 	$tp = new we_tag_tagParser($GLOBALS['we_doc']->getElement('data'));

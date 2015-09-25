@@ -23,11 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_sidebar_frames{
-	var $_frameset = '';
-
-	public function __construct(){
-		$this->_frameset = WEBEDITION_DIR . 'sideBarFrame.php';
-	}
 
 	function getHTML($what){
 		switch($what){
@@ -58,7 +53,7 @@ class we_sidebar_frames{
 				</div>
 			</div>
 			<div id="weSidebarContentDiv">
-				<iframe id="weSidebarContent" src="<?php echo $this->_frameset; ?>?pnt=content" name="weSidebarContent"></iframe>
+				<iframe id="weSidebarContent" src="<?php echo WEBEDITION_DIR; ?>sideBarFrame.php?pnt=content" name="weSidebarContent"></iframe>
 			</div>
 			<div name="weSidebarFooter" id="weSidebarFooter">
 			</div>

@@ -129,7 +129,6 @@ var Tree = null;
 var Vtabs = null;
 var TreeInfo = null;
 var busy = 0;
-var firstLoad = false;
 var hot = 0;
 var last = 0;
 var lastUsedLoadFrame = null;
@@ -171,8 +170,8 @@ var g_l = {
 	nav_no_open_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
 	nav_no_entry: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>',
 	unable_to_call_ping: '<?php echo g_l('global', '[unable_to_call_ping]'); ?>',
-	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) . '",
-	nothing_to_publish: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) . '"
+	nothing_to_save: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) ?>",
+	nothing_to_publish: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) ?>"
 };
 
 // TODO: move to some JS-file
@@ -256,7 +255,9 @@ var modules = {
 var constants = {
 	WE_EDITPAGE_CONTENT:<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
 	PING_TIME:<?php echo we_base_constants::PING_TIME * 1000; ?>
-}
+};
+
+
 /*##################### messaging function #####################*/
 
 // this variable contains settings how to deal with settings
@@ -264,14 +265,40 @@ var constants = {
 /**
  * setting integer, any sum of 1,2,4
  */
-var messageSettings = <?php echo (!empty($_SESSION["prefs"]["message_reporting"]) ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION["prefs"]["message_reporting"] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
-var weEditorWasLoaded = false;
+var messageSettings = <?php echo (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
 var setPageNrCallback = {
 	success: function (o) {
 	},
 	failure: function (o) {
 		alert(g_l.unable_to_call_setpagenr);
 	}
+};
+
+var WE={
+	consts:{
+		global:constants,
+	},
+	dirs:dirs,
+	tables:tables,
+	contentTypes:contentTypes,
+	permissions:wePerms,
+	messageSettings:messageSettings,
+	session:{
+		seemode:SEEMODE,
+		seeMode_edit_include:seeMode_edit_include,
+		userID:userID,
+		sess_id:sess_id,
+		specialUnload:specialUnload,
+		docuLang:docuLang,
+		helpLang:helpLang,
+	},
+	g_l:{
+		main:g_l,
+	},
+	sizes:size,
+	layout:{
+		//vtabs:Vtabs,
+	},
 };
 //-->
 </script>

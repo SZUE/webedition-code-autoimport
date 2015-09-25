@@ -258,12 +258,6 @@ function loadTreeData(){
 					$Tree->topFrame . '.treeData.add(' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
 				) .
 				$Tree->getJSLoadTree($treeItems) . '
-	first=' . $Tree->topFrame . '.firstLoad;
-	if(top.firstLoad){
-		' . $Tree->topFrame . '.toggleBusy(0);
-	}else{
-		' . $Tree->topFrame . '.firstLoad = true;
-	}
 }
 loadTreeData();');
 	} else {
