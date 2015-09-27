@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_XMLParser{
-
 	var $parseError;
 	var $Nodes = array();
 	var $Handle = 0;
@@ -54,7 +53,8 @@ class we_backup_XMLParser{
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
 
 		if(!xml_parse_into_struct($parser, $data, $this->Nodes)){
-			$this->parseError = xml_get_current_line_number($parser) . ': ' . xml_Error_string(xml_get_error_code($parser));
+			$this->parseError = xml_get_current_line_number($parser) . ': ' . xml_Error_string(xml_get_error_code($parser)) . ' - ' .
+				xml_get_current_byte_index($parser) . '(' . substr($data, xml_get_current_byte_index($parser) - 10, 20) . ')';
 			return FALSE;
 		}
 
