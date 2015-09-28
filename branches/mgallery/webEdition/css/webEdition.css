@@ -123,6 +123,7 @@ body.radient{
 	background: linear-gradient(to right,#EAEAEA, #CFCFCF); /*menu/background.gif*/
 	border-top:1px solid black;
 }
+
 #vtab{
 	position:absolute;
 	top:8px;
@@ -131,6 +132,7 @@ body.radient{
 	border-top:1px solid #909090;
 	text-decoration:none
 }
+
 #vtab div{
 	border-bottom:1px solid #909090;
 	border-right:1px solid #909090;
@@ -139,21 +141,26 @@ body.radient{
 	position:relative;
 	cursor: pointer;
 }
+
 #vtab div span{
-	transform: rotate(-90deg);
 	position: absolute;
-	transform-origin: 1ex 1ex;
-	bottom: 0px;
-	left:2px;
-	bottom:0px;
 	display:block;
-	text-align: center;
+	bottom: -12px;
+	left:2px;
 	width:83px;
+	-webkit-transform:rotate(-90deg); /* Chrome, Opera 15+, Safari 3.1+ */
+	-webkit-transform-origin: 0 0;
+	-ms-transform:rotate(-90deg); /* IE 9 */
+	-ms-transform-origin: 0 0;
+	transform: rotate(-90deg); /* Firefox 16+, IE 10+, Opera*/
+	transform-origin: 0 0;
+	text-align: center;
 }
 
 #vtab .tabNorm{
 	background: linear-gradient(to right,white, #cacaca);
 }
+
 #vtab .tabActive{
 	background-color:#f3f7ff;
 	border-right-color: #f3f7ff;
@@ -215,6 +222,7 @@ td.boxHeader{
 	padding:1px;
 	cursor: pointer;
 }
+
 #treeFrameDiv{
 	position:absolute;
 	top:0px;
@@ -300,9 +308,11 @@ td.boxHeader{
 #resize.withIconBar{
 	top:72px;
 }
+
 .weSelect{
 	margin-right:.5ex;
 }
+
 .weSelect,
 .wetextinput{
 	background-color: white;
@@ -381,7 +391,6 @@ input.wetextinput:focus{
 	color: black;
 }
 
-
 .objectDescription {
 	padding: 4px 0 4px 0;
 	max-width:50em;
@@ -437,7 +446,6 @@ a.notpublished,
 .changeddefaultfont {
 	color: blue;
 }
-
 
 .defaultgray,
 .defaultgray a,
@@ -510,6 +518,7 @@ a.notpublished,
 .tableHeader a:visited {
 	color: black;
 }
+
 /*
 .tableHeader a:active {
 	color: #FF0000;
