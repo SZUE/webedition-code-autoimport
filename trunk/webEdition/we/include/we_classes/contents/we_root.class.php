@@ -314,7 +314,7 @@ abstract class we_root extends we_class{
 			$v = $this->RestrictOwners ? true : false;
 			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		}
-		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
+		return '';
 	}
 
 	function formOwners($canChange = true){
@@ -736,7 +736,7 @@ abstract class we_root extends we_class{
 	 */
 
 	public function getRealPath($old = false){
-		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : TEMPLATES_PATH) .
+		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' : TEMPLATES_PATH) .
 			($old ? $this->OldPath : $this->getPath());
 	}
 
