@@ -87,6 +87,7 @@ $l_weClass=array(
 	'file_on_liveserver'=>'Ten plik już istnieje !',
 	'filename'=>'Nazwa pliku',
 	'folder_saved_ok'=>'Zapamiętano katalog `%s` !',
+	'foldername'=>'Folder name',
 	'function'=>'Funkcja',
 	'generateTemplate'=>'Utwórz szablon',
 	'grant_language'=>'Change language',

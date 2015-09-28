@@ -87,6 +87,7 @@ $l_weClass=array(
 	'file_on_liveserver'=>'Archivo ya existe',
 	'filename'=>'Nombre de archivo',
 	'folder_saved_ok'=>'La carpeta `%s` ha sido exitosamente salvada!',
+	'foldername'=>'Folder name',
 	'function'=>'Función',
 	'generateTemplate'=>'Generar plantilla',
 	'grant_language'=>'Change language',

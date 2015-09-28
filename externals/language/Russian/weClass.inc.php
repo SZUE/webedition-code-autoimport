@@ -87,6 +87,7 @@ $l_weClass=array(
 	'file_on_liveserver'=>'Файл уже существует',
 	'filename'=>'Имя файла',
 	'folder_saved_ok'=>'Директория `%s` успешно сохранена!',
+	'foldername'=>'Folder name',
 	'function'=>'Функция',
 	'generateTemplate'=>'Сгенерировать шаблон',
 	'grant_language'=>'Change language',

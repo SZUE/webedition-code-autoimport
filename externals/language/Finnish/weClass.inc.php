@@ -87,6 +87,7 @@ $l_weClass=array(
 	'file_on_liveserver'=>'Tiedosto on jo olemassa',
 	'filename'=>'Tiedoston nimi',
 	'folder_saved_ok'=>'Hakemisto `%s` on tallennettu!',
+	'foldername'=>'Folder name',
 	'function'=>'Toiminto',
 	'generateTemplate'=>'Luo sivupohja',
 	'grant_language'=>'Vaihda kieltä',

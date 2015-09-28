@@ -87,6 +87,7 @@ $l_weClass=array(
 	'file_on_liveserver'=>'Bestand bestaat al',
 	'filename'=>'Bestandsnaam',
 	'folder_saved_ok'=>'De map `%s` is succesvol bewaard!',
+	'foldername'=>'Folder name',
 	'function'=>'Functie',
 	'generateTemplate'=>'Genereer sjabloon',
 	'grant_language'=>'Wijzig taal',
