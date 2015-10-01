@@ -362,6 +362,7 @@ we/include/we_modules/object/we_objectFile.inc.php
 we/include/we_modules/object/we_objectEx.inc.php
 we/include/we_modules/object/we_listview_object.class.php
 we/include/we_modules/object/we_listview_multiobject.class.php
+we/include/we_modules/object/we_editor_info_object.inc.php
 we/include/we_modules/object/we_editor_info_objectFile.inc.php
 we/include/we_modules/object/we_editor_contentobjectFile.inc.php
 we/include/we_modules/object/we_class_folder.inc.php

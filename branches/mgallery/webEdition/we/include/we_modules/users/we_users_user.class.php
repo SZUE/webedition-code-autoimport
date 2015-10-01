@@ -1682,7 +1682,6 @@ function delElement(elvalues,elem) {
 			);
 		}
 
-
 		return $content .
 			we_html_multiIconBox::getHTML('', $parts, 30);
 	}
