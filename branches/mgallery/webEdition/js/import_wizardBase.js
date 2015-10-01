@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var ajaxUrl = "/webEdition/rpc/rpc.php";
+var ajaxUrl = top.WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php";
 
 var weGetCategoriesHandleSuccess = function (o) {
 	if (o.responseText !== undefined) {
@@ -65,7 +65,7 @@ function wiz_next(frm, url) {
 
 
 function we_cmd() {
-	var url = '/webEdition/we_cmd.php?';
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
 		url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -76,16 +76,16 @@ function we_cmd() {
 		case 'we_selector_directory':
 		case 'we_selector_image':
 		case 'we_selector_document':
-			new jsWindow(url, 'we_fileselector', -1, -1, size.docSelect.width, size.docSelect.height, true, true, true);
+			new jsWindow(url, 'we_fileselector', -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case 'browse_server':
 			new jsWindow(url, 'browse_server', -1, -1, 840, 400, true, false, true);
 			break;
 		case 'we_selector_category':
-			new jsWindow(url, 'we_catselector', -1, -1, size.catSelect.width, size.catSelect.width, true, true, true);
+			new jsWindow(url, 'we_catselector', -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.width, true, true, true);
 			break;
 		case 'add_docCat':
-			if (tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
+			if (top.WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
 				self.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
 			if (self.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + arguments[1] + ',') == -1) {

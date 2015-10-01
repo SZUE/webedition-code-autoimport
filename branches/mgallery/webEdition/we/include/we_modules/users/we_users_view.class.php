@@ -45,10 +45,7 @@ var g_l={
 	save_changed_user:"' . g_l('modules_users', '[save_changed_user]') . '",
 	give_org_name:"' . g_l('modules_users', '[give_org_name]') . '"
 };
-var dirs={
-	WEBEDITION_DIR:"' . WEBEDITION_DIR . '",
-	WE_USERS_MODULE_DIR:"' . WE_USERS_MODULE_DIR . '"
-};
+top.WE().consts.dirs.WE_USERS_MODULE_DIR="' . WE_USERS_MODULE_DIR . '";
 
 parent.document.title = "' . $title . '";
 var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"])) : 0) . ';

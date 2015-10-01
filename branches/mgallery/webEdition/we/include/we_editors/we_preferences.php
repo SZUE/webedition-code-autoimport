@@ -2467,10 +2467,6 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	var modules = {
 		SPELLCHECKER: '<?php echo intval(defined('SPELLCHECKER')); ?>'
 	};
-	var tables = {
-		OBJECT_FILES_TABLE: '<?php echo (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''); ?>',
-		FILE_TABLE: '<?php echo (defined('FILE_TABLE') ? FILE_TABLE : ''); ?>'
-	};
 	var perms = {
 		CAN_SELECT_OTHER_USERS_FILES: '<?php echo (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1); ?>'
 	};

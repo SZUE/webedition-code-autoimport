@@ -538,16 +538,6 @@ var consts={
 	EMPTY_EXT : "' . we_base_link::EMPTY_EXT . '",
 	TYPE_INT:"' . we_base_link::TYPE_INT . '"
 };
-var dirs = {
-	WEBEDITION_DIR:"' . WEBEDITION_DIR . '"
-};
-
-var size = {
-	docSelect: {
-		width:' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',
-		height:' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
-	}
-}
 '
 			) . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');
 	}

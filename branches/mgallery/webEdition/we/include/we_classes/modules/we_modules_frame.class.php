@@ -282,18 +282,7 @@ function we_save() {
 	static function getJSToggleTreeCode($module, $treeDefaultWidth){
 		//FIXME: throw some of these functions out again and use generic version of main-window functions
 		return we_html_element::jsElement('
-var size = {
-	"tree": {
-		"hidden":' . weTree::HiddenWidth . ',
-		"default":' . $treeDefaultWidth . ',
-		"min":' . weTree::MinWidthModules . ',
-		"max":' . weTree::MaxWidthModules . ',
-		"step":' . weTree::StepWidth . ',
-		"moveWidth":' . weTree::MoveWidth . ',
-		"deleteWidth":' . weTree::DeleteWidth . ',
-		"jsWidth":' . self::$treeWidthsJS . '
-	},
-};
+var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
 var currentModule="' . $module . '";
 ') . we_html_element::jsScript(JS_DIR . 'modules_tree.js');
 	}

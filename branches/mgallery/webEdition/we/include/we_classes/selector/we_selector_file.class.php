@@ -233,10 +233,7 @@ var queryType={
 	SETDIR:' . self::SETDIR . '
 };
 
-var dirs={
-	WEBEDITION_DIR:"' . WEBEDITION_DIR . '",
-	ICON_DIR:"' . ICON_DIR . '"
-};
+top.WE().consts.dirs.ICON_DIR="' . ICON_DIR . '";
 
 var options={
   rootDirID:' . $this->rootDirID . ',

@@ -149,7 +149,7 @@ function updateCustomerFilterIfNeeded() {
 	if ((_elem = document.we_form["we_" + docName + "_ParentID"])) {
 		_parentid = _elem.value;
 		if (_parentid !== _oldparentid) {
-			top.YAHOO.util.Connect.asyncRequest('GET', '/webEdition/rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, ajaxCallback);
+			top.YAHOO.util.Connect.asyncRequest('GET', top.WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, ajaxCallback);
 			_oldparentid = _parentid;
 		}
 	}
@@ -226,7 +226,7 @@ function goTemplate(tid) {
 
 function we_cmd() {
 	var args = "";
-	var url = "/webEdition/we_cmd.php?";
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -331,7 +331,7 @@ function we_cmd() {
 			document.getElementById('cursorVal').style.display = "block";
 			document.getElementById('weImage').style.cursor = "crosshair";
 			document.getElementById("weImage").addEventListener("click", setFocusPositionByMouse, false);
-			var hot=_EditorFrame.getEditorIsHot();
+			var hot = _EditorFrame.getEditorIsHot();
 			setFocusPositionByValue();
 			_EditorFrame.setEditorIsHot(hot);
 			break;

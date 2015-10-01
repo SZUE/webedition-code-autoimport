@@ -156,10 +156,6 @@ function getHTMLCategory(){
 }
 
 $jsCode = "
-	var dirs={
-	'WE_INCLUDES_DIR':'" . WE_INCLUDES_DIR . "',
-	'WEBEDITION_DIR':'" . WEBEDITION_DIR . "'
-	};
 var _oCsv_;
 var _sCsv;
 var _sInitCsv_;
@@ -173,7 +169,7 @@ var g_l={
 
 function we_cmd(){
 	var args='';
-	var url=dirs.WEBEDITION_DIR +'we_cmd.php?';
+	var url=top.WE().consts.dirs.WEBEDITION_DIR +'we_cmd.php?';
 	for(var i=0;i<arguments.length;i++){
 		url+='we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i<(arguments.length-1)){

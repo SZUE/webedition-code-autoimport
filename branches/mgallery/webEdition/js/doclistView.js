@@ -473,7 +473,7 @@ function changeit(value, rowNr) {
 			innerhtml = "<table class=\"default\"><tbody><tr><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
 							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
-							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'we_selector_category\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.CATEGORY_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\">" +
+							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'we_selector_category\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + top.WE().consts.tables.CATEGORY_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\">" +
 							g_l.select_value +
 							"</button></td></tr></tbody></table>";
 
@@ -501,7 +501,7 @@ function changeit(value, rowNr) {
 			innerhtml = "<table class=\"default\"><tbody><tr><td>" +
 							"<input class=\"wetextinput\" name=\"search[" + rowNr + "]\" size=\"58\" value=\"\"  id=\"search[" + rowNr + "]\" readonly=\"1\" style=\"width: 190px;\" type=\"text\" />" +
 							"</td><td><input value=\"\" name=\"searchParentID[" + rowNr + "]\" type=\"hidden\" /></td><td></td><td>" +
-							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'we_selector_document\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + tables.TEMPLATES_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\" >" +
+							"<button title=\"" + g_l.select_value + "\" class=\"weBtn\" style=\"width: 70px\" onclick=\"we_cmd(\'we_selector_document\',document.we_form.elements[\'searchParentID[" + rowNr + "]\'].value,\'" + top.WE().consts.tables.TEMPLATES_TABLE + "\',\'document.we_form.elements[\\\\\'searchParentID[" + rowNr + "]\\\\\'].value\',\'document.we_form.elements[\\\\\'search[" + rowNr + "]\\\\\'].value\',\'\',\'\',\'0\',\'\',\'\');\" >" +
 							g_l.select_value +
 							"</button></td></tr></tbody></table>";
 

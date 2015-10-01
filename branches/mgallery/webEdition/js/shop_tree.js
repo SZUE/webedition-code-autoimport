@@ -134,11 +134,11 @@ function start() {
 }
 
 function doClick(id, ct, table) {
-	top.content.editor.location = '/webEdition/we/include/we_modules/shop/edit_shop_frameset.php?pnt=editor&bid=' + id;
+	top.content.editor.location = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_modules/shop/edit_shop_frameset.php?pnt=editor&bid=' + id;
 }
 function doFolderClick(id, ct, table) {
-	top.content.editor.location = '/webEdition/we/include/we_modules/shop/edit_shop_frameset.php?pnt=editor&mid=' + id;
+	top.content.editor.location = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_modules/shop/edit_shop_frameset.php?pnt=editor&mid=' + id;
 }
 function doYearClick(yearView) {
-	top.content.editor.location = '/webEdition/we/include/we_modules/shop/edit_shop_frameset.php?pnt=editor&ViewYear=' + yearView;
+	top.content.editor.location = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_modules/shop/edit_shop_frameset.php?pnt=editor&ViewYear=' + yearView;
 }

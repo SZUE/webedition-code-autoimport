@@ -97,7 +97,7 @@ function formatDate(date, format) {
 }
 
 function we_cmd() {
-	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -111,7 +111,7 @@ function we_cmd() {
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1,top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "switchPage":
 			document.we_form.cmd.value = arguments[0];
@@ -120,16 +120,16 @@ function we_cmd() {
 			break;
 		case "show_search":
 			keyword = top.content.we_form_treefooter.keyword.value;
-			new jsWindow(dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
+			new jsWindow(top.WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
 			break;
 		case "show_customer_settings":
-			new jsWindow(dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
+			new jsWindow(top.WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
 			break;
 		case "export_customer":
-			new jsWindow(dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=export", "export_customer", -1, -1, 640, 600, true, true, true, false);
+			new jsWindow(top.WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=export", "export_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		case "import_customer":
-			new jsWindow(dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
+			new jsWindow(top.WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		default:
 			var args = [];
@@ -161,5 +161,5 @@ var ajaxCallbackResetLogins = {
 };
 
 function resetLogins(id) {
-	YAHOO.util.Connect.asyncRequest("GET", dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=" + id, ajaxCallbackResetLogins);
+	YAHOO.util.Connect.asyncRequest("GET", top.WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php?cmd=ResetFailedCustomerLogins&cns=customer&custid=" + id, ajaxCallbackResetLogins);
 }

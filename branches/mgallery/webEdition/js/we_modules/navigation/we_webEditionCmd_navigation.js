@@ -20,8 +20,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_navigation(args,url) {
-	var k,fo=false;
+function we_cmd_navigation(args, url) {
+	var k, fo = false;
 	switch (args[0]) {
 
 		case "navigation_edit":
@@ -57,10 +57,10 @@ function we_cmd_navigation(args,url) {
 				if (wind)
 					wind.focus();
 			}
-			new jsWindow("/webEdition/we/include/we_modules/navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
+			new jsWindow(top.WE().consts.dirs.WE_INCLUDES_DIR + "we_modules/navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
 			return true;
 		case "module_navigation_edit_navi":
-			new jsWindow("/webEdition/we/include/we_modules/navigation/weNaviEditor.php?we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
+			new jsWindow(top.WE().consts.dirs.WE_INCLUDES_DIR + "we_modules/navigation/weNaviEditor.php?we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
 			return true;
 		case "module_navigation_do_reset_customer_filter":
 			we_repl(self.load, url, args[0]);

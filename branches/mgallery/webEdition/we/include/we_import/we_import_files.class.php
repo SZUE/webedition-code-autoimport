@@ -101,26 +101,8 @@ class we_import_files{
 	}
 
 	function _getJS($fileinput){
-		return we_html_element::jsElement("
-var dirs={
-	WEBEDITION_DIR:'" . WEBEDITION_DIR . "',
-};
-var tables={
-FILE_TABLE:'" . FILE_TABLE . "'
-};
-
-var size = {
-	catSelect: {
-		width:" . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ",
-		height:" . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . "
-	},
-	windowDirSelect: {
-		width:" . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ",
-		height:" . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . "
-	}
-};
-" .
-				'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
+		return we_html_element::jsElement(
+			'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
 			') . we_html_element::jsElement(!$this->isWeFileupload ? '
 
 function uploadFinished() {

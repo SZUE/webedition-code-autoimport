@@ -31,7 +31,7 @@ default_color = "#ffffff";
 passed_dls = [];
 
 function showContent(id) {
-	top.content.editor.edbody.messaging_msg_view.location = dirs.WE_MESSAGING_MODULE_DIR + "messaging_message_view.php?id=" + id + "&we_transaction=" + transaction;
+	top.content.editor.edbody.messaging_msg_view.location = top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_message_view.php?id=" + id + "&we_transaction=" + transaction;
 }
 
 function check(elem, groupSel) {
@@ -70,7 +70,7 @@ function doSelectMessage(id) {
 	parent.parent.last_entry_selected = id;
 
 	if (document.images["read_" + id] !== undefined) {
-		document.images["read_" + id].src = dirs.IMAGE_DIR + "msg_read.gif";
+		document.images["read_" + id].src = top.WE().consts.dirs.IMAGE_DIR + "msg_read.gif";
 	}
 	highlight_TR(id, sel_color, sel_text_color);
 }
@@ -115,5 +115,5 @@ function unSelectMessage(id, unsel_all) {
 }
 
 function newMessage(username) {
-	new jsWindow(dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + transaction + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+	new jsWindow(top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + transaction + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 }

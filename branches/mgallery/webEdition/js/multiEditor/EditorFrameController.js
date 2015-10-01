@@ -878,25 +878,25 @@ function EditorFrameController() {
 	};
 
 	/*
-	// TODO: make better fn getEditorStateByID(id, table, editPage), returning an array with all status data and references if open
-	this.getEditorIfOpen = function (table, id, editPage) {
-		if(!(table && id && editPage)){
-			return false;
-		}
+	 // TODO: make better fn getEditorStateByID(id, table, editPage), returning an array with all status data and references if open
+	 this.getEditorIfOpen = function (table, id, editPage) {
+	 if(!(table && id && editPage)){
+	 return false;
+	 }
 
-		var usedEditors = this.getEditorsInUse(),
-			frameId,
-			editor;
+	 var usedEditors = this.getEditorsInUse(),
+	 frameId,
+	 editor;
 
-		for (frameId in usedEditors) {
-			editor = usedEditors[frameId];
-			if (editor.getEditorEditorTable() == table && editor.getEditorDocumentId() == id && editor.getEditorEditPageNr() == editPage) {
-				return editor.getContentEditor();
-			}
-		}
-		return false;
-	};
-	*/
+	 for (frameId in usedEditors) {
+	 editor = usedEditors[frameId];
+	 if (editor.getEditorEditorTable() == table && editor.getEditorDocumentId() == id && editor.getEditorEditPageNr() == editPage) {
+	 return editor.getContentEditor();
+	 }
+	 }
+	 return false;
+	 };
+	 */
 
 }
 top.weEditorFrameController = new EditorFrameController();
@@ -969,7 +969,7 @@ function EditorFrame(ref, elementId) {
 
 	this.freeEditor = function () {
 
-		this.EditorFrameWindow.location = "/webEdition/html/blank_editor.html";
+		this.EditorFrameWindow.location = top.WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
 
 		this.EditorType = null;	// model|cockpit, etc
 
@@ -1049,7 +1049,7 @@ function EditorFrame(ref, elementId) {
 	//   nothing
 	//--------------------------------------------------------------------
 	this.setEmptyEditor = function () {
-		this.EditorFrameWindow.location = "/webEdition/html/blank_editor.html";
+		this.EditorFrameWindow.location = top.WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
 	};
 
 	this.getEditorFrameWindow = function () {

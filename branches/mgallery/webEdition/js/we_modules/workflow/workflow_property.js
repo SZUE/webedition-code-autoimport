@@ -33,7 +33,7 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -45,14 +45,14 @@ function we_cmd() {
 			new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "we_selector_directory":
-			new jsWindow(url, "we_fileselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1, top.WE().consts.size.windowDirSelect.width, top.WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url, "we_catselector", -1, -1, size.catSelect.width, size.catSelect.height, true, true, true, true);
+			new jsWindow(url, "we_catselector", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openObjselector":
-			url = dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + tables.OBJECT_TABLE + "&we_cmd[5]=" + arguments[5] + "&we_cmd[9]=1";
-			new jsWindow(url, "we_objectselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true);
+			url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + top.WE().consts.tables.OBJECT_TABLE + "&we_cmd[5]=" + arguments[5] + "&we_cmd[9]=1";
+			new jsWindow(url, "we_objectselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case "add_cat":
 		case "del_cat":

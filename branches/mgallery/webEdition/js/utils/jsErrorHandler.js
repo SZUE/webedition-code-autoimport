@@ -49,7 +49,7 @@ try {
 			postData += '&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion);
 			postData += '&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent);
 			xmlhttp = new XMLHttpRequest();
-			xmlhttp.open('POST', '/webEdition/rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
+			xmlhttp.open('POST', top.WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
 			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			xmlhttp.send(postData);
 		} catch (e) {

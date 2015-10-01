@@ -215,7 +215,7 @@ function doUnload() {
  */
 function we_cmd() {
 	var args = "";
-	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	var i;
 	for (i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -239,15 +239,15 @@ function we_cmd() {
 
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url, "we_docselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
+			new jsWindow(url, "we_docselector", -1, -1,top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 
 		case "we_selector_file":
-			new jsWindow(url, "we_selector", -1, -1, size.windowSelect.width, size.windowSelect.height, true, true, true, true);
+			new jsWindow(url, "we_selector", -1, -1,top.WE().consts.size.windowSelect.width, top.WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 
 		case "openNewsletterDirselector":
-			url = dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_newsletter_dirSelector&";
+			url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_newsletter_dirSelector&";
 			for (i = 1; i < arguments.length; i++) {
 				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {

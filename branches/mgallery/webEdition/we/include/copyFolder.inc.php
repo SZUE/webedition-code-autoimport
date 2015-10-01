@@ -26,8 +26,6 @@ $yuiSuggest = & weSuggest::getInstance();
 if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', '', 1);
 	$cmd4 = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 4);
-	$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-		we_html_element::jsScript(JS_DIR . 'copyFolder.js');
 
 	$yes_button = we_html_button::create_button(we_html_button::OK, "form:we_form");
 	$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
@@ -72,20 +70,8 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 			'</td></tr></table>';
 	}
 	we_fragment_copyFolder::printHeader();
-	?>
-	<script>
-		var size = {
-			windowDirSelect: {
-				width:<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
-				height:<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
-			},
-			catSelect: {
-				width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
-				height:<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
-			},
-		};
-	</script><?php
-	echo $js .
+	echo we_html_element::jsScript(JS_DIR . "windows.js") .
+	we_html_element::jsScript(JS_DIR . 'copyFolder.js') .
 	'<body class="weDialogBody" onload="self.focus();">' .
 	'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
 	we_html_tools::htmlDialogLayout(

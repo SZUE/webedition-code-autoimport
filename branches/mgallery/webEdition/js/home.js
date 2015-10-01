@@ -323,7 +323,7 @@ function saveSettings() {
 	fo.elements['we_cmd[1]'].value = JSON.stringify(aDat);
 	fo.elements['we_cmd[2]'].value = JSON.stringify(rss);
 	top.YAHOO.util.Connect.setForm(fo);
-	var cObj = top.YAHOO.util.Connect.asyncRequest('POST', '/webEdition/we/include/we_widgets/cmd.php', top.weDummy);
+	var cObj = top.YAHOO.util.Connect.asyncRequest('POST', top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php', top.weDummy);
 }
 
 function hasExpandedWidget(node) {
@@ -605,7 +605,7 @@ function implode(arr, delimeter, enclosure) {
 }
 
 function composeUri(args) {
-	var uri = '/webEdition/we/include/we_widgets/dlg/' + args[0] + '.php?';
+	var uri = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/' + args[0] + '.php?';
 	for (var i = 1; i < args.length; i++) {
 		uri += 'we_cmd[' + (i - 1) + ']=' + args[i];
 		if (i < (args.length - 1)) {
@@ -715,7 +715,7 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 			//FIXME: what about all other tools?!
 	}
 	if (_cmdName) {
-		top.YAHOO.util.Connect.asyncRequest('GET', '/webEdition/rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args, ajaxCallback);
+		top.YAHOO.util.Connect.asyncRequest('GET', top.WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=' + _cmdName + '&cns=widgets' + args, ajaxCallback);
 	}
 }
 
@@ -759,7 +759,7 @@ function rpc() {
 	var path = (sType !== 'rss' && sType !== 'pad' && sType !== 'plg' && sType !== 'sct') ? 'dlg/' + arguments[6] : 'mod/' + sType;
 	_tmpForm.id = "_tmpSubmitForm";
 	_tmpForm.method = "POST";
-	_tmpForm.action = '/webEdition/we/include/we_widgets/' + path + '.php';
+	_tmpForm.action = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/' + path + '.php';
 	_tmpForm.target = "RSIFrame";
 	for (var i = 0; i < arguments.length; i++) {
 		var _tmpField = document.createElement('input');
@@ -861,7 +861,7 @@ function setMfdData(data) {
 }
 
 function getUser() {
-	var url = top.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
 		url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {

@@ -148,7 +148,7 @@ function weSetCookie(name, value, expires, path, domain) {
 
 function treeResized() {
 	var treeWidth = getTreeWidth();
-	if (treeWidth <= size.tree.hidden) {
+	if (treeWidth <= top.WE().consts.size.tree.hidden) {
 		setTreeArrow("right");
 	} else {
 		setTreeArrow("left");
@@ -156,13 +156,13 @@ function treeResized() {
 	}
 }
 
-var oldTreeWidth = size.tree.defaultWidth;
+var oldTreeWidth = top.WE().consts.size.tree.defaultWidth;
 function toggleTree() {
 	var tfd = self.document.getElementById("treeFrameDiv");
 	var w = top.getTreeWidth();
 
 	if (tfd.style.display == "none") {
-		oldTreeWidth = (oldTreeWidth < size.tree.min ? size.tree.defaultWidth : oldTreeWidth);
+		oldTreeWidth = (oldTreeWidth < top.WE().consts.size.tree.min ? top.WE().consts.size.tree.defaultWidth : oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display = "block";
 		setTreeArrow("left");
@@ -170,13 +170,13 @@ function toggleTree() {
 	} else {
 		tfd.style.display = "none";
 		oldTreeWidth = w;
-		setTreeWidth(size.tree.hidden);
+		setTreeWidth(top.WE().consts.size.tree.hidden);
 		setTreeArrow("right");
 	}
 }
 
 function treeOut() {
-	if (getTreeWidth() <= size.tree.min) {
+	if (getTreeWidth() <= top.WE().consts.size.tree.min) {
 		toggleTree();
 	}
 }
@@ -188,12 +188,12 @@ function getTreeWidth() {
 
 function incTree() {
 	var w = parseInt(getTreeWidth());
-	if ((w > size.tree.min) && (w < size.tree.max)) {
-		w += size.tree.step;
+	if ((w > top.WE().consts.size.tree.min) && (w < top.WE().consts.size.tree.max)) {
+		w += top.WE().consts.size.tree.step;
 		setTreeWidth(w);
 	}
-	if (w >= size.tree.max) {
-		w = size.tree.max;
+	if (w >= top.WE().consts.size.tree.max) {
+		w = top.WE().consts.size.tree.max;
 		setTreeWidth(w);
 		self.document.getElementById("incBaum").style.backgroundColor = "grey";
 	} else {
@@ -203,12 +203,12 @@ function incTree() {
 
 function decTree() {
 	var w = parseInt(getTreeWidth());
-	w -= size.tree.step;
-	if (w > size.tree.min) {
+	w -= top.WE().consts.size.tree.step;
+	if (w > top.WE().consts.size.tree.min) {
 		setTreeWidth(w);
 		self.document.getElementById("incBaum").style.backgroundColor = "";
 	}
-	if (w <= size.tree.min && ((w + size.tree.step) >= size.tree.min)) {
+	if (w <= top.WE().consts.size.tree.min && ((w + top.WE().consts.size.tree.step) >= top.WE().consts.size.tree.min)) {
 		toggleTree();
 	}
 }
@@ -233,7 +233,7 @@ function setSidebarWidth() {
 function setTreeWidth(w) {
 	self.document.getElementById("bframeDiv").style.width = w + "px";
 	self.document.getElementById("bm_content_frameDiv").style.left = w + "px";
-	if (w > size.tree.hidden) {
+	if (w > top.WE().consts.size.tree.hidden) {
 		storeTreeWidth(w);
 	}
 }
@@ -307,7 +307,7 @@ function doPostCmd(cmds, target) {
 		doc.body.removeChild(doc.forms[0]);
 	}
 	var formElement = doc.createElement("FORM");
-	formElement.action = '/webEdition/we_cmd.php';
+	formElement.action = top.WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php';
 	formElement.method = "post";
 	formElement.target = target;
 
@@ -360,8 +360,8 @@ function start() {
 	self.Tree = self;
 	self.Vtabs = self;
 	self.TreeInfo = self;
-	if (tables.table_to_load) {
-		we_cmd("load", tables.table_to_load);
+	if (top.WE().consts.tables.table_to_load) {
+		we_cmd("load", top.WE().consts.tables.table_to_load);
 	}
 }
 
@@ -373,13 +373,13 @@ function hasPermDelete(eTable, isFolder) {
 		return true;
 	}
 	switch (eTable) {
-		case tables.FILE_TABLE:
+		case top.WE().consts.tables.FILE_TABLE:
 			return (isFolder ? wePerms.DELETE_DOC_FOLDER : wePerms.DELETE_DOCUMENT);
-		case tables.TEMPLATES_TABLE:
+		case top.WE().consts.tables.TEMPLATES_TABLE:
 			return (isFolder ? wePerms.DELETE_TEMP_FOLDER : wePerms.DELETE_TEMPLATE);
-		case tables.OBJECT_FILES_TABLE:
+		case top.WE().consts.tables.OBJECT_FILES_TABLE:
 			return (isFolder ? wePerms.DELETE_OBJECTFILE : wePerms.DELETE_OBJECTFILE);
-		case tables.OBJECT_TABLE:
+		case top.WE().consts.tables.OBJECT_TABLE:
 			return (isFolder ? false : wePerms.DELETE_OBJECT);
 		default:
 			return false;
@@ -556,7 +556,7 @@ function we_cmd_base(args, url) {
 			we_cmd("tool_weSearch_edit", "", "", 4, 3);
 			break;
 		case "we_selector_category":
-			new jsWindow(url, "we_cateditor", -1, -1, size.catSelect.width, size.catSelect.height, true, true, true, true);
+			new jsWindow(url, "we_cateditor", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openSidebar":
 			top.weSidebar.open("default");
@@ -683,7 +683,7 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "preferences", -1, -1, 540, 670, true, true, true, true);
 			break;
 		case "editCat":
-			we_cmd("we_selector_category", 0, tables.CATEGORY_TABLE, "", "", "", "", "", 1);
+			we_cmd("we_selector_category", 0, top.WE().consts.tables.CATEGORY_TABLE, "", "", "", "", "", 1);
 			break;
 		case "editThumbs":
 			new jsWindow(url, "thumbnails", -1, -1, 560, 550, true, true, true);
@@ -774,14 +774,14 @@ function we_cmd_base(args, url) {
 			break;
 		case "we_customer_selector":
 		case "we_selector_file":
-			new jsWindow(url, "we_fileselector", -1, -1, size.windowSelect.width, size.windowSelect.height, true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1, top.WE().consts.size.windowSelect.width, top.WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new jsWindow(url, "we_fileselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1, top.WE().consts.size.windowDirSelect.width, top.WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url, "we_fileselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "setTab":
 			if (self.Vtabs && self.Vtabs.setTab && (window.treeData !== undefined)) {
@@ -980,7 +980,7 @@ function we_cmd_base(args, url) {
 			doSave(url, args[1], args[0]);
 			break;
 		case "we_selector_delete":
-			new jsWindow(url, "we_del_selector", -1, -1, size.windowDelSelect.width, size.windowDelSelect.height, true, true, true, true);
+			new jsWindow(url, "we_del_selector", -1, -1, top.WE().consts.size.windowDelSelect.width, top.WE().consts.size.windowDelSelect.height, true, true, true, true);
 			break;
 		case "browse":
 			openBrowser();
@@ -1063,16 +1063,16 @@ function we_cmd_base(args, url) {
 			weplugin_wait = new jsWindow("/webEdition/editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
 			break;
 		case "edit_settings_newsletter":
-			new jsWindow(dirs.WE_MODULES_DIR + "newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
+			new jsWindow(top.WE().consts.dirs.WE_MODULES_DIR + "newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
 			break;
 		case "edit_settings_customer":
-			new jsWindow(dirs.WE_MODULES_DIR + "customer/edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
+			new jsWindow(top.WE().consts.dirs.WE_MODULES_DIR + "customer/edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
 			break;
 		case "edit_settings_shop":
-			new jsWindow(dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
+			new jsWindow(top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
 			break;
 		case "edit_settings_messaging":
-			new jsWindow(dirs.WE_MESSAGING_MODULE_DIR + "messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
+			new jsWindow(top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
 			break;
 		case "edit_settings_spellchecker":
 			we_cmd("spellchecker_edit");
@@ -1129,7 +1129,7 @@ function we_cmd_base(args, url) {
 						self.Tree.setScrollY();
 					}
 				}
-				var tbl_prefix = tables.TBL_PREFIX,
+				var tbl_prefix = top.WE().consts.tables.TBL_PREFIX,
 								table = (args[1] !== undefined && args[1]) ? args[1] : 'tblFile';
 				we_cmd("setTab", (tbl_prefix !== '' && table.indexOf(tbl_prefix) !== 0 ? tbl_prefix + table : table));
 				//toggleBusy(1);
@@ -1174,8 +1174,8 @@ function we_cmd_base(args, url) {
 
 				widthBeforeDeleteMode = width;
 
-				if (width < size.tree.deleteWidth) {
-					top.setTreeWidth(size.tree.deleteWidth);
+				if (width < top.WE().consts.size.tree.deleteWidth) {
+					top.setTreeWidth(top.WE().consts.size.tree.deleteWidth);
 				}
 				top.storeTreeWidth(widthBeforeDeleteMode);
 
@@ -1211,8 +1211,8 @@ function we_cmd_base(args, url) {
 
 				widthBeforeDeleteMode = width;
 
-				if (width < size.tree.moveWidth) {
-					top.setTreeWidth(size.tree.moveWidth);
+				if (width < top.WE().consts.size.tree.moveWidth) {
+					top.setTreeWidth(top.WE().consts.size.tree.moveWidth);
 				}
 				top.storeTreeWidth(widthBeforeDeleteMode);
 
@@ -1241,8 +1241,8 @@ function we_cmd_base(args, url) {
 
 				var width = top.getTreeWidth();
 				widthBeforeDeleteMode = width;
-				if (width < size.tree.moveWidth) {
-					top.setTreeWidth(size.tree.moveWidth);
+				if (width < top.WE().consts.size.tree.moveWidth) {
+					top.setTreeWidth(top.WE().consts.size.tree.moveWidth);
 				}
 				top.storeTreeWidth(widthBeforeDeleteMode);
 
@@ -1287,14 +1287,14 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "open_document":
-			we_cmd("load", tables.FILE_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
+			we_cmd("load", top.WE().consts.tables.FILE_TABLE);
+			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + top.WE().consts.tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			new jsWindow(url, "we_dirChooser", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "open_collection":
-			we_cmd("load", tables.VFILE_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
+			we_cmd("load", top.WE().consts.tables.VFILE_TABLE);
+			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + top.WE().consts.tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			new jsWindow(url, "we_dirChooser", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "edit_new_collection":
 			url = "/webEdition/we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
@@ -1315,9 +1315,9 @@ function we_cmd_base(args, url) {
 			new jsWindow(docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
 			break;
 		case "open_template":
-			we_cmd("load", tables.TEMPLATES_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=" + contentTypes.TEMPLATE + "&we_cmd[2]=" + tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new jsWindow(url, "we_dirChooser", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
+			we_cmd("load", top.WE().consts.tables.TEMPLATES_TABLE);
+			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=" + top.WE().consts.contentTypes.TEMPLATE + "&we_cmd[2]=" + top.WE().consts.tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			new jsWindow(url, "we_dirChooser", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "switch_edit_page":
 			// get editor root frame of active tab

@@ -61,9 +61,6 @@ class we_customer_view extends we_modules_view{
 			parent::getJSTop() .
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
-var dirs={
-	"WEBEDITION_DIR":"' . WEBEDITION_DIR . '"
-};
 var g_l={
 	"save_changed_customer":"' . g_l('modules_customer', '[save_changed_customer]') . '",
 	"delete_alert":"' . g_l('modules_customer', '[delete_alert]') . '",
@@ -87,16 +84,7 @@ var perms={
 		return parent::getJSProperty() .
 			we_html_element::jsElement('
 var loaded=0;
-var dirs={
-	"WEBEDITION_DIR":"' . WEBEDITION_DIR . '",
-	"WE_CUSTOMER_MODULE_DIR":"' . WE_CUSTOMER_MODULE_DIR . '"
-};
-var size = {
-	"docSelect": {
-		"width":' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',
-		"height":' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
-	},
-};
+top.WE().consts.dirs.WE_CUSTOMER_MODULE_DIR="' . WE_CUSTOMER_MODULE_DIR . '";
 
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){

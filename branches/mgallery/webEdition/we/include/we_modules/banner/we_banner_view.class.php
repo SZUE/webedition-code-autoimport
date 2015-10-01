@@ -238,33 +238,6 @@ var perms={
 			var g_l = {
 				'deleteStatConfirm': "<?php echo g_l('modules_banner', '[deleteStatConfirm]'); ?>"
 			};
-			var dirs = {
-				'WEBEDITION_DIR': '<?php echo WEBEDITION_DIR; ?>'
-			};
-			var size = {
-				'catSelect': {
-					'width':<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
-					'height':<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
-				},
-				'docSelect': {
-					'width':<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
-					'height':<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
-				},
-				'windowSelect': {
-					'width':<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
-					'height':<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
-				},
-				'windowDirSelect': {
-					'width':<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
-					'height':<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
-				},
-				'windowDelSelect': {
-					'width':<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
-					'height':<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
-				}
-			};
-
-
 			//-->
 		</script>
 		<?php

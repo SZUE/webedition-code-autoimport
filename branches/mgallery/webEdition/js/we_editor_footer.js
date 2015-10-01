@@ -103,11 +103,11 @@ function setPath() {
 }
 
 function saveReload() {
-	self.location = '/webEdition/we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' + we_transaction;
+	self.location = top.WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' + we_transaction;
 }
 
 function we_cmd() {
-	var url = '/webEdition/we_cmd.php?';
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {

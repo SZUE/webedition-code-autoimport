@@ -63,16 +63,6 @@ abstract class we_import_wizardBase{
 var tables = {
 	OBJECT_TABLE: '" . (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE') . "'
 };
-var size = {
-	catSelect: {
-		width:" . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ",
-		height:" . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . "
-	},
-	docSelect: {
-		width:" . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ",
-		height:" . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . "
-	}
-};
 var path='" . $this->path . "';") .
 				we_html_element::jsScript(JS_DIR . 'import_wizardBase.js') .
 				STYLESHEET, $body

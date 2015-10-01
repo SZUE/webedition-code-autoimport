@@ -79,7 +79,7 @@ function doClick(id) {
 	setScrollY();
 
 	switch (table) {
-		case top.tables.FILE_TABLE:
+		case top.WE().consts.tables.FILE_TABLE:
 			if (frames.top.wasdblclick && ct !== "folder") {
 				top.openBrowser(id);
 				setTimeout("wasdblclick=false;", 400);

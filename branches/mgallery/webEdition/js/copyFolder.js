@@ -91,7 +91,7 @@ function incTemp(val) {
 
 function we_cmd() {
 	var args = "";
-	var url = "/webEdition/we_cmd.php?";
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -101,10 +101,10 @@ function we_cmd() {
 
 	switch (arguments[0]) {
 		case "we_selector_directory":
-			new jsWindow(url, "we_fileselector", -1, -1, size.windowDirSelect.height, true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1, top.WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url, "we_cateditor", -1, -1, size.catSelect.width, size.catSelect.height, true, true, true, true);
+			new jsWindow(url, "we_cateditor", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		default:
 			var args = [];

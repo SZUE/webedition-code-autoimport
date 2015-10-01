@@ -65,9 +65,7 @@ class we_messaging_iconbar{
 	private function getJSCode(){
 		return we_html_element::jsScript(JS_DIR . 'windows.js') .
 				we_html_element::jsElement('
-var dirs={
-	"WE_MESSAGING_MODULE_DIR":"' . WE_MESSAGING_MODULE_DIR . '",
-};
+top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
 var transaction="' . $this->weTransaction . '";
 var g_l={
 	"q_rm_todos":"' . g_l('modules_messaging', '[q_rm_todos]') . '",

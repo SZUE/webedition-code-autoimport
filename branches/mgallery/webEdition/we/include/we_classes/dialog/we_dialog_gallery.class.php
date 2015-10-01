@@ -45,14 +45,7 @@ class we_dialog_gallery extends we_dialog_base{
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsElement('
-var size = {
-	"docSelect": {
-	"width":' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',
-					"height":' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
-	}
-};'
-			) . we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js') .
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/wegallery/js/gallery_init.js') .
 			weSuggest::getYuiFiles();
 	}
 

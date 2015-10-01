@@ -199,7 +199,6 @@ var oWidget = {
 		oNewDiv.style.height = document.body.offsetHeight + 'px';
 		oNewDiv.style.left = '0px';
 		oNewDiv.style.top = '0px';
-		//oNewDiv.style.backgroundImage = 'url(/webEdition/images/pixel.gif)';
 		document.body.appendChild(oNewDiv);
 	},
 	removeMasks: function () {

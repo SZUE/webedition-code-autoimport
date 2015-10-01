@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var ajaxURL = "/webEdition/rpc/rpc.php";
+var ajaxURL = top.WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php";
 
 function init() {
 	sizeScrollContent();

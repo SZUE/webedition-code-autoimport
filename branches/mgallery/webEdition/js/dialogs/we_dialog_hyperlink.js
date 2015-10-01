@@ -46,7 +46,7 @@ function weCheckAcFields() {
 }
 
 function we_cmd() {
-	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -57,7 +57,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url, "we_docselector", -1, -1, size.docSelect.width, size.docSelect.height, true, false, true, true);
+			new jsWindow(url, "we_docselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, false, true, true);
 			break;
 
 		case "browse_server":

@@ -53,7 +53,7 @@ weSidebar.open = function () {
 	if (arguments[1] !== undefined) {
 		width = parseInt(arguments[1]);
 	} else {
-		width = size.sidebar.defaultWidth;
+		width = top.WE().consts.size.sidebar.defaultWidth;
 	}
 	if (isNaN(width) || width < 100) {
 		width = 100;
@@ -86,20 +86,20 @@ weSidebar.openUrl = function (url) {
 };
 
 weSidebar.openDocument = function (obj) {
-	obj.table = tables.FILE_TABLE;
-	obj.ct = (obj.ct === undefined ? contentTypes.WEDOCUMENT : obj.ct);
+	obj.table = top.WE().consts.tables.FILE_TABLE;
+	obj.ct = (obj.ct === undefined ? top.WE().consts.contentTypes.WEDOCUMENT : obj.ct);
 	weSidebar._open(obj);
 };
 
 weSidebar.openDocumentById = function () {
 	obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
-	obj.ct = (arguments[1] === undefined ? contentTypes.WEDOCUMENT : arguments[1]);
+	obj.ct = (arguments[1] === undefined ? top.WE().consts.contentTypes.WEDOCUMENT : arguments[1]);
 	weSidebar._open(obj);
 };
 
 weSidebar.openTemplate = function (obj) {
-	obj.table = tables.TEMPLATES_TABLE;
-	obj.ct = contentTypes.TEMPLATE;
+	obj.table = top.WE().consts.tables.TEMPLATES_TABLE;
+	obj.ct = top.WE().consts.contentTypes.TEMPLATE;
 	weSidebar._open(obj);
 };
 
@@ -109,8 +109,8 @@ weSidebar.openTemplateById = function () {
 };
 
 weSidebar.openObject = function (obj) {
-	if (tables.OBJECT_FILES_TABLE) {
-		obj.table = tables.OBJECT_FILES_TABLE;
+	if (top.WE().consts.tables.OBJECT_FILES_TABLE) {
+		obj.table = top.WE().consts.tables.OBJECT_FILES_TABLE;
 		obj.ct = "objectFile";
 		weSidebar._open(obj);
 	}
@@ -122,8 +122,8 @@ weSidebar.openObjectById = function () {
 };
 
 weSidebar.openClass = function (obj) {
-	if (tables.OBJECT_TABLE) {
-		obj.table = tables.OBJECT_TABLE;
+	if (top.WE().consts.tables.OBJECT_TABLE) {
+		obj.table = top.WE().consts.tables.OBJECT_TABLE;
 		obj.ct = "object";
 		weSidebar._open(obj);
 	}

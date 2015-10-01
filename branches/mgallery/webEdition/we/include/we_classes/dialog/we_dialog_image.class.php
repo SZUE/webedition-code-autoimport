@@ -517,12 +517,6 @@ class we_dialog_image extends we_dialog_base{
 		$yuiSuggest = & weSuggest::getInstance();
 		$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : array();
 		return parent::getJs() . we_html_element::jsElement('
-			var size = {
-				"docSelect": {
-					"width":' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',
-					"height":' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
-				}
-			};
 			var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.weclassNames_tinyMce') . ' ;
 			var g_l={
 				"wysiwyg_none":"' . g_l('wysiwyg', '[none]') . '"

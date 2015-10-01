@@ -32,7 +32,7 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -41,17 +41,17 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "we_selector_file":
-			new jsWindow(url, "we_selector", -1, -1, size.windowSelect.width, size.windowSelect.height, true, true, true, true);
+			new jsWindow(url, "we_selector", -1, -1, top.WE().consts.size.windowSelect.width, top.WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url, "we_catselector", -1, -1, size.catSelect.width, size.catSelect.height, true, true, true, true);
+			new jsWindow(url, "we_catselector", -1, -1,top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url, "we_docselector", -1, -1, size.docSelect.width, size.docSelect.height, true, true, true, true);
+			new jsWindow(url, "we_docselector", -1, -1,top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new jsWindow(url, "we_dirselector", -1, -1, size.windowDirSelect.width, size.windowDirSelect.height, true, true, true, true);
+			new jsWindow(url, "we_dirselector", -1, -1,top.WE().consts.size.windowDirSelect.width, top.WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_banner_dirSelector":
 			new jsWindow(url, "we_bannerselector", -1, -1, 600, 350, true, true, true);

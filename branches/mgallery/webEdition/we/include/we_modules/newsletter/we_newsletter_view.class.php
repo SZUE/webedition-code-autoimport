@@ -275,19 +275,8 @@ var g_l = {
 	"search_finished":"' . g_l('modules_newsletter', '[search_finished]') . '"
 };
 var dirs = {
-	"WEBEDITION_DIR": "' . WEBEDITION_DIR . '",
 	"WE_MODULES_DIR": "' . WE_MODULES_DIR . '",
 }
-var size = {
-	"docSelect": {
-		"width":' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',
-		"height":' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
-	},
-	"windowSelect": {
-		"width":' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',
-		"height":' . we_selector_file::WINDOW_SELECTOR_HEIGHT . '
-	}
-};
 
 var modFrameSet="' . $this->frameset . '";
 var checkMail=' . intval(!empty($this->settings['reject_save_malformed'])) . ';

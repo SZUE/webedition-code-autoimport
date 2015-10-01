@@ -36,7 +36,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = [];
-	var url = dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -115,7 +115,7 @@ function we_cmd() {
 			 break;
 			 */
 		case "empty_log":
-			new jsWindow(dirs.WE_WORKFLOW_MODULE_DIR + "edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
+			new jsWindow(top.WE().consts.dirs.WE_WORKFLOW_MODULE_DIR + "edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);

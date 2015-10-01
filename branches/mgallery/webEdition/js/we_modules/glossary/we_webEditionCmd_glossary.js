@@ -29,13 +29,13 @@ function we_cmd_glossary(args, url) {
 			if (_EditorFrame !== false &&
 							_EditorFrame.getEditorType() == "model" &&
 							(
-											_EditorFrame.getEditorContentType() == contentTypes.WEDOCUMENT ||
-											_EditorFrame.getEditorContentType() == contentTypes.OBJECT_FILE
+											_EditorFrame.getEditorContentType() == top.WE().consts.contentTypes.WEDOCUMENT ||
+											_EditorFrame.getEditorContentType() == top.WE().consts.contentTypes.OBJECT_FILE
 											)
 							) {
 
 				var transaction = _EditorFrame.getEditorTransaction();
-				url = "/webEdition/we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
+				url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
 				new jsWindow(url, "glossary_check", -1, -1, 730, 400, true, false, true);
 
 			} else {

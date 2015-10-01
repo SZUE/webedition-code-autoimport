@@ -446,26 +446,6 @@ function submitForm(){
 	function getPropertyJS(){
 		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
 var loaded;
-var dirs={
-	"WEBEDITION_DIR":"' . WEBEDITION_DIR . '"
-};
-var size = {
-	"catSelect": {
-		"width":' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',
-		"height":' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . '
-	},
-	"docSelect": {
-		"width":' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',
-		"height":' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . '
-	},
-	"windowDirSelect": {
-		"width":' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',
-		"height":' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . '
-	},
-};
-var tables = {
-	"OBJECT_TABLE": "' . (defined('OBJECT_TABLE') ? OBJECT_TABLE : '') . '"
-};
 var uid="' . $this->uid . '";
 var g_l={
 	"worktime_empty": "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",

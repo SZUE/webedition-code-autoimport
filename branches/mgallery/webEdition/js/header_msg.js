@@ -41,6 +41,6 @@ function header_msg_update(newmsg_count, newtodo_count) {
 		top.weEditorFrameController.getActiveDocumentReference().setTaskCount(newtodo_count);
 	}
 	if (changed) {
-		new jsWindow(dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newMsg&msg=" + newmsg_count + "&todo=" + newtodo_count + "&omsg=" + oldMsg + "&otodo=" + oldTodo, "we_delinfo", -1, -1, 550, 200, true, true, true);
+		new jsWindow(top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newMsg&msg=" + newmsg_count + "&todo=" + newtodo_count + "&omsg=" + oldMsg + "&otodo=" + oldTodo, "we_delinfo", -1, -1, 550, 200, true, true, true);
 	}
 }

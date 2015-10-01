@@ -184,74 +184,6 @@ var dd = {
 		}
 	};
 
-var size = {
-	tree: {
-		hidden:<?php echo weTree::HiddenWidth; ?>,
-		defaultWidth:<?php echo weTree::DefaultWidth; ?>,
-		min:<?php echo weTree::MinWidth; ?>,
-		max:<?php echo weTree::MaxWidth; ?>,
-		step:<?php echo weTree::StepWidth; ?>,
-		moveWidth:<?php echo weTree::MoveWidth; ?>,
-		deleteWidth:<?php echo weTree::DeleteWidth; ?>
-	},
-	catSelect: {
-		width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
-		height:<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
-	},
-	docSelect: {
-		width:<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
-		height:<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
-	},
-	windowSelect: {
-		width:<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
-		height:<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
-	},
-	windowDirSelect: {
-		width:<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
-		height:<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
-	},
-	windowDelSelect: {
-		width:<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
-		height:<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
-	},
-	sidebar: {
-		defaultWidth:<?php echo SIDEBAR_DEFAULT_WIDTH; ?>
-	}
-};
-var tables = {
-	FILE_TABLE: "<?php echo FILE_TABLE; ?>",
-	TEMPLATES_TABLE: "<?php echo TEMPLATES_TABLE; ?>",
-	OBJECT_FILES_TABLE: "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
-	OBJECT_TABLE: "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
-	CATEGORY_TABLE: "<?php echo CATEGORY_TABLE; ?>",
-	VFILE_TABLE: "<?php echo (defined('VFILE_TABLE') ? VFILE_TABLE : 'v' ); ?>",
-	table_to_load: "<?php echo $_table_to_load; ?>",
-	TBL_PREFIX: '<?php echo TBL_PREFIX; ?>'
-};
-var dirs = {
-	WEBEDITION_DIR:"<?php echo WEBEDITION_DIR;?>",
-	WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
-	WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
-	WE_MESSAGING_MODULE_DIR: "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
-};
-var contentTypes = {
-	TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
-	WEDOCUMENT: '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
-	OBJECT_FILE: '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
-	IMAGE: "<?php echo we_base_ContentTypes::IMAGE; ?>",
-	HTML: "<?php echo we_base_ContentTypes::HTML; ?>",
-	FLASH: "<?php echo we_base_ContentTypes::FLASH; ?>",
-	QUICKTIME: "<?php echo we_base_ContentTypes::QUICKTIME; ?>",
-	VIDEO: "<?php echo we_base_ContentTypes::VIDEO; ?>",
-	AUDIO: "<?php echo we_base_ContentTypes::AUDIO; ?>",
-	JS: "<?php echo we_base_ContentTypes::JS; ?>",
-	TEXT: "<?php echo we_base_ContentTypes::TEXT; ?>",
-	XML: "<?php echo we_base_ContentTypes::XML; ?>",
-	HTACESS: "<?php echo we_base_ContentTypes::HTACESS; ?>",
-	CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
-	APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
-	COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
-};
 var modules = {
 	MESSAGING_SYSTEM:<?php echo intval(defined('MESSAGING_SYSTEM')); ?>
 };
@@ -279,8 +211,34 @@ var setPageNrCallback = {
 
 var WebEdition={
 	consts:{
-		contentTypes:contentTypes,
-		dirs:dirs,
+		contentTypes:{
+			TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
+			WEDOCUMENT: '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
+			OBJECT_FILE: '<?php echo we_base_ContentTypes::OBJECT_FILE; ?>',
+			IMAGE: "<?php echo we_base_ContentTypes::IMAGE; ?>",
+			HTML: "<?php echo we_base_ContentTypes::HTML; ?>",
+			FLASH: "<?php echo we_base_ContentTypes::FLASH; ?>",
+			QUICKTIME: "<?php echo we_base_ContentTypes::QUICKTIME; ?>",
+			VIDEO: "<?php echo we_base_ContentTypes::VIDEO; ?>",
+			AUDIO: "<?php echo we_base_ContentTypes::AUDIO; ?>",
+			JS: "<?php echo we_base_ContentTypes::JS; ?>",
+			TEXT: "<?php echo we_base_ContentTypes::TEXT; ?>",
+			XML: "<?php echo we_base_ContentTypes::XML; ?>",
+			HTACESS: "<?php echo we_base_ContentTypes::HTACESS; ?>",
+			CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
+			APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
+			COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
+		},
+		dirs:{
+			WEBEDITION_DIR:"<?php echo WEBEDITION_DIR; ?>",
+			WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
+			WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
+			WE_MESSAGING_MODULE_DIR: "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
+			IMAGE_DIR:"<?php echo IMAGE_DIR; ?>",
+			ICON_DIR:"<?php echo ICON_DIR; ?>",
+			WE_CUSTOMER_MODULE_DIR:"<?php echo defined('WE_CUSTOMER_MODULE_DIR') ? WE_CUSTOMER_MODULE_DIR : 'WE_CUSTOMER_MODULE_DIR'; ?>",
+			WE_INCLUDES_DIR:"<?php echo WE_INCLUDES_DIR; ?>",
+		},
 		g_l:{
 			main:g_l,
 			<?php
@@ -290,8 +248,50 @@ var WebEdition={
 			?>
 		},
 		global:constants,
-		tables:tables,
-		sizes:size,
+		tables: {
+			FILE_TABLE: "<?php echo FILE_TABLE; ?>",
+			TEMPLATES_TABLE: "<?php echo TEMPLATES_TABLE; ?>",
+			OBJECT_FILES_TABLE: "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
+			OBJECT_TABLE: "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
+			CATEGORY_TABLE: "<?php echo CATEGORY_TABLE; ?>",
+			VFILE_TABLE: "<?php echo (defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE' ); ?>",
+			table_to_load: "<?php echo $_table_to_load; ?>",
+			TBL_PREFIX: '<?php echo TBL_PREFIX; ?>'
+		},
+		size:{
+			tree: {
+				hidden:<?php echo weTree::HiddenWidth; ?>,
+				defaultWidth:<?php echo weTree::DefaultWidth; ?>,
+				min:<?php echo weTree::MinWidth; ?>,
+				max:<?php echo weTree::MaxWidth; ?>,
+				step:<?php echo weTree::StepWidth; ?>,
+				moveWidth:<?php echo weTree::MoveWidth; ?>,
+				deleteWidth:<?php echo weTree::DeleteWidth; ?>
+			},
+			catSelect: {
+				width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_CATSELECTOR_HEIGHT; ?>
+			},
+			docSelect: {
+				width:<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>
+			},
+			windowSelect: {
+				width:<?php echo we_selector_file::WINDOW_SELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_SELECTOR_HEIGHT; ?>
+			},
+			windowDirSelect: {
+				width:<?php echo we_selector_file::WINDOW_DIRSELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_DIRSELECTOR_HEIGHT; ?>
+			},
+			windowDelSelect: {
+				width:<?php echo we_selector_file::WINDOW_DELSELECTOR_WIDTH; ?>,
+				height:<?php echo we_selector_file::WINDOW_DELSELECTOR_HEIGHT; ?>
+			},
+			sidebar: {
+				defaultWidth:<?php echo SIDEBAR_DEFAULT_WIDTH; ?>
+			}
+		},
 	},
 	permissions:wePerms,
 	messageSettings:messageSettings,
