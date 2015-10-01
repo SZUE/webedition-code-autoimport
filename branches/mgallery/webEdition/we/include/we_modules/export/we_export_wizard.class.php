@@ -1319,10 +1319,11 @@ function formFileChooser() {
 			we_html_element::jsElement('
 				function formDirChooser() {
 					var args = "";
-					var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
+					var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+					for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
 					switch (arguments[0]) {
 						case "we_selector_directory":
-							new jsWindow(url,"dir_selector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,false,true true);
+							new jsWindow(url,"dir_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,false,true true);
 						break;
 					}
 				}

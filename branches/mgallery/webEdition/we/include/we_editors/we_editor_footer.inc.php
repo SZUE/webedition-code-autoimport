@@ -140,8 +140,6 @@ echo STYLESHEET .
 	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
 	var g_l={
 		"in_wf_warning":"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') : '') . '",
-		"save_error_fields_value_not_valid": "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '"
-
 	};
 	var doc={
 		ID:"' . $we_doc->ID . '",

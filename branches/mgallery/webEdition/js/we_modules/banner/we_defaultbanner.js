@@ -63,7 +63,7 @@ function we_save() {
 		if (YAHOO.autocoml.isValid()) {
 			document.we_form.submit();
 		} else {
-			top.we_showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+			top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
 		}
 	}
 }

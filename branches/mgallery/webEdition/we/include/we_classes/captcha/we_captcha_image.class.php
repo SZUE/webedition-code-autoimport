@@ -311,19 +311,19 @@ class we_captcha_image{
 
 		$styles = explode(",", $style);
 		if(!empty($styles)){
-			if(in_array("strikeout", $styles)){
+			if(in_array('strikeout', $styles)){
 				$this->style['strikeout'] = true;
 			}
-			if(in_array("fullcircle", $styles)){
+			if(in_array('fullcircle', $styles)){
 				$this->style['fullcircle'] = true;
 			}
-			if(in_array("outlinecircle", $styles)){
+			if(in_array('outlinecircle', $styles)){
 				$this->style['outlinecircle'] = true;
 			}
-			if(in_array("fullrectangle", $styles)){
+			if(in_array('fullrectangle', $styles)){
 				$this->style['fullrectangle'] = true;
 			}
-			if(in_array("outlinerectangle", $styles)){
+			if(in_array('outlinerectangle', $styles)){
 				$this->style['outlinerectangle'] = true;
 			}
 			$colors = explode(",", $color);

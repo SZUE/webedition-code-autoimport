@@ -62,19 +62,18 @@ class we_customer_view extends we_modules_view{
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
 var g_l={
-	"save_changed_customer":"' . g_l('modules_customer', '[save_changed_customer]') . '",
-	"delete_alert":"' . g_l('modules_customer', '[delete_alert]') . '",
-	"no_perms": "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_perms]')) . '",
-	"nothing_to_delete":"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
-	"nothing_to_save":"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '"
+	save_changed_customer:"' . g_l('modules_customer', '[save_changed_customer]') . '",
+	delete_alert:"' . g_l('modules_customer', '[delete_alert]') . '",
+	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
+	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '"
 };
 
 var topFrame=' . $this->topFrame . ';
 var frameUrl="' . $this->frameset . '";
 var perms={
-	"DELETE_CUSTOMER":' . intval(permissionhandler::hasPerm("DELETE_CUSTOMER")) . ',
-	"EDIT_CUSTOMER":' . intval(permissionhandler::hasPerm("EDIT_CUSTOMER")) . ',
-	"NEW_CUSTOMER":' . intval(permissionhandler::hasPerm("NEW_CUSTOMER")) . '
+	DELETE_CUSTOMER:' . intval(permissionhandler::hasPerm("DELETE_CUSTOMER")) . ',
+	EDIT_CUSTOMER:' . intval(permissionhandler::hasPerm("EDIT_CUSTOMER")) . ',
+	NEW_CUSTOMER:' . intval(permissionhandler::hasPerm("NEW_CUSTOMER")) . '
 };
 ') .
 			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_top.js');

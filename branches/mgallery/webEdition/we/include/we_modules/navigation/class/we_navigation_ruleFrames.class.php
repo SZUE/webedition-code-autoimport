@@ -208,8 +208,7 @@ class we_navigation_ruleFrames{
 
 		$saveButton = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();');
-		$acErrorMsg = we_message_reporting::getShowMessageCall(
-				g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 		return we_html_tools::getHtmlTop() . STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
@@ -257,7 +256,7 @@ function clearNavigationForm() {
 function we_cmd(){
 
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]){
 
@@ -306,17 +305,17 @@ function we_cmd(){
 		break;
 
 		case "we_selector_directory":
-			new jsWindow(url,arguments[0],-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,arguments[0],-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 		break;
 		case "we_selector_category":
-			new jsWindow(url,arguments[0],-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,arguments[0],-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 		break;
 		case "we_selector_file":
-			new jsWindow(url,arguments[0],-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,arguments[0],-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 		break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url,arguments[0],-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,arguments[0],-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 		break;
 	}
 }') . '

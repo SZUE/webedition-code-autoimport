@@ -77,8 +77,7 @@ function save(){
 		opener.rpc(sCsv,'','','','',_sObjId,_sUpbInc);
 	}
 	previewPrefs();
-	" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
 	self.close();
 }
 

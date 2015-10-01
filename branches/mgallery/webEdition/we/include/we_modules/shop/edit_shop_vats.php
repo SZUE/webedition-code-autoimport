@@ -70,7 +70,6 @@ if(!isset($weShopVat)){
 $allVats = we_shop_vats::getAllShopVATs();
 
 $vatJavaScript = '
-top.WE().consts.dirs.WE_SHOP_MODULE_DIR="' . WE_SHOP_MODULE_DIR . '";
 top.WE().consts.g_l.shop.vat_confirm_delete="' . g_l('modules_shop', '[vat][js_confirm_delete]') . '";
 var SCRIPT_NAME="' . $_SERVER['SCRIPT_NAME'] . '";
 var allVats = {

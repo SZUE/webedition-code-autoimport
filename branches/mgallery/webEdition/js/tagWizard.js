@@ -45,7 +45,7 @@ function weTagWizard(tagName) {
 
 			if (this.reqAttributes[this.allAttributes[i]]) {
 				// no need to change these elements
-			} else if (this.typeAttributeRequires[newType] && this.inArray(this.allAttributes[i], this.typeAttributeRequires[newType])) {
+			} else if (this.typeAttributeRequires[newType] && WE().util.in_array(this.allAttributes[i], this.typeAttributeRequires[newType])) {
 				this.setLabelRequired(this.allAttributes[i], true);
 			} else {
 				this.setLabelRequired(this.allAttributes[i], false);
@@ -59,8 +59,7 @@ function weTagWizard(tagName) {
 
 			// show the correct attributes
 			for (i = 0; i < this.allAttributes.length; i++) {
-
-				if (this.inArray(this.allAttributes[i], this.typeAttributeAllows[newType])) {
+				if (WE().util.in_array(this.allAttributes[i], this.typeAttributeAllows[newType])) {
 
 					if (this.allAttributes[i] != this.typeAttributeId) {
 						hasAttributes = true;
@@ -182,8 +181,8 @@ function weTagWizard(tagName) {
 				} else {
 
 					// check if attribute is required by the value of the type-Attribut
-					//if (this.typeAttributeRequires[typeValue] && (!fieldValue || fieldValue == '-') && this.inArray(fieldId, typeAttributeRequires[typeValue]) ) { //#4483
-					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && this.inArray(fieldId, typeAttributeRequires[typeValue])) {
+					//if (this.typeAttributeRequires[typeValue] && (!fieldValue || fieldValue == '-') && WE().util.in_array(fieldId, typeAttributeRequires[typeValue]) ) { //#4483
+					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && WE().util.in_array(fieldId, typeAttributeRequires[typeValue])) {
 						this.missingFields.push(fieldName);
 					}
 				}

@@ -80,7 +80,7 @@ echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
 		failure: function(o) {
 			if (weRpcFailedCnt++ > 5) {
 				//in this case, rpc failed 5 times, this is severe, user should be in informed!
-				alert("<?php echo g_l('global', '[unable_to_call_ping]'); ?>");
+				alert(WE().consts.g_l.main.unable_to_call_ping);
 			}
 		}
 	}

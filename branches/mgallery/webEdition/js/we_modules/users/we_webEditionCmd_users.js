@@ -24,70 +24,70 @@
 function we_cmd_users(args, url) {
 	switch (args[0]) {
 		case "we_users_selector":
-			if (hasPerm(wePerms.NEW_USER) || hasPerm(wePerms.NEW_GROUP) || hasPerm(wePerms.SAVE_USER) || hasPerm(wePerms.SAVE_GROUP) || hasPerm(wePerms.DELETE_USER) || hasPerm(wePerms.DELETE_GROUP)) {
+			if (hasPerm('NEW_USER') || hasPerm('NEW_GROUP') || hasPerm('SAVE_USER') || hasPerm('SAVE_GROUP') || hasPerm('DELETE_USER') || hasPerm('DELETE_GROUP')) {
 				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "users_edit":
 		case "users_edit_ifthere":
-			if (hasPerm(wePerms.NEW_USER) || hasPerm(wePerms.NEW_GROUP) || hasPerm(wePerms.SAVE_USER) || hasPerm(wePerms.SAVE_GROUP) || hasPerm(wePerms.DELETE_USER) || hasPerm(wePerms.DELETE_GROUP)) {
+			if (hasPerm('NEW_USER') || hasPerm('NEW_GROUP') || hasPerm('SAVE_USER') || hasPerm('SAVE_GROUP') || hasPerm('DELETE_USER') || hasPerm('DELETE_GROUP')) {
 				new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_user":
-			if (hasPerm(wePerms.NEW_USER)) {
+			if (hasPerm('NEW_USER')) {
 				showNewWindow(args);
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "save_user":
-			if (hasPerm(wePerms.SAVE_USER)) {
+			if (hasPerm('SAVE_USER')) {
 				showNewWindow(args);
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_group":
-			if (hasPerm(wePerms.NEW_GROUP)) {
+			if (hasPerm('NEW_GROUP')) {
 				showNewWindow(args);
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_alias":
-			if (hasPerm(wePerms.NEW_USER)) {
+			if (hasPerm('NEW_USER')) {
 				showNewWindow(args);
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "exit_users":
 			showNewWindow(args);
 			break;
 		case "delete_user":
-			if (hasPerm(wePerms.DELETE_USER)) {
+			if (hasPerm('DELETE_USER')) {
 				showNewWindow(args);
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "new_organization":
-			if (hasPerm(wePerms.NEW_USER)) {
+			if (hasPerm('NEW_USER')) {
 				showNewWindow(args);
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "doctypes":
 			new jsWindow(url, "doctypes", -1, -1, 720, 670, true, true, true);
 			break;
 		case "users_unlock":
-			top.YAHOO.util.Connect.asyncRequest('GET', url, {success: weDummy, failure: weDummy});
+			top.YAHOO.util.Connect.asyncRequest('GET', url, {success:  function(){}, failure:  function(){}});
 //		we_repl(self.load,url,args[0]);
 			break;
 		case "users_add_owner":

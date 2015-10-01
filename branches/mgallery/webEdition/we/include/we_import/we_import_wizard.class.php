@@ -2487,7 +2487,7 @@ function handle_event(evt) {
 							switch($tagname){
 								// tags with text content, links and hrefs
 								case "input":
-									if(in_array("date", we_tag_tagParser::makeArrayFromAttribs($tag))){
+									if(in_array('date', we_tag_tagParser::makeArrayFromAttribs($tag))){
 										$dateFields[] = $name;
 									}
 								case "textarea":

@@ -147,17 +147,6 @@ function inSelectBox(p, val) {
 	return false;
 }
 
-function in_array(n, h) {
-	for (var i = 0; i < h.length; i++) {
-
-		if (h[i] == n) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
 function markEMails() {
 }
 

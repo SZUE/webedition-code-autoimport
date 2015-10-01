@@ -154,7 +154,7 @@ function we_cmd() {
 			break;
 
 		case "we_selector_directory":
-			new jsWindow(url, "we_fileselector", -1, -1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ', true, true, true, true);
+			new jsWindow(url, "we_fileselector", -1, -1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 
 		case "select_seem_start":

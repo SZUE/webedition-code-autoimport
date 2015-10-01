@@ -108,30 +108,28 @@ weTagWizard.needsEndTag = ' . ($weTag->needsEndTag() ? 'true' : 'false') . ';
 ' . $typeAttributeJs . '
 function we_cmd(){
 	var args = "";
-	var url = "/webEdition/we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
-
 		case "switch_type":
 			weTagWizard.changeType(arguments[1]);
 		break;
 
 		case "saveTag":
 
-			if (strWeTag = weTagWizard.getWeTag()) {' .
-	( $openAtCursor ? '
+			if (strWeTag = weTagWizard.getWeTag()) {
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
+			' .
+	( $openAtCursor ? '
 				contentEditor.window.addCursorPosition( strWeTag );
 				self.close();;
 				' : '
-				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
 				contentEditor.document.we_form.elements.tag_edit_area.value=strWeTag;
-    			contentEditor.document.we_form.elements.tag_edit_area.select();
+   			contentEditor.document.we_form.elements.tag_edit_area.select();
     			self.close();'
 	) . '
 			} else {
 				if (weTagWizard.missingFields.length) {
-
 					req = "";
 					for (i=0;i<weTagWizard.missingFields.length;i++) {
 						req += "- " + weTagWizard.missingFields[i] + "\n";
@@ -145,17 +143,17 @@ function we_cmd(){
 		break;
 
 		case "we_selector_directory":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 		case "we_selector_document":
 		case "we_selector_image":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 		case "we_selector_file":
-			new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_fileselector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		case "we_users_selector":
 	        new jsWindow(url,"browse_users",-1,-1,500,300,true,false,true);

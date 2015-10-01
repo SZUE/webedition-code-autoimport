@@ -66,7 +66,7 @@ function we_cmd() {
 			break;
 		case "delete_workflow":
 			if (!perms.DELETE_WORKFLOW) {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			} else {
 				if (top.content.editor.edbody.loaded) {
 					if (!confirm(g_l.delete_question))
@@ -81,7 +81,7 @@ function we_cmd() {
 			break;
 		case "save_workflow":
 			if (!perms.EDIT_WORKFLOW && !perms.NEW_WORKFLOW) {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			} else {
 				if (top.content.editor.edbody.loaded) {
 					top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);

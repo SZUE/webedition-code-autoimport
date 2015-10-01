@@ -40,11 +40,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("rssProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[messaging]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[messaging]'), '', '', STYLESHEET .
-	we_html_element::jsElement($jsPrefs . "
-	var g_l={
-	prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "'
-};
-") .
+	we_html_element::jsElement($jsPrefs) .
 	we_html_element::jsScript(JS_DIR . 'widgets/msg.js'), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();"

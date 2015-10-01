@@ -212,21 +212,16 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		return we_html_element::jsElement('
 parent.document.title="' . $title . '";
-var dirs = {
-	"WEBEDITION_DIR": "' . WEBEDITION_DIR . '"
-};
 var g_l = {
-	"save_changed_banner":"' . g_l('modules_banner', '[save_changed_banner]') . '",
-	"no_perms": "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[no_perms]')) . '",
-	"delete_question":"' . g_l('modules_banner', '[delete_question]') . '",
-	"nothing_to_delete": "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_delete]')) . '",
-	"nothing_to_save": "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '"
-
+	save_changed_banner:"' . g_l('modules_banner', '[save_changed_banner]') . '",
+	delete_question:"' . g_l('modules_banner', '[delete_question]') . '",
+	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_delete]')) . '",
+	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '"
 };
 var perms={
-	"DELETE_BANNER":' . intval(permissionhandler::hasPerm("DELETE_BANNER")) . ',
-	"EDIT_BANNER":' . intval(permissionhandler::hasPerm("EDIT_BANNER")) . ',
-	"NEW_BANNER":' . intval(permissionhandler::hasPerm("NEW_BANNER")) . '
+	DELETE_BANNER:' . intval(permissionhandler::hasPerm("DELETE_BANNER")) . ',
+	EDIT_BANNER:' . intval(permissionhandler::hasPerm("EDIT_BANNER")) . ',
+	NEW_BANNER:' . intval(permissionhandler::hasPerm("NEW_BANNER")) . '
 };
 ') .
 			we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');

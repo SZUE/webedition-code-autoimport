@@ -179,15 +179,5 @@ function sprintf() {
 }
 
 function hasPerm(perm) {
-	return (wePerms.ADMINISTRATOR || wePerms[perm] ? true : false);
-}
-
-//FIXME: we have this function more than once
-function in_array(arr, val) {
-	for (var i = 0; i < arr.length; i++) {
-		if (arr[i] === val) {
-			return(i);
-		}
-	}
-	return(-1);
+	return (WE().session.permissions.ADMINISTRATOR || WE().session.permissions[perm] ? true : false);
 }

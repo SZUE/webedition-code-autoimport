@@ -826,19 +826,20 @@ abstract class we_rebuild_wizard{
 			function we_cmd() {
 				f = document.we_form;
 				var args = "";
-				var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+				var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+				for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				switch (arguments[0]) {
 				case "we_selector_directory":
-					new jsWindow(url,"we_fileselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+					new jsWindow(url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 					break;
 				case "we_selector_category":
-					new jsWindow(url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
+					new jsWindow(url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 					break;
 				case "add_cat":
 					var catsToAdd = makeArrayFromCSV(arguments[1]);
 					var cats = makeArrayFromCSV(f.categories.value);
 					for(var i=0;i<catsToAdd.length;i++){
-						if(!inArray(catsToAdd[i],cats)){
+						if(!WE().util.in_array(catsToAdd[i],cats)){
 							cats.push(catsToAdd[i]);
 						};
 					};
@@ -868,7 +869,7 @@ abstract class we_rebuild_wizard{
 					var foldersToAdd = makeArrayFromCSV(arguments[1]);
 					var folders = makeArrayFromCSV(f.' . $folders . '.value);
 					for(var i=0;i<foldersToAdd.length;i++){
-						if(!inArray(foldersToAdd[i],folders)){
+						if(!WE().util.in_array(foldersToAdd[i],folders)){
 							folders.push(foldersToAdd[i]);
 						};
 					};
@@ -944,12 +945,6 @@ abstract class we_rebuild_wizard{
 				if(csv.length && csv.substring(0,1)==","){csv=csv.substring(1,csv.length);}
 				if(csv.length && csv.substring(csv.length-1,csv.length)==","){csv=csv.substring(0,csv.length-1);}
 				if(csv.length==0){return [];}else{return csv.split(/,/);};
-			}
-			function inArray(needle,haystack){
-				for(var i=0;i<haystack.length;i++){
-					if(haystack[i] == needle){return true;}
-				}
-				return false;
 			}
 			function set_button_state() {
 				if(top.wizbusy && top.wizbusy.switch_button_state){

@@ -51,7 +51,7 @@ function showMessage(message, prio, win) {
 	// always show in console !
 	messageConsole.addMessage(prio, message);
 
-	if (prio & messageSettings) { // show it, if you should
+	if (prio & WE().session.messageSettings) { // show it, if you should
 
 		// the used vars are in file JS_DIR . "weJsStrings.php";
 		switch (prio) {
@@ -73,11 +73,6 @@ function showMessage(message, prio, win) {
 	}
 }
 
-function weDummy(o) { // AJAX Requests
-	// dummy
-}
-
-
 // new functions
 function doClickDirect(id, ct, table, fenster) {
 	if (!fenster) {
@@ -89,7 +84,7 @@ function doClickDirect(id, ct, table, fenster) {
 
 	} else {
 		//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
-		top.we_showMessage(g_l.open_link_in_SEEM_edit_include, WE_MESSAGE_WARNING, window);
+		top.we_showMessage(WE().consts.g_l.main.open_link_in_SEEM_edit_include, WE_MESSAGE_WARNING, window);
 		top.opener.top.doClickDirect(id, ct, table, top.opener);
 		// clean session
 		// get the EditorFrame - this is important due to edit_include_mode!!!!
@@ -97,7 +92,7 @@ function doClickDirect(id, ct, table, fenster) {
 		if (_ActiveEditor) {
 			trans = _ActiveEditor.getEditorTransaction();
 			if (trans) {
-				top.we_cmd('users_unlock', _ActiveEditor.getEditorDocumentId(), userID, _ActiveEditor.getEditorEditorTable(), trans);
+				top.we_cmd('users_unlock', _ActiveEditor.getEditorDocumentId(), WE().session.userID, _ActiveEditor.getEditorEditorTable(), trans);
 			}
 		}
 		top.close();
@@ -352,7 +347,7 @@ function openBrowser(url) {
 	try {
 		browserwind = window.open("/webEdition/openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 	} catch (e) {
-		top.we_showMessage(g_l.browser_crashed, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.main.browser_crashed, WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -369,18 +364,18 @@ function hasPermDelete(eTable, isFolder) {
 	if (eTable === "") {
 		return false;
 	}
-	if (wePerms.ADMINISTRATOR) {
+	if (WE().session.permissions.ADMINISTRATOR) {
 		return true;
 	}
 	switch (eTable) {
 		case top.WE().consts.tables.FILE_TABLE:
-			return (isFolder ? wePerms.DELETE_DOC_FOLDER : wePerms.DELETE_DOCUMENT);
+			return (isFolder ? WE().session.permissions.DELETE_DOC_FOLDER : WE().session.permissions.DELETE_DOCUMENT);
 		case top.WE().consts.tables.TEMPLATES_TABLE:
-			return (isFolder ? wePerms.DELETE_TEMP_FOLDER : wePerms.DELETE_TEMPLATE);
+			return (isFolder ? WE().session.permissions.DELETE_TEMP_FOLDER : WE().session.permissions.DELETE_TEMPLATE);
 		case top.WE().consts.tables.OBJECT_FILES_TABLE:
-			return (isFolder ? wePerms.DELETE_OBJECTFILE : wePerms.DELETE_OBJECTFILE);
+			return (isFolder ? WE().session.permissions.DELETE_OBJECTFILE : WE().session.permissions.DELETE_OBJECTFILE);
 		case top.WE().consts.tables.OBJECT_TABLE:
-			return (isFolder ? false : wePerms.DELETE_OBJECT);
+			return (isFolder ? false : WE().session.permissions.DELETE_OBJECT);
 		default:
 			return false;
 	}
@@ -417,7 +412,7 @@ function doUnloadSEEM(whichWindow) {
 	}
 
 	if (docIds) {
-		top.we_cmd('users_unlock', docIds, userID, docTables);
+		top.we_cmd('users_unlock', docIds, WE().session.userID, docTables);
 		if (top.opener) {
 			top.opener.focus();
 
@@ -507,7 +502,7 @@ function doUnloadNormal(whichWindow) {
 
 
 function doUnload(whichWindow) { // triggered when webEdition-window is closed
-	if (SEEMODE) {
+	if (WE().session.seemode) {
 		doUnloadSEEM(whichWindow);
 	} else {
 		doUnloadNormal(whichWindow);
@@ -582,13 +577,13 @@ function we_cmd_base(args, url) {
 			toggleBusy(1);
 			if (weEditorFrameController.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
-					top.we_showMessage(g_l.no_perms_action, WE_MESSAGE_ERROR, window);
-				} else if (window.confirm(g_l.delete_single_confirm_delete + "\n" + path)) {
+					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE_MESSAGE_ERROR, window);
+				} else if (window.confirm(WE().consts.g_l.main.delete_single_confirm_delete + "\n" + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames.editFooter, self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
 			} else {
-				top.we_showMessage(g_l.no_document_opened, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "delete_single_document":
@@ -598,12 +593,12 @@ function we_cmd_base(args, url) {
 			toggleBusy(1);
 			if (weEditorFrameController.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
-					top.we_showMessage(g_l.no_perms_action, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE_MESSAGE_ERROR, window);
 				} else {
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().editFooter, self.load, url + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
 			} else {
-				top.we_showMessage(g_l.no_document_opened, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "do_delete":
@@ -626,13 +621,13 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
 			break;
 		case "update":
-			new jsWindow("/webEdition/liveUpdate/liveUpdate.php?active=update", "we_update_" + sess_id, -1, -1, 600, 500, true, true, true);
+			new jsWindow("/webEdition/liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "upgrade":
-			new jsWindow("/webEdition/liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + sess_id, -1, -1, 600, 500, true, true, true);
+			new jsWindow("/webEdition/liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "languageinstallation":
-			new jsWindow("/webEdition/liveUpdate/liveUpdate.php?active=languages", "we_update_" + sess_id, -1, -1, 600, 500, true, true, true);
+			new jsWindow("/webEdition/liveUpdate/liveUpdate.php?active=languages", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "del":
 			we_cmd('delete', 1, args[2]);
@@ -714,7 +709,7 @@ function we_cmd_base(args, url) {
 				}
 				wind.focus();
 			}
-			url = "http://help.webedition.org/index.php?language=" + helpLang;
+			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
 			new jsWindow(url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_modules":
@@ -742,7 +737,7 @@ function we_cmd_base(args, url) {
 				}
 				wind.focus();
 			}
-			url = "http://help.webedition.org/index.php?language=" + helpLang;
+			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
 			new jsWindow(url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_tools":
@@ -760,7 +755,7 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "info", -1, -1, 432, 350, true, false, true);
 			break;
 		case "help":
-			url = "http://help.webedition.org/index.php?language=" + helpLang;
+			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
 			new jsWindow(url, "help", -1, -1, 720, 600, true, false, true, true);
 			break;
 		case "help_forum":
@@ -920,7 +915,7 @@ function we_cmd_base(args, url) {
 					we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 				}
 			} else {
-				alert(g_l.no_editor_left);
+				alert(WE().consts.g_l.main.no_editor_left);
 			}
 			break;
 		case "open_extern_document":
@@ -936,7 +931,7 @@ function we_cmd_base(args, url) {
 				// load new document editor
 				we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 			} else {
-				alert(g_l.no_editor_left);
+				alert(WE().consts.g_l.main.no_editor_left);
 			}
 			break;
 		case "close_document":
@@ -1108,7 +1103,7 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "new":
-			if (SEEMODE) {
+			if (WE().session.seemode) {
 				top.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
 
 			} else {
@@ -1121,7 +1116,7 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "load":
-			if (SEEMODE) {
+			if (WE().session.seemode) {
 				//	toggleBusy(1);
 			} else {
 				if (self.Tree) {
@@ -1140,7 +1135,7 @@ function we_cmd_base(args, url) {
 		case "exit_move":
 		case "exit_addToCollection":
 			deleteMode = false;
-			if (SEEMODE) {
+			if (WE().session.seemode) {
 			} else {
 				treeData.setstate(treeData.tree_states.edit);
 				drawTree();
@@ -1152,7 +1147,7 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "delete":
-			if (SEEMODE) {
+			if (WE().session.seemode) {
 				if (top.deleteMode != args[1]) {
 					top.deleteMode = args[1];
 				}
@@ -1189,7 +1184,7 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "move":
-			if (SEEMODE) {
+			if (WE().session.seemode) {
 				if (top.deleteMode != args[1]) {
 					top.deleteMode = args[1];
 				}
@@ -1226,7 +1221,7 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "addToCollection":
-			if (SEEMODE) {
+			if (WE().session.seemode) {
 				//
 			} else {
 				if (top.deleteMode != args[1]) {
@@ -1257,7 +1252,7 @@ function we_cmd_base(args, url) {
 		case "reset_home":
 			var _currEditor = top.weEditorFrameController.getActiveEditorFrame();
 			if (_currEditor && _currEditor.getEditorType() === "cockpit") {
-				if (confirm(g_l.cockpit_reset_settings)) {
+				if (confirm(WE().consts.g_l.main.cockpit_reset_settings)) {
 					//FIXME: currently this doesn't work
 					top.weEditorFrameController.getActiveDocumentReference().location = '/webEdition/we/include/we_widgets/cmd.php?we_cmd[0]=' + args[0];
 					if ((window.treeData !== undefined) && treeData) {
@@ -1265,7 +1260,7 @@ function we_cmd_base(args, url) {
 					}
 				}
 			} else {
-				top.we_showMessage(g_l.cockpit_not_activated, WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE_MESSAGE_NOTICE, window);
 			}
 			break;
 
@@ -1283,7 +1278,7 @@ function we_cmd_base(args, url) {
 				top.weEditorFrameController.getActiveDocumentReference().createWidget(args[0].substr(args[0].length - 3), 1, 1);
 			}
 			else {
-				top.we_showMessage(g_l.cockpit_not_activated, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "open_document":
@@ -1301,17 +1296,17 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		case "help_documentation":
-			new jsWindow("http://documentation.webedition.org/wiki/" + docuLang + "/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
+			new jsWindow("http://documentation.webedition.org/wiki/" + WE().session.docuLang + "/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
 			break;
 
 		case "help_tagreference":
-			new jsWindow("http://tags.webedition.org/" + docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
+			new jsWindow("http://tags.webedition.org/" + WE().session.docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "help_demo":
-			new jsWindow("http://demo.webedition.org/" + docuLang + "/", "help_demo", -1, -1, 960, 700, true, true, true, true);
+			new jsWindow("http://demo.webedition.org/" + WE().session.docuLang + "/", "help_demo", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "open_tagreference":
-			var docupath = "http://tags.webedition.org/" + docuLang + "/" + args[1];
+			var docupath = "http://tags.webedition.org/" + WE().session.docuLang + "/" + args[1];
 			new jsWindow(docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
 			break;
 		case "open_template":
@@ -1398,4 +1393,13 @@ function we_cmd_base(args, url) {
 			return false;
 	}
 	return true;
+}
+
+top.WE().util.in_array = function (haystack, needle) {
+	for (var i = 0; i < haystack.length; i++) {
+		if (haystack[i] == needle) {
+			return true;
+		}
+	}
+	return false;
 }

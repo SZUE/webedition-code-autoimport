@@ -98,7 +98,7 @@ function we_cmd() {
 				break;
 			}
 			if (!perms.DELETE_NEWSLETTER) {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 				return;
 			}
 			if (top.content.editor.edbody.loaded) {
@@ -121,7 +121,7 @@ function we_cmd() {
 				top.we_showMessage(g_l.no_newsletter_selected, WE_MESSAGE_ERROR, window);
 			} else {
 				if (!perms.EDIT_NEWSLETTER && !perms.NEW_NEWSLETTER) {
-					top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 					return;
 				}
 				if (top.content.editor.edbody.loaded) {

@@ -45,12 +45,6 @@ echo we_html_tools::getHtmlTop() .
 	}
 
 	var isChrome =<?php echo intval(we_base_browserDetect::isChrome()); ?>;
-	var curUserID =<?php echo intval($_SESSION["user"]["ID"]); ?>;
-	var g_l = {
-		eplugin_exit_doc: "<?php echo g_l('multiEditor', '[eplugin_exit_doc]'); ?>",
-		no_editor_left: "<?php echo we_message_reporting::prepareMsgForJS(g_l('multiEditor', '[no_editor_left]')); ?>"
-	};
-	var contentTypeApp = "<?php echo we_base_ContentTypes::APPLICATION; ?>";
 //-->
 </script>
 <?php

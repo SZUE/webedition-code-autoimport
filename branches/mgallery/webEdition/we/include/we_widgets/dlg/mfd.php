@@ -30,7 +30,6 @@ list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(';', we_b
 $jsCode = "
 var _sUsers='" . $sUsers . "';
 	var g_l={
-	prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "',
 	no_type_selected: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[no_type_selected]')) . "'
 };
 ";

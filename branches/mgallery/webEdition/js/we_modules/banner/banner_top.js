@@ -88,7 +88,7 @@ function we_cmd() {
 			break;
 		case "delete_banner":
 			if (perms.DELETE_BANNER) {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 			} else {
 
 				if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
@@ -117,7 +117,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
 
 			}
 			top.content.usetHot();

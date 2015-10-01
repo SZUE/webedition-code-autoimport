@@ -411,22 +411,17 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		return we_html_element::jsElement('
 parent.document.title="' . $title . '";
-var dirs = {
-	"WEBEDITION_DIR": "' . WEBEDITION_DIR . '",
-	"WE_WORKFLOW_MODULE_DIR": "' . WE_WORKFLOW_MODULE_DIR . '",
-};
 var g_l = {
-	"save_changed_workflow":"' . g_l('modules_workflow', '[save_changed_workflow]') . '",
-	"save_question":"' . g_l('modules_workflow', '[save_question]') . '",
-	"delete_question":"' . g_l('modules_workflow', '[delete_question]') . '",
-	"no_perms": "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[no_perms]')) . '",
-	"nothing_to_delete": "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_delete]')) . '",
-	"nothing_to_save": "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '"
+	save_changed_workflow:"' . g_l('modules_workflow', '[save_changed_workflow]') . '",
+	save_question:"' . g_l('modules_workflow', '[save_question]') . '",
+	delete_question:"' . g_l('modules_workflow', '[delete_question]') . '",
+	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_delete]')) . '",
+	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '"
 };
 var perms={
-	"DELETE_WORKFLOW":' . intval(permissionhandler::hasPerm("DELETE_WORKFLOW")) . ',
-	"EDIT_WORKFLOW":' . intval(permissionhandler::hasPerm("EDIT_WORKFLOW")) . ',
-	"NEW_WORKFLOW":' . intval(permissionhandler::hasPerm("NEW_WORKFLOW")) . '
+	DELETE_WORKFLOW:' . intval(permissionhandler::hasPerm("DELETE_WORKFLOW")) . ',
+	EDIT_WORKFLOW:' . intval(permissionhandler::hasPerm("EDIT_WORKFLOW")) . ',
+	NEW_WORKFLOW:' . intval(permissionhandler::hasPerm("NEW_WORKFLOW")) . '
 };
 ') .
 			we_html_element::jsScript(WE_JS_WORKFLOW_MODULE_DIR . 'workflow_top.js');
@@ -440,7 +435,7 @@ function submitForm(){
 	f.method = "post";
 	f.submit();
 }
-		');
+');
 	}
 
 	function getPropertyJS(){

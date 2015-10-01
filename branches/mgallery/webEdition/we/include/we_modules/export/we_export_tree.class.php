@@ -29,19 +29,12 @@ class we_export_tree extends weTree{
 	}
 
 	function getJSLoadTree(array $treeItems){
-		$js = '
-function in_array(arr,item){
-	for(i=0;i<arr.length;i++){
-		if(arr[i]==item) return true;
-	}
-	return false;
-}' .
-			$this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
+		$js = $this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
 
 		foreach($treeItems as $item){
 
-			$js.='if(' . $this->topFrame . '.indexOfEntry("' . $item['id'] . '")<0){'.
-$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
+			$js.='if(' . $this->topFrame . '.indexOfEntry("' . $item['id'] . '")<0){' .
+				$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			$elems = '';
 			foreach($item as $k => $v){
 				$elems.='"' . strtolower($k) . '":' .

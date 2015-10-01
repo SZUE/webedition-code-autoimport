@@ -180,13 +180,13 @@ function we_save_document() {
 			}
 		}
 		if (countSaveLoop > 10) {
-			top.we_showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+			top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else if (acStatusType.toLowerCase() == 'object' && acStatus.running) {
 			countSaveLoop++;
 			setTimeout(we_save_document, 100);
 		} else if (invalidAcFields) {
-			top.we_showMessage(g_l.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+			top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else {
 			countSaveLoop = 0;

@@ -341,7 +341,6 @@ var consts={
 	reloadUrl:"' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs",
 };
 var g_l={
-	name_nok: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')) . '",
 	thumbnail_hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_hochkomma]')) . '",
 	thumbnail_empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_empty]')) . '",
 	thumbnail_exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_exists]')) . '",

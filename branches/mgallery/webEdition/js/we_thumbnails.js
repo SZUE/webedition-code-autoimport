@@ -21,15 +21,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function in_array(haystack, needle) {
-	for (var i = 0; i < haystack.length; i++) {
-		if (haystack[i] == needle) {
-			return true;
-		}
-	}
-
-	return false;
-}
 
 function init() {
 	self.focus();
@@ -69,12 +60,12 @@ function change_thumbnail() {
 
 function add_thumbnail() {
 	var name = prompt(g_l.thumbnail_new, '');
-	
+
 	if (name === null) {
 		return;
 	}
 	if ((name.indexOf('<') !== -1) || (name.indexOf('>') !== -1)) {
-		top.we_showMessage(g_l.name_nok, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(top.WE().consts.g_l.main.name_nok, WE_MESSAGE_ERROR, window);
 		return;
 	}
 
@@ -82,7 +73,7 @@ function add_thumbnail() {
 		top.we_showMessage(g_l.thumbnail_hochkomma, WE_MESSAGE_ERROR, window);
 	} else if (name == '') {
 		top.we_showMessage(g_l.thumbnail_empty, WE_MESSAGE_ERROR, window);
-	} else if (in_array(thumbnail_names, name)) {
+	} else if (top.WE().util.in_array(thumbnail_names, name)) {
 		top.we_showMessage(g_l.thumbnail_exists, WE_MESSAGE_ERROR, window);
 	} else {
 		self.location = consts.reloadUrl + '&newthumbnail=' + encodeURI(name);

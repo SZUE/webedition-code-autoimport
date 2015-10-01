@@ -244,15 +244,6 @@ function addElement(value, text, sel) {
 	}
 }
 
-function in_array(n, h) {
-	for (var i = 0; i < h.length; i++) {
-		if (h[i] == n) {
-			return true;
-		}
-	}
-	return false;
-}
-
 function send_recipients() {
 	if (hot) {
 		var p = document.forms[0].elements.we_recipient;

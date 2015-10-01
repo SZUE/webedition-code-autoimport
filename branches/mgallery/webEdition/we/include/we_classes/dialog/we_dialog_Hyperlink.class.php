@@ -532,7 +532,6 @@ var classNames = ' . (!empty($this->args["cssClasses"]) ? '"' . $this->args['css
 var g_l={
 	anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
 	wysiwyg_none:"' . g_l('wysiwyg', '[none]') . '",
-	save_error_fields_value_not_valid: "'.we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')).'"
 };
 var consts={
 	EMPTY_EXT : "' . we_base_link::EMPTY_EXT . '",

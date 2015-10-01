@@ -82,7 +82,7 @@ function we_cmd() {
 				return;
 			}
 			if (!perms.DELETE_CUSTOMER) {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_WARNING, window);
 				return;
 			}
 
@@ -103,7 +103,7 @@ function we_cmd() {
 				return;
 			}
 			if (!perms.EDIT_CUSTOMER && !perms.NEW_CUSTOMER) {
-				top.we_showMessage(g_l.no_perms, WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_WARNING, window);
 				return;
 			}
 

@@ -142,6 +142,6 @@ function save() {
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, _sObjId, _sMdcInc);
 	_oCsv_.value = opener.base64_encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
-	top.we_showMessage(g_l.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
 	self.close();
 }

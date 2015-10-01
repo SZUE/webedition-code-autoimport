@@ -214,25 +214,20 @@ class we_newsletter_view extends we_modules_view{
 
 		return we_html_element::jsElement('
 parent.document.title = "' . $title . '";
-var dirs = {
-	"WEBEDITION_DIR": "' . WEBEDITION_DIR . '",
-	"WE_MODULES_DIR": "' . WE_MODULES_DIR . '",
-};
 var g_l = {
-	"save_changed_newsletter":"' . g_l('modules_newsletter', '[save_changed_newsletter]') . '",
-	"no_newsletter_selected": "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_newsletter_selected]')) . '",
-	"nothing_to_save": "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_save]')) . '",
-	"nothing_to_delete": "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_delete]')) . '",
-	"no_perms": "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_perms]')) . '",
-	"delete_group_question":	"' . g_l('modules_newsletter', '[delete_group_question]') . '",
-	"delete_question":"' . g_l('modules_newsletter', '[delete_question]') . '",
+	save_changed_newsletter:"' . g_l('modules_newsletter', '[save_changed_newsletter]') . '",
+	no_newsletter_selected: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_newsletter_selected]')) . '",
+	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_save]')) . '",
+	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_delete]')) . '",
+	delete_group_question:	"' . g_l('modules_newsletter', '[delete_group_question]') . '",
+	delete_question:"' . g_l('modules_newsletter', '[delete_question]') . '",
 };
 var topFrame=' . $this->topFrame . ';
 var frameSet="' . $this->frameset . '";
 var perms={
-	"DELETE_NEWSLETTER":' . intval(permissionhandler::hasPerm("DELETE_NEWSLETTER")) . ',
-	"EDIT_NEWSLETTER":' . intval(permissionhandler::hasPerm("EDIT_NEWSLETTER")) . ',
-	"NEW_NEWSLETTER":' . intval(permissionhandler::hasPerm("NEW_NEWSLETTER")) . '
+	DELETE_NEWSLETTER:' . intval(permissionhandler::hasPerm("DELETE_NEWSLETTER")) . ',
+	EDIT_NEWSLETTER:' . intval(permissionhandler::hasPerm("EDIT_NEWSLETTER")) . ',
+	NEW_NEWSLETTER:' . intval(permissionhandler::hasPerm("NEW_NEWSLETTER")) . '
 };
 ') . we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_top.js');
 	}
@@ -274,9 +269,6 @@ var g_l = {
 	"email_delete_all":"' . g_l('modules_newsletter', '[email_delete_all]') . '",
 	"search_finished":"' . g_l('modules_newsletter', '[search_finished]') . '"
 };
-var dirs = {
-	"WE_MODULES_DIR": "' . WE_MODULES_DIR . '",
-}
 
 var modFrameSet="' . $this->frameset . '";
 var checkMail=' . intval(!empty($this->settings['reject_save_malformed'])) . ';

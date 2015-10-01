@@ -205,8 +205,7 @@ $sTblWidget = we_html_multiIconBox::getHTML('rssProps', $parts, 30, $buttons, -1
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[rss_feed]'), '', '', STYLESHEET .
 	we_html_element::jsElement($jsPrefs . "
 var g_l={
-	'prefs_saved_successfully': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "',
-	'invalid_url': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]')) . "'
+	invalid_url: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]')) . "'
 };") .
 	we_html_element::jsScript(JS_DIR . 'widgets/rss.js'), we_html_element::htmlBody(
 		array('class' => 'weDialogBody', 'onload' => 'init();'), we_html_element::htmlForm("", $sTblWidget)

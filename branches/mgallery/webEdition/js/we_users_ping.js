@@ -65,7 +65,7 @@ var ajaxCallback = {
 	failure: function (o) {
 		if (weRpcFailedCnt++ > 5) {
 			//in this case, rpc failed 5 times, this is severe, user should be in informed!
-			alert(g_l.unable_to_call_ping);
+			alert(WE().consts.g_l.main.unable_to_call_ping);
 		}
 	}
 };

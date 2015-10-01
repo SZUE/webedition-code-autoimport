@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 // Define needed JS
-//$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
 
 function getPreferencesFooterJS(){
@@ -36,7 +35,7 @@ var countSaveTrys = 0;
 function we_save() {
 		$tmp
 	// update setting for message_reporting
-	top.opener.top.messageSettings = document.getElementById('content').contentDocument.getElementById("message_reporting").value;
+	WE().session.messageSettings = document.getElementById('content').contentDocument.getElementById("message_reporting").value;
 
 	if(top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart){
 		var oCockpit=top.opener.top.weEditorFrameController.getActiveDocumentReference();

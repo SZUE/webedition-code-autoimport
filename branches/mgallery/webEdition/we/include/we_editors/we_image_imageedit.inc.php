@@ -67,9 +67,9 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <option value="image_focus">' . g_l('weClass', '[image_focus]') . '&hellip;</option>
 </optgroup>
 <optgroup label="' . g_l('weClass', '[convert]') . '">' .
-			((in_array("jpg", $supported)) ? '<option value="image_convertJPEG">' . g_l('weClass', '[convert_jpg]') . '...</option>' : '') .
-			(($_gdtype != "gif" && in_array("gif", $supported)) ? '<option value="doImage_convertGIF">' . g_l('weClass', '[convert_gif]') . '</option>' : '') .
-			(($_gdtype != "png" && in_array("png", $supported)) ? '<option value="doImage_convertPNG">' . g_l('weClass', '[convert_png]') . '</option>' : '') .
+			((in_array('jpg', $supported)) ? '<option value="image_convertJPEG">' . g_l('weClass', '[convert_jpg]') . '...</option>' : '') .
+			(($_gdtype != "gif" && in_array('gif', $supported)) ? '<option value="doImage_convertGIF">' . g_l('weClass', '[convert_gif]') . '</option>' : '') .
+			(($_gdtype != "png" && in_array('png', $supported)) ? '<option value="doImage_convertPNG">' . g_l('weClass', '[convert_png]') . '</option>' : '') .
 			'</optgroup>
 </select></td></tr>' :
 			''

@@ -239,7 +239,7 @@ function EditorFrameController() {
 					this.closeDocument(this.ActiveEditorFrameId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
 
 				} else {
-					top.we_showMessage(g_l.no_editor_left, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE_MESSAGE_ERROR, window);
 				}
 			}
 		}
@@ -292,7 +292,7 @@ function EditorFrameController() {
 					this.closeEditorFrame(editorId);
 					top.weMultiTabs.closeTab(editorId);
 
-					if (top.seeMode_edit_include) { // close window in edit_include_mode
+					if (WE().session.seeMode_edit_include) { // close window in edit_include_mode
 						top.close();
 					}
 
@@ -368,7 +368,7 @@ function EditorFrameController() {
 	 */
 	this.closeAllDocuments = function () {
 
-		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(g_l.eplugin_exit_doc)) {
+		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
 
 			// close all none Hot Editors
 			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
@@ -404,7 +404,7 @@ function EditorFrameController() {
 
 	this.closeAllButActiveDocument = function (activeId) {
 
-		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(g_l.eplugin_exit_doc)) {
+		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
 
 			// only do something, if more than one editor is open
 			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1) {
@@ -478,7 +478,7 @@ function EditorFrameController() {
 				// unlock document
 				trans = this.EditorFrames[frameId].getEditorTransaction();
 				if (trans) {
-					top.we_cmd('users_unlock', this.EditorFrames[frameId].getEditorDocumentId(), curUserID, this.EditorFrames[frameId].getEditorEditorTable(), trans);
+					top.we_cmd('users_unlock', this.EditorFrames[frameId].getEditorDocumentId(), WE().session.userID, this.EditorFrames[frameId].getEditorEditorTable(), trans);
 					top.we_cmd("remove_from_editor_plugin", trans);
 				}
 

@@ -199,7 +199,7 @@ function save() {
 	opener.saveSettings();
 	//savePrefs();
 	//displayRssFeed(sUri,true);
-	top.we_showMessage(g_l.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
 	opener.top.weNavigationHistory.navigateReload();
 	self.close();
 }
@@ -261,7 +261,7 @@ function handleTopRssFeed(sAction) {
 				handleButtonState(1, 'overwrite', 'delete');
 				_iTopRssFeedsLen++;
 			} else {
-				top.we_showMessage(g_l.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
 			}
 			break;
 		case 'delete':

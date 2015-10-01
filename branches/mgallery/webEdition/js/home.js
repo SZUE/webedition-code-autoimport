@@ -323,7 +323,7 @@ function saveSettings() {
 	fo.elements['we_cmd[1]'].value = JSON.stringify(aDat);
 	fo.elements['we_cmd[2]'].value = JSON.stringify(rss);
 	top.YAHOO.util.Connect.setForm(fo);
-	var cObj = top.YAHOO.util.Connect.asyncRequest('POST', top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php', top.weDummy);
+	var cObj = top.YAHOO.util.Connect.asyncRequest('POST', top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php', function(){});
 }
 
 function hasExpandedWidget(node) {

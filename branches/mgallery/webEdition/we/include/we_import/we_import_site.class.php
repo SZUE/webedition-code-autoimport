@@ -138,16 +138,16 @@ class we_import_site{
 		return we_html_element::jsElement('
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 
 	switch (arguments[0]) {
 			case "we_selector_image":
 			case "we_selector_document":
-			new jsWindow(url,"we_docselector",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 
 			case "we_selector_directory":
-			new jsWindow(url,"we_dirselector",-1,-1,' . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ',true,true,true,true);
+			new jsWindow(url,"we_dirselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 
 		case "browse_server":
@@ -168,18 +168,18 @@ function displayTable() {
 	if (document.we_form.templateID.value > 0) {
 		document.getElementById("specifyParam").style.display="block";
 		var iframeObj = document.getElementById("iloadframe");
-		iframeObj.src = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=updateSiteImportTable&tid="+document.we_form.templateID.value;
+		iframeObj.src = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=updateSiteImportTable&tid="+document.we_form.templateID.value;
 	}
-}') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsElement('
+}
 function doUnload() {
 	if (jsWindow_count) {
 		for (i = 0; i < jsWindow_count; i++) {
 			eval("jsWindow" + i + "Object.close()");
 		}
 	}
-}');
+}
+') .
+			we_html_element::jsScript(JS_DIR . 'windows.js');
 	}
 
 	/**

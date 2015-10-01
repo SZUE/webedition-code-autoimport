@@ -896,11 +896,7 @@ function submitForm() {
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
 			we_html_element::jsElement('
-var dirs = {
-		"WE_SHOP_MODULE_DIR": "' . WE_SHOP_MODULE_DIR . '",
-		"WE_MODULES_DIR": "' . WE_MODULES_DIR . '",
-		"SCRIPT_NAME": "' . $_SERVER['SCRIPT_NAME'] . '"
-};
+var SCRIPT_NAME= "' . $_SERVER['SCRIPT_NAME'] . '";
 var bid =' . we_base_request::_(we_base_request::INT, 'bid', 0) . ';
 var cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';
 

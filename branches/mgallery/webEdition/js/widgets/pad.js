@@ -365,7 +365,7 @@ function save() {
 		opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId, _sPadInc);
 	}
 	opener.setPrefs(_sObjId, sBit, sTitleEnc);
-	top.we_showMessage(g_l.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
 	opener.top.weNavigationHistory.navigateReload();
 	self.close();
 }

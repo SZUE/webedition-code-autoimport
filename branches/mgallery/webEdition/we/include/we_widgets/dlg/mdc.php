@@ -163,9 +163,6 @@ var _sInitTitle_='" . $sTitle . "';
 var _sMdcInc='mdc/mdc';
 
 var table='" . $_selTable . "';
-var g_l={
-	prefs_saved_successfully: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')) . "'
-};
 
 function we_cmd(){
 	var args='';
@@ -178,10 +175,10 @@ function we_cmd(){
 	}
 	switch(arguments[0]){
 		case 'we_selector_directory':
-			new jsWindow(url,'we_fileselector',-1,-1," . we_selector_file::WINDOW_DIRSELECTOR_WIDTH . "," . we_selector_file::WINDOW_DIRSELECTOR_HEIGHT . ",true,true,true,true);
+			new jsWindow(url,'we_fileselector',-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 		case 'we_selector_category':
-			new jsWindow(url,'we_catselector',-1,-1," . we_selector_file::WINDOW_CATSELECTOR_WIDTH . "," . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ",true,true,true,true);
+			new jsWindow(url,'we_catselector',-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		default:
 					var args = [];

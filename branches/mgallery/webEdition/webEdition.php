@@ -142,40 +142,7 @@ var weplugin_wait = null;
 // is set in headermenu.php
 var weSidebar = null;
 // seeMode
-var SEEMODE =<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>;
-var seeMode_edit_include = <?php echo (!empty($SEEM_edit_include)) ? 'true' : 'false'; ?>; // in edit_include mode of seeMode
-var userID =<?php echo $_SESSION["user"]["ID"]; ?>;
-var sess_id = "<?php echo session_id(); ?>";
 var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
-var docuLang = "<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>";
-var helpLang = "<?php echo $GLOBALS["WE_LANGUAGE"]; ?>"
-var wePerms = {
-<?php
-foreach($_SESSION['perms'] as $perm => $access){
-	echo '"' . $perm . '":' . ($_SESSION['perms']['ADMINISTRATOR'] ? 1 : intval($access)) . ',';
-}
-?>
-};
-var g_l = {
-	unable_to_call_setpagenr: '<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>',
-	open_link_in_SEEM_edit_include: '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
-	browser_crashed: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
-	no_perms_action: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
-	no_document_opened: '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
-	no_editor_left: "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
-	eplugin_exit_doc: "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
-	delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
-	cockpit_reset_settings: '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
-	cockpit_not_activated: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
-	no_perms: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
-	nav_first_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
-	nav_last_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
-	nav_no_open_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
-	nav_no_entry: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>',
-	unable_to_call_ping: '<?php echo g_l('global', '[unable_to_call_ping]'); ?>',
-	nothing_to_save: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) ?>",
-	nothing_to_publish: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) ?>"
-};
 
 // TODO: move to some JS-file
 var dd = {
@@ -195,22 +162,17 @@ var constants = {
 
 /*##################### messaging function #####################*/
 
-// this variable contains settings how to deal with settings
-// it has to be set when changing the preferences
-/**
- * setting integer, any sum of 1,2,4
- */
-var messageSettings = <?php echo (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>;
 var setPageNrCallback = {
 	success: function (o) {
 	},
 	failure: function (o) {
-		alert(g_l.unable_to_call_setpagenr);
+		alert(WE().consts.g_l.main.unable_to_call_setpagenr);
 	}
 };
 
 var WebEdition={
-	consts:{
+	//all constants in WE used in JS
+		consts:{
 		contentTypes:{
 			TEMPLATE: '<?php echo we_base_ContentTypes::TEMPLATE; ?>',
 			WEDOCUMENT: '<?php echo we_base_ContentTypes::WEDOCUMENT; ?>',
@@ -238,9 +200,33 @@ var WebEdition={
 			ICON_DIR:"<?php echo ICON_DIR; ?>",
 			WE_CUSTOMER_MODULE_DIR:"<?php echo defined('WE_CUSTOMER_MODULE_DIR') ? WE_CUSTOMER_MODULE_DIR : 'WE_CUSTOMER_MODULE_DIR'; ?>",
 			WE_INCLUDES_DIR:"<?php echo WE_INCLUDES_DIR; ?>",
+			WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : 'WE_SHOP_MODULE_DIR'; ?>",
+			WE_WORKFLOW_MODULE_DIR: "<?php echo defined('WE_WORKFLOW_MODULE_DIR') ? WE_WORKFLOW_MODULE_DIR : 'WE_WORKFLOW_MODULE_DIR'; ?>",
 		},
 		g_l:{
-			main:g_l,
+			main:{
+				unable_to_call_setpagenr: '<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>',
+				open_link_in_SEEM_edit_include: '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
+				browser_crashed: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
+				no_perms_action: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
+				no_document_opened: '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
+				no_editor_left: "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
+				eplugin_exit_doc: "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
+				delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
+				cockpit_reset_settings: '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
+				cockpit_not_activated: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
+				no_perms: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
+				nav_first_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
+				nav_last_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
+				nav_no_open_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_open_document]')); ?>',
+				nav_no_entry: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][no_entry]')); ?>',
+				unable_to_call_ping: '<?php echo g_l('global', '[unable_to_call_ping]'); ?>',
+				nothing_to_save: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) ?>",
+				nothing_to_publish: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) ?>",
+				save_error_fields_value_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>",
+				name_nok:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')); ?>",
+				prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
+			},
 			<?php
 			foreach($jsmods as $mod){
 				echo $mod.':{},';
@@ -293,20 +279,32 @@ var WebEdition={
 			}
 		},
 	},
-	permissions:wePerms,
-	messageSettings:messageSettings,
+
+	//all relevant settings for current session
 	session:{
-		seemode:SEEMODE,
-		seeMode_edit_include:seeMode_edit_include,
-		userID:userID,
-		sess_id:sess_id,
+		seemode:<?php echo intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>,
+		seeMode_edit_include:<?php echo (!empty($SEEM_edit_include)) ? 'true' : 'false'; ?>, // in edit_include mode of seeMode
+		userID:<?php echo $_SESSION["user"]["ID"]; ?>,
+		//permissions set for the user
+		permissions:{
+		<?php
+		foreach($_SESSION['perms'] as $perm => $access){
+			echo  $perm . ':' . ($_SESSION['perms']['ADMINISTRATOR'] ? 1 : intval($access)) . ',';
+		}
+		?>
+		},
+		sess_id:"<?php echo session_id(); ?>",
 		specialUnload:specialUnload,
-		docuLang:docuLang,
-		helpLang:helpLang,
+		docuLang:"<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>",
+		helpLang:"<?php echo $GLOBALS["WE_LANGUAGE"]; ?>",
+		messageSettings:<?php echo (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>,
 	},
 	layout:{
 		//vtabs:Vtabs,
 	},
+	//utility functions, defined in webedition.js
+	util:{
+	}
 };
 //-->
 </script>
@@ -379,7 +377,7 @@ if($diff){
 					case "eplugin_exit_doc" :
 					if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
 	if (top.plugin.isInEditor(arguments[1])) {
-	return confirm(g_l.eplugin_exit_doc);
+	return confirm(WE().consts.g_l.main.eplugin_exit_doc);
 	}
 	}
 	return true;
@@ -404,7 +402,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 			top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
 			top.weEditorFrameController.toggleFrames();
 		} else {
-			top.showMessage(g_l.no_editor_left, WE_MESSAGE_INFO, window);
+			top.showMessage(WE().consts.g_l.main.no_editor_left, WE_MESSAGE_INFO, window);
 		}
 	}
 

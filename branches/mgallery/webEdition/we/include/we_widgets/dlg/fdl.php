@@ -39,8 +39,7 @@ function save(){
 	savePrefs();
 	previewPrefs();
 	refresh();
-	" . we_message_reporting::getShowMessageCall(
-		g_l('cockpit', '[prefs_saved_successfully]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
+	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
 	self.close();
 }
 
@@ -71,8 +70,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("rssProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[customer]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[customer]'), '', '', STYLESHEET .
-	we_html_element::jsElement(
-		$jsPrefs . $jsCode), we_html_element::htmlBody(
+	we_html_element::jsElement($jsPrefs . $jsCode), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();"
 		), we_html_element::htmlForm("", $sTblWidget)));
