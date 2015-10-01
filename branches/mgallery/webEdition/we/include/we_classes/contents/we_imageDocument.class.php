@@ -831,7 +831,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		// External link
 		$_ext_link_table = new we_html_table(array('class' => 'default'), 1, 2);
 
-		$_ext_link_table->setCol(0, 0, null, $this->htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
+		$_ext_link_table->setCol(0, 0, null, we_html_tools::htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
 		$_ext_link_table->setCol(0, 1, null, $butExt);
 
 		$_ext_link = "href" . we_html_element::htmlBr() . $_ext_link_table->getHtml();

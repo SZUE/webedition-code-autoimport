@@ -516,7 +516,7 @@ abstract class we_rebuild_wizard{
 				array(
 				$selAllBut,
 				$deselAllBut
-				), 10, array('style' => 'margin:10px 0 20px 0;')
+				), array('style' => 'margin:10px 0 20px 0;')
 		);
 
 		$_html .= we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));

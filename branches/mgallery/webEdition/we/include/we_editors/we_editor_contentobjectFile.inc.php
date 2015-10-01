@@ -82,20 +82,10 @@ echo we_html_element::jsScript(JS_DIR . 'windows.js') .
 			$js = '';
 			foreach($parts as $idx => $part){
 
-				echo '<div id="' . $part['name'] . '">
-	<a name="f' . $part['name'] . '"></a>
-	<table class="default" width="100%">
-	<tr>
-		<td class="defaultfont" width="100%">
-			<table style="margin-left:30px;" class="default">
-				<tr><td class="defaultfont">' . $part["html"] . '</td></tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td>
-	</tr>
-	</table>
+				echo '<div id="' . $part['name'] . '" class="objectFileElement">
+	<div id="f' . $part['name'] . '" class="default defaultfont">
+' . $part["html"] . '
+</div>
 </div>';
 				$js.='objectEntry.add(document, \'' . $part['name'] . '\', null);';
 			}

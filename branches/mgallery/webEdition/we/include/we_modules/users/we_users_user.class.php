@@ -1919,7 +1919,7 @@ function show_seem_chooser(val) {
 		$_start_weapp->selectOption($this->Preferences['seem_start_weapp']);
 		$weAPPSelector = $_start_weapp->getHtml();
 
-		$_seem_weapp_chooser = we_html_button::create_button_table(array($weAPPSelector), 10, array('id' => 'seem_start_weapp', 'style' => 'display:none'));
+		$_seem_weapp_chooser = we_html_button::create_button_table(array($weAPPSelector), array('id' => 'seem_start_weapp', 'style' => 'display:none'));
 
 
 		// Build SEEM select start document chooser
@@ -1935,7 +1935,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 		$yuiSuggest->setContainerWidth(299);
 
-		$_seem_document_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()), 0, array('id' => 'seem_start_document', 'style' => 'display:none'));
+		$_seem_document_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()),array('id' => 'seem_start_document', 'style' => 'display:none'));
 
 		// Build SEEM select start object chooser
 		$yuiSuggest->setAcId('Obj');
@@ -1952,7 +1952,7 @@ function show_seem_chooser(val) {
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 		$yuiSuggest->setContainerWidth(299);
 
-		$_seem_object_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()), 10, array('id' => 'seem_start_object', 'style' => 'display:none'));
+		$_seem_object_chooser = we_html_button::create_button_table(array($yuiSuggest->getHTML()), array('id' => 'seem_start_object', 'style' => 'display:none'));
 
 		// Build final HTML code
 		$_seem_html = new we_html_table(array('class' => 'default'), 2, 1);

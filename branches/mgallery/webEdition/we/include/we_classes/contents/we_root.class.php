@@ -244,7 +244,7 @@ abstract class we_root extends we_class{
 					"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .
 					we_html_tools::hidden($textname, $path, array('id' => $textname)) .
 					we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => '1')),
-					'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]'), 'left', 'defaultfont'
+					'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]')
 			);
 		}
 
@@ -308,7 +308,7 @@ abstract class we_root extends we_class{
 		$textname = 'wetmp_' . $this->Name . '_CreatorID';
 		$idname = 'we_' . $this->Name . '_CreatorID';
 
-		$inputFeld = $this->htmlTextInput($textname, 24, $creator, '', ' readonly', '');
+		$inputFeld = we_html_tools::htmlTextInput($textname, 24, $creator, '', ' readonly', '');
 		$idfield = we_html_element::htmlHidden($idname, $this->CreatorID);
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");

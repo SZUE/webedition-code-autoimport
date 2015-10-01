@@ -121,16 +121,11 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 
 			$content = '
-<div id="' . $identifier . '">
-	<a name="f' . $identifier . '"></a>
-	<table class="default" width="100%">
-	<tr><td class="defaultfont" width="100%">
-			<table style="margin-left:30px;" class="default">
-			<tr><td class="defaultfont">' . $we_doc->getFieldHTML($name, $type, array()) . '</td></tr>
-			</table>
-	</td></tr>
+<div id="' . $identifier . '" class="objectFileElement">
+	<div id="f' . $identifier . '" class="default defaultfont">
+	' . $we_doc->getFieldHTML($name, $type, array()) . '
 	<tr><td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>
-	</table>
+	</div>
 </div>';
 			$yuiSuggest = &weSuggest::getInstance();
 			$fildsObj = $yuiSuggest->getyuiAcFields();

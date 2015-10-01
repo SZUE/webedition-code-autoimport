@@ -263,7 +263,7 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button_table($buttons, $gap = 10, $attribs = ''){
+	static function create_button_table($buttons, $attribs = ''){
 		if(is_array($attribs)){
 			$attr = '';
 			foreach($attribs as $k => $v){
@@ -275,29 +275,6 @@ abstract class we_html_button{
 
 		//FIMXE: change all calls to this function => remove
 		return ($attribs ? '<span ' . $attr . '>' : '') . implode('', $buttons) . ($attribs ? '</span>' : '');
-		// Get number of buttons
-		$_count_button = count($buttons);
-
-		// Create array for table attributes
-		$attr = array('style' => 'border-style:none; padding:0px;border-spacing:0px;');
-
-		// Check for attribute parameters
-		if($attribs && is_array($attribs)){
-			foreach($attribs as $k => $v){
-				$attr[$k] = $v;
-			}
-		}
-
-		// Create table
-		$_button_table = new we_html_table($attr, 1, $_count_button);
-
-		// Build cols for every button
-		foreach($buttons as $i => $button){
-			$_button_table->setCol(0, $i, array('class' => 'weEditmodeStyle', 'style' => ( $i < $_count_button - 1 ? 'padding-right:' . $gap . 'px' : '')), $button);
-		}
-
-		// Get created HTML
-		return $_button_table->getHtml();
 	}
 
 	/**

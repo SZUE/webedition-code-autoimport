@@ -25,17 +25,14 @@
 class we_object_createTemplate extends we_template{
 
 	function formDirChooser($width = "", $rootDirID = 0, $table = TEMPLATES_TABLE, $Pathname = "ParentPath", $IDName = "ParentID", $cmd = ""){
-		if(!$table){
-			$table = $this->Table;
-		}
+		$table = $table? : $this->Table;
 		$textname = 'we_' . $this->Name . '_' . $Pathname;
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$path = $this->$Pathname;
-		$myid = $this->$IDName;
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','')");
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden($idname, 0), $button);
+		//$myid = $this->$IDName;
+		$cmd = "document.we_form.elements['" . $idname . "'].value";
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd . ",'" . $table . "','" . we_base_request::encCmd($cmd) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','','')");
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden($idname, 0), $button);
 	}
 
 	protected function formExtension2(){

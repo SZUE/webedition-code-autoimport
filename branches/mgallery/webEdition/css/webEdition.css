@@ -1023,7 +1023,7 @@ table.customer{
 
 table.default td,
 table.default th{
-	padding:0xp;
+	padding:0px;
 }
 
 table.withSpace tr td{
@@ -1389,4 +1389,17 @@ div.collection-content{
 #PropertyPage input[type="checkbox"],
 #PropertyPage input[type="radio"]{
 	width:auto;
+}
+
+.objectFileElement{
+	padding:10px 30px;
+	border-bottom:1px solid #AFB0AF;
+}
+
+.clearfix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0px;
 }

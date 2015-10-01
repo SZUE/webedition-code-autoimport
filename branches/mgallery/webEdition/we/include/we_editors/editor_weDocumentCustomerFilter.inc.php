@@ -85,7 +85,7 @@ function formWebuser($canChange, $width = 388){
 	$idname = 'we_' . $GLOBALS['we_doc']->Name . '_WebUserID';
 
 	//$attribs = ' readonly';
-	//$inputFeld=$GLOBALS['we_doc']->htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
+	//$inputFeld=we_html_tools::htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
 	//$idfield = $GLOBALS['we_doc']->htmlHidden($idname,$GLOBALS['we_doc']->WebUserID);
 
 	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements['" . $idname . "'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value')");

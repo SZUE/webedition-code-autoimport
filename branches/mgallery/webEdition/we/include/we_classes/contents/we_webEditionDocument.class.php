@@ -387,7 +387,7 @@ class we_webEditionDocument extends we_textContentDocument{
 						$GLOBALS["meta"][$name]["default"] :
 						''));
 
-			$retInput = $this->htmlTextInput($inputName, 40, $value, '', ' readonly ', 'text', 254);
+			$retInput = we_html_tools::htmlTextInput($inputName, 40, $value, '', ' readonly ', 'text', 254);
 
 			//	menu for all possible charsets
 
@@ -405,7 +405,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			$retSelect = $this->htmlSelect('we_tmp_' . $name, $_charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
 		} else {
 			//	charset-tag NOT available
-			$retInput = $this->htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
+			$retInput = we_html_tools::htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
 			$retSelect = $this->htmlSelect("dummi2", array(g_l('charset', '[error][no_charset_available]')), 1, DEFAULT_CHARSET, false, array('disabled' => 'disabled'), 'value', 254);
 		}
 		//getCharsets

@@ -140,7 +140,7 @@ abstract class we_class{
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name)), $size, ($elementtype ? $this->getElement($name) : $ps), $maxlength, $attribs), $text, $textalign, $textclass);
 	}
 
 	function formInput2WithSelect($width, $name, $size = 25, $type = 'txt', $attribs = '', array $selValues = array(), $selWidth = 200, $reload = false, $resetSel = false){
@@ -152,14 +152,14 @@ abstract class we_class{
 		$inputName = $type ? ('we_' . $this->Name . '_' . $type . '[' . $name . ']') : ('we_' . $this->Name . '_' . $name);
 		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $selValues, 1, '', false, array("onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;" . $doReset . $doReload), "value", $selWidth);
 
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput($inputName, $size, ($type && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), '', $attribs, $type, $width), (g_l('weClass', '[' . $name . ']', true)? : $name), '', '', $sel);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($inputName, $size, ($type && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), '', $attribs, $type, $width), (g_l('weClass', '[' . $name . ']', true)? : $name), '', '', $sel);
 	}
 
 	function formInputField($elementtype, $name, $text, $size, $width, $maxlength = '', $attribs = '', $textalign = 'left', $textclass = 'defaultfont'){
 		if(!$elementtype){
 			$ps = $this->$name;
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlTextInput('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $size, ($elementtype && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $size, ($elementtype && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
 	}
 
 	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont'){
@@ -171,8 +171,9 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable($pop, $text, 'left', 'defaultfont');
 	}
 
-	function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0){
-		return we_html_tools::htmlTextInput($name, $size, $value, $maxlength, $attribs, $type, $width, $height);
+	//FIXME: remove
+	function htmlTextInput($name, $size = 0, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0){
+		return we_html_tools::htmlTextInput($name, 0, $value, $maxlength, $attribs, $type, $width, $height);
 	}
 
 	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = array()){

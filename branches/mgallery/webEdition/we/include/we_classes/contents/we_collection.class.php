@@ -515,7 +515,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 	  $rowControllsArr[] = we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index);
 	  $rowControllsArr[] = we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
 	  $rowControllsArr[] = we_html_button::create_button(we_html_button::TRASH, 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
-	  $rowControlls = we_html_button::create_button_table($rowControllsArr, 5);
+	  $rowControlls = we_html_button::create_button_table($rowControllsArr);
 
 	  $rowHtml = new we_html_table(array('draggable' => 'false'), 1, 3);
 	  $rowHtml->setCol(0, 0, array('width' => '70px', 'style' => 'padding:0 0 0 20px;', 'class' => 'weMultiIconBoxHeadline'), 'Nr. <span id="label_' . $index . '">' . $index . '</span>');

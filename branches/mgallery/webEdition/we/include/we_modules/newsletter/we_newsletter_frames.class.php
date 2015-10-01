@@ -1994,7 +1994,6 @@ function postSelectorSelect(wePssCmd) {
 						"lastname" => "",
 						"etyp" => "",
 						"eid" => "")) .
-					//we_button::create_button_table(array($close,$edit)).
 
 					we_html_tools::htmlDialogLayout(
 						we_html_element::htmlDiv(array('style' => 'margin-top:10px;'), $this->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ? : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'))

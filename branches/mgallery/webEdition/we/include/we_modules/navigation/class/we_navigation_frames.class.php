@@ -266,7 +266,7 @@ function setTab(tab) {
 					array(
 					we_html_button::create_button(we_html_button::DIRUP, 'javascript:' . $this->topFrame . '.we_cmd("move_up");', true, 100, 22, '', '', (($this->Model->Ordn > 0) ? false : true), false),
 					we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:' . $this->topFrame . '.we_cmd("move_down");', true, 100, 22, '', '', (($this->Model->Ordn < ($_num - 1)) ? false : true), false)
-					), 10, array(
+					), array(
 					'style' => 'margin-left: 15px'
 			)));
 		} else {
@@ -624,7 +624,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			we_html_button::create_button_table(
 				array(
 				we_html_button::create_button('preview', 'javascript:' . $this->topFrame . '.we_cmd("dyn_preview");'), ($this->Model->hasDynChilds() ? we_html_button::create_button('delete_all', 'javascript:' . $this->topFrame . '.we_cmd("depopulate");') : ''))
-				, 10, array('style' => 'margin-top:20px;')) . '
+				, array('style' => 'margin-top:20px;')) . '
 </div>';
 	}
 
@@ -1004,12 +1004,12 @@ function onSelectionClassChangeJS(value) {
 		if(!$extraField){
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
-					we_html_tools::hidden($name, $value) . $this->htmlTextInput(
+					we_html_tools::hidden($name, $value) . we_html_tools::htmlTextInput(
 						"__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); ' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 120), 0), $title, 'left', 'defaultfont', '', $_button);
 		} else {
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
-					we_html_tools::hidden($name, $value) . $this->htmlTextInput(
+					we_html_tools::hidden($name, $value) . we_html_tools::htmlTextInput(
 						"__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); ' . $this->topFrame . '.mark();"', 'text', ($this->_width_size - 120) - abs($extraFieldWidth) - 8, 0), $title, 'left', 'defaultfont', '', we_html_tools::getPixel(20, 4), $extraField, $_button);
 		}
 	}
@@ -1635,7 +1635,7 @@ function ' . $prefix . 'setLinkSelection(value){
 		$table2->setColContent(0, 0, we_html_button::create_button_table(
 				array(
 				we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
-				), 10, array(
+				), array(
 				'style' => 'margin-left: 15px'
 		)));
 

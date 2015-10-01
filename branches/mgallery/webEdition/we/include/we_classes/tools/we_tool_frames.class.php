@@ -238,7 +238,7 @@ function setTab(tab) {
 
 		$_but_table = we_html_button::create_button_table(array(
 				we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))
-				), 10, array('style' => 'margin-left: 15px;margin-top:10px;')
+				), array('style' => 'margin-left: 15px;margin-top:10px;')
 		);
 
 		return $this->getHTMLDocument(
