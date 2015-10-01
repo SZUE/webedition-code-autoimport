@@ -125,7 +125,7 @@ abstract class we_class{
 
 	/* creates a color field. when user clicks, a colorchooser opens. Data that will be stored at the $elements Array */
 
-	function formColor($width, $name, $size = 25, $type = 'txt', $height = 18, $isTag = false){
+	function formColor($width, $name, $type = 'txt', $height = 18, $isTag = false){
 		$value = $this->getElement($name);
 		if(!$isTag){
 			$width -= 4;

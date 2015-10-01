@@ -37,7 +37,7 @@ function we_showMessage(message, prio, win) {
 			win.top.opener.top.showMessage(message, prio, win);
 		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.showMessage !== undefined) {
 			win.top.opener.top.opener.top.showMessage(message, prio, win);
-		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== null &&  win.top.opener.top.opener.top.opener.top.showMessage !== undefined) {
+		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== null && win.top.opener.top.opener.top.opener.top.showMessage !== undefined) {
 			win.top.opener.top.opener.top.opener.top.showMessage(message, prio, win);
 		} else {//nichts gefunden
 			if (!win) {
@@ -52,4 +52,32 @@ function we_showMessage(message, prio, win) {
 		win.alert(message);
 
 	}
+}
+
+function WE() {
+	/*if (WE.instance !== undefined) {
+		return WE.instance;
+	}*/
+	if (top.WebEdition !== undefined) {
+		WE.instance = top.WebEdition;
+		return WE.instance;
+	}
+	if (top.window.WebEdition !== undefined) {
+		WE.instance = top.window.WebEdition;
+		return WE.instance;
+	}
+	if (top.window.opener.top.WebEdition !== undefined) {
+		WE.instance = top.window.opener.top.WebEdition;
+		return WE.instance;
+	}
+	if (top.window.opener.top.opener.top.WebEdition !== undefined) {
+		WE.instance = top.window.opener.top.opener.top.WebEdition;
+		return WE.instance;
+	}
+	if (top.window.opener.top.opener.top.opener.top.WebEdition !== undefined) {
+		WE.instance = top.window.opener.top.opener.top.opener.top.WebEdition;
+		return WE.instance;
+	}
+
+	return {};
 }

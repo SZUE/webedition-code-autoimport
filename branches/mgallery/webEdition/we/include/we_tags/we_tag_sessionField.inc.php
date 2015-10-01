@@ -300,7 +300,7 @@ function we_tag_sessionField($attribs, $content){
 
 			if($showcontrol){
 				$checked = '';
-
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' .
@@ -309,7 +309,7 @@ function we_tag_sessionField($attribs, $content){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
+			<input name="WE_SF_IMG_DATA[' . $name . ']" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . ' />
 		</td>
 	</tr>
 	<tr>

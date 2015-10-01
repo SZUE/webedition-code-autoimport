@@ -246,10 +246,6 @@ function weDoOk() {' .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js', 'addKeyListener();self.focus();');
 	}
 
-	function formColor($size, $name, $value, $width = ""){
-		return '<input size="' . $size . '" type="text" name="' . $name . '" style="' . ($width ? 'width:' . $width . 'px;' : '') . 'background-color:' . $value . '" value="' . $value . '" onclick="openColorChooser(\'' . $name . '\',this.value);" readonly />';
-	}
-
 	function getHttpVar($type, $name, $alt = ""){
 		return we_base_request::_($type, "we_dialog_args", $alt, $name);
 	}

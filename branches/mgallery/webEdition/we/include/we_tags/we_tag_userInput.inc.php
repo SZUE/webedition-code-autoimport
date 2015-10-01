@@ -27,7 +27,6 @@ function we_tag_userInput($attribs, $content){
 		return $foo;
 	}
 
-
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$property = weTag_getAttribute('property', $attribs, false, we_base_request::BOOL);
@@ -138,7 +137,7 @@ function we_tag_userInput($attribs, $content){
 				}
 
 				$checked = (!empty($_SESSION[$_imgDataId]['doDelete'])) ? ' checked' : '';
-
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
@@ -146,7 +145,7 @@ function we_tag_userInput($attribs, $content){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+			<input name="' . $fieldname . '" type="file" accept="' . implode(',', we_base_ContentTypes::inst()->getRealContentTypes(we_base_ContentTypes::IMAGE)) . '"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>
@@ -225,13 +224,13 @@ function we_tag_userInput($attribs, $content){
 				}
 
 				$checked = (!empty($_SESSION[$_flashmovieDataId]['doDelete']) ? ' checked' : '');
-
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
 	</tr>
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" style="text-align:left"><input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:left"><input name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
@@ -306,7 +305,7 @@ function we_tag_userInput($attribs, $content){
 				}
 
 				$checked = (!empty($_SESSION[$_quicktimeDataId]["doDelete"]) ? ' checked' : '');
-
+				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $quicktimeTag . '
@@ -314,7 +313,7 @@ function we_tag_userInput($attribs, $content){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+			<input name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>
@@ -392,7 +391,7 @@ function we_tag_userInput($attribs, $content){
 				}
 
 				$checked = (!empty($_SESSION[$_binaryDataId]['doDelete']) ? ' checked' : '');
-
+$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
@@ -400,7 +399,7 @@ function we_tag_userInput($attribs, $content){
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
-			<input' . ($size ? ' size="' . $size . '"' : '') . ' name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
+			<input name="' . $fieldname . '" type="file" accept="application/*"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
 		</td>
 	</tr>
 	<tr>

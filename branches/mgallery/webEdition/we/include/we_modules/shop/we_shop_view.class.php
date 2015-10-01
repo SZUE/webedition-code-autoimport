@@ -645,7 +645,7 @@ function submitForm() {
 
 // table row of one article
 				$orderTable .= '
-		<tr><td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td></tr>
+		<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>
 		<tr>
 			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location='" . $_SERVER['SCRIPT_NAME'] . "?pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
 			<td></td>

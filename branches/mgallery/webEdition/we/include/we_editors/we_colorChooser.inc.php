@@ -87,7 +87,7 @@ if(z != 0){
 </script>
 		</table></td>
 	</tr>
-	<tr><td style="padding-top:10px;">' . we_html_tools::htmlFormElementTable('<input type="text" size="20" name="colorvalue" class="defaultfont" style="width:150px" />', g_l('wysiwyg', '[color]')) . '</td></tr>
+	<tr><td style="padding-top:10px;">' . we_html_tools::htmlFormElementTable('<input type="text" name="colorvalue" class="defaultfont" style="width:150px" />', g_l('wysiwyg', '[color]')) . '</td></tr>
 </table>
 ', g_l('global', '[select_color]'), $buttons);
 					?>

@@ -52,7 +52,7 @@ class we_document_video extends we_binaryDocument{
 	<tr>
 		<td>' . $this->formSelectElement(155, 'autoplay', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . $this->formSelectElement(155, 'controller', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . $this->formColor(155, 'bgcolor', 25, "attrib") . '</td>
+		<td>' . $this->formColor(155, 'bgcolor', "attrib") . '</td>
 	</tr>
 	<tr>
 		<td>' . $this->formSelectElement(155, 'mute', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>

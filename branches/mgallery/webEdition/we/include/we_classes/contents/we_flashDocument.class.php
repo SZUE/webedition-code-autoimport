@@ -189,7 +189,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	<tr>
 		<td>' . $this->formSelectElement(155, "play", array("" => g_l('global', '[true]'), "false" => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
 		<td>' . $this->formSelectElement(155, "quality", array("" => "", "low" => "low", "high" => "high", "autohigh" => "autohigh", "autolow" => "autolow", "best" => "best"), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . $this->formColor(155, "bgcolor", 25, "attrib") . '</td>
+		<td>' . $this->formColor(155, "bgcolor", "attrib") . '</td>
 	</tr>
 	<tr>
 		<td>' . $this->formSelectElement(155, "align", array("" => "", "left" => g_l('global', '[left]'), "right" => g_l('global', '[right]'), "top" => g_l('global', '[top]'), "bottom" => g_l('global', '[bottom]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>

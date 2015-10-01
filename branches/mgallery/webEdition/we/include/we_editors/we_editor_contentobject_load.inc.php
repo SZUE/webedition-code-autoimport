@@ -138,24 +138,18 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 			$uniqid = 'entry_' . $identifier;
 			$we_doc->addEntryToClass($identifier, $after);
 
-			$content = '<div id="' . $uniqid . '">
-				<a id="f' . $uniqid . '"></a>
-				<table style="padding:0px 30px;" class="default">
-				<tr><td class="defaultfont" width="600">
-				<table cellpadding="6">' .
+			$content = '<div id="' . $uniqid . '" class="objectFileElement">
+<div id="f' . $uniqid . '" class="objectFileElement">
+				<table cellpadding="6" style="width:600px;float:left;">' .
 				$we_doc->getFieldHTML($we_doc->getElement("wholename" . $identifier), $uniqid) .
 				'</table>
-				</td>
-				<td width="150" class = "defaultfont" style="vertical-align:top">' .
+				<span class="defaultfont clearfix" style="width:180px;">' .
 				we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .
 				we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier) .
 				we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_entry_at_class','" . $we_transaction . "','" . $uniqid . "');", true, 22, 22, "", "", false, false, "_" . $identifier) .
 				we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_delete_entry_at_class','" . $we_transaction . "','" . $uniqid . "');") .
-				'</td>
-				</tr>
-				</table>
-				<div style="border-top: 1px solid #AFB0AF;margin:10px 0px;clear:both;"></div></div>
-				</div>';
+				'</span>
+		</div></div>';
 
 			echo $jsGUI->getResponse('add', $uniqid, $content, $afterid);
 

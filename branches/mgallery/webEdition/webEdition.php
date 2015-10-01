@@ -109,6 +109,9 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 		$jsCmd[$mod] = WE_JS_MODULES_DIR . $mod . '/we_webEditionCmd_' . $mod . '.js';
 	}
 }
+$jsmods = array_keys($jsCmd);
+$jsmods[] = 'base';
+$jsmods[] = 'tools';
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
  STYLESHEET;
@@ -274,16 +277,21 @@ var setPageNrCallback = {
 	}
 };
 
-var WE={
+var WebEdition={
 	consts:{
 		contentTypes:contentTypes,
 		dirs:dirs,
+		g_l:{
+			main:g_l,
+			<?php
+			foreach($jsmods as $mod){
+				echo $mod.':{},';
+			}
+			?>
+		},
 		global:constants,
 		tables:tables,
 		sizes:size,
-	},
-	g_l:{
-		main:g_l,
 	},
 	permissions:wePerms,
 	messageSettings:messageSettings,
@@ -382,9 +390,6 @@ if($diff){
 	return 0;
 					default:
 <?php
-$jsmods = array_keys($jsCmd);
-$jsmods[] = 'base';
-$jsmods[] = 'tools';
 foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
 	echo 'if(we_cmd_' . $mod . '(arguments,url)){break;}';
 }

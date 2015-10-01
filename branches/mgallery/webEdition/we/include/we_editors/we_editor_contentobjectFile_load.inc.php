@@ -94,27 +94,27 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				case 'object_insert_meta_at_object':
 					$we_doc->addMetaToObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
 					break;
-				case "object_delete_meta_at_object":
+				case 'object_delete_meta_at_object':
 					$we_doc->removeMetaFromObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
 					break;
-				case "object_down_meta_at_object":
+				case 'object_down_meta_at_object':
 					$we_doc->downMetaAtObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
 					break;
-				case "object_up_meta_at_object":
+				case 'object_up_meta_at_object':
 					$we_doc->upMetaAtObject($name, we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3));
 					break;
-				case "object_change_objectlink":
+				case 'object_change_objectlink':
 					$we_doc->i_getLinkedObjects();
 					break;
-				case "object_remove_image_at_object":
+				case 'object_remove_image_at_object':
 					$we_doc->remove_image($name);
 					break;
-				case "object_delete_link_at_object":
+				case 'object_delete_link_at_object':
 					if(isset($we_doc->elements[$name])){
 						unset($we_doc->elements[$name]);
 					}
 					break;
-				case "object_change_link_at_object":
+				case 'object_change_link_at_object':
 					$we_doc->changeLink($name);
 					break;
 			}
@@ -124,7 +124,6 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <div id="' . $identifier . '" class="objectFileElement">
 	<div id="f' . $identifier . '" class="default defaultfont">
 	' . $we_doc->getFieldHTML($name, $type, array()) . '
-	<tr><td><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>
 	</div>
 </div>';
 			$yuiSuggest = &weSuggest::getInstance();
