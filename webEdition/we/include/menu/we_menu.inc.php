@@ -814,5 +814,5 @@ if($_activeIntModules){
 		}
 	}
 }
-ksort($we_menu);
+ksort($we_menu, SORT_NATURAL);
 return $we_menu;
