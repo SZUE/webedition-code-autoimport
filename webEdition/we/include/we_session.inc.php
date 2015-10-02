@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -58,7 +57,13 @@ if(!(isset($_POST['WE_LOGIN_username']) && isset($_POST['WE_LOGIN_password']))){
 	return;
 }
 
-$userdata = getHash('SELECT UseSalt, passwd, username, LoginDenied, ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"');
+//check if we have utf-8 -> Login-Screen is always utf-8
+/*if($GLOBALS['WE_BACKENDCHARSET'] !== 'UTF-8'){
+	$_POST['WE_LOGIN_username'] = utf8_decode($_POST['WE_LOGIN_username']);
+	$_POST['WE_LOGIN_password'] = utf8_decode($_POST['WE_LOGIN_password']);
+}*/
+
+$userdata = getHash('SELECT UseSalt,passwd,username,LoginDenied,ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"');
 
 // only if username exists !!
 if(!$userdata || (!we_users_user::comparePasswords($userdata['UseSalt'], $_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))){
@@ -86,12 +91,11 @@ $_SESSION['user']['Username'] = $userdata['username'];
 $_SESSION['user']['ID'] = $userdata['ID'];
 
 if($_SESSION['user']['Username'] && $_SESSION['user']['ID']){
-
 	$_SESSION['prefs'] = we_users_user::readPrefs($userdata['ID'], $GLOBALS['DB_WE'], true);
-
 	$_SESSION['perms'] = we_users_user::getAllPermissions($_SESSION['user']['ID']);
 	we_users_user::setEffectiveWorkspaces($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 }
+
 $_SESSION['user']['isWeSession'] = true;
 unset($userdata);
 we_base_sessionHandler::makeNewID();
