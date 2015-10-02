@@ -25,6 +25,65 @@
  */
 
 /**This file is intended to be a global file for many js functions in WE*/
+// this function is universal function for all messages in webEdition
+var WE_MESSAGE_INFO = -1;
+var WE_MESSAGE_FRONTEND = -2;
+var WE_MESSAGE_NOTICE = 1;
+var WE_MESSAGE_WARNING = 2;
+var WE_MESSAGE_ERROR = 4;
+
+function we_showMessage(message, prio, win) {
+	if (win && win.top && typeof win.top.showMessage === 'function') {
+		win.top.showMessage(message, prio, win);
+	} else if (win.top.opener) {
+		if (win.top.opener.top.showMessage !== undefined) {
+			win.top.opener.top.showMessage(message, prio, win);
+		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.showMessage !== undefined) {
+			win.top.opener.top.opener.top.showMessage(message, prio, win);
+		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== null && win.top.opener.top.opener.top.opener.top.showMessage !== undefined) {
+			win.top.opener.top.opener.top.opener.top.showMessage(message, prio, win);
+		} else {//nichts gefunden
+			if (!win) {
+				win = window;
+			}
+			win.alert(message);
+		}
+	} else { // there is no webEdition window open, just show the alert
+		if (!win) {
+			win = window;
+		}
+		win.alert(message);
+
+	}
+}
+
+function WE() {
+	/*if (WE.instance !== undefined) {
+		return WE.instance;
+	}*/
+	if (top.WebEdition !== undefined) {
+		WE.instance = top.WebEdition;
+		return WE.instance;
+	}
+	if (top.window.WebEdition !== undefined) {
+		WE.instance = top.window.WebEdition;
+		return WE.instance;
+	}
+	if (top.window.opener.top.WebEdition !== undefined) {
+		WE.instance = top.window.opener.top.WebEdition;
+		return WE.instance;
+	}
+	if (top.window.opener.top.opener.top.WebEdition !== undefined) {
+		WE.instance = top.window.opener.top.opener.top.WebEdition;
+		return WE.instance;
+	}
+	if (top.window.opener.top.opener.top.opener.top.WebEdition !== undefined) {
+		WE.instance = top.window.opener.top.opener.top.opener.top.WebEdition;
+		return WE.instance;
+	}
+
+	return {};
+}
 
 /**
  * Get a file icon out of a given type, used in tree, selectors & tabs

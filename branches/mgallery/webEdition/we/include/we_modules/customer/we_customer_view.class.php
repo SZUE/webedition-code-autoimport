@@ -492,7 +492,7 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 					$_sorting .= 'opener.' . $this->topFrame . '.addSorting("' . $_sort . '");' . "\n";
 				}
 
-				echo we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				echo we_html_element::jsScript(JS_DIR . "global.js") .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 var selected = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex;
 opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length=0;
@@ -543,7 +543,7 @@ self.close();');
 						$this->settings->properties[$k] = $set;
 					}
 				}
-				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+				echo we_html_element::jsScript(JS_DIR . 'global.js') .
 				we_html_element::jsElement(
 					$this->settings->save() ?
 						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'self.close();' :

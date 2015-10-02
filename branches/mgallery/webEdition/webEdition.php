@@ -318,7 +318,7 @@ we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
- we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+ we_html_element::jsScript(JS_DIR . 'global.js') .
  we_html_element::jsScript(JS_DIR . 'webEdition.js') .
  we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
  we_html_element::jsScript(JS_DIR . 'we_users_ping.js');

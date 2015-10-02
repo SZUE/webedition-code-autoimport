@@ -113,7 +113,7 @@ abstract class we_modules_frame{
 
 		$extraHead = $this->getJSCmdCode() .
 			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
-			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_main_headermenu::css() .
 			$extraHead;
 

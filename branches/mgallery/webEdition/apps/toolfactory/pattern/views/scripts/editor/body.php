@@ -71,7 +71,7 @@ $form->addElement($newTab);
 $htmlPage = we_ui_layout_HTMLPage::getInstance();
 
 $htmlPage->addJSFile(JS_DIR.'windows.js');
-$htmlPage->addJSFile(JS_DIR.'we_showMessage.js');
+$htmlPage->addJSFile(JS_DIR.'global.js');
 $htmlPage->addJSFile(LIB_DIR . 'additional/yui/yahoo-min.js');
 $htmlPage->addJSFile(LIB_DIR . 'additional/yui/event-min.js');
 $htmlPage->addJSFile(LIB_DIR . 'additional/yui/connection-min.js');
@@ -172,7 +172,7 @@ $htmlPage->addElement($form);
 
 $htmlPage->addInlineJS($js);
 $htmlPage->setBodyAttributes(array('class' => 'weEditorBody', 'onload' => 'loaded=1;'));
-$htmlPage->addJSFile(JS_DIR.'we_showMessage.js');
+$htmlPage->addJSFile(JS_DIR.'global.js');
 
 echo $htmlPage->getHTML();
 

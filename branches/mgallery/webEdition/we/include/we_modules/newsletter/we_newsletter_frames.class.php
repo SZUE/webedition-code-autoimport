@@ -2010,7 +2010,7 @@ function postSelectorSelect(wePssCmd) {
 		if(we_base_request::_(we_base_request::STRING, "ncmd") === "do_clear_log"){
 			$this->View->db->query('TRUNCATE TABLE ' . NEWSLETTER_LOG_TABLE);
 			return
-				we_html_element::jsScript(JS_DIR . "we_showMessage.js") .
+				we_html_element::jsScript(JS_DIR . "global.js") .
 				we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[log_is_clear]'), we_message_reporting::WE_MESSAGE_NOTICE)
 					. 'self.close();'

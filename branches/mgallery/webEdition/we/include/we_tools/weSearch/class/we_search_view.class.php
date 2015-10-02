@@ -232,7 +232,7 @@ class we_search_view{
 
 				break;
 			case 'tool_weSearch_delete' :
-				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+				echo we_html_element::jsScript(JS_DIR . 'global.js');
 				if($this->Model->delete()){
 					echo we_html_element::jsElement(
 						$this->topFrame . '.deleteEntry("' . $this->Model->ID . '");

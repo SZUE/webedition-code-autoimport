@@ -746,7 +746,7 @@ var weNavTitleField = [];
 				break;
 			case 'module_navigation_delete':
 
-				echo we_html_element::jsScript(JS_DIR . 'we_showMessage.js');
+				echo we_html_element::jsScript(JS_DIR . 'global.js');
 
 				if(!permissionhandler::hasPerm('DELETE_NAVIGATION')){
 					echo we_html_element::jsElement(

@@ -251,7 +251,7 @@ function submitForm() {
 		return
 			parent::getJSProperty() .
 			we_html_element::jsScript(JS_DIR . 'weValidate.js') .
-			we_html_element::jsScript(JS_DIR . 'we_showMessage.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::jsElement('
 var g_l = {
 	"must_save_preview": "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[must_save_preview]')) . '",

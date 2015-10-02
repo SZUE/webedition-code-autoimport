@@ -156,7 +156,7 @@ $sTblWidget = we_html_multiIconBox::getHTML('mfdProps', $parts, 30, $buttons, -1
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLESHEET .
 	we_html_element::jsScript(JS_DIR . "global.js") .
 	we_html_element::jsElement($jsPrefs . $jsCode) .
-	we_html_element::jsScript(JS_DIR . "widgets/mfd.js"), we_html_element::htmlBody(
+	we_html_element::jsScript(JS_DIR . 'widgets/mfd.js'), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();setIconOfDocClass('mfdUIcon');"
 		), we_html_element::htmlForm("", $sTblWidget)));
