@@ -25,8 +25,8 @@
 function we_tag_linkToSeeMode($attribs){
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT); //	if a document-id is selected go to that document
 	$oid = weTag_getAttribute('oid', $attribs, 0, we_base_request::INT); //	if an object-id is selected go to that object
-	$permission = weTag_getAttribute("permission", $attribs, '', we_base_request::STRING);
-	$docAttr = weTag_getAttribute("doc", $attribs, "top", we_base_request::STRING);
+	$permission = weTag_getAttribute('permission', $attribs, '', we_base_request::STRING);
+	$docAttr = weTag_getAttribute('doc', $attribs, "top", we_base_request::STRING);
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
 	return ''; //this feature is currently unsupported
@@ -35,10 +35,9 @@ function we_tag_linkToSeeMode($attribs){
 		return $foo;
 	}
 
-	$value = weTag_getAttribute("value", $attribs, '', we_base_request::STRING);
+	$value = weTag_getAttribute('value', $attribs, '', we_base_request::STRING);
 
 	if(isset($id) && $id){
-
 		$type = 'document';
 	} elseif(isset($GLOBALS['we_obj']) || $oid){ // use object if possible
 		$type = 'object';
@@ -53,8 +52,8 @@ function we_tag_linkToSeeMode($attribs){
 		$id = $doc->ID;
 	}
 
-	if(isset($_SESSION["webuser"]) && isset($_SESSION["webuser"]) && $_SESSION['webuser']['registered'] && !we_base_request::_(we_base_request::STRING, "we_transaction")){
-		if(!$permission || isset($_SESSION["webuser"][$permission]) && $_SESSION["webuser"][$permission]){ // Has webUser the right permissions??
+	if(!empty($_SESSION['webuser']['registered']) && !we_base_request::_(we_base_request::STRING, 'we_transaction')){
+		if(!$permission || !empty($_SESSION['webuser'][$permission])){ // Has webUser the right permissions??
 			//	check if the customer is a user, too.
 			$tmpDB = $GLOBALS['DB_WE'];
 
@@ -78,14 +77,14 @@ function we_tag_linkToSeeMode($attribs){
 						'xml' => $xml
 						), $value);
 			} else { //	customer is no user
-				return "<!-- ERROR: CUSTOMER IS NO USER! -->";
+				return '<!-- ERROR: CUSTOMER IS NO USER! -->';
 			}
 			unset($tmpDB);
 		} else { // User has not the right permissions.
-			return "<!-- ERROR: USER DOES NOT HAVE REQUIRED PERMISSION! -->";
+			return '<!-- ERROR: USER DOES NOT HAVE REQUIRED PERMISSION! -->';
 		}
 	} else { //	webUser is not registered, show nothing
-		return "<!-- ERROR: USER HAS NOT BEEN LOGGED IN! -->";
+		return '<!-- ERROR: USER HAS NOT BEEN LOGGED IN! -->';
 	}
 	return $retStr;
 }
