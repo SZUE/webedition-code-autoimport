@@ -431,7 +431,7 @@ abstract class we_SEEM{
 				if($linkArray[3][$i] != ""){ //  we have several parameters, deal with them
 					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
 					$isObj = array_key_exists("we_objectID", $theParameterArray);
-					$linkArray[2][$i] = 'javascript:' . self::getClassVars(($isObj ? 'vtabSrcObjs' : 'vtabSrcDocs')) . "top.weSidebar.load('" . $linkArray[2][$i] . "');";
+					$linkArray[2][$i] = 'javascript:' . self::getClassVars(($isObj ? 'vtabSrcObjs' : 'vtabSrcDocs')) . "WE().layout.sidebar.load('" . $linkArray[2][$i] . "');";
 					$javascriptCode = "onmouseover=\"top.info('ID: " . ($isObj ?
 							//	target is a object
 							$theParameterArray["we_objectID"] . "');\" " :
@@ -439,7 +439,7 @@ abstract class we_SEEM{
 							$linkArray[6][$i] . "');\" " . $linkArray[4][$i] . ' ');
 				} else { //  without parameters
 					$javascriptCode = " onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"" . $linkArray[4][$i] . " ";
-					$linkArray[2][$i] = 'javascript:' . self::getClassVars("vtabSrcDocs") . "top.weSidebar.load('" . $linkArray[2][$i] . "')";
+					$linkArray[2][$i] = 'javascript:' . self::getClassVars("vtabSrcDocs") . "WE().layout.sidebar.load('" . $linkArray[2][$i] . "')";
 				}
 				$destCode = str_replace($curLink, '<' . $linkArray[1][$i] . $linkArray[2][$i] . '"' . $javascriptCode . ' onmouseout="top.info(\' \')">', $destCode);
 			}

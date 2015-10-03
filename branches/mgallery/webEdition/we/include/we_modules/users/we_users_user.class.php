@@ -1271,7 +1271,7 @@ _multiEditorreload = true;';
 		$_tableObj->setCol(1, 0, array('style' => 'padding-top:5px;'), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
 		$_tableObj->setCol(2, 0, array('style' => 'padding-top:10px;'), we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
 
-		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){switch_button_state(\'edit\', \'enabled\');}else{switch_button_state(\'edit\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
+		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){weButton.switch_button_state(\'edit\', \'enabled\');}else{weButton.switch_button_state(\'edit\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
 			$this->DB_WE->query('SELECT ID,username,Text,Type FROM ' . USER_TABLE . ' WHERE Type IN (0,2) AND ParentID=' . intval($this->ID));
 			while($this->DB_WE->next_record()){

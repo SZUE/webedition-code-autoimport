@@ -341,15 +341,15 @@ function press_ok_button() {
 }
 
 function disableDelBut() {
-	switch_button_state("delete", "disabled");
-	switch_button_state("btn_function_trash", "disabled");
+	weButton.switch_button_state("delete", "disabled");
+	weButton.switch_button_state("btn_function_trash", "disabled");
 	changeCatState = 0;
 }
 
 function enableDelBut() {
-	switch_button_state("delete", "enabled");
+	weButton.switch_button_state("delete", "enabled");
 	if (top.options.userCanEditCat) {
-		switch_button_state("btn_function_trash", "enabled");
+		weButton.switch_button_state("btn_function_trash", "enabled");
 		changeCatState = 1;
 	}
 }
@@ -358,32 +358,32 @@ function startFrameset() {
 }
 
 function disableRootDirButs() {
-	switch_button_state("root_dir", "disabled");
-	switch_button_state("btn_fs_back", "disabled");
+	weButton.switch_button_state("root_dir", "disabled");
+	weButton.switch_button_state("btn_fs_back", "disabled");
 	rootDirButsState = 0;
 }
 function enableRootDirButs() {
-	switch_button_state("root_dir", "enabled");
-	switch_button_state("btn_fs_back", "enabled");
+	weButton.switch_button_state("root_dir", "enabled");
+	weButton.switch_button_state("btn_fs_back", "enabled");
 	rootDirButsState = 1;
 }
 function disableNewFolderBut() {
-	switch_button_state("btn_new_dir", "disabled");
+	weButton.switch_button_state("btn_new_dir", "disabled");
 	makefolderState = 0;
 }
 function enableNewFolderBut() {
-	switch_button_state("btn_new_dir", "enabled");
+	weButton.switch_button_state("btn_new_dir", "enabled");
 	makefolderState = 1;
 }
 function disableNewBut() {
-	switch_button_state("btn_new_dir", "disabled");
-	switch_button_state("btn_add_cat", "disabled");
+	weButton.switch_button_state("btn_new_dir", "disabled");
+	weButton.switch_button_state("btn_add_cat", "disabled");
 }
 
 function enableNewBut() {
 	if (top.options.userCanEditCat) {
-		switch_button_state("btn_new_dir", "enabled");
-		switch_button_state("btn_add_cat", "enabled");
+		weButton.switch_button_state("btn_new_dir", "enabled");
+		weButton.switch_button_state("btn_add_cat", "enabled");
 	}
 }
 

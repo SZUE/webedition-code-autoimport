@@ -27,20 +27,20 @@ function set_state_edit_delete_recipient(control) {
 	var i = p.length;
 
 	if (i === 0) {
-		switch_button_state("edit", "disabled");
-		switch_button_state("delete", "disabled");
-		switch_button_state("delete_all", "disabled");
-		//edit_enabled = switch_button_state("edit", "disabled");
-		//delete_enabled = switch_button_state("delete", "disabled");
-		//delete_all_enabled = switch_button_state("delete_all", "disabled");
+		weButton.switch_button_state("edit", "disabled");
+		weButton.switch_button_state("delete", "disabled");
+		weButton.switch_button_state("delete_all", "disabled");
+		//edit_enabled = weButton.switch_button_state("edit", "disabled");
+		//delete_enabled = weButton.switch_button_state("delete", "disabled");
+		//delete_all_enabled = weButton.switch_button_state("delete_all", "disabled");
 
 	} else {
-		switch_button_state("edit", "enabled");
-		switch_button_state("delete", "enabled");
-		switch_button_state("delete_all", "enabled");
-		//edit_enabled = switch_button_state("edit", "enabled");
-		//delete_enabled = switch_button_state("delete", "enabled");
-		//delete_all_enabled = switch_button_state("delete_all", "enabled");
+		weButton.switch_button_state("edit", "enabled");
+		weButton.switch_button_state("delete", "enabled");
+		weButton.switch_button_state("delete_all", "enabled");
+		//edit_enabled = weButton.switch_button_state("edit", "enabled");
+		//delete_enabled = weButton.switch_button_state("delete", "enabled");
+		//delete_all_enabled = weButton.switch_button_state("delete_all", "enabled");
 	}
 }
 

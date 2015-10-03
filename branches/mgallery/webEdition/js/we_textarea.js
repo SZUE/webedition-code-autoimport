@@ -22,6 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+weTextarea_count = 0;
+
 //FIXME: change/remove this!
 function we_textarea(name, value, cols, rows, width, height, autobr, autobrName, showAutobr, showRTF, language, classname, style, wrap, changehandler, xml, id, showSpell, origName) {
 	this.TAName = name;
@@ -38,7 +41,6 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 	this.ButtonDown = we_textarea_ButtonDown;
 	this.xml = xml;
 	this.id = id;
-
 	if (style.length) {
 		if (style.substring(style.length - 1, style.length) != ";") {
 			style += ";";
@@ -51,13 +53,11 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 		style += "height:" + height + "px;";
 	}
 	val = value ? value : "";
-
 	if (val) {
 		val = val.replace(/##\|n##/gi, "\n");
 		val = val.replace(/<##scr#ipt##/gi, "<script");
 		val = val.replace(/<\/##scr#ipt##/gi, "</script");
 		val = val.replace(/##\|lt\;\?##/gi, "<?");
-
 	}
 	out = '<input type="hidden" name="' +
 					autobrName +
@@ -209,4 +209,34 @@ function we_textarea_ButtonDown(bt) {
 	bt.style.borderTop = "#000000 solid 1px";
 }
 
-weTextarea_count = 0;
+//used for we:userInput
+function open_wysiwyg_win() {
+	var url = "/webEdition/we_cmd_frontend.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		if (i < (arguments.length - 1))
+			url += "&";
+	}
+
+	if (window.screen) {
+		h = ((screen.height - 100) > screen.availHeight) ? screen.height - 100 : screen.availHeight;
+		w = screen.availWidth;
+	}
+	var wyw = Math.max(arguments[2], arguments[9]);
+	wyw = wyw ? wyw : 800;
+	var wyh = parseInt(arguments[3]) + parseInt(arguments[10]);
+	wyh = wyh ? wyh : 600;
+	if (window.screen) {
+		var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
+		screen_height = screen_height - 40;
+		var screen_width = screen.availWidth - 10;
+		wyw = Math.min(screen_width, wyw);
+		wyh = Math.min(screen_height, wyh);
+	}
+// set new width & height;
+
+	url = url.replace(/we_cmd\[2\]=[^&]+/, "we_cmd[2]=" + wyw);
+	url = url.replace(/we_cmd\[3\]=[^&]+/, "we_cmd[3]=" + (wyh - arguments[10]));
+	new jsWindow(url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
+	//doPostCmd(arguments,"we_wysiwygWin");
+}

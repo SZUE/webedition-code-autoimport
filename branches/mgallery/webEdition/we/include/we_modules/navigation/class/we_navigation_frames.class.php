@@ -640,13 +640,13 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.LinkID.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
-		$wecmdenc3 = we_base_request::encCmd("opener.switch_button_state('open_navigation_doc', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');");
+		$wecmdenc3 = we_base_request::encCmd("opener.weButton.switch_button_state('open_navigation_doc', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');");
 
 		$_cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.LinkID.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
-		$wecmdenc3 = we_base_request::encCmd('opener.' . $this->topFrame . ".we_cmd('populateWorkspaces');opener.switch_button_state('open_navigation_obj', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');");
+		$wecmdenc3 = we_base_request::encCmd('opener.' . $this->topFrame . ".we_cmd('populateWorkspaces');opener.weButton.switch_button_state('open_navigation_obj', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');");
 		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_cmd_cat = "javascript:we_cmd('we_selector_category',document.we_form.elements.LinkID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.LinkID.value','document.we_form.elements.LinkPath.value','opener." . $this->topFrame . ".we_cmd(\"populateText\");opener." . $this->topFrame . ".mark();','','" . $rootDirID . "')";
 
@@ -1188,7 +1188,7 @@ function setFields() {
 
 function selectItem() {
 	if(document.we_form.fields.selectedIndex>-1){
-		switch_button_state("save", "enabled");
+		weButton.switch_button_state("save", "enabled");
 	}
 }';
 

@@ -186,7 +186,7 @@ var weFileUpload = (function () {
 					for (var i = 0; i < l; i++) {
 						if (!_.utils.contains(_.sender.preparedFiles, files[i])) {
 							_.controller.selectedFiles.push(files[i]);
-							
+
 						}
 					}
 					*/
@@ -199,7 +199,7 @@ var weFileUpload = (function () {
 							_.view.addFile(f, _.sender.preparedFiles.length);
 						}
 					}
-					
+
 					if(_.sender.EDIT_IMAGES_CLIENTSIDE){
 						_.controller.processImages();
 					}
@@ -252,7 +252,7 @@ var weFileUpload = (function () {
 				_.controller.processNextImage();
 			};
 
-			this.processNextImage = function () { 
+			this.processNextImage = function () {
 				if(_.sender.imageFilesNotProcessed.length === 0){
 					// unlock GUI
 					_.view.unsetImageEditMessage();
@@ -324,10 +324,10 @@ var weFileUpload = (function () {
 								}
 								deg = deg > 360 ? deg - 360 : deg;
 
-								if(_.sender.transformAll.doTrans || deg !== 0){ 
+								if(_.sender.transformAll.doTrans || deg !== 0){
 									canvas.width = tempImg.width;
 									canvas.height = tempImg.height;
-									
+
 									// prepare rotation
 									switch (deg) {
 										case 90:
@@ -430,7 +430,7 @@ var weFileUpload = (function () {
 								case 8:
 									deg += 90;
 									break;
-									
+
 							}
 						}
 						deg = deg > 360 ? deg - 360 : deg;
@@ -479,7 +479,7 @@ var weFileUpload = (function () {
 			};
 			*/
 
-			this.fileDragHover = function (e) { 
+			this.fileDragHover = function (e) {
 				e.preventDefault();
 				e.target.className = (e.type === 'dragover' ? _.controller.elemFileDragClasses + ' we_file_drag_hover' : _.controller.elemFileDragClasses);
 			};
@@ -535,7 +535,7 @@ var weFileUpload = (function () {
 				degrees: 0
 			};
 			this.moreFieldsToAppend = [];
-			this.EDIT_IMAGES_CLIENTSIDE = false; 
+			this.EDIT_IMAGES_CLIENTSIDE = false;
 
 			this.resetParams = function () {
 			};
@@ -590,7 +590,7 @@ var weFileUpload = (function () {
 								tempH = MAX_HEIGHT;
 							}
 						}
-						
+
 						var canvas = document.createElement('canvas'),
 							ctx = canvas.getContext("2d"),
 							deg = 0,
@@ -977,13 +977,13 @@ var weFileUpload = (function () {
 				var tBuffer = new Float32Array(4 * sw * sh); // target buffer Float32 rgb
 				var sR = 0, sG = 0,  sB = 0; // source's current point r,g,b
 				// untested !
-				var sA = 0;  //source alpha    
+				var sA = 0;  //source alpha
 
 				for (sy = 0; sy < sh; sy++) {
 					ty = sy * scale; // y src position within target
 					tY = 0 | ty;     // rounded : target pixel's y
 					yIndex = 4 * tY * tw;  // line index within target array
-					crossY = (tY != (0 | ty + scale)); 
+					crossY = (tY != (0 | ty + scale));
 					if (crossY) { // if pixel is crossing botton target pixel
 						wy = (tY + 1 - ty); // weight of point within target pixel
 						nwy = (ty + scale - tY - 1); // ... within y+1 target pixel
@@ -1015,7 +1015,7 @@ var weFileUpload = (function () {
 							tBuffer[tIndex + 1] += sG * w;
 							tBuffer[tIndex + 2] += sB * w;
 							tBuffer[tIndex + 3] += sA * w;
-							// add weighted component for next (tX+1) px                
+							// add weighted component for next (tX+1) px
 							nw = nwx * scale
 							tBuffer[tIndex + 4] += sR * nw; // not 3
 							tBuffer[tIndex + 5] += sG * nw; // not 4
@@ -1028,7 +1028,7 @@ var weFileUpload = (function () {
 							tBuffer[tIndex + 1] += sG * w;
 							tBuffer[tIndex + 2] += sB * w;
 							tBuffer[tIndex + 3] += sA * w;
-							// add weighted component for next (tY+1) px                
+							// add weighted component for next (tY+1) px
 							nw = nwy * scale
 							tBuffer[tIndex + 4 * tw    ] += sR * nw; // *4, not 3
 							tBuffer[tIndex + 4 * tw + 1] += sG * nw; // *4, not 3
@@ -1060,7 +1060,7 @@ var weFileUpload = (function () {
 							tBuffer[tIndex + 4 * tw + 6] += sB * nw;
 							tBuffer[tIndex + 4 * tw + 7] += sA * nw;
 						}
-					} // end for sx 
+					} // end for sx
 				} // end for sy
 
 				// create result canvas
@@ -1071,7 +1071,7 @@ var weFileUpload = (function () {
 				var imgRes = resCtx.getImageData(0, 0, tw, th);
 				var tByteBuffer = imgRes.data;
 				// convert float32 array into a UInt8Clamped Array
-				var pxIndex = 0; //  
+				var pxIndex = 0; //
 				for (sIndex = 0, tIndex = 0; pxIndex < tw * th; sIndex += 4, tIndex += 4, pxIndex++) {
 					tByteBuffer[tIndex] = Math.ceil(tBuffer[sIndex]);
 					tByteBuffer[tIndex + 1] = Math.ceil(tBuffer[sIndex + 1]);
@@ -1491,7 +1491,7 @@ var weFileUpload = (function () {
 			};
 
 			this.enableWeButton = function (btn, enabled) {
-				_.view.elems.footer[btn + '_enabled'] = _.view.elems.footer.switch_button_state(btn, (enabled ? 'enabled' : 'disabled'));
+				_.view.elems.footer[btn + '_enabled'] = _.view.elems.footer.weButton.switch_button_state(btn, (enabled ? 'enabled' : 'disabled'));
 			};
 
 			this.setWeButtonText = function (btn, text) {
@@ -1662,7 +1662,7 @@ var weFileUpload = (function () {
 			this.addFile = function (f, index) {
 				this.appendRow(f, _.sender.preparedFiles.length - 1);
 			};
-			
+
 			this.repaintEntry = function (fileObj){
 				fileObj.entry.getElementsByClassName('weFileUploadEntry_size')[0].innerHTML = (fileObj.isSizeOk ? _.utils.computeSize(fileObj.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');//style.backgroundColor = 'orange';
 			};
@@ -1672,7 +1672,7 @@ var weFileUpload = (function () {
 				document.getElementById('we_fileUpload_message').style.display = 'block';
 
 				/* Popup-JS is blocked too
-				var l = window.screenX + 200, 
+				var l = window.screenX + 200,
 				t = window.screenY + 200, x = 17;
 				this.messageWindow = window.open('', 'popwin', "left = " + l + ", top = " + t + ", width = 320, height = 210,  toolbar = no, location = no, directories = no, status = no, menubar = no, scrollbars = no, resizable = no");
 				var content = "<!DOCTYPE html><html><head>";
@@ -1694,7 +1694,7 @@ var weFileUpload = (function () {
 				document.getElementById('we_fileUpload_messageBg').style.display = 'none';
 				document.getElementById('we_fileUpload_message').style.display = 'none';
 			};
-			
+
 			this.repaintImageEditMessage = function(){
 				document.getElementById('we_fileUpload_messageNr').innerHTML = _.sender.imageFilesNotProcessed.length;
 			};
@@ -1712,11 +1712,11 @@ var weFileUpload = (function () {
 				div = document.getElementById('div_upload_files');
 				div.scrollTop = div.scrollHeight;
 				document.getElementById('fileInput_uploadFiles_' + index).addEventListener('change', _.controller.replaceSelectionHandler, false);
-				
+
 				var el = document.getElementById('div_rowButtons_' + index);
 				//el.style.backgroundSize = 'contain';
 				//el.style.backgroundImage = "url(" + f.dataURL + ")";
-				
+
 				this.elems.extProgressDiv.style.display = 'none';
 				_.controller.setWeButtonText('cancel', 'cancel');
 

@@ -140,7 +140,7 @@ var browserwind = null;
 var makefocus = null;
 var weplugin_wait = null;
 // is set in headermenu.php
-var weSidebar = null;
+//var weSidebar = null;
 // seeMode
 var specialUnload =<?php echo intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
 
@@ -301,6 +301,8 @@ var WebEdition={
 	},
 	layout:{
 		//vtabs:Vtabs,
+		button:null,
+		sidebar:null,
 	},
 	//utility functions, defined in webedition.js
 	util:{
@@ -329,7 +331,7 @@ foreach($jsCmd as $cur){
 }
 ?>
 <script><!--
-top.weSidebar = weSidebar;
+//top.weSidebar = weSidebar;
 	function we_cmd() {
 	var url = "/webEdition/we_cmd.php?";
 					for (var i = 0; i < arguments.length; i++) {

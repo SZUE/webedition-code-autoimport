@@ -217,11 +217,11 @@ function set_state_edit_delete_recipient() {
 	var p = document.forms[0].elements.we_recipient;
 	var i = p.length;
 	if (i === 0) {
-		edit_enabled = switch_button_state('edit', 'disabled');
-		delete_enabled = switch_button_state('delete', 'disabled');
+		edit_enabled = weButton.switch_button_state('edit', 'disabled');
+		delete_enabled = weButton.switch_button_state('delete', 'disabled');
 	} else {
-		edit_enabled = switch_button_state('edit', 'enabled');
-		delete_enabled = switch_button_state('delete', 'enabled');
+		edit_enabled = weButton.switch_button_state('edit', 'enabled');
+		delete_enabled = weButton.switch_button_state('delete', 'enabled');
 	}
 }
 
@@ -330,9 +330,9 @@ function addLocale() {
 	}
 
 	if (found === true) {
-		top.we_showMessage(g_l.language_already_exists, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.prefs.language_already_exists, WE_MESSAGE_ERROR, window);
 	} else if (CountryValue === "") {
-		top.we_showMessage(g_l.language_country_missing, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.prefs.language_country_missing, WE_MESSAGE_ERROR, window);
 	} else {
 		document.getElementById('locale_temp_locales').options[document.getElementById('locale_temp_locales').options.length] = new Option(LocaleText, LocaleValue, false, false);
 		if (document.getElementById('locale_temp_locales').options.length === 1) {
@@ -340,7 +340,7 @@ function addLocale() {
 		}
 		if (modules.SPELLCHECKER) {
 // Wörterbuch hinzufügen
-			if (confirm(g_l.add_dictionary_question)) {
+			if (confirm(WE().consts.g_l.prefs.add_dictionary_question)) {
 				top.opener.top.we_cmd('spellchecker_edit_ifthere');
 			}
 		}
@@ -354,7 +354,7 @@ function deleteLocale() {
 		var LocaleIndex = document.getElementById('locale_temp_locales').selectedIndex;
 		var LocaleValue = document.getElementById('locale_temp_locales').options[LocaleIndex].value;
 		if (LocaleValue == document.getElementById('locale_default').value) {
-			top.we_showMessage(g_l.cannot_delete_default_language, WE_MESSAGE_ERROR, window);
+			top.we_showMessage(WE().consts.g_l.prefs.cannot_delete_default_language, WE_MESSAGE_ERROR, window);
 		} else {
 			document.getElementById('locale_temp_locales').options[LocaleIndex] = null;
 		}
@@ -365,7 +365,7 @@ function deleteLocale() {
 function delete_recipient() {
 	var p = document.forms[0].elements.we_recipient;
 	if (p.selectedIndex >= 0) {
-		if (confirm(g_l.delete_recipient)) {
+		if (confirm(WE().consts.g_l.prefs.delete_recipient)) {
 			hot = true;
 			var d = document.forms[0].elements["newconf[formmail_deleted]"];
 			d.value += ((d.value) ? "," : "") + p.options[p.selectedIndex].value;
@@ -376,7 +376,7 @@ function delete_recipient() {
 }
 
 function add_recipient() {
-	var newRecipient = prompt(g_l.input_name, "");
+	var newRecipient = prompt(WE().consts.g_l.prefs.input_name, "");
 	var p = document.forms[0].elements.we_recipient;
 	if (newRecipient !== null) {
 		if (newRecipient.length > 0) {
@@ -391,10 +391,10 @@ function add_recipient() {
 				set_state_edit_delete_recipient();
 				send_recipients();
 			} else {
-				top.we_showMessage(g_l.recipient_exists, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.prefs.recipient_exists, WE_MESSAGE_ERROR, window);
 			}
 		} else {
-			top.we_showMessage(g_l.not_entered_recipient, WE_MESSAGE_ERROR, window);
+			top.we_showMessage(WE().consts.g_l.prefs.not_entered_recipient, WE_MESSAGE_ERROR, window);
 		}
 	}
 }
@@ -405,7 +405,7 @@ function edit_recipient() {
 	var editRecipient;
 	if (p.selectedIndex >= 0) {
 		editRecipient = p.options[p.selectedIndex].text;
-		editRecipient = prompt(g_l.recipient_new_name, editRecipient);
+		editRecipient = prompt(WE().consts.g_l.prefs.recipient_new_name, editRecipient);
 	}
 
 	if (p.selectedIndex >= 0 && editRecipient !== null) {
@@ -415,7 +415,7 @@ function edit_recipient() {
 			}
 
 			if (editRecipient.length > 255) {
-				top.we_showMessage(g_l.max_name_recipient, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.prefsmax_name_recipient, WE_MESSAGE_ERROR, window);
 				return;
 			}
 
@@ -424,10 +424,10 @@ function edit_recipient() {
 				hot = true;
 				send_recipients();
 			} else {
-				top.we_showMessage(g_l.recipient_exists, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.prefs.recipient_exists, WE_MESSAGE_ERROR, window);
 			}
 		} else {
-			top.we_showMessage(g_l.not_entered_recipient, WE_MESSAGE_ERROR, window);
+			top.we_showMessage(WE().consts.g_l.prefs.not_entered_recipient, WE_MESSAGE_ERROR, window);
 		}
 	}
 }
@@ -514,7 +514,7 @@ function selectSidebarDoc() {
 			break;
 		}
 	}
-	parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, top.WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', top.WE().consts.contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
+	parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, top.WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
 }
 
 function select_seem_start() {
@@ -538,7 +538,7 @@ function select_seem_start() {
 			parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_object')[0].value, top.WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
 		}
 	} else {
-		parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_document')[0].value, top.WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', top.WE().consts.contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
+		parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_document')[0].value, top.WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
 	}
 }
 

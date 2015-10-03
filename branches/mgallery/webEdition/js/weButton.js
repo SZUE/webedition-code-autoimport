@@ -22,79 +22,62 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function weButton() {
-}
-
-weButton.disable = function (id) {
-	var el = document.getElementById(id);
-	if (el !== null) {
-		if (el.tagName === "BUTTON") {
-			el.disabled = true;
-			return;
-		}/*
-		 el.className = "weBtnDisabled";
-		 var tds = el.getElementsByTagName("TD");
-		 tds[0].className = "weBtnLeftDisabled";
-		 tds[1].className = "weBtnMiddleDisabled";
-		 tds[2].className = "weBtnRightDisabled";
-		 var img = document.getElementById(el.id + "_img");
-		 if (img !== null && img.src.indexOf("Disabled.gif") == -1) {
-		 img.src = img.src.replace(/\.gif/, "Disabled.gif");
-		 }*/
-	}
-};
-
-weButton.enable = function (id) {
-	var el = document.getElementById(id);
-	if (el !== null) {
-		if (el.tagName === "BUTTON") {
-			el.disabled = false;
-			return;
+var weButton = {
+	disable: function (id) {
+		var el = document.getElementById(id);
+		if (el !== null) {
+			if (el.tagName === "BUTTON") {
+				el.disabled = true;
+				return;
+			}
 		}
-	}
-};
-
-weButton.setText = function (id, text) {
-	var el = document.getElementById(id);
-	if (el !== null && text !== undefined) {
-		if (el.tagName === "BUTTON") {
-			el.innerHTML = text;
-			return;
+	},
+	enable: function (id) {
+		var el = document.getElementById(id);
+		if (el !== null) {
+			if (el.tagName === "BUTTON") {
+				el.disabled = false;
+				return;
+			}
 		}
+	},
+	setText: function (id, text) {
+		var el = document.getElementById(id);
+		if (el !== null && text !== undefined) {
+			if (el.tagName === "BUTTON") {
+				el.innerHTML = text;
+				return;
+			}
+		}
+	},
+	hide: function (id) {
+		var el = document.getElementById(id);
+		if (el !== null) {
+			el.style.display = "none";
+		}
+	},
+	show: function (id) {
+		var el = document.getElementById(id);
+		if (el !== null) {
+			el.style.display = "block";
+		}
+	},
+	isDisabled: function (id) {
+		var el = document.getElementById(id);
+		return (el !== null && (el.tagName == "BUTTON" ? el.disabled : el.className == "weBtnDisabled"));
+	},
+	isEnabled: function (id) {
+		return !this.isDisabled(id);
+	},
+	switch_button_state: function (element, state) {
+		switch (state) {
+			case "enabled":
+				this.enable(element);
+				return true;
+			case "disabled":
+				this.disable(element);
+		}
+
+		return false;
 	}
 };
-
-weButton.hide = function (id) {
-	var el = document.getElementById(id);
-	if (el !== null) {
-		el.style.display = "none";
-	}
-};
-
-weButton.show = function (id) {
-	var el = document.getElementById(id);
-	if (el !== null) {
-		el.style.display = "block";
-	}
-};
-
-weButton.isDisabled = function (id) {
-	var el = document.getElementById(id);
-	return (el !== null && (el.tagName == "BUTTON" ? el.disabled : el.className == "weBtnDisabled"));
-};
-
-weButton.isEnabled = function (id) {
-	return !this.isDisabled(id);
-};
-
-function switch_button_state(element, state) {
-	switch (state) {
-		case "enabled":
-			weButton.enable(element);
-			return true;
-		case "disabled":
-			weButton.disable(element);
-	}
-
-	return false;
-}

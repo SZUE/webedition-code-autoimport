@@ -22,20 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function switch_button_state(element, state) {
-	switch (state) {
-		case "enabled":
-			weButton.enable(element);
-			return true;
-		case "disabled":
-			weButton.disable(element);
-			return false;
-		default:
-
-			return false;
-	}
-}
-
 function setFieldValue(fieldNameTo, fieldFrom) {
 	if (document.we_form.SelectionType.value === "doctype" && (fieldNameTo === "TitleField" || fieldNameTo === "SorrtField")) {
 		eval("document.we_form." + fieldNameTo + ".value=fieldFrom.value");

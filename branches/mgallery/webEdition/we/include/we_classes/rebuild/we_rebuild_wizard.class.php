@@ -250,13 +250,13 @@ abstract class we_rebuild_wizard{
 				f.submit();
 			}
 			function set_button_state(alldis) {
-				if(top.wizbusy && top.wizbusy.switch_button_state){
-					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "disabled");
+				if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
+					top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "disabled");
 					if(alldis){
-						top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "disabled");
+						top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "disabled");
 						top.wizbusy.showRefreshButton();
 					}else{
-						top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+						top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 					}
 				}else{
 					setTimeout("set_button_state("+(alldis ? 1 : 0)+")",300);
@@ -349,9 +349,9 @@ abstract class we_rebuild_wizard{
 		$taskFilename = WE_FRAGMENT_PATH . $taskname;
 
 		$js = 'function set_button_state() {
-				if(top.wizbusy && top.wizbusy.switch_button_state){
-					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "enabled");
-					top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+				if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
+					top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "enabled");
+					top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 				}else{
 					setTimeout(set_button_state,300);
 				}
@@ -813,8 +813,8 @@ abstract class we_rebuild_wizard{
 							' . we_message_reporting::getShowMessageCall(g_l('rebuild', '[noFieldsChecked]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 							return;
 						} else {
-							top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "disabled");
-							top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "disabled");
+							top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "disabled");
+							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "disabled");
 							top.wizbusy.showRefreshButton();
 							f.step.value=2;
 							f.target="wizcmd";
@@ -947,9 +947,9 @@ abstract class we_rebuild_wizard{
 				if(csv.length==0){return [];}else{return csv.split(/,/);};
 			}
 			function set_button_state() {
-				if(top.wizbusy && top.wizbusy.switch_button_state){
-					top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "enabled");
-					top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+				if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
+					top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "enabled");
+					top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 				}else{
 					setTimeout(set_button_state,300);
 				}

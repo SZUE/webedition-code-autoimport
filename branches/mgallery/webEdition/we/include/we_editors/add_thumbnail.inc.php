@@ -49,9 +49,9 @@ function select_thumbnails(sel){
 	}
 
 	if(thumbs.length){
-		switch_button_state("add", "enabled");
+		weButton.switch_button_state("add", "enabled");
 	}else{
-		switch_button_state("add", "disabled");
+		weButton.switch_button_state("add", "disabled");
 	}
 
 	self.showthumbs.location = "' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+encodeURI(thumbs.join(","));

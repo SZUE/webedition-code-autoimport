@@ -554,7 +554,7 @@ function we_cmd_base(args, url) {
 			new jsWindow(url, "we_cateditor", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openSidebar":
-			top.weSidebar.open("default");
+			WE().layout.sidebar.open("default");
 			break;
 		case "loadSidebarDocument":
 			top.weSidebarContent.location.href = url;
@@ -1403,3 +1403,5 @@ top.WE().util.in_array = function (haystack, needle) {
 	}
 	return false;
 }
+
+//WE().layout.button = weButton;

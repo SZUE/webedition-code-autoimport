@@ -178,13 +178,13 @@ function goTo(where){
 	f.submit();
 }
 function set_button_state(alldis) {
-	if(top.wizbusy && top.wizbusy.switch_button_state){
-		top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "disabled");
+	if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
+		top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "disabled");
 		if(alldis){
-			top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "disabled");
+			top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "disabled");
 			top.wizbusy.showRefreshButton();
 		}else{
-			top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+			top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 		}
 	}else{
 		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
@@ -415,13 +415,13 @@ function goTo(where){
 
 
 function set_button_state(alldis) {
-					if(top.wizbusy && top.wizbusy.switch_button_state){
-						top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "enabled");
+					if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
+						top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "enabled");
 		if(alldis){
-							top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 							top.wizbusy.showRefreshButton();
 		}else{
-							top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 							var nextBut = top.wizbusy.document.getElementById(\'nextCell\');
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
@@ -663,13 +663,13 @@ set_button_state(false);';
 				}
 
 				function set_button_state(alldis) {
-					if(top.wizbusy && top.wizbusy.switch_button_state){
-						top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "enabled");
+					if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
+						top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "enabled");
 						if(alldis){
-							top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 							top.wizbusy.showRefreshButton();
 						}else{
-							top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 							var nextBut = top.wizbusy.document.getElementById("nextCell");
 				  			nextBut.innerHTML = \'' . $nextButton . '\';
 						}
@@ -1184,13 +1184,13 @@ function goTo(where){
 
 
 function set_button_state(alldis) {
-					if(top.wizbusy && top.wizbusy.switch_button_state){
-						top.wizbusy.back_enabled = top.wizbusy.switch_button_state("back", "enabled");
+					if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
+						top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "enabled");
 		if(alldis){
-							top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 							top.wizbusy.showRefreshButton();
 		}else{
-							top.wizbusy.next_enabled = top.wizbusy.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
 							var nextBut = top.wizbusy.document.getElementById(\'nextCell\');
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}

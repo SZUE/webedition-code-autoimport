@@ -47,13 +47,13 @@ function we_tag_sidebar($attribs, $content){
 			return $content;
 		}
 
-		$attribs['href'] = "javascript:top.weSidebar.open('" . $id . "', " . $width . ",'" . $params . "');";
+		$attribs['href'] = "javascript:WE().layout.sidebar.open('" . $id . "', " . $width . ",'" . $params . "');";
 	} else {
 		$file = ($file ? : $url);
 		if(!$file){
 			return '';
 		}
-		$attribs['href'] = "javascript:top.weSidebar.load('" . $file . "');top.weSidebar.resize(" . $width . ",'" . $params . "');";
+		$attribs['href'] = "javascript:WE().layout.sidebar.load('" . $file . "');WE().layout.sidebar.resize(" . $width . ",'" . $params . "');";
 	}
 
 	return getHtmlTag('a', $attribs, $content);

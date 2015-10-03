@@ -159,7 +159,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$_SESSION['weS']['EditPageNr'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 		$we_doc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};') . SCRIPT_BUTTONS_ONLY . STYLESHEET_BUTTONS_ONLY;
+			$_insertReloadFooter = STYLESHEET . we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};');
 		}
 		break;
 	case 'delete_link':
