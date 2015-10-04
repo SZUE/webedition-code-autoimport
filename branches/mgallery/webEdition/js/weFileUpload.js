@@ -1892,10 +1892,10 @@ var weFileUpload = (function () {
 			_.view.uploadBtnName = conf.uploadBtnName || _.view.uploadBtnName;
 			_.fieldName = 'we_File';
 			if (typeof conf.binDocProperties !== 'undefined') {
-				_.view.icon = getTreeIcon(conf.binDocProperties.ct);
+				_.view.icon = WE().util.getTreeIcon(conf.binDocProperties.ct);
 				_.view.binDocType = conf.binDocProperties.type || _.view.binDocType;
 			} else {
-				_.view.icon = getTreeIcon('text/plain');
+				_.view.icon = WE().util.getTreeIcon('text/plain');
 			}
 		};
 

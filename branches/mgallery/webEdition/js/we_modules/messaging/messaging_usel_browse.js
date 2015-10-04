@@ -101,14 +101,14 @@ function zeichne(startEntry, zweigEintrag) {
 			if (nf[ai].id != -1) {
 				ret += "<a name='_" + nf[ai].id + "' href=\"javascript:doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\" border=\"0\">";
 			}
-			ret += getTreeIcon(nf[ai].contentType) + "</a>" +
+			ret += WE().util.getTreeIcon(nf[ai].contentType) + "</a>" +
 							"<a href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>' +
 							"&nbsp;<a name='_" + nf[ai].id + "' href=\"javascript:top.check('" + nf[ai].id + '&' + nf[ai].text + "')\"><span id=\"" + nf[ai].id + '&' + nf[ai].text + "\" class=\"u_tree_entry\">" + (parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") + "</span></A><br/>"
 		} else {
 			var newAst = zweigEintrag;
 
 			ret += '<a href="javascript:top.openClose(\'' + nf[ai].id + '\',1)"><span class="treeKreuz fa-stack ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span>";
-			ret += "<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + getTreeIcon('we/userGroup') + "</a>" +
+			ret += "<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + WE().util.getTreeIcon('we/userGroup') + "</a>" +
 							"<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
 							"&nbsp;<b>" + nf[ai].text + "</b></a>" +
 							"<br/>";

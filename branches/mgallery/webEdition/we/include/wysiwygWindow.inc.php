@@ -90,7 +90,7 @@ if(preg_match('%^.+_te?xt\[.+\]$%i', $fields['name'])){
 	$writeToFrontend = true;
 }
 
-echo we_html_tools::getHtmlTop(sprintf('', $fieldName), $fields['charset']);
+echo we_html_tools::getHtmlTop($fieldName, $fields['charset']);
 
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	if(!isset($writeToFrontend)){

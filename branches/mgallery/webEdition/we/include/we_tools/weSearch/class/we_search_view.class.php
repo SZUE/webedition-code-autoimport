@@ -1604,7 +1604,7 @@ weSearch.g_l = {
 				$content[] = $whichSearch !== self::SEARCH_MEDIA ?
 					array(
 					array("dat" => we_html_tools::getPixel(20, 1) . $actionCheckbox),
-					array("dat" => we_html_element::jsElement('document.write(getTreeIcon("' . $_result[$f]["ContentType"] . '"))')),
+					array("dat" => we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $_result[$f]["ContentType"] . '"))')),
 					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . $_result[$f]['docTable'] . '\',\'' . $_result[$f]["docID"] . '\',\'' . $_result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $_result[$f]['Path'] . '"><u>' . $_result[$f]["Text"]),
 					array("dat" => ($whichSearch === 'TmplSearch' ? str_replace('/' . $_result[$f]["Text"], '', $_result[$f]["Path"]) : $_result[$f]["SiteTitle"])),
 					array("dat" => isset($_result[$f]["VersionID"]) && $_result[$f]['VersionID'] ? "-" : ($_result[$f]["CreationDate"] ? date(
@@ -1771,11 +1771,11 @@ weSearch.g_l = {
 				$imageViewPopup = "<img src='" . $urlPopup . "' border='0' /></a>";
 			} else {
 				$imagesize = array(0, 0);
-				$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . we_base_ContentTypes::IMAGE . '"))');
+				$imageView = $imageViewPopup = we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . we_base_ContentTypes::IMAGE . '"))');
 			}
 		} else {
 			$imagesize = array(0, 0);
-			$imageView = $imageViewPopup = we_html_element::jsElement('document.write(getTreeIcon("' . $file["ContentType"] . '",false,"' . $file['Extension'] . '"))');
+			$imageView = $imageViewPopup = we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $file["ContentType"] . '",false,"' . $file['Extension'] . '"))');
 		}
 
 		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup);

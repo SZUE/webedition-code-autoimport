@@ -178,7 +178,7 @@ TabView.prototype = {
 		} else {
 			var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
 			var _ext = _text ? _text.replace(/^.*\./, ".") : "";
-			this.myDoc.getElementById('load_' + frameId).innerHTML = getTreeIcon(this.contentType[frameId], false, _ext);
+			this.myDoc.getElementById('load_' + frameId).innerHTML = WE().util.getTreeIcon(this.contentType[frameId], false, _ext);
 		}
 	},
 	/**

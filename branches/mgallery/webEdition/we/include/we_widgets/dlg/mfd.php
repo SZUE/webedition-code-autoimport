@@ -158,5 +158,5 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLES
 	we_html_element::jsElement($jsPrefs . $jsCode) .
 	we_html_element::jsScript(JS_DIR . 'widgets/mfd.js'), we_html_element::htmlBody(
 		array(
-		"class" => "weDialogBody", "onload" => "init();setIconOfDocClass('mfdUIcon');"
+		"class" => "weDialogBody", "onload" => "init();WE().util.setIconOfDocClass(document,'mfdUIcon');"
 		), we_html_element::htmlForm("", $sTblWidget)));

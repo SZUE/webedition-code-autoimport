@@ -238,7 +238,7 @@ class we_voting_frames extends we_modules_frame{
 
 				$variant_js .=
 					'owners_label.addItem();
-					owners_label.setItem(0,(owners_label.itemCount-1),getTreeIcon("' . ($foo ? 'folder' : 'we/user') . '")+" ' . id_to_path($owner, USER_TABLE) . '");';
+					owners_label.setItem(0,(owners_label.itemCount-1),WE().util.getTreeIcon("' . ($foo ? 'folder' : 'we/user') . '")+" ' . id_to_path($owner, USER_TABLE) . '");';
 			}
 		}
 		$variant_js .=

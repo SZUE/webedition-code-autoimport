@@ -245,7 +245,7 @@ function we_cmd() {
 			for(var i=0;i<own_arr.length;i++){
 				if(own_arr[i]!=""){
 					owners_label.addItem();
-					owners_label.setItem(0,(owners_label.itemCount-1),getTreeIcon(isfolders_arr[i]==1 ? "folder" : "we/user")+" "+own_arr[i]);
+					owners_label.setItem(0,(owners_label.itemCount-1),WE().util.getTreeIcon(isfolders_arr[i]==1 ? "folder" : "we/user")+" "+own_arr[i]);
 					owners_label.showVariant(0);
 				}
 			}

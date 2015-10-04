@@ -396,7 +396,7 @@ weCollectionEdit = {
 
 			if (item.ct !== 'image/*' && item.id !== -1) {
 				elPreview = div.getElementsByClassName('previewDiv')[0];
-				elPreview.innerHTML = getTreeIcon(item.ct, false, item.ext);
+				elPreview.innerHTML = WE().util.getTreeIcon(item.ct, false, item.ext);
 				elPreview.style.background = 'transparent';
 				elPreview.style.display = 'block';
 			}
@@ -413,7 +413,7 @@ weCollectionEdit = {
 
 			if (item.ct !== 'image/*' && item.id !== -1) {
 				elPreview = div.getElementsByClassName('divInner')[0];
-				elPreview.innerHTML = getTreeIcon(item.ct, false, item.ext) + '<div class="divTitle defaultfont" style="font-size:' + this.gridItemDimension.font + 'px;">' + item.name + item.ext + '</div>';
+				elPreview.innerHTML = WE().util.getTreeIcon(item.ct, false, item.ext) + '<div class="divTitle defaultfont" style="font-size:' + this.gridItemDimension.font + 'px;">' + item.name + item.ext + '</div>';
 				//<div class="divTitle defaultfont" style="font-size:10px;">Titel: ' + propDesc + '</div>';
 				elPreview.getElementsByTagName('SPAN')[0].style.fontSize = this.gridItemDimension.icon + 'px';
 				elPreview.style.background = 'transparent';

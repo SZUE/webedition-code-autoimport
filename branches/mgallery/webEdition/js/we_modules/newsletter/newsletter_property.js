@@ -605,7 +605,7 @@ function searchEmail(searchname) {
 				}
 			}
 		}
-		msg = sprintf(g_l.search_finished, hit);
+		msg = WE().util.sprintf(g_l.search_finished, hit);
 		top.we_showMessage(msg, WE_MESSAGE_NOTICE, window);
 	}
 }

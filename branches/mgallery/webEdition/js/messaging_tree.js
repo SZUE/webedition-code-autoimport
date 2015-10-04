@@ -255,7 +255,7 @@ function zeichne(startEntry, zweigEintrag) {
 				}
 			} else {
 				ret += '<a id="_' + nf[ai].id + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ");return true;\">" +
-								getTreeIcon(nf[ai].contenttype, nf[ai].open) +
+								WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
 								"</a>";
 				trg = "doClick(" + nf[ai].id + ");return true;";
 			}
@@ -273,7 +273,7 @@ function zeichne(startEntry, zweigEintrag) {
 			}
 
 			ret += "<a id='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"" + trg + "\">" +
-							getTreeIcon(nf[ai].contenttype, nf[ai].open) +
+							WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
 							"</a>" +
 							"<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\">" +
 							"" + translate(nf[ai].text) + "</a>" +

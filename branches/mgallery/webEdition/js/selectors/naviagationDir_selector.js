@@ -76,7 +76,7 @@ function writeBody(d) {
 					'<table class="default" width="100%">' +
 					(makeNewFolder ?
 									'<tr style="background-color:#DFE9F5;">' +
-									'<td class="selectoricon">' + getTreeIcon('folder', false) + '</td>' +
+									'<td class="selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
 									'<td><input type="hidden" name="we_FolderText" value="' + g_l.newFolder + '" />' +
 									'<input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.newFolder + '"  class="wetextinput" style="width:100%" /></td>' +
 									'</tr>' :
@@ -85,7 +85,7 @@ function writeBody(d) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + '>' +
-						'<td class="selector selectoricon">' + getTreeIcon((entries[i].isFolder ? 'folder' : 'we/navigation'), false) + '</td>' +
+						'<td class="selector selectoricon">' + WE().util.getTreeIcon((entries[i].isFolder ? 'folder' : 'we/navigation'), false) + '</td>' +
 						(we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector" style="" >' + entries[i].text

@@ -120,12 +120,12 @@ class we_chooser_multiDir{
 			$this->nr++;
 		}
 		$out .= '
-</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
+</table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document, "chooserFileIcon");');
 
 
 		return '<table class="default" width="' . $this->width . '">
 <tr><td><div class="multichooser">' . $out . '</div></td></tr>
-' . ($this->addbut ? '<tr><td style="text-align:right;padding-top:5px;">' . $this->addbut . '</td></tr>' : '') . '</table>' . we_html_element::jsElement('setIconOfDocClass("chooserFileIcon");');
+' . ($this->addbut ? '<tr><td style="text-align:right;padding-top:5px;">' . $this->addbut . '</td></tr>' : '') . '</table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"chooserFileIcon");');
 	}
 
 }

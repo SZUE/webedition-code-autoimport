@@ -83,7 +83,7 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 	row += (cur.disabled ?
 					"" :
 					"<a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
-					getTreeIcon(cur.contenttype, cur.open) +
+					WE().util.getTreeIcon(cur.contenttype, cur.open) +
 					(cur.disabled ?
 									"" :
 									"</a><a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
@@ -108,7 +108,7 @@ function drawCustomerSort(nf, ai, zweigEintrag) {
 
 	row += "<a href=\"javascript:" + oc_js + "><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\" border=0>" +
-					getTreeIcon(nf[ai].contenttype, nf[ai].open) +
+					WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
 					"</a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\">" +
 					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + treeData.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +

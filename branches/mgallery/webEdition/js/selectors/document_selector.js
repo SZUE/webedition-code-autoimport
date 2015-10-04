@@ -165,7 +165,7 @@ function writeBodyDocument(d) {
 					'<table class="selector">' +
 					(makeNewFolder ?
 									'<tr>' +
-									'<td class="treeIcon selectoricon">' + getTreeIcon('folder', false) + '</td>' +
+									'<td class="treeIcon selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
 									'<td class="filename"><input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" /></td>' +
 									'<td class="selector title">' + g_l.folder + '</td>' +
 									'<td class="selector moddate">' + g_l.date_format + '</td>' +
@@ -175,7 +175,7 @@ function writeBodyDocument(d) {
 		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : "") + ' id="line_' + entries[i].ID + '" style="cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-						'<td class="selector treeIcon selectoricon">' + getTreeIcon(entries[i].contentType, false) + '</td>' +
+						'<td class="selector treeIcon selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"' + (entries[i].published === 0 && entries[i].isFolder === 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
 						(we_editDirID == entries[i].ID ?
 										'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :

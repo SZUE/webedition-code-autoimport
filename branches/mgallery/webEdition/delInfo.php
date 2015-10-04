@@ -27,7 +27,7 @@ we_html_tools::protect();
 if(isset($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
 	$table = new we_html_table(array('style' => 'margin:10px;', 'class' => 'defaultfont default'), 1, 2);
 	foreach($_SESSION['weS']['delete_files_nok'] as $i => $data){
-		$table->setCol($i, 0, array('style' => 'padding-top:2px;'), (isset($data["ContentType"]) ? we_html_element::jsElement('document.write(getTreeIcon("' . $data["ContentType"] . '"))') : ""));
+		$table->setCol($i, 0, array('style' => 'padding-top:2px;'), (isset($data["ContentType"]) ? we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $data["ContentType"] . '"))') : ""));
 		$table->setCol($i, 1, null, str_replace($_SERVER['DOCUMENT_ROOT'], "", $data["path"]));
 		$table->addRow();
 	}

@@ -37,7 +37,7 @@ function writeBody(d) {
 							'<input type="hidden" name="table" value="' + options.table + '" />' +
 							'<input type="hidden" name="id" value="' + currentDir + '" />' +
 							(makeNewFolder ?
-											'<div class="imgDiv">' + getTreeIcon('folder', false) + '<br/>' +
+											'<div class="imgDiv">' + WE().util.getTreeIcon('folder', false) + '<br/>' +
 											'<input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" />' +
 											'</div>' :
 											'');
@@ -45,7 +45,7 @@ function writeBody(d) {
 				var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true"';
 				var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 				body += '<div class="imgDiv ' + ((entries[i].ID == top.currentID) ? "selected" : "") + '" id="line_' + entries[i].ID + '" title="' + entries[i].text + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
-								(entries[i].isFolder ? getTreeIcon("folder") : '<img src="' + top.WE().consts.dirs.WEBEDITION_DIR + "thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size2=200" + '" class="icon"/>') +
+								(entries[i].isFolder ? WE().util.getTreeIcon("folder") : '<img src="' + top.WE().consts.dirs.WEBEDITION_DIR + "thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size2=200" + '" class="icon"/>') +
 								'<div class="imgText selector">' +
 								(we_editDirID == entries[i].ID ?
 												'<input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onmousedown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :

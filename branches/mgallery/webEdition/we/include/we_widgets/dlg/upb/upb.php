@@ -50,7 +50,7 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', STYLESHE
 		"marginheight" => 10,
 		"leftmargin" => 15,
 		"topmargin" => 10,
-		"onload" => 'if(parent!=self)init();setIconOfDocClass("upbIcon");'
+		"onload" => 'if(parent!=self){init();}WE().util.setIconOfDocClass(document,"upbIcon");'
 		), we_html_element::htmlDiv(array(
 			"id" => "upb"
 			), $ct)));

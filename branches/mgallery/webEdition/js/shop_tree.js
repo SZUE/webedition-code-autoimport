@@ -50,7 +50,7 @@ function zeichne(startEntry, zweigEintrag) {
 					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
 				}
 			}
-			ret += getTreeIcon('we/shop') +
+			ret += WE().util.getTreeIcon('we/shop') +
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" :
 											"") +
@@ -70,7 +70,7 @@ function zeichne(startEntry, zweigEintrag) {
 			ret += (perm_EDIT_SHOP_ORDER ?
 							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 							"") +
-							getTreeIcon('folder', nf[ai].open) +
+							WE().util.getTreeIcon('folder', nf[ai].open) +
 							(perm_EDIT_SHOP_ORDER ?
 											"</a>" +
 											// make the month in tree clickable

@@ -44,7 +44,7 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLES
 		"marginheight" => 10,
 		"leftmargin" => 15,
 		"topmargin" => 10,
-		"onload" => 'if(parent!=self){init();}setIconOfDocClass(\'mfdIcon\');'
+		"onload" => 'if(parent!=self){init();}WE().util.setIconOfDocClass(document,\'mfdIcon\');'
 		), we_html_element::htmlDiv(array(
 			'id' => 'mfd'
 			), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)

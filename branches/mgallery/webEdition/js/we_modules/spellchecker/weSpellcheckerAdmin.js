@@ -97,7 +97,7 @@ function checkApplet() {
 }
 
 function deleteDict(name) {
-	if (confirm(sprintf(g_l.ask_dict_del, name))) {
+	if (confirm(WE().util.sprintf(g_l.ask_dict_del, name))) {
 		hiddenCmd.dispatch("deleteDict", name);
 	}
 }
