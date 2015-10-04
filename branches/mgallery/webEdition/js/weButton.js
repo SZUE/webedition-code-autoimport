@@ -22,9 +22,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var weButton = {
-	disable: function (id) {
-		var el = document.getElementById(id);
+WE().layout.button = {
+	disable: function (doc, id) {
+		var el = doc.getElementById(id);
 		if (el !== null) {
 			if (el.tagName === "BUTTON") {
 				el.disabled = true;
@@ -32,8 +32,8 @@ var weButton = {
 			}
 		}
 	},
-	enable: function (id) {
-		var el = document.getElementById(id);
+	enable: function (doc, id) {
+		var el = doc.getElementById(id);
 		if (el !== null) {
 			if (el.tagName === "BUTTON") {
 				el.disabled = false;
@@ -41,8 +41,8 @@ var weButton = {
 			}
 		}
 	},
-	setText: function (id, text) {
-		var el = document.getElementById(id);
+	setText: function (doc, id, text) {
+		var el = doc.getElementById(id);
 		if (el !== null && text !== undefined) {
 			if (el.tagName === "BUTTON") {
 				el.innerHTML = text;
@@ -50,32 +50,32 @@ var weButton = {
 			}
 		}
 	},
-	hide: function (id) {
-		var el = document.getElementById(id);
+	hide: function (doc, id) {
+		var el = doc.getElementById(id);
 		if (el !== null) {
 			el.style.display = "none";
 		}
 	},
-	show: function (id) {
-		var el = document.getElementById(id);
+	show: function (doc, id) {
+		var el = doc.getElementById(id);
 		if (el !== null) {
 			el.style.display = "block";
 		}
 	},
-	isDisabled: function (id) {
-		var el = document.getElementById(id);
+	isDisabled: function (doc, id) {
+		var el = doc.getElementById(id);
 		return (el !== null && (el.tagName == "BUTTON" ? el.disabled : el.className == "weBtnDisabled"));
 	},
-	isEnabled: function (id) {
-		return !this.isDisabled(id);
+	isEnabled: function (doc, id) {
+		return !this.isDisabled(doc, id);
 	},
-	switch_button_state: function (element, state) {
+	switch_button_state: function (doc, element, state) {
 		switch (state) {
 			case "enabled":
-				this.enable(element);
+				this.enable(doc, element);
 				return true;
 			case "disabled":
-				this.disable(element);
+				this.disable(doc, element);
 		}
 
 		return false;

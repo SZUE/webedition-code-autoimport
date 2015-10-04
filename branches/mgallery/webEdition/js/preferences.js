@@ -217,11 +217,11 @@ function set_state_edit_delete_recipient() {
 	var p = document.forms[0].elements.we_recipient;
 	var i = p.length;
 	if (i === 0) {
-		edit_enabled = weButton.switch_button_state('edit', 'disabled');
-		delete_enabled = weButton.switch_button_state('delete', 'disabled');
+		edit_enabled = WE().layout.button.switch_button_state(document, 'edit', 'disabled');
+		delete_enabled = WE().layout.button.switch_button_state(document, 'delete', 'disabled');
 	} else {
-		edit_enabled = weButton.switch_button_state('edit', 'enabled');
-		delete_enabled = weButton.switch_button_state('delete', 'enabled');
+		edit_enabled = WE().layout.button.switch_button_state(document, 'edit', 'enabled');
+		delete_enabled = WE().layout.button.switch_button_state(document, 'delete', 'enabled');
 	}
 }
 

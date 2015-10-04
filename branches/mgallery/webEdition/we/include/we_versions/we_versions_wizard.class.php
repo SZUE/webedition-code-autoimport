@@ -70,11 +70,10 @@ abstract class we_versions_wizard{
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = new we_html_table(array('class' => 'default'), 1, 4);
-			$content2->setCol(0, 0, array("id" => "prev", "style" => "display:table-cell; padding-left:10px;text-align:right"), $prevButton);
-			$content2->setCol(0, 1, array("id" => "nextCell", "style" => "display:table-cell; padding-left:10px;text-align:right"), $nextButton);
-			$content2->setCol(0, 2, array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton);
-			$content2->setCol(0, 3, array("id" => "cancel", "style" => "display:table-cell; padding-left:10px;text-align:right"), $cancelButton);
+			$content2 = we_html_element::htmlSpan(array("id" => "prev", "style" => "padding-left:10px;text-align:right"), $prevButton).
+				we_html_element::htmlSpan(array("id" => "nextCell", "style" => "padding-left:10px;text-align:right"), $nextButton).
+				we_html_element::htmlSpan(array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton).
+				we_html_element::htmlSpan(array("id" => "cancel", "style" => "padding-left:10px;text-align:right"), $cancelButton);
 
 			$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none;text-align:left"), $pb);
@@ -178,13 +177,13 @@ function goTo(where){
 	f.submit();
 }
 function set_button_state(alldis) {
-	if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
-		top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "disabled");
+	if(top.wizbusy){
+		top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "disabled");
 		if(alldis){
-			top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "disabled");
+			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "disabled");
 			top.wizbusy.showRefreshButton();
 		}else{
-			top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
+			top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 		}
 	}else{
 		setTimeout(function(){set_button_state((alldis ? 1 : 0));},300);
@@ -415,13 +414,13 @@ function goTo(where){
 
 
 function set_button_state(alldis) {
-					if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
-						top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "enabled");
+					if(top.wizbusy){
+						top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
 		if(alldis){
-							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 							top.wizbusy.showRefreshButton();
 		}else{
-							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 							var nextBut = top.wizbusy.document.getElementById(\'nextCell\');
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
@@ -581,8 +580,9 @@ set_button_state(false);';
 			if($k != "all"){
 				$jsCheckboxCheckAll .= 'document.getElementById("version_reset_' . $k . '").checked = checked;';
 			}
-			if($jsCheckboxCtIf != "")
+			if($jsCheckboxCtIf != ""){
 				$jsCheckboxCtIf .= " && ";
+			}
 			$jsCheckboxCtIf .= 'document.getElementById("version_reset_' . $k . '").checked==0';
 			$jsCheckboxArgs .= 'args += "&ct[' . $k . ']="+encodeURI(document.getElementById("version_reset_' . $k . '").checked);';
 		}
@@ -606,12 +606,10 @@ set_button_state(false);';
 							var minutes = document.getElementById("reset_minutes").value;
 							var seconds = document.getElementById("reset_seconds").value;
 							if(' . $jsCheckboxCtIf . ') {
-								' . we_message_reporting::getShowMessageCall(
-				g_l('versions', '[notCheckedContentType]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+								' . we_message_reporting::getShowMessageCall(g_l('versions', '[notCheckedContentType]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 							}
 							else if(date=="") {
-								' . we_message_reporting::getShowMessageCall(
-				g_l('versions', '[notCheckedDate]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
+								' . we_message_reporting::getShowMessageCall(g_l('versions', '[notCheckedDate]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 							}
 							else {
 								selectedValue="";
@@ -627,7 +625,6 @@ set_button_state(false);';
 				}
 
 				function checkAll(val) {
-
 		            	if(val.checked) {
 		            		checked = 1;
 		            	}
@@ -639,7 +636,6 @@ set_button_state(false);';
 					}
 
 	            	function checkAllRevert() {//FIXME:unused (box doesnt exist?)
-
 	            		var checkbox = document.getElementById("version_reset_all");
 						checkbox.checked = false;
 	            	}
@@ -663,13 +659,13 @@ set_button_state(false);';
 				}
 
 				function set_button_state(alldis) {
-					if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
-						top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "enabled");
+					if(top.wizbusy){
+						top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
 						if(alldis){
-							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 							top.wizbusy.showRefreshButton();
 						}else{
-							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 							var nextBut = top.wizbusy.document.getElementById("nextCell");
 				  			nextBut.innerHTML = \'' . $nextButton . '\';
 						}
@@ -1184,13 +1180,13 @@ function goTo(where){
 
 
 function set_button_state(alldis) {
-					if(top.wizbusy && top.wizbusy.weButton.switch_button_state){
-						top.wizbusy.back_enabled = top.wizbusy.weButton.switch_button_state("back", "enabled");
+					if(top.wizbusy){
+						top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "back", "enabled");
 		if(alldis){
-							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 							top.wizbusy.showRefreshButton();
 		}else{
-							top.wizbusy.next_enabled = top.wizbusy.weButton.switch_button_state("next", "enabled");
+							top.wizbusy.next_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, "next", "enabled");
 							var nextBut = top.wizbusy.document.getElementById(\'nextCell\');
 				nextBut.innerHTML = \'' . $nextButton . '\';
 		}
@@ -1211,12 +1207,7 @@ set_button_state(false);';
 		if(!count($contents)){
 			return '';
 		}
-		$headCal = we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
-
-		$headCal .=
+		$headCal = we_html_tools::getCalendarFiles() .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
@@ -1224,8 +1215,9 @@ set_button_state(false);';
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					$headCal . STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') . ($contents[0] ? we_html_element::jsElement(
-							$contents[0]) : "")) . we_html_element::htmlBody(
+					$headCal . STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') .
+					($contents[0] ? we_html_element::jsElement($contents[0]) : "")) .
+				we_html_element::htmlBody(
 					array("class" => "weDialogBody")
 					, we_html_element::htmlForm(
 						array(

@@ -299,18 +299,18 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 							tr.appendChild(getTextColumn(g_l.all_words_identified, 7));
 							table.appendChild(tr);
-							weButton.hide('execute');
+							WE().layout.button.hide(document, 'execute');
 		<?php
 		if($cmd3 != "checkOnly"){
 			?>
-								weButton.enable('publish');
-								weButton.show('publish');
+								WE().layout.button.enable(document, 'publish');
+								WE().layout.button.show(document, 'publish');
 			<?php
 		}
 		?>
 
 						} else {
-							weButton.enable('execute');
+							WE().layout.button.enable(document, 'execute');
 						}
 
 					}
@@ -320,12 +320,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 						tr.appendChild(getTextColumn(g_l.no_java, 7));
 						table.appendChild(tr);
-						weButton.hide('execute');
+						WE().layout.button.hide(document, 'execute');
 		<?php
 		if($cmd3 != "checkOnly"){
 			?>
 							document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
-							weButton.enable('publish');
+							WE().layout.button.enable(document, 'publish');
 			<?php
 		}
 		?>
@@ -435,7 +435,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 					$Buttons = we_html_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
 					if($cmd3 != "checkOnly"){
-						$Buttons .= we_html_element::jsElement("weButton.hide('publish');");
+						$Buttons .= we_html_element::jsElement("WE().layout.button.hide(document, 'publish');");
 					}
 
 					$Parts = array();

@@ -31,12 +31,7 @@ echo we_html_tools::getHtmlTop() .
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-$headCal = we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
-	we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-	we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-	we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
-
-echo $headCal .
+echo we_html_tools::getCalendarFiles() .
  doclistView::getSearchJS() .
  STYLESHEET
 ?>

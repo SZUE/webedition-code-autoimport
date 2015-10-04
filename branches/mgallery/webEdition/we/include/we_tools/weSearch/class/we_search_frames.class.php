@@ -183,13 +183,7 @@ function setTab(tab) {
 				break;
 		}
 
-		$head = we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
-
-
-		return $this->getHTMLDocument($body, $head . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
+		return $this->getHTMLDocument($body, we_html_tools::getCalendarFiles() . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
 	}
 
 	function getTab(){

@@ -890,9 +890,7 @@ function submitForm() {
 			// ********************************************************************************
 			// "Html output for order with articles"
 			//
-		echo we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
-			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
+		echo we_html_tools::getCalendarFiles() .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
 			we_html_element::jsElement('
@@ -1230,7 +1228,7 @@ function CalendarChanged(calObject) {
 					);
 				}
 
-				echo we_html_multiIconBox::getHTML('',$parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
+				echo we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
 				'</form>
 		</body>
 		</html>';

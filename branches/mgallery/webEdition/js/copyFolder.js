@@ -55,7 +55,7 @@ function addCat(paths) {
 
 function toggleButton() {
 	if (document.getElementById('CreateTemplate').checked) {
-		weButton.enable('select');
+		WE().layout.button.enable(document,'select');
 		if (acin = document.getElementById('yuiAcInputTemplate')) {
 			document.getElementById('yuiAcInputTemplate').disabled = false;
 			lastCFolder = acin.value;
@@ -63,7 +63,7 @@ function toggleButton() {
 		}
 		return true;
 	} else {
-		weButton.disable('select');
+		WE().layout.button.disable(document,'select');
 		if (acin = document.getElementById('yuiAcInputTemplate')) {
 			document.getElementById('yuiAcInputTemplate').disabled = true;
 			acin.readOnly = true;

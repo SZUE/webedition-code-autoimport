@@ -1245,12 +1245,7 @@ window.onload=extraInit;');
 		}
 
 		$js = $this->View->getJSProperty('setFocus();') .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/calendar.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
-
-		$css = we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css");
-
+			we_html_tools::getCalendarFiles();
 
 		$out = $this->View->getHiddens() .
 			$this->View->newsletterHiddens() .
@@ -1297,7 +1292,7 @@ window.onload=extraInit;');
 				)
 		);
 //$this->getHTMLDocumentHeader();
-		return $this->getHTMLDocument($body, $js . $css);
+		return $this->getHTMLDocument($body, $js);
 	}
 
 	function getHTMLEmailEdit(){

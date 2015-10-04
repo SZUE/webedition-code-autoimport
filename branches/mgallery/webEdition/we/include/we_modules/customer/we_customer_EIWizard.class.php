@@ -560,9 +560,9 @@ class we_customer_EIWizard{
 			we_html_element::jsElement('
 					function switchImportFrom(obj){
 						if(obj.value === "local"){
-							top.footer.weButton.disable("next_footer");
+							WE().layout.button.disable(top.footer.document, "next_footer");
 						} else {
-							top.footer.weButton.enable("next_footer");
+							WE().layout.button.enable(top.footer.document, "next_footer");
 						}
 					}
 

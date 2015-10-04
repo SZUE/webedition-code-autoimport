@@ -484,7 +484,7 @@ function we_tag_userInput($attribs, $content){
 				we_html_element::jsScript(JS_DIR . 'windows.js') .
 				(!$inlineedit ?
 					//FIXME: does tiny really use weButtons?!
-					we_html_element::jsScript(JS_DIR . 'weButton.js') .
+					STYLESHEET_BUTTONS_ONLY.
 					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') :
 					''
 				) .

@@ -858,4 +858,11 @@ function clip_' . $unique . '(){
 		return $oSelector->getHTML();
 	}
 
+	public static function getCalendarFiles(){
+		return we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
+			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
+	}
+
 }

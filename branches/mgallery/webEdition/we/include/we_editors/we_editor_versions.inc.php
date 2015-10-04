@@ -35,10 +35,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 $content = $_view->getVersionsOfDoc();
 $foundItems = count($content);
 
-echo we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
- we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
- we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . '/calendar.js') .
- we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js') .
+echo we_html_tools::getCalendarFiles() .
  $_view->getJS() .
  STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'we_versions.css', array('media' => 'screen')) .
@@ -52,8 +49,8 @@ echo we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.
 		echo $_view->getHTMLforVersions(array(
 			array("html" => "<div id='searchTable'>" . $_view->getBodyTop() . "</div>"),
 			array("html" => "<div id='parametersTop'>" . $_view->getParameterTop($foundItems) . "</div>" . $_view->tblList($content, $_view->makeHeadLines()) . "<div id='parametersBottom'>" . $_view->getParameterBottom($foundItems) . "</div>")
-		)).
-			we_html_element::htmlHidden("we_complete_request", 1);
+		)) .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body></html>

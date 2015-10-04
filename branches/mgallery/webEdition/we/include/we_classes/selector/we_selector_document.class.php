@@ -227,12 +227,12 @@ function exit_open() {
 				return parent::printHeaderJSDef() . '
 var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';
 function disableNewFileBut() {
-	weButton.switch_button_state("' . $btn . '",  "disabled");
+	WE().layout.button.switch_button_state(document, "' . $btn . '",  "disabled");
 	newFileState = 0;
 }
 
 function enableNewFileBut() {
-	weButton.switch_button_state("' . $btn . '",  "enabled");
+	WE().layout.button.switch_button_state(document, "' . $btn . '",  "enabled");
 	newFileState = 1;
 }';
 		}

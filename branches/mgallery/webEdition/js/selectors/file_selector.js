@@ -341,15 +341,15 @@ function press_ok_button() {
 }
 
 function disableDelBut() {
-	weButton.switch_button_state("delete", "disabled");
-	weButton.switch_button_state("btn_function_trash", "disabled");
+	WE().layout.button.switch_button_state(document, "delete", "disabled");
+	WE().layout.button.switch_button_state(document, "btn_function_trash", "disabled");
 	changeCatState = 0;
 }
 
 function enableDelBut() {
-	weButton.switch_button_state("delete", "enabled");
+	WE().layout.button.switch_button_state(document, "delete", "enabled");
 	if (top.options.userCanEditCat) {
-		weButton.switch_button_state("btn_function_trash", "enabled");
+		WE().layout.button.switch_button_state(document, "btn_function_trash", "enabled");
 		changeCatState = 1;
 	}
 }
@@ -358,32 +358,32 @@ function startFrameset() {
 }
 
 function disableRootDirButs() {
-	weButton.switch_button_state("root_dir", "disabled");
-	weButton.switch_button_state("btn_fs_back", "disabled");
+	WE().layout.button.switch_button_state(document, "root_dir", "disabled");
+	WE().layout.button.switch_button_state(document, "btn_fs_back", "disabled");
 	rootDirButsState = 0;
 }
 function enableRootDirButs() {
-	weButton.switch_button_state("root_dir", "enabled");
-	weButton.switch_button_state("btn_fs_back", "enabled");
+	WE().layout.button.switch_button_state(document, "root_dir", "enabled");
+	WE().layout.button.switch_button_state(document, "btn_fs_back", "enabled");
 	rootDirButsState = 1;
 }
 function disableNewFolderBut() {
-	weButton.switch_button_state("btn_new_dir", "disabled");
+	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
 	makefolderState = 0;
 }
 function enableNewFolderBut() {
-	weButton.switch_button_state("btn_new_dir", "enabled");
+	WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
 	makefolderState = 1;
 }
 function disableNewBut() {
-	weButton.switch_button_state("btn_new_dir", "disabled");
-	weButton.switch_button_state("btn_add_cat", "disabled");
+	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
+	WE().layout.button.switch_button_state(document, "btn_add_cat", "disabled");
 }
 
 function enableNewBut() {
 	if (top.options.userCanEditCat) {
-		weButton.switch_button_state("btn_new_dir", "enabled");
-		weButton.switch_button_state("btn_add_cat", "enabled");
+		WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
+		WE().layout.button.switch_button_state(document, "btn_add_cat", "enabled");
 	}
 }
 

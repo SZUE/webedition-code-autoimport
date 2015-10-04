@@ -288,10 +288,7 @@ $_notepad = $oPad->getHTML() .
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
 	we_html_element::cssLink(CSS_DIR . 'pad.css') .
-	we_html_element::cssLink(LIB_DIR . "additional/jscalendar/skins/aqua/theme.css") .
-	we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar.js") .
-	we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS["WE_LANGUAGE"] . "/calendar.js") .
-	we_html_element::jsScript(LIB_DIR . "additional/jscalendar/calendar-setup.js") .
+	we_html_tools::getCalendarFiles() .
 	we_html_element::jsElement(
 		(($type === "pad/pad") ? "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';

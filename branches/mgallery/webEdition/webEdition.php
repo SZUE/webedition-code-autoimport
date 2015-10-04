@@ -323,8 +323,8 @@ we_html_element::jsScript(JS_DIR . 'windows.js') .
  we_html_element::jsScript(JS_DIR . 'global.js') .
  we_html_element::jsScript(JS_DIR . 'webEdition.js') .
  we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
+ we_html_element::jsScript(JS_DIR . 'weButton.js') .
  we_html_element::jsScript(JS_DIR . 'we_users_ping.js');
-
 
 foreach($jsCmd as $cur){
 	echo we_html_element::jsScript($cur);

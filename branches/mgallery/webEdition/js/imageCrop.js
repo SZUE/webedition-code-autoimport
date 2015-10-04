@@ -287,7 +287,7 @@ var CropTool = {
 		else if (e.target.id == this.coverID || e.target.id == this.imgID) {
 			this.resetCropTool();
 			document.getElementById("console").style.display = "none";
-			this.weButton.switch_button_state("save", "disabled");
+			WE().layout.button.switch_button_state(document, "save", "disabled");
 		}
 		this.sel.setCursor("e-resize", "n-resize", "e-resize", "n-resize", "move", "pointer");
 		this.sel.track = false;
@@ -504,7 +504,7 @@ var CropTool = {
 		this.sel.draw(x1, y1, w, h);
 		this.setCropSize(x1, y1, w, h);
 		document.getElementById("console").style.display = "block";
-		this.weButton.switch_button_state("save", "enabled");
+		WE().layout.button.switch_button_state(document, "save", "enabled");
 	},
 	setCropSize: function (x1, y1, w, h) {
 		document.forms.we_form.cropCoordX.value = x1;
@@ -833,10 +833,10 @@ var CropTool = {
 	},
 	switch_button_state: function (element, state) {
 		if (state == "enabled") {
-			weButton.enable(element);
+			WE().layout.button.enable(document, element);
 			return true;
 		} else if (state == "disabled") {
-			weButton.disable(element);
+			WE().layout.button.disable(document, element);
 			return false;
 		}
 		return false;

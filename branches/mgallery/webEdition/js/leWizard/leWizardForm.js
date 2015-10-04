@@ -28,7 +28,7 @@ function leWizardForm() {
 leWizardForm.ForwardInterval = null;
 
 leWizardForm.next = function () {
-	if (weButton.isEnabled("next")) {
+	if (WE().layout.button.isEnabled(document, "next")) {
 		window.clearInterval(leWizardForm.ForwardInterval);
 		document.leWebForm.submit();
 	}
@@ -41,7 +41,7 @@ leWizardForm.forceNext = function () {
 
 
 leWizardForm.back = function () {
-	if (weButton.isEnabled("back")) {
+	if (WE().layout.button.isEnabled(document, "back")) {
 		window.clearInterval(leWizardForm.ForwardInterval);
 		window.frames.leLoadFrame.document.location = backUrl;
 	}
@@ -49,7 +49,7 @@ leWizardForm.back = function () {
 
 leWizardForm.reload = function () {
 	// reload uses nextUrl - there was an error
-	if (weButton.isEnabled("reload")) {
+	if (WE().layout.button.isEnabled(document, "reload")) {
 		window.clearInterval(leWizardForm.ForwardInterval);
 		window.frames.leLoadFrame.document.location = nextUrl;
 	}

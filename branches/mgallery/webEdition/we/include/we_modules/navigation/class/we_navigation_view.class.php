@@ -339,14 +339,14 @@ function clearFields(){
 	var st = document.we_form.SelectionType;
 	if(st.selectedIndex>-1){
 		removeAllCats();
-		' . $this->editorBodyFrame . '.weButton.switch_button_state("select_TitleField", "enabled");
-		' . $this->editorBodyFrame . '.weButton.switch_button_state("select_SortField", "enabled");
+		WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_TitleField", "enabled");
+		WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_SortField", "enabled");
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_CLASS . '" && document.we_form.ClassID.options.length<1){
-			' . $this->editorBodyFrame . '.weButton.switch_button_state("select_TitleField", "disabled");
-			' . $this->editorBodyFrame . '.weButton.switch_button_state("select_XFolder", "disabled");
+			WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_TitleField", "disabled");
+			WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_XFolder", "disabled");
 			document.getElementById("yuiAcInputFolderPath").disabled=true;
 		} else {
-			' . $this->editorBodyFrame . '.weButton.switch_button_state("select_XFolder", "enabled");
+			WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_XFolder", "enabled");
 			document.getElementById("yuiAcInputFolderPath").disabled=false;
 		}
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_DOCTYPE . '"){
@@ -354,8 +354,8 @@ function clearFields(){
 			setVisible("objFolder",false);
 			setVisible("catFolder",false);
 			if(' . $this->editorBodyForm . '.DocTypeID.options[' . $this->editorBodyForm . '.DocTypeID.selectedIndex].value==0){
-				' . $this->editorBodyFrame . '.weButton.switch_button_state("select_TitleField", "disabled");
-				' . $this->editorBodyFrame . '.weButton.switch_button_state("select_SortField", "disabled");
+				WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_TitleField", "disabled");
+				WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_SortField", "disabled");
 			}
 		}
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_CLASS . '"){
@@ -783,13 +783,13 @@ var weNavTitleField = [];
 					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-								' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_down", "enabled");
-								' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_up", "enabled");
+								WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "enabled");
+								WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
 
 								if(' . $this->editorBodyForm . '.Ordn.value==0){
-									' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_up", "disabled");
+									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "disabled");
 								} else {
-									' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_up", "enabled");
+									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
@@ -805,13 +805,13 @@ var weNavTitleField = [];
 					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-								' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_down", "enabled");
-								' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_up", "enabled");
+								WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "enabled");
+								WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
 
 								if(' . $this->editorBodyForm . '.Ordn.value==1){
-									' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_up", "disabled");
+									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "disabled");
 								} else {
-									' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_up", "enabled");
+									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
@@ -829,12 +829,12 @@ var weNavTitleField = [];
 					echo we_html_element::jsElement(
 						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
 						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-									' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_down", "enabled");
-									' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_up", "enabled");
+									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "enabled");
+									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
 									if(' . $this->editorBodyForm . '.Ordn.value==' . ($_num + 1) . '){
-										' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_down", "disabled");
+										WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "disabled");
 									} else {
-										' . $this->editorBodyFrame . '.weButton.switch_button_state("direction_down", "enabled");
+										WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);

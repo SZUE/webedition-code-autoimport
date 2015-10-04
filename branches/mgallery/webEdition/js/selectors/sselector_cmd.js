@@ -75,13 +75,13 @@ function selectDir() {
 	}
 
 	if (top.currentDir.substring(0, 12) === "/webEdition/" || top.currentDir === "/webEdition") {
-		top.weButton.disable("btn_new_dir_ss");
-		top.weButton.disable("btn_add_file_ss");
-		top.weButton.disable("btn_function_trash_ss");
+		WE().layout.button.disable(document, "btn_new_dir_ss");
+		WE().layout.button.disable(document, "btn_add_file_ss");
+		WE().layout.button.disable(document, "btn_function_trash_ss");
 	} else {
-		top.weButton.enable("btn_new_dir_ss");
-		top.weButton.enable("btn_add_file_ss");
-		top.weButton.enable("btn_function_trash_ss");
+		WE().layout.button.enable(document, "btn_new_dir_ss");
+		WE().layout.button.enable(document, "btn_add_file_ss");
+		WE().layout.button.enable(document, "btn_function_trash_ss");
 	}
 
 	drawDir(top.currentDir);

@@ -199,16 +199,16 @@ function reloadDoc() {
 }
 
 function enableButtons() {
-	weButton.enable("ignore");
-	weButton.enable("change");
-	weButton.enable("add");
+	WE().layout.button.enable(document, "ignore");
+	WE().layout.button.enable(document, "change");
+	WE().layout.button.enable(document, "add");
 }
 
 function disableButtons() {
-	weButton.disable("ignore");
-	weButton.disable("change");
-	weButton.disable("add");
-	weButton.disable("check");
+	WE().layout.button.disable(document, "ignore");
+	WE().layout.button.disable(document, "change");
+	WE().layout.button.disable(document, "add");
+	WE().layout.button.disable(document, "check");
 }
 
 function spellcheck() {
@@ -260,7 +260,7 @@ function findNext() {
 					if (document.getElementById("spinner").style.display != "none") {
 						fadeout("spinner", 80, 10, 10);
 					}
-					weButton.enable("check");
+					WE().layout.button.enable(document, "check");
 					top.we_showMessage(g_l.finished, WE_MESSAGE_NOTICE, window);
 				}
 			}

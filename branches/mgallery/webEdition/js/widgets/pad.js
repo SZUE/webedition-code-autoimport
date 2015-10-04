@@ -85,7 +85,7 @@ function cancelNote() {
 		setColor(gel(mark + '_tr'), mark, '#FFFFFF');
 	}
 	unpopulate();
-	weButton.switch_button_state('delete', 'disabled');
+	WE().layout.button.switch_button_state(document, 'delete', 'disabled');
 }
 // deletes a note
 function deleteNote() {
@@ -161,7 +161,7 @@ function populate(r) {
 	fo.elements.rdo_prio[prio == 'high' ? 0 : prio == 'medium' ? 1 : 2].checked = true;
 	fo.elements.props_title.value = gel(r + '_Title').value;
 	fo.elements.props_text.value = gel(r + '_Text').value;
-	weButton.switch_button_state('delete', 'enabled');
+	WE().layout.button.switch_button_state(document, 'delete', 'enabled');
 	displayNote();
 }
 

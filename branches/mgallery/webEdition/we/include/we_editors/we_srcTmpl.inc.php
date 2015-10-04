@@ -339,7 +339,7 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	}
 	$groupselect .= '</optgroup></select>';
 
-	$tagselect = '<select onkeydown="return openTagWizWithReturn(event?event:window.event)" class="defaultfont" style="width: 250px; height: 100px;" size="7" ondblclick="edit_wetag(this.value);" name="tagSelection" id="tagSelection" onchange="weButton.enable(\'btn_direction_right_applyCode\')">';
+	$tagselect = '<select onkeydown="return openTagWizWithReturn(event?event:window.event)" class="defaultfont" style="width: 250px; height: 100px;" size="7" ondblclick="edit_wetag(this.value);" name="tagSelection" id="tagSelection" onchange="WE().layout.button.enable(document, \'btn_direction_right_applyCode\')">';
 
 	for($i = 0; $i < count($allWeTags); $i++){
 		$tagselect .= '

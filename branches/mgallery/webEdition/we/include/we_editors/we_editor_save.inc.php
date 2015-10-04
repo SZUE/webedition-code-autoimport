@@ -113,8 +113,8 @@ var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();';
 	// enable navigation box if doc has been published
 	if(!empty($GLOBALS['we_doc']->Published)){
 		echo 'try{
-	if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor && contentEditor.weButton.switch_button_state){
-		contentEditor.weButton.switch_button_state("add", "enabled");
+	if( _EditorFrame && _EditorFrame.getEditorIsInUse() && contentEditor){
+		WE().layout.button.switch_button_state(contentEditor.document, "add", "enabled");
 	}
 } catch(e) {}';
 	}

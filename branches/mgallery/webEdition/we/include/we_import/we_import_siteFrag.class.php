@@ -52,8 +52,8 @@ class we_import_siteFrag extends we_fragment_base{
 		}
 		echo we_html_element::jsElement('
 top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
-top.siteimportbuttons.weButton.disable("back");
-top.siteimportbuttons.weButton.disable("next");
+WE().layout.button.disable(top.siteimportbuttons.document, "back");
+WE().layout.button.disable(top.siteimportbuttons.document, "next");
 top.siteimportbuttons.setProgress(' . $progress . ');
 top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldHtmlspecialchars($progressText, ENT_QUOTES) . '";');
 	}

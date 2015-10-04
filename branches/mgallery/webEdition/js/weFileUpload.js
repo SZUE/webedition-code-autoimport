@@ -1491,7 +1491,7 @@ var weFileUpload = (function () {
 			};
 
 			this.enableWeButton = function (btn, enabled) {
-				_.view.elems.footer[btn + '_enabled'] = _.view.elems.footer.weButton.switch_button_state(btn, (enabled ? 'enabled' : 'disabled'));
+				_.view.elems.footer[btn + '_enabled'] = WE().layout.button.switch_button_state(_.view.elems.footer.document, btn, (enabled ? 'enabled' : 'disabled'));
 			};
 
 			this.setWeButtonText = function (btn, text) {
@@ -1509,7 +1509,7 @@ var weFileUpload = (function () {
 				}
 
 				if (replace) {
-					_.view.elems.footer.weButton.setText(btn, replace);
+					WE().layout.button.setText(_.view.elems.footer.document, btn, replace);
 				}
 			};
 		}

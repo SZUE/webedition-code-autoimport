@@ -137,7 +137,7 @@ class we_wizard_code{
 				break;
 		}
 
-		$_select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"weButton.enable('btn_direction_right_applyCode')\">\n";
+		$_select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"WE().layout.button.enable(document, 'btn_direction_right_applyCode')\">\n";
 		foreach($_options as $option){
 			if($option['type'] === 'optgroup' && count($option['value']) > 0){
 				$_select .= '<optgroup label="' . $option['name'] . '">';

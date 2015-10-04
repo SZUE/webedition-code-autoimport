@@ -668,7 +668,7 @@ function startImport(isFileReady) {
 	' . ((we_base_request::_(we_base_request::STRING, "import_from") === "import_upload") ? ('
 	if(isFileReady || document.we_form.we_upload_file.value) {
 		startBusy();
-		top.body.delete_enabled = top.body.weButton.switch_button_state("delete", "disabled");
+		top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
 		document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
 		document.we_form.submit();
 	}else{
@@ -676,8 +676,8 @@ function startImport(isFileReady) {
 	}') : ('
 	if(document.we_form.backup_select.value) {
 		startBusy();
-		top.body.delete_backup_enabled = top.body.weButton.switch_button_state("delete_backup", "disabled");
-		top.body.delete_enabled = top.body.weButton.switch_button_state("delete", "disabled");
+		top.body.delete_backup_enabled = WE().layout.button.switch_button_state(top.body.document, "delete_backup", "disabled");
+		top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
 		document.we_form.action = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php";
 		document.we_form.submit();
 	}else{

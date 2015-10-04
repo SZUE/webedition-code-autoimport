@@ -114,19 +114,19 @@ var container=targetF.' . $this->containerId . ';' .
 	function getDisableButtonJS(){
 		return '';
 //FIXME: this doesn't work
-		return '
+		/*return '
 for(i=0; i < top.container.position.length; i++) {
 	id = top.container.position[i];
 	id = id.replace(/entry_/, "");
-	targetF.weButton.enable("btn_direction_up_" + id);
-	targetF.weButton.enable("btn_direction_down_" + id);
+	WE().layout.button.enable(targetF.document, "btn_direction_up_" + id);
+	WE().layout.button.enable(targetF.document, "btn_direction_down_" + id);
 	if(i == 0) {
-		targetF.weButton.disable("btn_direction_up_" + id);
+		WE().layout.button.disable(targetF.document, "btn_direction_up_" + id);
 	}
 	if(i+1 == top.container.position.length) {
-		targetF.weButton.disable("btn_direction_down_" + id);
+		WE().layout.button.disable(targetF.document, "btn_direction_down_" + id);
 	}
-}';
+}';*/
 	}
 
 }
