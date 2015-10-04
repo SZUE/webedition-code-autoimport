@@ -2477,7 +2477,6 @@ self.focus();');
 			}
 
 			foreach($user_blocks as $user_block){
-
 				$html_block = $this->View->getFromCache($blockcache . "_h_" . $user_block);
 				$plain_block = $this->View->getFromCache($blockcache . "_p_" . $user_block);
 
@@ -2785,7 +2784,7 @@ self.focus();');
 	 */
 	function replacePlaceholder(&$content, &$content_plain, $customerInfos){
 		$placeholderfieldsmatches = array();
-		preg_match_all("/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/", $content, $placeholderfieldsmatches);
+		preg_match_all('/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/', $content, $placeholderfieldsmatches);
 		$placeholderfields = $placeholderfieldsmatches[1];
 		unset($placeholderfieldsmatches);
 

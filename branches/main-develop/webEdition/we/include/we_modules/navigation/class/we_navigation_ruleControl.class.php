@@ -53,7 +53,7 @@ class we_navigation_ruleControl{
 				// 2ns check if another element has same name
 				$db = new DB_WE();
 
-				if(f('SELECT 1 FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName = "' . $db->escape($this->NavigationRule->NavigationName) . '" AND ID != ' . intval($this->NavigationRule->ID) . ' LIMIT 1', '', $db)){
+				if(f('SELECT 1 FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationName="' . $db->escape($this->NavigationRule->NavigationName) . '" AND ID!=' . intval($this->NavigationRule->ID) . ' LIMIT 1', '', $db)){
 					$js = we_message_reporting::getShowMessageCall(
 							sprintf(g_l('navigation', '[rules][name_exists]'), $this->NavigationRule->NavigationName), we_message_reporting::WE_MESSAGE_ERROR);
 					$save = false;
@@ -190,6 +190,7 @@ $_selectWorkspace";
 	}
 
 	static function getAllNavigationRules(){
+		//FIXME: add cache?
 		$db = new DB_WE();
 		$db->query('SELECT * FROM ' . NAVIGATION_RULE_TABLE . ' ORDER BY ID');
 

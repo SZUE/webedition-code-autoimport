@@ -553,7 +553,7 @@ abstract class we_base_imageEdit{
 		}
 		$imgSrc = '/' . ltrim($imgSrc, '/');
 
-		$_imgPath = $_SERVER ['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $imgSrc;
+		$_imgPath = $_SERVER ['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $imgSrc;
 		$path_parts = pathinfo($_imgPath);
 		if(isset($path_parts['extension']) && ( $path_parts ['extension'] === 'svg' || $path_parts['extension'] === 'svgz')){
 			if(file_exists($_imgPath)){
@@ -574,7 +574,7 @@ abstract class we_base_imageEdit{
 			$_thumbSrc = ($imgID ?
 					WE_THUMB_PREVIEW_DIR . $imgID . '_' . $width . '_' . $height . strtolower($outputFormat) :
 					TEMP_DIR . ($tmpName ? : we_base_file::getUniqueId()) . '.' . strtolower($outputFormat));
-			$_thumbPath = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $_thumbSrc;
+			$_thumbPath = WEBEDITION_PATH . '../' . $_thumbSrc;
 
 			$_thumbExists = file_exists($_thumbPath);
 

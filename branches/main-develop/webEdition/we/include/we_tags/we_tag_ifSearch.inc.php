@@ -27,7 +27,7 @@ function we_tag_ifSearch($attribs){
 	$set = weTag_getAttribute('set', $attribs, true, we_base_request::BOOL);
 
 	return ($set ?
-					isset($_REQUEST['we_lv_search_' . $name]) :
-					isset($_REQUEST['we_lv_search_' . $name]) && strlen(str_replace(array('\\"', '"'), '', trim($_REQUEST['we_lv_search_' . $name])))
-			);
+			isset($_REQUEST['we_lv_search_' . $name]) :
+			(isset($_REQUEST['we_lv_search_' . $name]) && trim(we_base_request::_(we_base_request::HTML, 'we_lv_search_' . $name)))
+		);
 }

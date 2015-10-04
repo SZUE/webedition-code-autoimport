@@ -437,7 +437,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 		$last = $now;
 	}
 
-	public static function removeObsoleteFiles($path){
+	public static function removeObsoleteFiles($path=''){
 		$path = $path ? : WEBEDITION_PATH . 'liveUpdate/includes/';
 		if(is_file($path . 'del.files')){
 			$all = array();

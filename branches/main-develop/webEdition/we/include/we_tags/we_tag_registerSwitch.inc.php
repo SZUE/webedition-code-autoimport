@@ -27,8 +27,8 @@ function we_tag_registerSwitch(){
 		return '';
 	}
 
-	if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['WE_MAIN_DOC_REF']->InWebEdition){
-		$GLOBALS['WE_MAIN_DOC_REF']->setEditorPersistent('registered', (bool) $_REQUEST['we_set_registeredUser']);
+	if(($val = we_base_request::_(we_base_request::BOOL, 'we_set_registeredUser', -1)) !== -1 && $GLOBALS['WE_MAIN_DOC_REF']->InWebEdition){
+		$GLOBALS['WE_MAIN_DOC_REF']->setEditorPersistent('registered', $val);
 	}
 
 	$val = (bool) $GLOBALS['WE_MAIN_DOC_REF']->getEditorPersistent('registered');

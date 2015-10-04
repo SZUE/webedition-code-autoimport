@@ -528,7 +528,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->CategoryIDs = makeCSVFromArray($arr, true);
@@ -588,7 +588,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->Customers = makeCSVFromArray($arr, true);
@@ -602,7 +602,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 				if(($id = we_base_request::_(we_base_request::INT, "ncmdvalue"))){
 					foreach($arr as $k => $v){
 						if($v == $id){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->banner->FolderIDs = makeCSVFromArray($arr, true);
@@ -769,7 +769,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		$this->db->query('SELECT c.Dat AS templateCode, l.DID AS DID FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.Dat LIKE "%<we:banner %"');
 		$foo = array();
 		while($this->db->next_record()){
-			preg_match_all("|(<we:banner [^>]+>)|U", $this->db->f('templateCode'), $foo, PREG_SET_ORDER);
+			preg_match_all('|(<we:banner [^>]+>)|U', $this->db->f('templateCode'), $foo, PREG_SET_ORDER);
 			foreach($foo as $cur){
 				$wholeTag = $cur[1];
 				$name = preg_replace('|.+name="([^"]+)".*|i', '$1', $wholeTag);

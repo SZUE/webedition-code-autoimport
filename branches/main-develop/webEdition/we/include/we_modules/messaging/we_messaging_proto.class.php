@@ -152,7 +152,7 @@ class we_messaging_proto extends we_class{
 
 		if(isset($search_folder_ids)){
 			foreach($search_folder_ids as $elem){
-				if(in_array($elem, we_messaging_messaging::array_get_kvals('ID', $this->available_folders))){
+				if(isset($this->available_folders[$elem])){
 					$this->search_folder_ids[] = $elem;
 				}
 			}
@@ -199,27 +199,28 @@ class we_messaging_proto extends we_class{
 	function get_available_folders(){
 		$this->available_folders = array();
 
-		$this->DB_WE->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid));
-		//$this->DB_WE->query('SELECT ID, ParentID, account_id, Name, obj_type FROM  ' . $this->folder_tbl . ' WHERE msg_type=' . $this->sql_class_nr  . ' AND UserID=' . $this->userid);
-		while($this->DB_WE->next_record()){
-			$this->available_folders[] = array('ID' => $this->DB_WE->f('ID'),
-				'ParentID' => $this->DB_WE->f('ParentID'),
+		$this->DB_WE->query('SELECT ID,ParentID,Name,obj_type FROM  ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid));
+		while($this->DB_WE->next_record(MYSQL_ASSOC)){
+			$this->available_folders[$this->DB_WE->f('ID')] = $this->DB_WE->getRecord() + array(
 				'ClassName' => $this->ClassName,
-				'account_id' => $this->DB_WE->f('account_id'),
-				'obj_type' => $this->DB_WE->f('obj_type'),
 				'view_class' => $this->view_class,
-				'Name' => $this->DB_WE->f('Name'));
+			);
 		}
 
 		return $this->available_folders;
 	}
 
 	function create_folder($name, $parent){
-		$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->folder_tbl) . ' (ID, ParentID, UserID, account_id, msg_type, obj_type, Name) VALUES (NULL, ' . intval($parent) . ', ' . intval($this->userid) . ', -1, ' . $this->sql_class_nr . ', ' . we_messaging_proto::FOLDER_NR . ', "' . $this->DB_WE->escape($name) . '")');
-		$this->DB_WE->query('SELECT LAST_INSERT_ID() as l');
-		$this->DB_WE->next_record();
-
-		return $this->DB_WE->f('l');
+		$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->folder_tbl) . ' ' .
+			we_database_base::arraySetter(array(
+				'ParentID' => $parent,
+				'UserID' => $this->userid,
+				'account_id' => -1,
+				'msg_type' => $this->sql_class_nr,
+				'obj_type' => we_messaging_proto::FOLDER_NR,
+				'Name' => $name
+		)));
+		return $this->DB_WE->getInsertId();
 	}
 
 	function modify_folder($fid, $folder_name, $parent_folder){

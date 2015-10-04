@@ -39,7 +39,7 @@ function we_tag_write($attribs){
 			break;
 	}
 
-	$name = weTag_getAttribute('formname', $attribs, ((isset($GLOBALS['WE_FORM']) && $GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : 'we_global_form'), we_base_request::STRING);
+	$name = weTag_getAttribute('formname', $attribs, (empty($GLOBALS['WE_FORM']) ? 'we_global_form' : $GLOBALS['WE_FORM']), we_base_request::STRING);
 
 	$publish = weTag_getAttribute('publish', $attribs, false, we_base_request::BOOL);
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
@@ -68,7 +68,8 @@ function we_tag_write($attribs){
 			case 'document':
 				$tid = weTag_getAttribute('tid', $attribs, 0, we_base_request::INT);
 				$doctype = weTag_getAttribute('doctype', $attribs, '', we_base_request::STRING);
-				$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories, true);
+				$id = we_base_request::_(we_base_request::INT, 'we_editDocument_ID', 0);
+				$ok = we_webEditionDocument::initDocument($name, $tid, $doctype, $categories, $id, true);
 				break;
 			case 'object':
 				$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
@@ -76,7 +77,7 @@ function we_tag_write($attribs){
 
 				if(f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid))){
 					if(!$id || f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $id . ' AND TableID=' . intval($classid))){
-						$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), true);
+						$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), $id, true);
 					} else {
 						$GLOBALS['we_object_write_ok'] = false;
 						t_e('Object ' . $id . ' is no element of class ' . intval($classid) . '!');
@@ -94,12 +95,12 @@ function we_tag_write($attribs){
 			$GLOBALS['we_object_write_ok'] = false;
 			return;
 		}
-		$isOwner = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && (
+		$isOwner = !empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && (
 			($protected && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->WebUserID)) ||
 			($userid && ($_SESSION['webuser']['ID'] == $GLOBALS['we_' . $type][$name]->getElement($userid)))
 			);
 
-		$isAdmin = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && $admin && isset($_SESSION['webuser'][$admin]) && $_SESSION['webuser'][$admin];
+		$isAdmin = !empty($_SESSION['webuser']['registered']) && $admin && !empty($_SESSION['webuser'][$admin]);
 
 		$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($admin/* only if this field is used */ ? $isAdmin : true) : false); //FR #8411
 
@@ -276,13 +277,13 @@ function we_tag_write($attribs){
 			$GLOBALS['we_object_write_ok'] = false;
 		}
 	}
-	if(isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START']){
+	if(!empty($GLOBALS['WE_SESSION_START'])){
 		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]); //fix #8051
 	}
 }
 
 function checkAndCreateBinary($formname, $type = 'we_document'){
-	$webuserId = isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
+	$webuserId = !empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 	$regs = array();
 
 	$checks = array(

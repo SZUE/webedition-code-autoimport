@@ -48,21 +48,21 @@ function we_tag_userInput($attribs, $content){
 	}
 
 	$fieldname = $property ?
-			('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '_' . $name) :
-			('we_ui_' . (isset($GLOBALS['WE_FORM']) ?
-					$GLOBALS['WE_FORM'] :
-					''
-			) . '[' . $name . ']');
+		('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '_' . $name) :
+		('we_ui_' . (isset($GLOBALS['WE_FORM']) ?
+			$GLOBALS['WE_FORM'] :
+			''
+		) . '[' . $name . ']');
 
 	$objekt = (isset($GLOBALS['WE_FORM']) ?
-					(isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
-							$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
-							(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
-									$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
-									(isset($GLOBALS['we_doc']) ?
-											$GLOBALS['we_doc'] :
-											false))) :
-					'');
+			(isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
+				$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
+				(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
+					$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
+					(isset($GLOBALS['we_doc']) ?
+						$GLOBALS['we_doc'] :
+						false))) :
+			'');
 
 	if($objekt){
 		if($property){
@@ -70,8 +70,8 @@ function we_tag_userInput($attribs, $content){
 			$orgVal = $isset ? $objekt->{$name} : $value;
 		} else {
 			$isset = (!$objekt->ID && $objekt->getElement($name) === '' ?
-							false :
-							$objekt->issetElement($name));
+					false :
+					$objekt->issetElement($name));
 
 			$orgVal = $isset ? $objekt->getElement($name) : $value;
 		}
@@ -90,14 +90,14 @@ function we_tag_userInput($attribs, $content){
 
 	if(!$editable && !$hidden && $type !== 'img' && $type !== 'binary' && $type !== 'flashmovie' && $type !== 'quicktime'){
 		$_hidden = getHtmlTag(
-				'input', array(
+			'input', array(
 			'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
 		));
 		return (($type != 'hidden') ? $content : '') . $_hidden;
 	}
 	switch($type){
 		case 'img' :
-			$_imgDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$_imgDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 			if($editable){
 				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
@@ -161,7 +161,7 @@ function we_tag_userInput($attribs, $content){
 	</tr>
 </table>';
 			}
-			
+
 			$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" />';
 
 			if(isset($_SESSION[$_imgDataId]['serverPath'])){
@@ -169,22 +169,22 @@ function we_tag_userInput($attribs, $content){
 
 				return '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />' . $hidden;
 			}
-			
+
 			if(isset($_SESSION[$_imgDataId]['doDelete']) && $_SESSION[$_imgDataId]['doDelete']){
 				return $hidden;
 			}
-			
+
 			if((isset($_SESSION[$_imgDataId]['id']) && $_SESSION[$_imgDataId]['id']) || (isset($orgVal) && $orgVal)){//Fix #9835
 				unset($attribs['width']);
 				unset($attribs['height']);
 				$attribs['id'] = $_SESSION[$_imgDataId]['id'] ? $_SESSION[$_imgDataId]['id'] : $orgVal;
 				return $GLOBALS['we_doc']->getField($attribs, 'img') . $hidden;
 			}
-			
+
 			return '';
 
 		case 'flashmovie' :
-			$_flashmovieDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_FLASHMOVIE_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$_flashmovieDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_FLASHMOVIE_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 			if($editable){
 				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
@@ -220,8 +220,8 @@ function we_tag_userInput($attribs, $content){
 
 					// Include Flash class
 					$flashmovieTag = (isset($attribs['id']) && $attribs['id'] ?
-									$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
-									'<img src="' . ICON_DIR . 'no_flashmovie.gif" alt="" width="64" height="64" />');
+							$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
+							'<img src="' . ICON_DIR . 'no_flashmovie.gif" alt="" width="64" height="64" />');
 				}
 
 				$checked = (isset($_SESSION[$_flashmovieDataId]['doDelete']) && $_SESSION[$_flashmovieDataId]['doDelete'] ? ' checked' : '');
@@ -266,7 +266,7 @@ function we_tag_userInput($attribs, $content){
 
 			return '';
 		case 'quicktime' :
-			$_quicktimeDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$_quicktimeDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 
 			if($editable){
@@ -301,8 +301,8 @@ function we_tag_userInput($attribs, $content){
 					unset($attribs['width']);
 					unset($attribs['height']);
 					$quicktimeTag = (isset($attribs['id']) && $attribs['id'] ?
-									$GLOBALS['we_doc']->getField($attribs, 'quicktime') :
-									'<img src="' . ICON_DIR . 'no_quicktime.gif" alt="" width="64" height="64" />');
+							$GLOBALS['we_doc']->getField($attribs, 'quicktime') :
+							'<img src="' . ICON_DIR . 'no_quicktime.gif" alt="" width="64" height="64" />');
 				}
 
 				$checked = (isset($_SESSION[$_quicktimeDataId]["doDelete"]) && $_SESSION[$_quicktimeDataId]["doDelete"] ? ' checked' : '');
@@ -353,7 +353,7 @@ function we_tag_userInput($attribs, $content){
 			return '';
 
 		case 'binary' :
-			$_binaryDataId = we_base_request::_(we_base_request::RAW, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$_binaryDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 			if($editable){
 				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
@@ -448,8 +448,7 @@ function we_tag_userInput($attribs, $content){
 
 		case 'textarea' :
 			//$attribs['inlineedit'] = "true"; // bugfix: 7276
-			$pure = weTag_getAttribute("pure", $attribs, false, we_base_request::BOOL);
-			if($pure){
+			if(weTag_getAttribute("pure", $attribs, false, we_base_request::BOOL)){
 				$atts = removeAttribs($attribs, array(
 					'wysiwyg',
 					'commands',
@@ -600,8 +599,8 @@ function open_wysiwyg_win(){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-							substr($lang, 0, 2) :
-							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+					substr($lang, 0, 2) :
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
 			if(!Zend_Locale::hasCache()){
 				Zend_Locale::setCache(getWEZendCache());
@@ -648,8 +647,8 @@ function open_wysiwyg_win(){
 			$doc = we_getDocForTag($docAttr);
 			$lang = $doc->Language;
 			$langcode = ($lang ?
-							substr($lang, 0, 2) :
-							array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
+					substr($lang, 0, 2) :
+					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()) );
 
 			$frontendL = $GLOBALS['weFrontendLanguages'];
 			foreach($frontendL as &$lcvalue){
@@ -707,10 +706,10 @@ function open_wysiwyg_win(){
 				foreach($values as $txt){
 
 					$attsOption = ($txt == $orgVal ?
-									array(
-								'selected' => 'selected'
-									) :
-									array());
+							array(
+							'selected' => 'selected'
+							) :
+							array());
 
 					$options .= getHtmlTag('option', $attsOption, trim($txt), true);
 				}
@@ -756,8 +755,8 @@ function open_wysiwyg_win(){
 				'fontnames'
 			));
 			return (!$isset ?
-							we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
-							we_getInputRadioField($fieldname, $orgVal, $value, $atts));
+					we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
+					we_getInputRadioField($fieldname, $orgVal, $value, $atts));
 
 		case 'hidden':
 			return getHtmlTag('input', array(

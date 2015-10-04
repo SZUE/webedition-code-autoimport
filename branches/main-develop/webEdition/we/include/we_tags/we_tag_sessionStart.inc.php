@@ -33,7 +33,7 @@ function we_tag_sessionStart($attribs){
 		return '';
 	}
 
-	if(isset($_REQUEST['we_webUser_logout']) && $_REQUEST['we_webUser_logout']){
+	if(!empty($_REQUEST['we_webUser_logout'])){
 		if(isset($_SESSION['webuser']['registered']) && $_SESSION['webuser']['registered'] && isset($_SESSION['webuser']['ID']) && $_SESSION['webuser']['ID']){
 			if(( (isset($_REQUEST['s']['AutoLogin']) && !$_REQUEST['s']['AutoLogin']) || (isset($_SESSION['webuser']['AutoLogin']) && !$_SESSION['webuser']['AutoLogin'])) && isset($_SESSION['webuser']['AutoLoginID'])){
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_AUTOLOGIN_TABLE . ' WHERE AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($_SESSION['webuser']['AutoLoginID'])) . '"');
@@ -49,7 +49,7 @@ function we_tag_sessionStart($attribs){
 		return '';
 	}
 
-	if(isset($_REQUEST['we_set_registeredUser']) && $GLOBALS['we_doc']->InWebEdition){
+	if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition && we_base_request::_(we_base_request::BOOL, 'we_set_registeredUser')){
 		$_SESSION['weS']['we_set_registered'] = $_REQUEST['we_set_registeredUser'];
 	}
 
@@ -94,9 +94,8 @@ function we_tag_sessionStart($attribs){
 			}
 		}
 	}
-	$onlinemonitor = weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL);
 
-	if($onlinemonitor && isset($_SESSION['webuser']['registered'])){
+	if(!empty($_SESSION['webuser']['registered']) && weTag_getAttribute('onlinemonitor', $attribs, false, we_base_request::BOOL)){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . CUSTOMER_SESSION_TABLE . ' WHERE LastAccess<DATE_SUB(NOW(), INTERVAL 1 HOUR)');
 		$monitorgroupfield = weTag_getAttribute('monitorgroupfield', $attribs, '', we_base_request::STRING);
 		$doc = we_getDocForTag(weTag_getAttribute('monitordoc', $attribs, '', we_base_request::STRING), false);
@@ -123,6 +122,10 @@ function we_tag_sessionStart($attribs){
 				'WebUserDescription' => '',
 		)));
 	}
+	//remove sessions consisting only of webuser[registered]
+	if(!empty($_SESSION['webuser']) && count($_SESSION['webuser']) == 1){
+		unset($_SESSION['webuser']);
+	}
 	return '';
 }
 
@@ -147,7 +150,7 @@ function wetagsessionHandleFailedLogin(){
 			$_SESSION['webuser']['loginfailed'] = we_users_user::MAX_LOGIN_COUNT_REACHED;
 			unset($_REQUEST['s']);
 			if(($path = id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT, FILE_TABLE))){
-				include($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $path);
+				include(WEBEDITION_PATH . '../' . $path);
 				exit();
 			}
 		}
@@ -190,7 +193,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 			$_SESSION['webuser']['registered'] = true;
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET LastLogin=UNIX_TIMESTAMP() WHERE ID=' . intval($_SESSION['webuser']['ID']));
 
-			if($persistentlogins && isset($_REQUEST['s']['AutoLogin']) && $_REQUEST['s']['AutoLogin'] && $_SESSION['webuser']['AutoLoginDenied'] != 1){
+			if($persistentlogins && !empty($_REQUEST['s']['AutoLogin']) && $_SESSION['webuser']['AutoLoginDenied'] != 1){
 				$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
 				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),

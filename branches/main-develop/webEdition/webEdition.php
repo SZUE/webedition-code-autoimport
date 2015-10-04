@@ -1158,9 +1158,9 @@ echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
 					top.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
 				}
 				var wyw = arguments[2];
-				wyw = Math.max(wyw ? wyw : 800);
+				wyw = Math.max((wyw ? wyw : 520), 520);
 				var wyh = arguments[3];
-				wyh = Math.max(wyh ? wyh : 600);
+				wyh = Math.max((wyh ? wyh : 400), 400);
 
 				if (window.screen) {
 					var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;

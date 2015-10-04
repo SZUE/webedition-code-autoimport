@@ -298,14 +298,13 @@ class we_thumbnail{
 	 * @param boolean $getBinary if set, also the binary image data will be loaded
 	 * @public
 	 */
-	public function initByImageIDAndThumbID($imageID, $thumbID, $getBinary = false){
+	public function initByImageIDAndThumbID($imageID, $thumbID, $createIfNotExist = true, $getBinary = false){
 		$this->imageID = $imageID;
 
 		if(!$this->getImageData($getBinary)){
 			return false;
 		}
-		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db);
-		$_foo = $_foo ? : array(
+		$_foo = getHash('SELECT * FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db) ? : array(
 			'ID' => 0,
 			'Width' => 0,
 			'Height' => 0,
@@ -320,6 +319,16 @@ class we_thumbnail{
 		);
 
 		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Ratio'], $_foo['Maxsize'], $_foo['Interlace'], $_foo['Fitinside'], $_foo['Format'], $_foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $_foo['Date']);
+
+		/* FIXME: the following code was missing here (and in several places this function is called)!
+		 * Is this the right place to execute it? or should we move it to init() or some other place?
+		 */
+		if(($createIfNotExist && !$this->exists()) && ($this->createThumb() === we_thumbnail::BUILDERROR)){
+			t_e('Error creating thumbnail for file', $this->Filename . $this->Extension);
+			return false;
+		}
+		// END
+
 		return true;
 	}
 
@@ -352,7 +361,7 @@ class we_thumbnail{
 			we_base_file::createLocalFolder($_thumbdir);
 		}
 		$quality = max(10, min(100, intval($this->thumbQuality) * 10));
-		$outarr = we_base_imageEdit::edit_image($this->imageData ? : $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath, $this->outputFormat, $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
+		$outarr = we_base_imageEdit::edit_image($this->imageData ? : WEBEDITION_PATH . '../' . $this->imagePath, $this->outputFormat, WEBEDITION_PATH . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->thumbRatio, $this->thumbInterlace, 0, 0, -1, -1, 0, $this->thumbFitinside);
 
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
@@ -396,7 +405,7 @@ class we_thumbnail{
 	 */
 	public static function getThumbDirectory($realpath = false){
 		$dir = '/' . ltrim(preg_replace('#^\.?(.*)$#', '$1', (WE_THUMBNAIL_DIRECTORY ? : '_thumbnails_')), '/');
-		return ($realpath ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') . $dir;
+		return ($realpath ? WEBEDITION_PATH . '../' : '') . $dir;
 	}
 
 	/**
@@ -429,7 +438,10 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function getOutputPath($withDocumentRoot = false, $unique = false){
-		return ($withDocumentRoot ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' : '') . $this->outputPath . ((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->outputPath) : time()) : '');
+		return ($withDocumentRoot ? WEBEDITION_PATH . '../' : '') .
+			$this->outputPath .
+			((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime(WEBEDITION_PATH . '../' . $this->outputPath) : time()) :
+				'');
 	}
 
 	/**
@@ -600,7 +612,7 @@ class we_thumbnail{
 	 */
 	private function checkAndGetImageSizeIfNeeded(){
 		if(!($this->imageWidth && $this->imageHeight)){
-			$arr = $this->getimagesize($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath);
+			$arr = $this->getimagesize(WEBEDITION_PATH . '../' . $this->imagePath);
 			if(count($arr) >= 2){
 				$this->imageWidth = $arr[0];
 				$this->imageHeight = $arr[1];
@@ -615,7 +627,7 @@ class we_thumbnail{
 	 * @private
 	 */
 	private function getBinaryData(){
-		$this->imageData = we_base_file::load($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '../' . $this->imagePath);
+		$this->imageData = we_base_file::load(WEBEDITION_PATH . '../' . $this->imagePath);
 	}
 
 	public static function deleteByThumbID($id){

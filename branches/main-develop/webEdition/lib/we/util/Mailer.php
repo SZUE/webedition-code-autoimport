@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -25,7 +24,6 @@
  *
  */
 class we_util_Mailer extends Zend_Mail{
-
 	/**
 	 * Type of Message, either text/html or text/plain
 	 *
@@ -134,8 +132,8 @@ class we_util_Mailer extends Zend_Mail{
 				$suhosin = extension_loaded('suhosin');
 				$_sender = $sender ? $this->parseEmailUser($sender) : '';
 				$tr = ($_sender && isset($_sender['email']) && $_sender['email'] != '' && !$suhosin ?
-								new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
-								new Zend_Mail_Transport_Sendmail());
+						new Zend_Mail_Transport_Sendmail('-f' . $_sender['email']) :
+						new Zend_Mail_Transport_Sendmail());
 
 				Zend_Mail::setDefaultTransport($tr);
 				break;
@@ -206,7 +204,7 @@ class we_util_Mailer extends Zend_Mail{
 			$name = (isset($user['name']) ? $user['name'] : '');
 		} else {
 			$_user = array();
-			if(preg_match("/<(.)*>/", $user, $_user)){
+			if(preg_match('/<(.)*>/', $user, $_user)){
 				$email = substr($_user[0], 1, strpos($_user[0], ">") - 1);
 				$name = substr($user, 0, strpos($user, "<"));
 			} else {
@@ -243,38 +241,35 @@ class we_util_Mailer extends Zend_Mail{
 		if($this->Body){
 			if($this->isEmbedImages){
 				$binParts = $images = array();
-				preg_match_all("/(src|background)=\"(.*)\"/Ui", $this->Body, $images);
+				preg_match_all('/(src|background)="(.*)"/Ui', $this->Body, $images);
 				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
 
 				foreach($images[2] as $i => $url){
-					$isBinaryData = preg_match("/image\/(.*);base64,(.*)\"/Ui", $url . '"', $binParts);
+					$isBinaryData = preg_match('/image\/(.*);base64,(.*)"/Ui', $url . '"', $binParts);
 
 					if($isBinaryData){
-						if(in_array($binParts[1], $this->embedImages)){
-							$cid = 'cid:' . $this->doaddAttachmentInline($binParts[2], true, $binParts[1]);
-						} else {
+						if(!in_array($binParts[1], $this->embedImages)){
 							continue;
 						}
+						$cid = 'cid:' . $this->doaddAttachmentInline($binParts[2], true, $binParts[1]);
 					} elseif(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
 						$filename = basename($url);
 						$fileParts = pathinfo($filename);
 						$ext = $fileParts['extension'];
 
-						if(in_array($ext, $this->embedImages)){
-							$directory = str_replace('..', '', dirname($url) . '/');
-							$directory = ($directory === '.' ? '' : $directory);
-							if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
-								$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
-							}
-							$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
-									((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
-									((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
-							$attachmentpath = $this->basedir . $directory . $filename;
-							$attachmentpath = str_replace('//', '/', $attachmentpath);
-							$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
-						} else {
+						if(!in_array($ext, $this->embedImages)){
 							continue;
 						}
+						$directory = str_replace('..', '', dirname($url) . '/');
+						$directory = ($directory === '.' ? '' : $directory);
+						if(($pos = stripos($directory, $_SERVER['SERVER_NAME']))){
+							$directory = substr($directory, (strlen($_SERVER['SERVER_NAME']) + $pos), strlen($directory));
+						}
+						$this->basedir = ($this->basedir ? : $_SERVER['DOCUMENT_ROOT']) .
+							((strlen($this->basedir) > 1 && substr($this->basedir, -1) != '/') ? '/' : '') .
+							((strlen($directory) > 1 && substr($directory, -1) != '/') ? '/' : '');
+						$attachmentpath = str_replace('//', '/', $this->basedir . $directory . $filename);
+						$cid = 'cid:' . $this->doaddAttachmentInline($attachmentpath);
 					}
 					$this->Body = preg_replace('/' . $images[1][$i] . '="' . preg_quote($url, '/') . '"/Ui', $images[1][$i] . '="' . $cid . '"', $this->Body);
 				}
@@ -320,15 +315,15 @@ class we_util_Mailer extends Zend_Mail{
 	public function parseHtml2TextPart($html){
 
 		$this->AltBody = trim(strip_tags(
-						preg_replace(array(
+				preg_replace(array(
 			'-<br[^>]*>-s',
 			'-<(ul|ol)[^>]*>-s',
 			'-<(head|title|style|script)[^>]*>.*?</\1>-s'
-								), array(
+					), array(
 			"\n",
 			"\n\n",
 			''
-								), strtr($html, array(
+					), strtr($html, array(
 			"\n" => '',
 			"\r" => '',
 			'</h1>' => "\n\n",
@@ -342,8 +337,8 @@ class we_util_Mailer extends Zend_Mail{
 			'</li>' => "\n",
 			'&lt;' => '<',
 			'&gt;' => '>',
-										)
-						))
+						)
+				))
 		));
 	}
 
@@ -354,11 +349,12 @@ class we_util_Mailer extends Zend_Mail{
 		if($isBinData){
 			$at = new Zend_Mime_Part(base64_decode($attachment));
 			$at->id = $at->filename = str_replace('.', '', uniqid('', true));
-			$at->type = self::get_mime_type($ext, $at->filename);
+			$at->type = self::get_mime_type($ext, '');
 		} else {
-			$at = new Zend_Mime_Part(we_base_file::load($attachment));
 			$filename = basename($attachment);
 			$rep = str_replace($_SERVER['DOCUMENT_ROOT'], '', $attachment);
+			$attachment = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], '/'), WEBEDITION_PATH . '..', $attachment);
+			$at = new Zend_Mime_Part(we_base_file::load($attachment));
 			$at->id = md5($filename);
 			$at->filename = $filename;
 			$fileParts = pathinfo($filename);
@@ -379,20 +375,22 @@ class we_util_Mailer extends Zend_Mail{
 	 * @return mime type of ext
 	 */
 	public function doaddAttachment($attachmentpath){
-		if($attachmentpath){
-			$binarydata = we_base_file::load($attachmentpath);
-			$at = new Zend_Mime_Part($binarydata);
-			$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
-			$at->encoding = Zend_Mime::ENCODING_BASE64;
-			$filename = basename($attachmentpath);
-			$at->id = md5($filename);
-			$at->filename = $filename;
-			$fileParts = pathinfo($filename);
-			$ext = $fileParts['extension'];
-			$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
-
-			$this->addAttachment($at);
+		if(!$attachmentpath){
+			return;
 		}
+		$attachmentpath = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], '/'), WEBEDITION_PATH . '..', $attachmentpath);
+		$binarydata = we_base_file::load($attachmentpath);
+		$at = new Zend_Mime_Part($binarydata);
+		$at->disposition = Zend_Mime::DISPOSITION_ATTACHMENT;
+		$at->encoding = Zend_Mime::ENCODING_BASE64;
+		$filename = basename($attachmentpath);
+		$at->id = md5($filename);
+		$at->filename = $filename;
+		$fileParts = pathinfo($filename);
+		$ext = $fileParts['extension'];
+		$at->type = self::get_mime_type($ext, $filename, $attachmentpath);
+
+		$this->addAttachment($at);
 	}
 
 	/**
@@ -478,7 +476,7 @@ class we_util_Mailer extends Zend_Mail{
 	public function Send(){
 		try{
 			$t = parent::send();
-		}catch(Zend_Exception $e){
+		} catch (Zend_Exception $e){
 			t_e('warning', 'Error while sending mail: ', $e);
 			return false;
 		}
@@ -532,15 +530,15 @@ class we_util_Mailer extends Zend_Mail{
 		//remove css/js code
 		$html = preg_replace('|<script.*</script>|', '', preg_replace('|<style.*/[ ]*style>|', '', $html));
 		$this->addTextPart(
-				trim(
-						strip_tags(
-								strtr($html, array(
+			trim(
+				strip_tags(
+					strtr($html, array(
 			'&nbsp;' => ' ',
 			'<br />' => "\n",
 			'<br/>' => "\n")
-								)
-						)
+					)
 				)
+			)
 		);
 	}
 

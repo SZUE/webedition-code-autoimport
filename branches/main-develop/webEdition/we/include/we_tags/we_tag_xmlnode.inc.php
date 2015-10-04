@@ -51,7 +51,7 @@ function we_tag_xmlnode($attribs){
 		echo $foo;
 		return false;
 	}
-	$feed = weTag_getAttribute('feed', $attribs, '', we_base_request::STRING);
+	$feed = weTag_getAttribute('feed', $attribs, '', we_base_request::HTML);
 	$url = weTag_getAttribute('url', $attribs, '', we_base_request::URL);
 
 	if(!isset($GLOBALS["xpaths"])){
@@ -68,10 +68,10 @@ function we_tag_xmlnode($attribs){
 		$parent_name = $GLOBALS["xstack"][$pind_name];
 	}
 
-	$ind_name = count($GLOBALS["xpaths"]) + 1;
+	$ind_name = count($GLOBALS['xpaths']) + 1;
 	$GLOBALS["xpaths"][$ind_name] = array();
-	$GLOBALS["xpaths"][$ind_name]["xpath"] = $attribs["xpath"];
-	$GLOBALS["xpaths"][$ind_name]["parent"] = $parent_name;
+	$GLOBALS["xpaths"][$ind_name]['xpath'] = $attribs["xpath"];
+	$GLOBALS["xpaths"][$ind_name]['parent'] = $parent_name;
 	$got_name = false;
 
 	// find feed

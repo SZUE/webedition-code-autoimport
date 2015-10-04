@@ -25,7 +25,7 @@
 function we_isUserInputNotEmpty($attribs){
 	$formname = weTag_getAttribute('formname', $attribs, 'we_global_form', we_base_request::STRING);
 	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
-	return (isset($_REQUEST['we_ui_' . $formname][$match]) && !empty($_REQUEST['we_ui_' . $formname][$match]));
+	return (!empty(we_base_request::_(we_base_request::HTML, 'we_ui_' . $formname, '', $match)));
 }
 
 function we_tag_ifUserInputEmpty($attribs){

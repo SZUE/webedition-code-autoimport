@@ -87,7 +87,7 @@ class we_objectFile extends we_document{
 		$this->CSS = '';
 	}
 
-	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0, $wewrite = false){
+	public static function initObject($classID, $formname = 'we_global_form', $categories = '', $parentid = 0, $objID = 0, $wewrite = false){
 		$session = isset($GLOBALS['WE_SESSION_START']) && $GLOBALS['WE_SESSION_START'];
 
 		if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
@@ -99,8 +99,8 @@ class we_objectFile extends we_document{
 				$_SESSION['weS']['we_object_session_' . $formname] = array();
 			}
 			$wof->we_new();
-			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
-				$wof->initByID($id, OBJECT_FILES_TABLE);
+			if($objID){
+				$wof->initByID($objID, OBJECT_FILES_TABLE);
 				if(!$wof->TableID){
 					return false;
 				}
@@ -109,7 +109,9 @@ class we_objectFile extends we_document{
 				$wof->setRootDirID(true);
 				$wof->resetParentID();
 				$wof->restoreDefaults();
-				if(strlen($categories)){
+			}
+			if(($wewrite || !$objID)){
+				if($categories){
 					$categories = makeIDsFromPathCVS($categories, CATEGORY_TABLE);
 					$wof->Category = $categories;
 				}
@@ -125,12 +127,13 @@ class we_objectFile extends we_document{
 				}
 			}
 
+
 			if($session){
 				$wof->saveInSession($_SESSION['weS']['we_object_session_' . $formname]);
 			}
 		} else {
-			if(($id = we_base_request::_(we_base_request::INT, 'we_editObject_ID', 0))){
-				$wof->initByID($id, OBJECT_FILES_TABLE);
+			if($objID){
+				$wof->initByID($objID, OBJECT_FILES_TABLE);
 			} elseif($session){
 				$wof->we_initSessDat($_SESSION['weS']['we_object_session_' . $formname]);
 			}
@@ -302,31 +305,26 @@ class we_objectFile extends we_document{
 		$defwsCSVArray = makeArrayFromCSV(isset($foo['DefaultWorkspaces']) ? $foo['DefaultWorkspaces'] : '');
 		$owsCSVArray = makeArrayFromCSV(isset($foo['Workspaces']) ? $foo['Workspaces'] : '');
 		$otmplsCSVArray = makeArrayFromCSV(isset($foo['Templates']) ? $foo['Templates'] : '');
-		$this->Workspaces = '';
-		$this->Templates = '';
+		$this->Workspaces = array();
+		$this->Templates = array();
 		$this->ExtraWorkspaces = '';
 		$this->ExtraTemplates = '';
 		$processedWs = array();
 
 // loop throgh all default workspaces
-		foreach($defwsCSVArray as $_defWs){
+		foreach($defwsCSVArray as $i => $_defWs){
 // loop through each object workspace
-			foreach($owsCSVArray as $i => $ows){
+			foreach($owsCSVArray as $ows){
 				if((!in_array($_defWs, $processedWs)) && in_workspace($_defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
-					$processedWs = array($_defWs);
-					$this->Workspaces .= $_defWs . ',';
-					$this->Templates .= $otmplsCSVArray[$i] . ',';
+					$processedWs[] = $_defWs;
+					$this->Workspaces[] = $_defWs;
+					$this->Templates[] = $otmplsCSVArray[$i];
 				}
 			}
 		}
-		unset($processedWs);
 
-		if($this->Workspaces){
-			$this->Workspaces = ',' . $this->Workspaces;
-		}
-		if($this->Templates){
-			$this->Templates = ',' . $this->Templates;
-		}
+		$this->Workspaces = implode(',', $this->Workspaces);
+		$this->Templates = implode(',', $this->Templates);
 	}
 
 	function setRootDirID($doit = false){
@@ -1381,7 +1379,6 @@ class we_objectFile extends we_document{
 		$attribs["height"] = isset($attribs["height"]) ? $attribs["height"] : 200;
 		$attribs["rows"] = 10;
 		$attribs["cols"] = 60;
-		$attribs['bgcolor'] = isset($attribs["bgcolor"]) ? $attribs["bgcolor"] : '';
 		$attribs['tinyparams'] = isset($attribs["tinyparams"]) ? $attribs["tinyparams"] : "";
 		$attribs['templates'] = isset($attribs["templates"]) ? $attribs["templates"] : "";
 		$attribs["class"] = isset($attribs["class"]) ? $attribs["class"] : "";
@@ -1531,7 +1528,7 @@ class we_objectFile extends we_document{
 
 	public function getPossibleWorkspaces($ClassWs, $all = false){
 		$ClassWs = $ClassWs ? : f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
-		$userWs = get_ws(FILE_TABLE,false,true);
+		$userWs = get_ws(FILE_TABLE, false, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
 // alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
@@ -1973,10 +1970,10 @@ class we_objectFile extends we_document{
 				$text = str_replace('%PathNoC%', $zwtext, $text);
 			}
 			//remove duplicate "//" which will produce errors
-			$text = str_replace(array(' ', '//'), array('-', '/'), $text);
-			$text = (URLENCODE_OBJECTSEOURLS) ?
-				str_replace('%2F', '/', urlencode($text)) :
-				preg_replace(array('~&szlig;~', '~&(.)dash;~', '~&(.)uml;~', '~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~&[^;]+;~', '~[^0-9a-zA-Z/._-]~',), array('ss', '-', '${1}e', '${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
+			$text = preg_replace('|\.+$|', '', str_replace(array(' ', '//'), array('-', '/'), $text));
+			$text = (URLENCODE_OBJECTSEOURLS ?
+					str_replace('%2F', '/', urlencode($text)) :
+					preg_replace(array('~&szlig;~', '~-*&(.)dash;-*~', '~&(.)uml;~', '~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~&[^;]+;~', '~[^0-9a-zA-Z/._-]~', '~//+~', '~--+~'), array('ss', '-', '${1}e', '${1}${3}', '', '/', '-'), htmlentities($text, ENT_COMPAT, $this->Charset)));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
@@ -2241,7 +2238,7 @@ class we_objectFile extends we_document{
 			if(!we_root::we_save(true)){
 				return false;
 			}
-			if(we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
+			if(!$resave && we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE)){
 				we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
 			}
 		}
@@ -2416,7 +2413,9 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
+		if(!$DoNotMark){
+			we_temporaryDocument::delete($this->ID, $this->Table, $this->DB_WE);
+		}
 		//if($oldUrl != $this->Url || !$wasPublished || $this->oldCategory != $this->Category){
 		//FIXME: changes of customerFilter are missing here
 		$this->rewriteNavigation();

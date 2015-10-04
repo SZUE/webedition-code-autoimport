@@ -227,40 +227,16 @@ class we_customer_EIWizard{
 		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", CSV_LINEEND);
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames", true);
 
-		switch(we_base_request::_(we_base_request::STRING, "selection")){
-			case self::SELECTION_MANUAL:
-				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
-				break;
-			default:
-				$filter_count = we_base_request::_(we_base_request::INT, "filter_count", 0);
-				$filter_fieldname = $filter_operator = $filter_fieldvalue = $filter_logic = array();
-
-				$fields_names = array("fieldname", "operator", "fieldvalue", "logic");
-				for($i = 0; $i < $filter_count; $i++){
-					$new = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "");
-					foreach($fields_names as $field){
-						$var = "filter_" . $field;
-						$varname = $var . "_" . $i;
-						if(($val = we_base_request::_(we_base_request::STRING, $varname))){
-							${$var}[] = $val;
-						}
-					}
-				}
-
-				$filterarr = array();
-				foreach($filter_fieldname as $k => $v){
-					$op = $this->getOperator($filter_operator[$k]);
-					$filterarr[] = ($k ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
-				}
-
-				$this->db->query('SELECT ID FROM ' . CUSTOMER_TABLE . ($filterarr ? ' WHERE (' . implode(' ', $filterarr) . ')' : ""));
-				$customers = $this->db->getAll(true);
-		}
+		$customers = $this->getExportCustomers();
 		if($customers){
 			//set variables in top frame
-			$js = "";
+			$js = '';
 			$parts = array(
-				array("headline" => g_l('modules_customer', '[filename]'), "html" => we_html_tools::htmlTextInput("filename", $_input_size, $filename), "space" => $_space),
+				array(
+					'headline' => g_l('modules_customer', '[filename]'),
+					'html' => we_html_tools::htmlTextInput('filename', $_input_size, $filename),
+					'space' => $_space
+				),
 			);
 
 			switch($type){
@@ -310,26 +286,26 @@ class we_customer_EIWizard{
 			$parts[] = array("headline" => $table->getHtml(), "space" => $_space, "noline" => 1, "html" => "");
 		} else {
 			$parts = array(
-				array("headline" => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', "space" => $_space)
+				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', "space" => $_space)
 			);
 			$js = we_html_element::jsElement(
-					 $this->bodyFrame . '.document.we_form.step.value--;
+					$this->bodyFrame . '.document.we_form.step.value--;
 	' . $this->footerFrame . '.location="' . $this->frameset . '?pnt=eifooter&art=' . self::ART_EXPORT . '&step="+' . $this->bodyFrame . '.document.we_form.step.value;
 	' . $this->bodyFrame . '.document.we_form.submit();'
-
-
-				); //FIXME: disable next button
+			); //FIXME: disable next button
 		}
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
-					we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
-						//we_html_element::htmlHidden(array("name"=>"step",""=>"4")).
-						$this->getHiddens(array("art" => self::ART_EXPORT, "step" => 3)) .
-						we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step3]'))
+
+		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
+				we_html_element::htmlHead(STYLESHEET . $js) .
+				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
+						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
+							//we_html_element::htmlHidden(array("name"=>"step",""=>"4")).
+							$this->getHiddens(array('art' => self::ART_EXPORT, 'step' => 3)) .
+							we_html_multiIconBox::getHTML("weExportWizard", "100%", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[export_step3]'))
+						)
 					)
 				)
 		);
-
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(STYLESHEET . $js) . $body);
 	}
 
 	function getHTMLExportStep4(){
@@ -373,6 +349,7 @@ class we_customer_EIWizard{
 
 			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
+				session_write_close();
 				$_size = filesize(TEMP_PATH . $_filename);
 
 				header("Pragma: public");
@@ -1201,36 +1178,7 @@ function doNext(){
 		$csv_lineend = we_base_request::_(we_base_request::RAW, "csv_lineend", "");
 		$csv_fieldnames = we_base_request::_(we_base_request::BOOL, "csv_fieldnames");
 
-		switch(we_base_request::_(we_base_request::STRING, "selection")){
-			case self::SELECTION_MANUAL:
-				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
-				break;
-			default:
-				$filter_count = we_base_request::_(we_base_request::INT, "filter_count", 0);
-				$filter_fieldname = $filter_operator = $filter_fieldvalue = $filter_logic = array();
-
-				$fields_names = array("fieldname", "operator", "fieldvalue", "logic");
-				for($i = 0; $i < $filter_count; $i++){
-					$new = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "");
-					foreach($fields_names as $field){
-						$var = "filter_" . $field;
-						$varname = $var . "_" . $i;
-						if(($val = we_base_request::_(we_base_request::STRING, $varname))){
-							${$var}[] = $val;
-						}
-					}
-				}
-
-				$filterarr = array();
-				foreach($filter_fieldname as $k => $v){
-					$op = $this->getOperator($filter_operator[$k]);
-					$filterarr[] = ($k ? (" " . $filter_logic[$k] . " ") : "") . $filter_fieldname[$k] . " " . $op . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
-				}
-
-				$this->db->query('SELECT ID FROM ' . CUSTOMER_TABLE . ($filterarr ? ' WHERE (' . implode(' ', $filterarr) . ')' : ""));
-				$customers = $this->db->getAll(true);
-		}
-
+		$customers = $this->getExportCustomers();
 		if(!$customers){
 //FIXME: add code to switch to previous page
 			t_e('noting to export', $customers, $_REQUEST);
@@ -1675,14 +1623,14 @@ function formDirChooser() {
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_customer":
 				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
-				$customers= array_unique(array_merge($customers,we_base_request::_(we_base_request::INTLISTA, "cus", array())));
+				$customers = array_unique(array_merge($customers, we_base_request::_(we_base_request::INTLISTA, "cus", array())));
 				break;
 			case "del_customer":
 				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
 				if(($id = we_base_request::_(we_base_request::INT, "cus"))){
 					foreach($customers as $k => $v){
 						if($v == $id){
-							array_splice($customers, $k, 1);
+							unset($customers[$k]);
 						}
 					}
 				}
@@ -1864,6 +1812,31 @@ document.we_form.filter_count.value="' . $count . '";');
 				return ">=";
 			case 6:
 				return "LIKE";
+		}
+	}
+
+	private function getExportCustomers(){
+		switch(we_base_request::_(we_base_request::STRING, 'selection')){
+			case self::SELECTION_MANUAL:
+				return we_base_request::_(we_base_request::INTLISTA, 'customers', array());
+			default:
+				$filter_count = we_base_request::_(we_base_request::INT, 'filter_count', 0);
+				$filter_fieldname = $filter_operator = $filter_fieldvalue = $filter_logic = array();
+
+				$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic');
+				for($i = 0; $i < $filter_count; $i++){
+					foreach($fields_names as $field){
+						$var = "filter_" . $field;
+						${$var}[] = we_base_request::_(we_base_request::STRING, $var . '_' . $i, 0);
+					}
+				}
+				$filterarr = array();
+				foreach($filter_fieldname as $k => $v){
+					$filterarr[] = ($k ? (' ' . $filter_logic[$k] . ' ') : '') . $v . ' ' . $this->getOperator($filter_operator[$k]) . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
+				}
+
+				$this->db->query('SELECT ID FROM ' . CUSTOMER_TABLE . ($filterarr ? ' WHERE (' . implode(' ', $filterarr) . ')' : ''));
+				return $this->db->getAll(true);
 		}
 	}
 

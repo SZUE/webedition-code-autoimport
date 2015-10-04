@@ -26,6 +26,8 @@ function we_tag_ifNotCustomerResetPassword(array $attribs){
 			return !empty($GLOBALS['ERROR']['customerResetPassword']);
 		case 'passwordMismatch':
 			return isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_NOT_MATCH;
+		case 'passwordRule':
+			return isset($GLOBALS['ERROR']['customerResetPassword']) && $GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_NOT_SUFFICIENT;
 		case 'required':
 			return isset($GLOBALS['ERROR']['customerResetPassword']) && ($GLOBALS['ERROR']['customerResetPassword'] == we_customer_customer::PWD_FIELD_NOT_SET);
 		case 'userNotExists': //FR #9823

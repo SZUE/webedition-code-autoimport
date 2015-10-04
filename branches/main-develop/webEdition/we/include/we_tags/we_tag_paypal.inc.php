@@ -159,7 +159,7 @@ function we_tag_paypal($attribs){
 
 // if there is not action variable, set the default action of 'process'
 
-		switch(we_base_request::_(we_base_request::RAW, 'action', 'process')){
+		switch(we_base_request::_(we_base_request::HTML, 'action', 'process')){
 
 			case 'process': // Process and order
 				// There should be no output at this point.  To process the POST data,
@@ -247,7 +247,7 @@ function we_tag_paypal($attribs){
 						case (!$useVat && !$netprices) :
 							$shopVat = (1 + ($shopVat / 100));
 							//paypal allows only two decimal places
-							$itemPrice = ($itemPrice / $shopVat);	
+							$itemPrice = ($itemPrice / $shopVat);
 							break;
 						case ($netprices && $useVat) :
 							$totalVat = $itemPrice / 100 * $shopVat;
@@ -258,12 +258,12 @@ function we_tag_paypal($attribs){
 						default:
 							break;
 					}
-					
+
 					//round itemprice first here, because for calculating correct vat we need orign itemprice
 					$itemPrice = round($itemPrice, 2); //#6546
-					
+
 					$p->add_field('amount_' . $i, $itemPrice);
-					
+
 					// determine the shipping cost by accumulating the total
 					$summit += ( $itemPrice * $item['quantity']);
 				}

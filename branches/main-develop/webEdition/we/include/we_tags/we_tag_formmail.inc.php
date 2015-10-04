@@ -24,7 +24,7 @@
  */
 function we_tag_formmail(){
 	if(!$GLOBALS['WE_MAIN_DOC']->InWebEdition){
-		include_once($_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . 'we_formmail.php');
+		include_once(WEBEDITION_PATH . 'we_formmail.php');
 	}
 	return '';
 }

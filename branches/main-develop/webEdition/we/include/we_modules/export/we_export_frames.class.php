@@ -704,6 +704,7 @@ function closeAllType(){
 
 			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
 				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
+				session_write_close();
 				$_size = filesize(TEMP_PATH . $_filename);
 
 				header("Pragma: public");
@@ -722,6 +723,7 @@ function closeAllType(){
 		} else {
 			header("Location: " . $this->frameset . "?pnt=cmd&cmd=error=upload_failed");
 		}
+		exit();
 	}
 
 	function getHTMLCmd(){
@@ -805,7 +807,7 @@ function closeAllType(){
 				if(($cat = we_base_request::_(we_base_request::INT, "cat"))){
 					foreach($arr as $k => $v){
 						if($v == $cat){
-							array_splice($arr, $k, 1);
+							unset($arr[$k]);
 						}
 					}
 					$this->View->export->Categorys = makeCSVFromArray($arr, true);

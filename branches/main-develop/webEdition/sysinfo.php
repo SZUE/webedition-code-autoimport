@@ -150,7 +150,7 @@ function getOK($message = '', $value = ''){
 	return '<div style="min-height:20px; min-width: 20px; cursor:pointer; padding-right:20px; padding-left:0px; background:url(' . IMAGE_DIR . 'valid.gif) center right no-repeat;" title="' . $message . '">' . $value . '</div>';
 }
 
-$_install_dir = $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR;
+$_install_dir = WEBEDITION_PATH;
 
 $_install_dir = '<abbr title="' . $_install_dir . '">' . we_util_Strings::shortenPath($_install_dir, 35) . '</abbr>';
 

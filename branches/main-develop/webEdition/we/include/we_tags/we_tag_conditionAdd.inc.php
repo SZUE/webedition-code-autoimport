@@ -45,9 +45,12 @@ function we_tag_conditionAdd($attribs){
 			$var = $regs[2];
 		}
 	}
+	$escape = true;
 	switch(strtolower($type)){
 		case 'now' :
 			$value = time();
+			$escape = false;
+			break;
 		case 'sessionfield' :
 			if($var && isset($_SESSION['webuser'][$var])){
 				$value = $_SESSION['webuser'][$var];
@@ -61,7 +64,7 @@ function we_tag_conditionAdd($attribs){
 			break;
 		case 'request' :
 			if($var && isset($_REQUEST[$var])){
-				$value = $_REQUEST[$var];
+				$value = we_base_request::_(we_base_request::HTML, $var);
 			}
 			break;
 		default :
@@ -80,7 +83,7 @@ function we_tag_conditionAdd($attribs){
 	$value = (isset($regs[1]) ? $regs[1] : '') . $value . (isset($regs[3]) ? $regs[3] : '');
 
 	if(strlen($field) && isset($GLOBALS['we_lv_conditionName']) && isset($GLOBALS[$GLOBALS['we_lv_conditionName']])){
-		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '(' . $field . ' ' . $compare . ' "' . $GLOBALS['DB_WE']->escape($value) . '") ';
+		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= '(' . $field . ' ' . $compare . ' ' . ($escape ? '"' : '') . $GLOBALS['DB_WE']->escape($value) . ($escape ? '"' : '') . ') ';
 	} else {
 		$GLOBALS[$GLOBALS['we_lv_conditionName']] .= (preg_match('/^(.*)AND ?$/', $GLOBALS[$GLOBALS['we_lv_conditionName']]) ? '1 ' : '0 ');
 	}

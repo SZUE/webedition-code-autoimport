@@ -203,6 +203,10 @@ class we_html_table extends we_html_baseCollection{
 					$colspan--;
 				} else {
 					$col = $row->getChild($j);
+					if(!is_object($col)){
+						t_e($col,$j,$row);
+						continue;
+					}
 					if(in_array('colspan', array_keys($col->attribs))){
 						$colspan = $col->getAttribute('colspan')-1;
 					}

@@ -40,7 +40,8 @@ function we_tag_createShop($attribs){
 		new we_base_sessionHandler();
 	}
 
-	if(isset($_SESSION[$shopname . '_save']) && ((isset($_REQUEST['deleteshop']) && $_REQUEST['deleteshop'] == 1) && ((isset($_REQUEST['shopname']) && $_REQUEST['shopname'] === $shopname) || !isset($_REQUEST['shopname'])) || $deleteshop)){ // delete shop
+	$sName=we_base_request::_(we_base_request::HTML,'shopname');
+	if(isset($_SESSION[$shopname . '_save']) && (we_base_request::_(we_base_request::BOOL,'deleteshop') && (!$sName||$sName === $shopname) || $deleteshop)){ // delete shop
 		unset($_SESSION[$shopname . '_save']);
 	}
 	if(isset($GLOBALS['WE_LOGOUT']) && $GLOBALS['WE_LOGOUT'] && $deleteshoponlogout){

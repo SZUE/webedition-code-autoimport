@@ -40,6 +40,7 @@ CREATE TABLE ###TBLPREFIX###tblOrders (
   IntPayment_Type tinyint(4) unsigned default NULL,
   strSerial longtext NOT NULL,
   strSerialOrder longtext NOT NULL,
+	shopname tinytext NOT NULL DEFAULT '',
   PRIMARY KEY  (IntID),
 	KEY DateOrder (DateOrder),
 	KEY IntOrderID (IntOrderID)

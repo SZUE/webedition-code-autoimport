@@ -28,8 +28,8 @@ abstract class we_backup_import{
 		we_backup_util::addLog(sprintf('Reading offset %s, %s lines, Mem: %s', $offset, $lines, memory_get_usage(true)));
 		we_backup_util::writeLog();
 		$header = (isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset'] ?
-						we_exim_XMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
-						we_exim_XMLExIm::getHeader('', 'backup'));
+				we_exim_XMLExIm::getHeader($_SESSION['weS']['weBackupVars']['encoding'], 'backup') :
+				we_exim_XMLExIm::getHeader('', 'backup'));
 		$data = $header . we_backup_fileReader::readLine($filename, $offset, $lines, $iscompressed);
 
 		if(strlen($data) == strlen($header)){
@@ -51,6 +51,9 @@ abstract class we_backup_import{
 		$parser = new we_backup_XMLParser();
 
 		$parser->parse($data, (DEFAULT_CHARSET ? : 'ISO-8859-1')); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
+		if($parser->parseError){
+			t_e('encountered parse error during import', $parser->parseError);
+		}
 		// free some memory
 		unset($data);
 
@@ -84,16 +87,13 @@ abstract class we_backup_import{
 
 						do{
 							$element_value = $parser->getNodeName();
-							if($parser->parseError){
-								t_e('encountered parse error during import', $parser);
-							}
 							if($element_value === 'Field'){
 								$element_name = $parser->getNodeData();
 							}
 							if(isset($element_name) && $element_name){
 								$object->elements[$element_name][$element_value] = $parser->getNodeData();
 							}
-						}while($parser->nextSibling());
+						} while($parser->nextSibling());
 
 						unset($element_name);
 						unset($element_value);
@@ -106,8 +106,8 @@ abstract class we_backup_import{
 						} else {
 							// import field
 							$object->$name = (we_exim_contentProvider::needCoding($classname, $name, we_exim_contentProvider::CODING_OLD) ?
-											we_exim_contentProvider::decode($parser->getNodeData()) :
-											$parser->getNodeData()); //original mit Bug #3412 aber diese Version l�st 4092
+									we_exim_contentProvider::decode($parser->getNodeData()) :
+									$parser->getNodeData()); //original mit Bug #3412 aber diese Version l�st 4092
 						}
 
 						if(isset($object->persistent_slots) && !in_array($name, $object->persistent_slots)){
@@ -124,13 +124,13 @@ abstract class we_backup_import{
 							$object->documentTable = defined('FILE_TABLE') ? FILE_TABLE : 'tblfile';
 						}
 					}
-				}while($parser->nextSibling());
+				} while($parser->nextSibling());
 
 				$addtext = '';
 				if(isset($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && $_SESSION['weS']['weBackupVars']['options']['convert_charset']){
 					$addtext = (method_exists($object, 'convertCharsetEncoding') ?
-									" - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET :
-									" - Converting Charset: NO ");
+							" - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET :
+							" - Converting Charset: NO ");
 				}
 				$_prefix = 'Saving object ';
 				switch($classname){
@@ -166,7 +166,7 @@ abstract class we_backup_import{
 			if(isset($object)){
 				unset($object);
 			}
-		}while($parser->nextSibling());
+		} while($parser->nextSibling());
 	}
 
 	private static function getObject($tagname, $attribs, &$object, &$classname){

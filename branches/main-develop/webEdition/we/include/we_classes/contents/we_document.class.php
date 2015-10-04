@@ -234,7 +234,7 @@ class we_document extends we_root{
 
 				if(in_array($_path, $NoDelNavis)){
 					$pos = array_search($_path, $NoDelNavis);
-					array_splice($NoDelNavis, $pos, 1);
+					unset($NoDelNavis[$pos]);
 				}
 			}
 		}
@@ -263,7 +263,7 @@ class we_document extends we_root{
 		if(in_array($id, $cats)){
 			$pos = array_search($id, $cats);
 			if($pos !== false || $pos == '0'){
-				array_splice($cats, $pos, 1);
+				unset($cats[$pos]);
 			}
 		}
 		$this->Category = makeCSVFromArray($cats, true);
@@ -314,7 +314,7 @@ class we_document extends we_root{
 				$_naviItem = new we_navigation_navigation($_id);
 				if(!$_naviItem->hasAnyChilds()){
 					$_naviItem->delete();
-					array_splice($navis, $pos, 1);
+					unset($navis[$pos]);
 				}
 			}
 		}
@@ -329,7 +329,7 @@ class we_document extends we_root{
 				$_naviItem->delete();
 				if(in_array($_path, $navis)){
 					$pos = array_search($_path, $navis);
-					array_splice($navis, $pos, 1);
+					unset($navis[$pos]);
 				}
 			}
 		}
@@ -1296,7 +1296,7 @@ class we_document extends we_root{
 	}
 
 	function del_schedule($nr){
-		array_splice($this->schedArr, $nr, 1);
+		unset($this->schedArr[$nr]);
 	}
 
 	protected function i_setElementsFromHTTP(){
@@ -1370,8 +1370,8 @@ class we_document extends we_root{
 		$cats = makeArrayFromCSV($this->schedArr[$nr]['CategoryIDs']);
 		if(in_array($id, $cats)){
 			$pos = array_search($id, $cats);
-			if($pos !== false || $pos == '0'){
-				array_splice($cats, $pos, 1);
+			if($pos !== false){
+				unset($cats[$pos]);
 			}
 		}
 		$this->schedArr[$nr]['CategoryIDs'] = makeCSVFromArray($cats, true);
@@ -1399,7 +1399,7 @@ class we_document extends we_root{
 				$this->schedArr = array();
 			}
 			while($this->DB_WE->next_record()){
-				$s = unserialize($this->DB_WE->f('Schedpro'));
+				$s = we_unserialize($this->DB_WE->f('Schedpro'));
 				if(is_array($s)){
 					$s['active'] = $this->DB_WE->f('Active');
 					$this->schedArr[] = $s;
@@ -1466,7 +1466,7 @@ class we_document extends we_root{
 
 			$ind = array_search(we_base_constants::WE_EDITPAGE_VARIANTS, $this->EditPageNrs);
 			if(!empty($ind)){
-				array_splice($this->EditPageNrs, $ind, 1);
+				unset($this->EditPageNrs[$ind]);
 			}
 		}
 	}
@@ -1512,20 +1512,20 @@ class we_document extends we_root{
 	public static function parseInternalLinks(&$text, $pid, $path = ''){
 		$DB_WE = new DB_WE();
 		$regs = array();
-		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
+		if(preg_match_all('/(href|src)="(' . we_base_link::TYPE_INT_PREFIX . '|\?id=)(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
-				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
+				$foo = getHash('SELECT Path,(ContentType="' . we_base_ContentTypes::IMAGE . '") AS isImage  FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[3]) . (isset($GLOBALS['we_doc']->InWebEdition) && $GLOBALS['we_doc']->InWebEdition ? '' : ' AND Published>0'), $DB_WE);
 
 				if($foo && $foo['Path']){
 					$path_parts = pathinfo($foo['Path']);
 					if(show_SeoLinks() && WYSIWYGLINKS_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 						$foo['Path'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 					}
-					$text = str_replace($reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . $reg[4], $reg[1] . '="' . $foo['Path'] . ($reg[3] ? '?' : '') . $reg[4], $text);
+					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . ($reg[4] ? '?' : '') . $reg[5], $text);
 				} else {
 					$text = preg_replace(array(
-						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
-						'-<(a|img) [^>]*' . $reg[1] . '="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . '(\?|&|&amp;|")[^>]*>-Ui',
+						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
+						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '(\?|&|&amp;|")[^>]*>-Ui',
 						), array(
 						'$3',
 						''

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,7 +30,6 @@
  * Description: Provides functions for creating html tags
  */
 class we_html_baseCollection extends we_html_baseElement{
-
 	var $childs = array();
 
 	/**
@@ -72,7 +70,8 @@ class we_html_baseCollection extends we_html_baseElement{
 	 * @return		void
 	 */
 	function delChild($childid){
-		array_splice($this->childs, $childid, 1);
+		unset($this->childs[$childid]);
+		$this->childs = array_values($this->childs);
 	}
 
 	/**

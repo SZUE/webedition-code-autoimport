@@ -1251,7 +1251,7 @@ function set_state_edit_delete_recipient(control) {
 					if(($ncust = we_base_request::_(we_base_request::STRING, "ncustomer") ) !== false){
 						foreach($arr as $k => $v){
 							if($v == $ncust){
-								array_splice($arr, $k, 1);
+								unset($arr[$k]);
 							}
 						}
 						$this->newsletter->groups[$ngroup]->Customers = makeCSVFromArray($arr, true);
@@ -1751,7 +1751,7 @@ self.close();');
 				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file, 2) : array());
 
 				if($nrid){
-					array_splice($emails, $nrid, 1);
+					unset($emails[$nrid]);
 					$emails_out = '';
 					foreach($emails as $email){
 						$emails_out.=makeCSVFromArray($email) . "\n";
@@ -2184,8 +2184,8 @@ self.close();');
 		$this->db->query('SELECT LinkID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . $this->newsletter->ID . ' AND Type=' . we_newsletter_block::ATTACHMENT . ($group ? ' AND FIND_IN_SET("' . $this->db->escape($group) . '",Groups)' : ''));
 
 		while($this->db->next_record()){
-			if($this->db->f("LinkID")){
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . $this->db->f("LinkID"), '', $dbtmp);
+			if($this->db->f('LinkID')){
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . $this->db->f('LinkID'), '', $dbtmp);
 
 				if($path){
 					$atts[] = $_SERVER['DOCUMENT_ROOT'] . $path;

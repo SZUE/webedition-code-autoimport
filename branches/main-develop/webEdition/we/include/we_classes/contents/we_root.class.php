@@ -314,7 +314,7 @@ abstract class we_root extends we_class{
 			$v = $this->RestrictOwners ? true : false;
 			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[limitedAccess]'), false, 'defaultfont', "setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');");
 		}
-		return '<table style="border-spacing: 0px;border-style:none;" cellpadding="0"><tr><td><img src="' . TREE_IMAGE_DIR . ($this->RestrictOwners ? 'check1_disabled.gif' : 'check0_disabled.gif') . '" /></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
+		return '';
 	}
 
 	function formOwners($canChange = true){
@@ -385,7 +385,7 @@ abstract class we_root extends we_class{
 		if(in_array($id, $owners)){
 			$pos = array_search($id, $owners);
 			if($pos !== false || $pos == '0'){
-				array_splice($owners, $pos, 1);
+				unset($owners[$pos]);
 			}
 		}
 		$this->Owners = makeCSVFromArray($owners, true);
@@ -702,7 +702,7 @@ abstract class we_root extends we_class{
 	}
 
 	/** returns the Path dynamically (use it, when the class-variable Path is not set)  */
-	function getPath(){
+	public function getPath(){
 		return rtrim($this->getParentPath(), '/') . '/' . ( isset($this->Filename) ? $this->Filename : '' ) . ( isset($this->Extension) ? $this->Extension : '' );
 	}
 
@@ -731,10 +731,13 @@ abstract class we_root extends we_class{
 		return false;
 	}
 
-	/* get the Real-Path of the Object (Server-Path) */
+	/* get the Real-Path of the Object (Server-Path)
+	 * @$fileaccesss bool if true, a path valid for domain replacement is given
+	 */
 
 	public function getRealPath($old = false){
-		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] : TEMPLATES_PATH) . ($old ? $this->OldPath : $this->getPath());
+		return (($this->Table == FILE_TABLE) ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' : TEMPLATES_PATH) .
+			($old ? $this->OldPath : $this->getPath());
 	}
 
 	/* get the Site-Path of the Object */
@@ -943,8 +946,8 @@ abstract class we_root extends we_class{
 				break;
 		}
 
-		$regs = array();
 		if($_REQUEST){
+			$regs = array();
 			$dates = array();
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
@@ -983,8 +986,9 @@ abstract class we_root extends we_class{
 					$this->OwnersReadOnly = serialize($v);
 				}
 			}
+			$year = date('Y');
 			foreach($dates as $k => $v){
-				$this->setElement($k, mktime($dates[$k]['hour'], $dates[$k]['minute'], 0, $dates[$k]['month'], $dates[$k]['day'], $dates[$k]['year']), 'date');
+				$this->setElement($k, mktime(empty($dates[$k]['hour']) ? 0 : $dates[$k]['hour'], empty($dates[$k]['minute']) ? 0 : $dates[$k]['minute'], 0, empty($dates[$k]['month']) ? 1 : $dates[$k]['month'], empty($dates[$k]['day']) ? 1 : $dates[$k]['day'], empty($dates[$k]['year']) ? $year : $dates[$k]['year']), 'date');
 			}
 		}
 		$this->ParentPath = $this->getParentPath();
@@ -1399,8 +1403,7 @@ abstract class we_root extends we_class{
 	}
 
 	protected function isMoved(){
-		$this->wasMoved = ($this->OldPath && ($this->Path != $this->OldPath));
-		return $this->wasMoved;
+		return ($this->wasMoved = ($this->OldPath && ($this->Path != $this->OldPath)));
 	}
 
 	public function wasMoved(){

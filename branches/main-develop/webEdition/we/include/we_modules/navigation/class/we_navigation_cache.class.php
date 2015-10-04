@@ -61,7 +61,7 @@ class we_navigation_cache{
 		$db = new DB_WE();
 		while($_id != 0){
 			self::cacheNavigation($_id);
-			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), 'ParentID', $db);
+			$_id = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($_id), '', $db);
 			$_c++;
 			if($_c > 99999){
 				break;
@@ -94,10 +94,9 @@ class we_navigation_cache{
 
 	static function getCachedRule(){//FIXME: this file is never written!
 		$_cache = WE_CACHE_PATH . 'rules.php';
-		if(file_exists($_cache)){
-			return we_base_file::load($_cache);
-		}
-		return false;
+		return (file_exists($_cache) ?
+				we_base_file::load($_cache) :
+				false);
 	}
 
 	/**

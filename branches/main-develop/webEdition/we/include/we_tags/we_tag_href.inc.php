@@ -70,7 +70,7 @@ function we_tag_href($attribs){
 
 			if($int){
 				$href = $intPath;
-				$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
+				$include_path = $href ? WEBEDITION_PATH . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 				$path_parts = pathinfo($href);
 				if($hidedirindex && show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$href = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
@@ -81,7 +81,7 @@ function we_tag_href($attribs){
 		case we_base_link::TYPE_EXT:
 			$int = false;
 			$href = $extPath;
-			$include_path = $href ? $_SERVER['DOCUMENT_ROOT'] . WEBEDITION_DIR . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
+			$include_path = $href ? WEBEDITION_PATH . '..' . $href : ''; //(symlink) webEdition always points to the REAL DOC-Root!
 			break;
 	}
 

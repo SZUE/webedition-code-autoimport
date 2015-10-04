@@ -424,7 +424,7 @@ function checkFooter(){
 					//we can't use include-tag since we don't have a document & many warnings will occur.
 					$path = id_to_path($id, FILE_TABLE, $DB_WE);
 					if($path){
-						include($_SERVER['DOCUMENT_ROOT'] . $path);
+						include(WEBEDITION_PATH . '../' . $path);
 					}
 					ob_end_clean();
 					break;
@@ -433,7 +433,7 @@ function checkFooter(){
 			if($s['type'] != self::TYPE_ONCE && ($nextWann = self::getNextTimestamp($s, $now))){
 				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Wann=' . intval($nextWann) . ' WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
 			} else {
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0 WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
+				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0,SerializedData="" WHERE Active=1 AND DID=' . intval($id) . ' AND ClassName="' . $schedFile['ClassName'] . '" AND Type="' . $s['type'] . '" AND Was="' . $s['task'] . '" AND Wann=' . $schedFile['Wann']);
 			}
 		}
 
@@ -462,6 +462,10 @@ function checkFooter(){
 	}
 
 	static function trigger_schedule(){
+		//sth. to do???
+		if(!f('SELECT 1 FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1')){
+			return;
+		}
 		$DB_WE = new DB_WE();
 		$now = time();
 		$hasLock = $DB_WE->hasLock();
@@ -477,11 +481,11 @@ function checkFooter(){
 		}
 
 		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Wann<=UNIX_TIMESTAMP() AND lockedUntil<NOW() AND Active=1 ORDER BY Wann LIMIT 1', $DB_WE))){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=lockedUntil+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '" AND Wann=' . $rec['Wann']);
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '" AND Wann=' . $rec['Wann']);
 			if($hasLock){
 				$DB_WE->unlock();
 			}
-			$s = unserialize($rec['Schedpro']);
+			$s = we_unserialize($rec['Schedpro']);
 			if(is_array($s)){
 				$s['lasttime'] = self::getPrevTimestamp($s, $now);
 				$tmp = array(
@@ -493,9 +497,11 @@ function checkFooter(){
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else {
 				//data invalid, reset & make sure this is not processed the next time
-				$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Active=0, Schedpro="' . serialize(array()) . '" WHERE DID=' . $rec['DID'] . ' AND Active=1 AND Wann=' . $rec['Wann'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec["Type"] . '" AND Was="' . $rec["Was"] . '"');
+				$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . $rec['DID'] . ' AND Active=1 AND Wann=' . $rec['Wann'] . ' AND ClassName="' . $rec['ClassName'] . '" AND Type="' . $rec['Type'] . '" AND Was="' . $rec['Was'] . '"');
 			}
 		}
+		//cleanup old single shots
+		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE Active=0 AND Type=' . self::TYPE_ONCE . ' AND Wann<UNIX_TIMESTAMP(CURDATE()-INTERVAL 1 YEAR)');
 		//make sure DB is unlocked!
 		$DB_WE->unlock();
 //reset state
@@ -510,7 +516,7 @@ function checkFooter(){
 
 		$scheddy = array();
 
-		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Schedpro IS NULL OR Schedpro=""');
+		$DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE Schedpro=""');
 		while($DB_WE->next_record()){
 			$s = array();
 
@@ -531,7 +537,7 @@ function checkFooter(){
 		}
 
 		foreach($scheddy as $s){
-			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="' . $DB_WE->escape(serialize($s)) . '", Active=1, SerializedData="" WHERE DID=' . intval($s["did"]) . ' AND Was=' . intval($s["task"]) . " AND Wann=" . intval($s["time"]));
+			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET Schedpro="' . $DB_WE->escape(we_serialize($s, 'json')) . '", Active=1, SerializedData="" WHERE DID=' . intval($s["did"]) . ' AND Was=' . intval($s["task"]) . ' AND Wann=' . intval($s["time"]));
 		}
 	}
 
@@ -760,7 +766,7 @@ function checkFooter(){
 						'Was' => $s['task'],
 						'ClassName' => $object->ClassName,
 						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
-						'Schedpro' => serialize($s),
+						'Schedpro' => we_serialize($s, 'json'),
 						'Type' => $s['type'],
 						'Active' => $s['active']
 				)))){

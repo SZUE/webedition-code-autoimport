@@ -81,7 +81,7 @@ class we_navigation_item{
 		$this->catParam = $catParam;
 
 		if(!is_array($attributes)){
-			$attributes = @unserialize($attributes);
+			$attributes = we_unserialize($attributes);
 		}
 		$this->attributes = $attributes;
 
@@ -126,14 +126,12 @@ class we_navigation_item{
 		$item->position = count($this->items);
 	}
 
-	function setCurrent(we_navigation_items &$weNavigationItems, $self = true){
-		if($self){
-			$this->current = true;
-		}
+	function setCurrent(we_navigation_items &$weNavigationItems){
+		$this->current = true;
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
 			$weNavigationItems->items['id' . $this->parentid]->setCurrent($weNavigationItems);
-			$this->setContainsCurrent();
+			$this->containsCurrent = true;
 		}
 	}
 
@@ -143,69 +141,14 @@ class we_navigation_item{
 		}
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
-			//$weNavigationItems->items['id' . $this->parentid]->unsetCurrent($weNavigationItems);
 			foreach($this->items as $_i){
 				$_i->unsetCurrent($weNavigationItems);
 			}
-			$this->unsetContainsCurrent();
+			$this->containsCurrent = false;
 		}
-	}
-
-	function setContainsCurrent(){
-		$this->containsCurrent = true;
-	}
-
-	function unsetContainsCurrent(){
-		$this->containsCurrent = false;
 	}
 
 	function isCurrent(we_navigation_items $weNavigationItems){
-		if(isset($_SERVER['REQUEST_URI']) && ($this->CurrentOnAnker || $this->CurrentOnUrlPar || $this->currentOnCat)){
-			$uri = parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI']));
-			$ref = parse_url(str_replace('&amp;', '&', $this->href));
-			if($uri['path'] == $ref['path']){
-				$allfound = true;
-
-				$uriarrq = array();
-				if(isset($uri['query'])){
-					parse_str($uri['query'], $uriarrq);
-				}
-				$refarrq = array();
-				if(isset($ref['query'])){
-					parse_str($ref['query'], $refarrq);
-				}
-
-				if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
-					//remove other param tha "anchors" or catParams respectively
-					$tmpUriarrq = $tmpRefarrq = array();
-					if($this->CurrentOnAnker){
-						$tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
-						$tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';
-					}
-					if($this->currentOnCat){
-						$tmpUriarrq[$this->catParam] = isset($uriarrq[$this->catParam]) ? $uriarrq[$this->catParam] : '#';
-						$tmpRefarrq[$this->catParam] = isset($refarrq[$this->catParam]) ? $refarrq[$this->catParam] : '#';
-					}
-					$uriarrq = $tmpUriarrq;
-					$refarrq = $tmpRefarrq;
-				}
-
-				if(($allfound &= (count($uriarrq) == count($refarrq)))){
-					foreach($refarrq as $key => $val){
-						$allfound &= isset($uriarrq[$key]) && $uriarrq[$key] == $val;
-					}
-				}
-
-				if($allfound){
-					$this->setCurrent($weNavigationItems);
-				} elseif($this->current){
-					$this->unsetCurrent($weNavigationItems);
-				}
-
-				return $allfound;
-			}
-		}
-
 		switch($this->table){
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				if(isset($GLOBALS['we_obj'])){
@@ -218,6 +161,50 @@ class we_navigation_item{
 				}
 				break;
 		}
+
+		if(isset($_SERVER['REQUEST_URI']) && isset($id) && ($this->docid == $id)){
+			static $uri = null;
+			static $uriarrq = array();
+			$refarrq = array();
+
+			$uri = ($uri === null ? parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])) : $uri);
+			$ref = parse_url(str_replace('&amp;', '&', $this->href));
+			if(!empty($uri['query']) && !$uriarrq){
+				parse_str($uri['query'], $uriarrq);
+			}
+			if(!empty($ref['query'])){
+				parse_str($ref['query'], $refarrq);
+			}
+			if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
+				//remove other param tha "anchors" or catParams respectively
+				$tmpUriarrq = $tmpRefarrq = array();
+				if($this->CurrentOnAnker){
+					$tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
+					$tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';
+				}
+				if($this->currentOnCat){
+					$tmpUriarrq[$this->catParam] = isset($uriarrq[$this->catParam]) ? $uriarrq[$this->catParam] : '#';
+					$tmpRefarrq[$this->catParam] = isset($refarrq[$this->catParam]) ? $refarrq[$this->catParam] : '#';
+				}
+			} else {
+				$tmpUriarrq = $uriarrq;
+				$tmpRefarrq = $refarrq;
+			}
+			$allfound = true;
+			if(($allfound &= (count($tmpUriarrq) == count($tmpRefarrq)))){
+				foreach($tmpRefarrq as $key => $val){
+					$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
+				}
+			}
+
+			if($allfound){
+				$this->setCurrent($weNavigationItems);
+			} elseif($this->current){
+				$this->unsetCurrent($weNavigationItems);
+			}
+			return $allfound;
+		}
+
 		if(isset($id) && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker)){
 			$this->setCurrent($weNavigationItems);
 			return true;

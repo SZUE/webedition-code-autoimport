@@ -111,7 +111,7 @@ class we_backup_table{
 	function fetchNewColumns(){
 		// fix for bannerclicks table - primary key has been added
 		if(defined('BANNER_CLICKS_TABLE') && $this->table == BANNER_CLICKS_TABLE){
-			if(!$this->issetElement('clickid')){
+			if(!isset($this->elements['clickid'])){
 				$this->elements['clickid'] = array(
 					'Field' => 'clickid',
 					'Type' => 'BIGINT',
@@ -124,7 +124,7 @@ class we_backup_table{
 		}
 		// fix for bannerviews table - primary key has been added
 		if(defined('BANNER_VIEWS_TABLE') && $this->table == BANNER_VIEWS_TABLE){
-			if(!$this->issetElement('viewid')){
+			if(!isset($this->elements['viewid'])){
 				$this->elements['viewid'] = array(
 					'Field' => 'viewid',
 					'Type' => 'BIGINT',

@@ -164,7 +164,10 @@ class we_shop_statusMails{
 			'languageFieldIsISO' => 0
 			), $documentsarray
 		);
-		$zw2 = strtr(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"', '', $DB_WE), array('O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":'));
+		$zw2 = strtr(f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="weShopStatusMails"', '', $DB_WE), array(
+			'O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":',
+			'O:17:"weshopstatusmails":' => 'O:19:"we_shop_statusMails":',
+		));
 
 		if($zw2){
 			$zw2 = unserialize($zw2);

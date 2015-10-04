@@ -27,6 +27,10 @@ class we_object_exImport extends we_object{
 		'ID', 'OF_ID', 'OF_ParentID', 'OF_Text', 'OF_Path', 'OF_Url', 'OF_TriggerID', 'OF_Workspaces', 'OF_ExtraWorkspaces', 'OF_ExtraWorkspacesSelected',
 		'OF_Templates', 'OF_ExtraTemplates', 'OF_Category', 'OF_Published', 'OF_IsSearchable', 'OF_Charset', 'OF_WebUserID', 'OF_Language', 'variant_weInternVariantElement'
 	);
+	protected $isAddFieldNoSave = false;
+	protected $isModifyFieldNoSave = false;
+	protected $isDropFieldNoSave = false;
+	protected $isForceDropOnSave = false;
 
 	function saveToDB(){
 		$this->wasUpdate = $this->ID > 0;
@@ -107,7 +111,7 @@ class we_object_exImport extends we_object{
 
 			foreach($this->SerializedArray as $fieldname => $value){
 				$arr = explode('_', $fieldname);
-				if(!isset($arr[0])){
+				if(!isset($arr[1])){
 					continue;
 				}
 
@@ -143,10 +147,12 @@ class we_object_exImport extends we_object{
 			}
 
 			//FIXME: deactivated for #9899 - some elements are not present (e.g. object-references) & will be deleted therefore
-			/*
-			foreach($drop as $key => $value){
-				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
-			}*/
+			//With $this->isForceDropOnSave drops can be activated
+			if($this->isForceDropOnSave){
+				foreach($drop as $key => $value){
+					$this->DB_WE->query('ALTER TABLE ' . $ctable . ' DROP ' . $value);
+				}
+			}
 
 			foreach($alter as $key => $value){
 				$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $key . ' ' . $value);
@@ -248,19 +254,20 @@ class we_object_exImport extends we_object{
 
 	function getFieldPrefix($name){
 		$this->SerializedArray = unserialize($this->DefaultValues);
-		$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
-		foreach($this->SerializedArray as $fieldname => $value){
+		//$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
+		foreach(array_keys($this->SerializedArray) as $fieldname){
 			$arr = explode('_', $fieldname);
-			if(!isset($arr[0]))
+			if(!isset($arr[1])){
 				continue;
-			$fieldtype = $arr[0];
-			unset($arr[0]);
-			$fieldname = implode('_', $arr);
-			if($fieldname == $name){
-				return $fieldtype;
 			}
+		$fieldtype = $arr[0];
+		unset($arr[0]);
+		$fieldname = implode('_', $arr);
+		if($fieldname == $name){
+			return $fieldtype;
 		}
 		return false;
+		}
 	}
 
 	function getDefaultArray($name, $type = '', $default = ''){
@@ -278,6 +285,9 @@ class we_object_exImport extends we_object{
 			'class' => '',
 			'max' => '',
 			'cssClasses' => '',
+			'fontnames' => '',
+			'fontsizes' => '',
+			'formats' => '',
 			'tinyparams' => '',
 			'templates' => '',
 			'xml' => '',
@@ -331,7 +341,6 @@ class we_object_exImport extends we_object{
 		$this->DB_WE->query('ALTER TABLE ' . $ctable . ' CHANGE ' . $type . '_' . $name . ' ' . $type . '_' . $newname . ' ' . $this->switchtypes2($type));
 		unset($this->elements);
 		$this->i_savePersistentSlotsToDB();
-		;
 		$this->i_getContentData();
 	}
 
@@ -347,7 +356,7 @@ class we_object_exImport extends we_object{
 		} else {
 			$this->strOrder = '';
 		}
-		if(isset($this->isAddFieldNoSave) && $this->isAddFieldNoSave){
+		if($this->isAddFieldNoSave){
 			return true;
 		}
 		return $this->saveToDB(true);
@@ -358,7 +367,7 @@ class we_object_exImport extends we_object{
 		$isfound = false;
 		foreach($this->SerializedArray as $field => $value){
 			$arr = explode('_', $field);
-			if(!isset($arr[0])){
+			if(!isset($arr[1])){
 				continue;
 			}
 			$fieldtype = $arr[0];
@@ -383,7 +392,7 @@ class we_object_exImport extends we_object{
 			unset($arrOrder[array_search(max($arrOrder), $arrOrder)]);
 
 			$this->strOrder = implode(',', $arrOrder);
-			if(isset($this->isDropFieldNoSave) && $this->isDropFieldNoSave){
+			if($this->isDropFieldNoSave){
 				return true;
 			} else {
 				return $this->saveToDB(true);
@@ -428,11 +437,9 @@ class we_object_exImport extends we_object{
 		}
 		$this->DefaultValues = serialize($this->SerializedArray);
 
-		if(isset($this->isModifyFieldNoSave) && $this->isModifyFieldNoSave){
-			return true;
-		} else {
-			return $this->saveToDB(true);
-		}
+		return ($this->isModifyFieldNoSave ?
+				true :
+				$this->saveToDB(true));
 	}
 
 	function resetOrder(){
@@ -550,46 +557,52 @@ class we_object_exImport extends we_object{
 		}
 	}
 
-	/* setter for runtime variable isAddFieldNoSave which allows to construct Classes from within Apps */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
+	/* setter for for property isAddFieldNoSave which allows to construct Classes from within Apps */
 
 	function setIsAddFieldNoSave($isAddFieldNoSave){
 		$this->isAddFieldNoSave = $isAddFieldNoSave;
 	}
 
-	/* getter for runtime variable isAddFieldNoSave which allows to construct Classes from within Apps */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
+	/* getter for for property isAddFieldNoSave which allows to construct Classes from within Apps */
 
 	function getIsAddFieldNoSave(){
 		return $this->isAddFieldNoSave;
 	}
 
-	/* setter for runtime variable isModifyFieldNoSave which allows to construct Classes from within Apps */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
+	/* setter for for property isModifyFieldNoSave which allows to construct Classes from within Apps */
 
 	function setIsModifyFieldNoSave($isModifyFieldNoSave){
 		$this->isModifyFieldNoSave = $isModifyFieldNoSave;
 	}
 
-	/* getter for runtime variable isModifyFieldNoSave which allows to construct Classes from within Apps */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
+	/* getter for property isModifyFieldNoSave which allows to construct Classes from within Apps */
 
 	function getIsModifyFieldNoSave(){
 		return $this->isModifyFieldNoSave;
 	}
 
-	/* setter for runtime variable isDropFieldNoSave which allows to construct Classes from within Apps */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
+	/* setter for property isDropFieldNoSave which allows to construct Classes from within Apps */
 
 	function setIsDropFieldNoSave($isDropFieldNoSave){
 		$this->isDropFieldNoSave = $isDropFieldNoSave;
 	}
 
-	/* getter for runtime variable isDropFieldNoSave which allows to construct Classes from within Apps */
-	/* do not access this variable directly, in later WE Versions, it will be protected */
+	/* getter for property isDropFieldNoSave which allows to construct Classes from within Apps */
 
 	function getIsDropFieldNoSave(){
 		return $this->isDropFieldNoSave;
+	}
+
+	/* setter for property isForceDropOnSave which allows to construct Classes from within Apps */
+
+	function setIsForceDropOnSave($isForceDropOnSave){
+		$this->isForceDropOnSave = $isForceDropOnSave;
+	}
+
+	/* getter for property isForceDropOnSave which allows to construct Classes from within Apps */
+
+	function getIsForceDropOnSave(){
+		return $this->isForceDropOnSave;
 	}
 
 }

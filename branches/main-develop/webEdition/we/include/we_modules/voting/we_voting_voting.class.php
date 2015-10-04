@@ -179,7 +179,7 @@ class we_voting_voting extends weModelBase{
 				if($diff < 0){
 					$diff = abs($diff);
 					for($i = 0; $i < $diff; $i++){
-						array_splice($this->Scores, (count($this->Scores) - 1), 1);
+						unset($this->Scores[(count($this->Scores) - 1)]);
 					}
 				}
 			}
