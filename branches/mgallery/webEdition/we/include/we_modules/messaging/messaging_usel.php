@@ -262,17 +262,14 @@ if($maxsel){
 		}
 
 		function doUnload() {
-			if (jsWindow_count) {
-				for (i = 0; i < jsWindow_count; i++) {
-					eval("jsWindow" + i + "Object.close()");
-				}
-			}
+			jsWindowCloseAll();
 		}
 //-->
 </script>
 <?php echo STYLESHEET; ?>
 </head>
-<body class="weDialogBody" onload="doOnLoad();init();" onunload="doUnload();">
+<body class="weDialogBody" onload="doOnLoad();
+		init();" onunload="doUnload();">
 	<form name="usel">
 		<?php
 		$tbl = '  <table cellspacing="6">

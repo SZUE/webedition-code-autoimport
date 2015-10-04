@@ -65,11 +65,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 	}
 
 	function doUnload() {
-		if (jsWindow_count) {
-			for (i = 0; i < jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
+		jsWindowCloseAll();
 	}
 //-->
 </script>

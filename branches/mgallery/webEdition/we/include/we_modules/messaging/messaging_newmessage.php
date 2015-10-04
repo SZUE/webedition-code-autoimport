@@ -68,19 +68,11 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 		document.compose_form.submit();
 	}
 
-	function doUnload() {
-		if (jsWindow_count) {
-			for (i = 0; i < jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
-	}
-
 //-->
 </script>
 </head>
 
-<body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="doUnload();">
+<body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="jsWindowCloseAll();">
 	<?php
 	$mode = we_base_request::_(we_base_request::STRING, 'mode');
 	if($mode === 're'){

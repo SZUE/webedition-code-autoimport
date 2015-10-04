@@ -66,6 +66,6 @@ function closeAllModalWindows() {
 	}
 }
 
-		function setOpenedWithWE(val) {
-			openedWithWE = val;
-		}
+function setOpenedWithWE(val) {
+	openedWithWE = val;
+}

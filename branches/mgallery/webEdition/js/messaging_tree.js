@@ -26,7 +26,6 @@
 
 var multi_select = 0;
 var startloc = 0;
-var count = 0;
 var folder = 0;
 var mode = "show_folder_content";
 

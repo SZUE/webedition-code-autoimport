@@ -26,7 +26,6 @@
 
 //FIXME: compare & unite all _tree.js files
 
-var count = 0;
 var folder = 0;
 var startloc = 0;
 

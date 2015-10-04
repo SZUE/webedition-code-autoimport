@@ -21,8 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation, BrowserCrashedErrorMsg) {
-
+function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
 	var foo_w = w;
 	var foo_h = h;
 
@@ -57,8 +56,7 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 }
 
 function jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
-	var properties = (this.hideMenue ? "menubar=no," : "menubar=yes,") + (this.resizable ? "resizable=yes," : "resizable=no,") + ((this.scroll) ? "scrollbars=yes," : "scrollbars=no,") + "width=" + this.w + ",height=" + this.h;
-	properties += ",left=" + this.x + ",top=" + this.y;
+	var properties = (this.hideMenue ? "menubar=no," : "menubar=yes,") + (this.resizable ? "resizable=yes," : "resizable=no,") + ((this.scroll) ? "scrollbars=yes," : "scrollbars=no,") + "width=" + this.w + ",height=" + this.h + ",left=" + this.x + ",top=" + this.y;
 	try {
 		this.wind = window.open(this.url, this.ref, properties);
 //Bug mit chrome:
@@ -82,6 +80,14 @@ function jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
 function jsWindowClose() {
 	if (!this.wind.closed)
 		this.wind.close();
+}
+
+function jsWindowCloseAll() {
+	if (jsWindow_count) {
+		for (i = 0; i < jsWindow_count; i++) {
+			eval("jsWindow" + i + "Object.close()");
+		}
+	}
 }
 
 //FIXME use an Array to store these objects!

@@ -38,6 +38,7 @@ function getLayout() {
 
 	return treeData.node_layouts[layout_key];
 }
+
 function openClose(id) {
 	if (id == "") {
 		return;

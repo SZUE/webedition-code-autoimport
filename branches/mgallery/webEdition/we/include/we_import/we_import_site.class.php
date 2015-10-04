@@ -172,11 +172,7 @@ function displayTable() {
 	}
 }
 function doUnload() {
-	if (jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 ') .
 			we_html_element::jsScript(JS_DIR . 'windows.js');
