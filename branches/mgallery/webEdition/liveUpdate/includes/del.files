@@ -1,4 +1,3 @@
-js/we_showMessage.js
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -2544,6 +2543,7 @@ js/weTinyMceDialogs.js
 js/we_textarea_include.inc.php
 js/we_tabs/tabs.js
 js/we_tabs/images.js
+js/we_showMessage.js
 js/we_modules/banner/banner_cmd.js
 js/weJsStrings.php
 js/weJsStrings.inc.php
@@ -2903,6 +2903,7 @@ images/pd/pad_corner_lt.gif
 images/pd/pad_corner_lb.gif
 images/pd/msg/todo.gif
 images/pd/msg/message.gif
+images/pd/msg
 images/pd/line_v.gif
 images/pd/line_h.gif
 images/pd/hell_rechts_unten.gif

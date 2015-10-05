@@ -59,7 +59,7 @@ function we_tag_textarea($attribs, $content){
 		return we_html_forms::weTextarea($fieldname, $value, $attribs, $autobr, $autobrName, $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', ($spellcheck == 'true'), false, $name);
 	}
 
-	$fieldVal = $GLOBALS['we_doc']->getField($attribs);
+	$fieldVal = we_document::parseInternalLinks($GLOBALS['we_doc']->getField($attribs), 0, '');
 	if(!weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL) || strpos($fieldVal, '</wegallery>') === false){
 		return $fieldVal;
 	}

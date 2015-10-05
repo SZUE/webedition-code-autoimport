@@ -121,11 +121,11 @@ var ImageDialog = {
 	/*unused
 	 analyseSrc : function(src) {
 	 src_vars = Array();
-	 if(src.split('?id=',2)[1] || src.split('document:',2)[1]){//internal Document, no thumbnail
+	 if(src.split('?id=',2)[1] || src.split(WE().consts.linkPrefix.TYPE_INT_PREFIX',2)[1]){//internal Document, no thumbnail
 	 src_vars[0] = false; // type = ext
 	 src_vars[1] = ''; // external src
 	 src_vars[2] = true; // type = int
-	 src_vars[3] = src.split("?id=",2)[1] ? src.split("?id=",2)[1] : src.split('document:',2)[1]; // internal id
+	 src_vars[3] = src.split("?id=",2)[1] ? src.split("?id=",2)[1] : src.split(WE().consts.linkPrefix.TYPE_INT_PREFIX,2)[1]; // internal id
 	 src_vars[4] = src.split('?id=',2)[1] ? src.split('?id=',2)[0] : src; // internal src
 	 src_vars[5] = 0;
 
@@ -136,7 +136,7 @@ var ImageDialog = {
 	 src_vars[1] = '' // external src
 	 src_vars[2] = true; // type = int
 	 src_vars[3] = docId; // internal id
-	 src_vars[4] = 'document:' + docId; // internal src
+	 src_vars[4] = WE().consts.linkPrefix.TYPE_INT_PREFIX+ docId; // internal src
 	 src_vars[5] = thumbId;
 	 } else{
 	 src_vars[0] = true; // type = ext

@@ -209,10 +209,10 @@ abstract class we_html_forms{
 			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
 
 			if(stripos($name, "we_ui") === false){//we are in backend
-				$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), $e->parseInternalImageSrc($value));
+				$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), we_wysiwyg_editor::parseInternalImageSrc($value));
 				$previewDivContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
 					isset($GLOBALS['we_doc']) && !($GLOBALS['we_doc'] instanceof we_objectFile) && !($GLOBALS['we_doc'] instanceof we_object) ?
-						$e->parseInternalImageSrc($GLOBALS['we_doc']->getField($attribs)) :
+						we_wysiwyg_editor::parseInternalImageSrc($GLOBALS['we_doc']->getField($attribs)) :
 						we_document::parseInternalLinks($value, 0)
 					)
 				);

@@ -80,11 +80,6 @@ we_html_element::jsScript(JS_DIR . 'global.js');
 	var WE_SPELLCHECKER_MODULE_DIR = "<?php echo defined('SPELLCHECKER') ? WE_SPELLCHECKER_MODULE_DIR : ''; ?>";
 	var TEMPLATES_TABLE = "<?php echo TEMPLATES_TABLE ?>";
 	var CTYPE_TEMPLATE = "<?php echo we_base_ContentTypes::TEMPLATE; ?>";
-	var linkPrefix = {
-		'TYPE_OBJ_PREFIX': '<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>',
-		'TYPE_INT_PREFIX': '<?php echo we_base_link::TYPE_INT_PREFIX; ?>',
-		'TYPE_MAIL_PREFIX': '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>'
-	}
 	//-->
 </script><?php
 $js = '';

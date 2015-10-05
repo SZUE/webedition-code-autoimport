@@ -51,9 +51,9 @@ function seeMode_dealWithLinks() {
 		if (!(_href.indexOf("javascript:") === 0 ||
 						_href.indexOf("#") === 0 ||
 						(_href.indexOf("#") === document.URL.length && _href === (document.URL + _aTags[i].hash)) ||
-						_href.indexOf(linkPrefix.TYPE_OBJ_PREFIX) === 0 ||
-						_href.indexOf(linkPrefix.TYPE_INT_PREFIX) === 0 ||
-						_href.indexOf(linkPrefix.TYPE_MAIL_PREFIX) === 0 ||
+						_href.indexOf(WE().consts.linkPrefix.TYPE_OBJ_PREFIX) === 0 ||
+						_href.indexOf(WE().consts.linkPrefix.TYPE_INT_PREFIX) === 0 ||
+						_href.indexOf(WE().consts.linkPrefix.TYPE_MAIL_PREFIX) === 0 ||
 						_href.indexOf("?") === 0 ||
 						_href === ""
 						)

@@ -542,7 +542,7 @@ class we_wysiwyg_editor{
 		return we_html_button::create_button(we_html_button::EDIT, "javascript:" . $js_function . "('open_wysiwyg_window', '" . $this->name . "', " . $width . ", " . $height . ",'" . $param4 . "','" . $this->propstring . "','" . $this->className . "','" .  rtrim($this->fontnamesCSV, ',') . "','" . $this->outsideWE . "'," . $width . "," . $height . ",'" . $this->xml . "','" . $this->removeFirstParagraph . "','" . $this->bgcol . "','" . urlencode($this->baseHref) . "','" . $this->charset . "','" . $this->cssClasses . "','" . $this->Language . "','" . we_base_request::encCmd($this->contentCss) . "','" . $this->origName . "','" . we_base_request::encCmd($this->tinyParams) . "','" . we_base_request::encCmd($this->restrictContextmenu) . "', 'true', '" . $this->isFrontendEdit . "','" . $this->templates . "','" . $this->formats . "','" . $this->imageStartID . "','" . $this->galleryTemplates . "','" . $this->fontsizes . "');", true, 25);
 	}
 
-	function parseInternalImageSrc($value){
+	static function parseInternalImageSrc($value){
 		static $t = 0;
 		$t = ($t ? : time());
 		$regs = array();
@@ -561,7 +561,7 @@ class we_wysiwyg_editor{
 				$lookup = array();
 			}
 
-			foreach($regs as $reg){t_e("parse", $reg, $lookup);
+			foreach($regs as $reg){
 				$path = empty($lookup[intval($reg[3])]) ? '' : $lookup[intval($reg[3])];
 				$value = $path ? str_ireplace($reg[1], 'src="' . $path . '?id=' . $reg[3] . '&time=' . $t . '"', $value) :
 					str_ireplace($reg[0], '<img src="' . ICON_DIR . 'no_image.gif?id=0">', $value);
@@ -765,7 +765,7 @@ class we_wysiwyg_editor{
 
 	private function getInlineHTML(){
 		$rows = $this->getToolbarRows();
-		$editValue = $this->parseInternalImageSrc($this->value);
+		$editValue = self::parseInternalImageSrc($this->value);
 
 		list($lang) = explode('_', $GLOBALS["weDefaultFrontendLanguage"]);
 
@@ -1357,7 +1357,7 @@ tinyMCE.PluginManager.load = function(n, u, cb, s) {
 		tinymce.ScriptLoader.add(url, loadDependencies, s);
 	}
 };
-		
+
 tinyMCE.weResizeLoops = 100;
 tinyMCE.weResizeEditor = function(render){
 	var h = tinyMCE.DOM.get("' . $this->name . '_toolbargroup").parentNode.offsetHeight;

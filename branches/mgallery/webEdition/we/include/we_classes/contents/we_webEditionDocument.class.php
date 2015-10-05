@@ -620,13 +620,13 @@ class we_webEditionDocument extends we_textContentDocument{
 		//FIXME: implement textarea as element-type for textareas!
 		if($rebuildMode === 'main'){
 			foreach($this->elements as $name => $elem){
-				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="document:') !== false || strpos($elem['dat'], 'href="document:') !== false)){
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="' . we_base_link::TYPE_INT_PREFIX) !== false || strpos($elem['dat'], 'href="' . we_base_link::TYPE_INT_PREFIX) !== false)){
 					$this->MediaLinks = array_merge($this->MediaLinks, we_document::parseInternalLinks($elem['dat'], 0, '', true));
 				}
 			}
 		} else {//rebuilding from tblTemporaryDoc
 			foreach($this->elements as $name => $elem){
-				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="') !== false || strpos($elem['dat'], 'href="document:') !== false)){
+				if($elem['type'] === 'txt' && (strpos($elem['dat'], 'src="') !== false || strpos($elem['dat'], 'href="' . we_base_link::TYPE_INT_PREFIX) !== false)){
 					$this->MediaLinks = array_merge($this->MediaLinks, we_wysiwyg_editor::reparseInternalLinks($elem['dat'], true));
 				}
 			}

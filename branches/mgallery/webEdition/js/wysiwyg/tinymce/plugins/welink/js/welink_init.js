@@ -58,7 +58,7 @@ function init() {
 
 		 switch(linktype){
 		 case "int":
-		 //formObj.elements['we_dialog_args[fileID]'].value = urlParts[0].split('document:')[1];
+		 //formObj.elements['we_dialog_args[fileID]'].value = urlParts[0].split(WE().consts.linkPrefix.TYPE_INT_PREFIX)[1];
 		 break;
 		 case "obj":
 		 //formObj.elements['we_dialog_args[objID]'].value = urlParts[0].split('object:')[1];
