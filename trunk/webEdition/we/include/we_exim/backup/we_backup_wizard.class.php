@@ -1019,7 +1019,7 @@ function setLocation(loc){
 //Note: we show a link for external download - do we need this?
 
 				$_link = WEBEDITION_DIR . 'showTempFile.php?' . http_build_query(array(
-						'file' => str_replace(WEBEDITION_DIR, '', $_down),
+						'file' => str_replace(WEBEDITION_PATH, '', $_down),
 						'binary' => 1
 				));
 

@@ -191,10 +191,9 @@ class we_navigation_item{
 				$tmpRefarrq = $refarrq;
 			}
 			$allfound = true;
-			if(($allfound &= (count($tmpUriarrq) == count($tmpRefarrq)))){
-				foreach($tmpRefarrq as $key => $val){
-					$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
-				}
+			//current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
+			foreach($tmpRefarrq as $key => $val){
+				$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
 			}
 
 			if($allfound){
