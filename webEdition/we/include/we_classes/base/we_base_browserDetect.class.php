@@ -27,6 +27,7 @@ class we_base_browserDetect{
 	const UNKNOWN = 'unknown';
 	const OPERA = 'opera';
 	const IE = 'ie';
+	const EDGE = 'edge';
 	const FF = 'firefox';
 	const LYNX = 'lynx';
 	const JAVA = 'java';
@@ -66,7 +67,7 @@ class we_base_browserDetect{
 		self::$detected = true;
 		self::$ua = $ua ? : (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		$regs = array();
-		if(preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', self::$ua, $regs)){
+		if(preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', self::$ua, $regs)){t_e("regs", $regs);
 			$pre = $regs[1];
 			//$mid = $regs[2];
 			$bracket = str_replace(array('(', ')'), '', $regs[3]);
@@ -105,6 +106,9 @@ class we_base_browserDetect{
 						} elseif(stristr($post, 'netscape/7')){
 							self::$br = self::NETSCAPE;
 							self::$v = (preg_match('/netscape\/(7.+)/i', $post, $regs) ? trim($regs[1]) : 7);
+						} elseif(stristr($post, 'edge')) {
+							self::$br = self::EDGE;
+							self::$v = (preg_match('/edge/(.+)/i', $post, $regs) ? trim($regs[1]) : 12);
 						} elseif(preg_match('/AppleWebKit\/([0-9.]+)/i', $post, $regs)){
 
 							if(stristr($post, 'chrome')){
@@ -205,6 +209,10 @@ class we_base_browserDetect{
 
 	public static function isIE(){
 		return self::inst()->getBrowser() == self::IE;
+	}
+
+	public static function isEdge(){
+		return self::inst()->getBrowser() == self::EDGE;
 	}
 
 	public static function isOpera(){
