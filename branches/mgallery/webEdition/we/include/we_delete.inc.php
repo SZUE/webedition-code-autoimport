@@ -86,6 +86,7 @@ if(!$wfchk){
 			$idInfos = getHash('SELECT IsFolder, Path FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($selectedItems[0]));
 			if(!$idInfos){
 				t_e('ID ' . $selectedItems[0] . ' not present in table ' . $table);
+				return;
 			} elseif($idInfos['IsFolder']){
 				$idInfos['hasFiles'] = f('SELECT ID FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ParentID=' . intval($selectedItems[0]) . " AND  IsFolder = 0 AND Path LIKE '" . $GLOBALS['DB_WE']->escape($idInfos['Path']) . "%'", 'ID', $GLOBALS['DB_WE']) > 0 ? 1 : 0;
 			}

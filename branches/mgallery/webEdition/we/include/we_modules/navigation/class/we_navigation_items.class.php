@@ -280,7 +280,7 @@ class we_navigation_items{
 		$ponder = 0;
 
 		$_isObject = (isset($GLOBALS['we_obj']) && !$GLOBALS['WE_MAIN_DOC']->IsFolder);
-		$cats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
+		$main_cats = array_filter(explode(',', $GLOBALS['WE_MAIN_DOC']->Category));
 
 		foreach($this->currentRules as $_rule){
 			$ponder = 4;
@@ -328,7 +328,7 @@ class we_navigation_items{
 			}
 
 			if(($cats = makeArrayFromCSV($_rule->Categories))){
-				if($this->checkCategories($cats, $cats)){
+				if($this->checkCategories($cats, $main_cats)){
 					$ponder--;
 				} else {
 					continue; // remove from selection

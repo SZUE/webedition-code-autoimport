@@ -1903,7 +1903,7 @@ class we_objectFile extends we_document{
 				$text = str_replace('%PathNoC%', $zwtext, $text);
 			}
 			//remove duplicate "//" which will produce errors and transform URL to lowercase
-			$text = str_replace(array(' ', '//'), array('-', '/'), (OBJECTSEOURLS_LOWERCASE ? strtolower($text) : $text));
+			$text = preg_replace('|\.+$|', '', str_replace(array(' ', '//'), array('-', '/'), (OBJECTSEOURLS_LOWERCASE ? strtolower($text) : $text)));
 			$text = (URLENCODE_OBJECTSEOURLS ?
 					str_replace('%2F', '/', urlencode($text)) :
 					preg_replace(array('~&szlig;~', '~-*&(.)dash;-*~', '~&(.)uml;~', '~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~&[^;]+;~', '~[^0-9a-zA-Z/._-]~', '~//+~', '~--+~'), array('ss', '-', '${1}e', '${1}${3}', '', '/', '-'), htmlentities($text, ENT_COMPAT, $this->Charset)));

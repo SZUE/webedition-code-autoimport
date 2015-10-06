@@ -292,6 +292,7 @@ we/include/we_modules/voting/we_votingDirSelect.php
 we/include/we_modules/voting/we_votingDirSelector.php
 we/include/we_modules/voting/we_votingDirSelectorFrameset.php
 we/include/we_modules/users/we_webEditionCmd_users.inc.php
+we/include/we_modules/users/weUsersView.class.php
 we/include/we_modules/users/we_users_util.php
 we/include/we_modules/users/we_usersSelect.php
 we/include/we_modules/users/we_usersSelector.inc.php
@@ -299,6 +300,7 @@ we/include/we_modules/users/we_users_ping.php
 we/include/we_modules/users/we_users_ping.inc.php
 we/include/we_modules/users/we_users_lockmessage.inc.php
 we/include/we_modules/users/we_users.inc.php
+we/include/we_modules/users/weUsersFrames.class.php
 we/include/we_modules/users/we_conf_users.inc.php
 we/include/we_modules/users/we_conf_userpro.inc.php
 we/include/we_modules/users/edit_users_search.php

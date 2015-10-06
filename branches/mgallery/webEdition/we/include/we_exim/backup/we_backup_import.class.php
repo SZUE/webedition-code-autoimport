@@ -51,6 +51,9 @@ abstract class we_backup_import{
 		$parser = new we_backup_XMLParser();
 
 		$parser->parse($data, (DEFAULT_CHARSET ? : 'ISO-8859-1')); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
+		if($parser->parseError){
+			t_e('encountered parse error during import', $parser->parseError);
+		}
 		// free some memory
 		unset($data);
 
@@ -84,9 +87,6 @@ abstract class we_backup_import{
 
 						do{
 							$element_value = $parser->getNodeName();
-							if($parser->parseError){
-								t_e('encountered parse error during import', $parser);
-							}
 							if($element_value === 'Field'){
 								$element_name = $parser->getNodeData();
 							}

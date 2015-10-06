@@ -2308,7 +2308,7 @@ function resetTabs(){
 	}
 
 	static function filenameNotValid($username){
-		return preg_match('|^[A-Za-z0-9._\-][A-Za-z0-9._\-@]+$|', $username);
+		return preg_match('|^[A-Z0-9._\-][A-Z0-9.,_\-@]+$|i', $username);
 	}
 
 	static function setEffectiveWorkspaces($user, we_database_base $db, $onlyParent = false){

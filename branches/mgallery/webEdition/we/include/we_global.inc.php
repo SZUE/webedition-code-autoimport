@@ -1100,7 +1100,7 @@ function we_templatePost(){
 function show_SeoLinks(){
 	return (
 		!(SEOINSIDE_HIDEINWEBEDITION && $GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
-		!(SEOINSIDE_HIDEINEDITMODE && (!empty($GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE'])))
+		!(SEOINSIDE_HIDEINEDITMODE && (!empty($GLOBALS['we_editmode']) || (!empty($GLOBALS['WE_MAIN_EDITMODE']))))
 		);
 }
 

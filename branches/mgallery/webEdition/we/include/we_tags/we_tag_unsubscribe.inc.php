@@ -25,7 +25,7 @@
 function we_tag_unsubscribe($attribs){
 	$attribs['type'] = 'text';
 	$attribs['name'] = 'we_unsubscribe_email__';
-	$attribs['value'] = we_base_request::_(we_base_request::EMAIL, "we_unsubscribe_email__", '');
+	$attribs['value'] = we_base_request::_(we_base_request::EMAIL, "we_unsubscribe_email__", weTag_getAttribute('value', $attribs, false, we_base_request::STRING));
 
 	return getHtmlTag('input', $attribs);
 }
