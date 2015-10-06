@@ -1453,7 +1453,10 @@ class we_versions_version{
 		$docBackup = isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] : false;
 		$GLOBALS['getDocContentVersioning'] = true;
 		$transBackup = $GLOBALS['we_transaction'];
-
+		if(isset($GLOBALS['we_doc'])){
+			$WE_old_we_doc = $GLOBALS['we_doc'];
+		}
+		$GLOBALS['we_doc'] = $we_doc;
 		extract($GLOBALS, EXTR_SKIP); // globalen Namensraum herstellen.
 
 		$isdyn = isset($GLOBALS['WE_IS_DYN']) ? $GLOBALS['WE_IS_DYN'] : 'notSet';
@@ -1504,7 +1507,11 @@ class we_versions_version{
 		}
 
 		unset($GLOBALS['getDocContentVersioning']);
-
+		if(isset($WE_old_we_doc)){
+			$GLOBALS['we_doc'] = $WE_old_we_doc;
+		} else {
+			unset($GLOBALS['we_doc']);
+		}
 		return $contents;
 	}
 

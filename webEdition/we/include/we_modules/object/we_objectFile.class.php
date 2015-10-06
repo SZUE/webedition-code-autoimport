@@ -3087,7 +3087,7 @@ class we_objectFile extends we_document{
 			}
 			$pidstr = ($pid ? '?pid=' . intval($pid) : '');
 
-			if($hidedirindex && !((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (isset($GLOBALS['WE_MAIN_EDITMODE']) && $GLOBALS['WE_MAIN_EDITMODE']))){
+			if($hidedirindex && !((isset($GLOBALS['we_editmode']) && $GLOBALS['we_editmode']) || (!empty($GLOBALS['WE_MAIN_EDITMODE'])))){
 				$path_parts = pathinfo($path);
 				if(show_SeoLinks() && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
