@@ -63,11 +63,7 @@ var hot= 0;
 var scrollToVal=0;
 
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 
 function we_cmd() {
@@ -128,13 +124,8 @@ function switchPage(page) {
 	return we_submitForm(self.name, "' . $this->frameset . '?pnt=edbody");
 }
 
-
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 
 function we_cmd() {

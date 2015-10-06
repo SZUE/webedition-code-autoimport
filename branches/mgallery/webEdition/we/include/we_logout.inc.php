@@ -42,12 +42,7 @@ we_base_sessionHandler::makeNewID(true);
 
 if(!isset($GLOBALS['isIncluded']) || !$GLOBALS['isIncluded']){
 	echo we_html_element::jsElement('
-	for(i=0;i<top.jsWindow_count;i++){
-		eval("var obj=top.jsWindow"+i+"Object");
-		try{
-			obj.close();
-		}catch(err){}
-	}
+	top.jsWindowCloseAll();
 
 	if(top.tinyMceDialog !== undefined && top.tinyMceDialog !== null){
 		var tinyDialog = top.tinyMceDialog;

@@ -26,11 +26,7 @@ function SendMail(was) {
 	document.location = SCRIPT_NAME + "?pnt=edbody&bid=" + bid + "&SendMail=" + was;
 }
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 
 function we_cmd() {

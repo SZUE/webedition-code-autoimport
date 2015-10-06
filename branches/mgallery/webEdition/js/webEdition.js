@@ -526,11 +526,7 @@ function we_openMediaReference(id) {
 function we_cmd_base(args, url) {
 	switch (args[0]) {
 		case "exit_modules":
-			if (jsWindow_count) {
-				for (i = 0; i < jsWindow_count; i++) {
-					eval("if(jsWindow" + i + "Object.ref=='edit_module') jsWindow" + i + "Object.close()");
-				}
-			}
+			jsWindowClose('edit_module');
 			break;
 		case "openFirstStepsWizardMasterTemplate":
 		case "openFirstStepsWizardDetailTemplates":
@@ -691,58 +687,26 @@ function we_cmd_base(args, url) {
 			alert("Es gibt noch keine URL für die Snippets Seite");
 			break;
 		case "help_modules":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
-				wind.focus();
-			}
+			jsWindowFocus('edit_module');
 			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
 			new jsWindow(url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_modules":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
-				wind.focus();
-			}
+			jsWindowFocus('edit_module');
 			url = "/webEdition/we_cmd.php?we_cmd[0]=info";
 			new jsWindow(url, "info", -1, -1, 432, 350, true, false, true);
 			break;
 		case "help_tools":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='tool_window' || jsWindow" + k + "Object.ref=='tool_window_navigation' || jsWindow" + k + "Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
-				wind.focus();
-			}
+			jsWindowFocus('tool_window') ||
+							jsWindowFocus('tool_window_navigation') ||
+							jsWindowFocus('tool_window_weSearch');
 			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
 			new jsWindow(url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_tools":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='tool_window' || jsWindow" + k + "Object.ref=='tool_window_navigation' || jsWindow" + k + "Object.ref=='tool_window_weSearch'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
-				wind.focus();
-			}
+			jsWindowFocus('tool_window') ||
+							jsWindowFocus('tool_window_navigation') ||
+							jsWindowFocus('tool_window_weSearch');
 			url = "/webEdition/we_cmd.php?we_cmd[0]=info";
 			new jsWindow(url, "info", -1, -1, 432, 350, true, false, true);
 			break;

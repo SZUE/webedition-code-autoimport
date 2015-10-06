@@ -34,13 +34,9 @@ function we_cmd_tool_weSearch(args, url) {
 		case "tool_weSearch_delete":
 		case "tool_weSearch_save":
 		case "tool_weSearch_exit":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='tool_window_weSearch'){ jsWindow" + k + "Object.wind.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo)
-						break;
-				}
+			var wind = jsWindowFind('tool_window_weSearch');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
 				wind.focus();
 			}
 			break;

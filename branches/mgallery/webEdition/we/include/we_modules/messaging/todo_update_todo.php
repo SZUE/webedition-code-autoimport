@@ -42,11 +42,7 @@ function do_confirm() {
 	}
 
 	function doUnload() {
-		if (top.jsWindow_count) {
-			for (i = 0; i < top.jsWindow_count; i++) {
-				eval("jsWindow" + i + "Object.close()");
-			}
-		}
+		jsWindowCloseAll();
 	}
 //-->
 </script>

@@ -22,17 +22,13 @@
  */
 
 function shopCloseWindow(args) {
-	fo = false;
-	if (jsWindow_count) {
-		for (k = jsWindow_count - 1; k > -1; k--) {
-			eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-			if (fo) {
-				break;
-			}
-		}
+	var wind = jsWindowFind('edit_module');
+	if (wind) {
+		wind.content.we_cmd(args[0]);
 		wind.focus();
+		return true;
 	}
-	return fo;
+	return false;
 }
 
 function we_cmd_shop(args, url) {
@@ -86,24 +82,14 @@ function we_cmd_shop(args, url) {
 		case "revenue_view":
 		case "new_article":
 		case "delete_shop":
-			if (jsWindow_count) {
-				for (k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo)
-						break;
-				}
-				if (fo) {
-					wind.content.we_cmd(args[0]);
-					wind.focus();
-				}
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
+				wind.focus();
 			}
 			break;
 		case "exit_shop":
-			if (jsWindow_count) {
-				for (i = 0; i < jsWindow_count; i++) {
-					eval("if(jsWindow" + i + "Object.ref=='edit_module') jsWindow" + i + "Object.close()");
-				}
-			}
+			jsWindowClose('edit_module');
 			break;
 		case "shop_insert_variant":
 		case "shop_move_variant_up":

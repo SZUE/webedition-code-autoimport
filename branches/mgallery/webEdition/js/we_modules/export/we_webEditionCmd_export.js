@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_export(args,url) {
+function we_cmd_export(args, url) {
 	switch (args[0]) {
 		case "export_edit":
 		case "export_edit_ifthere":
@@ -32,14 +32,9 @@ function we_cmd_export(args,url) {
 		case "delete_export":
 		case "exit_export":
 		case "start_export":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
 				wind.focus();
 			}
 			return true;

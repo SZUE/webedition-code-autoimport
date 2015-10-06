@@ -20,36 +20,19 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_banner(args,url) {
-	var k,fo=false;
+function we_cmd_banner(args, url) {
+	var k, fo = false;
 	switch (args[0]) {
 		case "banner_edit":
 		case "banner_edit_ifthere":
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "banner_default":
-			if (jsWindow_count) {
-				for (k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo)
-						break;
-				}
-				if (window.wind !== undefined) {
-					wind.focus();
-				}
-			}
+			jsWindowFocus('edit_module');
 			new jsWindow(url, "defaultbanner", -1, -1, 500, 220, true, false, true, true);
 			return true;
 		case "banner_code":
-			if (jsWindow_count) {
-				for (k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
-				wind.focus();
-			}
+			jsWindowFocus('edit_module');
 			new jsWindow(url, "bannercode", -1, -1, 500, 420, true, true, true, false);
 			return true;
 		case "new_banner":
@@ -57,15 +40,10 @@ function we_cmd_banner(args,url) {
 		case "save_banner":
 		case "exit_banner":
 		case "delete_banner":
-			if (jsWindow_count) {
-				for (k = jsWindow_count - 1; k > -1; k--) {
-					//FIXME: remove evals, if jswindow has an array!
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
-				if (wind && args[0] != "empty_log") {
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
+				if (args[0] != "empty_log") {
 					wind.focus();
 				}
 			}

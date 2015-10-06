@@ -96,11 +96,7 @@ var hot = 0;
 parent.document.title = "' . $title . '";
 
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 
 function we_cmd(){
@@ -194,11 +190,7 @@ var hot= 0;
 var scrollToVal=0;
 
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 
 function we_cmd() {
@@ -276,11 +268,7 @@ function we_cmd() {
 var loaded=0;
 
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 
 function we_cmd() {

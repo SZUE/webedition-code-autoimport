@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_customer(args,url) {
+function we_cmd_customer(args, url) {
 	switch (args[0]) {
 
 		case "customer_edit":
@@ -37,14 +37,9 @@ function we_cmd_customer(args,url) {
 		case "show_search":
 		case "import_customer":
 		case "export_customer":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
 				wind.focus();
 			}
 			return true;

@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_workflow(args,url) {
+function we_cmd_workflow(args, url) {
 	switch (args[0]) {
 		case "workflow_isIn":
 		case "workflow_pass":
@@ -41,14 +41,9 @@ function we_cmd_workflow(args,url) {
 		case "new_workflow":
 		case "delete_workflow":
 		case "empty_log":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
 				wind.focus();
 			}
 			return true;

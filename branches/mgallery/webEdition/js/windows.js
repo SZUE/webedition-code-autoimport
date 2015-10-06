@@ -20,6 +20,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//FIXME use an Array to store these objects!
+jsWindow_count = 0;
 
 function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
 	var foo_w = w;
@@ -46,8 +48,6 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 	this.hideMenue = hideMenue;
 	this.resizable = resizable;
 	this.wind = null;
-	this.open = jsWindowOpen;
-	this.close = jsWindowClose;
 	this.obj = this.name + "Object";
 	eval(this.obj + "=this;");
 	if (openAtStartup) {
@@ -55,7 +55,7 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 	}
 }
 
-function jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
+jsWindow.prototype.open = function (noPopupErrorMsg, noPopupLocation) {
 	var properties = (this.hideMenue ? "menubar=no," : "menubar=yes,") + (this.resizable ? "resizable=yes," : "resizable=no,") + ((this.scroll) ? "scrollbars=yes," : "scrollbars=no,") + "width=" + this.w + ",height=" + this.h + ",left=" + this.x + ",top=" + this.y;
 	try {
 		this.wind = window.open(this.url, this.ref, properties);
@@ -77,18 +77,51 @@ function jsWindowOpen(noPopupErrorMsg, noPopupLocation) {
 
 }
 
-function jsWindowClose() {
+jsWindow.prototype.close = function () {
 	if (!this.wind.closed)
 		this.wind.close();
+};
+
+function jsWindowClose(name) {
+	var i;
+	for (i = 0; i <= top.jsWindow_count; i++) {
+		if (eval("top.jsWindow" + i + "Object.ref") == name) {
+			eval("top.jsWindow" + i + "Object.close()");
+		}
+	}
 }
 
 function jsWindowCloseAll() {
 	if (jsWindow_count) {
 		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
+			try {
+				eval("jsWindow" + i + "Object.close()");
+			} catch (err) {
+
+			}
 		}
 	}
 }
 
-//FIXME use an Array to store these objects!
-jsWindow_count = 0;
+function jsWindowFind(name) {
+	var wind = undefined;
+	if (jsWindow_count) {
+		var fo = false;
+		for (k = jsWindow_count - 1; k > -1; k--) {
+			eval("if(jsWindow" + k + "Object.ref=='" + name + "'){fo=true;wind=jsWindow" + k + "Object.wind}");
+			if (fo) {
+				break;
+			}
+		}
+	}
+	return wind;
+}
+
+function jsWindowFocus(name) {
+	var wind = jsWindowFind(name);
+	if (wind !== undefined) {
+		wind.focus();
+		return true;
+	}
+	return false;
+}

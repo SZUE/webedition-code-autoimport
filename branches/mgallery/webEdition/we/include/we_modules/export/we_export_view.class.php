@@ -87,11 +87,7 @@ function usetHot() {
 }
 
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 
 parent.document.title = "' . $title . '";
@@ -253,11 +249,7 @@ var loaded=0;
 var table = "' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '";
 
 function doUnload() {
-	if (!!jsWindow_count) {
-		for (i = 0; i < jsWindow_count; i++) {
-			eval("jsWindow" + i + "Object.close()");
-		}
-	}
+	jsWindowCloseAll();
 }
 
 function we_cmd() {

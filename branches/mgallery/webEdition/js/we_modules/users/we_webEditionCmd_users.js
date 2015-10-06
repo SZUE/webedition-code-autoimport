@@ -24,7 +24,7 @@
 function we_cmd_users(args, url) {
 	switch (args[0]) {
 		case "we_users_selector":
-			if(WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {
+			if (WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {
 				new jsWindow(url, "browse_users", -1, -1, 500, 300, true, false, true);
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
@@ -87,7 +87,9 @@ function we_cmd_users(args, url) {
 			new jsWindow(url, "doctypes", -1, -1, 720, 670, true, true, true);
 			break;
 		case "users_unlock":
-			top.YAHOO.util.Connect.asyncRequest('GET', url, {success:  function(){}, failure:  function(){}});
+			top.YAHOO.util.Connect.asyncRequest('GET', url, {success: function () {
+				}, failure: function () {
+				}});
 //		we_repl(self.load,url,args[0]);
 			break;
 		case "users_add_owner":
@@ -116,15 +118,9 @@ function we_cmd_users(args, url) {
 }
 
 function showNewWindow(args) {
-	var fo = false;
-	if (jsWindow_count) {
-		for (var k = jsWindow_count - 1; k > -1; k--) {
-			eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-			if (fo)
-				break;
-		}
-		if (wind)
-			wind.focus();
+	var wind = jsWindowFind('edit_module');
+	if (wind) {
+		wind.content.we_cmd(args[0]);
+		wind.focus();
 	}
-
 }

@@ -51,16 +51,7 @@ function we_cmd_glossary(args, url) {
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			break;
 		case "glossary_settings":
-			if (jsWindow_count) {
-				for (k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo)
-						break;
-				}
-				if (window.wind !== undefined) {
-					wind.focus();
-				}
-			}
+			jsWindowFocus('edit_module');
 			new jsWindow(url, "edit_glossary_settings", -1, -1, 490, 250, true, true, true, true);
 			break;
 		case "glossary_dictionaries":
@@ -68,13 +59,12 @@ function we_cmd_glossary(args, url) {
 			break;
 		case ((args[0].substr(0, 15) == "GlossaryXYZnew_") ? args[0] : false):
 			tempargs = args[0].split("\XYZ");
-			for (k = jsWindow_count - 1; k > -1; k--) {
-				eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + tempargs[1] + "','" + tempargs[2] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-				if (fo) {
-					break;
-				}
+
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				wind.content.we_cmd(tempargs[1], tempargs[2]);
+				wind.focus();
 			}
-			wind.focus();
 			break;
 		case "new_glossary_acronym":
 		case "new_glossary_abbreviation":
@@ -82,20 +72,15 @@ function we_cmd_glossary(args, url) {
 		case "new_glossary_link":
 		case "new_glossary_textreplacement":
 		case "exit_glossary":
-
 		case "save_exception":
 		case "save_glossary":
 		case "delete_glossary":
-			if (jsWindow_count) {
-				for (k = jsWindow_count - 1; k > -1; k--) {
-					if (args[1] !== undefined) {
-						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "','" + args[1] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					} else {
-						eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					}
-					if (fo) {
-						break;
-					}
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				if (args[1] !== undefined) {
+					wind.content.we_cmd(args[0], args[1]);
+				} else {
+					wind.content.we_cmd(args[0]);
 				}
 				wind.focus();
 			}

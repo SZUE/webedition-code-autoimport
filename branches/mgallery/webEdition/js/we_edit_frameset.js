@@ -51,16 +51,8 @@ function closeAllModalWindows() {
 	try {
 		var _editor1 = self.frames[1];
 		var _editor2 = self.frames[2];
-		if (_editor1.jsWindow_count) {
-			for (i = 0; i < _editor1.jsWindow_count; i++) {
-				eval("_editor1.jsWindow" + i + "Object.close()");
-			}
-		}
-		if (_editor2.jsWindow_count) {
-			for (i = 0; i < _editor2.jsWindow_count; i++) {
-				eval("_editor2.jsWindow" + i + "Object.close()");
-			}
-		}
+		_editor1.jsWindowCloseAll();
+		_editor2.jsWindowCloseAll();
 	} catch (e) {
 
 	}

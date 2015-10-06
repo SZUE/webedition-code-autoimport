@@ -20,7 +20,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_newsletter(args,url) {
+function we_cmd_newsletter(args, url) {
 	switch (args[0]) {
 		case "newsletter_edit":
 		case "newsletter_edit_ifthere":
@@ -44,14 +44,9 @@ function we_cmd_newsletter(args,url) {
 		case "edit_file":
 		case "clear_log":
 		case "exit_newsletter":
-			var fo = false;
-			if (jsWindow_count) {
-				for (var k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){ jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
 				wind.focus();
 			}
 			return true;

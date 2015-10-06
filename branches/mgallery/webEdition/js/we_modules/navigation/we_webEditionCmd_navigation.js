@@ -34,29 +34,16 @@ function we_cmd_navigation(args, url) {
 		case "module_navigation_save":
 		case "module_navigation_delete":
 		case "module_navigation_reset_customer_filter":
-			if (jsWindow_count) {
-				for (k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){jsWindow" + k + "Object.wind.content.we_cmd('" + args[0] + "');fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
-				if (wind && args[0] != "empty_log") {
+			var wind = jsWindowFind('edit_module');
+			if (wind) {
+				wind.content.we_cmd(args[0]);
+				if (args[0] != "empty_log") {
 					wind.focus();
 				}
 			}
 			return true;
 		case "module_navigation_rules":
-			if (jsWindow_count) {
-				for (k = jsWindow_count - 1; k > -1; k--) {
-					eval("if(jsWindow" + k + "Object.ref=='edit_module'){fo=true;wind=jsWindow" + k + "Object.wind}");
-					if (fo) {
-						break;
-					}
-				}
-				if (wind)
-					wind.focus();
-			}
+			jsWindowFocus('edit_module');
 			new jsWindow(top.WE().consts.dirs.WE_INCLUDES_DIR + "we_modules/navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
 			return true;
 		case "module_navigation_edit_navi":
