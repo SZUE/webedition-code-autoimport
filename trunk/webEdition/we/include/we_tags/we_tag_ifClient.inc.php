@@ -23,28 +23,27 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifClient($attribs){
-	$version = weTag_getAttribute('version', $attribs, '', we_base_request::FLOAT);
-	$browser = weTag_getAttribute('browser', $attribs, '', we_base_request::STRING);
-	$operator = weTag_getAttribute('operator', $attribs, '', we_base_request::STRING);
-	$system = weTag_getAttribute('system', $attribs, '', we_base_request::STRING);
-
 	$br = we_base_browserDetect::inst();
-	if($browser){
+
+	if(($browser = weTag_getAttribute('browser', $attribs, '', we_base_request::STRING))){
 		$bro = explode(',', $browser);
 		$_browserOfClient = $br->getBrowser();
 		$browserMatched = in_array($_browserOfClient, $bro);
 		// for backwards compatibility
 		if(!$browserMatched){
 			$browserMatched = ((we_base_browserDetect::isNN() && in_array('mozilla', $bro)) ||
-					($_browserOfClient == we_base_browserDetect::APPLE && in_array('safari', $bro)));
+				($_browserOfClient == we_base_browserDetect::APPLE && in_array('safari', $bro)));
+		}
+		if(!$browserMatched){
+			return false;
 		}
 	} else {
 		$browserMatched = true;
 	}
 
-	if($browserMatched && $version){
+	if(($version = weTag_getAttribute('version', $attribs, '', we_base_request::FLOAT))){
 		$brv = $br->getBrowserVersion();
-		switch($operator){
+		switch(weTag_getAttribute('operator', $attribs, '', we_base_request::STRING)){
 			case 'equal':
 				$versionMatched = (floor(floatval($brv)) == floor($version));
 				break;
@@ -61,6 +60,7 @@ function we_tag_ifClient($attribs){
 				$versionMatched = (floatval($brv) >= $version);
 				break;
 			default://old behaviour
+				//FIXME: add to deprecated, remove in 7.0.1
 				$versionMatched = true;
 				$ver = str_replace(array('up', 'down', 'eq'), array('>=', '<', '=='), $version);
 
@@ -71,10 +71,14 @@ function we_tag_ifClient($attribs){
 				}
 				break;
 		}
+		if(!$versionMatched){
+			return false;
+		}
 	} else {
 		$versionMatched = true;
 	}
 
+	$system = weTag_getAttribute('system', $attribs, '', we_base_request::STRING);
 
 	$systemMatched = ($system && $browserMatched && $versionMatched ? in_array($br->getSystem(), explode(',', $system)) : true);
 
