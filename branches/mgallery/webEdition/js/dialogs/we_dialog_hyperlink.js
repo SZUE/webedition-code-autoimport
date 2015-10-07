@@ -46,7 +46,7 @@ function weCheckAcFields() {
 }
 
 function we_cmd() {
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -57,7 +57,7 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url, "we_docselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, false, true, true);
+			new jsWindow(url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true, true);
 			break;
 
 		case "browse_server":
@@ -126,20 +126,20 @@ function weDoCheckAcFields() {
 	acStatus = YAHOO.autocoml.checkACFields();
 	acStatusType = typeof acStatus;
 	if (weAcCheckLoop > 10) {
-		top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		weAcCheckLoop = 0;
 	} else if (acStatusType.toLowerCase() == "object") {
 		if (acStatus.running) {
 			weAcCheckLoop++;
 			setTimeout(weDoCheckAcFields, 100);
 		} else if (!acStatus.valid) {
-			top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			weAcCheckLoop = 0;
 		} else {
 			weAcCheckLoop = 0;
 			document.we_form.submit();
 		}
 	} else {
-		top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_WE().consts.message.MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE_WE().consts.message.MESSAGE_ERROR, window);
 	}
 }

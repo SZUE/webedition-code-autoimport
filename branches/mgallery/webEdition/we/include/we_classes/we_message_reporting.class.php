@@ -76,9 +76,9 @@ abstract class we_message_reporting{
 	public static function jsString(){
 		return '
 var message_reporting={
-	"notice":"' . g_l('alert', '[notice]') . '",
-	"warning":"' . g_l('alert', '[warning]') . '",
-	"error":"' . g_l('alert', '[error]') . '"
+	notice:"' . g_l('alert', '[notice]') . '",
+	warning:"' . g_l('alert', '[warning]') . '",
+	error:"' . g_l('alert', '[error]') . '"
 };';
 	}
 

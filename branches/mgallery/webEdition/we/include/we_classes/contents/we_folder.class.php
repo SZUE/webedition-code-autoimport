@@ -408,7 +408,6 @@ class we_folder extends we_root{
 		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 					we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					</table></td></tr>' :
-
 					'') .
 				($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
 	<tr><td class="defaultfont" style="padding-top:10px;">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 0, 255, 'onchange=_EditorFrame.setEditorIsHot(true); ') . '</td><td></td><td></td></tr>
@@ -436,11 +435,10 @@ class we_folder extends we_root{
 		$idname = 'we_' . $this->Name . '_CopyID';
 		$parents = array(0, $this->ID);
 		we_getParentIDs(FILE_TABLE, $this->ID, $parents);
-		$ParentsCSV = makeCSVFromArray($parents, true);
 		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		//FIXME: give JS an array!
-		$wecmdenc3 = we_base_request::encCmd("var parents = '" . $ParentsCSV . "';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');}");
+		$wecmdenc3 = we_base_request::encCmd("var parents=[" . implode(',', $parents) . "];if(parents.indexOf(currentID) > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');}");
 		$but = we_html_button::create_button(we_html_button::SELECT, ($this->ID ?
 					"javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . $this->Table . "', '" . we_base_request::encCmd($cmd1) . "', '', '" . $wecmdenc3 . "')" :
 					"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))

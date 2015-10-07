@@ -482,10 +482,9 @@ function we_tag_userInput($attribs, $content){
 			return we_html_element::jsElement('weFrontpageEdit=true;') .
 				we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 				we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js').
 				(!$inlineedit ?
 					//FIXME: does tiny really use weButtons?!
-					STYLESHEET_BUTTONS_ONLY.
+					STYLESHEET_BUTTONS_ONLY .
 					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') :
 					''
 				) .

@@ -145,7 +145,7 @@ function addClassesToList(list_id, specific_option) {
 }
 
 function selectOptionByValue(form, selName, val) {
-	if (typeof (form) == 'undefined' || typeof (form.elements[selName]) == 'undefined' && typeof (val) == 'undefined') {
+	if (form === undefined || form.elements[selName] === undefined && val === undefined) {
 		return;
 	}
 

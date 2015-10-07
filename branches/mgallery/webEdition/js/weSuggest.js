@@ -259,7 +259,7 @@ YAHOO.autocoml = {
 			if (YAHOO.autocoml.yuiAcFields[i].fields_id !== undefined) {
 				var yuiAcOnSelectField;
 				for (j = 0; j < YAHOO.autocoml.yuiAcFields[i].fields_id.length; j++) {
-					if ((yuiAcOnSelectField = document.getElementById(YAHOO.autocoml.yuiAcFields[i].fields_id[j])) && (typeof (params[3]) != 'undefined')) {
+					if ((yuiAcOnSelectField = document.getElementById(YAHOO.autocoml.yuiAcFields[i].fields_id[j])) && (params[3] !== undefined)) {
 						yuiAcOnSelectField.value = params[3];
 					}
 				}

@@ -69,7 +69,7 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 		}
 
 		$button = we_html_button::create_button(
-				"select", "javascript:we_cmd('" . $we_cmd . "', 0, '" . $this->Table . "', '', '', 'fillIDs();var foo2=\\'\\'; if(all" . $this->TextName . "s.length>=2){foo2=all" . $this->TextName . "s.substring(1,all" . $this->TextName . "s.length-1)};var foo=opener.document.getElementById(\\'" . $this->getIdName() . "\\'); if(foo.value){foo.value WE_PLUS= \\',\\'WE_PLUS foo2;}else{foo.value = foo2;};')");
+				"select", "javascript:we_cmd('" . $we_cmd . "', 0, '" . $this->Table . "', '', '', 'fillIDs();var foo2=\\'\\'; if(all" . $this->TextName . "s.length>=2){foo2=all" . $this->TextName . "s.substring(1,all" . $this->TextName . "s.length-1)};var foo=opener.document.getElementById(\\'" . $this->getIdName() . "\\'); if(foo.value){foo.value += \\',\\'+ foo2;}else{foo.value = foo2;};')");
 
 		return '
 <table class="attribute">

@@ -299,8 +299,7 @@ function exit_open(){' . ($this->JSIDName ? '
 	}
 	if(!!opener.' . $frameRef . 'YAHOO && !!opener.' . $frameRef . 'YAHOO.autocoml) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 	' : '') .
-				($this->JSCommand ?
-					'	' . str_replace('WE_PLUS', '+', $this->JSCommand) . ';' : '') .
+				($this->JSCommand ? '	' . $this->JSCommand . ';' : '') .
 				'	self.close();
 	}'
 		);

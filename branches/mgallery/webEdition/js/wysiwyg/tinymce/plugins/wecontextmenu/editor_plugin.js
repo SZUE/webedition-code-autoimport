@@ -153,7 +153,7 @@
 			t._menu = m;
 
 			function getParent(pa,sel){
-				sel = typeof sel !== 'undefined' ? sel : false;
+				sel = (sel !== undefined ? sel : false);
 				if(sel && groups[pa][2] == 'top'){
 					return m;
 				}

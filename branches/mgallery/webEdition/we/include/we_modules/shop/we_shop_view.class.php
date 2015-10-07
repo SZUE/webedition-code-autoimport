@@ -154,8 +154,7 @@ function we_cmd(){
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+		return parent::getJSTop() .
 			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;

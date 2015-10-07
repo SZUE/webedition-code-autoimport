@@ -183,7 +183,6 @@ class we_class_folder extends we_folder{
 		$parents = array(0, $this->ID);
 		we_getParentIDs(FILE_TABLE, $this->ID, $parents);
 		$this->setClassProp();
-		$ParentsCSV = implode(',', $parents);
 		if($this->ID){
 			$_disabled = false;
 			$_disabledNote = '';
@@ -193,7 +192,7 @@ class we_class_folder extends we_folder{
 		}
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("var parents = '" . $ParentsCSV . "';if(parents.indexOf(',' WE_PLUS currentID WE_PLUS ',') > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');};");
+		$wecmdenc3 = we_base_request::encCmd("var parents =[" .implode(',', $parents). "];if(parents.indexOf(currentID) > -1){" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folder_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . "}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');};");
 		$but = we_html_button::create_button(we_html_button::SELECT, $this->ID ? "javascript:we_cmd('we_selector_directory', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $wecmdenc1 . "', '', '" . $wecmdenc3 . "',''," . $this->RootfolderID . ");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR), true, 100, 22, "", "", $_disabled);
 
 		return '<table class="default" style="margin-bottom:2px;"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .

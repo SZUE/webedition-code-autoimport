@@ -59,7 +59,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	}
 	?>
 	<script><!--
-		top.cockpitFrame = top.weEditorFrameController.getActiveDocumentReference();
+		WE().layout.cockpitFrame = top.weEditorFrameController.getActiveDocumentReference();
 		var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 		_EditorFrame.initEditorFrameData(
 						{

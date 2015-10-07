@@ -25,7 +25,6 @@
 var regular_logout = false;
 var widthBeforeDeleteMode = 0;
 var widthBeforeDeleteModeSidebar = 0;
-var cockpitFrame;
 var we_mediaReferences = {};
 
 
@@ -42,9 +41,7 @@ var we_mediaReferences = {};
  * @param win object reference to the calling window
  */
 WE().util.showMessage = function (message, prio, win) {
-	if (!win) {
-		win = this.window;
-	}
+	win = (win ? win : this.window);
 	// default is error, to avoid missing messages
 	prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
 
@@ -57,17 +54,17 @@ WE().util.showMessage = function (message, prio, win) {
 		switch (prio) {
 			// Notice
 			case WE().consts.message.WE_MESSAGE_NOTICE:
-				win.alert(message_reporting.notice + ":\n" + message);
+				win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
 				break;
 
 				// Warning
 			case WE().consts.message.WE_MESSAGE_WARNING:
-				win.alert(message_reporting.warning + ":\n" + message);
+				win.alert(WE().consts.g_l.message_reporting.warning + ":\n" + message);
 				break;
 
 				// Error
 			case WE().consts.message.WE_MESSAGE_ERROR:
-				win.alert(message_reporting.error + ":\n" + message);
+				win.alert(WE().consts.g_l.message_reporting.error + ":\n" + message);
 				break;
 		}
 	}
@@ -133,12 +130,11 @@ function doExtClick(url) {
 	top.weEditorFrameController.openDocument('', '', '', '', '', url, '', '', parameters);
 }
 
-function weSetCookie(name, value, expires, path, domain) {
-	var doc = self.document;
+WE().util.weSetCookie = function (doc, name, value, expires, path, domain) {
 	doc.cookie = name + "=" + encodeURI(value) +
-					((expires === null) ? "" : "; expires=" + expires.toGMTString()) +
-					((path === null) ? "" : "; path=" + path) +
-					((domain === null) ? "" : "; domain=" + domain);
+					((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
+					((path === undefined) ? "" : "; path=" + path) +
+					((domain === undefined) ? "" : "; domain=" + domain);
 }
 
 function treeResized() {
@@ -208,7 +204,6 @@ function decTree() {
 	}
 }
 
-
 function getSidebarWidth() {
 	var obj = self.document.getElementById("sidebarDiv");
 	if (obj === undefined || obj === null) {
@@ -237,7 +232,7 @@ function storeTreeWidth(w) {
 	var ablauf = new Date();
 	var newTime = ablauf.getTime() + 30758400000;
 	ablauf.setTime(newTime);
-	weSetCookie("treewidth_main", w, ablauf, "/");
+	WE().util.weSetCookie(self.document, "treewidth_main", w, ablauf, "/");
 }
 
 function focusise() {
@@ -306,7 +301,6 @@ function doPostCmd(cmds, target) {
 	formElement.method = "post";
 	formElement.target = target;
 
-	var hiddens = [];
 	for (var i = 0; i < cmds.length; i++) {
 		var hid = doc.createElement("INPUT");
 		hid.name = "we_cmd[" + i + "]";
@@ -339,7 +333,6 @@ function openWindow(url, ref, x, y, w, h, scrollbars, menues) {
 	new jsWindow(url, ref, x, y, w, h, true, scrollbars, menues);
 }
 
-
 function openBrowser(url) {
 	if (!url) {
 		url = "/";
@@ -351,12 +344,12 @@ function openBrowser(url) {
 	}
 }
 
-function start() {
+function start(table_to_load) {
 	self.Tree = self;
 	self.Vtabs = self;
 	self.TreeInfo = self;
-	if (top.WE().consts.tables.table_to_load) {
-		we_cmd("load", top.WE().consts.tables.table_to_load);
+	if (table_to_load) {
+		we_cmd("load", table_to_load);
 	}
 }
 

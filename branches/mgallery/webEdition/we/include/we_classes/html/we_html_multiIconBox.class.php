@@ -163,14 +163,7 @@ function weSetCookieVariable(name,value){
 	if(c.length > 0){
 		c=c.substring(0,c.length-1);
 	}
-	weSetCookie("we' . session_id() . '", c);
-}
-function weSetCookie(name, value, expires, path, domain){
-	var doc = (top.name == "edit_module") ? top.opener.top.document : top.document;
-	doc.cookie = name + "=" +encodeURI(value) +
-	((expires == null) ? "" : "; expires=" + expires.toGMTString()) +
-	((path == null)    ? "" : "; path=" + path) +
-	((domain == null)  ? "" : "; domain=" + domain);
+	WE().util.weSetCookie((top.name == "edit_module") ? top.opener.top.document : top.document,"we' . session_id() . '", c);
 }');
 	}
 

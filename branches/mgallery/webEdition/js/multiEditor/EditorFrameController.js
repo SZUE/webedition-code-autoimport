@@ -266,9 +266,7 @@ function EditorFrameController() {
 
 		}
 
-		if (!nextCommand) {
-			nextCommand = "";
-		}
+		nextCommand = (nextCommand ? nextCommand : "");
 
 		if (top.we_cmd("eplugin_exit_doc", this.getEditorFrame(editorId).getEditorTransaction())) {
 

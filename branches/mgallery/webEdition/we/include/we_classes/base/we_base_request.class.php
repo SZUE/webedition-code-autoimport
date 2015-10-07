@@ -380,6 +380,10 @@ class we_base_request{
 		self::$allTables = array_merge(self::$allTables, $tables);
 	}
 
+	public static function getAllTables(){
+		return self::$allTables;
+	}
+
 	/**
 	 * @internal
 	 * @param type $str

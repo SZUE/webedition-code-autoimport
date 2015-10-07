@@ -77,7 +77,7 @@ function checkMetaFieldName(inpElem, nr) {
 	if (_errtxt !== "") {
 		inpElem.focus();
 		inpElem.select();
-		top.opener.top.showMessage(_errtxt, 4, top);
+		WE().util.showMessage(_errtxt, 4, top);
 		return false;
 	}
 	return true;

@@ -179,8 +179,7 @@ function we_tag_sessionField($attribs, $content){
 			}
 			echo we_html_element::jsElement('weFrontpageEdit=true;') .
 			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js').
-				we_html_element::jsScript(JS_DIR . 'global.js');
+			we_html_element::jsScript(JS_DIR . 'windows.js');
 			$autobr = $autobrAttr ? 'on' : 'off';
 			$showAutobr = isset($attribs['autobr']);
 			return we_html_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');

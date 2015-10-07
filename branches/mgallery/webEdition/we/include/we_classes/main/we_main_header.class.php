@@ -24,10 +24,6 @@
  */
 class we_main_header{
 
-	static function pCSS(){
-		we_main_headermenu::pCSS();
-	}
-
 	static function pJS($SEEM_edit_include){
 		we_main_headermenu::pJS();
 		if((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include)){

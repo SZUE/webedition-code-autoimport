@@ -305,7 +305,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 			if (variant != this.currentVariant && this.editable) {
 				this.setItem(this.currentVariant, i, this.form.elements[this.name + "_item" + i].value);
 			}
-			if (typeof (this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i]) != 'undefined') {
+			if ((this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i]) !== undefined) {
 				if (this.editable) {
 					this.form.elements[this.name + "_item" + i].value = this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + i].value;
 					this.form.elements[this.name + "_itemImageID" + i].value = this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_itemImageID" + i].value;

@@ -118,8 +118,7 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 ?>
 <script><!--
 <?php
-echo we_tool_lookup::getJsCmdInclude($jsCmd) .
- we_message_reporting::jsString();
+echo we_tool_lookup::getJsCmdInclude($jsCmd);
 ?>
 
 if (self.location !== top.location) {
@@ -227,6 +226,11 @@ var WebEdition={
 					name_nok:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')); ?>",
 					prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
 				},
+				message_reporting:{
+					notice:"<?php echo g_l('alert', '[notice]');?>",
+					warning:"<?php echo g_l('alert', '[warning]');?>",
+					error:"<?php echo g_l('alert', '[error]');?>"
+				},
 				<?php
 				foreach($jsmods as $mod){
 					echo $mod.':{},';
@@ -242,14 +246,14 @@ var WebEdition={
 				WE_MESSAGE_ERROR:<?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>,
 			},
 			tables: {
-				FILE_TABLE: "<?php echo FILE_TABLE; ?>",
-				TEMPLATES_TABLE: "<?php echo TEMPLATES_TABLE; ?>",
 				OBJECT_FILES_TABLE: "<?php echo defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'; ?>",
 				OBJECT_TABLE: "<?php echo defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'; ?>",
-				CATEGORY_TABLE: "<?php echo CATEGORY_TABLE; ?>",
-				VFILE_TABLE: "<?php echo (defined('VFILE_TABLE') ? VFILE_TABLE : 'VFILE_TABLE' ); ?>",
-				table_to_load: "<?php echo $_table_to_load; ?>",
-				TBL_PREFIX: '<?php echo TBL_PREFIX; ?>'
+				TBL_PREFIX: '<?php echo TBL_PREFIX; ?>',
+<?php
+foreach(we_base_request::getAllTables() as $k => $v){
+	echo $k . ':"' . $v . '",';
+}
+?>
 			},
 			size:{
 				tree: {
@@ -286,9 +290,9 @@ var WebEdition={
 				}
 			},
 			linkPrefix: {
-				'TYPE_OBJ_PREFIX': '<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>',
-				'TYPE_INT_PREFIX': '<?php echo we_base_link::TYPE_INT_PREFIX; ?>',
-				'TYPE_MAIL_PREFIX': '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>'
+				TYPE_OBJ_PREFIX: '<?php echo we_base_link::TYPE_OBJ_PREFIX; ?>',
+				TYPE_INT_PREFIX: '<?php echo we_base_link::TYPE_INT_PREFIX; ?>',
+				TYPE_MAIL_PREFIX: '<?php echo we_base_link::TYPE_MAIL_PREFIX; ?>'
 			},
 		},
 
@@ -315,6 +319,7 @@ var WebEdition={
 		//vtabs:Vtabs,
 		button:null,
 		sidebar:null,
+		cockpitFrame:null,
 	},
 	//utility functions, defined in webedition.js
 	util:{
@@ -333,14 +338,14 @@ echo we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(JS_DIR . 'webEdition.js') .
  we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
  we_html_element::jsScript(JS_DIR . 'weButton.js') .
- we_html_element::jsScript(JS_DIR . 'we_users_ping.js');
+ we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
+ we_main_headermenu::css();
 
 foreach($jsCmd as $cur){
 	echo we_html_element::jsScript($cur);
 }
 ?>
 <script><!--
-//top.weSidebar = weSidebar;
 	function we_cmd() {
 	var url = "/webEdition/we_cmd.php?";
 					for (var i = 0; i < arguments.length; i++) {
@@ -381,26 +386,28 @@ if($diff){
 	case "exit_doc_question":
 					// return !! important for multiEditor
 					return new jsWindow(url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
-					case "loadVTab":
-					var op = top.makeFoldersOpenString();
-					parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
-					break;
-					case "eplugin_exit_doc" :
-					if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
-	if (top.plugin.isInEditor(arguments[1])) {
-	return confirm(WE().consts.g_l.main.eplugin_exit_doc);
-	}
-	}
-	return true;
-					case "editor_plugin_doc_count":
-					if (top.plugin.document.WePlugin !== undefined) {
-	return top.plugin.getDocCount();
-	}
-	return 0;
-					default:
+	case "loadVTab":
+		var op = top.makeFoldersOpenString();
+		parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
+		break;
+	case "eplugin_exit_doc" :
+		if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
+			if (top.plugin.isInEditor(arguments[1])) {
+				return confirm(WE().consts.g_l.main.eplugin_exit_doc);
+			}
+		}
+		return true;
+	case "editor_plugin_doc_count":
+		if (top.plugin.document.WePlugin !== undefined) {
+			return top.plugin.getDocCount();
+		}
+		return 0;
+	default:
 <?php
 foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
-	echo 'if(we_cmd_' . $mod . '(arguments,url)){break;}';
+	echo 'if(we_cmd_' . $mod . '(arguments,url)){
+	break;
+}';
 }
 ?>
 		if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
@@ -413,21 +420,18 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 			top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
 			top.weEditorFrameController.toggleFrames();
 		} else {
-			top.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_INFO, window);
+			WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_INFO, window);
 		}
 	}
 
 	}
 //-->
 </script>
-<?php
-$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
-we_main_header::pCSS();
-?>
 </head>
-<body id="weMainBody" onload="top.start();" onbeforeunload="doUnload()">
-	<div id="headerDiv">
-		<?php we_main_header::pbody($SEEM_edit_include); ?>
+<body id="weMainBody" onload="top.start('<?php echo $_table_to_load;?>');" onbeforeunload="doUnload()">
+	<div id="headerDiv"><?php
+	$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
+		we_main_header::pbody($SEEM_edit_include); ?>
 	</div>
 	<div id="resizeFrame"><?php
 		$_sidebarwidth = getSidebarWidth();

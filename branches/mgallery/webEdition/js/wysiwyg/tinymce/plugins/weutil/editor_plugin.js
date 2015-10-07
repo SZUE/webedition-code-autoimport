@@ -75,7 +75,7 @@
 									cm.setDisabled('welang', false);
 								}
 							default:
-								if (typeof mapTable[n.nodeName.toLowerCase()] !== 'undefined') {
+								if (mapTable[n.nodeName.toLowerCase()] !== undefined) {
 									cm.setActive(mapTable[n.nodeName.toLowerCase()], 1);
 									cm.setDisabled(mapTable[n.nodeName.toLowerCase()], false);
 								}

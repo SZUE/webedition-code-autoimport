@@ -28,10 +28,10 @@
 // this function is universal function for all messages in webEdition
 
 function we_showMessage(message, prio, win) {
+	win = (win ? win : this.window);
 	if (WE()) {
 		WE().util.showMessage(message, prio, win);
 	} else { // there is no webEdition window open, just show the alert
-		win = (win ? win : window);
 		win.alert(message);
 	}
 }

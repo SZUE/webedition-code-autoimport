@@ -54,7 +54,7 @@ if ( window.addEventListener ) { // moz
 	window.addEventListener(
 		\"load\",
 		function() {
-			top.cockpitFrame.executeAjaxRequest('" . base64_decode(
+			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode(
 			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
 		},
 		true
@@ -62,7 +62,7 @@ if ( window.addEventListener ) { // moz
 
 } else if ( window.attachEvent ) { // IE
 	window.attachEvent( \"onload\", function(){
-			top.cockpitFrame.executeAjaxRequest('" . base64_decode(
+			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode(
 			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
 		}
 	);

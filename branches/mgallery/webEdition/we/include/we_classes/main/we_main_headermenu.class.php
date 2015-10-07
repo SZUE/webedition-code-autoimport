@@ -53,10 +53,6 @@ onunload=function() {
 </div>';
 	}
 
-	static function pCSS(){
-		echo self::css();
-	}
-
 	static function css(){
 		$ret = '';
 		foreach(self::getCssForCssMenu() as $link){

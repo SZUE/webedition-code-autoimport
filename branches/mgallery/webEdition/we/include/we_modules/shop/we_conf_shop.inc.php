@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -43,4 +42,8 @@ define('WE_SHOP_PRICENAME', 'we_shopPricename');
 define('WE_SHOP_SHIPPING', 'we_shopPriceShipping');
 define('WE_SHOP_CALC_VAT', 'we_shopCalcVat');
 
-we_base_request::registerTables(array(SHOP_TABLE, WE_SHOP_PREFS_TABLE, WE_SHOP_VAT_TABLE));
+we_base_request::registerTables(array(
+	'SHOP_TABLE' => SHOP_TABLE,
+	'WE_SHOP_PREFS_TABLE' => WE_SHOP_PREFS_TABLE,
+	'WE_SHOP_VAT_TABLE' => WE_SHOP_VAT_TABLE
+));

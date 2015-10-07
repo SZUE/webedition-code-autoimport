@@ -471,7 +471,7 @@ weCollectionEdit = {
 		for (var i = 0; i < items.length; i++) {
 			if (this.dd.IsDuplicates || this.collectionCsv.search(',' + items[i].id + ',') === -1) {
 				itemsSet[0].push(items[i].id);
-				if (this.dd.fillEmptyRows && !rowsFull && el.nextSibling && typeof el.nextSibling.id !== 'undefined' && el.nextSibling.id.substr(0, 10) === this.view + '_item_') {
+				if (this.dd.fillEmptyRows && !rowsFull && el.nextSibling && el.nextSibling.id !== undefined && el.nextSibling.id.substr(0, 10) === this.view + '_item_') {
 					index = el.nextSibling.id.substr(10);
 					id = this.view === 'grid' ? el.nextSibling.childNodes[2].value : document.getElementById('yuiAcResultItem_' + index).value;
 					if (id === -1 || id === 0) {
