@@ -978,8 +978,8 @@ function setLocation(loc){
 			if(is_file($_SESSION['weS']['weBackupVars']['backup_file'])){
 //Note: we show a link for external download - do we need this?
 
-				$_link = WEBEDITION_PATH . 'showTempFile.php?' . http_build_query(array(
-						'file' => str_replace(WEBEDITION_DIR, '', $_down),
+				$_link = WEBEDITION_DIR . 'showTempFile.php?' . http_build_query(array(
+						'file' => str_replace(WEBEDITION_PATH, '', $_down),
 						'binary' => 1
 				));
 

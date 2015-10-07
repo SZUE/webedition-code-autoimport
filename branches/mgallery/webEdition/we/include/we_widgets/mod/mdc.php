@@ -30,9 +30,13 @@ $mdc = "";
 if(!isset($aCsv)){
 	$aCsv = explode(';', $aProps[3]);
 }
-$_binary = $aCsv[1];
-$_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
-$_csv = $aCsv[2];
+if($aCsv){
+	$_binary = $aCsv[1];
+	$_csv = $aCsv[2];
+	$_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
+} else {
+	$_csv = '';
+}
 
 if($_csv){
 	if($_binary{0}){

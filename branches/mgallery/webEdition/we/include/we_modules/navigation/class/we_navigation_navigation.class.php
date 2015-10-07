@@ -706,11 +706,12 @@ class we_navigation_navigation extends weModelBase{
 				if($this->LinkSelection === self::LSELECTION_EXTERN){
 					return array('', 0);
 				}
-
 				return array(FILE_TABLE, $this->UrlID);
 			case self::STPYE_CLASS:
 			case self::STPYE_OBJLINK:
 				return array(OBJECT_FILES_TABLE, $this->LinkID);
+			case self::STPYE_DOCLINK:
+				return array(FILE_TABLE,$this->LinkID);
 		}
 	}
 
