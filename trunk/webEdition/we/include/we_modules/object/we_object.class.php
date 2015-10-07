@@ -452,7 +452,7 @@ class we_object extends we_document{
 						}
 						if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 							$arrt[$nam]['meta'][] = $_val;
-						} elseif(($key = $this->getElement($cur . 'defaultkey' . $f))!==''){ //Fix #9830
+						} elseif(($key = $this->getElement($cur . 'defaultkey' . $f)) !== ''){ //Fix #9830
 							$arrt[$nam]['meta'][$key] = $_val;
 						} else {
 							$arrt[$nam]['meta'][''] = $_val;
@@ -1733,10 +1733,9 @@ class we_object extends we_document{
 		$var_flip = array_flip(g_l('modules_object', '[url]'));
 
 		$select2 = "";
-		if(($anz = $this->getElement("DefaultanzahlUrl")) >= 0){ //Fix #9964 0 is an corret value!
-
+		if(($anz = $this->getElement('DefaultanzahlUrl', 'dat', -1)) >= 0){ //Fix #9964 0 is an corret value!
 			$allFields = array_merge(self::$urlUnique, self::$urlFields);
-			$this->DefaultUrl = "";
+			$this->DefaultUrl = '';
 
 			for($i = 0; $i <= $anz; $i++){
 				$was = "DefaultUrl_" . $i;
