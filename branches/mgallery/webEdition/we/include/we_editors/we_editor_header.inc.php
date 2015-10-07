@@ -139,7 +139,7 @@ echo STYLESHEET .
  we_html_element::jsElement(
 	'var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
-	($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE = 1;' : '')) .
+	($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE=true;' : '')) .
  we_html_element::jsScript(JS_DIR . 'we_editor_header.js');
 $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
 ?>

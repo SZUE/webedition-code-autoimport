@@ -42,4 +42,4 @@ if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_
 	);
 }
 
-echo we_html_element::jsElement('parent.openedWithWE = 1;');
+echo we_html_element::jsElement('parent.openedWithWE=true;');

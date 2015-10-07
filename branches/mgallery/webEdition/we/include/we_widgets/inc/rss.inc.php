@@ -50,9 +50,8 @@ $aLang = array(
 );
 
 $_iFrmRss = we_html_element::jsElement("
-if ( window.addEventListener ) { // moz
 	window.addEventListener(
-		\"load\",
+		'load',
 		function() {
 			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode(
 			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
@@ -60,12 +59,6 @@ if ( window.addEventListener ) { // moz
 		true
 	);
 
-} else if ( window.attachEvent ) { // IE
-	window.attachEvent( \"onload\", function(){
-			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode(
-			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
-		}
-	);
-}") . '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
+") . '<div class="rssDiv middlefont" id="m_' . $iCurrId . '_inline" style="width:100%;height:287px ! important; overflow: auto;"></div>';
 
 $oTblDiv = $_iFrmRss;

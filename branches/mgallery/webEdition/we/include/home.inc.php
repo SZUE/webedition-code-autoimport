@@ -63,13 +63,11 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
 		_EditorFrame.initEditorFrameData(
 						{
-							"EditorType": "cockpit",
-							"EditorDocumentText": "<?php
-	echo g_l('cockpit', '[cockpit]');
-	?>",
-							"EditorDocumentPath": "Cockpit",
-							"EditorContentType": "cockpit",
-							"EditorEditCmd": "open_cockpit"
+							EditorType: "cockpit",
+							EditorDocumentText: "<?php echo g_l('cockpit', '[cockpit]'); ?>",
+							EditorDocumentPath: "Cockpit",
+							EditorContentType: "cockpit",
+							EditorEditCmd: "open_cockpit"
 						}
 		);
 

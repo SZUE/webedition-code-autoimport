@@ -920,7 +920,7 @@ var CropTool = {
 	}
 };
 
-if (window.attachEvent) {
+/*if (window.attachEvent) {
 	var clearElementProps = [
 		"onmousedown",
 		"onmouseup",
@@ -957,7 +957,7 @@ if (window.attachEvent) {
 						CropTool = null;
 					}
 	);
-}
+}*/
 
 if (!Function.prototype.apply) {
 	Function.prototype.apply = function (thisObj, params) {

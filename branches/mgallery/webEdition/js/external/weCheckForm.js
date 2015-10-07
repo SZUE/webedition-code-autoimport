@@ -29,9 +29,6 @@ weCheckFormEvent.addEvent = function (e, name, f) {
 	if (e.addEventListener) {
 		e.addEventListener(name, f, true);
 	}
-	if (e.attachEvent) {
-		e.attachEvent("on" + name, f);
-	}
 };
 
 weCheckFormEvent.stopEvent = function (ev) {

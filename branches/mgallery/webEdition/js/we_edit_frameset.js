@@ -31,7 +31,7 @@ var openedInEditor = true;
 //	With this var we can see, if the document is opened via webEdition
 //	or just opened in the bm_content Frame, p.ex javascript location.replace or reload or sthg..
 //	we must check, if the tab is switched ... etc.
-var openedWithWE = 1;
+var openedWithWE = true;
 
 
 function we_cmd() {

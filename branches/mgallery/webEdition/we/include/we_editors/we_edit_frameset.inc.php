@@ -352,7 +352,7 @@ function setOnload(){
 	// in Edit-Mode all must be reloaded !!!
 	// To remove this functionality - just use the second condition as well.
 	return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW */ ?
-			'if(top.edit_include){top.edit_include.close();} if(openedWithWE == 0){ checkDocument(); } setOpenedWithWE(0);' :
+			'if(top.edit_include){top.edit_include.close();} if(openedWithWE==false){ checkDocument(); } setOpenedWithWE(false);' :
 			'');
 }
 

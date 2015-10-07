@@ -99,11 +99,7 @@ if(isset($GLOBALS['we_doc'])){
 	if(isset($useSeeModeJS[$GLOBALS['we_doc']->ContentType]) && in_array($GLOBALS['we_doc']->EditPageNr, $useSeeModeJS[$GLOBALS['we_doc']->ContentType])){
 		$js.='
 // add event-Handler, replace links after load
-	if (window.addEventListener) {
-		window.addEventListener("load", seeMode_dealWithLinks, false);
-	} else if (window.attachEvent) {
-		window.attachEvent("onload", seeMode_dealWithLinks);
-	}
+	window.addEventListener("load", seeMode_dealWithLinks, false);
 ';
 	}
 }
@@ -120,11 +116,7 @@ window.onerror = function () {
 
 }
 
-if (window.addEventListener) {
-	window.addEventListener("load", we_rpc_dw_onload);
-} else {
-	window.attachEvent("onload", we_rpc_dw_onload);
-}
+window.addEventListener("load", we_rpc_dw_onload);
 ';
 }
 echo we_html_element::jsScript(JS_DIR . 'we_textarea.js') .

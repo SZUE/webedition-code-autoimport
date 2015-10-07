@@ -300,11 +300,11 @@ var _sObjId='m_" . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 5) . "'
 var _sTb='" . $title . "';
 var _sInitProps='" . $_sInitProps . "';") . "
 var _ttlB64Esc='';
-var g_l={
-	'until_befor_from': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]')) . "',
-	'note_not_modified': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]')) . "',
-	'title_empty': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]')) . "',
-	'date_empty': '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]')) . "',
+WE().consts.g_l.cockpit.pad={
+	until_befor_from: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]')) . "',
+	note_not_modified: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]')) . "',
+	title_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]')) . "',
+	date_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]')) . "',
 };
 if(typeof parent.base64_encode=='function'){
 _ttlB64Esc=escape(parent.base64_encode(_sTb));

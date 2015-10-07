@@ -58,15 +58,8 @@ function keyBoardListener(_successor) {
 	 * @param {Event} evt
 	 */
 	this.cancelEvent = function (evt) {
-
-		if (document.attachEvent) {
-			evt.returnValue = false;
-
-		} else {
-			evt.preventDefault();
-			evt.stopPropagation();
-
-		}
+		evt.preventDefault();
+		evt.stopPropagation();
 	};
 }
 
@@ -178,7 +171,7 @@ function keyEditorListener(_successor) {
 		_editorType = "";
 
 		// check if an editor is open
-		if (top!==undefined && top.weEditorFrameController !== undefined) {
+		if (top !== undefined && top.weEditorFrameController !== undefined) {
 			_activeEditorFrame = top.weEditorFrameController.getActiveEditorFrame();
 			if (top.weEditorFrameController.getActiveDocumentReference()) {
 				_editorType = _activeEditorFrame.getEditorType();

@@ -1007,9 +1007,9 @@ function EditorFrame(ref, elementId) {
 		if (obj) {
 			for (var eigen in obj) {
 				if (typeof (obj[eigen]) === "boolean") {
-					eval("this." + eigen + " = " + obj[eigen]);
+					this[eigen] = obj[eigen];
 				} else {
-					eval("this." + eigen + " = \"" + obj[eigen] + "\"");
+					this[eigen] = obj[eigen];
 				}
 			}
 			this.updateEditorTab();

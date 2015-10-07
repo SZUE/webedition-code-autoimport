@@ -80,17 +80,7 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 	protected function _renderHTML(){
 		$page = we_ui_layout_HTMLPage::getInstance();
 
-		$noticeText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][notice]'));
-		$warningText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][warning]'));
-		$errorText = str_replace('"', '\"', g_l('messageConsole', '[iconBar][error]'));
-
 		$js = <<<EOS
-
-var _msgNotice  = "$noticeText";
-var _msgWarning = "$warningText";
-var _msgError   = "$errorText";
-
-
 var _console_$this->_consoleName = new messageConsoleView( '$this->_consoleName', this.window );
 _console_$this->_consoleName.register();
 

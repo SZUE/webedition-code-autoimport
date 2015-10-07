@@ -229,7 +229,12 @@ var WebEdition={
 				message_reporting:{
 					notice:"<?php echo g_l('alert', '[notice]');?>",
 					warning:"<?php echo g_l('alert', '[warning]');?>",
-					error:"<?php echo g_l('alert', '[error]');?>"
+					error:"<?php echo g_l('alert', '[error]');?>",
+					msgNotice:"<?php echo g_l('messageConsole', '[iconBar][notice]');?>",
+					msgWarning:"<?php echo g_l('messageConsole', '[iconBar][warning]');?>",
+					msgError:"<?php echo g_l('messageConsole', '[iconBar][error]');?>",
+				},
+				cockpit:{
 				},
 				<?php
 				foreach($jsmods as $mod){
@@ -364,7 +369,7 @@ foreach($jsCmd as $cur){
 	try {
 	var _string = ',edit_document,new_document,open_extern_document,edit_document_with_parameters,new_folder,edit_folder';
 					if (_string.indexOf("," + arguments[0] + ",") === - 1) {
-	top.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+		top.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
 	}
 	} catch (exp) {
 
@@ -428,7 +433,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 //-->
 </script>
 </head>
-<body id="weMainBody" onload="top.start('<?php echo $_table_to_load;?>');" onbeforeunload="doUnload()">
+<body id="weMainBody" onload="top.start('<?php echo $_table_to_load;?>');" onunload="doUnload()" onbeforeunload="doUnload()">
 	<div id="headerDiv"><?php
 	$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 		we_main_header::pbody($SEEM_edit_include); ?>

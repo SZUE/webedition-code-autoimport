@@ -28,8 +28,8 @@ function we_setPath(path, text, id, classname) {
 
 	// update document-tab
 	_EditorFrame.initEditorFrameData({
-		"EditorDocumentText": text,
-		"EditorDocumentPath": path
+		EditorDocumentText: text,
+		EditorDocumentPath: path
 	});
 
 	if (classname) {

@@ -1024,7 +1024,7 @@ function we_templateHead($fullHeader = false){
 	we_html_element::jsScript(JS_DIR . 'global.js') .
 	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 	weSuggest::getYuiFiles() .
-	we_html_element::jsElement('parent.openedWithWE = 1;');
+	we_html_element::jsElement('parent.openedWithWE=true;');
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	if($fullHeader){
 		echo '</head><body onload="doScrollTo();" onunload="doUnload()">';

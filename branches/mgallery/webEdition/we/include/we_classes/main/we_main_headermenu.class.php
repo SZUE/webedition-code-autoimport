@@ -31,19 +31,14 @@ class we_main_headermenu{
 	 * @return string
 	 */
 	public static function createMessageConsole($consoleName = 'NoName'){
-		return we_html_element::jsScript(JS_DIR . 'messageConsoleView.js') .
-			we_html_element::jsElement('
-var _msgNotice  = "' . g_l('messageConsole', '[iconBar][notice]') . '";
-var _msgWarning = "' . g_l('messageConsole', '[iconBar][warning]') . '";
-var _msgError   = "' . g_l('messageConsole', '[iconBar][error]') . '";
-
-
+		return we_html_element::jsScript(JS_DIR . 'messageConsoleView.js', '
 var _console_' . $consoleName . ' = new messageConsoleView("' . $consoleName . '", this.window );
 _console_' . $consoleName . '.register();
-
-onunload=function() {
+window.document.body.addEventListener("onunload",
+function() {
 	_console_' . $consoleName . '.unregister();
 }
+);
 ') . '
 <div id="messageConsole">
 <table><tr>

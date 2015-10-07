@@ -65,7 +65,7 @@ if($weFileupload->processFileRequest()){
 	$we_maxfilesize_text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
 
 	echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) .
-	STYLESHEET . we_html_element::jsElement('parent.openedWithWE = 1;') . $weFileupload->getJS() . $weFileupload->getCss();
+	STYLESHEET . we_html_element::jsElement('parent.openedWithWE=true;') . $weFileupload->getJS() . $weFileupload->getCss();
 
 	if(!isset($_SESSION['weS']['we_data'][$we_transaction])){
 		$we_alerttext = $we_maxfilesize_text;

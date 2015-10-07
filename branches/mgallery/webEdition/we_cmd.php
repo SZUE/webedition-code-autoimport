@@ -282,7 +282,7 @@ function findInclude($cmd){
 			}
 			//	This is ONLY used in the edit-mode of the documents.
 			//	This statement prevents the page from being reloaded.
-			echo we_html_element::jsElement('parent.openedWithWE = 1;');
+			echo we_html_element::jsElement('parent.openedWithWE=true;');
 			t_e('error', 'command \'' . $cmd . '\' not known!');
 			exit('command \'' . $cmd . '\' not known!');
 	}
@@ -298,6 +298,6 @@ if(($inc = findInclude($cmd))){
 
 	require((substr($inc, 0, 5) === 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
 	//  This statement prevents the page from being reloaded
-	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE = 1;') : '') .
+	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE=true;') : '') .
 	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
 }
