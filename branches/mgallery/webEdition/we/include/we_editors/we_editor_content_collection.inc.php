@@ -38,12 +38,6 @@ weCollectionEdit.we_doc = {
 	remClass: "' . $GLOBALS['we_doc']->getRemClass() . '"
 };
 
-weCollectionEdit.we_const = {
-	TBL_PREFIX: "' . TBL_PREFIX . '",
-	FILE_TABLE: "' . FILE_TABLE . '",
-	OBJECT_FILES_TABLE: "' . OBJECT_FILES_TABLE . '",
-};
-
 weCollectionEdit.g_l = {
 	element_not_set: "' . g_l('weClass', '[collection][notSet]') . '",
 	info_insertion: "' . g_l('weClass', '[collection][infoAddFiles]') . '"

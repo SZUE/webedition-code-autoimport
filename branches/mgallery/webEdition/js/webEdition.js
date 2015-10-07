@@ -46,7 +46,7 @@ function showMessage(message, prio, win) {
 		win = this.window;
 	}
 	// default is error, to avoid missing messages
-	prio = prio ? prio : WE_MESSAGE_ERROR;
+	prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
 
 	// always show in console !
 	messageConsole.addMessage(prio, message);
@@ -56,17 +56,17 @@ function showMessage(message, prio, win) {
 		// the used vars are in file JS_DIR . "weJsStrings.php";
 		switch (prio) {
 			// Notice
-			case WE_MESSAGE_NOTICE:
+			case WE().consts.message.WE_MESSAGE_NOTICE:
 				win.alert(message_reporting.notice + ":\n" + message);
 				break;
 
 				// Warning
-			case WE_MESSAGE_WARNING:
+			case WE().consts.message.WE_MESSAGE_WARNING:
 				win.alert(message_reporting.warning + ":\n" + message);
 				break;
 
 				// Error
-			case WE_MESSAGE_ERROR:
+			case WE().consts.message.WE_MESSAGE_ERROR:
 				win.alert(message_reporting.error + ":\n" + message);
 				break;
 		}
@@ -84,7 +84,7 @@ function doClickDirect(id, ct, table, fenster) {
 
 	} else {
 		//  If a include-file is edited and another link is chosen, it will appear on the main window. And the pop-up will be closed.
-		top.we_showMessage(WE().consts.g_l.main.open_link_in_SEEM_edit_include, WE_MESSAGE_WARNING, window);
+		top.we_showMessage(WE().consts.g_l.main.open_link_in_SEEM_edit_include, WE().consts.message.WE_MESSAGE_WARNING, window);
 		top.opener.top.doClickDirect(id, ct, table, top.opener);
 		// clean session
 		// get the EditorFrame - this is important due to edit_include_mode!!!!
@@ -347,7 +347,7 @@ function openBrowser(url) {
 	try {
 		browserwind = window.open("/webEdition/openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 	} catch (e) {
-		top.we_showMessage(WE().consts.g_l.main.browser_crashed, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.main.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -515,7 +515,7 @@ function we_openMediaReference(id) {
 				break;
 			default:
 				if (ref.isTempPossible && ref.referencedIn == 'main' && ref.isModified) {
-					top.we_showMessage('Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!', WE_MESSAGE_ERROR, window);
+					top.we_showMessage('Der Link wurde bei einer unveröffentlichten Änderung entfernt: Er existiert nur noch in der veröffentlichten Version!', WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
 					top.weEditorFrameController.openDocument(ref.table, ref.id, ref.ct);
 				}
@@ -565,13 +565,13 @@ function we_cmd_base(args, url) {
 			toggleBusy(1);
 			if (weEditorFrameController.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
-					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else if (window.confirm(WE().consts.g_l.main.delete_single_confirm_delete + "\n" + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().frames.editFooter, self.load, url2 + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "delete_single_document":
@@ -581,12 +581,12 @@ function we_cmd_base(args, url) {
 			toggleBusy(1);
 			if (weEditorFrameController.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
-					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
 					submit_we_form(top.weEditorFrameController.getActiveDocumentReference().editFooter, self.load, url + "&we_cmd[2]=" + top.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable());
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "do_delete":
@@ -1216,7 +1216,7 @@ function we_cmd_base(args, url) {
 					}
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
 
@@ -1234,7 +1234,7 @@ function we_cmd_base(args, url) {
 				top.weEditorFrameController.getActiveDocumentReference().createWidget(args[0].substr(args[0].length - 3), 1, 1);
 			}
 			else {
-				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "open_document":

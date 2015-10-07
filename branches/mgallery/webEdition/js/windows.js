@@ -69,7 +69,7 @@ jsWindow.prototype.open = function (noPopupErrorMsg, noPopupLocation) {
 	} catch (e) {
 		if (noPopupErrorMsg !== undefined && noPopupErrorMsg.length) {
 			if (!this.wind) {
-				top.we_showMessage(noPopupErrorMsg, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(noPopupErrorMsg, WE().consts.message.WE_MESSAGE_ERROR, window);
 				//  disabled See Bug#1335
 				if (noPopupLocation !== undefined) {
 					//document.location = noPopupLocation;

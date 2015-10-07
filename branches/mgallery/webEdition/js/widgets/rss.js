@@ -199,7 +199,7 @@ function save() {
 	opener.saveSettings();
 	//savePrefs();
 	//displayRssFeed(sUri,true);
-	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	opener.top.weNavigationHistory.navigateReload();
 	self.close();
 }
@@ -208,7 +208,7 @@ function preview() {
 	var oIptUri = _fo.elements.ipt_uri;
 	var sUri = oIptUri.value;
 	if (!isUrl(sUri)) {
-		top.we_showMessage(g_l.invalid_url, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.invalid_url, WE().consts.message.WE_MESSAGE_ERROR, window);
 		//return;
 	}
 	previewPrefs();
@@ -261,7 +261,7 @@ function handleTopRssFeed(sAction) {
 				handleButtonState(1, 'overwrite', 'delete');
 				_iTopRssFeedsLen++;
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
 		case 'delete':

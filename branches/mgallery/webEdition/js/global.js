@@ -26,11 +26,6 @@
 
 /**This file is intended to be a global file for many js functions in WE*/
 // this function is universal function for all messages in webEdition
-var WE_MESSAGE_INFO = -1;
-var WE_MESSAGE_FRONTEND = -2;
-var WE_MESSAGE_NOTICE = 1;
-var WE_MESSAGE_WARNING = 2;
-var WE_MESSAGE_ERROR = 4;
 
 function we_showMessage(message, prio, win) {
 	if (win && win.top && typeof win.top.showMessage === 'function') {

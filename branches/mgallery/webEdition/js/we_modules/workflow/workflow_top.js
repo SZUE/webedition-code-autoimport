@@ -62,13 +62,13 @@ function we_cmd() {
 			break;
 		case "delete_workflow":
 			if (!perms.DELETE_WORKFLOW) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				if (top.content.editor.edbody.loaded) {
 					if (!confirm(g_l.delete_question))
 						return;
 				} else {
-					top.we_showMessage(g_l.nothing_to_delete, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 
 				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
@@ -77,7 +77,7 @@ function we_cmd() {
 			break;
 		case "save_workflow":
 			if (!perms.EDIT_WORKFLOW && !perms.NEW_WORKFLOW) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				if (top.content.editor.edbody.loaded) {
 					top.content.editor.edbody.setStatus(top.content.editor.edfooter.document.we_form.status_workflow.value);
@@ -92,7 +92,7 @@ function we_cmd() {
 						}
 					}
 				} else {
-					top.we_showMessage(g_l.nothing_to_save, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				top.content.editor.edbody.document.we_form.wcmd.value = args[0];
 				top.content.editor.edbody.submitForm();

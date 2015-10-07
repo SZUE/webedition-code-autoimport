@@ -348,7 +348,7 @@ function publishDocs() {
 	}
 
 	if (check === false) {
-		top.we_showMessage(g_l.notChecked, WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(g_l.notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	} else {
 		Check = confirm(g_l.publish_docs);
 		if (Check === true) {
@@ -359,7 +359,7 @@ function publishDocs() {
 
 var ajaxCallbackPublishDocs = {
 	success: function (o) {
-		top.we_showMessage(g_l.publishOK, WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(g_l.publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 		// reload current document => reload all open Editors on demand
 
@@ -389,7 +389,7 @@ var ajaxCallbackPublishDocs = {
 
 function search(newSearch) {
 	if (canNotMakeTemp) {
-		top.we_showMessage(g_l.noTempTableRightsDoclist, WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(g_l.noTempTableRightsDoclist, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	} else {
 		if (newSearch) {
 			document.we_form.searchstart.value = 0;

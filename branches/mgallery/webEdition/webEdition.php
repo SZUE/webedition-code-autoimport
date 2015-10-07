@@ -234,6 +234,13 @@ var WebEdition={
 				?>
 			},
 			global:constants,
+			message:{
+				WE_MESSAGE_INFO: <?php echo we_message_reporting::WE_MESSAGE_INFO; ?>,
+				WE_MESSAGE_FRONTEND: <?php echo we_message_reporting::WE_MESSAGE_FRONTEND; ?>,
+				WE_MESSAGE_NOTICE:<?php echo we_message_reporting::WE_MESSAGE_NOTICE; ?>,
+				WE_MESSAGE_WARNING:<?php echo we_message_reporting::WE_MESSAGE_WARNING; ?>,
+				WE_MESSAGE_ERROR:<?php echo we_message_reporting::WE_MESSAGE_ERROR; ?>,
+			},
 			tables: {
 				FILE_TABLE: "<?php echo FILE_TABLE; ?>",
 				TEMPLATES_TABLE: "<?php echo TEMPLATES_TABLE; ?>",
@@ -406,7 +413,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 			top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
 			top.weEditorFrameController.toggleFrames();
 		} else {
-			top.showMessage(WE().consts.g_l.main.no_editor_left, WE_MESSAGE_INFO, window);
+			top.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_INFO, window);
 		}
 	}
 

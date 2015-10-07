@@ -369,6 +369,6 @@ function save() {
 	if (_sCsvInit_ != sCsv) {
 		opener.rpc(sCsv, '', '', '', '', _sObjId, _sSctInc);
 	}
-	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	self.close();
 }

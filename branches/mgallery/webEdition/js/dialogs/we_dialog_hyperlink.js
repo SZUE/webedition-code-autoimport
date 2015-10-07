@@ -126,20 +126,20 @@ function weDoCheckAcFields() {
 	acStatus = YAHOO.autocoml.checkACFields();
 	acStatusType = typeof acStatus;
 	if (weAcCheckLoop > 10) {
-		top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+		top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		weAcCheckLoop = 0;
 	} else if (acStatusType.toLowerCase() == "object") {
 		if (acStatus.running) {
 			weAcCheckLoop++;
 			setTimeout(weDoCheckAcFields, 100);
 		} else if (!acStatus.valid) {
-			top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+			top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			weAcCheckLoop = 0;
 		} else {
 			weAcCheckLoop = 0;
 			document.we_form.submit();
 		}
 	} else {
-		top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+		top.showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_WE().consts.message.MESSAGE_ERROR, window);
 	}
 }

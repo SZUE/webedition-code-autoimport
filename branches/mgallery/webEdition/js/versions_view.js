@@ -361,7 +361,7 @@ function deleteVers() {
 	}
 
 	if (check == false) {
-		top.we_showMessage(g_l.notChecked, WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(g_l.notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		return;
 	}
 	Check = confirm(g_l.deleteVersions);

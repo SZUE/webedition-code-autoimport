@@ -39,7 +39,7 @@ function we_cmd_glossary(args, url) {
 				new jsWindow(url, "glossary_check", -1, -1, 730, 400, true, false, true);
 
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "glossary_edit_acronym":

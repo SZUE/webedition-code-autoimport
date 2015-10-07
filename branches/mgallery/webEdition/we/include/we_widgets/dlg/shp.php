@@ -75,7 +75,7 @@ function save(){
 		if((!_bPrev&&sCsv!=_sInitCsv_)||(_bPrev&&sCsv!=_sLastPreviewCsv)){
 			refresh(false);
 		}
-		top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		self.close();
 	} else {
 		" . we_message_reporting::getShowMessageCall(

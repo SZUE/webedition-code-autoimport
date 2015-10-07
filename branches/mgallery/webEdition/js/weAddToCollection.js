@@ -8,9 +8,6 @@ weAddToCollection = {
 		nothingToMove: '',
 		notValidFolder: ''
 	},
-	we_const_: {
-		VFILE_TABLE: ''
-	},
 	init: function (conf, g_l, we_const) {
 		this.conf = conf;
 		this.g_l = g_l;
@@ -34,7 +31,7 @@ weAddToCollection = {
 		}
 		if (!sel) {
 			top.toggleBusy(0);
-			top.we_showMessage(this.g_l.nothingToMove, WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.nothingToMove, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
 
@@ -48,7 +45,7 @@ weAddToCollection = {
 				setTimeout(press_ok_move, 100);
 				return;
 			} else if (!acStatus.valid) {
-				top.we_showMessage(this.g_l.notValidFolder, WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(this.g_l.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return;
 			}
 		}
@@ -66,7 +63,7 @@ weAddToCollection = {
 		_collID = _collID ? _collID : 0;
 		for (_frameId in _usedEditors) {
 			_editor = _usedEditors[_frameId];
-			if (_editor.getEditorEditorTable() == this.we_const.VFILE_TABLE && _editor.getEditorDocumentId() == _collID) {
+			if (_editor.getEditorEditorTable() == WE().consts.tables.VFILE_TABLE && _editor.getEditorDocumentId() == _collID) {
 				_isOpen = true;
 				_transaction = _editor.getEditorTransaction();
 				if (_editor.getEditorEditPageNr() == 1) {
@@ -131,7 +128,7 @@ weAddToCollection = {
 		}
 		if (!sel) {
 			top.toggleBusy(0);
-			top.we_showMessage(this.g_l.nothingToMove, WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.nothingToMove, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
 

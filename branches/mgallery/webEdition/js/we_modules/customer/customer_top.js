@@ -78,7 +78,7 @@ function we_cmd() {
 				return;
 			}
 			if (!perms.DELETE_CUSTOMER) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}
 
@@ -88,7 +88,7 @@ function we_cmd() {
 					topFrame.editor.edbody.submitForm();
 				}
 			} else {
-				top.we_showMessage(g_l.nothing_to_delete, WE_MESSAGE_WARNING, window);
+				top.we_showMessage(g_l.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
 			}
 
 
@@ -99,7 +99,7 @@ function we_cmd() {
 				return;
 			}
 			if (!perms.EDIT_CUSTOMER && !perms.NEW_CUSTOMER) {
-				top.we_showMessage(WE().consts.g_l.main.no_perms, WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}
 
@@ -107,7 +107,7 @@ function we_cmd() {
 				topFrame.editor.edbody.document.we_form.cmd.value = args[0];
 				topFrame.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(g_l.nothing_to_save, WE_MESSAGE_WARNING, window);
+				top.we_showMessage(g_l.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
 			}
 
 			top.content.usetHot();

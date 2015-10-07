@@ -222,7 +222,7 @@ function spellcheck() {
 		setTimeout(spellcheck, 1000);
 		retryjava++;
 	} else {
-		top.we_showMessage(g_l.no_java, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.no_java, WE().consts.message.WE_MESSAGE_ERROR, window);
 		self.close();
 	}
 }
@@ -261,7 +261,7 @@ function findNext() {
 						fadeout("spinner", 80, 10, 10);
 					}
 					WE().layout.button.enable(document, "check");
-					top.we_showMessage(g_l.finished, WE_MESSAGE_NOTICE, window);
+					top.we_showMessage(g_l.finished, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				}
 			}
 		} else {
@@ -277,6 +277,6 @@ function add() {
 		hiddenCmd.dispatch("addWord", currentWord);
 		findNext();
 	} else {
-		top.we_showMessage("A fatal error occured", WE_MESSAGE_ERROR, window);
+		top.we_showMessage("A fatal error occured", WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }

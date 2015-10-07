@@ -35,7 +35,7 @@ function we_save_docType(doc, url) {
 	}
 	acStatusType = typeof acStatus;
 	if (countSaveLoop > 10) {
-		top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		countSaveLoop = 0;
 	} else if (acStatusType.toLowerCase() == 'object') {
 		if (acStatus.running) {
@@ -44,14 +44,14 @@ function we_save_docType(doc, url) {
 				we_save_docType(doc, url);
 			}, 100);
 		} else if (!acStatus.valid) {
-			top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+			top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else {
 			countSaveLoop = 0;
 			we_submitForm(doc, url);
 		}
 	} else {
-		top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -110,15 +110,15 @@ function we_cmd() {
 			var name = prompt(top.WE().consts.g_l.doctypeEdit.newDocTypeName, "");
 			if (name !== null) {
 				if ((name.indexOf("<") !== -1) || (name.indexOf(">") !== -1)) {
-					top.we_showMessage(top.WE().consts.g_l.main.name_nok, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(top.WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 					return;
 				}
 				if (name.indexOf("'") !== -1 || name.indexOf('"') !== -1 || name.indexOf(',') !== -1) {
-					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_hochkomma, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else if (name === "") {
-					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_empty, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else if (top.WE().util.in_array(docTypeNames, name)) {
-					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_exists, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
 					/*						if (top.opener.top.header) {
 					 top.opener.top.header.location.reload();

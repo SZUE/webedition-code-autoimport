@@ -29,7 +29,7 @@ function we_lcmd(par) {
 				top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);
 				top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.we_save_document();
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.nothing_to_save, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.nothing_to_save, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			return;
 		case 'trigger_publish_document':
@@ -37,7 +37,7 @@ function we_lcmd(par) {
 				top.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);
 				top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.we_save_document();
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.nothing_to_publish, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.main.nothing_to_publish, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			return;
 

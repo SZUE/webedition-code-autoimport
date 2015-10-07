@@ -138,7 +138,7 @@ function delStep() {
 		document.we_form.wcmd.value = "reload_table";
 		submitForm();
 	} else {
-		top.we_showMessage(g_l.del_last_step, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.del_last_step, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -148,7 +148,7 @@ function delTask() {
 		document.we_form.wcmd.value = "reload_table";
 		submitForm();
 	} else {
-		top.we_showMessage(g_l.del_last_task, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.del_last_task, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -157,35 +157,35 @@ function checkData() {
 	var nsteps = document.we_form.wsteps;
 	var ntasks = document.we_form.wtasks;
 	if (document.we_form[uid + "_Text"].value === "") {
-		top.we_showMessage(g_l.name_empty, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.name_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
 	if (document.we_form[uid + "_Folders"].value === "" && document.we_form[uid + "_Type"].value == 1) {
-		top.we_showMessage(g_l.folders_empty, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.folders_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
 	if (document.we_form[uid + "_ObjectFileFolders"].value === "" && document.we_form[uid + "_Type"].value == 2) {
-		top.we_showMessage(g_l.folders_empty, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.folders_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 
 	if ((document.we_form[uid + "_DocType"].value === 0 && document.we_form[uid + "_Categories"].value === "") && document.we_form[uid + "_Type"].value === 0) {
-		top.we_showMessage(g_l.doctype_empty, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 
 		return false;
 	}
 
 	if (document.we_form[uid + "_Objects"].value === "" && document.we_form[uid + "_Type"].value == 2) {
-		top.we_showMessage(g_l.objects_empty, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.objects_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}
 	var _txt;
 	for (i = 0; i < nsteps.value; i++) {
 		if (document.we_form[uid + '_step' + i + '_Worktime'].value === "") {
 			_txt = g_l.worktime_empty;
-			top.we_showMessage(_txt.replace(/%s/, i + 1), WE_MESSAGE_ERROR, window);
+			top.we_showMessage(_txt.replace(/%s/, i + 1), WE().consts.message.WE_MESSAGE_ERROR, window);
 			return false;
 		}
 		userempty = true;
@@ -196,7 +196,7 @@ function checkData() {
 		}
 		if (userempty) {
 			_txt = g_l.user_empty;
-			top.we_showMessage(_txt.replace(/%s/, i + 1), WE_MESSAGE_ERROR, window);
+			top.we_showMessage(_txt.replace(/%s/, i + 1), WE().consts.message.WE_MESSAGE_ERROR, window);
 			return false;
 		}
 

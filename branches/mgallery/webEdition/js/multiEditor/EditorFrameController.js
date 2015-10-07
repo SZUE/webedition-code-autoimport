@@ -239,7 +239,7 @@ function EditorFrameController() {
 					this.closeDocument(this.ActiveEditorFrameId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
 
 				} else {
-					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 			}
 		}

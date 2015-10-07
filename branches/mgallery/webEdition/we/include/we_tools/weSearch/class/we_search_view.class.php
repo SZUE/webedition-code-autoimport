@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_view{
+class we_search_view extends we_modules_view{
 	const VIEW_LIST = 'list';
 	const VIEW_ICONS = 'icons';
 	const SEARCH_DOCS = 'DocSearch';
@@ -47,10 +47,8 @@ class we_search_view{
 	private $view = 'list';
 
 	public function __construct($frameset = '', $topframe = 'top'){
+		parent::__construct($frameset, $topframe);
 		$this->toolName = 'weSearch';
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
 		$this->Model = new we_search_model();
 		$this->yuiSuggest = & weSuggest::getInstance();
 		$this->searchclass = new we_search_search();
@@ -58,9 +56,7 @@ class we_search_view{
 	}
 
 	function getJSTop(){
-		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
-			we_html_element::jsElement(
+		return we_html_element::jsElement(
 				'var activ_tab = "1";
    var hot = 0;
 
@@ -388,9 +384,6 @@ case "tool_weSearch_new_forObjects":
 				$addinputRows = "";
 		}
 
-
-
-
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
 				$anzahl = $this->Model->anzahlDocSearch;
@@ -408,22 +401,12 @@ case "tool_weSearch_new_forObjects":
 				$anzahl = 0;
 		}
 
-		$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
-
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
-		$showHideSelects = $showSelects = '';
+		$showSelects = '';
 		$_js = we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
 			we_html_element::jsElement('
 weSearch.we_const = {
-	WEBEDITION_DIR: "' . WEBEDITION_DIR . '",
-	IMAGE_DIR: "' . IMAGE_DIR . '",
-	CATEGORY_TABLE: "' . CATEGORY_TABLE . '",
-	TEMPLATES_TABLE: "' . TEMPLATES_TABLE . '",
-	FILE_TABLE: "' . FILE_TABLE . '",
-	OBJECT_FILES_TABLE: "' . OBJECT_FILES_TABLE . '",
-	WE_MESSAGE_NOTICE: "' . we_message_reporting::WE_MESSAGE_NOTICE . '",
-	WE_MESSAGE_ERROR: "' . we_message_reporting::WE_MESSAGE_ERROR . '",
 	SEARCH_DOCS: "' . self::SEARCH_DOCS . '",
 	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
 	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
@@ -2606,7 +2589,7 @@ weSearch.g_l = {
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {

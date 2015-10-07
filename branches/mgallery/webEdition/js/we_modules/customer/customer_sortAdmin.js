@@ -38,7 +38,7 @@ function we_cmd() {
 
 		case "add_sort_field":
 			if (arguments[1] === "") {
-				top.we_showMessage(g_l.sortname_empty, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(g_l.sortname_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}
 			document.we_form.sortindex.value = arguments[1];
@@ -50,7 +50,7 @@ function we_cmd() {
 			document.we_form.fieldindex.value = arguments[2];
 		case "del_sort":
 			if (arguments[1] == settings.default_sort_view) {
-				top.we_showMessage(g_l.default_soting_no_del, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(g_l.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			else {
 				document.we_form.cmd.value = arguments[0];

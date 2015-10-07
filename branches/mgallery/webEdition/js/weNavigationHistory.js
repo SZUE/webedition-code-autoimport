@@ -57,7 +57,7 @@ function weNavigationHistory() {
 					this.navigateBack();
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.nav_first_document, WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.nav_first_document, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 		} else {
 			this.getNoDocumentMessage();
@@ -73,7 +73,7 @@ function weNavigationHistory() {
 					this.navigateNext();
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.nav_last_document, WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.nav_last_document, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 		} else {
 			this.getNoDocumentMessage();
@@ -86,7 +86,7 @@ function weNavigationHistory() {
 				_currentEditor.setEditorReloadAllNeeded(true);
 				_currentEditor.setEditorIsActive(true);
 			} else { // reopen current Editor
-				top.we_showMessage(WE().consts.g_l.main.nav_no_open_document, WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.nav_no_open_document, WE().consts.message.WE_MESSAGE_NOTICE, window);
 // this.saveInHistory = false;
 // this.documentHistory[this.currentIndex].executeHistoryEntry();
 
@@ -97,7 +97,7 @@ function weNavigationHistory() {
 	};
 
 	this.getNoDocumentMessage = function () {
-		top.we_showMessage(WE().consts.g_l.main.nav_no_entry, WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(WE().consts.g_l.main.nav_no_entry, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	};
 }
 

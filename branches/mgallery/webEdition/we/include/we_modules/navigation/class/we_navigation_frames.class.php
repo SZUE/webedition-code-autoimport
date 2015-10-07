@@ -104,11 +104,7 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	public function getHTMLDocumentHeader(){
-		if(!empty($this->Model->Charset)){
 			return parent::getHTMLDocumentHeader($this->Model->Charset);
-		}
-		return we_html_tools::getHtmlTop($this->module, $this->Model->Charset) .
-			STYLESHEET;
 	}
 
 	/**

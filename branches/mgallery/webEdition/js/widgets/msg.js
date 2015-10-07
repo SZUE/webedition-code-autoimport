@@ -29,7 +29,7 @@ function init() {
 
 function save() {
 	previewPrefs();
-	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE_MESSAGE_NOTICE, window);
+	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	self.close();
 }
 

@@ -85,7 +85,7 @@ function hideDictSelector() {
 function checkApplet() {
 	if (appletActiv && document.spellchecker.uploadFinished && document.spellchecker.uploadFinished()) {
 		if (document.spellchecker.packingFinished()) {
-			top.we_showMessage(g_l.dict_saved, WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(g_l.dict_saved, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 		hideDictSelector();
 		appletActiv = false;

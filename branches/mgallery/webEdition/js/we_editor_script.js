@@ -298,7 +298,7 @@ function we_cmd() {
 			if (hasGD) {
 				new jsWindow(url, "we_image_resize", -1, -1, 260, (gdType === "jpg" ? 250 : 190), true, false, true);
 			} else {
-				top.we_showMessage(g_l.gdTypeNotSupported, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "image_convertJPEG":
@@ -315,10 +315,10 @@ function we_cmd() {
 				if (gdSupport) {
 					new jsWindow(url, "we_rotate", -1, -1, 300, (gdType === "jpg" ? 230 : 170), true, false, true);
 				} else {
-					top.we_showMessage(g_l.gdTypeNotSupported, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 			} else {
-				top.we_showMessage(g_l.noRotate, WE_MESSAGE_ERROR, window);
+				top.we_showMessage(g_l.noRotate, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "image_focus":
@@ -335,7 +335,7 @@ function we_cmd() {
 				if (gdSupport) {
 					CropTool.crop();
 				} else {
-					top.we_showMessage(g_l.gdTypeNotSupported, WE_MESSAGE_ERROR, window);
+					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 			}
 			break;
@@ -382,32 +382,32 @@ function fields_are_valid() {
 					case "int":
 					case "integer":
 						if (!theVal.match(/^-{0,1}\d+$/)) {
-							top.we_showMessage(g_l.field_contains_incorrect_chars.replace(/%s/, theType), WE_MESSAGE_ERROR, window);
+							top.we_showMessage(g_l.field_contains_incorrect_chars.replace(/%s/, theType), WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						} else if (theVal > 2147483647) {
-							top.we_showMessage(g_l.field_int_value_to_height, WE_MESSAGE_ERROR, window);
+							top.we_showMessage(g_l.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "float":
 						if (isNaN(theVal)) {
-							top.we_showMessage(g_l.field_int_value_to_height, WE_MESSAGE_ERROR, window);
+							top.we_showMessage(g_l.field_int_value_to_height, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "weObject_input_length":
 						if (!theVal.match(/^-{0,1}\d+$/) || theVal < 1 || theVal > 1023) {
-							top.we_showMessage(g_l.field_input_contains_incorrect_length, WE_MESSAGE_ERROR, window);
+							top.we_showMessage(g_l.field_input_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
 						break;
 					case "weObject_int_length":
 						if (!theVal.match(/^-{0,1}\d+$/) || theVal < 1 || theVal > 20) {
-							top.we_showMessage(g_l.field_int_contains_incorrect_length, WE_MESSAGE_ERROR, window);
+							top.we_showMessage(g_l.field_int_contains_incorrect_length, WE().consts.message.WE_MESSAGE_ERROR, window);
 							theInputs[i].focus();
 							return false;
 						}
@@ -422,17 +422,17 @@ function fields_are_valid() {
 
 function we_checkObjFieldname(i) {
 	if (i.value.search(/^([a-zA-Z0-9_+-])*$/)) {
-		top.we_showMessage(g_l.fieldNameNotValid, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.fieldNameNotValid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		i.focus();
 		i.select();
 		i.value = i.getAttribute("oldValue");
 	} else if (i.value === 'Title' || i.value === 'Description') {
-		top.we_showMessage(g_l.fieldNameNotTitleDesc, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.fieldNameNotTitleDesc, WE().consts.message.WE_MESSAGE_ERROR, window);
 		i.focus();
 		i.select();
 		i.value = i.getAttribute("oldValue");
 	} else if (i.value.length === 0) {
-		top.we_showMessage(g_l.fieldNameEmpty, WE_MESSAGE_ERROR, window);
+		top.we_showMessage(g_l.fieldNameEmpty, WE().consts.message.WE_MESSAGE_ERROR, window);
 		//		i.focus(); # 1052
 		//		i.select();
 		i.value = i.getAttribute("oldValue");

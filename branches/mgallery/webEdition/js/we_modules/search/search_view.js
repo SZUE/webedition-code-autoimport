@@ -1,13 +1,5 @@
 weSearch = {
 	we_const: {// FIXME: move most important constants to webedition.js
-		WEBEDITION_DIR: '',
-		IMAGE_DIR: '',
-		CATEGORY_TABLE: '',
-		TEMPLATES_TABLE: '',
-		FILE_TABLE: '',
-		OBJECT_FILES_TABLE: '',
-		WE_MESSAGE_NOTICE: '',
-		WE_MESSAGE_ERROR: '',
 		SEARCH_DOCS: '',
 		SEARCH_TMPL: '',
 		SEARCH_MEDIA: '',
@@ -112,7 +104,7 @@ weSearch = {
 	},
 	search: function (newSearch) {
 		if (!this.conf.checkRightTempTable && !this.conf.heckRightDropTable) {
-			top.we_showMessage(this.g_l.noTempTableRightsSearch, this.we_const.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.noTempTableRightsSearch, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			top.console.debug("hier??");
 			return;
 		}
@@ -131,7 +123,7 @@ weSearch = {
 					}
 				}
 				if (Checks.length === 0) {
-					top.we_showMessage(this.g_l.nothingCheckedAdv, this.we_const.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(this.g_l.nothingCheckedAdv, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 			case this.we_const.SEARCH_DOCS:
@@ -150,8 +142,8 @@ weSearch = {
 				//top.console.debug('cl', Checks.length);
 				if (Checks.length === 0) {
 					//FIXME: dirty fix => allow to search without searchForXX when no searchFieldsMediaSearch[0] is empty
-					if(this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value){
-						top.we_showMessage(this.g_l.nothingCheckedTmplDoc, this.we_const.WE_MESSAGE_ERROR, window);
+					if (this.conf.editorBodyFrame.document.we_form.elements['searchMediaSearch[0]'].value) {
+						top.we_showMessage(this.g_l.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 					} else {
 						Checks[0] = '';
 					}
@@ -168,7 +160,7 @@ weSearch = {
 					}
 				}
 				if (Checks.length === 0) {
-					top.we_showMessage(this.g_l.nothingCheckedTmplDoc, this.we_const.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(this.g_l.nothingCheckedTmplDoc, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
 		}
@@ -298,11 +290,11 @@ weSearch = {
 	},
 	setOrder: function (order, whichSearch) {
 		//FIXME: ordering media search does not work yet
-		if(whichSearch === 'MediaSearch'){
+		if (whichSearch === 'MediaSearch') {
 			alert('ordering columns temporarily disabled');
 			return;
 		}
-		
+
 		var columns = ['Text', 'SiteTitle', 'CreationDate', 'ModDate'],
 						deleteArrow, arrow, foo;
 
@@ -461,7 +453,7 @@ weSearch = {
 				var innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search" + this.conf.whichsearch + "ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>' +
+								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.CATEGORY_TABLE).replace(/__we_selector__/, 'we_selector_category') + '</td>' +
 								'</tr></tbody></table>';
 
 				var cell = document.createElement('TD');
@@ -484,7 +476,7 @@ weSearch = {
 				var innerhtml = "<table class=\"default\"><tbody><tr>" +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td>' + this.elems.pixel + '</td>' +
-								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, this.we_const.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>' +
+								'<td>' + this.elems.btnSelector.replace(/__we_new_id__/g, rowNr).replace(/__we_sel_table__/, WE().consts.tables.TEMPLATES_TABLE).replace(/__we_selector__/, 'we_selector_document') + '</td>' +
 								"</tr></tbody></table>";
 
 				cell = document.createElement("TD");
@@ -505,7 +497,7 @@ weSearch = {
 				}
 				row.removeChild(searchTD);
 
-				var table = value === 'ParentIDDoc' ? this.we_const.FILE_TABLE : (value === 'ParentIDObj' ? this.we_const.OBJECT_FILES_TABLE : this.we_const.TEMPLATES_TABLE);
+				var table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
 
 				var innerhtml = "<table class=\"default\"><tbody><tr>" +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
@@ -664,7 +656,7 @@ weSearch = {
 	ajaxCallbackResetVersion: {
 		success: function (o) {
 			//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-			top.we_showMessage(weSearch.g_l.versionsResetAllVersionsOK, weSearch.we_const.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(weSearch.g_l.versionsResetAllVersionsOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 			// reload current document => reload all open Editors on demand
 			var _usedEditors = top.opener.weEditorFrameController.getEditorsInUse();
@@ -708,7 +700,7 @@ weSearch = {
 		}
 
 		if (check == false) {
-			top.we_showMessage(this.g_l.versionsNotChecked, this.we_const.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.versionsNotChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		} else {
 			Check = confirm("' . g_l('versions', '[resetVersionsSearchtool]') . '");
 			if (Check == true) {
@@ -765,7 +757,7 @@ weSearch = {
 		}
 
 		if (check == false) {//searchtool__notChecked
-			top.we_showMessage(this.g_l.searchtool__notChecked, this.we_const.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 		else {
 			Check = confirm("' . g_l('searchtool', '[publish_docs]') . '");
@@ -791,7 +783,7 @@ weSearch = {
 		}
 
 		if (check == false) {//searchtool__notChecked
-			top.we_showMessage(this.g_l.searchtool__notChecked, this.we_const.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.searchtool__notChecked, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 		else {
 			Check = confirm("you really want to delete them?\n=> coming soon...");
@@ -806,7 +798,7 @@ weSearch = {
 		if (elem) {
 			elem.style.display = elem.style.display === 'block' ? 'none' : 'block';
 		}
-		btn.firstChild.src = this.we_const.IMAGE_DIR + 'button/icons/direction_' + (elem.style.display === 'block' ? 'down' : 'right') + '.gif';
+		btn.firstChild.src = WE().consts.dirs.IMAGE_DIR + 'button/icons/direction_' + (elem.style.display === 'block' ? 'down' : 'right') + '.gif';
 	},
 	ajaxCallbackPublishDocs: {
 		success: function (o) {
@@ -830,7 +822,7 @@ weSearch = {
 			}
 			document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "";
 			document.getElementById("resetBusyDocSearch").innerHTML = "";
-			top.we_showMessage(weSearch.g_l.searchtool__publishOK, weSearch.we_const.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(weSearch.g_l.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 		},
 		failure: function (o) {

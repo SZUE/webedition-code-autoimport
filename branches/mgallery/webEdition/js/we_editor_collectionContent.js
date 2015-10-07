@@ -99,11 +99,6 @@ weCollectionEdit = {
 		grid: null,
 		list: null
 	},
-	we_const: {// FIXME: move such "constants" to webEdition.js ("global" namespace)
-		TBL_PREFIX: '',
-		FILE_TABLE: '',
-		OBJECT_FILES_TABLE: ''
-	},
 	we_doc: {
 		ID: 0,
 		name: '',
@@ -277,7 +272,7 @@ weCollectionEdit = {
 			}
 		}
 
-		top.we_cmd('addToCollection', 1, this.we_const.TBL_PREFIX + this.we_doc.remTable, this.we_doc.ID, this.we_doc.Path, index, pos);
+		top.we_cmd('addToCollection', 1, WE().consts.tables.TBL_PREFIX + this.we_doc.remTable, this.we_doc.ID, this.we_doc.Path, index, pos);
 	},
 	doClickDelete: function (elem) {
 		var el = this.getItem(elem);
@@ -305,7 +300,7 @@ weCollectionEdit = {
 		}
 	},
 	doClickOpenToEdit: function (id) {
-		var table = this.we_doc.remTable === 'tblFile' ? this.we_const.FILE_TABLE : this.we_const.OBJECT_FILES_TABLE,
+		var table = this.we_doc.remTable === 'tblFile' ? WE().consts.tables.FILE_TABLE : WE().consts.tables.OBJECT_FILES_TABLE,
 						ct = this.storage['item_' + id].ct;
 		top.weEditorFrameController.openDocument(table, id, ct);
 	},
@@ -551,7 +546,7 @@ weCollectionEdit = {
 		}
 
 		if (!this.collectionName) {
-			this.collectionName = (this.we_const.TBL_PREFIX + this.we_doc.remTable === this.we_const.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
+			this.collectionName = (WE().consts.tables.TBL_PREFIX + this.we_doc.remTable === WE().consts.tables.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
 		}
 		document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value = this.collectionCsv;
 		if (!notSetHot) {
@@ -816,7 +811,7 @@ weCollectionEdit = {
 					this.hideSpace(elem);
 				}
 
-				if (this.we_const.TBL_PREFIX + this.we_doc.remTable === data[1]) {
+				if (WE().consts.tables.TBL_PREFIX + this.we_doc.remTable === data[1]) {
 					if (!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1) {
 						this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
 						return;

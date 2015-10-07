@@ -44,7 +44,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 			if(validation::deleteService($_service)){
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE));
 			} else {
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE_MESSAGE_ERR)
+				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE().consts.message.WE_MESSAGE_ERR)
 				);
 			}
 			break;
