@@ -24,16 +24,6 @@
 
 mainXhtmlFields = ["setXhtml_remove_wrong", "setXhtml_show_wrong"];
 showXhtmlFields = ["setXhtml_show_wrong_text", "setXhtml_show_wrong_js", "setXhtml_show_wrong_error_log"];
-Array.prototype.contains = function (obj) {
-	var i, listed = false;
-	for (i = 0; i < this.length; i++) {
-		if (this[i] === obj) {
-			listed = true;
-			break;
-		}
-	}
-	return listed;
-};
 
 function checkAllRevert() {
 	var checkbox = document.getElementById("version_all");
