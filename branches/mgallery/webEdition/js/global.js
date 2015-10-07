@@ -28,27 +28,11 @@
 // this function is universal function for all messages in webEdition
 
 function we_showMessage(message, prio, win) {
-	if (win && win.top && typeof win.top.showMessage === 'function') {
-		win.top.showMessage(message, prio, win);
-	} else if (win.top.opener) {
-		if (win.top.opener.top.showMessage !== undefined) {
-			win.top.opener.top.showMessage(message, prio, win);
-		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.showMessage !== undefined) {
-			win.top.opener.top.opener.top.showMessage(message, prio, win);
-		} else if (win.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== undefined && win.top.opener.top.opener.top.opener !== null && win.top.opener.top.opener.top.opener.top.showMessage !== undefined) {
-			win.top.opener.top.opener.top.opener.top.showMessage(message, prio, win);
-		} else {//nichts gefunden
-			if (!win) {
-				win = window;
-			}
-			win.alert(message);
-		}
+	if (WE()) {
+		WE().util.showMessage(message, prio, win);
 	} else { // there is no webEdition window open, just show the alert
-		if (!win) {
-			win = window;
-		}
+		win = (win ? win : window);
 		win.alert(message);
-
 	}
 }
 

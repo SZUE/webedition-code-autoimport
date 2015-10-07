@@ -41,7 +41,7 @@ var we_mediaReferences = {};
  * @param prio integer one of the values 1,2,4
  * @param win object reference to the calling window
  */
-function showMessage(message, prio, win) {
+WE().util.showMessage = function (message, prio, win) {
 	if (!win) {
 		win = this.window;
 	}
@@ -71,7 +71,7 @@ function showMessage(message, prio, win) {
 				break;
 		}
 	}
-}
+};
 
 // new functions
 function doClickDirect(id, ct, table, fenster) {
