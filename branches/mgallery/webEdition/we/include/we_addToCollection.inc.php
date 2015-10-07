@@ -74,8 +74,7 @@ if($cmd0 === 'do_addToCollection'){
 			}
 		}
 	}
-	$script = we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(JS_DIR . 'global.js') .
+	$script =
 		we_html_element::jsElement($script);
 }
 

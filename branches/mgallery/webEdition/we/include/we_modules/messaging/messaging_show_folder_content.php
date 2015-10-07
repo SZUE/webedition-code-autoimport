@@ -32,9 +32,7 @@ $transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'
 if(!$transaction){
 	exit();
 }
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js').
-	we_html_element::jsElement('
+echo we_html_element::jsElement('
 		var transaction="' . $transaction . '";
 		top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
 ') .

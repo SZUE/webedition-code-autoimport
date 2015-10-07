@@ -591,7 +591,7 @@ echo we_html_tools::getHtmlTop("webEdition - " . g_l('versions', '[versioning]')
 	}
 //-->
 </script>
-<?php echo we_html_element::jsScript(JS_DIR . 'windows.js').we_html_element::jsScript(JS_DIR . 'global.js') . $js; ?>
+<?php echo $js; ?>
 <style type="text/css" media="screen">
 	td {
 		font-size:11px;

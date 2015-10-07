@@ -134,8 +134,6 @@ if($we_doc->IsTextContentDoc && $haspermNew && //	$_js_permnew
 
 
 echo STYLESHEET .
- we_html_element::jsScript(JS_DIR . "windows.js") .
- we_html_element::jsScript(JS_DIR . 'global.js') .
  we_html_element::jsElement('
 	var we_transaction="' . $we_transaction . '";
 	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(we_transaction);

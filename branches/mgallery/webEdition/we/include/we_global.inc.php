@@ -1021,8 +1021,8 @@ function we_templateHead($fullHeader = false){
 	we_html_tools::getJSErrorHandler() .
 	STYLESHEET_BUTTONS_ONLY .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js').
-		we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
+	we_html_element::jsScript(JS_DIR . 'global.js') .
+	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 	weSuggest::getYuiFiles() .
 	we_html_element::jsElement('parent.openedWithWE = 1;');
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');

@@ -274,8 +274,6 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("mdcProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[my_documents]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', weSuggest::getYuiFiles() . STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js').
 	we_html_element::jsElement($jsPrefs . $jsCode . $jsTree) .
 	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js'), we_html_element::htmlBody(
 		array(

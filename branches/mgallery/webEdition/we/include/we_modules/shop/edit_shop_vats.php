@@ -177,9 +177,7 @@ $parts = array(
 	),
 );
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js').
- we_html_element::jsElement(
+echo we_html_element::jsElement(
 	$vatJavaScript .
 	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . we_html_element::jsScript(JS_DIR . 'we_modules/shop/edit_shop_vats.js') . "
 	</head>

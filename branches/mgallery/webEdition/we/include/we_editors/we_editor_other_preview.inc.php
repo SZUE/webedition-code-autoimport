@@ -43,9 +43,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) === 'download'){
 echo we_html_tools::getHtmlTop() .
  (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
 	we_html_element::jsElement('parent.frames.editHeader.we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");') : ''
-) .
- we_html_element::jsScript(JS_DIR . 'windows.js').
-	we_html_element::jsScript(JS_DIR . 'global.js');
+);
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo STYLESHEET . we_html_element::cssElement('

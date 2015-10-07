@@ -218,8 +218,6 @@ function doKeyDown() {
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . ($printJS_Style ? STYLESHEET : '') . static::getTinyMceJS() .
 			($printJS_Style ?
-				we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js') .
 				$this->getJs() :
 				''
 			) . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') . $additionals .

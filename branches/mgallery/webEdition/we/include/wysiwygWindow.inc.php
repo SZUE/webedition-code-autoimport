@@ -136,10 +136,7 @@ top.close();');
 	<body class="weDialogBody">
 		<?php
 	} else {
-
-		echo STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'windows.js').
-			we_html_element::jsScript(JS_DIR . 'global.js');
+		echo STYLESHEET;
 		?>
 	</head>
 	<body class="weDialogBody" onload="top.focus();">

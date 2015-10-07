@@ -29,9 +29,9 @@ echo we_html_tools::getHtmlTop(g_l('modules_banner', '[defaultbanner]')) .
 
 if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$GLOBALS['DB_WE']->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'tool' => 'banner',
-				'pref_name' => 'DefaultBannerID',
-				'pref_value' => we_base_request::_(we_base_request::INT, "DefaultBannerID", 0)
+			'tool' => 'banner',
+			'pref_name' => 'DefaultBannerID',
+			'pref_value' => we_base_request::_(we_base_request::INT, "DefaultBannerID", 0)
 	)));
 
 	echo we_html_element::jsElement('top.close();') . '</head><body></body></html>';
@@ -62,9 +62,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	return $yuiSuggest->getHTML();
 }
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-we_html_element::jsScript(JS_DIR . 'global.js').
-	we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'we_defaultbanner.js') .
+echo we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'we_defaultbanner.js') .
  weSuggest::getYuiFiles();
 ?>
 </head>
@@ -80,6 +78,6 @@ we_html_element::jsScript(JS_DIR . 'global.js').
 		echo we_html_tools::htmlDialogLayout($content, g_l('modules_banner', '[defaultbanner]'), $buttons, "100%", 30, 175);
 		?>
 	</form>
-	<?php echo  $yuiSuggest->getYuiJs(); ?>
+	<?php echo $yuiSuggest->getYuiJs(); ?>
 </body>
 </html>

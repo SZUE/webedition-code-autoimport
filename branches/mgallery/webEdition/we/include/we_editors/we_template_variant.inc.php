@@ -27,11 +27,9 @@ if(!empty($we_doc->elements["Charset"]["dat"]) && $we_doc->EditPageNr == we_base
 }
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js').
-	we_html_element::jsScript(JS_DIR . 'global.js');
+ STYLESHEET;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo STYLESHEET;
 ?>
 </head>
 <body bgcolor="white" marginwidth="15" marginheight="15" leftmargin="15" topmargin="15" onunload="doUnload()">
@@ -71,8 +69,8 @@ echo STYLESHEET;
 			)
 		);
 
-		echo we_html_multiIconBox::getHTML('template_variant', $parts, 30, '', -1, '', '', false).
-			we_html_element::htmlHidden("we_complete_request", 1);
+		echo we_html_multiIconBox::getHTML('template_variant', $parts, 30, '', -1, '', '', false) .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body>

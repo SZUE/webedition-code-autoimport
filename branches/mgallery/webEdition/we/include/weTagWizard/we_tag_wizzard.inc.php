@@ -91,8 +91,6 @@ weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 // print html header of page
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 	we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js') .
 	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
 	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('

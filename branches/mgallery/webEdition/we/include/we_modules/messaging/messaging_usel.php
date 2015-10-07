@@ -34,8 +34,6 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js').
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js');
 ?>
 <script><!--

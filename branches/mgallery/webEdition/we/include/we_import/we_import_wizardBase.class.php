@@ -54,8 +54,7 @@ abstract class we_import_wizardBase{
 					we_html_element::htmlIFrame('wizcmd', $this->path . "?pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js').
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '',
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
 				we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 				we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .

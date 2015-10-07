@@ -25,8 +25,6 @@ include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 //make sure we know which browser is used
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js') .
  we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
  STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'home.css');

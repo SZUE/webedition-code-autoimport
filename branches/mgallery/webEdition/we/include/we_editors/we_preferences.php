@@ -2474,8 +2474,6 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	var url = "<?php echo WEBEDITION_DIR; ?> 'we_cmd.php?";
 //--></</script><?php
 echo STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js').
 	weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){

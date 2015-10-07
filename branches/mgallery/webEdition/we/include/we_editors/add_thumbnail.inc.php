@@ -92,10 +92,6 @@ function we_cmd(){
 	}
 }');
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js');
-
-
 echo STYLESHEET . "</head>";
 
 // SELECT Box with thumbnails

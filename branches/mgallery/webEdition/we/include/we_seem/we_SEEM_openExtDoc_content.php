@@ -38,8 +38,7 @@ if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_
 	//	there must be a navigation-history - so use it
 	$_table->setColContent(1, 0, we_html_button::create_button(we_html_button::BACK, "javascript:top.weNavigationHistory.navigateBack();"));
 
-	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'attachKeyListener.js'), we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $_table->getHtml())
+	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $_table->getHtml())
 	);
 }
 

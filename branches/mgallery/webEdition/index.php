@@ -78,7 +78,6 @@ function printHeader($login, $status = 200, $js = ''){
 
 	echo we_html_tools::getHtmlTop('webEdition') . STYLESHEET .
 	we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::jsElement(we_message_reporting::jsString());
 
 	if($login != LOGIN_OK){

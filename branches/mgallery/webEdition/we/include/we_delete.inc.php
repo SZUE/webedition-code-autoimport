@@ -374,9 +374,7 @@ for ( frameId in _usedEditors ) {
 	} else {
 		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
 	}
-	echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js') .
-	we_html_element::jsElement($script);
+	echo we_html_element::jsElement($script);
 
 	//exit;
 }

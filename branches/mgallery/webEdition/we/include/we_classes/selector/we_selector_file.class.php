@@ -184,8 +184,6 @@ class we_selector_file{
 		$this->setDirAndID(); //set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset') .
 		we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-		we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(JS_DIR . 'global.js') .
 		$this->getFramesetJavaScriptDef() .
 		$this->getFramsetJSFile() .
 		$this->getExitOpen() .

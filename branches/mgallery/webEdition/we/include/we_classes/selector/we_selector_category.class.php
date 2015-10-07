@@ -495,8 +495,6 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::jsElement('
 function we_cmd(){
 	var args = "";

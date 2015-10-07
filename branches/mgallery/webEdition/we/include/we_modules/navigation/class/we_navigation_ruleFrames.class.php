@@ -211,10 +211,7 @@ class we_navigation_ruleFrames{
 		$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 		return we_html_tools::getHtmlTop() . STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement('
-
 var allFields = ["FolderID", "DoctypeID", "ClassID", "WorkspaceID"];
 var resetFields = ["NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID"];
 

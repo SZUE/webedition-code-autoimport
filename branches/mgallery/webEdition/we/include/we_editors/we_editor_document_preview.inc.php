@@ -21,9 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop(5) .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js');
+echo we_html_tools::getHtmlTop(5);
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo STYLESHEET;

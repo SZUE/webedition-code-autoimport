@@ -31,8 +31,6 @@ if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be d
 }
 
 echo we_html_tools::getHtmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '') .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js').
 	STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 

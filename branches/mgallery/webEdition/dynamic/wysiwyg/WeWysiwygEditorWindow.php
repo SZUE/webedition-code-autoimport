@@ -23,9 +23,7 @@ we_html_tools::protect();
 
 $fieldName = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), 'UTF-8') .
- STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js');
+ STYLESHEET;
 
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	$newHTML = we_base_request::_(we_base_request::RAW, $fieldName, '');

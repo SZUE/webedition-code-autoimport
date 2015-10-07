@@ -154,8 +154,6 @@ if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
 </script>
 <?php
 echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js').
 	STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'selectors.css') .
  we_html_element::cssElement('

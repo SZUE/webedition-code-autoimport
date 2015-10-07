@@ -51,8 +51,6 @@ $parts[] = array(
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js') .
  weSuggest::getYuiFiles();
 require(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .

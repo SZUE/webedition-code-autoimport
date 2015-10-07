@@ -29,8 +29,6 @@ $browser = we_base_browserDetect::inst();
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'global.js').
 	we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_hl.js') .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
  we_html_element::jsElement('

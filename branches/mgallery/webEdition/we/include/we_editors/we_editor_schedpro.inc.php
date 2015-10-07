@@ -25,12 +25,8 @@ if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 	we_schedpro::trigger_schedule();
 }
 
-echo we_html_tools::getHtmlTop();
-
+echo we_html_tools::getHtmlTop() . STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js').
-	we_html_element::jsScript(JS_DIR . 'global.js');
 ?>
 </head>
 <body  class="weEditorBody" onload="checkFooter()" onunload="doUnload()">

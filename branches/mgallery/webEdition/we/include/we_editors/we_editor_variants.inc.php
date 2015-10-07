@@ -27,10 +27,8 @@ if(!empty($we_doc->elements["Charset"]["dat"]) && $we_doc->EditPageNr == we_base
 }
 
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js').
-	we_html_element::jsScript(JS_DIR . 'global.js');
+ STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo STYLESHEET;
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()">
@@ -44,7 +42,7 @@ echo STYLESHEET;
 				break;
 
 			case we_base_ContentTypes::TEMPLATE:
-				include(WE_INCLUDES_PATH. 'we_editors/we_template_variant.inc.php');
+				include(WE_INCLUDES_PATH . 'we_editors/we_template_variant.inc.php');
 				break;
 
 			default:

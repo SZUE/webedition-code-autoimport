@@ -53,8 +53,6 @@ switch(we_base_request::_(we_base_request::STRING,'do')){
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js').
  $we_doc->getSearchJS() .
  (isset($javascript) ? we_html_element::jsElement($javascript) : '');
 
