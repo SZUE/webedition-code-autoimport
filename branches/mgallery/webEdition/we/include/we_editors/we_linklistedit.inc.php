@@ -342,7 +342,8 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
  weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'linklistedit.js');
+ we_html_element::jsScript(JS_DIR . 'global.js').
+	we_html_element::jsScript(JS_DIR . 'linklistedit.js');
 ?>
 <script><!--
 

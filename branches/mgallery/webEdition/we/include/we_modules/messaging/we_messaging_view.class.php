@@ -128,21 +128,25 @@ function submitForm() {
 				return $out;
 			case 'new_message':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsScript(JS_DIR . 'global.js').
 					we_html_element::jsElement('
 				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",-1,-1,670,530,true,false,true,false);
 				');
 			case 'new_todo':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsScript(JS_DIR . 'global.js').
 					we_html_element::jsElement('
 				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);					//-->
 				');
 			case 'forward_todo':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsScript(JS_DIR . 'global.js').
 					we_html_element::jsElement('
 				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 				');
 			case 'rej_todo':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsScript(JS_DIR . 'global.js').
 					we_html_element::jsElement('
 				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 				');
@@ -155,6 +159,7 @@ function submitForm() {
 			case 'update_todo':
 				if($this->messaging->selected_message){
 					echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+						we_html_element::jsScript(JS_DIR . 'global.js').
 					we_html_element::jsElement('
 					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 					');
@@ -317,6 +322,7 @@ top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
 				return $out;
 			case 'edit_settings':
 				return we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsScript(JS_DIR . 'global.js').
 					we_html_element::jsElement('
 					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
 					');

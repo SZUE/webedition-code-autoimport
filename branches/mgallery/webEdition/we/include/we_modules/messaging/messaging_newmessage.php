@@ -36,7 +36,8 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', '[new_message]')) .
  STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js').
+	we_html_element::jsScript(JS_DIR . 'global.js');
 ?>
 
 <script><!--

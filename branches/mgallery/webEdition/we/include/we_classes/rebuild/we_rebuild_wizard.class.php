@@ -968,6 +968,7 @@ abstract class we_rebuild_wizard{
 		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', STYLESHEET .
 				($contents[0] ?
 					we_html_element::jsScript(JS_DIR . 'windows.js') .
+					we_html_element::jsScript(JS_DIR . 'global.js') .
 					we_html_element::jsElement($contents[0]) : ''), we_html_element::htmlBody(array(
 					"class" => "weDialogBody"
 					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[1])

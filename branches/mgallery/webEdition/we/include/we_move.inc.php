@@ -116,6 +116,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 			we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	$script = we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsScript(JS_DIR . 'global.js').
 		we_html_element::jsElement($script);
 }
 

@@ -22,7 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'global.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo STYLESHEET .
@@ -51,8 +52,8 @@ echo STYLESHEET .
 				"html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(),
 				"space" => 140
 			)
-			), 20).
-			we_html_element::htmlHidden("we_complete_request",1);
+			), 20) .
+		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body>

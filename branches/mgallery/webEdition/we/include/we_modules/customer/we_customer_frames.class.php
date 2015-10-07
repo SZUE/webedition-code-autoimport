@@ -252,6 +252,7 @@ function setTab(tab) {
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();', 'style' => 'overflow:hidden'), we_html_element::jsScript(JS_DIR . "windows.js") .
+					we_html_element::jsScript(JS_DIR . 'global.js').
 					$this->View->getJSAdmin() .
 					we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
 							"cmd" => "switchBranch",

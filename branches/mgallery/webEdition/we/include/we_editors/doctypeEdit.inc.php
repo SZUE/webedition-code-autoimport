@@ -154,6 +154,7 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
  weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'global.js') .
  we_html_element::jsScript(JS_DIR . 'doctypeEdit.js');
 ?>
 <script><!--

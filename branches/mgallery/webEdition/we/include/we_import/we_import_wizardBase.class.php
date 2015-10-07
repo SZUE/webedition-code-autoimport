@@ -55,7 +55,8 @@ abstract class we_import_wizardBase{
 		));
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+				we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
 				we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 				we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
 				we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
@@ -97,6 +98,7 @@ var path='" . $this->path . "';") .
 						//FIXME: delete condition and else branch when new uploader is stable
 						(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
 						we_html_element::jsScript(JS_DIR . "windows.js") .
+						we_html_element::jsScript(JS_DIR . 'global.js').
 						we_html_element::jsElement($js)) .
 					we_html_element::htmlBody(array(
 						"class" => "weDialogBody",

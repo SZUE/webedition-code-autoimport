@@ -141,7 +141,7 @@ options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 					'ParentID' => intval($this->dir),
 					'Text' => $txt,
 					'Path' => $Path,
-					'IsFolder' => 1,//intval($what),
+					'IsFolder' => 1, //intval($what),
 			)));
 			$folderID = $this->db->getInsertId();
 			$js.='top.currentPath = "' . $Path . '";
@@ -283,7 +283,7 @@ top.parentID = "' . $this->values["ParentID"] . '";');
 			$catlistNotDeleted = "";
 			$changeToParent = false;
 			foreach($catsToDel as $id){
-				$IsDir = 1;//f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "", $this->db);
+				$IsDir = 1; //f('SELECT IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), "", $this->db);
 				if($this->CatInUse($id, $IsDir)){
 					$catlistNotDeleted .= id_to_path($id, CATEGORY_TABLE) . '\n';
 				} else {
@@ -496,6 +496,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::jsElement('
 function we_cmd(){
 	var args = "";

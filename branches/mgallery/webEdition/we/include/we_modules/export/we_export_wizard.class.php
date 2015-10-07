@@ -362,8 +362,9 @@ function we_submit(){
 
 		$_space = 10;
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js");
-		$js.=we_html_element::jsElement('
+		$js = we_html_element::jsScript(JS_DIR . "windows.js").
+			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
@@ -1297,6 +1298,7 @@ if (top.footer.setProgress){
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement('
 function formFileChooser() {
 	var args = "";
@@ -1316,6 +1318,7 @@ function formFileChooser() {
 		$table = FILE_TABLE;
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement('
 				function formDirChooser() {
 					var args = "";

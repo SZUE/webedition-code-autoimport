@@ -155,7 +155,8 @@ class we_messaging_frames extends we_modules_frame{
 				document.we_messaging_search.messaging_search_keyword.value = "";
 				doSearch();
 			}
-		') . we_html_element::jsScript(JS_DIR . 'windows.js');
+		') . we_html_element::jsScript(JS_DIR . 'windows.js').
+			we_html_element::jsScript(JS_DIR . 'global.js');
 
 		$searchlabel = $this->viewclass === 'todo' ? '[search_todos]' : '[search_messages]';
 		$hidden = we_html_tools::hidden('we_transaction', $this->transaction);

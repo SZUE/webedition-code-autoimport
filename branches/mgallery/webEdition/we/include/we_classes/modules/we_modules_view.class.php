@@ -58,15 +58,18 @@ class we_modules_view implements we_modules_viewIF{
 	}
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
-		return we_html_element::jsScript(JS_DIR . 'windows.js');
+		return we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js');
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return we_html_element::jsScript(JS_DIR . 'windows.js');
+		return we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js');
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . "windows.js");
+		return we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js');
 	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){

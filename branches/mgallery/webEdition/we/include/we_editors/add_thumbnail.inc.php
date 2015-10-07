@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -37,8 +36,8 @@ if(!($we_doc instanceof we_imageDocument)){
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 
-	echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]')) .
-	we_html_element::jsElement('
+echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]')) .
+ we_html_element::jsElement('
 function select_thumbnails(sel){
 	var thumbs = [];
 
@@ -93,7 +92,8 @@ function we_cmd(){
 	}
 }');
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'global.js');
 
 
 echo STYLESHEET . "</head>";

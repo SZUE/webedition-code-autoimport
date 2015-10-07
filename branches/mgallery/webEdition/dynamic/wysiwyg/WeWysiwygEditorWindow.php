@@ -24,7 +24,8 @@ we_html_tools::protect();
 $fieldName = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), 'UTF-8') .
  STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'global.js');
 
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	$newHTML = we_base_request::_(we_base_request::RAW, $fieldName, '');
@@ -82,25 +83,25 @@ window.close();');
 			 */
 
 			$e = new we_wysiwyg_editor(
-					we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), //$name,
-					we_base_request::_(we_base_request::INT, 'we_cmd', '', 2), //$width,
-					we_base_request::_(we_base_request::INT, 'we_cmd', '', 3), //$height
-					$_SESSION['weS']['WEAPP_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)], //value
-					we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5), //$propstring
-					we_base_request::_(we_base_request::STRING, 'we_cmd', '', 13), //$bgcol
-					"", //$fullscreen
-					we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6), //$className
-					'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings', //7, fontnames ,
-					we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 8), //$outsideWE=false
-					true, //dies ist xml
-					false, //$removeFirstParagraph=true
-					true, //$inlineedit=true
-					'', //$baseHref
-					'UTF-8', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 14), //$cssClasses
-					'', // 15, $Language=""
-					'', //test
-					we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 17), //$spell
-					false //frontendEdit
+				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1), //$name,
+				we_base_request::_(we_base_request::INT, 'we_cmd', '', 2), //$width,
+				we_base_request::_(we_base_request::INT, 'we_cmd', '', 3), //$height
+				$_SESSION['weS']['WEAPP_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '_' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)], //value
+				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5), //$propstring
+				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 13), //$bgcol
+				"", //$fullscreen
+				we_base_request::_(we_base_request::STRING, 'we_cmd', '', 6), //$className
+				'arial; helvetica; sans-serif,courier new; courier; mono,geneva; arial; helvetica; sans-serif,georgia; times new roman; times; serif,tahoma,times new roman; times; serif,verdana; arial; helvetica; sans-serif,wingdings', //7, fontnames ,
+				we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 8), //$outsideWE=false
+				true, //dies ist xml
+				false, //$removeFirstParagraph=true
+				true, //$inlineedit=true
+				'', //$baseHref
+				'UTF-8', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 14), //$cssClasses
+				'', // 15, $Language=""
+				'', //test
+				we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 17), //$spell
+				false //frontendEdit
 			); //FIXME: what about the missing params?
 
 			$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close()');

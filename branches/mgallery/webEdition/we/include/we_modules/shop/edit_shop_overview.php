@@ -66,7 +66,8 @@ while($DB_WE->next_record()){
 
 $info = g_l('modules_shop', '[anzahl]') . ": <b>" . ($f + $r) . "</b><br/>" . g_l('modules_shop', '[unbearb]') . ": " . (($f) ? $f : "0");
 $stat = g_l('modules_shop', '[umsatzgesamt]') . ": <b>" . we_base_util::formatNumber(($bezahlt + $unbezahlt) * $mwst) . " $waehr </b><br/><br/>" . g_l('modules_shop', '[schonbezahlt]') . ": " . we_base_util::formatNumber($bezahlt * $mwst) . " $waehr <br/>" . g_l('modules_shop', '[unbezahlt]') . ": " . we_base_util::formatNumber($unbezahlt * $mwst) . " $waehr";
-echo we_html_element::jsScript(JS_DIR . 'windows.js');
+echo we_html_element::jsScript(JS_DIR . 'windows.js').
+	we_html_element::jsScript(JS_DIR . 'global.js');
 ?>
 </head>
 <body class="weEditorBody" onunload="doUnload()"><?php

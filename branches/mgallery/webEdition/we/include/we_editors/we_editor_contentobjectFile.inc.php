@@ -67,6 +67,7 @@ echo $jsGUI->getJS() .
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+ we_html_element::jsScript(JS_DIR . 'global.js') .
  STYLESHEET;
 ?>
 </head>

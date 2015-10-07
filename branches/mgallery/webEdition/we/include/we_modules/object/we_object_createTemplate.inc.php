@@ -119,6 +119,7 @@ $cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3);
 
 echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]')) .
  we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'global.js').
  STYLESHEET;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');

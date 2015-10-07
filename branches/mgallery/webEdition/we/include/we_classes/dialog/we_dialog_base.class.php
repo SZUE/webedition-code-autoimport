@@ -164,15 +164,15 @@ function doKeyDown() {
 		if($this->pageNr == $this->numPages && $this->JsOnly == false){
 			$back = $this->getBackBut();
 			$ok = we_html_button::create_button(we_html_button::OK, 'form:we_form');
-			$okBut = $back ? $back. $ok : $ok;
+			$okBut = $back ? $back . $ok : $ok;
 		} else if($this->pageNr < $this->numPages){
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
-			$okBut = ($back && $next ) ? $back. $next : ($back ? : $next );
+			$okBut = ($back && $next ) ? $back . $next : ($back ? : $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
-			$okBut = ($back && $ok ) ? $back. $ok : ($back ? : $ok );
+			$okBut = ($back && $ok ) ? $back . $ok : ($back ? : $ok );
 		}
 		return we_html_button::position_yes_no_cancel($okBut, '', $this->getCancelBut());
 	}
@@ -217,7 +217,12 @@ function doKeyDown() {
 
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
 		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . ($printJS_Style ? STYLESHEET : '') . static::getTinyMceJS() .
-			($printJS_Style ? we_html_element::jsScript(JS_DIR . 'windows.js') . $this->getJs() : '') . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') . $additionals .
+			($printJS_Style ?
+				we_html_element::jsScript(JS_DIR . 'windows.js') .
+				we_html_element::jsScript(JS_DIR . 'global.js') .
+				$this->getJs() :
+				''
+			) . we_html_element::cssLink(CSS_DIR . 'wysiwyg/tinymce/weDialogCss.css') . $additionals .
 			'</head>';
 	}
 

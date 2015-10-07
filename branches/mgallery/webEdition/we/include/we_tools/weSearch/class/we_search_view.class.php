@@ -59,6 +59,7 @@ class we_search_view{
 
 	function getJSTop(){
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement(
 				'var activ_tab = "1";
    var hot = 0;
@@ -2605,6 +2606,7 @@ weSearch.g_l = {
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {

@@ -70,9 +70,9 @@ abstract class we_versions_wizard{
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = we_html_element::htmlSpan(array("id" => "prev", "style" => "padding-left:10px;text-align:right"), $prevButton).
-				we_html_element::htmlSpan(array("id" => "nextCell", "style" => "padding-left:10px;text-align:right"), $nextButton).
-				we_html_element::htmlSpan(array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton).
+			$content2 = we_html_element::htmlSpan(array("id" => "prev", "style" => "padding-left:10px;text-align:right"), $prevButton) .
+				we_html_element::htmlSpan(array("id" => "nextCell", "style" => "padding-left:10px;text-align:right"), $nextButton) .
+				we_html_element::htmlSpan(array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton) .
 				we_html_element::htmlSpan(array("id" => "cancel", "style" => "padding-left:10px;text-align:right"), $cancelButton);
 
 			$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
@@ -1209,13 +1209,14 @@ set_button_state(false);';
 		}
 		$headCal = we_html_tools::getCalendarFiles() .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
 
 		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
 				we_html_element::htmlHead(
-					$headCal . STYLESHEET . we_html_element::jsScript(JS_DIR . 'windows.js') .
+					$headCal . STYLESHEET .
 					($contents[0] ? we_html_element::jsElement($contents[0]) : "")) .
 				we_html_element::htmlBody(
 					array("class" => "weDialogBody")

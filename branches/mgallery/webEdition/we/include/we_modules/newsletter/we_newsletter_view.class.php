@@ -470,6 +470,7 @@ function getStatusContol() {
 
 					if($h['Step'] != 0 || $h['Offset'] != 0){
 						echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+							we_html_element::jsScript(JS_DIR . 'global.js').
 						we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
@@ -754,6 +755,7 @@ edf.populateGroups();');
 
 					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
 					echo we_html_element::jsScript(JS_DIR . "windows.js") .
+						we_html_element::jsScript(JS_DIR . 'global.js').
 					we_html_element::jsElement('
 							new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);
 						');
@@ -849,6 +851,7 @@ self.close();');
 			case "popSend":
 
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				we_html_element::jsScript(JS_DIR . 'global.js').
 				we_html_element::jsElement(
 					((!trim($this->newsletter->Subject)) ? 'if(confirm("' . g_l('modules_newsletter', '[no_subject]') . '")){' : '') . '
 							url ="' . $this->frameset . '?pnt=send&nid=' . $this->newsletter->ID . (we_base_request::_(we_base_request::BOOL, "test") ? '&test=1' : '') . '";

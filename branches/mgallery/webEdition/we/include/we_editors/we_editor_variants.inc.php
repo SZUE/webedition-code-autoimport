@@ -27,7 +27,8 @@ if(!empty($we_doc->elements["Charset"]["dat"]) && $we_doc->EditPageNr == we_base
 }
 
 echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'windows.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js').
+	we_html_element::jsScript(JS_DIR . 'global.js');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo STYLESHEET;
 ?>

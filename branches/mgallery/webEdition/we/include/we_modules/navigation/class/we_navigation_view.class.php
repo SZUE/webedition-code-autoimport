@@ -866,6 +866,7 @@ var weNavTitleField = [];
 				break;
 			case 'dyn_preview':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
+				we_html_element::jsScript(JS_DIR . 'global.js').
 				we_html_element::jsElement('
 						url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
 						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'

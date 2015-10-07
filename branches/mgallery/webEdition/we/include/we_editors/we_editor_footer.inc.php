@@ -53,7 +53,7 @@ switch($we_doc->userHasAccess()){
 		we_editor_footer::fileInWorkspace();
 		exit();
 
-		case we_root::USER_NO_PERM : //	access is restricted and user has no permission
+	case we_root::USER_NO_PERM : //	access is restricted and user has no permission
 		we_editor_footer::fileIsRestricted($we_doc);
 		exit;
 
@@ -135,6 +135,7 @@ if($we_doc->IsTextContentDoc && $haspermNew && //	$_js_permnew
 
 echo STYLESHEET .
  we_html_element::jsScript(JS_DIR . "windows.js") .
+ we_html_element::jsScript(JS_DIR . 'global.js') .
  we_html_element::jsElement('
 	var we_transaction="' . $we_transaction . '";
 	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(we_transaction);

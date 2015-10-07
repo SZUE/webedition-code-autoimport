@@ -45,7 +45,8 @@ echo we_html_element::htmlDocType();
 		<title><?php echo $we_doc->getElement('Title') ?></title>
 		<?php
 		if(!empty($GLOBALS['we_editmode'])){
-			echo we_html_element::jsScript(JS_DIR . 'windows.js');
+			echo we_html_element::jsScript(JS_DIR . 'windows.js').
+				we_html_element::jsScript(JS_DIR . 'global.js');
 			require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		} else {
 			echo we_tag('textarea', array('name' => 'HEAD'));

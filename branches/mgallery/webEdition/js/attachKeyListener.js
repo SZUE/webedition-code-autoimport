@@ -23,11 +23,8 @@
  */
 
 function enableKeyboardShortCuts() {
-
 	if (top.dealWithKeyboardShortCut !== undefined && document.attachedKeyListeners === undefined) {
-
 		document.attachedKeyListeners = true;
-
 		if (document.addEventListener) {
 			document.addEventListener("keydown", top.dealWithKeyboardShortCut, true);
 		} else if (document.attachEvent) {

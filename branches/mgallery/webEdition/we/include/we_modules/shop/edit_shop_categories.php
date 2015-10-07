@@ -324,7 +324,9 @@ $parts[] = array(
 	//'html' => $debug_output
 );
 
-echo we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement($jsFunction) .
+echo we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'global.js').
+	we_html_element::jsElement($jsFunction) .
  '</head>
 <body class="weDialogBody" onload="window.focus(); addListeners();">
 	<form name="we_form" method="post" >

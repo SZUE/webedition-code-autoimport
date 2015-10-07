@@ -439,7 +439,9 @@ function submitForm(){
 	}
 
 	function getPropertyJS(){
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsElement('
 var loaded;
 var uid="' . $this->uid . '";
 var g_l={
@@ -954,7 +956,9 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 		ob_start();
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-		return ob_end_clean() . we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return ob_end_clean() . we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsElement('
 		function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {
 			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);

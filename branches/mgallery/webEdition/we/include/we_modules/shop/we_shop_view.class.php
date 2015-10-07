@@ -24,42 +24,13 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_shop_view{
+class we_shop_view extends we_modules_view{
 	var $db;
 	var $frameset;
 	var $topFrame;
 	var $raw;
 	private $CLFields = array(); //
 	private $classIds = array();
-
-	function __construct($frameset = '', $topframe = 'top.content'){
-		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
-		//$this->raw = new weShop();
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
-		$this->frameset = $frameset;
-	}
-
-	function setTopFrame($frame){
-		$this->topFrame = $frame;
-	}
-
-	//------------------------------------------------
-
-
-	function getCommonHiddens($cmds = array()){
-		return we_html_element::htmlHiddens(array(
-				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
-				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
-				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
-				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
-		));
-	}
 
 	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
 		// grep the last element from the year-set, wich is the current year
@@ -178,12 +149,14 @@ function we_cmd(){
 }
 		';
 
-		return we_html_element::jsScript(JS_DIR . 'windows.js') .
+		return parent::getJSTop_tmp() .
 			we_html_element::jsElement($out);
 	}
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
-		return we_html_element::jsScript(JS_DIR . 'windows.js') . we_html_element::jsElement('
+		return we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot= 0;
@@ -263,7 +236,7 @@ function we_cmd() {
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . "windows.js") .
+		return parent::getJSProperty() .
 			we_html_element::jsElement('
 var loaded=0;
 
@@ -880,6 +853,7 @@ function submitForm() {
 			//
 		echo we_html_tools::getCalendarFiles() .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
 			we_html_element::jsElement('
 var SCRIPT_NAME= "' . $_SERVER['SCRIPT_NAME'] . '";

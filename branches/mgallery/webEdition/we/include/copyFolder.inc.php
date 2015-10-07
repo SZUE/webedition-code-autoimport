@@ -71,7 +71,8 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	}
 	we_fragment_copyFolder::printHeader();
 	echo we_html_element::jsScript(JS_DIR . "windows.js") .
-	we_html_element::jsScript(JS_DIR . 'copyFolder.js') .
+	we_html_element::jsScript(JS_DIR . 'global.js').
+		we_html_element::jsScript(JS_DIR . 'copyFolder.js') .
 	'<body class="weDialogBody" onload="self.focus();">' .
 	'<form onsubmit="return fsubmit(this)" name="we_form" target="pbUpdateFrame" method="get">' .
 	we_html_tools::htmlDialogLayout(

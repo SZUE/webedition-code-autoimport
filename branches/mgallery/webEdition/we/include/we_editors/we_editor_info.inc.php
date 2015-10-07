@@ -23,7 +23,8 @@
  */
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'windows.js');
+ we_html_element::jsScript(JS_DIR . 'windows.js').
+	we_html_element::jsScript(JS_DIR . 'global.js');
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
 ?>
 <script><!--

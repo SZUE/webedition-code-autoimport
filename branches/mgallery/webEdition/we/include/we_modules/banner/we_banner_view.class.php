@@ -237,7 +237,8 @@ var perms={
 		</script>
 		<?php
 		echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_property.js');
+		we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_property.js');
 	}
 
 	function processCommands(){

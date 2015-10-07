@@ -553,6 +553,7 @@ class we_customer_EIWizard{
 
 		$parts = array();
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement('
 					function switchImportFrom(obj){
 						if(obj.value === "local"){
@@ -1459,6 +1460,7 @@ function doNext(){
 	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement('
 function formFileChooser() {
 	var args = "";
@@ -1482,6 +1484,7 @@ function formFileChooser() {
 	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement('
 function formDirChooser() {
 	var args = "";
@@ -1525,6 +1528,7 @@ function formDirChooser() {
 		}
 		$customers = array_filter($customers);
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js').
 			we_html_element::jsElement('
 function selector_cmd(){
 	var args = "";

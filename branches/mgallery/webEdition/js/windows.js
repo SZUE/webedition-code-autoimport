@@ -22,6 +22,8 @@
  */
 //FIXME use an Array to store these objects!
 jsWindow_count = 0;
+jsWindows = [];
+
 
 function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
 	var foo_w = w;
@@ -49,6 +51,7 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 	this.resizable = resizable;
 	this.wind = null;
 	this.obj = this.name + "Object";
+	jsWindows.push(this);
 	eval(this.obj + "=this;");
 	if (openAtStartup) {
 		this.open(noPopupErrorMsg, noPopupLocation);
@@ -78,15 +81,16 @@ jsWindow.prototype.open = function (noPopupErrorMsg, noPopupLocation) {
 }
 
 jsWindow.prototype.close = function () {
-	if (!this.wind.closed)
+	if (!this.wind.closed) {
 		this.wind.close();
+	}
 };
 
 function jsWindowClose(name) {
 	var i;
-	for (i = 0; i <= top.jsWindow_count; i++) {
-		if (eval("top.jsWindow" + i + "Object.ref") == name) {
-			eval("top.jsWindow" + i + "Object.close()");
+	for (i = 0; i <= jsWindow_count; i++) {
+		if (eval("jsWindow" + i + "Object.ref") == name) {
+			eval("jsWindow" + i + "Object.close()");
 		}
 	}
 }

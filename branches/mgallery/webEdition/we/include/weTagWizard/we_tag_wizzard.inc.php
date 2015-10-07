@@ -89,13 +89,13 @@ weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 }
 // additional javascript for the individual tags - end
 // print html header of page
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',
- STYLESHEET .
- we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
- we_html_element::jsScript(JS_DIR . 'windows.js') .
- we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
- we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
+	we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
+	we_html_element::jsScript(JS_DIR . 'global.js') .
+	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
+	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('
 var allAttributes = [' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . '];
 var reqAttributes = {' . implode(',', $jsReqAttributes) . '};
 
@@ -120,14 +120,14 @@ function we_cmd(){
 			if (strWeTag = weTagWizard.getWeTag()) {
 				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
 			' .
-	( $openAtCursor ? '
+		( $openAtCursor ? '
 				contentEditor.window.addCursorPosition( strWeTag );
 				self.close();;
 				' : '
 				contentEditor.document.we_form.elements.tag_edit_area.value=strWeTag;
    			contentEditor.document.we_form.elements.tag_edit_area.select();
     			self.close();'
-	) . '
+		) . '
 			} else {
 				if (weTagWizard.missingFields.length) {
 					req = "";
