@@ -22,16 +22,77 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function array_search(needle, haystack) {
-	var i;
+sel_color = "#697ace";
+default_color = "#000000";
 
-	for (i = 0; i < haystack.length; i++) {
-		if (needle == haystack[i])
-			return i;
+// Highlighting-Stuff start
+function selectEntryHandler(id) {
+	var j;
+
+	if (parent.multi_select === false) {
+		//unselect all selected entries
+		for (j = 0; j < parent.entries_selected.length; j++) {
+			highlight_Elem(parent.entries_selected[j], default_color);
+		}
+		parent.entries_selected = [];
+		doSelectMessage(id, 'elem', '');
+	} else {
+		if (WE().util.in_array(id, parent.entries_selected)) {
+			unSelectMessage(id, 'elem', '');
+		} else {
+			doSelectMessage(id, 'elem', '');
+		}
+	}
+}
+
+function doSelectMessage(id, mode, doc) {
+	if (id == -1) {
+		return;
 	}
 
-	return -1;
+	var highlight_color = sel_color;
+
+	if (mode == "fv") {
+		showContent(id);
+		//IE Mac 5.01 doesnt support Array.push()
+		parent.entries_selected = parent.entries_selected.concat([String(id)]);
+		parent.last_entry_selected = id;
+		highlight_TR(id, highlight_color, '');
+	} else {
+		entries_selected = entries_selected.concat([String(id)]);
+		highlight_Elem(id, highlight_color, doc);
+	}
+
 }
+
+function highlight_Elem(id, color, fr) {
+	if (fr === '') {
+		document.getElementById(id).style.color = color;
+	} else if (fr.document.getElementById(id)) {
+		fr.document.getElementById(id).style.color = color;
+	}
+}
+
+function highlight_TR(id, color) {
+	var i;
+	for (i = 0; i <= 3; i++) {
+		document.getElementById("td_" + id + "_" + i).style.backgroundColor = color;
+	}
+}
+
+function unSelectMessage(id, show_cont, doc) {
+	if (show_cont == 'fv') {
+		parent.entries_selected = array_rm_elem(parent.entries_selected, id, -1);
+		highlight_TR(id, default_color);
+		top.editor.edbody.msg_mfv.messaging_message_view.location = top.WE().consts.dirs.WEBEDITION_DIR + "html/gray.html";
+	} else {
+		entries_selected = array_rm_elem(entries_selected, id, -1);
+		highlight_Elem(id, default_color, messaging_usel_main);
+	}
+}
+
+//Highlighting-Stuff end
+
 
 function array_two_dim_search(needle, haystack, offset) {
 	var i;
@@ -67,7 +128,7 @@ function array_rm_elem(arr, elem, tdim_off) {
 
 	// Locate elem in arr
 	index = (tdim_off < 0 ?
-					array_search(elem, arr) :
+					arr.indexOf(elem) :
 					array_two_dim_search(elem, arr, tdim_off));
 
 
@@ -97,4 +158,3 @@ function get_sel_elems(sel_box) {
 function close_win(name) {
 	jsWindowClose(name);
 }
-

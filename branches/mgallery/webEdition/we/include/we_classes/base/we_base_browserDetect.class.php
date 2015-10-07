@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_browserDetect{
-
 	const UNKNOWN = 'unknown';
 	const OPERA = 'opera';
 	const IE = 'ie';
@@ -106,7 +105,7 @@ class we_base_browserDetect{
 						} elseif(stristr($post, 'netscape/7')){
 							self::$br = self::NETSCAPE;
 							self::$v = (preg_match('/netscape\/(7.+)/i', $post, $regs) ? trim($regs[1]) : 7);
-						} elseif(stristr($post, 'edge')) {
+						} elseif(stristr($post, 'edge')){
 							self::$br = self::EDGE;
 							self::$v = (preg_match('/edge/(.+)/i', $post, $regs) ? trim($regs[1]) : 12);
 						} elseif(preg_match('/AppleWebKit\/([0-9.]+)/i', $post, $regs)){
@@ -286,47 +285,47 @@ class we_base_browserDetect{
 		//don't check anymore
 		return true;
 		/*
-		if(self::isGecko()){
-			return true;
-		}
-		$inst = self::inst();
-		switch($inst->getSystem()){
-			case self::SYS_WIN :
-				switch($inst->getBrowser()){
-					case self::IE:
-					case self::OPERA:
-					case self::SAFARI:
-						return true;
-				}
-				break;
+		  if(self::isGecko()){
+		  return true;
+		  }
+		  $inst = self::inst();
+		  switch($inst->getSystem()){
+		  case self::SYS_WIN :
+		  switch($inst->getBrowser()){
+		  case self::IE:
+		  case self::OPERA:
+		  case self::SAFARI:
+		  return true;
+		  }
+		  break;
 
-			case self::SYS_MAC:
-				switch($inst->getBrowser()){
-					case self::OPERA:
-					case self::SAFARI:
-						return true;
-				}
-				break;
+		  case self::SYS_MAC:
+		  switch($inst->getBrowser()){
+		  case self::OPERA:
+		  case self::SAFARI:
+		  return true;
+		  }
+		  break;
 
-			case self::SYS_UNIX:
-				switch($inst->getBrowser()){
-					case self::OPERA:
-						return true;
-				}
+		  case self::SYS_UNIX:
+		  switch($inst->getBrowser()){
+		  case self::OPERA:
+		  return true;
+		  }
 
-				break;
+		  break;
 
-			case self::UNKNOWN:
-				switch($inst->getBrowser()){
-					case self::IE:
-					case self::OPERA:
-					case self::SAFARI:
-						return true;
-				}
+		  case self::UNKNOWN:
+		  switch($inst->getBrowser()){
+		  case self::IE:
+		  case self::OPERA:
+		  case self::SAFARI:
+		  return true;
+		  }
 
-				break;
-		}
-		return false;
+		  break;
+		  }
+		  return false;
 
 		 */
 	}

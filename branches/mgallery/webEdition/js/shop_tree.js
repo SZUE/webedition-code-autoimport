@@ -26,8 +26,6 @@
 
 //FIXME: compare & unite all _tree.js files
 
-var folder = 0;
-
 function drawEintraege() {
 	fr = top.content.tree;
 	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
@@ -133,11 +131,11 @@ function start() {
 }
 
 function doClick(id, ct, table) {
-	top.content.editor.location = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_modules/shop/edit_shop_frameset.php?pnt=editor&bid=' + id;
+	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'shop/edit_shop_frameset.php?pnt=editor&bid=' + id;
 }
 function doFolderClick(id, ct, table) {
-	top.content.editor.location = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_modules/shop/edit_shop_frameset.php?pnt=editor&mid=' + id;
+	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'shop/edit_shop_frameset.php?pnt=editor&mid=' + id;
 }
 function doYearClick(yearView) {
-	top.content.editor.location = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_modules/shop/edit_shop_frameset.php?pnt=editor&ViewYear=' + yearView;
+	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'shop/edit_shop_frameset.php?pnt=editor&ViewYear=' + yearView;
 }

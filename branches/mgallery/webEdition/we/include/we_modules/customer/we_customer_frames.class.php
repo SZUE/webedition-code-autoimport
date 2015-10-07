@@ -49,10 +49,6 @@ class we_customer_frames extends we_modules_frame{
 		switch($what){
 			case 'edfooter':
 				return $this->getHTMLEditorFooter('save_customer');
-			case 'treeheader':
-				return $this->getHTMLTreeHeader();
-			case 'treefooter':
-				return $this->getHTMLTreeFooter();
 			case 'customer_admin':
 				return $this->getHTMLCustomerAdmin();
 			case 'branch_editor':

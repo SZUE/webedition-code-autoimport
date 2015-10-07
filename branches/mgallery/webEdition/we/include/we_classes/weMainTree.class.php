@@ -107,7 +107,7 @@ if(weWindow.treeData){
 	}
 
 	function customJSFile(){
-		return parent::customJSFile() . we_html_element::jsScript(JS_DIR . 'main_tree.js');
+		return we_html_element::jsScript(JS_DIR . 'main_tree.js');
 	}
 
 	function getJSLoadTree(array $treeItems){

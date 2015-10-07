@@ -298,10 +298,6 @@ function we_save() {
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
 	}
 
-	protected function getHTMLTreeHeader(){
-		return '';
-	}
-
 	protected function getHTMLTreeFooter(){
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array('style' => "background-color:white;margin:0px 5px;", "class" => "editfooter"), '<div id="infoField" class="defaultfont"></div>')

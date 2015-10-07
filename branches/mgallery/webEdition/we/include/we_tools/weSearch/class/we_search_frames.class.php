@@ -155,7 +155,7 @@ function setTab(tab) {
 				'class' => 'weEditorBody',
 				'onkeypress' => 'javascript:if(event.keyCode==\'13\' || event.keyCode==\'3\') weSearch.search(true);',
 				'onload' => 'loaded=1;setTimeout(weSearch.init,200);',
-				'onresize' => 'sizeScrollContent();'
+				//'onresize' => 'wesizeScrollContent();'
 				), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 				we_html_element::htmlForm(array(
 					'name' => 'we_form', 'onsubmit' => 'return false'

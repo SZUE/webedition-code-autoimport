@@ -51,7 +51,7 @@ treeData.frames=frames;
 	}
 
 	function customJSFile(){
-		return parent::customJSFile() . we_html_element::jsScript(JS_DIR . 'search_tree.js');
+		return we_html_element::jsScript(JS_DIR . 'search_tree.js');
 	}
 
 }

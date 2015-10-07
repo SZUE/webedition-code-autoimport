@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
-
 	/**
 	 * title tag
 	 *
@@ -208,7 +206,16 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 */
 	protected function _renderHTML(){
 
-		$this->addJSFile(JS_DIR . 'attachKeyListener.js');
+		$this->addJSFiles(array(
+			JS_DIR . 'attachKeyListener.js',
+			JS_DIR . 'windows.js',
+			JS_DIR . 'global.js',
+			LIB_DIR . 'additional/yui/yahoo-min.js',
+			LIB_DIR . 'additional/yui/event-min.js',
+			LIB_DIR . 'additional/yui/connection-min.js',
+			LIB_DIR . 'additional/yui/json-min.js',
+			LIB_DIR . 'we/core/JsonRpc.js',
+		));
 
 		$js = '';
 		// write in all frames except in top frame

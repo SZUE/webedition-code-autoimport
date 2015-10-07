@@ -66,7 +66,8 @@ class we_messaging_frames extends we_modules_frame{
 	protected function getHTMLTree($extraHead = ''){
 		return parent::getHTMLTree(
 				we_html_element::jsScript(JS_DIR . 'tree.js') .
-				we_html_element::jsScript(JS_DIR . 'messaging_tree.js'));
+				we_html_element::jsScript(JS_DIR . 'messaging_tree.js')
+		);
 	}
 
 	function getHTMLFrameset(){
@@ -94,7 +95,6 @@ class we_messaging_frames extends we_modules_frame{
 
 		$extraHead = $this->getJSCmdCode() .
 			we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_hl.js') .
 			$this->Tree->getJSTreeCode() .
 			we_html_element::jsElement($this->getJSStart());
 
@@ -155,7 +155,7 @@ class we_messaging_frames extends we_modules_frame{
 				document.we_messaging_search.messaging_search_keyword.value = "";
 				doSearch();
 			}
-		') . we_html_element::jsScript(JS_DIR . 'windows.js').
+		') . we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsScript(JS_DIR . 'global.js');
 
 		$searchlabel = $this->viewclass === 'todo' ? '[search_todos]' : '[search_messages]';

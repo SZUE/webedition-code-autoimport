@@ -43,15 +43,18 @@ function WE() {
 	if (top.window.WebEdition !== undefined) {
 		return top.window.WebEdition;
 	}
-	if (top.window.opener.top.WebEdition !== undefined) {
-		return top.window.opener.top.WebEdition;
+	if (top.window.opener) {
+		if (top.window.opener.top.WebEdition !== undefined) {
+			return top.window.opener.top.WebEdition;
+		}
+		if (top.window.opener.top.opener) {
+			if (top.window.opener.top.opener.top.WebEdition !== undefined) {
+				return top.window.opener.top.opener.top.WebEdition;
+			}
+			if (top.window.opener.top.opener.top.opener && top.window.opener.top.opener.top.opener.top.WebEdition !== undefined) {
+				return top.window.opener.top.opener.top.opener.top.WebEdition;
+			}
+		}
 	}
-	if (top.window.opener.top.opener.top.WebEdition !== undefined) {
-		return top.window.opener.top.opener.top.WebEdition;
-	}
-	if (top.window.opener.top.opener.top.opener.top.WebEdition !== undefined) {
-		return top.window.opener.top.opener.top.opener.top.WebEdition;
-	}
-
 	return {};
 }

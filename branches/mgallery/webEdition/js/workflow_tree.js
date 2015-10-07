@@ -26,9 +26,6 @@
 
 //FIXME: compare & unite all _tree.js files
 
-var folder = 0;
-var startloc = 0;
-
 function doClick(id) {
 	var item = top.content.get(id);
 	ct = item.contenttype;

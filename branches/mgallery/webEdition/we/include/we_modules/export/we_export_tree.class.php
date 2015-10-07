@@ -25,7 +25,7 @@
 class we_export_tree extends weTree{
 
 	function customJSFile(){
-		return parent::customJSFile() . we_html_element::jsScript(WE_JS_EXPORT_MODULE_DIR . 'export_tree.js');
+		return we_html_element::jsScript(WE_JS_EXPORT_MODULE_DIR . 'export_tree.js');
 	}
 
 	function getJSLoadTree(array $treeItems){
@@ -56,18 +56,17 @@ class we_export_tree extends weTree{
 
 	function getJSStartTree(){
 		return 'function startTree(){
-frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . ',
-	"tree":' . $this->treeFrame . '
-};
-treeData.frames=frames;
-				frames.cmd.location=treeData.frameset+"?pnt=load&cmd=load&tab="+frames.top.table+"&pid=0&openFolders="+frames.top.openFolders[frames.top.table];
-			}';
+	frames={
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . ',
+		tree:' . $this->treeFrame . '
+	};
+	treeData.frames=frames;
+	frames.cmd.location=treeData.frameset+"?pnt=load&cmd=load&tab="+frames.top.table+"&pid=0&openFolders="+frames.top.openFolders[frames.top.table];
+}';
 	}
 
 	function getJSDrawTree(){
-
 		return '
 function drawTree(){
 	var out=\'<div class="treetable \'+treeData.getlayout()+\'"><nobr>\'+
@@ -79,30 +78,32 @@ function drawTree(){
 
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){
 		$js = $this->getJSTreeCode() . we_html_element::jsElement('
-var SelectedItems= [];
-SelectedItems["' . FILE_TABLE . '"]=[];' .
-				(defined('OBJECT_FILES_TABLE') ? (
-					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=[];
-	SelectedItems["' . OBJECT_TABLE . '"]=[];
-	') : '') . '
-
-SelectedItems["' . TEMPLATES_TABLE . '"]=[];
+var SelectedItems={
+	' . FILE_TABLE . ':[],
+	' . TEMPLATES_TABLE . ':[],' .
+				(defined('OBJECT_FILES_TABLE') ? ('
+	' . OBJECT_FILES_TABLE . ':[],
+	' . OBJECT_TABLE . ':[],
+	') : ''
+				) . '
+};
 
 var openFolders= {
-"' . FILE_TABLE . '":"",' .
+	' . FILE_TABLE . ':"",
+	' . TEMPLATES_TABLE . ':""' .
 				(defined('OBJECT_FILES_TABLE') ? ('
-"' . OBJECT_FILES_TABLE . '":"",
-"' . OBJECT_TABLE . '":"",
-') : '') . '
-"' . TEMPLATES_TABLE . '":""
+	' . OBJECT_FILES_TABLE . ':"",
+	' . OBJECT_TABLE . ':"",
+') : ''
+				) . '
 };' . $this->getJSStartTree()) . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){
 			$captions = array();
-			if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+			if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 				$captions[FILE_TABLE] = g_l('export', '[documents]');
 			}
-			if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
+			if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
 				$captions[TEMPLATES_TABLE] = g_l('export', '[templates]');
 			}
 			if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
@@ -171,18 +172,18 @@ var openFolders= {
 			$OpenCloseStatus = in_array($ID, $openFolders);
 
 			$treeItems[] = array(
-				"id" => $ID,
-				"parentid" => $entry["ParentID"],
-				"text" => $entry["Text"],
-				"contenttype" => $entry["ContentType"],
-				"isclassfolder" => $entry["IsClassFolder"],
-				"table" => $table,
-				"checked" => (isset($selDocs) && in_array($ID, $selDocs)),
-				"typ" => $IsFolder ? "group" : "item",
-				"open" => $OpenCloseStatus,
-				"published" => ($published && ($published < $entry["ModDate"])) ? -1 : $published,
-				"disabled" => in_array($entry["Path"], $GLOBALS['parentpaths']),
-				"tooltip" => $ID
+				'id' => $ID,
+				'parentid' => $entry['ParentID'],
+				'text' => $entry['Text'],
+				'contenttype' => $entry['ContentType'],
+				'isclassfolder' => $entry['IsClassFolder'],
+				'table' => $table,
+				'checked' => (isset($selDocs) && in_array($ID, $selDocs)),
+				'typ' => $IsFolder ? 'group' : 'item',
+				'open' => $OpenCloseStatus,
+				'published' => ($published && ($published < $entry['ModDate'])) ? -1 : $published,
+				'disabled' => in_array($entry['Path'], $GLOBALS['parentpaths']),
+				'tooltip' => $ID
 			);
 
 			if($IsFolder && $OpenCloseStatus){

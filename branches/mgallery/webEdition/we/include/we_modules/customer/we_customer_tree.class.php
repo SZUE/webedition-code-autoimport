@@ -32,7 +32,7 @@ class we_customer_tree extends weTree{
 	}
 
 	function customJSFile(){
-		return parent::customJSFile() . we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_tree.js');
+		return we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_tree.js');
 	}
 
 	function getJSStartTree(){

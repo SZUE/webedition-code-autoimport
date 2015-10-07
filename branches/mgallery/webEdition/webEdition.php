@@ -109,9 +109,6 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 		$jsCmd[$mod] = WE_JS_MODULES_DIR . $mod . '/we_webEditionCmd_' . $mod . '.js';
 	}
 }
-$jsmods = array_keys($jsCmd);
-$jsmods[] = 'base';
-$jsmods[] = 'tools';
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
  STYLESHEET;
@@ -119,6 +116,10 @@ echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) 
 <script><!--
 <?php
 echo we_tool_lookup::getJsCmdInclude($jsCmd);
+$jsmods = array_keys($jsCmd);
+$jsmods[] = 'base';
+$jsmods[] = 'tools';
+
 ?>
 
 if (self.location !== top.location) {

@@ -174,7 +174,7 @@ if($maxsel){
 			for (i = 0; i < len; i++) {
 				tarr = delta_sel[i].split(delim);
 
-				if (array_search(String(tarr[0]), current_sel) != -1) {
+				if (WE().util.in_array(String(tarr[0]), current_sel) != -1) {
 					continue;
 				}
 

@@ -24,9 +24,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-var multi_select = 0;
-var startloc = 0;
-var folder = 0;
+var multi_select = false;
 var mode = "show_folder_content";
 
 deleteMode = false;
@@ -392,7 +390,7 @@ function delete_menu_entries(ids) {
 	var cont = new container();
 	del_parents = [];
 	for (i = 1; i <= t.len; i++) {
-		if (array_search(t[i].id, ids) == -1) {
+		if (!WE().util.in_array(t[i].id, ids)) {
 			cont.add(t[i]);
 		} else {
 			del_parents = del_parents.concat([String(t[i].parentid)]);

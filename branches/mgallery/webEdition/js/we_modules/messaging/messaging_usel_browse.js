@@ -35,7 +35,7 @@ var folder = 0;
 
 entries_selected = [];
 last_entry_selected = -1;
-multi_select = 1;
+multi_select = true;
 
 for (i = 0; i < opener.current_sel.length; i++) {
 	if (opener.current_sel[i][0] != 'we_message') {

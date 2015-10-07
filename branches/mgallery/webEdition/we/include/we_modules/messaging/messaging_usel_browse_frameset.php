@@ -29,7 +29,6 @@ $browser = we_base_browserDetect::inst();
 
 echo we_html_tools::getHtmlTop() .
  STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_hl.js') .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
  we_html_element::jsElement('
 var table="' . USER_TABLE . '";'
@@ -104,20 +103,6 @@ checked : checked
 	function showContent(id) {
 		top.cmd.location = "<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
 	}
-
-	function array_search(needle, haystack) {
-		var i;
-
-		for (i = 0; i < haystack.length; i++) {
-			if (needle == haystack[i]) {
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
-
 	self.focus();
 //-->
 </script>

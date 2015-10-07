@@ -26,9 +26,9 @@ if($_SESSION["user"]["ID"]){
 	$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW() + INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION["user"]["ID"]) . ' AND sessionID="' . session_id() . '"');
 }
 
-echo we_html_element::jsScript(JS_DIR . 'libs/yui/yahoo-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/event-min.js') .
- we_html_element::jsScript(JS_DIR . 'libs/yui/connection-min.js');
+echo we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+ we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
 ?>
 <script><!--
 

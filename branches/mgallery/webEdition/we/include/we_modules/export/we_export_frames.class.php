@@ -52,7 +52,6 @@ class we_export_frames extends we_modules_frame{
 			case "load":
 				return $this->getHTMLCmd();
 			case "treeheader":
-				return '';
 			case "treefooter":
 				return '';
 			default:
@@ -702,7 +701,7 @@ function closeAllType(){
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";

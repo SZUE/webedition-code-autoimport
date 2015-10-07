@@ -32,9 +32,9 @@ class we_main_headermenu{
 	 */
 	public static function createMessageConsole($consoleName = 'NoName'){
 		return we_html_element::jsScript(JS_DIR . 'messageConsoleView.js', '
-var _console_' . $consoleName . ' = new messageConsoleView("' . $consoleName . '", this.window );
+var _console_' . $consoleName . ' = new messageConsoleView(\'' . $consoleName . '\', this.window );
 _console_' . $consoleName . '.register();
-window.document.body.addEventListener("onunload",
+window.document.body.addEventListener(\'onunload\',
 function() {
 	_console_' . $consoleName . '.unregister();
 }

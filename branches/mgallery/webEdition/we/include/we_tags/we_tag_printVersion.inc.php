@@ -55,16 +55,13 @@ function we_tag_printVersion($attribs, $content){
 		//objects are always shown by a dynamic page
 		$_query_string['we_objectID'] = $id;
 		$_query_string['tid'] = $tid;
-		$url = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']));
 	} else {
 		$triggerID = $triggerID ? : ($doc->IsDynamic ? $doc->ID : 0);
 		if($triggerID || $doc->IsDynamic){
 			$_query_string['pv_id'] = $id;
 			$_query_string['pv_tid'] = $tid;
-			$url = $triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME']);
 		} else {
-
-			return '';
+			return $content;
 			/*
 			  $_query_string['we_cmd[0]'] = 'show';
 			  $_query_string['we_cmd[1]'] = $id;
@@ -74,10 +71,9 @@ function we_tag_printVersion($attribs, $content){
 		}
 	}
 
-	if($link){
-		$attribs = removeAttribs($attribs, array('tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link')); //	not html - valid
-		$attribs['href'] = $url . '?' . http_build_query($_query_string);
-		return getHtmlTag('a', $attribs, $content, true);
-	}
-	return $url . '?' . http_build_query($_query_string);
+	$attribs['href'] = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'])) . '?' . http_build_query($_query_string);
+
+	return ($link ?
+			getHtmlTag('a', removeAttribs($attribs, array('tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link')), $content, true) :
+			$attribs['href']);
 }

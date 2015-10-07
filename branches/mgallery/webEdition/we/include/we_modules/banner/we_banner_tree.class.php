@@ -25,7 +25,7 @@
 class we_banner_tree extends weTree{
 
 	function customJSFile(){
-		return parent::customJSFile() . we_html_element::jsScript(JS_DIR . 'banner_tree.js');
+		return we_html_element::jsScript(JS_DIR . 'banner_tree.js');
 	}
 
 	function getJSStartTree(){

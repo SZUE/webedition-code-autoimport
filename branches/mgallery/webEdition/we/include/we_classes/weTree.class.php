@@ -181,7 +181,7 @@ function container(){
 }';
 	}
 
-	// Function which control how tree contenet will be displayed
+	// Function which control how tree content will be displayed
 	function getHTMLContruct(){
 		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable'), ''
@@ -200,23 +200,23 @@ function container(){
 		);
 	}
 
-	function getJSDrawTree(){
+	protected function getJSDrawTree(){
 		return '
 function drawTree(){
-	try{
-		var type=typeof(' . $this->treeFrame . ');
-	}catch(e){
+	if(' . $this->treeFrame . '==undefined){
 		window.setTimeout(drawTree, 500);
 		return;
 	}
 
-	var out="<div class=\""+treeData.getlayout()+"\"><nobr>"+draw(treeData.startloc,"")+"</nobr></div>";' .
+	var out="<div class=\""+treeData.getlayout()+"\"><nobr>"+
+		draw(treeData.startloc,"")+
+		"</nobr></div>";' .
 			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }' .
 			$this->getJSDraw();
 	}
 
-	function getJSDraw(){
+	protected function getJSDraw(){
 		$custom_draw = $this->getJSCustomDraw();
 		$draw_code = '';
 		foreach($custom_draw as $ck => $cv){

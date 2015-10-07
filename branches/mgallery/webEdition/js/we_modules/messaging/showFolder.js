@@ -48,7 +48,7 @@ function check(elem, groupSel) {
 
 		parent.entries_selected = [];
 		doSelectMessage(id);
-	} else if (array_search(id, parent.entries_selected) != -1) {
+	} else if (WE().util.in_array(id, parent.entries_selected)) {
 		unSelectMessage(id);
 	} else {
 		doSelectMessage(id);

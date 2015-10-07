@@ -96,8 +96,6 @@ abstract class we_modules_frame{
 				return $this->getHTMLTree();
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
-			case 'treefooter':
-				return $this->getHTMLTreeFooter();
 			case 'search':
 				return $this->getHTMLSearch();
 			case 'exit_doc_question':
@@ -112,7 +110,7 @@ abstract class we_modules_frame{
 		$this->setTreeWidthFromCookie();
 
 		$extraHead = $this->getJSCmdCode() .
-			self::getJSToggleTreeCode($this->module, $this->treeDefaultWidth) .
+			self::getJSToggleTreeCode($this->module) .
 			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_main_headermenu::css() .
 			$extraHead;
@@ -162,14 +160,17 @@ abstract class we_modules_frame{
 	function getHTMLLeft(){
 		//we load tree in iFrame, because the complete tree JS is based on document.open() and document.write()
 		//it makes not much sense, to rewrite trees before abandoning them anyway
-
-		$attribs = array('id' => 'left', 'name' => 'left', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;');
-
-		$content = we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . ($this->treeHeaderHeight > 1 ? $this->treeHeaderHeight - 6/* padding+border */ : 1) . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'padding: 5px 0 0 0 ; ' : 'background: #ffffff')), $this->getHTMLTreeheader()) .
-			$this->getHTMLTree() .
-			($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array('id' => 'treefooter', 'class' => 'editfooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'), $this->getHTMLTreefooter()));
-
-		return we_html_element::htmlDiv($attribs, $content);
+		return we_html_element::htmlDiv(array(
+				'id' => 'left', 'name' => 'left', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;'
+				), we_html_element::htmlDiv(array(
+					'id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . ($this->treeHeaderHeight > 1 ? $this->treeHeaderHeight - 6/* padding+border */ : 1) . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'padding: 5px 0px 0px 0px; ' : 'background: #ffffff')
+					), $this->getHTMLTreeheader()) .
+				$this->getHTMLTree() .
+				($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array(
+						'id' => 'treefooter', 'class' => 'editfooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'
+						), $this->getHTMLTreefooter())
+				)
+		);
 	}
 
 	protected function getHTMLTree($extraHead = ''){
@@ -182,7 +183,7 @@ abstract class we_modules_frame{
 				'marginwidth' => 0,
 				'marginheight' => 4,
 				'leftmargin' => 0,
-				'topmargin' => 4), $this->Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
+				'topmargin' => 4), $extraHead . $this->Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
 		);
 	}
 
@@ -279,7 +280,7 @@ function we_save() {
 		}
 	}
 
-	static function getJSToggleTreeCode($module, $treeDefaultWidth){
+	static function getJSToggleTreeCode($module){
 		//FIXME: throw some of these functions out again and use generic version of main-window functions
 		return we_html_element::jsElement('
 var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
