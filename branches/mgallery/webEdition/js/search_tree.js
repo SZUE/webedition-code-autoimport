@@ -50,23 +50,18 @@ function info(text) {
 }
 
 function openClose(id) {
-	var sort = "";
 	if (id == "") {
 		return;
 	}
+	var sort = "";
 	var eintragsIndex = indexOfEntry(id);
 	var openstatus;
 
 	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
-
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {
-		if (sort != "") {
-			frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + "&sort=" + sort;
-		} else {
-			frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id;
-		}
+		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

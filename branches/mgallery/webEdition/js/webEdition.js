@@ -137,6 +137,23 @@ WE().util.weSetCookie = function (doc, name, value, expires, path, domain) {
 					((domain === undefined) ? "" : "; domain=" + domain);
 }
 
+WE().util.weGetCookie = function (doc, name) {
+	var cname = name + "=";
+	var dc = doc.cookie;
+	if (dc.length > 0) {
+		begin = dc.indexOf(cname);
+		if (begin != -1) {
+			begin += cname.length;
+			end = dc.indexOf(";", begin);
+			if (end == -1) {
+				end = dc.length;
+			}
+			return unescape(dc.substring(begin, end));
+		}
+	}
+	return null;
+}
+
 function treeResized() {
 	var treeWidth = getTreeWidth();
 	if (treeWidth <= top.WE().consts.size.tree.hidden) {

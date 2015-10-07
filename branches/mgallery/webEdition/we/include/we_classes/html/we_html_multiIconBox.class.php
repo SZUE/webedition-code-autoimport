@@ -93,78 +93,7 @@ abstract class we_html_multiIconBox{
 	}
 
 	static function getJS(){
-		return we_html_element::jsElement('
-function weToggleBox(name,textDown,textRight){
-	var t = document.getElementById(\'table_\'+name);
-	var s = document.getElementById(\'text_\'+name);
-	var b = document.getElementById(\'btn_direction_\'+name+\'_middle\');
-	if(t.style.display == "none"){
-		t.style.display = "";
-		s.innerHTML = textDown;
-		weSetCookieVariable("but_"+name,"down")
-	}else{
-		t.style.display = "none";
-		s.innerHTML = textRight;
-		weSetCookieVariable("but_"+name,"right")
-	}
-}
-
-function toggleButton(but,name){
-	but.getElementsByTagName("i")[0].className="fa fa-lg fa-caret-"+weGetCookieVariable("but_" + name);
-}
-
-function weGetCookieVariable(name){
-	var c = weGetCookie("we' . session_id() . '");
-	var vals = [];
-	if(c != null){
-		var parts = c.split(/&/);
-		for(var i=0; i<parts.length; i++){
-			var foo = parts[i].split(/=/);
-			vals[unescape(foo[0])]=unescape(foo[1]);
-		}
-		return vals[name];
-	}
-	return null;
-}
-
-function weGetCookie(name){
-	var cname = name + "=";
-	var doc = (top.name == "edit_module") ? top.opener.top.document : top.document;
-	var dc = doc.cookie;
-	if (dc.length > 0) {
-		begin = dc.indexOf(cname);
-		if (begin != -1) {
-			begin += cname.length;
-			end = dc.indexOf(";", begin);
-			if (end == -1) {
-				end = dc.length;
-			}
-			return unescape(dc.substring(begin, end));
-		}
-	}
-	return null;
-}
-
-function weSetCookieVariable(name,value){
-	var c = weGetCookie("we' . session_id() . '");
-	var vals = [];
-	if(c != null){
-		var parts = c.split(/&/);
-		for(var i=0; i<parts.length; i++){
-			var foo = parts[i].split(/=/);
-			vals[unescape(foo[0])]=unescape(foo[1]);
-		}
-	}
-	vals[name] = value;
-	c = "";
-	for (var i in vals) {
-		c += encodeURI(i)+"="+encodeURI(vals[i])+"&";
-	}
-	if(c.length > 0){
-		c=c.substring(0,c.length-1);
-	}
-	WE().util.weSetCookie((top.name == "edit_module") ? top.opener.top.document : top.document,"we' . session_id() . '", c);
-}');
+		return we_html_element::jsScript(JS_DIR . 'multiIconBox.js');
 	}
 
 	static function getDynJS($uniqname = '', $marginLeft = 0){

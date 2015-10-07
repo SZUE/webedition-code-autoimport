@@ -50,12 +50,6 @@ function setTreeState() {
 	}
 }
 
-function applyLayout() {
-	eval('if(' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '"))' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '").className ="' +
-					(arguments[0] ? arguments[0] : this.getlayout()) +
-					'";');
-}
-
 function rootEntry(id, text, rootstat, offset) {
 	return new node({
 		id: id,
@@ -75,11 +69,41 @@ function node(attribs) {
 	}
 
 	this.getlayout = getLayout;
-	this.applylayout = applyLayout;
 	this.showsegment = showSegment;
-	this.clear = clearItems;
 	return this;
 }
+
+node.prototype.applylayout = function () {
+	eval('if(' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '"))' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '").className ="' +
+					(arguments[0] ? arguments[0] : this.getlayout()) +
+					'";');
+};
+
+node.prototype.clear = function () {
+	var deleted = 0;
+
+	for (var ai = 1; ai <= treeData.len; ai++) {
+		if (treeData[ai].parentid != this.id) {
+			continue;
+		}
+		if (treeData[ai].contenttype == "group") {
+			deleted += treeData[ai].clear();
+		} else {
+			ind = ai;
+			while (ind <= treeData.len - 1) {
+				treeData[ind] = treeData[ind + 1];
+				ind++;
+			}
+			ai--;
+			treeData.len[treeData.len] = null;
+			treeData.len--;
+		}
+		deleted++;
+	}
+	drawTree();
+	return deleted;
+};
+
 
 function selectNode() {
 	if (arguments[0]) {
@@ -166,30 +190,6 @@ function parentChecked(start) {
 	return false;
 }
 
-function clearItems() {
-	var deleted = 0;
-
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].parentid != this.id) {
-			continue;
-		}
-		if (treeData[ai].contenttype == "group") {
-			deleted += treeData[ai].clear();
-		} else {
-			ind = ai;
-			while (ind <= treeData.len - 1) {
-				treeData[ind] = treeData[ind + 1];
-				ind++;
-			}
-			ai--;
-			treeData.len[treeData.len] = null;
-			treeData.len--;
-		}
-		deleted++;
-	}
-	drawTree();
-	return deleted;
-}
 
 function clickHandler(cur) {
 	var row = "<span>";
