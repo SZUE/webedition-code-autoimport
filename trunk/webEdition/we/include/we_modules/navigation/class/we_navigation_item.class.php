@@ -230,6 +230,10 @@ class we_navigation_item{
 		return $this->visible;
 	}
 
+	public function setLevel(){
+		self::$currentPosition[$this->level]=0;
+	}
+
 	function writeItem(&$weNavigationItems, $depth = false){
 		if(!isset(self::$currentPosition[$this->level])){
 			self::$currentPosition[$this->level] = 0;

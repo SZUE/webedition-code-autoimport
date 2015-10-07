@@ -26,7 +26,9 @@ function we_tag_navigationEntries(){
 	if(isset($GLOBALS['weNavigationItemArray']) && is_array($GLOBALS['weNavigationItemArray'])){
 		$element = end($GLOBALS['weNavigationItemArray']);
 		$code = '';
-
+		if($element->items){
+			reset($element->items)->setLevel();
+		}
 		foreach($element->items as $item){
 			$code .= $item->writeItem($GLOBALS['weNavigationObject'], $GLOBALS['weNavigationDepth']);
 		}
