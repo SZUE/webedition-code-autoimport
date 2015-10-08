@@ -1011,11 +1011,9 @@ function we_templateHead($fullHeader = false){
 		((!isset($GLOBALS['we_editmode']) || (!$GLOBALS['we_editmode']) && isset($_SESSION['weS']) && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE))){
 		return;
 	}
-	if($fullHeader){
-		if(isset($GLOBALS['WE_HTML_HEAD_BODY'])){
-			echo we_templatePreContent(); //to increment we_templatePreContent-var
-			return;
-		}
+	if($fullHeader && isset($GLOBALS['WE_HTML_HEAD_BODY'])){
+		echo we_templatePreContent(); //to increment we_templatePreContent-var
+		return;
 	}
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
 	we_html_tools::getJSErrorHandler() .

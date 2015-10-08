@@ -93,10 +93,8 @@ abstract class we_html_element{
 		return we_html_baseElement::getHtmlCode(new we_html_baseElement('style', true, $attribs, $content));
 	}
 
-	public static function jsScript($name, $onload = ''){
-		$attribs = array(
-			'src' => self::getUnCache($name),
-		);
+	public static function jsScript($name, $onload = '', $attribs = array()){
+		$attribs['src'] = self::getUnCache($name);
 		if($onload){
 			$attribs['onload'] = $onload;
 		}

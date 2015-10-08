@@ -1304,7 +1304,7 @@ weSearch.g_l = {
 				if($where || $where_OR){
 
 					if(isset($folderID) && ($folderID != '' && $folderID != 0)){
-						$where = ' AND (1 ' . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
+						$where = ' AND (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
 					}
 
 					if($_table == VERSIONS_TABLE){
@@ -1315,10 +1315,10 @@ weSearch.g_l = {
 					}
 
 					if($workspaces){
-						$where = ' AND (1 ' . $where . ')' . we_search_search::ofFolderAndChildsOnly($workspaces, $_table);
+						$where = ' (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($workspaces, $_table);
 					}
 
-					$whereQuery = '1 ' . $where;
+					$whereQuery = $where;
 
 					//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
 					$restrictUserQuery = ' AND ((' . escape_sql_query($_table) . '.RestrictOwners=0 OR ' . escape_sql_query($_table) . '.RestrictOwners= ' . intval($_SESSION["user"]["ID"]) . ') OR (FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',' . escape_sql_query($_table) . '.Owners)))';

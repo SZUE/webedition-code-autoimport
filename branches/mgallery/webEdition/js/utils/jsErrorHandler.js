@@ -21,41 +21,37 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-try {
-	window.onerror = function (msg, file, line, col, errObj) {
-		console = top.console || console;//FIXME: fast and dirty fix for some popups
-		log = (console.debug !== undefined ? console.debug : console.log);
-		log(msg);
+window.onerror = function (msg, file, line, col, errObj) {
+	console = (top.console ? top.console : console);//FIXME: fast and dirty fix for some popups
+	log = (console.debug !== undefined ? console.debug : console.log);
+	log(msg);
+	if (errObj) {
+		log(errObj);
+	}
+	try {//we don' want to raise errors inside
+		postData = 'we_cmd[msg]=' + encodeURIComponent(msg);
+		postData += '&we_cmd[file]=' + encodeURIComponent(file);
+		postData += '&we_cmd[line]=' + encodeURIComponent(line);
+		postData += '&we_cmd[url]=' + encodeURIComponent(this.location.pathname + this.location.search);
+		if (col) {
+			postData += '&we_cmd[col]=' + encodeURIComponent(col);
+		}
 		if (errObj) {
-			log(errObj);
+			postData += '&we_cmd[errObj]=' + encodeURIComponent(errObj.stack);
 		}
-		try {//we don' want to raise errors inside
-			postData = 'we_cmd[msg]=' + encodeURIComponent(msg);
-			postData += '&we_cmd[file]=' + encodeURIComponent(file);
-			postData += '&we_cmd[line]=' + encodeURIComponent(line);
-			postData += '&we_cmd[url]=' + encodeURIComponent(this.location.pathname + this.location.search);
-			if (col) {
-				postData += '&we_cmd[col]=' + encodeURIComponent(col);
-			}
-			if (errObj) {
-				postData += '&we_cmd[errObj]=' + encodeURIComponent(errObj.stack);
-			}
-			lcaller = arguments.callee.caller;
-			while (lcaller) {
-				postData += '&we_cmd[]=' + encodeURIComponent(lcaller.name);
-				lcaller = lcaller.caller;
-			}
-			postData += '&we_cmd[App]=' + encodeURIComponent(navigator.appName);
-			postData += '&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion);
-			postData += '&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent);
-			xmlhttp = new XMLHttpRequest();
-			xmlhttp.open('POST', top.WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
-			xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			xmlhttp.send(postData);
-		} catch (e) {
-			log(e);
+		lcaller = arguments.callee.caller;
+		while (lcaller) {
+			postData += '&we_cmd[]=' + encodeURIComponent(lcaller.name);
+			lcaller = lcaller.caller;
 		}
-	};
-} catch (e) {
-	log(e);
-}
+		postData += '&we_cmd[App]=' + encodeURIComponent(navigator.appName);
+		postData += '&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion);
+		postData += '&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent);
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.open('POST', top.WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
+		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		xmlhttp.send(postData);
+	} catch (e) {
+		log(e);
+	}
+};

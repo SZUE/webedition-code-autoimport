@@ -26,16 +26,6 @@
 
 /**This file is intended to be a global file for many js functions in WE*/
 // this function is universal function for all messages in webEdition
-
-function we_showMessage(message, prio, win) {
-	win = (win ? win : this.window);
-	if (WE()) {
-		WE().util.showMessage(message, prio, win);
-	} else { // there is no webEdition window open, just show the alert
-		win.alert(message);
-	}
-}
-
 function WE() {
 	if (top.WebEdition !== undefined) {
 		return top.WebEdition;
@@ -56,5 +46,14 @@ function WE() {
 			}
 		}
 	}
-	return {};
+	return false;
+}
+
+function we_showMessage(message, prio, win) {
+	win = (win ? win : this.window);
+	if (WE()) {
+		WE().util.showMessage(message, prio, win);
+	} else { // there is no webEdition window open, just show the alert
+		win.alert(message);
+	}
 }
