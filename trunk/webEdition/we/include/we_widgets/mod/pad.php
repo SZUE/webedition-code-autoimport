@@ -71,7 +71,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 		$DB_WE->query('INSERT INTO ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'WidgetName' => $title,
 				'UserID' => intval($_SESSION['user']['ID']),
-				'CreationDate' => sql_function('CURRENT_DATE()'),
+				'CreationDate' => sql_function('CURDATE()'),
 				'Title' => $entTitle,
 				'Text' => $entText,
 				'Priority' => $q_Priority,
