@@ -33,6 +33,12 @@ abstract class we_tool_frames extends we_modules_frame{
 	var $_width_size = 520;
 	var $Model;
 
+	function __construct($frameset){
+		parent::__construct($frameset);
+		$this->treeFooterHeight = 40;
+		$this->treeWidth = 200;
+	}
+
 	function getHTML($what){
 		switch($what){
 			case 'frameset':
@@ -41,10 +47,6 @@ abstract class we_tool_frames extends we_modules_frame{
 				return $this->getHTMLHeader();
 			case 'resize':
 				return $this->getHTMLResize();
-			case 'left':
-				return $this->getHTMLLeft();
-			case 'right':
-				return $this->getHTMLRight();
 			case 'editor':
 				return $this->getHTMLEditor();
 			case 'edheader':
@@ -71,6 +73,7 @@ abstract class we_tool_frames extends we_modules_frame{
 
 	//TODO: call parent after if(){}
 	function getHTMLFrameset(){
+		$this->setTreeWidthFromCookie();
 
 		$this->Model->clearSessionVars();
 
@@ -84,41 +87,29 @@ abstract class we_tool_frames extends we_modules_frame{
 
 		$js = $this->getJSCmdCode() .
 			$this->Tree->getJSTreeCode() .
+			self::getJSToggleTreeCode($this->toolName) .
 			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_main_headermenu::css();
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->getJSStart())
 				, we_html_element::htmlExIFrame('header', parent::getHTMLHeader($this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php', $this->toolName)) .
-				we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . ($modelid ? '&modelid=' . $modelid : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'overflow: hidden;', '', '', false) .
+				$this->getHTMLResize() .
+				/* we_html_element::htmlIFrame('resize', $this->frameset . '?pnt=resize' . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . ($modelid ? '&modelid=' . $modelid : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'overflow: hidden;', '', '', false) . */
 				we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . ($modelid ? '&modelid=' . $modelid : ''))
 		);
 
 		return $this->getHTMLDocument($body, $js);
 	}
 
-	function getHTMLResize(){
-		$modelid = we_base_request::_(we_base_request::INT, 'modelid');
+	/* protected function getHTMLEditor(){
+	  $tab = we_base_request::_(we_base_request::INT, 'tab');
+	  $sid = we_base_request::_(we_base_request::STRING, 'sid');
 
-		$body = we_html_element::htmlIFrame('left', $this->frameset . "?pnt=left" . ($modelid ? '&modelid=' . $modelid : ''), 'position:absolute;top:0px;bottom:0px;left:0px;width:200px;', '', '', false) .
-			we_html_element::htmlIFrame('right', $this->frameset . "?pnt=right" . (($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'position:absolute;top:0px;bottom:0px;left:200px;right:0px;', '', '', !($this instanceof we_search_frames));
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
-	}
-
-	function getHTMLRight(){
-		$body = we_html_element::htmlIFrame('editor', $this->frameset . "?pnt=editor" . (($tab = we_base_request::_(we_base_request::INT, 'tab') ) ? '&tab=' . $tab : '') . (($sid = we_base_request::_(we_base_request::INT, 'sid')) ? '&sid=' . $sid : ''), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false);
-
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
-	}
-
-	protected function getHTMLEditor(){
-		$tab = we_base_request::_(we_base_request::INT, 'tab');
-		$sid = we_base_request::_(we_base_request::STRING, 'sid');
-
-		$body = we_html_element::htmlIFrame('edheader', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edheader', 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
-			we_html_element::htmlIFrame('edbody', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edbody', 'position:absolute;top:40px;bottom:40px;left:0px;right:0px;', '', '', true) .
-			we_html_element::htmlIFrame('edfooter', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . '&pnt=edfooter', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;', '', '', false);
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
-	}
+	  $body = we_html_element::htmlIFrame('edheader', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edheader', 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
+	  we_html_element::htmlIFrame('edbody', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edbody', 'position:absolute;top:40px;bottom:40px;left:0px;right:0px;', '', '', true) .
+	  we_html_element::htmlIFrame('edfooter', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . '&pnt=edfooter', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;', '', '', false);
+	  return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
+	  } */
 
 	function getJSCmdCode(){
 		return $this->View->getJSTop();
@@ -217,8 +208,8 @@ function setTab(tab) {
 			$out = ob_get_clean();
 			return
 				/* we_html_element::jsElement('
-				  ' . $this->topFrame . '.resize.right.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
-				  ' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";
+				  ' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
+				  ' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";
 				  ') . */ $out;
 		}
 
@@ -291,17 +282,8 @@ function we_save() {
 			we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30);
 	}
 
-	function getHTMLLeft(){
-		$body = we_html_element::htmlIFrame('treeheader', "about:blank", 'display:none', '', '', false) .
-			we_html_element::htmlIFrame('tree', $this->frameset . "?pnt=treeconst" . (($mid = we_base_request::_(we_base_request::INT, 'modelid')) ? '&modelid=' . $mid : ''), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;', '', '', true) .
-			we_html_element::htmlIFrame('treefooter', $this->frameset . "?pnt=treefooter", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;', '', '', false);
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
-	}
-
 	protected function getHTMLTreeFooter(){
-		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('style' => "background-color:white;margin:0px 5px;", "class" => "editfooter"), '<div id="infoField" class="defaultfont"></div>')
-		);
+		return '<div id="infoField" class="defaultfont"></div>';
 	}
 
 	function getHTMLCmd(){

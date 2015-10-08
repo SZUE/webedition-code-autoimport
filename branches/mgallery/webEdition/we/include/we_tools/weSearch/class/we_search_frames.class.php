@@ -36,11 +36,11 @@ class we_search_frames extends we_tool_frames{
 
 		$this->TreeSource = 'table:' . $this->Table;
 
-		$this->Tree = new we_search_tree($this->frameset, 'top.content', 'top.content.resize.left.tree', 'top.content.cmd');
+		$this->Tree = new we_search_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 
 		$this->View = new we_search_view($_frameset, 'top.content');
 		$this->Model = &$this->View->Model;
-		$this->setFrames('top.content', 'top.content.resize.left.tree', 'top.content.cmd');
+		$this->setFrames('top.content', 'top.content', 'top.content.cmd');
 	}
 
 	function getHTMLCmd(){

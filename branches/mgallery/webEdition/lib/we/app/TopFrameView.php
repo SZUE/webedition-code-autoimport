@@ -35,7 +35,7 @@ class we_app_TopFrameView extends Zend_View{
 	 *
 	 * @var string
 	 */
-	const kEditorFrameset = 'self.resize.right.editor';
+	const kEditorFrameset = 'self.resize.editor';
 
 	/**
 	 * appName attribute

@@ -139,7 +139,7 @@ class we_search_view extends we_modules_view{
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
 					($tab !== false ? '&tab=' . $tab : '') .
 					'&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 
 			case 'tool_weSearch_edit' :
@@ -154,7 +154,7 @@ class we_search_view extends we_modules_view{
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader' .
 					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
 					urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
         if(' . $this->topFrame . '.treeData){
          ' . $this->topFrame . '.treeData.unselectnode();
          ' . $this->topFrame . '.treeData.selectnode("' . $this->Model->ID . '");
@@ -280,20 +280,20 @@ case "tool_weSearch_delete":
 			we_message_reporting::getShowMessageCall(g_l('searchtool', '[predefinedSearchdelete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	return;
  }
- if(' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.newone.value==1){
+ if(' . $this->topFrame . '.editor.edbody.document.we_form.newone.value==1){
 	' . we_message_reporting::getShowMessageCall(g_l('tools', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	return;
  }
  ' . (!permissionhandler::hasPerm("DELETE_" . strtoupper($this->toolName)) ? (we_message_reporting::getShowMessageCall(
 					g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)) : ('
-		 if (' . $this->topFrame . '.resize.right.editor.edbody.loaded) {
+		 if (' . $this->topFrame . '.editor.edbody.loaded) {
 
 			if (confirm("' . g_l('searchtool', '[confirmDel]') . '")) {
-			 ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.cmd.value=arguments[0];
-			 ' . $this->topFrame . '.resize.right.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+			 ' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=arguments[0];
+			 ' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
 			 ' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=0&pnt=edheader";
-			 ' . $this->topFrame . '.resize.right.editor.edfooter.location="' . $this->frameset . '?home=0&pnt=edfooter";
-			 ' . $this->topFrame . '.resize.right.editor.edbody.submitForm();
+			 ' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=0&pnt=edfooter";
+			 ' . $this->topFrame . '.editor.edbody.submitForm();
 
 			}
 
@@ -2565,10 +2565,10 @@ weSearch.g_l = {
 
 	function setTopFrame($frame){
 		$this->topFrame = $frame;
-		$this->editorBodyFrame = $frame . '.resize.right.editor.edbody';
+		$this->editorBodyFrame = $frame . '.editor.edbody';
 		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $frame . '.resize.right.editor.edheader';
-		$this->editorFooterFrame = $frame . '.resize.right.editor.edfooter';
+		$this->editorHeaderFrame = $frame . '.editor.edheader';
+		$this->editorFooterFrame = $frame . '.editor.edfooter';
 	}
 
 	function getCommonHiddens($cmds = array()){

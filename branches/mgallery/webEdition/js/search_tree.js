@@ -39,7 +39,7 @@ function reloadGroup(pid) {
 }
 
 function info(text) {
-	t = frames.top.resize.left.treefooter.window.document.getElementById("infoField");
+	t = frames.top.document.getElementById("infoField");
 	if (text != " ") {
 		t.style.display = "block";
 		t.innerHTML = text;
@@ -72,5 +72,5 @@ function openClose(id) {
 
 function doClick(id, typ) {
 	var node = top.content.get(id);
-	top.content.resize.right.editor.edbody.we_cmd("tool_weSearch_edit", node.id);
+	top.content.editor.edbody.we_cmd("tool_weSearch_edit", node.id);
 }
