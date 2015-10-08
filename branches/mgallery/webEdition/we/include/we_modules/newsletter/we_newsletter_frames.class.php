@@ -2390,7 +2390,7 @@ self.focus();');
 			} else {
 				$emailName = $email;
 			}
-			$phpmail = new we_util_Mailer($emailName, $this->View->newsletter->Subject, $this->View->newsletter->Sender, $this->View->newsletter->Reply, $this->View->newsletter->isEmbedImages);
+			$phpmail = new we_helpers_mail($emailName, $this->View->newsletter->Subject, $this->View->newsletter->Sender, $this->View->newsletter->Reply, $this->View->newsletter->isEmbedImages);
 			$phpmail->setCharSet($this->View->newsletter->Charset ? : $GLOBALS["_language"]["charset"]);
 
 			if($htmlmail){

@@ -308,7 +308,7 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$we_recipientBCC[] = $bcc;
 					}
 				}
-				$phpmail = new we_util_Mailer($f['subscribe_mail'], $subject, $from, $from);
+				$phpmail = new we_helpers_mail($f['subscribe_mail'], $subject, $from, $from);
 				if(isset($includeimages)){
 					$phpmail->setIsEmbedImages($includeimages);
 				} else {
@@ -624,7 +624,7 @@ function _weMailNewSuccessfullNewsletterActiviation($adminmailid, $adminemail, $
 		return;
 	}
 	$db = $GLOBALS['DB_WE'];
-	$phpmail = new we_util_Mailer($adminemail, $adminsubject, $f['subscribe_mail'], $f['subscribe_mail']);
+	$phpmail = new we_helpers_mail($adminemail, $adminsubject, $f['subscribe_mail'], $f['subscribe_mail']);
 
 	$phpmail->setCharSet($charset);
 

@@ -183,7 +183,7 @@ abstract class we_modules_frame{
 				'marginwidth' => 0,
 				'marginheight' => 4,
 				'leftmargin' => 0,
-				'topmargin' => 4), $extraHead . $this->Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}')
+				'topmargin' => 4), $extraHead . $this->Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}')
 		);
 	}
 

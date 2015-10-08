@@ -33,7 +33,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 	<div id="bm_mainDiv">
 		<?php
 		$Tree = new weMainTree('webEdition.php', 'top', 'top.resize.left.tree', 'top.load');
-		echo $Tree->getHTMLContructX('if(top.treeResized){top.treeResized();}');
+		echo $Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}');
 		?>
 	</div>
 	<div id="bm_searchField">

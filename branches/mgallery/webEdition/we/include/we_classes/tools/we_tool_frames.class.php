@@ -61,8 +61,6 @@ abstract class we_tool_frames extends we_modules_frame{
 				return $this->getHTMLTreeHeader();
 			case 'treefooter':
 				return $this->getHTMLTreeFooter();
-			case 'treeconst':
-				return $this->Tree->getHTMLContruct();
 			case 'exit_doc_question':
 				return $this->getHTMLExitQuestion();
 			default:
@@ -100,16 +98,6 @@ abstract class we_tool_frames extends we_modules_frame{
 
 		return $this->getHTMLDocument($body, $js);
 	}
-
-	/* protected function getHTMLEditor(){
-	  $tab = we_base_request::_(we_base_request::INT, 'tab');
-	  $sid = we_base_request::_(we_base_request::STRING, 'sid');
-
-	  $body = we_html_element::htmlIFrame('edheader', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edheader', 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
-	  we_html_element::htmlIFrame('edbody', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . ($tab ? '&tab=' . $tab : '') . '&pnt=edbody', 'position:absolute;top:40px;bottom:40px;left:0px;right:0px;', '', '', true) .
-	  we_html_element::htmlIFrame('edfooter', $this->frameset . ($sid !== false ? '?sid=' . $sid : '?home=1') . '&pnt=edfooter', 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;', '', '', false);
-	  return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
-	  } */
 
 	function getJSCmdCode(){
 		return $this->View->getJSTop();

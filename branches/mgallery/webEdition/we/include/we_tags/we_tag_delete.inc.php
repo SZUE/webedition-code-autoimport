@@ -98,7 +98,7 @@ function we_tag_delete($attribs){
 			if(!$mailfrom){
 				$mailfrom = 'dontReply@' . $_SERVER['SERVER_NAME'];
 			}
-			$phpmail = new we_util_Mailer($mail, $subject, $mailfrom);
+			$phpmail = new we_helpers_mail($mail, $subject, $mailfrom);
 			$phpmail->setCharSet($charset);
 			$phpmail->addTextPart(trim($mailtext));
 			$phpmail->buildMessage();

@@ -574,7 +574,7 @@ function we_mail($recipient, $subject, $txt, $from = '', $replyTo = ''){
 		$txt = str_replace("\n", "\r\n", $txt);
 	}
 
-	$phpmail = new we_util_Mailer($recipient, $subject, $from, $replyTo);
+	$phpmail = new we_helpers_mail($recipient, $subject, $from, $replyTo);
 	$phpmail->setCharSet($GLOBALS['WE_BACKENDCHARSET']);
 	$txtMail = strip_tags($txt);
 	if($txt != $txtMail){

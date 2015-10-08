@@ -44,12 +44,6 @@ treeData.frames=frames;
 }';
 	}
 
-	function getHTMLContruct(){
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'tree.css'), we_html_element::htmlBody(array('id' => 'treetable'), '<div id="treetable" class="tree" style="height:100%;border-right:1px solid black"></div>')
-		);
-	}
-
 	function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'search_tree.js');
 	}

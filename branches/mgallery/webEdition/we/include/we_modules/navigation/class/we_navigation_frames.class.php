@@ -104,7 +104,7 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	public function getHTMLDocumentHeader(){
-			return parent::getHTMLDocumentHeader($this->Model->Charset);
+		return parent::getHTMLDocumentHeader($this->Model->Charset);
 	}
 
 	/**
@@ -146,7 +146,6 @@ if(' . $this->View->topFrame . '.activ_tab!=1 && ' . $this->View->topFrame . '.a
 function mark() {
 	var elem = document.getElementById("mark");
 	elem.style.display = "inline";
-
 }
 
 function unmark() {
@@ -184,34 +183,24 @@ function setTab(tab) {
 }' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;')
 		);
 
-		/*
-		  $table = new we_html_table(array("style" => 'width:100%;margin-top:3px;', 'class' => 'default'), 1, 1);
 
-		  $table->setCol(0, 0, array('style'=>'vertical-align:top", "class" => "small"),
-		  we_html_element::htmlB(
-		  g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) .
-		  ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) .
-		  '<div id="mark" style="display: none;">*</div>'
-		  ));
-		 */
-		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
+		$extraJS = "document.getElementById('tab_'+" . $this->topFrame . ".activ_tab).className='tabActive';";
 		$body = we_html_element::htmlBody(
 				array(
 				"id" => "eHeaderBody",
-				"onload" => "setFrameSize()",
+				"onload" => 'setFrameSize();' . $extraJS,
 				"onresize" => "setFrameSize()"
 				), we_html_element::htmlDiv(array('id' => "main"), we_html_element::htmlDiv(array('id' => 'headrow'), '&nbsp;' .
 						we_html_element::htmlB(g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' .
 							str_replace('&amp;', '&', $this->Model->Text) .
 							we_html_element::htmlDiv(array('id' => 'mark', 'style' => 'display: none;'), '*'))) .
-					$we_tabs->getHTML() . '</div>' . we_html_element::jsElement($extraJS))
+					$we_tabs->getHTML() . '</div>')
 		);
 
 		return $this->getHTMLDocument($body, we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') . $tabsHead);
 	}
 
 	protected function getHTMLEditorBody(){
-
 		$hiddens = array('cmd' => 'tool_' . $this->module . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
 		if(we_base_request::_(we_base_request::BOOL, "home")){
@@ -371,18 +360,18 @@ function setTab(tab) {
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$rootDirID = 0;
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.LinkID.value");
+		$cmd1 = "document.we_form.elements.LinkID.value";
+		$wecmdenc1 = we_base_request::encCmd($cmd1);
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
-		$_cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "','',0)";
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.LinkID.value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
+		$_cmd_doc = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "','',0)";
+
 		$wecmdenc3 = we_base_request::encCmd("opener." . $this->topFrame . ".we_cmd('populateFolderWs');");
-		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile',0)" : '';
+		$_cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',$cmd1,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','objectFile',0)" : '';
 
 		$_button_doc = we_html_button::create_button(we_html_button::SELECT, $_cmd_doc, true, 0, 0, '', '', false) .
-			we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . FILE_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false);
+			we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . FILE_TABLE . '",' . $cmd1 . ',"")', true, 100, 22, '', '', false);
 		$_button_obj = we_html_button::create_button(we_html_button::SELECT, $_cmd_obj, true, 0, 0, '', '', false) .
-			(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",document.we_form.elements.LinkID.value,"")', true, 100, 22, '', '', false) : '');
+			(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:openToEdit("' . OBJECT_FILES_TABLE . '",' . $cmd1 . ',"")', true, 100, 22, '', '', false) : '');
 
 		$_buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == we_navigation_navigation::STPYE_DOCLINK) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == we_navigation_navigation::STPYE_OBJLINK ? 'inline' : 'none') . '">' . $_button_obj . '</div>';
 		$_path = ($this->Model->LinkID == 0 ?
@@ -473,18 +462,18 @@ function setTab(tab) {
 			$_padding = "10";
 		}
 
-		$cmd = 'opener.we_cmd("copyNaviFolder")';
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.CopyFolderID.value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.CopyFolderPath.value");
+		$cmd1 = "document.we_form.CopyFolderID.value";
 
-		$_cmd = "javascript:we_cmd('openNavigationDirselector',document.we_form.elements.CopyFolderID.value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $cmd . "')";
+		$_cmd = "javascript:we_cmd('openNavigationDirselector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.CopyFolderPath.value") . "','opener.we_cmd(\"copyNaviFolder\")')";
 		$_button_copyFolder = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $_disabled);
 
 		$parts[] = array(
 			'headline' => g_l('weClass', '[copyFolder]'),
-			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes(
-					$this->Model->Path) . "';\nvar selfNaviId = '" . $this->Model->ID . "';") . "<div style='float:left; margin-right:20px'>" . we_html_tools::htmlAlertAttentionBox(
-				g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHiddens(
+			'html' => we_html_element::jsElement("var selfNaviPath ='" . addslashes($this->Model->Path) . "';
+var selfNaviId = '" . $this->Model->ID . "';") .
+			"<div style='float:left; margin-right:20px'>" .
+			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') .
+				$_disabledNote, we_html_tools::TYPE_INFO, ($this->_width_size - 120), true, 0) . "</div>" . "<div style='padding-top:{$_padding}px'>" . $_button_copyFolder . "</div>" . we_html_element::htmlHiddens(
 				array(
 					'name' => 'CopyFolderID',
 					"value" => '',

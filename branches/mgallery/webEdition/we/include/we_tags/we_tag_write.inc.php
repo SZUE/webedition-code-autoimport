@@ -268,7 +268,7 @@ function we_tag_write($attribs){
 						$subject = g_l('global', '[std_subject_newDoc]');
 						break;
 				}
-				$phpmail = new we_util_Mailer($mail, $subject, $mailfrom);
+				$phpmail = new we_helpers_mail($mail, $subject, $mailfrom);
 				$phpmail->setCharSet($charset);
 				$phpmail->addTextPart($mailtext);
 				$phpmail->buildMessage();

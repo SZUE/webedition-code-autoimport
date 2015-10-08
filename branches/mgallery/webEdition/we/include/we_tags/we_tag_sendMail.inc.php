@@ -128,7 +128,7 @@ function we_tag_sendMail($attribs, $content){
 	if(!$codes){
 		t_e('Document to send via we:sendMail is empty ID: ' . $id);
 	}
-	$phpmail = new we_util_Mailer($we_recipient, $subject, $from, $reply, $includeimages);
+	$phpmail = new we_helpers_mail($we_recipient, $subject, $from, $reply, $includeimages);
 	if(isset($includeimages)){
 		$phpmail->setIsEmbedImages($includeimages);
 	}
