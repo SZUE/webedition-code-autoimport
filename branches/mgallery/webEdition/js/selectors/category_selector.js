@@ -239,7 +239,8 @@ function writeBody(d) {
 									(makeNewFolder ?
 													'<input type="hidden" name="what" value="' + top.queryType.CREATEFOLDER + '" />' :
 													'<input type="hidden" name="what" value="' + top.queryType.CREATE_CAT + '" />'
-													)) +
+													)
+									) +
 					'<input type="hidden" name="order" value="' + top.order + '" />' +
 					'<input type="hidden" name="rootDirID" value="' + options.rootDirID + '" />' +
 					'<input type="hidden" name="table" value="' + options.table + '" />' +
@@ -263,61 +264,66 @@ function writeBody(d) {
 						body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
 										'<td class="selector selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +
 										/*'<td class="selectoricon">' + WE().util.getTreeIcon(entries[i].isFolder ? 'folder' : 'we/category') + '</td>'*/
-										((we_editCatID !== undefined && we_editCatID == entries[i].ID) ?
-														'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-														'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
-														) +
-										'</td></tr>';
-					}
-					d.innerHTML = body + '</table></form>';
-					if (makeNewFolder || makeNewCat || we_editCatID) {
-						top.fsbody.document.we_form.we_EntryText_tmp.focus();
-						top.fsbody.document.we_form.we_EntryText_tmp.select();
-					}
-				}
+														((we_editCatID !== undefined && we_editCatID == entries[i].ID) ?
+																		'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+																		'<td class="selector filename" title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div>'
+																		) +
+														'</td></tr>';
+									}
+									d.innerHTML = body + '</table></form>';
+									if (makeNewFolder || makeNewCat || we_editCatID) {
+										top.fsbody.document.we_form.we_EntryText_tmp.focus();
+										top.fsbody.document.we_form.we_EntryText_tmp.select();
+									}
+								}
 
-				function queryString(what, id, o, we_editCatID) {
-					if (!o) {
-						o = top.order;
-					}
-					if (!we_editCatID) {
-						we_editCatID = "";
-					}
-					return options.formtarget + 'what=' + what + '&rootDirID=' + options.rootDirID + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
-				}
+								function queryString(what, id, o, we_editCatID) {
+									if (!o) {
+										o = top.order;
+									}
+									if (!we_editCatID) {
+										we_editCatID = "";
+									}
+									return options.formtarget + 'what=' + what + '&rootDirID=' + options.rootDirID + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
+								}
 
-				function weonclick(e) {
-					if (top.makeNewFolder || top.makeNewCat || top.we_editCatID) {
-						if (!inputklick) {
-							if (parent.options.needIEEscape) {
-								document.we_form.we_EntryText.value = escape(top.fsbody.document.we_form.we_EntryText_tmp.value);
-							} else {
-								document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;
-							}
-							top.makeNewFolder = top.makeNewCat = top.we_editCatID = false;
-							document.we_form.submit();
-						} else {
-							inputklick = false;
-						}
-					} else {
-						inputklick = false;
-						if (document.all) {
-							if (e.ctrlKey || e.altKey) {
-								ctrlpressed = true;
-							}
-							if (e.shiftKey) {
-								shiftpressed = true;
-							}
-						} else {
-							if (e.altKey || e.metaKey || e.ctrlKey) {
-								ctrlpressed = true;
-							}
-							if (e.shiftKey) {
-								shiftpressed = true;
-							}
-						}
-						if (!self.shiftpressed && !self.ctrlpressed) {
-							top.unselectAllFiles();
-						}
-					}
-				}
+								function weonclick(e) {
+									if (top.makeNewFolder || top.makeNewCat || top.we_editCatID) {
+										if (!inputklick) {
+											if (parent.options.needIEEscape) {
+												document.we_form.we_EntryText.value = escape(top.fsbody.document.we_form.we_EntryText_tmp.value);
+											} else {
+												document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;
+											}
+											top.makeNewFolder = top.makeNewCat = top.we_editCatID = false;
+											document.we_form.submit();
+										} else {
+											inputklick = false;
+										}
+									} else {
+										inputklick = false;
+										if (document.all) {
+											if (e.ctrlKey || e.altKey) {
+												ctrlpressed = true;
+											}
+											if (e.shiftKey) {
+												shiftpressed = true;
+											}
+										} else {
+											if (e.altKey || e.metaKey || e.ctrlKey) {
+												ctrlpressed = true;
+											}
+											if (e.shiftKey) {
+												shiftpressed = true;
+											}
+										}
+										if (!self.shiftpressed && !self.ctrlpressed) {
+											top.unselectAllFiles();
+										}
+									}
+								}
+								function saveOnKeyBoard() {
+									top.fsvalues.weWysiwygSetHiddenText();
+									top.fsvalues.we_checkName();
+									return true;
+								}

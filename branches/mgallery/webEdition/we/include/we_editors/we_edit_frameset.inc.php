@@ -193,12 +193,8 @@ if($we_Table == FILE_TABLE && $we_ContentType === we_base_ContentTypes::FOLDER &
 
 if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 	//	show errorMessage - no view for this document (we:hidePages)
-	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-		we_html_element::htmlHead(
-			we_html_element::jsElement('top.toggleBusy(0);') .
-			STYLESHEET
-		) .
-		we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), we_html_tools::TYPE_ALERT, 500, true), g_l('alert', '[no_views][headline]'))
+	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('top.toggleBusy(0);') .
+		STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), we_html_tools::TYPE_ALERT, 500, true), g_l('alert', '[no_views][headline]'))
 		)
 	);
 	exit;
@@ -376,7 +372,7 @@ switch($_SESSION['weS']['we_mode']){
 ?>
 <body onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});" onunload="doUnload();" style="overflow:hidden">
 	<?php
-	//FIXME: if we want to remove these iframes, e.g. EditorFrameController.js enumerate the frames, make sure to get all
+//FIXME: if we want to remove these iframes, e.g. EditorFrameController.js enumerate the frames, make sure to get all
 	echo we_html_element::htmlIFrame('editHeader', we_class::url(WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=load_edit_header"), 'position:absolute;top:0px;left:0px;right:0px;height:' . $headerSize . 'px;', '', '', false) .
 	($showContentEditor ?
 		we_html_element::htmlIFrame('editor_' . $fid, 'about:blank', 'display:none;position:absolute;top:' . $headerSize . 'px;left:0px;right:0px;bottom:40px;', '', setOnload()) .

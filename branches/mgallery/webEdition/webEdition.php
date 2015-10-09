@@ -327,9 +327,12 @@ foreach(we_base_request::getAllTables() as $k => $v){
 		sidebar:null,
 		cockpitFrame:null,
 	},
+	handler:{
+		errorHandler:errorHandler,
+		dealWithKeyboardShortCut:null,
+	},
 	//utility functions, defined in webedition.js
 	util:{
-		errorHandler:errorHandler,
 	}
 };
 //-->
@@ -340,7 +343,7 @@ echo we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+ we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
  we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
  we_html_element::jsScript(JS_DIR . 'webEdition.js') .
  we_html_element::jsScript(JS_DIR . 'weSidebar.js') .

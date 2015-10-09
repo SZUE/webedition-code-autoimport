@@ -260,9 +260,7 @@ class we_customer_EIWizard{
 	' . $this->bodyFrame . '.document.we_form.submit();'
 			); //FIXME: disable next button
 		}
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(STYLESHEET . $js) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlCenter(
 						we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "body"),
 							//we_html_element::htmlHidden(array("name"=>"step",""=>"4")).
 							$this->getHiddens(array('art' => self::ART_EXPORT, 'step' => 3)) .
@@ -553,7 +551,7 @@ class we_customer_EIWizard{
 
 		$parts = array();
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 					function switchImportFrom(obj){
 						if(obj.value === "local"){
@@ -1460,7 +1458,7 @@ function doNext(){
 	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 function formFileChooser() {
 	var args = "";
@@ -1484,7 +1482,7 @@ function formFileChooser() {
 	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 function formDirChooser() {
 	var args = "";
@@ -1528,7 +1526,7 @@ function formDirChooser() {
 		}
 		$customers = array_filter($customers);
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 function selector_cmd(){
 	var args = "";

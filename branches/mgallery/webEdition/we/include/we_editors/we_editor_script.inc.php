@@ -35,7 +35,7 @@ echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
 	font-family: ' . g_l('css', '[font_family]') . ';
 }
 ');
-we_html_element::jsScript(JS_DIR . 'global.js');
+we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 ?>
 <script><!--
 	var we_transaction = "<?php echo we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0); ?>";

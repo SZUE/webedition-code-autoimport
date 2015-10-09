@@ -80,11 +80,10 @@ abstract class we_versions_wizard{
 			$content->setCol(0, 1, array("style" => "text-align:right"), $content2->getHtml());
 		}
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					STYLESHEET . $js) . we_html_element::htmlBody(
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(
 					array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
-					), ($dc ? $pb : $content->getHtml())));
+					), ($dc ? $pb : $content->getHtml()))
+		);
 	}
 
 	/**
@@ -1208,24 +1207,20 @@ set_button_state(false);';
 			return '';
 		}
 		$headCal = we_html_tools::getCalendarFiles() .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js');
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					$headCal . STYLESHEET .
-					($contents[0] ? we_html_element::jsElement($contents[0]) : "")) .
-				we_html_element::htmlBody(
+		return we_html_tools::getHtmlTop('', '', '', $headCal . STYLESHEET .
+				($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(
 					array("class" => "weDialogBody")
 					, we_html_element::htmlForm(
 						array(
 						"name" => "we_form",
 						"method" => "post",
 						"action" => WEBEDITION_DIR . "we_cmd.php"
-						), $contents[1])));
+						), $contents[1]))
+		);
 	}
 
 }

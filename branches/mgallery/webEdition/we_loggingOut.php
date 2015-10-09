@@ -34,14 +34,10 @@ include(WE_INCLUDES_PATH . 'we_logout.inc.php');
 if(we_base_request::_(we_base_request::BOOL, 'isopener')){
 	header('location: ' . WEBEDITION_DIR . 'index.php');
 }
-?>
 
-<html>
-	<head>
-	</head>
+echo we_html_tools::getHtmlTop('', '', '', '', '
 	<body onload="self.setTimeout(function(){
 		self.close();
 	}, 1000);" style="background-color:#386AAB;color:white">
-		<?php echo g_l('global', '[irregular_logout]'); ?>
-	</body>
-</html>
+		' . g_l('global', '[irregular_logout]') . '
+	</body>');

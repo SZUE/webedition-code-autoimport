@@ -116,7 +116,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 			we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	$script = we_html_element::jsScript(JS_DIR . 'windows.js') .
-		we_html_element::jsScript(JS_DIR . 'global.js').
+		we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 		we_html_element::jsElement($script);
 }
 
@@ -128,7 +128,7 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
 			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
 
-	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead($script . we_html_element::jsElement($js)));
+	echo we_html_tools::getHtmlTop('', '', '', $script . we_html_element::jsElement($js));
 	exit();
 }
 

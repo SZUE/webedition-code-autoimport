@@ -54,8 +54,7 @@ abstract class we_import_wizardBase{
 					we_html_element::htmlIFrame('wizcmd', $this->path . "?pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '',
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
 				we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 				we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
 				we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
@@ -91,15 +90,10 @@ var path='" . $this->path . "';") .
 			$_step = 'get' . $type . 'Step' . $step;
 			list($js, $content) = $this->$_step();
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
-			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-					we_html_element::htmlHead(
-						STYLESHEET .
-						//FIXME: delete condition and else branch when new uploader is stable
-						(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
-						we_html_element::jsScript(JS_DIR . "windows.js") .
-						we_html_element::jsScript(JS_DIR . 'global.js').
-						we_html_element::jsElement($js)) .
-					we_html_element::htmlBody(array(
+			return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+					//FIXME: delete condition and else branch when new uploader is stable
+					(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
+					we_html_element::jsElement($js), we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
 						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
 						), we_html_element::htmlForm($a, we_html_element::htmlHiddens(array(
@@ -150,7 +144,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", false, false, '_btn');
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:parent.wizbody.handle_event('cancel');", true, 0, 0, "", "", false, false);
 
-		$prevNextButtons = $prevButton ? $prevButton. $nextButton : null;
+		$prevNextButtons = $prevButton ? $prevButton . $nextButton : null;
 
 		$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, $pb);
@@ -159,9 +153,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 <div id="closeDiv" style="display:none;">' . $closeButton . '</div>'
 		);
 
-		echo we_html_element::htmlDocType() . we_html_element::htmlHtml(
-			we_html_element::htmlHead(STYLESHEET) .
-			we_html_element::htmlBody(array(
+		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array(
 				"class" => "weDialogButtonsBody",
 				"onload" => "top.wizbody.set_button_state();",
 				'style' => 'overflow:hidden;'
@@ -581,9 +573,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . "
 						"cid" => "")));
 		}
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(
-					we_html_element::jsElement("
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement("
 function addField(form, fieldType, fieldName, fieldValue) {
 	if (document.getElementById) {
 		var input = document.createElement('INPUT');
@@ -648,8 +638,7 @@ function we_import(mode, cid) {
 	we_form.method = 'post';
 	we_form.submit();
 }"
-				)) .
-				we_html_element::htmlBody(array('style' => 'overflow:hidden;'), $out));
+				), we_html_element::htmlBody(array('style' => 'overflow:hidden;'), $out));
 	}
 
 	private function importFinished($v, $type){

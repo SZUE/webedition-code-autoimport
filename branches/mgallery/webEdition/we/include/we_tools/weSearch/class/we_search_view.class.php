@@ -229,7 +229,7 @@ class we_search_view extends we_modules_view{
 
 				break;
 			case 'tool_weSearch_delete' :
-				echo we_html_element::jsScript(JS_DIR . 'global.js');
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 				if($this->Model->delete()){
 					echo we_html_element::jsElement(
 						$this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
@@ -2589,7 +2589,7 @@ weSearch.g_l = {
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {

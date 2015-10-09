@@ -32,7 +32,7 @@ function closeOnEscape() {
 }
 
 function saveOnKeyBoard() {
-	window.frames[1].we_save();
+	we_save();
 	return true;
 }
 

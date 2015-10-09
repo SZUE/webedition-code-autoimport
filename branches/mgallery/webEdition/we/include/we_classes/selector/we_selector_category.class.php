@@ -375,7 +375,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
 			($isMainChooser ?
-				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true) : ''
+				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true,($isMainChooser ? 'catproperties' : '')) : ''
 			) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
@@ -488,7 +488,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
 
 			$ta = we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("catDescription", $description, array("bgcolor" => "white", "inlineedit" => "true", "wysiwyg" => "true", "width" => 450, "height" => 130), true, 'autobr', true, "", true, true, true, false, ""), "<b>" . g_l('global', '[description]') . "</b>", "left", "defaultfont", "", "", "", "", "", 0);
-			$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:weWysiwygSetHiddenText();we_checkName();");
+			$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();");
 		}
 
 		we_html_tools::protect();

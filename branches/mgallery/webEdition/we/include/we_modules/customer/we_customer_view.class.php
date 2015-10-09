@@ -246,7 +246,7 @@ var attribs = {
 				break;
 			case 'show_admin':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsScript(JS_DIR . 'global.js').
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
 				we_html_element::jsElement('
 url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=customer_admin";
 new jsWindow(url,"customer_admin",-1,-1,600,420,true,true,true,false);');
@@ -447,7 +447,7 @@ close();');
 				break;
 			case 'show_sort_admin':
 				echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js').
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
 				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=sort_admin";
 new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 
@@ -490,7 +490,7 @@ new jsWindow(url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 					$_sorting .= 'opener.' . $this->topFrame . '.addSorting("' . $_sort . '");' . "\n";
 				}
 
-				echo we_html_element::jsScript(JS_DIR . "global.js") .
+				echo we_html_element::jsScript(JS_DIR . "global.js", 'initWE();') .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 var selected = opener.' . $this->topFrame . '.document.we_form_treeheader.sort.selectedIndex;
 opener.' . $this->topFrame . '.document.we_form_treeheader.sort.options.length=0;
@@ -510,25 +510,25 @@ self.close();');
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsScript(JS_DIR . 'global.js').
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
 				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
 						new jsWindow(url,"search",-1,-1,650,600,true,true,true,false);');
 				break;
 			case 'show_customer_settings':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsScript(JS_DIR . 'global.js').
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
 				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings";
 						new jsWindow(url,"customer_settings",-1,-1,550,250,true,true,true,false);');
 				break;
 			case 'import_customer':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsScript(JS_DIR . 'global.js').
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
 				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import";
 						new jsWindow(url,"import_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'export_customer':
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsScript(JS_DIR . 'global.js').
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
 				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export";
 						new jsWindow(url,"export_customer",-1,-1,640,600,true,true,true,false);');
 				break;
@@ -545,7 +545,7 @@ self.close();');
 						$this->settings->properties[$k] = $set;
 					}
 				}
-				echo we_html_element::jsScript(JS_DIR . 'global.js') .
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement(
 					$this->settings->save() ?
 						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[settings_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'self.close();' :

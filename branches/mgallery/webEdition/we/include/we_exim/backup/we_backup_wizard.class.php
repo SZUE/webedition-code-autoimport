@@ -440,7 +440,7 @@ extra_files_desc=[];';
 
 		$js = we_html_element::jsElement($js) .
 			we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			(!we_fileupload_include::USE_LEGACY_FOR_BACKUP && isset($fileUploaderHead) ? $fileUploaderHead : '') .
 			self::getJSDep("import", $docheck, $doclick, $douncheck) .
 			we_html_element::jsElement('
@@ -704,7 +704,7 @@ self.focus();');
 
 		$mode = "export";
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			self::getJSDep("export", $docheck, $doclick) .
 			we_html_element::jsElement('
 function startStep(){
@@ -1262,7 +1262,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 				$_SESSION['weS']['delete_files_nok'] = array();
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
 				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsScript(JS_DIR . 'global.js') .
+				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement('new jsWindow("' . WEBEDITION_DIR . 'delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
 				break;
 			case "deletebackup":

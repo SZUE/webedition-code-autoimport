@@ -178,6 +178,12 @@ tr.WEFile td{
 	right:0px;
 	border-left:1px solid grey;
 }
+
+#fsvaluesDiv.catproperties,
+#fsbodyDiv.catproperties{
+	bottom: 108px;
+}
+
 #fsfooter{
 	position: fixed;
 	height:90px;

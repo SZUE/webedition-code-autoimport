@@ -671,7 +671,7 @@ this.selectedIndex = 0;' .
 				'' :
 				self::getJSErrorHandler(true)
 			) .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			self::htmlMetaCtCharset(($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width; height=device-height; maximum-scale=1.0; initial-scale=1.0; user-scalable=yes')) .

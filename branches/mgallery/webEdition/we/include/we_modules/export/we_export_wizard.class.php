@@ -362,8 +362,8 @@ function we_submit(){
 
 		$_space = 10;
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js").
-			we_html_element::jsScript(JS_DIR . 'global.js').
+		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 function we_cmd(){
 	var args = "";
@@ -650,9 +650,7 @@ function setState(a) {
 			array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), "space" => $_space)
 		);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(STYLESHEET . $js) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
 							"pnt" => "body",
 							"step" => 7)) .
 						we_html_multiIconBox::getHTML("weExportWizard", $parts, 30, "", -1, "", "", false, g_l('export', '[options]'))
@@ -727,9 +725,7 @@ function setState(a) {
 
 		$parts[] = array("headline" => g_l('export', '[export_to]'), "html" => $table->getHtml(), "space" => $_space);
 
-		return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead(STYLESHEET . "\n" . $js) .
-				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
 							"pnt" => "load",
 							"cmd" => "export",
 							"step" => 7)) .
@@ -1298,7 +1294,7 @@ if (top.footer.setProgress){
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 function formFileChooser() {
 	var args = "";
@@ -1318,7 +1314,7 @@ function formFileChooser() {
 		$table = FILE_TABLE;
 
 		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 				function formDirChooser() {
 					var args = "";

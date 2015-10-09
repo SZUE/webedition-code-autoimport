@@ -852,7 +852,7 @@ function submitForm() {
 			//
 		echo we_html_tools::getCalendarFiles() .
 			we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
 			we_html_element::jsElement('
 var SCRIPT_NAME= "' . $_SERVER['SCRIPT_NAME'] . '";

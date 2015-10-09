@@ -34,6 +34,5 @@ $_table->setColContent(0, 1, we_html_button::create_button(we_html_button::BACK,
 
 
 
-echo we_html_element::htmlDocType() . we_html_element::htmlHtml(STYLESHEET .
-	we_html_element::htmlBody(array("id" => "footerBody"), $_table->getHtml())
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array("id" => "footerBody"), $_table->getHtml())
 );

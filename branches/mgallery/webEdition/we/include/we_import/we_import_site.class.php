@@ -176,7 +176,7 @@ function doUnload() {
 }
 ') .
 			we_html_element::jsScript(JS_DIR . 'windows.js').
-		we_html_element::jsScript(JS_DIR . 'global.js');
+		we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 	}
 
 	/**

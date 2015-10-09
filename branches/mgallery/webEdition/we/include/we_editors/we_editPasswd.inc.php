@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,12 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('global', '[changePass]'));
 
 function getContent(){
 	return '
 		<form action="' . $_SERVER['REQUEST_URI'] . '" method="post">' .
-			we_html_tools::htmlDialogLayout('
+		we_html_tools::htmlDialogLayout('
 						<table class="default">
 							<tr><td class="defaultfont">' . g_l('global', '[oldPass]') . '</td></tr>
 							<tr><td style="padding-bottom:5px;">' . we_html_tools::htmlTextInput('oldpasswd', 20, '', 32, '', 'password', 200) . '</td></tr>
@@ -37,8 +35,8 @@ function getContent(){
 							<tr><td class="defaultfont">' . g_l('global', '[newPass2]') . '</td></tr>
 							<tr><td>' . we_html_tools::htmlTextInput('newpasswd2', 20, '', 32, '', 'password', 200) . '</td></tr>
 						</table>', g_l('global', '[changePass]'), we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::SAVE, 'javascript:document.forms[0].submit();'), null, we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();'))
-			) .we_html_element::htmlHidden("cmd","ok").'</form>';
+				we_html_button::create_button(we_html_button::SAVE, 'javascript:document.forms[0].submit();'), null, we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();'))
+		) . we_html_element::htmlHidden("cmd", "ok") . '</form>';
 }
 
 function getLoad(){
@@ -68,27 +66,24 @@ top.document.forms[0].elements.newpasswd2.select();';
 			$pwd = $DB_WE->escape(we_users_user::makeSaltedPassword($useSalt, $_SESSION['user']['Username'], $newpasswd));
 			$DB_WE->query('UPDATE ' . USER_TABLE . ' SET passwd="' . $pwd . '", UseSalt=' . $useSalt . ' WHERE ID=' . $_SESSION["user"]['ID'] . ' AND username="' . $DB_WE->escape($_SESSION["user"]["Username"]) . '"');
 			$js = we_message_reporting::getShowMessageCall(g_l('global', '[pass_changed]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-					'top.close();';
+				'top.close();';
 		}
 	}
 	return (isset($js) ? we_html_element::jsElement($js) : '');
 }
 
-echo STYLESHEET .
- we_html_element::jsElement('
-			function saveOnKeyBoard() {
-				document.forms[0].submit();
-				return true;
-			}
-			function closeOnEscape() {
-				return true;
+echo we_html_tools::getHtmlTop(g_l('global', '[changePass]'), '', '', STYLESHEET .
+	we_html_element::jsElement('
+function saveOnKeyBoard() {
+	document.forms[0].submit();
+	return true;
+}
+function closeOnEscape() {
+	return true;
 
-			}
-
-			self.focus();') .
- '</head>' .
- we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;')
+}
+'), we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;text-align:center;', 'onload' => 'self.focus();')
 		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-				, we_html_element::htmlExIFrame('passwdcontent', getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;', 'weDialogBody') .
-				getLoad()
-)) . '</html>';
+			, we_html_element::htmlExIFrame('passwdcontent', getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;', 'weDialogBody') .
+			getLoad()
+)));

@@ -67,7 +67,7 @@ class we_modules_view implements we_modules_viewIF{
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js');
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 	}
 
 	function getJSSubmitFunction($def_target = "edbody", $def_method = "post"){

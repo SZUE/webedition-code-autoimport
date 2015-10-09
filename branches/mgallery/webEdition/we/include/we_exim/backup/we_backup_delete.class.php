@@ -75,7 +75,7 @@ class we_backup_delete extends we_fragment_base{
 	function finish(){
 		if(!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
 			echo we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js').
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
 				we_html_element::jsElement('
 					new jsWindow("' . WEBEDITION_DIR . 'delInfo.php","we_delinfo",-1,-1,600,550,true,true,true);
 			');

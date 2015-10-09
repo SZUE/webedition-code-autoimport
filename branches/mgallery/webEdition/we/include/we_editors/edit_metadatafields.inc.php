@@ -340,11 +340,10 @@ echo
  we_html_element::jsElement('
 function closeOnEscape() {
 	return true;
-
 }
 
 function saveOnKeyBoard() {
-	window.frames[1].we_save();
+	window.we_save();
 	return true;
 
 }'

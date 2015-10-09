@@ -955,7 +955,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		return ob_end_clean() . we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 		function openToEdit(tab,id,contentType){
 		if(top.opener && top.opener.top.weEditorFrameController) {

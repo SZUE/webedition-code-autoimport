@@ -111,7 +111,7 @@ abstract class we_modules_frame{
 
 		$extraHead = $this->getJSCmdCode() .
 			self::getJSToggleTreeCode($this->module) .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_main_headermenu::css() .
 			$extraHead;
 

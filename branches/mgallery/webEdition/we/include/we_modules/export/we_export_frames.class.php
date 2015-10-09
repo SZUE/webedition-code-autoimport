@@ -473,9 +473,7 @@ function closeAllType(){
 					"all" => $all,
 					"cmd" => "do_export"));
 
-			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-					we_html_element::htmlHead('') .
-					we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
 					)
 			);
 		}
@@ -522,9 +520,7 @@ function closeAllType(){
 					"all" => $all,
 					"cmd" => "do_export"));
 
-			return we_html_element::htmlDocType() . we_html_element::htmlHtml(
-					we_html_element::htmlHead('') .
-					we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
 					)
 			);
 		}
@@ -622,11 +618,8 @@ function closeAllType(){
 				''
 			);
 
-		$out = we_html_element::htmlDocType() . we_html_element::htmlHtml(
-				we_html_element::htmlHead($head . $_progress_update .
-					we_html_element::jsElement('function showEndStatus(){' . we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ';}')
-				) .
-				we_html_element::htmlBody(
+		$out = we_html_tools::getHtmlTop('', '', '', $_progress_update .
+				we_html_element::jsElement('function showEndStatus(){' . we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ';}'), we_html_element::htmlBody(
 					array(
 						"bgcolor" => "#ffffff",
 						"marginwidth" => 5,
@@ -701,7 +694,7 @@ function closeAllType(){
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
 		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";

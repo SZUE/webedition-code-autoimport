@@ -1,8 +1,8 @@
+###UPDATEONLY### UPDATE ###TBLPREFIX###tblWebUser SET Path=CONCAT("/",Username) WHERE SUBSTR(Path,1,1)!="/"
+/* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblWebUser)###
 /* query separator */
 ###UPDATEDROPCOL(Text,###TBLPREFIX###tblWebUser)###
-/* query separator */
-###UPDATEDROPCOL(Path,###TBLPREFIX###tblWebUser)###
 /* query separator */
 ###UPDATEDROPCOL(IsFolder,###TBLPREFIX###tblWebUser)###
 /* query separator */
@@ -23,6 +23,7 @@ CREATE TABLE ###TBLPREFIX###tblWebUser (
   AutoLogin tinyint(1) unsigned NOT NULL default '0',
   ModifyDate int(10) unsigned NOT NULL default '0',
   ModifiedBy enum('','backend','frontend','external') NOT NULL default '',
+	Path varchar(255) default NULL,
   Newsletter_Ok enum('','ja','0','1','2') NOT NULL,
   PRIMARY KEY  (ID),
   UNIQUE KEY Username (Username),
