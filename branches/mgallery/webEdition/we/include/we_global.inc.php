@@ -1016,10 +1016,9 @@ function we_templateHead($fullHeader = false){
 		return;
 	}
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
-	we_html_tools::getJSErrorHandler() .
+	we_html_element::jsScript(JS_DIR . 'global.js') .
 	STYLESHEET_BUTTONS_ONLY .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsScript(JS_DIR . 'global.js') .
 	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 	weSuggest::getYuiFiles() .
 	we_html_element::jsElement('parent.openedWithWE=true;');

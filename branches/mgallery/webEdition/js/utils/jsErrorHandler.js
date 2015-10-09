@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-window.onerror = function (msg, file, line, col, errObj) {
+function errorHandler(msg, file, line, col, errObj) {
 	console = (top.console ? top.console : console);//FIXME: fast and dirty fix for some popups
 	log = (console.debug !== undefined ? console.debug : console.log);
 	log(msg);
@@ -52,6 +52,7 @@ window.onerror = function (msg, file, line, col, errObj) {
 		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xmlhttp.send(postData);
 	} catch (e) {
+		console.log(e);
 		log(e);
 	}
 };

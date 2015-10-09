@@ -311,7 +311,6 @@ function exit_open(){' . ($this->JSIDName ? '
 
 	protected function printBodyHTML(){
 		echo we_html_tools::getHtmlTop('', '', '4Trans') .
-		we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js') .
 		STYLESHEET .
 		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 		$this->getFramsetJSFile() .

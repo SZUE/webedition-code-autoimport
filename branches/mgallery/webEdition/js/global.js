@@ -57,3 +57,9 @@ function we_showMessage(message, prio, win) {
 		win.alert(message);
 	}
 }
+
+if (WE()) {
+	window.onerror = WE().util.errorHandler;
+}else{
+	console.log('error handler possibly not attached');
+}

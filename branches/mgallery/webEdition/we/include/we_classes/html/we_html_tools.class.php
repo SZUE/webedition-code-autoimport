@@ -649,25 +649,29 @@ this.selectedIndex = 0;' .
 		echo self::getHtmlTop($title, $charset, $doctype);
 	}
 
-	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $extraHead = '', $body = ''){
+	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $extraHead = '', $body = '', $skipErrorHandler = true){
 		return we_html_element::htmlDocType($doctype) .
 			we_html_element::htmlhtml(
 				we_html_element::htmlHead(
-					self::getHtmlInnerHead($title, $charset) . $extraHead, ($extraHead || $body ? true : false)
+					self::getHtmlInnerHead($title, $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)
 				) .
 				$body, ($body ? true : false)
 		);
 	}
 
-	public static function getJSErrorHandler(){
-		return we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js');
+	public static function getJSErrorHandler($register = false){
+		return we_html_element::jsScript(JS_DIR . 'utils/jsErrorHandler.js', ($register ? 'window.onerror=errorHandler;' : ''));
 	}
 
-	public static function getHtmlInnerHead($title = 'webEdition', $charset = ''){
+	private static function getHtmlInnerHead($title, $charset, $skipErrorHandler){
 		self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		return
 			//load this as early as possible
-			self::getJSErrorHandler() .
+			($skipErrorHandler ?
+				'' :
+				self::getJSErrorHandler(true)
+			) .
+			we_html_element::jsScript(JS_DIR . 'global.js') .
 			self::htmlMetaCtCharset(($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
 			we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width; height=device-height; maximum-scale=1.0; initial-scale=1.0; user-scalable=yes')) .
@@ -677,9 +681,8 @@ this.selectedIndex = 0;' .
 			we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
 			we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
-			we_html_element::jsScript(JS_DIR . 'global.js') .
-			we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js');
+			we_html_element::jsScript(JS_DIR . 'attachKeyListener.js', '', array('defer' => 'defer')) .
+			we_html_element::jsScript(JS_DIR . 'windows.js', '', array('defer' => 'defer'));
 	}
 
 	static function htmlMetaCtCharset($charset){

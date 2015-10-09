@@ -110,7 +110,7 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 	}
 }
 
-echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username']) .
+echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'],'','', '', '', false) .
  STYLESHEET;
 ?>
 <script><!--
@@ -329,6 +329,7 @@ foreach(we_base_request::getAllTables() as $k => $v){
 	},
 	//utility functions, defined in webedition.js
 	util:{
+		errorHandler:errorHandler,
 	}
 };
 //-->
