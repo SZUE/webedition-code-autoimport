@@ -183,7 +183,6 @@ class we_selector_file{
 	function printFramesetHTML($withPreview = true){
 		$this->setDirAndID(); //set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset') .
-		we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 		$this->getFramesetJavaScriptDef() .
 		$this->getFramsetJSFile() .
 		$this->getExitOpen() .

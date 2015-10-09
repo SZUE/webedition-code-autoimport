@@ -58,8 +58,14 @@ function we_showMessage(message, prio, win) {
 	}
 }
 
-if (WE()) {
-	window.onerror = WE().util.errorHandler;
-}else{
-	console.log('error handler possibly not attached');
+function initWE() {
+//make some assignments to all WE documents
+	if (WE()) {
+		window.onerror = WE().util.errorHandler;
+		document.addEventListener('keydown', WE().util.dealWithKeyboardShortCut, true);
+	} else {
+		//console.log('error handler possibly not attached');
+	}
 }
+
+initWE();

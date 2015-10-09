@@ -22,11 +22,10 @@
  */
 
 function errorHandler(msg, file, line, col, errObj) {
-	console = (top.console ? top.console : console);//FIXME: fast and dirty fix for some popups
-	log = (console.debug !== undefined ? console.debug : console.log);
-	log(msg);
+	deb = console.debug !== undefined;
+	(deb ? console.debug(msg) : console.log(msg));
 	if (errObj) {
-		log(errObj);
+		(deb ? console.debug(errObj) : console.log(errObj));
 	}
 	try {//we don' want to raise errors inside
 		postData = 'we_cmd[msg]=' + encodeURIComponent(msg);
@@ -48,11 +47,11 @@ function errorHandler(msg, file, line, col, errObj) {
 		postData += '&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion);
 		postData += '&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent);
 		xmlhttp = new XMLHttpRequest();
-		xmlhttp.open('POST', top.WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
+		xmlhttp.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=TriggerJSError&cns=error', true);
 		xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xmlhttp.send(postData);
 	} catch (e) {
-		console.log(e);
-		log(e);
+		(deb ? console.debug(e) : console.log(e));
 	}
-};
+}
+;

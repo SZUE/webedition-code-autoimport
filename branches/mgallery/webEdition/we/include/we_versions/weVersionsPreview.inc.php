@@ -21,8 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-@include_once('Text/Diff.php');
-@include_once('Text/Diff/Renderer/inline.php');
+
 //FIXME make this a class
 $_db = $GLOBALS['DB_WE'];
 

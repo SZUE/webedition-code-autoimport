@@ -298,6 +298,6 @@ if(($inc = findInclude($cmd))){
 
 	require((substr($inc, 0, 5) === 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
 	//  This statement prevents the page from being reloaded
-	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE=true;') : '') .
-	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
+	echo (!in_array($cmd, $cmds_no_js) ? we_html_element::jsElement('parent.openedWithWE=true;') : '');
+	//.	(in_array($cmd, array('edit_document', 'switch_edit_page', 'load_editor')) ? we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') : '');
 }

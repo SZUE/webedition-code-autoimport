@@ -47,7 +47,6 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 	);
 }
 echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]')) .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('
 	function closeOnEscape() {
 		return true;

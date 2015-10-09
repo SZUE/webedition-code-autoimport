@@ -40,8 +40,7 @@ class we_base_menu{
 	}
 
 	public function getJS(){
-		return we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-			we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
+		return we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
 			we_html_element::jsElement('
 function menuaction(cmd,cmd1) {
 if(cmd1===undefined){

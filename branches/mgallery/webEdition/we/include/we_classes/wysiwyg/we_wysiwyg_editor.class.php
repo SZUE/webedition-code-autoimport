@@ -1034,7 +1034,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					' . ($this->fullscreen || $this->isInPopup ? "" : "case 87:") . '
 						e.stopPropagation();
 						e.preventDefault();
-						top.dealWithKeyboardShortCut(e);
+						WE().util.dealWithKeyboardShortCut(e);
 						return false;
 					default:
 						//let tiny do its job

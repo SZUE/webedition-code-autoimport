@@ -82,7 +82,7 @@ function() {
 		return $location . 'document.getElementById("nav").parentNode.innerHTML="' . str_replace("\n", '"+"', addslashes($menu->getHTML())) . '";';
 	}
 
-	static function getMenu(){
+	private static function getMenu(){
 		if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){ // there is only a menu when not in seem_edit_include!
 			return null;
 		}

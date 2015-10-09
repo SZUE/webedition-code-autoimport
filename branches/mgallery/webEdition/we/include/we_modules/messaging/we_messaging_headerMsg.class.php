@@ -38,7 +38,7 @@ class we_messaging_headerMsg{
 			$load = '';
 		}
 
-		echo we_html_element::jsScript(JS_DIR . 'header_msg.js', $load);
+		echo we_html_element::jsScript(JS_DIR . 'header_msg.js', $load, array('defer' => 'defer'));
 	}
 
 	static function pbody(){

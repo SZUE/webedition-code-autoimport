@@ -23,8 +23,7 @@
  */
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
- STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'keyListener.js');
+ STYLESHEET;
 
 $_we_cmd6 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6);
 

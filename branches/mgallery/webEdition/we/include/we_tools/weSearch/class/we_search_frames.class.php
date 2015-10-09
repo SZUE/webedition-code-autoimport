@@ -204,7 +204,6 @@ function setTab(tab) {
 		$_but_table = we_html_button::create_button('save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')));
 
 		return $this->getHTMLDocument(
-				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
 				we_html_element::jsElement('
           function we_save() {
             ' . $this->topFrame . '.we_cmd("tool_' . $this->module . '_save");

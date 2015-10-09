@@ -402,4 +402,4 @@ function dealWithKeyboardShortCut(evt) {
 							keyListener.dealEvent(evt) : true);
 	}
 }
-top.dealWithKeyboardShortCut = dealWithKeyboardShortCut;
+WE().util.dealWithKeyboardShortCut = dealWithKeyboardShortCut;

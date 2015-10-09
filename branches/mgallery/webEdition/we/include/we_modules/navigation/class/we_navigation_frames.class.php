@@ -1627,7 +1627,6 @@ function ' . $prefix . 'setLinkSelection(value){
 		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', ($this->View->Model->IsFolder ? '[we_new_folder_after_save]' : '[we_new_entry_after_save]')), false, "defaultfont", ""));
 
 		return $this->getHTMLDocument(
-				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .
 				we_html_element::jsElement('
 					function we_save() {
 						' . $this->topFrame . '.makeNewDoc = document.we_form.makeNewDoc.checked;

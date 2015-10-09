@@ -152,7 +152,6 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 $yuiSuggest = & weSuggest::getInstance();
 echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
  weSuggest::getYuiFiles() .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'doctypeEdit.js');
 ?>
 <script><!--

@@ -78,7 +78,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 }
 
 
-echo we_html_element::jsScript(JS_DIR . 'keyListener.js') . we_html_element::jsElement("
+echo we_html_element::jsElement("
 	var _nextCmd = null;
 	var _EditorFrame = top.opener.top.weEditorFrameController.getEditorFrame('" . $editorFrameId . "');
 	self.focus();

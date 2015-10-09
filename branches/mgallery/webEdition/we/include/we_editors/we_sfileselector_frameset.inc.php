@@ -153,8 +153,7 @@ if(($cmd4 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4))){
 	//-->
 </script>
 <?php
-echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-	STYLESHEET .
+echo STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'selectors.css') .
  we_html_element::cssElement('
 #fsfooter{
@@ -166,7 +165,7 @@ echo we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 </head>
 <body onload="setLookin();
 		top.fscmd.selectDir();" onunload="doUnload();">
-			<?php
+				<?php
 				$footerHeight = (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2) ? 60 : 90);
 				echo we_html_element::htmlDiv(array('id' => 'fsheader'), printHeaderHTML(($cmd1 ? 1 : 0))) .
 				we_html_element::htmlIFrame('fsbody', 'about:blank', 'position:absolute;top:73px;bottom:' . $footerHeight . 'px;left:0px;right:0px;', '', '', true) .

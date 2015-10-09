@@ -23,8 +23,7 @@
  */
 we_html_tools::protect();
 echo ((empty($GLOBALS['we_print_not_htmltop'])) ? we_html_tools::getHtmlTop() : '') .
- STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'attachKeyListener.js');
+ STYLESHEET;
 
 $mod = str_replace(array('.', '/', '\\'), '', we_base_request::_(we_base_request::STRING, "mod", (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "")));
 

@@ -221,7 +221,6 @@ function setTab(tab) {
 		);
 
 		return $this->getHTMLDocument(
-				we_html_element::jsScript(JS_DIR . "attachKeyListener.js") .
 				we_html_element::jsElement('
 function we_save() {
 	' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
@@ -323,10 +322,7 @@ function we_save() {
 	}
 
 	function getHTMLDocument($body, $head = ''){
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-				we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') .
-				$head, $body
-		);
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . $head, $body);
 	}
 
 	private function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $PathName = 'Path', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $disabled = false, $showtrash = false){

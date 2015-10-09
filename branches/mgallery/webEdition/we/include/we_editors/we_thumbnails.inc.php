@@ -347,7 +347,6 @@ var g_l={
 	thumbnail_new: "' . g_l('thumbnails', '[new]') . '"
 };
 	') .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsScript(JS_DIR . 'we_thumbnails.js') .
  STYLESHEET . '</head>';
 //  check if gd_lib is installed ...

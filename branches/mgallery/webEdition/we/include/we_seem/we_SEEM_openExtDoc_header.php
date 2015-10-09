@@ -38,6 +38,5 @@ $_table->setColContent(0, 1, we_html_element::htmlImg(array("src" => IMAGE_DIR .
 $_table->setCol(0, 1, array("class" => "middlefontred", 'style' => 'padding-left:9px;'), $_errormsg);
 
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js'), we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())
 );

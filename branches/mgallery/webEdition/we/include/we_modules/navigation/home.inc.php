@@ -24,8 +24,6 @@
 echo (!empty($GLOBALS["we_print_not_htmltop"]) ? we_html_tools::getHtmlTop() : '') .
  STYLESHEET;
 
-
-
 $_row = 0;
 $_starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
 $_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), g_l('navigation', '[navigation]'));

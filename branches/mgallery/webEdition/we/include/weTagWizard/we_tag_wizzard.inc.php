@@ -92,8 +92,7 @@ weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 	we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
 	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
-	we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-	we_html_element::jsScript(JS_DIR . 'attachKeyListener.js') . we_html_element::jsElement('
+	we_html_element::jsElement('
 var allAttributes = [' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . '];
 var reqAttributes = {' . implode(',', $jsReqAttributes) . '};
 

@@ -75,7 +75,6 @@ top.document.forms[0].elements.newpasswd2.select();';
 }
 
 echo STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('
 			function saveOnKeyBoard() {
 				document.forms[0].submit();

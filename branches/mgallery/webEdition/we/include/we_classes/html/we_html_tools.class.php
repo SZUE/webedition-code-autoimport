@@ -681,7 +681,6 @@ this.selectedIndex = 0;' .
 			we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
 			we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
 			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
-			we_html_element::jsScript(JS_DIR . 'attachKeyListener.js', '', array('defer' => 'defer')) .
 			we_html_element::jsScript(JS_DIR . 'windows.js', '', array('defer' => 'defer'));
 	}
 

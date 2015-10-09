@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_tabs{
-
 	private $container = '';
 
 	public function __construct(){
@@ -36,9 +35,8 @@ class we_tabs{
 
 	function getHeader(){
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-				we_html_element::cssLink(CSS_DIR . 'webEdition.css') .
-				we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
-				we_html_element::jsScript(JS_DIR . "attachKeyListener.js");
+			STYLESHEET .
+			we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js');
 	}
 
 	function getHTML(){

@@ -220,7 +220,6 @@ $_parts = array(
 );
 
 echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]')) .
- we_html_element::jsScript(JS_DIR . 'keyListener.js') .
  we_html_element::jsElement('function closeOnEscape() {
 		return true;
 	}
