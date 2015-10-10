@@ -1800,20 +1800,7 @@ function delElement(elvalues,elem) {
 		// Generate needed JS
 		$js = we_html_element::jsElement("
 function select_seem_start() {
-	myWind = false;
-
-	for(k=top.opener.top.jsWindow_count;k>-1;k--){
-
-		eval(\"if(top.opener.top.jsWindow\" + k + \"Object){\" +
-			 \"	if(top.opener.top.jsWindow\" + k + \"Object.ref == 'edit_module'){\" +
-			 \"		myWind = top.opener.top.jsWindow\" + k + \"Object.wind.content.editor.edbody;\" +
-			 \"		myWindStr = 'top.jsWindow\" + k + \"Object.wind.content.editor.edbody';\" +
-			 \"	}\" +
-			 \"}\");
-		if(myWind){
-			break;
-		}
-	}
+	myWindStr=\"top.jsWindow.prototype.find('preferences').wind\";
 
 	if(document.getElementById('seem_start_type').value == 'object') {
 		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, '" . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");

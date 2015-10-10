@@ -22,7 +22,7 @@
  */
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function setMultiSelectData(name, max) {

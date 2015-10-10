@@ -22,7 +22,7 @@
  */
 
 function shopCloseWindow(args) {
-	var wind = jsWindowFind('edit_module');
+	var wind = jsWindow.prototype.find('edit_module');
 	if (wind) {
 		wind.content.we_cmd(args[0]);
 		wind.focus();
@@ -82,14 +82,14 @@ function we_cmd_shop(args, url) {
 		case "revenue_view":
 		case "new_article":
 		case "delete_shop":
-			var wind = jsWindowFind('edit_module');
+			var wind = jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				wind.focus();
 			}
 			break;
 		case "exit_shop":
-			jsWindowClose('edit_module');
+			jsWindow.prototype.closeByName('edit_module');
 			break;
 		case "shop_insert_variant":
 		case "shop_move_variant_up":

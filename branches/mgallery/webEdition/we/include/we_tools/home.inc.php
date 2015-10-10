@@ -31,7 +31,7 @@ $_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3)
 $_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
 
 echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
- (isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "");
+ (!empty($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "");
 ?>
 
 </head>

@@ -71,7 +71,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 </script>
 </head>
 
-<body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="jsWindowCloseAll();">
+<body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="jsWindow.prototype.closeAll();">
 	<?php
 	$mode = we_base_request::_(we_base_request::STRING, 'mode');
 	if($mode === 're'){

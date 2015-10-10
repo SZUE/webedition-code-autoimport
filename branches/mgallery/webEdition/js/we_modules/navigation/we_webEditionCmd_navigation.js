@@ -34,7 +34,7 @@ function we_cmd_navigation(args, url) {
 		case "module_navigation_save":
 		case "module_navigation_delete":
 		case "module_navigation_reset_customer_filter":
-			var wind = jsWindowFind('edit_module');
+			var wind = jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				if (args[0] != "empty_log") {
@@ -43,7 +43,7 @@ function we_cmd_navigation(args, url) {
 			}
 			return true;
 		case "module_navigation_rules":
-			jsWindowFocus('edit_module');
+			jsWindow.prototype.focus('edit_module');
 			new jsWindow(top.WE().consts.dirs.WE_MODULES_DIR + "navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
 			return true;
 		case "module_navigation_edit_navi":

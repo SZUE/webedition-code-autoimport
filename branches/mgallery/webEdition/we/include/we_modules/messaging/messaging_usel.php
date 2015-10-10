@@ -261,7 +261,7 @@ if($maxsel){
 		}
 
 		function doUnload() {
-			jsWindowCloseAll();
+			jsWindow.prototype.closeAll();
 		}
 //-->
 </script>

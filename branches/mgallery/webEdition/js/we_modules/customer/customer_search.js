@@ -22,7 +22,7 @@
  */
 
 function doUnload() {
-	jsWindowCloseAll();s
+	jsWindow.prototype.closeAll();
 }
 
 

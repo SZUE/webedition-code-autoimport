@@ -156,7 +156,7 @@ class we_customer_EIWizard{
 		$js = we_html_element::jsElement('
 
 			function doUnload() {
-				jsWindowCloseAll();
+				jsWindow.prototype.closeAll();
 			}
 
 			function we_cmd(){
@@ -550,21 +550,18 @@ class we_customer_EIWizard{
 		$fileUploader->setDimensions(array('alertBoxWidth' => 430, 'marginTop' => 10));
 
 		$parts = array();
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsElement('
-					function switchImportFrom(obj){
-						if(obj.value === "local"){
-							WE().layout.button.disable(top.footer.document, "next_footer");
-						} else {
-							WE().layout.button.enable(top.footer.document, "next_footer");
-						}
-					}
+		$js = we_html_element::jsElement('
+function switchImportFrom(obj){
+	if(obj.value === "local"){
+		WE().layout.button.disable(top.footer.document, "next_footer");
+	} else {
+		WE().layout.button.enable(top.footer.document, "next_footer");
+	}
+}
 
-					function callBack(){
-						document.we_form.import_from[1].checked=true;
-					}
-				') . $fileUploader->getJs();
+function callBack(){
+	document.we_form.import_from[1].checked=true;
+}') . $fileUploader->getJs();
 		$css = STYLESHEET . $fileUploader->getCss();
 
 		$table = new we_html_table(array('class' => 'default withSpace'), 2, 2);
@@ -1457,9 +1454,7 @@ function doNext(){
 
 	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsElement('
+		$js = we_html_element::jsElement('
 function formFileChooser() {
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -1481,9 +1476,7 @@ function formFileChooser() {
 
 	function formDirChooser($width = "", $rootDirID = 0, $table = FILE_TABLE, $Pathname = "ParentPath", $Pathvalue = "", $IDName = "ParentID", $IDValue = "", $cmd = ""){
 
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsElement('
+		$js = we_html_element::jsElement('
 function formDirChooser() {
 	var args = "";
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
@@ -1525,9 +1518,7 @@ function formDirChooser() {
 				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
 		}
 		$customers = array_filter($customers);
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsElement('
+		$js = we_html_element::jsElement('
 function selector_cmd(){
 	var args = "";
 	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}

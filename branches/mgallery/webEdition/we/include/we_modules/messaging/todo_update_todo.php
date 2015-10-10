@@ -42,7 +42,7 @@ function do_confirm() {
 	}
 
 	function doUnload() {
-		jsWindowCloseAll();
+		jsWindow.prototype.closeAll();
 	}
 //-->
 </script>

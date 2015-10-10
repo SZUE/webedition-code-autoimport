@@ -208,7 +208,6 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 
 		$this->addJSFiles(array(
 			JS_DIR . 'windows.js',
-			JS_DIR . 'global.js',
 			LIB_DIR . 'additional/yui/yahoo-min.js',
 			LIB_DIR . 'additional/yui/event-min.js',
 			LIB_DIR . 'additional/yui/connection-min.js',
@@ -306,7 +305,7 @@ EOS;
 			}
 			$html .= "\t</style>\n";
 		}
-
+		$html.=we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 		// add javascript tags for external JavaScript files
 		foreach($this->_JSFiles as $file){
 			$html .= we_html_element::jsScript($file);

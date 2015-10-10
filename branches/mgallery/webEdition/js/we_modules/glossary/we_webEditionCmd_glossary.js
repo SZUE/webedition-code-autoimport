@@ -51,7 +51,7 @@ function we_cmd_glossary(args, url) {
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			break;
 		case "glossary_settings":
-			jsWindowFocus('edit_module');
+			jsWindow.prototype.focus('edit_module');
 			new jsWindow(url, "edit_glossary_settings", -1, -1, 490, 250, true, true, true, true);
 			break;
 		case "glossary_dictionaries":
@@ -60,7 +60,7 @@ function we_cmd_glossary(args, url) {
 		case ((args[0].substr(0, 15) == "GlossaryXYZnew_") ? args[0] : false):
 			tempargs = args[0].split("\XYZ");
 
-			var wind = jsWindowFind('edit_module');
+			var wind = jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(tempargs[1], tempargs[2]);
 				wind.focus();
@@ -75,7 +75,7 @@ function we_cmd_glossary(args, url) {
 		case "save_exception":
 		case "save_glossary":
 		case "delete_glossary":
-			var wind = jsWindowFind('edit_module');
+			var wind = jsWindow.prototype.find('edit_module');
 			if (wind) {
 				if (args[1] !== undefined) {
 					wind.content.we_cmd(args[0], args[1]);

@@ -25,7 +25,6 @@
 //TODO: make weModuleIconbar.class for all Iconbars and let weMessagingIconbar inherit from it
 
 class we_messaging_iconbar{
-
 	private $parentFrameset;
 	private $weTransaction;
 	private $viewclass;
@@ -63,9 +62,7 @@ class we_messaging_iconbar{
 	}
 
 	private function getJSCode(){
-		return we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
-			we_html_element::jsElement('
+		return we_html_element::jsElement('
 top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
 var transaction="' . $this->weTransaction . '";
 var g_l={
@@ -73,7 +70,7 @@ var g_l={
 	"q_rm_messages":"' . g_l('modules_messaging', '[q_rm_messages]') . '"
 };
 ') .
-				we_html_element::jsScript(WE_JS_MESSAGING_MODULE_DIR . 'messaging_iconbar.js');
+			we_html_element::jsScript(WE_JS_MESSAGING_MODULE_DIR . 'messaging_iconbar.js');
 	}
 
 	private function getHTMLBody(){

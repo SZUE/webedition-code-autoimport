@@ -67,7 +67,7 @@ var hot = 0;
 parent.document.title = "' . $title . '";
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd(){
@@ -162,7 +162,7 @@ var hot= 0;
 var scrollToVal=0;
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd() {
@@ -240,7 +240,7 @@ function we_cmd() {
 var loaded=0;
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd() {

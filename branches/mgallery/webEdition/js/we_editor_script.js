@@ -137,7 +137,7 @@ function we_submitForm(target, url) {
 }
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function updateCustomerFilterIfNeeded() {

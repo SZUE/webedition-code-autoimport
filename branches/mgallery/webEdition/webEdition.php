@@ -326,6 +326,7 @@ foreach(we_base_request::getAllTables() as $k => $v){
 		button:null,
 		sidebar:null,
 		cockpitFrame:null,
+		windows:[],
 	},
 	handler:{
 		errorHandler:errorHandler,

@@ -63,7 +63,7 @@ var hot= 0;
 var scrollToVal=0;
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd() {
@@ -125,7 +125,7 @@ function switchPage(page) {
 }
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd() {
@@ -149,20 +149,7 @@ function we_cmd() {
 			break;
 
 		case "select_seem_start":
-			myWind = false;
-
-			for (k = top.opener.top.jsWindow_count; k > -1; k--) {
-
-				eval("if(top.opener.top.jsWindow" + k + "Object){" +
-								"	if(top.opener.top.jsWindow" + k + "Object.ref == \'edit_module\'){" +
-								"		myWind = top.opener.top.jsWindow" + k + "Object.wind.content.editor.edbody;" +
-								"		myWindStr = \'top.jsWindow" + k + "Object.wind.content.editor.edbody\';" +
-								"	}" +
-								"}");
-				if (myWind) {
-					break;
-				}
-			}
+			myWindStr="top.jsWindow.prototype.find(\'preferences\').wind";
 
 			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, "' . FILE_TABLE . '", myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", "' . we_base_ContentTypes::WEDOCUMENT . '", 1);
 

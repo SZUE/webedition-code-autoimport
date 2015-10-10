@@ -27,7 +27,7 @@
 var hot = 0;
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function setHot() {

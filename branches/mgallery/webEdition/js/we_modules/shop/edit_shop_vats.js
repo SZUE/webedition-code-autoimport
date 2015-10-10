@@ -78,7 +78,7 @@ function changeFormSelect(theId, newVal) {
 }
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd() {

@@ -74,7 +74,7 @@ function usetHot() {
 	hot = 0;
 }
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 parent.document.title = "' . $title . '";
@@ -205,7 +205,7 @@ function we_cmd() {
 var loaded=0;
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd() {

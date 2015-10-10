@@ -129,7 +129,7 @@ var frames={
 	function getJSSettings(){
 		return '
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd(){

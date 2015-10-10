@@ -34,7 +34,7 @@ function we_cmd_tool_weSearch(args, url) {
 		case "tool_weSearch_delete":
 		case "tool_weSearch_save":
 		case "tool_weSearch_exit":
-			var wind = jsWindowFind('tool_window_weSearch');
+			var wind = jsWindow.prototype.find('tool_window_weSearch');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				wind.focus();

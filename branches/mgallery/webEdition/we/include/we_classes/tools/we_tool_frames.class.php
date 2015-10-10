@@ -86,7 +86,6 @@ abstract class we_tool_frames extends we_modules_frame{
 		$js = $this->getJSCmdCode() .
 			$this->Tree->getJSTreeCode() .
 			self::getJSToggleTreeCode($this->toolName) .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_main_headermenu::css();
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->getJSStart())

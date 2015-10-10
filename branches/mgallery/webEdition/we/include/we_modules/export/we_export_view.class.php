@@ -87,7 +87,7 @@ function usetHot() {
 }
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 parent.document.title = "' . $title . '";
@@ -249,7 +249,7 @@ var loaded=0;
 var table = "' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '";
 
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd() {

@@ -28,11 +28,11 @@ function we_cmd_banner(args, url) {
 			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "banner_default":
-			jsWindowFocus('edit_module');
+			jsWindow.prototype.focus('edit_module');
 			new jsWindow(url, "defaultbanner", -1, -1, 500, 220, true, false, true, true);
 			return true;
 		case "banner_code":
-			jsWindowFocus('edit_module');
+			jsWindow.prototype.focus('edit_module');
 			new jsWindow(url, "bannercode", -1, -1, 500, 420, true, true, true, false);
 			return true;
 		case "new_banner":
@@ -40,7 +40,7 @@ function we_cmd_banner(args, url) {
 		case "save_banner":
 		case "exit_banner":
 		case "delete_banner":
-			var wind = jsWindowFind('edit_module');
+			var wind = jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				if (args[0] != "empty_log") {

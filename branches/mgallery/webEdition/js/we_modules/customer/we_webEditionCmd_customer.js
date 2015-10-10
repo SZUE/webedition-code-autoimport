@@ -37,7 +37,7 @@ function we_cmd_customer(args, url) {
 		case "show_search":
 		case "import_customer":
 		case "export_customer":
-			var wind = jsWindowFind('edit_module');
+			var wind = jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				wind.focus();

@@ -215,7 +215,7 @@ function setTab(tab) {
 
 		$js = we_html_element::jsElement('
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
 
 function we_cmd() {
@@ -1537,9 +1537,7 @@ self.focus();
 				$fname = rtrim(we_base_request::_(we_base_request::FILE, "csv_dir", ''), '/') . '/blacklist_export_' . time() . '.csv';
 				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
-				$js.=we_html_element::jsScript(JS_DIR . "windows.js") .
-					we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
-					we_html_element::jsElement('new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
+				$js.= we_html_element::jsElement('new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
 				break;
 		}
 
@@ -1986,7 +1984,6 @@ function postSelectorSelect(wePssCmd) {
 						"lastname" => "",
 						"etyp" => "",
 						"eid" => "")) .
-
 					we_html_tools::htmlDialogLayout(
 						we_html_element::htmlDiv(array('style' => 'margin-top:10px;'), $this->formFileChooser(420, "csv_file", ($open_file ? : ($csv_file ? : "/")), "", "", 'readonly="readonly" onchange="alert(100)"'))
 						. '<br/>' . $out, g_l('modules_newsletter', '[select_file]'), $close . $edit, "100%", 30, 597)
@@ -2002,7 +1999,6 @@ function postSelectorSelect(wePssCmd) {
 		if(we_base_request::_(we_base_request::STRING, "ncmd") === "do_clear_log"){
 			$this->View->db->query('TRUNCATE TABLE ' . NEWSLETTER_LOG_TABLE);
 			return
-				we_html_element::jsScript(JS_DIR . "global.js", 'initWE();') .
 				we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[log_is_clear]'), we_message_reporting::WE_MESSAGE_NOTICE)
 					. 'self.close();'
@@ -2072,9 +2068,7 @@ function clearLog(){
 		}
 
 
-		$head = we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
-			we_html_element::jsElement('
+		$head = we_html_element::jsElement('
 function yes(){
 	doSend(' . $_offset . ',' . $_step . ');
 }

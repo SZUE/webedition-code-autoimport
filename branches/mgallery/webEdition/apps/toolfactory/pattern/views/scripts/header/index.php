@@ -31,6 +31,5 @@ $page->setBodyAttributes(array('class'=>'weMenuBody'));
 $page->addElement($table);
 
 // needed for menu !!
-$page->addJSFile(JS_DIR.'global.js');
 
 echo $page->getHTML();

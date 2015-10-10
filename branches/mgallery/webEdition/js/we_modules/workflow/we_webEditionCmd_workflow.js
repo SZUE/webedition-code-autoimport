@@ -41,7 +41,7 @@ function we_cmd_workflow(args, url) {
 		case "new_workflow":
 		case "delete_workflow":
 		case "empty_log":
-			var wind = jsWindowFind('edit_module');
+			var wind = jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				wind.focus();

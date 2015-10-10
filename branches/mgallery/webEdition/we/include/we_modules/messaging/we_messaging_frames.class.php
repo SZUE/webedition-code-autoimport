@@ -143,20 +143,19 @@ class we_messaging_frames extends we_modules_frame{
 
 	protected function getHTMLEditorHeader(){
 		$extraHead = we_html_element::jsElement('
-			function doSearch() {
-				top.content.cmd.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
-			}
+function doSearch() {
+	top.content.cmd.location = "' . $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
+}
 
-			function launchAdvanced() {
-				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_search_advanced.php?we_transaction=' . $this->transaction . '","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
-			}
+function launchAdvanced() {
+	new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_search_advanced.php?we_transaction=' . $this->transaction . '","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
+}
 
-			function clearSearch() {
-				document.we_messaging_search.messaging_search_keyword.value = "";
-				doSearch();
-			}
-		') . we_html_element::jsScript(JS_DIR . 'windows.js') .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
+function clearSearch() {
+	document.we_messaging_search.messaging_search_keyword.value = "";
+	doSearch();
+}
+');
 
 		$searchlabel = $this->viewclass === 'todo' ? '[search_todos]' : '[search_messages]';
 		$hidden = we_html_tools::hidden('we_transaction', $this->transaction);

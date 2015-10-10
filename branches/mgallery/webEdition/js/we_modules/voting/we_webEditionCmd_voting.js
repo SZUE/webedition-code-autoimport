@@ -32,7 +32,7 @@ function we_cmd_voting(args, url) {
 		case "save_voting":
 		case "exit_voting":
 		case "delete_voting":
-			var wind = jsWindowFind('edit_module');
+			var wind = jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				wind.focus();

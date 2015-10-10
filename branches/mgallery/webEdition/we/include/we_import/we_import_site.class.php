@@ -172,11 +172,9 @@ function displayTable() {
 	}
 }
 function doUnload() {
-	jsWindowCloseAll();
+	jsWindow.prototype.closeAll();
 }
-') .
-			we_html_element::jsScript(JS_DIR . 'windows.js').
-		we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
+');
 	}
 
 	/**

@@ -62,7 +62,6 @@ class we_navigation_frames extends we_modules_frame{
 	function getHTMLFrameset(){
 		$extraHead = $this->getJSCmdCode() .
 			$this->Tree->getJSTreeCode() .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_main_headermenu::css();
 
 		$tab = we_base_request::_(we_base_request::STRING, 'tab');

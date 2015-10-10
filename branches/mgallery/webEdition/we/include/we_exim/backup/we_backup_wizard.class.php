@@ -78,13 +78,13 @@ WE().consts.g_l.backupWizard={
 	todo_data:"' . g_l('backup', '[' . $mode . '_todo_data]') . '",
 	shop_data:"' . g_l('backup', '[' . $mode . '_shop_data]') . '",
 	unselect_dep2:"' . g_l('backup', '[unselect_dep2]') . '",
-	unselect_dep3:"'.g_l('backup', '[unselect_dep3]').'",
-	core_data:"'.g_l('backup', '[' . $mode . '_core_data]').'",
-	object_data:"'.g_l('backup', '[' . $mode . '_object_data]').'",
-	versions_data:"'.g_l('backup', '[' . $mode . '_versions_data]').'",
-	binary_data:"'.g_l('backup', '[' . $mode . '_binary_data]').'",
-	user_data:"'.g_l('backup', '[' . $mode . '_user_data]').'",
-	customer_data:"'.g_l('backup', '[' . $mode . '_customer_data]').'",
+	unselect_dep3:"' . g_l('backup', '[unselect_dep3]') . '",
+	core_data:"' . g_l('backup', '[' . $mode . '_core_data]') . '",
+	object_data:"' . g_l('backup', '[' . $mode . '_object_data]') . '",
+	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
+	binary_data:"' . g_l('backup', '[' . $mode . '_binary_data]') . '",
+	user_data:"' . g_l('backup', '[' . $mode . '_user_data]') . '",
+	customer_data:"' . g_l('backup', '[' . $mode . '_customer_data]') . '",
 };
 
 function doCheck(opt){
@@ -439,8 +439,6 @@ extra_files_desc=[];';
 
 
 		$js = we_html_element::jsElement($js) .
-			we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			(!we_fileupload_include::USE_LEGACY_FOR_BACKUP && isset($fileUploaderHead) ? $fileUploaderHead : '') .
 			self::getJSDep("import", $docheck, $doclick, $douncheck) .
 			we_html_element::jsElement('
@@ -703,9 +701,7 @@ self.focus();');
 
 
 		$mode = "export";
-		$js = we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			self::getJSDep("export", $docheck, $doclick) .
+		$js = self::getJSDep("export", $docheck, $doclick) .
 			we_html_element::jsElement('
 function startStep(){
 	self.focus();
@@ -1261,9 +1257,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 				$_SESSION['weS']['backup_delete'] = 1;
 				$_SESSION['weS']['delete_files_nok'] = array();
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('new jsWindow("' . WEBEDITION_DIR . 'delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
+				echo we_html_element::jsElement('new jsWindow("' . WEBEDITION_DIR . 'delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
 				break;
 			case "deletebackup":
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");

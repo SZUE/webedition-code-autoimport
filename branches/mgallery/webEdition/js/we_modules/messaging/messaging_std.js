@@ -156,5 +156,5 @@ function get_sel_elems(sel_box) {
 }
 
 function close_win(name) {
-	jsWindowClose(name);
+	jsWindow.prototype.closeByName(name);
 }
