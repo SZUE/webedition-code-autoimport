@@ -56,17 +56,23 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function initByHref($href, $target = '', $class = '', $param = '', $anchor = '', $lang = '', $hreflang = '', $title = '', $accesskey = '', $tabindex = '', $rel = '', $rev = ''){
 		if($href){
-			$this->args["href"] = $href;
-			list($type, $ref) = explode(':', $this->args['href']);
+			$this->args['href'] = $href;
+			$href = explode(':', $this->args['href']);
+			if(count($href) == 2){
+				list($type, $ref) = $href;
 			$type.=':';
+			} else {
+				$ref = '';
+				$type = we_base_link::TYPE_EXT;
+			}
 
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
-			if(($this->noInternals || (isset($this->args["outsideWE"]) && $this->args["outsideWE"] == 1)) && (
+			if(($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)) && (
 					$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
 					)
 			){
-				$this->args["href"] = $type = $ref = '';
+				$this->args['href'] = $type = $ref = '';
 			}
 
 			$this->args['mailsubject'] = $this->args['mailcc'] = $this->args['mailbcc'] = '';
@@ -226,7 +232,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 	function initByHttp(){
 		parent::initByHttp();
-		$href = $this->getHttpVar(we_base_request::RAW, 'href');
+		$href = $this->getHttpVar(we_base_request::URL, 'href');
 		$target = $this->getHttpVar(we_base_request::STRING, 'target');
 		$param = $this->getHttpVar(we_base_request::STRING, 'param');
 		$anchor = $this->getHttpVar(we_base_request::STRING, 'anchor');
