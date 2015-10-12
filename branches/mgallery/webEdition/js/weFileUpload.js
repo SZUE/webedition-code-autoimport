@@ -1984,7 +1984,9 @@ var weFileUpload = (function () {
 			this.doSubmit = false;
 
 			this.setEditorIsHot = function () {
-				WE().layout.weEditorFrameController.setEditorIsHot(true, WE().layout.weEditorFrameController.ActiveEditorFrameId);
+				if (_.uiClass !== 'we_fileupload_ui_wedoc') {
+					WE().layout.weEditorFrameController.setEditorIsHot(true, WE().layout.weEditorFrameController.ActiveEditorFrameId);
+				}
 			};
 		}
 
