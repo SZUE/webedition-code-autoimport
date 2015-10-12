@@ -64,22 +64,26 @@ class we_banner_view extends we_modules_view{
 		foreach(array_keys($this->banner->persistents) as $p){
 			if(!in_array($p, $this->pageFields[$this->page])){
 				$v = $this->banner->{$p};
-				$out.=we_html_element::htmlHidden($this->uid . '_'.$p, $v);
+				$out.=we_html_element::htmlHidden($this->uid . '_' . $p, $v);
 			}
 		}
 		return $out;
 	}
 
+	public function getHomeScreen(){
+		$GLOBALS['we_head_insert'] = $this->getJSProperty();
+		$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
+		$content = we_html_button::create_button("new_banner", "javascript:top.opener.top.we_cmd('new_banner');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER")) .
+			'<br/>' .
+			we_html_button::create_button("new_bannergroup", "javascript:top.opener.top.we_cmd('new_bannergroup');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_BANNER"));
+
+		return parent::getHomeScreen('banner', "banner.gif", $content);
+	}
+
 	function getProperties(){
 		$yuiSuggest = & weSuggest::getInstance();
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			$GLOBALS['we_head_insert'] = $this->getJSProperty();
-			$GLOBALS['we_body_insert'] = '<form name="we_form">';
-			$GLOBALS['we_body_insert'] .= $this->getHiddens() . '</form>';
-			$GLOBALS['mod'] = 'banner';
-			ob_start();
-			include(WE_MODULES_PATH . 'home.inc.php');
-			return ob_get_clean();
+			return $this->getHomeScreen();
 		}
 		$out = STYLESHEET . $this->getJSProperty() . weSuggest::getYuiFiles() . '
 				</head>
@@ -166,7 +170,7 @@ class we_banner_view extends we_modules_view{
 				$itsname = 'weBannerPlace';
 				$openText = g_l('weClass', '[moreProps]');
 				$closeText = g_l('weClass', '[lessProps]');
-				$wepos = weGetCookieVariable('but_'.$itsname);
+				$wepos = weGetCookieVariable('but_' . $itsname);
 				break;
 			case we_banner_banner::PAGE_STATISTICS:
 				$headline = g_l('tabs', '[module][statistics]');

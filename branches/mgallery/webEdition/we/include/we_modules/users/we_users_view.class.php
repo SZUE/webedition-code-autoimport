@@ -29,8 +29,8 @@ class we_users_view extends we_modules_view{
 
 	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
 		return
-				parent::getJSTop() .
-				we_html_element::jsElement('
+			parent::getJSTop() .
+			we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot= 0;
@@ -60,9 +60,9 @@ function we_cmd() {
 
 	function getJSProperty(){
 		return
-				parent::getJSProperty() .
-				weSuggest::getYuiFiles() .
-				we_html_element::jsElement('
+			parent::getJSProperty() .
+			weSuggest::getYuiFiles() .
+			we_html_element::jsElement('
 var loaded = 0;
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
@@ -234,10 +234,10 @@ function we_cmd() {
 			$_SESSION["user_session_data"] = $user_object;
 
 			echo we_html_element::jsElement('top.content.usetHot();' .
-					($user_object->Type == 1 ?
-							'top.content.cgroup=' . $user_object->ID . ';' :
-							'') .
-					'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
+				($user_object->Type == 1 ?
+					'top.content.cgroup=' . $user_object->ID . ';' :
+					'') .
+				'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
 		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody&oldtab=0";
 		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 		}
@@ -372,8 +372,8 @@ function we_cmd() {
 				return;
 			}
 			$foo = ($user_object->ID ?
-							getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
-							array('ParentID' => 0));
+					getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
+					array('ParentID' => 0));
 
 			$ret = $user_object->saveToDB();
 			$_SESSION['user_session_data'] = $user_object;
@@ -408,9 +408,9 @@ function we_cmd() {
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[user_path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 			} else {
 				$tree_code = ($id ?
-								'top.content.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
-								'top.content.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "folder" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
-						'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
+						'top.content.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
+						'top.content.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "folder" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
+					'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
 
 				switch($user_object->Type){
 					case we_users_user::TYPE_ALIAS:
@@ -507,9 +507,9 @@ function we_cmd() {
 			if($user_object->deleteMe()){
 				echo we_html_element::jsElement('
 		top.content.deleteEntry(' . $user_object->ID . ');
-		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR+"html/gray.html";
-		top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=mod_home&mod=users";
-		top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR+"html/gray.html";');
+		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
+		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody&home=1";
+		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";');
 				unset($_SESSION["user_session_data"]);
 			}
 		}
@@ -539,9 +539,9 @@ function we_cmd() {
 			}
 
 			echo we_html_element::jsElement(
-					($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
-							'top.content.we_cmd(\'display_user\',' . $uid . ')' :
-							we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)
+				($found || permissionhandler::hasPerm('ADMINISTRATOR') ?
+					'top.content.we_cmd(\'display_user\',' . $uid . ')' :
+					we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR)
 			));
 		}
 	}
@@ -574,6 +574,20 @@ function we_cmd() {
 		if(($page = we_base_request::_(we_base_request::INT, 'page')) !== false){
 			$this->page = $page;
 		}
+	}
+
+	public function getHomeScreen(){
+		$content = we_html_element::cssElement('
+	i.alias{
+	color:grey;
+	}
+button.weBtn{
+	padding-bottom:1em;
+}') . we_html_button::create_button("fat:create_user,fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_user');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) .
+			we_html_button::create_button("fat:create_group,fa-lg fa-users,fa-plus", "javascript:top.opener.top.we_cmd('new_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GROUP")) .
+			we_html_button::create_button("fat:create_alias,alias fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_alias');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_ALIAS"));
+
+		return parent::getHomeScreen('users', "user.gif", $content);
 	}
 
 }

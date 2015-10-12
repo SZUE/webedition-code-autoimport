@@ -26,7 +26,6 @@
 
 
 class we_modules_view implements we_modules_viewIF{
-
 	var $db;
 	var $frameset;
 	var $topFrame;
@@ -39,10 +38,10 @@ class we_modules_view implements we_modules_viewIF{
 
 	function getCommonHiddens($cmds = array()){
 		return we_html_element::htmlHiddens(array(
-					'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
-					'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
-					'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
-					'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
+				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
+				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
 		));
 	}
 
@@ -76,6 +75,36 @@ function submitForm() {
 
 	public function processVariables(){
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
+	}
+
+	public function getHomeScreen($mod, $icon, $content){
+		ob_start();
+		echo we_html_tools::getHtmlTop() .
+		STYLESHEET;
+
+		$modData = we_base_moduleInfo::getModuleData($mod);
+		$title = isset($modData['text']) ? $modData['text'] : '';
+
+		$_row = 0;
+		$_starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
+		$_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), $title);
+		$_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
+		$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
+
+		echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
+		(isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "");
+		?>
+		</head>
+
+		<body bgcolor="#F0EFF0" onload="loaded = 1;
+						var we_is_home = 1;">
+			<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
+			<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $icon; ?>" width="335" height="329" /></div>
+				<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
+		</body>
+		</html>
+		<?php
+		return ob_get_clean();
 	}
 
 }

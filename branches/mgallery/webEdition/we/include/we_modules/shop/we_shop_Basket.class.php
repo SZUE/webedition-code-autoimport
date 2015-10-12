@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_Basket{
-
 	//FIXME: this is set back to public due to some shop restrictions, see #6530, #6954
 	/**
 	 * 	this array contains all shopping items
@@ -206,7 +205,7 @@ class we_shop_Basket{
 				}
 
 				$Record['WE_PATH'] = $Record['wedoc_Path'] . ($variant ? '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant : '');
-				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id), '', $DB_WE);
+				$Record['WE_TEXT'] = f('SELECT Text FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id) . ' LIMIT 1', '', $DB_WE);
 				$Record['WE_VARIANT'] = $variant;
 				$Record['WE_ID'] = intval($id);
 

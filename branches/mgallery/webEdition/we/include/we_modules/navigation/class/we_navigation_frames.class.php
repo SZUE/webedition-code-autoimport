@@ -203,14 +203,7 @@ function setTab(tab) {
 		$hiddens = array('cmd' => 'tool_' . $this->module . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			$hiddens['cmd'] = 'home';
-			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
-			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', '0'));
-			$tool = $GLOBALS['tool'] = $this->module;
-			ob_start();
-			include($_SERVER['DOCUMENT_ROOT'] . $this->toolUrl . 'home.inc.php');
-
-			return ob_get_clean();
+			return $this->View->getHomeScreen();
 		}
 
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onload' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .

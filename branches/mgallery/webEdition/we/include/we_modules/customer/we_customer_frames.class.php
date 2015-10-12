@@ -175,13 +175,7 @@ function setTab(tab) {
 		$hiddens = array('cmd' => 'customer_edit', 'pnt' => 'edbody', 'activ_sort' => 0);
 
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			$hiddens['cmd'] = 'home';
-			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
-			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0));
-			$GLOBALS['mod'] = 'customer';
-			ob_start();
-			include(WE_MODULES_PATH . 'home.inc.php');
-			return ob_get_clean();
+			return $this->View->getHomeScreen();
 		}
 
 		$branch = we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'));

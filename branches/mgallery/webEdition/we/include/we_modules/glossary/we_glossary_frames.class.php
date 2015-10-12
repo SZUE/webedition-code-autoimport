@@ -46,6 +46,7 @@ class we_glossary_frames extends we_modules_frame{
 
 	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
+			//FIXME: remove
 			return we_glossary_frameEditorHome::Header($this);
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
@@ -71,7 +72,7 @@ class we_glossary_frames extends we_modules_frame{
 
 	protected function getHTMLEditorBody(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return we_glossary_frameEditorHome::Body($this);
+			return $this->View->getHomeScreen();
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		if($cmdid && !is_numeric($cmdid)){

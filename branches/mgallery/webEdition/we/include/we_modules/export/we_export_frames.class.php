@@ -119,14 +119,7 @@ function setTab(tab) {
 		$hiddens = array('cmd' => 'export_edit', 'pnt' => 'edbody');
 
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			$hiddens["cmd"] = "home";
-			$GLOBALS["we_head_insert"] = $this->View->getJSProperty();
-			$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
-			);
-			$GLOBALS["mod"] = "export";
-			ob_start();
-			include(WE_MODULES_PATH . 'home.inc.php');
-			return ob_get_clean();
+			return $this->View->getHomeScreen();
 		}
 		$yuiSuggest = & weSuggest::getInstance();
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;" . $this->getJSStart(), "onunload" => "doUnload()"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
