@@ -243,6 +243,11 @@ class we_dialog_image extends we_dialog_base{
 			array('importToID', 'text')
 		));
 		$this->weFileupload->setEditorProperties(array('isLayoutSmall' => true));
+		$this->weFileupload->setEditorJS(array(
+			'writebackTarget' => '',
+			'customCallback' => '',
+			'predefinedCallback' => 'imagedialog'
+		));
 	}
 
 	/* use parent
@@ -254,7 +259,7 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	function getHeaderHTML($printJS_Style = false){
-		return parent::getHeaderHTML($printJS_Style, $this->weFileupload->getJs() . $this->weFileupload->getCss());
+		return parent::getHeaderHTML($printJS_Style, $this->weFileupload->getJs() . $this->weFileupload->getEditorJs() . $this->weFileupload->getCss());
 	}
 
 	function getDialogContentHTML(){
@@ -504,19 +509,7 @@ class we_dialog_image extends we_dialog_base{
 
 		') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
-			weSuggest::getYuiFiles() . we_html_element::jsElement('
-			function doOnImportSuccess(doc){
-				alert("import done: " + doc.path + " (id: " + doc.id + ")");
-				we_FileUpload.reset();
-				document.we_form.elements["radio_type"][0].checked=true;
-				document.getElementById("imageInt").style.display="block";
-				document.getElementById("imageExt").style.display="none";
-				document.getElementById("imageUpload").style.display="none";
-				document.getElementById("yuiAcResultImage").value = doc.id;
-				document.getElementById("yuiAcInputImage").value = doc.path;
-				imageChanged();
-			}
-		');
+			weSuggest::getYuiFiles();
 	}
 
 }

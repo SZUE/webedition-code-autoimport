@@ -71,6 +71,7 @@ var weFileUpload = (function () {
 		_.fieldName = '';
 		_.genericFilename = '';
 		_.fileuploadType = 'abstract';
+		_.uiClass = 'we_fileupload_ui_base';
 		_.isLegacyMode = false;
 
 		_.init_abstract = function (conf) {
@@ -93,13 +94,13 @@ var weFileUpload = (function () {
 			if (typeof conf !== 'undefined') {
 				s.typeCondition = conf.typeCondition || s.typeCondition;
 				_.fieldName = conf.fieldName || _.fieldName;
+				_.uiClass = conf.uiClass || _.uiClass;
 				_.genericFilename = conf.genericFilename || _.genericFilename;
 				_.isLegacyMode = !_.utils.checkBrowserCompatibility() || conf.isLegacyMode;
 				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
 				c.isPreset = conf.isPreset || c.isPreset;
 				s.chunkSize = typeof conf.chunkSize !== 'undefined' ? (conf.chunkSize * 1024) : s.chunkSize;
 				s.callback = conf.callback || s.callback;
-				s.location = conf.location || s.location;
 				s.responseClass = conf.responseClass || s.responseClass;
 				s.dialogCallback = conf.callback || s.dialogCallback;
 				s.maxUploadSize = typeof conf.maxUploadSize !== 'undefined' ? conf.maxUploadSize : s.maxUploadSize;
@@ -517,7 +518,6 @@ var weFileUpload = (function () {
 			this.callback = function () {
 				document.forms[0].submit();
 			};
-			this.location = '';
 			this.dialogCallback = null;
 			this.isUploading = false;
 			this.isCancelled = false;
@@ -1433,9 +1433,9 @@ var weFileUpload = (function () {
 		function Utils() {
 			this.makeLegacy = function () {
 				var fs = _.view.elems.fileSelect,
-								fsLegacy = document.getElementById(_.fieldName + '_legacy'),
-								alertbox = document.getElementById(_.fieldName + '_alert'),
-								alertboxLegacy = document.getElementById(_.fieldName + '_alert_legacy');
+					fsLegacy = document.getElementById(_.fieldName + '_legacy'),
+					alertbox = document.getElementById(_.fieldName + '_alert'),
+					alertboxLegacy = document.getElementById(_.fieldName + '_alert_legacy');
 
 				fs.id = fs.name = _.fieldName + '_alt';
 				fsLegacy.id = fsLegacy.name = _.fieldName;
@@ -1999,7 +1999,7 @@ var weFileUpload = (function () {
 
 			this.postProcess = function (resp) {
 				_.sender.preparedFiles = [];
-				if (this.location === 'dialog') {
+				if (_.uiClass !== 'we_fileupload_ui_wedoc') {
 					var cur = this.currentFile;
 
 					this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
@@ -2256,7 +2256,7 @@ var weFileUpload = (function () {
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						_.controller.setWeButtonState('reset_btn', false);
 						this.setDisplay('fileInputWrapper', 'none');
-						if (_.sender.location !== 'dialog') {
+						if (_.uiClass === 'we_fileupload_ui_wedoc') {
 							this.setDisplay('divBtnReset', 'none');
 						}
 						this.setDisplay('divBtnUpload', 'none');

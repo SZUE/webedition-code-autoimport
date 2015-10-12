@@ -35,17 +35,15 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected $contentType;
 	protected $extension;
 
-	public function __construct($contentType = '', $extension = '', $layout = 'vertical'){
+	public function __construct($contentType = '', $extension = ''){
 		parent::__construct('we_File');
 
 		$this->contentType = $contentType;
 		$this->responseClass = 'we_fileupload_resp_import';
 		$type = 'binDoc';
-		$location = $layout === 'vertical' ? 'dialog' : 'we_doc';
 		$this->layout = $layout === 'horizontal' ? $layout : $this->layout;
 		$this->callback = '';
 		$this->type = 'binDoc';
-		$this->location = $location;
 		$this->extension = $extension;
 		$this->setInternalProgress(array('isInternalProgress' => true));
 		$this->internalProgress['width'] = 170;

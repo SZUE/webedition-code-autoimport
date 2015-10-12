@@ -366,9 +366,9 @@ doDropFromInside = function(text){
 			we_html_element::jsElement('
 we_FileUpload = new weFileUpload("' . $this->type . '");
 we_FileUpload.init({
+	uiClass : "' . get_class($this) . '",
 	fieldName : "' . $this->name . '",
 	genericFilename : ' . json_encode($this->genericFilename) . ',
-	location : "' . ($this->layout === 'vertical' ? 'dialog' : 'we_doc') . '",
 	form : ' . json_encode($this->form) . ',
 	footerName : "' . $this->footerName . '",
 	uploadBtnName : "' . $this->externalUiElements['btnUploadName'] . '",
