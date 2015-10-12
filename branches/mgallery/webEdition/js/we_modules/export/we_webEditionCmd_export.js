@@ -32,7 +32,7 @@ function we_cmd_export(args, url) {
 		case "delete_export":
 		case "exit_export":
 		case "start_export":
-			var wind = jsWindow.prototype.find('edit_module');
+			var wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				wind.focus();

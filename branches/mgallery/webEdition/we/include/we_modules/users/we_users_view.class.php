@@ -37,7 +37,7 @@ var hot= 0;
 var scrollToVal=0;
 
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -99,7 +99,7 @@ function switchPage(page) {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -123,7 +123,7 @@ function we_cmd() {
 			break;
 
 		case "select_seem_start":
-			myWindStr="top.jsWindow.prototype.find(\'preferences\').wind";
+			myWindStr="WE().util.jsWindow.prototype.find(\'preferences\').wind";
 
 			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, "' . FILE_TABLE . '", myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", "' . we_base_ContentTypes::WEDOCUMENT . '", 1);
 

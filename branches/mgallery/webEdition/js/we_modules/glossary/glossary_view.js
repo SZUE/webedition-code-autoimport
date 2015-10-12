@@ -28,7 +28,7 @@ var get_focus = 1;
 var activ_tab = 1;
 var scrollToVal = 0;
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 

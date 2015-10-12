@@ -118,7 +118,7 @@ function we_cmd_users(args, url) {
 }
 
 function showNewWindow(args) {
-	var wind = jsWindow.prototype.find('edit_module');
+	var wind = WE().util.jsWindow.prototype.find('edit_module');
 	if (wind) {
 		wind.content.we_cmd(args[0]);
 		wind.focus();

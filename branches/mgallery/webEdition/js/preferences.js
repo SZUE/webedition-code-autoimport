@@ -491,12 +491,12 @@ function show_seem_chooser(val) {
 
 function selectSidebarDoc() {
 //	myWind = parent.opener.top.jsWindow.prototype.find('preferences');
-	myWindStr = "top.jsWindow.prototype.find('preferences').wind";
+	myWindStr = "WE().util.jsWindow.prototype.find('preferences').wind";
 	parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, WE().util.hasPerm("CAN_SELECT_OTHER_USERS_FILES"));
 }
 
 function select_seem_start() {
-	myWindStr = "top.jsWindow.prototype.find('preferences').wind";
+	myWindStr = "WE().util.jsWindow.prototype.find('preferences').wind";
 	if (document.getElementById('seem_start_type').value == 'object') {
 //FIXME frames['content'] will probably not work here
 		if (WE().consts.tables.OBJECT_FILES_TABLE) {

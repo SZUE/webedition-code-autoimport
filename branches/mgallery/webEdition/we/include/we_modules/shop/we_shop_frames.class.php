@@ -72,7 +72,7 @@ var hot = 0;
 parent.document.title = "' . $title . '";
 
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd(){
@@ -172,7 +172,7 @@ function we_cmd(){
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
 		$extraHead = we_html_element::jsElement('
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {

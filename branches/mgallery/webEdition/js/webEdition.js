@@ -435,7 +435,7 @@ function doUnloadSEEM(whichWindow) {
 		top.edit_include.close();
 	}
 	try {
-		jsWindow.prototype.closeAll();
+		WE().util.jsWindow.prototype.closeAll();
 		if (browserwind) {
 			browserwind.close();
 		}
@@ -473,7 +473,7 @@ function doUnloadNormal(whichWindow) {
 		}
 
 		try {
-			jsWindow.prototype.closeAll();
+			WE().util.jsWindow.prototype.closeAll();
 			if (browserwind) {
 				browserwind.close();
 			}
@@ -538,7 +538,7 @@ function we_openMediaReference(id) {
 function we_cmd_base(args, url) {
 	switch (args[0]) {
 		case "exit_modules":
-			jsWindow.prototype.closeByName('edit_module');
+			WE().util.jsWindow.prototype.closeByName('edit_module');
 			break;
 		case "openFirstStepsWizardMasterTemplate":
 		case "openFirstStepsWizardDetailTemplates":
@@ -699,26 +699,26 @@ function we_cmd_base(args, url) {
 			alert("Es gibt noch keine URL für die Snippets Seite");
 			break;
 		case "help_modules":
-			jsWindow.prototype.focus('edit_module');
+			WE().util.jsWindow.prototype.focus('edit_module');
 			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
 			new (WE().util.jsWindow)(top.window, url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_modules":
-			jsWindow.prototype.focus('edit_module');
+			WE().util.jsWindow.prototype.focus('edit_module');
 			url = "/webEdition/we_cmd.php?we_cmd[0]=info";
 			new (WE().util.jsWindow)(top.window, url, "info", -1, -1, 432, 350, true, false, true);
 			break;
 		case "help_tools":
-			jsWindow.prototype.focus('tool_window') ||
-							jsWindow.prototype.focus('tool_window_navigation') ||
-							jsWindow.prototype.focus('tool_window_weSearch');
+			WE().util.jsWindow.prototype.focus('tool_window') ||
+							WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
+							WE().util.jsWindow.prototype.focus('tool_window_weSearch');
 			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
 			new (WE().util.jsWindow)(top.window, url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_tools":
-			jsWindow.prototype.focus('tool_window') ||
-							jsWindow.prototype.focus('tool_window_navigation') ||
-							jsWindow.prototype.focus('tool_window_weSearch');
+			WE().util.jsWindow.prototype.focus('tool_window') ||
+							WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
+							WE().util.jsWindow.prototype.focus('tool_window_weSearch');
 			url = "/webEdition/we_cmd.php?we_cmd[0]=info";
 			new (WE().util.jsWindow)(top.window, url, "info", -1, -1, 432, 350, true, false, true);
 			break;

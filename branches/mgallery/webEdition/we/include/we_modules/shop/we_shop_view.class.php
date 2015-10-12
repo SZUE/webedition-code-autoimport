@@ -42,7 +42,7 @@ var hot= 0;
 var scrollToVal=0;
 
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -120,7 +120,7 @@ function we_cmd() {
 var loaded=0;
 
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {

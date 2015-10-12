@@ -172,7 +172,7 @@ function displayTable() {
 	}
 }
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 ');
 	}

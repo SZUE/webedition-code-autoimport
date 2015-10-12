@@ -64,7 +64,7 @@ function we_submitForm(target, url) {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 	opener.top.dc_win_open = false;
 }
 

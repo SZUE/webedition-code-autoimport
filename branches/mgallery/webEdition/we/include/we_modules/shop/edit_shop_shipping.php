@@ -79,7 +79,7 @@ function IsDigit(e) {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd(){

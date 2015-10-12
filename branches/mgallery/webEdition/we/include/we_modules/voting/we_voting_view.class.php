@@ -69,7 +69,7 @@ function usetHot() {
 	hot = 0;
 }
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 parent.document.title = "' . $title . '";
@@ -200,7 +200,7 @@ function we_cmd() {
 var loaded=0;
 
 function doUnload() {
-	jsWindow.prototype.closeAll(window);
+	WE().util.jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {

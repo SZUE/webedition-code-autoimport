@@ -22,7 +22,7 @@
  */
 
 function shopCloseWindow(args) {
-	var wind = jsWindow.prototype.find('edit_module');
+	var wind = WE().util.jsWindow.prototype.find('edit_module');
 	if (wind) {
 		wind.content.we_cmd(args[0]);
 		wind.focus();
@@ -82,7 +82,7 @@ function we_cmd_shop(args, url) {
 		case "revenue_view":
 		case "new_article":
 		case "delete_shop":
-			var wind = jsWindow.prototype.find('edit_module');
+			var wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
 				wind.focus();
