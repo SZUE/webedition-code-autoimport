@@ -1216,9 +1216,10 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			editorLevel = "inline";
 			weEditorFrame = _EditorFrame;
 		} else {
-			if(top.opener !== null && top.opener.top.weEditorFrameController !== undefined && top.isWeDialog === undefined){
+		//FIXME: check if WE().layout.weEditorFrameController cannot be used
+			if(top.opener !== null && top.opener.top.WebEdition.layout.weEditorFrameController !== undefined && top.isWeDialog === undefined){
 				editorLevel = "popup";
-				weEditorFrame = top.opener.top.weEditorFrameController;
+				weEditorFrame = top.opener.top.WebEdition.layout.weEditorFrameController;
 			} else {
 				editorLevel = "fullscreen";
 				weEditorFrame = null;

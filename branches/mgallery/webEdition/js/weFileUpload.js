@@ -172,9 +172,9 @@ var weFileUpload = (function () {
 			this.fileselectOnclick = function () {
 			};
 
-			this.checkIsPresetFiles = function(){
+			this.checkIsPresetFiles = function () {
 
-				if(_.controller.isPreset && WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload){
+				if (_.controller.isPreset && WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload) {
 					_.controller.fileSelectHandler(null, true, WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload);
 				}
 
@@ -186,7 +186,7 @@ var weFileUpload = (function () {
 				files = _.controller.selectedFiles = isPreset ? (presetFileupload.length ? presetFileupload : files) : (e.target.files || e.dataTransfer.files);
 
 				if (files.length) {
-					if(!isPreset){
+					if (!isPreset) {
 						_.sender.resetParams();
 						if (e.type === 'drop') {
 							e.stopPropagation();
@@ -198,14 +198,14 @@ var weFileUpload = (function () {
 					_.controller.fileselectOnclick();
 
 					_.sender.imageFilesNotProcessed = [];
-					for(var f, i = 0; i < files.length; i++){
-						if(!_.utils.contains(_.sender.preparedFiles, _.controller.selectedFiles[i])){
+					for (var f, i = 0; i < files.length; i++) {
+						if (!_.utils.contains(_.sender.preparedFiles, _.controller.selectedFiles[i])) {
 							f = _.controller.prepareFile(_.controller.selectedFiles[i]);
 							_.sender.preparedFiles.push(f);
 							_.view.addFile(f, _.sender.preparedFiles.length);
 						}
 					}
-					if(_.sender.EDIT_IMAGES_CLIENTSIDE){
+					if (_.sender.EDIT_IMAGES_CLIENTSIDE) {
 						_.controller.processImages();
 					}
 				}
@@ -213,27 +213,27 @@ var weFileUpload = (function () {
 
 			this.prepareFile = function (f, isUploadable) {
 				var fileObj = {
-						file: f,
-						fileNum: 0,
-						dataArray: null,
-						currentPos: 0,
-						partNum: 0,
-						currentWeightFile: 0,
-						mimePHP: 'none',
-						fileNameTemp: ''
-					},
-					transformables = ['image/jpeg', 'image/gif', 'image/png'],//TODO: add all transformable types
-					//TODO: make this OK-stuff more concise
-					type = f.type ? f.type : 'text/plain',
-					u = isUploadable || true,
-					isTypeOk = _.utils.checkFileType(type, f.name),
-					isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false,
-					errorMsg = [
-						_.utils.gl.errorNoFileSelected,
-						_.utils.gl.errorFileSize,
-						_.utils.gl.errorFileType,
-						_.utils.gl.errorFileSizeType
-					];
+					file: f,
+					fileNum: 0,
+					dataArray: null,
+					currentPos: 0,
+					partNum: 0,
+					currentWeightFile: 0,
+					mimePHP: 'none',
+					fileNameTemp: ''
+				},
+				transformables = ['image/jpeg', 'image/gif', 'image/png'], //TODO: add all transformable types
+								//TODO: make this OK-stuff more concise
+								type = f.type ? f.type : 'text/plain',
+								u = isUploadable || true,
+								isTypeOk = _.utils.checkFileType(type, f.name),
+								isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false,
+								errorMsg = [
+									_.utils.gl.errorNoFileSelected,
+									_.utils.gl.errorFileSize,
+									_.utils.gl.errorFileType,
+									_.utils.gl.errorFileSizeType
+								];
 
 				fileObj.type = type;
 				fileObj.isUploadable = isTypeOk && isSizeOk && u; //maybe replace uploadConditionOk by this
@@ -245,20 +245,20 @@ var weFileUpload = (function () {
 				fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
 				fileObj.lastChunkSize = f.size % _.sender.chunkSize;
 
-				if(transformables.indexOf(f.type) !== -1) {
+				if (transformables.indexOf(f.type) !== -1) {
 					_.sender.imageFilesNotProcessed.push(fileObj);
 				}
 
 				return fileObj;
 			};
 
-			this.processImages = function (){
+			this.processImages = function () {
 				_.view.setImageEditMessage();
 				_.controller.processNextImage();
 			};
 
 			this.processNextImage = function () {
-				if(_.sender.imageFilesNotProcessed.length === 0){
+				if (_.sender.imageFilesNotProcessed.length === 0) {
 					// unlock GUI
 					_.view.unsetImageEditMessage();
 					return;
@@ -267,7 +267,7 @@ var weFileUpload = (function () {
 				_.view.repaintImageEditMessage();
 
 				var fileObj = _.sender.imageFilesNotProcessed.shift(),
-					transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types;
+								transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types;
 
 				if (transformables.indexOf(fileObj.type) !== -1) {
 					fileObj.exif = {};
@@ -293,19 +293,19 @@ var weFileUpload = (function () {
 						var innerReader = new FileReader();
 						innerReader.onloadend = function () {
 							var tempImg = new Image(),
-								ratio = 1;
+											ratio = 1;
 
 							tempImg.src = innerReader.result;
 							tempImg.onload = function () {
 								var canvas = document.createElement('canvas'),
-									ctx = canvas.getContext("2d"),
-									deg = _.sender.transformAll.degrees,
-									x = 0, y = 0,
-									transformedCanvas;
+												ctx = canvas.getContext("2d"),
+												deg = _.sender.transformAll.degrees,
+												x = 0, y = 0,
+												transformedCanvas;
 
-								if(_.sender.transformAll.width){
+								if (_.sender.transformAll.width) {
 									ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
-								} else if(_.sender.transformAll.height){
+								} else if (_.sender.transformAll.height) {
 									ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
 								} else {
 									ratio = 1;
@@ -313,8 +313,8 @@ var weFileUpload = (function () {
 								ratio = ratio > 0 && ratio < 1 ? ratio : 1;
 
 								// correct landscape using exif data
-								if(fileObj.exif.Orientation && fileObj.exif.Orientation.value !== 1){
-									switch(fileObj.exif.Orientation.value) {
+								if (fileObj.exif.Orientation && fileObj.exif.Orientation.value !== 1) {
+									switch (fileObj.exif.Orientation.value) {
 										case 3:
 											deg += 180;
 											break;
@@ -329,7 +329,7 @@ var weFileUpload = (function () {
 								}
 								deg = deg > 360 ? deg - 360 : deg;
 
-								if(_.sender.transformAll.doTrans || deg !== 0){
+								if (_.sender.transformAll.doTrans || deg !== 0) {
 									canvas.width = tempImg.width;
 									canvas.height = tempImg.height;
 
@@ -365,7 +365,7 @@ var weFileUpload = (function () {
 								canvas = null;
 
 								fileObj.dataURL = transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.doTrans ? _.sender.transformAll.quality / 10 : 1);
-								if(_.sender.transformAll.doTrans || deg !== 0){
+								if (_.sender.transformAll.doTrans || deg !== 0) {
 									fileObj.dataArray = _.utils.dataURLToUInt8Array(fileObj.dataURL);
 									fileObj.size = fileObj.dataArray.length;
 								} else {
@@ -399,90 +399,90 @@ var weFileUpload = (function () {
 
 			//TODO: maybe reintegrate into fn processNextImage()
 			/*
-			this.transformImage = function(fileObj){
-				var reader = new FileReader();
-				reader.onloadend = function () {
-					var tempImg = new Image(),
-						ratio = 1;
+			 this.transformImage = function(fileObj){
+			 var reader = new FileReader();
+			 reader.onloadend = function () {
+			 var tempImg = new Image(),
+			 ratio = 1;
 
-					tempImg.src = reader.result;
-					tempImg.onload = function () {
-						var canvas = document.createElement('canvas'),
-							ctx = canvas.getContext("2d"),
-							deg = _.sender.transformAll.degrees,
-							x = 0, y = 0,
-							transformedCanvas, uInt8Array;
+			 tempImg.src = reader.result;
+			 tempImg.onload = function () {
+			 var canvas = document.createElement('canvas'),
+			 ctx = canvas.getContext("2d"),
+			 deg = _.sender.transformAll.degrees,
+			 x = 0, y = 0,
+			 transformedCanvas, uInt8Array;
 
-						if(_.sender.transformAll.width){
-							ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
-						} else if(_.sender.transformAll.height){
-							ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
-						}
-						ratio = ratio < 1 ? ratio : 1;
+			 if(_.sender.transformAll.width){
+			 ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
+			 } else if(_.sender.transformAll.height){
+			 ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
+			 }
+			 ratio = ratio < 1 ? ratio : 1;
 
-						canvas.width = tempImg.width;
-						canvas.height = tempImg.height;
+			 canvas.width = tempImg.width;
+			 canvas.height = tempImg.height;
 
-						// correct landscape using exif data
-						if(fileObj.exif.Orientation && fileObj.exif.Orientation.value !== 1){
-							switch(fileObj.exif.Orientation.value) {
-								case 3:
-									deg += 180;
-									break;
-								case 6:
-									deg += 270;
-									break;
-								case 8:
-									deg += 90;
-									break;
+			 // correct landscape using exif data
+			 if(fileObj.exif.Orientation && fileObj.exif.Orientation.value !== 1){
+			 switch(fileObj.exif.Orientation.value) {
+			 case 3:
+			 deg += 180;
+			 break;
+			 case 6:
+			 deg += 270;
+			 break;
+			 case 8:
+			 deg += 90;
+			 break;
 
-							}
-						}
-						deg = deg > 360 ? deg - 360 : deg;
+			 }
+			 }
+			 deg = deg > 360 ? deg - 360 : deg;
 
-						// prepare rotation
-						switch (deg) {
-							case 90:
-								canvas.width = tempImg.height;
-								canvas.height = tempImg.width;
-								x = -tempImg.width;
-								break;
-							case 270:
-								canvas.width = tempImg.height;
-								canvas.height = tempImg.width;
-								y = -tempImg.height;
-								break;
-							case 180:
-								x = -tempImg.width;
-								y = -tempImg.height;
-								break;
-							default:
-						}
-						ctx.rotate(-Math.PI * deg / 180);
-						ctx.drawImage(tempImg, x, y, tempImg.width, tempImg.height);
+			 // prepare rotation
+			 switch (deg) {
+			 case 90:
+			 canvas.width = tempImg.height;
+			 canvas.height = tempImg.width;
+			 x = -tempImg.width;
+			 break;
+			 case 270:
+			 canvas.width = tempImg.height;
+			 canvas.height = tempImg.width;
+			 y = -tempImg.height;
+			 break;
+			 case 180:
+			 x = -tempImg.width;
+			 y = -tempImg.height;
+			 break;
+			 default:
+			 }
+			 ctx.rotate(-Math.PI * deg / 180);
+			 ctx.drawImage(tempImg, x, y, tempImg.width, tempImg.height);
 
-						// var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
-						transformedCanvas = _.utils.downScaleCanvas(canvas, ratio);
-						canvas = null;
+			 // var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
+			 transformedCanvas = _.utils.downScaleCanvas(canvas, ratio);
+			 canvas = null;
 
-						fileObj.dataURL = transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.quality / 10);
-						fileObj.dataArray = _.utils.dataURLToUInt8Array(fileObj.dataURL);
-						fileObj.size = fileObj.dataArray.length;
-						fileObj.totalParts = Math.ceil(fileObj.size / _.sender.chunkSize);
-						fileObj.lastChunkSize = fileObj.size % _.sender.chunkSize;
-						//TODO: check the following flags again
-						fileObj.isUploadable = true;
-						fileObj.isTypeOk = true;
-						fileObj.isSizeOk = true;
-						fileObj.uploadConditionsOk = true;
+			 fileObj.dataURL = transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.quality / 10);
+			 fileObj.dataArray = _.utils.dataURLToUInt8Array(fileObj.dataURL);
+			 fileObj.size = fileObj.dataArray.length;
+			 fileObj.totalParts = Math.ceil(fileObj.size / _.sender.chunkSize);
+			 fileObj.lastChunkSize = fileObj.size % _.sender.chunkSize;
+			 //TODO: check the following flags again
+			 fileObj.isUploadable = true;
+			 fileObj.isTypeOk = true;
+			 fileObj.isSizeOk = true;
+			 fileObj.uploadConditionsOk = true;
 
-						_.view.repaintEntry(fileObj);
-						_.controller.processNextImage();
-					};
-				};
-				reader.readAsDataURL(fileObj.file);
-			};
-			*/
+			 _.view.repaintEntry(fileObj);
+			 _.controller.processNextImage();
+			 };
+			 };
+			 reader.readAsDataURL(fileObj.file);
+			 };
+			 */
 
 			this.fileDragHover = function (e) {
 				e.preventDefault();
@@ -495,7 +495,7 @@ var weFileUpload = (function () {
 				if (isFooter) {
 					top.WE().layout.button[enable ? 'enable' : 'disable'](_.view.elems.footer.document, btn);
 				} else {
-					top .WE().layout.button[enable ? 'enable' : 'disable'](document, btn);
+					top.WE().layout.button[enable ? 'enable' : 'disable'](document, btn);
 					if (btn === 'browse_harddisk_btn') {
 						top.WE().layout.button[enable ? 'enable' : 'disable'](document, 'browse_btn');
 					}
@@ -552,104 +552,104 @@ var weFileUpload = (function () {
 
 			//new client side image editing
 			/*
-			this.transformAndSendFile = function (cur) {
-				top.console.debug(this.transformAll);
-				var reader = new FileReader();
-				reader.onloadend = function () {
-					var tempImg = new Image(),
-						ratio = 1;
+			 this.transformAndSendFile = function (cur) {
+			 top.console.debug(this.transformAll);
+			 var reader = new FileReader();
+			 reader.onloadend = function () {
+			 var tempImg = new Image(),
+			 ratio = 1;
 
-					tempImg.src = reader.result;
-					tempImg.onload = function () {
-						if(_.sender.transformAll.width){
-							ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
-						} else if(_.sender.transformAll.height){
-							ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
-						}
-						ratio = ratio < 1 ? ratio : 1;
+			 tempImg.src = reader.result;
+			 tempImg.onload = function () {
+			 if(_.sender.transformAll.width){
+			 ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
+			 } else if(_.sender.transformAll.height){
+			 ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
+			 }
+			 ratio = ratio < 1 ? ratio : 1;
 
-						// var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
-						var canv = document.createElement('canvas');
-						canv.width = tempImg.width;
-						canv.height = tempImg.height;
-						canv.getContext('2d').drawImage(tempImg, 0, 0);
-						var resulting_canvas = _.utils.downScaleCanvas(canv, ratio);
-						var canvas = resulting_canvas;
+			 // var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
+			 var canv = document.createElement('canvas');
+			 canv.width = tempImg.width;
+			 canv.height = tempImg.height;
+			 canv.getContext('2d').drawImage(tempImg, 0, 0);
+			 var resulting_canvas = _.utils.downScaleCanvas(canv, ratio);
+			 var canvas = resulting_canvas;
 
-						// var 2: K3N @ http://stackoverflow.com/questions/17861447/html5-canvas-drawimage-how-to-apply-antialiasing
+			 // var 2: K3N @ http://stackoverflow.com/questions/17861447/html5-canvas-drawimage-how-to-apply-antialiasing
 
 
-						// var 3: simple resize + rotation
+			 // var 3: simple resize + rotation
 
-						var MAX_WIDTH = 600;
-						var MAX_HEIGHT = 600;
-						var tempW = tempImg.width;
-						var tempH = tempImg.height;
-						if (tempW > tempH) {
-							if (tempW > MAX_WIDTH) {
-								tempH *= MAX_WIDTH / tempW;
-								tempW = MAX_WIDTH;
-							}
-						} else {
-							if (tempH > MAX_HEIGHT) {
-								tempW *= MAX_HEIGHT / tempH;
-								tempH = MAX_HEIGHT;
-							}
-						}
+			 var MAX_WIDTH = 600;
+			 var MAX_HEIGHT = 600;
+			 var tempW = tempImg.width;
+			 var tempH = tempImg.height;
+			 if (tempW > tempH) {
+			 if (tempW > MAX_WIDTH) {
+			 tempH *= MAX_WIDTH / tempW;
+			 tempW = MAX_WIDTH;
+			 }
+			 } else {
+			 if (tempH > MAX_HEIGHT) {
+			 tempW *= MAX_HEIGHT / tempH;
+			 tempH = MAX_HEIGHT;
+			 }
+			 }
 
-						var canvas = document.createElement('canvas'),
-							ctx = canvas.getContext("2d"),
-							deg = 0,
-							x = 0, y = 0;
+			 var canvas = document.createElement('canvas'),
+			 ctx = canvas.getContext("2d"),
+			 deg = 0,
+			 x = 0, y = 0;
 
-						canvas.width = tempW;
-						canvas.height = tempH;
-						switch (deg) {
-							case 90:
-								canvas.width = tempH;
-								canvas.height = tempW;
-								x = -tempW;
-								break;
-							case 270:
-								canvas.width = tempH;
-								canvas.height = tempW;
-								y = -tempH;
-								break;
-							case 180:
-								x = -tempW;
-								y = -tempH;
-								break;
-							default:
-						}
-						ctx.rotate(-Math.PI * deg / 180);
-						ctx.drawImage(tempImg, x, y, tempW, tempH);
+			 canvas.width = tempW;
+			 canvas.height = tempH;
+			 switch (deg) {
+			 case 90:
+			 canvas.width = tempH;
+			 canvas.height = tempW;
+			 x = -tempW;
+			 break;
+			 case 270:
+			 canvas.width = tempH;
+			 canvas.height = tempW;
+			 y = -tempH;
+			 break;
+			 case 180:
+			 x = -tempW;
+			 y = -tempH;
+			 break;
+			 default:
+			 }
+			 ctx.rotate(-Math.PI * deg / 180);
+			 ctx.drawImage(tempImg, x, y, tempW, tempH);
 
-						canvas.toBlob(function (blob) {
-								var arrayBufferNew = null;
-								var fr = new FileReader();
-								fr.onload = function (e) {
-									arrayBufferNew = this.result;
-									cur.dataArray = new Uint8Array(arrayBufferNew);
-									_.sender.sendNextChunk(true);
+			 canvas.toBlob(function (blob) {
+			 var arrayBufferNew = null;
+			 var fr = new FileReader();
+			 fr.onload = function (e) {
+			 arrayBufferNew = this.result;
+			 cur.dataArray = new Uint8Array(arrayBufferNew);
+			 _.sender.sendNextChunk(true);
 
-								};
-								cur.size = blob.size;
-								//_.view.setInternalProgress(0);
-								cur.totalParts = Math.ceil(blob.size / _.sender.chunkSize);
-								cur.lastChunkSize = blob.size % _.sender.chunkSize;
-								fr.readAsArrayBuffer(blob);
-							}, "image/jpeg", 1.0
-						);
+			 };
+			 cur.size = blob.size;
+			 //_.view.setInternalProgress(0);
+			 cur.totalParts = Math.ceil(blob.size / _.sender.chunkSize);
+			 cur.lastChunkSize = blob.size % _.sender.chunkSize;
+			 fr.readAsArrayBuffer(blob);
+			 }, "image/jpeg", 1.0
+			 );
 
-					};
-				};
-				reader.readAsDataURL(cur.file);
-			};
-			*/
+			 };
+			 };
+			 reader.readAsDataURL(cur.file);
+			 };
+			 */
 
 			this.sendNextFile = function () {
 				var cur, fr = null, cnt,
-					that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+								that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
 
 				if (this.uploadFiles.length > 0) {
 					this.currentFile = cur = this.uploadFiles.shift();
@@ -707,15 +707,15 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-							blob,
-							cur.file.name,
-							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-							cur.partNum,
-							cur.totalParts,
-							cur.fileNameTemp,
-							cur.size
-							);
+										blob,
+										cur.file.name,
+										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+										cur.partNum,
+										cur.totalParts,
+										cur.fileNameTemp,
+										cur.size
+										);
 					}
 				} else {
 					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
@@ -724,9 +724,9 @@ var weFileUpload = (function () {
 
 			this.sendChunk = function (part, fileName, fileCt, partSize, partNum, totalParts, fileNameTemp, fileSize) {
 				var xhr = new XMLHttpRequest(),
-					fd = new FormData(),
-					fsize = fileSize || 1,
-					that = this;
+								fd = new FormData(),
+								fsize = fileSize || 1,
+								that = this;
 
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState === 4) {
@@ -759,19 +759,19 @@ var weFileUpload = (function () {
 			};
 
 			this.appendMoreData = function (fd) {
-				for(var i = 0; i < this.moreFieldsToAppend.length; i++){
-					if(document.we_form.elements[this.moreFieldsToAppend[i][0]]){
-						switch(this.moreFieldsToAppend[i][1]){
+				for (var i = 0; i < this.moreFieldsToAppend.length; i++) {
+					if (document.we_form.elements[this.moreFieldsToAppend[i][0]]) {
+						switch (this.moreFieldsToAppend[i][1]) {
 							case 'check':
 								fd.append(this.moreFieldsToAppend[i][0], ((document.we_form.elements[this.moreFieldsToAppend[i][0]].checked) ? 1 : 0));
 								break;
 							case 'multi_select':
 								var sel = document.we_form.elements[this.moreFieldsToAppend[i][0]],
-									opts = [], opt;
+												opts = [], opt;
 
-								for (var j=0, len=sel.options.length; j<len; j++) {
+								for (var j = 0, len = sel.options.length; j < len; j++) {
 									opt = sel.options[j];
-									if(opt.selected) {
+									if (opt.selected) {
 										opts.push(opt.value);
 									}
 								}
@@ -857,19 +857,19 @@ var weFileUpload = (function () {
 				html: ''
 			};
 
-			this.setImageEditMessage = function (){
+			this.setImageEditMessage = function () {
 			};
 
-			this.unsetImageEditMessage = function (){
+			this.unsetImageEditMessage = function () {
 			};
 
-			this.repaintImageEditMessage = function(){
+			this.repaintImageEditMessage = function () {
 			};
 
 			this.repaintGUI = function (arg) {
 			};
 
-			this.repaintEntry = function (obj){
+			this.repaintEntry = function (obj) {
 			};
 
 			//TODO: adapt these progress fns to standard progressbars
@@ -993,8 +993,9 @@ var weFileUpload = (function () {
 
 			/* GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
 			//TODO: try to scale width and height by different ratio
-			this.downScaleCanvas = function(cv, scale) {
-				if (!(scale < 1) || !(scale > 0)) throw ('scale must be a positive number <1 ');
+			this.downScaleCanvas = function (cv, scale) {
+				if (!(scale < 1) || !(scale > 0))
+					throw ('scale must be a positive number <1 ');
 				var sqScale = scale * scale; // square scale = area of source pixel within target
 				var sw = cv.width; // source image width
 				var sh = cv.height; // source image height
@@ -1010,7 +1011,7 @@ var weFileUpload = (function () {
 				var crossY = false; // does scaled px cross its current px bottom border ?
 				var sBuffer = cv.getContext('2d').getImageData(0, 0, sw, sh).data; // source buffer 8 bit rgba
 				var tBuffer = new Float32Array(4 * sw * sh); // target buffer Float32 rgb
-				var sR = 0, sG = 0,  sB = 0; // source's current point r,g,b
+				var sR = 0, sG = 0, sB = 0; // source's current point r,g,b
 				// untested !
 				var sA = 0;  //source alpha
 
@@ -1025,7 +1026,7 @@ var weFileUpload = (function () {
 					}
 					for (sx = 0; sx < sw; sx++, sIndex += 4) {
 						tx = sx * scale; // x src position within target
-						tX = 0 |  tx;    // rounded : target pixel's x
+						tX = 0 | tx;    // rounded : target pixel's x
 						tIndex = yIndex + tX * 4; // target pixel index within target array
 						crossX = (tX != (0 | tx + scale));
 						if (crossX) { // if pixel is crossing target pixel's right
@@ -1118,13 +1119,13 @@ var weFileUpload = (function () {
 				return resCV;
 			};
 
-			this.dataURLToUInt8Array = function(dataURL) {
+			this.dataURLToUInt8Array = function (dataURL) {
 				var BASE64_MARKER = ';base64,',
-					parts = dataURL.split(BASE64_MARKER),
-					//contentType = parts[0].split(':')[1],
-					raw = window.atob(parts[1]),
-					rawLength = raw.length,
-					uInt8Array = new Uint8Array(rawLength);
+								parts = dataURL.split(BASE64_MARKER),
+								//contentType = parts[0].split(':')[1],
+								raw = window.atob(parts[1]),
+								rawLength = raw.length,
+								uInt8Array = new Uint8Array(rawLength);
 
 				for (var i = 0; i < rawLength; ++i) {
 					uInt8Array[i] = raw.charCodeAt(i);
@@ -1246,20 +1247,20 @@ var weFileUpload = (function () {
 			this.totalWeight = 0;
 
 			/* use parent (abstract)
-			this.appendMoreData = function (fd) {
-				for(var i = 0; i < this.moreFieldsToAppend.length; i++){
-					if(document.we_form.elements[this.moreFieldsToAppend[i]]){
-						fd.append(this.moreFieldsToAppend[i], document.we_form.elements[this.moreFieldsToAppend[i]].value);
-					}
-				}
+			 this.appendMoreData = function (fd) {
+			 for(var i = 0; i < this.moreFieldsToAppend.length; i++){
+			 if(document.we_form.elements[this.moreFieldsToAppend[i]]){
+			 fd.append(this.moreFieldsToAppend[i], document.we_form.elements[this.moreFieldsToAppend[i]].value);
+			 }
+			 }
 
-				return fd;
-			};
-			*/
+			 return fd;
+			 };
+			 */
 
 			this.postProcess = function (resp) {
 				var that = _.sender,
-					cur = this.currentFile;
+								cur = this.currentFile;
 
 				this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
 				this.form.form.elements.weFileCt.value = cur.mimePHP;
@@ -1385,7 +1386,7 @@ var weFileUpload = (function () {
 						}
 						_.controller.setWeButtonState('reset_btn', false);
 						_.controller.setWeButtonState('browse_harddisk_btn', false);
-						if(this.isInternalBtnUpload){
+						if (this.isInternalBtnUpload) {
 							_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
 							this.setDisplay('btnResetUpload', 'none');
 							this.setDisplay('btnCancel', 'inline-block');
@@ -1417,7 +1418,7 @@ var weFileUpload = (function () {
 						}
 						_.controller.setWeButtonState('browse_harddisk_btn', true);
 						_.controller.setWeButtonState('reset_btn', false);
-						if(this.isInternalBtnUpload){
+						if (this.isInternalBtnUpload) {
 							_.controller.setWeButtonState(_.view.uploadBtnName, false, true);
 							this.setDisplay('btnResetUpload', 'inline-block');
 							this.setDisplay('btnCancel', 'none');
@@ -1601,7 +1602,7 @@ var weFileUpload = (function () {
 
 			this.appendMoreData = function (fd) {
 				var sf = document.we_startform,
-					cur = this.currentFile;
+								cur = this.currentFile;
 
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
@@ -1618,7 +1619,7 @@ var weFileUpload = (function () {
 
 				var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
 				if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts && this.isGdOk) {
-					if(!this.EDIT_IMAGES_CLIENTSIDE){
+					if (!this.EDIT_IMAGES_CLIENTSIDE) {
 						fd.append('width', sf.width.value);
 						fd.append('height', sf.height.value);
 						fd.append('widthSelect', sf.widthSelect.value);
@@ -1701,48 +1702,48 @@ var weFileUpload = (function () {
 				this.appendRow(f, _.sender.preparedFiles.length - 1);
 			};
 
-			this.repaintEntry = function (fileObj){
+			this.repaintEntry = function (fileObj) {
 				fileObj.entry.getElementsByClassName('weFileUploadEntry_size')[0].innerHTML = (fileObj.isSizeOk ? _.utils.computeSize(fileObj.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');//style.backgroundColor = 'orange';
 			};
 
-			this.setImageEditMessage = function (){
+			this.setImageEditMessage = function () {
 				document.getElementById('we_fileUpload_messageBg').style.display = 'block';
 				document.getElementById('we_fileUpload_message').style.display = 'block';
 
 				/* Popup-JS is blocked too
-				var l = window.screenX + 200,
-				t = window.screenY + 200, x = 17;
-				this.messageWindow = window.open('', 'popwin', "left = " + l + ", top = " + t + ", width = 320, height = 210,  toolbar = no, location = no, directories = no, status = no, menubar = no, scrollbars = no, resizable = no");
-				var content = "<!DOCTYPE html><html><head>";
-				content += "<title>Example</title>";
-				content += '<link href="/webEdition/lib/additional/fontawesome/css/font-awesome.min.css?e453b0856c5227f6105a807a734c492c" rel="styleSheet" type="text/css">';
-				content += "</head><body bgcolor=”#ccc”>";
-				content += "<p>Any HTML will work, just make sure to escape \"quotes\",";
-				content += 'or use single-quotes instead.</p>';
-				content += "<p>You can even pass parameters… (" + x + ")</p>";
-				content += '<span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>';
-				content += "</body></html>";
-				this.messageWindow.document.open();
-				this.messageWindow.document.write(content);
-				this.messageWindow.document.close();
-				*/
+				 var l = window.screenX + 200,
+				 t = window.screenY + 200, x = 17;
+				 this.messageWindow = window.open('', 'popwin', "left = " + l + ", top = " + t + ", width = 320, height = 210,  toolbar = no, location = no, directories = no, status = no, menubar = no, scrollbars = no, resizable = no");
+				 var content = "<!DOCTYPE html><html><head>";
+				 content += "<title>Example</title>";
+				 content += '<link href="/webEdition/lib/additional/fontawesome/css/font-awesome.min.css?e453b0856c5227f6105a807a734c492c" rel="styleSheet" type="text/css">';
+				 content += "</head><body bgcolor=”#ccc”>";
+				 content += "<p>Any HTML will work, just make sure to escape \"quotes\",";
+				 content += 'or use single-quotes instead.</p>';
+				 content += "<p>You can even pass parameters… (" + x + ")</p>";
+				 content += '<span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>';
+				 content += "</body></html>";
+				 this.messageWindow.document.open();
+				 this.messageWindow.document.write(content);
+				 this.messageWindow.document.close();
+				 */
 			};
 
-			this.unsetImageEditMessage = function (){
+			this.unsetImageEditMessage = function () {
 				document.getElementById('we_fileUpload_messageBg').style.display = 'none';
 				document.getElementById('we_fileUpload_message').style.display = 'none';
 			};
 
-			this.repaintImageEditMessage = function(){
+			this.repaintImageEditMessage = function () {
 				document.getElementById('we_fileUpload_messageNr').innerHTML = _.sender.imageFilesNotProcessed.length;
 			};
 
 			this.appendRow = function (f, index) {
 				var div,
-				row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
-					replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
-					replace(/FILENAME/g, (f.file.name)).
-					replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
+								row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
+								replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
+								replace(/FILENAME/g, (f.file.name)).
+								replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
 				weAppendMultiboxRow(row, '', 0, 0, 0, -1);
 				f.entry = document.getElementById('div_uploadFiles_' + index);
@@ -1801,7 +1802,7 @@ var weFileUpload = (function () {
 
 			this.reloadOpener = function () {
 				try {
-					var activeFrame = top.opener.top.weEditorFrameController.getActiveEditorFrame();
+					var activeFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
 					if (document.we_startform.importToID.value === activeFrame.EditorDocumentId && activeFrame.EditorEditPageNr === 16) {
 						top.opener.top.we_cmd('switch_edit_page', 16, activeFrame.EditorTransaction);
@@ -1814,12 +1815,12 @@ var weFileUpload = (function () {
 
 			this.repaintGUI = function (arg) {
 				var i, j,
-					s = _.sender,
-					cur = s.currentFile,
-					fileProg = 0,
-					totalProg = 0,
-					digits = 0,
-					totalDigits = s.totalChunks > 1000 ? 2 : (s.totalChunks > 100 ? 1 : 0);
+								s = _.sender,
+								cur = s.currentFile,
+								fileProg = 0,
+								totalProg = 0,
+								digits = 0,
+								totalDigits = s.totalChunks > 1000 ? 2 : (s.totalChunks > 100 ? 1 : 0);
 
 				switch (arg.what) {
 					case 'chunkOK' :
@@ -1983,9 +1984,7 @@ var weFileUpload = (function () {
 			this.doSubmit = false;
 
 			this.setEditorIsHot = function () {
-				if(top.weEditorFrameController){
-					top.weEditorFrameController.setEditorIsHot(true, top.weEditorFrameController.ActiveEditorFrameId);
-				}
+				WE().layout.weEditorFrameController.setEditorIsHot(true, WE().layout.weEditorFrameController.ActiveEditorFrameId);
 			};
 		}
 
@@ -2000,7 +1999,7 @@ var weFileUpload = (function () {
 
 			this.postProcess = function (resp) {
 				_.sender.preparedFiles = [];
-				if(this.location === 'dialog'){
+				if (this.location === 'dialog') {
 					var cur = this.currentFile;
 
 					this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
@@ -2013,7 +2012,7 @@ var weFileUpload = (function () {
 				} else {
 					if (resp.status === 'success') {
 						_.sender.currentFile = null;
-						if(WE()){
+						if (WE()) {
 							window.we_cmd('update_file');
 							WE().layout.weEditorFrameController.getActiveEditorFrame().getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
 						}
@@ -2070,34 +2069,34 @@ var weFileUpload = (function () {
 			};
 
 			/* use parent (abstract)
-			this.appendMoreData = function (fd) {
-				for(var i = 0; i < this.moreFieldsToAppend.length; i++){
-					if(document.we_form.elements[this.moreFieldsToAppend[i][0]]){
-						switch(this.moreFieldsToAppend[i][1]){
-							case 'check':
-								fd.append(this.moreFieldsToAppend[i][0], ((document.we_form.elements[this.moreFieldsToAppend[i][0]].checked) ? 1 : 0));
-								break;
-							case 'multi_select':
-								var sel = document.we_form.elements[this.moreFieldsToAppend[i][0]],
-									opts = [], opt, j=0;
+			 this.appendMoreData = function (fd) {
+			 for(var i = 0; i < this.moreFieldsToAppend.length; i++){
+			 if(document.we_form.elements[this.moreFieldsToAppend[i][0]]){
+			 switch(this.moreFieldsToAppend[i][1]){
+			 case 'check':
+			 fd.append(this.moreFieldsToAppend[i][0], ((document.we_form.elements[this.moreFieldsToAppend[i][0]].checked) ? 1 : 0));
+			 break;
+			 case 'multi_select':
+			 var sel = document.we_form.elements[this.moreFieldsToAppend[i][0]],
+			 opts = [], opt, j=0;
 
-								for (var i=0, len=sel.options.length; i<len; i++) {
-									opt = sel.options[i];
-									if(opt.selected) {
-										opts.push(opt.value);
-									}
-								}
-								fd.append(sel.id, opts);
-								break;
-							default:
-								fd.append(this.moreFieldsToAppend[i][0], document.we_form.elements[this.moreFieldsToAppend[i][0]].value);
-						}
-					}
-				}
+			 for (var i=0, len=sel.options.length; i<len; i++) {
+			 opt = sel.options[i];
+			 if(opt.selected) {
+			 opts.push(opt.value);
+			 }
+			 }
+			 fd.append(sel.id, opts);
+			 break;
+			 default:
+			 fd.append(this.moreFieldsToAppend[i][0], document.we_form.elements[this.moreFieldsToAppend[i][0]].value);
+			 }
+			 }
+			 }
 
-				return fd;
-			};
-			*/
+			 return fd;
+			 };
+			 */
 
 			this.cancel = function () {
 				this.currentFile = -1;
@@ -2149,8 +2148,8 @@ var weFileUpload = (function () {
 					_.sender.isAutostartPermitted = false;
 				}
 
-				if(f.type.search("image/") !== -1 && f.uploadConditionsOk && f.size < 4194304) {
-				//if (this.binDocType === 'image' && f.uploadConditionsOk && f.size < 4194304) {
+				if (f.type.search("image/") !== -1 && f.uploadConditionsOk && f.size < 4194304) {
+					//if (this.binDocType === 'image' && f.uploadConditionsOk && f.size < 4194304) {
 					var reader = new FileReader();
 					reader.onloadstart = function (e) {
 						_.view.elems.dragInnerRight.appendChild(_.view.spinner);
@@ -2158,8 +2157,8 @@ var weFileUpload = (function () {
 
 					reader.onload = function (e) {
 						var maxSize = 100,
-							mode = 'resize',
-							image = new Image();
+										mode = 'resize',
+										image = new Image();
 
 						image.onload = function () {
 							if (mode !== 'resize') {
@@ -2173,8 +2172,8 @@ var weFileUpload = (function () {
 								_.view.elems.dragInnerRight.appendChild(_.view.preview);
 							} else {
 								var width = image.width,
-									height = image.height,
-									cv = document.createElement('canvas');
+												height = image.height,
+												cv = document.createElement('canvas');
 
 								if (width > height) {
 									if (width > maxSize) {
@@ -2257,7 +2256,7 @@ var weFileUpload = (function () {
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						_.controller.setWeButtonState('reset_btn', false);
 						this.setDisplay('fileInputWrapper', 'none');
-						if(_.sender.location !== 'dialog'){
+						if (_.sender.location !== 'dialog') {
 							this.setDisplay('divBtnReset', 'none');
 						}
 						this.setDisplay('divBtnUpload', 'none');
