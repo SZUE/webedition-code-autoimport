@@ -46,6 +46,10 @@ function findInclude($cmd){
 		case 'we_selector_image':
 		case 'we_selector_directory':
 			return 'selectors.inc.php';
+		case 'we_fileupload':
+		case 'we_fileupload_image':
+		case 'we_fileupload_import':
+			return 'we_editors/we_fileupload.inc.php';
 		case 'backupLog':
 			return 'we_exim/backup/backuplog.inc.php';
 		case 'newMsg':

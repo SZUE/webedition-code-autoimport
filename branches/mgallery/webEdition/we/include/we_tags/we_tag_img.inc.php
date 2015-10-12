@@ -121,6 +121,14 @@ function we_tag_img($attribs){
 		$out = ''; //no_image war noch in der Vorschau sichtbar
 	}
 
+	$btnSelectWecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
+	//$btnSelectWecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
+	$btnSelectWecmdenc3 = we_base_request::encCmd("var t = opener && opener.top.weEditorFrameController ? opener.top : top; var ed = t.weEditorFrameController.getVisibleEditorFrame(); ed.setScrollTo(); ed._EditorFrame.setEditorIsHot(true); t.we_cmd('reload_editpage','" . $name . "','change_image'); t.hot = 1;");
+
+	if($GLOBALS['we_editmode'] && $out) { //in editMode we surround image with dropzone
+		$out = we_fileupload_ui_base::getExternalDropZone('we_File', $out, 'width:auto;height:auto;padding:12px;', we_base_ContentTypes::IMAGE, $btnSelectWecmdenc1, $btnSelectWecmdenc3);
+	}
+
 	if(!$id && (!$GLOBALS['we_editmode'])){
 		return '';
 	}
@@ -179,13 +187,10 @@ function we_tag_img($attribs){
 				// disable edit_image_button
 				we_html_button::create_button("fa:btn_edit_image,fa-lg fa-pencil,fa-lg fa-file-image-o", "#", false, 100, 20, "", "", true));
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
-
 		$out .= we_html_button::create_button_table(
 				array(
 				$_editButton,
-				we_html_button::create_button("fa:btn_select_image,fa-lg fa-exchange,fa-lg fa-file-image-o", "javascript:we_cmd('we_selector_image', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
+				we_html_button::create_button("fa:btn_select_image,fa-lg fa-exchange,fa-lg fa-file-image-o", "javascript:we_cmd('we_selector_image', '" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $btnSelectWecmdenc1 . "','','" . $btnSelectWecmdenc3 . "',''," . $parentid . ",'" . we_base_ContentTypes::IMAGE . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true),
 				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('remove_image', '" . $name . "')", true)
 				)) . '</td></tr></table>';
 	}

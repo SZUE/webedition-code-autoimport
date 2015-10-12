@@ -145,8 +145,9 @@ function reloadDir() {
 }
 
 function newFile() {
-	url = "we_fs_uploadFile.php?pid=" + top.currentDir + "&tab=" + top.table + "&ct=" + currentType;
-	new (WE().util.jsWindow)(top.window, url, "we_fsuploadFile", -1, -1, 450, 660, true, false, true);
+	var url = "we_cmd.php?we_cmd[0]=we_fileupload_import&we_cmd[2]=fileselectCallback&we_cmd[3]=" + top.currentDir + "&we_cmd[4]=" + top.currentPath + "&we_cmd[5]=1";
+	new (WE().util.jsWindow)(top.window, url, "we_fileupload_image", -1, -1, 500, 550, true, true, true, true);
+
 }
 
 function newCollection() {

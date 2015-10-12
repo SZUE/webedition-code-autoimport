@@ -746,6 +746,10 @@ function we_cmd_base(args, url) {
 		case "we_selector_document":
 			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
+		case "we_fileupload_image":
+		case "we_fileupload_import":
+			new (WE().util.jsWindow)(top.window, url, "we_fileupload_image", -1, -1, 500, top.WE().consts.size.docSelect.height, true, true, true, true);
+			break;
 		case "setTab":
 			if (self.Vtabs && self.Vtabs.setTab && (window.treeData !== undefined)) {
 				self.Vtabs.setTab(args[1]);

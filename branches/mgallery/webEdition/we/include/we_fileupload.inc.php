@@ -31,9 +31,10 @@ $cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 
 switch($cmd1){
 	case 'binaryDoc' :
+		t_e('instance of we_fileupload');
 		$contentType = we_base_request::_(we_base_request::STRING, 'we_doc_ct', '');
 		$ext = we_base_request::_(we_base_request::STRING, 'we_doc_ext', '');
-		$fileUpload = new we_fileupload_binaryDocument($contentType, $ext);
+		$fileUpload = new we_fileupload_ui_editor($contentType, $ext, 'horizontal');
 		$fileUpload->processFileRequest();
 		break;
 	case 'tag' :

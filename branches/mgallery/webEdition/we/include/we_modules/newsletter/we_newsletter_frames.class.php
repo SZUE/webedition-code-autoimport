@@ -1615,11 +1615,11 @@ self.focus();
 	}
 
 	function getHTMLUploadCsv($what){
-		$weFileupload = new we_fileupload_include('we_File', '', '', 'we_form', 'upload_footer', true, "we_cmd('do_" . $what . "');", '', 330, true, false, 0);
-		$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
-		$weFileupload->setAction($this->frameset . '?' . ($what === 'upload_csv' ? 'pnt=upload_csv&grp=0&ncmd=do_upload_csv' :
-				($what === 'upload_black' ? 'pnt=upload_black&grp=undefined&ncmd=do_upload_black' : '')));
-
+		$weFileupload = new we_fileupload_ui_base('we_File');
+		$weFileupload->setCallback("we_cmd('do_" . $what . "');");
+		$weFileupload->setExternalProgress(array('isExternalProgress' => true));
+		$weFileupload->setExternalUiElements(array('btnUploadName' => 'upload_footer'));
+		$weFileupload->setDimensions(array('width' => 330, 'marginTop' => 6));
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
 		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
 

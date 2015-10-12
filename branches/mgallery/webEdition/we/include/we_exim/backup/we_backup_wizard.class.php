@@ -196,14 +196,14 @@ self.focus();
 		$js = "";
 
 		//FIXME: delete condition when new uploader is stable
-		$maxsize = (!we_fileupload_include::USE_LEGACY_FOR_BACKUP && $this->fileUploader ?
+		$maxsize = (!we_fileupload::USE_LEGACY_FOR_BACKUP && $this->fileUploader ?
 				$this->fileUploader->getMaxUploadSize() :
 				getUploadMaxFilesize());
 
 		if(we_base_request::_(we_base_request::STRING, "import_from") === 'import_upload'){
 			if($maxsize || $this->fileUploader){
 				//FIXME: delete condition and else branch when new uploader is stable
-				if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+				if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
 					if($this->fileUploader){
 						$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
 						$inputTypeFile = $this->fileUploader->getHTML();
@@ -216,7 +216,7 @@ self.focus();
 					if(!(DEFAULT_CHARSET != '')){
 						$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 					}
-					$parts[] = array("headline" => "", "html" => we_fileupload_base::getHtmlAlertBoxesStatic(600), "space" => 0, "noline" => 1);
+					$parts[] = array("headline" => "", "html" => we_fileupload_ui_base::getHtmlAlertBoxesStatic(600), "space" => 0, "noline" => 1);
 					$parts[] = array("headline" => "", "html" => $inputTypeFile, "space" => 0, "noline" => 1);
 				} else {
 					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
@@ -439,7 +439,7 @@ extra_files_desc=[];';
 
 
 		$js = we_html_element::jsElement($js) .
-			(!we_fileupload_include::USE_LEGACY_FOR_BACKUP && isset($fileUploaderHead) ? $fileUploaderHead : '') .
+			(!we_fileupload::USE_LEGACY_FOR_BACKUP && isset($fileUploaderHead) ? $fileUploaderHead : '') .
 			self::getJSDep("import", $docheck, $doclick, $douncheck) .
 			we_html_element::jsElement('
 function startBusy() {
@@ -928,11 +928,11 @@ function press_yes() {
 						break;
 					case 3:
 						//FIXME: delete condition when new uploader is stable
-						if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+						if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
 							//$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
-							if(!(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode())){
-								$startImportCall = we_fileupload_include::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
-								$cancelCall = we_fileupload_include::getJsBtnCmdStatic('cancel', 'body');
+							if(!(we_fileupload::isFallback() || we_fileupload::isLegacyMode())){
+								$startImportCall = we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
+								$cancelCall = we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body');
 							} else {
 								$startImportCall = 'top.body.startImport()';
 								$cancelCall = 'top.close()';
@@ -1130,7 +1130,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						$ok = true;
 					} else if($we_upload_file && ($we_upload_file != "none")){
 						//FIXME: delete condition when new uploader is stable
-						if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+						if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
 							if($this->fileUploader){
 								$continue = $this->fileUploader->processFileRequest();
 							} else {

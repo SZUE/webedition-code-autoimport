@@ -31,13 +31,14 @@ $step = we_base_request::_(we_base_request::INT,'step',1);
 $weBackupWizard = new we_backup_wizard(WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php', we_backup_wizard::RECOVER);
 
 //FIXME: delete condition when new uploader is stable
-if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-	if(!(we_fileupload_base::isFallback() || we_fileupload_base::isLegacyMode()) && ($what === 'cmd' || ($what === 'body' && $step == 3))){
-		$fileUploader = new we_fileupload_include('we_upload_file', 'body', '', 'we_form', '', true, 'top.body.startImport(true)', '', 400, true, true, 200, '', 'xml, gz, tgz');
-		$fileUploader->setAction($weBackupWizard->frameset . '?pnt=cmd&operation_mode=import');
-		$fileUploader->setInternalProgress(array('width' => 300));
+if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
+	if(!(we_fileupload_ui_base::isFallback() || we_fileupload::isLegacyMode()) && ($what === 'cmd' || ($what === 'body' && $step == 3))){
+		$fileUploader = new we_fileupload_ui_base('we_upload_file');
+		$fileUploader->setTypeCondition('accepted', array(), array('xml', 'gz', 'tgz'));
+		$fileUploader->setCallback('top.body.startImport(true)');
+		$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
 		$fileUploader->setDimensions(array('width' => 500, 'dragHeight' => 60, 'marginTop' => 5));
-		$fileUploader->setFileNameTemp(array('path' => BACKUP_PATH . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
+		$fileUploader->setGenericFileName(BACKUP_DIR . 'tmp/' . we_fileupload::REPLACE_BY_FILENAME);
 		$weBackupWizard->setFileUploader($fileUploader);
 	}
 }

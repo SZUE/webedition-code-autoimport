@@ -112,7 +112,7 @@ function generatedSaveDoc(){
 	var addCmd = arguments[0] ? arguments[0] : '';
 	if(weCanSave){
 " . ($we_doc->isBinary() ?
-		we_fileupload_binaryDocument::getJsOnLeave($js_we_save_cmd) :
+		we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :
 		$js_we_save_cmd
 	) .
 	($reloadPage ?

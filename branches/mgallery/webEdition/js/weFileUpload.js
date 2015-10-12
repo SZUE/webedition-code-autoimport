@@ -69,6 +69,7 @@ var weFileUpload = (function () {
 	function weFileUpload_abstract() {
 		//declare "protected" members: they are accessible from weFileUpload_include/imp too!
 		_.fieldName = '';
+		_.genericFilename = '';
 		_.fileuploadType = 'abstract';
 		_.isLegacyMode = false;
 
@@ -92,11 +93,14 @@ var weFileUpload = (function () {
 			if (typeof conf !== 'undefined') {
 				s.typeCondition = conf.typeCondition || s.typeCondition;
 				_.fieldName = conf.fieldName || _.fieldName;
+				_.genericFilename = conf.genericFilename || _.genericFilename;
 				_.isLegacyMode = !_.utils.checkBrowserCompatibility() || conf.isLegacyMode;
 				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
+				c.isPreset = conf.isPreset || c.isPreset;
 				s.chunkSize = typeof conf.chunkSize !== 'undefined' ? (conf.chunkSize * 1024) : s.chunkSize;
 				s.callback = conf.callback || s.callback;
 				s.location = conf.location || s.location;
+				s.responseClass = conf.responseClass || s.responseClass;
 				s.dialogCallback = conf.callback || s.dialogCallback;
 				s.maxUploadSize = typeof conf.maxUploadSize !== 'undefined' ? conf.maxUploadSize : s.maxUploadSize;
 				if (typeof conf.form !== 'undefined') {
@@ -164,42 +168,43 @@ var weFileUpload = (function () {
 		function AbstractController() {
 			this.elemFileDragClasses = 'we_file_drag';
 			this.outer = null;
+			this.isPreset = false;
 			this.fileselectOnclick = function () {
 			};
 
-			this.fileSelectHandler = function (e) {
-				var files = _.controller.selectedFiles = e.target.files || e.dataTransfer.files;
-				var l = files.length || 0;
+			this.checkIsPresetFiles = function(){
+				
+				if(_.controller.isPreset && top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload){
+					_.controller.fileSelectHandler(null, true, top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload);
+				}
+				
+			};
 
-				if (l) {
-					_.sender.resetParams();//inc: clear array first
+			this.fileSelectHandler = function (e, isPreset, presetFileupload) {
+				var files = [];
 
-					if (e.type === 'drop') {
-						e.stopPropagation();
-						e.preventDefault();
-						e.target.className = _.controller.elemFileDragClasses;
-						_.controller.fileselectOnclick();
-					}
+				files = _.controller.selectedFiles = isPreset ? (presetFileupload.length ? presetFileupload : files) : (e.target.files || e.dataTransfer.files);
 
-					/*
-					_.controller.selectedFiles = [];
-					for (var i = 0; i < l; i++) {
-						if (!_.utils.contains(_.sender.preparedFiles, files[i])) {
-							_.controller.selectedFiles.push(files[i]);
-
+				if (files.length) {
+					if(!isPreset){
+						_.sender.resetParams();
+						if (e.type === 'drop') {
+							e.stopPropagation();
+							e.preventDefault();
+							e.target.className = _.controller.elemFileDragClasses;
+							//_.controller.fileselectOnclick();
 						}
 					}
-					*/
+					_.controller.fileselectOnclick();
 
 					_.sender.imageFilesNotProcessed = [];
-					for(var f, i = 0; i < l; i++){
+					for(var f, i = 0; i < files.length; i++){
 						if(!_.utils.contains(_.sender.preparedFiles, _.controller.selectedFiles[i])){
 							f = _.controller.prepareFile(_.controller.selectedFiles[i]);
 							_.sender.preparedFiles.push(f);
 							_.view.addFile(f, _.sender.preparedFiles.length);
 						}
 					}
-
 					if(_.sender.EDIT_IMAGES_CLIENTSIDE){
 						_.controller.processImages();
 					}
@@ -488,11 +493,11 @@ var weFileUpload = (function () {
 				isFooter = isFooter || false;
 
 				if (isFooter) {
-					_.view.elems.footer.weButton[enable ? 'enable' : 'disable'](btn);
+					top.WE().layout.button[enable ? 'enable' : 'disable'](_.view.elems.footer.document, btn);
 				} else {
-					weButton[enable ? 'enable' : 'disable'](btn);
+					top .WE().layout.button[enable ? 'enable' : 'disable'](document, btn);
 					if (btn === 'browse_harddisk_btn') {
-						weButton[enable ? 'enable' : 'disable']('browse_btn');
+						top.WE().layout.button[enable ? 'enable' : 'disable'](document, 'browse_btn');
 					}
 				}
 			};
@@ -501,6 +506,7 @@ var weFileUpload = (function () {
 
 		function AbstractSender() {
 			this.chunkSize = 256 * 1024;
+			this.responseClass = 'we_fileupload_ui_base';
 			this.typeCondition = [];
 			this.maxUploadSize = 0;
 			this.form = {
@@ -701,15 +707,15 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-										blob,
-										cur.file.name,
-										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-										cur.partNum,
-										cur.totalParts,
-										cur.fileNameTemp,
-										cur.size
-										);
+							blob,
+							cur.file.name,
+							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+							cur.partNum,
+							cur.totalParts,
+							cur.fileNameTemp,
+							cur.size
+							);
 					}
 				} else {
 					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
@@ -725,7 +731,9 @@ var weFileUpload = (function () {
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState === 4) {
 						if (xhr.status === 200) {
-							that.processResponse(JSON.parse(xhr.responseText), {partSize: partSize, partNum: partNum, totalParts: totalParts});
+							var resp = JSON.parse(xhr.responseText);
+							resp = resp.DataArray && resp.DataArray.data ? resp.DataArray.data : resp;
+							that.processResponse(resp, {partSize: partSize, partNum: partNum, totalParts: totalParts});
 						} else {
 							that.processError({type: 'request', msg: 'http request failed'});
 						}
@@ -733,6 +741,9 @@ var weFileUpload = (function () {
 				};
 
 				fileCt = fileCt ? fileCt : 'text/plain';
+				fd.append('fileinputName', _.fieldName);
+				fd.append('genericFilename', _.genericFilename);
+				fd.append('weResponseClass', this.responseClass);
 				fd.append('uploadParts', 1);
 				fd.append('wePartNum', partNum);
 				fd.append('wePartCount', totalParts);
@@ -748,6 +759,30 @@ var weFileUpload = (function () {
 			};
 
 			this.appendMoreData = function (fd) {
+				for(var i = 0; i < this.moreFieldsToAppend.length; i++){
+					if(document.we_form.elements[this.moreFieldsToAppend[i][0]]){
+						switch(this.moreFieldsToAppend[i][1]){
+							case 'check':
+								fd.append(this.moreFieldsToAppend[i][0], ((document.we_form.elements[this.moreFieldsToAppend[i][0]].checked) ? 1 : 0));
+								break;
+							case 'multi_select':
+								var sel = document.we_form.elements[this.moreFieldsToAppend[i][0]],
+									opts = [], opt;
+
+								for (var j=0, len=sel.options.length; j<len; j++) {
+									opt = sel.options[j];
+									if(opt.selected) {
+										opts.push(opt.value);
+									}
+								}
+								fd.append(sel.id, opts);
+								break;
+							default:
+								fd.append(this.moreFieldsToAppend[i][0], document.we_form.elements[this.moreFieldsToAppend[i][0]].value);
+						}
+					}
+				}
+
 				return fd;
 			};
 
@@ -1200,6 +1235,8 @@ var weFileUpload = (function () {
 			if (_.isLegacyMode) {
 				_.utils.makeLegacy();
 			}
+
+			_.controller.checkIsPresetFiles();
 		};
 
 		function Controller() {
@@ -1208,6 +1245,7 @@ var weFileUpload = (function () {
 		function Sender() {
 			this.totalWeight = 0;
 
+			/* use parent (abstract)
 			this.appendMoreData = function (fd) {
 				for(var i = 0; i < this.moreFieldsToAppend.length; i++){
 					if(document.we_form.elements[this.moreFieldsToAppend[i]]){
@@ -1217,6 +1255,7 @@ var weFileUpload = (function () {
 
 				return fd;
 			};
+			*/
 
 			this.postProcess = function (resp) {
 				var that = _.sender,
@@ -1491,7 +1530,7 @@ var weFileUpload = (function () {
 			};
 
 			this.enableWeButton = function (btn, enabled) {
-				_.view.elems.footer[btn + '_enabled'] = WE().layout.button.switch_button_state(_.view.elems.footer.document, btn, (enabled ? 'enabled' : 'disabled'));
+				_.view.elems.footer[btn + '_enabled'] = top.WE().layout.button.switch_button_state(_.view.elems.footer.document, btn, (enabled ? 'enabled' : 'disabled'));
 			};
 
 			this.setWeButtonText = function (btn, text) {
@@ -1509,7 +1548,7 @@ var weFileUpload = (function () {
 				}
 
 				if (replace) {
-					WE().layout.button.setText(_.view.elems.footer.document, btn, replace);
+					top.WE().layout.button.setText(_.view.elems.footer.document, btn, replace);
 				}
 			};
 		}
@@ -1567,7 +1606,6 @@ var weFileUpload = (function () {
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
 				fd.append('we_cmd[0]', 'import_files');
-				fd.append('cmd', 'buttons');
 				fd.append('jsRequirementsOk', 1);
 				fd.append('step', 1);
 
@@ -1892,10 +1930,10 @@ var weFileUpload = (function () {
 			_.view.uploadBtnName = conf.uploadBtnName || _.view.uploadBtnName;
 			_.fieldName = 'we_File';
 			if (typeof conf.binDocProperties !== 'undefined') {
-				_.view.icon = WE().util.getTreeIcon(conf.binDocProperties.ct);
+				_.view.icon = top.WE().util.getTreeIcon(conf.binDocProperties.ct);
 				_.view.binDocType = conf.binDocProperties.type || _.view.binDocType;
 			} else {
-				_.view.icon = WE().util.getTreeIcon('text/plain');
+				_.view.icon = top.WE().util.getTreeIcon('text/plain');
 			}
 		};
 
@@ -1936,6 +1974,8 @@ var weFileUpload = (function () {
 			if (_.isLegacyMode) {
 				_.utils.makeLegacy();
 			}
+
+			_.controller.checkIsPresetFiles();
 		};
 
 		function Controller() {
@@ -1960,7 +2000,6 @@ var weFileUpload = (function () {
 
 			this.postProcess = function (resp) {
 				_.sender.preparedFiles = [];
-
 				if(this.location === 'dialog'){
 					var cur = this.currentFile;
 
@@ -2030,18 +2069,35 @@ var weFileUpload = (function () {
 				return false;
 			};
 
+			/* use parent (abstract)
 			this.appendMoreData = function (fd) {
 				for(var i = 0; i < this.moreFieldsToAppend.length; i++){
 					if(document.we_form.elements[this.moreFieldsToAppend[i][0]]){
-						if(this.moreFieldsToAppend[i][1] === 'check'){
-							fd.append(this.moreFieldsToAppend[i][0], ((document.we_form.elements[this.moreFieldsToAppend[i][0]].checked) ? 1 : 0));
-						} else {
-							fd.append(this.moreFieldsToAppend[i][0], document.we_form.elements[this.moreFieldsToAppend[i][0]].value);
+						switch(this.moreFieldsToAppend[i][1]){
+							case 'check':
+								fd.append(this.moreFieldsToAppend[i][0], ((document.we_form.elements[this.moreFieldsToAppend[i][0]].checked) ? 1 : 0));
+								break;
+							case 'multi_select':
+								var sel = document.we_form.elements[this.moreFieldsToAppend[i][0]],
+									opts = [], opt, j=0;
+
+								for (var i=0, len=sel.options.length; i<len; i++) {
+									opt = sel.options[i];
+									if(opt.selected) {
+										opts.push(opt.value);
+									}
+								}
+								fd.append(sel.id, opts);
+								break;
+							default:
+								fd.append(this.moreFieldsToAppend[i][0], document.we_form.elements[this.moreFieldsToAppend[i][0]].value);
 						}
 					}
 				}
+
 				return fd;
 			};
+			*/
 
 			this.cancel = function () {
 				this.currentFile = -1;
@@ -2093,7 +2149,8 @@ var weFileUpload = (function () {
 					_.sender.isAutostartPermitted = false;
 				}
 
-				if (this.binDocType === 'image' && f.uploadConditionsOk && f.size < 4194304) {
+				if(f.type.search("image/") !== -1 && f.uploadConditionsOk && f.size < 4194304) {
+				//if (this.binDocType === 'image' && f.uploadConditionsOk && f.size < 4194304) {
 					var reader = new FileReader();
 					reader.onloadstart = function (e) {
 						_.view.elems.dragInnerRight.appendChild(_.view.spinner);

@@ -24,6 +24,7 @@
  */
 class we_base_request{
 	private static $allTables = array();
+	const NOT_VALID = '__NOT_VALID__'; // to be used as default just for indicating that is IS an default
 
 	/* converts an csv of ints to an array */
 	const INTLISTA = 'intListA';

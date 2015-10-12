@@ -29,20 +29,24 @@ switch($we_ContentType){
 	case we_base_ContentTypes::IMAGE;
 	case we_base_ContentTypes::VIDEO:
 	case we_base_ContentTypes::AUDIO:
-		$allowedContentTypes = implode(',', we_base_ContentTypes::inst()->getRealContentTypes($we_ContentType));
+		$allowedContentTypes = array($we_ContentType);
 		break;
 	case we_base_ContentTypes::APPLICATION;
-		$allowedContentTypes = '';
+		$allowedContentTypes = array();
 		break;
 	default:
-		$allowedContentTypes = $we_ContentType;
+		$allowedContentTypes = array($we_ContentType);
 }
 
-$weFileupload = new we_fileupload_include('we_uploadedFile', '', '', '', '', true, 'document.forms[0].submit()', '', 330, true, false, 0, $allowedContentTypes, '', '', 'php, php4, php5, htaccess', array(), -1);
-$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
+$weFileupload = new we_fileupload_ui_editor('we_uploadedFile');
+$weFileupload->setTypeCondition('accepted', $allowedContentTypes, array());
+$weFileupload->setTypeCondition('forbidden', array(), array('php', 'php4', 'php5' ,'htaccess'));
+$weFileupload->setDimensions(array('width' => 330, 'marginTop' => 6));
+$weFileupload->setExternalProgress(array('isExternalProgress' => true));
+t_e('instance of we_fileupload');
 
-if($weFileupload->processFileRequest()){
-	$tempName = $weFileupload->getFileNameTemp();
+//if($weFileupload->processFileRequest()){
+	$tempName = we_fileupload::commitFile('we_uploadedFile');
 
 	echo we_html_tools::getHtmlTop(g_l('newFile', '[import_File_from_hd_title]')) . STYLESHEET;
 
@@ -226,4 +230,3 @@ if($weFileupload->processFileRequest()){
 			</form></div>
 	</body>
 	</html>
-<?php } ?>

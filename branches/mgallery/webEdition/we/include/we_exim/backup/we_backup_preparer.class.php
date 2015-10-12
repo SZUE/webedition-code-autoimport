@@ -253,13 +253,11 @@ abstract class we_backup_preparer{
 			return BACKUP_PATH . $backup_select;
 		}
 
-		if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
+		if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
+			// should be obsolete when sending request to rpc
 			$isFileAllreadyHere = false;
-			if(!(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode())){
-				$uploader = new we_fileupload_include('we_upload_file');
-				$uploader->setTypeCondition('accepted', '', 'xml, gz, tgz, zip');
-				$uploader->setFileNameTemp(array('path' => BACKUP_PATH . 'tmp/'), we_fileupload_include::USE_FILENAME_FROM_UPLOAD);
-				$isFileAllreadyHere = $uploader->processFileRequest(we_fileupload_include::ON_ERROR_RETURN);
+			if(!(we_fileupload::isFallback() || we_fileupload::isLegacyMode())){
+				$commitedFile = we_fileupload::commitFile('we_upload_file', array('accepted' => array('xml', 'gz', 'tgz', 'zip')));
 			}
 		}
 
@@ -269,12 +267,11 @@ abstract class we_backup_preparer{
 			if(empty($_FILES['we_upload_file']['tmp_name']) || $_FILES['we_upload_file']['error']){
 				return false;
 			}
-
 			$filename = BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'];
 
 			//FIXME: delete condition when new uploader is stable
-			if(!we_fileupload_include::USE_LEGACY_FOR_BACKUP){
-				if($isFileAllreadyHere || move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $filename)){
+			if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
+				if($commitedFile || move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $filename)){
 					we_base_file::insertIntoCleanUp($filename, 0);
 					return $filename;
 				}

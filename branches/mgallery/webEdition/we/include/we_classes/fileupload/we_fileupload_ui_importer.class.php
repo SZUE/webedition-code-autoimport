@@ -22,8 +22,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_fileupload_importFiles extends we_fileupload_base{
-	private $jsRequirementsOk = false; //obsolete
+class we_fileupload_ui_importer extends we_fileupload_ui_base{
+	protected $jsRequirementsOk = false; //obsolete
 	protected $dimensions = array(
 		'width' => 400,
 		'dragHeight' => 30,
@@ -33,8 +33,10 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		'marginBottom' => 0
 	);
 
-	public function __construct($name, $callback = ''){
+	public function __construct($name){
 		parent::__construct($name);
+		$this->responseClass = 'we_fileupload_resp_multiimport';
+
 		$this->type = 'imp';
 		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
 		$this->setDimensions(array('width' => 400, 'dragHeight' => 44));
@@ -50,10 +52,9 @@ class we_fileupload_importFiles extends we_fileupload_base{
 		$this->fileTable = FILE_TABLE;
 		$this->footerName = 'imgimportbuttons';
 		$this->contentName = 'imgimportcontent';
-		$this->callback = $callback;
 	}
 
-	public function getHTML($hiddens = ''){
+	public function getHTML($hiddens = ''){t_e('hiddens', $hiddens);
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 		$alert = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .

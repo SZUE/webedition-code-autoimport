@@ -34,35 +34,39 @@ $step = we_base_request::_(we_base_request::INT,"step", 0);
 $mode = we_base_request::_(we_base_request::INT,"mode",0);
 
 //FIXME: delete condition and else branch when new uploader is stable
-if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
-	if($type && !(we_fileupload_include::isFallback() || we_fileupload_base::isLegacyMode()) && ($step == 1 || $step == 2) && $what === 'wizbody'){
-		$acceptedMime = $acceptedExt = '';
+if(!we_fileupload::USE_LEGACY_FOR_WEIMPORT){
+	if($type && !(we_fileupload::isFallback() || we_fileupload::isLegacyMode()) && ($step == 1) && $what === 'wizbody'){
+		$acceptedMime = $acceptedExt = array();
 		switch($type){
 			case we_import_functions::TYPE_GENERIC_XML:
 				$name = 'uploaded_xml_file';
-				$acceptedMime = 'text/xml';
-				$acceptedExt = 'xml';
-				$fileNameTemp = array('prefix' => 'we_xml_', 'postfix' => '.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
+				$acceptedMime = array('text/xml');
+				$acceptedExt = array('xml');
+				$genericFileNameTemp = TEMP_DIR . 'we_xml_' . we_fileupload::REPLACE_BY_UNIQUEID . '.xml';
 				break;
 			case we_import_functions::TYPE_WE_XML:
 				$name = 'uploaded_xml_file';
-				$acceptedMime = 'text/xml';
-				$acceptedExt = 'xml';
-				$fileNameTemp = array('prefix' => '', 'postfix' => '_w.xml', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
+				$acceptedMime = array('text/xml');
+				$acceptedExt = array('xml');
+				$genericFileNameTemp = TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . '_w.xml';
 				break;
 			case we_import_functions::TYPE_CSV:
 				$name = 'uploaded_csv_file';
-				$acceptedExt = 'csv,txt';
-				$fileNameTemp = array('prefix' => 'we_csv_', 'postfix' => '.csv', 'path' => TEMP_DIR, 'missingDocRoot' => we_fileupload_include::MISSING_DOC_ROOT);
+				$acceptedExt = array('csv','txt');
+				$genericFileNameTemp = TEMP_DIR . 'we_csv_' . we_fileupload::REPLACE_BY_UNIQUEID . '.csv';
 				break;
 			default:
 				break;
 		}
 
-		$wizard->fileUploader = new we_fileupload_include($name, 'wizbody', '', 'we_form', 'next_btn', true, 'top.wizbody.handle_eventNext()', "self.document.we_form.elements['v[rdofloc]'][1].checked=true;", 410, true, true, 200, $acceptedMime, $acceptedExt, '', '', array(), -1);
-		$wizard->fileUploader->setAction($wizard->path . '?pnt=wizbody&step=1&type=' . $type);
-		$wizard->fileUploader->setFileNameTemp($fileNameTemp);
-		$wizard->fileUploader->setDimensions(array('marginTop' => 12));
+		$wizard->fileUploader = new we_fileupload_ui_base($name);
+		$wizard->fileUploader->setTypeCondition('accepted', $acceptedMime, $acceptedExt);
+		$wizard->fileUploader->setCallback('top.wizbody.handle_eventNext()');
+		$wizard->fileUploader->setExternalUiElements(array('contentName' => 'wizbody', 'btnUploadName' => 'next_btn'));
+		$wizard->fileUploader->setFileSelectOnclick("self.document.we_form.elements['v[rdofloc]'][1].checked=true;");
+		$wizard->fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 200));
+		$wizard->fileUploader->setGenericFileName($genericFileNameTemp);
+		$wizard->fileUploader->setDimensions(array('width' => 410, 'marginTop' => 12));
 	}
 }
 

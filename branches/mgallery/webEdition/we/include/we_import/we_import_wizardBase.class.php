@@ -71,9 +71,9 @@ var path='" . $this->path . "';") .
 	private function getWizBody($type = '', $step = 0, $mode = 0){
 		//FIXME: delete condition and else branch when new uploader is stable
 		$continue = true;
-		if(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT){
+		if(!we_fileupload::USE_LEGACY_FOR_WEIMPORT){
 			if($this->fileUploader){
-				$continue = $this->fileUploader->processFileRequest();
+//				$continue = $this->fileUploader->processFileRequest();
 			}
 		}
 
@@ -90,10 +90,11 @@ var path='" . $this->path . "';") .
 			$_step = 'get' . $type . 'Step' . $step;
 			list($js, $content) = $this->$_step();
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
-			return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-					//FIXME: delete condition and else branch when new uploader is stable
-					(!we_fileupload_include::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
-					we_html_element::jsElement($js), we_html_element::htmlBody(array(
+			return we_html_tools::getHtmlTop('', '', '', 
+						STYLESHEET .
+						//FIXME: delete condition and else branch when new uploader is stable
+						(!we_fileupload::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
+						we_html_element::jsElement($js), we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
 						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
 						), we_html_element::htmlForm($a, we_html_element::htmlHiddens(array(

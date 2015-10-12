@@ -231,17 +231,18 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	private function initFileUploader(){
-		$this->weFileupload = new we_fileupload_ui_image(we_base_ContentTypes::IMAGE, '', 'dialog');
-		$this->weFileupload->setCallback('top.doOnImportSuccess(scope.imported_files[0]);');
+		$this->weFileupload = new we_fileupload_ui_editor(we_base_ContentTypes::IMAGE, '', 'dialog');
+		$this->weFileupload->setCallback('top.doOnImportSuccess(scope.weDoc);');
 		//$this->weFileupload->setIsInternalBtnUpload(true);
 		$this->weFileupload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
-		$this->weFileupload->setAction(WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import_files&cmd=buttons&jsRequirementsOk=1&step=1&weFormNum=1&weFormCount=1');
+		// TODO: let uploader class set additional fields
 		$this->weFileupload->setMoreFieldsToAppend(array(
 			array('imgsSearchable', 'text'), //we use checkbox width hidden
 			array('importMetadata', 'text'),
 			array('sameName', 'text'),
 			array('importToID', 'text')
 		));
+		$this->weFileupload->setEditorProperties(array('isLayoutSmall' => true));
 	}
 
 	/* use parent
@@ -385,38 +386,15 @@ class we_dialog_image extends we_dialog_base{
 		$srctable .= '<tr><td><div id="imageExt" style="margin-top:4px;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_EXT ? '' : 'display:none;') . '">' . $extSrc . '</div></td></tr>';
 		if($intSrc){
 			$srctable .= '<tr><td><div id="imageInt" style="margin:2px 0 2px 0;' . (isset($this->args["type"]) && $this->args["type"] === we_base_link::TYPE_INT ? '' : 'display:none;') . '">' . $intSrc . '</div></td></tr>';
-		}
-
-		if(!we_fileupload_base::isFallback()){
-			$yuiSuggest = &weSuggest::getInstance();
-			$cmd1 = "document.we_form.importToID.value";
-			$wecmdenc2 = we_base_request::encCmd("document.we_form.importToDir.value");
-			$wecmdenc3 = ''; //we_base_request::encCmd();
-			$startID = IMAGESTARTID_DEFAULT ? : 0;
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "',''," . $startID . ",'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-			$yuiSuggest->setAcId("importToID");
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-			$yuiSuggest->setInput("importToDir", $startID ? id_to_path($startID, FILE_TABLE) : '/');
-			$yuiSuggest->setLabel(g_l('weClass', '[dir]'));
-			$yuiSuggest->setMaxResults(10);
-			$yuiSuggest->setMayBeEmpty(true);
-			$yuiSuggest->setResult("importToID", $startID);
-			$yuiSuggest->setSelector(weSuggest::DirSelector);
-			$yuiSuggest->setWidth(320);
-			$yuiSuggest->setSelectButton($but);
-			$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="/webEdition/images/icons/no_image.gif" alt="no-image" />';
-
-			$srctable .= '
-				<tr>
-					<td>' .
-						$this->weFileupload->getHTML() .
-					'</td>
-				</tr>';
+			$srctable .= '<tr><td><div id="imageUpload" style="margin:2px 0 2px 20px;display:none;background-color:#fafafa;">' . $this->weFileupload->getHTML() . '</div></td></tr>';
 		}
 		$srctable .= '</table>';
 
-		return array(
-			array('html' => $srctable),
+		$parts = array(array('html' => $srctable));
+		//$parts = array_merge($parts, array(array('html' => '<div id="imageUpload">' . $this->weFileupload->getHTML() . '</div>')));
+		
+		return array_merge($parts, array(
+			//array('html' => $srctable),
 			array('headline' => g_l('wysiwyg', '[image][formatting]'),
 				'html' => '<table class="default" width="560">
 					<tr>
@@ -444,7 +422,7 @@ class we_dialog_image extends we_dialog_base{
 				weSuggest::getYuiFiles() .
 				$yuiSuggest->getYuiJs() .
 				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')),
-		);
+		));
 	}
 
 	private function getDisplayThumbsSel(){

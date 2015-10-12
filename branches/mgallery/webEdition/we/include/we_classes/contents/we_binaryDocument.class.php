@@ -337,7 +337,7 @@ class we_binaryDocument extends we_document{
 				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
 				'</a>');
 
-		$fileUpload = new we_fileupload_binaryDocument($this->ContentType, $this->Extension);
+		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType, $this->Extension);
 
 		return $fileUpload->getHTML($fs, $ft, $md, $this->getThumbnail(100, 100), $this->getThumbnail());
 	}
@@ -363,7 +363,6 @@ class we_binaryDocument extends we_document{
 	}
 
 	function formIsProtected(){
-
 		return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', 'geschützt', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 		//return we_html_forms::checkboxWithHidden((bool) $this->IsProtected, 'we_' . $this->Name . '_IsProtected', g_l('weClass', '[IsProtected]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}

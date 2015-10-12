@@ -28,11 +28,13 @@ function weFile($f){
 	return f('SELECT 1 FROM ' . FILE_TABLE . " WHERE Path='" . $GLOBALS['DB_WE']->escape($f) . "'");
 }
 
-$weFileupload = new we_fileupload_include('we_uploadFile', '', '', 'we_form', '', true, 'document.we_form.submit()', '', 330, true, false, 0);
-$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
 
-if($weFileupload->processFileRequest()){
-	$tempName = $weFileupload->getFileNameTemp();
+$weFileupload = new we_fileupload_ui_base('we_uploadFile');
+$weFileupload->setDimensions(array('width' => 330, 'marginTop' => 6));
+$weFileupload->setExternalProgress(array('isExternalProgress' => true));
+
+//if($tempName = we_fileupload::commitFile('we_uploadFile')){
+	//$tempName = $weFileupload->getFileNameTemp();
 	echo we_html_tools::getHtmlTop() .
 		STYLESHEET .
 		$weFileupload->getCss() . $weFileupload->getJs();
@@ -42,12 +44,14 @@ if($weFileupload->processFileRequest()){
 
 	$we_alerttext = "";
 
-	if(isset($_FILES['we_uploadFile'])){
+	if(($tempName = we_fileupload::commitFile('we_uploadFile')) || isset($_FILES['we_uploadFile'])){t_e("path", $cpat, $_FILES);
 		$overwrite = we_base_request::_(we_base_request::BOOL,"overwrite");
 
 		if(!$tempName){
 			$tempName = TEMP_PATH . we_base_file::getUniqueId();
 			move_uploaded_file($_FILES['we_uploadFile']['tmp_name'], $tempName);
+		} else {
+			$tempName = $_SERVER['DOCUMENT_ROOT'] . $tempName;
 		}
 
 		if(file_exists($cpat . "/" . $_FILES['we_uploadFile']["name"])){
@@ -74,6 +78,7 @@ if($weFileupload->processFileRequest()){
 				$_FILES['we_uploadFile']["name"] = $footext;
 			}
 		}
+
 		if(!$we_alerttext){
 			copy($tempName, str_replace(array('\\', '//'), '/', $cpat . '/' . $_FILES['we_uploadFile']['name']));
 		}
@@ -118,4 +123,3 @@ if($weFileupload->processFileRequest()){
 	</div>
 	</body>
 	</html>
-<?php } ?>

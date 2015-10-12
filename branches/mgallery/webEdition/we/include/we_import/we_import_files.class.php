@@ -86,7 +86,7 @@ class we_import_files{
 		$this->fileNameTemp = we_base_request::_(we_base_request::FILE, "weFileNameTemp", '');
 		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
-		$this->isWeFileupload = !we_fileupload_base::isFallback() && !we_fileupload_base::isLegacyMode();
+		$this->isWeFileupload = !we_fileupload::isFallback() && !we_fileupload::isLegacyMode();
 	}
 
 	function getHTML(){
@@ -174,8 +174,6 @@ function uploadFinished() {
 		);
 
 		// categoryselector
-
-
 		if(permissionhandler::hasPerm("EDIT_KATEGORIE")){
 
 			$parts[] = array(
@@ -301,8 +299,9 @@ function uploadFinished() {
 			return $this->getStep2Legacy();
 		}
 
-		$uploader = new we_fileupload_importFiles('we_File', $this->callBack);
-		$body = $uploader->getHTML($this->_getHiddens());
+		$uploader = new we_fileupload_ui_importer('we_File');
+		$uploader->setCallback($this->callBack);
+		$body = $uploader->getHTML($this->_getHiddens(true));
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . $uploader->getCss() . $uploader->getJs() . we_html_multiIconBox::getDynJS("uploadFiles", 30), $body);
 	}
@@ -316,7 +315,7 @@ function uploadFinished() {
 		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
 			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', '[import_expl]'), $maxsize), we_html_tools::TYPE_INFO, 520, false)) .
-			(we_fileupload_base::isFallback() && !we_fileupload_base::isLegacyMode() ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, 520, false)) : '') .
+			(we_fileupload::isFallback() && !we_fileupload::isLegacyMode() ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, 520, false)) : '') .
 			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', '[import_expl_jupload]'), $maxsize), we_html_tools::TYPE_INFO, 520, false));
 
 
@@ -411,7 +410,7 @@ function uploadFinished() {
 		$formcount = we_base_request::_(we_base_request::INT, "weFormCount", 0);
 
 		$bodyAttribs = array("class" => "weDialogButtonsBody", 'style' => 'overflow:hidden;');
-		if($this->step == 1){
+		if($this->step == 1){ // used only by legacy upload => we_fileupload uses rpc interface
 			$bodyAttribs["onload"] = "next();";
 			$resp = $this->importFile();
 			$error = $resp['error'];
@@ -429,12 +428,12 @@ function uploadFinished() {
 			}
 		}
 
-		if($formcount && $this->isWeFileupload){
+		if($formcount && $this->isWeFileupload){ // FIXME: throw away => not used anymore by we_fileupload
 			$response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '');
 			if($this->partNum == $this->partCount){
 				//actual file completed
 				$response['status'] = $error ? 'failure' : 'success';
-				$response['message'] = $error ? /* g_l('importFiles', "[" . */$error['error'] /* . "]") */ : ''; //text in $error is already translated: "Requested lang entry l_importFiles[Fehler beim speichern]"
+				$response['message'] = $error ? $error['error']  : ''; //text in $error is already translated: "Requested lang entry l_importFiles[Fehler beim speichern]"
 				//all files done
 				if($formnum === $formcount){
 					if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']) && $formnum != 0){
@@ -503,7 +502,7 @@ function cancel() {
 		top.close();
 	}
 }
-		' . ((we_fileupload_base::isFallback() || we_fileupload_base::isLegacyMode()) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
+		' . ((we_fileupload::isFallback() || we_fileupload::isLegacyMode()) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
 function next() {
 	var cf = top.imgimportcontent;
 
@@ -519,7 +518,7 @@ function next() {
 
 }"));
 
-		//$we_uploader = new we_fileupload_importFiles('we_File');
+		//$we_uploader = new we_fileupload_ui_importer('we_File');
 		//$js .= $we_uploader->getJs(true, false, true);
 
 
@@ -629,7 +628,8 @@ function next() {
 		return $js;
 	}
 
-	function importFile(){
+	function importFile(){ // used by legacy upload only => we_fileupload uses rpc interface
+							// TODO: ifnd out: is it really used by legacy upload?
 		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
 			$we_ContentType = getContentTypeFromFile($_FILES['we_File']["name"]);
 			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || ($this->isWeFileupload && $this->partNum == $this->showErrorAtChunkNr)){
@@ -820,10 +820,10 @@ function next() {
 		}
 	}
 
-	function _getHiddens(){
-		return we_html_element::htmlHiddens(array(
+	function _getHiddens($noCmd = false){
+
+		return ($noCmd ? '' : we_html_element::htmlHidden('cmd', 'buttons')) . we_html_element::htmlHiddens(array(
 				'we_cmd[0]' => 'import_files',
-				'cmd' => 'buttons',
 				'step' => 1,
 				'weFormNum' => 0,
 				'weFormCount' => 0,

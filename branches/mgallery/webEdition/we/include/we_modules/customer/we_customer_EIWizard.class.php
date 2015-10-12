@@ -545,9 +545,15 @@ class we_customer_EIWizard{
 		$source = we_base_request::_(we_base_request::FILE, "source", "/");
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
 
-		$fileUploader = new we_fileupload_include('upload', 'body', 'footer', 'we_form', 'next_footer', false, 'top.load.doNextAction()', 'document.we_form.import_from[1].checked = true;', 369, true, true, 200);
-		$fileUploader->setAction($this->frameset . '?pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type);
-		$fileUploader->setDimensions(array('alertBoxWidth' => 430, 'marginTop' => 10));
+		$fileUploader = new we_fileupload_ui_base('upload');
+		$fileUploader->setExternalUiElements(array('btnUploadName' => 'next_footer'));
+		$fileUploader->setCallback('top.load.doNextAction()');
+		//$fileUploader->setForm(array('action' => $this->frameset . '?pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type));
+		$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 200));
+		$fileUploader->setFileSelectOnclick('document.we_form.import_from[1].checked = true;');
+		$fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . ($type == self::TYPE_CSV ? ".csv" : ".xml"));
+		$fileUploader->setDisableUploadBtnOnInit(false);
+		$fileUploader->setDimensions(array('width' => 369, 'alertBoxWidth' => 430, 'marginTop' => 10));
 
 		$parts = array();
 		$js = we_html_element::jsElement('
@@ -611,28 +617,22 @@ function callBack(){
 		$filesource = "";
 
 		if($import_from == self::EXPORT_LOCAL){
-			$fileUploader = new we_fileupload_include('upload');
-			$fileUploader->setFileNameTemp(array('postfix' => $ext));
-
-			if($fileUploader->processFileRequest()){
-				//we have finished upload or we are in fallback mode
-				$filesource = $fileUploader->getFileNameTemp();
-				$filename = str_replace($_SERVER['DOCUMENT_ROOT'], '', $filesource);
-
-				if(!$filename && isset($_FILES['upload']) && $_FILES["upload"]["size"]){
-					//fallback mode
-					$filename = TEMP_DIR . we_base_file::getUniqueId() . $ext;
-					$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
-					move_uploaded_file($_FILES['upload']["tmp_name"], $filesource);
+			if(!(we_fileupload::isFallback() || we_fileupload::isLegacyMode())){
+				$filename = we_fileupload::commitFile('we_upload_file', array('accepted' => array()));
+				$filesource = $filename ? $_SERVER['DOCUMENT_ROOT'] . $filename : '';
+			}
+			if(!$filename && isset($_FILES['upload']) && $_FILES["upload"]["size"]){
+				$filename = TEMP_DIR . we_base_file::getUniqueId() . $ext;
+				$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
+				if(!move_uploaded_file($_FILES['upload']["tmp_name"], $filesource)){
+					$filename = $filesource = '';
 				}
-			} else {
-				//ajax response allready written: return here to send response only
-				return;
 			}
 		} else {
 			$filename = $source;
 			$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;
 		}
+
 
 		$parts = array();
 		if(is_file($filesource) && is_readable($filesource)){
@@ -980,7 +980,7 @@ function callBack(){
 			case "2":
 				$buttons = we_html_button::position_yes_no_cancel(
 						we_html_button::create_button(we_html_button::BACK, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_back&step=" . $step . "';") .
-						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'), we_html_button::create_button(we_html_button::CANCEL, "javascript:" . we_fileupload_include::getJsBtnCmdStatic('cancel', 'body'))
+						we_html_button::create_button(we_html_button::NEXT, "javascript:" . $this->loadFrame . ".location='" . $this->frameset . "?pnt=eiload&cmd=import_next&step=" . $step . "';", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer'), we_html_button::create_button(we_html_button::CANCEL, "javascript:" . we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body'))
 				);
 				break;
 			case "5":
@@ -1239,7 +1239,7 @@ function doNext(){
 	if(' . $this->bodyFrame . '.document.we_form.step.value === "2" &&
 			' . $this->bodyFrame . '.we_FileUpload !== undefined &&
 			' . $this->bodyFrame . '.document.we_form.import_from[1].checked){
-		' . we_fileupload_include::getJsBtnCmdStatic('upload', 'body', 'doNextAction();') . '
+		' . we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'doNextAction();') . '
 		return;
 	}
 	doNextAction();

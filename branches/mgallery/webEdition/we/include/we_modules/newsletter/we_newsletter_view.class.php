@@ -761,30 +761,23 @@ edf.populateGroups();');
 			case "do_upload_csv":
 			case "do_upload_black":
 				$group = we_base_request::_(we_base_request::INT, "group", 0);
-				$weFileupload = new we_fileupload_include('we_File');
-				if(!$weFileupload->processFileRequest()){
-					//ajax resonse allready written: return here to send response only
-					$this->jsonOnly = true;
-
-					return;
-				}
 
 				//set header we avoided when sending JSON only
 				we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
 				echo we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
 
 				//we have finished upload or we are in fallback mode
-				$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $weFileupload->getFileNameTemp());
-				if(!$tempName && isset($_FILES["we_File"]) && $_FILES["we_File"]["size"]){
+				$tempName = we_fileupload::commitFile('we_File');
+				if(!$tempName && isset($_FILES['we_File']) && $_FILES['we_File']['size']){
 					//fallback or legacy mode
-					$we_File = $_FILES["we_File"];
+					$we_File = $_FILES['we_File'];
 					$tempName = TEMP_PATH . we_base_file::getUniqueId();
 
-					if(!move_uploaded_file($we_File["tmp_name"], $tempName)){
+					if(!move_uploaded_file($we_File['tmp_name'], $tempName)){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						return;
 					}
-					$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], "", $tempName);
+					$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], '', $tempName);
 				}
 
 				//print next command

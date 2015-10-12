@@ -25,7 +25,7 @@
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-
+t_e('instance of we_fileupload');
 // init document
 $we_alerttext = '';
 $error = false;
@@ -42,22 +42,24 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 
 switch($contentType){
 	case we_base_ContentTypes::IMAGE;
-		$allowedContentTypes = implode(',', we_base_ContentTypes::inst()->getRealContentTypes($contentType));
-		$allowedExtensions = we_base_imageEdit::IMAGE_EXTENSIONS;
+		$allowedContentTypes = we_base_ContentTypes::inst()->getRealContentTypes($contentType);
+		$allowedExtensions = explode(',', we_base_imageEdit::IMAGE_EXTENSIONS);
 		break;
 	case we_base_ContentTypes::APPLICATION;
-		$allowedContentTypes = '';
-		$allowedExtensions = '';
+		$allowedContentTypes = array();
+		$allowedExtensions = array();
 		break;
 	default:
-		$allowedContentTypes = $contentType;
-		$allowedExtensions = '';
+		$allowedContentTypes = array($contentType);
+		$allowedExtensions = array();
 }
 
 $mode = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
-$weFileupload = new we_fileupload_include('we_File', '', '', '', '', true, 'document.forms[0].submit();', '', 330, true, false, 200, $allowedContentTypes, $allowedExtensions, '', '', array(), -1);
+$weFileupload = new we_fileupload_ui_base('we_File');
+$weFileupload->setTypeCondition('accepted', $allowedContentTypes, $allowedExtensions);
+$weFileupload->setDimensions(array('width' => 330, 'marginTop' => 6));
 $weFileupload->setIsFallback($mode === 'legacy' ? true : true);
-$weFileupload->setExternalProgress(true, 'progressbar', true, 120);
+$weFileupload->setExternalProgress(array('isExternalProgress' => true));
 
 if($weFileupload->processFileRequest()){
 	$we_File = $weFileupload->getFileNameTemp();
