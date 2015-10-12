@@ -653,8 +653,7 @@ top.makeNewDocument = true;' .
 options.canSelectDir=' . intval($this->canSelectDir) . ';
 options.col2js="' . $this->col2js . '";
 var contentTypes = {' . implode(',', $ctypes) . '};
-var consts={
-};');
+');
 	}
 
 }

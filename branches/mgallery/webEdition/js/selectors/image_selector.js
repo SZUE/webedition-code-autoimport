@@ -25,7 +25,7 @@
 
 function writeBody(d) {
 	switch (top.options.view) {
-		case consts.VIEW_LIST:
+		case WE().consts.selectors.VIEW_LIST:
 			writeBodyDocument(d);
 			break;
 		default:

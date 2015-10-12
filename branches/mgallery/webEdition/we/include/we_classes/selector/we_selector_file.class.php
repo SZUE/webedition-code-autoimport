@@ -241,6 +241,9 @@ WE().consts.selectors={
 	CREATE_CAT:' . self::CREATE_CAT . ',
 	DO_RENAME_ENTRY:' . self::DO_RENAME_ENTRY . ',
 	SETDIR:' . self::SETDIR . '
+	VIEW_ICONS:"' . we_search_view::VIEW_ICONS . '",
+  VIEW_LIST="' . we_search_view::VIEW_LIST . '"
+
 };
 
 var g_l={
