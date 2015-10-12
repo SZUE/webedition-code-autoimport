@@ -83,8 +83,7 @@ var perms={
 	}
 
 	function getJSProperty(){
-		return parent::getJSProperty() .
-				we_html_element::jsElement('
+		return we_html_element::jsElement('
 var loaded=0;
 WE().consts.dirs.WE_CUSTOMER_MODULE_DIR="' . WE_CUSTOMER_MODULE_DIR . '";
 

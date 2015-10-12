@@ -73,7 +73,6 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 	function getProperties(){
 		$yuiSuggest = & weSuggest::getInstance();
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->getJSProperty();
 			$GLOBALS['we_body_insert'] = '<form name="we_form">';
 			$GLOBALS['we_body_insert'] .= $this->getHiddens() . '</form>';

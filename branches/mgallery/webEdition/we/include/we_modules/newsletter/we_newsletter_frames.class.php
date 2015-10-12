@@ -1227,15 +1227,12 @@ window.onload=extraInit;');
 	 */
 	function getHTMLProperties(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
 			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getHiddens(array('ncmd' => 'home')) . we_html_element::htmlHidden('home', 0));
 			$GLOBALS['mod'] = 'newsletter';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			$out = ob_get_contents();
-			ob_end_clean();
-			return $out;
+			return ob_get_clean();
 		}
 
 		$js = $this->View->getJSProperty('setFocus();') .

@@ -30,10 +30,9 @@ class we_customer_frames extends we_modules_frame{
 	protected $treeFooterHeight = 40;
 	protected $treeDefaultWidth = 244;
 
-	function __construct(){
+	public function __construct(){
 		parent::__construct(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php');
 		$this->Tree = new we_customer_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->setFrames("top.content", "top.content", "top.content.cmd");
 		$this->View = new we_customer_view();
 	}
 
@@ -177,7 +176,6 @@ function setTab(tab) {
 
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			$hiddens['cmd'] = 'home';
-			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
 			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0));
 			$GLOBALS['mod'] = 'customer';

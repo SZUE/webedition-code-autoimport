@@ -115,13 +115,12 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 	function getProperties(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){ //TODO: find a better solution for this!
-			$GLOBALS['we_print_not_htmltop'] = true;
 			$GLOBALS['we_head_insert'] = $this->getPropertyJS();
 			$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
 			$GLOBALS['mod'] = 'workflow';
 			ob_start();
 			include(WE_MODULES_PATH . 'home.inc.php');
-			return;
+			return ob_get_clean();
 		}
 		$content = '<form name="we_form" onsubmit="return false">' .
 			$this->getHiddens();
