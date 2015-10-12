@@ -236,11 +236,6 @@ WE().consts.g_l.newsletter = {
 };
 var topFrame=top.content;
 var frameSet="' . $this->frameset . '";
-var perms={
-	DELETE_NEWSLETTER:' . intval(permissionhandler::hasPerm("DELETE_NEWSLETTER")) . ',
-	EDIT_NEWSLETTER:' . intval(permissionhandler::hasPerm("EDIT_NEWSLETTER")) . ',
-	NEW_NEWSLETTER:' . intval(permissionhandler::hasPerm("NEW_NEWSLETTER")) . '
-};
 ') . we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_top.js');
 	}
 

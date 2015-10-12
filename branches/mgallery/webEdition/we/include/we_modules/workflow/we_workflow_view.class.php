@@ -417,11 +417,6 @@ var g_l = {
 	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_delete]')) . '",
 	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '"
 };
-var perms={
-	DELETE_WORKFLOW:' . intval(permissionhandler::hasPerm("DELETE_WORKFLOW")) . ',
-	EDIT_WORKFLOW:' . intval(permissionhandler::hasPerm("EDIT_WORKFLOW")) . ',
-	NEW_WORKFLOW:' . intval(permissionhandler::hasPerm("NEW_WORKFLOW")) . '
-};
 ') .
 			we_html_element::jsScript(WE_JS_WORKFLOW_MODULE_DIR . 'workflow_top.js');
 	}
@@ -442,18 +437,16 @@ function submitForm(){
 var loaded;
 var uid="' . $this->uid . '";
 var g_l={
-	"worktime_empty": "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",
-	"user_empty":"' . addslashes(g_l('modules_workflow', '[user_empty]')) . '",
-	"del_last_step":"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_step]')) . '",
-	"del_last_task":"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_task]')) . '",
-	"name_empty":"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[name_empty]')) . '",
-	"folders_empty":"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[folders_empty]')) . '",
-	"doctype_empty":"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[doctype_empty]')) . '",
-	"objects_empty":"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[objects_empty]')) . '"
+	worktime_empty: "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",
+	user_empty:"' . addslashes(g_l('modules_workflow', '[user_empty]')) . '",
+	del_last_step:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_step]')) . '",
+	del_last_task:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_task]')) . '",
+	name_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[name_empty]')) . '",
+	folders_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[folders_empty]')) . '",
+	doctype_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[doctype_empty]')) . '",
+	objects_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[objects_empty]')) . '"
 };
 ' . (!$this->show ? '
-
-
 
 function getNumOfDocs(){
 	return ' . $this->workflowDef->loadDocuments() . count($this->workflowDef->documents) . ';

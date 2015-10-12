@@ -91,7 +91,7 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.glossary.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return;
 			}
-			if (!permDELETE_GLOSSARY) {
+			if (!WE().util.hasPerm("DELETE_GLOSSARY")) {
 				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 
@@ -139,7 +139,10 @@ function we_cmd() {
 		case "glossary_edit_foreignword":
 		case "glossary_edit_link":
 		case "glossary_edit_textreplacement":
-			WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+			if (!WE().util.hasPerm("EDIT_GLOSSARY")) {
+				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
+				break;
+			}
 			top.content.hot = 0;
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.cmdid.value = args[1];

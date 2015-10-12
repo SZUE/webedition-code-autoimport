@@ -22,6 +22,5 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createCustomer = we_html_button::create_button("fat:new_customer,fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_customer');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_CUSTOMER"));
-$content = $createCustomer;
+$content = we_html_button::create_button("fat:new_customer,fa-lg fa-user-plus", "javascript:top.opener.top.we_cmd('new_customer');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_CUSTOMER"));
 $modimage = "customer.gif";

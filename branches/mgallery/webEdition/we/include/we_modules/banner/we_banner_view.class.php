@@ -24,7 +24,7 @@
  */
 /* the parent class of storagable webEdition classes */
 
-class we_banner_view extends we_banner_base implements we_modules_viewIF{
+class we_banner_view extends we_modules_view{
 	// settings array; format settings[setting_name]=settings_value
 	var $settings = array();
 	//default banner
@@ -215,11 +215,6 @@ var g_l = {
 	delete_question:"' . g_l('modules_banner', '[delete_question]') . '",
 	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_delete]')) . '",
 	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '"
-};
-var perms={
-	DELETE_BANNER:' . intval(permissionhandler::hasPerm("DELETE_BANNER")) . ',
-	EDIT_BANNER:' . intval(permissionhandler::hasPerm("EDIT_BANNER")) . ',
-	NEW_BANNER:' . intval(permissionhandler::hasPerm("NEW_BANNER")) . '
 };
 ') .
 			we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');

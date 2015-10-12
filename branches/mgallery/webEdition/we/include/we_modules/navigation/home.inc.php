@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo (!empty($GLOBALS["we_print_not_htmltop"]) ? we_html_tools::getHtmlTop() : '') .
+echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 $_row = 0;
@@ -46,7 +46,7 @@ echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
 	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 	<div id="modimage"><img src="<?php echo IMAGE_DIR . 'startscreen/navigation.gif'; ?>" width="335" height="329" /></div>
 
-<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
+	<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
 </body>
 
 </html>

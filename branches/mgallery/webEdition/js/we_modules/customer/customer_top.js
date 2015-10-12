@@ -77,7 +77,7 @@ function we_cmd() {
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
-			if (!perms.DELETE_CUSTOMER) {
+			if (!WE().util.hasPerm("DELETE_CUSTOMER")) {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}
@@ -98,7 +98,7 @@ function we_cmd() {
 			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
-			if (!perms.EDIT_CUSTOMER && !perms.NEW_CUSTOMER) {
+			if (!WE().util.hasPerm("EDIT_CUSTOMER") && !WE().util.hasPerm("NEW_CUSTOMER")) {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_WARNING, window);
 				return;
 			}

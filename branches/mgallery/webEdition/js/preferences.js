@@ -492,7 +492,7 @@ function show_seem_chooser(val) {
 function selectSidebarDoc() {
 //	myWind = parent.opener.top.jsWindow.prototype.find('preferences');
 	myWindStr = "top.jsWindow.prototype.find('preferences').wind";
-	parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
+	parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('newconf[SIDEBAR_DEFAULT_DOCUMENT]').value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'newconf[SIDEBAR_DEFAULT_DOCUMENT]\')[0].value', myWindStr + '.content.document.getElementsByName(\'ui_sidebar_file_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, WE().util.hasPerm("CAN_SELECT_OTHER_USERS_FILES"));
 }
 
 function select_seem_start() {
@@ -503,7 +503,7 @@ function select_seem_start() {
 			parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_object')[0].value, WE().consts.tables.OBJECT_FILES_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_object\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_object_name\')[0].value', '', '', '', 'objectFile', 1);
 		}
 	} else {
-		parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_document')[0].value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, perms.CAN_SELECT_OTHER_USERS_FILES);
+		parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_document')[0].value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, WE().util.hasPerm("CAN_SELECT_OTHER_USERS_FILES"));
 	}
 }
 

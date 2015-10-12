@@ -84,7 +84,6 @@ WE().consts.navigation={
 };
 var data={
 	frameset:"' . $this->frameset . '",
-	permDELETE_NAVIGATION:' . intval(permissionhandler::hasPerm('DELETE_NAVIGATION')) . ',
 };') .
 				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
 	}

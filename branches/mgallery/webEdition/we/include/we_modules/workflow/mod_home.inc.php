@@ -22,6 +22,5 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$createWf = we_html_button::create_button("fat:new_workflow,fa-lg fa-gears", "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
-$content = $createWf;
+$content = we_html_button::create_button("fat:new_workflow,fa-lg fa-gears", "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
 $modimage = "workflow.gif";

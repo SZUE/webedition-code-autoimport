@@ -83,7 +83,7 @@ function we_cmd() {
 			}
 			break;
 		case "delete_banner":
-			if (perms.DELETE_BANNER) {
+			if (WE().util.hasPerm("DELETE_BANNER")) {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 
@@ -100,7 +100,7 @@ function we_cmd() {
 			}
 			break;
 		case "save_banner":
-			if (perms.EDIT_BANNER || perms.NEW_BANNER) {
+			if (WE().util.hasPerm("EDIT_BANNER") || WE().util.hasPerm("NEW_BANNER")) {
 				if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
 					if (!top.content.editor.edbody.checkData()) {
 						return;

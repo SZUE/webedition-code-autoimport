@@ -22,7 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo ((empty($GLOBALS['we_print_not_htmltop'])) ? we_html_tools::getHtmlTop() : '') .
+
+echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 $mod = str_replace(array('.', '/', '\\'), '', we_base_request::_(we_base_request::STRING, "mod", (isset($GLOBALS["mod"]) ? $GLOBALS["mod"] : "")));
@@ -48,6 +49,6 @@ echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
 		var we_is_home = 1;">
 	<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 	<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $modimage; ?>" width="335" height="329" /></div>
-<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
+		<?php echo (isset($GLOBALS["we_body_insert"]) ? $GLOBALS["we_body_insert"] : ""); ?>
 </body>
 </html>

@@ -2455,9 +2455,6 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	var modules = {
 		SPELLCHECKER: '<?php echo intval(defined('SPELLCHECKER')); ?>'
 	};
-	var perms = {
-		CAN_SELECT_OTHER_USERS_FILES: '<?php echo (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1); ?>'
-	};
 	WE().consts.g_l.prefs = {
 		language_already_exists: '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')); ?>',
 		language_country_missing: '<?php echo we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_country_missing]')); ?>',

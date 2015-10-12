@@ -111,9 +111,6 @@ var makeNewCat=false;
 var we_editCatID="";
 var old=0;
 var noChoose=' . intval($this->noChoose) . ';
-var perms={
-	"EDIT_KATEGORIE":' . intval(permissionhandler::hasPerm("EDIT_KATEGORIE")) . '
-};
 
 g_l.new_cat_name="' . g_l('fileselector', '[new_cat_name]') . '";
 

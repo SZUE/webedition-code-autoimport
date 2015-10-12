@@ -48,7 +48,6 @@ class we_glossary_frameEditorHome{
 			'name' => 'we_form',
 		);
 
-		$GLOBALS["we_print_not_htmltop"] = true;
 		$GLOBALS["we_head_insert"] = $weGlossaryFrames->View->getJSProperty();
 		$GLOBALS["we_body_insert"] = we_html_element::htmlForm($_form, $weGlossaryFrames->View->getCommonHiddens($_hidden));
 		$GLOBALS["mod"] = "glossary";
@@ -56,18 +55,7 @@ class we_glossary_frameEditorHome{
 		ob_start();
 		include(WE_MODULES_PATH . 'home.inc.php');
 
-		$content =ob_get_clean();
-
-		$_body = array(
-			'bgcolor' => '#F0EFF0',
-			'marginwidth' => 15,
-			'marginheight' => 15,
-			'leftmargin' => 15,
-			'topmargin' => 15,
-			'onload' => 'loaded=1;',
-		);
-
-		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody($_body, $content), "");
+		return ob_get_clean();
 	}
 
 	function Footer($weGlossaryFrames){

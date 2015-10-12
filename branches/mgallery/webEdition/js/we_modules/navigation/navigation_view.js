@@ -142,7 +142,7 @@ function we_cmd() {
 					return;
 				}
 			}
-			if (data.permDELETE_NAVIGATION) {
+			if (!WE().util.hasPerm("DELETE_NAVIGATION")) {
 				WE().util.showMessage(WE().consts.g_l.navigation.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			}

@@ -64,8 +64,6 @@ WE().consts.g_l.glossary.view={
 };
 var data={
 	frameset:"' . $this->frameset . '",
-	permDELETE_GLOSSARY:' . intval(permissionhandler::hasPerm('DELETE_GLOSSARY')) . ',
-	permEDIT_GLOSSARY:' . intval(permissionhandler::hasPerm('EDIT_GLOSSARY')) . ',
 };
 parent.document.title = "' . $title . '";
 ') .

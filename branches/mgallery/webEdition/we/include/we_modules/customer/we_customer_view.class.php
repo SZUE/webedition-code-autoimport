@@ -73,11 +73,6 @@ var g_l={
 
 var topFrame=top.content;
 var frameUrl="' . $this->frameset . '";
-var perms={
-	DELETE_CUSTOMER:' . intval(permissionhandler::hasPerm("DELETE_CUSTOMER")) . ',
-	EDIT_CUSTOMER:' . intval(permissionhandler::hasPerm("EDIT_CUSTOMER")) . ',
-	NEW_CUSTOMER:' . intval(permissionhandler::hasPerm("NEW_CUSTOMER")) . '
-};
 ') .
 				we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_top.js');
 	}

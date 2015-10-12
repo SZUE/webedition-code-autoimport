@@ -128,12 +128,12 @@ function doClick(id, ct) {
 				wasdblclick = false;
 			}, 400);
 		} else if (top.currentID == id) {
-			if (perms.EDIT_KATEGORIE) {
+			if (WE().util.hasPerm("EDIT_KATEGORIE")) {
 				top.RenameEntry(id);
 			}
 		}
 	} else if (top.currentID == id && (!top.ctrlpressed)) {
-		if (perms.EDIT_KATEGORIE) {
+		if (WE().util.hasPerm("EDIT_KATEGORIE")) {
 			top.RenameEntry(id);
 		}
 
