@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -341,28 +343,22 @@ keyTagWizardListener.prototype = new keyBoardListener();
 function keyReloadListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function (evt) {
-
 		switch (evt.keyCode) {
 			case 82:// R Reload
-				this.cancelEvent(evt);
-				return true;
 			case 90://Z Back
-				this.cancelEvent(evt);
-				return true;
-			case 116:
+			case 116: // F5
 				this.cancelEvent(evt);
 				return true;
 		}
-	}
-	return this.next(evt);
-
+		return this.next(evt);
+	};
 }
 
 keyReloadListener.prototype = new keyBoardListener();
 
 
 // build the CoR
-var keyListener = new keyEditorListener(new keyModuleListener(new keyToolListener(new keyDialogListener(new keyDialogSaveListener(new keyTagWizardListener(new keyReloadListener( )))))));
+WE().handler.keyListener = new keyEditorListener(new keyModuleListener(new keyToolListener(new keyDialogListener(new keyDialogSaveListener(new keyTagWizardListener(new keyReloadListener( )))))));
 
 /**
  * Receives all Keyboard Events and forwards them, if required
@@ -373,15 +369,15 @@ var keyListener = new keyEditorListener(new keyModuleListener(new keyToolListene
 function dealWithKeyboardShortCut(evt, win) {
 	// This function receives all events, when a key is pressed and forwards the event to
 	// the first keyboardlistener ("chain of responsibility")
-	keyListener.win = win;
+	WE().handler.keyListener.win = win;
 	switch (evt.keyCode) {
 		case -1:
-			keyListener.cancelEvent(evt);
+			WE().handler.keyListener.cancelEvent(evt);
 			return true;
 		case 27: // ESCAPE
 		case 13: // ENTER
 		case 116: // F5 - works only in FF
-			return keyListener.dealEvent(evt);
+			return WE().handler.keyListener.dealEvent(evt);
 		case 45://ins
 		case 46://del
 		case 67: //C
@@ -389,6 +385,6 @@ function dealWithKeyboardShortCut(evt, win) {
 			break;
 		default:
 			return (evt.ctrlKey || evt.metaKey ?
-							keyListener.dealEvent(evt) : true);
+							WE().handler.keyListener.dealEvent(evt) : true);
 	}
 }

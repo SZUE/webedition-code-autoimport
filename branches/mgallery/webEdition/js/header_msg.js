@@ -32,7 +32,7 @@ function header_msg_update(newmsg_count, newtodo_count) {
 	msgTD.firstChild.innerHTML = newmsg_count;
 	todoTD.firstChild.innerHTML = newtodo_count;
 	var control = WE().layout.weEditorFrameController;
-	if (control.getActiveDocumentReference() &&
+	if (control && control.getActiveDocumentReference() &&
 					control.getActiveDocumentReference().quickstart &&
 					typeof (control.getActiveDocumentReference().setMsgCount) == 'function' &&
 					typeof (control.getActiveDocumentReference().setTaskCount) == 'function') {
