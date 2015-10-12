@@ -338,7 +338,7 @@ function getMainDialog(){
 echo
 we_html_element::jsElement('
 var consts={
-	reloadUrl:"' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs",
+	reloadUrl:WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=editThumbs",
 };
 var g_l={
 	thumbnail_hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_hochkomma]')) . '",

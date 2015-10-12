@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -23,17 +25,17 @@
 
 function drawNewFolder() {
 	unselectAllFiles();
-	top.fscmd.location.replace(top.queryString(top.queryType.NEWFOLDER, currentDir));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.NEWFOLDER, currentDir));
 }
 
 function RenameFolder(id) {
 	unselectAllFiles();
-	top.fscmd.location.replace(top.queryString(top.queryType.RENAMEFOLDER, currentDir, "", id));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.RENAMEFOLDER, currentDir, "", id));
 }
 
 function showPreview(id) {
 	if (top.fspreview) {
-		top.fspreview.location.replace(top.queryString(top.queryType.PREVIEW, id));
+		top.fspreview.location.replace(top.queryString(WE().consts.selectors.PREVIEW, id));
 	}
 }
 
@@ -101,7 +103,7 @@ function setDir(id) {
 	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
-	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.SETDIR, id));
 	e = getEntry(id);
 	top.document.getElementById('fspath').innerHTML = e.path;
 }
@@ -147,10 +149,10 @@ function addEntry(id, txt, folder, pth, moddte, ct) {
 
 function writeBody(d) {
 	var body = (we_editDirID ?
-					'<input type="hidden" name="what" value="' + consts.DORENAMEFOLDER + '" />' +
+					'<input type="hidden" name="what" value="' + WE().consts.selectors.DORENAMEFOLDER + '" />' +
 					'<input type="hidden" name="we_editDirID" value="' + we_editDirID + '" />'
 					:
-					'<input type="hidden" name="what" value="' + consts.CREATEFOLDER + '" />'
+					'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATEFOLDER + '" />'
 					) +
 					'<input type="hidden" name="order" value="' + order + '" />' +
 					'<input type="hidden" name="rootDirID" value="' + options.rootDirID + '" />' +
@@ -166,7 +168,7 @@ function writeBody(d) {
 									'');
 
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!wasdblclick){doClick(' + entries[i].ID + ',0);}else{wasdblclick=false;}\',300);return true"';
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!wasdblclick){doClick(' + entries[i].ID + ',0);}else{wasdblclick=false;}},300);return true"';
 		var ondblclick = ' onDblClick="wasdblclick=true;clearTimeout(tout);doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + 'cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="treeIcon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +

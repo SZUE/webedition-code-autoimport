@@ -227,7 +227,7 @@ class weSuggest{
 
 		return we_html_element::jsElement('
 YAHOO.autocoml.width= ' . intval($this->width) . ';
-YAHOO.autocoml.ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+YAHOO.autocoml.ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc/rpc.php";
 YAHOO.autocoml.selfType="' . $weSelfContentType . '";
 YAHOO.autocoml.selfID="' . $weSelfID . '";
 YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};

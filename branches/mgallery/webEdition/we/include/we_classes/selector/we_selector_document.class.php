@@ -378,7 +378,7 @@ top.makeNewDocument = true;' .
 		if(top.document.getElementById("fspath")){
 			top.document.getElementById("fspath").innerHTML = BreadCrumb;
 		}else if(weCountWriteBC<10){
-			setTimeout(\'weWriteBreadCrumb("' . $path . '")\',100);
+			setTimeout(function(){weWriteBreadCrumb("' . $path . '")},100);
 		}
 		weCountWriteBC++;
 	}') . '

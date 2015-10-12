@@ -102,7 +102,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 							"path" => $item['Path']
 						);
 					}
-					$script .= 'new (WE().util.jsWindow)(top.window, "' . WEBEDITION_DIR . 'moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
+					$script .= 'new (WE().util.jsWindow)(top.window, WE().consts.dirs.WEBEDITION_DIR+"moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
 				} else {
 					$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				}

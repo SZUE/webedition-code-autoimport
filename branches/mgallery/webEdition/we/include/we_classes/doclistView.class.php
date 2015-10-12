@@ -35,7 +35,7 @@ abstract class doclistView{
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		return we_html_element::jsElement('
-var ajaxURL = "' . WEBEDITION_DIR . 'rpc/rpc.php";
+var ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc/rpc.php";
 var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
 var docID="' . $GLOBALS['we_doc']->ID . '";
 var transaction="' . $we_transaction . '";

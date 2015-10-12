@@ -8,10 +8,9 @@ weAddToCollection = {
 		nothingToMove: '',
 		notValidFolder: ''
 	},
-	init: function (conf, g_l, we_const) {
+	init: function (conf, g_l) {
 		this.conf = conf;
 		this.g_l = g_l;
-		this.we_const = we_const;
 
 		top.treeData.setstate(top.treeData.tree_states.select);
 		if (top.treeData.table != this.conf.table) {
@@ -40,7 +39,7 @@ weAddToCollection = {
 		var invalidAcFields = false;
 		acStatus = YAHOO.autocoml.checkACFields();
 		acStatusType = typeof acStatus;
-		if (acStatusType.toLowerCase() == 'object') {
+		if (acStatusType.toLowerCase() === 'object') {
 			if (acStatus.running) {
 				setTimeout(press_ok_move, 100);
 				return;

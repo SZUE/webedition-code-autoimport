@@ -90,8 +90,6 @@ echo we_html_tools::getHtmlTop() .
 		},{
 			nothingToMove: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_move]')) . '",
 			notValidFolder: "' . we_message_reporting::prepareMsgForJS(g_l('weClass', '[notValidFolder]')) . '"
-		},{
-			VFILE_TABLE: "' . VFILE_TABLE . '"
 		}
 	);') .
  weSuggest::getYuiFiles();

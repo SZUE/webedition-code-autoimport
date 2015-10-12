@@ -24,33 +24,29 @@
  */
 /* the parent class of storagable webEdition classes */
 class we_voting_view extends we_modules_view{
+
 	var $voting;
 	var $editorBodyFrame;
 	var $editorBodyForm;
 	var $editorHeaderFrame;
 	var $icon_pattern = "";
 
-	function __construct($frameset = "", $topframe = "top.content"){
+	function __construct(){
+		$frameset = WE_VOTING_MODULE_DIR . "edit_voting_frameset.php";
+		$topframe = "top.content";
 		parent::__construct($frameset, $topframe);
+		$this->editorBodyFrame = 'top.content.editor.edbody';
+		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
+		$this->editorHeaderFrame = 'top.content.editor.edheader';
 		$this->voting = new we_voting_voting();
 	}
 
-	function setTopFrame($frame){
-		parent::setTopFrame($frame);
-		$this->editorBodyFrame = $frame . '.editor.edbody';
-		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $frame . '.editor.edheader';
-	}
-
-	//------------------------------------------------
-
-
 	function getCommonHiddens($cmds = array()){
 		return
-			parent::getCommonHiddens($cmds) .
-			we_html_element::htmlHiddens(array(
-				"vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
-				"IsFolder" => (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0')
+				parent::getCommonHiddens($cmds) .
+				we_html_element::htmlHiddens(array(
+					"vernr" => (isset($cmds["vernr"]) ? $cmds["vernr"] : 0),
+					"IsFolder" => (isset($this->voting->IsFolder) ? $this->voting->IsFolder : '0')
 		));
 	}
 
@@ -60,8 +56,8 @@ class we_voting_view extends we_modules_view{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
 		return
-			parent::getJSTop() .
-			we_html_element::jsElement('
+				parent::getJSTop() .
+				we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot = 0;
@@ -81,7 +77,7 @@ parent.document.title = "' . $title . '";
 
 function we_cmd() {
 	var args = [];
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 		for(var i = 0; i < arguments.length; i++){
 						args.push(arguments[i]);
 
@@ -103,26 +99,26 @@ function we_cmd() {
 					break;
 
 		case "vote":
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = args[0];
-				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 3;
-				' . $this->topFrame . '.editor.edbody.document.we_form.votnr.value = args[1];
-				' . $this->topFrame . '.editor.edbody.submitForm();
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.tabnr.value = 3;
+				top.content.editor.edbody.document.we_form.votnr.value = args[1];
+				top.content.editor.edbody.submitForm();
 				break;
 		case "resetscores":
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = args[0];
-				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 3;
-				' . $this->topFrame . '.editor.edbody.submitForm();
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.tabnr.value = 3;
+				top.content.editor.edbody.submitForm();
 				break;
 					case "new_voting":
 					case "new_voting_group":
-			if(' . $this->topFrame . '.editor.edbody.loaded) {
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value = args[0];
-				' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value = args[1];
-				' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value = 1;
-				' . $this->topFrame . '.editor.edbody.document.we_form.vernr.value = 0;
-				' . $this->topFrame . '.editor.edbody.submitForm();
+			if(top.content.editor.edbody.loaded) {
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
+				top.content.editor.edbody.document.we_form.tabnr.value = 1;
+				top.content.editor.edbody.document.we_form.vernr.value = 0;
+				top.content.editor.edbody.submitForm();
 			} else {
-				setTimeout(\'we_cmd("new_voting");\', 10);
+				setTimeout(function(){we_cmd("new_voting");}, 10);
 			}
 			break;
 		case "delete_voting":
@@ -132,17 +128,17 @@ function we_cmd() {
 				return;
 			}
 			' . (!permissionhandler::hasPerm("DELETE_VOTING") ?
-					(
-					we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					) :
-					('
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
+								(
+								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+								) :
+								('
+					if (top.content.editor.edbody.loaded) {
 						if (confirm("' . g_l('modules_voting', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
-							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
+							top.content.editor.edbody.document.we_form.cmd.value=args[0];
+							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 							' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
-							' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
-							' . $this->topFrame . '.editor.edbody.submitForm();
+							top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
+							top.content.editor.edbody.submitForm();
 						}
 					} else {
 						' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -155,23 +151,23 @@ function we_cmd() {
 			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 
 
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
+					if (top.content.editor.edbody.loaded) {
 
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
-							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-							' . $this->topFrame . '.editor.edbody.document.we_form.owners_name.value=' . $this->topFrame . '.editor.edbody.owners_label.name;
-							' . $this->topFrame . '.editor.edbody.document.we_form.owners_count.value=' . $this->topFrame . '.editor.edbody.owners_label.itemCount;
+							top.content.editor.edbody.document.we_form.cmd.value=args[0];
+							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+							top.content.editor.edbody.document.we_form.owners_name.value=top.content.editor.edbody.owners_label.name;
+							top.content.editor.edbody.document.we_form.owners_count.value=top.content.editor.edbody.owners_label.itemCount;
 							' . '
 							if(' . $this->editorBodyForm . '.IsFolder.value!=1){
-								' . $this->topFrame . '.editor.edbody.document.we_form.question_name.value=' . $this->topFrame . '.editor.edbody.question_edit.name;
-								' . $this->topFrame . '.editor.edbody.document.we_form.answers_name.value=' . $this->topFrame . '.editor.edbody.answers_edit.name;
-								' . $this->topFrame . '.editor.edbody.document.we_form.variant_count.value=' . $this->topFrame . '.editor.edbody.answers_edit.variantCount;
-								' . $this->topFrame . '.editor.edbody.document.we_form.item_count.value=' . $this->topFrame . '.editor.edbody.answers_edit.itemCount;
-								' . $this->topFrame . '.editor.edbody.document.we_form.iptable_name.value=' . $this->topFrame . '.editor.edbody.iptable_label.name;
-								' . $this->topFrame . '.editor.edbody.document.we_form.iptable_count.value=' . $this->topFrame . '.editor.edbody.iptable_label.itemCount;
+								top.content.editor.edbody.document.we_form.question_name.value=top.content.editor.edbody.question_edit.name;
+								top.content.editor.edbody.document.we_form.answers_name.value=top.content.editor.edbody.answers_edit.name;
+								top.content.editor.edbody.document.we_form.variant_count.value=top.content.editor.edbody.answers_edit.variantCount;
+								top.content.editor.edbody.document.we_form.item_count.value=top.content.editor.edbody.answers_edit.itemCount;
+								top.content.editor.edbody.document.we_form.iptable_name.value=top.content.editor.edbody.iptable_label.name;
+								top.content.editor.edbody.document.we_form.iptable_count.value=top.content.editor.edbody.iptable_label.itemCount;
 							}
 
-							' . $this->topFrame . '.editor.edbody.submitForm();
+							top.content.editor.edbody.submitForm();
 							top.content.usetHot();
 					} else {
 						' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -181,13 +177,13 @@ function we_cmd() {
 
 		case "voting_edit":
 			' . (!permissionhandler::hasPerm("EDIT_VOTING") ? we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
-			' . $this->topFrame . '.editor.edbody.document.we_form.cmdid.value=args[1];
-			' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-			' . $this->topFrame . '.editor.edbody.submitForm();
+			top.content.editor.edbody.document.we_form.cmd.value=args[0];
+			top.content.editor.edbody.document.we_form.cmdid.value=args[1];
+			top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+			top.content.editor.edbody.submitForm();
 		break;
 		case "load":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
+			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
 		break;
 		case "home":
 			' . $this->editorBodyFrame . '.parent.location="' . $this->frameset . '?pnt=editor";
@@ -200,8 +196,8 @@ function we_cmd() {
 
 	function getJSProperty(){
 		return
-			parent::getJSProperty() .
-			we_html_element::jsElement('
+				parent::getJSProperty() .
+				we_html_element::jsElement('
 var loaded=0;
 
 function doUnload() {
@@ -210,7 +206,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "switchPage":
 			document.we_form.cmd.value=arguments[0];
@@ -218,7 +214,7 @@ function we_cmd() {
 			submitForm();
 		break;
 		case "we_voting_dirSelector":
-			url="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_voting_dirSelector&";
+			url=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=we_voting_dirSelector&";
 			for(var i = 1; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 			new (WE().util.jsWindow)(top.window, url,"we_votingSelector",-1,-1,600,350,true,true,true);
 		break;
@@ -294,9 +290,8 @@ function we_cmd() {
 			}
 			top.content.we_cmd.apply(this, args);
 	}
-}' . $this->getJSSubmitFunction() . '
-
-		');
+}' . $this->getJSSubmitFunction()
+		);
 	}
 
 	function processCommands(){
@@ -310,20 +305,20 @@ function we_cmd() {
 			case "new_voting_group":
 				if(!permissionhandler::hasPerm("NEW_VOTING")){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
 				}
 				$this->voting = new we_voting_voting();
 				$this->voting->IsFolder = we_base_request::_(we_base_request::STRING, "cmd") === 'new_voting_group' ? 1 : 0;
 				echo we_html_element::jsElement(
-					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+						'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";
+						top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 			case "voting_edit":
 				if(!permissionhandler::hasPerm("EDIT_VOTING")){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';
@@ -334,15 +329,15 @@ function we_cmd() {
 
 				if(!$this->voting->isAllowedForUser()){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					$this->voting = new we_voting_voting();
 					$_REQUEST["home"] = true;
 					break;
 				}
 				echo we_html_element::jsElement(
-					$this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+						'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->voting->Text) . '";
+						top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 			case "save_voting":
 				if(!permissionhandler::hasPerm("NEW_VOTING") && !permissionhandler::hasPerm("EDIT_VOTING")){
@@ -406,13 +401,13 @@ function we_cmd() {
 					if($q_empty){
 						$error = true;
 						echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[question_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[question_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					} else if($a_empty){
 						$error = true;
 						echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_empty]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
@@ -423,7 +418,7 @@ function we_cmd() {
 					$weAcResult = $weAcQuery->getItemById($this->voting->ParentID, VOTING_TABLE, array("IsFolder"));
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 						echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
+								we_message_reporting::getShowMessageCall(g_l('modules_voting', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
 						);
 						break;
 					}
@@ -437,37 +432,37 @@ function we_cmd() {
 						$db_tmp = new DB_WE();
 						$this->db->query('SELECT ID FROM ' . VOTING_TABLE . ' WHERE Path LIKE "' . $db_tmp->escape($oldpath) . '%" AND ID!=' . intval($this->voting->ID));
 						while($this->db->next_record()){
-							$db_tmp->query('UPDATE ' . VOTING_TABLE . ' SET Path="' . $this->voting->evalPath($this->db->f('ID')) . '" WHERE ID=' . $this->db->f('ID'));
+							$db_tmp->query('UPDATE ' . VOTING_TABLE . ' SET Path="' . $this->voting->evalPath($this->db->f('ID'),$db_tmp) . '" WHERE ID=' . $this->db->f('ID'));
 						}
 					}
 
 					$js = ($newone ?
-							$this->topFrame . '.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});' . $this->topFrame . '.drawTree();' :
-							$this->topFrame . '.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
-						);
+									'top.content.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
+									'top.content.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
+							);
 					echo we_html_element::jsElement($js .
-						$this->editorHeaderFrame . '.location.reload();' .
-						we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
+							$this->editorHeaderFrame . '.location.reload();' .
+							we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
 				}
 				break;
 			case "delete_voting":
 
 				if(!permissionhandler::hasPerm("DELETE_VOTING")){
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					return;
 				}
 				if($this->voting->delete()){
 					echo we_html_element::jsElement(
-						$this->topFrame . '.deleteEntry(' . $this->voting->ID . ');
-setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[group_deleted]' : '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);');
+							'top.content.deleteEntry(' . $this->voting->ID . ');
+setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[group_deleted]' : '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);');
 					$this->voting = new we_voting_voting();
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
 					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
+							we_message_reporting::getShowMessageCall(g_l('modules_voting', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 				}
 
@@ -574,16 +569,16 @@ setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('modules_voting', 
 					}
 
 					$myline = $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['votingsession'])) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['voting'])) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(date(g_l('weEditorInfo', '[date_format]'), $data['time']))) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['ip'])) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['agent'])) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($cookie)) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($fallback)) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($mess)) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answer'])) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answertext'])) . $enclose . $delimiter .
-						$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['successor'])) . $enclose . $delimiter;
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['voting'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim(date(g_l('weEditorInfo', '[date_format]'), $data['time']))) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['ip'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['agent'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($cookie)) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($fallback)) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($mess)) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answer'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['answertext'])) . $enclose . $delimiter .
+							$enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($data['successor'])) . $enclose . $delimiter;
 
 					if($data['additionalfields'] != ''){
 						$addData = we_unserialize($data['additionalfields']);

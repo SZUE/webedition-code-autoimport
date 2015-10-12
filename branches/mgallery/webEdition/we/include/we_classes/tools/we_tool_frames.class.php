@@ -181,7 +181,6 @@ function setTab(tab) {
 	}
 
 	protected function getHTMLEditorBody(){
-
 		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
 		if(we_base_request::_(we_base_request::BOOL, "home")){
@@ -192,12 +191,7 @@ function setTab(tab) {
 			$tool = $GLOBALS['tool'] = $this->toolName;
 			ob_start();
 			include($this->toolDir . 'home.inc.php');
-			$out = ob_get_clean();
-			return
-				/* we_html_element::jsElement('
-				  ' . $this->topFrame . '.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
-				  ' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";
-				  ') . */ $out;
+			return ob_get_clean();
 		}
 
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", 'onload' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .

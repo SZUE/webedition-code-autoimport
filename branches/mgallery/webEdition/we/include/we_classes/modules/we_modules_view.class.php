@@ -26,34 +26,23 @@
 
 
 class we_modules_view implements we_modules_viewIF{
+
 	var $db;
 	var $frameset;
 	var $topFrame;
 
 	public function __construct($frameset = '', $topframe = 'top.content'){
 		$this->db = new DB_WE();
-		$this->setFramesetName($frameset);
-		$this->setTopFrame($topframe);
-	}
-
-	//-----------------Init -------------------------------
-
-	function setFramesetName($frameset){
 		$this->frameset = $frameset;
+		$this->topFrame = $topframe;
 	}
-
-	function setTopFrame($frame){
-		$this->topFrame = $frame;
-	}
-
-	//------------------------------------------------
 
 	function getCommonHiddens($cmds = array()){
 		return we_html_element::htmlHiddens(array(
-				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
-				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
-				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
-				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
+					'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+					'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
+					'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
+					'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
 		));
 	}
 

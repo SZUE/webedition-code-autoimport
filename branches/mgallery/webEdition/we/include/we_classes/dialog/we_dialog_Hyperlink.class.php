@@ -337,8 +337,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
 			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? we_const.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
-if(this.value === \'\' || this.value === we_const.EMPTY_EXT){
+			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? consts.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
+if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 	checkMakeEmptyHrefExt();
 }else{
 	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);

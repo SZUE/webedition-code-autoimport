@@ -84,7 +84,7 @@ function we_submitForm(url){
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);

@@ -1,10 +1,4 @@
 weSearch = {
-	we_const: {// FIXME: move most important constants to webedition.js
-		SEARCH_DOCS: '',
-		SEARCH_TMPL: '',
-		SEARCH_MEDIA: '',
-		SEARCH_ADV: ''
-	},
 	conf: {
 		whichsearch: '',
 		editorBodyFrame: '',
@@ -112,7 +106,7 @@ weSearch = {
 		var Checks = [], m = 0, i, table;
 
 		switch (this.conf.whichsearch) {
-			case this.we_const.SEARCH_ADV:
+			case WE().consts.weSearch.SEARCH_ADV:
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 					if (table.substring(0, 23) === 'search_tables_advSearch') {
@@ -126,8 +120,8 @@ weSearch = {
 					top.we_showMessage(this.g_l.nothingCheckedAdv, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 				break;
-			case this.we_const.SEARCH_DOCS:
-			case this.we_const.SEARCH_MEDIA:
+			case WE().consts.weSearch.SEARCH_DOCS:
+			case WE().consts.weSearch.SEARCH_MEDIA:
 				//top.console.debug(this.conf.editorBodyFrame.document.we_form.elements);
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
@@ -149,7 +143,7 @@ weSearch = {
 					}
 				}
 				break;
-			case this.we_const.SEARCH_TMPL:
+			case WE().consts.weSearch.SEARCH_TMPL:
 				for (i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 					table = this.conf.editorBodyFrame.document.we_form.elements[i].name;
 					if (table == 'searchForText' + this.conf.whichsearch || table === 'searchForContent' + this.conf.whichsearch) {
@@ -323,7 +317,7 @@ weSearch = {
 
 		if (this.conf.editorBodyFrame.loaded) {
 			var scrollheight;
-			if (this.conf.whichsearch === this.we_const.SEARCH_ADV) {
+			if (this.conf.whichsearch === WE().consts.weSearch.SEARCH_ADV) {
 				scrollheight = 140;
 			} else {
 				scrollheight = 170;
@@ -627,7 +621,6 @@ weSearch = {
 
 				document.getElementById("search" + this.conf.whichsearch + "[" + rowNr + "]").value = setValue;
 		}
-		;
 
 		switch (from) {
 			case "allModsIn":
@@ -656,7 +649,7 @@ weSearch = {
 	ajaxCallbackResetVersion: {
 		success: function (o) {
 			//top.we_cmd("save_document","' . $GLOBALS['we_transaction'] . '","0","1","0", "","");
-			top.we_showMessage(weSearch.g_l.versionsResetAllVersionsOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.weSearch.versionsResetAllVersionsOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 			// reload current document => reload all open Editors on demand
 			var _usedEditors = top.opener.weEditorFrameController.getEditorsInUse();
@@ -730,7 +723,7 @@ weSearch = {
 	},
 	checkAllActionChecks: function () {
 		var checkAll = document.getElementsByName("action_all_" + this.conf.whichsearch);
-		var checkboxes = document.getElementsByName((this.conf.whichsearch == this.we_const.SEARCH_MEDIA ? 'delete_docs_MediaSearch' : 'publish_docs_DocSearch'));
+		var checkboxes = document.getElementsByName((this.conf.whichsearch == WE().consts.weSearch.SEARCH_MEDIA ? 'delete_docs_MediaSearch' : 'publish_docs_DocSearch'));
 		var check = false;
 
 		if (checkAll[0].checked) {
@@ -822,7 +815,7 @@ weSearch = {
 			}
 			document.getElementById("resetBusy" + this.conf.whichsearch).innerHTML = "";
 			document.getElementById("resetBusyDocSearch").innerHTML = "";
-			top.we_showMessage(weSearch.g_l.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.weSearch.searchtool__publishOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 		},
 		failure: function (o) {
@@ -849,7 +842,7 @@ weSearch = {
 	},
 	previewVersion: function (ID) {
 		top.we_cmd("versions_preview", ID, 0);
-		//new (WE().util.jsWindow)(top.window, "' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
+		//new (WE().util.jsWindow)(top.window, WE().consts.dirs.WEBEDITION_DIR+"we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
 	},
 	calendarSetup: function (x) {
 		for (i = 0; i < x; i++) {

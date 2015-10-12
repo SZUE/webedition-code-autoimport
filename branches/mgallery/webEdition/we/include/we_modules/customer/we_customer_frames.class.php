@@ -34,7 +34,7 @@ class we_customer_frames extends we_modules_frame{
 		parent::__construct(WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php');
 		$this->Tree = new we_customer_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->setFrames("top.content", "top.content", "top.content.cmd");
-		$this->View = new we_customer_view(WE_CUSTOMER_MODULE_DIR . "edit_customer_frameset.php", "top.content");
+		$this->View = new we_customer_view();
 	}
 
 	public function getHTMLDocumentHeader($what = '', $mode = ''){
@@ -200,8 +200,8 @@ function setTab(tab) {
 
 	protected function getHTMLTreeFooter(){
 		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"cmd" => "show_search"));
+				'pnt' => 'cmd',
+				'cmd' => 'show_search'));
 
 		$table = new we_html_table(array('class' => 'default', "width" => '100%'), 1, 1);
 		$table->setCol(0, 0, array("nowrap" => null, "class" => "small"), we_html_element::jsElement($this->View->getJSSubmitFunction("cmd", "post")) .

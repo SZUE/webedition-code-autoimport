@@ -218,21 +218,6 @@ var wasdblclick=false;
 var tout=null;
 var mk=null;
 
-var queryType={
-	CMD:' . self::CMD . ',
-	DEL:' . self::DEL . ',
-	PROPERTIES:' . self::PROPERTIES . ',
-	PREVIEW:' . self::PREVIEW . ',
-	NEWFOLDER:' . self::NEWFOLDER . ',
-	CREATEFOLDER:' . self::CREATEFOLDER . ',
-	RENAMEFOLDER:' . self::RENAMEFOLDER . ',
-	CREATE_CAT:' . self::CREATE_CAT . ',
-	DO_RENAME_ENTRY:' . self::DO_RENAME_ENTRY . ',
-	SETDIR:' . self::SETDIR . '
-};
-
-top.WE().consts.dirs.ICON_DIR="' . ICON_DIR . '";
-
 var options={
   rootDirID:' . $this->rootDirID . ',
 	table:"' . $this->table . '",
@@ -244,9 +229,18 @@ var options={
 	open_doc:"' . $this->open_doc . '"
 };
 
-var consts={
+WE().consts.selectors={
 	DORENAMEFOLDER:"' . self::DORENAMEFOLDER . '",
-	CREATEFOLDER:"' . self::CREATEFOLDER . '"
+	CREATEFOLDER:"' . self::CREATEFOLDER . '",
+	CMD:' . self::CMD . ',
+	DEL:' . self::DEL . ',
+	PROPERTIES:' . self::PROPERTIES . ',
+	PREVIEW:' . self::PREVIEW . ',
+	NEWFOLDER:' . self::NEWFOLDER . ',
+	RENAMEFOLDER:' . self::RENAMEFOLDER . ',
+	CREATE_CAT:' . self::CREATE_CAT . ',
+	DO_RENAME_ENTRY:' . self::DO_RENAME_ENTRY . ',
+	SETDIR:' . self::SETDIR . '
 };
 
 var g_l={

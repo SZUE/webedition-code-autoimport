@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -51,7 +53,7 @@ function closeOnEscape() {
 
 function orderIt(o) {
 	order = o + (order == o ? " DESC" : "");
-	top.fscmd.location.replace(top.queryString(top.queryType.CMD, top.currentDir, order));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, top.currentDir, order));
 }
 
 function goBackDir() {
@@ -134,7 +136,7 @@ function setDir(id) {
 	top.currentPath = e.path;
 	top.currentText = e.text;
 	top.document.getElementsByName("fname")[0].value = e.text;
-	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 }
 
 function setRootDir() {
@@ -178,7 +180,7 @@ function addEntry(id, txt, folder, pth, ct) {
 function writeBody(d) {
 	var body = '<table>';
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true;"';
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}},300);return true;"';
 		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : '') + ' id="line_' + entries[i].ID + '" style="cursor:pointer;"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +

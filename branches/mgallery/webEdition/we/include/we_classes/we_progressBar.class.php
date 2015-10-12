@@ -72,12 +72,12 @@ function setProgress' . $this->name . '(progress){
 					'setProgressText' . $this->name . '("progress_text' . $this->name . '",progress+"%");' :
 					'') .
 				($this->callback_code ?
-					'if(progress<100) to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');
+					'if(progress<100) to=setTimeout(function(){' . $this->callback_code . '},' . $this->callback_timeout . ');
 							else var to=clearTimeout(to);
 					' : '') . '
 }' .
 				($this->callback_code ?
-					'var to=setTimeout(\'' . $this->callback_code . '\',' . $this->callback_timeout . ');' :
+					'var to=setTimeout(function(){' . $this->callback_code . '},' . $this->callback_timeout . ');' :
 					'')
 		);
 	}

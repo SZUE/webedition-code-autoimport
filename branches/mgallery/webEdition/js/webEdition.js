@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -211,12 +213,12 @@ function incTree() {
 
 function decTree() {
 	var w = parseInt(getTreeWidth());
-	w -= top.WE().consts.size.tree.step;
-	if (w > top.WE().consts.size.tree.min) {
+	w -= WE().consts.size.tree.step;
+	if (w > WE().consts.size.tree.min) {
 		setTreeWidth(w);
 		self.document.getElementById("incBaum").style.backgroundColor = "";
 	}
-	if (w <= top.WE().consts.size.tree.min && ((w + top.WE().consts.size.tree.step) >= top.WE().consts.size.tree.min)) {
+	if (w <= WE().consts.size.tree.min && ((w + WE().consts.size.tree.step) >= WE().consts.size.tree.min)) {
 		toggleTree();
 	}
 }
@@ -240,7 +242,7 @@ function setSidebarWidth() {
 function setTreeWidth(w) {
 	self.document.getElementById("bframeDiv").style.width = w + "px";
 	self.document.getElementById("bm_content_frameDiv").style.left = w + "px";
-	if (w > top.WE().consts.size.tree.hidden) {
+	if (w > WE().consts.size.tree.hidden) {
 		storeTreeWidth(w);
 	}
 }

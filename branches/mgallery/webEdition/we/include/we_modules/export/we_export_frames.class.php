@@ -36,7 +36,7 @@ class we_export_frames extends we_modules_frame{
 		parent::__construct(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php");
 		$this->Tree = new we_export_treeMain($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->SelectionTree = new we_export_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_export_view(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php", "top.content");
+		$this->View = new we_export_view();
 		$this->setFrames("top.content", "top.content", "top.content.cmd");
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
 	}
@@ -696,7 +696,7 @@ function closeAllType(){
 		return we_html_element::jsElement('
 				function formFileChooser() {
 					var args = "";
-					var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
+					var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
 					switch (arguments[0]) {
 						case "browse_server":
 							new (WE().util.jsWindow)(top.window, url,"server_selector",-1,-1,660,330,true,false,true);

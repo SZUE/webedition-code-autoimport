@@ -126,7 +126,7 @@ var ajaxObj = {
 		},
 
 		startRequest:function(id) {
-			 YAHOO.util.Connect.asyncRequest("POST", "' . WEBEDITION_DIR . 'rpc/rpc.php", callback, "cmd=GetNaviItems&nid="+id);
+			 YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR+"rpc/rpc.php", callback, "cmd=GetNaviItems&nid="+id);
 		}
 
 };

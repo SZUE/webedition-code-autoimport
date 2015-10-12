@@ -643,7 +643,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 			echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
-			echo we_html_element::jsElement('self.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1";');
+			echo we_html_element::jsElement('self.location=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=copyFolder&finish=1";');
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} elseif(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
 			echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . FILE_TABLE . '");' . we_message_reporting::getShowMessageCall(g_l('copyFolder', '[copy_success]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();');

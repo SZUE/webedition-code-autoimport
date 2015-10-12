@@ -68,7 +68,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "load":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
@@ -130,7 +130,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = [];
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" +encodeURI(arguments[i]);
@@ -157,9 +157,9 @@ function we_cmd() {
 		case "openNavigationDirselector":
 		case "openNewsletterDirselector":
 			if (args[0] == "openNewsletterDirselector") {
-				url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_newsletter_dirSelector";//FIXME
+				url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=we_newsletter_dirSelector";//FIXME
 			}else {
-				url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_navigation_dirSelector&";
+				url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=we_navigation_dirSelector&";
 			}
 			for (var i = 1; i < args.length; i++) {
 				url += "we_cmd[" + i + "]=" +encodeURI(args[i]);
@@ -533,9 +533,9 @@ function we_cmd() {
 			if($user_object->deleteMe()){
 				echo we_html_element::jsElement('
 		top.content.deleteEntry(' . $user_object->ID . ');
-		top.content.editor.edheader.location="' . WEBEDITION_DIR . 'html/gray.html";
-		top.content.editor.edbody.location="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=users";
-		top.content.editor.edfooter.location="' . WEBEDITION_DIR . 'html/gray.html";');
+		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR+"html/gray.html";
+		top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=mod_home&mod=users";
+		top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR+"html/gray.html";');
 				unset($_SESSION["user_session_data"]);
 			}
 		}

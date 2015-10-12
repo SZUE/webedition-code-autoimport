@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -42,5 +44,5 @@ function doClick(id, ct) {
 }
 
 function setDir(id) {
-	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.SETDIR, id));
 }

@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -28,9 +30,9 @@ function writeBody(d) {
 			break;
 		default:
 			var body = (we_editDirID ?
-							'<input type="hidden" name="what" value="' + consts.DORENAMEFOLDER + '" />' +
+							'<input type="hidden" name="what" value="' + WE().consts.selectors.DORENAMEFOLDER + '" />' +
 							'<input type="hidden" name="we_editDirID" value="' + we_editDirID + '" />' :
-							'<input type="hidden" name="what" value="' + consts.CREATEFOLDER + '" />'
+							'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATEFOLDER + '" />'
 							) +
 							'<input type="hidden" name="order" value="' + order + '" />' +
 							'<input type="hidden" name="rootDirID" value="' + options.rootDirID + '" />' +
@@ -42,7 +44,7 @@ function writeBody(d) {
 											'</div>' :
 											'');
 			for (i = 0; i < entries.length; i++) {
-				var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true"';
+				var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}},300);return true"';
 				var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 				body += '<div class="imgDiv ' + ((entries[i].ID == top.currentID) ? "selected" : "") + '" id="line_' + entries[i].ID + '" title="' + entries[i].text + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 								(entries[i].isFolder ? WE().util.getTreeIcon("folder") : '<img src="' + top.WE().consts.dirs.WEBEDITION_DIR + "thumbnail.php?id=" + entries[i].ID + "&amp;size=150&amp;path=" + entries[i].path + "&amp;extension=.jpg&amp;size2=200" + '" class="icon"/>') +

@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -70,7 +72,7 @@ function setDir(id) {
 	if (id) {
 		top.enableDelBut();
 	}
-	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 }
 
 function selectFile(id) {

@@ -276,7 +276,7 @@ function populateGroups() {
 }
 
 function we_save() {
-		setTimeout(\'top.content.we_cmd("save_newsletter")\',100);
+		setTimeout(function(){top.content.we_cmd("save_newsletter")},100);
 }
 
 function afterLoad(){

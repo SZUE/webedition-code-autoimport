@@ -31,7 +31,7 @@ class we_navigation_frames extends we_modules_frame{
 
 	function __construct(){
 		$this->module = 'navigation';
-		$this->toolUrl = WE_INCLUDES_DIR . 'we_modules/' . $this->module . '/'; //TODO: replace toll/module-wide by $module
+		$this->toolUrl = WE_INCLUDES_DIR . 'we_modules/' . $this->module . '/'; //TODO: replace tool/module-wide by $module
 
 		$_frameset = $this->toolUrl . 'edit_' . $this->module . '_frameset.php';
 		parent::__construct($_frameset);

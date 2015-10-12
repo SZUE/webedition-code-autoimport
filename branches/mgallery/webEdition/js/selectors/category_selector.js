@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -181,7 +183,7 @@ function setDir(id) {
 	if (id) {
 		top.enableDelBut();
 	}
-	top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 }
 
 function drawNewFolder() {
@@ -205,9 +207,9 @@ function deleteEntry() {
 		if (todel) {
 			todel = "," + todel;
 		}
-		top.fscmd.location.replace(top.queryString(top.queryType.DEL, top.currentID) + "&todel=" + encodeURI(todel));
+		top.fscmd.location.replace(top.queryString(WE().consts.selectors.DEL, top.currentID) + "&todel=" + encodeURI(todel));
 		if (top.fsvalues)
-			top.fsvalues.location.replace(top.queryString(top.queryType.PROPERTIES, 0));
+			top.fsvalues.location.replace(top.queryString(WE().consts.selectors.PROPERTIES, 0));
 		top.disableDelBut();
 	}
 
@@ -220,12 +222,12 @@ function RenameEntry(id) {
 
 function showPref(id) {
 	if (self.fsvalues)
-		self.fsvalues.location = top.queryString(top.queryType.PROPERTIES) + "&catid=" + id;
+		self.fsvalues.location = top.queryString(WE().consts.selectors.PROPERTIES) + "&catid=" + id;
 }
 
 function hidePref() {
 	if (self.fsvalues)
-		self.fsvalues.location = top.queryString(top.queryType.PROPERTIES);
+		self.fsvalues.location = top.queryString(WE().consts.selectors.PROPERTIES);
 }
 
 function writeBody(d) {
@@ -234,11 +236,11 @@ function writeBody(d) {
 					'<form name="we_form" target="fscmd" method="post" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
 					) +
 					(we_editCatID ?
-									'<input type="hidden" name="what" value="' + top.queryType.DO_RENAME_ENTRY + '" />' +
+									'<input type="hidden" name="what" value="' + WE().consts.selectors.DO_RENAME_ENTRY + '" />' +
 									'<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />' :
 									(makeNewFolder ?
-													'<input type="hidden" name="what" value="' + top.queryType.CREATEFOLDER + '" />' :
-													'<input type="hidden" name="what" value="' + top.queryType.CREATE_CAT + '" />'
+													'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATEFOLDER + '" />' :
+													'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATE_CAT + '" />'
 													)
 									) +
 					'<input type="hidden" name="order" value="' + top.order + '" />' +
@@ -259,7 +261,7 @@ function writeBody(d) {
 													'')
 									/*)*/;
 					for (i = 0; i < entries.length; i++) {
-						var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true;"';
+						var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}},300);return true;"';
 						var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 						body += '<tr id="line_' + entries[i].ID + '" style="cursor:pointer;' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
 										'<td class="selector selectoricon">' + WE().util.getTreeIcon('we/category') + '</td>' +

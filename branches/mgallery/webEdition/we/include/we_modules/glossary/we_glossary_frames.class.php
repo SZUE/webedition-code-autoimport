@@ -31,7 +31,7 @@ class we_glossary_frames extends we_modules_frame{
 		$this->module = "glossary";
 		parent::__construct(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php");
 		$this->Tree = new we_glossary_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_glossary_view(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php", "top.content");
+		$this->View = new we_glossary_view();
 		$this->setFrames("top.content", "top.content", "top.content.cmd");
 	}
 

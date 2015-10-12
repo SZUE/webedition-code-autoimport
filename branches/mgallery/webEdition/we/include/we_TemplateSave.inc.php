@@ -27,8 +27,8 @@ if(!($trans = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1)))
 
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', 
-	we_html_element::jsElement('var url="' . WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array(
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',
+	we_html_element::jsElement('var url=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?' . http_build_query(array(
 			'we_cmd' => array(
 				0 => 'save_document',
 				1 => $trans,

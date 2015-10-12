@@ -51,20 +51,20 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 	function getHiddens(){
 		$out = we_html_element::htmlHiddens(array(
-				"home" => 0,
-				"ncmd" => "new_banner",
-				"ncmdvalue" => "",
-				"bid" => $this->banner->ID,
-				"pnt" => we_base_request::_(we_base_request::STRING, "pnt"),
-				"page" => $this->page,
-				"bname" => $this->uid,
-				"order" => $this->Order,
-				$this->uid . "_IsFolder" => $this->banner->IsFolder
+				'home' => 0,
+				'ncmd' => 'new_banner',
+				'ncmdvalue' => '',
+				'bid' => $this->banner->ID,
+				'pnt' => we_base_request::_(we_base_request::STRING, 'pnt'),
+				'page' => $this->page,
+				'bname' => $this->uid,
+				'order' => $this->Order,
+				$this->uid . '_IsFolder' => $this->banner->IsFolder
 		));
 		foreach(array_keys($this->banner->persistents) as $p){
 			if(!in_array($p, $this->pageFields[$this->page])){
 				$v = $this->banner->{$p};
-				$out.=we_html_element::htmlHidden($this->uid . "_$p", $v);
+				$out.=we_html_element::htmlHidden($this->uid . '_'.$p, $v);
 			}
 		}
 		return $out;
@@ -72,14 +72,13 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 
 	function getProperties(){
 		$yuiSuggest = & weSuggest::getInstance();
-		if(we_base_request::_(we_base_request::BOOL, "home")){
-			$GLOBALS["we_print_not_htmltop"] = true;
-			$GLOBALS["we_head_insert"] = $this->getJSProperty();
-			$GLOBALS["we_body_insert"] = '<form name="we_form">';
-			$GLOBALS["we_body_insert"] .= $this->getHiddens() . '</form>';
-			$GLOBALS["mod"] = "banner";
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
+			$GLOBALS['we_print_not_htmltop'] = true;
+			$GLOBALS['we_head_insert'] = $this->getJSProperty();
+			$GLOBALS['we_body_insert'] = '<form name="we_form">';
+			$GLOBALS['we_body_insert'] .= $this->getHiddens() . '</form>';
+			$GLOBALS['mod'] = 'banner';
 			ob_start();
-
 			include(WE_MODULES_PATH . 'home.inc.php');
 			return ob_get_clean();
 		}
@@ -90,93 +89,93 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 			$this->getHiddens();
 
 		$znr = -1;
-		$headline = $openText = $closeText = $wepos = $itsname = "";
+		$headline = $openText = $closeText = $wepos = $itsname = '';
 		switch($this->page){
 			case we_banner_banner::PAGE_PROPERTY:
 				$out .= we_html_element::htmlHiddens(array(
-						"UseFilter" => $this->UseFilter,
-						"FilterDate" => $this->FilterDate,
-						"FilterDateEnd" => $this->FilterDateEnd
+						'UseFilter' => $this->UseFilter,
+						'FilterDate' => $this->FilterDate,
+						'FilterDateEnd' => $this->FilterDateEnd
 				));
 				$parts = array(
 					array(
-						"headline" => g_l('modules_banner', '[path]'),
-						"html" => $this->formPath(),
-						"space" => 120
+						'headline' => g_l('modules_banner', '[path]'),
+						'html' => $this->formPath(),
+						'space' => 120
 				));
 				$znr = -1;
 				if(!$this->banner->IsFolder){
 					$parts[] = array(
-						"headline" => g_l('modules_banner', '[banner]'),
-						"html" => $this->formBanner(),
-						"space" => 120
+						'headline' => g_l('modules_banner', '[banner]'),
+						'html' => $this->formBanner(),
+						'space' => 120
 					);
 					$parts[] = array(
-						"headline" => g_l('modules_banner', '[period]'),
-						"html" => $this->formPeriod(),
-						"space" => 120
+						'headline' => g_l('modules_banner', '[period]'),
+						'html' => $this->formPeriod(),
+						'space' => 120
 					);
 					$znr = 2;
 				}
 				if(defined('CUSTOMER_TABLE')){
 					$parts[] = array(
-						"headline" => g_l('modules_banner', '[customers]'),
-						"html" => $this->formCustomer(),
-						"space" => 120
+						'headline' => g_l('modules_banner', '[customers]'),
+						'html' => $this->formCustomer(),
+						'space' => 120
 					);
 				}
 				$headline = g_l('tabs', '[module][properties]');
-				$itsname = "weBannerProp";
+				$itsname = 'weBannerProp';
 				$openText = g_l('weClass', '[moreProps]');
 				$closeText = g_l('weClass', '[lessProps]');
-				$wepos = weGetCookieVariable("but_weBannerProp");
+				$wepos = weGetCookieVariable('but_weBannerProp');
 				break;
 			case we_banner_banner::PAGE_PLACEMENT:
 				$out .= we_html_element::htmlHiddens(array(
-						"UseFilter" => $this->UseFilter,
-						"FilterDate" => $this->FilterDate,
-						"FilterDateEnd" => $this->FilterDateEnd
+						'UseFilter' => $this->UseFilter,
+						'FilterDate' => $this->FilterDate,
+						'FilterDateEnd' => $this->FilterDateEnd
 				));
 				$parts = array(
 					array(
-						"headline" => g_l('modules_banner', '[tagname]'),
-						"html" => $this->formTagName(),
-						"space" => 120
+						'headline' => g_l('modules_banner', '[tagname]'),
+						'html' => $this->formTagName(),
+						'space' => 120
 					),
 					array(
-						"headline" => g_l('modules_banner', '[pages]'),
-						"html" => $this->formFiles(),
-						"space" => 120
+						'headline' => g_l('modules_banner', '[pages]'),
+						'html' => $this->formFiles(),
+						'space' => 120
 					),
 					array(
-						"headline" => g_l('modules_banner', '[dirs]'),
-						"html" => $this->formFolders(),
-						"space" => 120
+						'headline' => g_l('modules_banner', '[dirs]'),
+						'html' => $this->formFolders(),
+						'space' => 120
 					),
 					array(
-						"headline" => g_l('modules_banner', '[categories]'),
-						"html" => $this->formCategories(),
-						"space" => 120
+						'headline' => g_l('modules_banner', '[categories]'),
+						'html' => $this->formCategories(),
+						'space' => 120
 					),
 					array(
-						"headline" => g_l('modules_banner', '[doctypes]'),
-						"html" => $this->formDoctypes(),
-						"space" => 120)
+						'headline' => g_l('modules_banner', '[doctypes]'),
+						'html' => $this->formDoctypes(),
+						'space' => 120)
 				);
 				$headline = g_l('tabs', '[module][placement]');
 				$znr = 3;
-				$itsname = "weBannerPlace";
+				$itsname = 'weBannerPlace';
 				$openText = g_l('weClass', '[moreProps]');
 				$closeText = g_l('weClass', '[lessProps]');
-				$wepos = weGetCookieVariable("but_$itsname");
+				$wepos = weGetCookieVariable('but_'.$itsname);
 				break;
 			case we_banner_banner::PAGE_STATISTICS:
 				$headline = g_l('tabs', '[module][statistics]');
 				$parts = array(
 					array(
-						"headline" => "",
-						"html" => $this->formStat(),
-						"space" => 0)
+						'headline' => '',
+						'html' => $this->formStat(),
+						'space' => 0)
 				);
 				break;
 			default:
@@ -184,7 +183,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 		}
 
 		$out.= we_html_multiIconBox::getJS() .
-			we_html_multiIconBox::getHTML($itsname, $parts, 30, "", $znr, $openText, $closeText, ($wepos === "down")) .
+			we_html_multiIconBox::getHTML($itsname, $parts, 30, '', $znr, $openText, $closeText, ($wepos === 'down')) .
 			'</form>' .
 			$yuiSuggest->getYuiJs() .
 			'</body></html>';
@@ -195,7 +194,7 @@ class we_banner_view extends we_banner_base implements we_modules_viewIF{
 	function previewBanner(){
 		$ID = $this->banner->bannerID;
 		if($ID){
-			switch(f('SELECT ContentType FROM ' . FILE_TABLE . " WHERE ID=" . intval($ID), "", $this->db)){
+			switch(f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($ID), '', $this->db)){
 				case we_base_ContentTypes::IMAGE;
 					$img = new we_imageDocument();
 					$img->initByID($ID, FILE_TABLE);

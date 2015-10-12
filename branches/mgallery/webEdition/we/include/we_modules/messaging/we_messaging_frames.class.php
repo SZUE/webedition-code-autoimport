@@ -43,7 +43,7 @@ class we_messaging_frames extends we_modules_frame{
 		$this->transaction = $reqTransaction;
 		$this->weTransaction = &$weTransaction;
 		$this->viewclass = $viewclass;
-		$this->View = new we_messaging_view(WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php", "top.content", $this->transaction, $this->weTransaction);
+		$this->View = new we_messaging_view($this->transaction, $this->weTransaction);
 		$this->Tree = new we_messaging_tree($this->frameset, "top.content", "top.content", "top.content.cmd", $this->weTransaction);
 	}
 

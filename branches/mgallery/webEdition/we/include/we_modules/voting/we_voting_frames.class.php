@@ -31,7 +31,7 @@ class we_voting_frames extends we_modules_frame{
 	public function __construct(){
 		parent::__construct(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php");
 		$this->Tree = new we_voting_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_voting_view(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php", "top.content");
+		$this->View = new we_voting_view();
 		$this->setFrames("top.content", "top.content", "top.content.cmd");
 	}
 

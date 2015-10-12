@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -80,7 +82,7 @@ function setDir(id) {
 	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
-	top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.SETDIR, id));
 	e = getEntry(id);
 	top.document.getElementById('fspath').innerHTML = e.path;
 }
@@ -129,17 +131,17 @@ function addEntry(ID, text, extension, isFolder, path, modDate, contentType, pub
 }
 
 function setFilter(ct) {
-	top.fscmd.location.replace(top.queryString(top.queryType.CMD, top.currentDir, "", "", ct));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, top.currentDir, "", "", ct));
 }
 
 function showPreview(id) {
 	if (top.fspreview) {
-		top.fspreview.location.replace(top.queryString(top.queryType.PREVIEW, id));
+		top.fspreview.location.replace(top.queryString(WE().consts.selectors.PREVIEW, id));
 	}
 }
 
 function reloadDir() {
-	top.fscmd.location.replace(top.queryString(top.queryType.CMD, top.currentDir));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, top.currentDir));
 }
 
 function newFile() {
@@ -154,9 +156,9 @@ function newCollection() {
 
 function writeBodyDocument(d) {
 	var body = (we_editDirID ?
-					'<input type="hidden" name="what" value="' + top.consts.DORENAMEFOLDER + '" />' +
+					'<input type="hidden" name="what" value="' + WE().consts.selectors.DORENAMEFOLDER + '" />' +
 					'<input type="hidden" name="we_editDirID" value="' + top.we_editDirID + '" />' :
-					'<input type="hidden" name="what" value="' + top.consts.CREATEFOLDER + '" />'
+					'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATEFOLDER + '" />'
 					) +
 					'<input type="hidden" name="order" value="' + top.order + '" />' +
 					'<input type="hidden" name="rootDirID" value="' + top.options.rootDirID + '" />' +
@@ -172,7 +174,7 @@ function writeBodyDocument(d) {
 									'</tr>' :
 									'');
 	for (i = 0; i < entries.length; i++) {
-		var onclick = ' onclick="weonclick(event);tout=setTimeout(\'if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}\',300);return true"';
+		var onclick = ' onclick="weonclick(event);tout=setTimeout(function(){if(!top.wasdblclick){top.doClick(' + entries[i].ID + ',0);}else{top.wasdblclick=false;}},300);return true"';
 		var ondblclick = ' onDblClick="top.wasdblclick=true;clearTimeout(tout);top.doClick(' + entries[i].ID + ',1);return true;"';
 		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;cursor:pointer;"' : "") + ' id="line_' + entries[i].ID + '" style="cursor:pointer;" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="selector treeIcon selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +

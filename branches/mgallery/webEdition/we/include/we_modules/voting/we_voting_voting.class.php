@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -27,6 +28,7 @@
  *
  */
 class we_voting_voting extends weModelBase{
+
 //voting status codes
 
 	const SUCCESS = 1;
@@ -261,8 +263,8 @@ class we_voting_voting extends weModelBase{
 		return (strpos(we_base_file::clearPath(dirname($this->Path) . '/'), '/' . $this->Text . '/') !== false);
 	}
 
-	function evalPath($id = 0){
-		$db_tmp = new DB_WE();
+	function evalPath($id = 0, we_database_base $db = null){
+		$db_tmp = $db? : new DB_WE();
 		$path = '';
 		if($id == 0){
 			$id = $this->ParentID;
@@ -455,8 +457,8 @@ class we_voting_voting extends weModelBase{
 		if($this->RevoteTime != 0){
 			if($this->RevoteControl == 1){
 				$revotetime = ($this->RevoteTime < 0 ?
-						630720000 : //20 years
-						$this->RevoteTime);
+								630720000 : //20 years
+								$this->RevoteTime);
 				setcookie(md5('_we_voting_' . $this->ID), time(), time() + $revotetime);
 			} else {
 				if(!is_array($this->Revote)){
@@ -661,9 +663,9 @@ class we_voting_voting extends weModelBase{
 	function loadDB($id = '0'){
 
 		$logQuery = ($this->IsFolder ?
-				'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A JOIN `' . VOTING_LOG_TABLE . "` B ON A.ID=B.voting WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder=0 ORDER BY B.time" :
-				'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($id) . ' ORDER BY time'
-			);
+						'SELECT A.*, B.* FROM `' . VOTING_TABLE . '` A JOIN `' . VOTING_LOG_TABLE . "` B ON A.ID=B.voting WHERE A.Path LIKE '" . $this->db->escape($this->Path) . "%' AND A.IsFolder=0 ORDER BY B.time" :
+						'SELECT * FROM `' . VOTING_LOG_TABLE . '` WHERE `voting`=' . intval($id) . ' ORDER BY time'
+				);
 
 		$this->db->query($logQuery);
 		$this->LogData = array();
@@ -712,21 +714,21 @@ class we_voting_voting extends weModelBase{
 		}
 		$_cookieStatus = $this->cookieDisabled() ? 0 : 1;
 		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION["webuser"]["registered"]) && !empty($_SESSION["webuser"]["ID"]) ?
-				$_SESSION["webuser"]["ID"] : 0);
+						$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
-				'votingsession' => $votingsession,
-				'voting' => $this->ID,
-				'time' => sql_function('UNIX_TIMESTAMP()'),
-				'ip' => $_SERVER['REMOTE_ADDR'],
-				'agent' => $_SERVER['HTTP_USER_AGENT'],
-				'userid' => $userid,
-				'cookie' => $_cookieStatus,
-				'fallback' => $this->FallbackActive,
-				'answer' => $answer,
-				'answertext' => $answertext,
-				'successor' => $successor,
-				'additionalfields' => $additionalfields,
-				'status' => $status,
+					'votingsession' => $votingsession,
+					'voting' => $this->ID,
+					'time' => sql_function('UNIX_TIMESTAMP()'),
+					'ip' => $_SERVER['REMOTE_ADDR'],
+					'agent' => $_SERVER['HTTP_USER_AGENT'],
+					'userid' => $userid,
+					'cookie' => $_cookieStatus,
+					'fallback' => $this->FallbackActive,
+					'answer' => $answer,
+					'answertext' => $answertext,
+					'successor' => $successor,
+					'additionalfields' => $additionalfields,
+					'status' => $status,
 		)));
 
 		return true;
@@ -756,19 +758,19 @@ class we_voting_voting extends weModelBase{
 		}
 		foreach($LogData as $ld){
 			$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
-					'votingsession' => '',
-					'voting' => $this->ID,
-					'time' => $ld['time'],
-					'ip' => $ld['ip'],
-					'agent' => $ld['agent'],
-					'userid' => 0,
-					'cookie' => $ld['cookie'],
-					'fallback' => $ld['fallback'],
-					'answer' => '',
-					'answertext' => '',
-					'successor' => '',
-					'additionalfields' => '',
-					'status' => $ld['status'],
+						'votingsession' => '',
+						'voting' => $this->ID,
+						'time' => $ld['time'],
+						'ip' => $ld['ip'],
+						'agent' => $ld['agent'],
+						'userid' => 0,
+						'cookie' => $ld['cookie'],
+						'fallback' => $ld['fallback'],
+						'answer' => '',
+						'answertext' => '',
+						'successor' => '',
+						'additionalfields' => '',
+						'status' => $ld['status'],
 			)));
 		}
 		$this->LogData = '';

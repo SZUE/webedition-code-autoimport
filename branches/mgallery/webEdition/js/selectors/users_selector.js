@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -24,9 +26,9 @@
 function setDir(id) {
 	if (currentType === "user") {
 		currentDir = id;
-		top.fscmd.location.replace(top.queryString(top.queryType.CMD, id));
+		top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 	} else {
-		top.fscmd.location.replace(top.queryString(top.queryType.SETDIR, id));
+		top.fscmd.location.replace(top.queryString(WE().consts.selectors.SETDIR, id));
 	}
 }
 
