@@ -25,18 +25,12 @@
 /* the parent class of storagable webEdition classes */
 class we_voting_view extends we_modules_view{
 	var $voting;
-	var $editorBodyFrame;
-	var $editorBodyForm;
-	var $editorHeaderFrame;
 	var $icon_pattern = "";
 
 	function __construct(){
 		$frameset = WE_VOTING_MODULE_DIR . "edit_voting_frameset.php";
 		$topframe = "top.content";
 		parent::__construct($frameset, $topframe);
-		$this->editorBodyFrame = 'top.content.editor.edbody';
-		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = 'top.content.editor.edheader';
 		$this->voting = new we_voting_voting();
 	}
 
@@ -61,6 +55,7 @@ var get_focus = 1;
 var activ_tab = 1;
 var hot = 0;
 var scrollToVal = 0;
+WE().consts.dirs.WE_VOTING_MODULE_DIR="'.WE_VOTING_MODULE_DIR.'";
 
 function setHot() {
 	hot = 1;
@@ -135,7 +130,7 @@ function we_cmd() {
 						if (confirm("' . g_l('modules_voting', '[delete_alert]') . '")) {
 							top.content.editor.edbody.document.we_form.cmd.value=args[0];
 							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
-							' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
+							top.content.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
 							top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
 							top.content.editor.edbody.submitForm();
 						}
@@ -156,8 +151,7 @@ function we_cmd() {
 							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 							top.content.editor.edbody.document.we_form.owners_name.value=top.content.editor.edbody.owners_label.name;
 							top.content.editor.edbody.document.we_form.owners_count.value=top.content.editor.edbody.owners_label.itemCount;
-							' . '
-							if(' . $this->editorBodyForm . '.IsFolder.value!=1){
+							if(top.content.editor.edbody.document.we_form.IsFolder.value!=1){
 								top.content.editor.edbody.document.we_form.question_name.value=top.content.editor.edbody.question_edit.name;
 								top.content.editor.edbody.document.we_form.answers_name.value=top.content.editor.edbody.answers_edit.name;
 								top.content.editor.edbody.document.we_form.variant_count.value=top.content.editor.edbody.answers_edit.variantCount;
@@ -185,7 +179,7 @@ function we_cmd() {
 			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
 		break;
 		case "home":
-			' . $this->editorBodyFrame . '.parent.location="' . $this->frameset . '?pnt=editor";
+			top.content.editor.edbody.parent.location="' . $this->frameset . '?pnt=editor";
 		break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);
@@ -264,7 +258,7 @@ function we_cmd() {
 
 		case "reset_ipdata":
 			if(confirm("' . g_l('modules_voting', '[delete_ipdata_question]') . '")){
-				url = "' . WE_VOTING_MODULE_DIR . 'edit_voting_frameset.php?pnt="+arguments[0];
+				url = WE().consts.dirs.WE_VOTING_MODULE_DIR+"edit_voting_frameset.php?pnt="+arguments[0];
 				new (WE().util.jsWindow)(top.window, url,arguments[0],-1,-1,420,230,true,false,true);
 				var t = document.getElementById("ip_mem_size");
 				setVisible("delete_ip_data",false);
@@ -273,12 +267,12 @@ function we_cmd() {
 		break;
 		case "delete_log":
 			if(confirm("' . g_l('modules_voting', '[delete_log_question]') . '")){
-				url = "' . WE_VOTING_MODULE_DIR . 'edit_voting_frameset.php?pnt="+arguments[0];
+				url = WE().consts.dirs.WE_VOTING_MODULE_DIR+"edit_voting_frameset.php?pnt="+arguments[0];
 				new (WE().util.jsWindow)(top.window, url,arguments[0],-1,-1,420,230,true,false,true);
 			}
 		break;
 		case "show_log":
-			url = "' . WE_VOTING_MODULE_DIR . 'edit_voting_frameset.php?pnt="+arguments[0];
+			url = WE().consts.dirs.WE_VOTING_MODULE_DIR+"edit_voting_frameset.php?pnt="+arguments[0];
 			new (WE().util.jsWindow)(top.window, url,arguments[0],-1,-1,810,600,true,true,true);
 		break;
 		break;
@@ -440,7 +434,7 @@ function we_cmd() {
 							'top.content.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
 						);
 					echo we_html_element::jsElement($js .
-						$this->editorHeaderFrame . '.location.reload();' .
+						'top.content.editor.edheader.location.reload();' .
 						we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
 				}
 				break;

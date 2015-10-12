@@ -50,7 +50,7 @@ function we_cmd() {
 		}
 	}
 	if (hot == "1" && args[0] != "save_banner") {
-		if (confirm(g_l.save_changed_banner)) {
+		if (confirm(WE().consts.g_l.banner.view.save_changed_banner)) {
 			args[0] = "save_banner";
 		} else {
 			top.content.usetHot();
@@ -88,11 +88,11 @@ function we_cmd() {
 			} else {
 
 				if (top.content.editor.edbody.loaded && top.content.editor.edbody.we_is_home === undefined) {
-					if (!confirm(g_l.delete_question)) {
+					if (!confirm(WE().consts.g_l.banner.view.delete_question)) {
 						return;
 					}
 				} else {
-					top.we_showMessage(g_l.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
+					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
 					return;
 				}
 				top.content.editor.edbody.document.we_form.ncmd.value = args[0];
@@ -106,7 +106,7 @@ function we_cmd() {
 						return;
 					}
 				} else {
-					top.we_showMessage(g_l.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
+					top.we_showMessage(WE().consts.g_l.banner.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
 					return;
 				}
 

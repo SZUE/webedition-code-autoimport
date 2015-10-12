@@ -82,9 +82,6 @@ class we_banner_view extends we_modules_view{
 
 	function getProperties(){
 		$yuiSuggest = & weSuggest::getInstance();
-		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHomeScreen();
-		}
 		$out = STYLESHEET . $this->getJSProperty() . weSuggest::getYuiFiles() . '
 				</head>
 				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
@@ -214,26 +211,19 @@ class we_banner_view extends we_modules_view{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		return we_html_element::jsElement('
 parent.document.title="' . $title . '";
-var g_l = {
+WE().consts.g_l.banner.view = {
 	save_changed_banner:"' . g_l('modules_banner', '[save_changed_banner]') . '",
 	delete_question:"' . g_l('modules_banner', '[delete_question]') . '",
 	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_delete]')) . '",
-	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '"
+	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '",
+	deleteStatConfirm: "' . g_l('modules_banner', '[deleteStatConfirm]') . '"
 };
 ') .
 			we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');
 	}
 
 	function getJSProperty(){
-		?>
-		<script><!--
-			var g_l = {
-				'deleteStatConfirm': "<?php echo g_l('modules_banner', '[deleteStatConfirm]'); ?>"
-			};
-			//-->
-		</script>
-		<?php
-		echo we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_property.js');
+		return we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_property.js');
 	}
 
 	function processCommands(){

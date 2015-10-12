@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
+class we_workflow_view extends we_modules_view{
 	const PAGE_PROPERTIES = 0;
 	const PAGE_OVERVIEW = 1;
 	const BUTTON_DECLINE = 'fat:decline,fa-lg fa-close fa-cancel';
@@ -39,9 +39,11 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 	//wat page is currentlly displed 0-properties(default);1-overview;
 	var $page = self::PAGE_PROPERTIES;
 	var $hiddens = array();
+	var $uid;
 
 	function __construct(){
 		parent::__construct();
+		$this->uid = 'wf_' . md5(uniqid(__FILE__, true));
 		$this->workflowDef = new we_workflow_workflow();
 		$this->documentDef = new we_workflow_document();
 		array_push($this->hiddens, 'ID', 'Status');
@@ -115,13 +117,7 @@ class we_workflow_view extends we_workflow_base implements we_modules_viewIF{
 
 	function getProperties(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){ //TODO: find a better solution for this!
-
-			$GLOBALS['we_head_insert'] = $this->getPropertyJS();
-			$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
-			$GLOBALS['mod'] = 'workflow';
-			ob_start();
-			include(WE_MODULES_PATH . 'home.inc.php');
-			return ob_get_clean();
+			return $this->getHomeScreen();
 		}
 		$content = '<form name="we_form" onsubmit="return false">' .
 			$this->getHiddens();
@@ -1187,7 +1183,6 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 	}
 
 	static function showFooterForNormalMode($we_doc, $showPubl){
-		$_gap = 16;
 		$_col = 0;
 
 		$_footerTable = new we_html_table(array('class' => 'default'), 1, 0);
@@ -1302,6 +1297,14 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 				}
 		}
 		return $_footerTable->getHtml();
+	}
+
+	public function getHomeScreen(){
+		$GLOBALS['we_head_insert'] = $this->getPropertyJS();
+		$GLOBALS['we_body_insert'] = '<form name="we_form">' . $this->getHiddens() . '</form>';
+		$content = we_html_button::create_button("fat:new_workflow,fa-lg fa-gears", "javascript:top.opener.top.we_cmd('new_workflow');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_WORKFLOW"));
+
+		return parent::getHomeScreen('workflow', "workflow.gif", $content);
 	}
 
 }

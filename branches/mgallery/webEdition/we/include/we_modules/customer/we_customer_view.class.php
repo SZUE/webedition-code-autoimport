@@ -63,7 +63,8 @@ class we_customer_view extends we_modules_view{
 			parent::getJSTop() .
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
-var g_l={
+WE().consts.dirs.WE_CUSTOMER_MODULE_DIR="' . WE_CUSTOMER_MODULE_DIR . '";
+WE().consts.g_l.customer.view={
 	save_changed_customer:"' . g_l('modules_customer', '[save_changed_customer]') . '",
 	delete_alert:"' . g_l('modules_customer', '[delete_alert]') . '",
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
@@ -79,7 +80,6 @@ var frameUrl="' . $this->frameset . '";
 	function getJSProperty(){
 		return we_html_element::jsElement('
 var loaded=0;
-WE().consts.dirs.WE_CUSTOMER_MODULE_DIR="' . WE_CUSTOMER_MODULE_DIR . '";
 
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){

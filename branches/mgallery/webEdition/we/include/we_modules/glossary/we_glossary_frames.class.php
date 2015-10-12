@@ -47,7 +47,7 @@ class we_glossary_frames extends we_modules_frame{
 	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			//FIXME: remove
-			return we_glossary_frameEditorHome::Header($this);
+			return parent::getHTMLEditorHeader();
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		if($cmdid && !is_numeric($cmdid)){
@@ -97,7 +97,7 @@ class we_glossary_frames extends we_modules_frame{
 
 	protected function getHTMLEditorFooter(){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return we_glossary_frameEditorHome::Footer($this);
+			return parent::getHTMLEditorFooter('');
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		if($cmdid && !is_numeric($cmdid)){

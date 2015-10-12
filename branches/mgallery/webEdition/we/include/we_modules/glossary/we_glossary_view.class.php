@@ -70,38 +70,11 @@ parent.document.title = "' . $title . '";
 	}
 
 	function getJSProperty(){
-		return parent::getJSProperty() .
-			we_html_element::jsElement('
-var loaded=0;
-
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-function we_cmd() {
-	var args = "";
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-	switch (arguments[0]) {
-		case "switchPage":
-			document.we_form.cmd.value=arguments[0];
-			document.we_form.tabnr.value=arguments[1];
-			submitForm();
-			break;
-		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-			top.content.we_cmd.apply(this, args);
-	}
-}
-function submitForm() {
-	var f = self.document.we_form;
-	f.target =  (arguments[0]?arguments[0]:"edbody");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"post");
-	f.submit();
-}');
+		return we_html_element::jsElement('
+var data={
+	frameset:"' . $this->frameset . '"
+};
+').we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view_prop.js');
 	}
 
 	function getJSSubmitFunction(){

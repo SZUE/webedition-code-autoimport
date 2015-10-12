@@ -49,7 +49,7 @@ function we_cmd() {
 		}
 	}
 	if (hot == 1 && args[0] !== "save_customer") {
-		if (confirm(g_l.save_changed_customer)) {
+		if (confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
 			args[0] = "save_customer";
 		} else {
 			top.content.usetHot();
@@ -62,10 +62,10 @@ function we_cmd() {
 			}
 			break;
 		case "new_customer":
-			if (topFrame.editor.edbody.loaded) {
-				topFrame.editor.edbody.document.we_form.cmd.value = args[0];
-				topFrame.editor.edbody.document.we_form.cmdid.value = args[1];
-				topFrame.editor.edbody.submitForm();
+			if (top.content.editor.edbody.loaded) {
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
+				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout(function () {
 					we_cmd("new_customer");
@@ -82,13 +82,13 @@ function we_cmd() {
 				return;
 			}
 
-			if (topFrame.editor.edbody.loaded) {
-				if (confirm(g_l.delete_alert)) {
-					topFrame.editor.edbody.document.we_form.cmd.value = args[0];
-					topFrame.editor.edbody.submitForm();
+			if (top.content.editor.edbody.loaded) {
+				if (confirm(WE().consts.g_l.customer.view.delete_alert)) {
+					top.content.editor.edbody.document.we_form.cmd.value = args[0];
+					top.content.editor.edbody.submitForm();
 				}
 			} else {
-				top.we_showMessage(g_l.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_WARNING, window);
 			}
 
 
@@ -103,38 +103,38 @@ function we_cmd() {
 				return;
 			}
 
-			if (topFrame.editor.edbody.loaded) {
-				topFrame.editor.edbody.document.we_form.cmd.value = args[0];
-				topFrame.editor.edbody.submitForm();
+			if (top.content.editor.edbody.loaded) {
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.submitForm();
 			} else {
-				top.we_showMessage(g_l.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
+				top.we_showMessage(WE().consts.g_l.customer.view.nothing_to_save, WE().consts.message.WE_MESSAGE_WARNING, window);
 			}
 
 			top.content.usetHot();
 			break;
 
 		case "customer_edit":
-			topFrame.editor.edbody.document.we_form.cmd.value = args[0];
-			topFrame.editor.edbody.document.we_form.cmdid.value = args[1];
-			topFrame.editor.edbody.submitForm();
+			top.content.editor.edbody.document.we_form.cmd.value = args[0];
+			top.content.editor.edbody.document.we_form.cmdid.value = args[1];
+			top.content.editor.edbody.submitForm();
 			break;
 		case "show_admin":
 		case "show_sort_admin":
-			if (topFrame.editor.edbody.document.we_form.cmd.value === "home") {
-				topFrame.editor.edbody.document.we_form.home.value = 1;
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
+				top.content.editor.edbody.document.we_form.home.value = 1;
 			}
-			topFrame.editor.edbody.document.we_form.cmd.value = args[0];
-			topFrame.editor.edbody.document.we_form.cmdid.value = args[1];
-			topFrame.editor.edbody.submitForm();
+			top.content.editor.edbody.document.we_form.cmd.value = args[0];
+			top.content.editor.edbody.document.we_form.cmdid.value = args[1];
+			top.content.editor.edbody.submitForm();
 			break;
 		case "show_search":
 		case "show_customer_settings":
 		case "export_customer":
 		case "import_customer":
-			topFrame.editor.edbody.we_cmd(args[0]);
+			top.content.editor.edbody.we_cmd(args[0]);
 			break;
 		case "load":
-			topFrame.cmd.location = frameUrl + "?pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
+			top.content.cmd.location = frameUrl + "?pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);

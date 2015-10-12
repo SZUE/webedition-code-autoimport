@@ -102,8 +102,8 @@ function we_cmd(){
 		case "revenue_view":
 		//FIXME: this is not correct; document doesnt work like this
 			' . ($resultD ? 'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";' :
-						(!empty($resultO) ? 'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=' . $classid . '";' :
-								'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";')) . '
+				(!empty($resultO) ? 'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=' . $classid . '";' :
+					'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";')) . '
 			break;
 		';
 
@@ -259,7 +259,7 @@ function we_cmd() {
 		$home = we_base_request::_(we_base_request::BOOL, 'home');
 
 		if($home){
-			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop';
+			$bodyURL = $this->frameset . '?home=1';
 		} elseif($mid){
 			$year = substr($mid, (strlen($mid) - 4));
 			$month = str_replace($year, '', $mid);
@@ -280,9 +280,9 @@ function we_cmd() {
 	function getHTMLEditorTop(){// TODO: merge getHTMLRight and getHTMLRightTop
 		$DB_WE = $this->db;
 
-		$home = we_base_request::_(we_base_request::BOOL, "home");
-		$mid = we_base_request::_(we_base_request::INT, "mid", 0);
-		$bid = we_base_request::_(we_base_request::INT, "bid", 0);
+		$home = we_base_request::_(we_base_request::BOOL, 'home');
+		$mid = we_base_request::_(we_base_request::INT, 'mid', 0);
+		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 
 // config
 		$feldnamen = explode('|', f('SELECT strFelder FROM ' . WE_SHOP_PREFS_TABLE . ' WHERE strDateiname="shop_pref"', '', $DB_WE));
@@ -300,7 +300,7 @@ function we_cmd() {
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . $DB_WE->escape(WE_SHOP_TITLE_FIELD_NAME) . '" LIMIT 1', '', $DB_WE);
 
 		if($home){
-			$bodyURL = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=mod_home&mod=shop'; //same as in getHTMLRight()
+			$bodyURL = $this->frameset . '?home=1&pnt=edbody'; //same as in getHTMLRight()
 		} elseif($mid){
 // TODO::WANN UND VON WEM WIRD DAS AUFGERUFEN ????
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_overviewTop.php?mid=' . $mid;
@@ -442,6 +442,13 @@ function setTab(tab) {
 
 	function getJSStart(){
 		return 'start();';
+	}
+
+	protected function getHTMLEditorBody(){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
+			return $this->View->getHomeScreen();
+		}
+		return $this->View->getProperties();
 	}
 
 }

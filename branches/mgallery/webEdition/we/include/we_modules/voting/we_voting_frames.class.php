@@ -128,7 +128,6 @@ class we_voting_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorFooter(){
-
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
 		}
@@ -208,16 +207,16 @@ class we_voting_frames extends we_modules_frame{
 				}
 			}
 
-			$variant_js .=
-				'answers_edit.delRelatedItems=true;
-				question_edit.showVariant(0);
-				answers_edit.showVariant(0);
-				question_edit.showVariant(' . we_base_request::_(we_base_request::INT, 'vernr', 0) . ');
-				answers_edit.showVariant(' . we_base_request::_(we_base_request::INT, 'vernr', 0) . ');
-				answers_edit.SetMinCount(' . ($this->View->voting->AllowFreeText ? 1 : 2) . ');
-				answers_edit.' . ($this->View->voting->AllowImages ? 'show' : 'hide') . 'Images();
-				answers_edit.' . ($this->View->voting->AllowMedia ? 'show' : 'hide') . 'Media();
-			  answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Successors();';
+			$variant_js .=				'
+answers_edit.delRelatedItems=true;
+question_edit.showVariant(0);
+answers_edit.showVariant(0);
+question_edit.showVariant(' . we_base_request::_(we_base_request::INT, 'vernr', 0) . ');
+answers_edit.showVariant(' . we_base_request::_(we_base_request::INT, 'vernr', 0) . ');
+answers_edit.SetMinCount(' . ($this->View->voting->AllowFreeText ? 1 : 2) . ');
+answers_edit.' . ($this->View->voting->AllowImages ? 'show' : 'hide') . 'Images();
+answers_edit.' . ($this->View->voting->AllowMedia ? 'show' : 'hide') . 'Media();
+answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Successors();';
 		}
 
 
@@ -323,8 +322,6 @@ class we_voting_frames extends we_modules_frame{
 
 			$_charsetHandler = new we_base_charsetHandler();
 			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-			$charset = $GLOBALS['WE_BACKENDCHARSET'];
-//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 			$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
 			$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 325, "defaultfont", false);
 			$import_Charset = '<table class="default"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';

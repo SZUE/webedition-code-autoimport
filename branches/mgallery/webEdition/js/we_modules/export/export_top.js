@@ -1,11 +1,10 @@
-<?php
-
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * webEdition CMS
+ * $Rev: 10569 $
+ * $Author: mokraemer $
+ * $Date: 2015-10-12 19:56:23 +0200 (Mo, 12. Okt 2015) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -19,29 +18,18 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_glossary_frameEditorHome{
 
-	function Header($weGlossaryFrames){
+function setHot() {
+	hot = 1;
+}
 
-		$_body = array(
-			'bgcolor' => '#F0EFF0',
-		);
+function usetHot() {
+	hot = 0;
+}
 
-		$body = we_html_element::htmlBody($_body, "");
-
-		return $weGlossaryFrames->getHTMLDocument($body);
-	}
-
-		function Footer($weGlossaryFrames){
-
-		$_body = array(
-			'bgcolor' => '#EFF0EF',
-		);
-
-		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody($_body, ""));
-	}
-
+function doUnload() {
+	WE().util.jsWindow.prototype.closeAll(window);
 }

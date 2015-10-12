@@ -26,7 +26,6 @@ we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
 class we_export_frames extends we_modules_frame{
 	var $SelectionTree;
-	var $editorBodyFrame;
 	var $_space_size = 130;
 	var $_width_size = 535;
 	protected $treeDefaultWidth = 220;
@@ -37,7 +36,6 @@ class we_export_frames extends we_modules_frame{
 		$this->Tree = new we_export_treeMain($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->SelectionTree = new we_export_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_export_view();
-		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
 	}
 
 	public function getHTMLDocumentHeader($what = '', $mode = ''){
@@ -177,7 +175,7 @@ function hideProgress() {
 	}
 
 	function getHTMLProperties($preselect = ""){// TODO: move to weExportView
-		$this->SelectionTree->init($this->frameset, $this->editorBodyFrame, $this->editorBodyFrame, $this->cmdFrame);
+		$this->SelectionTree->init($this->frameset, 'top.content.editor.edbody', 'top.content.editor.edbody', $this->cmdFrame);
 
 		$tabNr = we_base_request::_(we_base_request::INT, "tabnr", 1);
 
@@ -189,12 +187,12 @@ function toggle(id){
 }
 
 function clearLog(){
-	' . $this->editorBodyFrame . '.document.getElementById("log").innerHTML = "";
+	top.content.editor.edbody.document.getElementById("log").innerHTML = "";
 }
 
 function addLog(text){
-	' . $this->editorBodyFrame . '.document.getElementById("log").innerHTML+= text;
-	' . $this->editorBodyFrame . '.document.getElementById("log").scrollTop = 50000;
+	top.content.editor.edbody.document.getElementById("log").innerHTML+= text;
+	top.content.editor.edbody.document.getElementById("log").scrollTop = 50000;
 }
 ') .
 			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
@@ -389,7 +387,7 @@ function closeAllType(){
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			return we_html_element::jsElement("self.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=" . $this->editorBodyFrame . "'");
+			return we_html_element::jsElement("self.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=top.content.editor.edbody'");
 		}
 		return '';
 	}
@@ -479,12 +477,12 @@ function closeAllType(){
 
 			if(!$xmlExIm->prepare){
 				$_progress_update = we_html_element::jsElement('
-										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
-										if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[prepare]'))) . '<br/>");
+										if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
+										if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[prepare]'))) . '<br/>");
 										if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(0);
 										if(' . $this->topFrame . '.editor.edfooter.setProgressText) ' . $this->topFrame . '.editor.edfooter.setProgressText("current_description","' . g_l('export', '[working]') . '");
-										if(' . $this->editorBodyFrame . '.addLog){
-										' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[export]'))) . '<br/>");
+										if(top.content.editor.edbody.addLog){
+										top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(20, 5) . we_html_element::htmlB(g_l('export', '[export]'))) . '<br/>");
 									}
 								');
 				//FIXME: set export type in getHeader
@@ -534,7 +532,7 @@ function closeAllType(){
 					case 'weBinary':
 						$_progress_update .= "\n" .
 							we_html_element::jsElement('
-											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '<br/>");
+											if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '<br/>");
 										') . "\n";
 						$proceed = false;
 						break;
@@ -565,7 +563,7 @@ function closeAllType(){
 
 					$_progress_update .= "\n" .
 						we_html_element::jsElement('
-											if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br/>");
+											if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_tools::getPixel(50, 5) . $_progress_text) . '<br/>");
 										');
 				}
 			}
@@ -595,10 +593,10 @@ function closeAllType(){
 		$_progress_update .= "\n" .
 			we_html_element::jsElement('
 									if (' . $this->topFrame . '.editor.edfooter.doProgress) ' . $this->topFrame . '.editor.edfooter.doProgress(100);
-									if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("<br/>' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
+									if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("<br/>' . addslashes(we_html_tools::getPixel(10, 10) . we_html_element::htmlB(g_l('export', '[end_export]') . ' - ' . date("d.m.Y H:i:s"))) . '<br/><br/>");
 							') . "\n" .
 			($this->View->export->ExportTo === 'local' ?
-				we_html_element::jsElement($this->editorBodyFrame . '.addLog(\'' .
+				we_html_element::jsElement('top.content.editor.edbody.addLog(\'' .
 					we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1) . g_l('export', '[backup_finished]')) . "<br/>" .
 						addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', '[download_starting2]') . "<br/><br/>" .
 						addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', '[download_starting3]') . "<br/>" .
@@ -756,7 +754,7 @@ function closeAllType(){
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener." . $this->editorBodyFrame . ".we_cmd(\\'add_cat\\',top.allIDs);')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.top.content.editor.edbody.we_cmd(\\'add_cat\\',top.allIDs);')");
 
 		$cats = new we_chooser_multiDir($this->_width_size, $this->View->export->Categorys, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 

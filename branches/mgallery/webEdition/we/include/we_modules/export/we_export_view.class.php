@@ -26,18 +26,13 @@ we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
 class we_export_view extends we_modules_view{
 	var $export;
-	var $editorBodyFrame;
 	var $editorBodyDoc;
-	var $editorBodyForm;
 	private $page;
 
 	public function __construct(){
 		$frameset = WE_EXPORT_MODULE_DIR . "edit_export_frameset.php";
 		$topframe = "top.content";
 		parent::__construct($frameset, $topframe);
-		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
-		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $this->topFrame . '.editor.edheader';
 		$this->export = new we_export_export();
 	}
 
@@ -64,26 +59,12 @@ class we_export_view extends we_modules_view{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		return
-			parent::getJSTop() .
-			we_html_element::jsElement('
+		return we_html_element::jsElement('
 var get_focus = 1;
 var activ_tab = 1;
 var hot= 0;
 var scrollToVal=0;
-var table = "' . FILE_TABLE . '";
-
-function setHot() {
-	hot = "1";
-}
-
-function usetHot() {
-	hot = "0";
-}
-
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
+var table = WE().consts.dirs.FILE_TABLE;
 
 parent.document.title = "' . $title . '";
 
@@ -111,83 +92,95 @@ function we_cmd() {
 			}
 					break;
 		case "new_export_group":
-			' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
-			if(' . $this->editorBodyFrame . '.loaded) {
-				' . $this->editorBodyForm . '.IsFolder.value = 1;
+		if(!WE().util.hasPerm("NEW_EXPORT")){
+		' . we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			return;
+			}
+			if(top.content.editor.edbody.loaded) {
+				top.content.editor.edbody.document.we_form.IsFolder.value = 1;
 			}
 		case "new_export":
-			' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : '') . '
-			if(' . $this->editorBodyFrame . '.loaded) {
-				' . $this->editorBodyForm . '.cmd.value = args[0];
-				' . $this->editorBodyForm . '.cmdid.value = args[1];
-				' . $this->editorBodyForm . '.pnt.value = "edbody";
-				' . $this->editorBodyForm . '.tabnr.value = 1;
-				' . $this->editorBodyFrame . '.submitForm();
+		if(!WE().util.hasPerm("NEW_EXPORT")){
+		' . we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			return;
+			}
+			if(top.content.editor.edbody.loaded) {
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.cmdid.value = args[1];
+				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
+				top.content.editor.edbody.document.we_form.tabnr.value = 1;
+				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout("we_cmd("+args[0]+");", 10);
 			}
 		break;
 		case "delete_export":
-			if(' . $this->editorBodyForm . '.cmd.value=="home") return;
-			' . (!permissionhandler::hasPerm("DELETE_EXPORT") ?
-					(
-					we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					) :
-					('
-					if (' . $this->editorBodyFrame . '.loaded) {
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home"){
+			return;
+			}
+			if(!WE().util.hasPerm("DELETE_EXPORT")){
+					' . we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+						return;
+					}
+
+					if (top.content.editor.edbody.loaded) {
 						var message="' . g_l('export', '[delete_question]') . '";
-						if(' . $this->editorBodyForm . '.IsFolder.value=="1") message = "' . g_l('export', '[delete_group_question]') . '";
+						if(top.content.editor.edbody.document.we_form.IsFolder.value=="1") message = "' . g_l('export', '[delete_group_question]') . '";
 
 						if (confirm(message)) {
-							' . $this->editorBodyForm . '.cmd.value=args[0];
-							' . $this->editorBodyForm . '.pnt.value = "cmd" ;
-							' . $this->editorBodyForm . '.tabnr.value=top.content.activ_tab;
-							' . $this->editorBodyFrame . '.submitForm("cmd");
+							top.content.editor.edbody.document.we_form.cmd.value=args[0];
+							top.content.editor.edbody.document.we_form.pnt.value = "cmd" ;
+							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+							top.content.editor.edbody.submitForm("cmd");
 						}
 					} else {
 						' . we_message_reporting::getShowMessageCall(g_l('export', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 					}
 
-			')) . '
+
 		break;
 		case "start_export":
 					if(top.content.hot!=0){
 						' . we_message_reporting::getShowMessageCall(g_l('export', '[must_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						break;
 					}
-					' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
-				) . '
+					if(!WE().util.hasPerm("NEW_EXPORT")){
+					' . we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+						return;
+					}
 					if (top.content.editor.edheader.setTab) top.content.editor.edheader.setActiveTab("tab_3");
 					if (top.content.editor.edheader.setTab) top.content.editor.edheader.setTab(3);
 					if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress(0);
-					if (' . $this->editorBodyFrame . '.clearLog) ' . $this->editorBodyFrame . '.clearLog();
-					if (' . $this->editorBodyFrame . '.addLog) ' . $this->editorBodyFrame . '.addLog("' . addslashes(we_html_tools::getPixel(10, 10)) . '<br/>");
+					if (top.content.editor.edbody.clearLog) top.content.editor.edbody.clearLog();
+					if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("<br/><br/>");
 		case "save_export":
-			' . (!permissionhandler::hasPerm("NEW_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
-				) . '
-			if(' . $this->editorBodyForm . '.cmd.value=="home") return;
+if(!WE().util.hasPerm("NEW_EXPORT")){
+' . we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			return;
+			}
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
 
-			if (' . $this->editorBodyFrame . '.loaded) {
-							if(' . $this->editorBodyForm . '.Text.value==""){
+			if (top.content.editor.edbody.loaded) {
+							if(top.content.editor.edbody.document.we_form.Text.value==""){
 								' . we_message_reporting::getShowMessageCall(g_l('export', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 								return;
 							}
-							' . $this->editorBodyForm . '.cmd.value=args[0];
-							' . $this->editorBodyForm . '.pnt.value=args[0]=="start_export" ? "load" : "edbody";
-							' . $this->editorBodyForm . '.tabnr.value=top.content.activ_tab;
-							if(' . $this->editorBodyForm . '.IsFolder.value!=1){
-								' . $this->editorBodyForm . '.selDocs.value=' . $this->editorBodyFrame . '.SelectedItems["' . FILE_TABLE . '"].join(",");
-								' . $this->editorBodyForm . '.selTempl.value=' . $this->editorBodyFrame . '.SelectedItems["' . TEMPLATES_TABLE . '"].join(",");
-								' . (defined('OBJECT_FILES_TABLE') ? $this->editorBodyForm . '.selObjs.value=' . $this->editorBodyFrame . '.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') . '
-								' . (defined('OBJECT_TABLE') ? $this->editorBodyForm . '.selClasses.value=' . $this->editorBodyFrame . '.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
+							top.content.editor.edbody.document.we_form.cmd.value=args[0];
+							top.content.editor.edbody.document.we_form.pnt.value=args[0]=="start_export" ? "load" : "edbody";
+							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+							if(top.content.editor.edbody.document.we_form.IsFolder.value!=1){
+								top.content.editor.edbody.document.we_form.selDocs.value=top.content.editor.edbody.SelectedItems[WE().consts.dirs.FILE_TABLE].join(",");
+								top.content.editor.edbody.document.we_form.selTempl.value=top.content.editor.edbody.SelectedItems[WE().consts.dirs.TEMPLATES_TABLE].join(",");
+								' . (defined('OBJECT_FILES_TABLE') ? 'top.content.editor.edbody.document.we_form.selObjs.value=top.content.editor.edbody.SelectedItems[WE().consts.dirs.OBJECT_FILES_TABLE].join(",");' : '') . '
+								' . (defined('OBJECT_TABLE') ? 'top.content.editor.edbody.document.we_form.selClasses.value=top.content.editor.edbody.SelectedItems[WE().consts.dirs.OBJECT_TABLE].join(",");' : '') . '
 
-								' . $this->editorBodyForm . '.selDocs_open.value=' . $this->editorBodyFrame . '.openFolders["' . FILE_TABLE . '"];
-								' . $this->editorBodyForm . '.selTempl_open.value=' . $this->editorBodyFrame . '.openFolders["' . TEMPLATES_TABLE . '"];
-								' . (defined('OBJECT_FILES_TABLE') ? $this->editorBodyForm . '.selObjs_open.value=' . $this->editorBodyFrame . '.openFolders["' . OBJECT_FILES_TABLE . '"];' : '') . '
-								' . (defined('OBJECT_TABLE') ? $this->editorBodyForm . '.selClasses_open.value=' . $this->editorBodyFrame . '.openFolders["' . OBJECT_TABLE . '"];' : '') . '
+								top.content.editor.edbody.document.we_form.selDocs_open.value=top.content.editor.edbody.openFolders[WE().consts.dirs.FILE_TABLE];
+								top.content.editor.edbody.document.we_form.selTempl_open.value=top.content.editor.edbody.openFolders[WE().consts.dirs.TEMPLATES_TABLE];
+								' . (defined('OBJECT_FILES_TABLE') ? 'top.content.editor.edbody.document.we_form.selObjs_open.value=top.content.editor.edbody.openFolders[WE().consts.dirs.OBJECT_FILES_TABLE];' : '') . '
+								' . (defined('OBJECT_TABLE') ? 'top.content.editor.edbody.document.we_form.selClasses_open.value=top.content.editor.edbody.openFolders[WE().consts.dirs.OBJECT_TABLE];' : '') . '
 							}
 
-							' . $this->editorBodyFrame . '.submitForm(args[0]=="start_export" ? "cmd" : "edbody");
+							top.content.editor.edbody.submitForm(args[0]=="start_export" ? "cmd" : "edbody");
 			} else {
 				' . we_message_reporting::getShowMessageCall(g_l('export', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			}
@@ -195,27 +188,29 @@ function we_cmd() {
 		break;
 
 		case "export_edit":
-			' . (!permissionhandler::hasPerm("EDIT_EXPORT") ? we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . 'return;' : ''
-				) . '
+		if(!WE().util.hasPerm("EDIT_EXPORT")){
+		' . we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+			return;
+			}
 			top.content.hot=0;
-			' . $this->editorBodyForm . '.cmd.value=args[0];
-			' . $this->editorBodyForm . '.pnt.value="edbody";
-			' . $this->editorBodyForm . '.cmdid.value=args[1];
-			' . $this->editorBodyForm . '.tabnr.value=top.content.activ_tab;
+			top.content.editor.edbody.document.we_form.cmd.value=args[0];
+			top.content.editor.edbody.document.we_form.pnt.value="edbody";
+			top.content.editor.edbody.document.we_form.cmdid.value=args[1];
+			top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
 
-			' . $this->editorBodyFrame . '.submitForm();
+			top.content.editor.edbody.submitForm();
 		break;
 		case "load":
 			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+args[1]+"&offset="+args[2]+"&sort="+args[3];
 		break;
 		case "home":
-			' . $this->editorBodyFrame . '.parent.location="' . $this->frameset . '?pnt=editor";
+			top.content.editor.edbody.parent.location="' . $this->frameset . '?pnt=editor";
 		break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);
 
 	}
-}');
+}') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export_top.js');
 	}
 
 	function getJSProperty(){
@@ -238,66 +233,17 @@ function we_cmd() {
 			}
 		}
 
-		return parent::getJSProperty() .
-			we_html_element::jsElement('
-var loaded=0;
+		return we_html_element::jsElement('
+
 var table = "' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '";
-
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-function we_cmd() {
-	var args = "";
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-		for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	switch (arguments[0]) {
-		case "switchPage":
-			document.we_form.cmd.value=arguments[0];
-			document.we_form.tabnr.value=arguments[1];
-			submitForm();
-			break;
-		case "we_export_dirSelector":
-			url=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=we_export_dirSelector&";
-			for(var i = 1; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-			new (WE().util.jsWindow)(top.window, url,"we_exportselector",-1,-1,600,350,true,true,true);
-			break;
-		case "we_selector_category":
-			new (WE().util.jsWindow)(top.window, url,"we_catselector",-1,-1,' . we_selector_file::WINDOW_CATSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_CATSELECTOR_HEIGHT . ',true,true,true,true);
-		break;
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
-		break;
-		case "add_cat":
-		case "del_cat":
-		case "del_all_cats":
-			document.we_form.cmd.value=arguments[0];
-			' . $this->editorBodyForm . '.pnt.value="edbody";
-			document.we_form.tabnr.value=top.content.activ_tab;
-			document.we_form.cat.value=arguments[1];
-			submitForm();
-		break;
-		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
-			top.content.we_cmd.apply(this, args);
-	}
-}
-function submitForm() {
-	var f = self.document.we_form;
-	f.target =  (arguments[0]?arguments[0]:"edbody");
-	f.action = (arguments[1]?arguments[1]:"' . $this->frameset . '");
-	f.method = (arguments[2]?arguments[2]:"post");
-	f.submit();
-}
+var data={
+	frameset:"' . $this->frameset . '"
+};
 
 function start() {
 	' . $selected . $opened . ( $this->export->IsFolder == 0 ? '
-	setHead(' . $this->editorBodyFrame . '.table);' : '') . '
-}');
+	setHead(top.content.editor.edbody.table);' : '') . '
+}') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export_prop.js');
 	}
 
 	function getJSSubmitFunction(){
@@ -431,7 +377,7 @@ function start() {
 					);
 				echo we_html_element::jsElement(
 					$js .
-					$this->editorHeaderFrame . '.location.reload();' .
+					'top.content.editor.edheader.location.reload();' .
 					we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
 					'top.content.hot=0;'
 				);

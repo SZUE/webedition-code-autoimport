@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -74,7 +76,7 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "delete_stat":
-			if (confirm(g_l.deleteStatConfirm)) {
+			if (confirm(WE().consts.g_l.banner.view.deleteStatConfirm)) {
 				document.we_form.ncmd.value = arguments[0];
 				submitForm();
 			}

@@ -440,7 +440,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 //-->
 </script>
 </head>
-<body id="weMainBody" onload="initWE();top.start('<?php echo $_table_to_load;?>');" onunload="doUnload()" onbeforeunload="doUnload()">
+<body id="weMainBody" onload="initWE();top.start('<?php echo $_table_to_load;?>');" onbeforeunload="doUnload()">
 	<div id="headerDiv"><?php
 	$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 		we_main_header::pbody($SEEM_edit_include); ?>

@@ -106,14 +106,14 @@ function setTab(tab){
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	protected function getHTMLEditorFooter($mode = 0){
+	protected function getHTMLEditorBody(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('bgcolor' => '#F0EFF0'), ''));
+			return $this->View->getHomeScreen();
 		}
+	}
 
-		return we_html_tools::getHtmlTop() .
-			STYLESHEET .
-			parent::getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_footer.js'));
+	protected function getHTMLEditorFooter($mode = 0){
+		return parent::getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_footer.js'));
 	}
 
 	function getHTMLCmd(){

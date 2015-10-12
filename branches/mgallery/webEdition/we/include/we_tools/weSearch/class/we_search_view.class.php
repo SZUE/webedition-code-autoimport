@@ -37,7 +37,6 @@ class we_search_view extends we_modules_view{
 	var $frameset;
 	var $topFrame;
 	var $editorBodyFrame;
-	var $editorBodyForm;
 	var $editorHeaderFrame;
 	var $editorFooterFrame;
 	var $icon_pattern = '';
@@ -51,7 +50,6 @@ class we_search_view extends we_modules_view{
 	public function __construct($frameset = '', $topframe = 'top'){
 		parent::__construct($frameset, $topframe);
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
-		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
 		$this->editorHeaderFrame = $this->topFrame . '.editor.edheader';
 		$this->editorFooterFrame = $this->topFrame . '.editor.edfooter';
 
