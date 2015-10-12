@@ -144,12 +144,12 @@ function reloadDir() {
 
 function newFile() {
 	url = "we_fs_uploadFile.php?pid=" + top.currentDir + "&tab=" + top.table + "&ct=" + currentType;
-	new jsWindow(url, "we_fsuploadFile", -1, -1, 450, 660, true, false, true);
+	new (WE().util.jsWindow)(top.window, url, "we_fsuploadFile", -1, -1, 450, 660, true, false, true);
 }
 
 function newCollection() {
 	url = "we_cmd.php?we_cmd[0]=editNewCollection&fixedpid=" + top.currentDir + "&caller=selector";
-	new jsWindow(url, "we_newICollection", -1, -1, 460, 560, true, false, true);
+	new (WE().util.jsWindow)(top.window, url, "we_newICollection", -1, -1, 460, 560, true, false, true);
 }
 
 function writeBodyDocument(d) {

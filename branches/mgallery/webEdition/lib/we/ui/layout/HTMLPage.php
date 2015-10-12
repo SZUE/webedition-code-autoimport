@@ -207,7 +207,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	protected function _renderHTML(){
 
 		$this->addJSFiles(array(
-			JS_DIR . 'windows.js',
+			//JS_DIR . 'windows.js',
 			LIB_DIR . 'additional/yui/yahoo-min.js',
 			LIB_DIR . 'additional/yui/event-min.js',
 			LIB_DIR . 'additional/yui/connection-min.js',

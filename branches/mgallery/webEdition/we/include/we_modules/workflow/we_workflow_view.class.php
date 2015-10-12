@@ -954,7 +954,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 		ob_start();
 		require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-		return ob_end_clean() . we_html_element::jsScript(JS_DIR . 'windows.js') .
+		return ob_end_clean() .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 		function openToEdit(tab,id,contentType){
@@ -1092,7 +1092,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 		$wfType = f('SELECT ' . WORKFLOW_TABLE . '.Type as Type FROM ' . WORKFLOW_TABLE . ',' . WORKFLOW_DOC_TABLE . ' WHERE ' . WORKFLOW_DOC_TABLE . '.workflowID=' . WORKFLOW_TABLE . '.ID AND ' . WORKFLOW_DOC_TABLE . '.ID=' . intval($workflowDocument->ID), 'Type', $db);
 		return '<table class="default" style="margin-right:15px;">
 		<tr><td>' . we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . '</td></tr>
-		<tr><td style="padding-top:10px;">' . we_html_button::create_button('logbook', "javascript:new jsWindow('" . WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=" . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',-1,-1,640,480,true,false,true);") . '</td></tr>		</table>';
+		<tr><td style="padding-top:10px;">' . we_html_button::create_button('logbook', "javascript:new (WE().util.jsWindow)(top.window, '" . WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=" . $workflowDocument->document->ID . "&type=" . $wfType . "','workflow_history',-1,-1,640,480,true,false,true);") . '</td></tr>		</table>';
 	}
 
 	static function getLogForDocument($docID, $type = 0){//type is an string-array

@@ -26,7 +26,7 @@
 
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 
@@ -111,7 +111,7 @@ function we_cmd() {
 			 break;
 			 */
 		case "empty_log":
-			new jsWindow(top.WE().consts.dirs.WE_WORKFLOW_MODULE_DIR + "edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
+			new (WE().util.jsWindow)(top.window, top.WE().consts.dirs.WE_WORKFLOW_MODULE_DIR + "edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);

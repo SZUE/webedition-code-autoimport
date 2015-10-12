@@ -828,10 +828,10 @@ abstract class we_rebuild_wizard{
 				for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 				switch (arguments[0]) {
 				case "we_selector_directory":
-					new jsWindow(url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+					new (WE().util.jsWindow)(top.window, url,"we_fileselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 					break;
 				case "we_selector_category":
-					new jsWindow(url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+					new (WE().util.jsWindow)(top.window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 					break;
 				case "add_cat":
 					var catsToAdd = makeArrayFromCSV(arguments[1]);

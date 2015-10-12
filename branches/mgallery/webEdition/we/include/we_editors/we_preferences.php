@@ -2509,22 +2509,22 @@ for(i=1;i<childs.length;++i){
 		 for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 switch (arguments[0]){
 case "browse_server":
-new jsWindow(url,"browse_server",-1,-1,840,400,true,false,true);
+new (WE().util.jsWindow)(top.window, url,"browse_server",-1,-1,840,400,true,false,true);
 break;
 case "we_selector_image":
 case "we_selector_document":
-new jsWindow(url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
+new (WE().util.jsWindow)(top.window, url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
 break;
 case "show_formmail_log":
 url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailLog.php"
-new jsWindow(url,"we_selector_document",-1,-1,840,400,true,false,true);
+new (WE().util.jsWindow)(top.window, url,"we_selector_document",-1,-1,840,400,true,false,true);
 break;
 case "show_formmail_block_log":
 url = "' . WE_INCLUDES_DIR . 'we_editors/weFormmailBlockLog.php"
-new jsWindow(url,"we_selector_document",-1,-1,840,400,true,false,true);
+new (WE().util.jsWindow)(top.window, url,"we_selector_document",-1,-1,840,400,true,false,true);
 break;
 case "openColorChooser":
-new jsWindow(url,"we_colorChooser",-1,-1,430,370,true,true,true);
+new (WE().util.jsWindow)(top.window, url,"we_colorChooser",-1,-1,430,370,true,true,true);
 break;
 
 default:

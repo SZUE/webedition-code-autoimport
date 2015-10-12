@@ -25,7 +25,7 @@ function we_cmd_object(args, url) {
 
 		case "object_edit_ifthere":
 		case "edit_object":
-			new jsWindow(url, "edit_module", -1, -1, 380, 250, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "edit_module", -1, -1, 380, 250, true, true, true, true);
 			break;
 		case "new_objectFile":
 			we_cmd("new", top.WE().consts.tables.OBJECT_FILES_TABLE, "", "objectFile");
@@ -107,20 +107,20 @@ function we_cmd_object(args, url) {
 			top.we_cmd("mv", 1, top.WE().consts.tables.OBJECT_FILES_TABLE);
 			break;
 		case "object_preview_objectFile":
-			new jsWindow(url, "preview_object", -1, -1, 1600, 1200, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "preview_object", -1, -1, 1600, 1200, true, true, true, true);
 			break;
 		case "object_create_tmpfromClass":
-			new jsWindow(url, "tmpfromClass", -1, -1, 580, 200, true, false, true, false);
+			new (WE().util.jsWindow)(top.window, url, "tmpfromClass", -1, -1, 580, 200, true, false, true, false);
 			break;
 		case "open_object":
 			we_cmd("load", top.WE().consts.tables.OBJECT_TABLE);
 			url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=object&we_cmd[2]=" + top.WE().consts.tables.OBJECT_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new jsWindow(url, "we_dirChooser", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_dirChooser", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case "open_objectFile":
 			we_cmd("load", top.WE().consts.tables.OBJECT_FILES_TABLE);
 			url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=objectFile&we_cmd[2]=" + top.WE().consts.tables.OBJECT_FILES_TABLE + "&we_cmd[5]=" + encodeURIComponent("opener.top.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new jsWindow(url, "we_dirChooser", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_dirChooser", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true);
 			break;
 		default:
 			return false;

@@ -25,15 +25,15 @@ function we_cmd_banner(args, url) {
 	switch (args[0]) {
 		case "banner_edit":
 		case "banner_edit_ifthere":
-			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "banner_default":
 			jsWindow.prototype.focus('edit_module');
-			new jsWindow(url, "defaultbanner", -1, -1, 500, 220, true, false, true, true);
+			new (WE().util.jsWindow)(top.window, url, "defaultbanner", -1, -1, 500, 220, true, false, true, true);
 			return true;
 		case "banner_code":
 			jsWindow.prototype.focus('edit_module');
-			new jsWindow(url, "bannercode", -1, -1, 500, 420, true, true, true, false);
+			new (WE().util.jsWindow)(top.window, url, "bannercode", -1, -1, 500, 420, true, true, true, false);
 			return true;
 		case "new_banner":
 		case "new_bannergroup":

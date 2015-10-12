@@ -101,10 +101,10 @@ function we_cmd() {
 
 	switch (arguments[0]) {
 		case "we_selector_directory":
-			new jsWindow(url, "we_fileselector", -1, -1, top.WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, top.WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url, "we_cateditor", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_cateditor", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		default:
 			var args = [];

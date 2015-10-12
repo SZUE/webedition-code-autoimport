@@ -34,7 +34,7 @@ function usetHot() {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 /**
@@ -157,7 +157,7 @@ function we_cmd() {
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
 				top.we_showMessage(g_l.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
-				new jsWindow(frameSet + "?pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
+				new (WE().util.jsWindow)(top.window, frameSet + "?pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
 			}
 			break;
 

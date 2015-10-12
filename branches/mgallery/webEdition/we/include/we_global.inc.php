@@ -1018,7 +1018,6 @@ function we_templateHead($fullHeader = false){
 	echo ($fullHeader ? we_html_element::htmlDocType() . '<html><head><title>WE</title>' . we_html_tools::htmlMetaCtCharset($GLOBALS['CHARSET']) : '') .
 	we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 	STYLESHEET_BUTTONS_ONLY .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	weSuggest::getYuiFiles() .
 	we_html_element::jsElement('parent.openedWithWE=true;');
 	require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');

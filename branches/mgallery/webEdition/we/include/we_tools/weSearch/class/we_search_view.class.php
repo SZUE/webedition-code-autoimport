@@ -107,7 +107,7 @@ class we_search_view extends we_modules_view{
      break;
      case "exit_doc_question":
       url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
-      new jsWindow(url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
+      new (WE().util.jsWindow)(top.window, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
      break;
      ' . $this->getTopJSAdditional() . '
      default:
@@ -2588,8 +2588,7 @@ weSearch.g_l = {
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(JS_DIR . "windows.js") .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 var loaded=0;
 function we_cmd() {
@@ -2598,23 +2597,23 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 		case "we_selector_file":
-			new jsWindow(url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
 		case "we_selector_directory":
-			new jsWindow(url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		case "open' . $this->toolName . 'Dirselector":
 			url = WE().consts.dirs.WEBEDITION_DIR+"apps/' . $this->toolName . '/we_' . $this->toolName . 'DirSelect.php?";
 			for(var i = 0; i < arguments.length; i++){
 				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 			}
-			new jsWindow(url,"we_' . $this->toolName . '_dirselector",-1,-1,600,400,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_' . $this->toolName . '_dirselector",-1,-1,600,400,true,true,true);
 			break;
 			' . $this->getPropertyJSAdditional() . '
 		default:

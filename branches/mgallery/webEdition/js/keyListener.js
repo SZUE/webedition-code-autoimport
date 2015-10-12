@@ -96,7 +96,8 @@ function keyDialogListener(_successor) {
 
 					if (this.win.top.closeOnEscape()) {
 						this.cancelEvent(evt);
-						this.win.top.close();
+						jsWindow.prototype.closeAll(this.win);
+						//this.win.top.close();
 						return true;
 					}
 				}

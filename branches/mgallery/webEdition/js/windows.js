@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  *
  * webEdition CMS
@@ -21,9 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-windows = [];
 
-function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
+function jsWindow(referer, url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
 	var foo_w = w;
 	var foo_h = h;
 
@@ -33,22 +34,24 @@ function jsWindow(url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resiza
 		var screen_width = screen.availWidth - 10;
 		w = Math.min(screen_width, w);
 		h = Math.min(screen_height, h);
-		x = (x == -1 ? Math.round((screen_width - w) / 2) : x);
-		y = (y == -1 ? Math.round((screen_height - h) / 2) : y);
+		x = (x === -1 ? Math.round((screen_width - w) / 2) : x);
+		y = (y === -1 ? Math.round((screen_height - h) / 2) : y);
 	}
 
+	this.referer = referer;
 	this.url = url;
 	this.ref = ref;
 	this.x = x;
 	this.y = y;
 	this.w = w;
 	this.h = h;
-	this.scroll = (foo_w != w || foo_h != h) ? true : scroll;
+	this.scroll = (foo_w !== w || foo_h !== h) ? true : scroll;
 	this.hideMenue = hideMenue;
 	this.resizable = resizable;
 	this.wind = null;
-	windows.push(this);
-	WE().layout.windows.push(this);
+	if (WE()) {
+		WE().layout.windows.push(this);
+	}
 	if (openAtStartup) {
 		this.open(noPopupErrorMsg, noPopupLocation);
 	}
@@ -74,51 +77,76 @@ jsWindow.prototype.open = function (noPopupErrorMsg, noPopupLocation) {
 		}
 	}
 
-}
+};
 
 jsWindow.prototype.close = function () {
+	var wind;
+	for (var i = 0; i < WE().layout.windows.length; i++) {
+		wind = WE().layout.windows[i].wind;
+		if (wind === this.wind || wind.closed) {
+			WE().layout.windows.splice(i, 1);
+			i--;
+		}
+	}
 	if (!this.wind.closed) {
 		this.wind.close();
 	}
 };
 
 jsWindow.prototype.closeByName = function (name) {
-	for (var i = 0; i < windows.length; i++) {
-		if (windows[i].ref == name) {
-			windows[i].close();
-			windows.splice(i, 1);
-		}
+	var obj;
+	while ((obj = this.find(name))) {
+		//closes dependend windows
+		this.closeAll(obj.wind);
 	}
-}
+};
 
-//FIXME: since we need one function to close all dependent windows, we can't currently use only WE().layout.windows global
-
-jsWindow.prototype.closeAll = function (all) {
-	if (all) {
+//FIXME:this function should be called instead of a top.close
+jsWindow.prototype.closeAll = function (ref) {
+	if (ref === undefined) {
 		while (WE().layout.windows.length) {
 			WE().layout.windows.pop().close();
 		}
 	} else {
-		while (windows.length) {
-			windows.pop().close();
+		var refObj = undefined;
+		for (var i = 0; i < WE().layout.windows.length; i++) {
+			if (WE().layout.windows[i].wind === ref) {
+				refObj = WE().layout.windows[i];
+			}
+			if (WE().layout.windows[i].referer === ref) {
+				var obj = WE().layout.windows[i];
+				//remove from window list
+				WE().layout.windows.splice(i, 1);
+				//close all windows from this window first
+				this.closeAll(obj.wind);
+				obj.close();
+				//reset i
+				i = -1;
+			}
+		}
+		if (refObj) {
+			refObj.close();
+		} else if (!ref.closed) {
+			//if we didn't find the window, just close it
+			ref.close();
 		}
 	}
-}
+};
 
 jsWindow.prototype.find = function (name) {
-	for (var i = 0; i < windows.length; i++) {
-		if (windows[i].ref == name) {
-			return windows[i].wind;
+	for (var i = 0; i < WE().layout.windows.length; i++) {
+		if (WE().layout.windows[i].ref === name) {
+			return WE().layout.windows[i].wind;
 		}
 	}
 	return undefined;
-}
+};
 
 jsWindow.prototype.focus = function (name) {
-	var wind = jsWindow.prototype.find(name);
+	var wind = this.find(name);
 	if (wind !== undefined) {
 		wind.focus();
 		return true;
 	}
 	return false;
-}
+};

@@ -23,7 +23,7 @@
 
 var loaded;
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -36,7 +36,7 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "we_banner_selector":
-			new jsWindow(url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 			break;
 		default:
 			var args = [];

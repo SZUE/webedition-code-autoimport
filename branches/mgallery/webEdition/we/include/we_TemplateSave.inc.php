@@ -40,5 +40,5 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',
 			'we_complete_request' => 1
 			), null, '&') .
 		'";
-new jsWindow(url,"templateSaveQuestion",-1,-1,400,170,true,false,true);
+new (WE().util.jsWindow)(top.window, url,"templateSaveQuestion",-1,-1,400,170,true,false,true);
 '), '<body></body>');

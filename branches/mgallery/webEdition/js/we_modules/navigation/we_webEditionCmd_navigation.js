@@ -26,11 +26,11 @@ function we_cmd_navigation(args, url) {
 
 		case "navigation_edit":
 		case "navigation_edit_ifthere":
-			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "module_navigation_new":
 		case "module_navigation_new_group":
-		case "module_navigation_exit":
+		case "exit_navigation":
 		case "module_navigation_save":
 		case "module_navigation_delete":
 		case "module_navigation_reset_customer_filter":
@@ -44,10 +44,10 @@ function we_cmd_navigation(args, url) {
 			return true;
 		case "module_navigation_rules":
 			jsWindow.prototype.focus('edit_module');
-			new jsWindow(top.WE().consts.dirs.WE_MODULES_DIR + "navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, top.WE().consts.dirs.WE_MODULES_DIR + "navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
 			return true;
 		case "module_navigation_edit_navi":
-			new jsWindow(top.WE().consts.dirs.WE_MODULES_DIR + "navigation/weNaviEditor.php?we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
+			new (WE().util.jsWindow)(top.window, top.WE().consts.dirs.WE_MODULES_DIR + "navigation/weNaviEditor.php?we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
 			return true;
 		case "module_navigation_do_reset_customer_filter":
 			we_repl(self.load, url, args[0]);

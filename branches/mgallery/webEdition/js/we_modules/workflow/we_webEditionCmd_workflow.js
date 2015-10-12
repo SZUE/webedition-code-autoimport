@@ -25,14 +25,14 @@ function we_cmd_workflow(args, url) {
 		case "workflow_isIn":
 		case "workflow_pass":
 		case "workflow_decline":
-			new jsWindow(url, "choose_workflow", -1, -1, 420, 320, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "choose_workflow", -1, -1, 420, 320, true, true, true, true);
 			return true;
 		case "workflow_finish":
 			we_repl(self.load, url, args[0]);
 			return true;
 		case "workflow_edit":
 		case "workflow_edit_ifthere":
-			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "new_user":
 		case "exit_workflow":

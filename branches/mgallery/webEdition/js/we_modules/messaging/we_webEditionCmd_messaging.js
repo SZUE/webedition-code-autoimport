@@ -24,7 +24,7 @@ function we_cmd_messaging(args, url) {
 	switch (args[0]) {
 		case "messaging_start":
 		case "messaging_edit_ifthere":
-			new jsWindow(url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "messaging_new_message":
 		case "messaging_new_todo":

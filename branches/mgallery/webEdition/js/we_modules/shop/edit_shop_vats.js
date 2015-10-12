@@ -78,7 +78,7 @@ function changeFormSelect(theId, newVal) {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -103,7 +103,7 @@ function we_cmd() {
 
 		case "close":
 			if (hot) {
-				new jsWindow(top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_exitQuestion.php", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+				new (WE().util.jsWindow)(top.window, top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_exitQuestion.php", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			} else {
 				window.close();
 			}

@@ -304,17 +304,17 @@ function we_cmd(){
 		break;
 
 		case "we_selector_directory":
-			new jsWindow(url,arguments[0],-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,arguments[0],-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 		break;
 		case "we_selector_category":
-			new jsWindow(url,arguments[0],-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,arguments[0],-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 		break;
 		case "we_selector_file":
-			new jsWindow(url,arguments[0],-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,arguments[0],-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 		break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url,arguments[0],-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,arguments[0],-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 		break;
 	}
 }') . '

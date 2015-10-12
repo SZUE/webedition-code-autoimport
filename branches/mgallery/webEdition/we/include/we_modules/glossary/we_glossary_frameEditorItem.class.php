@@ -128,7 +128,7 @@ function setDisplay(id, display) {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -143,16 +143,16 @@ function we_cmd() {
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 		case "we_selector_file":
-			new jsWindow(url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
 		case "we_selector_directory":
-			new jsWindow(url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		default:
 					var args = [];

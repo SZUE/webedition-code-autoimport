@@ -126,7 +126,7 @@ function set_frames(vc) {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {

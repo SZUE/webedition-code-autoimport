@@ -127,28 +127,24 @@ function submitForm() {
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				return $out;
 			case 'new_message':
-				return we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
+				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 					we_html_element::jsElement('
-				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",-1,-1,670,530,true,false,true,false);
+				new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",-1,-1,670,530,true,false,true,false);
 				');
 			case 'new_todo':
-				return we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
+				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 					we_html_element::jsElement('
-				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);					//-->
+				new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);					//-->
 				');
 			case 'forward_todo':
-				return we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
+				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 					we_html_element::jsElement('
-				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+				new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 				');
 			case 'rej_todo':
-				return we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
+				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 					we_html_element::jsElement('
-				new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+				new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 				');
 			case 'reset_right_view':
 				return we_html_element::jsElement('
@@ -158,10 +154,9 @@ function submitForm() {
 				');
 			case 'update_todo':
 				if($this->messaging->selected_message){
-					echo we_html_element::jsScript(JS_DIR . 'windows.js') .
-						we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
+					echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 					we_html_element::jsElement('
-					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
+					new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_update_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
 					');
 				}
 				break;
@@ -198,7 +193,7 @@ function submitForm() {
 				$idx = isset($this->messaging->available_folders[$aid]) ? $aid : -1;
 				if($idx > -1){
 					$js_out .= '
-					top.content.updateEntry({id:'.$aid.',parentid: -1, text:"' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});';
+					top.content.updateEntry({id:' . $aid . ',parentid: -1, text:"' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});';
 				}
 
 				return we_html_element::jsElement($js_out) . $this->update_treeview();
@@ -218,7 +213,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank";';
 
 				$aid = $this->messaging->Folder_ID;
 				$js_out = '
-					top.content.updateEntry({id:'.$aid.',parentid: -1, text:"' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});
+					top.content.updateEntry({id:' . $aid . ',parentid: -1, text:"' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});
 				';
 				return we_html_element::jsElement($js_out);
 			case 'update_treeview':
@@ -321,10 +316,9 @@ top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
 				}
 				return $out;
 			case 'edit_settings':
-				return we_html_element::jsScript(JS_DIR . 'windows.js') .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
+				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 					we_html_element::jsElement('
-					new jsWindow("' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
+					new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'messaging_settings.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_settings",-1,-   1,280,200,true,false,true,false);
 					');
 			case 'save_settings':
 				if($ui){

@@ -47,9 +47,6 @@ class we_navigation_view extends we_modules_view{
 		$this->editorFooterFrame = $frame . '.editor.edfooter';
 	}
 
-	//------------------------------------------------
-
-
 	function getCommonHiddens($cmds = array()){
 		return
 			parent::getCommonHiddens($cmds) .
@@ -70,39 +67,39 @@ var makeNewDoc = false;
 
 function we_cmd() {
 	var args = [];
-	var url = "' . WEBEDITION_DIR . 'we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR +"we_cmd.php?";
 		for(var i = 0; i < arguments.length; i++){
 						args.push(arguments[i]);
 
 		url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)){ url += "&"; }
 		}
-	if(' . $this->topFrame . '.hot && (args[0]=="module_navigation_edit" || args[0]=="module_navigation_new" || args[0]=="module_navigation_new_group" || args[0]=="module_navigation_exit")){
-		' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value = args[0];
-		' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value = args[1];
+	if(top.content.hot && (args[0]=="module_navigation_edit" || args[0]=="module_navigation_new" || args[0]=="module_navigation_new_group" || args[0]=="exit_navigation")){
+		top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value = args[0];
+		top.content.editor.edbody.document.getElementsByName("delayParam")[0].value = args[1];
 		args[0] = "exit_doc_question";
 	}
 	switch (args[0]) {
 		case "module_navigation_edit":
-			if(' . $this->editorBodyFrame . '.loaded) {
-				' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
-				' . $this->editorBodyFrame . '.document.we_form.cmdid.value=args[1];
-				' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-				' . $this->editorBodyFrame . '.submitForm();
+			if(top.content.editor.edbody.loaded) {
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.cmdid.value=args[1];
+				top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+				top.content.editor.edbody.document.we_form.pnt.value="edbody";
+				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout(\'we_cmd("module_navigation_edit",\'+args[1]+\');\', 10);
 			}
 		break;
 		case "module_navigation_new":
 		case "module_navigation_new_group":
-			if(' . $this->editorBodyFrame . '.loaded) {
-				' . $this->topFrame . '.hot = 0;
-				if(' . $this->editorBodyFrame . '.document.we_form.presetFolder !== undefined) ' . $this->editorBodyFrame . '.document.we_form.presetFolder.value = false;
-				' . $this->editorBodyFrame . '.document.we_form.cmd.value = args[0];
-				' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-				' . $this->editorBodyFrame . '.document.we_form.tabnr.value = 1;
-				' . $this->editorBodyFrame . '.submitForm();
+			if(top.content.editor.edbody.loaded) {
+				top.content.hot = 0;
+				if(top.content.editor.edbody.document.we_form.presetFolder !== undefined) top.content.editor.edbody.document.we_form.presetFolder.value = false;
+				top.content.editor.edbody.document.we_form.cmd.value = args[0];
+				top.content.editor.edbody.document.we_form.pnt.value="edbody";
+				top.content.editor.edbody.document.we_form.tabnr.value = 1;
+				top.content.editor.edbody.submitForm();
 			} else {
 				setTimeout(\'we_cmd("\' + args[0] + \'");\', 10);
 			}
@@ -111,20 +108,20 @@ function we_cmd() {
 			}
 		break;
 		case "module_navigation_save":
-			if(' . $this->editorBodyFrame . '.document.we_form.cmd.value=="home") return;
-			if (' . $this->editorBodyFrame . '.loaded) {
-					if(' . $this->editorBodyFrame . '.document.we_form.presetFolder) ' . $this->editorBodyFrame . '.document.we_form.presetFolder.value = makeNewDoc;
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
+			if (top.content.editor.edbody.loaded) {
+					if(top.content.editor.edbody.document.we_form.presetFolder) top.content.editor.edbody.document.we_form.presetFolder.value = makeNewDoc;
 					var cont = true;
-					if(' . $this->editorBodyFrame . '.document.we_form.Selection!==undefined) {
-						if(' . $this->editorBodyFrame . '.document.we_form.Selection.options[' . $this->editorBodyFrame . '.document.we_form.Selection.selectedIndex].value=="' . we_navigation_navigation::SELECTION_DYNAMIC . '" && ' . $this->editorBodyFrame . '.document.we_form.IsFolder.value=="1"){
+					if(top.content.editor.edbody.document.we_form.Selection!==undefined) {
+						if(top.content.editor.edbody.document.we_form.Selection.options[top.content.editor.edbody.document.we_form.Selection.selectedIndex].value=="' . we_navigation_navigation::SELECTION_DYNAMIC . '" && top.content.editor.edbody.document.we_form.IsFolder.value=="1"){
 							cont = confirm("' . g_l('navigation', '[save_populate_question]') . '");
 						}
 					}
 					if(cont){
-						' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
-						' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-						' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-						' . $this->editorBodyFrame . '.submitForm();
+						top.content.editor.edbody.document.we_form.cmd.value=args[0];
+						top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+						top.content.editor.edbody.document.we_form.pnt.value="edbody";
+						top.content.editor.edbody.submitForm();
 					}
 			} else {
 				' . we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_save]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -132,32 +129,32 @@ function we_cmd() {
 			break;
 		case "populate":
 		case "depopulate":
-			if(' . $this->editorBodyFrame . '.document.we_form.cmd.value=="home") return;
-			if (' . $this->editorBodyFrame . '.loaded) {
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home") return;
+			if (top.content.editor.edbody.loaded) {
 					if(args[0]=="populate") {
 						q="' . g_l('navigation', '[populate_question]') . '";
 					} else {
 						q="' . g_l('navigation', '[depopulate_question]') . '";
 					}
 					if(confirm(q)){
-						' . $this->editorBodyFrame . '.document.we_form.pnt.value="edbody";
-						' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
-						' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-						if(' . $this->editorBodyFrame . '.document.we_form.pnt.value=="previewIframe") {
-						' . $this->editorBodyFrame . '.document.we_form.pnt.value="preview";
+						top.content.editor.edbody.document.we_form.pnt.value="edbody";
+						top.content.editor.edbody.document.we_form.cmd.value=args[0];
+						top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+						if(top.content.editor.edbody.document.we_form.pnt.value=="previewIframe") {
+						top.content.editor.edbody.document.we_form.pnt.value="preview";
 						}
 
-						' . $this->editorBodyFrame . '.submitForm();
+						top.content.editor.edbody.submitForm();
 					}
 			}
 		break;
 		case "module_navigation_delete":
-			if(' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=="home"){
+			if(top.content.editor.edbody.document.we_form.cmd.value=="home"){
 				' . we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_selected]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 				return;
 			}
-			if(' . $this->topFrame . '.editor.edbody.document.we_form.newone){
-				if(' . $this->topFrame . '.editor.edbody.document.we_form.newone.value==1){
+			if(top.content.editor.edbody.document.we_form.newone){
+				if(top.content.editor.edbody.document.we_form.newone.value==1){
 				' . we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 				return;
 			} }
@@ -166,13 +163,13 @@ function we_cmd() {
 					we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					) :
 					('
-					if (' . $this->topFrame . '.editor.edbody.loaded) {
+					if (top.content.editor.edbody.loaded) {
 						if (confirm("' . g_l('navigation', '[delete_alert]') . '")) {
-							' . $this->topFrame . '.editor.edbody.document.we_form.cmd.value=args[0];
-							' . $this->topFrame . '.editor.edbody.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-							' . $this->editorHeaderFrame . '.location="' . $this->frameset . '?home=1&pnt=edheader";
-							' . $this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
-							' . $this->topFrame . '.editor.edbody.submitForm();
+							top.content.editor.edbody.document.we_form.cmd.value=args[0];
+							top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+							top.content.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
+							top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";
+							top.content.editor.edbody.submitForm();
 						}
 					} else {
 						' . we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -181,37 +178,39 @@ function we_cmd() {
 			')) . '
 		break;
 		case "move_abs":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+args[0]+"&pos="+args[1];
+			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+args[0]+"&pos="+args[1];
 		break;
 		case "move_up":
 		case "move_down":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+args[0];
+			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&cmd="+args[0];
 		break;
 		case "dyn_preview":
 		case "create_template":
 		case "populateWorkspaces":
 		case "populateFolderWs":
 		case "populateText":
-			' . $this->editorBodyFrame . '.document.we_form.cmd.value=args[0];
-			' . $this->editorBodyFrame . '.document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-			' . $this->editorBodyFrame . '.document.we_form.pnt.value="cmd";
-			' . $this->editorBodyFrame . '.submitForm("cmd");
+			top.content.editor.edbody.document.we_form.cmd.value=args[0];
+			top.content.editor.edbody.document.we_form.tabnr.value=top.content.activ_tab;
+			top.content.editor.edbody.document.we_form.pnt.value="cmd";
+			top.content.editor.edbody.submitForm("cmd");
 		break;
 		case "del_mode":
-			' . $this->topFrame . '.treeData.setstate(treeData.tree_states["select"]);
-			' . $this->topFrame . '.treeData.unselectnode();
-			' . $this->topFrame . '.drawTree();
+			top.content.treeData.setstate(treeData.tree_states["select"]);
+			top.content.treeData.unselectnode();
+			top.content.drawTree();
 		case "move_mode":
-			' . $this->topFrame . '.treeData.setstate(treeData.tree_states["selectitem"]);
-			' . $this->topFrame . '.treeData.unselectnode();
-			' . $this->topFrame . '.drawTree();
+			top.content.treeData.setstate(treeData.tree_states["selectitem"]);
+			top.content.treeData.unselectnode();
+			top.content.drawTree();
 		break;
-		case "module_navigation_exit":
-			top.close();
+		case "exit_navigation":
+		if (hot != 1) {
+			top.opener.top.we_cmd("exit_modules");
+			}
 		break;
 		case "exit_doc_question":
-			url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
-			new jsWindow(url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
+			url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value+"&delayParam="+top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
+			new (WE().util.jsWindow)(top.window, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
 		break;
 
 		case "module_navigation_reset_customer_filter":
@@ -227,7 +226,7 @@ function we_cmd() {
 
 function mark() {
 	hot=1;
-	' . $this->editorHeaderFrame . '.mark();
+	top.content.editor.edheader.mark();
 }');
 	}
 
@@ -254,16 +253,16 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new jsWindow(url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 		case "we_selector_file":
-			new jsWindow(url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
 		case "we_selector_directory":
-			new jsWindow(url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		case "openNavigationDirselector":
 			url = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=we_navigation_dirSelector&";
@@ -271,11 +270,11 @@ function we_cmd() {
 				url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 				if(i < (arguments.length - 1)){ url += "&"; }
 			}
-			new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;
 		case "openFieldSelector":
 			url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_frameset.php?pnt=fields&cmd="+arguments[1]+"&type="+arguments[2]+"&selection="+arguments[3]+"&multi="+arguments[4];
-			new jsWindow(url,"we_navigation_field_selector",-1,-1,380,350,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_navigation_field_selector",-1,-1,380,350,true,true,true);
 			break;
 		case "copyNaviFolder":
 			folderPath = document.we_form.CopyFolderPath.value;
@@ -283,14 +282,14 @@ function we_cmd() {
 			setTimeout(function(){copyNaviFolder(folderPath, folderID);},100);
 			break;
 		case "rebuildNavi":
-			//new jsWindow(\'' . WE_INCLUDES_PATH . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
+			//new (WE().util.jsWindow)(top.window, \'' . WE_INCLUDES_PATH . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=\',\'resave\',-1,-1,600,130,0,true);
 			break;
 		default:
 					var args = [];
 			for (var i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
 			}
-			' . $this->topFrame . '.we_cmd.apply(this, args);
+			top.content.we_cmd.apply(this, args);
 
 	}
 }
@@ -335,18 +334,18 @@ var table = "' . FILE_TABLE . '";
 var log_counter=0;
 
 function clearFields(){
-	' . $this->topFrame . '.mark();
+	top.content.mark();
 	var st = document.we_form.SelectionType;
 	if(st.selectedIndex>-1){
 		removeAllCats();
-		WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_TitleField", "enabled");
-		WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_SortField", "enabled");
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_TitleField", "enabled");
+		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_SortField", "enabled");
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_CLASS . '" && document.we_form.ClassID.options.length<1){
-			WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_TitleField", "disabled");
-			WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_XFolder", "disabled");
+			WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_TitleField", "disabled");
+			WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_XFolder", "disabled");
 			document.getElementById("yuiAcInputFolderPath").disabled=true;
 		} else {
-			WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_XFolder", "enabled");
+			WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_XFolder", "enabled");
 			document.getElementById("yuiAcInputFolderPath").disabled=false;
 		}
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_DOCTYPE . '"){
@@ -354,8 +353,8 @@ function clearFields(){
 			setVisible("objFolder",false);
 			setVisible("catFolder",false);
 			if(' . $this->editorBodyForm . '.DocTypeID.options[' . $this->editorBodyForm . '.DocTypeID.selectedIndex].value==0){
-				WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_TitleField", "disabled");
-				WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "select_SortField", "disabled");
+				WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_TitleField", "disabled");
+				WE().layout.button.switch_button_state(top.content.editor.edbody.document, "select_SortField", "disabled");
 			}
 		}
 		if(st.options[st.selectedIndex].value=="' . we_navigation_navigation::STPYE_CLASS . '"){
@@ -418,7 +417,7 @@ function setCustomerFilter(sel) {
 }
 
 function setPresentation(type) {
-	' . $this->topFrame . '.mark();
+	top.content.mark();
 	var st = document.we_form.SelectionType;
 	st.options.length = 0;
 	if(type=="' . we_navigation_navigation::SELECTION_DYNAMIC . '"){
@@ -475,21 +474,21 @@ function closeAllStats(){
 }
 
 function putTitleField(field){
-	' . $this->topFrame . '.mark();
+	top.content.mark();
 	document.we_form.TitleField.value=field;
 	document.we_form.__TitleField.value = document.we_form.SelectionType.value === "doctype" ? field : field.substring(field.indexOf("_")+1,field.length);
 	weInputRemoveClass(document.we_form.__TitleField, "weMarkInputError");
 }
 
 function putSortField(field){
-	' . $this->topFrame . '.mark();
+	top.content.mark();
 	document.we_form.SortField.value = field;
 	document.we_form.__SortField.value = document.we_form.SelectionType.value === "doctype" ? field : field.substring(field.indexOf("_")+1,field.length);
 	weInputRemoveClass(document.we_form.__SortField, "weMarkInputError");
 }
 
 function setFocus() {
-	if(document.we_form.Text!==undefined && ' . $this->topFrame . '.activ_tab==1){
+	if(document.we_form.Text!==undefined && top.content.activ_tab==1){
 		document.we_form.Text.focus();
 	}
 }
@@ -599,8 +598,8 @@ var weNavTitleField = [];
 				$this->Model->IsFolder = we_base_request::_(we_base_request::STRING, 'cmd') === 'module_navigation_new_group' ? 1 : 0;
 				$this->Model->ParentID = we_base_request::_(we_base_request::INT, 'ParentID', 0);
 				echo we_html_element::jsElement(
-					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+					'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";
+					top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 				break;
 			case 'module_navigation_edit':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
@@ -621,11 +620,11 @@ var weNavTitleField = [];
 					break;
 				}
 				echo we_html_element::jsElement(
-					$this->editorHeaderFrame . '.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
-								if(' . $this->topFrame . '.treeData){
-									' . $this->topFrame . '.treeData.unselectnode();
-									' . $this->topFrame . '.treeData.selectnode(' . $this->Model->ID . ');
+					'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";
+					top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+								if(top.content.treeData){
+									top.content.treeData.unselectnode();
+									top.content.treeData.selectnode(' . $this->Model->ID . ');
 								}');
 				break;
 			case 'module_navigation_save':
@@ -697,20 +696,20 @@ var weNavTitleField = [];
 				}
 
 				$js = ($newone ?
-						$this->topFrame . '.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
-						$this->topFrame . '.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
+						'top.content.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
+						'top.content.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
 					$_old_items = array();
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
 						foreach($_old_items as $_id){
-							$js .= $this->topFrame . '.deleteEntry(' . $_id['ID'] . ');';
+							$js .= 'top.content.deleteEntry(' . $_id['ID'] . ');';
 						}
 					}
 					$_items = $this->Model->populateGroup($_old_items);
 					foreach($_items as $_k => $_item){
-						$js .= $this->topFrame . '.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
+						$js .= 'top.content.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
@@ -718,23 +717,23 @@ var weNavTitleField = [];
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
 						foreach($_old_items as $_id){
-							$js .= $this->topFrame . '.deleteEntry(' . $_id['ID'] . ');';
+							$js .= 'top.content.deleteEntry(' . $_id['ID'] . ');';
 						}
 					}
 				}
 
 
-				$js = we_html_element::jsElement($js . $this->editorHeaderFrame . '.location.reload();' .
+				$js = we_html_element::jsElement($js . 'top.content.editor.edheader.location.reload();' .
 						we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
-						$this->topFrame . '.hot=0;
-						if(' . $this->topFrame . '.makeNewDoc) {
-							setTimeout("' . $this->topFrame . '.we_cmd(\"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
+						'top.content.hot=0;
+						if(top.content.makeNewDoc) {
+							setTimeout("top.content.we_cmd(\"module_navigation_' . (($this->Model->IsFolder == 1) ? 'new_group' : 'new') . '\",100)");
 						}
 					');
 
 				if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
 					$js .= we_html_element::jsElement(
-							$this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::JS, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::INT, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
+							'top.content.we_cmd("' . we_base_request::_(we_base_request::JS, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::INT, 'delayParam')) ? ',"' . $dp . '"' : '' ) . ');
 							'
 					);
 					$_REQUEST['delayCmd'] = '';
@@ -756,7 +755,7 @@ var weNavTitleField = [];
 				}
 				if($this->Model->delete()){
 					echo we_html_element::jsElement('
-									' . $this->topFrame . '.deleteEntry(' . $this->Model->ID . ');
+									top.content.deleteEntry(' . $this->Model->ID . ');
 									setTimeout(\'' . we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '\',500);
 
 							');
@@ -781,15 +780,15 @@ var weNavTitleField = [];
 					}
 
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
-						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-								WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "enabled");
-								WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';
+						top.content.reloadGroup(' . $this->Model->ParentID . ');
+								WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+								WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
 
 								if(' . $this->editorBodyForm . '.Ordn.value==0){
-									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "disabled");
+									WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
 								} else {
-									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
+									WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
@@ -803,15 +802,15 @@ var weNavTitleField = [];
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
-						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-								WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "enabled");
-								WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';
+						top.content.reloadGroup(' . $this->Model->ParentID . ');
+								WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+								WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
 
 								if(' . $this->editorBodyForm . '.Ordn.value==1){
-									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "disabled");
+									WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
 								} else {
-									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
+									WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
@@ -827,14 +826,14 @@ var weNavTitleField = [];
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
 					echo we_html_element::jsElement(
-						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';' .
-						$this->topFrame . '.reloadGroup(' . $this->Model->ParentID . ');
-									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "enabled");
-									WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_up", "enabled");
+						$this->editorBodyForm . '.Ordn.value=' . $this->Model->Ordn . ';
+						top.content.reloadGroup(' . $this->Model->ParentID . ');
+									WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
+									WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
 									if(' . $this->editorBodyForm . '.Ordn.value==' . ($_num + 1) . '){
-										WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "disabled");
+										WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "disabled");
 									} else {
-										WE().layout.button.switch_button_state(' . $this->editorBodyFrame . '.document, "direction_down", "enabled");
+										WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
 								}' .
 						$this->editorBodyForm . '.Position.innerHTML=\'' . $posText . '\';'
 					);
@@ -844,8 +843,8 @@ var weNavTitleField = [];
 				$_items = $this->Model->populateGroup();
 				$_js = '';
 				foreach($_items as $_k => $_item){
-					$_js .= $this->topFrame . '.deleteEntry(' . $_item['id'] . ');';
-					$_js .= $this->topFrame . '.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
+					$_js .= 'top.content.deleteEntry(' . $_item['id'] . ');
+						top.content.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 				}
 				echo we_html_element::jsElement(
 					$_js .
@@ -856,7 +855,7 @@ var weNavTitleField = [];
 				$_items = $this->Model->depopulateGroup();
 				$_js = '';
 				foreach($_items as $_id){
-					$_js .= $this->topFrame . '.deleteEntry(' . $_id . ');
+					$_js .= 'top.content.deleteEntry(' . $_id . ');
 						';
 				}
 				$_js .= we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);
@@ -865,16 +864,15 @@ var weNavTitleField = [];
 				$this->Model->saveField('Selection');
 				break;
 			case 'dyn_preview':
-				echo we_html_element::jsScript(JS_DIR . "windows.js") .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();').
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement('
 						url = "' . WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_frameset.php?pnt=dyn_preview";
-						new jsWindow(url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
+						new (WE().util.jsWindow)(top.window, url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 				);
 				break;
 			case 'create_template':
 				echo we_html_element::jsElement(
-					$this->topFrame . '.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
+					'top.content.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
 					');
 				break;
 			case 'populateFolderWs':
@@ -889,7 +887,7 @@ var weNavTitleField = [];
 							';
 					}
 					echo we_html_element::jsElement(
-						$this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace",true);
+						'top.content.editor.edbody.setVisible("objLinkFolderWorkspace",true);
 							' . $this->editorBodyForm . '.FolderWsID.options.length = 0;
 							' . $_js . '
 						');
@@ -898,11 +896,11 @@ var weNavTitleField = [];
 						$this->editorBodyForm . '.FolderWsID.options.length = 0;
 								' . $this->editorBodyForm . '.FolderWsID.options[' . $this->editorBodyForm . '.FolderWsID.options.length] = new Option("/",0);
 								' . $this->editorBodyForm . '.FolderWsID.selectedIndex = 0;
-								' . $this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace",true);'
+								top.content.editor.edbody.setVisible("objLinkFolderWorkspace",true);'
 					);
 				} else {
 					echo we_html_element::jsElement(
-						$this->editorBodyFrame . '.setVisible("objLinkFolderWorkspace' . $_prefix . '",false);
+						'top.content.editor.edbody.setVisible("objLinkFolderWorkspace' . $_prefix . '",false);
 								' . $this->editorBodyForm . '.FolderWsID.options.length = 0;
 								' . $this->editorBodyForm . '.FolderWsID.options[' . $this->editorBodyForm . '.FolderWsID.options.length] = new Option("-1",-1);
 								' . $this->editorBodyForm . '.LinkID.value = "";
@@ -924,7 +922,7 @@ var weNavTitleField = [];
 						$_fields = $_class->getAllVariantFields();
 						$_objFields = "\n";
 						foreach($_fields as $_key => $val){
-							$_objFields .= $this->editorBodyFrame . '.weNavTitleField["' . substr($_key, strpos($_key, "_") + 1) . '"] = "' . $_key . '";' . "\n";
+							$_objFields .= 'top.content.editor.edbody.weNavTitleField["' . substr($_key, strpos($_key, "_") + 1) . '"] = "' . $_key . '";' . "\n";
 						}
 					}
 				}
@@ -947,7 +945,7 @@ var weNavTitleField = [];
 					}
 					echo we_html_element::jsElement(
 						$_objFields .
-						$this->editorBodyFrame . '.setVisible("objLinkWorkspace' . $_prefix . '",true);
+						'top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",true);
 							' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length = 0;
 							' . $_js . '
 						');
@@ -958,12 +956,12 @@ var weNavTitleField = [];
 							$this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length = 0;
 								' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options[' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length] = new Option("/",0);
 								' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.selectedIndex = 0;
-								//' . $this->editorBodyFrame . '.setVisible("objLinkWorkspace' . $_prefix . '",false);'
+								//top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",false);'
 						);
 					} else {
 						echo we_html_element::jsElement(
 							$_objFields .
-							$this->editorBodyFrame . '.setVisible("objLinkWorkspace' . $_prefix . '",false);
+							'top.content.editor.edbody.setVisible("objLinkWorkspace' . $_prefix . '",false);
 								' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length = 0;
 								' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options[' . $this->editorBodyForm . '.WorkspaceID' . $_prefix . '.options.length] = new Option("-1",-1);
 								' . $this->editorBodyForm . '.LinkID.value = "";

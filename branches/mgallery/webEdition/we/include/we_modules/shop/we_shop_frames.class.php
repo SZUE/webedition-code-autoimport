@@ -55,7 +55,7 @@ class we_shop_frames extends we_modules_frame{
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
 		$extraHead = we_html_element::jsElement('
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {

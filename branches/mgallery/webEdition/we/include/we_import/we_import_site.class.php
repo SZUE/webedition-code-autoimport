@@ -143,19 +143,19 @@ function we_cmd() {
 	switch (arguments[0]) {
 			case "we_selector_image":
 			case "we_selector_document":
-			new jsWindow(url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 
 			case "we_selector_directory":
-			new jsWindow(url,"we_dirselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,"we_dirselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 
 		case "browse_server":
-			new jsWindow(url,"browse_server",-1,-1,800,400,true,false,true);
+			new (WE().util.jsWindow)(top.window, url,"browse_server",-1,-1,800,400,true,false,true);
 			break;
 
 		case "siteImportCreateWePageSettings":
-			new jsWindow(url,"siteImportCreateWePageSettings",-1,-1,520,600,true,false,true);
+			new (WE().util.jsWindow)(top.window, url,"siteImportCreateWePageSettings",-1,-1,520,600,true,false,true);
 			break;
 	}
 }
@@ -172,7 +172,7 @@ function displayTable() {
 	}
 }
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 ');
 	}

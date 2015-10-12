@@ -56,5 +56,5 @@ function IsDigitPercent(e) {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }

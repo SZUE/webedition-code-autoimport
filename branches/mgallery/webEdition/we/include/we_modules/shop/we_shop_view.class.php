@@ -67,7 +67,7 @@ var hot = 0;
 parent.document.title = "' . $title . '";
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd(){
@@ -113,28 +113,28 @@ function we_cmd(){
 
 		$out .= '
 		case "pref_shop":
-			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_pref.php","shoppref",-1,-1,470,600,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_pref.php","shoppref",-1,-1,470,600,true,true,true,false);
 			break;
 
 		case "edit_shop_vats":
-			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_vats.php","edit_shop_vats",-1,-1,500,450,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vats.php","edit_shop_vats",-1,-1,500,450,true,false,true,false);
 			break;
 
 		case "edit_shop_shipping":
-			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
 			break;
 		case "edit_shop_status":
-			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
 			break;
 		case "edit_shop_vat_country":
-			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
 			break;
 		case "payment_val":
-			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.php","shoppref",-1,-1,520,720,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.php","shoppref",-1,-1,520,720,true,false,true,false);
 			break;
 
 		case "edit_shop_categories":
-			var wind = new jsWindow("' . WE_SHOP_MODULE_DIR . 'edit_shop_categories.php","edit_shop_categories",-1,-1,500,450,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_categories.php","edit_shop_categories",-1,-1,500,450,true,false,true,false);
 			break;
 
 		default:
@@ -162,7 +162,7 @@ var hot= 0;
 var scrollToVal=0;
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -240,7 +240,7 @@ function we_cmd() {
 var loaded=0;
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -851,7 +851,6 @@ function submitForm() {
 			// "Html output for order with articles"
 			//
 		echo we_html_tools::getCalendarFiles() .
-			we_html_element::jsScript(JS_DIR . 'windows.js') .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
 			we_html_element::jsElement('

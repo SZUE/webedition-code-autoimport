@@ -57,7 +57,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 	function selectRecipient() {
 		var rs = encodeURI(document.compose_form.mn_recipients.value);
 
-		new jsWindow("<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+		new (WE().util.jsWindow)(top.window, "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php?we_transaction=<?php echo $transaction; ?>&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 		//	    opener.top.add_win(msg_usel);
 	}
 
@@ -71,7 +71,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 </script>
 </head>
 
-<body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="jsWindow.prototype.closeAll();">
+<body class="weDialogBody" onload="document.compose_form.mn_body.focus()" onunload="jsWindow.prototype.closeAll(window);">
 	<?php
 	$mode = we_base_request::_(we_base_request::STRING, 'mode');
 	if($mode === 're'){

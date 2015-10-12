@@ -61,10 +61,14 @@ function we_showMessage(message, prio, win) {
 function initWE() {
 //make some assignments to all WE documents
 	if (WE()) {
-		window.onerror = WE().handler.errorHandler;
-		document.addEventListener('keydown', function (evt) {
-			WE().handler.dealWithKeyboardShortCut(evt, window);
-		});
+		try {
+			window.onerror = WE().handler.errorHandler;
+			document.addEventListener('keydown', function (evt) {
+				WE().handler.dealWithKeyboardShortCut(evt, window);
+			});
+		} catch (e) {
+			console.log('unable to add listeners');
+		}
 	} else {
 		//console.log('error handler possibly not attached');
 	}

@@ -115,5 +115,5 @@ function unSelectMessage(id, unsel_all) {
 }
 
 function newMessage(username) {
-	new jsWindow(top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + transaction + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+	new (WE().util.jsWindow)(top.window, top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR + 'messaging_newmessage.php?we_transaction=' + transaction + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 }

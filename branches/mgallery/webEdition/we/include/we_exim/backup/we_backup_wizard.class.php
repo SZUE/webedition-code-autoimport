@@ -1257,7 +1257,7 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 				$_SESSION['weS']['backup_delete'] = 1;
 				$_SESSION['weS']['delete_files_nok'] = array();
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
-				echo we_html_element::jsElement('new jsWindow("' . WEBEDITION_DIR . 'delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
+				echo we_html_element::jsElement('new (WE().util.jsWindow)(top.window, "' . WEBEDITION_DIR . 'delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
 				break;
 			case "deletebackup":
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");

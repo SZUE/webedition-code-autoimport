@@ -25,7 +25,7 @@
  */
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -162,7 +162,7 @@ function we_cmd() {
 			top.content.cmd.location = frameset + "?pnt=cmd&ucmd=delete_user";
 			break;
 		case "search":
-			new jsWindow(top.WE().consts.dirs.WE_USERS_MODULE_DIR + "edit_users_sresults.php?kwd=" + args[1], "customer_settings", -1, -1, 580, 400, true, false, true);
+			new (WE().util.jsWindow)(top.window, top.WE().consts.dirs.WE_USERS_MODULE_DIR + "edit_users_sresults.php?kwd=" + args[1], "customer_settings", -1, -1, 580, 400, true, false, true);
 			break;
 		case "new_organization":
 			var orgname = prompt(g_l.give_org_name, "");

@@ -345,6 +345,7 @@ echo we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
  we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
+ we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;').
  we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
  we_html_element::jsScript(JS_DIR . 'webEdition.js') .
  we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
@@ -390,13 +391,13 @@ if($diff){
 		echo 'case "' . $m . '_edit_ifthere":
 ';
 	}
-	echo 'new jsWindow(url,"module_info",-1,-1,380,250,true,true,true);
+	echo 'new (WE().util.jsWindow)(top.window, url,"module_info",-1,-1,380,250,true,true,true);
 		break;';
 }
 ?>
 	case "exit_doc_question":
 					// return !! important for multiEditor
-					return new jsWindow(url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
+					return new (WE().util.jsWindow)(top.window, url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
 	case "loadVTab":
 		var op = top.makeFoldersOpenString();
 		parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);

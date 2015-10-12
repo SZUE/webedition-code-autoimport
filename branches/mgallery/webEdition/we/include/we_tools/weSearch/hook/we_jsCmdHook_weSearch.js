@@ -25,7 +25,7 @@ function we_cmd_tool_weSearch(args, url) {
 	switch (args[0]) {
 
 		case "tool_weSearch_edit":
-			new jsWindow(url, "tool_window_weSearch", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "tool_window_weSearch", -1, -1, 970, 760, true, true, true, true);
 			break;
 		case "tool_weSearch_new_forDocuments":
 		case "tool_weSearch_new_forTemplates":

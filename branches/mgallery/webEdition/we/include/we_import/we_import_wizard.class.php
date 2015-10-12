@@ -510,10 +510,10 @@ function we_cmd() {
 					url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 					if(i < (arguments.length - 1)){ url += "&"; }
 				}
-				new jsWindow(url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
+				new (WE().util.jsWindow)(top.window, url,"we_navigation_dirselector",-1,-1,600,400,true,true,true);
 			break;' . "
 		case 'we_selector_file':
-			new jsWindow(url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
+			new (WE().util.jsWindow)(top.window, url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:
 					var args = [];

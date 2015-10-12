@@ -81,7 +81,7 @@ function we_cmd(){
 
 	switch (arguments[0]){
 		case "editThumbs":
-			new jsWindow(url, "thumbnails", -1, -1, 500, 550, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "thumbnails", -1, -1, 500, 550, true, true, true);
 			break;
 		default:
 					var args = [];

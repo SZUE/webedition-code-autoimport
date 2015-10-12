@@ -215,7 +215,7 @@ function setTab(tab) {
 
 		$js = we_html_element::jsElement('
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 }
 
 function we_cmd() {
@@ -1537,7 +1537,7 @@ self.focus();
 				$fname = rtrim(we_base_request::_(we_base_request::FILE, "csv_dir", ''), '/') . '/blacklist_export_' . time() . '.csv';
 				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
-				$js.= we_html_element::jsElement('new jsWindow("' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
+				$js.= we_html_element::jsElement('new (WE().util.jsWindow)(top.window, "' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
 				break;
 		}
 
@@ -1850,7 +1850,7 @@ self.focus();
 			we_html_element::jsElement('
 self.focus();
 function editEmailFile(eid,email,htmlmail,salutation,title,firstname,lastname){
-	new jsWindow("' . $this->frameset . '?pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
+	new (WE().util.jsWindow)(top.window, "' . $this->frameset . '?pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
 }
 
 function setAndSave(eid,email,htmlmail,salutation,title,firstname,lastname){
@@ -2081,7 +2081,7 @@ function cancel(){
 }
 
 function ask(start,group){
-	new jsWindow("' . $this->View->frameset . '?pnt=qsend&start="+start+"&grp="+group,"send_question",-1,-1,400,200,true,true,true,false);
+	new (WE().util.jsWindow)(top.window, "' . $this->View->frameset . '?pnt=qsend&start="+start+"&grp="+group,"send_question",-1,-1,400,200,true,true,true,false);
 }
 
 function doSend(start,group){

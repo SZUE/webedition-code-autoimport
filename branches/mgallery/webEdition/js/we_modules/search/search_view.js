@@ -849,7 +849,7 @@ weSearch = {
 	},
 	previewVersion: function (ID) {
 		top.we_cmd("versions_preview", ID, 0);
-		//new jsWindow("' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
+		//new (WE().util.jsWindow)(top.window, "' . WEBEDITION_DIR . 'we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
 	},
 	calendarSetup: function (x) {
 		for (i = 0; i < x; i++) {

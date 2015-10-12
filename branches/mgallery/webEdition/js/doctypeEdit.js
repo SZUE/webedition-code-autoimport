@@ -64,7 +64,7 @@ function we_submitForm(target, url) {
 }
 
 function doUnload() {
-	jsWindow.prototype.closeAll();
+	jsWindow.prototype.closeAll(window);
 	opener.top.dc_win_open = false;
 }
 
@@ -94,10 +94,10 @@ function we_cmd() {
 		case "we_selector_image":
 		case "we_selector_document":
 		case "we_selector_directory":
-			new jsWindow(url, "we_fileselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new jsWindow(url, "we_catselector", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_catselector", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "add_dt_template":
 		case "delete_dt_template":

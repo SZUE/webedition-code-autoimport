@@ -78,6 +78,7 @@ function printHeader($login, $status = 200, $js = ''){
 
 	echo we_html_tools::getHtmlTop('webEdition', '', '', '', '', false) .
 	STYLESHEET .
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
 	we_html_element::jsElement(we_message_reporting::jsString());
 
@@ -193,6 +194,7 @@ $count = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tb
 
 if($count >= we_base_constants::LOGIN_FAILED_NR){
 	echo we_html_tools::getHtmlTop('webEdition ') .
+	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::jsElement(
 		we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)
 	) .
@@ -319,7 +321,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 				$headerjs = 'function open_we() {
 			var aw=' . (!empty($_SESSION['prefs']['weWidth']) ? $_SESSION['prefs']['weWidth'] : 8000) . ';
 			var ah=' . (!empty($_SESSION['prefs']['weHeight']) ? $_SESSION['prefs']['weHeight'] : 6000) . ';
-			win = new jsWindow("' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(__FILE__, true)) . '", -1, -1, aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
+			win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w='+aw+'&browser='+((document.all) ? 'ie' : 'nn'), '" . md5(uniqid(__FILE__, true)) . '", -1, -1, aw, ah, true, true, true, true, "' . g_l('alert', '[popupLoginError]') . '", "' . WEBEDITION_DIR . 'index.php"); }';
 			}
 			break;
 		case LOGIN_CREDENTIALS_INVALID:
