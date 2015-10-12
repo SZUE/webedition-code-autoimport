@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -41,7 +40,7 @@ $_path = (isset($_SESSION['weS']['SEEM']['startId']) ? // logout from webEdition
 we_base_sessionHandler::makeNewID(true);
 
 if(!isset($GLOBALS['isIncluded']) || !$GLOBALS['isIncluded']){
-	echo we_html_element::jsElement('
+	echo we_html_tools::getHtmlTop() . we_html_element::jsElement('
 	WE().util.jsWindow.prototype.closeAll();
 
 	if(top.tinyMceDialog !== undefined && top.tinyMceDialog !== null){

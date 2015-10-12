@@ -229,7 +229,7 @@ function we_cmd() {
 		}
 	}
 
-	var contentEditor = WE().layout.weEditorFrameController.weEditorFrameController.getVisibleEditorFrame();
+	var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 
 	switch (arguments[0]) {
 		case "edit_link":
