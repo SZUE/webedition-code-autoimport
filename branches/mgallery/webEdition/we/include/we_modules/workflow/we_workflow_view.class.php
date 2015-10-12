@@ -870,13 +870,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 
 		return we_html_element::jsScript(JS_DIR . 'tooltip.js') .
 			we_html_element::jsElement('function openToEdit(tab,id,contentType){
-		if(top.opener && top.opener.top.weEditorFrameController) {
-			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		}
+		WE().layout.weEditorFrameController.openDocument(tab,id,contentType);
 	}') .
 			we_html_multiIconBox::getHTML('', $_parts, 30);
 	}
@@ -958,13 +952,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
 		function openToEdit(tab,id,contentType){
-		if(top.opener && top.opener.top.weEditorFrameController) {
-			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		}
+		WE().layout.weEditorFrameController.openDocument(tab,id,contentType);
 	}') .
 			'</head>
 		<body class="weEditorBody" onunload="doUnload()">

@@ -44,9 +44,9 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['
 			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
 			$we_JavaScript .= 'if(opener){
-opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
+WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
 }else{
-top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
+WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
 }' . $we_doc->getUpdateTreeScript();
 	} else {
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_publish_notok]'), $we_doc->Path);

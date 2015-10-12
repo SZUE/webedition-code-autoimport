@@ -123,7 +123,7 @@ function we_tag_img($attribs){
 
 	$btnSelectWecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
 	//$btnSelectWecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage','" . $name . "','change_image'); opener.top.hot = 1;");
-	$btnSelectWecmdenc3 = we_base_request::encCmd("var t = opener && opener.top.weEditorFrameController ? opener.top : top; var ed = t.weEditorFrameController.getVisibleEditorFrame(); ed.setScrollTo(); ed._EditorFrame.setEditorIsHot(true); t.we_cmd('reload_editpage','" . $name . "','change_image'); t.hot = 1;");
+	$btnSelectWecmdenc3 = we_base_request::encCmd("var ed = WE().layout.weEditorFrameController.getVisibleEditorFrame(); ed.setScrollTo(); ed._EditorFrame.setEditorIsHot(true); t.we_cmd('reload_editpage','" . $name . "','change_image'); t.hot = 1;");
 
 	if($GLOBALS['we_editmode'] && $out) { //in editMode we surround image with dropzone
 		$out = we_fileupload_ui_base::getExternalDropZone('we_File', $out, 'width:auto;height:auto;padding:12px;', we_base_ContentTypes::IMAGE, $btnSelectWecmdenc1, $btnSelectWecmdenc3);

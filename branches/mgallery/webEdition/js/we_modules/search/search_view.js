@@ -264,23 +264,14 @@ weSearch = {
 			this.search(false);
 		}
 	},
-	getMainWindow: function () {
-		if (top.opener && top.opener.top.weEditorFrameController) {
-			return top.opener.top;
-		} else if (top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-			return top.opener.top.opener.top;
-		} else if (top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-			return top.opener.top.opener.top.opener.top;
-		}
-	},
 	openToEdit: function (tab, id, contentType) {
-		this.getMainWindow().weEditorFrameController.openDocument(tab, id, contentType);
+		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
 	},
 	openModule: function (mod, id) {
-		this.getMainWindow().we_cmd(mod + '_edit_ifthere', id);
+		top.we_cmd(mod + '_edit_ifthere', id);
 	},
 	openCategory: function (id) {
-		this.getMainWindow().we_cmd('editCat', id);
+		top.we_cmd('editCat', id);
 	},
 	setOrder: function (order, whichSearch) {
 		//FIXME: ordering media search does not work yet
@@ -652,7 +643,7 @@ weSearch = {
 			top.we_showMessage(WE().consts.g_l.weSearch.versionsResetAllVersionsOK, WE().consts.message.WE_MESSAGE_NOTICE, window);
 
 			// reload current document => reload all open Editors on demand
-			var _usedEditors = top.opener.weEditorFrameController.getEditorsInUse();
+			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 			for (frameId in _usedEditors) {
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);
@@ -798,7 +789,7 @@ weSearch = {
 
 			// reload current document => reload all open Editors on demand
 
-			var _usedEditors = top.opener.weEditorFrameController.getEditorsInUse();
+			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 			for (frameId in _usedEditors) {
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor
 					_usedEditors[frameId].setEditorReloadAllNeeded(true);

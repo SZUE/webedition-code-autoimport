@@ -40,7 +40,6 @@ class we_search_frames extends we_tool_frames{
 
 		$this->View = new we_search_view($_frameset, 'top.content');
 		$this->Model = &$this->View->Model;
-		$this->setFrames('top.content', 'top.content', 'top.content.cmd');
 	}
 
 	function getHTMLCmd(){

@@ -173,11 +173,11 @@ var weFileUpload = (function () {
 			};
 
 			this.checkIsPresetFiles = function(){
-				
-				if(_.controller.isPreset && top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload){
-					_.controller.fileSelectHandler(null, true, top.opener.top.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload);
+
+				if(_.controller.isPreset && WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload){
+					_.controller.fileSelectHandler(null, true, WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload);
 				}
-				
+
 			};
 
 			this.fileSelectHandler = function (e, isPreset, presetFileupload) {
@@ -2013,9 +2013,9 @@ var weFileUpload = (function () {
 				} else {
 					if (resp.status === 'success') {
 						_.sender.currentFile = null;
-						if(top.weEditorFrameController){
+						if(WE()){
 							window.we_cmd('update_file');
-							top.weEditorFrameController.getActiveEditorFrame().getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
+							WE().layout.weEditorFrameController.getActiveEditorFrame().getDocumentReference().frames.editHeader.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
 						}
 
 						this.fireCallback();

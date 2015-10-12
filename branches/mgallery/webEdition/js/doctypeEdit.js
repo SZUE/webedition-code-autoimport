@@ -35,7 +35,7 @@ function we_save_docType(doc, url) {
 	}
 	acStatusType = typeof acStatus;
 	if (countSaveLoop > 10) {
-		top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		countSaveLoop = 0;
 	} else if (acStatusType.toLowerCase() == 'object') {
 		if (acStatus.running) {
@@ -44,14 +44,14 @@ function we_save_docType(doc, url) {
 				we_save_docType(doc, url);
 			}, 100);
 		} else if (!acStatus.valid) {
-			top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else {
 			countSaveLoop = 0;
 			we_submitForm(doc, url);
 		}
 	} else {
-		top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -83,7 +83,7 @@ function disableLangDefault(allnames, allvalues, deselect) {
 
 function we_cmd() {
 	var args = "";
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -94,10 +94,10 @@ function we_cmd() {
 		case "we_selector_image":
 		case "we_selector_document":
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(top.window, url, "we_catselector", -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "add_dt_template":
 		case "delete_dt_template":
@@ -107,23 +107,23 @@ function we_cmd() {
 			we_save_docType(self.name, url)
 			break;
 		case "newDocType":
-			var name = prompt(top.WE().consts.g_l.doctypeEdit.newDocTypeName, "");
+			var name = prompt(WE().consts.g_l.doctypeEdit.newDocTypeName, "");
 			if (name !== null) {
 				if ((name.indexOf("<") !== -1) || (name.indexOf(">") !== -1)) {
-					top.we_showMessage(top.WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 					return;
 				}
 				if (name.indexOf("'") !== -1 || name.indexOf('"') !== -1 || name.indexOf(',') !== -1) {
-					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else if (name === "") {
-					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
-				} else if (top.WE().util.in_array(docTypeNames, name)) {
-					top.we_showMessage(top.WE().consts.g_l.doctypeEdit.doctype_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
+				} else if (WE().util.in_array(docTypeNames, name)) {
+					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
 					/*						if (top.opener.top.header) {
 					 top.opener.top.header.location.reload();
 					 }*/
-					self.location = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]=" + encodeURIComponent(name);
+					self.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newDocType&we_cmd[1]=" + encodeURIComponent(name);
 				}
 			}
 			break;

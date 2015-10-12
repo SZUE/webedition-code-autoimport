@@ -65,7 +65,7 @@ function add_thumbnail() {
 		return;
 	}
 	if ((name.indexOf('<') !== -1) || (name.indexOf('>') !== -1)) {
-		top.we_showMessage(top.WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.main.name_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 
@@ -73,7 +73,7 @@ function add_thumbnail() {
 		top.we_showMessage(g_l.thumbnail_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (name == '') {
 		top.we_showMessage(g_l.thumbnail_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
-	} else if (top.WE().util.in_array(thumbnail_names, name)) {
+	} else if (WE().util.in_array(thumbnail_names, name)) {
 		top.we_showMessage(g_l.thumbnail_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
 		self.location = consts.reloadUrl + '&newthumbnail=' + encodeURI(name);

@@ -158,7 +158,7 @@ if($weFileupload->processFileRequest()){
 	if(!empty($we_File) && !$we_alerttext){
 		?>
 		opener.we_cmd("update_file");
-		_EditorFrame = opener.top.weEditorFrameController.getActiveEditorFrame();
+		_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 		_EditorFrame.getDocumentReference().frames.editHeader.we_setPath("<?php echo $we_doc->Path; ?>", "<?php echo $we_doc->Text; ?>",<?php echo $we_doc->ID; ?>, "published");
 		self.close();
 	<?php } ?>

@@ -40,7 +40,7 @@ if($cmd === "ok"){
 		} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 
 
-			$script = 'opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();';
+			$script = 'WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();';
 		}
 
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){

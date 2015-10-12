@@ -2981,13 +2981,13 @@ class we_objectFile extends we_document{
 		$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
 
 		$queries = array(
-			'(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_OBJLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STPYE_OBJLINK . '")) AND LinkID=' . intval($this->ID) . ')',
+			'(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STYPE_OBJLINK . '")) AND LinkID=' . intval($this->ID) . ')',
 			//FIXME: query should use ID, not parentID
-			'((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND SelectionType="' . we_navigation_navigation::STPYE_CLASS . '" AND (ClassID=' . $this->TableID . '))'
+			'((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND SelectionType="' . we_navigation_navigation::STYPE_CLASS . '" AND (ClassID=' . $this->TableID . '))'
 		);
 		if($category){
 			//FIXME: query should use ID, not parentID
-			$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND SelectionType="' . we_navigation_navigation::STPYE_CLASS . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
+			$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_CLASS . '") AND (FIND_IN_SET("' . implode('",Categories) OR FIND_IN_SET("', $category) . '",Categories)))';
 		}
 
 		$this->DB_WE->query('SELECT DISTINCT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ' . implode(' OR ', $queries));
@@ -3116,7 +3116,7 @@ class we_objectFile extends we_document{
 					"icon" => "class.gif"
 				);
 			} elseif($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
-				$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:top.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
+				$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
 					'<div style="margin-bottom:12px;">' . $this->formClass() . '</div>';
 				$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">' . g_l('modules_object', '[class_id]') . '</div>' .
 					'<div style="margin-bottom:12px;">' . $this->formClassId() . '</div>';

@@ -28,7 +28,7 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -37,17 +37,17 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "we_selector_file":
-			new (WE().util.jsWindow)(top.window, url, "we_selector", -1, -1, top.WE().consts.size.windowSelect.width, top.WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(top.window, url, "we_catselector", -1, -1,top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_catselector", -1, -1,WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(top.window, url, "we_docselector", -1, -1,top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_docselector", -1, -1,WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_dirselector", -1, -1,top.WE().consts.size.windowDirSelect.width, top.WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_dirselector", -1, -1,WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_banner_dirSelector":
 			new (WE().util.jsWindow)(top.window, url, "we_bannerselector", -1, -1, 600, 350, true, true, true);

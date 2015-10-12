@@ -84,7 +84,7 @@ function unSelectMessage(id, show_cont, doc) {
 	if (show_cont == 'fv') {
 		parent.entries_selected = array_rm_elem(parent.entries_selected, id, -1);
 		highlight_TR(id, default_color);
-		top.editor.edbody.msg_mfv.messaging_message_view.location = top.WE().consts.dirs.WEBEDITION_DIR + "html/gray.html";
+		top.editor.edbody.msg_mfv.messaging_message_view.location = WE().consts.dirs.WEBEDITION_DIR + "html/gray.html";
 	} else {
 		entries_selected = array_rm_elem(entries_selected, id, -1);
 		highlight_Elem(id, default_color, messaging_usel_main);

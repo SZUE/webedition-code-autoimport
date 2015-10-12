@@ -46,11 +46,7 @@ class we_modules_view implements we_modules_viewIF{
 		));
 	}
 
-	function getJSTop_tmp(){//taken from old edit_shop_frameset.php
-		return '';
-	}
-
-	function getJSTop(){//TODO: is this shop-code or a copy paste from another module?
+	function getJSTop(){
 		return '';
 	}
 

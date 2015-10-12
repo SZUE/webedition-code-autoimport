@@ -190,7 +190,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 
 		// no open document can be moved
 		// close all Editors with deleted documents
-		var _usedEditors = top.weEditorFrameController.getEditorsInUse();
+		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 		var _move_table = "<?php
 echo $table;
@@ -219,7 +219,7 @@ echo g_l('alert', '[move_exit_open_docs_continue]');
 
 				for (i = 0; i < _open_move_editors.length; i++) {
 					_open_move_editors[i].setEditorIsHot(false);
-					top.weEditorFrameController.closeDocument(_open_move_editors[i].getFrameId());
+					WE().layout.weEditorFrameController.closeDocument(_open_move_editors[i].getFrameId());
 
 				}
 				we_cmd('do_move', '', '<?php

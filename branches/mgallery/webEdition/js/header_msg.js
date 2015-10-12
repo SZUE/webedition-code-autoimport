@@ -31,16 +31,15 @@ function header_msg_update(newmsg_count, newtodo_count) {
 	todoTD.className = "middlefont" + ((newtodo_count > 0) ? "red" : "");
 	msgTD.firstChild.innerHTML = newmsg_count;
 	todoTD.firstChild.innerHTML = newtodo_count;
-
-	if (top.weEditorFrameController &&
-					top.weEditorFrameController.getActiveDocumentReference() &&
-					top.weEditorFrameController.getActiveDocumentReference().quickstart &&
-					typeof (top.weEditorFrameController.getActiveDocumentReference().setMsgCount) == 'function' &&
-					typeof (top.weEditorFrameController.getActiveDocumentReference().setTaskCount) == 'function') {
-		top.weEditorFrameController.getActiveDocumentReference().setMsgCount(newmsg_count);
-		top.weEditorFrameController.getActiveDocumentReference().setTaskCount(newtodo_count);
+	var control = WE().layout.weEditorFrameController;
+	if (control.getActiveDocumentReference() &&
+					control.getActiveDocumentReference().quickstart &&
+					typeof (control.getActiveDocumentReference().setMsgCount) == 'function' &&
+					typeof (control.getActiveDocumentReference().setTaskCount) == 'function') {
+		control.getActiveDocumentReference().setMsgCount(newmsg_count);
+		control.getActiveDocumentReference().setTaskCount(newtodo_count);
 	}
 	if (changed) {
-		new (WE().util.jsWindow)(top.window, top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newMsg&msg=" + newmsg_count + "&todo=" + newtodo_count + "&omsg=" + oldMsg + "&otodo=" + oldTodo, "we_delinfo", -1, -1, 550, 200, true, true, true);
+		new (WE().util.jsWindow)(top.window, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=newMsg&msg=" + newmsg_count + "&todo=" + newtodo_count + "&omsg=" + oldMsg + "&otodo=" + oldTodo, "we_delinfo", -1, -1, 550, 200, true, true, true);
 	}
 }

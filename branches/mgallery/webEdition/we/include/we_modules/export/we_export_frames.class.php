@@ -37,7 +37,6 @@ class we_export_frames extends we_modules_frame{
 		$this->Tree = new we_export_treeMain($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->SelectionTree = new we_export_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_export_view();
-		$this->setFrames("top.content", "top.content", "top.content.cmd");
 		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
 	}
 
@@ -191,7 +190,6 @@ function hideProgress() {
 		$tabNr = we_base_request::_(we_base_request::INT, "tabnr", 1);
 
 		return we_html_element::jsElement('
-var log_counter=0;
 function toggle(id){
 	var elem = document.getElementById(id);
 	if(elem.style.display == "none") elem.style.display = "";

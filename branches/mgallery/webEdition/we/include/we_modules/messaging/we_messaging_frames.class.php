@@ -60,7 +60,7 @@ class we_messaging_frames extends we_modules_frame{
 	}
 
 	function getJSCmdCode(){
-		return $this->View->getJSTop_tmp();
+		return '';
 	}
 
 	protected function getHTMLTree($extraHead = ''){

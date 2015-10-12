@@ -109,7 +109,7 @@ function makeCSVFromArray(arr) {
 
 function refreshTree() {
 	//FIXME: this won\'t work in current version
-	top.opener.top.we_cmd("load", top.WE().consts.tables.FILE_TABLE);
+	top.opener.top.we_cmd("load", WE().consts.tables.FILE_TABLE);
 }
 
 function checkFileinput() {
@@ -130,7 +130,7 @@ function checkFileinput() {
 }
 
 function we_cmd() {
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
 		url += 'we_cmd[' + i + ']=' + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -140,10 +140,10 @@ function we_cmd() {
 
 	switch (arguments[0]) {
 		case 'we_selector_directory':
-			new (WE().util.jsWindow)(top.window, url, 'we_fileselector', -1, -1, top.WE().consts.size.windowDirSelect.width, top.WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, 'we_fileselector', -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case 'we_selector_category':
-			new (WE().util.jsWindow)(top.window, url, 'we_catselector', -1, -1, top.WE().consts.size.catSelect.width, top.WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 	}
 }

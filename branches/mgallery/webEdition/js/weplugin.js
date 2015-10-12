@@ -42,7 +42,7 @@ function editSettings() {
 }
 
 function editSource(filename, ct, charset) {
-	var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
+	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 	var source = "###EDITORPLUGIN:EMPTYSTRING###";
 	if (_EditorFrame.getContentEditor().getSource) {
 		source = _EditorFrame.getContentEditor().getSource();
@@ -59,14 +59,14 @@ function editSource(filename, ct, charset) {
 }
 
 function editFile() {
-	var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
+	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 	document.we_form.elements['we_cmd[0]'].value = "editFile";
 	document.we_form.elements['we_cmd[1]'].value = _EditorFrame.getEditorTransaction();
 	document.we_form.submit();
 }
 
 function setSource(trans) {
-	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(trans);
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	if (_EditorFrame) {
 		_EditorFrame.setEditorIsHot(true);
 		var source = (self.isLoaded) ? document.WePlugin.getSource(trans).replace(/\r?\n?$/, "") : "";

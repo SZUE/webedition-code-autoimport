@@ -100,9 +100,9 @@ function we_cmd_users(args, url) {
 			if (args[0] === "object_del_all_users" && args[3]) {
 				url += '#f' + args[3];
 			}
-			if (!we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
+			if (!we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
-				we_repl(top.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			break;
 		case "chooseAddress":

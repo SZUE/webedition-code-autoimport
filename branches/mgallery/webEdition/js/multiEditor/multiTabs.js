@@ -87,7 +87,7 @@ TabView.prototype = {
 	 */
 	onCloseTab: function (val) {
 		frameId = (typeof val) == "object" ? val.id.replace(/close_/g, "") : val;
-		top.weEditorFrameController.closeDocument(frameId);
+		WE().layout.weEditorFrameController.closeDocument(frameId);
 	},
 	/**
 	 * removes a tab from the tab view
@@ -193,7 +193,7 @@ TabView.prototype = {
 	 */
 	selectFrame: function (val) {
 		frameId = (typeof val) == "object" ? val.id.replace(/tab_/g, "") : val;
-		top.weEditorFrameController.showEditor(frameId);
+		WE().layout.weEditorFrameController.showEditor(frameId);
 		//this.selectTab(frameId);
 	},
 	/**

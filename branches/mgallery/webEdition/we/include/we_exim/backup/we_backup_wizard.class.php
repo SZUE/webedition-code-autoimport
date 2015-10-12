@@ -447,13 +447,13 @@ function startBusy() {
 }
 
 function startImport(isFileReady) {
-	var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse(),
+	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
 		isFileReady = isFileReady || false;
 	for (frameId in _usedEditors) {
 		_usedEditors[frameId].setEditorIsHot( false );
 
 	}
-	top.opener.top.weEditorFrameController.closeAllDocuments();
+	WE().layout.weEditorFrameController.closeAllDocuments();
 
 	' . ((we_base_request::_(we_base_request::STRING, "import_from") === "import_upload") ? ('
 	if(isFileReady || document.we_form.we_upload_file.value) {
@@ -895,7 +895,7 @@ function setLocation(loc){
 }
 function press_yes() {
 
-	var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse();
+	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 	var _unsavedChanges = false;
 	for (frameId in _usedEditors) {
 		if ( _usedEditors[frameId].getEditorIsHot() ) {

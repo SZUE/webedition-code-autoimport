@@ -82,7 +82,7 @@ function weNavigationHistory() {
 
 	this.navigateReload = function () {
 		if (this.documentHistory.length) {
-			if ((_currentEditor = top.weEditorFrameController.getActiveEditorFrame())) { // reload current Editor
+			if ((_currentEditor = WE().layout.weEditorFrameController.getActiveEditorFrame())) { // reload current Editor
 				_currentEditor.setEditorReloadAllNeeded(true);
 				_currentEditor.setEditorIsActive(true);
 			} else { // reopen current Editor
@@ -112,7 +112,7 @@ function weNavigationHistoryEntry(table, id, ct, editcmd, url, parameters) {
 	this.executeHistoryEntry = function () {
 
 		if (this.editcmd || (this.id && this.id != "0")) {
-			top.weEditorFrameController.openDocument(
+			WE().layout.weEditorFrameController.openDocument(
 							this.table,
 							this.id,
 							this.ct,

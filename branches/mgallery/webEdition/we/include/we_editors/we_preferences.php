@@ -221,7 +221,7 @@ parent.opener.top.moveTo((screen.width / 2) - " . ($settingvalue / 2) . ", (scre
 				// editor font has changed - mark all editors to reload!
 				$GLOBALS['save_javascript'] .= '
 if (!_multiEditorreload) {
-	var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 		for (frameId in _usedEditors) {
 
 			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
@@ -267,7 +267,7 @@ _multiEditorreload = true;';
 				// editor tooltip font has changed - mark all editors to reload!
 				$GLOBALS['save_javascript'] .= '
 if (!_multiEditorreload) {
-	var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 		for (frameId in _usedEditors) {
 
 			if ( (_usedEditors[frameId].getEditorEditorTable() == "' . TEMPLATES_TABLE . '" || _usedEditors[frameId].getEditorEditorTable() == "' . FILE_TABLE . '") &&
@@ -298,7 +298,7 @@ _multiEditorreload = true;';
 				// complete webEdition reload: anpassen nach Wegfall der Frames
 				$GLOBALS['save_javascript'] .= "
 // reload current document => reload all open Editors on demand
-var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 for (frameId in _usedEditors) {
 
 	if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor

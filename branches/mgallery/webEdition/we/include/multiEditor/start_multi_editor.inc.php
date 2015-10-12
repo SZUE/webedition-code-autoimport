@@ -41,8 +41,8 @@ function checkIfValidStartdocument($id, $type = 'document'){
 
 
 function _buildJsCommand($cmdArray = array('', '', 'cockpit', 'open_cockpit', '', '', '', '', '')){
-	return 'if(top && top.weEditorFrameController){
-		top.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");
+	return 'if(WE()&&WE().layout.weEditorFrameController){
+		WE().layout.weEditorFrameController.openDocument("' . implode('", "', $cmdArray) . '");
 }';
 }
 
@@ -107,7 +107,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 				}
 				break;
 			case '0':
-				$jsCommand = 'top.weEditorFrameController.toggleFrames();';
+				$jsCommand = 'WE().layout.weEditorFrameController.toggleFrames();';
 				break;
 			case 'document':
 				if($_SESSION['prefs']['seem_start_file'] != 0 && checkIfValidStartdocument($_SESSION['prefs']['seem_start_file'])){ //	if a stardocument is already selected - show this

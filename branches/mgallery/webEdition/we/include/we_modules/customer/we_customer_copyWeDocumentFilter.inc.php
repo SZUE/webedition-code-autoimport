@@ -67,8 +67,8 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	we_html_element::jsElement('
 function checkForOpenChilds() {
 	' . $_allChildsJS . '
-	var _openChilds = Array();
-	var _usedEditors = top.opener.top.weEditorFrameController.getEditorsInUse();
+	var _openChilds = [];
+	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 	for (frameId in _usedEditors) {
 
@@ -85,7 +85,7 @@ function checkForOpenChilds() {
 			// close all
 			for (i=0;i<_openChilds.length;i++) {
 				_usedEditors[_openChilds[i]].setEditorIsHot(false);
-				top.opener.top.weEditorFrameController.closeDocument(_openChilds[i]);
+				WE().layout.weEditorFrameController.closeDocument(_openChilds[i]);
 			}
 		} else {
 			window.close();

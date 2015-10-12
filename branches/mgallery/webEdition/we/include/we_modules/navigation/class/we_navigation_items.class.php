@@ -132,7 +132,7 @@ class we_navigation_items{
 	  'display' => !empty($_dyn['display']) ? $_dyn['display'] : '',
 	  'name' => !empty($_dyn['field']) ? $_dyn['field'] : (!empty($_dyn['name']) ? $_dyn['name'] : $_dyn['text']),
 	  'docid' => $_dyn['id'],
-	  'table' => (($_nav->SelectionType == we_navigation_navigation::STPYE_CLASS || $_nav->SelectionType == we_navigation_navigation::STPYE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
+	  'table' => (($_nav->SelectionType == we_navigation_navigation::STYPE_CLASS || $_nav->SelectionType == we_navigation_navigation::STYPE_OBJLINK) ? OBJECT_FILES_TABLE : FILE_TABLE),
 	  'href' => $href,
 	  'type' => 'item',
 	  'parentid' => $_nav->ID,
@@ -286,7 +286,7 @@ class we_navigation_items{
 			$ponder = 4;
 			$parentPath = '';
 			switch($_rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
-				case we_navigation_navigation::STPYE_DOCTYPE:
+				case we_navigation_navigation::STYPE_DOCTYPE:
 					if($_isObject){
 						continue; // remove from selection
 					}
@@ -303,7 +303,7 @@ class we_navigation_items{
 					}
 					break;
 
-				case we_navigation_navigation::STPYE_CLASS:
+				case we_navigation_navigation::STYPE_CLASS:
 					if(!$_isObject){
 						continue; // remove from selection
 					}
@@ -470,11 +470,11 @@ class we_navigation_items{
 			$_tmpItem['Name'] = $_tmpItem['Text'];
 			$this->Storage['items'][] = $_tmpItem;
 
-			if($_db->Record['IsFolder'] == 1 && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STPYE_DOCLINK)){
+			if($_db->Record['IsFolder'] == 1 && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STYPE_DOCLINK)){
 				$_ids[] = $_db->Record['LinkID'];
-			} elseif($_db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_DOCLINK){
+			} elseif($_db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $_db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK){
 				$_ids[] = $_db->Record['LinkID'];
-			} elseif(($_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATEGORY || $_db->Record['SelectionType'] == we_navigation_navigation::STPYE_CATLINK) && $_db->Record['LinkSelection'] != we_navigation_navigation::LSELECTION_EXTERN){
+			} elseif(($_db->Record['SelectionType'] == we_navigation_navigation::STYPE_CATEGORY || $_db->Record['SelectionType'] == we_navigation_navigation::STYPE_CATLINK) && $_db->Record['LinkSelection'] != we_navigation_navigation::LSELECTION_EXTERN){
 				$_ids[] = $_db->Record['UrlID'];
 			}
 

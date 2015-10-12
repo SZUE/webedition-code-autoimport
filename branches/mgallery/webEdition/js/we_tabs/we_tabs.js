@@ -51,7 +51,7 @@ function setTabClass(elem) {
 
 function allowed_change_edit_page() {
 	try {
-		var contentEditor = top.opener && top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController ? top.opener.top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.opener && top.opener.top.weEditorFrameController ? top.opener.top.weEditorFrameController.getVisibleEditorFrame() : top.weEditorFrameController.getVisibleEditorFrame();
+		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 		if (contentEditor && contentEditor.contentWindow.fields_are_valid) {
 			return contentEditor.contentWindow.fields_are_valid();
 
@@ -83,18 +83,8 @@ function setPathGroup(pathGroup) {
 		titlePathGroup = pathGroup;
 }
 
-try {
-	var __weEditorFrameController = (top.opener && top.opener.top.opener && top.opener.top.opener.top.hasOwnProperty('weEditorFrameController') ?
-					top.opener.top.opener.top.weEditorFrameController :
-					(top.opener && top.opener.top.hasOwnProperty('weEditorFrameController') ?
-									top.opener.top.weEditorFrameController :
-									top.weEditorFrameController)
-					);
-} catch (e) {//Bugfix FF >34
-	var __weEditorFrameController = top.weEditorFrameController;
-}
 
-if (__weEditorFrameController && (__weEditorFrameController.getVisibleEditorFrame()) || (parent.frames && parent.frames[1])) {
+if ((WE().layout.weEditorFrameController.getVisibleEditorFrame()) || (parent.frames && parent.frames[1])) {
 	setTimeout(getPathInfos, 250);
 }
 
@@ -102,7 +92,7 @@ var loop = 0;
 
 function getPathInfos() {
 	try {
-		var contentEditor = __weEditorFrameController.getVisibleEditorFrame();
+		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 
 		if (contentEditor === null && parent.frames) {
 			contentEditor = parent.frames[1];
@@ -146,7 +136,7 @@ function setFrameSize() {
 			nList[0].style.height = tabsHeight + "px";
 			nList[1].style.top = tabsHeight + "px";
 			nList[2].style.top = tabsHeight + "px";
-		}else if(parent.document.getElementById('updatetabsDiv')){
+		} else if (parent.document.getElementById('updatetabsDiv')) {
 			//no need to resize
 		} else if (parent.document.getElementsByTagName("FRAMESET").length) {
 			//FIXME: remove this if frames are obsolete

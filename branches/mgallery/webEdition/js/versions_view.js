@@ -21,7 +21,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var ajaxURL = top.WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php";
+var ajaxURL = WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php";
 
 function init() {
 	sizeScrollContent();
@@ -299,7 +299,7 @@ var ajaxCallbackResetVersion = {
 			setTimeout('search(false);', 500);
 			// reload current document => reload all open Editors on demand
 
-			var _usedEditors = top.weEditorFrameController.getEditorsInUse();
+			var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 			for (frameId in _usedEditors) {
 
 				if (_usedEditors[frameId].getEditorIsActive()) { // reload active editor

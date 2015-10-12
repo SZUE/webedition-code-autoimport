@@ -250,7 +250,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 					$publishedStylePre = $isPublished ? '<span>' : '<span style="color: red">';
 
 					$content[] = array(
-						array('dat' => '<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\' ,\'' . $orderRows[$i]['obID'] . '\',\'' . $docType2 . '\');");">' . $publishedStylePre . substr($orderRows[$i]['obTitle'], 0, 25) . '..</span></a>'),
+						array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\' ,\'' . $orderRows[$i]['obID'] . '\',\'' . $docType2 . '\');");">' . $publishedStylePre . substr($orderRows[$i]['obTitle'], 0, 25) . '..</span></a>'),
 						array('dat' => $publishedStylePre . $orderRows[$i]['obID'] . '</span>'),
 						//$content[$nr][2]['dat'] = $orderRows[$i]['type'];
 						array('dat' => $publishedStylePre . ($orderRows[$i]['cDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cDate']) : "") . '</span>'),
@@ -322,7 +322,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 					$isPublished = $orderRows[$i]['dPub'] > 0 ? true : false;
 					$publishedStylePre = $isPublished ? '<span>' : '<span style="color: red">';
 					$content[$nr] = array(
-						array('dat' => '<a href="javascript:top.opener.top.weEditorFrameController.openDocument(\'' . FILE_TABLE . '\' ,\'' . $orderRows[$i]['dd'] . '\',\'' . $docType . '\');");">' . $publishedStylePre . substr($orderRows[$i]['sql'], 0, 25) . '..</span></a>'),
+						array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . FILE_TABLE . '\' ,\'' . $orderRows[$i]['dd'] . '\',\'' . $docType . '\');");">' . $publishedStylePre . substr($orderRows[$i]['sql'], 0, 25) . '..</span></a>'),
 						array('dat' => $publishedStylePre . ($orderRows[$i]['dd']) . '</span>'),
 						//$content[$nr][2]['dat'] = $orderRows[$i]['type'];
 						array('dat' => $publishedStylePre . ($orderRows[$i]['dDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dDate']) : '') . '</span>'),

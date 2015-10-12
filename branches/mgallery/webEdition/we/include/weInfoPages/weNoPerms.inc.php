@@ -25,7 +25,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('alert', '[no_perms_title]'), '', '', STYLESHEET .
 	we_html_element::jsElement('
 	top.toggleBusy(0);
-	top.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);'));
+	WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);'));
 ?>
 <body class="weDialogBody"><?php
 	echo we_html_tools::htmlDialogLayout('<p class="defaultfont">' . g_l('alert', '[no_perms_action]') . '</p>', g_l('alert', '[no_perms_title]'));

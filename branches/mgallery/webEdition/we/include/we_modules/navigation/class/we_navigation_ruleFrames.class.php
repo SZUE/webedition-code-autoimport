@@ -112,10 +112,10 @@ class we_navigation_ruleFrames{
 		);
 
 		$selectionTypes = array(
-			we_navigation_navigation::STPYE_DOCTYPE => g_l('global', '[documents]')
+			we_navigation_navigation::STYPE_DOCTYPE => g_l('global', '[documents]')
 		);
 		if(defined('OBJECT_TABLE')){
-			$selectionTypes[we_navigation_navigation::STPYE_CLASS] = g_l('global', '[objects]');
+			$selectionTypes[we_navigation_navigation::STYPE_CLASS] = g_l('global', '[objects]');
 		}
 
 		$parts[] = array(
@@ -216,8 +216,8 @@ var allFields = ["FolderID", "DoctypeID", "ClassID", "WorkspaceID"];
 var resetFields = ["NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID"];
 
 var dependencies = {;
-"' . we_navigation_navigation::STPYE_CLASS . '":["ClassID", "WorkspaceID", "Categories"],
-"' . we_navigation_navigation::STPYE_DOCTYPE . '": ["FolderID", "DoctypeID", "Categories"]
+"' . we_navigation_navigation::STYPE_CLASS . '":["ClassID", "WorkspaceID", "Categories"],
+"' . we_navigation_navigation::STYPE_DOCTYPE . '": ["FolderID", "DoctypeID", "Categories"]
 };
 
 function switchType(value) {

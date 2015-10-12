@@ -33,7 +33,7 @@ function we_submitForm(target, url) {
 }
 
 function we_cmd() {
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
@@ -43,8 +43,8 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case 'checkDocument':
-			if (top.weEditorFrameController.getActiveDocumentReference().frames[1].we_submitForm) {
-				top.weEditorFrameController.getActiveDocumentReference().frames[1].we_submitForm("validation", url);
+			if (WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1].we_submitForm) {
+				WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1].we_submitForm("validation", url);
 			}
 			break;
 		default:

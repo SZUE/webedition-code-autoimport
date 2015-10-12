@@ -90,7 +90,7 @@ var path='" . $this->path . "';") .
 			$_step = 'get' . $type . 'Step' . $step;
 			list($js, $content) = $this->$_step();
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
-			return we_html_tools::getHtmlTop('', '', '', 
+			return we_html_tools::getHtmlTop('', '', '',
 						STYLESHEET .
 						//FIXME: delete condition and else branch when new uploader is stable
 						(!we_fileupload::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
@@ -649,7 +649,7 @@ function we_import(mode, cid) {
 				$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');
 							top.wizbusy.setProgress(100);
 							top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);
-							if(top.opener.top.top.weEditorFrameController.getActiveDocumentReference().quickstart && top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) top.opener.top.weEditorFrameController.getActiveDocumentReference().location.reload();
+							if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) WE().layout.weEditorFrameController.getActiveDocumentReference().location.reload();
 							if(top.wizbusy && top.wizbusy.document.getElementById('progress')) {
 							progress = top.wizbusy.document.getElementById('progress');
 							if(progress!==undefined){

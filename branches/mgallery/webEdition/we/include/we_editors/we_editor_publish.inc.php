@@ -25,7 +25,7 @@
 we_html_tools::protect();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $GLOBALS['we_transaction']), 1);
 echo we_html_element::jsElement('
-var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");
 var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
 	$we_JavaScript . ';top.toggleBusy(0);' .
 	($we_responseText ?

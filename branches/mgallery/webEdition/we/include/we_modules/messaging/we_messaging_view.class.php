@@ -33,9 +33,6 @@ class we_messaging_view extends we_modules_view{
 		$frameset = WE_MESSAGING_MODULE_DIR . "edit_messaging_frameset.php";
 		$topframe = "top.content";
 		parent::__construct($frameset, $topframe);
-		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
-		$this->editorBodyForm = $this->editorBodyFrame . '.document.we_form';
-		$this->editorHeaderFrame = $this->topFrame . '.editor.edheader';
 
 		$this->transaction = $reqTransaction;
 		$this->weTransaction = &$weTransaction;
@@ -113,37 +110,27 @@ function submitForm() {
 			/* FALLTHROUGH */
 			case 'show_message':
 				if(isset($id)){
-					$out .= we_html_element::jsElement('
-					top.content.editor.edbody.messaging_msg_view.location="' . (WE_MESSAGING_MODULE_DIR . 'messaging_message_view.php?we_transaction=' . $this->transaction . '&id= ' . $id) . '";
-					');
+					$out .= we_html_element::jsElement('top.content.editor.edbody.messaging_msg_view.location="' . (WE_MESSAGING_MODULE_DIR . 'messaging_message_view.php?we_transaction=' . $this->transaction . '&id= ' . $id) . '";');
 				}
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				return $out;
 			case 'new_message':
 				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-						we_html_element::jsElement('
-				new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",-1,-1,670,530,true,false,true,false);
-				');
+						we_html_element::jsElement('new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'messaging_newmessage.php?we_transaction=' . $this->transaction . '&mode=' . we_base_request::_(we_base_request::STRING, 'mode') . '", "messaging_new_message",-1,-1,670,530,true,false,true,false);');
 			case 'new_todo':
 				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-						we_html_element::jsElement('
-				new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);					//-->
-				');
+						we_html_element::jsElement('new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=new", "messaging_new_todo",-1,-1,690,520,true,false,true,false);');
 			case 'forward_todo':
 				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-						we_html_element::jsElement('
-				new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
-				');
+						we_html_element::jsElement('new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=forward", "messaging_new_todo",-1,-1,690,600,true,false,true,false);');
 			case 'rej_todo':
 				return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-						we_html_element::jsElement('
-				new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);
-				');
+						we_html_element::jsElement('new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'todo_edit_todo.php?we_transaction=' . $this->transaction . '&mode=reject", "messaging_new_todo",-1,-1,690,600,true,false,true,false);');
 			case 'reset_right_view':
 				return we_html_element::jsElement('
-				top.content.editor.edbody.entries_selected = [];
-				top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.messaging_msg_view.location="about:blank"
+top.content.editor.edbody.entries_selected = [];
+top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+top.content.editor.edbody.messaging_msg_view.location="about:blank"
 				');
 			case 'update_todo':
 				if($this->messaging->selected_message){
@@ -176,10 +163,10 @@ function submitForm() {
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 
 				$js_out = '
-				top.content.editor.edbody.entries_selected = [];
-				top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
-				top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
-				top.content.editor.edbody.messaging_msg_view.location="about:blank";
+top.content.editor.edbody.entries_selected = [];
+top.content.editor.edbody.messaging_fv_headers.location="' . we_class::url($this->frameset) . '&pnt=msg_fv_headers&si=' . $this->messaging->get_sortitem() . '&so=' . $this->messaging->get_sortorder() . '&viewclass=" + top.content.viewclass;
+top.content.editor.edbody.messaging_messages_overview.location="' . we_class::url(WE_MESSAGING_MODULE_DIR . 'messaging_show_folder_content.php') . '";
+top.content.editor.edbody.messaging_msg_view.location="about:blank";
 				';
 
 				$aid = $this->messaging->Folder_ID;
@@ -302,10 +289,9 @@ top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
 				if(($folders = we_base_request::_(we_base_request::INTLIST, 'folders'))){
 
 					$out .= we_html_element::jsElement('
-					top.content.delete_menu_entries([String(' . implode('), String(', $folders) . ')]);
-					top.content.folders_removed([String(' . implode('), String(', $folders) . ')]);
-					top.content.drawEintraege();
-					');
+top.content.delete_menu_entries([String(' . implode('), String(', $folders) . ')]);
+top.content.folders_removed([String(' . implode('), String(', $folders) . ')]);
+top.content.drawEintraege();');
 				}
 				return $out;
 			case 'edit_settings':

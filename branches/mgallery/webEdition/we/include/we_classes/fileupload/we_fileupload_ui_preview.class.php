@@ -101,7 +101,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 					we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));')))
 				) .
 				we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')),
-					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), 
+					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'),
 						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
 						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
 						we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type'))
@@ -135,8 +135,8 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		}
 
 		if($type === 'switch_tab'){
-			$parentObj = 'top.weEditorFrameController';
-			$frame = 'top.weEditorFrameController.getVisibleEditorFrame()';
+			$parentObj = 'WE().layout.weEditorFrameController';
+			$frame = 'WE().layout.weEditorFrameController.getVisibleEditorFrame()';
 		} else {
 			$parentObj = 'top._EditorFrame';
 			$frame = '_EditorFrame.getContentEditor()';

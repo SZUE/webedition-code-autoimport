@@ -32,7 +32,6 @@ class we_voting_frames extends we_modules_frame{
 		parent::__construct(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php");
 		$this->Tree = new we_voting_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_voting_view();
-		$this->setFrames("top.content", "top.content", "top.content.cmd");
 	}
 
 	function getHTML($what){
@@ -714,21 +713,17 @@ function refreshTexts(){
 		$tabNr = ($this->View->voting->IsFolder && $t != 1) ? 1 : $t;
 
 		$out = we_html_element::jsElement('
-
-			var table = "' . FILE_TABLE . '";
-			var log_counter=0;
-			function toggle(id){
-				var elem = document.getElementById(id);
-				if(elem.style.display == "none") elem.style.display = "block";
-				else elem.style.display = "none";
-			}
-			function setVisible(id,visible){
-				var elem = document.getElementById(id);
-				if(visible==true) elem.style.display = "block";
-				else elem.style.display = "none";
-			}
-
-		');
+var table = "' . FILE_TABLE . '";
+function toggle(id){
+	var elem = document.getElementById(id);
+	if(elem.style.display == "none") elem.style.display = "block";
+	else elem.style.display = "none";
+}
+function setVisible(id,visible){
+	var elem = document.getElementById(id);
+	if(visible==true) elem.style.display = "block";
+	else elem.style.display = "none";
+}');
 
 		$out .= we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab1(), 30, '', -1, '', '', false, $preselect)) .
 			(!$this->View->voting->IsFolder ?

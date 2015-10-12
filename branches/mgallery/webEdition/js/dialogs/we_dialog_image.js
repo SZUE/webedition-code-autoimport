@@ -68,7 +68,7 @@ function fsubmit(e) {
 
 function we_cmd() {
 	var args = "";
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -79,7 +79,7 @@ function we_cmd() {
 		case "we_selector_document":
 		case "we_selector_image":
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, top.WE().consts.size.docSelect.width, top.WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
 			new (WE().util.jsWindow)(top.window, url, "browse_server", -1, -1, 840, 400, true, false, true);

@@ -115,7 +115,7 @@ function we_cmd(){
 		case "saveTag":
 
 			if (strWeTag = weTagWizard.getWeTag()) {
-				var contentEditor = opener.top.weEditorFrameController.getVisibleEditorFrame();
+				var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 			' .
 		( $openAtCursor ? '
 				contentEditor.window.addCursorPosition( strWeTag );

@@ -137,7 +137,7 @@ switch($_SESSION['weS']['we_mode']){
 
 echo STYLESHEET .
  we_html_element::jsElement(
-	'var _EditorFrame = top.weEditorFrameController.getEditorFrame(parent.name);
+	'var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 	($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE=true;' : '')) .
  we_html_element::jsScript(JS_DIR . 'we_editor_header.js');
@@ -153,12 +153,12 @@ $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::WEDOCUMENT:
 				if($we_doc->TemplateID && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-					echo ' - <a style="font-weight:bold;color:#006699" href="javascript:top.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openTemplate]') . '</a>';
+					echo ' - <a style="font-weight:bold;color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openTemplate]') . '</a>';
 				}
 				break;
 			case we_base_ContentTypes::TEMPLATE:
 				if($we_doc->MasterTemplateID){
-					echo ' - <a style="font-weight:bold;color:#006699" href="javascript:top.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->MasterTemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openMasterTemplate]') . '</a>';
+					echo ' - <a style="font-weight:bold;color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->MasterTemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openMasterTemplate]') . '</a>';
 				}
 			default:
 		}

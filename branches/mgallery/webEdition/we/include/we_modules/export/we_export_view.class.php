@@ -225,8 +225,8 @@ function we_cmd() {
 		$opened = '';
 		$arr = array(FILE_TABLE => "selDocs", TEMPLATES_TABLE => "selTempl");
 		if(defined('OBJECT_TABLE')){
-			$arr[OBJECT_FILES_TABLE] = "selObjs";
-			$arr[OBJECT_TABLE] = "selClasses";
+			$arr[OBJECT_FILES_TABLE] = 'selObjs';
+			$arr[OBJECT_TABLE] = 'selClasses';
 		}
 
 		foreach($arr as $table => $elem){

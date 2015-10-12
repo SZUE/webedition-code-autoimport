@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -99,7 +101,7 @@ function exit_close() {
 function we_submit() {
 	var bSelection = _fo.Selection.selectedIndex;
 	var bSelType = _fo.headerSwitch.selectedIndex;
-	_fo.action = top.WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + _sObjId + '&we_cmd[1]=' + opener.base64_encode(_fo.title.value) + ';' +
+	_fo.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + _sObjId + '&we_cmd[1]=' + opener.base64_encode(_fo.title.value) + ';' +
 					(bSelection ? '1' : '0') + (bSelType ? '1' : '0') + ';' + (bSelection ? getTreeSelected() : '');
 	_fo.method = 'post';
 	_fo.submit();
@@ -142,6 +144,6 @@ function save() {
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, _sObjId, _sMdcInc);
 	_oCsv_.value = opener.base64_encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
-	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
+	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
 	self.close();
 }

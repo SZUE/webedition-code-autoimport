@@ -170,7 +170,7 @@ function EditorFrameController() {
 
 			if (parameters !== this.getEditorFrame(_editorId).getEditorDocumentParameters()) {
 				// re-open document
-				this.closeDocument(_editorId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
+				this.closeDocument(_editorId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
 
 			} else if (this.ActiveEditorFrameId !== _editorId) {
 
@@ -236,7 +236,7 @@ function EditorFrameController() {
 				if (this.EditorWindowsAmount === 1) { // only one active document here, for example SeeMode
 					// build nextCmd
 					// table,id,ct,editcmd,dt,url,code,mode
-					this.closeDocument(this.ActiveEditorFrameId, "top.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
+					this.closeDocument(this.ActiveEditorFrameId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
 
 				} else {
 					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -897,7 +897,7 @@ function EditorFrameController() {
 	 */
 
 }
-top.weEditorFrameController = new EditorFrameController();
+WE().layout.weEditorFrameController = new EditorFrameController();
 
 //--------------------------------------------------------------------
 // CLASS:
@@ -967,7 +967,7 @@ function EditorFrame(ref, elementId) {
 
 	this.freeEditor = function () {
 
-		this.EditorFrameWindow.location = top.WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
+		this.EditorFrameWindow.location = WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
 
 		this.EditorType = null;	// model|cockpit, etc
 
@@ -1047,7 +1047,7 @@ function EditorFrame(ref, elementId) {
 	//   nothing
 	//--------------------------------------------------------------------
 	this.setEmptyEditor = function () {
-		this.EditorFrameWindow.location = top.WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
+		this.EditorFrameWindow.location = WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
 	};
 
 	this.getEditorFrameWindow = function () {

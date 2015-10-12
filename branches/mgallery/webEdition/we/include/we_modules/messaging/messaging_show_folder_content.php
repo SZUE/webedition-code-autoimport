@@ -34,7 +34,7 @@ if(!$transaction){
 }
 echo we_html_element::jsElement('
 		var transaction="' . $transaction . '";
-		top.WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
+		WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
 ') .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/showFolder.js');

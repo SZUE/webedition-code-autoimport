@@ -45,7 +45,7 @@ $newUrl = $arr['scheme'] . '://' . $arr['host'] . ( isset($arr['port']) ? (':' .
 echo we_html_tools::getHtmlTop('', '', 'frameset');
 ?>
 <script><!--
-	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
 
 	_EditorFrame.initEditorFrameData({
 		EditorType: "none_webedition",
@@ -71,7 +71,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 		if (loc) {	//	Page is on webEdition-Server, open it with matching command
 
 			// close existing editor, it was closed very hard
-			top.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
+			WE().layout.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
 
 			// build command for this location
 			top.we_cmd("open_url_in_editor", loc);

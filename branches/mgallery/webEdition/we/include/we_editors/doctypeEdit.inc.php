@@ -189,7 +189,7 @@ echo 'var docTypeNames = [' . implode(',', $GLOBALS['DB_WE']->getAll(true)) . ']
 ?>
 
 var countSaveLoop = 0;
-top.WE().consts.g_l.doctypeEdit = {
+WE().consts.g_l.doctypeEdit = {
 	newDocTypeName: "<?php echo g_l('weClass', '[newDocTypeName]'); ?>",
 	doctype_hochkomma: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_hochkomma]')); ?>",
 	doctype_empty: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')); ?>",

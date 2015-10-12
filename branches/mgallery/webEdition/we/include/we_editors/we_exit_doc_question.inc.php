@@ -80,7 +80,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 
 echo we_html_element::jsElement("
 	var _nextCmd = null;
-	var _EditorFrame = top.opener.top.weEditorFrameController.getEditorFrame('" . $editorFrameId . "');
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame('" . $editorFrameId . "');
 	self.focus();
 
 	// functions for keyBoard Listener
@@ -96,14 +96,14 @@ echo we_html_element::jsElement("
 	}
 
 	function pressed_yes() {
-		_EditorFrame.getDocumentReference().frames.editFooter.we_save_document('" . str_replace("'", "\\'", "top.weEditorFrameController.closeDocument('" . $editorFrameId . "');" . ($nextCmd ? "top.setTimeout('" . $nextCmd . "', 1000);" : "" )) . "');
+		_EditorFrame.getDocumentReference().frames.editFooter.we_save_document('" . str_replace("'", "\\'", "WE().layout.weEditorFrameController.closeDocument('" . $editorFrameId . "');" . ($nextCmd ? "top.setTimeout('" . $nextCmd . "', 1000);" : "" )) . "');
 		window_closed();
 		self.close();
 	}
 
 	function pressed_no() {
 		_EditorFrame.setEditorIsHot(false);
-		opener.top.weEditorFrameController.closeDocument('" . $editorFrameId . "');
+		WE().layout.weEditorFrameController.closeDocument('" . $editorFrameId . "');
 		" . ($nextCmd ? "opener.top.setTimeout('" . $nextCmd . "', 1000);" : "" ) . "
 		window_closed();
 		self.close();

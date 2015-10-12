@@ -50,7 +50,7 @@ weAddToCollection = {
 		}
 
 		// check if collection is open
-		var _usedEditors = top.weEditorFrameController.getEditorsInUse(),
+		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
 						_collID = document.getElementById('yuiAcResultDir').value,
 						_isOpen = false,
 						_isEditorCollActive = false,

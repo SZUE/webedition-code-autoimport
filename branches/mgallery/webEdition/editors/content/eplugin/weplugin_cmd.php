@@ -90,14 +90,14 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 			$_SESSION['weS']['we_data'][$_we_transaction][1]["data"]["dat"] = $_SESSION['weS']['we_data'][$_we_transaction][0]["elements"]["data"]["dat"];
 
 			$out = we_html_element::jsElement(
-					'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
+					'var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
 _EditorFrame.getContentFrame().reloadContent = true;');
 		}
 
 		break;
 	case "reloadContentFrame":
 		$out = we_html_element::jsElement(
-				'var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
+				'var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $_we_transaction . '");
 _EditorFrame.setEditorIsHot(true);
 if (
 	_EditorFrame.getEditorEditPageNr() == ' . we_base_constants::WE_EDITPAGE_CONTENT . ' ||

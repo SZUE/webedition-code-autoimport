@@ -103,11 +103,11 @@ function setPath() {
 }
 
 function saveReload() {
-	self.location = top.WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' + we_transaction;
+	self.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' + we_transaction;
 }
 
 function we_cmd() {
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
+	var url = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?';
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -147,7 +147,7 @@ function we_cmd() {
 function we_save_document() {
 	var countSaveLoop = 0;
 	try {
-		var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();
+		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 		if (contentEditor && contentEditor.fields_are_valid && !contentEditor.fields_are_valid()) {
 			return;
 
@@ -180,13 +180,13 @@ function we_save_document() {
 			}
 		}
 		if (countSaveLoop > 10) {
-			top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else if (acStatusType.toLowerCase() == 'object' && acStatus.running) {
 			countSaveLoop++;
 			setTimeout(we_save_document, 100);
 		} else if (invalidAcFields) {
-			top.we_showMessage(top.WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else {
 			countSaveLoop = 0;

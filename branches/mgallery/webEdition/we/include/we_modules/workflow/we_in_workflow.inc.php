@@ -39,9 +39,9 @@ if($cmd === 'ok'){
 			default:
 			case we_base_constants::MODE_NORMAL:
 				$script = 'if(opener){
-opener.top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
+WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
 }else{
-top.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
+WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
 }';
 		}
 

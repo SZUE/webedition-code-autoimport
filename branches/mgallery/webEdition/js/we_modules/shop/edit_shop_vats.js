@@ -83,7 +83,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = top.WE().consts.dirs + "we_cmd.php?";
+	var url = WE().consts.dirs + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -103,7 +103,7 @@ function we_cmd() {
 
 		case "close":
 			if (hot) {
-				new (WE().util.jsWindow)(top.window, top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_exitQuestion.php", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+				new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_exitQuestion.php", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			} else {
 				window.close();
 			}
@@ -127,7 +127,7 @@ function we_cmd() {
 			break;
 
 		case "delete":
-			if (confirm(top.WE().consts.g_l.shop.vat_confirm_delete)) {
+			if (confirm(WE().consts.g_l.shop.vat_confirm_delete)) {
 				document.location = SCRIPT_NAME + "?we_cmd[0]=deleteVat&weShopVatId=" + arguments[1];
 			}
 			break;

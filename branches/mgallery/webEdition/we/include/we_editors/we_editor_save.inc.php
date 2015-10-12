@@ -26,7 +26,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 ?>
 
 <script><!--
-	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction("<?php echo $we_transaction; ?>");
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("<?php echo $we_transaction; ?>");
 	var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
 
 <?php
@@ -71,7 +71,7 @@ if(!empty($wasSaved)){
 			echo "_reloadTabs['" . $table . "'] = '," . $vals . ",';";
 		}
 		echo "
-var _usedEditors = top.weEditorFrameController.getEditorsInUse();
+var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 for (frameId in _usedEditors) {
 	if ( _reloadTabs[_usedEditors[frameId].getEditorEditorTable()] && (_reloadTabs[_usedEditors[frameId].getEditorEditorTable()]).indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1 ) {
@@ -108,7 +108,7 @@ if($we_responseText){
 	echo 'self.focus();
 top.toggleBusy(0);
 showAlert = 0;
-var contentEditor = top.weEditorFrameController.getVisibleEditorFrame();';
+var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();';
 
 	// enable navigation box if doc has been published
 	if(!empty($GLOBALS['we_doc']->Published)){

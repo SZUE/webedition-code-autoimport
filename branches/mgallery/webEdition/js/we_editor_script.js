@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var _controller = (opener && opener.top.weEditorFrameController) ? opener.top.weEditorFrameController : top.weEditorFrameController;
+var _controller = WE().layout.weEditorFrameController;
 
 var _EditorFrame = _controller.getEditorFrame(parent.name);
 if (!_EditorFrame) {
@@ -144,7 +144,7 @@ function updateCustomerFilterIfNeeded() {
 	if ((_elem = document.we_form["we_" + docName + "_ParentID"])) {
 		_parentid = _elem.value;
 		if (_parentid !== _oldparentid) {
-			top.YAHOO.util.Connect.asyncRequest('GET', top.WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, ajaxCallback);
+			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, ajaxCallback);
 			_oldparentid = _parentid;
 		}
 	}
@@ -215,13 +215,13 @@ function setScrollTo() {
 
 function goTemplate(tid) {
 	if (tid > 0) {
-		top.weEditorFrameController.openDocument(TEMPLATES_TABLE, tid, CTYPE_TEMPLATE);
+		WE().layout.weEditorFrameController.openDocument(TEMPLATES_TABLE, tid, CTYPE_TEMPLATE);
 	}
 }
 
 function we_cmd() {
 	var args = "";
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -229,7 +229,7 @@ function we_cmd() {
 		}
 	}
 
-	var contentEditor = (top.weEditorFrameController === undefined ? opener.top : top).weEditorFrameController.getVisibleEditorFrame();
+	var contentEditor = WE().layout.weEditorFrameController.weEditorFrameController.getVisibleEditorFrame();
 
 	switch (arguments[0]) {
 		case "edit_link":

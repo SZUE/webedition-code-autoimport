@@ -39,7 +39,7 @@ var ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc/rpc.php";
 var rows = ' . (isset($_REQUEST["searchFields"]) ? count($_REQUEST["searchFields"]) - 1 : 0) . ';
 var docID="' . $GLOBALS['we_doc']->ID . '";
 var transaction="' . $we_transaction . '";
-top.WE().consts.dirs.IMAGE_DIR="' . IMAGE_DIR . '";
+WE().consts.dirs.IMAGE_DIR="' . IMAGE_DIR . '";
 var searchclassFolderMode=' . intval($GLOBALS['we_doc']->searchclassFolder->mode) . ';
 var g_l={
 	"publish_docs":"' . g_l('searchtool', '[publish_docs]') . '",

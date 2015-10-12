@@ -320,7 +320,7 @@ if(!$wfchk){
 
 						$script .= '
 // close all Editors with deleted documents
-var _usedEditors =  top.weEditorFrameController.getEditorsInUse();
+var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 
 // if a class is deleted, close all open objects of this class
 var _delete_table = "' . $table . '";
@@ -333,7 +333,7 @@ for ( frameId in _usedEditors ) {
 		' . $class_condition . '
 		) {
 		_usedEditors[frameId].setEditorIsHot(false);
-		top.weEditorFrameController.closeDocument(frameId);
+		WE().layout.weEditorFrameController.closeDocument(frameId);
 	}
 }';
 					}

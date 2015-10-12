@@ -1063,7 +1063,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				}
 			} else {
 				var match,
-					frameControler = editorLevel === "inline" ? top.weEditorFrameController : top.opener.top.weEditorFrameController;
+					frameControler = WE().layout.weEditorFrameController;
 
 				if(!frameController){
 					return;
@@ -1103,7 +1103,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			//TODO: clean up the mess in here!
 			ed.pasteAsPlainText = 0;
 			ed.controlManager.setActive("pastetext", 0);
-			var openerDocument = ' . (!$this->isInPopup ? '""' : ($this->isFrontendEdit ? 'top.opener.document' : 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document')) . ';
+			var openerDocument = ' . (!$this->isInPopup ? '""' : ($this->isFrontendEdit ? 'top.opener.document' : 'WE().layout.weEditorFrameController.getVisibleEditorFrame().document')) . ';
 			' . ($this->isInPopup ? '
 			try{
 				ed.setContent(openerDocument.getElementById("' . $this->name . '").value)
@@ -1125,9 +1125,9 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 					//nothing
 				}
 			} else if(hasOpener){
-				if(opener.top.weEditorFrameController){
+				if(WE().layout.weEditorFrameController){
 					//we are in backend
-					var editor = opener.top.weEditorFrameController.ActiveEditorFrameId;
+					var editor = WE().layout.weEditorFrameController.ActiveEditorFrameId;
 					var wedoc = null;
 					try{
 						wedoc = opener.top.bm_content_frame.frames[editor].frames["contenteditor_" + editor];

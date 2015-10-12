@@ -25,6 +25,7 @@
 //TODO in modulesFrames: set module-settings as class properties instead of looping them through as method parameters!
 
 abstract class we_modules_frame{
+
 	var $module;
 	var $db;
 	var $frameset;
@@ -44,12 +45,9 @@ abstract class we_modules_frame{
 		$this->db = new DB_WE();
 		$this->frameset = $frameset;
 		$this->Tree = new weTree();
-	}
-
-	function setFrames($topFrame, $treeFrame, $cmdFrame){
-		$this->topFrame = $topFrame;
-		$this->treeFrame = $treeFrame;
-		$this->cmdFrame = $cmdFrame;
+		$this->topFrame = "top.content";
+		$this->treeFrame = "top.content";
+		$this->cmdFrame = "top.content.cmd";
 	}
 
 	function getJSStart(){
@@ -64,11 +62,11 @@ abstract class we_modules_frame{
 
 	function getHTMLDocument($body, $extraHead = ''){
 		return $this->getHTMLDocumentHeader() .
-			$extraHead .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
-			'</head>' . $body . '</html>';
+				$extraHead .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
+				we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
+				'</head>' . $body . '</html>';
 	}
 
 	static function getTree_g_l(){//FIXME:remove
@@ -110,14 +108,14 @@ abstract class we_modules_frame{
 		$this->setTreeWidthFromCookie();
 
 		$extraHead = $this->getJSCmdCode() .
-			self::getJSToggleTreeCode($this->module) .
-			we_main_headermenu::css() .
-			$extraHead;
+				self::getJSToggleTreeCode($this->module) .
+				we_main_headermenu::css() .
+				$extraHead;
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->getJSStart()), we_html_element::htmlExIFrame('header', self::getHTMLHeader(WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php', $this->module)) .
-				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) : '') .
-				$this->getHTMLResize($extraUrlParams) .
-				we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . $extraUrlParams)
+						($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '?pnt=iconbar' . $extraUrlParams, 'position: absolute; top: 32px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) : '') .
+						$this->getHTMLResize($extraUrlParams) .
+						we_html_element::htmlIFrame('cmd', $this->frameset . '?pnt=cmd' . $extraUrlParams)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -132,8 +130,8 @@ abstract class we_modules_frame{
 		$menu = $jmenu->getCode(false) . $jmenu->getJS();
 
 		return
-			we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu) .
-			we_html_element::htmlDiv(array('style' => 'width:5em;position: absolute;top: 0px;right: 0px;'), we_main_headermenu::createMessageConsole('moduleFrame'));
+				we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu) .
+				we_html_element::htmlDiv(array('style' => 'width:5em;position: absolute;top: 0px;right: 0px;'), we_main_headermenu::createMessageConsole('moduleFrame'));
 	}
 
 	function getHTMLResize($extraUrlParams = ''){//TODO: only customer uses param sid: handle sid with extraUrlParams
@@ -145,10 +143,10 @@ abstract class we_modules_frame{
 </div>';
 
 		$content = we_html_element::htmlDiv(array('style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px;width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('style' => 'width: ' . (weTree::HiddenWidth - 1) . 'px;border-right:1px solid #767676;', 'id' => 'vtabs'), $_incDecTree) .
-					$this->getHTMLLeft()
-				) .
-				we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background-color: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), we_html_element::htmlIFrame('editor', $this->frameset . '?pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;', '', '', false)
-				)
+								$this->getHTMLLeft()
+						) .
+						we_html_element::htmlDiv(array('id' => 'right', 'style' => 'background-color: #F0EFF0; position: absolute; top: 0px; bottom: 0px; left: ' . $this->treeWidth . 'px; right: 0px; width: auto; border-left: 1px solid black; overflow: auto;'), we_html_element::htmlIFrame('editor', $this->frameset . '?pnt=editor' . $extraUrlParams, 'position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: hidden;', '', '', false)
+						)
 		);
 
 		$attribs = array('id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden');
@@ -160,29 +158,29 @@ abstract class we_modules_frame{
 		//we load tree in iFrame, because the complete tree JS is based on document.open() and document.write()
 		//it makes not much sense, to rewrite trees before abandoning them anyway
 		return we_html_element::htmlDiv(array(
-				'id' => 'left', 'name' => 'left', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;'
-				), we_html_element::htmlDiv(array(
-					'id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . ($this->treeHeaderHeight > 1 ? $this->treeHeaderHeight - 6/* padding+border */ : 1) . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'padding: 5px 0px 0px 0px; ' : 'background: #ffffff')
-					), $this->getHTMLTreeheader()) .
-				$this->getHTMLTree() .
-				($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array(
-						'id' => 'treefooter', 'class' => 'editfooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'
-						), $this->getHTMLTreefooter())
-				)
+					'id' => 'left', 'name' => 'left', 'style' => 'position: absolute; top: 0px; bottom: 0px; left: ' . weTree::HiddenWidth . 'px; right: 0px;'
+						), we_html_element::htmlDiv(array(
+							'id' => 'treeheader', 'style' => 'overflow:hidden; position: absolute; top: 0px; left: 0px; height: ' . ($this->treeHeaderHeight > 1 ? $this->treeHeaderHeight - 6/* padding+border */ : 1) . 'px; width: 100%; ' . ($this->treeHeaderHeight != 1 ? 'padding: 5px 0px 0px 0px; ' : 'background: #ffffff')
+								), $this->getHTMLTreeheader()) .
+						$this->getHTMLTree() .
+						($this->treeFooterHeight == 0 ? '' : we_html_element::htmlDiv(array(
+									'id' => 'treefooter', 'class' => 'editfooter', 'style' => 'position: absolute; bottom: 0px; left: 0px; padding-left: 2px; height: ' . $this->treeFooterHeight . 'px; width: 100%; overflow:hidden;'
+										), $this->getHTMLTreefooter())
+						)
 		);
 	}
 
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv(array(
-				'id' => 'tree',
-				'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
-				'link' => '#000000',
-				'alink' => '#000000',
-				'vlink' => '#000000',
-				'marginwidth' => 0,
-				'marginheight' => 4,
-				'leftmargin' => 0,
-				'topmargin' => 4), $extraHead . $this->Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}')
+					'id' => 'tree',
+					'style' => 'overflow:scroll;position: absolute; top: ' . $this->treeHeaderHeight . 'px; bottom: ' . $this->treeFooterHeight . 'px; left: 0px; width: 100%; background: #F3F7FF',
+					'link' => '#000000',
+					'alink' => '#000000',
+					'vlink' => '#000000',
+					'marginwidth' => 0,
+					'marginheight' => 4,
+					'leftmargin' => 0,
+					'topmargin' => 4), $extraHead . $this->Tree->getHTMLContruct('if(top.treeResized){top.treeResized();}')
 		);
 	}
 
@@ -199,8 +197,8 @@ abstract class we_modules_frame{
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$body = we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false) .
-				we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;') .
-				we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false)
+						we_html_element::htmlIFrame('edbody', $this->frameset . '?pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; top: 40px; bottom: 40px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;') .
+						we_html_element::htmlIFrame('edfooter', $this->frameset . '?pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, 'position: absolute; bottom: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', 'width: 100%; overflow: hidden', '', '', false)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -255,8 +253,8 @@ function we_save() {
 			$_cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
-					'</body>');
+							we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), IMAGE_DIR . "alert.gif", "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
+							'</body>');
 		}
 	}
 

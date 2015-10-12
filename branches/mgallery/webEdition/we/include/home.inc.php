@@ -59,8 +59,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	}
 	?>
 	<script><!--
-		WE().layout.cockpitFrame = top.weEditorFrameController.getActiveDocumentReference();
-		var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
+		WE().layout.cockpitFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
+		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
 		_EditorFrame.initEditorFrameData(
 						{
 							EditorType: "cockpit",
@@ -250,7 +250,7 @@ function isHot(){
 function closeAllModalWindows(){
 }
 
-var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
 _EditorFrame.initEditorFrameData(
 {
 	"EditorType":"cockpit",

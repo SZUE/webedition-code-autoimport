@@ -243,7 +243,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset') .
  we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js');
 ?>
 <script><!--
-	var _EditorFrame = top.weEditorFrameController.getEditorFrame(window.name);
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
 	_EditorFrame.initEditorFrameData(
 					{
 						"EditorType": "model",
@@ -299,7 +299,7 @@ if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
 
 			if (loc) {	//	Page is on webEdition-Server, open it with matching command
 				// close existing editor, it was closed very hard
-				top.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
+				WE().layout.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
 
 				// build command for this location
 				top.we_cmd("open_url_in_editor", loc);

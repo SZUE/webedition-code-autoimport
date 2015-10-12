@@ -364,13 +364,7 @@ top.makeNewDocument = true;' .
 		}
 	}
 	function openToEdit(tab,id,contentType){
-		if(top.opener && top.opener.top.weEditorFrameController) {
-			top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		} else if(top.opener.top.opener && top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		} else if(top.opener.top.opener.top.opener && top.opener.top.opener.top.opener.top.weEditorFrameController) {
-			top.opener.top.opener.top.opener.top.weEditorFrameController.openDocument(tab,id,contentType);
-		}
+		WE().layout.weEditorFrameController.openDocument(tab,id,contentType);
 	}
 	var weCountWriteBC = 0;
 	function weWriteBreadCrumb(BreadCrumb){

@@ -136,7 +136,7 @@ if($we_doc->IsTextContentDoc && $haspermNew && //	$_js_permnew
 echo STYLESHEET .
  we_html_element::jsElement('
 	var we_transaction="' . $we_transaction . '";
-	var _EditorFrame = top.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
 	var g_l={
 		"in_wf_warning":"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[' . stripTblPrefix($we_doc->Table) . '][in_wf_warning]') : '') . '",
 	};

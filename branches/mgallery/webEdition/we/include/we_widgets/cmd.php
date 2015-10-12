@@ -63,12 +63,12 @@ function gel(id_){
 	return document.getElementById?document.getElementById(id_):null;
 }
 function transmit(){
-	if(top.weEditorFrameController.getActiveDocumentReference() && top.weEditorFrameController.getActiveDocumentReference().quickstart){
-		top.weEditorFrameController.getActiveDocumentReference().pushContent('" . $aProps[0] . "','m_" . $iCurrId . "',gel('content').innerHTML,gel('prefix').innerHTML,gel('postfix').innerHTML,gel('csv').innerHTML);
+	if(WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart){
+		WE().layout.weEditorFrameController.getActiveDocumentReference().pushContent('" . $aProps[0] . "','m_" . $iCurrId . "',gel('content').innerHTML,gel('prefix').innerHTML,gel('postfix').innerHTML,gel('csv').innerHTML);
 	}
 }
 
-var widgetFrame = top.weEditorFrameController.getActiveDocumentReference();
+var widgetFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 ";
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}') .
 			we_html_element::jsElement($js), we_html_element::htmlBody(

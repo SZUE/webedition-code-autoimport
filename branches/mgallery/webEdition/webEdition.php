@@ -154,11 +154,6 @@ var dd = {
 var modules = {
 	MESSAGING_SYSTEM:<?php echo intval(defined('MESSAGING_SYSTEM')); ?>
 };
-var constants = {
-	WE_EDITPAGE_CONTENT:<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
-	PING_TIME:<?php echo we_base_constants::PING_TIME * 1000; ?>
-};
-
 
 /*##################### messaging function #####################*/
 
@@ -226,6 +221,8 @@ var WebEdition={
 					save_error_fields_value_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>",
 					name_nok:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')); ?>",
 					prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
+					copy_folder_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')); ?>",
+					folder_copy_success: "<?php echo we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')); ?>",
 				},
 				message_reporting:{
 					notice:"<?php echo g_l('alert', '[notice]');?>",
@@ -243,7 +240,10 @@ var WebEdition={
 				}
 				?>
 			},
-			global:constants,
+			global:{
+				WE_EDITPAGE_CONTENT:<?php echo we_base_constants::WE_EDITPAGE_CONTENT; ?>,
+				PING_TIME:<?php echo we_base_constants::PING_TIME * 1000; ?>
+			},
 			message:{
 				WE_MESSAGE_INFO: <?php echo we_message_reporting::WE_MESSAGE_INFO; ?>,
 				WE_MESSAGE_FRONTEND: <?php echo we_message_reporting::WE_MESSAGE_FRONTEND; ?>,
@@ -372,11 +372,11 @@ foreach($jsCmd as $cur){
 	 }*/
 
 	//	When coming from a we_cmd, always mark the document as opened with we !!!!
-	if (top.weEditorFrameController && top.weEditorFrameController.getActiveDocumentReference) {
+	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
 	try {
 	var _string = ',edit_document,new_document,open_extern_document,edit_document_with_parameters,new_folder,edit_folder';
 					if (_string.indexOf("," + arguments[0] + ",") === - 1) {
-		top.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+		WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
 	}
 	} catch (exp) {
 
@@ -422,15 +422,15 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 }';
 }
 ?>
-		if ((nextWindow = top.weEditorFrameController.getFreeWindow())) {
+		if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
 			_nextContent = nextWindow.getDocumentReference();
 			we_repl(_nextContent, url, arguments[0]);
 			// activate tab
 			var pos=(arguments[0]==="open_cockpit"?0:undefined);
 			top.weMultiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ',pos);
 			// set Window Active and show it
-			top.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
-			top.weEditorFrameController.toggleFrames();
+			WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
+			WE().layout.weEditorFrameController.toggleFrames();
 		} else {
 			WE().util.showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_INFO, window);
 		}

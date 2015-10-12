@@ -80,14 +80,14 @@ function doClick(id) {
 	setScrollY();
 
 	switch (table) {
-		case top.WE().consts.tables.FILE_TABLE:
+		case WE().consts.tables.FILE_TABLE:
 			if (frames.top.wasdblclick && ct !== "folder") {
 				top.openBrowser(id);
 				setTimeout("wasdblclick=false;", 400);
 				break;
 			}
 		default:
-			top.weEditorFrameController.openDocument(table, id, ct);
+			WE().layout.weEditorFrameController.openDocument(table, id, ct);
 			break;
 	}
 }

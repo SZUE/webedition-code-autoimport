@@ -99,7 +99,7 @@ if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed'
 		} else if(preg_match('|^(.+_input)\[.+\]$|i', $fields['name'])){
 			$reqName = preg_replace('/^(.+_input)\[.+\]$/', '$1', $fields['name']);
 		}
-		$openerDocument = 'top.opener.top.weEditorFrameController.getVisibleEditorFrame().document';
+		$openerDocument = 'WE().layout.weEditorFrameController.getVisibleEditorFrame().document';
 	} else {
 		$reqName = str_replace('[' . $fieldName . ']', '', $fields['name']);
 		$openerDocument = 'top.opener.document';
@@ -126,7 +126,7 @@ try{
 	' . $openerDocument . '.getElementById("div_wysiwyg_' . $fields['name'] . '").innerHTML=\'' . $divValue . '\';
 } catch(err){}
 try{
-	top.opener.top.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
+	WE().layout.weEditorFrameController.getVisibleEditorFrame().seeMode_dealWithLinks();
 } catch(err){}
 
 top.close();');

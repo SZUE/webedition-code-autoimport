@@ -31,7 +31,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_properties.php?";
+	var url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_properties.php?";
 
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
@@ -54,7 +54,7 @@ function we_cmd() {
 			wind = new (WE().util.jsWindow)(top.window, url + "&bid=" + bid, "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
 			break;
 		case "customer_edit":
-			top.document.location = top.WE().consts.dirs.WE_MODULES_DIR + 'show_frameset.php?mod=customer&sid=' + cid;
+			top.document.location = WE().consts.dirs.WE_MODULES_DIR + 'show_frameset.php?mod=customer&sid=' + cid;
 			break;
 		case "add_new_article":
 			wind = new (WE().util.jsWindow)(top.window, url + "&bid=" + bid, "add_new_article", -1, -1, 650, 600, true, false, true, false);
@@ -67,6 +67,6 @@ function neuerartikel() {
 }
 
 function deleteorder() {
-	top.content.editor.location = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=" + bid;
+	top.content.editor.location = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=" + bid;
 	top.content.deleteEntry(bid);
 }

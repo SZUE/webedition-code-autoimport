@@ -34,22 +34,22 @@ var ajaxCallback = {
 			if (result && result.Success) {
 				var num_users = result.DataArray.num_users;
 				weRpcFailedCnt = 0;
-				if (top.weEditorFrameController) {
-					var _ref = top.weEditorFrameController.getActiveDocumentReference();
-					if (_ref) {
-						if (_ref.setUsersOnline && _ref.setUsersListOnline) {
-							_ref.setUsersOnline(num_users);
-							var usersHTML = result.DataArray.users;
-							if (usersHTML) {
-								_ref.setUsersListOnline(usersHTML);
-							}
-						}
-						mfdData = result.DataArray.mfd_data;
-						if (_ref.setMfdData && mfdData !== undefined) {
-							_ref.setMfdData(mfdData);
+
+				var _ref = WE().layout.weEditorFrameController.getActiveDocumentReference();
+				if (_ref) {
+					if (_ref.setUsersOnline && _ref.setUsersListOnline) {
+						_ref.setUsersOnline(num_users);
+						var usersHTML = result.DataArray.users;
+						if (usersHTML) {
+							_ref.setUsersListOnline(usersHTML);
 						}
 					}
+					mfdData = result.DataArray.mfd_data;
+					if (_ref.setMfdData && mfdData !== undefined) {
+						_ref.setMfdData(mfdData);
+					}
 				}
+
 				if (modules.MESSAGING_SYSTEM) {
 					if (top.header_msg_update) {
 						var newmsg_count = result.DataArray.newmsg_count;
@@ -70,6 +70,6 @@ var ajaxCallback = {
 	}
 };
 
-window.setInterval(function(){
+window.setInterval(function () {
 	YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php", ajaxCallback, 'protocol=json&cmd=Ping');
-}, constants.PING_TIME);
+}, WE().consts.global.PING_TIME);

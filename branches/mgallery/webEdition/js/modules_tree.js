@@ -24,14 +24,14 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-var oldTreeWidth = top.WE().consts.size.tree.default;
+var oldTreeWidth = WE().consts.size.tree.default;
 
 function toggleTree() {
 	var tfd = self.document.getElementById("left");
 	var w = getTreeWidth();
 
 	if (tfd.style.display == "none") {
-		oldTreeWidth = (oldTreeWidth < top.WE().consts.size.tree.min ? top.WE().consts.size.tree.default : oldTreeWidth);
+		oldTreeWidth = (oldTreeWidth < WE().consts.size.tree.min ? WE().consts.size.tree.default : oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display = "block";
 		setTreeArrow("left");
@@ -39,7 +39,7 @@ function toggleTree() {
 	} else {
 		tfd.style.display = "none";
 		oldTreeWidth = w;
-		setTreeWidth(top.WE().consts.size.tree.hidden);
+		setTreeWidth(WE().consts.size.tree.hidden);
 		setTreeArrow("right");
 	}
 }
@@ -70,7 +70,7 @@ function getTreeWidth() {
 function setTreeWidth(w) {
 	self.document.getElementById("lframeDiv").style.width = w + "px";
 	self.document.getElementById("right").style.left = w + "px";
-	if (w > top.WE().consts.size.tree.hidden) {
+	if (w > WE().consts.size.tree.hidden) {
 		storeTreeWidth(w);
 	}
 }
@@ -84,24 +84,24 @@ function storeTreeWidth(w) {
 
 function incTree() {
 	var w = parseInt(getTreeWidth());
-	if ((w > top.WE().consts.size.tree.min) && (w < top.WE().consts.size.tree.max)) {
-		w += top.WE().consts.size.tree.step;
+	if ((w > WE().consts.size.tree.min) && (w < WE().consts.size.tree.max)) {
+		w += WE().consts.size.tree.step;
 		setTreeWidth(w);
 	}
-	if (w >= top.WE().consts.size.tree.max) {
-		w = top.WE().consts.size.tree.max;
+	if (w >= WE().consts.size.tree.max) {
+		w = WE().consts.size.tree.max;
 		self.document.getElementById("incBaum").style.backgroundColor = "grey";
 	}
 }
 
 function decTree() {
 	var w = parseInt(getTreeWidth());
-	w -= top.WE().consts.size.tree.step;
-	if (w > top.WE().consts.size.tree.min) {
+	w -= WE().consts.size.tree.step;
+	if (w > WE().consts.size.tree.min) {
 		setTreeWidth(w);
 		self.document.getElementById("incBaum").style.backgroundColor = "";
 	}
-	if (w <= top.WE().consts.size.tree.min && ((w + top.WE().consts.size.tree.step) >= top.WE().consts.size.tree.min)) {
+	if (w <= WE().consts.size.tree.min && ((w + WE().consts.size.tree.step) >= WE().consts.size.tree.min)) {
 		toggleTree();
 	}
 }

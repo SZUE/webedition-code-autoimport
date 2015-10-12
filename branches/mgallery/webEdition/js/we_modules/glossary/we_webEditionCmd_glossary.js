@@ -25,17 +25,17 @@ function we_cmd_glossary(args, url) {
 	switch (args[0]) {
 		case "glossary_check":
 
-			var _EditorFrame = top.weEditorFrameController.getActiveEditorFrame();
+			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			if (_EditorFrame !== false &&
 							_EditorFrame.getEditorType() == "model" &&
 							(
-											_EditorFrame.getEditorContentType() == top.WE().consts.contentTypes.WEDOCUMENT ||
-											_EditorFrame.getEditorContentType() == top.WE().consts.contentTypes.OBJECT_FILE
+											_EditorFrame.getEditorContentType() == WE().consts.contentTypes.WEDOCUMENT ||
+											_EditorFrame.getEditorContentType() == WE().consts.contentTypes.OBJECT_FILE
 											)
 							) {
 
 				var transaction = _EditorFrame.getEditorTransaction();
-				url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
 				new (WE().util.jsWindow)(top.window, url, "glossary_check", -1, -1, 730, 400, true, false, true);
 
 			} else {

@@ -302,7 +302,7 @@ weCollectionEdit = {
 	doClickOpenToEdit: function (id) {
 		var table = this.we_doc.remTable === 'tblFile' ? WE().consts.tables.FILE_TABLE : WE().consts.tables.OBJECT_FILES_TABLE,
 						ct = this.storage['item_' + id].ct;
-		top.weEditorFrameController.openDocument(table, id, ct);
+		WE().layout.weEditorFrameController.openDocument(table, id, ct);
 	},
 	getPlaceholder: function () {
 		if (this.dd.placeholder !== null) {
@@ -550,7 +550,7 @@ weCollectionEdit = {
 		}
 		document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value = this.collectionCsv;
 		if (!notSetHot) {
-			top.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 		}
 	},
 	hideSpace: function (elem) { // TODO: use classes do define states!
@@ -898,7 +898,7 @@ weCollectionEdit = {
 						}
 					}
 				};
-				xhr.open('POST', top.WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?protocol=json&cmd=GetItemsFromDB&cns=collection', true);
+				xhr.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc/rpc.php?protocol=json&cmd=GetItemsFromDB&cns=collection', true);
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				xhr.send(postData);
 				// set max waiting time

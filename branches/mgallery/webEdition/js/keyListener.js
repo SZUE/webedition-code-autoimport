@@ -171,53 +171,53 @@ function keyEditorListener(_successor) {
 		_editorType = "";
 
 		// check if an editor is open
-		if (this.win.top !== undefined && this.win.top.weEditorFrameController !== undefined) {
-			_activeEditorFrame = this.win.top.weEditorFrameController.getActiveEditorFrame();
-			if (this.win.top.weEditorFrameController.getActiveDocumentReference()) {
-				_editorType = _activeEditorFrame.getEditorType();
-				if (_editorType === "model") {
-					_editor = true;
-				}
-			}
 
-			if (_editor) {
-				switch (evt.keyCode) {
-					case 83: //S
-						if (evt.shiftKey) { // SHIFT + S (Publish)
-							self.focus(); // focus, to avoid a too late onchange of editor
-							this.cancelEvent(evt);
-							_activeEditorFrame.setEditorPublishWhenSave(true);
-							if (_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document !== undefined) {
-								_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document();
-							}
-						} else {// S (Save)
-							self.focus();  // focus, to avoid a too late onchange of editor
-							this.cancelEvent(evt);
-							_activeEditorFrame.setEditorPublishWhenSave(false);
-							if (_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document !== undefined) {
-								_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document();
-							}
-						}
-						return true;
-
-					case 90://Strg-z
-//					console.log("strg-z canceled");
-						return true;
-					case 87://W
-					case 115: //F4 (closing a tab)
-						self.focus();  // focus, to avoid a too late onchange of editor
-						this.cancelEvent(evt);
-						this.win.top.weEditorFrameController.closeDocument(_activeEditorFrame.getFrameId());
-						return true;
-				}
+		_activeEditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+		if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
+			_editorType = _activeEditorFrame.getEditorType();
+			if (_editorType === "model") {
+				_editor = true;
 			}
 		}
+
+		if (_editor) {
+			switch (evt.keyCode) {
+				case 83: //S
+					if (evt.shiftKey) { // SHIFT + S (Publish)
+						self.focus(); // focus, to avoid a too late onchange of editor
+						this.cancelEvent(evt);
+						_activeEditorFrame.setEditorPublishWhenSave(true);
+						if (_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document !== undefined) {
+							_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document();
+						}
+					} else {// S (Save)
+						self.focus();  // focus, to avoid a too late onchange of editor
+						this.cancelEvent(evt);
+						_activeEditorFrame.setEditorPublishWhenSave(false);
+						if (_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document !== undefined) {
+							_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document();
+						}
+					}
+					return true;
+
+				case 90://Strg-z
+//					console.log("strg-z canceled");
+					return true;
+				case 87://W
+				case 115: //F4 (closing a tab)
+					self.focus();  // focus, to avoid a too late onchange of editor
+					this.cancelEvent(evt);
+					WE().layout.weEditorFrameController.closeDocument(_activeEditorFrame.getFrameId());
+					return true;
+			}
+		}
+
 		switch (evt.keyCode) {
 			case 87://W
 			case 115: //F4 (closing a tab)
 				if (_editorType === "cockpit") {
 					self.focus();  // focus, to avoid a too late onchange of editor
-					this.win.top.weEditorFrameController.closeDocument(_activeEditorFrame.getFrameId());
+					WE().layout.weEditorFrameController.closeDocument(_activeEditorFrame.getFrameId());
 				}
 				this.cancelEvent(evt);
 				return true;
@@ -314,16 +314,14 @@ function keyTagWizardListener(_successor) {
 
 		if (evt.keyCode === 73) { // I (Open Tag-Wizard Prompt)
 
-			if (this.win.top.weEditorFrameController !== undefined) {
-				_activeEditorFrame = this.win.top.weEditorFrameController.getActiveEditorFrame();
+			_activeEditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
-				if (_activeEditorFrame.getEditorContentType() === "text/weTmpl" &&
-								_activeEditorFrame.getEditorFrameWindow().frames.editFooter.tagGroups.alltags !== undefined) {
+			if (_activeEditorFrame.getEditorContentType() === "text/weTmpl" &&
+							_activeEditorFrame.getEditorFrameWindow().frames.editFooter.tagGroups.alltags !== undefined) {
 
-					_activeEditorFrame.getEditorFrameWindow().frames.editFooter.openTagWizardPrompt();
-					this.cancelEvent(evt);
-					return true;
-				}
+				_activeEditorFrame.getEditorFrameWindow().frames.editFooter.openTagWizardPrompt();
+				this.cancelEvent(evt);
+				return true;
 			}
 		}
 		return this.next(evt);
@@ -344,23 +342,22 @@ function keyReloadListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 	this.dealEvent = function (evt) {
 
-		if (this.win.top.weEditorFrameController !== undefined) {
-			switch (evt.keyCode) {
-				case 82:// R Reload
-					this.cancelEvent(evt);
-					return true;
-				case 90://Z Back
-					this.cancelEvent(evt);
-					return true;
-				case 116:
-					this.cancelEvent(evt);
-					return true;
-			}
+		switch (evt.keyCode) {
+			case 82:// R Reload
+				this.cancelEvent(evt);
+				return true;
+			case 90://Z Back
+				this.cancelEvent(evt);
+				return true;
+			case 116:
+				this.cancelEvent(evt);
+				return true;
 		}
-		return this.next(evt);
+	}
+	return this.next(evt);
 
-	};
 }
+
 keyReloadListener.prototype = new keyBoardListener();
 
 

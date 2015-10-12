@@ -37,8 +37,8 @@ function we_save() {
 	// update setting for message_reporting
 	WE().session.messageSettings = document.getElementById('content').contentDocument.getElementById("message_reporting").value;
 
-	if(top.opener.top.weEditorFrameController.getActiveDocumentReference().quickstart){
-		var oCockpit=top.opener.top.weEditorFrameController.getActiveDocumentReference();
+	if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart){
+		var oCockpit=WE().layout.weEditorFrameController.getActiveDocumentReference();
 		var _fo=document.getElementById('content').contentDocument.forms[0];
 		var oSctCols=_fo.elements['newconf[cockpit_amount_columns]'];
 		var iCols=oSctCols.options[oSctCols.selectedIndex].value;

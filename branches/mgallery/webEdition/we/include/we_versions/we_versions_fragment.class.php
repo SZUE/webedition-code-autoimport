@@ -61,7 +61,7 @@ class we_versions_fragment extends we_fragment_base{
 
 			// reload current document => reload all open Editors on demand
 
-			var _usedEditors =  top.opener.weEditorFrameController.getEditorsInUse();
+			var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 			for (frameId in _usedEditors) {
 
 				if ( _usedEditors[frameId].getEditorIsActive() ) { // reload active editor

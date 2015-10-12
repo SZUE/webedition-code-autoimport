@@ -23,7 +23,7 @@
  */
 
 function we_cmd() {
-	var url = top.WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
@@ -38,8 +38,8 @@ function we_cmd() {
 			we_cmd("reload_editpage");
 			break;
 		case "reload_editpage":
-			if (top.opener.top.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd) {
-				top.opener.top.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd("reload_editpage");
+			if (WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd) {
+				WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd("reload_editpage");
 			}
 			window.focus();
 			break;

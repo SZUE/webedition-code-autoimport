@@ -45,37 +45,37 @@ function we_cmd_shop(args, url) {
 			break;
 		case "pref_shop":
 			shopCloseWindow(args);
-			url = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php";
+			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php";
 			new (WE().util.jsWindow)(top.window, url, "shoppref", -1, -1, 470, 600, true, true, true, false);
 			break;
 		case "edit_shop_status":
 			shopCloseWindow(args);
-			url = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_status.php";
+			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_status.php";
 			new (WE().util.jsWindow)(top.window, url, "edit_shop_status", -1, -1, 700, 580, true, true, true, false);
 			break;
 		case "edit_shop_vat_country":
 			shopCloseWindow(args);
-			url = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_vat_country.php";
+			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_vat_country.php";
 			new (WE().util.jsWindow)(top.window, url, "edit_shop_vat_country", -1, -1, 700, 780, true, true, true, false);
 			break;
 		case "edit_shop_categories":
 			shopCloseWindow(args);
-			url = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_categories.php";
+			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_categories.php";
 			new (WE().util.jsWindow)(top.window, url, "edit_shop_categories", -1, -1, 740, 650, true, false, true, false);
 			break;
 		case "edit_shop_vats":
 			shopCloseWindow(args);
-			url = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_vats.php";
+			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_vats.php";
 			new (WE().util.jsWindow)(top.window, url, "edit_shop_vats", -1, -1, 650, 650, true, false, true, false);
 			break;
 		case "edit_shop_shipping":
 			shopCloseWindow(args);
-			url = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_shipping.php";
+			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_shipping.php";
 			new (WE().util.jsWindow)(top.window, url, "edit_shop_shipping", -1, -1, 700, 600, true, false, true, false);
 			break;
 		case "payment_val":
 			shopCloseWindow(args);
-			url = top.WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_payment.php";
+			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_payment.php";
 			new (WE().util.jsWindow)(top.window, url, "edit_shop_payment", -1, -1, 520, 720, true, false, true, false);
 			break;
 		case 'yearCmd'://pseudocommand
@@ -96,7 +96,7 @@ function we_cmd_shop(args, url) {
 		case "shop_move_variant_down":
 		case "shop_remove_variant":
 			url += "#f" + (parseInt(args[1]) - 1);
-			we_sbmtFrm(top.weEditorFrameController.getActiveDocumentReference().frames[1], url);
+			we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
 			break;
 		case 'shop_preview_variant':
 			url += "#f" + (parseInt(args[1]) - 1);

@@ -50,7 +50,7 @@ WE().layout.sidebar = {
 		if (arguments[1] !== undefined) {
 			width = parseInt(arguments[1]);
 		} else {
-			width = top.WE().consts.size.sidebar.defaultWidth;
+			width = WE().consts.size.sidebar.defaultWidth;
 		}
 		if (isNaN(width) || width < 100) {
 			width = 100;
@@ -79,18 +79,18 @@ WE().layout.sidebar = {
 		top.we_cmd("open_url_in_editor", url);
 	},
 	openDocument: function (obj) {
-		obj.table = top.WE().consts.tables.FILE_TABLE;
-		obj.ct = (obj.ct === undefined ? top.WE().consts.contentTypes.WEDOCUMENT : obj.ct);
+		obj.table = WE().consts.tables.FILE_TABLE;
+		obj.ct = (obj.ct === undefined ? WE().consts.contentTypes.WEDOCUMENT : obj.ct);
 		this._open(obj);
 	},
 	openDocumentById: function () {
 		obj.id = (arguments[0] === undefined ? 0 : arguments[0]);
-		obj.ct = (arguments[1] === undefined ? top.WE().consts.contentTypes.WEDOCUMENT : arguments[1]);
+		obj.ct = (arguments[1] === undefined ? WE().consts.contentTypes.WEDOCUMENT : arguments[1]);
 		this._open(obj);
 	},
 	openTemplate: function (obj) {
-		obj.table = top.WE().consts.tables.TEMPLATES_TABLE;
-		obj.ct = top.WE().consts.contentTypes.TEMPLATE;
+		obj.table = WE().consts.tables.TEMPLATES_TABLE;
+		obj.ct = WE().consts.contentTypes.TEMPLATE;
 		this._open(obj);
 	},
 	openTemplateById: function () {
@@ -98,8 +98,8 @@ WE().layout.sidebar = {
 		this._open(obj);
 	},
 	openObject: function (obj) {
-		if (top.WE().consts.tables.OBJECT_FILES_TABLE) {
-			obj.table = top.WE().consts.tables.OBJECT_FILES_TABLE;
+		if (WE().consts.tables.OBJECT_FILES_TABLE) {
+			obj.table = WE().consts.tables.OBJECT_FILES_TABLE;
 			obj.ct = "objectFile";
 			this._open(obj);
 		}
@@ -109,8 +109,8 @@ WE().layout.sidebar = {
 		this._open(obj);
 	},
 	openClass: function (obj) {
-		if (top.WE().consts.tables.OBJECT_TABLE) {
-			obj.table = top.WE().consts.tables.OBJECT_TABLE;
+		if (WE().consts.tables.OBJECT_TABLE) {
+			obj.table = WE().consts.tables.OBJECT_TABLE;
 			obj.ct = "object";
 			this._open(obj);
 		}
@@ -155,6 +155,6 @@ WE().layout.sidebar = {
 		code = (obj.code === undefined ? "" : obj.code);
 		mode = (obj.mode === undefined ? "" : obj.mode);
 		parameters = (obj.parameters === undefined ? "" : obj.parameters);
-		top.weEditorFrameController.openDocument(table, id, ct, editcmd, dt, url, code, mode, parameters);
+		WE().layout.weEditorFrameController.openDocument(table, id, ct, editcmd, dt, url, code, mode, parameters);
 	}
 };

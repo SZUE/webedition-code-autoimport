@@ -23,7 +23,7 @@
  */
 
 function setHotDocuments() {
-	var allHotDocuments = top.opener.top.weEditorFrameController.getEditorsInUse();
+	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
 	var liStr = "";
 	var _hotDocumentsOfCt = {};
 	for (var frameId in allHotDocuments) {
@@ -58,7 +58,7 @@ function setHotDocuments() {
 }
 
 function yes_cmd_pressed() {
-	var allHotDocuments = top.opener.top.weEditorFrameController.getEditorsInUse();
+	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
 	for (var frameId in allHotDocuments) {
 		if (allHotDocuments[frameId].getEditorIsHot()) {
 			allHotDocuments[frameId].setEditorIsHot(false);

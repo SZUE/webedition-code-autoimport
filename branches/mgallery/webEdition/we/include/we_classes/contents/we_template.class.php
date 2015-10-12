@@ -79,7 +79,7 @@ class we_template extends we_document{
 		}
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
 		return we_html_element::jsElement('
-var _currentEditorRootFrame = top.weEditorFrameController.getActiveDocumentReference();
+var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 _currentEditorRootFrame.frames[2].reloadContent = true;');
 	}
 
@@ -549,7 +549,7 @@ we_templateInit();?>';
 			$elemAttribs[$id] = $data[1];
 		}
 
-		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, array('style' => 'margin-right: 20px;'), 'value', 0, $elemAttribs), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:top.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');").
+		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, array('style' => 'margin-right: 20px;'), 'value', 0, $elemAttribs), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');").
 			we_html_button::create_button(we_html_button::VIEW,"javascript:top.openBrowser(document.we_form.elements['TemplateDocuments'].value);")
 			));
 	}

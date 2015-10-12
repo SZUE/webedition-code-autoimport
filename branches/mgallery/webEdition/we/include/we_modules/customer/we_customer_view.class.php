@@ -86,7 +86,7 @@ var perms={
 		return parent::getJSProperty() .
 				we_html_element::jsElement('
 var loaded=0;
-top.WE().consts.dirs.WE_CUSTOMER_MODULE_DIR="' . WE_CUSTOMER_MODULE_DIR . '";
+WE().consts.dirs.WE_CUSTOMER_MODULE_DIR="' . WE_CUSTOMER_MODULE_DIR . '";
 
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){
