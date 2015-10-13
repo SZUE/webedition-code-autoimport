@@ -39,8 +39,6 @@ class we_import_files{
 	var $degrees = 0;
 	var $categories = '';
 	public $callBack = '';
-	private $jsRequirementsOk = false; //obsolete: we use browserdetection now
-	private $isWeFileupload = false;
 	private $maxUploadSizeMB = 8;
 	private $maxUploadSizeB = 0;
 	private $fileNameTemp = '';
@@ -80,13 +78,11 @@ class we_import_files{
 		$this->keepRatio = we_base_request::_(we_base_request::BOOL, "keepRatio", $this->keepRatio);
 		$this->quality = we_base_request::_(we_base_request::INT, "quality", $this->quality);
 		$this->degrees = we_base_request::_(we_base_request::INT, "degrees", $this->degrees);
-		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
 		$this->fileNameTemp = we_base_request::_(we_base_request::FILE, "weFileNameTemp", '');
 		$this->maxUploadSizeMB = defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 8; //FIMXE: 8???
 		$this->maxUploadSizeB = $this->maxUploadSizeMB * 1048576;
-		$this->isWeFileupload = !we_fileupload::isFallback() && !we_fileupload::isLegacyMode();
 	}
 
 	function getHTML(){
@@ -103,14 +99,7 @@ class we_import_files{
 	function _getJS($fileinput){
 		return we_html_element::jsElement(
 				'var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
-			') . we_html_element::jsElement(!$this->isWeFileupload ? '
-
-function uploadFinished() {
-	refreshTree();
-	' . we_message_reporting::getShowMessageCall(
-						g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-}
-' : '') .
+			') .
 			we_html_element::jsScript(JS_DIR . 'import_files.js');
 	}
 
@@ -157,7 +146,7 @@ function uploadFinished() {
 			array(
 				'headline' => g_l('importFiles', '[destination_dir]'),
 				'html' =>
-				we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('callBack', $this->callBack) . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . we_html_tools::hidden('jsRequirementsOk', 0) . // fix for categories require reload!
+				we_html_tools::hidden('we_cmd[0]', 'import_files') . we_html_tools::hidden('callBack', $this->callBack) . we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', '2') . // fix for categories require reload!
 				we_html_element::htmlHidden('categories', '') .
 				$yuiSuggest->getHTML(),
 				'space' => 150
@@ -295,10 +284,6 @@ function uploadFinished() {
 	function getStep2(){
 		$this->savePropsInSession();
 
-		if(!$this->isWeFileupload){
-			return $this->getStep2Legacy();
-		}
-
 		$uploader = new we_fileupload_ui_importer('we_File');
 		$uploader->setCallback($this->callBack);
 		$body = $uploader->getHTML($this->_getHiddens(true));
@@ -306,72 +291,7 @@ function uploadFinished() {
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . $uploader->getCss() . $uploader->getJs() . we_html_multiIconBox::getDynJS("uploadFiles", 30), $body);
 	}
 
-	function getStep2Legacy(){
-		// create Second Screen ##############################################################################
-		$but = we_html_button::create_button(we_html_button::TRASH, "wedelRow(WEFORMNUM + 1,this)");
-		$but = str_replace(array("\n", "\r"), " ", $but);
-		$maxsize = we_base_file::getHumanFileSize(getUploadMaxFilesize(false, $GLOBALS['DB_WE']), we_base_file::SZ_MB);
-
-		$content = we_html_tools::hidden('we_cmd[0]', 'import_files') .
-			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
-			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', '[import_expl]'), $maxsize), we_html_tools::TYPE_INFO, 520, false)) .
-			(we_fileupload::isFallback() && !we_fileupload::isLegacyMode() ? we_html_element::htmlDiv(array('id' => 'desc', 'style' => 'margin-top: 4px;'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, 520, false)) : '') .
-			we_html_element::htmlDiv(array('id' => 'descJupload', 'style' => 'display:none;'), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('importFiles', '[import_expl_jupload]'), $maxsize), we_html_tools::TYPE_INFO, 520, false));
-
-
-		$parts = array(
-			array("headline" => "", "html" => $content, "space" => 0)
-		);
-
-		$fileinput = we_html_element::htmlInput(
-				array(
-					'name' => "we_File",
-					'type' => "file",
-					'size' => 40,
-					'onclick' => "checkFileinput();",
-					'onchange' => "checkFileinput();"
-			)) . $but;
-
-		$fileinput = '<table><tr><td style="vertical-align:top" class="weMultiIconBoxHeadline">' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td><td style="padding-left:35px;">' . $fileinput . '</td></tr></table>';
-
-		$form_content = str_replace("WEFORMNUM", 0, $this->_getHiddens("buttons", $this->step) . str_replace("WE_FORM_NUM", 1, $fileinput));
-		$formhtml = we_html_element::htmlForm(
-				array(
-				"action" => WEBEDITION_DIR . "we_cmd.php",
-				"name" => "we_upload_form_0",
-				"method" => "post",
-				"enctype" => "multipart/form-data",
-				"target" => "imgimportbuttons"
-				), $form_content);
-
-		$parts[] = array(
-			"headline" => '', "html" => $formhtml, "space" => 0
-		);
-
-		$content = we_html_element::htmlDiv(
-				array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(
-					array(
-					"action" => WEBEDITION_DIR . "we_cmd.php",
-					"name" => "we_startform",
-					"method" => "post"
-					), $this->_getHiddens()) .
-				we_html_multiIconBox::getHTML("uploadFiles", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'))
-		);
-
-		$body = we_html_element::htmlBody(
-				array(
-				"class" => "weDialogBody",
-				//"onMouseMove" => "checkButtons();",
-				"onload" => "checkButtons();"
-				), $content);
-
-		$js = $this->_getJS($fileinput) . we_html_multiIconBox::getDynJS("uploadFiles", 30);
-
-		return $this->_getHtmlPage($body, $js);
-	}
-
 	function getStep3(){
-
 		// create Second Screen ##############################################################################
 		$parts = array();
 
@@ -406,74 +326,16 @@ function uploadFinished() {
 	}
 
 	function _getButtons(){
-		$formnum = we_base_request::_(we_base_request::INT, "weFormNum", 0);
-		$formcount = we_base_request::_(we_base_request::INT, "weFormCount", 0);
-
 		$bodyAttribs = array("class" => "weDialogButtonsBody", 'style' => 'overflow:hidden;');
-		if($this->step == 1){ // used only by legacy upload => we_fileupload uses rpc interface
-			$bodyAttribs["onload"] = "next();";
-			$resp = $this->importFile();
-			$error = $resp['error'];
-			if($error){
-				if(!isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
-					$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = array();
-				}
-				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'][] = $error;
-			} else if($resp['success']){
-				$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']) ? $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] : array();
-				$_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']) ? $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] : array();
-
-				$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'][] = $resp['success'];
-				$_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'][] = $resp['importedFile'];
-			}
-		}
-
-		if($formcount && $this->isWeFileupload){ // FIXME: throw away => not used anymore by we_fileupload
-			$response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '');
-			if($this->partNum == $this->partCount){
-				//actual file completed
-				$response['status'] = $error ? 'failure' : 'success';
-				$response['message'] = $error ? $error['error']  : ''; //text in $error is already translated: "Requested lang entry l_importFiles[Fehler beim speichern]"
-				//all files done
-				if($formnum === $formcount){
-					if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']) && $formnum != 0){
-						$filelist = '';
-						foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
-							$filelist .= '- ' . $err["filename"] . ' => ' . $err["error"] . '\n';
-						}
-						unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
-						$response['completed'] = we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', '[error]'), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
-					} else {
-						$response['completed'] = we_message_reporting::getShowMessageCall(g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
-					}
-					$response['success'] = $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'];
-					$response['imported_files'] = $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'];
-					unset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']);
-					unset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']);
-				}
-			} else {
-				$response['fileNameTemp'] = $this->fileNameTemp;
-				//TODO: if we have a message here, we can stop uloading chunks of this file!
-				$response['status'] = empty($error) ? 'continue' : 'failure';
-				$response['message'] = empty($error) ? '' : g_l('importFiles', '[' . $error['error'] . ']');
-			}
-			echo json_encode($response);
-			exit();
-		}
-
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancel()", true, 0, 0, '', '', false, false);
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:cancel()");
-		$progressbar = '';
 
 		$js = we_html_element::jsElement('
-var weFormNum = ' . $formnum . ';
-var weFormCount = ' . $formcount . ';
-
 function back() {
 	if(top.imgimportcontent.document.we_startform.step.value=="2") {
 		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import&we_cmd[1]=' . we_import_functions::TYPE_LOCAL_FILES . '";
 	} else {
-		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import_files&jsRequirementsOk=' . ($this->jsRequirementsOk ? 1 : 0) . '";
+		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import_files";
 	}
 }
 
@@ -494,6 +356,7 @@ function weCheckAC(j){
 	}
 }
 
+// TODO: let we_fileupload deliver fn
 function cancel() {
 	var cf = top.imgimportcontent;
 	if(cf.weFileUpload !== undefined){
@@ -502,34 +365,30 @@ function cancel() {
 		top.close();
 	}
 }
-		' . ((we_fileupload::isFallback() || we_fileupload::isLegacyMode()) ? $this->_getJsFnNextLegacy($formcount, $formcount) : "
+
 function next() {
 	var cf = top.imgimportcontent;
 
-	if (cf.document.getElementById('start') && cf.document.getElementById('start') && cf.document.getElementById('start').style.display != 'none') {
-		" . (permissionhandler::hasPerm('EDIT_KATEGORIE') ? "top.imgimportcontent.selectCategories();" : "") . "
-		cf.document.we_startform.jsRequirementsOk.value = " . ($this->jsRequirementsOk ? 1 : 0) . ";
+	if (cf.document.getElementById("start") && cf.document.getElementById("start") && cf.document.getElementById("start").style.display != "none") {
+		' . (permissionhandler::hasPerm('EDIT_KATEGORIE') ? 'top.imgimportcontent.selectCategories();' : '') . '
 		cf.document.we_startform.submit();
 	} else {
 		if(cf.we_FileUpload !== undefined){
 			cf.we_FileUpload.startUpload();
+		} else {
+			alert("what\'s wrong?");
 		}
 	}
 
-}"));
-
-		//$we_uploader = new we_fileupload_ui_importer('we_File');
-		//$js .= $we_uploader->getJs(true, false, true);
-
-
+}');
 		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 0, 0, "", "", false);
 		$prevButton2 = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 0, 0, "", "", false, false);
 		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:next();", true, 0, 0, "", "", $this->step > 0, false);
 
-		$prog = ($formcount === 0) ? 0 : (($this->step == 0) ? 0 : ((int) ((100 / $formcount) * ($formnum + 1))));
-		$pb = new we_progressBar($prog);
+		// TODO: let we_fileupload set pb
+		$pb = new we_progressBar();
 		$pb->setStudLen(200);
-		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), $formnum + 1), 0, "progress_title");
+		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), 1), 0, "progress_title");
 		$progressbar = '<div id="progressbar" style="margin:0 0 6px 12px;' . (($this->step == 0) ? 'display:none;' : '') . '">' . $pb->getHTML() . '</div>';
 		$js .= $pb->getJSCode();
 
@@ -539,11 +398,7 @@ function next() {
 		$table->setCol(0, 0, null, $progressbar);
 		$table->setCol(0, 1, array("styke" => "text-align:right"), we_html_element::htmlDiv(array(
 				'id' => 'normButton'
-				), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)) .
-			we_html_element::htmlDiv(
-				array(
-				'id' => 'juButton', 'style' => 'display:none;'
-				), we_html_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
+				), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)));
 
 		if($this->step == 3){
 			$table->setCol(0, 0, null, '');
@@ -558,275 +413,11 @@ function next() {
 		return $this->_getHtmlPage($body, $js);
 	}
 
-	function _getJsFnNextLegacy($formnum = 0, $formcount = 0){
-		$js = '
-function next() {
-	if(!weCheckAC(1)){
-		return false;
-	}
-	if (top.imgimportcontent.document.getElementById("start") && top.imgimportcontent.document.getElementById("start").style.display != "none") {
-		' . (permissionhandler::hasPerm('EDIT_KATEGORIE') ? 'top.imgimportcontent.selectCategories();' : '') . '
-		top.imgimportcontent.document.we_startform.submit();
-	} else {
-		if(weFormNum == weFormCount && weFormNum != 0){
-			document.getElementById("progressbar").style.display = "none";
-		';
-
-		if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']) && $formnum == $formcount && $formnum != 0){
-			$filelist = '';
-			foreach($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] as $err){
-				$filelist .= '- ' . $err["filename"] . ' => ' . $err["error"] . '\n';
-			}
-			unset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs']);
-			$js .= we_message_reporting::getShowMessageCall(sprintf(g_l('importFiles', '[error]'), $filelist), we_message_reporting::WE_MESSAGE_ERROR);
-		} else {
-			$js .= we_message_reporting::getShowMessageCall(g_l('importFiles', '[finished]'), we_message_reporting::WE_MESSAGE_NOTICE);
-		}
-
-		$js .= "
-			top.opener.top.we_cmd('load','" . FILE_TABLE . "');
-			top.close();
-			return;
-		}
-		forms = top.imgimportcontent.document.forms;
-		var z=0;
-		var sameName=top.imgimportcontent.document.we_startform.sameName.value;
-
-		for(var i=0; i<forms.length;i++){
-			if(forms[i].name.substring(0,14) == 'we_upload_form') {
-				if(z == weFormNum && forms[i].we_File.value != ''){
-					forms[i].importToID.value = top.imgimportcontent.document.we_startform.importToID.value;" . ((we_base_imageEdit::gd_version() > 0) ? ("
-					forms[i].thumbs.value = top.imgimportcontent.document.we_startform.thumbs.value;
-					forms[i].width.value = top.imgimportcontent.document.we_startform.width.value;
-					forms[i].height.value = top.imgimportcontent.document.we_startform.height.value;
-					forms[i].widthSelect.value = top.imgimportcontent.document.we_startform.widthSelect.value;
-					forms[i].heightSelect.value = top.imgimportcontent.document.we_startform.heightSelect.value;
-					forms[i].keepRatio.value = top.imgimportcontent.document.we_startform.keepRatio.checked ? 1 : 0;
-					forms[i].quality.value = top.imgimportcontent.document.we_startform.quality.value;
-					for(var n=0;n<top.imgimportcontent.document.we_startform.degrees.length;n++){
-						if(top.imgimportcontent.document.we_startform.degrees[n].checked){
-							forms[i].degrees.value = top.imgimportcontent.document.we_startform.degrees[n].value;
-							break;
-						}
-					}") : "") . "
-					forms[i].sameName.value = sameName;
-					forms[i].weFormNum.value = weFormNum + 1;
-					forms[i].weFormCount.value = forms.length - 2;
-					WE().layout.button.switch_button_state(document, 'back', 'disabled');
-					WE().layout.button.switch_button_state(document, 'next', 'disabled');
-					document.getElementById('progressbar').style.display = '';
-					forms[i].submit();
-					return;
-				}
-				z++;
-			}
-		}
-	}
-}
-		";
-
-		return $js;
-	}
-
-	function importFile(){ // used by legacy upload only => we_fileupload uses rpc interface
-							// TODO: ifnd out: is it really used by legacy upload?
-		if(isset($_FILES['we_File']) && strlen($_FILES['we_File']["tmp_name"])){
-			$we_ContentType = getContentTypeFromFile($_FILES['we_File']["name"]);
-			if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($we_ContentType)) || ($this->isWeFileupload && $this->partNum == $this->showErrorAtChunkNr)){
-				return array(
-					'error' => array('filename' => $_FILES['we_File']['name'], 'error' => 'no_perms'),
-					'success' => 0
-				);
-			}
-
-			// move file
-			include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-			$tm = we_base_file::getUniqueId();
-			$tempName = TEMP_PATH . $tm;
-
-			if(!@move_uploaded_file($_FILES['we_File']["tmp_name"], $tempName)){
-				return array(
-					'error' => array('filename' => $_FILES['we_File']['name'], 'error' => 'move_file_error'),
-					'success' => 0
-				);
-			}
-
-			if($this->partCount > 1){
-				if($this->partNum == 1){
-					$this->fileNameTemp = $tm;
-				} else {
-					file_put_contents(TEMP_PATH . $this->fileNameTemp, file_get_contents($tempName), FILE_APPEND);
-					unlink($tempName);
-				}
-			}
-
-			if($this->partCount == 1 || ($this->partCount == $this->partNum)){
-				$tempName = $this->partCount > 1 ? TEMP_PATH . $this->fileNameTemp : $tempName;
-				$this->fileNameTemp = '';
-				$fileSize = we_base_request::_(we_base_request::INT, "weFileSize", $_FILES['we_File']['size']);
-
-				// setting Filename, Path ...
-				$_fn = we_import_functions::correctFilename($_FILES['we_File']["name"]);
-				$matches = array();
-				preg_match('#^(.*)(\..+)$#', $_fn, $matches);
-
-				if(!$matches){
-					return array(
-						'error' => array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[save_error]')),
-						'success' => 0
-					);
-				}
-				$we_doc->Filename = $matches[1];
-				$we_doc->Extension = strtolower($matches[2]);
-				if(!$we_doc->Filename){
-					$we_doc->Filename = $matches[2];
-					$we_doc->Extension = '';
-				}
-				$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-				$we_doc->setParentID($this->importToID);
-				$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
-
-				// if file exists we have to see if we should create a new one or overwrite it!
-				if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"'))){
-					switch($this->sameName){
-						case 'overwrite':
-
-							$tmp = $we_doc->ClassName;
-							$we_doc = new $tmp();
-							$we_doc->initByID($file_id, FILE_TABLE);
-							break;
-						case "rename":
-							$z = 0;
-							$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-							while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->importToID))){
-								$z++;
-								$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-							}
-							$we_doc->Text = $footext;
-							$we_doc->Filename = $we_doc->Filename . "_" . $z;
-							$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
-							break;
-						default:
-							return array(
-								'error' => array("filename" => $_FILES['we_File']["name"], 'error' => g_l('importFiles', '[same_name]')),
-								'success' => 0
-							);
-					}
-				}
-				// now change the category
-				$we_doc->Category = $this->categories;
-				switch($we_ContentType){
-					case we_base_ContentTypes::IMAGE:
-					case we_base_ContentTypes::FLASH:
-						$we_size = $we_doc->getimagesize($tempName);
-						if(is_array($we_size) && count($we_size) >= 2){
-							$we_doc->setElement("width", $we_size[0], "attrib");
-							$we_doc->setElement("height", $we_size[1], "attrib");
-							$we_doc->setElement("origwidth", $we_size[0], 'attrib');
-							$we_doc->setElement("origheight", $we_size[1], 'attrib');
-						}
-				}
-				if($we_doc->Extension === '.pdf'){
-					$we_doc->setMetaDataFromFile($tempName);
-				}
-
-				$we_doc->setElement('type', $we_ContentType, "attrib");
-				$fh = @fopen($tempName, 'rb');
-				$fileSize = $fileSize < 1 ? 1 : $fileSize;
-
-				if($fh){
-					if($we_doc->isBinary()){
-						$we_doc->setElement("data", $tempName);
-					} else {
-						$foo = explode('/', $_FILES['we_File']["type"]);
-						$we_doc->setElement("data", fread($fh, $fileSize), $foo[0]);
-					}
-					fclose($fh);
-				} else {
-					//FIXME: fopen uses less memory then gd: gd can fail (and returns 500) even if $fh = true!
-					return array(
-						'error' => array('filename' => $_FILES['we_File']['name'], 'error' => g_l('importFiles', '[read_file_error]')),
-						'success' => 0
-					);
-				}
-
-				$we_doc->setElement('filesize', $fileSize, 'attrib');
-				$we_doc->Table = FILE_TABLE;
-				$we_doc->Published = time();
-				if($we_ContentType == we_base_ContentTypes::IMAGE){
-					$we_doc->Thumbs = $this->thumbs;
-					$we_doc->IsSearchable = $this->imgsSearchable;
-
-					$newWidth = 0;
-					$newHeight = 0;
-					if($this->width){
-						$newWidth = ($this->widthSelect === 'percent' ?
-								round(($we_doc->getElement("origwidth") / 100) * $this->width) :
-								$this->width);
-					}
-					if($this->height){
-						$newHeight = ($this->widthSelect === 'percent' ?
-								round(($we_doc->getElement("origheight") / 100) * $this->height) :
-								$this->height);
-					}
-					if(($newWidth && ($newWidth != $we_doc->getElement("origwidth"))) || ($newHeight && ($newHeight != $we_doc->getElement("origheight")))){
-
-						if($we_doc->resizeImage($newWidth, $newHeight, $this->quality, $this->keepRatio)){
-							$this->width = $newWidth;
-							$this->height = $newHeight;
-						}
-					}
-
-					if($this->degrees){
-						$we_doc->rotateImage(
-							($this->degrees % 180 == 0) ?
-								$we_doc->getElement('origwidth') :
-								$we_doc->getElement("origheight"), ($this->degrees % 180 == 0 ?
-								$we_doc->getElement("origheight") :
-								$we_doc->getElement("origwidth")), $this->degrees, $this->quality);
-					}
-					$we_doc->DocChanged = true;
-				}
-				if(!$we_doc->we_save()){
-					return array(
-						'error' => array('filename' => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[save_error]')),
-						'success' => 0
-					);
-				}
-				if($we_ContentType === we_base_ContentTypes::IMAGE && $this->importMetadata){
-					$we_doc->importMetaData();
-					$we_doc->we_save();
-				}
-				if(!$we_doc->we_publish()){
-					return array(
-						'error' => array("filename" => $_FILES['we_File']["name"], "error" => "publish_error"),
-						'success' => 0
-					);
-				}
-				if($we_ContentType === we_base_ContentTypes::IMAGE && $this->importMetadata){
-					$we_doc->importMetaData();
-				}
-			}
-			return array(
-				'error' => array(),
-				'success' => $we_doc->ID,
-				'importedFile' => array('id' => $we_doc->ID, 'path' => $we_doc->Path)
-			);
-		} else {
-			return array(
-				'error' => array("filename" => $_FILES['we_File']["name"], "error" => g_l('importFiles', '[php_error]')),
-				'success' => 0
-			);
-		}
-	}
-
 	function _getHiddens($noCmd = false){
 
 		return ($noCmd ? '' : we_html_element::htmlHidden('cmd', 'buttons')) . we_html_element::htmlHiddens(array(
-				'we_cmd[0]' => 'import_files',
 				'step' => 1,
-				'weFormNum' => 0,
-				'weFormCount' => 0,
+				// these are used by we_fileupload to grasp these values AND by editor to have when going back one step
 				'importToID' => $this->importToID,
 				'sameName' => $this->sameName,
 				'thumbs' => $this->thumbs,
@@ -840,18 +431,16 @@ function next() {
 				'categories' => $this->categories,
 				'imgsSearchable' => $this->imgsSearchable,
 				'importMetadata' => $this->importMetadata,
-				//'callBack' => $this->callBack
 		));
 	}
 
 	function _getFrameset(){
 		$_step = we_base_request::_(we_base_request::INT, 'step', -1);
 
-		// set and return html code
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&importToID=" . $this->importToID . "&cmd=content&jsRequirementsOk=" . ($this->jsRequirementsOk ? 1 : 0) . ($_step > -1 ? '&step=' . $_step : '') . '&callBack=' . $this->callBack, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
-					we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons&jsRequirementsOk=" . ($this->jsRequirementsOk ? 1 : 0) . ($_step > -1 ? '&step=' . $_step : '') . '&callBack=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
+					, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&importToID=" . $this->importToID . "&cmd=content" . ($_step > -1 ? '&step=' . $_step : '') . '&callBack=' . $this->callBack, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+					we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($_step > -1 ? '&step=' . $_step : '') . '&callBack=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
 		));
 
 		return $this->_getHtmlPage($body);

@@ -69,12 +69,10 @@ var path='" . $this->path . "';") .
 	}
 
 	private function getWizBody($type = '', $step = 0, $mode = 0){
-		//FIXME: delete condition and else branch when new uploader is stable
+		// FIXME: probably obsolete
 		$continue = true;
-		if(!we_fileupload::USE_LEGACY_FOR_WEIMPORT){
-			if($this->fileUploader){
+		if($this->fileUploader){
 //				$continue = $this->fileUploader->processFileRequest();
-			}
 		}
 
 		if($continue){
@@ -92,8 +90,7 @@ var path='" . $this->path . "';") .
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
 			return we_html_tools::getHtmlTop('', '', '',
 						STYLESHEET .
-						//FIXME: delete condition and else branch when new uploader is stable
-						(!we_fileupload::USE_LEGACY_FOR_WEIMPORT && $this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
+						($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
 						we_html_element::jsElement($js), we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
 						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"

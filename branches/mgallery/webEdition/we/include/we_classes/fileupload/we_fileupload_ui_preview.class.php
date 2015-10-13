@@ -81,20 +81,10 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		return we_html_element::htmlDiv(array('style' => 'margin-top:18px;'), $this->getButtonWrapped('reset', false, $width) . $this->getButtonWrapped('browse', false, $width));
 	}
 
-	protected function getFileInputLegacy(){
-		return 		$fileInputLegacy = we_html_element::htmlInput(array(
-			'type' => 'file',
-			'name' => $this->name,
-			'id' => $this->name,
-			'accept' => implode(',', $this->typeCondition['accepted']['mime']))
-		);
-	}
-
 	protected function getHtmlDropZone($type = 'preview', $thumbnailSmall = ''){
 			$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
-			return !(self::isFallback() || self::isLegacyMode()) ? (
-				we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"),
+			return we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"),
 					we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
 					we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(getTreeIcon("' . $this->contentType . '"));')))
 				) .
@@ -106,32 +96,23 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 					) .
 					we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
 				) .
-				($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag we_file_drag_mask'), '') : '')) : '';
+				($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag we_file_drag_mask'), '') : '');
 	}
 
 	protected function getHiddens(){
-		$hiddens =  parent::getHiddens() . we_html_element::htmlHiddens(array(
+		return $hiddens =  parent::getHiddens() . we_html_element::htmlHiddens(array(
 			'we_doc_ct' => $this->contentType,
 			'we_doc_ext' => $this->extension,
-		));
-
-		return !(self::isLegacyMode() || self::isFallback()) ? $hiddens : $hiddens . we_html_element::htmlHiddens(array(
-			'we_fu_isLegacy' => 1,
 		));
 	}
 
 	public function getJsBtnCmd($btn = 'upload'){
 		$call = 'window.we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
-		$callback = 'we_cmd(\'editor_uploadFile\', \'legacy\');';
 
-		return 'if(window.we_FileUpload === undefined || window.we_FileUpload.getIsLegacyMode()){' . $callback . ';}else{' . $call . ';}';
+		return 'if(window.we_FileUpload === undefined){alert("what\'s wrong?");}else{' . $call . ';}';
 	}
 
 	public static function getJsOnLeave($callback, $type = 'switch_tab'){
-		if(self::isFallback() || self::isLegacyMode()){
-			return $callback;
-		}
-
 		if($type === 'switch_tab'){
 			$parentObj = 'WE().layout.weEditorFrameController';
 			$frame = 'WE().layout.weEditorFrameController.getVisibleEditorFrame()';
@@ -140,7 +121,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			$frame = '_EditorFrame.getContentEditor()';
 		}
 
-		return "var fileupload; if(" . $parentObj . " !== undefined && (fileUpload = " . $frame . ".we_FileUpload) !== undefined && fileUpload.getType() === 'binDoc' && !fileUpload.getIsLegacyMode()){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
+		return "var fileupload; if(" . $parentObj . " !== undefined && (fileUpload = " . $frame . ".we_FileUpload) !== undefined && fileUpload.getType() === 'binDoc'){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
 	}
 
 	public function setIsExternalBtnUpload($isExternal){

@@ -84,21 +84,19 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 
 		$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="/webEdition/images/icons/no_image.gif" alt="no-image" />';
 		$formUploader = we_html_element::htmlDiv(array('id' => 'imageUpload', 'style' => 'display:block;width:384px;'),
-			(self::isFallback() || self::isLegacyMode() ? $this->getFileInputLegacy() :
-				$this->getJs() .
-				$this->getCss() .
-				$this->getHiddens() .
+			$this->getJs() .
+			$this->getCss() .
+			$this->getHiddens() .
 
-				we_html_element::htmlDiv(array('style' => 'width:200px'), 
-					$divButtons
-				) .
-				we_html_element::htmlDiv(array('style' => 'width:200px'), 
-					we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style'=>"position:relative;"),
-						$this->getHtmlDropZone('preview', $noImage)
-					)
-				) .
-				$divProgressbar
-			)
+			we_html_element::htmlDiv(array('style' => 'width:200px'), 
+				$divButtons
+			) .
+			we_html_element::htmlDiv(array('style' => 'width:200px'), 
+				we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style'=>"position:relative;"),
+					$this->getHtmlDropZone('preview', $noImage)
+				)
+			) .
+			$divProgressbar
 		);
 
 		$parts = array(
@@ -122,7 +120,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 	public function getHtmlFooter(){
 		return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'width:auto; height:100%;'),
 			we_html_element::htmlDiv(array('style' => 'float:right'),
-				(we_html_element::htmlDiv(array('style' => 'display:table-cell;'), we_fileupload::isLegacyMode() || we_fileupload::isFallback() ? '<input type="submit">' : $this->getDivBtnUploadCancel(170))) .
+				(we_html_element::htmlDiv(array('style' => 'display:table-cell;'), $this->getDivBtnUploadCancel(170))) .
 				we_html_element::htmlDiv(array('style' => 'display:table-cell;'), we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.close()'))
 			)
 		);
@@ -187,44 +185,6 @@ documentWriteback = function(importedDocument){
 			');
 	}
 
-/*
-	protected function getFormUploader(){
-		$fileInputLegacy = we_html_element::htmlInput(array(
-			'type' => 'file',
-			'name' => $this->name,
-			'id' => $this->name,
-			'accept' => implode(',', $this->typeCondition['accepted']['mime']))
-		);
-
-		$progress = new we_progressBar(0, true);
-		$progress->setStudLen(200);
-		$progress->setName('_fileupload');
-		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'display:none;'), $progress->getHTML());
-
-		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:400px'),
-			$this->getDivBtnInputReset($this->dimensions['inputWidth'] - 4)
-		);
-
-		$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="/webEdition/images/icons/no_image.gif" alt="no-image" />';
-		$divUploader = we_html_element::htmlDiv(array('id' => 'imageUpload', 'style' => 'display:block;width:384px;'),
-			(self::isFallback() || self::isLegacyMode() ? $fileInputLegacy :
-				$this->getJs() .
-				$this->getCss() .
-				$this->getHiddens() .
-
-				we_html_element::htmlDiv(array('style' => 'width:200px'), 
-					$divButtons
-				) .
-				we_html_element::htmlDiv(array('style' => 'width:200px'), 
-					we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style'=>"position:relative;"),
-						$this->getHtmlDropZone('preview', $noImage)
-					)
-				) .
-				$divProgressbar
-			)
-		);
-	}
-*/
 	protected function getFormIsSearchable(){
 		return we_html_element::htmlDiv(array(), we_html_forms::checkboxWithHidden(true, 'imgsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', ''));
 	}

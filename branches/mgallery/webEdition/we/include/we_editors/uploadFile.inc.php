@@ -58,7 +58,6 @@ $mode = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 $weFileupload = new we_fileupload_ui_base('we_File');
 $weFileupload->setTypeCondition('accepted', $allowedContentTypes, $allowedExtensions);
 $weFileupload->setDimensions(array('width' => 330, 'marginTop' => 6));
-$weFileupload->setIsFallback($mode === 'legacy' ? true : true);
 $weFileupload->setExternalProgress(array('isExternalProgress' => true));
 
 if($weFileupload->processFileRequest()){

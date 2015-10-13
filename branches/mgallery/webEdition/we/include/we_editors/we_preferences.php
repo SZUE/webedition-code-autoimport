@@ -1710,9 +1710,6 @@ for(i=0;i<elements.length; ++i){
 				g_l('prefs', '[upload][we_max_size_hint]') .
 				'</td></tr></table>';
 
-			// FILE UPLOAD
-			$_fileuploader_use_legacy = we_html_forms::checkbox(1, get_value('FILE_UPLOAD_USE_LEGACY'), 'newconf[FILE_UPLOAD_USE_LEGACY]', g_l('prefs', '[upload][use_legacy]'), false, 'defaultfont', '');
-
 			$_we_new_folder_mod = '<table class="default"><tr><td>' .
 				we_html_tools::htmlTextInput("newconf[WE_NEW_FOLDER_MOD]", 22, get_value("WE_NEW_FOLDER_MOD"), 3, ' onkeypress="return IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">' .
 				g_l('prefs', '[we_new_folder_mod_hint]') .
@@ -1815,7 +1812,6 @@ for(i=0;i<elements.length; ++i){
 
 			$_settings = array(
 				array("headline" => g_l('prefs', '[upload][we_max_size]'), "html" => $_we_max_upload_size, "space" => 200),
-				array('headline' => g_l('prefs', '[upload][title]'), 'html' => $_fileuploader_use_legacy, 'space' => 200),
 				array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, "space" => 200),
 				array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), "space" => 200, "noline" => 1),
 				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $html_db_charset_information . $_db_set_charset->getHtml() . $html_db_charset_warning, "space" => 200),

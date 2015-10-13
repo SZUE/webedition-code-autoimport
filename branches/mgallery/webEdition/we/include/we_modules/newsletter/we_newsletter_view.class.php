@@ -751,17 +751,6 @@ edf.populateGroups();');
 
 				//we have finished upload or we are in fallback mode
 				$tempName = we_fileupload::commitFile('we_File');
-				if(!$tempName && isset($_FILES['we_File']) && $_FILES['we_File']['size']){
-					//fallback or legacy mode
-					$we_File = $_FILES['we_File'];
-					$tempName = TEMP_PATH . we_base_file::getUniqueId();
-
-					if(!move_uploaded_file($we_File['tmp_name'], $tempName)){
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[upload_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
-						return;
-					}
-					$tempName = str_replace($_SERVER['DOCUMENT_ROOT'], '', $tempName);
-				}
 
 				//print next command
 				echo we_html_element::jsElement($ncmd === 'do_upload_csv' ? '

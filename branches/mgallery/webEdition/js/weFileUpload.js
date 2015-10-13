@@ -72,7 +72,6 @@ var weFileUpload = (function () {
 		_.genericFilename = '';
 		_.fileuploadType = 'abstract';
 		_.uiClass = 'we_fileupload_ui_base';
-		_.isLegacyMode = false;
 
 		_.init_abstract = function (conf) {
 			var that = _.self, c = _.controller, s = _.sender, v = _.view, u = _.utils;
@@ -96,7 +95,6 @@ var weFileUpload = (function () {
 				_.fieldName = conf.fieldName || _.fieldName;
 				_.uiClass = conf.uiClass || _.uiClass;
 				_.genericFilename = conf.genericFilename || _.genericFilename;
-				_.isLegacyMode = !_.utils.checkBrowserCompatibility() || conf.isLegacyMode;
 				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
 				c.isPreset = conf.isPreset || c.isPreset;
 				s.chunkSize = typeof conf.chunkSize !== 'undefined' ? (conf.chunkSize * 1024) : s.chunkSize;
@@ -1154,11 +1152,6 @@ var weFileUpload = (function () {
 
 		//public functions
 		this.startUpload = function () {
-			if (_.isLegacyMode) {
-				_.sender.callback();
-				return;
-			}
-
 			if (_.sender.prepareUpload()) {
 				setTimeout(function () {
 					_.sender.sendNextFile();
@@ -1178,10 +1171,6 @@ var weFileUpload = (function () {
 
 		this.deleteRow = function (index, but) {
 			_.view.deleteRow(index, but);
-		};
-
-		this.getIsLegacyMode = function () {
-			return _.isLegacyMode;
 		};
 
 		this.getType = function () {
@@ -1230,12 +1219,7 @@ var weFileUpload = (function () {
 			_.view.elems.fileName = document.getElementById('div_' + _.fieldName + '_fileName');
 			_.view.elems.btnResetUpload = document.getElementById('div_' + _.fieldName + '_btnResetUpload');
 			_.view.elems.btnCancel = document.getElementById('div_' + _.fieldName + '_btnCancel');
-
 			_.view.repaintGUI({what: 'initGui'});
-
-			if (_.isLegacyMode) {
-				_.utils.makeLegacy();
-			}
 
 			_.controller.checkIsPresetFiles();
 		};
@@ -1430,25 +1414,7 @@ var weFileUpload = (function () {
 			};
 		}
 
-		function Utils() {
-			this.makeLegacy = function () {
-				var fs = _.view.elems.fileSelect,
-					fsLegacy = document.getElementById(_.fieldName + '_legacy'),
-					alertbox = document.getElementById(_.fieldName + '_alert'),
-					alertboxLegacy = document.getElementById(_.fieldName + '_alert_legacy');
-
-				fs.id = fs.name = _.fieldName + '_alt';
-				fsLegacy.id = fsLegacy.name = _.fieldName;
-				document.getElementById(_.fieldName).style.display = 'none';
-				document.getElementById(_.fieldName + '_legacy').style.display = '';
-				if (typeof alertbox !== 'undefined' && typeof alertboxLegacy !== 'undefined') {
-					alertbox.style.display = 'none';
-					alertboxLegacy.style.display = '';
-				}
-				_.sender.form.form.weIsFileInLegacy.value = 1;//FIXME: do we need this?
-				_.sender.form.form.weIsUploading.value = 0;
-			};
-		}
+		function Utils() {}
 	}
 
 	function weFileUpload_imp() {
@@ -1607,7 +1573,6 @@ var weFileUpload = (function () {
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
 				fd.append('we_cmd[0]', 'import_files');
-				fd.append('jsRequirementsOk', 1);
 				fd.append('step', 1);
 
 				fd.append('importToID', sf.importToID.value);
@@ -1957,7 +1922,6 @@ var weFileUpload = (function () {
 			v.elems.fileDrag_state_1 = document.getElementById('div_fileupload_fileDrag_state_1');
 			v.elems.dragInnerRight = document.getElementById('div_upload_fileDrag_innerRight');
 			v.elems.divRight = document.getElementById('div_fileupload_right');
-			v.elems.divRightLegacy = document.getElementById('div_fileupload_right_legacy');
 			v.elems.txtFilename = document.getElementById('span_fileDrag_inner_filename');
 			v.elems.txtFilename_1 = document.getElementById('span_fileDrag_inner_filename_1');//??
 			v.elems.txtSize = document.getElementById('span_fileDrag_inner_size');
@@ -1965,16 +1929,11 @@ var weFileUpload = (function () {
 			v.elems.divBtnReset = document.getElementById('div_fileupload_btnReset');
 			v.elems.divBtnCancel = document.getElementById('div_fileupload_btnCancel');
 			v.elems.divBtnUpload = document.getElementById('div_fileupload_btnUpload');
-			v.elems.divBtnUploadLegacy = document.getElementById('div_fileupload_btnUploadLegacy');
 			v.elems.divProgressBar = document.getElementById('div_fileupload_progressBar');
 			v.elems.divButtons = document.getElementById('div_fileupload_buttons');
 
 			v.spinner = document.createElement("i");
 			v.spinner.className = "fa fa-2x fa-spinner fa-pulse";
-
-			if (_.isLegacyMode) {
-				_.utils.makeLegacy();
-			}
 
 			_.controller.checkIsPresetFiles();
 		};
@@ -2331,16 +2290,7 @@ var weFileUpload = (function () {
 			};
 		}
 
-		function Utils() {
-			this.makeLegacy = function () {
-				var v = _.view;
-				_.controller.setWeButtonState('upload_legacy_btn', true);
-				v.setDisplay('divRight', 'none');
-				v.setDisplay('divButtons', 'none');
-				v.setDisplay('divRightLegacy', '');
-				v.setDisplay('divBtnUploadLegacy', '');
-			};
-		}
+		function Utils() {}
 
 		this.doUploadIfReady = function (callback) {
 			if (_.sender.isAutostartPermitted && _.sender.preparedFiles.length > 0 && _.sender.preparedFiles[0].uploadConditionsOk) {

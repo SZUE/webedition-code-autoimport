@@ -263,11 +263,7 @@ doDropFromInside = function(text){
 		$btnUpload = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $this->getButtonWrapped('upload', true, ($isIE10 ? 84 : 100)));
 		$btnCancel = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $this->getButtonWrapped('cancel', false, ($isIE10 ? 84 : 100)));
 
-		return (self::isFallback() || self::isLegacyMode()) ? ( we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name))) :
-			(we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_legacy', 'style' => 'display:none;'),
-					we_html_element::htmlInput(array('type' => 'file', 'name' => $this->name . '_legacy', 'id' => $this->name . '_legacy'))
-				) . 
-				we_html_element::htmlDiv(array('id' => 'div_' . $this->name, 'style' => 'float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;'),
+		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name, 'style' => 'float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;'),
 					we_html_element::htmlDiv(array(),
 						$this->getButtonWrapped('browse', false, $isIE10 ? 84 : ($this->dimensions['width'] - 110)) .
 						we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_btnResetUpload', 'style' => 'vertical-align: top; display: inline-block; height: 22px;'),
@@ -280,8 +276,7 @@ doDropFromInside = function(text){
 						$this->getHtmlDropZone() . $this->getHtmlFileInfo()
 					)
 				) .
-				$this->getHiddens()
-			);
+				$this->getHiddens();
 	}
 
 	protected function getHiddens(){
@@ -289,7 +284,6 @@ doDropFromInside = function(text){
 			'weFileNameTemp' => '',
 			'weFileName' => '',
 			'weFileCt' => '',
-			'weIsFileInLegacy' => 0,
 			'weIsUploadComplete' => 0,
 			'weIsUploading' => 1,
 		));
@@ -300,29 +294,12 @@ doDropFromInside = function(text){
 	}
 
 	public static function getHtmlAlertBoxesStatic($width = 410, $maxSize = -1, $isSizeReady = false){
-		if(self::isLegacyMode()){
-			$text = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB));
+			$size = $isSizeReady ? $maxSize : (intval($maxSize !== -1 ? $maxSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0)));
+			$text = $size ? sprintf(g_l('newFile', '[size_limit_set_to]'), $size) : g_l('newFile', '[no_size_limit]');
 
 			return '<div id="div_alert">' .
-				we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_ALERT, $width) .
+				we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, $width) .
 				'</div>';
-		} else {
-			if(self::isFallback()){
-
-				return '<div id="div_alert">' .
-					we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize(getUploadMaxFilesize(false), we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, $width) .
-					'<div style="margin-top: 4px"></div>' .
-					we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[fallback_text]'), we_html_tools::TYPE_ALERT, $width, false, 9) .
-					'</div>';
-			} else {
-				$size = $isSizeReady ? $maxSize : (intval($maxSize !== -1 ? $maxSize : (defined('FILE_UPLOAD_MAX_UPLOAD_SIZE') ? FILE_UPLOAD_MAX_UPLOAD_SIZE : 0)));
-				$text = $size ? sprintf(g_l('newFile', '[size_limit_set_to]'), $size) : g_l('newFile', '[no_size_limit]');
-
-				return '<div id="div_alert">' .
-					we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, $width) .
-					'</div>';
-			}
-		}
 	}
 
 	protected function _getHtmlFileRow(){
@@ -342,13 +319,14 @@ doDropFromInside = function(text){
 	}
 
 	public function getCss(){
-		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . (
-			self::isFallback() || self::isLegacyMode() ? '' : we_html_element::cssElement('
-			div.we_file_drag{
-				padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
-				height: ' . $this->dimensions['dragHeight'] . 'px;
-				width: ' . $this->dimensions['dragWidth'] . 'px;
-			}'));
+		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . 
+			we_html_element::cssElement('
+				div.we_file_drag{
+					padding-top: ' . (($this->dimensions['dragHeight'] - 10) / 2) . 'px;
+					height: ' . $this->dimensions['dragHeight'] . 'px;
+					width: ' . $this->dimensions['dragWidth'] . 'px;
+				}
+			');
 	}
 
 	public function getJs(){
@@ -361,7 +339,7 @@ doDropFromInside = function(text){
 		}
 		$this->callback = strpos($this->callback, 'WECMDENC_') !== false ? base64_decode(urldecode(substr($this->callback, 9))) : $this->callback;
 
-		return self::isFallback() || self::isLegacyMode() ? '' : (we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
+		return we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
 			we_html_element::jsScript('/webEdition/lib/additional/ExifReader/ExifReader.js') .
 			we_html_element::jsElement('
 we_FileUpload = new weFileUpload("' . $this->type . '");
@@ -375,7 +353,6 @@ we_FileUpload.init({
 	maxUploadSize : ' . $this->maxUploadSizeBytes . ',
 	typeCondition : ' . str_replace(array("\n\r", "\r\n", "\r", "\n"), "", json_encode($this->typeCondition)) . ',
 	isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
-	isLegacyMode : false,
 	isPreset: ' . ($this->isPreset ? 'true' : 'false') . ',
 	callback : function(scope){' . $this->callback . '},
 	fileselectOnclick : function(){' . $this->fileselectOnclick . '},
@@ -392,7 +369,7 @@ we_FileUpload.init({
 	isInternalBtnUpload : ' . ($this->isInternalBtnUpload ? 'true' : 'false') . ',
 	responseClass : "' . $this->responseClass . '"
 });
-') . ($this->externalProgress['create'] ? $progressbar->getJS('', true) : ''));
+			') . ($this->externalProgress['create'] ? $progressbar->getJS('', true) : '');
 	}
 
 	protected function _getJsGl(){
@@ -421,11 +398,12 @@ we_FileUpload.init({
 	}
 
 	public static function getJsBtnCmdStatic($btn = 'upload', $contentName = '', $callback = ''){
+		//FIXME: still need direct callback 
 		$win = $contentName ? 'top.' . $contentName . '.' : '';
 		$callback = $btn === 'upload' ? ($callback ? : 'document.forms[0].submit()') : 'top.close()';
 		$call = $win . 'we_FileUpload.' . ($btn === 'upload' ? 'startUpload()' : 'cancelUpload()');
 
-		return 'if(' . $win . 'we_FileUpload === undefined || ' . $win . 'we_FileUpload.isLegacyMode){' . $callback . ';}else{' . $call . ';}';
+		return 'if(' . $win . 'we_FileUpload === undefined){' . $callback . ';}else{' . $call . ';}';
 	}
 
 }

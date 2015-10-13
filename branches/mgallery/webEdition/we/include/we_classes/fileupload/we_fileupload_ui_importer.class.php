@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_importer extends we_fileupload_ui_base{
-	protected $jsRequirementsOk = false; //obsolete
 	protected $dimensions = array(
 		'width' => 400,
 		'dragHeight' => 30,
@@ -38,7 +37,6 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 		$this->responseClass = 'we_fileupload_resp_multiimport';
 
 		$this->type = 'imp';
-		$this->jsRequirementsOk = we_base_request::_(we_base_request::BOOL, "jsRequirementsOk", false);
 		$this->setDimensions(array('width' => 400, 'dragHeight' => 44));
 		$this->isGdOk = we_base_imageEdit::gd_version() > 0;
 		$this->internalProgress = array(

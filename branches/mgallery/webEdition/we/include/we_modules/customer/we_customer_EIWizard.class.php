@@ -617,10 +617,8 @@ function callBack(){
 		$filesource = "";
 
 		if($import_from == self::EXPORT_LOCAL){
-			if(!(we_fileupload::isFallback() || we_fileupload::isLegacyMode())){
-				$filename = we_fileupload::commitFile('we_upload_file', array('accepted' => array()));
-				$filesource = $filename ? $_SERVER['DOCUMENT_ROOT'] . $filename : '';
-			}
+			$filename = we_fileupload::commitFile('we_upload_file', array('accepted' => array()));
+			$filesource = $filename ? $_SERVER['DOCUMENT_ROOT'] . $filename : '';
 			if(!$filename && isset($_FILES['upload']) && $_FILES["upload"]["size"]){
 				$filename = TEMP_DIR . we_base_file::getUniqueId() . $ext;
 				$filesource = $_SERVER['DOCUMENT_ROOT'] . $filename;

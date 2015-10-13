@@ -196,36 +196,20 @@ self.focus();
 		$js = "";
 
 		//FIXME: delete condition when new uploader is stable
-		$maxsize = (!we_fileupload::USE_LEGACY_FOR_BACKUP && $this->fileUploader ?
-				$this->fileUploader->getMaxUploadSize() :
-				getUploadMaxFilesize());
+		$maxsize = $this->fileUploader->getMaxUploadSize();
 
 		if(we_base_request::_(we_base_request::STRING, "import_from") === 'import_upload'){
 			if($maxsize || $this->fileUploader){
-				//FIXME: delete condition and else branch when new uploader is stable
-				if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
-					if($this->fileUploader){
-						$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
-						$inputTypeFile = $this->fileUploader->getHTML();
-					} else {
-						//$alertMaxSize = sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB));
-						$inputTypeFile = we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => 35));
-					}
+				//FIXME: 
+				$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
+				$inputTypeFile = $this->fileUploader->getHTML();
 
-					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-					if(!(DEFAULT_CHARSET != '')){
-						$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-					}
-					$parts[] = array("headline" => "", "html" => we_fileupload_ui_base::getHtmlAlertBoxesStatic(600), "space" => 0, "noline" => 1);
-					$parts[] = array("headline" => "", "html" => $inputTypeFile, "space" => 0, "noline" => 1);
-				} else {
-					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-					if(!(DEFAULT_CHARSET != '')){
-						$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
-					}
-					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 600), "space" => 0, "noline" => 1);
-					$parts[] = array("headline" => "", "html" => we_html_element::htmlInput(array("name" => "we_upload_file", "type" => "file", "size" => 35)), "space" => 0, "noline" => 1);
+				$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
+				if(!(DEFAULT_CHARSET != '')){
+					$parts[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), "space" => 0, "noline" => 1);
 				}
+				$parts[] = array("headline" => "", "html" => we_fileupload_ui_base::getHtmlAlertBoxesStatic(600), "space" => 0, "noline" => 1);
+				$parts[] = array("headline" => "", "html" => $inputTypeFile, "space" => 0, "noline" => 1);
 			}
 		} else {
 			$js = '
@@ -439,7 +423,7 @@ extra_files_desc=[];';
 
 
 		$js = we_html_element::jsElement($js) .
-			(!we_fileupload::USE_LEGACY_FOR_BACKUP && isset($fileUploaderHead) ? $fileUploaderHead : '') .
+			(isset($fileUploaderHead) ? $fileUploaderHead : '') .
 			self::getJSDep("import", $docheck, $doclick, $douncheck) .
 			we_html_element::jsElement('
 function startBusy() {
@@ -928,33 +912,17 @@ function press_yes() {
 						break;
 					case 3:
 						//FIXME: delete condition when new uploader is stable
-						if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
-							//$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
-							if(!(we_fileupload::isFallback() || we_fileupload::isLegacyMode())){
-								$startImportCall = we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
-								$cancelCall = we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body');
-							} else {
-								$startImportCall = 'top.body.startImport()';
-								$cancelCall = 'top.close()';
-							}
+						//$startImportCall = $this->fileUploader ? $this->fileUploader->getJsBtnCmd('upload') : "top.body.startImport();";
+						$startImportCall = we_fileupload_ui_base::getJsBtnCmdStatic('upload', 'body', 'top.body.startImport()');
+						$cancelCall = we_fileupload_ui_base::getJsBtnCmdStatic('cancel', 'body');
 
-							if(defined('WORKFLOW_TABLE')){
-								$db = new DB_WE();
-								$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
-										we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
-										we_html_button::create_button("restore_backup", "javascript:" . $startImportCall));
-							} else {
-								$nextbut = we_html_button::create_button("restore_backup", "javascript:" . $startImportCall);
-							}
+						if(defined('WORKFLOW_TABLE')){
+							$db = new DB_WE();
+							$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
+									we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) " . $startImportCall . ";") :
+									we_html_button::create_button("restore_backup", "javascript:" . $startImportCall));
 						} else {
-							if(defined('WORKFLOW_TABLE')){
-								$db = new DB_WE();
-								$nextbut = (we_workflow_utility::getAllWorkflowDocs(FILE_TABLE, $db) || (defined('OBJECT_FILES_TABLE') && we_workflow_utility::getAllWorkflowDocs(OBJECT_FILES_TABLE, $db)) ?
-										we_html_button::create_button("restore_backup", "javascript:if(confirm('" . g_l('modules_workflow', '[ask_before_recover]') . "')) top.body.startImport();") :
-										we_html_button::create_button("restore_backup", "javascript:top.body.startImport();"));
-							} else {
-								$nextbut = we_html_button::create_button("restore_backup", "javascript:top.body.startImport();");
-							}
+							$nextbut = we_html_button::create_button("restore_backup", "javascript:" . $startImportCall);
 						}
 
 						$nextprevbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?pnt=body&step=2';") . $nextbut;
@@ -1130,20 +1098,9 @@ top.busy.location="' . $this->frameset . '?pnt=busy";' .
 						$ok = true;
 					} else if($we_upload_file && ($we_upload_file != "none")){
 						//FIXME: delete condition when new uploader is stable
-						if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
-							if($this->fileUploader){
-								$continue = $this->fileUploader->processFileRequest();
-							} else {
-								$we_backup_obj->filename = BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'];
-								if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], BACKUP_PATH . "tmp/" . $_FILES["we_upload_file"]["name"])){
-									echo we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .
-										we_message_reporting::getShowMessageCall(sprintf(g_l('backup', '[cannot_save_tmpfile]'), BACKUP_DIR), we_message_reporting::WE_MESSAGE_ERROR));
-									return '';
-								}
-								we_base_file::insertIntoCleanUp($we_backup_obj->filename, 0);
-								$ok = true;
-							}
-						} else {
+						if($this->fileUploader){
+							$continue = $this->fileUploader->processFileRequest();
+						} else {//FIXME: still need this branch?
 							$we_backup_obj->filename = BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'];
 							if(!move_uploaded_file($_FILES["we_upload_file"]["tmp_name"], BACKUP_PATH . "tmp/" . $_FILES["we_upload_file"]["name"])){
 								echo we_html_element::jsElement('top.busy.location="' . $this->frameset . '?pnt=busy";' .

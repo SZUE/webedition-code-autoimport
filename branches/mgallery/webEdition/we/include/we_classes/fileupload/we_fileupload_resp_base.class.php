@@ -49,7 +49,7 @@ class we_fileupload_resp_base extends we_fileupload{
 	);
 	protected $contentType = 'image/*';// alloud target ct: obsolete => use typeCondition
 	protected $controlVars = array(
-			'partNum' => 1, // when legacy upload partNum = partCount = 1 means read process uploaded file as if one chunk only
+			'partNum' => 1,
 			'partCount' => 1,
 			'formnum' => 0,
 			'formcount' => 0,
@@ -87,8 +87,6 @@ class we_fileupload_resp_base extends we_fileupload{
 	const FORCE_DOC_ROOT = true;
 	const MISSING_DOC_ROOT = true;
 	const USE_FILENAME_FROM_UPLOAD = true;
-	const USE_LEGACY_FOR_BACKUP = false;
-	const USE_LEGACY_FOR_WEIMPORT = false;
 
 	public function __construct($name = '', $contentType = '', $FILE = array(), $fileVars = array(), $controlVars = array(), $docVars = ''){
 		$this->name = $name ? : $this->name;
@@ -98,43 +96,25 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	protected function initByHttp(){
 		$this->FILES = $_FILES;
-		if(we_base_request::_(we_base_request::BOOL, 'we_fu_isSubmitLegacy', false)){
-			// must be legacy upload: init fileVars from $FILE
-			$this->fileVars = array(
-				'fileNameTemp' => '',
-				'weFileName' => $this->FILES[$this->name]['name'],
-				'we_FileSize' => $this->FILES[$this->name]['size'],
-				'weFileCt' => $this->FILES[$this->name]['type']
-			);
-			$this->controlVars = array(
-				'partNum' => 1,
-				'partCount' => 1,
-				'formnum' => 0,
-				'formcount' => 0,
+		$this->fileVars = array_merge(array(), array_filter(
+			array(
+				'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
+				'fileNameTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
+				'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
+				'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
+				'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID)
+			), function($var){return $var !== we_base_request::NOT_VALID;})
+		);
+		$this->controlVars = array_merge($this->controlVars, array_filter(
+			array(
+				'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
+				'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
+				'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
+				'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
 				'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
-				'weIsUploading' => false,
-			);
-		} else {
-			$this->fileVars = array_merge(array(), array_filter(
-				array(
-					'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
-					'fileNameTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
-					'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
-					'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
-					'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID)
-				), function($var){return $var !== we_base_request::NOT_VALID;})
-			);
-			$this->controlVars = array_merge($this->controlVars, array_filter(
-				array(
-					'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
-					'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
-					'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
-					'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
-					'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
-					'weIsUploading' => we_base_request::_(we_base_request::BOOL, 'weIsUploading', we_base_request::NOT_VALID),
-				), function($var){return $var !== we_base_request::NOT_VALID;})
-			);
-		}
+				'weIsUploading' => we_base_request::_(we_base_request::BOOL, 'weIsUploading', we_base_request::NOT_VALID),
+			), function($var){return $var !== we_base_request::NOT_VALID;})
+		);
 	}
 
 	public function processRequest(){
@@ -144,7 +124,7 @@ class we_fileupload_resp_base extends we_fileupload{
 		}
 
 		$this->fileVars['weFileCt'] = getContentTypeFromFile($this->FILES[$this->name]["name"]);//compare mime and ct by extension
-		if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($this->fileVars['weFileCt']))){// || ($this->isWeFileupload && $this->partNum == $this->showErrorAtChunkNr)){
+		if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($this->fileVars['weFileCt']))){
 			//t_e('err 2');
 			return array_merge($this->response, array('status' => 'failure', 'message' => 'no_perms'));
 		}

@@ -27,7 +27,7 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 	
 	public function processRequest() {
 		// manage filenumber
-		if($this->controlVars['formcount']){// && $this->isWeFileupload){
+		if($this->controlVars['formcount']){
 			return parent::processRequest();
 		}
 	}

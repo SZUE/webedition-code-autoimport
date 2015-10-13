@@ -253,13 +253,9 @@ abstract class we_backup_preparer{
 			return BACKUP_PATH . $backup_select;
 		}
 
-		if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
-			// should be obsolete when sending request to rpc
-			$isFileAllreadyHere = false;
-			if(!(we_fileupload::isFallback() || we_fileupload::isLegacyMode())){
-				$commitedFile = we_fileupload::commitFile('we_upload_file', array('accepted' => array('xml', 'gz', 'tgz', 'zip')));
-			}
-		}
+		// FIXME: we have still parts of fallback here:
+		// change fileinput name to standard, and stop mesing around with $_FILES: not even commit() should be necessary!
+		$commitedFile = we_fileupload::commitFile('we_upload_file', array('accepted' => array('xml', 'gz', 'tgz', 'zip')));
 
 		$we_upload_file = (!empty($_FILES['we_upload_file']) ? $_FILES['we_upload_file'] : '');
 		if($we_upload_file && ($we_upload_file != 'none')){
@@ -268,18 +264,11 @@ abstract class we_backup_preparer{
 				return false;
 			}
 			$filename = BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'];
-
-			//FIXME: delete condition when new uploader is stable
-			if(!we_fileupload::USE_LEGACY_FOR_BACKUP){
-				if($commitedFile || move_uploaded_file($_FILES['we_upload_file']['tmp_name'], $filename)){
+			if($commitedFile){
 					we_base_file::insertIntoCleanUp($filename, 0);
 					return $filename;
-				}
 			} else {
-				if(move_uploaded_file($_FILES['we_upload_file']['tmp_name'], BACKUP_PATH . 'tmp/' . $_FILES['we_upload_file']['name'])){
-					we_base_file::insertIntoCleanUp($filename, 0);
-					return $filename;
-				}
+				t_e('we_fileupload failure');
 			}
 		}
 

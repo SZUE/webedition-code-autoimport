@@ -28,8 +28,7 @@ abstract class we_fileupload{
 	protected $maxUploadSizeMBytes = 16;
 	protected $maxUploadSizeBytes = 0;
 	protected $isGdOk = true;
-	public static $isFallback = false;
-	protected $genericFileNaeTemp = '';
+	protected $genericFileNameTemp = '';
 
 	const CHUNK_SIZE = 128;
 	const ON_ERROR_RETURN = true;
@@ -37,10 +36,7 @@ abstract class we_fileupload{
 
 	const REPLACE_BY_UNIQUEID = '##REPLACE_BY_UNIQUEID##';
 	const REPLACE_BY_FILENAME = '##REPLACE_BY_FILENAME##';
-
 	const USE_FILENAME_FROM_UPLOAD = true;
-	const USE_LEGACY_FOR_BACKUP = false;
-	const USE_LEGACY_FOR_WEIMPORT = false;
 
 	protected function __construct($name){
 		$this->name = $name;
@@ -67,22 +63,12 @@ abstract class we_fileupload{
 		return $this->name;
 	}
 
-	public static function isFallback(){
-		return self::$isFallback ||
-			(we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 10) ||
-			(we_base_browserDetect::isSafari() && intval(we_base_browserDetect::getBrowserVersion()) < 7);
-	}
-
-	public static function isLegacyMode(){
-		return defined('FILE_UPLOAD_USE_LEGACY') && FILE_UPLOAD_USE_LEGACY == true;
-	}
-
 	public static function isDragAndDrop(){
 		return !((we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11) || we_base_browserDetect::isOpera());
 	}
 
 	public function getMaxUploadSize(){
-		return self::isFallback() || self::isLegacyMode() ? getUploadMaxFilesize(false) : $this->maxUploadSizeBytes;
+		return $this->maxUploadSizeBytes;
 	}
 
 	public function setTypeCondition($field = 'accepted', $mime = array(), $ext = array(), $cts = array()){ // move to ui_base or base
@@ -120,8 +106,8 @@ abstract class we_fileupload{
 		$this->typeCondition[$field] = $tmp;
 	}
 
-	public static function commitFile($fileInputName = '', $typecondition = array()){// FIXME: move to resp_base?
-		if(!self::isFallback() && !self::isLegacyMode() && $fileInputName && 
+	public static function commitFile($fileInputName = '', $typecondition = array()){// FIXME: implement typecondition, move to resp_base?
+		if($fileInputName && 
 				($filenametemp = we_base_request::_(we_base_request::STRING, 'weFileNameTemp', '')) &&
 				($filename = we_base_request::_(we_base_request::STRING, 'weFileName', ''))){
 
