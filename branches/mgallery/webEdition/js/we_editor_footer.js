@@ -116,7 +116,7 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "glossary_check":
-			new (WE().util.jsWindow)(top.window, url, "glossary_check", -1, -1, 730, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "glossary_check", -1, -1, 730, 400, true, false, true);
 			return;
 		case "save_document":
 			if (doc.isTemplate) {

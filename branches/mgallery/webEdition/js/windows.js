@@ -24,7 +24,7 @@
  */
 
 
-function jsWindow(referer, url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
+function jsWindow(opener, url, ref, x, y, w, h, openAtStartup, scroll, hideMenue, resizable, noPopupErrorMsg, noPopupLocation) {
 	var foo_w = w;
 	var foo_h = h;
 
@@ -37,8 +37,8 @@ function jsWindow(referer, url, ref, x, y, w, h, openAtStartup, scroll, hideMenu
 		x = (x === -1 ? Math.round((screen_width - w) / 2) : x);
 		y = (y === -1 ? Math.round((screen_height - h) / 2) : y);
 	}
-
-	this.referer = referer;
+	this.opener=opener;
+	this.referer = opener.top;
 	this.url = url;
 	this.ref = ref;
 	this.x = x;
@@ -60,7 +60,7 @@ function jsWindow(referer, url, ref, x, y, w, h, openAtStartup, scroll, hideMenu
 jsWindow.prototype.open = function (noPopupErrorMsg, noPopupLocation) {
 	var properties = (this.hideMenue ? "menubar=no," : "menubar=yes,") + (this.resizable ? "resizable=yes," : "resizable=no,") + ((this.scroll) ? "scrollbars=yes," : "scrollbars=no,") + "width=" + this.w + ",height=" + this.h + ",left=" + this.x + ",top=" + this.y;
 	try {
-		this.wind = window.open(this.url, this.ref, properties);
+		this.wind = this.opener.open(this.url, this.ref, properties);
 //Bug mit chrome:
 //		this.wind.moveTo(this.x,this.y);
 		this.wind.focus();
@@ -68,7 +68,7 @@ jsWindow.prototype.open = function (noPopupErrorMsg, noPopupLocation) {
 	} catch (e) {
 		if (noPopupErrorMsg !== undefined && noPopupErrorMsg.length) {
 			if (!this.wind) {
-				top.we_showMessage(noPopupErrorMsg, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(noPopupErrorMsg, WE().consts.message.WE_MESSAGE_ERROR, this.opener);
 				//  disabled See Bug#1335
 				if (noPopupLocation !== undefined) {
 					//document.location = noPopupLocation;

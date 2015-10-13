@@ -118,28 +118,28 @@ function we_cmd(){
 
 		$out .= '
 		case "pref_shop":
-			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_pref.php","shoppref",-1,-1,470,600,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_pref.php","shoppref",-1,-1,470,600,true,true,true,false);
 			break;
 
 		case "edit_shop_vats":
-			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vats.php","edit_shop_vats",-1,-1,500,450,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vats.php","edit_shop_vats",-1,-1,500,450,true,false,true,false);
 			break;
 
 		case "edit_shop_shipping":
-			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_shipping.php","edit_shop_shipping",-1,-1,700,600,true,false,true,false);
 			break;
 		case "edit_shop_status":
-			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_status.php","edit_shop_status",-1,-1,700,780,true,true,true,false);
 			break;
 		case "edit_shop_vat_country":
-			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
+			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_vat_country.php","edit_shop_vat_country",-1,-1,700,780,true,true,true,false);
 			break;
 		case "payment_val":
-			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.php","shoppref",-1,-1,520,720,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_payment.php","shoppref",-1,-1,520,720,true,false,true,false);
 			break;
 
 		case "edit_shop_categories":
-			var wind = new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_categories.php","edit_shop_categories",-1,-1,500,450,true,false,true,false);
+			var wind = new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_categories.php","edit_shop_categories",-1,-1,500,450,true,false,true,false);
 			break;
 
 		default:

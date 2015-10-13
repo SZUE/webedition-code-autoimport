@@ -36,7 +36,7 @@ function we_cmd_glossary(args, url) {
 
 				var transaction = _EditorFrame.getEditorTransaction();
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=glossary_check&we_cmd[2]=" + transaction + "&we_cmd[3]=checkOnly";
-				new (WE().util.jsWindow)(top.window, url, "glossary_check", -1, -1, 730, 400, true, false, true);
+				new (WE().util.jsWindow)(window, url, "glossary_check", -1, -1, 730, 400, true, false, true);
 
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -48,14 +48,14 @@ function we_cmd_glossary(args, url) {
 		case "glossary_edit_link":
 		case "glossary_edit_textreplacement":
 		case "glossary_edit_ifthere":
-			new (WE().util.jsWindow)(top.window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			break;
 		case "glossary_settings":
 			WE().util.jsWindow.prototype.focus('edit_module');
-			new (WE().util.jsWindow)(top.window, url, "edit_glossary_settings", -1, -1, 490, 250, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_glossary_settings", -1, -1, 490, 250, true, true, true, true);
 			break;
 		case "glossary_dictionaries":
-			new (WE().util.jsWindow)(top.window, url, "edit_glossary_dictionaries", -1, -1, 490, 250, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_glossary_dictionaries", -1, -1, 490, 250, true, true, true, true);
 			break;
 		case ((args[0].substr(0, 15) == "GlossaryXYZnew_") ? args[0] : false):
 			tempargs = args[0].split("\XYZ");

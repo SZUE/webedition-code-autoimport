@@ -226,7 +226,7 @@ $jsFunction = '
 		switch (arguments[0]) {
 			case "close":
 				if(hot){
-					new (WE().util.jsWindow)(top.window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_exitQuestion.php","we_exit_doc_question",-1,-1,380,130,true,false,true);
+					new (WE().util.jsWindow)(window, "' . WE_SHOP_MODULE_DIR . 'edit_shop_exitQuestion.php","we_exit_doc_question",-1,-1,380,130,true,false,true);
 				} else {
 					window.close();
 				}

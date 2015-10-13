@@ -111,7 +111,7 @@ function init() {
 }
 
 function browse_users_window() {
-	new (WE().util.jsWindow)(top.window, "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
+	new (WE().util.jsWindow)(window, "<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel_browse_frameset.php?we_transaction=<?php echo $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
 		}
 
 		function save_addrbook() {

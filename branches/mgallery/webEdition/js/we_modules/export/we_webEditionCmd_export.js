@@ -24,7 +24,7 @@ function we_cmd_export(args, url) {
 	switch (args[0]) {
 		case "export_edit":
 		case "export_edit_ifthere":
-			new (WE().util.jsWindow)(top.window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			return true;
 		case "new_export":
 		case "new_export_group":

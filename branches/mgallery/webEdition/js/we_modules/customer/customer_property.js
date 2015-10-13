@@ -103,11 +103,11 @@ function we_cmd() {
 
 	switch (arguments[0]) {
 		case "we_users_selector":
-			new (WE().util.jsWindow)(top.window, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1,WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1,WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "switchPage":
 			document.we_form.cmd.value = arguments[0];
@@ -116,16 +116,16 @@ function we_cmd() {
 			break;
 		case "show_search":
 			keyword = top.content.we_form_treefooter.keyword.value;
-			new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
 			break;
 		case "show_customer_settings":
-			new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
 			break;
 		case "export_customer":
-			new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=export", "export_customer", -1, -1, 640, 600, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=export", "export_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		case "import_customer":
-			new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		default:
 			var args = [];

@@ -192,7 +192,7 @@ function we_cmd() {
 			break;
 		case "exit_doc_question":
 			url = data.frameset + "?pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
-			new (WE().util.jsWindow)(top.window, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+			new (WE().util.jsWindow)(window, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			break;
 
 		case "module_navigation_reset_customer_filter":

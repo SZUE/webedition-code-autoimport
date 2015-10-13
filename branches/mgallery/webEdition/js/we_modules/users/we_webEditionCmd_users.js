@@ -25,7 +25,7 @@ function we_cmd_users(args, url) {
 	switch (args[0]) {
 		case "we_users_selector":
 			if (WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {
-				new (WE().util.jsWindow)(top.window, url, "browse_users", -1, -1, 500, 300, true, false, true);
+				new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
@@ -33,7 +33,7 @@ function we_cmd_users(args, url) {
 		case "users_edit":
 		case "users_edit_ifthere":
 			if (WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {
-				new (WE().util.jsWindow)(top.window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
+				new (WE().util.jsWindow)(window, url, "edit_module", -1, -1, 970, 760, true, true, true, true);
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_perms, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
@@ -84,7 +84,7 @@ function we_cmd_users(args, url) {
 			}
 			break;
 		case "doctypes":
-			new (WE().util.jsWindow)(top.window, url, "doctypes", -1, -1, 720, 670, true, true, true);
+			new (WE().util.jsWindow)(window, url, "doctypes", -1, -1, 720, 670, true, true, true);
 			break;
 		case "users_unlock":
 			top.YAHOO.util.Connect.asyncRequest('GET', url, {success: function () {
@@ -106,7 +106,7 @@ function we_cmd_users(args, url) {
 			}
 			break;
 		case "chooseAddress":
-			new (WE().util.jsWindow)(top.window, url, "chooseAddress", -1, -1, 400, 590, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "chooseAddress", -1, -1, 400, 590, true, true, true, true);
 			break;
 		case "users_changeR":
 			we_repl(self.load, url, args[0]);

@@ -121,7 +121,7 @@ function we_cmd() {
 	break;
 	case "exit_doc_question":
 	 url = "' . $this->frameset . '?pnt=exit_doc_question&delayCmd="+' . $this->editorBodyFrame . '.document.getElementsByName("delayCmd")[0].value+"&delayParam="+' . $this->editorBodyFrame . '.document.getElementsByName("delayParam")[0].value;
-	 new (WE().util.jsWindow)(top.window, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
+	 new (WE().util.jsWindow)(window, url,"we_exit_doc_question",-1,-1,380,130,true,false,true);
 	break;
 	case "tool_weSearch_save":
 	if(' . $this->editorBodyFrame . '.document.we_form.predefined.value==1) {
@@ -2590,23 +2590,23 @@ function we_cmd() {
 	switch (arguments[0]) {
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(top.window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
 			break;
 		case "we_selector_file":
-			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(top.window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		case "openweSearchDirselector":
 			url = WE().consts.dirs.WEBEDITION_DIR+"apps/weSearch/we_weSearchDirSelect.php?";
 			for(var i = 0; i < arguments.length; i++){
 				url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }
 			}
-			new (WE().util.jsWindow)(top.window, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
 			break;
 			' . $this->getPropertyJSAdditional() . '
 		default:

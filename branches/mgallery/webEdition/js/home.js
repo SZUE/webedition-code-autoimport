@@ -870,7 +870,7 @@ function getUser() {
 		}
 	}
 
-	new (WE().util.jsWindow)(top.window, url, 'browse_users', -1, -1, 500, 300, true, false, true);
+	new (WE().util.jsWindow)(window, url, 'browse_users', -1, -1, 500, 300, true, false, true);
 }
 
 
@@ -897,7 +897,7 @@ function removeWidget(wizId) {
 
 function newMessage(username) {
 	if (has_messaging) {
-		new (WE().util.jsWindow)(top.window, 'webEdition/we/include/we_modules/messaging/messaging_newmessage.php?we_transaction=' + transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
+		new (WE().util.jsWindow)(window, 'webEdition/we/include/we_modules/messaging/messaging_newmessage.php?we_transaction=' + transact + '&mode=u_' + encodeURI(username), 'messaging_new_message', -1, -1, 670, 530, true, false, true, false);
 	}
 }
 

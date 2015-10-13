@@ -39,20 +39,20 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "we_selector_file":
-			new (WE().util.jsWindow)(top.window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(top.window, url, "we_catselector", -1, -1,WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1,WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(top.window, url, "we_docselector", -1, -1,WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_docselector", -1, -1,WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_dirselector", -1, -1,WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_dirselector", -1, -1,WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_banner_dirSelector":
-			new (WE().util.jsWindow)(top.window, url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
 			break;
 		case "switchPage":
 			document.we_form.ncmd.value = arguments[0];

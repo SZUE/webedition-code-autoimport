@@ -115,11 +115,11 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "we_users_selector":
-			new (WE().util.jsWindow)(top.window, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 
 		case "select_seem_start":
@@ -141,7 +141,7 @@ function we_cmd() {
 					url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(top.window, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		default:
 			top.content.we_cmd.apply(this, args);

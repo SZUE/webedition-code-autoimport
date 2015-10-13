@@ -391,13 +391,13 @@ if($diff){
 		echo 'case "' . $m . '_edit_ifthere":
 ';
 	}
-	echo 'new (WE().util.jsWindow)(top.window, url,"module_info",-1,-1,380,250,true,true,true);
+	echo 'new (WE().util.jsWindow)(window, url,"module_info",-1,-1,380,250,true,true,true);
 		break;';
 }
 ?>
 	case "exit_doc_question":
 					// return !! important for multiEditor
-					return new (WE().util.jsWindow)(top.window, url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
+					return new (WE().util.jsWindow)(window, url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
 	case "loadVTab":
 		var op = top.makeFoldersOpenString();
 		parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);

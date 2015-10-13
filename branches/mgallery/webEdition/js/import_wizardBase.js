@@ -76,13 +76,13 @@ function we_cmd() {
 		case 'we_selector_directory':
 		case 'we_selector_image':
 		case 'we_selector_document':
-			new (WE().util.jsWindow)(top.window, url, 'we_fileselector', -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
+			new (WE().util.jsWindow)(window, url, 'we_fileselector', -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case 'browse_server':
-			new (WE().util.jsWindow)(top.window, url, 'browse_server', -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, 'browse_server', -1, -1, 840, 400, true, false, true);
 			break;
 		case 'we_selector_category':
-			new (WE().util.jsWindow)(top.window, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.width, true, true, true);
+			new (WE().util.jsWindow)(window, url, 'we_catselector', -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.width, true, true, true);
 			break;
 		case 'add_docCat':
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {

@@ -79,10 +79,10 @@ function we_cmd() {
 		case "we_selector_document":
 		case "we_selector_image":
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(top.window, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
 	}
 }

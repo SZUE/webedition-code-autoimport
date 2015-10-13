@@ -36,7 +36,7 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "we_banner_selector":
-			new (WE().util.jsWindow)(top.window, url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_bannerselector", -1, -1, 650, 400, true, true, true);
 			break;
 		default:
 			var args = [];

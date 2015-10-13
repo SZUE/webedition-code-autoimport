@@ -33,7 +33,7 @@ function addOptionh(txt, id) {
 
 function openFile() {
 	url = "we_sselector_uploadFile.php?pat=" + top.currentDir;
-	new (WE().util.jsWindow)(top.window, url, "we_fsuploadImage", -1, -1, 450, 360, true, false, true);
+	new (WE().util.jsWindow)(window, url, "we_fsuploadImage", -1, -1, 450, 360, true, false, true);
 }
 
 function reorder(name) {
@@ -131,7 +131,7 @@ function editFile() {
 				top.currentID = top.sitepath + top.rootDir + top.currentDir + "/" + a.value;
 			}
 			url = "we_sselector_editFile.php?id=" + top.currentID;
-			new (WE().util.jsWindow)(top.window, url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
 		}
 		else {
 			top.we_showMessage(g_l.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);

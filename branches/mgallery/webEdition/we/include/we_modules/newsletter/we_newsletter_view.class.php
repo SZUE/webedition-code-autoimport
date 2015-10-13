@@ -457,7 +457,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter' . ($
 						we_html_element::jsElement('
 										self.focus();
 										top.content.get_focus=0;
-										new (WE().util.jsWindow)(top.window, "' . $this->frameset . '?pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
+										new (WE().util.jsWindow)(window, "' . $this->frameset . '?pnt=qsave1","save_question",-1,-1,350,200,true,true,true,false);
 									');
 						break;
 					}
@@ -731,7 +731,7 @@ edf.populateGroups();');
 					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
 					echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 					we_html_element::jsElement('
-							new (WE().util.jsWindow)(top.window, "' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);
+							new (WE().util.jsWindow)(window, "' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);
 						');
 				}
 				break;
@@ -809,7 +809,7 @@ self.close();');
 				we_html_element::jsElement(
 					((!trim($this->newsletter->Subject)) ? 'if(confirm("' . g_l('modules_newsletter', '[no_subject]') . '")){' : '') . '
 url ="' . $this->frameset . '?pnt=send&nid=' . $this->newsletter->ID . (we_base_request::_(we_base_request::BOOL, "test") ? '&test=1' : '') . '";
-new (WE().util.jsWindow)(top.window, url,"newsletter_send",-1,-1,600,400,true,true,true,false);
+new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,true,false);
 						' . (!(trim($this->newsletter->Subject)) ? '}' : '')
 				);
 				break;

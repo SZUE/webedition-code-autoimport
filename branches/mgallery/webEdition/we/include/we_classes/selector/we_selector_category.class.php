@@ -500,7 +500,7 @@ function we_cmd(){
 
 	switch (arguments[0]){
 		case "we_selector_file":
-			new (WE().util.jsWindow)(top.window, url,"we_selector",-1,-1,' . self::WINDOW_SELECTOR_WIDTH . ',' . self::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . self::WINDOW_SELECTOR_WIDTH . ',' . self::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		default:
 					var args = [];

@@ -148,7 +148,7 @@ function doSearch() {
 }
 
 function launchAdvanced() {
-	new (WE().util.jsWindow)(top.window, "' . WE_MESSAGING_MODULE_DIR . 'messaging_search_advanced.php?we_transaction=' . $this->transaction . '","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
+	new (WE().util.jsWindow)(window, "' . WE_MESSAGING_MODULE_DIR . 'messaging_search_advanced.php?we_transaction=' . $this->transaction . '","messaging_search_advanced",-1,-1,300,240,true,false,true,false);
 }
 
 function clearSearch() {

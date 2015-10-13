@@ -85,7 +85,7 @@ we_ui_controls_WeWysiwygEditor.openWeWysiwyg = function()
 	url += "we_cmd[8]=&we_cmd[9]=337&we_cmd[10]=94&we_cmd[11]=1&we_cmd[12]=1&we_cmd[13]=&we_cmd[14]=&we_cmd[15]=UTF-8&";
 	url += "we_cmd[16]=" +encodeURI(arguments[6]) + "&";
 	url += "we_cmd[17]=";
-	new (WE().util.jsWindow)(top.window, url, "we_" + arguments[4] + "_wysiwyg", -1, -1, arguments[2] - 30, arguments[3] + 70, true, true, true);
+	new (WE().util.jsWindow)(window, url, "we_" + arguments[4] + "_wysiwyg", -1, -1, arguments[2] - 30, arguments[3] + 70, true, true, true);
 }
 
 

@@ -71,13 +71,13 @@ we_ui_controls_ACFileSelector.openSelector = function()
 	}
 	switch (arguments[0]) {
 		case "we_selector_document":
-			new (WE().util.jsWindow)(top.window, url, "we_docselector", -1, -1, 900, 685, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_docselector", -1, -1, 900, 685, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_selector", -1, -1, 900, 600, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, 900, 600, true, true, true, true);
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(top.window, url, "browse_server", -1, -1, 900, 600, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", -1, -1, 900, 600, true, true, true, true);
 			break;
 	}
 }
@@ -107,7 +107,7 @@ we_ui_controls_ACFileSelector.openToolSelector = function()
 					url += "&";
 				}
 			}
-			new (WE().util.jsWindow)(top.window, url, "we_" + arguments[5] + "_dirselector", -1, -1, 600, 400, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_" + arguments[5] + "_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 	}
 }

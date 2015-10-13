@@ -349,7 +349,7 @@ function doPublish(url, trans, cmd) {
 }
 
 function openWindow(url, ref, x, y, w, h, scrollbars, menues) {
-	new (WE().util.jsWindow)(top.window, url, ref, x, y, w, h, true, scrollbars, menues);
+	new (WE().util.jsWindow)(window, url, ref, x, y, w, h, true, scrollbars, menues);
 }
 
 function openBrowser(url) {
@@ -542,7 +542,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "openFirstStepsWizardMasterTemplate":
 		case "openFirstStepsWizardDetailTemplates":
-			new (WE().util.jsWindow)(top.window, url, "we_firststepswizard", -1, -1, 1024, 768, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_firststepswizard", -1, -1, 1024, 768, true, true, true);
 			break;
 		case "openUnpublishedObjects":
 			we_cmd("tool_weSearch_edit", "", "", 7, 3);
@@ -551,7 +551,7 @@ function we_cmd_base(args, url) {
 			we_cmd("tool_weSearch_edit", "", "", 4, 3);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(top.window, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "openSidebar":
 			WE().layout.sidebar.open("default");
@@ -560,13 +560,13 @@ function we_cmd_base(args, url) {
 			top.weSidebarContent.location.href = url;
 			break;
 		case "versions_preview":
-			new (WE().util.jsWindow)(top.window, url, "version_preview", -1, -1, 1000, 750, true, false, true, false);
+			new (WE().util.jsWindow)(window, url, "version_preview", -1, -1, 1000, 750, true, false, true, false);
 			break;
 		case "versions_wizard":
-			new (WE().util.jsWindow)(top.window, url, "versions_wizard", -1, -1, 600, 620, true, false, true);
+			new (WE().util.jsWindow)(window, url, "versions_wizard", -1, -1, 600, 620, true, false, true);
 			break;
 		case "versioning_log":
-			new (WE().util.jsWindow)(top.window, url, "versioning_log", -1, -1, 600, 500, true, false, true);
+			new (WE().util.jsWindow)(window, url, "versioning_log", -1, -1, 600, 500, true, false, true);
 			break;
 
 		case "delete_single_document_question":
@@ -618,16 +618,16 @@ function we_cmd_base(args, url) {
 			submit_we_form(self.treeheader, self.load, url);
 			break;
 		case "change_passwd":
-			new (WE().util.jsWindow)(top.window, url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
+			new (WE().util.jsWindow)(window, url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
 			break;
 		case "update":
-			new (WE().util.jsWindow)(top.window, "/webEdition/liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+			new (WE().util.jsWindow)(window, "/webEdition/liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "upgrade":
-			new (WE().util.jsWindow)(top.window, "/webEdition/liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+			new (WE().util.jsWindow)(window, "/webEdition/liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "languageinstallation":
-			new (WE().util.jsWindow)(top.window, "/webEdition/liveUpdate/liveUpdate.php?active=languages", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+			new (WE().util.jsWindow)(window, "/webEdition/liveUpdate/liveUpdate.php?active=languages", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "del":
 			we_cmd('delete', 1, args[2]);
@@ -662,7 +662,7 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "exit_multi_doc_question":
-			new (WE().util.jsWindow)(top.window, url, "exit_multi_doc_question", -1, -1, 500, 300, true, false, true);
+			new (WE().util.jsWindow)(window, url, "exit_multi_doc_question", -1, -1, 500, 300, true, false, true);
 			break;
 		case "loadFolder":
 		case "closeFolder":
@@ -672,28 +672,28 @@ function we_cmd_base(args, url) {
 			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
 			break;
 		case "rebuild":
-			new (WE().util.jsWindow)(top.window, url, "rebuild", -1, 0, 609, 645, true, false, true);
+			new (WE().util.jsWindow)(window, url, "rebuild", -1, 0, 609, 645, true, false, true);
 			break;
 		case "openPreferences":
-			new (WE().util.jsWindow)(top.window, url, "preferences", -1, -1, 540, 670, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "preferences", -1, -1, 540, 670, true, true, true, true);
 			break;
 		case "editCat":
 			we_cmd("we_selector_category", 0, WE().consts.tables.CATEGORY_TABLE, "", "", "", "", "", 1);
 			break;
 		case "editThumbs":
-			new (WE().util.jsWindow)(top.window, url, "thumbnails", -1, -1, 560, 550, true, true, true);
+			new (WE().util.jsWindow)(window, url, "thumbnails", -1, -1, 560, 550, true, true, true);
 			break;
 		case "editMetadataFields":
-			new (WE().util.jsWindow)(top.window, url, "metadatafields", -1, -1, 500, 550, true, true, true);
+			new (WE().util.jsWindow)(window, url, "metadatafields", -1, -1, 500, 550, true, true, true);
 			break;
 		case "doctypes":
-			new (WE().util.jsWindow)(top.window, url, "doctypes", -1, -1, 800, 670, true, true, true);
+			new (WE().util.jsWindow)(window, url, "doctypes", -1, -1, 800, 670, true, true, true);
 			break;
 		case "info":
-			new (WE().util.jsWindow)(top.window, url, "info", -1, -1, 432, 360, true, false, true);
+			new (WE().util.jsWindow)(window, url, "info", -1, -1, 432, 360, true, false, true);
 			break;
 		case "webEdition_online":
-			new (WE().util.jsWindow)(top.window, "http://www.webedition.org/", "webEditionOnline", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(window, "http://www.webedition.org/", "webEditionOnline", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "snippet_shop":
 			alert("Es gibt noch keine URL für die Snippets Seite");
@@ -701,54 +701,54 @@ function we_cmd_base(args, url) {
 		case "help_modules":
 			WE().util.jsWindow.prototype.focus('edit_module');
 			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
-			new (WE().util.jsWindow)(top.window, url, "help", -1, -1, 800, 600, true, false, true, true);
+			new (WE().util.jsWindow)(window, url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_modules":
 			WE().util.jsWindow.prototype.focus('edit_module');
 			url = "/webEdition/we_cmd.php?we_cmd[0]=info";
-			new (WE().util.jsWindow)(top.window, url, "info", -1, -1, 432, 350, true, false, true);
+			new (WE().util.jsWindow)(window, url, "info", -1, -1, 432, 350, true, false, true);
 			break;
 		case "help_tools":
 			WE().util.jsWindow.prototype.focus('tool_window') ||
 							WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
 							WE().util.jsWindow.prototype.focus('tool_window_weSearch');
 			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
-			new (WE().util.jsWindow)(top.window, url, "help", -1, -1, 800, 600, true, false, true, true);
+			new (WE().util.jsWindow)(window, url, "help", -1, -1, 800, 600, true, false, true, true);
 			break;
 		case "info_tools":
 			WE().util.jsWindow.prototype.focus('tool_window') ||
 							WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
 							WE().util.jsWindow.prototype.focus('tool_window_weSearch');
 			url = "/webEdition/we_cmd.php?we_cmd[0]=info";
-			new (WE().util.jsWindow)(top.window, url, "info", -1, -1, 432, 350, true, false, true);
+			new (WE().util.jsWindow)(window, url, "info", -1, -1, 432, 350, true, false, true);
 			break;
 		case "help":
 			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
-			new (WE().util.jsWindow)(top.window, url, "help", -1, -1, 720, 600, true, false, true, true);
+			new (WE().util.jsWindow)(window, url, "help", -1, -1, 720, 600, true, false, true, true);
 			break;
 		case "help_forum":
-			new (WE().util.jsWindow)(top.window, "http://forum.webedition.org", "help_forum", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(window, "http://forum.webedition.org", "help_forum", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "help_bugtracker":
-			new (WE().util.jsWindow)(top.window, "http://qa.webedition.org/tracker/", "help_bugtracker", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(window, "http://qa.webedition.org/tracker/", "help_bugtracker", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "help_changelog":
-			new (WE().util.jsWindow)(top.window, "http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(window, "http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "we_customer_selector":
 		case "we_selector_file":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_fileupload_image":
 		case "we_fileupload_import":
-			new (WE().util.jsWindow)(top.window, url, "we_fileupload_image", -1, -1, 500, top.WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_fileupload_image", -1, -1, 500, top.WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "setTab":
 			if (self.Vtabs && self.Vtabs.setTab && (window.treeData !== undefined)) {
@@ -947,7 +947,7 @@ function we_cmd_base(args, url) {
 			doSave(url, args[1], args[0]);
 			break;
 		case "we_selector_delete":
-			new (WE().util.jsWindow)(top.window, url, "we_del_selector", -1, -1, WE().consts.size.windowDelSelect.width, WE().consts.size.windowDelSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_del_selector", -1, -1, WE().consts.size.windowDelSelect.width, WE().consts.size.windowDelSelect.height, true, true, true, true);
 			break;
 		case "browse":
 			openBrowser();
@@ -959,34 +959,34 @@ function we_cmd_base(args, url) {
 			WE().layout.weEditorFrameController.openDocument('', '', '', 'open_cockpit');
 			break;
 		case "browse_server":
-			new (WE().util.jsWindow)(top.window, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(window, url, "browse_server", -1, -1, 840, 400, true, false, true);
 			break;
 		case "make_backup":
-			new (WE().util.jsWindow)(top.window, url, "export_backup", -1, -1, 680, 600, true, true, true);
+			new (WE().util.jsWindow)(window, url, "export_backup", -1, -1, 680, 600, true, true, true);
 			break;
 		case "recover_backup":
-			new (WE().util.jsWindow)(top.window, url, "recover_backup", -1, -1, 680, 600, true, true, true);
+			new (WE().util.jsWindow)(window, url, "recover_backup", -1, -1, 680, 600, true, true, true);
 			break;
 		case "import_docs":
-			new (WE().util.jsWindow)(top.window, url, "import_docs", -1, -1, 480, 390, true, false, true);
+			new (WE().util.jsWindow)(window, url, "import_docs", -1, -1, 480, 390, true, false, true);
 			break;
 		case "import":
-			new (WE().util.jsWindow)(top.window, url, "import", -1, -1, 600, 620, true, false, true);
+			new (WE().util.jsWindow)(window, url, "import", -1, -1, 600, 620, true, false, true);
 			break;
 		case "import_files":
-			new (WE().util.jsWindow)(top.window, url, "import_files", -1, -1, 600, 620, true, false, true);
+			new (WE().util.jsWindow)(window, url, "import_files", -1, -1, 600, 620, true, false, true);
 			break;
 		case "export":
-			new (WE().util.jsWindow)(top.window, url, "export", -1, -1, 600, 540, true, false, true);
+			new (WE().util.jsWindow)(window, url, "export", -1, -1, 600, 540, true, false, true);
 			break;
 		case "copyWeDocumentCustomerFilter":
-			new (WE().util.jsWindow)(top.window, url, "copyWeDocumentCustomerFilter", -1, -1, 400, 115, true, true, true);
+			new (WE().util.jsWindow)(window, url, "copyWeDocumentCustomerFilter", -1, -1, 400, 115, true, true, true);
 			break;
 		case "copyFolder":
-			new (WE().util.jsWindow)(top.window, url, "copyfolder", -1, -1, 550, 320, true, true, true);
+			new (WE().util.jsWindow)(window, url, "copyfolder", -1, -1, 550, 320, true, true, true);
 			break;
 		case "del_frag":
-			new (WE().util.jsWindow)(top.window, "/webEdition/delFrag.php?currentID=" + args[1], "we_del", -1, -1, 600, 130, true, true, true);
+			new (WE().util.jsWindow)(window, "/webEdition/delFrag.php?currentID=" + args[1], "we_del", -1, -1, 600, 130, true, true, true);
 			break;
 		case "open_wysiwyg_window":
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
@@ -1006,7 +1006,7 @@ function we_cmd_base(args, url) {
 			// set new width & height
 			url = url.replace(/we_cmd\[2\]=[^&]+/, 'we_cmd[2]=' + wyw);
 			url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]=' + (wyh - args[10]));
-			new (WE().util.jsWindow)(top.window, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
+			new (WE().util.jsWindow)(window, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
 			//doPostCmd(args,"we_wysiwygWin");
 			break;
 		case "not_installed_modules":
@@ -1016,7 +1016,7 @@ function we_cmd_base(args, url) {
 			we_repl(self.load, url, args[0]);
 			break;
 		case "customValidationService":
-			new (WE().util.jsWindow)(top.window, url, "we_customizeValidation", -1, -1, 700, 700, true, false, true);
+			new (WE().util.jsWindow)(window, url, "we_customizeValidation", -1, -1, 700, 700, true, false, true);
 			break;
 		case "edit_home":
 			if (args[1] === 'add') {
@@ -1024,22 +1024,22 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "edit_navi":
-			new (WE().util.jsWindow)(top.window, url, "we_navieditor", -1, -1, 400, 360, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_navieditor", -1, -1, 400, 360, true, true, true, true);
 			break;
 		case "initPlugin":
-			weplugin_wait = new (WE().util.jsWindow)(top.window, "/webEdition/editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
+			weplugin_wait = new (WE().util.jsWindow)(window, "/webEdition/editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
 			break;
 		case "edit_settings_newsletter":
-			new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_MODULES_DIR + "newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
 			break;
 		case "edit_settings_customer":
-			new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_MODULES_DIR + "customer/edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "customer/edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
 			break;
 		case "edit_settings_shop":
-			new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
 			break;
 		case "edit_settings_messaging":
-			new (WE().util.jsWindow)(top.window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_settings.php?mode=1", "messaging_settings", -1, -1, 280, 200, true, false, true);
 			break;
 		case "edit_settings_spellchecker":
 			we_cmd("spellchecker_edit");
@@ -1058,16 +1058,16 @@ function we_cmd_base(args, url) {
 			we_cmd("glossary_settings");
 			break;
 		case "sysinfo":
-			new (WE().util.jsWindow)(top.window, "/webEdition/we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", -1, -1, 720, 660, true, false, true);
+			new (WE().util.jsWindow)(window, "/webEdition/we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", -1, -1, 720, 660, true, false, true);
 			break;
 		case "showerrorlog":
-			new (WE().util.jsWindow)(top.window, "/webEdition/errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
+			new (WE().util.jsWindow)(window, "/webEdition/errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
 			break;
 		case "view_backuplog":
-			new (WE().util.jsWindow)(top.window, "/webEdition/we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", -1, -1, 720, 660, true, false, true);
+			new (WE().util.jsWindow)(window, "/webEdition/we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", -1, -1, 720, 660, true, false, true);
 			break;
 		case "show_message_console":
-			new (WE().util.jsWindow)(top.window, "/webEdition/we/include/jsMessageConsole/messageConsole.php", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
+			new (WE().util.jsWindow)(window, "/webEdition/we/include/jsMessageConsole/messageConsole.php", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
 			break;
 		case "remove_from_editor_plugin":
 			if (args[1] && top.plugin && top.plugin.remove) {
@@ -1256,35 +1256,35 @@ function we_cmd_base(args, url) {
 		case "open_document":
 			we_cmd("load", WE().consts.tables.FILE_TABLE);
 			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(top.window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "open_collection":
 			we_cmd("load", WE().consts.tables.VFILE_TABLE);
 			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(top.window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "edit_new_collection":
 			url = "/webEdition/we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
-			new (WE().util.jsWindow)(top.window, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		case "help_documentation":
-			new (WE().util.jsWindow)(top.window, "http://documentation.webedition.org/wiki/" + WE().session.docuLang + "/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(window, "http://documentation.webedition.org/wiki/" + WE().session.docuLang + "/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
 			break;
 
 		case "help_tagreference":
-			new (WE().util.jsWindow)(top.window, "http://tags.webedition.org/" + WE().session.docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(window, "http://tags.webedition.org/" + WE().session.docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "help_demo":
-			new (WE().util.jsWindow)(top.window, "http://demo.webedition.org/" + WE().session.docuLang + "/", "help_demo", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(window, "http://demo.webedition.org/" + WE().session.docuLang + "/", "help_demo", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "open_tagreference":
 			var docupath = "http://tags.webedition.org/" + WE().session.docuLang + "/" + args[1];
-			new (WE().util.jsWindow)(top.window, docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
+			new (WE().util.jsWindow)(window, docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
 			break;
 		case "open_template":
 			we_cmd("load", WE().consts.tables.TEMPLATES_TABLE);
 			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=" + WE().consts.contentTypes.TEMPLATE + "&we_cmd[2]=" + WE().consts.tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(top.window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "switch_edit_page":
 			// get editor root frame of active tab

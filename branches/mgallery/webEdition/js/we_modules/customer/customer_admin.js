@@ -53,7 +53,7 @@ function we_cmd() {
 		case "open_add_field":
 			branch = document.we_form.branch.value;
 			url = frameUrl + "?pnt=field_editor&art=add&branch=" + branch;
-			new (WE().util.jsWindow)(top.window, url, "field_editor", -1, -1, 380, 250, true, false, true);
+			new (WE().util.jsWindow)(window, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			break;
 		case "open_edit_field":
 			field = document.we_form.fields_select.value;
@@ -62,7 +62,7 @@ function we_cmd() {
 				top.we_showMessage(g_l.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				url = frameUrl + "?pnt=field_editor&art=edit&field=" + field + "&branch=" + branch;
-				new (WE().util.jsWindow)(top.window, url, "field_editor", -1, -1, 380, 250, true, false, true);
+				new (WE().util.jsWindow)(window, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			}
 			break;
 		case "delete_field":
@@ -112,7 +112,7 @@ function we_cmd() {
 				top.we_showMessage(g_l.branch_no_edit, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				url = frameUrl + "?pnt=branch_editor&art=edit&&branch=" + branch;
-				new (WE().util.jsWindow)(top.window, url, "field_editor", -1, -1, 380, 250, true, false, true);
+				new (WE().util.jsWindow)(window, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			}
 			break;
 		case "save_branch":

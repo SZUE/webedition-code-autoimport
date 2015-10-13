@@ -394,11 +394,11 @@ if($ok && $cmd === "edit_link_at_class"){
 			switch (arguments[0]) {
 				case "we_selector_image":
 				case "we_selector_document":
-					new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+					new (WE().util.jsWindow)(window, url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
 					break;
 
 				case "browse_server":
-					new (WE().util.jsWindow)(top.window, url, "browse_server", -1, -1, 840, 400, true, false, true);
+					new (WE().util.jsWindow)(window, url, "browse_server", -1, -1, 840, 400, true, false, true);
 					break;
 
 				default:

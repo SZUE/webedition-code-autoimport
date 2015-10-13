@@ -687,7 +687,7 @@ function closeAllType(){
 					var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if (i < (arguments.length - 1)){ url += "&"; }}
 					switch (arguments[0]) {
 						case "browse_server":
-							new (WE().util.jsWindow)(top.window, url,"server_selector",-1,-1,660,330,true,false,true);
+							new (WE().util.jsWindow)(window, url,"server_selector",-1,-1,660,330,true,false,true);
 						break;
 					}
 				}

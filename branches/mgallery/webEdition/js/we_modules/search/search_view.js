@@ -833,7 +833,7 @@ weSearch = {
 	},
 	previewVersion: function (ID) {
 		top.we_cmd("versions_preview", ID, 0);
-		//new (WE().util.jsWindow)(top.window, WE().consts.dirs.WEBEDITION_DIR+"we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
+		//new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
 	},
 	calendarSetup: function (x) {
 		for (i = 0; i < x; i++) {
