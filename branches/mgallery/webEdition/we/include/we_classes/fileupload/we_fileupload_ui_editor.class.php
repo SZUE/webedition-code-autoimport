@@ -182,7 +182,25 @@ reloadMainTree = function (table) {
 documentWriteback = function(importedDocument){
 	' . ($this->editorJS['writebackTarget'] ? 'opener.top.weEditorFrameController.getVisibleEditorFrame().' . $this->editorJS['writebackTarget'] . ' = importedDocument.id;' : '//no writeback') . '
 }
-			');
+
+function we_cmd() {
+	var args = "";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		if (i < (arguments.length - 1)) {
+			url += "&";
+		}
+	}
+	switch (arguments[0]) {
+		case "we_selector_directory":
+			alert("sevi");
+			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			break;
+	}
+}
+
+');
 	}
 
 	protected function getFormIsSearchable(){
