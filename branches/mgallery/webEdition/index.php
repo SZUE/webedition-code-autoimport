@@ -55,8 +55,6 @@ define('LOGIN_CREDENTIALS_INVALID', 1);
 define('LOGIN_UNKNOWN', 0);
 
 
-$ignore_browser = we_base_request::_(we_base_request::BOOL, 'ignore_browser', false);
-
 function getValueLoginMode($val){
 	$mode = isset($_COOKIE['we_mode']) ? $_COOKIE['we_mode'] : we_base_constants::MODE_NORMAL;
 	switch($val){
@@ -219,9 +217,7 @@ if(isset($GLOBALS['userLoginDenied'])){
 	$login = LOGIN_CREDENTIALS_INVALID;
 } else {
 	$login = LOGIN_UNKNOWN;
-	if($ignore_browser){
-		setcookie('ignore_browser', 'true', time() + 2592000); //	Cookie remembers that the incompatible mode has been selected, it will expire in one Month !!!
-	}
+	//old incompatible browser
 }
 
 function getError($reason, $cookie = false){
@@ -272,11 +268,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			'checkLogin' => session_id(),
 			'indexDate' => date('d.m.Y, H:i:s')));
 
-	if($ignore_browser){
-		$_hidden_values .= we_html_element::htmlHidden('ignore_browser', 'true');
-	}
-
-	/*	 * ***********************************************************************
+		/*	 * ***********************************************************************
 	 * BUILD DIALOG
 	 * *********************************************************************** */
 
@@ -336,7 +328,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 					we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case 3:
-			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed_security]'), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php" . (($ignore_browser || (isset($_COOKIE["ignore_browser"]) && $_COOKIE["ignore_browser"] === "true")) ? "&ignore_browser=" . (isset($_COOKIE["ignore_browser"]) ? $_COOKIE["ignore_browser"] : ($ignore_browser ? 1 : 0)) : "") . "';";
+			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed_security]'), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php';";
 			break;
 		case LOGIN_DENIED:
 			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_denied_for_user]'), we_message_reporting::WE_MESSAGE_ERROR);
