@@ -82,7 +82,7 @@ if(!empty($oldDoc) && !$isObj){
 	$we_tabs->addTab(new we_tab(g_l('versions', '[previewVersionOld]'), '((activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 }
 
-$js = $we_tabs->getHeader() .
+$js = we_tabs::getHeader() .
 	we_html_element::jsElement('
 function setTab(tab) {
 	toggle("tab"+activ_tab);

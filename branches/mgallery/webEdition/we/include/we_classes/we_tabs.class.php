@@ -25,18 +25,14 @@
 class we_tabs{
 	private $container = '';
 
-	public function __construct(){
-
-	}
-
-	public function addTab($tab){
+	public function addTab(we_tab $tab){
 		$this->container .= $tab->getHTML();
 	}
 
-	function getHeader(){
+	static function getHeader(){
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js');
+			we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js','setTimeout(getPathInfos, 250);');
 	}
 
 	function getHTML(){

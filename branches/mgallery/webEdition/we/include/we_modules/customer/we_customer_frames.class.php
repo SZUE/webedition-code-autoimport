@@ -162,11 +162,10 @@ class we_customer_frames extends we_modules_frame{
 				we_html_element::jsElement($extraJS)
 		);
 
-		return $this->getHTMLDocument($body, $tabs->getHeader() .
-				we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
+		return $this->getHTMLDocument($body, we_tabs::getHeader() .
 				we_html_element::jsElement('
 function setTab(tab) {
-	' . $this->topFrame . '.activ_tab=tab;
+	top.content.activ_tab=tab;
 	parent.edbody.we_cmd(\'switchPage\',tab);
 }'));
 	}
@@ -380,7 +379,7 @@ function setTab(tab) {
 		$search->setRow(0, array('style' => 'vertical-align:top'));
 		$search->setCol(0, 0, array('class' => 'defaultfont', 'colspan' => 3, 'style' => 'padding-bottom: 3px;'), g_l('modules_customer', '[search_for]'));
 
-		$select = new we_html_select(array('name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => 'opener.' . $this->topFrame . ".we_cmd('customer_edit',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
+		$select = new we_html_select(array('name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => "opener.top.content.we_cmd('customer_edit',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
 
 		$foundItems = 0;
 		if($mode){

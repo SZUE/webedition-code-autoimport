@@ -25,8 +25,34 @@
  * INCLUDES
  * *************************************************************************** */
 
-include(WE_INCLUDES_PATH . 'we_editors/we_preferences_header.inc.php');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_preferences_config.inc.php');
+
+
+$tabname = we_base_request::_(we_base_request::STRING, "tabname", "setting_ui");
+
+
+// generate the tabs
+
+$we_tabs = new we_tabs();
+
+foreach($GLOBALS['tabs'] as $name => $perm){
+	if(empty($perm) || permissionhandler::hasPerm($perm)){
+		$we_tabs->addTab(new we_tab(g_l('prefs', '[tab][' . $name . ']'), ($tabname === 'setting_' . $name ? we_tab::ACTIVE : we_tab::NORMAL), "top.we_cmd('" . $name . "');"));
+	}
+}
+
+function getPreferencesTabsDefaultHeight(){
+	return 22;
+}
+
+function getPreferencesCSS(){
+	return we_tabs::getHeader();
+}
+
+function getPreferencesHeader(){
+	return '<div id="main" >' . $GLOBALS['we_tabs']->getHTML() . '</div>';
+}
+
 
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
@@ -84,4 +110,4 @@ $body = we_html_element::htmlBody(array('id' => 'weMainBody', 'onload' => 'setFr
 			we_html_element::htmlExIFrame('we_preferences_footer', getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
 	));
 
-echo we_html_element::htmlBody(array(), $body) . getPreferencesJS() . getPreferencesFooterJS() . '</html>';
+echo we_html_element::htmlBody(array(), $body) . getPreferencesFooterJS() . '</html>';

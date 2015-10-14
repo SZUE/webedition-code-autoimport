@@ -46,7 +46,7 @@ foreach($mods as $_menuItem){
 	}
 }
 
-$tab_header = $we_tabs->getHeader();
+$tab_header = we_tabs::getHeader();
 
 echo $tab_header .
  we_html_element::jsElement('

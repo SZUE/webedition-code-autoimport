@@ -68,7 +68,7 @@ foreach($_menuItems as $_menuItem){
 	}
 }
 
-$tab_header = $we_tabs->getHeader();
+$tab_header = we_tabs::getHeader();
 
 echo $tab_header;
 ?>

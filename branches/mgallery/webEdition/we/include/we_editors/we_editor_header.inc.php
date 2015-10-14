@@ -129,7 +129,7 @@ switch($_SESSION['weS']['we_mode']){
 				$we_tabs->addTab(new we_tab(g_l('weClass', '[docList]'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_DOCLIST) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_DOCLIST . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_DOCLIST)));
 			}
 		}
-		echo $we_tabs->getHeader();
+		echo we_tabs::getHeader();
 		break;
 	case we_base_constants::MODE_SEE://	No tabs in Super-Easy-Edit_mode
 		echo we_html_element::jsElement('var weTabs; function setFrameSize(){}');

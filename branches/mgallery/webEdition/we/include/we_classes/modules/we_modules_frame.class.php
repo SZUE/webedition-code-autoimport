@@ -248,7 +248,7 @@ function we_save() {
 
 	protected function getHTMLExitQuestion(){
 		if(($dc = we_base_request::_(we_base_request::RAW, 'delayCmd'))){
-			$_frame = 'opener.' . $this->topFrame;
+			$_frame = 'opener.top.content';
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
 			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
 			$_cancel = 'self.close();';

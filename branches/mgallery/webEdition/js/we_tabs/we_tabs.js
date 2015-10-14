@@ -84,12 +84,7 @@ function setPathGroup(pathGroup) {
 }
 
 
-if ((WE().layout.weEditorFrameController.getVisibleEditorFrame()) || (parent.frames && parent.frames[1])) {
-	setTimeout(getPathInfos, 250);
-}
-
 var loop = 0;
-
 function getPathInfos() {
 	try {
 		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();

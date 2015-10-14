@@ -74,7 +74,7 @@ $we_tabs->addTab(new we_tab(g_l('modules_spellchecker', '[dictAdmin]'), '((activ
 $we_tabs->addTab(new we_tab(g_l('modules_spellchecker', '[userDictAdmin]'), '((activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
 
 
-$js = $we_tabs->getHeader();
+$js = we_tabs::getHeader();
 
 $table = new we_html_table(array('width' => 380, 'style' => 'margin: 5px;'), 3, 5);
 

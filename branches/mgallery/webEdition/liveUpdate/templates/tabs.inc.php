@@ -45,4 +45,4 @@ $_body = we_html_element::htmlBody(array(
 		'onload' => 'setFrameSize();',
 		'onresize' => 'setFrameSize()'), $bodyContent);
 
-echo we_html_tools::getHtmlTop('', '', '', $tabs->getHeader(), $_body);
+echo we_html_tools::getHtmlTop('', '', '', we_tabs::getHeader(), $_body);

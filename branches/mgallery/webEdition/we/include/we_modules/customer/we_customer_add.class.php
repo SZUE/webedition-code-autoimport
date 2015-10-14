@@ -164,7 +164,7 @@ abstract class we_customer_add{
 		return $pob->getHTMLDocument($out);
 	}
 
-	public static function getJSSortAdmin($pob){
+	public static function getJSSortAdmin(we_customer_view $pob){
 		return we_html_element::jsElement('
 var frames={
 	"set":"' . $pob->frameset . '"

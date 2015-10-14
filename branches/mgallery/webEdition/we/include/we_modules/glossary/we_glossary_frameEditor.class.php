@@ -25,7 +25,7 @@
 class we_glossary_frameEditor{
 
 	function buildHeader($weGlossaryFrames, $we_tabs, $titlePre, $titlePost){
-		$tabsHead = $we_tabs->getHeader();
+		$tabsHead = we_tabs::getHeader();
 		$bodyContent = '<div id="main" ><div id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $titlePre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . $titlePost . '</b></span></nobr></div>' . $we_tabs->getHTML() . '</div>';
 
 		$body = we_html_element::htmlBody(array("onresize" => "setFrameSize()", "onload" => "setFrameSize()", "id" => "eHeaderBody"), $bodyContent
