@@ -106,7 +106,6 @@ echo (isset($we_JavaScript) ? $we_JavaScript : "");
 if($we_responseText){
 	$_jsCommand = "";
 	echo 'self.focus();
-top.toggleBusy(0);
 showAlert = 0;
 var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();';
 

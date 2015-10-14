@@ -161,9 +161,6 @@ if(isset($we_JavaScript)){
 }
 if($we_show_response){
 	if($we_responseText){
-		?>
-		opener.top.toggleBusy(0);
-		<?php
 		echo we_message_reporting::getShowMessageCall($we_responseText, $we_response_type);
 	}
 }

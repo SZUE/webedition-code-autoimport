@@ -48,7 +48,6 @@ function openClose(id) {
 	treeData[eintragsIndex].open = openstatus;
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {
 		we_cmd("loadFolder", top.treeData.table, treeData[eintragsIndex].id);
-		toggleBusy(1);
 	} else {
 		we_cmd("closeFolder", top.treeData.table, treeData[eintragsIndex].id);
 		drawTree();

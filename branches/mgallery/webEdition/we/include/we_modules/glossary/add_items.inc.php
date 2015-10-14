@@ -167,7 +167,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		}
 		?>
 		<script><!--
-			top.opener.top.toggleBusy();
 			function setDialog() {
 
 		<?php

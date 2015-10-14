@@ -25,7 +25,6 @@ we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop(g_l('alert', '[noResourceTitle]'), '', '', STYLESHEET .
 	we_html_element::jsElement('
-	top.toggleBusy(0);
 	WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);'));
 ?>
 <body class="weDialogBody"><?php

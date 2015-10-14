@@ -25,11 +25,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsElement('
-	function toggleBusy(){
-	}
-	var makeNewEntryCheck = 0;
-	var publishWhenSave = 0;
-	var weModuleWindow = true;
+var makeNewEntryCheck = 0;
+var publishWhenSave = 0;
+var weModuleWindow = true;
 
 function we_cmd() {
 			var args = [];

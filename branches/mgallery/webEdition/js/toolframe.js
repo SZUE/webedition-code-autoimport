@@ -25,8 +25,6 @@
  */
 top.weToolWindow = true;
 
-function toggleBusy() {
-}
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
 

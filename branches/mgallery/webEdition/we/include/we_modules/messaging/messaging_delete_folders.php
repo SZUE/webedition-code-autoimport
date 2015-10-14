@@ -47,7 +47,6 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 				sel += (top.treeData[i].name + ",");
 		}
 		if (!sel) {
-			top.toggleBusy(0);
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			return;
 		}

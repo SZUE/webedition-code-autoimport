@@ -29,8 +29,8 @@ $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 $script = '';
 
 if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
-	($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
-	(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
+		($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
+		(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
 	require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 	exit();
 }
@@ -40,8 +40,7 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 	$db = new DB_WE();
 	if(($targetDirectroy = we_base_request::_(we_base_request::INT, 'we_target')) === false){
-		$script .= 'top.toggleBusy(0);' .
-			we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} elseif(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
 
 		// list of all item names which should be moved
@@ -82,8 +81,7 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 		}
 
 		if($retVal == -1){ //	not allowed to move document
-			$script .= 'top.toggleBusy(0);' .
-				we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
+			$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif($retVal){ //	move files !
 			$notMovedItems = array();
 			moveItems($targetDirectroy, $selectedItems, $table, $notMovedItems);
@@ -92,7 +90,6 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 				$script .= moveTreeEntries($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'));
 			}
 
-			$script .= 'top.toggleBusy(0);';
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode
 				if($notMovedItems){
 					$_SESSION['weS']['move_files_nok'] = array();
@@ -108,12 +105,10 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 				}
 			}
 		} else {
-			$script .= 'top.toggleBusy(0);' .
-				we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
+			$script .= we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	} else {
-		$script .= 'top.toggleBusy(0);' .
-			we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	}
 	$script = we_html_element::jsElement($script);
 }
@@ -123,8 +118,8 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	$js = ($retVal ? //	document moved -> go to seeMode startPage
-			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
-			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
+					we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
+					we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
 
 	echo we_html_tools::getHtmlTop('', '', '', $script . we_html_element::jsElement($js));
 	exit();
@@ -164,7 +159,6 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 			}
 		}
 		if (!sel) {
-			top.toggleBusy(0);
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
 			return;
 		}
@@ -247,7 +241,6 @@ echo $table;
 				sel += (top.treeData[i].id + ",");
 		}
 		if (!sel) {
-			top.toggleBusy(0);
 <?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
 			return;
 		}
@@ -302,7 +295,7 @@ echo
 <form name="we_form" method="post" onsubmit="return false">
 <div style="width:460px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
-	g_l('newFile', '[title_move]')) . '</h1>
+		g_l('newFile', '[title_move]')) . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . $_buttons . '</div></div>' . we_html_tools::hidden("sel", "") .

@@ -28,7 +28,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 echo we_html_element::jsElement('
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");
 var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
-	$we_JavaScript . ';top.toggleBusy(0);' .
+	$we_JavaScript . ';' .
 	($we_responseText ?
 		we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
 		'') .$GLOBALS['we_responseJS']

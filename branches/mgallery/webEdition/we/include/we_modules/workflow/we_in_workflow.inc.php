@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_element::jsElement('top.opener.top.toggleBusy(0);');
 $cmd2 = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2);
 
 if($cmd === 'ok'){

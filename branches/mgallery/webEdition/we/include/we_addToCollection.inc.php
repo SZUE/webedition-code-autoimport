@@ -44,9 +44,9 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 
 if($cmd0 === 'do_addToCollection'){
 	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target', 0)) === 0){
-		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$script .=  we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
-		$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else {
 		$collection = new we_collection();
 		$isSession = false;
@@ -58,7 +58,7 @@ if($cmd0 === 'do_addToCollection'){
 		}
 
 		if($collection->getRemTable() !== stripTblPrefix(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2))){
-			$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('wrong table for this collection', we_message_reporting::WE_MESSAGE_ERROR);
+			$script .= we_message_reporting::getShowMessageCall('wrong table for this collection', we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$collBefore = $collection->getCollection();
 			if(($items = $collection->getValidItemsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'InsertRecursive', false)))){
@@ -68,9 +68,9 @@ if($cmd0 === 'do_addToCollection'){
 				} else {
 					$collection->save();
 				}
-				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall('Inserted: ' . implode(',', $result[0]) . '\nAs duplicates rejected: ' . implode(',', $result[1]) . '. \n\nOthers items may have been rejecected because of inapropriate class/mime type.', we_message_reporting::WE_MESSAGE_ERROR);
+				$script .= we_message_reporting::getShowMessageCall('Inserted: ' . implode(',', $result[0]) . '\nAs duplicates rejected: ' . implode(',', $result[1]) . '. \n\nOthers items may have been rejecected because of inapropriate class/mime type.', we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				$script .= 'top.toggleBusy(0);' . we_message_reporting::getShowMessageCall("none of the items selected does matche the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
+				$script .= we_message_reporting::getShowMessageCall("none of the items selected does matche the collection's content types", we_message_reporting::WE_MESSAGE_INFO);
 			}
 		}
 	}

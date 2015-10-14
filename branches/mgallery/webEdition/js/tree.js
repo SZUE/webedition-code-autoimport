@@ -310,7 +310,6 @@ function showSegment() {
 	parentnode = frames.top.get(this.parentid);
 	parentnode.clear();
 	we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
-	toggleBusy(1);
 }
 
 function openClose(id) {

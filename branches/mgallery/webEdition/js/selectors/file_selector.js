@@ -80,11 +80,6 @@ function clearEntries() {
 }
 
 function exit_close() {
-	if (top.opener.top.opener && top.opener.top.opener.top.toggleBusy) {
-		top.opener.top.opener.top.toggleBusy();
-	} else if (top.opener.top.toggleBusy) {
-		top.opener.top.toggleBusy();
-	}
 	self.close();
 }
 

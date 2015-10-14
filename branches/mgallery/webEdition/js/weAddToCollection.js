@@ -29,7 +29,6 @@ weAddToCollection = {
 			}
 		}
 		if (!sel) {
-			top.toggleBusy(0);
 			top.we_showMessage(this.g_l.nothingToMove, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
@@ -126,7 +125,6 @@ weAddToCollection = {
 			}
 		}
 		if (!sel) {
-			top.toggleBusy(0);
 			top.we_showMessage(this.g_l.nothingToMove, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}

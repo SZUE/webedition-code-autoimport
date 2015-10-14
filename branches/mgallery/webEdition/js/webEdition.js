@@ -393,22 +393,6 @@ function hasPermDelete(eTable, isFolder) {
 	}
 }
 
-function toggleBusy(w) { //=> removed since no header animation anymore
-	return;/*
-	 if (w == busy || firstLoad == false) {
-	 return;
-	 }
-	 if (self.header) {
-	 if (self.header.toggleBusy) {
-	 busy = w;
-	 self.header.toggleBusy(w);
-	 return;
-	 }
-	 }
-	 setTimeout("toggleBusy(" + w + ");", 300);*/
-}
-
-
 function doUnloadSEEM(whichWindow) {
 	// unlock all open documents
 	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
@@ -574,7 +558,6 @@ function we_cmd_base(args, url) {
 			var eTable = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable();
 			var path = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorDocumentPath();
 
-			toggleBusy(1);
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -590,7 +573,6 @@ function we_cmd_base(args, url) {
 			var cType = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorContentType();
 			var eTable = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorEditorTable();
 
-			toggleBusy(1);
 			if (weWE().layout.weEditorFrameController.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -602,19 +584,15 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "do_delete":
-			toggleBusy(1);
 			submit_we_form(self.treeheader, self.load, url);
 			break;
 		case "move_single_document":
-			toggleBusy(1);
 			submit_we_form(WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter, self.load, url);
 			break;
 		case "do_move":
-			toggleBusy(1);
 			submit_we_form(self.treeheader, self.load, url);
 			break;
 		case "do_addToCollection":
-			toggleBusy(1);
 			submit_we_form(self.treeheader, self.load, url);
 			break;
 		case "change_passwd":
@@ -846,7 +824,6 @@ function we_cmd_base(args, url) {
 			break;
 		case "edit_document_with_parameters":
 		case "edit_document":
-			toggleBusy(1);
 			try {
 				if ((window.treeData !== undefined) && treeData) {
 					treeData.unselectnode();
@@ -930,7 +907,6 @@ function we_cmd_base(args, url) {
 			break;
 		case "publish":
 		case "unpublish":
-			toggleBusy(1);
 			doPublish(url, args[1], args[0]);
 			break;
 		case "save_document":
@@ -939,7 +915,6 @@ function we_cmd_base(args, url) {
 				_EditorFrame.getEditorFrameWindow().frames[1].focus();
 			}
 
-			toggleBusy(1);
 			if (!args[1]) {
 				args[1] = _EditorFrame.getEditorTransaction();
 			}
@@ -1089,7 +1064,6 @@ function we_cmd_base(args, url) {
 			break;
 		case "load":
 			if (WE().session.seemode) {
-				//	toggleBusy(1);
 			} else {
 				if (self.Tree) {
 					if (self.Tree.setScrollY) {
@@ -1099,7 +1073,6 @@ function we_cmd_base(args, url) {
 				var tbl_prefix = WE().consts.tables.TBL_PREFIX,
 								table = (args[1] !== undefined && args[1]) ? args[1] : 'tblFile';
 				we_cmd("setTab", (tbl_prefix !== '' && table.indexOf(tbl_prefix) !== 0 ? tbl_prefix + table : table));
-				//toggleBusy(1);
 				we_repl(self.load, url, args[0]);
 			}
 			break;

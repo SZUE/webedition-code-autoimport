@@ -151,8 +151,6 @@ echo we_html_tools::getHtmlTop() . STYLESHEET . we_html_element::jsElement('
 	var _showGlossaryCheck = ' . $showGlossaryCheck . ';
 
 
-top.toggleBusy(0);
-
 function we_footerLoaded(){
 if(doc.isTemplate){
 			setTemplate();

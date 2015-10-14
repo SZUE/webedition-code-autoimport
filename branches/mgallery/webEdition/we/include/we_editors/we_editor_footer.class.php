@@ -35,7 +35,7 @@ abstract class we_editor_footer{
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), sprintf(g_l('alert', '[file_locked_footer]'), $_username));
 		$_messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();")));
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
+		echo we_html_tools::getHtmlTop('', '', '',  STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
 	}
 
 	static function fileInWorkspace(){
@@ -44,7 +44,7 @@ abstract class we_editor_footer{
 		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), g_l('alert', '[' . FILE_TABLE . '][not_im_ws]'));
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
+		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
 	}
 
 	static function fileNoSave(){
@@ -53,7 +53,7 @@ abstract class we_editor_footer{
 		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), g_l('alert', '[file_no_save_footer]'));
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
+		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
 	}
 
 	static function fileIsRestricted($we_doc){
@@ -62,7 +62,7 @@ abstract class we_editor_footer{
 		$_messageTbl->setColContent(0, 0, we_html_element::htmlImg(array("src" => IMAGE_DIR . "alert.gif", 'style' => 'margin-right:5px;')));
 		$_messageTbl->setCol(0, 1, array("class" => "defaultfont"), str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))));
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('top.toggleBusy(0);') . STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
+		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
 	}
 
 	static function workflow($we_doc){
