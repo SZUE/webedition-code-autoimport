@@ -39,8 +39,8 @@ function getControlElement($type, $name){
 	if(isset($GLOBALS['we_doc']->controlElement) && is_array($GLOBALS['we_doc']->controlElement)){
 
 		return (isset($GLOBALS['we_doc']->controlElement[$type][$name]) ?
-				$GLOBALS['we_doc']->controlElement[$type][$name] :
-				false);
+						$GLOBALS['we_doc']->controlElement[$type][$name] :
+						false);
 	}
 	return false;
 }
@@ -68,8 +68,6 @@ switch($we_doc->userHasAccess()){
 
 
 //	preparations of needed vars
-echo we_html_tools::getHtmlTop();
-
 $showPubl = permissionhandler::hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
 $reloadPage = (bool) (($showPubl || $we_doc->ContentType == we_base_ContentTypes::TEMPLATE) && (!$we_doc->ID));
 $haspermNew = false;
@@ -88,8 +86,8 @@ switch($we_doc->ContentType){
 }
 
 $showGlossaryCheck = (isset($_SESSION['prefs']['force_glossary_check']) && $_SESSION['prefs']['force_glossary_check'] == 1 && (
-	$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE
-	) ? 1 : 0);
+		$we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE
+		) ? 1 : 0);
 
 //	added for we:controlElement type="button" name="save" hide="true"
 $_ctrlElem = getControlElement('button', 'save');
@@ -97,9 +95,9 @@ $_ctrlElem = getControlElement('button', 'save');
 $canWeSave = $we_doc->userCanSave();
 
 if($canWeSave &&
-	(($_ctrlElem && $_ctrlElem['hide']) ||
-	(defined('WORKFLOW_TABLE') && inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])))
-	)){
+		(($_ctrlElem && $_ctrlElem['hide']) ||
+		(defined('WORKFLOW_TABLE') && inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])))
+		)){
 	$canWeSave = false;
 }
 
@@ -112,29 +110,27 @@ function generatedSaveDoc(){
 	var addCmd = arguments[0] ? arguments[0] : '';
 	if(weCanSave){
 " . ($we_doc->isBinary() ?
-		we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :
-		$js_we_save_cmd
-	) .
-	($reloadPage ?
-		'setTimeout(saveReload,1500);' :
-		''
-	) . '
+				we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :
+				$js_we_save_cmd
+		) .
+		($reloadPage ?
+				'setTimeout(saveReload,1500);' :
+				''
+		) . '
 	}
 }';
 
 if($we_doc->IsTextContentDoc && $haspermNew && //	$_js_permnew
-	($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
+		($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
 	$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 	$_js_permnew = ($_ctrlElem ? //	changes for we:controlElement
-			'setTextDocument(true,' . ($_ctrlElem["checked"] ? "true" : "false") . ');' :
-			'setTextDocument(false);');
+					'setTextDocument(true,' . ($_ctrlElem["checked"] ? "true" : "false") . ');' :
+					'setTextDocument(false);');
 } else {
 	$_js_permnew = '';
 }
 
-
-echo STYLESHEET .
- we_html_element::jsElement('
+echo we_html_tools::getHtmlTop() . STYLESHEET . we_html_element::jsElement('
 	var we_transaction="' . $we_transaction . '";
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
 	var g_l={
@@ -161,11 +157,11 @@ function we_footerLoaded(){
 if(doc.isTemplate){
 			setTemplate();
 			}' .
-	$_js_permnew .
-	'setPath();
+		$_js_permnew .
+		'setPath();
 }
 ' .
-	$js) .
+		$js) .
  we_html_element::jsScript(JS_DIR . 'we_editor_footer.js');
 ?>
 </head>

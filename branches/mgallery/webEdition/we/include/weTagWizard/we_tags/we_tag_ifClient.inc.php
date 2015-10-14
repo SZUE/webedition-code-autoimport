@@ -8,16 +8,17 @@ $this->Groups[] = 'if_tags';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $this->Attributes[] = new weTagData_choiceAttribute('browser', array(
-	new weTagDataOption('ie'),
-	new weTagDataOption('nn'),
-	new weTagDataOption('mozilla'),
-	new weTagDataOption('safari'),
-	new weTagDataOption('opera'),
-	new weTagDataOption('lynx'),
-	new weTagDataOption('konqueror'),
-	new weTagDataOption('firefox'),
-	new weTagDataOption('chrome'),
-	new weTagDataOption('unknown'),
+	new weTagDataOption(we_base_browserDetect::IE),
+	new weTagDataOption(we_base_browserDetect::EDGE),
+	new weTagDataOption(we_base_browserDetect::NETSCAPE),
+	new weTagDataOption(we_base_browserDetect::MOZILLA),
+	new weTagDataOption(we_base_browserDetect::SAFARI),
+	new weTagDataOption(we_base_browserDetect::OPERA),
+	new weTagDataOption(we_base_browserDetect::LYNX),
+	new weTagDataOption(we_base_browserDetect::KONQUEROR),
+	new weTagDataOption(we_base_browserDetect::FF),
+	new weTagDataOption(we_base_browserDetect::CHROME),
+	new weTagDataOption(we_base_browserDetect::UNKNOWN),
 	), false, false, '');
 $this->Attributes[] = new weTagData_selectAttribute('operator', array(
 	new weTagDataOption('equal'),
@@ -29,10 +30,10 @@ $this->Attributes[] = new weTagData_selectAttribute('operator', array(
 	), false, '');
 $this->Attributes[] = new weTagData_textAttribute('version', false, '');
 $this->Attributes[] = new weTagData_choiceAttribute('system', array(
-	new weTagDataOption('win'),
-	new weTagDataOption('mac'),
-	new weTagDataOption('unix'),
-	new weTagDataOption('android'),
-	new weTagDataOption('iphone'),
-	new weTagDataOption('unknown'),
+	new weTagDataOption(we_base_browserDetect::SYS_WIN),
+	new weTagDataOption(we_base_browserDetect::SYS_MAC),
+	new weTagDataOption(we_base_browserDetect::SYS_UNIX),
+	new weTagDataOption(we_base_browserDetect::SYS_ANDROID),
+	new weTagDataOption(we_base_browserDetect::SYS_IPHONE),
+	new weTagDataOption(we_base_browserDetect::UNKNOWN),
 	), false, false, '');

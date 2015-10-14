@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_Hyperlink extends we_dialog_base{
+
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
 		'type', 'extHref', 'fileID', 'href', 'fileHref', 'objID', 'objHref', 'mailHref', 'target', 'class',
@@ -44,8 +45,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
 			$okBut = $back && $next ?
-				$back . $next :
-				($back ? : $next );
+					$back . $next :
+					($back ? : $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
@@ -67,12 +68,11 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				$type = we_base_link::TYPE_EXT;
 			}
 
-
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
 			if(($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)) && (
-				$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
-				)
+					$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
+					)
 			){
 				$this->args['href'] = $type = $ref = '';
 			}
@@ -115,12 +115,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				default:
 					$this->args['type'] = we_base_link::TYPE_EXT;
 					$this->args['extHref'] = preg_replace(
-						array(
+							array(
 						'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 						'|^' . WEBEDITION_DIR . '|',
 						'|^([^\?#]+).*$|'
-						), array('$1', '', '$1')
-						, $this->args["href"]);
+							), array('$1', '', '$1')
+							, $this->args["href"]);
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';
@@ -224,12 +224,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			return false;
 		}
 		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) === 'mailto') ? '' : '//') : '') .
-			($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
-			($parsed['host'] ? : '') .
-			($parsed['port'] ? ':' . $parsed['port'] : '') .
-			($parsed['path'] ? : '') .
-			($parsed['query'] ? '?' . $parsed['query'] : '') .
-			($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
+				($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
+				($parsed['host'] ? : '') .
+				($parsed['port'] ? ':' . $parsed['port'] : '') .
+				($parsed['path'] ? : '') .
+				($parsed['query'] ? '?' . $parsed['query'] : '') .
+				($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
 	}
 
 	function initByHttp(){
@@ -328,10 +328,10 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>' .
-				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
-					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
-					''
-				);
+					((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
+							'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
+							''
+					);
 
 			// EXTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
@@ -527,7 +527,7 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);');
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_init.js', 'preinit();tinyMCEPopup.onInit.add(init);');
 	}
 
 	function getJs(){
@@ -545,7 +545,7 @@ var consts={
 	TYPE_INT:"' . we_base_link::TYPE_INT . '"
 };
 '
-			) . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');
+				) . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');
 	}
 
 	function cmdFunction(array $args){
@@ -561,7 +561,7 @@ var consts={
 		}
 		// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
 		$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
-				(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
+						(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
 		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$query = array();
@@ -584,18 +584,18 @@ var consts={
 		}
 
 		return we_dialog_base::getTinyMceJS() .
-			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
-			'<form name="tiny_form">' . we_html_element::htmlHiddens(array(
-				"href" => $href,
-				"target" => $args["target"],
-				"class" => $args["cssclass"],
-				"lang" => $args["lang"],
-				"hreflang" => $args["hreflang"],
-				"title" => $args["title"],
-				"accesskey" => $args["accesskey"],
-				"tabindex" => $args["tabindex"],
-				"rel" => $args["rel"],
-				"rev" => $args["rev"])) . '</form>';
+				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
+				'<form name="tiny_form">' . we_html_element::htmlHiddens(array(
+					"href" => $href,
+					"target" => $args["target"],
+					"class" => $args["cssclass"],
+					"lang" => $args["lang"],
+					"hreflang" => $args["hreflang"],
+					"title" => $args["title"],
+					"accesskey" => $args["accesskey"],
+					"tabindex" => $args["tabindex"],
+					"rel" => $args["rel"],
+					"rev" => $args["rev"])) . '</form>';
 	}
 
 }

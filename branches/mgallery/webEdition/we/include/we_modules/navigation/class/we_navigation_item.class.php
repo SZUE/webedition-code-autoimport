@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -26,6 +27,7 @@
  * simplified representation of the navigation item
  */
 class we_navigation_item{
+
 	var $id;
 	var $icon;
 	var $docid;
@@ -231,7 +233,7 @@ class we_navigation_item{
 	}
 
 	public function setLevel(){
-		self::$currentPosition[$this->level]=0;
+		self::$currentPosition[$this->level] = 0;
 	}
 
 	function writeItem(&$weNavigationItems, $depth = false){
@@ -283,19 +285,33 @@ class we_navigation_item{
 							(!empty($this->attributes[$fieldname]) ?
 									$this->attributes[$fieldname] :
 									''));
-			return ($fieldname === 'title' ? oldHtmlspecialchars($val) : $val);
+			switch($fieldname){
+				case 'title':
+					return oldHtmlspecialchars($val);
+				case 'href':
+					return $this->linkValid ? $val : '';
+				default:
+					return $val;
+			}
 		}
 
 		// complete
 		if($_compl){
 			unset($attribs['complete']);
-			if((($_compl === 'link' && isset($this->text)) || ($_compl === 'image' && isset($this->icon) && $this->icon != '/'))){
-				unset($attribs['complete']);
-				$attribs['attributes'] = $_compl;
-				$attribs = $this->getNavigationFieldAttributes($attribs);
-				return ($_compl === 'image' ?
-						getHtmlTag('img', $attribs) :
-						(isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text));
+			$attribs['attributes'] = $_compl;
+			switch($_compl){
+				case 'link':
+					if(empty($this->text)){
+						return '';
+					}
+					$attribs = $this->getNavigationFieldAttributes($attribs);
+					return (empty($attribs['href']) || !$this->linkValid ? $this->text : getHtmlTag('a', $attribs, $this->text));
+				case 'image':
+					if(empty($this->icon) || $this->icon == '/'){
+						return '';
+					}
+					$attribs = $this->getNavigationFieldAttributes($attribs);
+					return getHtmlTag('img', $attribs);
 			}
 			return '';
 		}
@@ -305,7 +321,14 @@ class we_navigation_item{
 		if(isset($attribs['attributes'])){
 			$_attributes = $this->getNavigationFieldAttributes($attribs);
 			foreach($_attributes as $key => $value){
-				$code .= ' ' . ($key === 'link_attribute' ? $value : $key . '="' . $value . '"');
+				switch($key){
+					case 'href':
+						if(!$this->linkValid){
+							break;
+						}
+					default:
+						$code .= ' ' . ($key === 'link_attribute' ? $value : $key . '="' . $value . '"');
+				}
 			}
 		}
 		return $code;
@@ -337,12 +360,12 @@ class we_navigation_item{
 						foreach($useFields as $field){
 							if(!empty($this->$field)){
 								$attribs[$field] = ($field === 'title' ?
-										oldHtmlspecialchars($this->$field) :
-										$this->$field);
+												oldHtmlspecialchars($this->$field) :
+												$this->$field);
 							} elseif(!empty($this->attributes[$field])){
 								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
-										$this->attributes[$field] :
-										oldHtmlspecialchars($this->attributes[$field]));
+												$this->attributes[$field] :
+												oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
