@@ -430,3 +430,21 @@ function setview(view) {
 
 	top.writeBody(top.fsbody.document.body);
 }
+
+function we_cmd() {
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
+	for (var i = 0; i < arguments.length; i++) {
+		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		if (i < (arguments.length - 1)) {
+			url += "&";
+		}
+	}
+	switch (arguments[0]) {
+		default:
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			opener.we_cmd.apply(this, args);
+	}
+}
