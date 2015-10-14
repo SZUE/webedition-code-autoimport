@@ -959,23 +959,6 @@ var CropTool = {
 	);
 }*/
 
-if (!Function.prototype.apply) {
-	Function.prototype.apply = function (thisObj, params) {
-		if (thisObj === null || thisObj === undefined)
-			thisObj = window;
-		if (!params)
-			params = [];
-		var args = [];
-		for (var i = 0; i < params.length; i++) {
-			args[args.length] = "params[" + i + "]";
-		}
-		thisObj.__method__ = this;
-		var returnValue = eval("thisObj.__method__(" + args.join(",") + ");");
-		thisObj.__method__ = null;
-		return returnValue;
-	};
-}
-
 function setFocusPositionByMouse(e) {
 	var img = document.getElementById("weImage");
 	document.getElementById("x_focus").value = ((e.offsetX - img.width / 2) / (img.width / 2)).toFixed(2);

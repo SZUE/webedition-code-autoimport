@@ -170,6 +170,6 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 	for (i = 0; i < itemNum; i++) {
 		this.addItem();
 	}
-
-	eval(this.name + "=this");
+//FIXME: do we need this as a global var?
+	window[this.name] = this;
 }

@@ -100,7 +100,7 @@ function delaySubcriptionForIE9(){
 
  	function resizeTreeDiv(){
  		var h = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight;
-		document.getElementById("' . $TreeDiv->getId() . '").style.height = eval(h-50)+"px";
+		document.getElementById("' . $TreeDiv->getId() . '").style.height = (h-50)+"px";
 	}
 
 	weEventController.register("delete", function(data, sender) {

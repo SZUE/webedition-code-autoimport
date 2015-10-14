@@ -326,5 +326,7 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		this.addItem();
 	}
 
-	eval(this.name + "=this");
+	//FIXME: do we need this as a global var?
+	window[this.name] = this;
+
 }

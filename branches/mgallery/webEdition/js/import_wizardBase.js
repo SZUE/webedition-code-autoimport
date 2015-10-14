@@ -33,7 +33,7 @@ var weGetCategoriesHandleSuccess = function (o) {
 				propval = propval.replace(/\\\'/g, "'");
 				propval = propval.replace(/'/g, "\\\'");
 				var eId = json.elemsById[elemNr].elemId;
-				eval("self.wizbody.document.getElementById(json.elemsById[" + elemNr + "].elemId)." + json.elemsById[elemNr].props[propNr].prop + "='" + propval + "'");
+				self.wizbody.document.getElementById(json.elemsById[elemNr].elemId)[json.elemsById[elemNr].props[propNr].prop ] = propval;
 			}
 		}
 	}

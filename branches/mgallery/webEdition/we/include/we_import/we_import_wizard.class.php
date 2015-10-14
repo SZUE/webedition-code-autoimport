@@ -944,7 +944,7 @@ var handleSuccess = function(o){
 				propval = propval.replace(/'/g,"\\\'");
 				var e;
 				if(e = json.elems[elemNr].elem) {
-					eval("e."+json.elems[elemNr].props[propNr].prop+"='"+propval+"'");
+					e[json.elems[elemNr].props[propNr].prop]=propval;
 				}
 			}
 		}
@@ -1929,7 +1929,7 @@ var handleSuccess = function(o){
 				propval = propval.replace(/'/g,"\\\'");
 				var e;
 				if(e = json.elems[elemNr].elem) {
-					eval("e."+json.elems[elemNr].props[propNr].prop+"='"+propval+"'");
+					e[json.elems[elemNr].props[propNr].prop]=propval;
 				}
 			}
 		}

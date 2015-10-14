@@ -98,7 +98,7 @@ function toggle(group_id, display_style, use_form, form_name, form_group_name) {
 			// Check if forms should be used
 			if (use_form) {
 				// Tell the form which group is open
-				_document_form = eval('document.' + form_name + '.' + form_group_name);
+				_document_form = document[form_name][form_group_name];
 				_document_form.value = group_id;
 			}
 		} else {

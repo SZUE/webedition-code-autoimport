@@ -130,7 +130,8 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 	}
 
 	this.translate = we_textarea_translate;
-	eval(this.obj + "=this");
+	//FIXME: do we need this as a global var?
+	window[this.obj] = this;
 }
 
 function we_textarea_translate(check) {

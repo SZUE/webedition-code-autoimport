@@ -78,7 +78,7 @@ function we_submitForm(target, url) {
 				if (f.input_pass.value != "") {
 					var clearPass = f.input_pass.value;
 					f.input_pass.value = "";
-					eval("f." + f.obj_name.value + "_clearpasswd.value = clearPass;");
+					f[f.obj_name.value + "_clearpasswd"].value = clearPass;
 				}
 			}
 		}

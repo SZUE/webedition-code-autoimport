@@ -47,7 +47,7 @@ class we_versions_fragment extends we_fragment_base{
 			$versionslog->saveVersionsLog($_SESSION['weS']['versions']['logResetIds'], we_versions_log::VERSIONS_RESET);
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
-		$responseText = we_base_request::_(we_base_request::STRING, "responseText", "");
+		$responseText = we_base_request::_(we_base_request::STRING, 'responseText', "");
 		echo we_html_tools::getHtmlTop();
 		switch(we_base_request::_(we_base_request::STRING, 'type')){
 			case "delete_versions":

@@ -1036,7 +1036,7 @@ set_button_state(false);';
 		if(($step = we_base_request::_(we_base_request::INT, "step")) !== false){
 			$query['step'] = $step;
 		}
-		if(($text = we_base_request::_(we_base_request::STRING, "responseText")) !== false){
+		if(($text = we_base_request::_(we_base_request::STRING, 'responseText')) !== false){
 			$query['responseText'] = $text;
 		}
 

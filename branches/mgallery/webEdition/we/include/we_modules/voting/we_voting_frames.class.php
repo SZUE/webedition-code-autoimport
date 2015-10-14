@@ -585,8 +585,9 @@ function newIp(){
 		$i = 1;
 		if(isset($this->View->voting->QASet[$version])){
 			foreach($this->View->voting->QASet[$version]['answers'] as $key => $value){
-				if(!isset($this->View->voting->Scores[$key]))
+				if(!isset($this->View->voting->Scores[$key])){
 					$this->View->voting->Scores[$key] = 0;
+				}
 
 				$percent = we_voting_frames::getPercent($total_score, $this->View->voting->Scores[$key], 2);
 
@@ -635,6 +636,7 @@ function refreshTotal(){
 			percent = Math.round((parseInt(document.we_form.elements["scores_"+i].value)/total) * 100);
 		}
 		else percent = 0;
+		//FIXME: where is this function declared?
 		eval("setProgressitem"+i+"("+percent+");");
 	}
 
@@ -642,10 +644,10 @@ function refreshTotal(){
 
 function refreshTexts(){
 	var t = document.getElementById("question_score");
-	eval("t.innerHTML = document.we_form."+question_edit.name+"_item0.value");
+	t.innerHTML = document.we_form[question_edit.name+"_item0"].value;
 	for(i=0;i<answers_edit.itemCount;i++){
 		var t = document.getElementById("answers_score_"+i);
-		eval("t.innerHTML = document.we_form."+answers_edit.name+"_item"+i+".value");
+		t.innerHTML = document.we_form[answers_edit.name+"_item"+i].value;
 	}
 }');
 

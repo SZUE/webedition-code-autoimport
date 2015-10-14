@@ -100,9 +100,9 @@ function save() {
 var ajaxObj = {
 		handleSuccess:function(o){
 				this.processResult(o);
-				if(o["responseText"]) {
+				if(o.responseText) {
 					document.getElementById("details").innerHTML = "";
-					eval(o["responseText"]);
+					eval(o.responseText);
 
 					var items = weResponse.data.split(",");
 					var i = 0;
