@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -57,14 +58,14 @@ class we_export_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("NEW_EXPORT");
 		return parent::printHeaderTable('<td>' .
-				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-				we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-				'</td>');
+						we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+						we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+						'</td>');
 	}
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-			we_html_element::jsScript(JS_DIR . 'selectors/exportdir_selector.js');
+				we_html_element::jsScript(JS_DIR . 'selectors/exportdir_selector.js');
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -88,11 +89,7 @@ top.clearEntries();
 			echo we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
-			$folder->we_new();
-			$folder->setParentID($this->dir);
-			$folder->Table = $this->table;
-			$folder->Text = $txt;
-			$folder->Path = $folder->getPath();
+			$folder->we_new($this->table, $this->dir, $txt);
 			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "'", '', $this->db)){
 				echo we_message_reporting::getShowMessageCall(g_l('export', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_export_export::filenameNotValid($folder->Text)){
@@ -173,9 +170,9 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 		}
 
 		print
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>

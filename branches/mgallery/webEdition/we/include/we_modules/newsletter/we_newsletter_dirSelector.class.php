@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_newsletter_dirSelector extends we_selector_directory{
+
 	var $fields = "ID,ParentID,Text,Path,IsFolder";
 
 	function __construct($id, $JSIDName = "", $JSTextName = "", $JSCommand = "", $order = "", $sessionID = "", $we_editDirID = "", $FolderText = "", $rootDirID = 0, $multiple = 0){
@@ -39,17 +40,7 @@ top.clearEntries();
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		$folder = new we_folder();
-		$folder->we_new();
-		$folder->setParentID($this->dir);
-		$folder->Table = $this->table;
-		$folder->Text = $txt;
-		$folder->CreationDate = time();
-		$folder->ModDate = time();
-		$folder->Filename = $txt;
-		$folder->Published = time();
-		$folder->Path = $folder->getPath();
-		$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
-		$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
+		$folder->we_new($this->table, $this->dir, $txt);
 		if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -58,13 +49,12 @@ top.clearEntries();
 if(top.opener.top.content.makeNewEntry) ref = top.opener.top.content;
 else if(top.opener.top.opener) ref = top.opener.top.opener.top;
 ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '",published:1});
-';
-			if($this->canSelectDir){
-				echo 'top.currentPath = "' . $folder->Path . '";
+' .
+			($this->canSelectDir ?
+					'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-';
-			}
+' : '');
 		}
 
 		echo $this->printCmdAddEntriesHTML() .
@@ -124,8 +114,8 @@ top.selectFile(top.currentID);
 
 	function query(){
 		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) .
-			getWsQueryForSelector(NEWSLETTER_TABLE) .
-			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
+				getWsQueryForSelector(NEWSLETTER_TABLE) .
+				($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 
@@ -137,14 +127,14 @@ top.selectFile(top.currentID);
 		}
 
 		$ret.=' function startFrameset(){' . ($this->userCanMakeNewDir() ?
-				'top.enableNewFolderBut();' :
-				'top.disableNewFolderBut();') . '}';
+						'top.enableNewFolderBut();' :
+						'top.disableNewFolderBut();') . '}';
 		return $ret;
 	}
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-			we_html_element::jsScript(JS_DIR . 'selectors/newsletterdir_selector.js');
+				we_html_element::jsScript(JS_DIR . 'selectors/newsletterdir_selector.js');
 	}
 
 	function printHeaderHeadlines(){

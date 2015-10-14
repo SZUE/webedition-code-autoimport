@@ -55,14 +55,14 @@ class we_voting_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("NEW_VOTING");
 		return parent::printHeaderTable('<td>' .
-				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-				we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-				'</td>');
+						we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+						we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+						'</td>');
 	}
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-			we_html_element::jsScript(JS_DIR . 'selectors/votingdir_selector.js');
+				we_html_element::jsScript(JS_DIR . 'selectors/votingdir_selector.js');
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -87,12 +87,8 @@ top.clearEntries();
 			echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
-			$folder->we_new();
-			$folder->setParentID($this->dir);
-			$folder->Table = $this->table;
-			$folder->Text = $txt;
-			$folder->Path = $folder->getPath();
-			$this->db->query("SELECT ID FROM " . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "'");
+			$folder->we_new($this->table, $this->dir, $txt);
+			$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . " WHERE Path='" . $this->db->escape($folder->Path) . "'");
 			if($this->db->next_record()){
 				echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_voting_voting::filenameNotValid($folder->Text)){
@@ -105,7 +101,7 @@ if(top.opener.top.content.makeNewEntry){
 	ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:1});
 }
 ' . ($this->canSelectDir ?
-					'top.currentPath = "' . $folder->Path . '";
+						'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
@@ -124,8 +120,8 @@ top.selectFile(top.currentID);
 
 	function query(){
 		$this->db->query('SELECT ' . $this->db->escape($this->fields) . ' FROM ' .
-			$this->db->escape($this->table) .
-			' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' ' . self::getUserExtraQuery($this->table));
+				$this->db->escape($this->table) .
+				' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' ' . self::getUserExtraQuery($this->table));
 	}
 
 	static function getUserExtraQuery($table, $useCreatorID = true){
@@ -180,7 +176,7 @@ if(top.opener.top.content.updateEntry){
 	ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
 }
 ' . ($this->canSelectDir ?
-					'top.currentPath = "' . $folder->Path . '";
+						'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');

@@ -57,9 +57,9 @@ class we_navigation_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("EDIT_NAVIGATION");
 		return parent::printHeaderTable('<td>' .
-				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-				we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-				'</td>');
+						we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+						we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+						'</td>');
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -89,12 +89,8 @@ top.clearEntries();';
 			echo we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
-			$folder->we_new();
-			$folder->setParentID($this->dir);
-			$folder->Table = $this->table;
-			$folder->Text = $txt;
-			$folder->Path = $folder->getPath();
-			if(f('SELECT 1 FROM ' . $this->table . ' WHERE Path="' . $folder->Path . '"','',$this->db)){
+			$folder->we_new($this->table, $this->dir, $txt);
+			if(f('SELECT 1 FROM ' . $this->table . ' WHERE Path="' . $folder->Path . '"', '', $this->db)){
 				echo we_message_reporting::getShowMessageCall(g_l('navigation', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_navigation_navigation::filenameNotValid($folder->Text)){
 				echo we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
@@ -156,11 +152,11 @@ if(top.opener.top.updateEntry){
 	ref = top.opener.top;
 	ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
 }' . ($this->canSelectDir ?
-					'top.currentPath = "' . $folder->Path . '";
+						'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' :
-					''
+						''
 				);
 			}
 		}

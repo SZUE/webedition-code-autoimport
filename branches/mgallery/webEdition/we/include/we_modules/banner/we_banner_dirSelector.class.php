@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_banner_dirSelector extends we_selector_directory{
+
 	var $fields = 'ID,ParentID,Text,Path,IsFolder';
 
 	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editDirID = 0, $FolderText = ''){
@@ -57,14 +58,14 @@ class we_banner_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("NEW_BANNER");
 		return parent::printHeaderTable('<td>' .
-				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-				we_html_button::create_button("fa:btn_new_bannergroup,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-				'</td>');
+						we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+						we_html_button::create_button("fa:btn_new_bannergroup,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+						'</td>');
 	}
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-			we_html_element::jsScript(JS_DIR . 'selectors/bannerdir_selector.js');
+				we_html_element::jsScript(JS_DIR . 'selectors/bannerdir_selector.js');
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -88,11 +89,7 @@ top.clearEntries();
 			echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[group_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
-			$folder->we_new();
-			$folder->setParentID($this->dir);
-			$folder->Table = $this->table;
-			$folder->Text = $txt;
-			$folder->Path = $folder->getPath();
+			$folder->we_new($this->table, $this->dir, $txt);
 			$this->db->query('SELECT ID FROM ' . $this->table . ' WHERE Path="' . $this->db->escape($folder->Path) . '"');
 			if($this->db->next_record()){
 				$we_responseText = sprintf(g_l('modules_banner', '[group_path_exists]'), $folder->Path);
@@ -107,13 +104,12 @@ if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
 }
-';
-				if($this->canSelectDir){
-					echo 'top.currentPath = "' . $folder->Path . '";
+' .
+				($this->canSelectDir ?
+						'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-';
-				}
+' : '');
 			}
 		}
 

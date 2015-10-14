@@ -195,11 +195,7 @@ print we_html_element('<script>
 	echo we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else{
 	$folder = new we_folder();
-					$folder - > we_new();
-					$folder - > setParentID($this - > dir);
-					$folder - > Table = $this - > table;
-					$folder - > Text = $txt;
-					$folder - > Path = $folder - > getPath();
+					$folder - > we_new($this - > table,$this - > dir,$txt);
 					$this - > db - > query("SELECT ID FROM ".$this - > db - > escape($this - > table)." WHERE Path='".$this - > db - > escape($folder - > Path)."'");
 					if ($this - > db - > next_record()){
 	echo we_message_reporting::getShowMessageCall(g_l('tools', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);

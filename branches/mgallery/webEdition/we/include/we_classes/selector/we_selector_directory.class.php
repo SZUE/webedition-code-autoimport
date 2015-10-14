@@ -309,17 +309,7 @@ top.clearEntries();';
 				new we_class_folder() :
 				new we_folder());
 
-		$folder->we_new();
-		$folder->setParentID($this->dir);
-		$folder->Table = $this->table;
-		$folder->Text = $txt;
-		$folder->CreationDate = time();
-		$folder->ModDate = time();
-		$folder->Filename = $txt;
-		$folder->Published = time();
-		$folder->Path = $folder->getPath();
-		$folder->CreatorID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '';
-		$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : '';
+		$folder->we_new($this->table,$this->dir,$txt);
 		if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
