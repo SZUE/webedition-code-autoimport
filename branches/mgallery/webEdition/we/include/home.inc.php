@@ -116,7 +116,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			for (var i = 0; i < _iLayoutCols; i++) {
 				var asoc = getColumnAsoc('c_' + (i + 1));
 				var asoc_len = asoc.length;
-				if ((dat[i] === undefined && !!asoc_len) || (dat[i] !== undefined && asoc_len != dat[i].length)) {
+				if ((dat[i] === undefined && asoc_len) || (dat[i] !== undefined && asoc_len != dat[i].length)) {
 					return true;
 				}
 				for (var k = 0; k < asoc_len; k++) {
@@ -240,7 +240,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		we_base_widget::getJs() .
 		we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
 	);
-} else { // no right to see cockpit!!!
+} else { // no right to see cockpit!
 	echo
 	we_html_element::jsElement('
 function isHot(){

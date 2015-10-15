@@ -21,11 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-echo we_html_tools::getHtmlTop().
-		STYLESHEET;
-
 $we_tabs = new we_tabs();
 
 $name = array();
@@ -79,14 +74,14 @@ echo $tab_header;
 			if (confirm("<?php echo g_l('alert', '[discard_changed_data]') ?>")) {
 				top.content.hot = "0";
 				current = tool;
-				top.content.location.replace('tools_content.php?tool=' + tool);
+				top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
 			} else {
 				top.navi.setActiveTab(current);
 			}
 		} else {
 			top.content.hot = "0";
 			current = tool;
-			top.content.location.replace('tools_content.php?tool=' + tool);
+			top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
 		}
 
 	}

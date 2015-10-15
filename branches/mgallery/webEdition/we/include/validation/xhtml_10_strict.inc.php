@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /* * ********************************************************************
-  /*  ATTENTION: This is the xhtml 1.0 Strict Doctype!!!
+  /*  ATTENTION: This is the xhtml 1.0 Strict Doctype!
   /*  It is generated automatically from the dtd
   /*  http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd
-  /*  dont change this file !!!!!!!
+  /*  dont change this file !
   /********************************************************************* */
 $_validAtts = array(
 	"a" => array("id", "class", "style", "title", "lang", "xml:lang", "dir", "onclick", "ondblclick", "onmousedown", "onmouseup", "onmouseover", "onmousemove", "onmouseout", "onkeypress", "onkeydown", "onkeyup", "accesskey", "tabindex", "onfocus", "onblur", "charset", "type", "name", "href", "hreflang", "rel", "rev", "shape", "coords"),
@@ -109,7 +109,7 @@ $_validAtts = array(
 
 /* * ********************************************************************
   /*  follwing are required attributes depending on existing tags
-  /*  dont change anything inside this file !!!!!!
+  /*  dont change anything inside this file !
   /********************************************************************* */
 
 $_reqAtts = array(

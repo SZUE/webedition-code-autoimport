@@ -86,7 +86,7 @@ function doClickDirect(id, ct, table, fenster) {
 		top.we_showMessage(WE().consts.g_l.main.open_link_in_SEEM_edit_include, WE().consts.message.WE_MESSAGE_WARNING, window);
 		top.opener.top.doClickDirect(id, ct, table, top.opener);
 		// clean session
-		// get the EditorFrame - this is important due to edit_include_mode!!!!
+		// get the EditorFrame - this is important due to edit_include_mode!
 		var _ActiveEditor = WE().layout.weEditorFrameController.getActiveEditorFrame();
 		if (_ActiveEditor) {
 			trans = _ActiveEditor.getEditorTransaction();
@@ -122,7 +122,7 @@ function doClickWithParameters(id, ct, table, parameters) {
 }
 
 function doExtClick(url) {
-	// split url in url and parameters !!!
+	// split url in url and parameters !
 	var parameters = "";
 	if ((_position = url.indexOf("?")) != -1) {
 		parameters = url.substring(_position);
@@ -309,7 +309,7 @@ function we_sbmtFrm(target, url, source) {
 
 }
 
-// use this to submit a cmd with post (if you have much data, which is to long for the url);  // not testet very much!!!
+// use this to submit a cmd with post (if you have much data, which is to long for the url);  // not testet very much!
 function doPostCmd(cmds, target) {
 	var doc = self.postframe.document;
 	if (doc.forms[0]) {

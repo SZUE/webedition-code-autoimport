@@ -511,10 +511,8 @@ abstract class we_export_functions{
 							if(!in_array($regs[1], $hrefs)){
 								$hrefs[] = $regs[1];
 
-								$_int = ((!isset($we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"])) || $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"] == "") ? 0 : $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK]["dat"];
-
-								if($_int){
-									$_intID = $we_doc->elements[$regs[1] . we_base_link::MAGIC_INT_LINK_ID]['bdid'];
+								if($we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK, 'dat', 0)){
+									$_intID = $we_doc->getElement($regs[1] . we_base_link::MAGIC_INT_LINK_ID, 'bdid');
 
 									$_tag_name = self::correctTagname($k, "link", $_tag_counter);
 									$_file .= self::formatOutput($_tag_name, id_to_path($_intID, FILE_TABLE, $DB_WE), $format, 2, $cdata);

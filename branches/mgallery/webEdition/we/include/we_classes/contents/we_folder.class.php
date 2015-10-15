@@ -41,7 +41,7 @@ class we_folder extends we_root{
 	/**
 	 * @var we_customer_documentFilter
 	 */
-	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
 
 	/* Constructor */
 

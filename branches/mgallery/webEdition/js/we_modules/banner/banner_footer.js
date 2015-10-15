@@ -48,7 +48,7 @@ function we_cmd() {
 function we_save() {
 	var acLoopCount = 0;
 	var acIsRunning = false;
-	if (!!top.content.editor.edbody.YAHOO && !!top.content.editor.edbody.YAHOO.autocoml) {
+	if (top.content.editor.edbody.YAHOO !== undefined && top.content.editor.edbody.YAHOO.autocoml !== undefined) {
 		while (acLoopCount < 20 && top.content.editor.edbody.YAHOO.autocoml.isRunnigProcess()) {
 			acLoopCount++;
 			acIsRunning = true;

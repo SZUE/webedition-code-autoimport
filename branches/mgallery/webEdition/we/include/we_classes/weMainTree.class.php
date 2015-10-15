@@ -85,7 +85,7 @@ if(weWindow.treeData){
 			if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
 				' . $this->topFrame . '.updateEntry(attribs);
 			}else{
-			//FIXME: makenewentry!!!
+			//FIXME: makenewentry!
 				attribs.contenttype=\'' . $doc->ContentType . '\';
 				attribs.isclassfolder=\'' . (isset($doc->IsClassFolder) ? $doc->IsClassFolder : false) . '\';
 				attribs.checked=0;

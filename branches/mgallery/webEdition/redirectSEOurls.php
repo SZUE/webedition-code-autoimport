@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//don't start a we-session!!
+//don't start a we-session!
 if(!defined('NO_SESS')){
 	define('NO_SESS', 1);
 }

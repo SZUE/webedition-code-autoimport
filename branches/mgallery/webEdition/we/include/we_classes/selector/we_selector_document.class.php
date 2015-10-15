@@ -146,7 +146,7 @@ function exit_open() {
 					'top.opener.' . $this->JSIDName . '= top.currentID ? top.currentID : "";' : '') .
 				($this->JSTextName ?
 					'top.opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
-		if(!!top.opener.' . $frameRef . 'YAHOO && !!top.opener.' . $frameRef . 'YAHOO.autocoml) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
+		if(top.opener.' . $frameRef . 'YAHOO!==undefined && !!top.opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 		' : '') .
 				($this->JSCommand ?
 					$this->JSCommand . ';' : '') . '

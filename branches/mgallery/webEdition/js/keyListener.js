@@ -36,11 +36,11 @@ function keyBoardListener(_successor) {
 	this.successor = (_successor ? _successor : null);
 
 	/**
-	 * abstract function overwrite this!!!
+	 * abstract function overwrite this!
 	 * @param {Event} evt
 	 */
 	this.dealEvent = function (evt) {
-		alert("You MUST overwrite the function dealEvent!!");
+		alert("You MUST overwrite the function dealEvent!");
 		return this.next(evt);
 
 	};
@@ -93,7 +93,7 @@ function keyDialogListener(_successor) {
 	this.dealEvent = function (evt) {
 		switch (evt.keyCode) {
 			case 27:// ESCAPE
-				// does function closeOnEscape exist!!
+				// does function closeOnEscape exist!
 				if (this.win.top.closeOnEscape !== undefined) {
 
 					if (this.win.top.closeOnEscape()) {

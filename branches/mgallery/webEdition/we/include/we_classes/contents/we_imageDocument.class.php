@@ -33,7 +33,7 @@ class we_imageDocument extends we_binaryDocument{
 	private static $imgCnt = 0;
 
 	/**
-	 * Comma separated value of IDs from THUMBNAILS_TABLE  This value is not stored in DB!!
+	 * Comma separated value of IDs from THUMBNAILS_TABLE  This value is not stored in DB!
 	 * @var string
 	 */
 	var $Thumbs = -1;

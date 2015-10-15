@@ -549,7 +549,7 @@ class we_document extends we_root{
 
 		$this->OldPath = $this->Path;
 
-		if(!$resave){ // NO rebuild!!!
+		if(!$resave){ // NO rebuild!
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
@@ -604,7 +604,7 @@ class we_document extends we_root{
 								case 'link':
 									/*
 									 * documents: when no link is set but there is a default id in template $v['dat'] is serialized twice:
-									 * we do not register such links, they belong to the template and are they are not stored in tblContent!!
+									 * we do not register such links, they belong to the template and are they are not stored in tblContent!
 									 *
 									 * objectfiles: here the default defined in class is stored in tblObject_X:
 									 * it is no "dynamic" default and belongs to the object: so we register it as medialink of the object (and class)
@@ -657,7 +657,7 @@ class we_document extends we_root{
 	  //$save[2] = $this->NavigationItems;
 	  } */
 
-// reverse function to saveInSession !!!
+// reverse function to saveInSession !
 	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
@@ -1063,8 +1063,7 @@ class we_document extends we_root{
 	function getHref($attribs, we_database_base $db = null, $fn = 'this'){
 		$db = $db ? : new_DB_WE();
 		$n = $attribs['name'];
-		$nint = $n . we_base_link::MAGIC_INT_LINK;
-		if($this->getValFromSrc($fn, $nint)){
+		if($this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK, 'bdid')){
 			$intID = $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID, 'bdid'); //try bdid first
 			$intID = $intID ? : $this->getValFromSrc($fn, $n . we_base_link::MAGIC_INT_LINK_ID);
 			return f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($intID), '', $db);
@@ -1240,7 +1239,7 @@ class we_document extends we_root{
 			foreach($rollOverAttribsArr as $n => $v){
 				$_linkAttribs[$n] = $v;
 			}
-//   override the href at last important !!
+//   override the href at last important !
 
 			$linkAdds = (isset($link['params']) ? $link['params'] : '' ) . (isset($link['anchor']) ? $link['anchor'] : '' );
 			if(strpos($linkAdds, '?') === false && strpos($linkAdds, '&') !== false && strpos($linkAdds, '&') == 0){//Bug #5478
@@ -1414,7 +1413,7 @@ class we_document extends we_root{
 	}
 
 	/**
-	 * returns	a select menu within a html table. to ATTENTION this function is also used in classes object and objectFile !!!!
+	 * returns	a select menu within a html table. to ATTENTION this function is also used in classes object and objectFile !
 	 * 			when $withHeadline is true, a table with headline is returned, default is false
 	 * @return	select menue to determine charset
 	 * @param	boolean
@@ -1582,7 +1581,7 @@ class we_document extends we_root{
 			}
 		}
 
-		
+
 		return preg_replace('/\<a>(.*)\<\/a>/siU', '$1', $text);
 	}
 

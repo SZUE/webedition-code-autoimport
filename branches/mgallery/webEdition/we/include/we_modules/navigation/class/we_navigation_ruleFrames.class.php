@@ -271,7 +271,7 @@ function we_cmd(){
 			var isValid=1;
 			if(document.we_form.SelectionType.options[0].selected==true){
 				isValid=YAHOO.autocoml.isValidById("yuiAcInputFolderIDPath");
-			} else if(!!document.we_form.SelectionType.options[1] && document.we_form.SelectionType.options[1].selected==true){
+			} else if(document.we_form.SelectionType.options[1]!==undefined && document.we_form.SelectionType.options[1].selected==true){
 				isValid=YAHOO.autocoml.isValidById("yuiAcInputClassIDPath");
 			}
 			if(isValid && YAHOO.autocoml.isValidById("yuiAcInputNavigationIDPath")) {

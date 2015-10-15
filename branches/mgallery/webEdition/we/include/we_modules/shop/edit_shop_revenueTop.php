@@ -44,21 +44,21 @@ function orderBy($a, $b){
 function getTitleLink($text, $orderKey){
 	$desc = we_base_request::_(we_base_request::BOOL, "orderDesc");
 	$_href = $_SERVER['SCRIPT_NAME'] .
-		'?ViewYear=' . $GLOBALS['selectedYear'] .
-		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
-		'&orderBy=' . $orderKey .
-		'&actPage=' . $GLOBALS['actPage'] .
-		( ($GLOBALS['orderBy'] == $orderKey && !$desc) ? '&orderDesc=true' : '' );
+			'?ViewYear=' . $GLOBALS['selectedYear'] .
+			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
+			'&orderBy=' . $orderKey .
+			'&actPage=' . $GLOBALS['actPage'] .
+			( ($GLOBALS['orderBy'] == $orderKey && !$desc) ? '&orderDesc=true' : '' );
 
-	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-'.($desc ? 'desc' : 'asc').' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
+	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . ($desc ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
 }
 
 function getPagerLink(){
 	return $_SERVER['SCRIPT_NAME'] .
-		'?ViewYear=' . $GLOBALS['selectedYear'] .
-		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
-		'&orderBy=' . $GLOBALS['orderBy'] .
-		(we_base_request::_(we_base_request::BOOL, "orderDesc") ? '&orderDesc=true' : '' );
+			'?ViewYear=' . $GLOBALS['selectedYear'] .
+			'&ViewMonth=' . $GLOBALS['selectedMonth'] .
+			'&orderBy=' . $GLOBALS['orderBy'] .
+			(we_base_request::_(we_base_request::BOOL, "orderDesc") ? '&orderDesc=true' : '' );
 }
 
 function yearSelect($select_name){
@@ -81,34 +81,23 @@ function monthSelect($select_name, $selectedMonth){
 }
 
 $mon = we_base_request::_(we_base_request::INT, 'ViewMonth');
-echo we_html_tools::getHtmlTop() .
- STYLESHEET .
- we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+		we_html_element::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();
 	}
 
-	var countSetTitle = 0;
 	function setHeaderTitle() {
 		pre = "";
 		post = "' . ($mon > 0 ? g_l('modules_shop', '[month][' . $mon . ']') . ' ' : '') . we_base_request::_(we_base_request::INT, 'ViewYear') . '";
 		if(parent.edheader && parent.edheader.setTitlePath) {
-			parent.edheader.hasPathGroup = true;
-			parent.edheader.setPathGroup(pre);
-			parent.edheader.hasPathName = true;
-			parent.edheader.setPathName(post);
-			parent.edheader.setTitlePath();
-			countSetTitle = 0;
+			parent.edheader.setTitlePath(post,pre);
 		} else {
-			if(countSetTitle < 30) {
 				setTimeout(setHeaderTitle,100);
-				countSetTitle++;
-			}
 		}
 	}
 
-') . we_html_element::jsElement('
 	function we_cmd() {
 		switch (arguments[0]) {
 			case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
@@ -119,8 +108,7 @@ echo we_html_tools::getHtmlTop() .
 			default: // not needed yet
 				break;
 		}
-	}'). '
-</head>
+	}')) . '
 <body class="weEditorBody" onload="self.focus(); setHeaderTitle();" onunload="">
 <form>';
 
@@ -184,11 +172,11 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		$orderData = we_unserialize($DB_WE->f('strSerialOrder'));
 
 
-		$netPrice = $orderData['we_shopPriceIsNet'] ? $DB_WE->f('Price') :  ($DB_WE->f('Price')/(1+(floatval($shopArticleObject['shopvat'])/100)));
-		$grosPrice = $orderData['we_shopPriceIsNet'] ? ($DB_WE->f('Price')*(1+(floatval($shopArticleObject['shopvat'])/100))) : $DB_WE->f('Price');
+		$netPrice = $orderData['we_shopPriceIsNet'] ? $DB_WE->f('Price') : ($DB_WE->f('Price') / (1 + (floatval($shopArticleObject['shopvat']) / 100)));
+		$grosPrice = $orderData['we_shopPriceIsNet'] ? ($DB_WE->f('Price') * (1 + (floatval($shopArticleObject['shopvat']) / 100))) : $DB_WE->f('Price');
 
 		$priceToShow = $orderData['we_shopCalcVat'] ? $grosPrice : $netPrice;
-		$articleSum = $DB_WE->f('IntQuantity')*$priceToShow;
+		$articleSum = $DB_WE->f('IntQuantity') * $priceToShow;
 
 
 		$orderRows[] = array(
@@ -245,9 +233,9 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			if($calcVat){ // vat must be payed for this order
 				// now determine VAT
 				$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-						$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-						(isset($defaultVat) ? $defaultVat : 0)
-					);
+								$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
+								(isset($defaultVat) ? $defaultVat : 0)
+						);
 
 				if($articleVat > 0){
 					if(!isset($articleVatArray[$articleVat])){ // avoid notices
@@ -294,7 +282,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 					<td colspan="5"></td>
 					<td class="shopContentfontR">' . $_vat . '&nbsp;%</td>
 					<td class="shopContentfontR">' . we_base_util::formatNumber($_amount) . $waehr . '</td>
-				</tr>'."\n";
+				</tr>' . "\n";
 		}
 	}
 
@@ -309,7 +297,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<th>' . g_l('modules_shop', '[schonbezahlt]') . '</th>
 				<th>' . g_l('modules_shop', '[unbezahlt]') . '</th>
 				<th class="shopContentfontR">' . g_l('modules_shop', '[umsatzgesamt]') . '</th>
-			</tr>'. "\n" .'
+			</tr>' . "\n" . '
 			<tr class="shopContentfont">
 				<td>' . $selectedYear . '</td>
 				<td>' . ($selectedMonth > 0 ? $selectedMonth : '' ) . '</td>
@@ -319,7 +307,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<td class="npshopContentfontR">' . we_base_util::formatNumber($unpayed) . $waehr . '</td>
 				<td class="shopContentfontR">' . we_base_util::formatNumber($total) . $waehr . '</td>
 			</tr>' . "\n" .
-			$vatTable . '</table>'. "\n",
+		$vatTable . '</table>' . "\n",
 		'space' => 0
 	);
 
@@ -348,7 +336,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 
 		$variantStr = '';
 		if(!empty($articleData['WE_VARIANT'])){
-			$variantStr = '<br /><strong>' . g_l('modules_shop', '[variant]') . ': ' . $articleData['WE_VARIANT'].'</strong>';
+			$variantStr = '<br /><strong>' . g_l('modules_shop', '[variant]') . ': ' . $articleData['WE_VARIANT'] . '</strong>';
 		}
 
 		$customFields = '';
@@ -360,7 +348,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		}
 
 		$content[] = array(
-			array('dat' => '<a href="javascript:we_cmd(\'openOrder\','.$orderRow['IntOrderID'].',\'shop\',\''.SHOP_TABLE.'\');">'.$orderRow['IntOrderID'].'</a>'),
+			array('dat' => '<a href="javascript:we_cmd(\'openOrder\',' . $orderRow['IntOrderID'] . ',\'shop\',\'' . SHOP_TABLE . '\');">' . $orderRow['IntOrderID'] . '</a>'),
 			array('dat' => $orderRow[WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
 			array('dat' => $orderRow['IntQuantity']),
 			array('dat' => we_base_util::formatNumber($orderRow['Price']) . $waehr),

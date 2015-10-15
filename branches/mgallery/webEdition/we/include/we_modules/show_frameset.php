@@ -45,9 +45,10 @@ function we_cmd() {
 
 
 //when opened by navigation hook
-	if(we_base_request::_(we_base_request::STRING, 'tool') === 'navigation'){
+	/*if(we_base_request::_(we_base_request::STRING, 'tool') === 'navigation'){
+		t_e('eleminate this call');
 		$_REQUEST['mod'] = $mod = 'navigation';
-	}
+	}*/
 
 	//TODO: we should loop through all we_cmd and process them in respective we_module_frames.class only
 	$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1); //to be used only for IDs or integer constants!

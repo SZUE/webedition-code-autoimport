@@ -38,7 +38,7 @@ class we_binaryDocument extends we_document{
 	 * @var object instance of metadata reader for accessing metadata functionality
 	 */
 	private $metaDataReader = null;
-	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
 
 	/**
 	 * @var array for metadata read via $metaDataReader

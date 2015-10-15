@@ -475,7 +475,7 @@ weCollectionEdit = {
 					index = el.nextSibling.id.substr(10);
 					id = this.view === 'grid' ? el.nextSibling.childNodes[2].value : document.getElementById('yuiAcResultItem_' + index).value;
 					if (id === -1 || id === 0) {
-						//TODO: use insertItem()!!
+						//TODO: use insertItem()!
 						if (this.view === 'grid') {
 							el.nextSibling.childNodes[2].value = items[i].id;
 							el.nextSibling.firstChild.style.background = 'url(' + items[i].icon.url('%2F', '/') + ') no-repeat center center';

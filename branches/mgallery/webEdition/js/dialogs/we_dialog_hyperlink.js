@@ -35,7 +35,7 @@ function checkAnchor(el) {
 }
 
 function weCheckAcFields() {
-	if (!!weFocusedField) {
+	if (weFocusedField !== undefined) {
 		weFocusedField.blur();
 	}
 	if (document.getElementById("weDialogType").value === consts.TYPE_INT) {

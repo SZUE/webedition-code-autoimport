@@ -478,7 +478,7 @@ function fadeTrans(wizId, start, end, ms) {
 
 function toggle(wizId, wizType, prefix, postfix) {
 	var defRes = oCfg[wizType + '_props_'].res;
-	var defW = (!!defRes) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
+	var defW = (defRes !== undefined) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	var asoc = {
 		'width': {
 			'_inline': defW,
@@ -512,7 +512,7 @@ function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
 		setTheme(wizId, wizTheme);
 	}
 	gel(wizId).style.display = 'block';
-	if (!!oCfg.blend_.fadeIn) {
+	if (oCfg.blend_.fadeIn !== undefined) {
 		fadeTrans(wizId, 0, 100, oCfg.blend_.v);
 	}
 }
@@ -527,7 +527,7 @@ function createWidget(typ, row, col) {
 	var asoc = getColumnAsoc('c_' + col);
 	var properties = getWidgetProps('type');
 	var idx = properties.length /*+ 1*/;
-	while (!!gel('m_' + idx)) {
+	while (gel('m_' + idx) !== null) {
 		idx++;
 	}
 	var new_id = 'm_' + idx;
@@ -550,12 +550,12 @@ function createWidget(typ, row, col) {
 	divClone.setAttribute('class', 'le_widget');
 	divClone.className = 'le_widget'; // for IE
 	divClone.innerHTML = sClonedNode;
-	if (!!oCfg.blend_.fadeIn) {
+	if (oCfg.blend_.fadeIn !== undefined) {
 		divClone.style.display = 'none';
 	}
 	if (asoc.length && row) {
 		domNode.insertBefore(divClone, gel(asoc[row - 1].id));
-	} else { // add to empty col - before wildcard!!
+	} else { // add to empty col - before wildcard!
 		var _td = gel("c_" + col);
 		_td.insertBefore(
 						divClone,
@@ -572,12 +572,12 @@ function createWidget(typ, row, col) {
 			oPc.style.display = 'block';
 		}
 	}
-	if (!!oCfg.blend_.fadeIn) {
+	if (oCfg.blend_.fadeIn !== undefined) {
 		setOpacity(divClone.id, 0);
 	}
 	if (cloneSampleId !== 'divClone') {
 		divClone.style.display = 'block';
-		if (!!oCfg.blend_.fadeIn) {
+		if (oCfg.blend_.fadeIn !== undefined) {
 			fadeTrans(new_id, 0, 100, oCfg.blend_.v);
 		}
 	} else {
@@ -753,7 +753,7 @@ function rpc() {
 	var sType = gel(arguments[5] + '_type').value;
 	showLoadingSymbol(arguments[5]);
 
-	// temporaryliy add a form submit the form and save all !!
+	// temporaryliy add a form submit the form and save all !
 	// start bugfix #1145
 	var _tmpForm = document.createElement("form");
 	document.getElementsByTagName("body")[0].appendChild(_tmpForm);

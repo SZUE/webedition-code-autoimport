@@ -613,30 +613,16 @@ function isValidEmail(email) {
 	return checkMail ? we.validate.email(email) : true;
 }
 
-var countSetTitle = 0;
 function setHeaderTitle() {
 	if (parent.edheader && parent.edheader.setTitlePath) {
-		if (preObj = document.getElementById("yuiAcInputPathGroup")) {
-			parent.edheader.hasPathGroup = true;
-			parent.edheader.setPathGroup(preObj.value);
-		} else {
-			parent.edheader.hasPathGroup = false;
-		}
+		var preObj = document.getElementById("yuiAcInputPathGroup");
+		var postObj = document.getElementById("yuiAcInputPathName");
 
-		if (postObj = document.getElementById("yuiAcInputPathName")) {
-			parent.edheader.hasPathName = true;
-			parent.edheader.setPathName(postObj.value);
-		} else {
-			parent.edheader.hasPathName = false;
-		}
-		parent.edheader.setTitlePath();
-		countSetTitle = 0;
+		parent.edheader.setTitlePath((postObj ? postObj.value : ""), (preObj ? preObj.value : ""));
 	} else {
-		if (countSetTitle < 30) {
-			setTimeout(setHeaderTitle, 100);
-			countSetTitle++;
-		}
+		setTimeout(setHeaderTitle, 100);
 	}
+
 }
 
 function weShowMailsByStatus(status, group) {

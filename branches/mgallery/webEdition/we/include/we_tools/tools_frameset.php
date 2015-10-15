@@ -27,14 +27,13 @@ we_html_tools::protect();
 
 $title = 'webEdition ';
 $tool = we_base_request::_(we_base_request::STRING, 'tool');
+$showHeader = true;
 switch($tool){
 	case '':
 		break;
 	case 'weSearch':
 		$title .= g_l('tools', '[tools]') . ' - ' . g_l('searchtool', '[weSearch]');
-		break;
-	case 'navigation':
-		$title .= g_l('tools', '[tools]') . ' - ' . g_l('navigation', '[navigation]');
+		$showHeader = false;
 		break;
 	default:
 		$translate = we_core_Local::addTranslation('apps.xml');
@@ -84,8 +83,10 @@ echo we_html_tools::getHtmlTop($title, '', 'frameset') .
 ?>
 </head>
 <body style="overflow:hidden;"><?php
-	echo we_html_element::htmlIFrame('navi', WE_INCLUDES_DIR . 'we_tools/tools_header.php?tool=' . $tool, 'position:absolute;top:0px;left:0px;right:0px;height:21px;', '', '', false) .
-	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : ''), 'position:absolute;top:21px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false);
+	$_REQUEST['tool'] = $tool;
+	echo ($showHeader ?
+			we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.php', 'background-color:white;position:absolute;top:0px;height:21px;left:0px;right:0px;overflow: hidden;') : '') .
+	we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . 'we_tools/tools_content.php?tool=' . $tool . ($modelid ? ('&modelid=' . $modelid) : '') . ($tab ? ('&tab=' . $tab) : ''), 'position:absolute;top:' . ($showHeader ? 21 : 0) . 'px;left:0px;right:0px;bottom:0px;border-top:1px solid #999999;', '', '', false);
 	?>
 </body>
 </html>

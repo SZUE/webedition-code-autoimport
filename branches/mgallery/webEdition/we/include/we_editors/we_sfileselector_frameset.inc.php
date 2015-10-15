@@ -36,7 +36,7 @@ function printHeaderHTML($ret){
 					<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:top.fscmd.drawNewFolder();", true, 100, 22, "", "", false, false, "_ss") . '</td>
 					<td>' . we_html_button::create_button("fa:btn_add_file,fa-plus,fa-lg fa-file-o", "javascript:javascript:openFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>
 					<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, "javascript:top.fscmd.delFile();", true, 100, 22, "", "", false, false, "_ss") . '</td>') .
-		'</tr>
+			'</tr>
 		</table>
 		<table class="headerLines">
 			<tr>
@@ -67,7 +67,7 @@ function printFooterTable($ret, $filter, $currentName){
 		}
 	}
 	return '<table id="footer">' .
-		($filter === "all_Types" ? '
+			($filter === "all_Types" ? '
 				<tr>
 					<td class="defaultfont description">' . g_l('fileselector', '[type]') . '</td>
 					<td class="defaultfont">
@@ -98,11 +98,11 @@ $cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 $filter = we_base_request::_(we_base_request::STRING, 'we_cmd', 'all_Types', 2);
 $url = we_base_request::_(we_base_request::URL, 'we_cmd', '', 3);
 $currentDir = str_replace('\\', '/', ( $url ?
-		($url === '/' ? '' :
-			( parse_url($url) === FALSE && is_dir($docroot . $url) ?
-				$url :
-				dirname($url))) :
-		''));
+				($url === '/' ? '' :
+						( parse_url($url) === FALSE && is_dir($docroot . $url) ?
+								$url :
+								dirname($url))) :
+				''));
 $currentName = ($filter != we_base_ContentTypes::FOLDER ? basename($url) : '');
 if(!file_exists($docroot . $currentDir . '/' . $currentName)){
 	$currentDir = '';
@@ -138,7 +138,7 @@ $selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 			var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
 
 			opener.<?php echo $cmd1? : 'x'; ?> = foo;
-			if (!!opener.postSelectorSelect) {
+			if (opener.postSelectorSelect !== undefined) {
 				opener.postSelectorSelect('selectFile');
 			}
 		}

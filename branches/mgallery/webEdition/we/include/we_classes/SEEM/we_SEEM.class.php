@@ -342,7 +342,7 @@ abstract class we_SEEM{
 		$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 		foreach($SEEM_LinkArray[0] as $i => $link){
 
-			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !!!
+			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT){ //	in Super-Easy-Edit-Mode only in Editmode !
 				switch($SEEM_LinkArray[2][$i]){
 
 					//  Edit an included document from webedition.
@@ -476,7 +476,7 @@ abstract class we_SEEM{
 					$javascriptCode .= "top.doClickDirect(" . $linkArray[6][$i] . ",'" . $linkArray[7][$i] . "','" . FILE_TABLE . "');return true;\" onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"";
 				}
 
-				//  Target document is on another Web-Server - leave webEdition !!!!!
+				//  Target document is on another Web-Server - leave webEdition !
 			} elseif(strpos($linkArray[5][$i], 'http://') === 0 || strpos($linkArray[5][$i], 'https://') === 0){
 				$javascriptCode = " onclick=\"if(confirm('" . g_l('SEEM', '[ext_document_on_other_server_selected]') . "')){ window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');top.info(' '); } else { return false; };\" onmouseover=\"top.info('" . g_l('SEEM', '[info_ext_doc]') . "');\"";
 
@@ -830,7 +830,7 @@ abstract class we_SEEM{
 	 */
 	static function arrayToParameters($array, $arrayname, $ignor){
 
-		//	possible improvement - handle none arrays first!!!!!
+		//	possible improvement - handle none arrays first!
 
 		$ignor = array_merge($ignor, array_keys($_COOKIE));
 
@@ -919,7 +919,7 @@ abstract class we_SEEM{
 			//  The target is NO webEdition - Document
 		} else {
 
-			//  Target document is on another Web-Server - leave webEdition !!!!!
+			//  Target document is on another Web-Server - leave webEdition !
 			if(strpos($linkArray[5][$i], "http://") === 0){
 
 				$code = "window.open('" . $linkArray[5][$i] . $linkArray[3][$i] . "','_blank');";

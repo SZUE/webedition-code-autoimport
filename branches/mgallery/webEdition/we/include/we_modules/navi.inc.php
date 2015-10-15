@@ -21,11 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//FIXME: remove, if file is renamed to ...inc.php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-
-
 $we_tabs = new we_tabs();
 
 $name = array();
@@ -56,14 +51,14 @@ echo $tab_header .
 			if(confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
 				if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
 				current = module;
-				top.content.location.replace("' . WE_MODULES_DIR . 'show.php?mod=" + module);
+				top.content.location.replace(WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=" + module);
 			} else {
 				setActiveTab(current);
 			}
 		} else {
 			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
 			current = module;
-			top.content.location.replace("' . WE_MODULES_DIR . 'show.php?mod=" + module);
+			top.content.location.replace(WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=" + module);
 
 		}
 

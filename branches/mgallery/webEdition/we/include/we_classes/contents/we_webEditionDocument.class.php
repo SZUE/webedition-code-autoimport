@@ -37,7 +37,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	/**
 	 * @var we_customer_documentFilter
 	 */
-	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
+	var $documentCustomerFilter = ''; // DON'T SET TO NULL !
 
 	public function __construct(){
 		parent::__construct();
@@ -637,7 +637,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		// First off correct corupted fields
 		$this->correctFields();
 
-//FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!!!
+//FIXME: maybe use $this->getUsedElements() to unset unused elements?! add setting to do this? check rebuild!
 		// Bug Fix #6615
 		$this->temp_template_id = $this->TemplateID;
 		$this->temp_category = $this->Category;

@@ -151,7 +151,7 @@ abstract class we_root extends we_class{
 	}
 
 	function modifyChildrenPath(){
-		// do nothing, only in Folder-Classes this Function schould have code!!
+		// do nothing, only in Folder-Classes this Function schould have code!
 	}
 
 	function checkIfPathOk(){
@@ -469,7 +469,7 @@ abstract class we_root extends we_class{
 	}
 
 	# return html code for button and field to select user
-	# ATTENTION !!: You have to have we_cmd function in your file and browse_user section
+	# ATTENTION !: You have to have we_cmd function in your file and browse_user section
 
 	#
 	function formUserChooser($old_userID = -1, $width = '', $in_textname = '', $in_idname = ''){
@@ -1378,7 +1378,7 @@ abstract class we_root extends we_class{
 			$this->we_load(self::LOAD_TEMP_DB);
 		}
 
-		if(!$this->userHasPerms()){ //	File is restricted !!!!!
+		if(!$this->userHasPerms()){ //	File is restricted !
 			return self::USER_NO_PERM;
 		}
 

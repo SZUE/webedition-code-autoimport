@@ -275,7 +275,7 @@ var g_l={
 function exit_open(){' . ($this->JSIDName ? '
 	opener.' . $this->JSIDName . '=top.currentID;' : '') .
 				($this->JSTextName ? 'opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
-	if((!!opener.parent) && (!!opener.parent.frames.editHeader) && (!!opener.parent.frames.editHeader.setPathGroup)) {
+	if((opener.parent!==undefined) && (opener.parent.frames.editHeader!==undefined)) {
 			if(currentType!="")	{
 				switch(currentType){
 					case "noalias":
@@ -285,14 +285,13 @@ function exit_open(){' . ($this->JSIDName ? '
 						setTabsCurPath = top.currentPath;
 				}
 				if(getEntry(top.currentID).isFolder){
-					opener.parent.frames.editHeader.setPathGroup(setTabsCurPath);
+					opener.parent.frames.editHeader.setTitlePath("",setTabsCurPath);
 				}else{
-					opener.parent.frames.editHeader.setPathName(setTabsCurPath);
+					opener.parent.frames.editHeader.setTitlePath(setTabsCurPath);
 				}
-				opener.parent.frames.editHeader.setTitlePath();
 			}
 	}
-	if(!!opener.' . $frameRef . 'YAHOO && !!opener.' . $frameRef . 'YAHOO.autocoml) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
+	if(opener.' . $frameRef . 'YAHOO!==undefined && opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 	' : '') .
 				($this->JSCommand ? '	' . $this->JSCommand . ';' : '') .
 				'	self.close();

@@ -57,7 +57,7 @@ class we_base_request{
 	const WEFILE = 'wefile';
 	const WEFILELIST = 'wefilelist';
 	const WEFILELISTA = 'wefilelista';
-//remove these types!!!
+//remove these types!
 	const JS = 'js';
 	const SERIALIZED = 'serial';
 	const SERIALIZED_KEEP = 'serialK';

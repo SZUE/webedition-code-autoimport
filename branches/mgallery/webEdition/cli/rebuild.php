@@ -49,7 +49,7 @@ $_REQUEST = array(
 	/**
 	 * When rebuild type is set to "all", it rewrites
 	 * the maintable (tblFile) also.
-	 * Only use this if the maintable is broken!!!
+	 * Only use this if the maintable is broken!
 	 *
 	 *  @var boolean
 	 */
@@ -57,7 +57,7 @@ $_REQUEST = array(
 	/**
 	 * When rebuild type is set to "all", it rewrites the
 	 * temporary table (tblTemporaryDocs) also.
-	 * Only use this if the temporary table is broken!!!
+	 * Only use this if the temporary table is broken!
 	 *
 	 * @var boolean
 	 */
@@ -182,11 +182,11 @@ Options:
 
   --rewriteMaintable         When type is set to "all", it rewrites
                              the maintable (tblFile) also.
-                             Only use this if the maintable is broken!!!
+                             Only use this if the maintable is broken!
 
   --rewriteTmptable          When type is set to "all", it rewrites the
                              temporary table (tblTemporaryDocs) also.
-                             Only use this if the temporary table is broken!!!
+                             Only use this if the temporary table is broken!
 
 Options to use when type is set to "static":
 

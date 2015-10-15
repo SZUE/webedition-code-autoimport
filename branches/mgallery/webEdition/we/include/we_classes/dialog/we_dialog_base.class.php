@@ -212,7 +212,7 @@ function doKeyDown() {
 	}
 
 	function getDialogContentHTML(){
-		return ''; // overwrite !!
+		return ''; // overwrite !
 	}
 
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){

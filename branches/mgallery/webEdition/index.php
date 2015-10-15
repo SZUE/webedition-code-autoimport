@@ -210,7 +210,7 @@ if(isset($GLOBALS['userLoginDenied'])){
 } else if(isset($_SESSION['user']['Username']) && isset($_POST['WE_LOGIN_password']) && isset($_POST['WE_LOGIN_username'])){
 	$login = LOGIN_OK;
 	if(($mode = we_base_request::_(we_base_request::STRING, 'mode'))){
-		setcookie('we_mode', $mode, time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !!!
+		setcookie('we_mode', $mode, time() + 2592000); //	Cookie remembers the last selected mode, it will expire in one Month !
 	}
 	setcookie('we_popup', we_base_request::_(we_base_request::BOOL, 'popup'), time() + 2592000);
 } else if(isset($_POST['WE_LOGIN_password']) && isset($_POST['WE_LOGIN_username'])){
@@ -287,7 +287,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			$httpCode = 200;
 			$_body_javascript = '';
 
-			//	Here the mode - SEEM or normal is saved in the SESSION!!!
+			//	Here the mode - SEEM or normal is saved in the SESSION!
 			//	Perhaps this must move to another place later.
 			//	Later we must check permissions as well!
 			if(we_base_request::_(we_base_request::STRING, 'mode', we_base_constants::MODE_NORMAL) == we_base_constants::MODE_NORMAL){

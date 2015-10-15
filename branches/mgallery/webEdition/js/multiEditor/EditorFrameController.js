@@ -917,7 +917,7 @@ function EditorFrame(ref, elementId) {
 	this.FrameId = elementId;
 
 	this.EditorFrameWindow = top.bm_content_frame.window.frames[elementId];
-	this.EditorFrameReference = ref; // not needed yet !!!
+	this.EditorFrameReference = ref; // not needed yet !
 
 	this.EditorType = null;	// model|cockpit|none_webedition, etc
 
@@ -957,7 +957,7 @@ function EditorFrame(ref, elementId) {
 	this.EditorReloadAllNeeded = false;
 
 	// exit_doc_question for this document
-	// used in: closeDocument, closeEditorFrame, toggleFrames !!
+	// used in: closeDocument, closeEditorFrame, toggleFrames !
 	this.EditorExitDocQuestionDialog = false;
 
 

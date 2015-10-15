@@ -51,6 +51,6 @@ $page = we_ui_layout_HTMLPage::getInstance();
 $page->setBodyAttributes(array('class' => 'weMenuBody'));
 $page->addElement($table);
 
-// needed for menu !!
+// needed for menu !
 
 echo $page->getHTML();

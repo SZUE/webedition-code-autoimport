@@ -655,7 +655,7 @@ var weFileUpload = (function () {
 						this.isUploading = true;
 						_.view.repaintGUI({what: 'startSendFile'});
 
-						if (cur.size <= this.chunkSize && !this.transformAll.doTrans) {//&& !cur.doTrans!!
+						if (cur.size <= this.chunkSize && !this.transformAll.doTrans) {//&& !cur.doTrans!
 							this.sendNextChunk(false);
 						} else {
 							if (_.view.elems.fileSelect && _.view.elems.fileSelect.value) {
@@ -664,7 +664,7 @@ var weFileUpload = (function () {
 							var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
 
 							//clientside editing disabled!
-							if (false && this.EDIT_IMAGES_CLIENTSIDE && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1) {//TODO: && !cur.doTrans!!)
+							if (false && this.EDIT_IMAGES_CLIENTSIDE && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1) {//TODO: && !cur.doTrans!)
 								that.sendNextChunk(true);
 							} else {
 								fr = new FileReader();

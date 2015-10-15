@@ -116,7 +116,7 @@ function addUserToField() {
 			break;
 		}
 	}
-	if (!bUsrExists) {//FIXME change this path!!
+	if (!bUsrExists) {//FIXME change this path!
 		_fo.action = '/webEdition/we/include/we_widgets/dlg/mfd.php?we_cmd[0]=' +
 						_sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
 						_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + _sUsers + ',' + iNewUsrId;

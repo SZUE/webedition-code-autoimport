@@ -107,7 +107,7 @@ function we_tag_href($attribs){
 		$rootdir = '';
 	}
 
-	$int_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nint . ']';
+	$int_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nint . '#bdid]';
 	$intPath_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nintPath . ']';
 	$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nintID . '#bdid]';
 	$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';

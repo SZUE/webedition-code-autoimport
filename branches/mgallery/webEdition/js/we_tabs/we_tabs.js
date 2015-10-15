@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -22,11 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var resizeDummy = 1;
 var titlePathName = "";
 var titlePathGroup = "";
-var hasPathName = false;
-var hasPathGroup = false;
 
 function setActiveTab(tab) {
 	var tabCon = document.getElementById('tabContainer');
@@ -42,7 +41,7 @@ function setTabClass(elem) {
 	var arr = [];
 	var els = document.getElementsByTagName("*");
 	for (var i = 0; i < els.length; i++) {
-		if (els[i].className == "tabActive") {
+		if (els[i].className === "tabActive") {
 			els[i].className = "tabNormal";
 		}
 	}
@@ -54,7 +53,6 @@ function allowed_change_edit_page() {
 		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 		if (contentEditor && contentEditor.contentWindow.fields_are_valid) {
 			return contentEditor.contentWindow.fields_are_valid();
-
 		}
 	}
 	catch (e) {
@@ -63,28 +61,20 @@ function allowed_change_edit_page() {
 	return true;
 }
 
-function setTitlePath() {
+function setTitlePath(path, group) {
+	if (group) {
+		titlePathGroup = group;
+	}
+	if (path) {
+		titlePathName = path;
+	}
 	if ((titleElem = document.getElementById('titlePath'))) {
-		titlePathName = titlePathName.replace(/</g, "&lt;");
-		titlePathName = titlePathName.replace(/>/g, "&gt;");
-		titlePathGroup = titlePathGroup.replace(/</g, "&lt;");
-		titlePathGroup = titlePathGroup.replace(/>/g, "&gt;");
+		titlePathName = titlePathName.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+		titlePathGroup = titlePathGroup.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 		titleElem.innerHTML = titlePathGroup + ((titlePathGroup == "/" || titlePathName === "") ? "" : "/") + titlePathName;
 	}
 }
 
-function setPathName(pathName) {
-	if (hasPathName)
-		titlePathName = pathName;
-}
-
-function setPathGroup(pathGroup) {
-	if (hasPathGroup)
-		titlePathGroup = pathGroup;
-}
-
-
-var loop = 0;
 function getPathInfos() {
 	try {
 		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
@@ -93,19 +83,18 @@ function getPathInfos() {
 			contentEditor = parent.frames[1];
 		}
 
-		if (contentEditor.loaded) {
-			if ((pathNameElem = contentEditor.document.getElementById('yuiAcInputPathName'))) {
-				hasPathName = true;
-				titlePathName = pathNameElem.value;
-			}
-			if ((pathGroupElem = contentEditor.document.getElementById('yuiAcInputPathGroup'))) {
-				hasPathGroup = true;
-				titlePathGroup = pathGroupElem.value;
-			}
-			loop = 0;
-		} else if (loop < 10) {
-			loop++;
+		if (!contentEditor.loaded) {
 			setTimeout(getPathInfos, 250);
+			return;
+		}
+
+		var elem = contentEditor.document.getElementById('yuiAcInputPathName');
+		if (elem) {
+			titlePathName = elem.value;
+		}
+		elem = contentEditor.document.getElementById('yuiAcInputPathGroup');
+		if (elem) {
+			titlePathGroup = elem.value;
 		}
 	}
 	catch (e) {
@@ -133,14 +122,6 @@ function setFrameSize() {
 			nList[2].style.top = tabsHeight + "px";
 		} else if (parent.document.getElementById('updatetabsDiv')) {
 			//no need to resize
-		} else if (parent.document.getElementsByTagName("FRAMESET").length) {
-			//FIXME: remove this if frames are obsolete
-			var fs = parent.document.getElementsByTagName("FRAMESET")[0];
-			//document.getElementById('main').style.overflow = "hidden";
-			tabsHeight = document.getElementById('main').offsetHeight;
-			var fsRows = fs.rows.split(',');
-			fsRows[0] = tabsHeight;
-			fs.rows = fsRows.join(",");
 		}
 	} else {
 		setTimeout(setFrameSize, 100);

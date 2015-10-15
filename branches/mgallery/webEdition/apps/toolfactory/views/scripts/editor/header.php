@@ -68,7 +68,6 @@ $htmlPage->addHTML('</div>');
 $js = <<<EOS
 
 	weEventController.register("save", function(data, sender) {
-		//self.setTitlePath("", data.model.Path);
 		self.unmark();
 	});
 
@@ -79,8 +78,7 @@ $js = <<<EOS
 		}
 
 		path += parent.edbody.document.we_form.Text.value;
-		path = path.replace(/</g,"&lt;");
-		path = path.replace(/>/g,"&gt;");
+		path = path.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 		self.setTitlePath("", path.replace(/\/\//,"/"));
 		self.mark();
 	});

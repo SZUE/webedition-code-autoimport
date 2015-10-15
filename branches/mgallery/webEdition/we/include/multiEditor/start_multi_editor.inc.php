@@ -56,7 +56,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 	}
 	$jsCommand = _buildJsCommand($directCmd);
 } else { // check preferences for which document to open at startup
-// <we:linkToSeeMode> !!!!
+// <we:linkToSeeMode> !
 	if(isset($_SESSION['weS']['SEEM']) && isset($_SESSION['weS']['SEEM']['open_selected'])){
 		switch($_SESSION['weS']['SEEM']['startType']){
 			case 'document':

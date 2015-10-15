@@ -425,47 +425,47 @@ function edit_recipient() {
 function show_seem_chooser(val) {
 	switch (val) {
 		case 'document':
-			if (!!document.getElementById('selectordummy')) {
+			if (document.getElementById('selectordummy') !== undefined) {
 				document.getElementById('selectordummy').style.display = 'none';
 			}
-			if (!!document.getElementById('seem_start_object')) {
+			if (document.getElementById('seem_start_object') !== undefined) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
-			if (!!document.getElementById('seem_start_weapp')) {
+			if (document.getElementById('seem_start_weapp') !== undefined) {
 				document.getElementById('seem_start_weapp').style.display = 'none';
 			}
-			if (!!document.getElementById('seem_start_document')) {
+			if (document.getElementById('seem_start_document') !== undefined) {
 				document.getElementById('seem_start_document').style.display = 'block';
 			}
 
 			break;
 
 		case 'weapp':
-			if (!!document.getElementById('selectordummy')) {
+			if (document.getElementById('selectordummy') !== undefined) {
 				document.getElementById('selectordummy').style.display = 'none';
 			}
-			if (!!document.getElementById('seem_start_document')) {
+			if (document.getElementById('seem_start_document') !== undefined) {
 				document.getElementById('seem_start_document').style.display = 'none';
 			}
-			if (!!document.getElementById('seem_start_weapp')) {
+			if (document.getElementById('seem_start_weapp') !== undefined) {
 				document.getElementById('seem_start_weapp').style.display = 'block';
 			}
-			if (!!document.getElementById('seem_start_object')) {
+			if (document.getElementById('seem_start_object') !== undefined) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
 			break;
 		case 'object':
 			if (WE().consts.tables.OBJECT_FILES_TABLE) {
-				if (!!document.getElementById('selectordummy')) {
+				if (document.getElementById('selectordummy') !== undefined) {
 					document.getElementById('selectordummy').style.display = 'none';
 				}
-				if (!!document.getElementById('seem_start_weapp')) {
+				if (document.getElementById('seem_start_weapp') !== undefined) {
 					document.getElementById('seem_start_weapp').style.display = 'none';
 				}
-				if (!!document.getElementById('seem_start_document')) {
+				if (document.getElementById('seem_start_document') !== undefined) {
 					document.getElementById('seem_start_document').style.display = 'none';
 				}
-				if (!!document.getElementById('seem_start_object')) {
+				if (document.getElementById('seem_start_object') !== undefined) {
 					document.getElementById('seem_start_object').style.display = 'block';
 				}
 				break;
@@ -473,16 +473,16 @@ function show_seem_chooser(val) {
 			}
 			//no break
 		default:
-			if (!!document.getElementById('selectordummy')) {
+			if (document.getElementById('selectordummy') !== undefined) {
 				document.getElementById('selectordummy').style.display = 'block';
 			}
-			if (!!document.getElementById('seem_start_document')) {
+			if (document.getElementById('seem_start_document') !== undefined) {
 				document.getElementById('seem_start_document').style.display = 'none';
 			}
-			if (!!document.getElementById('seem_start_weapp')) {
+			if (document.getElementById('seem_start_weapp') !== undefined) {
 				document.getElementById('seem_start_weapp').style.display = 'none';
 			}
-			if (!!document.getElementById('seem_start_object')) {
+			if (document.getElementById('seem_start_object') !== undefined) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
 
