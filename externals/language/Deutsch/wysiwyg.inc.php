@@ -133,6 +133,7 @@ $l_wysiwyg=array(
 	'noshade'=>'Ohne Schattierung',
 	'nothing_selected'=>'Es ist nichts ausgewählt!',
 	'nothumb'=>'keine Miniaturansicht',
+	'openNewWindow'=>'In einem neuen Browserfenster öffnen',
 	'ordered_list'=>'Geordnete Liste',
 	'outdent'=>'Ausrücken',
 	'paragraph'=>'Absatz',

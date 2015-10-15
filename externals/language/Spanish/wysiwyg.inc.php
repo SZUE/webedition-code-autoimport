@@ -133,6 +133,7 @@ $l_wysiwyg=array(
 	'noshade'=>'Sin matiz',
 	'nothing_selected'=>'There is nothing selected!',
 	'nothumb'=>'Sin imagen en miniatura',
+	'openNewWindow'=>'Open in new browser window',
 	'ordered_list'=>'Activar/desactivar numeración',
 	'outdent'=>'Aumentar la sangría',
 	'paragraph'=>'Párrafo',

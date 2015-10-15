@@ -133,6 +133,7 @@ $l_wysiwyg=array(
 	'noshade'=>'Без затенения',
 	'nothing_selected'=>'There is nothing selected!',
 	'nothumb'=>'Без иконок',
+	'openNewWindow'=>'Open in new browser window',
 	'ordered_list'=>'Нумерованный список',
 	'outdent'=>'Втяжка',
 	'paragraph'=>'Знак абзаца',

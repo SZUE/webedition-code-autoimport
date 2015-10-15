@@ -133,6 +133,7 @@ $l_wysiwyg=array(
 	'noshade'=>'No shading',
 	'nothing_selected'=>'There is nothing selected!',
 	'nothumb'=>'no thumbnail',
+	'openNewWindow'=>'Open in new browser window',
 	'ordered_list'=>'Ordered list',
 	'outdent'=>'Outdent',
 	'paragraph'=>'Paragraph',

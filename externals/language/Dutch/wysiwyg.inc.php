@@ -133,6 +133,7 @@ $l_wysiwyg=array(
 	'noshade'=>'Geen schaduw',
 	'nothing_selected'=>'Er is niets geselecteerd!',
 	'nothumb'=>'geen thumbnail',
+	'openNewWindow'=>'Open in new browser window',
 	'ordered_list'=>'Geordende lijst',
 	'outdent'=>'Spring in',
 	'paragraph'=>'Paragraaf',

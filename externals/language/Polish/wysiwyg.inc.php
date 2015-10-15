@@ -133,6 +133,7 @@ $l_wysiwyg=array(
 	'noshade'=>'Bez cieniowania',
 	'nothing_selected'=>'There is nothing selected!',
 	'nothumb'=>'Brak miniatury',
+	'openNewWindow'=>'Open in new browser window',
 	'ordered_list'=>'Uporządkowana lista',
 	'outdent'=>'Usuń wcięcie',
 	'paragraph'=>'Paragraf',

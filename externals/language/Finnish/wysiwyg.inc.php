@@ -133,6 +133,7 @@ $l_wysiwyg=array(
 	'noshade'=>'Ei varjoa',
 	'nothing_selected'=>'Mitään ei ole valittu!',
 	'nothumb'=>'Ei esikatselukuvaa',
+	'openNewWindow'=>'Open in new browser window',
 	'ordered_list'=>'Numeroitu lista',
 	'outdent'=>'Poista sisennys',
 	'paragraph'=>'Kappale',
