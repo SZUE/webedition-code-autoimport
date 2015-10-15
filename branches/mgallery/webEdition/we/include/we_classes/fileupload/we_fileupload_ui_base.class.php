@@ -158,11 +158,10 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->isInternalBtnUpload = $flag;
 	}
 
-	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $target = '', $callback = ''){
-		$js = we_html_element::jsElement('
-//document.addEventListener("dragenter", function(event){event.preventDefault();event.target.style.cursor="no-drop";});
-//document.addEventListener("drop", function(event){event.preventDefault();event.target.style.cursor="auto";});			
+	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $callback = array()){
+		$callback = array_merge(array('external' => '', 'tree' => ''), $callback);
 
+		$js = we_html_element::jsElement('
 handleDragOver = function(e){
 	if(e.preventDefault){
 		e.preventDefault();
@@ -174,6 +173,11 @@ handleDragOver = function(e){
 		e.target.parentNode.className = "we_file_drag we_file_drag_hover";
 	}
 }
+
+handleDragLeave = function(e){
+	e.target.className = "we_file_drag";
+}
+
 handleDrop = function(e){
 	var text, files;
 
@@ -181,28 +185,29 @@ handleDrop = function(e){
 	e.preventDefault();
 	e.stopPropagation();
 
-	if(e.dataTransfer.getData("text")){
-		doDropFromInside(e.dataTransfer.getData("text"));
-	} else if(e.dataTransfer.files){
-		doDropFromOutside(e.dataTransfer.files);
+	if(text = e.dataTransfer.getData("text")){
+		switch(text.split(",")[0]){
+			case "dragItem": // drag from tree
+				doDragFromTree(text);
+				break;
+			default:
+				// more cases to come
+		}
+	} else if(e.dataTransfer.files){top.console.log("from ext");
+		doDragFromExternal(e.dataTransfer.files);
 	}
 }
-handleDragLeave = function(e){
-	e.target.className = "we_file_drag";
-}
-doDropFromOutside = function(files){
+
+doDragFromExternal = function(files){
 	document.presetFileupload = files;
-	top.we_cmd("we_fileupload_image", "' . $target . '", "' . $callback . '");
+	top.we_cmd("we_fileupload_editor", "' . $contentType . '", 1, "", "", "' . $callback['external'] . '", 0, 0, "", true);
 }
-doDropFromInside = function(text){
+doDragFromTree = function(text){
 	var data = text.split(",");
 
-	switch(data[0]){
-		case "dragItem":
-			if(data[2] && data[3] === "' . $contentType . '"){
-				' . (strpos($target, 'WECMDENC_') !== false ? base64_decode(urldecode(substr($target, 9))) : $target) . ' = data[2];
-				' . (strpos($callback, 'WECMDENC_') !== false ? base64_decode(urldecode(substr($callback, 9))) : $callback) . '
-			}
+	if(data[2] && data[3] === "' . $contentType . '"){
+		var table = data[1], id = data[2], ct = data[3];
+		' . (strpos($callback['tree'], 'WECMDENC_') !== false ? base64_decode(urldecode(substr($callback['tree'], 9))) : $callback['tree']) . '
 	}
 }
 		');

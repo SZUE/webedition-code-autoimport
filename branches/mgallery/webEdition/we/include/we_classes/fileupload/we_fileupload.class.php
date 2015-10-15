@@ -29,10 +29,11 @@ abstract class we_fileupload{
 	protected $maxUploadSizeBytes = 0;
 	protected $isGdOk = true;
 	protected $genericFileNameTemp = '';
+	protected $predefinedConfig = '';
 
 	const CHUNK_SIZE = 128;
-	const ON_ERROR_RETURN = true;
-	const ON_ERROR_DIE = true;
+	const ON_ERROR_RETURN = true;//obsolete?
+	const ON_ERROR_DIE = true;//obsolete?
 
 	const REPLACE_BY_UNIQUEID = '##REPLACE_BY_UNIQUEID##';
 	const REPLACE_BY_FILENAME = '##REPLACE_BY_FILENAME##';
@@ -94,7 +95,7 @@ abstract class we_fileupload{
 			}
 		}
 
-		$mime = array_map(function($e){return(strtolower(trim($e, ' ,')));}, $mime);
+		$mime = array_filter(array_map(function($e){return(strtolower(trim($e, ' ,')));}, $mime), function($var){return !$var ? false : true;});
 		$ext = array_map(function($e){return(strtolower(trim($e, ' ,')));}, $ext);
 
 		$tmp = array(
@@ -135,5 +136,8 @@ abstract class we_fileupload{
 		return $this->_checkFileType($mime, '', 'mime');
 	}
 	
+	public function setPredefinedConfig($predefinedConfig = ''){
+		$this->predefinedConfig = $predefinedConfig;
+	}
 
 }

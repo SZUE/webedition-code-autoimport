@@ -27,29 +27,23 @@
 
 we_html_tools::protect();
 
-$writebackTarget = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1));
-$customCallback = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));
-$importToID = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 3);
-$importToPath = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '/', 4));
-$setDisabledImportToID = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 5);
-$predefinedCallback = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 6);
+$contentType = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1));
+$doImport = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', true, 2));
+$predefinedConfig = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
+$writebackTarget = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4));
+$customCallback = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5));
+$importToID = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 6);
+$setFixedImportTo = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 7);
+$predefinedCallback = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 8);
+$isPreset = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', false, 9));
 
-// for legacy only
-if(we_base_request::_(we_base_request::BOOL, 'we_fu_isSubmitLegacy', false)){
-	//make some inst()-bla to have this in one line!
-	$respClass = we_base_request::_(we_base_request::STRING, 'weResponseClass', 'we_fileupload_resp_base');
-	$fileupload = new $respClass();
-	$fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);');
-	$resp = $fileupload->processRequest();
-}
-
-$fileUpload = new we_fileupload_ui_editor(we_base_ContentTypes::IMAGE, '', 'dialog');
-//$fileUpload->setCallback('top.reloadOpener();top.close()');
+$fileUpload = new we_fileupload_ui_editor($contentType, '', $doImport);
+$fileUpload->setpredefinedConfig($predefinedConfig);
 $fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);');
 $fileUpload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
-$fileUpload->setIsPreset(true);
+$fileUpload->setIsPreset($isPreset);
 $fileUpload->setIsExternalBtnUpload(true);
-$fileUpload->setFieldImportToID(array('setField' => true, 'presetID' => $importToID, 'presetPath' => $importToPath, 'setDisabled' => $setDisabledImportToID));
+$fileUpload->setFieldImportToID(array('setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo));
 $fileUpload->setMoreFieldsToAppend(array(
 	array('imgsSearchable', 'text'),
 	array('importMetadata', 'text'),
@@ -62,6 +56,7 @@ $fileUpload->setEditorJS(array(
 	'predefinedCallback' => $predefinedCallback
 ));
 
+
 echo we_html_tools::getHtmlTop('fileupload') . 
 	STYLESHEET . $fileUpload->getEditorJS() .
 	we_html_element::jsScript(JS_DIR . 'global.js') .
@@ -69,14 +64,9 @@ echo we_html_tools::getHtmlTop('fileupload') .
 
 echo we_html_element::htmlBody(array('style' => 'position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;', 'onload' => ''),
 	we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;'),
-		'<form name="we_form" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="we_cmd[0]" value="we_fileupload_image">
-		<input type="hidden" name="we_fu_isSubmitLegacy" value="1">
-		<input type="hidden" name="weResponseClass" value="we_fileupload_resp_import">
-		<input type="hidden" name="weFormCount" value="1">
-		<input type="hidden" name="weFormNum" value="1">' .
-		we_html_element::htmlDiv(array('id' => 'we_fileupload', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
-		we_html_element::htmlDiv(array('id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), $fileUpload->getHtmlFooter()) .
-		'</form>'
+		we_html_element::htmlForm(array(),
+			we_html_element::htmlDiv(array('id' => 'we_fileupload', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
+			we_html_element::htmlDiv(array('id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), $fileUpload->getHtmlFooter())
+		)
 	)
 ) . '</html>';

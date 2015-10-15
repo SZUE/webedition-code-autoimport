@@ -27,9 +27,8 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected $isExternalBtnUpload = false;
 	protected $importToID = array(
 		'setField' => false,
-		'presetID' => false,
-		'presetPath' => false,
-		'setDisabled' => false
+		'preset' => 0,
+		'setFixed' => false
 	);
 	protected $transaction;
 	protected $contentType;
@@ -41,13 +40,12 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$this->contentType = $contentType;
 		$this->responseClass = 'we_fileupload_resp_import';
 		$type = 'binDoc';
-		$this->layout = $layout === 'horizontal' ? $layout : $this->layout;
 		$this->callback = '';
 		$this->type = 'binDoc';
 		$this->extension = $extension;
 		$this->setInternalProgress(array('isInternalProgress' => true));
 		$this->internalProgress['width'] = 170;
-		//$this->setTypeCondition('accepted', array($contentType));
+		$this->setTypeCondition('accepted', array($contentType));
 		$this->setDimensions(array('width' => 200, 'dragHeight' => 116, 'alertBoxWidth' => 507));
 		//$this->binDocProperties = $this->getDocProperties();
 	}

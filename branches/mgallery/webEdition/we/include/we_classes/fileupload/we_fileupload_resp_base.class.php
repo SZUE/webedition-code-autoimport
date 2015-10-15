@@ -26,9 +26,9 @@ class we_fileupload_resp_base extends we_fileupload{
 	protected $name = 'we_File';
 	protected $response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '', 'weDoc' => '');
 	protected $isUploadComplete = false; // obsolete?
-	protected $fileNameTemp = ""; // obsolete?
-	
-	protected $fileNameTempParts = array(
+	//protected $fileNameTemp = ''; // obsolete?
+	protected $commitFile = true;
+	protected $fileNameTempParts = array( // obsolete?
 		'path' => TEMP_PATH,
 		'prefix' => '',
 		'postfix' => '',
@@ -57,15 +57,20 @@ class we_fileupload_resp_base extends we_fileupload{
 			'weIsUploading' => false,
 		);
 	protected $fileVars = array(
-			'fileNameTemp' => '',
+			'genericFileNameTemp' => '',
+			'fileTemp' => '',
+			'fileDef' => '',
+			'saveToID' => 0,
+			'saveToDir' => '',
 			'weFileName' => '',
 			'weFileSize' => 1,
 			'weFileCt' => '',
+			'sameName' => ''
 		);
 	protected $docVars = array(
 			'transaction' => '',
-			'sameName' => '',
-			'importToID' => 0,
+			//'sameName' => '',
+			//'importToID' => 0,
 			'importMetadata' => 1,
 			'imgsSearchable' => 0,
 			'title' => '',
@@ -96,17 +101,22 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	protected function initByHttp(){
 		$this->FILES = $_FILES;
-		$this->fileVars = array_merge(array(), array_filter(
+		$this->fileVars = array_merge($this->fileVars, array_filter(
 			array(
 				'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
-				'fileNameTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
+				'fileTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
+				'saveToID' => we_base_request::_(we_base_request::INT, "importToID", we_base_request::NOT_VALID),
+				//'importToID' => we_base_request::_(we_base_request::INT, "saveToDir", we_base_request::NOT_VALID),
+				'saveToDir' => we_base_request::_(we_base_request::URL, 'saveToDir', we_base_request::NOT_VALID),
 				'weFileName' => we_base_request::_(we_base_request::STRING, 'weFileName', we_base_request::NOT_VALID),
 				'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
-				'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID)
+				'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID),
+				'sameName' => we_base_request::_(we_base_request::STRING, 'sameName', we_base_request::NOT_VALID)
 			), function($var){return $var !== we_base_request::NOT_VALID;})
 		);
 		$this->controlVars = array_merge($this->controlVars, array_filter(
 			array(
+				'commitFile' => we_base_request::_(we_base_request::BOOL, 'we_fu_commitFile', true),
 				'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
 				'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
 				'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
@@ -119,58 +129,100 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	public function processRequest(){
 		if(!(isset($this->FILES[$this->name]) && strlen($this->FILES[$this->name]["tmp_name"]))){
-			//t_e('err 1', $this->FILES);
 			return array_merge($this->response, array('status' => 'failure', 'message' => g_l('importFiles', '[php_error]')));
 		}
 
 		$this->fileVars['weFileCt'] = getContentTypeFromFile($this->FILES[$this->name]["name"]);//compare mime and ct by extension
 		if(!permissionhandler::hasPerm(we_base_ContentTypes::inst()->getPermission($this->fileVars['weFileCt']))){
-			//t_e('err 2');
 			return array_merge($this->response, array('status' => 'failure', 'message' => 'no_perms'));
 		}
 
-		if($this->controlVars['partNum'] > 1 && !$this->fileVars['fileNameTemp']){
+		if($this->controlVars['partNum'] > 1 && !$this->fileVars['fileTemp']){
 			return array_merge($this->response, array('status' => 'failure', 'message' => 'inconsistent_params'));
 		}
 
-		$chunkName = $this->controlVars['partNum'] === 1 ? $this->makeFileNameTemp() : TEMP_DIR . we_base_file::getUniqueId();
+		$chunkName = $this->controlVars['partNum'] === 1 ? $this->makeFileTemp() : TEMP_DIR . we_base_file::getUniqueId();
 		$chunkFile = $_SERVER['DOCUMENT_ROOT'] . $chunkName;
 		if(!@move_uploaded_file($this->FILES[$this->name]["tmp_name"], $chunkFile)){
-			//t_e('err 3');
 			return array_merge($this->response, array('status' => 'failure', 'message' => 'move_file_error'));
 		}
 
-		// if not firts chunk append it to tempFile, else tmpFile = chunkFile
+		// if not first chunk append it to tempFile, else tmpFile = chunkFile
 		if($this->controlVars['partNum'] === 1){
-			$this->fileVars['fileNameTemp'] = $chunkName;
+			$this->fileVars['fileTemp'] = $chunkName;
 		} else {
-			file_put_contents($_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileNameTemp'], file_get_contents($chunkFile), FILE_APPEND);
+			file_put_contents($_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'], file_get_contents($chunkFile), FILE_APPEND);
 			unlink($chunkFile);
 		}
 
 		// everything works fine but upload not finished yet: get next chunk
 		if($this->controlVars['partCount'] !== $this->controlVars['partNum'] && $this->controlVars['partCount'] !== 1){
-			//t_e('err 4');
-			return array_merge($this->response, array('status' => 'continue', 'fileNameTemp' => $this->fileVars['fileNameTemp']));
+			return array_merge($this->response, array('status' => 'continue', 'fileNameTemp' => $this->fileVars['fileTemp']));
 		}
 
-		//t_e('post');
 		// last chunk appended: start post process and get some response to send
 		return $this->postProcess();
 	}
 
-	// in this simple variant we just leave tempFile in tmp directory and inform GUI that it can go on
 	protected function postprocess(){
-		return array_merge($this->response, array('status' => 'success', 'fileNameTemp' => $this->fileVars['fileNameTemp'], 'completed' => 1));
+		if(!$this->commitFile){ // most simple variant: we just leave tempFile in tmp directory and inform GUI that it can go on and grab it
+			return array_merge($this->response, array('status' => 'success', 'fileNameTemp' => $this->fileVars['fileTemp'], 'completed' => 1));
+		}
+
+		if(!$this->checkSetFile()){
+			return $this->response;
+		}
+
+		if(!copy($_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'], $_SERVER['DOCUMENT_ROOT'] . str_replace(array('\\', '//'), '/', $this->fileVars['fileDef']))){
+			return $this->response = array_merge($this->response, array('status' => 'failure', 'message' => 'error_copy_file', 'completed' => 1));
+		};
+
+		return array_merge($this->response, array('status' => 'success', 'fileNameTemp' => $this->fileVars['fileTemp'], 'completed' => 1, 'weDoc' => array('id' => 0, 'path' => $this->fileVars['fileDef'], 'text' => $this->fileVars['weFileName']), 'commited' => 1));
+	}
+
+	protected function checkSetFile(){
+		$path = rtrim($this->fileVars['saveToDir'] ? : ($this->fileVars['saveToID'] ? id_to_path($this->fileVars['saveToID']) : ''), '/') . '/';
+
+		if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . $this->fileVars['weFileName'])){
+			switch($this->fileVars['sameName']){
+				case 'overwrite':
+					if(path_to_id($path . $this->fileVars['weFileName'])){
+						$this->response = array_merge($this->response, array('status' => 'failure', 'message' => g_l('fileselector', '[can_not_overwrite_we_file]'), 'completed' => 1));
+						return false;
+					}
+					break;
+				case 'rename':
+					$z = 0;
+					$regs = array();
+					if(preg_match('|^(.+)(\.[^\.]+)$|', $this->fileVars['weFileName'], $regs)){
+						$ext = $regs[2];
+						$name = $regs[1];
+					} else {
+						$ext = "";
+						$name = $this->fileVars['weFileName'];
+					}
+					$tmp = $name . "_" . $z . $ext;
+					while(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . $tmp)){
+						$tmp = $name . "_" . ++$z . $ext;
+					}
+					$this->fileVars['weFileName'] = $tmp;
+					break;
+				default:
+					$this->response = array_merge($this->response, array('status' => 'failure', 'message' => g_l('importFiles', '[same_name]'), 'completed' => 1));
+					return false;
+			}
+		}
+		$this->fileVars['fileDef'] = $path . "/" . $this->fileVars['weFileName'];
+
+		return true;
+	}
+
+	protected function makeFileTemp(){
+		return $this->fileVars['genericFileNameTemp'] ? str_replace(array(self::REPLACE_BY_UNIQUEID, self::REPLACE_BY_FILENAME), array(we_base_file::getUniqueId(), $this->fileVars['weFileName']), $this->fileVars['genericFileNameTemp']) : TEMP_DIR . we_base_file::getUniqueId();
 	}
 
 	protected function checkIntegrity(){
 		return true;
-	}
-	
-
-	protected function makeFileNameTemp(){
-		return $this->fileVars['genericFileNameTemp'] ? str_replace(array(self::REPLACE_BY_UNIQUEID, self::REPLACE_BY_FILENAME), array(we_base_file::getUniqueId(), $this->fileVars['weFileName']), $this->fileVars['genericFileNameTemp']) : TEMP_DIR . we_base_file::getUniqueId();
 	}
 
 	protected function getAllowedContentTypes(){
@@ -216,7 +268,7 @@ class we_fileupload_resp_base extends we_fileupload{
 				$mimeGroup = substr($mime, 0, strpos($mime, '/') + 1) . '*';
 		}
 		if($alert){
-			//t_e($alert);
+			// t_e($alert);
 		}
 
 		if($tc['accepted']['all']){

@@ -40,27 +40,33 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		parent::__construct($contentType, $extensions);
 
 		$this->dimensions['dragWidth'] = 376;
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
+					array('importToID', 'int'),
+					array('saveToDir', 'text'),
+				));
 		$this->doImport = $doImport;
-		if($this->doImport && (!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE)){
-			$this->editorProperties['formAttributes'] = $this->editorProperties['formThumbnails'] = $this->editorProperties['formImageEdit'] = true;
+
+		if($this->doImport){
+			$this->responseClass = 'we_fileupload_resp_import';
+			if(!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE){
+				$this->editorProperties['formAttributes'] = $this->editorProperties['formThumbnails'] = $this->editorProperties['formImageEdit'] = true;
+				$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
+					array('import_metadata', 'check'),
+					array('thumbs[]', 'multi_select'),
+					array('img_alt', 'text'),
+					array('img_title', 'text'),
+					array('width', 'int'),
+					array('height', 'int'),
+					array('widthSelect', 'int'),
+					array('heightSelect', 'int'),
+					array('keepRatio', 'int'),
+					array('degrees', 'int'),
+					array('quality', 'int'),
+				));
+			}
+		} else {
+			$this->responseClass = 'we_fileupload_resp_base';
 		}
-		$this->responseClass = $this->doImport ? 'we_fileupload_resp_import' : 'we_fileupload_resp_base';
-		$this->moreFieldsToAppend = array(
-			array('import_metadata', 'check'),
-			//array('imgsSearchable', 'int'),
-			//array('sameName', 'text'),
-			//array('importToDir', 'int'),
-			array('thumbs[]', 'multi_select'),
-			array('img_alt', 'text'),
-			array('img_title', 'text'),
-			array('width', 'int'),
-			array('height', 'int'),
-			array('widthSelect', 'int'),
-			array('heightSelect', 'int'),
-			array('keepRatio', 'int'),
-			array('degrees', 'int'),
-			array('quality', 'int'),
-		);
 	}
 
 	public function getCss() {
@@ -100,18 +106,22 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		);
 
 		$parts = array(
-			array('icon' => '', 'headline' => 'Dateiauswahl', 'html' => $formUploader . $this->getFormImportMeta() . $this->getFormSameName(), 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']),
-			array('icon' => '', 'headline' => g_l('importFiles', '[destination_dir]'), 'html' => $this->getFormTargetDir(), "class" => 'paddingTop', 'noline' => true, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']),
-			array('icon' => '', 'headline' => 'Dokument', 'html' => $this->getFormIsSearchable(), 'space' => 0, 'noline' => true, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']),
+			array('icon' => '', 'headline' => 'Dateiauswahl', 'html' => $formUploader, 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']),
+			array('icon' => '', 'headline' => '', 'html' => $this->getFormSameName(), 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']),
+			array('icon' => '', 'headline' => g_l('importFiles', '[destination_dir]'), 'html' => $this->getFormTargetDir(), "class" => 'paddingTop', 'noline' => true, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall'])
 		);
 
-		if(!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE){
-			$parts = $this->editorProperties['formAttributes'] ? array_merge($parts, $this->getFormImageAttributes()) : $parts;
-			$parts = $this->editorProperties['formThumbnails'] ? array_merge($parts, $this->getFormThumbnails()) : $parts;
-			$parts = $this->editorProperties['formImageEdit'] ? array_merge($parts, $this->getFormImageEdit()) : $parts;
+		if($this->doImport){
+			$parts[] = array('icon' => '', 'headline' => 'Metadaten', 'html' => $this->getFormImportMeta(), 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']);
+			$parts[] = array('icon' => '', 'headline' => 'Dokument', 'html' => $this->getFormIsSearchable(), 'space' => 0, 'noline' => true, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']);
+			if(!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE){
+				$parts = $this->editorProperties['formAttributes'] ? array_merge($parts, $this->getFormImageAttributes()) : $parts;
+				$parts = $this->editorProperties['formThumbnails'] ? array_merge($parts, $this->getFormThumbnails()) : $parts;
+				$parts = $this->editorProperties['formImageEdit'] ? array_merge($parts, $this->getFormImageEdit()) : $parts;
+			}
 		}
 
-		$box = we_html_multiIconBox::getHTML("", $parts, 20, '', 2, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), false);
+	$box = we_html_multiIconBox::getHTML("", $parts, 20, '', 3, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), false);
 		$divBtnUpload = we_html_element::htmlDiv(array('style' => 'float:right;padding-top:10px;width:auto;'), $this->getDivBtnUploadCancel(170));
 
 		return $returnRows ? $parts : we_html_multiIconBox::getJS() . $box . ($this->isExternalBtnUpload ? '' : $divBtnUpload);
@@ -130,7 +140,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		return we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
 			we_html_element::jsElement('
 predefinedCallback = "' . $this->editorJS['predefinedCallback'] . '";
-customCallback = function(){' . $this->editorJS['customCallback'] . '};
+customCallback = function(importedDocument){' . $this->editorJS['customCallback'] . '};
 writebackTarget = "' . $this->editorJS['writebackTarget'] . '";
 
 doOnImportSuccess = function(importedDocument){
@@ -139,7 +149,7 @@ doOnImportSuccess = function(importedDocument){
 	}
 
 	switch(predefinedCallback){
-		case "selector": 
+		case "selector":
 			opener.top.reloadDir();
 			opener.top.unselectAllFiles();
 			opener.top.addEntry(importedDocument.id, "noch nichts", false, "importedDocument.path");
@@ -150,7 +160,20 @@ doOnImportSuccess = function(importedDocument){
 			reloadMainTree();
 			setTimeout(self.close, 250);
 			break;
+		case "sselector":
+			opener.top.fscmd.selectDir();
+			opener.top.fscmd.selectFile(importedDocument.text);
+			self.close();
 		case "weimg":
+			/*
+			var ed = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+			ed.setScrollTo();
+			ed._EditorFrame.setEditorIsHot(true);
+			//var t = opener.top;
+			we_cmd("reload_editpage","jux","change_image"); 
+			//t.hot = 1;
+			//setTimeout(self.close, 250);
+			*/
 			break;
 		case "imagedialog":
 			alert("import done: " + importedDocument.path + " (id: " + importedDocument.id + ")");
@@ -168,7 +191,7 @@ doOnImportSuccess = function(importedDocument){
 			// do nothing
 	}
 
-	customCallback();
+	customCallback(importedDocument);
 }
 
 reloadMainTree = function (table) {
@@ -180,7 +203,7 @@ reloadMainTree = function (table) {
 };
 
 documentWriteback = function(importedDocument){
-	' . ($this->editorJS['writebackTarget'] ? 'opener.top.weEditorFrameController.getVisibleEditorFrame().' . $this->editorJS['writebackTarget'] . ' = importedDocument.id;' : '//no writeback') . '
+	' . ($this->editorJS['writebackTarget'] ? 'WE().layout.weEditorFrameController.getVisibleEditorFrame().' . $this->editorJS['writebackTarget'] . ' = importedDocument.id;' : '//no writeback') . '
 }
 
 function we_cmd() {
@@ -194,9 +217,14 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "we_selector_directory":
-			alert("sevi");
 			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
+		default:
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			opener.we_cmd.apply(this, args);
 	}
 }
 
@@ -224,23 +252,39 @@ function we_cmd() {
 	}
 
 	protected function getFormTargetDir(){
-		$yuiSuggest = &weSuggest::getInstance();
-		$cmd1 = "document.we_form.importToID.value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.importToDir.value");
-		$wecmdenc3 = ''; //we_base_request::encCmd();
-		$startID = $this->importToID['presetID'] !== false ? $this->importToID['presetID'] : (IMAGESTARTID_DEFAULT ? : 0);
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "',''," . $startID . ",'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
-		$yuiSuggest->setAcId("importToID");
-		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput("importToDir", $startID ? id_to_path($startID, FILE_TABLE) : '/', '', $this->importToID['setDisabled']);
-		$yuiSuggest->setMaxResults(10);
-		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult("importToID", $startID);
-		$yuiSuggest->setSelector(weSuggest::DirSelector);
-		$yuiSuggest->setWidth(320);
-		$yuiSuggest->setSelectButton($but);
+		if($this->importToID['setField']){
 
-		return $yuiSuggest->getHTML();
+			if(!$this->importToID['setFixed'] && is_numeric($this->importToID['preset'])){
+				$yuiSuggest = &weSuggest::getInstance();
+				$cmd1 = "document.we_form.importToID.value";
+				$wecmdenc2 = we_base_request::encCmd("document.we_form.importToDir.value");
+				$wecmdenc3 = ''; //we_base_request::encCmd();
+				$startID = $this->importToID['presetID'] !== false ? $this->importToID['preset'] : (IMAGESTARTID_DEFAULT ? : 0);
+				$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "',''," . $startID . ",'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+				$yuiSuggest->setAcId("importToID");
+				$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
+				$yuiSuggest->setInput("importToDir", $startID ? id_to_path($startID, FILE_TABLE) : '/', '', $this->importToID['setDisabled']);
+				$yuiSuggest->setMaxResults(10);
+				$yuiSuggest->setMayBeEmpty(true);
+				$yuiSuggest->setResult("importToID", $startID);
+				$yuiSuggest->setSelector(weSuggest::DirSelector);
+				$yuiSuggest->setWidth(320);
+				$yuiSuggest->setSelectButton($but);
+
+				return $yuiSuggest->getHTML();
+			} else {
+				$value = is_numeric($this->importToID['preset']) ? id_to_path($this->importToID['preset']) : $this->importToID['preset'];
+				
+				return we_html_element::htmlInput(array('value' => $value, 'disabled' => 'disabled')) .
+					we_html_button::create_button(we_html_button::SELECT, '', '', '', '', '', '', true) .
+					we_html_element::htmlHiddens(array(
+						'importToID' => $value,
+						'saveToDir' => $value,
+					));
+			}
+		}
+
+		
 	}
 
 	protected function getFormThumbnails(){
@@ -321,6 +365,12 @@ function we_cmd() {
 
 	public function setEditorProperties($editorProperties = array()){
 		$this->editorProperties = array_merge($this->editorProperties, $editorProperties);
+	}
+
+	public function setDoImport($doImport = true){
+		$this->doImport = $doImport;
+		$this->responseClass = $this->doImport ? 'we_fileupload_resp_import' : 'we_fileupload_resp_base';
+		
 	}
 
 

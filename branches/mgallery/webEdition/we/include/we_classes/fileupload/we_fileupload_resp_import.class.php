@@ -23,22 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_resp_import extends we_fileupload_resp_base{
-	protected $writeToID = 0;
-	protected $importToID = 0;//Parent
+	//protected $writeToID = 0;
+	//protected $importToID = 0;//Parent
 
 	public function __construct($name = '', $contentType = '', $FILE = array(), $fileVars = array(), $controlVars = array(), $docVars = array()){
 		parent::__construct($name, $contentType, $FILE, $fileVars, $controlVars, $docVars);
-		t_e("resp_import", $this);
 	}
-	
+
 	protected function initByHttp(){
 		parent::initByHttp();
 
 		$this->docVars = array_filter(
 			array(
 				'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::NOT_VALID),
-				'sameName' => we_base_request::_(we_base_request::STRING, "sameName", we_base_request::NOT_VALID),
-				'importToID' => we_base_request::_(we_base_request::INT, "importToID", we_base_request::NOT_VALID),
 				'importMetadata' => we_base_request::_(we_base_request::INT, "importMetadata", we_base_request::NOT_VALID),
 				'imgsSearchable' => we_base_request::_(we_base_request::INT, "imgsSearchable", we_base_request::NOT_VALID),
 				'title' => we_base_request::_(we_base_request::STRING, 'img_title', we_base_request::NOT_VALID),
@@ -79,7 +76,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		if(!$this->typeCondition['accepted']['mime'] || in_array($this->fileVars['weFileCt'], $this->typeCondition['accepted']['mime'])){
 			$we_doc->Extension = strtolower((strpos($this->fileVars['weFileName'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '$1', $this->fileVars['weFileName']) : ''); //strtolower for feature 3764
-			$we_File = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileNameTemp'];
+			$we_File = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
 
 			if((!$we_doc->Filename) || (!$we_doc->ID)){
 				// Bug Fix #6284
@@ -174,12 +171,12 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				$we_doc->Extension = '';
 			}
 			$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-			$we_doc->setParentID($this->docVars['importToID']);
+			$we_doc->setParentID($this->fileVars['saveToID']);
 			$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 
 			// if file exists we have to see if we should create a new one or overwrite it!
 			if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"'))){
-				switch($this->docVars['sameName']){
+				switch($this->fileVars['sameName']){
 					case 'overwrite':
 						$tmp = $we_doc->ClassName;
 						$we_doc = new $tmp();
@@ -188,7 +185,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					case "rename":
 						$z = 0;
 						$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-						while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->docVars['importToID']))){
+						while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->fileVars['saveToID']))){
 							$z++;
 							$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
 						}
@@ -197,7 +194,6 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 						$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 						break;
 					default:
-						t_e("err d");
 						return array(
 							'error' => g_l('importFiles', '[same_name]'),
 							'success' => false,
@@ -207,7 +203,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			}
 		}
 
-		$tempFile =  $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileNameTemp'];
+		$tempFile =  $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
 
 		// now change the category
 		// $we_doc->Category = $this->docVars['categories'];
@@ -241,7 +237,6 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			fclose($fh);
 		} else {
 			//FIXME: fopen uses less memory then gd: gd can fail (and returns 500) even if $fh = true!
-			t_e("err e");
 			return array(
 				'error' => g_l('importFiles', '[read_file_error]'),
 				'success' => false,
@@ -289,7 +284,6 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$we_doc->DocChanged = true;
 		}
 		if(!$we_doc->we_save()){
-			t_e("err f");
 			return array(
 				'error' => g_l('importFiles', '[save_error]'),
 				'success' => false,
@@ -301,7 +295,6 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$we_doc->we_save();
 		}
 		if(!$we_doc->we_publish()){
-			t_e("err g");
 			return array(
 				'error' => "publish_error",
 				'success' => false,
@@ -315,9 +308,9 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'weDoc' => array('id' => $we_doc->ID, 'path' => $we_doc->Path)
 		);
 	}
-	
+
 	protected function getWeDoc(){
-		if(!$this->docVars['transaction']){t_e('getWEdoc', $this->fileVars['weFileCt']);
+		if(!$this->docVars['transaction']){
 			return we_base_ContentTypes::inst()->getObject($this->fileVars['weFileCt']) ? : new we_otherDocument();
 			//return $this->getDocument($this->fileVars['weFileCt']);
 		}

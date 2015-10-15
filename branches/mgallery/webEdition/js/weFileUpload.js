@@ -951,23 +951,23 @@ var weFileUpload = (function () {
 
 			this.checkFileType = function (type, name) {
 				var n = name || '',
-								ext = n.split('.').pop().toLowerCase(),
-								tc = _.sender.typeCondition,
-								typeGroup = type.split('/').shift() + '/*';
+					ext = n.split('.').pop().toLowerCase(),
+					tc = _.sender.typeCondition,
+					typeGroup = type.split('/').shift() + '/*';
 
 				if (tc.accepted.mime && tc.accepted.mime.length > 0 && type === '') {
 					return false;
 				}
 				if (tc.accepted.all && tc.accepted.all.length > 0 &&
-								!this.inArray(type, tc.accepted.all) &&
-								!this.inArray(typeGroup, tc.accepted.all) &&
-								!this.inArray(ext, tc.accepted.all)) {
+						!this.inArray(type, tc.accepted.all) &&
+						!this.inArray(typeGroup, tc.accepted.all) &&
+						!this.inArray(ext, tc.accepted.all)) {
 					return false;
 				}
 				if (tc.forbidden.all && tc.forbidden.all.length > 0 &&
-								(this.inArray(type, tc.forbidden.all) ||
-												this.inArray(typeGroup, tc.forbidden.all) ||
-												this.inArray(ext, tc.forbidden.all))) {
+						(this.inArray(type, tc.forbidden.all) ||
+						this.inArray(typeGroup, tc.forbidden.all) ||
+						this.inArray(ext, tc.forbidden.all))) {
 					return false;
 				}
 
@@ -1953,7 +1953,6 @@ var weFileUpload = (function () {
 			this.totalWeight = 0;
 			this.callback = null;
 			this.dialogCallback = null;
-			this.form.action = '/webEdition/we_cmd.php?we_cmd[0]=do_upload_file&we_cmd[1]=binaryDoc';
 
 			this.doOnFileFinished = function (resp) {
 			};
