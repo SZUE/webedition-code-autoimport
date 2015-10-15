@@ -23,6 +23,8 @@
  */
 //TODO: let do we_fileuploade_binaryDocument::processFileRequest() do the job!
 
+// OBSOLETE: check if new fileupload covers all functionality of this editor
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 t_e('instance of we_fileupload');

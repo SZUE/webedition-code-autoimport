@@ -96,6 +96,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	public function __construct($name){
 		parent::__construct($name);
 		$this->setGenericFileName();
+		$this->doCommitFile = false;
 		$this->responseClass = 'we_fileupload_resp_base';
 		$this->form['action'] = WEBEDITION_DIR . 'rpc/rpc.php?protocol=json&cmd=ProcessFileupload&cns=fileupload';
 	}
@@ -136,6 +137,11 @@ class we_fileupload_ui_base extends we_fileupload{
 
 	public function setDimensions($dimensions = array()){
 		$this->dimensions = array_merge($this->dimensions, $dimensions);
+	}
+	
+
+	public function setDoCommitFile($doCommitFile = true){
+		$this->doCommitFile =  boolval($doCommitFile);
 	}
 
 	public function setInternalProgress($internalProgress = array()){
@@ -289,8 +295,7 @@ doDragFromTree = function(text){
 			'weFileNameTemp' => '',
 			'weFileName' => '',
 			'weFileCt' => '',
-			'weIsUploadComplete' => 0,
-			'weIsUploading' => 1,
+			//'weIsUploadComplete' => 0,
 		));
 	}
 
@@ -352,6 +357,7 @@ we_FileUpload.init({
 	uiClass : "' . get_class($this) . '",
 	fieldName : "' . $this->name . '",
 	genericFilename : ' . json_encode($this->genericFilename) . ',
+	doCommitFile: ' . ($this->doCommitFile ? 'true' : 'false') . ',
 	form : ' . json_encode($this->form) . ',
 	footerName : "' . $this->footerName . '",
 	uploadBtnName : "' . $this->externalUiElements['btnUploadName'] . '",

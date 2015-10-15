@@ -27,7 +27,6 @@ class we_fileupload_resp_base extends we_fileupload{
 	protected $response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '', 'weDoc' => '');
 	protected $isUploadComplete = false; // obsolete?
 	//protected $fileNameTemp = ''; // obsolete?
-	protected $commitFile = true;
 	protected $fileNameTempParts = array( // obsolete?
 		'path' => TEMP_PATH,
 		'prefix' => '',
@@ -53,8 +52,8 @@ class we_fileupload_resp_base extends we_fileupload{
 			'partCount' => 1,
 			'formnum' => 0,
 			'formcount' => 0,
-			'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
-			'weIsUploading' => false,
+			//'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
+			'doCommitFile' => true
 		);
 	protected $fileVars = array(
 			'genericFileNameTemp' => '',
@@ -65,7 +64,7 @@ class we_fileupload_resp_base extends we_fileupload{
 			'weFileName' => '',
 			'weFileSize' => 1,
 			'weFileCt' => '',
-			'sameName' => ''
+			'sameName' => '',
 		);
 	protected $docVars = array(
 			'transaction' => '',
@@ -116,13 +115,12 @@ class we_fileupload_resp_base extends we_fileupload{
 		);
 		$this->controlVars = array_merge($this->controlVars, array_filter(
 			array(
-				'commitFile' => we_base_request::_(we_base_request::BOOL, 'we_fu_commitFile', true),
+				'doCommitFile' => we_base_request::_(we_base_request::BOOL, 'doCommitFile', true),
 				'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
 				'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
 				'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
 				'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
-				'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
-				'weIsUploading' => we_base_request::_(we_base_request::BOOL, 'weIsUploading', we_base_request::NOT_VALID),
+				//'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
 			), function($var){return $var !== we_base_request::NOT_VALID;})
 		);
 	}
@@ -165,7 +163,7 @@ class we_fileupload_resp_base extends we_fileupload{
 	}
 
 	protected function postprocess(){
-		if(!$this->commitFile){ // most simple variant: we just leave tempFile in tmp directory and inform GUI that it can go on and grab it
+		if(!$this->controlVars['doCommitFile']){ // most simple variant: we just leave tempFile in tmp directory and inform GUI that it can go on and grab it
 			return array_merge($this->response, array('status' => 'success', 'fileNameTemp' => $this->fileVars['fileTemp'], 'completed' => 1));
 		}
 

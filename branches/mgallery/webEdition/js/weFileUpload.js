@@ -97,6 +97,7 @@ var weFileUpload = (function () {
 				_.genericFilename = conf.genericFilename || _.genericFilename;
 				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
 				c.isPreset = conf.isPreset || c.isPreset;
+				s.doCommitFile = conf.doCommitFile !== undefined ? conf.doCommitFile : s.doCommitFile;
 				s.chunkSize = typeof conf.chunkSize !== 'undefined' ? (conf.chunkSize * 1024) : s.chunkSize;
 				s.callback = conf.callback || s.callback;
 				s.responseClass = conf.responseClass || s.responseClass;
@@ -504,6 +505,7 @@ var weFileUpload = (function () {
 		}
 
 		function AbstractSender() {
+			this.doCommitFile = true;
 			this.chunkSize = 256 * 1024;
 			this.responseClass = 'we_fileupload_ui_base';
 			this.typeCondition = [];
@@ -705,15 +707,15 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-										blob,
-										cur.file.name,
-										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-										cur.partNum,
-										cur.totalParts,
-										cur.fileNameTemp,
-										cur.size
-										);
+							blob,
+							cur.file.name,
+							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+							cur.partNum,
+							cur.totalParts,
+							cur.fileNameTemp,
+							cur.size
+						);
 					}
 				} else {
 					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
@@ -740,9 +742,9 @@ var weFileUpload = (function () {
 
 				fileCt = fileCt ? fileCt : 'text/plain';
 				fd.append('fileinputName', _.fieldName);
+				fd.append('doCommitFile', this.doCommitFile);
 				fd.append('genericFilename', _.genericFilename);
 				fd.append('weResponseClass', this.responseClass);
-				fd.append('uploadParts', 1);
 				fd.append('wePartNum', partNum);
 				fd.append('wePartCount', totalParts);
 				fd.append('weFileNameTemp', fileNameTemp);
@@ -750,7 +752,6 @@ var weFileUpload = (function () {
 				fd.append('weFileName', fileName);
 				fd.append('weFileCt', fileCt);
 				fd.append(typeof this.currentFile.field !== 'undefined' ? this.currentFile.field : _.fieldName, part, fileName);//FIXME: take fieldname allways from cur!
-				fd.append('weIsUploading', 1);
 				fd = this.appendMoreData(fd);
 				xhr.open('POST', this.form.action, true);
 				xhr.send(fd);
@@ -1249,7 +1250,7 @@ var weFileUpload = (function () {
 				this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
 				this.form.form.elements.weFileCt.value = cur.mimePHP;
 				this.form.form.elements.weFileName.value = cur.file.name;
-				this.form.form.elements.weIsUploadComplete.value = 1;
+				//this.form.form.elements.weIsUploadComplete.value = 1;
 				setTimeout(function () {
 					that.callback(resp);
 				}, 100);
@@ -1705,10 +1706,10 @@ var weFileUpload = (function () {
 
 			this.appendRow = function (f, index) {
 				var div,
-								row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
-								replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
-								replace(/FILENAME/g, (f.file.name)).
-								replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
+					row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
+					replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
+					replace(/FILENAME/g, (f.file.name)).
+					replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
 				weAppendMultiboxRow(row, '', 0, 0, 0, -1);
 				f.entry = document.getElementById('div_uploadFiles_' + index);
@@ -2027,36 +2028,6 @@ var weFileUpload = (function () {
 				}
 				return false;
 			};
-
-			/* use parent (abstract)
-			 this.appendMoreData = function (fd) {
-			 for(var i = 0; i < this.moreFieldsToAppend.length; i++){
-			 if(document.we_form.elements[this.moreFieldsToAppend[i][0]]){
-			 switch(this.moreFieldsToAppend[i][1]){
-			 case 'check':
-			 fd.append(this.moreFieldsToAppend[i][0], ((document.we_form.elements[this.moreFieldsToAppend[i][0]].checked) ? 1 : 0));
-			 break;
-			 case 'multi_select':
-			 var sel = document.we_form.elements[this.moreFieldsToAppend[i][0]],
-			 opts = [], opt, j=0;
-
-			 for (var i=0, len=sel.options.length; i<len; i++) {
-			 opt = sel.options[i];
-			 if(opt.selected) {
-			 opts.push(opt.value);
-			 }
-			 }
-			 fd.append(sel.id, opts);
-			 break;
-			 default:
-			 fd.append(this.moreFieldsToAppend[i][0], document.we_form.elements[this.moreFieldsToAppend[i][0]].value);
-			 }
-			 }
-			 }
-
-			 return fd;
-			 };
-			 */
 
 			this.cancel = function () {
 				this.currentFile = -1;

@@ -270,11 +270,6 @@ function we_cmd() {
 		case "object_editObjectTextArea":
 			new (WE().util.jsWindow)(window, url, "edit_object_text", -1, -1, 550, 455, true, false, true);
 			break;
-		case "editor_uploadFile":
-			new (WE().util.jsWindow)(window, "", "we_uploadFile", -1, -1, 450, 320, true, true, true);
-			if (contentEditor.we_submitForm)
-				contentEditor.we_submitForm("we_uploadFile", url);
-			break;
 		case "open_templateSelect":
 			new (WE().util.jsWindow)(window, "", "we_templateSelect", -1, -1, 600, 400, true, true, true);
 			if (contentEditor.we_submitForm)

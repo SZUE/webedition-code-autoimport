@@ -37,8 +37,6 @@ class rpcProcessFileuploadCmd extends rpcCmd{
 			'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
 			'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
 			'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
-			'weIsUploadComplete' => false,//FIXME: do we really need so much vars for execution control?
-			'weIsUploading' => we_base_request::_(we_base_request::BOOL, 'weIsUploading', we_base_request::NOT_VALID),
 		);
 		$fileVars = array(
 			'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),

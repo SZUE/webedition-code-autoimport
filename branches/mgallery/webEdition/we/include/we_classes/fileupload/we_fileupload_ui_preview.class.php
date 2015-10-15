@@ -37,6 +37,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	public function __construct($contentType = '', $extension = ''){
 		parent::__construct('we_File');
 
+		$this->doCommitFile = true;
 		$this->contentType = $contentType;
 		$this->responseClass = 'we_fileupload_resp_import';
 		$type = 'binDoc';

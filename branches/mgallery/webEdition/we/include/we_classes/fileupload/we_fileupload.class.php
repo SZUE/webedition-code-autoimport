@@ -30,6 +30,7 @@ abstract class we_fileupload{
 	protected $isGdOk = true;
 	protected $genericFileNameTemp = '';
 	protected $predefinedConfig = '';
+	protected $doCommitFile = true;
 
 	const CHUNK_SIZE = 128;
 	const ON_ERROR_RETURN = true;//obsolete?

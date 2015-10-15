@@ -209,8 +209,6 @@ function findInclude($cmd){
 			return 'we_move.inc.php';
 		case 'do_addToCollection':
 			return 'we_addToCollection.inc.php';
-		case 'editor_uploadFile':
-			return 'we_editors/uploadFile.inc.php';
 		case 'show_binaryDoc':
 			return 'we_editors/we_showBinaryDoc.inc.php';
 		case 'pref_ext_changed':
