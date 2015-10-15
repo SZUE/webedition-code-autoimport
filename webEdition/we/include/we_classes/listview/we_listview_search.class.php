@@ -175,8 +175,7 @@ class we_listview_search extends we_listview_base{
 				'');
 
 		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;
-		$this->DB_WE->query('SELECT 1 FROM ' . INDEX_TABLE . $where);
-		$this->anz_all = $this->DB_WE->num_rows();
+		$this->anz_all = f('SELECT COUNT(1) FROM ' . INDEX_TABLE . $where, $this->DB_WE);
 
 		$this->DB_WE->query(
 			'SELECT Category,ID,ID AS DID,ID AS OID,ClassID,Text,Workspace,WorkspaceID,Title,Description,Path,Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .

@@ -730,11 +730,11 @@ $GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' d
 $pre = '1010102_';
 $nr = 0;
 if($GLOBALS['DB_WE']->num_rows() && permissionhandler::hasPerm('NO_DOCTYPE')){
-	$we_menu[$pre . ($nr++)] = array('parent' => 1010100); // separator
+	$we_menu[$pre . sprintf('%09d', $nr++)] = array('parent' => 1010100); // separator
 }
 // File > New > webEdition Document > Doctypes*
 while($GLOBALS['DB_WE']->next_record()){
-	$we_menu[$pre . ($nr++)] = array(
+	$we_menu[$pre . sprintf('%09d', $nr++)] = array(
 		'text' => str_replace(array(',', '"', '\'',), array(' ', ''), $GLOBALS['DB_WE']->f('DocType')),
 		'parent' => 1010100,
 		'cmd' => 'new_dtPage' . $GLOBALS['DB_WE']->f('ID'),
@@ -751,7 +751,7 @@ if(defined('OBJECT_TABLE')){
 		$pre = '1010200_';
 		$nr = 0;
 		while($GLOBALS['DB_WE']->next_record()){
-			$we_menu[$pre . ($nr++)] = array(
+			$we_menu[$pre . sprintf('%09d', $nr++)] = array(
 				'text' => str_replace(array('"', '\''), '', $GLOBALS['DB_WE']->f('Text')),
 				'parent' => 1010200,
 				'cmd' => 'new_ClObjectFile' . $GLOBALS['DB_WE']->f('ID'),
@@ -778,7 +778,7 @@ foreach($allModules as $m){
 		  $moduleList .= 'customerpro|';
 		  }
 		  $moduleList .= $m['name'] . '|'; */
-		$we_menu[$pre . ($nr++)] = array(
+		$we_menu[$pre . sprintf('%09d', $nr++)] = array(
 			'text' => $m['text'] . '&hellip;',
 			'parent' => 3000000,
 			'cmd' => $m['name'] . '_edit_ifthere',
