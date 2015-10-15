@@ -67,7 +67,7 @@ class we_base_browserDetect{
 		self::$detected = true;
 		self::$ua = $ua ? : (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		$regs = array();
-		if(preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', self::$ua, $regs)){t_e("regs", $regs);
+		if(preg_match('/^([^ ]+) ([^(]*)(\([^)]+\))(.*)$/', self::$ua, $regs)){
 			$pre = $regs[1];
 			//$mid = $regs[2];
 			$bracket = str_replace(array('(', ')'), '', $regs[3]);
