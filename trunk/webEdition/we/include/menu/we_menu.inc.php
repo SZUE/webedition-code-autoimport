@@ -814,5 +814,5 @@ if($_activeIntModules){
 		}
 	}
 }
-ksort($we_menu, SORT_NATURAL);
+ksort($we_menu); //TODO: SORT_NATURAL requires PHP 5.4
 return $we_menu;
