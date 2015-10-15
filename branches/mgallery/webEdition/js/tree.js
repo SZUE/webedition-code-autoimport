@@ -73,35 +73,36 @@ function node(attribs) {
 	return this;
 }
 
-node.prototype.applylayout = function () {
-	eval('if(' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '"))' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '").className ="' +
-					(arguments[0] ? arguments[0] : this.getlayout()) +
-					'";');
-};
+node.prototype = {
+	applylayout: function () {
+		eval('if(' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '"))' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '").className ="' +
+						(arguments[0] ? arguments[0] : this.getlayout()) +
+						'";');
+	},
+	clear: function () {
+		var deleted = 0;
 
-node.prototype.clear = function () {
-	var deleted = 0;
-
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].parentid != this.id) {
-			continue;
-		}
-		if (treeData[ai].contenttype == "group") {
-			deleted += treeData[ai].clear();
-		} else {
-			ind = ai;
-			while (ind <= treeData.len - 1) {
-				treeData[ind] = treeData[ind + 1];
-				ind++;
+		for (var ai = 1; ai <= treeData.len; ai++) {
+			if (treeData[ai].parentid != this.id) {
+				continue;
 			}
-			ai--;
-			treeData.len[treeData.len] = null;
-			treeData.len--;
+			if (treeData[ai].contenttype == "group") {
+				deleted += treeData[ai].clear();
+			} else {
+				ind = ai;
+				while (ind <= treeData.len - 1) {
+					treeData[ind] = treeData[ind + 1];
+					ind++;
+				}
+				ai--;
+				treeData.len[treeData.len] = null;
+				treeData.len--;
+			}
+			deleted++;
 		}
-		deleted++;
+		drawTree();
+		return deleted;
 	}
-	drawTree();
-	return deleted;
 };
 
 

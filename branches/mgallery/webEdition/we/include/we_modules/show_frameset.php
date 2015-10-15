@@ -39,7 +39,7 @@ function we_cmd() {
 ');
 ?>
 </head>
-<body id="weMainBody" onload="setFrameSize()" onresize="setFrameSize()">
+<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
 	<?php
 	$_REQUEST['mod'] = $mod = (isset($mod) ? $mod : we_base_request::_(we_base_request::STRING, 'mod'));
 

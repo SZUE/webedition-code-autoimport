@@ -285,9 +285,9 @@ function exit_open(){' . ($this->JSIDName ? '
 						setTabsCurPath = top.currentPath;
 				}
 				if(getEntry(top.currentID).isFolder){
-					opener.parent.frames.editHeader.setTitlePath("",setTabsCurPath);
+					opener.parent.frames.editHeader.weTabs.setTitlePath("",setTabsCurPath);
 				}else{
-					opener.parent.frames.editHeader.setTitlePath(setTabsCurPath);
+					opener.parent.frames.editHeader.weTabs.setTitlePath(setTabsCurPath);
 				}
 			}
 	}

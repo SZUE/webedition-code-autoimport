@@ -614,11 +614,11 @@ function isValidEmail(email) {
 }
 
 function setHeaderTitle() {
-	if (parent.edheader && parent.edheader.setTitlePath) {
+	if (parent.edheader && parent.edheader.weTabs.setTitlePath) {
 		var preObj = document.getElementById("yuiAcInputPathGroup");
 		var postObj = document.getElementById("yuiAcInputPathName");
 
-		parent.edheader.setTitlePath((postObj ? postObj.value : ""), (preObj ? preObj.value : ""));
+		parent.edheader.weTabs.setTitlePath((postObj ? postObj.value : ""), (preObj ? preObj.value : ""));
 	} else {
 		setTimeout(setHeaderTitle, 100);
 	}

@@ -37,7 +37,7 @@ function jsWindow(opener, url, ref, x, y, w, h, openAtStartup, scroll, hideMenue
 		x = (x === -1 ? Math.round((screen_width - w) / 2) : x);
 		y = (y === -1 ? Math.round((screen_height - h) / 2) : y);
 	}
-	this.opener=opener;
+	this.opener = opener;
 	this.referer = opener.top;
 	this.url = url;
 	this.ref = ref;
@@ -57,96 +57,93 @@ function jsWindow(opener, url, ref, x, y, w, h, openAtStartup, scroll, hideMenue
 	}
 }
 
-jsWindow.prototype.open = function (noPopupErrorMsg, noPopupLocation) {
-	var properties = (this.hideMenue ? "menubar=no," : "menubar=yes,") + (this.resizable ? "resizable=yes," : "resizable=no,") + ((this.scroll) ? "scrollbars=yes," : "scrollbars=no,") + "width=" + this.w + ",height=" + this.h + ",left=" + this.x + ",top=" + this.y;
-	try {
-		this.wind = this.opener.open(this.url, this.ref, properties);
+jsWindow.prototype = {
+	open: function (noPopupErrorMsg, noPopupLocation) {
+		var properties = (this.hideMenue ? "menubar=no," : "menubar=yes,") + (this.resizable ? "resizable=yes," : "resizable=no,") + ((this.scroll) ? "scrollbars=yes," : "scrollbars=no,") + "width=" + this.w + ",height=" + this.h + ",left=" + this.x + ",top=" + this.y;
+		try {
+			this.wind = this.opener.open(this.url, this.ref, properties);
 //Bug mit chrome:
 //		this.wind.moveTo(this.x,this.y);
-		this.wind.focus();
+			this.wind.focus();
 
-	} catch (e) {
-		if (noPopupErrorMsg !== undefined && noPopupErrorMsg.length) {
-			if (!this.wind) {
-				top.we_showMessage(noPopupErrorMsg, WE().consts.message.WE_MESSAGE_ERROR, this.opener);
-				//  disabled See Bug#1335
-				if (noPopupLocation !== undefined) {
-					//document.location = noPopupLocation;
+		} catch (e) {
+			if (noPopupErrorMsg !== undefined && noPopupErrorMsg.length) {
+				if (!this.wind) {
+					top.we_showMessage(noPopupErrorMsg, WE().consts.message.WE_MESSAGE_ERROR, this.opener);
+					//  disabled See Bug#1335
+					if (noPopupLocation !== undefined) {
+						//document.location = noPopupLocation;
+					}
 				}
 			}
 		}
-	}
 
-};
-
-jsWindow.prototype.close = function () {
-	var wind;
-	for (var i = 0; i < WE().layout.windows.length; i++) {
-		wind = WE().layout.windows[i].wind;
-		if (wind === this.wind || wind.closed) {
-			WE().layout.windows.splice(i, 1);
-			i--;
-		}
-	}
-	if (!this.wind.closed) {
-		this.wind.close();
-	}
-};
-
-jsWindow.prototype.closeByName = function (name) {
-	var obj;
-	while ((obj = this.find(name))) {
-		//closes dependend windows
-		this.closeAll(obj.wind);
-	}
-};
-
-//FIXME:this function should be called instead of a top.close
-jsWindow.prototype.closeAll = function (ref) {
-	if (ref === undefined) {
-		while (WE().layout.windows.length) {
-			WE().layout.windows.pop().close();
-		}
-	} else {
-		var refObj = undefined;
+	},
+	close: function () {
+		var wind;
 		for (var i = 0; i < WE().layout.windows.length; i++) {
-			if (WE().layout.windows[i].wind === ref) {
-				refObj = WE().layout.windows[i];
-			}
-			if (WE().layout.windows[i].referer === ref) {
-				var obj = WE().layout.windows[i];
-				//remove from window list
+			wind = WE().layout.windows[i].wind;
+			if (wind === this.wind || wind.closed) {
 				WE().layout.windows.splice(i, 1);
-				//close all windows from this window first
-				this.closeAll(obj.wind);
-				obj.close();
-				//reset i
-				i = -1;
+				i--;
 			}
 		}
-		if (refObj) {
-			refObj.close();
-		} else if (!ref.closed) {
-			//if we didn't find the window, just close it
-			ref.close();
+		if (!this.wind.closed) {
+			this.wind.close();
 		}
-	}
-};
-
-jsWindow.prototype.find = function (name) {
-	for (var i = 0; i < WE().layout.windows.length; i++) {
-		if (WE().layout.windows[i].ref === name) {
-			return WE().layout.windows[i].wind;
+	},
+	closeByName: function (name) {
+		var obj;
+		while ((obj = this.find(name))) {
+			//closes dependend windows
+			this.closeAll(obj.wind);
 		}
+	},
+//FIXME:this function should be called instead of a top.close
+	closeAll: function (ref) {
+		if (ref === undefined) {
+			while (WE().layout.windows.length) {
+				WE().layout.windows.pop().close();
+			}
+		} else {
+			var refObj = undefined;
+			for (var i = 0; i < WE().layout.windows.length; i++) {
+				if (WE().layout.windows[i].wind === ref) {
+					refObj = WE().layout.windows[i];
+				}
+				if (WE().layout.windows[i].referer === ref) {
+					var obj = WE().layout.windows[i];
+					//remove from window list
+					WE().layout.windows.splice(i, 1);
+					//close all windows from this window first
+					this.closeAll(obj.wind);
+					obj.close();
+					//reset i
+					i = -1;
+				}
+			}
+			if (refObj) {
+				refObj.close();
+			} else if (!ref.closed) {
+				//if we didn't find the window, just close it
+				ref.close();
+			}
+		}
+	},
+	find: function (name) {
+		for (var i = 0; i < WE().layout.windows.length; i++) {
+			if (WE().layout.windows[i].ref === name) {
+				return WE().layout.windows[i].wind;
+			}
+		}
+		return undefined;
+	},
+	focus: function (name) {
+		var wind = this.find(name);
+		if (wind !== undefined) {
+			wind.focus();
+			return true;
+		}
+		return false;
 	}
-	return undefined;
-};
-
-jsWindow.prototype.focus = function (name) {
-	var wind = this.find(name);
-	if (wind !== undefined) {
-		wind.focus();
-		return true;
-	}
-	return false;
 };

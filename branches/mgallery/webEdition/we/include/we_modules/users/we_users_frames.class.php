@@ -127,7 +127,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 			return;
 		}
 		$user_object = $_SESSION["user_session_data"];
-		echo we_html_element::htmlBody(array('onresize' => 'setFrameSize()', 'onload' => 'setFrameSize()', 'id' => 'eHeaderBody'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
+		echo we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
 	}
 
 	protected function getHTMLEditorBody(){

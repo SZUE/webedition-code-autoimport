@@ -186,8 +186,8 @@ function setTab(tab) {
 		$body = we_html_element::htmlBody(
 				array(
 				"id" => "eHeaderBody",
-				"onload" => 'setFrameSize();' . $extraJS,
-				"onresize" => "setFrameSize()"
+				"onload" => 'weTabs.setFrameSize();' . $extraJS,
+				"onresize" => "weTabs.setFrameSize()"
 				), we_html_element::htmlDiv(array('id' => "main"), we_html_element::htmlDiv(array('id' => 'headrow'), '&nbsp;' .
 						we_html_element::htmlB(g_l('navigation', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' .
 							str_replace('&amp;', '&', $this->Model->Text) .

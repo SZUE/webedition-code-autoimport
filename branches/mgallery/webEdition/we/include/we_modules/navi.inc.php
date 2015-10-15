@@ -53,7 +53,7 @@ echo $tab_header .
 				current = module;
 				top.content.location.replace(WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=" + module);
 			} else {
-				setActiveTab(current);
+				weTabs.setActiveTab(current);
 			}
 		} else {
 			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}

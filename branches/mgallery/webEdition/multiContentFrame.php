@@ -41,10 +41,10 @@ echo we_html_tools::getHtmlTop() .
 ?>
 <script><!--
 	function startMultiEditor() {
+		WE().layout.multiTabs = new TabView(this.document);
 		we_cmd('start_multi_editor'<?php echo $_cmd_string; ?>);
 	}
 
-	var isChrome =<?php echo intval(we_base_browserDetect::isChrome()); ?>;
 //-->
 </script>
 <?php
@@ -52,19 +52,18 @@ echo we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') 
  we_html_element::jsScript(JS_DIR . 'multiEditor/multiTabs.js');
 ?>
 </head>
-<body onresize="setFrameSize()" onload="init();
-		startMultiEditor();" style="overflow: hidden;">
+<body onresize="WE().layout.multiTabs.setFrameSize()" onload="startMultiEditor();" style="overflow: hidden;">
 	<div id="multiEditorDocumentTabsFrameDiv">
 		<div id="weMultiTabs">
 			<div id="tabContainer" name="tabContainer">
 			</div>
-			<div class="hidden" id="tabDummy" title="" name="" onclick="top.weMultiTabs.selectFrame(this)">
+			<div class="hidden" id="tabDummy" title="" name="" onclick="WE().layout.multiTabs.selectFrame(this)">
 				<nobr>
 					<span class="spacer status" id="###loadId###" title="" ></span>
 					<span id="###tabTextId###" class="text"></span>
 					<span class="spacer">
 						<i class="fa fa-asterisk modified" id="###modId###"></i>
-						<span class="fa-stack close" id="###closeId###" onclick="top.weMultiTabs.onCloseTab(this)">
+						<span class="fa-stack close" id="###closeId###" onclick="WE().layout.multiTabs.onCloseTab(this)">
 							<i class="fa fa-circle-o fa-stack-2x"></i>
 							<i class="fa fa-close fa-stack-1x "></i>
 						</span>

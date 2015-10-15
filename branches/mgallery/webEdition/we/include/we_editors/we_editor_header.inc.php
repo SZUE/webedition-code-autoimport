@@ -144,7 +144,7 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
 ?>
 </head>
-<body id="eHeaderBody" onload="we_setPath(<?php echo "'" . $we_doc->Path . "','" . $_text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table !== TEMPLATES_TABLE && $we_doc->Table !== VFILE_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "'"; ?>);" onresize="setFrameSize()"
+<body id="eHeaderBody" onload="we_setPath(<?php echo "'" . $we_doc->Path . "','" . $_text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table !== TEMPLATES_TABLE && $we_doc->Table !== VFILE_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "'"; ?>);" onresize="weTabs.setFrameSize()"
 			<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_HEADER); ?>>
 	<div id="main" ><?php
 		echo '<div id="headrow">&nbsp;' . ($we_doc->ContentType ? we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) : '') . ': ' .

@@ -38,7 +38,7 @@ class we_tab{
 			}
 		}
 
-		$this->tab = '<div ' . $att . ' onclick="if ( allowed_change_edit_page() ){ setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="text">' . $text . '</span></nobr></div>';
+		$this->tab = '<div ' . $att . ' onclick="if ( weTabs.allowed_change_edit_page() ){ weTabs.setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><nobr><span class="text">' . $text . '</span></nobr></div>';
 	}
 
 	function getHTML(){

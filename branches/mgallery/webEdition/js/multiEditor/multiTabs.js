@@ -24,10 +24,7 @@
 
 // fits the frame height on resize, add or remove tabs if the tabs wrap
 function setFrameSize() {
-	tabsHeight = (document.getElementById('tabContainer').clientHeight ? (document.getElementById('tabContainer').clientHeight) : (document.body.clientHeight));
-	tabsHeight = tabsHeight < 22 ? 22 : tabsHeight;
-	document.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight + "px";
-	document.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight + "px";
+	WE().layout.multiTabs.setFrameSize();
 }
 
 /**
@@ -59,10 +56,7 @@ TabView.prototype = {
 	 */
 	addTab: function (frameId, text, title, pos) {
 		newtab = this.tabDummy.cloneNode(true);
-		newtab.innerHTML = newtab.innerHTML.replace(/###tabTextId###/g, "text_" + frameId);
-		newtab.innerHTML = newtab.innerHTML.replace(/###modId###/g, "mod_" + frameId);
-		newtab.innerHTML = newtab.innerHTML.replace(/###loadId###/g, "load_" + frameId);
-		newtab.innerHTML = newtab.innerHTML.replace(/###closeId###/g, "close_" + frameId);
+		newtab.innerHTML = newtab.innerHTML.replace(/###tabTextId###/g, "text_" + frameId).replace(/###modId###/g, "mod_" + frameId).replace(/###loadId###/g, "load_" + frameId).replace(/###closeId###/g, "close_" + frameId);
 		newtab.id = "tab_" + frameId;
 		newtab.name = "tab";
 		newtab.title = title;
@@ -80,7 +74,6 @@ TabView.prototype = {
 		this.setText(frameId, text);
 		this.setTitle(frameId, title);
 		this.selectTab(frameId);
-		setTimeout(setFrameSize, 100);
 	},
 	/**
 	 * controls the click on the close button
@@ -97,7 +90,7 @@ TabView.prototype = {
 		if (this.activeTab == frameId) {
 			this.activeTab = null;
 		}
-		setFrameSize();
+		this.setFrameSize();
 		this.contentType[frameId] = "";
 	},
 	/**
@@ -137,8 +130,8 @@ TabView.prototype = {
 		text = this.myDoc.getElementById('text_' + frameId);
 		if (text) {
 			text.innerHTML = val;
+			this.setFrameSize();
 		}
-		setTimeout(setFrameSize, 50);
 	},
 	setTextClass: function (frameId, classname) {
 		text = this.myDoc.getElementById('text_' + frameId);
@@ -196,6 +189,12 @@ TabView.prototype = {
 		WE().layout.weEditorFrameController.showEditor(frameId);
 		//this.selectTab(frameId);
 	},
+	setFrameSize: function () {
+		tabsHeight = (this.myDoc.getElementById('tabContainer').clientHeight ? (this.myDoc.getElementById('tabContainer').clientHeight) : (this.myDoc.body.clientHeight));
+		tabsHeight = tabsHeight < 22 ? 22 : tabsHeight;
+		this.myDoc.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight + "px";
+		this.myDoc.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight + "px";
+	},
 	/**
 	 * inits some vars
 	 */
@@ -208,9 +207,3 @@ TabView.prototype = {
 		this.contentType = [];
 	}
 };
-/**
- * document init
- */
-function init() {
-	top.weMultiTabs = new TabView(this.document);
-}

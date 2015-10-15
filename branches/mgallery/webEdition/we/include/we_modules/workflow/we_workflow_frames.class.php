@@ -98,8 +98,8 @@ function setTab(tab){
 		);
 
 		$body = we_html_element::htmlBody(array(
-				'onresize' => 'setFrameSize()',
-				'onload' => 'setFrameSize()',
+				'onresize' => 'weTabs.setFrameSize()',
+				'onload' => 'weTabs.setFrameSize()',
 				'id' => 'eHeaderBody',
 				), $mainDiv .
 				we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')

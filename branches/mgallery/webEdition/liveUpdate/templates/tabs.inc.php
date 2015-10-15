@@ -42,7 +42,7 @@ $bodyContent = '<div id="main"><div id="headrow"></div>' .
 
 $_body = we_html_element::htmlBody(array(
 		'id' => 'eHeaderBody',
-		'onload' => 'setFrameSize();',
-		'onresize' => 'setFrameSize()'), $bodyContent);
+		'onload' => 'weTabs.setFrameSize();',
+		'onresize' => 'weTabs.setFrameSize()'), $bodyContent);
 
 echo we_html_tools::getHtmlTop('', '', '', we_tabs::getHeader(), $_body);

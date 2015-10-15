@@ -54,11 +54,11 @@ $vtab = array(
 	foreach($vtab as $tab => $val){
 		if(defined($tab)){
 			$jsTabs[] = 'case "' . constant($tab) . '":
-		setActiveTab(' . $i . ');
+		setActiveVTab(' . $i . ');
 		break;';
 		}
 		if($val['show']){
-			echo '<div class="tabNorm" onclick="setActiveTab(' . $i . ');if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);"><span class="middlefont">' . $val['desc'] . '</span></div>';
+			echo '<div class="tabNorm" onclick="setActiveVTab(' . $i . ');if(top.deleteMode){we_cmd(\'exit_delete\', \'' . constant($tab) . '\');};treeOut();we_cmd(\'loadVTab\', \'' . constant($tab) . '\' ,0);"><span class="middlefont">' . $val['desc'] . '</span></div>';
 		}
 		if(!$defTab && $val['show']){
 			$defTab = constant($tab);
@@ -67,7 +67,7 @@ $vtab = array(
 	}
 	?>
 	<script><!--
-		function setActiveTab(no) {
+		function setActiveVTab(no) {
 			var allTabs = document.getElementById("vtab").getElementsByTagName("div");
 			for (var i = 0; i < allTabs.length; i++) {
 				allTabs[i].className = (i == no ? "tabActive" : "tabNorm");

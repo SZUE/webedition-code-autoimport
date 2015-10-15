@@ -333,7 +333,7 @@ class we_binaryDocument extends we_document{
 		$md = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 				'' :
 				g_l('metadata', '[supported_types]') . ': ' .
-				'<a href="javascript:parent.frames.editHeader.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
+				'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
 				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
 				'</a>');
 

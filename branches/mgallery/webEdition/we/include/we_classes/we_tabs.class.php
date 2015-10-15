@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_tabs{
+
 	private $container = '';
 
 	public function addTab(we_tab $tab){
@@ -31,8 +32,8 @@ class we_tabs{
 
 	static function getHeader(){
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
-			STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js','setTimeout(getPathInfos, 250);');
+				STYLESHEET .
+				we_html_element::jsElement('weTabs = new (WE().layout.we_tabs)(document);');
 	}
 
 	function getHTML(){

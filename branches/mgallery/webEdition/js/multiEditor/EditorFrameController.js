@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -187,7 +189,7 @@ function EditorFrameController() {
 				}
 
 				// activate tab
-				top.weMultiTabs.openTab(_editorId);
+				WE().layout.multiTabs.openTab(_editorId);
 
 				this.setActiveEditorFrame(_editorId);
 				this.toggleFrames();
@@ -288,7 +290,7 @@ function EditorFrameController() {
 
 					// free frame select next active frame
 					this.closeEditorFrame(editorId);
-					top.weMultiTabs.closeTab(editorId);
+					WE().layout.multiTabs.closeTab(editorId);
 
 					if (WE().session.seeMode_edit_include) { // close window in edit_include_mode
 						top.close();
@@ -301,7 +303,7 @@ function EditorFrameController() {
 				}
 
 			} else {
-				top.weMultiTabs.closeTab(editorId);
+				WE().layout.multiTabs.closeTab(editorId);
 			}
 		}
 
@@ -559,7 +561,7 @@ function EditorFrameController() {
 								);
 
 				// activate tab
-				top.weMultiTabs.openTab(editorId);
+				WE().layout.multiTabs.openTab(editorId);
 
 				// highlight tree
 				if (top.treeData && top.treeData.table === _currentEditor.getEditorEditorTable() && parseInt(_currentEditor.getEditorDocumentId())) {
@@ -624,7 +626,7 @@ function EditorFrameController() {
 
 				if (first) {
 					this.getEditorFrame(frameId).setEmptyEditor();
-					if (isChrome) {
+					if (WE().session.isChrome) {
 						this.getEditorFrame(frameId).EditorFrameReference.style.display = "block";
 					} else {
 						this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
@@ -632,7 +634,7 @@ function EditorFrameController() {
 					}
 					first = false;
 				} else {
-					if (isChrome) {
+					if (WE().session.isChrome) {
 						this.getEditorFrame(frameId).EditorFrameReference.style.display = "none";
 					} else {
 						this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
@@ -644,7 +646,7 @@ function EditorFrameController() {
 		} else {
 			for (var frameId in this.EditorFrames) {
 				if (this.ActiveEditorFrameId === frameId) {
-					if (isChrome) {
+					if (WE().session.isChrome) {
 						this.getEditorFrame(frameId).EditorFrameReference.style.display = "block";
 					} else {
 						this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
@@ -659,7 +661,7 @@ function EditorFrameController() {
 						this.getEditorFrame(frameId).EditorExitDocQuestionDialog.close();
 						this.getEditorFrame(frameId).EditorExitDocQuestionDialog = false;
 					}
-					if (isChrome) {
+					if (WE().session.isChrome) {
 						this.getEditorFrame(frameId).EditorFrameReference.style.display = "none";
 					} else {
 						this.getEditorFrame(frameId).EditorFrameReference.style.height = "0px";
@@ -1020,17 +1022,17 @@ function EditorFrame(ref, elementId) {
 	this.updateEditorTab = function () {
 		this.EditorDocumentText = this.EditorDocumentText.replace(/</g, "&lt;");
 		this.EditorDocumentText = this.EditorDocumentText.replace(/>/g, "&gt;");
-		top.weMultiTabs.setText(this.FrameId, this.EditorDocumentText);
-		top.weMultiTabs.setTitle(this.FrameId, this.EditorDocumentPath);
+		WE().layout.multiTabs.setText(this.FrameId, this.EditorDocumentText);
+		WE().layout.multiTabs.setTitle(this.FrameId, this.EditorDocumentPath);
 		if (this.EditorType === "model") {
-			top.weMultiTabs.setId(this.FrameId, "ID: " + this.EditorDocumentId);
+			WE().layout.multiTabs.setId(this.FrameId, "ID: " + this.EditorDocumentId);
 		} else {
-			top.weMultiTabs.setId(this.FrameId, this.EditorDocumentText);
+			WE().layout.multiTabs.setId(this.FrameId, this.EditorDocumentText);
 		}
-		top.weMultiTabs.setModified(this.FrameId, this.EditorIsHot);
-		top.weMultiTabs.setContentType(this.FrameId, this.EditorContentType);
-		top.weMultiTabs.setLoading(this.FrameId, this.EditorIsLoading);
-		top.weMultiTabs.setModified(this.FrameId, this.EditorIsHot);
+		WE().layout.multiTabs.setModified(this.FrameId, this.EditorIsHot);
+		WE().layout.multiTabs.setContentType(this.FrameId, this.EditorContentType);
+		WE().layout.multiTabs.setLoading(this.FrameId, this.EditorIsLoading);
+		WE().layout.multiTabs.setModified(this.FrameId, this.EditorIsHot);
 	};
 
 	//--------------------------------------------------------------------

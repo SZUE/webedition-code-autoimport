@@ -136,8 +136,8 @@ function setTab(tab) {
 		$body = we_html_element::htmlBody(
 						array(
 					'id' => 'eHeaderBody',
-					'onload' => 'setFrameSize()',
-					'onresize' => 'setFrameSize()'
+					'onload' => 'weTabs.setFrameSize()',
+					'onresize' => 'weTabs.setFrameSize()'
 						), '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB(
 								g_l('searchtool', ($this->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' .
 								$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' .

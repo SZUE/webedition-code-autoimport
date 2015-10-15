@@ -148,7 +148,7 @@ function we_cmd() {
 					' . we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 						return;
 					}
-					if (top.content.editor.edheader.setTab) top.content.editor.edheader.setActiveTab("tab_3");
+					if (top.content.editor.edheader.setTab) top.content.editor.edheader.weTabs.setActiveTab("tab_3");
 					if (top.content.editor.edheader.setTab) top.content.editor.edheader.setTab(3);
 					if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress(0);
 					if (top.content.editor.edbody.clearLog) top.content.editor.edbody.clearLog();

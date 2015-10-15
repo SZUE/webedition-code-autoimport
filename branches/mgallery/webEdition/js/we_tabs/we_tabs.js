@@ -24,106 +24,78 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var titlePathName = "";
-var titlePathGroup = "";
+WE().layout.we_tabs = function (doc) {
+	this.doc = doc;
+	this.titlePathName = "";
+	this.titlePathGroup = "";
+};
 
-function setActiveTab(tab) {
-	var tabCon = document.getElementById('tabContainer');
-	docTabs = tabCon.getElementsByTagName('DIV');
-	for (i = 0; i < docTabs.length; i++) {
-		docTabs[i].className = "tabNormal";
-	}
-	document.getElementById(tab).className = "tabActive";
-}
-
-
-function setTabClass(elem) {
-	var arr = [];
-	var els = document.getElementsByTagName("*");
-	for (var i = 0; i < els.length; i++) {
-		if (els[i].className === "tabActive") {
-			els[i].className = "tabNormal";
+WE().layout.we_tabs.prototype = {
+	setActiveTab: function (tab) {
+		var tabCon = this.doc.getElementById('tabContainer');
+		docTabs = tabCon.getElementsByTagName('DIV');
+		for (i = 0; i < docTabs.length; i++) {
+			docTabs[i].className = "tabNormal";
+		}
+		this.doc.getElementById(tab).className = "tabActive";
+	},
+	setTabClass: function (elem) {
+		var arr = [];
+		var els = this.doc.getElementsByTagName("*");
+		for (var i = 0; i < els.length; i++) {
+			if (els[i].className === "tabActive") {
+				els[i].className = "tabNormal";
+			}
+		}
+		elem.className = "tabActive";
+	},
+	allowed_change_edit_page: function () {
+		try {
+			var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+			if (contentEditor && contentEditor.contentWindow.fields_are_valid) {
+				return contentEditor.contentWindow.fields_are_valid();
+			}
+		}
+		catch (e) {
+			// Nothing
+		}
+		return true;
+	},
+	setTitlePath: function (path, group) {
+		if (group) {
+			this.titlePathGroup = group;
+		}
+		if (path) {
+			this.titlePathName = path;
+		}
+		var titleElem = this.doc.getElementById('titlePath');
+		if (titleElem) {
+			this.titlePathName = this.titlePathName.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+			this.titlePathGroup = this.titlePathGroup.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+			titleElem.innerHTML = this.titlePathGroup + ((this.titlePathGroup == "/" || this.titlePathName === "") ? "" : "/") + this.titlePathName;
+		}
+	},
+	setFrameSize: function () {
+		var tabsHeight;
+		if (this.doc.getElementById('tabContainer').offsetWidth > 0) {
+			if (this.doc.getElementById('naviDiv')) {
+				tabsHeight = this.doc.getElementById('main').offsetHeight;
+				this.doc.getElementById('naviDiv').style.height = tabsHeight + "px";
+				this.doc.getElementById('contentDiv').style.top = tabsHeight + "px";
+			} else if (this.doc.parent.document.getElementById("edheaderDiv")) {
+				tabsHeight = this.doc.getElementById('main').offsetHeight;
+				this.doc.parent.document.getElementById('edheaderDiv').style.height = tabsHeight + "px";
+				this.doc.parent.document.getElementById('edbodyDiv').style.top = tabsHeight + "px";
+			} else if (this.doc.parent.document.getElementsByName('editHeaderDiv').length > 0) {
+				tabsHeight = this.doc.getElementById('main').offsetHeight;
+				var tmp = this.doc.parent.document.getElementsByName("editHeaderDiv");
+				var nList = tmp[0].parentNode.getElementsByTagName("div");
+				nList[0].style.height = tabsHeight + "px";
+				nList[1].style.top = tabsHeight + "px";
+				nList[2].style.top = tabsHeight + "px";
+			} else if (this.doc.parent.document.getElementById('updatetabsDiv')) {
+				//no need to resize
+			}
 		}
 	}
-	elem.className = "tabActive";
-}
-
-function allowed_change_edit_page() {
-	try {
-		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-		if (contentEditor && contentEditor.contentWindow.fields_are_valid) {
-			return contentEditor.contentWindow.fields_are_valid();
-		}
-	}
-	catch (e) {
-		// Nothing
-	}
-	return true;
-}
-
-function setTitlePath(path, group) {
-	if (group) {
-		titlePathGroup = group;
-	}
-	if (path) {
-		titlePathName = path;
-	}
-	if ((titleElem = document.getElementById('titlePath'))) {
-		titlePathName = titlePathName.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-		titlePathGroup = titlePathGroup.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-		titleElem.innerHTML = titlePathGroup + ((titlePathGroup == "/" || titlePathName === "") ? "" : "/") + titlePathName;
-	}
-}
-
-function getPathInfos() {
-	try {
-		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-
-		if (contentEditor === null && parent.frames) {
-			contentEditor = parent.frames[1];
-		}
-
-		if (!contentEditor.loaded) {
-			setTimeout(getPathInfos, 250);
-			return;
-		}
-
-		var elem = contentEditor.document.getElementById('yuiAcInputPathName');
-		if (elem) {
-			titlePathName = elem.value;
-		}
-		elem = contentEditor.document.getElementById('yuiAcInputPathGroup');
-		if (elem) {
-			titlePathGroup = elem.value;
-		}
-	}
-	catch (e) {
-		// Nothing
-	}
-}
-
-function setFrameSize() {
-	var tabsHeight;
-	if (document.getElementById('tabContainer').offsetWidth > 0) {
-		if (document.getElementById('naviDiv')) {
-			tabsHeight = document.getElementById('main').offsetHeight;
-			document.getElementById('naviDiv').style.height = tabsHeight + "px";
-			document.getElementById('contentDiv').style.top = tabsHeight + "px";
-		} else if (parent.document.getElementById("edheaderDiv")) {
-			tabsHeight = document.getElementById('main').offsetHeight;
-			parent.document.getElementById('edheaderDiv').style.height = tabsHeight + "px";
-			parent.document.getElementById('edbodyDiv').style.top = tabsHeight + "px";
-		} else if (parent.document.getElementsByName('editHeaderDiv').length > 0) {
-			tabsHeight = document.getElementById('main').offsetHeight;
-			var tmp = parent.document.getElementsByName("editHeaderDiv");
-			var nList = tmp[0].parentNode.getElementsByTagName("div");
-			nList[0].style.height = tabsHeight + "px";
-			nList[1].style.top = tabsHeight + "px";
-			nList[2].style.top = tabsHeight + "px";
-		} else if (parent.document.getElementById('updatetabsDiv')) {
-			//no need to resize
-		}
-	} else {
-		setTimeout(setFrameSize, 100);
-	}
-}
+};

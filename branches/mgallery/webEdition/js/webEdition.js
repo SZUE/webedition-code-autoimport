@@ -843,7 +843,7 @@ function we_cmd_base(args, url) {
 			if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
 				_nextContent = nextWindow.getDocumentReference();
 				// activate tab and set state to loading
-				top.weMultiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
+				WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
 				// use Editor Frame
 				nextWindow.initEditorFrameData(
 								{
@@ -872,7 +872,7 @@ function we_cmd_base(args, url) {
 			if ((nextWindow = WE().layout.weEditorFrameController.getFreeWindow())) {
 				_nextContent = nextWindow.getDocumentReference();
 				// activate tab and set it status loading ...
-				top.weMultiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
+				WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
 				nextWindow.updateEditorTab();
 				// set Window Active and show it
 				WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.getFrameId());

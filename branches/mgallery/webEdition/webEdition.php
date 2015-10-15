@@ -320,6 +320,7 @@ foreach(we_base_request::getAllTables() as $k => $v){
 		docuLang:"<?php echo ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'); ?>",
 		helpLang:"<?php echo $GLOBALS["WE_LANGUAGE"]; ?>",
 		messageSettings:<?php echo (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : (we_message_reporting::WE_MESSAGE_ERROR | we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_NOTICE)); ?>,
+		isChrome:<?php echo intval(we_base_browserDetect::isChrome()); ?>,
 	},
 	layout:{
 		//vtabs:Vtabs,
@@ -346,6 +347,7 @@ echo we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .
  we_html_element::jsScript(JS_DIR . 'keyListener.js', 'WE().handler.dealWithKeyboardShortCut = dealWithKeyboardShortCut;') .
  we_html_element::jsScript(JS_DIR . 'windows.js', 'WE().util.jsWindow = jsWindow;WE().util.jsWindow;').
+		we_html_element::jsScript(JS_DIR . 'we_tabs/we_tabs.js') .
  we_html_element::jsScript(JS_DIR . 'messageConsole.js') .
  we_html_element::jsScript(JS_DIR . 'webEdition.js') .
  we_html_element::jsScript(JS_DIR . 'weSidebar.js') .
@@ -427,7 +429,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 			we_repl(_nextContent, url, arguments[0]);
 			// activate tab
 			var pos=(arguments[0]==="open_cockpit"?0:undefined);
-			top.weMultiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ',pos);
+			WE().layout.multiTabs.addTab(nextWindow.getFrameId(), ' &hellip; ', ' &hellip; ',pos);
 			// set Window Active and show it
 			WE().layout.weEditorFrameController.setActiveEditorFrame(nextWindow.FrameId);
 			WE().layout.weEditorFrameController.toggleFrames();

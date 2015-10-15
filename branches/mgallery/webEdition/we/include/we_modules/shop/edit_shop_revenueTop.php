@@ -91,8 +91,8 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 	function setHeaderTitle() {
 		pre = "";
 		post = "' . ($mon > 0 ? g_l('modules_shop', '[month][' . $mon . ']') . ' ' : '') . we_base_request::_(we_base_request::INT, 'ViewYear') . '";
-		if(parent.edheader && parent.edheader.setTitlePath) {
-			parent.edheader.setTitlePath(post,pre);
+		if(parent.edheader && parent.edheader.weTabs.setTitlePath) {
+			parent.edheader.weTabs.setTitlePath(post,pre);
 		} else {
 				setTimeout(setHeaderTitle,100);
 		}

@@ -76,7 +76,7 @@ echo $tab_header;
 				current = tool;
 				top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
 			} else {
-				top.navi.setActiveTab(current);
+				top.navi.weTabs.setActiveTab(current);
 			}
 		} else {
 			top.content.hot = "0";
@@ -88,7 +88,7 @@ echo $tab_header;
 	//-->
 </script>
 </head>
-<body id="eHeaderBody" link="black" alink="#1559b0" vlink="black" onload="setFrameSize()" onresize="setFrameSize()">
+<body id="eHeaderBody" link="black" alink="#1559b0" vlink="black" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
 	<div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
 </body>
 </html>

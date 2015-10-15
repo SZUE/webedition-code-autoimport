@@ -164,7 +164,7 @@ class we_workflow_view extends we_modules_view{
 	function getWorkflowHeaderMultiboxParts($space){
 		return array(
 			'headline' => g_l('modules_workflow', '[name]'),
-			'html' => we_html_tools::htmlTextInput($this->uid . '_Text', 37, stripslashes($this->workflowDef->Text), '', ' id="yuiAcInputPathName" onchange="top.content.setHot();" onblur=" parent.edheader.setTitlePath(this.value);"', "text", 498),
+			'html' => we_html_tools::htmlTextInput($this->uid . '_Text', 37, stripslashes($this->workflowDef->Text), '', ' id="yuiAcInputPathName" onchange="top.content.setHot();" onblur=" parent.edheader.weTabs.setTitlePath(this.value);"', "text", 498),
 			'space' => $space
 		);
 	}

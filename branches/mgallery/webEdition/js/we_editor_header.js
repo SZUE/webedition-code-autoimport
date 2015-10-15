@@ -33,7 +33,7 @@ function we_setPath(path, text, id, classname) {
 	});
 
 	if (classname) {
-		top.weMultiTabs.setTextClass(_EditorFrame.FrameId, classname);
+		WE().layout.multiTabs.setTextClass(_EditorFrame.FrameId, classname);
 	}
 
 	path = path.replace(/</g, '&lt;');
