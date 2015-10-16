@@ -144,7 +144,7 @@ function node(attribs) {
 
 node.prototype = {
 	getLayout: function () {
-		var layout_key = (this.typ == "group" ? "group" : "item");
+		var layout_key = (this.typ === "group" ? "group" : "item");
 		return treeData.node_layouts[layout_key];
 	},
 	showSegment: function () {
@@ -163,7 +163,7 @@ node.prototype = {
 			if (treeData[ai].parentid != this.id) {
 				continue;
 			}
-			if (treeData[ai].contenttype == "group") {
+			if (treeData[ai].contenttype === "group") {
 				deleted += treeData[ai].clear();
 			} else {
 				ind = ai;
