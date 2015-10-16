@@ -24,7 +24,6 @@
  */
 class we_base_linklist{
 	private $name = "";
-	private $sString = "";
 	private $listArray;
 	private $db;
 	private $rollScript = "";
@@ -38,13 +37,12 @@ class we_base_linklist{
 	private $cnt = 0;
 	private $pos = -1;
 
-	function __construct($sString, $hidedirindex = false, $objectseourls = false, $docName = '', $attribs = array()){
-		$this->sString = $sString;
+	function __construct(array $listArray, $hidedirindex = false, $objectseourls = false, $docName = '', $attribs = array()){
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;
 		$this->docName = $docName;
 		$this->attribs = $attribs;
-		$this->listArray = we_unserialize($sString);
+		$this->listArray = $listArray;
 		ksort($this->listArray, SORT_NUMERIC);
 		$limit = !empty($attribs['limit']) ? abs($attribs['limit']) : 0;
 		$editmode = (!empty($GLOBALS["we_editmode"]) && (!isset($GLOBALS["lv"])));
@@ -322,7 +320,7 @@ class we_base_linklist{
 	}
 
 	function getString(){
-		return ($this->listArray ? we_serialize($this->listArray) : '');
+		return ($this->listArray ? we_serialize($this->listArray, 'json') : '');
 	}
 
 	//added for #7269
@@ -468,7 +466,7 @@ class we_base_linklist{
 				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
 				$editbut = we_html_button::create_button("fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link", "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
 				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();_EditorFrame.setEditorIsHot(1);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "','')", true);
-				echo $plusbut. $upbut. $downbut. $editbut. $trashbut;
+				echo $plusbut . $upbut . $downbut . $editbut . $trashbut;
 			}
 		}
 		$ret&= next($this->listArray);

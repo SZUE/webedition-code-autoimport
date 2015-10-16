@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_newsletter_group extends we_newsletter_base{
-
 // properties start
 	var $ID = 0;
 	var $NewsletterID = 0;
@@ -104,7 +102,7 @@ class we_newsletter_group extends we_newsletter_base{
 				}
 			}
 
-			$this->Filter = we_serialize($this->aFilter);
+			$this->Filter = we_serialize($this->aFilter, 'json');
 		}
 	}
 
@@ -154,10 +152,7 @@ class we_newsletter_group extends we_newsletter_base{
 			}
 		}
 
-		$emails = $this->getEmailsFromList($this->Emails, 1);
-		$extern = $this->getEmailsFromExtern($this->Extern, 1);
-		$emails = array_merge($extern, $emails);
-
+		$emails = array_merge($this->getEmailsFromList($this->Emails, 1), $this->getEmailsFromExtern($this->Extern, 1));
 
 		foreach($emails as $email){
 			if(!$this->check_email($email)){
@@ -202,7 +197,7 @@ class we_newsletter_group extends we_newsletter_base{
 
 	static function getSettings(){
 		$db = new DB_WE();
-		$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE.' WHERE tool="newsletter"');
+		$db->query('SELECT pref_name,pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter"');
 		return $db->getAllFirst(false);
 	}
 

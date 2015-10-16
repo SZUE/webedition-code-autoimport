@@ -39,7 +39,7 @@ function we_tag_linklist($attribs){
 
 			$linklist = ($isInListview ? $GLOBALS["lv"]->f($name) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->getElement($name) : ''));
 
-			$ll = new we_base_linklist($linklist, $hidedirindex, $objectseourls, $GLOBALS['we_doc']->Name, $attribs);
+			$ll = new we_base_linklist(we_unserialize($linklist), $hidedirindex, $objectseourls, $GLOBALS['we_doc']->Name, $attribs);
 			$ll->setName($name);
 			return $ll;
 		case 'stop':

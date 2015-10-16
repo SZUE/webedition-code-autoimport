@@ -785,9 +785,10 @@ $we_menu = array(
 );
 
 $dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
-$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
+$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'] . ' LIMIT 95');
 $pre = '1010102_';
 $nr = 0;
+
 if($GLOBALS['DB_WE']->num_rows() && permissionhandler::hasPerm('NO_DOCTYPE')){
 	$we_menu[$pre . sprintf('%09d', $nr++)] = array('parent' => 1010100); // separator
 }
@@ -806,7 +807,7 @@ if(defined('OBJECT_TABLE')){
 	// object from which class
 	$ac = we_users_util::getAllowedClasses($GLOBALS['DB_WE']);
 	if($ac){
-		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . implode(',', $ac) . ') ' : '') . 'ORDER BY Text');
+		$GLOBALS['DB_WE']->query('SELECT ID,Text FROM ' . OBJECT_TABLE . ' ' . ($ac ? ' WHERE ID IN(' . implode(',', $ac) . ') ' : '') . 'ORDER BY Text LIMIT 95');
 		$pre = '1010200_';
 		$nr = 0;
 		while($GLOBALS['DB_WE']->next_record()){

@@ -155,7 +155,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		'img_title' => we_base_request::_(we_base_request::STRING, 'img_title'),
 	);
 
-	if(($linklist = we_base_request::_(we_base_request::SERIALIZED_KEEP, 'linklist')) !== false){
+	if(($linklist = we_base_request::_(we_base_request::SERIALIZED, 'linklist')) !== false){
 		//  set $nr to global, because it is used everywhere;
 		$nr = we_base_request::_(we_base_request::INT, 'nr', 0);
 		$ll = new we_base_linklist($linklist);
@@ -207,15 +207,14 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	  $linklist = serialize(array($link));
 	  } */
 } elseif($nr > -1){
-	$ll = new we_base_linklist($we_doc->getElement($name));
+	$ll = new we_base_linklist(we_unserialize($we_doc->getElement($name)));
 	$href = $ll->getHref($nr);
 	if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 		$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
 		$href = '';
 		$type = we_base_link::TYPE_MAIL;
 	} else {
-		$type = $ll->getType($nr);
-		$type = $type ? : we_base_link::TYPE_INT;
+		$type = $ll->getType($nr)? : we_base_link::TYPE_INT;
 		$emaillink = '';
 	}
 	$anchor = $ll->getAnchor($nr);
@@ -265,7 +264,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	$src_int = $ll->getImageSrcInt($nr);
 	$ctype = $ll->getCType($nr);
 } else {
-	$link = $we_doc->getElement($name) ? unserialize($we_doc->getElement($name)) : array();
+	$link = $we_doc->getElement($name) ? we_unserialize($we_doc->getElement($name)) : array();
 	$link = ($link ? : array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
 	$href = isset($link['href']) ? $link['href'] : '';
 	if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
@@ -297,10 +296,10 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$title = isset($link['title']) ? $link['title'] : '';
 		$target = isset($link['target']) ? $link['target'] : '';
 
-	//added for #7269
-	$bcc = isset($link['bcc']) ? $link['bcc'] : '';
-	$cc = isset($link['cc']) ? $link['cc'] : '';
-	$subject = isset($link['subject']) ? $link['subject'] : '';
+		//added for #7269
+		$bcc = isset($link['bcc']) ? $link['bcc'] : '';
+		$cc = isset($link['cc']) ? $link['cc'] : '';
+		$subject = isset($link['subject']) ? $link['subject'] : '';
 
 		$jswin = !empty($link['jswin']) ? : '';
 		$jscenter = isset($link['jscenter']) ? $link['jscenter'] : '';
@@ -340,7 +339,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 
 echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset')) .
  weSuggest::getYuiFiles() .
-	we_html_element::jsScript(JS_DIR . 'linklistedit.js');
+ we_html_element::jsScript(JS_DIR . 'linklistedit.js');
 ?>
 <script><!--
 
@@ -444,12 +443,12 @@ if($ok && $cmd === "edit_link_at_class"){
 		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest = & weSuggest::getInstance();
-		$yuiSuggest->setAcId("Doc");
+		$yuiSuggest->setAcId('Doc');
 		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
-		$yuiSuggest->setInput("href_int", $href_int);
+		$yuiSuggest->setInput('href_int', $href_int);
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult("id", $id);
+		$yuiSuggest->setResult('id', $id);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(300);
 		$yuiSuggest->setSelectButton($but, 10);
@@ -619,9 +618,7 @@ if($ok && $cmd === "edit_link_at_class"){
 			array('headline' => g_l('global', '[content]'),
 				'html' => '
 <table class="default">
-	<tr>
-		<td>' . $_content_select . '</td>
-	</tr>
+	<tr><td>' . $_content_select . '</td></tr>
 	<tr id="ctext_tr" style="display:' . (($ctype == we_base_link::CONTENT_TEXT) ? "table-row" : "none") . ';">
 		<td>' . $ctext . '</td>
 	</tr>
