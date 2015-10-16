@@ -53,94 +53,30 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	}
 
 	protected function postprocess(){
-		$resp = $this->docVars['transaction'] ? $this->writeToDocument() : $this->writeNewDocument();
-		if($resp['success']){
-			return array_merge($this->response, array('status' => 'success', 'completed' => 1, 'weDoc' => $resp['weDoc']));
+		$we_doc = $this->getWebeditionDocument();
+		//TODO: make concise mime and extension test here, taking uploader's typecondition from session
+		/*
+		if($this->typeCondition['accepted']['mime'] && !in_array($this->fileVars['weFileCt'], $this->typeCondition['accepted']['mime'])){
+			if(!empty($this->fileVars['weFileName'])){
+				$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
+			} else {
+				$we_alerttext = g_l('alert', '[no_file_selected]');
+			}
+		}
+		 * 
+		 */
+
+		$response = $this->writeWebeditionDocument($we_doc);
+
+		if($response['success']){
+			return array_merge($this->response, array('status' => 'success', 'completed' => 1, 'weDoc' => $response['weDoc']));
 		} else {
-			return array_merge($this->response, array('status' => 'failure', 'message' => $resp['error']));
+			return array_merge($this->response, array('status' => 'failure', 'message' => $response['error']));
 		}
 	}
-	
 
-	// TODO: do integrate writeToDocument() and writeNewDocument()!
-	protected function writeToDocument(){
-		if(!isset($_SESSION['weS']['we_data'][$this->docVars['transaction']])){
-			return array(
-				'error' => 'transaction is not correct',
-				'success' => false,
-				'weDoc' => array('id' => 0, 'path' => '')
-			);
-		}
-		$we_dt = $_SESSION['weS']['we_data'][$this->docVars['transaction']];
-		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-
-		if(!$this->typeCondition['accepted']['mime'] || in_array($this->fileVars['weFileCt'], $this->typeCondition['accepted']['mime'])){
-			$we_doc->Extension = strtolower((strpos($this->fileVars['weFileName'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '$1', $this->fileVars['weFileName']) : ''); //strtolower for feature 3764
-			$we_File = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
-
-			if((!$we_doc->Filename) || (!$we_doc->ID)){
-				// Bug Fix #6284
-				$we_doc->Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $this->fileVars['weFileName']);
-				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '$1', $we_doc->Filename);
-			}
-
-			$foo = explode('/', $this->fileVars['weFileCt']);
-			$we_doc->setElement('data', $we_File, $foo[0]);
-
-			switch($we_doc->ContentType){
-				case we_base_ContentTypes::IMAGE:
-					if(!$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($we_File), we_base_imageEdit::$GDIMAGE_TYPE)){
-						$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
-						break;
-					}
-				//no break
-				case we_base_ContentTypes::FLASH:
-					$we_size = $we_doc->getimagesize($we_File);
-					$we_doc->setElement('width', $we_size[0], 'attrib');
-					$we_doc->setElement('height', $we_size[1], 'attrib');
-					$we_doc->setElement('origwidth', $we_size[0], 'attrib');
-					$we_doc->setElement('origheight', $we_size[1], 'attrib');
-				//no break
-				default:
-					$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-					$we_doc->Path = $we_doc->getPath();
-					$we_doc->DocChanged = true;
-
-					if($we_doc->Extension === '.pdf'){
-						$we_doc->setMetaDataFromFile($we_File);
-					}
-
-					$_SESSION['weS']['we_data']['tmpName'] = $we_File;
-					if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
-						$we_doc->importMetaData();
-					}
-					$we_doc->saveInSession($_SESSION['weS']['we_data'][$this->docVars['transaction']]); // save the changed object in session
-			}
-		} else if(isset($this->fileVars['weFileName']) && !empty($this->fileVars['weFileName'])){
-			$we_alerttext = g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']');
-		} else if(isset($this->fileVars['weFileName']) && empty($this->fileVars['weFileName'])){
-			$we_alerttext = g_l('alert', '[no_file_selected]');
-		}
-
-		if(!empty($we_alerttext)){
-			return array(
-				'error' => $$we_alerttext,
-				'success' => false,
-				'weDoc' => array('id' => 0, 'path' => '')
-			);
-		}
-
-		//return array(true, array($we_doc->Path, $we_doc->Text));
-		return array(
-			'error' => '',
-			'success' => true,
-			'weDoc' => array('id' => $we_doc->ID, 'path' => $we_doc->Path)
-		);
-	}
-
-	protected function writeNewDocument(){
-		if(isset($this->docVars['transaction'])){
-			// upload to existing we_doc
+	protected function getWebeditionDocument(){ // TODO: avoid some more redundancy in this fn
+		if($this->docVars['transaction']){ // import ne binary for existing wedoc
 			if(!isset($_SESSION['weS']['we_data'][$this->docVars['transaction']])){
 				return array(
 					'error' => 'transaction is not correct',
@@ -150,66 +86,111 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			}
 			$we_dt = $_SESSION['weS']['we_data'][$this->docVars['transaction']];
 			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-		} else {
-			// upload to new we_doc
-			$_fn = we_import_functions::correctFilename($this->fileVars['weFileName']);
-			$matches = array();
-			preg_match('#^(.*)(\..+)$#', $_fn, $matches);
-			if(!$matches){
-				return array(
-					'error' => g_l('importFiles', '[save_error]'),
-					'success' => false,
-					'weDoc' => ''
-				);
-			}
-			$we_doc = $this->getWeDoc();
 
-			$we_doc->Filename = $matches[1];
-			$we_doc->Extension = strtolower($matches[2]);
-			if(!$we_doc->Filename){
-				$we_doc->Filename = $matches[2];//.htaccess
-				$we_doc->Extension = '';
+			$we_doc->Extension = strtolower((strpos($this->fileVars['weFileName'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '$1', $this->fileVars['weFileName']) : ''); //strtolower for feature 3764
+			if((!$we_doc->Filename) || (!$we_doc->ID)){
+				// Bug Fix #6284
+				$we_doc->Filename = preg_replace('/[^A-Za-z0-9._-]/', '', $this->fileVars['weFileName']);
+				$we_doc->Filename = preg_replace('/^(.+)\..+$/', '$1', $we_doc->Filename);
 			}
 			$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
-			$we_doc->setParentID($this->fileVars['saveToID']);
-			$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
+			$we_doc->Path = $we_doc->getPath();
 
-			// if file exists we have to see if we should create a new one or overwrite it!
-			if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"'))){
-				switch($this->fileVars['sameName']){
-					case 'overwrite':
-						$tmp = $we_doc->ClassName;
-						$we_doc = new $tmp();
-						$we_doc->initByID($file_id, FILE_TABLE);
-						break;
-					case "rename":
-						$z = 0;
+			return $we_doc;
+		}
+
+		// make new we_doc
+		$we_ContentType = getContentTypeFromFile($this->fileVars['weFileName']);
+		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+
+		// set filename, ext and path
+		$filename = we_import_functions::correctFilename($this->fileVars['weFileName']);
+		$matches = array();
+		preg_match('#^(.*)(\..+)$#', $filename, $matches);
+		if(!$matches){
+			return array(
+				'error' => g_l('importFiles', '[save_error]'),
+				'success' => false,
+				'weDoc' => ''
+			);
+		}
+		$we_doc->Filename = $matches[1];
+		$we_doc->Extension = strtolower($matches[2]);
+		if(!$we_doc->Filename){ // .htaccess
+			$we_doc->Filename = $matches[2];//.htaccess
+			$we_doc->Extension = '';
+		}
+		$we_doc->Text = $we_doc->Filename . $we_doc->Extension;
+		$we_doc->setParentID($this->fileVars['saveToID']);
+		$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
+
+		// if file exists we have to see if we should create a new one or overwrite it!
+		if(($file_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($we_doc->Path) . '"'))){
+			switch($this->fileVars['sameName']){
+				case 'overwrite':
+					$tmp = $we_doc->ClassName;
+					$we_doc = new $tmp();
+					$we_doc->initByID($file_id, FILE_TABLE);
+					break;
+				case "rename":
+					$z = 0;
+					$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
+					while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->fileVars['saveToID']))){
+						$z++;
 						$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-						while(f('SELECT ID FROM ' . FILE_TABLE . " WHERE Text='" . $GLOBALS['DB_WE']->escape($footext) . "' AND ParentID=" . intval($this->fileVars['saveToID']))){
-							$z++;
-							$footext = $we_doc->Filename . '_' . $z . $we_doc->Extension;
-						}
-						$we_doc->Text = $footext;
-						$we_doc->Filename = $we_doc->Filename . "_" . $z;
-						$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
-						break;
-					default:
-						return array(
-							'error' => g_l('importFiles', '[same_name]'),
-							'success' => false,
-							'weDoc' => ''
-						);
-				}
+					}
+					$we_doc->Text = $footext;
+					$we_doc->Filename = $we_doc->Filename . "_" . $z;
+					$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
+					break;
+				default:
+					return array(
+						'error' => g_l('importFiles', '[same_name]'),
+						'success' => false,
+						'weDoc' => ''
+					);
 			}
 		}
 
+		return $we_doc;
+	}
+
+	protected function writeWebeditionDocument($we_doc){
 		$tempFile =  $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
+		// TODO: there are more bad combinations to consider
+		if($we_doc->ContentType === we_base_ContentTypes::IMAGE){
+			if(!$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($tempFile), we_base_imageEdit::$GDIMAGE_TYPE)){
+				return array('filename' => $this->fileVars['weFileName'], 'error' => g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']'));
+			}
+		}
 
-		// now change the category
-		// $we_doc->Category = $this->docVars['categories'];
+		$we_doc->setElement('type', $we_doc->ContentType, "attrib");
+		//$we_doc->Published = time(); // nok for parked existing docs
 
-		switch($this->fileVars['weFileCt']){
+		if(($fh = @fopen($tempFile, 'rb'))){
+			if($we_doc->isBinary()){
+				$we_doc->setElement("data", $tempFile);
+			} else {
+				$mime = explode('/', $this->fileVars['weFileCt']);
+				$we_doc->setElement("data", $tempFile, $mime[0]);
+			}
+			fclose($fh);
+		} else {
+			//FIXME: fopen uses less memory then gd: gd can fail (and returns 500) even if $fh = true! // ?
+			//return array('filename' => $_FILES['we_File']['name'], 'error' => g_l('importFiles', '[read_file_error]'));
+			return array(
+				'error' => g_l('importFiles', '[read_file_error]'),
+				'success' => false,
+				'weDoc' => ''
+			);
+		}
+
+		switch($we_doc->ContentType){
 			case we_base_ContentTypes::IMAGE:
+				if(isset($this->docVars['importMetadata']) && $this->docVars['importMetadata']){
+					$we_doc->importMetaData($tempFile);
+				}
+				// no break
 			case we_base_ContentTypes::FLASH:
 				$we_size = $we_doc->getimagesize($tempFile);
 				if(is_array($we_size) && count($we_size) >= 2){
@@ -218,42 +199,27 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					$we_doc->setElement("origwidth", $we_size[0], 'attrib');
 					$we_doc->setElement("origheight", $we_size[1], 'attrib');
 				}
-		}
-		if($we_doc->Extension === '.pdf'){
-			$we_doc->setMetaDataFromFile($tempFile);
-		}
-
-		$we_doc->setElement('type', $this->fileVars['weFileCt'], "attrib");
-		$fh = @fopen($tempFile, 'rb');
-		$this->fileVars['weFileSize'] = $this->fileVars['weFileSize'] < 1 ? 1 : $this->fileVars['weFileSize'];
-
-		if($fh){
-			if($we_doc->isBinary()){
-				$we_doc->setElement("data", $tempFile);
-			} else {
-				$foo = explode('/', $_FILES['we_File']["type"]);
-				$we_doc->setElement("data", fread($fh, $this->fileVars['weFileSize']), $foo[0]);
-			}
-			fclose($fh);
-		} else {
-			//FIXME: fopen uses less memory then gd: gd can fail (and returns 500) even if $fh = true!
-			return array(
-				'error' => g_l('importFiles', '[read_file_error]'),
-				'success' => false,
-				'weDoc' => ''
-			);
+				// no break
+			default: 
+				$we_doc->Table = FILE_TABLE;
+				$this->fileVars['weFileSize'] = $this->fileVars['weFileSize'] < 1 ? 1 : $this->fileVars['weFileSize'];
+				$we_doc->setElement('filesize', $this->fileVars['weFileSize'], 'attrib');
+				/*
+				now change the category
+					$we_doc->Category = isset($this->docVars['categories']) && $this->docVars['categories'] = $this->docVars['categories'] : $we_doc->Category;
+				*/
+				if(isset($this->docVars['importMetadata']) && $this->docVars['importMetadata']){
+					if($we_doc->Extension === '.pdf'){
+						$we_doc->setMetaDataFromFile($tempFile);
+					}
+					if(we_base_request::_(we_base_request::BOOL, 'import_metadata')){
+						$we_doc->importMetaData($tempFile);
+					}
+				}
+				$we_doc->DocChanged = true;
 		}
 
-		$we_doc->setElement('filesize', $this->fileVars['weFileSize'], 'attrib');
-		$we_doc->Table = FILE_TABLE;
-		$we_doc->Published = time();
-		if($this->fileVars['weFileCt'] == we_base_ContentTypes::IMAGE){
-			$we_doc->setElement('title', (isset($this->docVars['title']) ? $this->docVars['title'] : $we_doc->title), 'attrib');
-			$we_doc->setElement('alt', (isset($this->docVars['alt']) ? $this->docVars['alt'] : $we_doc->alt), 'attrib');
-			$we_doc->setElement('Thumbs', (isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->alt), 'attrib');
-			$we_doc->Thumbs = isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->thumbs;
-			$we_doc->IsSearchable = isset($this->docVars['imgsSearchable']) ? $this->docVars['imgsSearchable'] : $we_doc->thumbs;
-
+		if($we_doc->ContentType == we_base_ContentTypes::IMAGE){
 			$newWidth = 0;
 			$newHeight = 0;
 			if(isset($this->docVars['width'])){
@@ -272,7 +238,6 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					$this->docVars['height'] = $newHeight;
 				}
 			}
-
 			if($this->docVars['degrees']){
 				$we_doc->rotateImage(
 					($this->docVars['degrees'] % 180 == 0) ?
@@ -281,43 +246,38 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 						$we_doc->getElement("origheight") :
 						$we_doc->getElement("origwidth")), $this->docVars['degrees'], $this->docVars['quality']);
 			}
-			$we_doc->DocChanged = true;
 		}
-		if(!$we_doc->we_save()){
-			return array(
-				'error' => g_l('importFiles', '[save_error]'),
-				'success' => false,
-				'weDoc' => ''
-			);
-		}
-		if($this->fileVars['weFileCt'] === we_base_ContentTypes::IMAGE && isset($this->docVars['importMetadata']) && $this->docVars['importMetadata']){
-			$we_doc->importMetaData();
-			$we_doc->we_save();
-		}
-		if(!$we_doc->we_publish()){
-			return array(
-				'error' => "publish_error",
-				'success' => false,
-				'weDoc' => ''
-			);
+
+		if($this->docVars['transaction']){
+			$_SESSION['weS']['we_data']['tmpName'] = $tempFile;// what's this?
+			$we_doc->saveInSession($_SESSION['weS']['we_data'][$this->docVars['transaction']]); // save the changed object in session
+		} else {
+			$we_doc->setElement('title', (isset($this->docVars['title']) ? $this->docVars['title'] : $we_doc->title), 'attrib');
+			$we_doc->setElement('alt', (isset($this->docVars['alt']) ? $this->docVars['alt'] : $we_doc->alt), 'attrib');
+			$we_doc->setElement('Thumbs', (isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->alt), 'attrib');
+			$we_doc->Thumbs = isset($this->docVars['thumbs']) ? $this->docVars['thumbs'] : $we_doc->thumbs;
+			$we_doc->IsSearchable = isset($this->docVars['imgsSearchable']) ? $this->docVars['imgsSearchable'] : $we_doc->thumbs;
+
+			if(!$we_doc->we_save()){
+				return array(
+					'error' => g_l('importFiles', '[save_error]'),
+					'success' => false,
+					'weDoc' => ''
+				);
+			}
+			if(!$we_doc->we_publish()){
+				return array(
+					'error' => "publish_error",
+					'success' => false,
+					'weDoc' => ''
+				);
+			}
 		}
 
 		return array(
 			'error' => array(),
 			'success' => true,
-			'weDoc' => array('id' => $we_doc->ID, 'path' => $we_doc->Path)
+			'weDoc' => array('id' => $we_doc->ID, 'path' => $we_doc->Path, 'text' => $we_doc->Text)
 		);
-	}
-
-	protected function getWeDoc(){
-		if(!$this->docVars['transaction']){
-			return we_base_ContentTypes::inst()->getObject($this->fileVars['weFileCt']) ? : new we_otherDocument();
-			//return $this->getDocument($this->fileVars['weFileCt']);
-		}
-
-		$we_dt = $_SESSION['weS']['we_data'][$this->docVars['transaction']];
-		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php'); // TODO: make some function doing what we_init_doc does!
-
-		return $we_doc;
 	}
 }
