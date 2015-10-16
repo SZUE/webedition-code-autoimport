@@ -23,15 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_frames extends we_modules_frame{
+
 	var $db;
 	var $View;
 	var $frameset;
 	public $module = 'shop';
-	protected $hasIconbar = true;
 	protected $treeDefaultWidth = 204;
 
 	function __construct($frameset){
 		parent::__construct(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php');
+		$this->hasIconbar = true;
 		$this->Tree = new we_shop_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_shop_view(WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php', 'top.content');
 	}
@@ -84,7 +85,7 @@ function we_cmd(){
 			top.content.editor.location="<?php echo WE_SHOP_MODULE_DIR; ?>edit_shop_frameset.php?pnt=editor";
 			break;
 		case "delete_shop":
-			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot == 1 ) {
+			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot === 1 ) {
 				if(confirm("' . g_l('modules_shop', '[del_shop]') . '")){
 					top.content.editor.edbody.deleteorder();
 				}
@@ -93,7 +94,7 @@ function we_cmd(){
 			}
 			break;
 		case "new_article":
-			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot == 1 ) {
+			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot === 1 ) {
 				top.content.editor.edbody.neuerartikel();
 			} else {
 				' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[no_order_there]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -102,8 +103,8 @@ function we_cmd(){
 		case "revenue_view":
 		//FIXME: this is not correct; document doesnt work like this
 			' . ($resultD ? 'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";' :
-				(!empty($resultO) ? 'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=' . $classid . '";' :
-					'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";')) . '
+						(!empty($resultO) ? 'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=' . $classid . '";' :
+								'top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=editor&top=1&typ=document";')) . '
 			break;
 		';
 
@@ -271,9 +272,9 @@ function we_cmd() {
 		}
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) .
-					we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;')
-				)
+						we_html_element::htmlBody(array('style' => 'position: fixed; top: 0px; left: 0px; right: 0px; bottom: 0px; border: 0px none;'), we_html_element::htmlIFrame('edheader', $this->frameset . '?pnt=edheader&home=' . $home . '&mid=' . $mid . $yearView . '&bid=' . $bid, 'position: absolute; top: 0px; left: 0px; right: 0px; height: 40px; overflow: hidden;', '', '', false) .
+								we_html_element::htmlIFrame('edbody', $bodyURL . '&pnt=edbody', 'position: absolute; top: 40px; bottom: 0px; left: 0px; right: 0px;', 'border:0px;width:100%;height:100%;')
+						)
 		);
 	}
 
@@ -313,7 +314,7 @@ function we_cmd() {
 		}
 
 		$body = we_html_element::htmlIFrame('edheader', 'edit_shop_frameset.php?pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
-			we_html_element::htmlIFrame('edbody', $bodyURL, 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;', '', '', true);
+				we_html_element::htmlIFrame('edbody', $bodyURL, 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;', '', '', true);
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
 	}
 
@@ -362,8 +363,8 @@ function setTab(tab) {
 }');
 
 		$tab_body_content = '<div id="main"><div id="headrow"><nobr><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></nobr></div>' .
-			$we_tabs->getHTML() .
-			'</div>';
+				$we_tabs->getHTML() .
+				'</div>';
 		$tab_body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
@@ -424,8 +425,8 @@ function setTab(tab) {
 }');
 
 		$tab_body_content = '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB($headline) . '</div>' .
-			$we_tabs->getHTML() .
-			'</div>';
+				$we_tabs->getHTML() .
+				'</div>';
 		$tab_body = we_html_element::htmlBody(array('id' => 'eHeaderBody'), $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);

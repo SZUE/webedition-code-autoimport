@@ -27,11 +27,11 @@ var hot = 0;
 var scrollToVal = 0;
 
 function setHot() {
-	hot = "1";
+	hot = 1;
 }
 
 function usetHot() {
-	hot = "0";
+	hot = 0;
 }
 
 function doUnload() {
@@ -48,7 +48,7 @@ function we_cmd() {
 			url += "&";
 		}
 	}
-	if (hot == 1 && args[0] !== "save_customer") {
+	if (hot === 1 && args[0] !== "save_customer") {
 		if (confirm(WE().consts.g_l.customer.view.save_changed_customer)) {
 			args[0] = "save_customer";
 		} else {
@@ -57,7 +57,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_customer":
-			if (hot != "1") {
+			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;

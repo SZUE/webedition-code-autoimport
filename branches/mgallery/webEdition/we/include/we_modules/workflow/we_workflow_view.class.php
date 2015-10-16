@@ -331,22 +331,22 @@ class we_workflow_view extends we_modules_view{
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/json-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
-			weSuggest::getYuiFiles() .
-			'	<table style="margin-right:30px;">
-				<tr style="vertical-align:top">
-					<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>
-					<td><table class="default" style="margin-top:3px;">
-						<tr><td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()", true, 30) . '</td>
-						</tr>
-						</table></td>
-				</tr>
-				<tr style="vertical-align:top">
-					<td colspan="2" nowrap>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
-				</table>' .
+			weSuggest::getYuiFiles() .			'
+<table style="margin-right:30px;">
+	<tr style="vertical-align:top">
+		<td>' . we_html_tools::htmlDialogBorder3(400, 300, $content, $headline) . '</td>
+		<td><table class="default" style="margin-top:3px;">
+			<tr><td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addTask()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delTask()", true, 30) . '</td>
+			</tr>
+			</table></td>
+	</tr>
+	<tr style="vertical-align:top">
+		<td colspan="2" nowrap>' . we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();addStep()", true, 30) . we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();delStep()", true, 30) . '</td></tr>
+</table>' .
 			$yuiSuggest->getYuiJs() .
 			we_html_element::htmlHiddens(array(
-				"wsteps" => $counter,
-				"wtasks" => $counter1
+				'wsteps' => $counter,
+				'wtasks' => $counter1
 		));
 	}
 

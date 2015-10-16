@@ -89,12 +89,12 @@ function zeichne(startEntry, zweigEintrag) {
 }
 
 function openClose(id, status) {
-	var eintragsIndex = indexOfEntry(id);
+	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawEintraege();
 }
 
-function indexOfEntry(id) {
+container.indexOfEntry=function (id) {
 	for (var ai = 1; ai <= treeData.len; ai++) {
 		if ((treeData[ai].typ === 'root') || (treeData[ai].typ === 'folder')) {
 			if (treeData[ai].id == id) {

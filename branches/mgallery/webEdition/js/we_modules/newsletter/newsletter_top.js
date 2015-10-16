@@ -28,11 +28,11 @@ var get_focus = 1;
 var hot = 0;
 
 function setHot() {
-	hot = "1";
+	hot = 1;
 }
 
 function usetHot() {
-	hot = "0";
+	hot = 0;
 }
 
 function doUnload() {
@@ -54,7 +54,7 @@ function we_cmd() {
 		}
 	}
 
-	if (hot == 1 && args[0] !== "save_newsletter") {
+	if (hot === 1 && args[0] !== "save_newsletter") {
 		if (confirm(WE().consts.g_l.newsletter.save_changed_newsletter)) {
 			args[0] = "save_newsletter";
 		} else {
@@ -63,7 +63,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_newsletter":
-			if (hot != 1) {
+			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;

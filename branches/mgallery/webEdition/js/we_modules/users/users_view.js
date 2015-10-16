@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition SDK
  *
@@ -40,7 +42,7 @@ function we_cmd() {
 		}
 	}
 
-	if (hot == "1" && args[0] != "save_user") {
+	if (hot === 1 && args[0] !== "save_user") {
 		if (confirm(g_l.save_changed_user)) {
 			args[0] = "save_user";
 		} else {
@@ -49,13 +51,13 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_users":
-			if (hot != 1) {
+			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
 		case "new_user":
 			top.content.editor.edbody.focus();
-			if (hot == 1 && top.content.editor.edbody.document.we_form.ucmd) {
+			if (hot === 1 && top.content.editor.edbody.document.we_form.ucmd) {
 				if (confirm(g_l.save_changed_user)) {
 					top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
 					top.content.editor.edbody.document.we_form.sd.value = 1;
@@ -82,7 +84,7 @@ function we_cmd() {
 			break;
 		case "display_user":
 			top.content.editor.edbody.focus();
-			if (hot == 1 && top.content.editor.edbody.document.we_form.ucmd) {
+			if (hot === 1 && top.content.editor.edbody.document.we_form.ucmd) {
 				if (confirm(g_l.save_changed_user)) {
 					top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
 					top.content.editor.edbody.document.we_form.sd.value = 1;
@@ -106,7 +108,7 @@ function we_cmd() {
 			}
 			break;
 		case "new_group":
-			if (hot == 1 && top.content.editor.edbody.document.we_form.ucmd) {
+			if (hot === 1 && top.content.editor.edbody.document.we_form.ucmd) {
 				if (confirm(g_l.save_changed_user)) {
 					top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
 					top.content.editor.edbody.document.we_form.sd.value = 1;
@@ -129,7 +131,7 @@ function we_cmd() {
 			}
 			break;
 		case "new_alias":
-			if (hot == 1 && top.content.editor.edbody.document.we_form.ucmd) {
+			if (hot === 1 && top.content.editor.edbody.document.we_form.ucmd) {
 				if (confirm(g_l.save_changed_user)) {
 					top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
 					top.content.editor.edbody.document.we_form.sd.value = 1;
@@ -166,7 +168,7 @@ function we_cmd() {
 			break;
 		case "new_organization":
 			var orgname = prompt(g_l.give_org_name, "");
-			if (orgname != null) {
+			if (orgname !== null) {
 				top.content.cmd.location = frameset + "?pnt=cmd&ucmd=new_organization&orn=" + orgname;
 			}
 			break;

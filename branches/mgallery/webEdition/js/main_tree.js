@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function getLayout() {
+node.getLayout = function () {
 	if (this.typ === "threedots") {
 		return treeData.node_layouts["threedots"];
 	}
@@ -37,13 +37,13 @@ function getLayout() {
 					(this.typ == "item" && this.published == -1 ? "-changed" : "");
 
 	return treeData.node_layouts[layout_key];
-}
+};
 
 function openClose(id) {
 	if (id == "") {
 		return;
 	}
-	var eintragsIndex = indexOfEntry(id);
+	var eintragsIndex = treeData.indexOfEntry(id);
 	var openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 	treeData[eintragsIndex].open = openstatus;
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {

@@ -28,10 +28,10 @@ class weMainTree extends weTree{
 		return '
 we_scrollY["' . FILE_TABLE . '"] = 0;
 we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
-			(defined('OBJECT_TABLE') ? '
+				(defined('OBJECT_TABLE') ? '
 we_scrollY["' . OBJECT_TABLE . '"] = 0;
 we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
-				'') . '
+						'') . '
 treeData.table="' . FILE_TABLE . '";';
 	}
 
@@ -64,12 +64,12 @@ while(1){
 		$s .= '
 if(weWindow.treeData){
 	var obj = weWindow.treeData;' .
-			($select ? '
+				($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
 	weWindow.treeData.selection="' . $doc->ID . '";' :
-				'weWindow.treeData.unselectnode();') . '
+						'weWindow.treeData.unselectnode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
-		if(weWindow.treeData[top.indexOfEntry(' . $doc->ParentID . ')]){
+		if(weWindow.treeData[top.treeData.indexOfEntry(' . $doc->ParentID . ')]){
 			var attribs={
 			"id":' . $doc->ID . ',
 			"parentid":' . $doc->ParentID . ',
@@ -79,10 +79,10 @@ if(weWindow.treeData){
 			"inschedule":\'' . intval($hasSched) . '\'
 			};
 
-			var visible=(' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')!=-1?
-				' . $this->topFrame . '.treeData[' . $this->topFrame . '.indexOfEntry(' . $doc->ParentID . ')].open:
+			var visible=(' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ParentID . ')!=-1?
+				' . $this->topFrame . '.treeData[' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ParentID . ')].open:
 					0);
-			if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
+			if(' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
 				' . $this->topFrame . '.updateEntry(attribs);
 			}else{
 			//FIXME: makenewentry!
@@ -96,7 +96,7 @@ if(weWindow.treeData){
 				' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
 			}
 			weWindow.drawTree();
-		}else if(' . $this->topFrame . '.indexOfEntry(' . $doc->ID . ')!=-1){
+		}else if(' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
 		' . $this->topFrame . '.deleteEntry(' . $doc->ID . ');
 		}
 	}
@@ -110,20 +110,19 @@ if(weWindow.treeData){
 		return we_html_element::jsScript(JS_DIR . 'main_tree.js');
 	}
 
-	function getJSLoadTree(array $treeItems){
+	function getJSLoadTree($clear, array $treeItems){
 		$js = '';
 
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
-				$js.= 'if(' . $this->topFrame . '.indexOfEntry("' . $item['id'] . '")<0){' .
-					$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
+				$js.= ($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){') .
+						$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
 				foreach($item as $k => $v){
 					$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-							intval($v) :
-							'\'' . addslashes($v) . '\'') . ',';
+									intval($v) :
+									'\'' . addslashes($v) . '\'') . ',';
 				}
-				$js.='}));
-					}';
+				$js.='}));' . ($clear ? '' : '}');
 			}
 		}
 		$js.=$this->topFrame . '.drawTree();';

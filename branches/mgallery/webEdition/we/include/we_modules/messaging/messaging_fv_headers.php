@@ -31,7 +31,7 @@ echo we_html_tools::getHtmlTop() .
 	function doSort(sortitem) {
 		entrstr = "";
 
-		top.content.cmd.location = "' . WE_MESSAGING_MODULE_DIR . 'edit_messaging_frameset.php?pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $transaction . '";
+		top.content.cmd.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"edit_messaging_frameset.php?pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $transaction . '";
 	}') .
  STYLESHEET;
 $si = we_base_request::_(we_base_request::STRING, "si");

@@ -26,7 +26,7 @@ function openClose(id) {
 	if (id === "") {
 		return;
 	}
-	var eintragsIndex = indexOfEntry(id);
+	var eintragsIndex = treeData.indexOfEntry(id);
 	var openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 
 	treeData[eintragsIndex].open = openstatus;
@@ -44,7 +44,7 @@ function openClose(id) {
 function doClick(id, typ) {
 	var cmd = "";
 	var node;
-	if (top.content.hot == "1") {
+	if (top.content.hot === 1) {
 		if (confirm(g_l.save_changed_export)) {
 			cmd = "save_export";
 			top.content.we_cmd("save_export");

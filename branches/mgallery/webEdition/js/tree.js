@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition SDK
  *
@@ -30,24 +32,93 @@ var wasdblclick = false;
 var tout = null;
 var hot = 0;
 
+function container() {
+	this.len = 0;
+	this.state = 0;
+	this.startloc = 0;
+	this.table = "";
+	this.selection = "";
+	this.selection_table = "";
+	return this;
+}
+
+container.prototype = {
+	getLayout: function () {
+		return this.tree_layouts[this.state];
+	},
+	setTreeState: function () {
+		this.state = arguments[0];
+		if (this.state == this.tree_states.edit) {
+			for (var i = 1; i <= this.len; i++) {
+				if (this[i].checked == 1) {
+					this[i].checked = 0;
+				}
+			}
+		}
+	},
+	selectNode: function () {
+		if (arguments[0]) {
+			var ind;
+			if (treeData.selection !== "" && treeData.selection_table == treeData.table) {
+				ind = treeData.indexOfEntry(treeData.selection);
+				if (ind != -1) {
+					var oldnode = get(treeData.selection);
+					oldnode.selected = 0;
+					oldnode.applylayout();
+				}
+			}
+			ind = treeData.indexOfEntry(arguments[0]);
+			if (ind != -1) {
+				var newnode = get(arguments[0]);
+				newnode.selected = 1;
+				newnode.applylayout();
+			}
+			treeData.selection = arguments[0];
+			treeData.selection_table = treeData.table;
+		}
+	},
+	unselectNode: function () {
+		if (treeData.selection !== "" && treeData.table == treeData.selection_table) {
+			var ind = treeData.indexOfEntry(treeData.selection);
+			if (ind != -1) {
+				var node = get(treeData.selection);
+				node.selected = 0;
+				if (node.applylayout)
+					node.applylayout();
+			}
+			treeData.selection = "";
+		}
+	},
+	clear: function () {
+		this.len = 0;
+	},
+	indexOfEntry: function (id) {
+		for (var ai = 1; ai <= treeData.len; ai++) {
+			if (treeData[ai].id == id) {
+				return ai;
+			}
+		}
+		return -1;
+	},
+	add: function (object) {
+		this[++this.len] = object;
+	},
+	addSort: function (object) {
+		this.len++;
+		for (var i = this.len; i > 0; i--) {
+			if (i > 1 && (this[i - 1].text.toLowerCase() > object.text.toLowerCase() || (this[i - 1].typ > object.typ))) {
+				this[i] = this[i - 1];
+				continue;
+			}
+			this[i] = object;
+			break;
+		}
+	}
+};
+
 function treeStartDrag(evt, type, table, id, ct) { // TODO: throw out setData
 	top.dd.dataTransfer.text = type + ',' + table + ',' + id + ',' + ct;
 	evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct);
-}
-
-function getTreeLayout() {
-	return this.tree_layouts[this.state];
-}
-
-function setTreeState() {
-	this.state = arguments[0];
-	if (this.state == this.tree_states.edit) {
-		for (var i = 1; i <= this.len; i++) {
-			if (this[i].checked == 1) {
-				this[i].checked = 0;
-			}
-		}
-	}
 }
 
 function rootEntry(id, text, rootstat, offset) {
@@ -68,20 +139,26 @@ function node(attribs) {
 		this[aname] = val;
 	}
 
-	this.getlayout = getLayout;
-	this.showsegment = showSegment;
 	return this;
 }
 
 node.prototype = {
+	getLayout: function () {
+		var layout_key = (this.typ == "group" ? "group" : "item");
+		return treeData.node_layouts[layout_key];
+	},
+	showSegment: function () {
+		parentnode = frames.top.get(this.parentid);
+		parentnode.clear();
+		we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
+	},
 	applylayout: function () {
 		eval('if(' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '"))' + treeData.treeFrame + '.document.getElementById("lab_' + this.id + '").className ="' +
-						(arguments[0] ? arguments[0] : this.getlayout()) +
+						(arguments[0] ? arguments[0] : this.getLayout()) +
 						'";');
 	},
 	clear: function () {
 		var deleted = 0;
-
 		for (var ai = 1; ai <= treeData.len; ai++) {
 			if (treeData[ai].parentid != this.id) {
 				continue;
@@ -104,42 +181,6 @@ node.prototype = {
 		return deleted;
 	}
 };
-
-
-function selectNode() {
-	if (arguments[0]) {
-		var ind;
-		if (treeData.selection !== "" && treeData.selection_table == treeData.table) {
-			ind = indexOfEntry(treeData.selection);
-			if (ind != -1) {
-				var oldnode = get(treeData.selection);
-				oldnode.selected = 0;
-				oldnode.applylayout();
-			}
-		}
-		ind = indexOfEntry(arguments[0]);
-		if (ind != -1) {
-			var newnode = get(arguments[0]);
-			newnode.selected = 1;
-			newnode.applylayout();
-		}
-		treeData.selection = arguments[0];
-		treeData.selection_table = treeData.table;
-	}
-}
-
-function unselectNode() {
-	if (treeData.selection !== "" && treeData.table == treeData.selection_table) {
-		var ind = indexOfEntry(treeData.selection);
-		if (ind != -1) {
-			var node = get(treeData.selection);
-			node.selected = 0;
-			if (node.applylayout)
-				node.applylayout();
-		}
-		treeData.selection = "";
-	}
-}
 
 function deleteEntry(id) {
 	var ind = 0;
@@ -223,7 +264,7 @@ function clickHandler(cur) {
 					WE().util.getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
 					(cur.inschedule > 0 ? '<i class="fa fa-clock-o"></i> ' : '') +
 					(select && href ? '<i class="fa fa-' + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i>' : '') +
-					'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getlayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
+					'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getLayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
 					(href ? "</a>" : "") +
 					"</span><br/>";
 	return row;
@@ -241,30 +282,18 @@ function drawThreeDots(nf, ai) {
 
 function drawGroup(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
-
 	row = "<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
-
 	row += clickHandler(nf[ai]);
-
 	if (nf[ai].open) {
 		newAst += (ai == nf.len ?
 						"<span class=\"treeKreuz\"></span>" :
 						'<span class="strich treeKreuz "></span>'
 						);
-
 		row += draw(nf[ai].id, newAst);
 	}
 	return row;
 }
 
-function indexOfEntry(id) {
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].id == id) {
-			return ai;
-		}
-	}
-	return -1;
-}
 
 function get(eintrag) {
 	var nf = new container();
@@ -286,42 +315,13 @@ function search(eintrag) {
 	return nf;
 }
 
-function add(object) {
-	this[++this.len] = object;
-}
-
-function addSort(object) {
-	this.len++;
-	for (var i = this.len; i > 0; i--) {
-		if (i > 1 && (this[i - 1].text.toLowerCase() > object.text.toLowerCase() || (this[i - 1].typ > object.typ))) {
-			this[i] = this[i - 1];
-		} else {
-			this[i] = object;
-			break;
-		}
-	}
-}
-
-function getLayout() {
-	var layout_key = (this.typ == "group" ? "group" : "item");
-	return treeData.node_layouts[layout_key];
-}
-
-function showSegment() {
-	parentnode = frames.top.get(this.parentid);
-	parentnode.clear();
-	we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
-}
-
 function openClose(id) {
 	if (id == "") {
 		return;
 	}
 
-	var eintragsIndex = indexOfEntry(id);
-
+	var eintragsIndex = treeData.indexOfEntry(id);
 	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
-
 	treeData[eintragsIndex].open = openstatus;
 	if (openstatus && treeData[eintragsIndex].loaded != 1) {
 		top.content.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id;
@@ -379,7 +379,6 @@ function checkNode(imgName) {
 
 		}
 		break;
-
 	}
 
 	if (!document.images) {
@@ -411,7 +410,7 @@ function makeNewEntry(attribs) {
 	if (table && treeData.table != table) {
 		return;
 	}
-	var pos = indexOfEntry(attribs.parentid);
+	var pos = treeData.indexOfEntry(attribs.parentid);
 	if (treeData[pos] && treeData[pos].loaded) {
 		attribs.typ = (attribs.contenttype === "folder" ? "group" : "item");
 		attribs.tooltip = attribs.id;

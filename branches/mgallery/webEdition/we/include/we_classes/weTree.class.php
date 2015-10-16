@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTree{
+
 	const DefaultWidth = 300;
 	const MinWidth = 200;
 	const MaxWidth = 1000;
@@ -113,18 +114,18 @@ frames={
 
 	function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
-			$this->customJSFile() .
-			we_html_element::jsElement('
+				$this->customJSFile() .
+				we_html_element::jsElement('
 var frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
+	top:' . $this->topFrame . ',
+	cmd:' . $this->cmdFrame . '
 };
 var treeData = new container();
 var we_scrollY = [];
 ' .
-				$this->getJSDrawTree() .
-				$this->getJSContainer() .
-				$this->getJSStartTree()
+						$this->getJSDrawTree() .
+						$this->getJSContainer() .
+						$this->getJSStartTree()
 		);
 	}
 
@@ -149,46 +150,26 @@ var we_scrollY = [];
 		}
 
 		return '
-function container(){
-	this.len = 0;
-	this.state=0;
-	this.startloc=0;
-	this.clear=function(){
-		this.len = 0;
-	};
-	this.add = add;
-	this.addSort = addSort;
+	container.prototype.topFrame="' . $this->topFrame . '";
+	container.prototype.treeFrame="' . $this->treeFrame . '";
+	container.prototype.frameset="' . $this->frameset . '";
+	container.prototype.frames={};
 
-	this.table="";
+	container.prototype.tree_states={' . implode(',', $ts) . '};
+	container.prototype.tree_layouts={' . implode(',', $tl) . '};
+	container.prototype.node_layouts={' . implode(',', $nl) . '};
 
-	this.selection="";
-	this.selection_table="";
-	this.selectnode=selectNode;
-	this.unselectnode=unselectNode;
-
-	this.setstate=setTreeState;
-	this.getlayout=getTreeLayout;
-
-	this.topFrame="' . $this->topFrame . '";
-	this.treeFrame="' . $this->treeFrame . '";
-	this.frameset="' . $this->frameset . '";
-	this.frames={};
-
-	this.tree_states={' . implode(',', $ts) . '};
-	this.tree_layouts={' . implode(',', $tl) . '};
-	this.node_layouts={' . implode(',', $nl) . '};
-	return this;
-}';
+';
 	}
 
 	function getHTMLContruct($onresize = ''){
 		return
-			we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::htmlDiv(array(
-				'id' => 'treetable',
-				'class' => 'tree',
-				'onresize' => $onresize
-				), ''
+				we_html_element::cssLink(CSS_DIR . 'tree.css') .
+				we_html_element::htmlDiv(array(
+					'id' => 'treetable',
+					'class' => 'tree',
+					'onresize' => $onresize
+						), ''
 		);
 	}
 
@@ -200,12 +181,12 @@ function drawTree(){
 		return;
 	}
 
-	var out="<div class=\""+treeData.getlayout()+"\"><nobr>"+
+	var out="<div class=\""+treeData.getLayout()+"\"><nobr>"+
 		draw(treeData.startloc,"")+
 		"</nobr></div>";' .
-			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
+				$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }' .
-			$this->getJSDraw();
+				$this->getJSDraw();
 	}
 
 	protected function getJSDraw(){
@@ -215,13 +196,13 @@ function drawTree(){
 			$draw_code.=' case "' . $ck . '":' . $cv . ' break;';
 		}
 		return
-			'
+				'
 function draw(startEntry,zweigEintrag){
 	var nf = search(startEntry);
 	var row="";
 	for (var ai = 1;ai <= nf.len;ai++) {
 		row+=zweigEintrag;
-		var pind=indexOfEntry(nf[ai].parentid);
+		var pind=treeData.indexOfEntry(nf[ai].parentid);
 		if(pind!=-1){
 			if(treeData[pind].open){
 				switch(nf[ai].typ){
@@ -246,18 +227,18 @@ function draw(startEntry,zweigEintrag){
 		);
 	}
 
-	function getJSLoadTree(array $treeItems){
+	function getJSLoadTree($clear, array $treeItems){
 		$js = '';
 		foreach($treeItems as $item){
-			$js.='if(' . $this->topFrame . '.indexOfEntry("' . $item['id'] . '")<0){' .
-				$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
+			$item['id'] = (is_int($item['id'])) ? $item['id'] : '"' . $item['id'] . '"';
+			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry(' . $item['id'] . ')<0){' ) .
+					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			foreach($item as $k => $v){
-				$js.= strtolower($k) . ':' .  ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-						intval($v) :
-						'\'' . addslashes($v) . '\'') . ',';
+				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
+								intval($v) :
+								'\'' . addslashes($v) . '\'') . ',';
 			}
-			$js.='}));
-			}';
+			$js.='}));' . ($clear ? '' : '}');
 		}
 		$js.=$this->topFrame . '.drawTree();';
 

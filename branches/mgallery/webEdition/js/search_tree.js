@@ -24,9 +24,9 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function showSegment() {
+node.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
-}
+};
 
 function reloadGroup(pid) {
 	var ai = 1;
@@ -54,7 +54,7 @@ function openClose(id) {
 		return;
 	}
 	var sort = "";
-	var eintragsIndex = indexOfEntry(id);
+	var eintragsIndex = treeData.indexOfEntry(id);
 	var openstatus;
 
 	openstatus = (treeData[eintragsIndex].open ? 0 : 1);

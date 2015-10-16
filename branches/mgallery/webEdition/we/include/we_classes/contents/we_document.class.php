@@ -651,12 +651,6 @@ class we_document extends we_root{
 		$this->documentCustomerFilter = we_customer_documentFilter::getFilterOfDocument($this);
 	}
 
-// reverse function to we_init_sessDat
-	/* function saveInSession(&$save){
-	  parent::saveInSession($save);
-	  //$save[2] = $this->NavigationItems;
-	  } */
-
 // reverse function to saveInSession !
 	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);

@@ -43,7 +43,7 @@ function we_cmd() {
 		}
 	}
 
-	if (hot == "1" && args[0] != "save_glossary") {
+	if (hot === 1 && args[0] !== "save_glossary") {
 		if (confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
 			args[0] = "save_glossary";
 		} else {
@@ -52,7 +52,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_glossary":
-			if (hot != "1") {
+			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;

@@ -186,7 +186,7 @@ function we_cmd() {
 			top.content.drawTree();
 			break;
 		case "exit_navigation":
-			if (hot != 1) {
+			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;

@@ -28,7 +28,7 @@ function openClose(id) {
 	var sort = "";
 	if (id == "")
 		return;
-	var eintragsIndex = indexOfEntry(id);
+	var eintragsIndex = treeData.indexOfEntry(id);
 	var openstatus;
 
 	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
@@ -48,9 +48,9 @@ function openClose(id) {
 	}
 }
 
-function showSegment() {
+node.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
-}
+};
 
 function reloadGroup(pid) {
 	var it = get(pid);
@@ -72,22 +72,22 @@ function info(text) {
 	}
 }
 
-function addSort(object) {
+container.addSort = function (object) {
 	this.len++;
 	for (var i = this.len; i > 0; i--) {
 		if (i > 1 && (this[i - 1].order > object.order)) {
 			this[i] = this[i - 1];
-		} else {
-			for (var j = i; j > 0; j--) {
-				if (j > 1 && (this[j - 1].order == object.order) && (this[j - 1].text.toLowerCase() > object.text.toLowerCase() || (this[j - 1].typ > object.typ))) {
-					this[j] = this[j - 1];
-				} else {
-					this[j] = object;
-					break;
-				}
-			}
-			break;
+			continue;
 		}
+		for (var j = i; j > 0; j--) {
+			if (j > 1 && (this[j - 1].order == object.order) && (this[j - 1].text.toLowerCase() > object.text.toLowerCase() || (this[j - 1].typ > object.typ))) {
+				this[j] = this[j - 1];
+			} else {
+				this[j] = object;
+				break;
+			}
+		}
+		break;
 	}
 }
 

@@ -26,7 +26,7 @@ function openClose(id) {
 	if (id === "") {
 		return;
 	}
-	var eintragsIndex = indexOfEntry(id);
+	var eintragsIndex = treeData.indexOfEntry(id);
 
 	if (treeData[eintragsIndex].typ == "group") {
 		sort = frames.top.document.we_form_treeheader.sort.value;
@@ -50,22 +50,22 @@ function openClose(id) {
 	}
 }
 
-function showSegment() {
+node.showSegment = function () {
 	var sort = "";
 	parentnode = frames.top.get(this.parentid);
 	parentnode.clear();
 	sort = frames.top.document.we_form_treheader.sort.value;
 	we_cmd("load", parentnode.id, this.offset, sort);
-}
+};
 
-function getLayout() {
+node.getLayout = function () {
 	if (this.typ == "threedots") {
 		return treeData.node_layouts.threedots;
 	}
 	var layout_key = (this.typ == "group" ? "group" : "item");
 
 	return treeData.node_layouts[layout_key] + (this.typ == "item" && this.published == 1 ? " loginDenied" : "");
-}
+};
 
 function doClick(id, typ) {
 	var node = frames.top.get(id);
@@ -87,7 +87,7 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 					(cur.disabled ?
 									"" :
 									"</a><a name=\"_" + cur.id + "\" href=\"javascript:" + oc_js + "\">") +
-					"<label id=\"lab_" + cur.id + "\" class=\"" + cur.getlayout() + "\">" + cur.text + "</label>" +
+					"<label id=\"lab_" + cur.id + "\" class=\"" + cur.getLayout() + "\">" + cur.text + "</label>" +
 					(cur.disabled ?
 									"" :
 									"</a>") +

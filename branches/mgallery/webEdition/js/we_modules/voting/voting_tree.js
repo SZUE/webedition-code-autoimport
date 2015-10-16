@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition CMS
  *
@@ -26,7 +28,7 @@ function openClose(id) {
 	if (id === "") {
 		return;
 	}
-	var eintragsIndex = indexOfEntry(id);
+	var eintragsIndex = treeData.indexOfEntry(id);
 	var openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 
 	treeData[eintragsIndex].open = openstatus;
@@ -43,7 +45,7 @@ function openClose(id) {
 
 function doClick(id, typ) {
 	var cmd = "";
-	if (top.content.hot == "1") {
+	if (top.content.hot === 1) {
 		if (confirm(g_l.save_changed_voting)) {
 			cmd = "save_voting";
 			top.content.we_cmd("save_voting");
@@ -63,9 +65,9 @@ function doClick(id, typ) {
 function info(text) {
 }
 
-function showSegment() {
+node.showSegment = function () {
 	parentnode = frames.top.get(this.parentid);
 	parentnode.clear();
 	frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();
-}
+};

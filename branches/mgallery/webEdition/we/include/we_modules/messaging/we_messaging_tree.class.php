@@ -37,13 +37,12 @@ class we_messaging_tree extends weTree{
 	function getJSStartTree(){
 		return parent::getTree_g_l() . '
 g_l.save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
-var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
 var table="' . MESSAGES_TABLE . '";
 
 function startTree(){
 	frames={
-	top:' . $this->topFrame . ',
-	cmd:' . $this->cmdFrame . '
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . '
 	};
 	treeData.frames=frames;
 	if(frames.cmd===undefined){
@@ -83,8 +82,8 @@ function startTree(){
 
 			$items[] = (($sf_cnt = $messaging->get_subfolder_count($folder['ID'])) ?
 					array(
-					'id' => $folder['ID'],
-					'parentid' => $folder['ParentID'],
+					'id' => intval($folder['ID']),
+					'parentid' => intval($folder['ParentID']),
 					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
 					'typ' => 'group',
 					'open' => 0,
@@ -96,8 +95,8 @@ function startTree(){
 					'viewclass' => $folder['view_class']
 					) :
 					array(
-					'id' => $folder['ID'],
-					'parentid' => $folder['ParentID'],
+					'id' => intval($folder['ID']),
+					'parentid' => intval($folder['ParentID']),
 					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
 					'typ' => 'item',
 					'open' => 0,
@@ -128,19 +127,11 @@ function startTree(){
 		return parent::getJSTreeCode() .
 			we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::jsElement('
-var messaging_module_dir="' . WE_MESSAGING_MODULE_DIR . '";
-
 parent.document.title = "' . $title . '";
 var we_transaction = "' . $this->transaction . '";
 var we_frameset="' . $this->frameset . '";'
 				. parent::getTree_g_l() . '
 var table="' . MESSAGES_TABLE . '";
-g_l.save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
-g_l.Mitteilungen="' . g_l('modules_messaging', '[Mitteilungen]') . '";
-g_l.ToDo="' . g_l('modules_messaging', '[ToDo]') . '";
-g_l.Erledigt="' . g_l('modules_messaging', '[Erledigt]') . '";
-g_l.Zurueckgewiesen="' . g_l('modules_messaging', '[Zurueckgewiesen]') . '";
-g_l.Gesendet="' . g_l('modules_messaging', '[Gesendet]') . '";
 ') .
 			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .
 			we_html_element::jsElement('

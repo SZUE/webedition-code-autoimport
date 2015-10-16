@@ -91,8 +91,6 @@ abstract class we_modules_frame{
 				return $this->getHTMLCmd();
 			case 'tree':
 				return $this->getHTMLTree();
-			case 'treeheader':
-				return $this->getHTMLTreeHeader();
 			case 'search':
 				return $this->getHTMLSearch();
 			case 'exit_doc_question':

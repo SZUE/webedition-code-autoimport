@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition SDK
  *
@@ -73,7 +75,7 @@ if (!document.images) {
 
 
 function r_tree_open(id) {
-	ind = indexOfEntry(id);
+	ind = treeData.indexOfEntry(id);
 	if (ind != -1) {
 		treeData[ind].open = 1;
 		if (treeData[ind].parentid >= 1) {
@@ -136,8 +138,8 @@ function we_cmd() {
 						(i < (arguments.length - 1) ? "&" : '');
 	}
 
-	if (hot == "1" && arguments[0] != "messaging_start_view") {
-		if (confirm(g_l.save_changed_folder)) {
+	if (hot === 1 && arguments[0] != "messaging_start_view") {
+		if (confirm(WE().consts.g_l.messaging.save_changed_folder)) {
 			top.content.editor.document.edit_folder.submit();
 		} else {
 			top.content.usetHot();
@@ -145,12 +147,12 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		case "messaging_exit":
-			if (hot != "1") {
+			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");
 			}
 			break;
 		case "show_folder_content":
-			ind = indexOfEntry(arguments[1]);
+			ind = treeData.indexOfEntry(arguments[1]);
 			if (ind > -1) {
 				update_icon(arguments[1]);
 				if (top.content.viewclass != treeData[ind].viewclass) {
@@ -187,7 +189,7 @@ function we_cmd() {
 		case "messaging_delete_mode_on":
 			deleteMode = true;
 			drawEintraege();
-			top.content.editor.edbody.location = messaging_module_dir + "messaging_delete_folders.php?we_transaction=" + we_transaction;
+			top.content.editor.edbody.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_delete_folders.php?we_transaction=" + we_transaction;
 			break;
 		case "messaging_delete_folders":
 			cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=delete_folders&folders=" + entries_selected.join(",");
@@ -235,7 +237,7 @@ function zeichne(startEntry, zweigEintrag) {
 	ret = "";
 	for (var ai = 1; ai <= nf.len; ai++) {
 		ret += zweigEintrag;
-		if (nf[ai].typ == "leaf_Folder") {
+		if (nf[ai].typ == "item") {
 			ret += '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
 
 			if (nf[ai].id != -1) {
@@ -290,7 +292,7 @@ function updateEntry(id, pid, text, pub, redraw) {
 		if (treeData[ai].id != id) {
 			continue;
 		}
-		if ((treeData[ai].typ == "parent_Folder") || (treeData[ai].typ == "leaf_Folder")) {
+		if ((treeData[ai].typ == "group") || (treeData[ai].typ == "item")) {
 			if (pid != -1) {
 				treeData[ai].parentid = pid;
 			}
@@ -307,26 +309,15 @@ function updateEntry(id, pid, text, pub, redraw) {
 }
 
 function openClose(id, status) {
-	var eintragsIndex = indexOfEntry(id);
+	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawEintraege();
-}
-
-function indexOfEntry(id) {
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ == "root") || (treeData[ai].typ == "parent_Folder")) {
-			if (treeData[ai].id == id) {
-				return ai;
-			}
-		}
-	}
-	return -1;
 }
 
 function search(eintrag) {
 	var nf = new container();
 	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ == "parent_Folder") || (treeData[ai].typ == "leaf_Folder")) {
+		if ((treeData[ai].typ == "group") || (treeData[ai].typ == "item")) {
 			if (treeData[ai].parentid == eintrag) {
 				nf.add(treeData[ai]);
 			}
@@ -359,8 +350,8 @@ function get_index(id) {
 function folder_added(parent_id) {
 	var ind = get_index(parent_id);
 	if (ind > -1) {
-		if (treeData[ind].typ == "leaf_Folder") {
-			treeData[ind].typ = "parent_Folder";
+		if (treeData[ind].typ == "item") {
+			treeData[ind].typ = "group";
 			treeData[ind].open = 0;
 			treeData[ind].leaf_count = 1;
 		}
@@ -379,7 +370,7 @@ function folders_removed() {
 		}
 		treeData[ind].leaf_count--;
 		if (treeData[ind].leaf_count <= 0) {
-			treeData[ind].typ = "leaf_Folder";
+			treeData[ind].typ = "item";
 		}
 	}
 }
@@ -406,6 +397,7 @@ function rootEntry(id, text, rootstat) {
 		loaded: true,
 		typ: 'root',
 		rootstat: rootstat,
+		open: 1,
 	});
 }
 
@@ -421,20 +413,20 @@ function doClick(id) {
 function loadData() {
 	treeData.clear();
 	startloc = 0;
-	treeData.add(self.rootEntry("0", "root", "root"));
+	treeData.add(self.rootEntry(0, "root", "root"));
 }
 
 function translate(inp) {
-	if (inp.substring(0, 12).toLowerCase() == "messages - (") {
-		return g_l.Mitteilungen + " - (" + inp.substring(12, inp.length);
-	} else if (inp.substring(0, 8).toLowerCase() == "task - (" || inp.substring(0, 8).toLowerCase() == "todo - (") {
-		return g_l.ToDo + " - (" + inp.substring(8, inp.length);
-	} else if (inp.substring(0, 8).toLowerCase() == "done - (") {
-		return g_l.Erledigt + " - (" + inp.substring(8, inp.length);
-	} else if (inp.substring(0, 12).toLowerCase() == "rejected - (") {
-		return g_l.Zurueckgewiesen + " - (" + inp.substring(12, inp.length);
-	} else if (inp.substring(0, 8).toLowerCase() == "sent - (") {
-		return g_l.Gesendet + " - (" + inp.substring(8, inp.length);
+	if (inp.substring(0, 12).toLowerCase() === "messages - (") {
+		return WE().consts.g_l.messaging.Mitteilungen + " - (" + inp.substring(12, inp.length);
+	} else if (inp.substring(0, 8).toLowerCase() === "task - (" || inp.substring(0, 8).toLowerCase() === "todo - (") {
+		return WE().consts.g_l.messaging.ToDo + " - (" + inp.substring(8, inp.length);
+	} else if (inp.substring(0, 8).toLowerCase() === "done - (") {
+		return WE().consts.g_l.messaging.Erledigt + " - (" + inp.substring(8, inp.length);
+	} else if (inp.substring(0, 12).toLowerCase() === "rejected - (") {
+		return WE().consts.g_l.messaging.Zurueckgewiesen + " - (" + inp.substring(12, inp.length);
+	} else if (inp.substring(0, 8).toLowerCase() === "sent - (") {
+		return WE().consts.g_l.messaging.Gesendet + " - (" + inp.substring(8, inp.length);
 	}
 	return inp;
 }

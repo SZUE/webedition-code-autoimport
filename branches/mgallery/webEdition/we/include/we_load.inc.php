@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -130,7 +131,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		}
 
 		$where = $collectionIDs ? ' WHERE ID IN(' . implode(',', $collectionIDs) . ') AND IsFolder=0 AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')' :
-			' WHERE ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
+				' WHERE ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
 		$DB_WE->query('SELECT ' . $elem . ' FROM ' . $queryTable . ' ' . $where . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,ABS(REPLACE(Text,"info","")),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$tmpItems = array();
@@ -231,8 +232,8 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	}
 
 	$openFolders = (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) ?
-			explode(',', $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) :
-			array());
+					explode(',', $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) :
+					array());
 
 
 	if($parentFolder){
@@ -253,11 +254,11 @@ function loadTreeData(){
 		window.setTimeout(loadTreeData,500);
 		return;
 	}' .
-				($parentFolder ? '' :
-					$Tree->topFrame . '.treeData.clear();' .
-					$Tree->topFrame . '.treeData.add(' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
-				) .
-				$Tree->getJSLoadTree($treeItems) . '
+						($parentFolder ? '' :
+								$Tree->topFrame . '.treeData.clear();' .
+								$Tree->topFrame . '.treeData.add(' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
+						) .
+						$Tree->getJSLoadTree(!$parentFolder, $treeItems) . '
 }
 loadTreeData();');
 	} else {

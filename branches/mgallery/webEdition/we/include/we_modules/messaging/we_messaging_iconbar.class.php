@@ -34,7 +34,7 @@ class we_messaging_iconbar{
 		array("fa:btn_messages_copy,fa-lg fa-copy", "javascript:copy_messages()", false),
 		array("fa:btn_messages_cut,fa-lg fa-scissors", "javascript:cut_messages()", false),
 		array("fa:btn_messages_paste,fa-lg fa-paste", "javascript:paste_messages()", false),
-		array("fa:btn_messages_trash,fa-lg fa-trash-o", "javascript:delete_messages()", false),
+		array("fa:btn_messages_trash,fa-lg fa-trash-o", "javascript:delete_messages(false)", false),
 		array("fa:btn_messages_update,fa-lg fa-refresh", "javascript:refresh()", false),
 		array("fa:btn_messages_tasks,fa-lg fa-long-arrow-right,fa-lg fa-tasks", "javascript:launch_todo()", false)
 	);
@@ -46,7 +46,7 @@ class we_messaging_iconbar{
 		array("fa:btn_task_copy,fa-lg fa-copy", "javascript:copy_messages()", false),
 		array("fa:btn_task_cut,fa-lg fa-scissors", "javascript:cut_messages()", false),
 		array("fa:btn_task_paste,fa-lg fa-paste", "javascript:paste_messages()", false),
-		array("fa:btn_task_trash,fa-lg fa-trash-o", "javascript:delete_messages()", false),
+		array("fa:btn_task_trash,fa-lg fa-trash-o", "javascript:delete_messages(true)", false),
 		array("fa:btn_task_update,fa-lg fa-refresh", "javascript:refresh()", false),
 		array("fa:btn_task_messages,fa-lg fa-long-arrow-right,fa-lg fa-envelope-o", "javascript:launch_msg()", false)
 	);
@@ -63,12 +63,7 @@ class we_messaging_iconbar{
 
 	private function getJSCode(){
 		return we_html_element::jsElement('
-WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
 var transaction="' . $this->weTransaction . '";
-var g_l={
-	"q_rm_todos":"' . g_l('modules_messaging', '[q_rm_todos]') . '",
-	"q_rm_messages":"' . g_l('modules_messaging', '[q_rm_messages]') . '"
-};
 ') .
 			we_html_element::jsScript(WE_JS_MESSAGING_MODULE_DIR . 'messaging_iconbar.js');
 	}

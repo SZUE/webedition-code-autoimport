@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition SDK
  *
@@ -40,7 +42,7 @@ function we_cmd() {
 			url += "&";
 		}
 	}
-	if (hot == 1 && args[0] !== "save_workflow") {
+	if (hot === 1 && args[0] !== "save_workflow") {
 		var hotConfirmMsg = confirm(g_l.save_changed_workflow);
 		if (hotConfirmMsg === true) {
 			args[0] = "save_workflow";
@@ -51,7 +53,7 @@ function we_cmd() {
 	}
 	switch (args[0]) {
 		case "exit_workflow":
-			if (hot != 1) {
+			if (hot !== 1) {
 				top.opener.top.we_cmd('exit_modules');
 			}
 			break;
