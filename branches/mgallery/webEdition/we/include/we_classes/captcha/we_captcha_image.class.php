@@ -472,7 +472,7 @@ class we_captcha_image{
 				} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
 					$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
 				} else {
-					$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
+					$family = LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
 				}
 			} else if(isset($_ENV['SystemRoot'])){
 				$windir = substr_replace('\\', '/', $_ENV['SystemRoot']);
@@ -481,7 +481,7 @@ class we_captcha_image{
 				} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
 					$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
 				} else {
-					$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
+					$family = LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
 				}
 			} else if(isset($_ENV['SystemDrive'])){
 				$windir = substr_replace('\\', '/', $_ENV['SystemDrive']);
@@ -492,11 +492,11 @@ class we_captcha_image{
 				} else if(file_exists($windir . "/fonts/" . $family . "ttf")){
 					$family = $windir . "/fonts/" . $family . "ttf";
 				} else {
-					$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
+					$family = LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
 				}
 			} else {
 				$use_fontfile = false;
-				$family = WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf";
+				$family = LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
 			}
 			$use_fontfile = true;
 
@@ -643,7 +643,7 @@ class we_captcha_image{
 						'xpos' => $xpos,
 						'ypos' => $ypos,
 						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
-						'family' => file_exists($family) ? $family : WE_INCLUDES_PATH . "fonts/DejaVuSans.ttf",
+						'family' => file_exists($family) ? $family : LIB_DIR . 'additional/fonts/DejaVuSans.ttf',
 						'sign' => $sign,
 						) :
 						array(
