@@ -23,7 +23,7 @@
  */
 
 function SendMail(was) {
-	document.location = SCRIPT_NAME + "?pnt=edbody&bid=" + bid + "&SendMail=" + was;
+	document.location = SCRIPT_NAME + "?mod=shop&pnt=edbody&bid=" + bid + "&SendMail=" + was;
 }
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -67,6 +67,6 @@ function neuerartikel() {
 }
 
 function deleteorder() {
-	top.content.editor.location = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=" + bid;
+	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=shop&pnt=edbody&deletethisorder=1&bid=" + bid;
 	top.content.treeData.deleteEntry(bid);
 }

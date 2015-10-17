@@ -52,25 +52,25 @@ function we_cmd() {
 
 		case "open_add_field":
 			branch = document.we_form.branch.value;
-			url = frameUrl + "?pnt=field_editor&art=add&branch=" + branch;
+			url = frameUrl + "&pnt=field_editor&art=add&branch=" + branch;
 			new (WE().util.jsWindow)(window, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			break;
 		case "open_edit_field":
 			field = document.we_form.fields_select.value;
 			branch = document.we_form.branch.value;
 			if (field === "") {
-				top.we_showMessage(g_l.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
-				url = frameUrl + "?pnt=field_editor&art=edit&field=" + field + "&branch=" + branch;
+				url = frameUrl + "&pnt=field_editor&art=edit&field=" + field + "&branch=" + branch;
 				new (WE().util.jsWindow)(window, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			}
 			break;
 		case "delete_field":
 			field = document.we_form.fields_select.value;
 			if (field === "") {
-				top.we_showMessage(g_l.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
-				if (confirm(g_l.del_fild_question)) {
+				if (confirm(WE().consts.g_l.customer.admin.del_fild_question)) {
 					document.we_form.cmd.value = arguments[0];
 					submitForm();
 				}
@@ -79,7 +79,7 @@ function we_cmd() {
 		case "reset_edit_order":
 			field = document.we_form.fields_select.value;
 			branch = document.we_form.branch.value;
-			if (confirm(g_l.reset_edit_order_question)) {
+			if (confirm(WE().consts.g_l.customer.admin.reset_edit_order_question)) {
 				document.we_form.cmd.value = arguments[0];
 				submitForm();
 			}
@@ -88,7 +88,7 @@ function we_cmd() {
 			field = document.we_form.fields_select.value;
 			branch = document.we_form.branch.value;
 			if (field === "") {
-				top.we_showMessage(g_l.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.cmd.value = arguments[0];
 				submitForm();
@@ -98,7 +98,7 @@ function we_cmd() {
 			field = document.we_form.fields_select.value;
 			branch = document.we_form.branch.value;
 			if (field === "") {
-				top.we_showMessage(g_l.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.cmd.value = arguments[0];
 				submitForm();
@@ -107,11 +107,11 @@ function we_cmd() {
 		case "open_edit_branch":
 			branch = document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
 			if (branch === "") {
-				top.we_showMessage(g_l.no_branch, WE().consts.message.WE_MESSAGE_ERROR, window);
-			} else if (branch == g_l.other) {
-				top.we_showMessage(g_l.branch_no_edit, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.customer.admin.no_branch, WE().consts.message.WE_MESSAGE_ERROR, window);
+			} else if (branch == WE().consts.g_l.customer.admin.other) {
+				top.we_showMessage(WE().consts.g_l.customer.admin.branch_no_edit, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
-				url = frameUrl + "?pnt=branch_editor&art=edit&&branch=" + branch;
+				url = frameUrl + "&pnt=branch_editor&art=edit&&branch=" + branch;
 				new (WE().util.jsWindow)(window, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			}
 			break;
@@ -119,7 +119,7 @@ function we_cmd() {
 		case "save_field":
 			var field_name = document.we_form.name.value;
 			if (field_name === "" || field_name.match(/[^a-zA-Z0-9\_]/) !== null) {
-				top.we_showMessage(g_l.we_fieldname_notValid, WE().consts.message.WE_MESSAGE_ERROR, window);
+				top.we_showMessage(WE().consts.g_l.customer.admin.we_fieldname_notValid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
 				document.we_form.cmd.value = arguments[0];
 				submitForm("field_editor");

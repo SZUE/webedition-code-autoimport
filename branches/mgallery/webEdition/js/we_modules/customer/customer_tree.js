@@ -43,7 +43,7 @@ container.prototype.openClose = function(id) {
 		sort = encodeURI(sort);
 		id = id.replace(/\+/g, "%2B");
 		sort = sort.replace(/\+/g, "%2B");
-		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

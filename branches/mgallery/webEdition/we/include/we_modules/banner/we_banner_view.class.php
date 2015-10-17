@@ -38,8 +38,8 @@ class we_banner_view extends we_modules_view{
 	var $pageFields = array();
 	var $uid;
 
-	public function __construct(){
-		parent::__construct();
+	public function __construct($frameset){
+		parent::__construct($frameset);
 		$this->banner = new we_banner_banner();
 		$this->page = 0;
 		$this->settings = $this->getSettings();
@@ -239,22 +239,22 @@ WE().consts.g_l.banner.view = {
 				$this->page = 0;
 				$this->banner = new we_banner_banner();
 				echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
+					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					');
 				break;
 			case "new_bannergroup":
 				$this->page = 0;
 				$this->banner = new we_banner_banner(0, 1);
 				echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
+					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					');
 				break;
 			case "reload":
 				echo we_html_element::jsElement('
-					top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
-					top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+					top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&page=' . $this->page . '&txt=' . $this->banner->Path . '&isFolder=' . $this->banner->IsFolder . '";
+					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 			case "banner_edit":
 				if(($id = we_base_request::_(we_base_request::INT, "bid"))){

@@ -35,7 +35,7 @@ class we_customer_view extends we_modules_view{
 	const ERR_SAVE_FIELD_NOT_EMPTY = -3;
 
 	function __construct(){
-		$frameset = WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php';
+		$frameset = WE_MODULES_DIR . 'show.php?mod=customer';
 		$topframe = 'top.content';
 		parent::__construct($frameset, $topframe);
 		$this->customer = new we_customer_customer();
@@ -70,6 +70,15 @@ WE().consts.g_l.customer.view={
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '"
 };
+WE().consts.g_l.customer.admin={
+	del_fild_question:"' . g_l('modules_customer', '[del_fild_question]') . '",
+	reset_edit_order_question:"' . g_l('modules_customer', '[reset_edit_order_question]') . '",
+	other:"' . g_l('modules_customer', '[other]') . '",
+	no_field: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_field]')) . '",
+	no_branch:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_branch]')) . '",
+	branch_no_edit:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[branch_no_edit]')) . '",
+	we_fieldname_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[we_fieldname_notValid]')) . '"
+};
 
 var topFrame=top.content;
 var frameUrl="' . $this->frameset . '";
@@ -84,7 +93,7 @@ var loaded=0;
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){
 		we_cmd("switchPage",top.content.activ_tab);
-		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Username) . '";
+		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";
 	}
 }' . $this->getJSSubmitFunction()) .
 			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_property.js');
@@ -93,15 +102,7 @@ function refreshForm(){
 	function getJSAdmin(){
 		return we_html_element::jsElement('
 var frameUrl="' . $this->frameset . '";
-var g_l={
-	del_fild_question:"' . g_l('modules_customer', '[del_fild_question]') . '",
-	reset_edit_order_question:"' . g_l('modules_customer', '[reset_edit_order_question]') . '",
-	other:"' . g_l('modules_customer', '[other]') . '",
-	no_field: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_field]')) . '",
-	no_branch:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_branch]')) . '",
-	branch_no_edit:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[branch_no_edit]')) . '",
-	we_fieldname_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[we_fieldname_notValid]')) . '"
-};' . $this->getJSSubmitFunction("customer_admin")
+' . $this->getJSSubmitFunction("customer_admin")
 			) .
 			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_admin.js');
 	}
@@ -157,15 +158,15 @@ function we_cmd(){
 				$this->customer = new we_customer_customer();
 				$this->settings->initCustomerWithDefaults($this->customer);
 				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
-					'top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
+					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
 				);
 				break;
 			case 'customer_edit':
 				$this->customer = new we_customer_customer(we_base_request::_(we_base_request::INT, "cmdid"));
 				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
-					'top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";'
+					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";' .
+					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";'
 				);
 				break;
 			case 'save_customer':
@@ -243,7 +244,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfoote
 			case 'show_admin':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement('
-url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=customer_admin";
+url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=customer_admin";
 new (WE().util.jsWindow)(window, url,"customer_admin",-1,-1,600,420,true,true,true,false);');
 				break;
 			case 'save_field':
@@ -442,7 +443,7 @@ close();');
 				break;
 			case 'show_sort_admin':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=sort_admin";
+				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=sort_admin";
 new (WE().util.jsWindow)(window, url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 
 				break;
@@ -504,22 +505,22 @@ self.close();');
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
 						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
 				break;
 			case 'show_customer_settings':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=settings";
+				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=settings";
 						new (WE().util.jsWindow)(window, url,"customer_settings",-1,-1,550,250,true,true,true,false);');
 				break;
 			case 'import_customer':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=import";
+				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=import";
 						new (WE().util.jsWindow)(window, url,"import_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'export_customer':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_CUSTOMER_MODULE_DIR . 'edit_customer_frameset.php?pnt=export";
+				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=export";
 						new (WE().util.jsWindow)(window, url,"export_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'save_settings':

@@ -1,6 +1,3 @@
-we/include/we_modules/messaging/messaging_main.php
-we/include/we_tools/tools_header.php
-we/include/we_editors/we_preferences_header.inc.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -132,6 +129,7 @@ we/include/we_tools/weSearch/class/searchtoolFrames.class.php
 we/include/we_tools/weSearch/class/searchtoolExp.class.inc.php
 we/include/we_tools/weSearch/class/searchtool.class.php
 we/include/we_tools/treePopup.inc.php
+we/include/we_tools/tools_header.php
 we/include/we_tools/tableFn.inc.php
 we/include/we_tools/navigation/we_navigationDirSelect.php
 we/include/we_tools/navigation/weNaviEditor.php
@@ -315,6 +313,7 @@ we/include/we_modules/users/edit_users_resize.php
 we/include/we_modules/users/edit_users_properties.php
 we/include/we_modules/users/edit_users_left.php
 we/include/we_modules/users/edit_users_header.php
+we/include/we_modules/users/edit_users_frameset.php
 we/include/we_modules/users/edit_users_frame.php
 we/include/we_modules/users/edit_users_editor.php
 we/include/we_modules/users/edit_users_edheader.php
@@ -351,6 +350,7 @@ we/include/we_modules/shop/edit_shop_orderlistTop.php
 we/include/we_modules/shop/edit_shop_optionsTop.php
 we/include/we_modules/shop/edit_shop_iconbarHeader.php
 we/include/we_modules/shop/edit_shop_header.php
+we/include/we_modules/shop/edit_shop_frameset.php
 we/include/we_modules/shop/edit_shop_editorHeaderTop.php
 we/include/we_modules/shop/edit_shop_editorHeader.php
 we/include/we_modules/shop/edit_shop_editorFramesetTop.php
@@ -433,6 +433,7 @@ we/include/we_modules/messaging/messaging_search_frame.php
 we/include/we_modules/messaging/messaging_right.php
 we/include/we_modules/messaging/messaging_mview.php
 we/include/we_modules/messaging/messaging_mfv.php
+we/include/we_modules/messaging/messaging_main.php
 we/include/we_modules/messaging/messaging_interfaces.inc.php
 we/include/we_modules/messaging/messaging_iconbar.php
 we/include/we_modules/messaging/messaging_header.php
@@ -503,6 +504,7 @@ we/include/we_modules/customer/we_conf_customerpro.inc.php
 we/include/we_modules/customer/weAbstractCustomerFilter.class.php
 we/include/we_modules/customer/mod_home.inc.php
 we/include/we_modules/customer/editor_weDocumentCustomerFilter.inc.php
+we/include/we_modules/customer/edit_customer_frameset.php
 we/include/we_modules/customer/copyWeDocumentCustomerFilter.inc.php
 we/include/we_modules/banner/we_webEditionCmd_banner.inc.php
 we/include/we_modules/banner/weModuleFrames.php
@@ -519,6 +521,7 @@ we/include/we_modules/banner/we_bannerDirSelectorFrameset.php
 we/include/we_modules/banner/weBannerBase.php
 we/include/we_modules/banner/mod_home.inc.php
 we/include/we_modules/banner/edit_banner_header.php
+we/include/we_modules/banner/edit_banner_frameset.php
 we/include/we_message_reporting/we_message_reporting.class.php
 we/include/we_message_reporting
 we/include/we_logging/versions/versionsLogView.class.php
@@ -2102,6 +2105,7 @@ we/include/we_editors/we_thumbnails.php
 we/include/we_editors/we_thumbnails_frameset.inc.php
 we/include/we_editors/we_thumbnails_footer.php
 we/include/we_editors/we_preferences_header.php
+we/include/we_editors/we_preferences_header.inc.php
 we/include/we_editors/we_preferences_footer.php
 we/include/we_editors/we_metadata_fields/frameset.inc.php
 we/include/we_editors/we_metadata_fields/footer.php

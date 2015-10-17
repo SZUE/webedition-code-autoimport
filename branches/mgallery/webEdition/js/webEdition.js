@@ -1007,7 +1007,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
 			break;
 		case "edit_settings_customer":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "customer/edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=customer&pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
 			break;
 		case "edit_settings_shop":
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);

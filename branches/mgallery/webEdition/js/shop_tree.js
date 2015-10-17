@@ -115,11 +115,11 @@ function startTree() {
 }
 
 function doClick(id, ct, table) {
-	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'shop/edit_shop_frameset.php?pnt=editor&bid=' + id;
+	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'show.php?mod=shop&pnt=editor&bid=' + id;
 }
 function doFolderClick(id, ct, table) {
-	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'shop/edit_shop_frameset.php?pnt=editor&mid=' + id;
+	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'show.php?mod=shop&pnt=editor&mid=' + id;
 }
 function doYearClick(yearView) {
-	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'shop/edit_shop_frameset.php?pnt=editor&ViewYear=' + yearView;
+	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + 'show.php?mod=shop&pnt=editor&ViewYear=' + yearView;
 }

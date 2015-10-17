@@ -45,7 +45,7 @@ function we_cmd() {
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]) {
 		case "load":
-			' . $this->topFrame . '.cmd.location="' . $this->frameset . '?pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
+			' . $this->topFrame . '.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 		break;
 		default:
 					var args = [];
@@ -95,7 +95,7 @@ function we_submitForm(target, url) {
 
 function switchPage(page) {
 	document.we_form.tab.value = page;
-	return we_submitForm(self.name, "' . $this->frameset . '?pnt=edbody");
+	return we_submitForm(self.name, "' . $this->frameset . '&pnt=edbody");
 }
 
 function doUnload() {
@@ -170,9 +170,9 @@ function we_cmd() {
 		$_SESSION["user_session_data"] = $user_object;
 
 		echo we_html_element::jsElement('
-		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody";
-		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
+		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody";
+		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 	}
 
 	private function new_alias(){
@@ -194,9 +194,9 @@ function we_cmd() {
 
 		$_SESSION["user_session_data"] = $user_object;
 		echo we_html_element::jsElement('
-		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody";
-		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
+		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody";
+		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 	}
 
 	private function new_user(){
@@ -216,9 +216,9 @@ function we_cmd() {
 
 		$_SESSION["user_session_data"] = $user_object;
 		echo we_html_element::jsElement('
-		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody&oldtab=0";
-		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
+		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&oldtab=0";
+		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 	}
 
 	private function display_user(){
@@ -237,9 +237,9 @@ function we_cmd() {
 				($user_object->Type == 1 ?
 					'top.content.cgroup=' . $user_object->ID . ';' :
 					'') .
-				'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader";
-		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody&oldtab=0";
-		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+				'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader";
+		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&oldtab=0";
+		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 		}
 	}
 
@@ -488,7 +488,7 @@ function we_cmd() {
 			}
 			echo we_html_element::jsElement('
 		if(confirm("' . $question . '")){
-			top.content.cmd.location="' . $this->frameset . '?pnt=cmd&ucmd=do_delete";
+			top.content.cmd.location="' . $this->frameset . '&pnt=cmd&ucmd=do_delete";
 		}');
 		}
 	}
@@ -507,9 +507,9 @@ function we_cmd() {
 			if($user_object->deleteMe()){
 				echo we_html_element::jsElement('
 		top.content.treeData.deleteEntry(' . $user_object->ID . ');
-		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
-		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody&home=1";
-		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";');
+		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&home=1";
+		top.content.editor.edbody.location="' . $this->frameset . '&pnt=edbody&home=1";
+		top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter&home=1";');
 				unset($_SESSION["user_session_data"]);
 			}
 		}

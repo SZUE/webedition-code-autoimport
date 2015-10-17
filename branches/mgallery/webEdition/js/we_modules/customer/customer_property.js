@@ -116,16 +116,16 @@ function we_cmd() {
 			break;
 		case "show_search":
 			keyword = top.content.we_form_treefooter.keyword.value;
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=customer&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
 			break;
 		case "show_customer_settings":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=customer&pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
 			break;
 		case "export_customer":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=export", "export_customer", -1, -1, 640, 600, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=customer&pnt=export", "export_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		case "import_customer":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_CUSTOMER_MODULE_DIR + "edit_customer_frameset.php?pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=customer&pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		default:
 			var args = [];

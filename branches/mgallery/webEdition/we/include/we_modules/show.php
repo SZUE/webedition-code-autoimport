@@ -26,24 +26,70 @@ we_html_tools::protect();
 
 $mod = we_base_request::_(we_base_request::STRING, 'mod');
 
-if(we_base_moduleInfo::isActive($mod)){
+if(we_base_moduleInfo::isActive($mod) && file_exists(WE_MODULES_PATH . $mod . '/edit_' . $mod . '_frameset.php')){
 	require_once(WE_MODULES_PATH . $mod . '/edit_' . $mod . '_frameset.php');
 }
-return;
+
+if(strpos($mod, '?')){
+	//compatibility code for ?mod=xxx?pnt=yy
+	list($mod, $other) = explode('?', $mod);
+	$_REQUEST['mod'] = $mod;
+	list($k, $v) = explode('=', $other);
+	$_REQUEST[$k] = $v;
+}
 
 if(!we_base_moduleInfo::isActive($mod)){
 	return;
 }
+$what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
+$mode = we_base_request::_(we_base_request::INT, "art", 0);
+$step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 switch($mod){
 	case 'banner':
 		$protect = we_base_moduleInfo::isActive('banner') && we_users_util::canEditModule('banner') ? null : array(false);
 		we_html_tools::protect($protect);
 
-		$what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
-		$mode = we_base_request::_(we_base_request::INT, "art", 0);
 
 		$weFrame = new we_banner_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		ob_start();
+		$weFrame->process();
+		$GLOBALS['extraJS'] = ob_get_clean();
+		break;
+	case 'shop':
+		$protect = we_base_moduleInfo::isActive('shop') && we_users_util::canEditModule('shop') ? null : array(false);
+		we_html_tools::protect($protect);
+
+		$weFrame = new we_shop_frames(WE_MODULES_DIR . 'show.php?mod=shop');
+		$weFrame->View->processCommands();
+		break;
+	case 'customer':
+		$protect = we_base_moduleInfo::isActive('customer') && we_users_util::canEditModule('customer') ? null : array(false);
+		we_html_tools::protect($protect);
+
+		switch($what){
+			case 'export':
+			case 'eibody':
+			case 'eifooter':
+			case 'eiload':
+			case 'import':
+			case 'eiupload':
+				$weFrame = new we_customer_EIWizard();
+				break;
+			default:
+				$weFrame = new we_customer_frames();
+				$weFrame->process();
+		}
+		break;
+	case 'users':
+		$protect = we_base_moduleInfo::isActive('users') && we_users_util::canEditModule('users') ? null : array(false);
+		we_html_tools::protect($protect);
+
+		$weFrame = new we_users_frames(WE_MODULES_DIR . 'show.php?mod=users');
+
+		ob_start();
+		$weFrame->process();
+		$GLOBALS['extraJS'] = ob_get_clean();
 		break;
 	default:
 		echo 'no module';
@@ -51,7 +97,4 @@ switch($mod){
 }
 
 //FIXME: process will generate js output without doctype
-ob_start();
-$weFrame->process();
-$GLOBALS['extraJS'] = ob_get_clean();
-echo $weFrame->getHTML($what, $mode);
+echo $weFrame->getHTML($what, $mode, $step);

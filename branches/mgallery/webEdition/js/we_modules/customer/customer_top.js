@@ -134,7 +134,7 @@ function we_cmd() {
 			top.content.editor.edbody.we_cmd(args[0]);
 			break;
 		case "load":
-			top.content.cmd.location = frameUrl + "?pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
+			top.content.cmd.location = frameUrl + "&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);
