@@ -82,9 +82,9 @@ class we_banner_view extends we_modules_view{
 
 	function getProperties(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$out = STYLESHEET . $this->getJSProperty() . weSuggest::getYuiFiles() . '
-				</head>
-				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">
+		$out = '
+				<body class="weEditorBody" onload="loaded=1;" onunload="doUnload()">' .
+			$this->getJSProperty() . weSuggest::getYuiFiles() . '
 				<form name="we_form" onsubmit="return false;">' .
 			$this->getHiddens();
 

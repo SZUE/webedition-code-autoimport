@@ -43,7 +43,7 @@ function startTree(){
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
 		$items = array();
 		$db = new DB_WE();
-		$db->query('SELECT ID,ParentID,IsFolder FROM ' . BANNER_TABLE . ' WHERE ParentID=' . $ParentId . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');
+		$db->query('SELECT ID,ParentID,IsFolder,Text FROM ' . BANNER_TABLE . ' WHERE ParentID=' . $ParentId . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');
 		while($db->next_record()){
 			$IsFolder = $db->f("IsFolder");
 			$items[] = ($IsFolder ? array(
