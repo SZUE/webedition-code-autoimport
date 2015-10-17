@@ -125,7 +125,7 @@ function rootEntry(id, text, rootstat) {
 	});
 }
 
-function start() {
+function startTree() {
 	loadData();
 	drawEintraege();
 }

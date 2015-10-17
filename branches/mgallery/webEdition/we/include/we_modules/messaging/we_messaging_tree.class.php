@@ -124,8 +124,8 @@ function startTree(){
 			}
 		}
 
-		return parent::getJSTreeCode() .
-			we_html_element::cssLink(CSS_DIR . 'tree.css') .
+		return we_html_element::cssLink(CSS_DIR . 'tree.css') .
+			parent::getJSTreeCode() .
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
 var we_transaction = "' . $this->transaction . '";

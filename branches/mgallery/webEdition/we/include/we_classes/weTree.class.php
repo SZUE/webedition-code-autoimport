@@ -185,52 +185,13 @@ function drawTree(){
 		draw(treeData.startloc,"")+
 		"</nobr></div>";' .
 				$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
-}' .
-				$this->getJSDraw();
-	}
-
-	protected function getJSDraw(){
-		$custom_draw = $this->getJSCustomDraw();
-		$draw_code = '';
-		foreach($custom_draw as $ck => $cv){
-			$draw_code.=' case "' . $ck . '":' . $cv . ' break;';
-		}
-		return
-				'
-function draw(startEntry,zweigEintrag){
-	var nf = search(startEntry);
-	var row="";
-	for (var ai = 1;ai <= nf.len;ai++) {
-		row+=zweigEintrag;
-		var pind=treeData.indexOfEntry(nf[ai].parentid);
-		if(pind!=-1){
-			if(treeData[pind].open){
-				switch(nf[ai].typ){
-					case "item":
-						row+=drawItem(nf,ai);
-						break;
-					case "threedots":
-						row+=drawThreeDots(nf,ai);
-						break;
-					' . $draw_code . '
-				}
-			}
-		}
-	}
-	return row;
 }';
-	}
-
-	function getJSCustomDraw(){
-		return array(
-			"group" => 'row+=drawGroup(nf, ai, zweigEintrag);',
-		);
 	}
 
 	function getJSLoadTree($clear, array $treeItems){
 		$js = '';
 		foreach($treeItems as $item){
-			$item['id'] = (is_int($item['id'])) ? $item['id'] : '"' . $item['id'] . '"';
+			$item['id'] = (is_numeric($item['id'])) ? $item['id'] : '"' . $item['id'] . '"';
 			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry(' . $item['id'] . ')<0){' ) .
 					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			foreach($item as $k => $v){

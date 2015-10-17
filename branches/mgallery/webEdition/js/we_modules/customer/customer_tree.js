@@ -74,7 +74,7 @@ function doClick(id, typ) {
 	}
 }
 
-function drawCustomerGroup(nf, ai, zweigEintrag) {
+function drawGroup(nf, ai, zweigEintrag) {
 	var cur = nf[ai];
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + cur.id + "')\"";
@@ -102,7 +102,7 @@ function drawCustomerGroup(nf, ai, zweigEintrag) {
 	return row;
 }
 
-function drawCustomerSort(nf, ai, zweigEintrag) {
+function drawSort(nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
 	var oc_js = treeData.topFrame + ".openClose('" + nf[ai].id + "')\"";
 

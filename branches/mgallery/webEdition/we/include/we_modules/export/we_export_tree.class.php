@@ -72,7 +72,7 @@ function drawTree(){
 		draw(treeData.startloc,"")+
 		"</nobr></div>";
 	frames.tree.document.getElementById("treetable").innerHTML=out;
-	}' . $this->getJSDraw();
+	}';
 	}
 
 	function getHTMLMultiExplorer($width = 500, $height = 250, $useSelector = true){

@@ -500,7 +500,7 @@ opener.top.content.applySort();
 self.close();');
 				break;
 			case 'applySort':
-				echo we_html_element::jsElement('top.content.clearTree();');
+				echo we_html_element::jsElement('top.content.treeData.clear();');
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .

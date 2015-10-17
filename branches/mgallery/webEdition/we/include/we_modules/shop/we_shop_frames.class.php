@@ -441,10 +441,6 @@ function setTab(tab) {
 		}
 	}
 
-	function getJSStart(){
-		return 'start();';
-	}
-
 	protected function getHTMLEditorBody(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->View->getHomeScreen();

@@ -211,10 +211,6 @@ function makeFoldersOpenString() {
 	return op;
 }
 
-function clearTree() {
-	treeData.clear();
-}
-
 function parentChecked(start) {
 	var obj = top.treeData;
 	for (var i = 1; i <= obj.len; i++) {
@@ -430,4 +426,32 @@ function setHot() {
 }
 function usetHot() {
 	hot = 0;
+}
+
+function draw(startEntry, zweigEintrag) {
+	var nf = search(startEntry);
+	var row = "";
+	for (var ai = 1; ai <= nf.len; ai++) {
+		row += zweigEintrag;
+		var pind = treeData.indexOfEntry(nf[ai].parentid);
+		if (pind != -1) {
+			if (treeData[pind].open) {
+				switch (nf[ai].typ) {
+					case "item":
+						row += drawItem(nf, ai);
+						break;
+					case "threedots":
+						row += drawThreeDots(nf, ai);
+						break;
+					case "group":
+						row += drawGroup(nf, ai, zweigEintrag);
+						break;
+					case "sort":
+						row += drawSort(nf, ai, zweigEintrag);
+						break;
+				}
+			}
+		}
+	}
+	return row;
 }

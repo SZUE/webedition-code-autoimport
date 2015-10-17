@@ -24,13 +24,6 @@
  */
 class we_customer_tree extends weTree{
 
-	function getJSCustomDraw(){
-		return array(
-			"sort" => 'row+=drawCustomerSort(nf, ai,zweigEintrag);',
-			"group" => 'row+=drawCustomerGroup(nf, ai,zweigEintrag);'
-		);
-	}
-
 	function customJSFile(){
 		return we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_tree.js');
 	}
