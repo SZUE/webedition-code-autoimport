@@ -99,7 +99,7 @@ top.clearEntries();';
 				echo 'var ref;
 if(top.opener.top.makeNewEntry){
 	ref = top.opener.top;
-	ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:0,order:0});
+	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:0,order:0});
 }';
 				if($this->canSelectDir){
 					echo 'top.currentPath = "' . $folder->Path . '";
@@ -148,9 +148,9 @@ top.clearEntries();
 			} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 				$folder->we_save();
 				echo 'var ref;
-if(top.opener.top.updateEntry){
+if(top.opener.top.treeData.updateEntry){
 	ref = top.opener.top;
-	ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
+	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
 }' . ($this->canSelectDir ?
 						'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";

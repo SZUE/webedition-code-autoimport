@@ -610,19 +610,19 @@ function we_cmd_base(args, url) {
 		case "del":
 			we_cmd('delete', 1, args[2]);
 			treeData.setstate(treeData.tree_states.select);
-			top.treeData.unselectnode();
+			top.treeData.unselectNode();
 			top.drawTree();
 			break;
 		case "mv":
 			we_cmd('move', 1, args[2]);
 			treeData.setstate(treeData.tree_states.selectitem);
-			top.treeData.unselectnode();
+			top.treeData.unselectNode();
 			top.drawTree();
 			break;//add_to_collection
 		case "tocollection":
 			we_cmd('addToCollection', 1, args[2]);
 			treeData.setstate(treeData.tree_states.select);
-			top.treeData.unselectnode();
+			top.treeData.unselectNode();
 			top.drawTree();
 			break;
 		case "changeLanguageRecursive":
@@ -825,7 +825,7 @@ function we_cmd_base(args, url) {
 		case "edit_document":
 			try {
 				if ((window.treeData !== undefined) && treeData) {
-					treeData.unselectnode();
+					treeData.unselectNode();
 					if (args[1]) {
 						treeData.selection_table = args[1];
 					}
@@ -833,7 +833,7 @@ function we_cmd_base(args, url) {
 						treeData.selection = args[2];
 					}
 					if (treeData.selection_table === treeData.table) {
-						treeData.selectnode(treeData.selection);
+						treeData.selectNode(treeData.selection);
 					}
 				}
 			} catch (e) {
@@ -928,7 +928,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "home":
 			if (top.treeData) {
-				top.treeData.unselectnode();
+				top.treeData.unselectNode();
 			}
 			WE().layout.weEditorFrameController.openDocument('', '', '', 'open_cockpit');
 			break;
@@ -1053,7 +1053,7 @@ function we_cmd_base(args, url) {
 				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
 
 			} else {
-				treeData.unselectnode();
+				treeData.unselectNode();
 				if (args[5] !== undefined) {
 					WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
 				} else {
@@ -1200,7 +1200,7 @@ function we_cmd_base(args, url) {
 					//FIXME: currently this doesn't work
 					WE().layout.weEditorFrameController.getActiveDocumentReference().location = '/webEdition/we/include/we_widgets/cmd.php?we_cmd[0]=' + args[0];
 					if ((window.treeData !== undefined) && treeData) {
-						treeData.unselectnode();
+						treeData.unselectNode();
 					}
 				}
 			} else {

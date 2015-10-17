@@ -227,13 +227,13 @@ function we_cmd() {
 function drawEintraege() {
 	fr = top.content.tree;
 	fr.innerHTML = '<div id="treetable"><nobr>' +
-					zeichne(top.content.startloc, "") +
+					treeData.draw(top.content.startloc, "") +
 					"</nobr></div>" +
 					"</body></html>";
 }
 
-function zeichne(startEntry, zweigEintrag) {
-	var nf = search(startEntry);
+container.prototype.draw = function (startEntry, zweigEintrag) {
+	var nf = this.search(startEntry);
 	ret = "";
 	for (var ai = 1; ai <= nf.len; ai++) {
 		ret += zweigEintrag;
@@ -257,7 +257,7 @@ function zeichne(startEntry, zweigEintrag) {
 			ret += "<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\" style=\"color:black\">" + (parseInt(nf[ai].published) ? " <b>" : "") + translate(nf[ai].text) + (parseInt(nf[ai].published) ? " </b>" : "") + "</a><br/>";
 		} else {
 			var newAst = zweigEintrag;
-			ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
+			ret += "<a href=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
 			if (deleteMode) {
 				if (nf[ai].id != -1) {
 					trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
@@ -279,26 +279,26 @@ function zeichne(startEntry, zweigEintrag) {
 				} else {
 					newAst += '<span class="strich treeKreuz "></span>';
 				}
-				ret += zeichne(nf[ai].id, newAst);
+				ret += this.draw(nf[ai].id, newAst);
 			}
 		}
 	}
 	return ret;
 }
 
-function updateEntry(id, pid, text, pub, redraw) {
+container.prototype.updateEntry = function (id, pid, text, pub, redraw) {
 	var ai = 1;
-	for (ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].id != id) {
+	for (ai = 1; ai <= this.len; ai++) {
+		if (this[ai].id != id) {
 			continue;
 		}
-		if ((treeData[ai].typ == "group") || (treeData[ai].typ == "item")) {
+		if ((this[ai].typ == "group") || (this[ai].typ == "item")) {
 			if (pid != -1) {
-				treeData[ai].parentid = pid;
+				this[ai].parentid = pid;
 			}
-			treeData[ai].text = text;
+			this[ai].text = text;
 			if (pub != -1) {
-				treeData[ai].published = pub;
+				this[ai].published = pub;
 			}
 			break;
 		}
@@ -306,25 +306,25 @@ function updateEntry(id, pid, text, pub, redraw) {
 	if (redraw == 1) {
 		drawEintraege();
 	}
-}
+};
 
-function openClose(id, status) {
+container.prototype.openClose = function(id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawEintraege();
 }
 
-function search(eintrag) {
+container.prototype.search = function (eintrag) {
 	var nf = new container();
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ == "group") || (treeData[ai].typ == "item")) {
-			if (treeData[ai].parentid == eintrag) {
-				nf.add(treeData[ai]);
+	for (var ai = 1; ai <= this.len; ai++) {
+		if ((this[ai].typ == "group") || (this[ai].typ == "item")) {
+			if (this[ai].parentid == eintrag) {
+				nf.add(this[ai]);
 			}
 		}
 	}
 	return nf;
-}
+};
 
 function update_Node(id) {
 	var i;

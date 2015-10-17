@@ -350,7 +350,7 @@ run();');
 			$_SESSION['prefs'] = we_users_user::readPrefs($_SESSION['user']['ID'], $DB_WE);
 
 			echo we_html_element::jsElement('
-var op = top.opener.top.makeFoldersOpenString();
+var op = top.opener.top.treeData.makeFoldersOpenString();
 top.opener.top.we_cmd("load", top.opener.top.treeData.table);
 ' . we_main_headermenu::getMenuReloadCode() . '
 top.busy.location="' . WE_INCLUDES_DIR . 'we_editors/we_recover_backup.php?pnt=busy&operation_mode=busy&current_description=' . g_l('backup', '[finished]') . '&percent=100";

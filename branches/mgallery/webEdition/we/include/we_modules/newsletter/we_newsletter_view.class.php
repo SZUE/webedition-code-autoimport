@@ -527,8 +527,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter' . ($
 						break;
 					case 0:
 						$jsmess = ($newone ?
-								'top.content.makeNewEntry({id:\'' . $this->newsletter->ID . '\',parentid:\'' . $this->newsletter->ParentID . '\',text:\'' . $this->newsletter->Text . '\',open:0,contenttype:\'' . ($this->newsletter->IsFolder ? we_base_ContentTypes::FOLDER : 'we/newsletter') . '\',table:\'' . NEWSLETTER_TABLE . '\'});' :
-								'top.content.updateEntry({id:' . $this->newsletter->ID . ',text:"' . $this->newsletter->Text . '",parentid:' . $this->newsletter->ParentID . '});') .
+								'top.content.treeData.makeNewEntry({id:\'' . $this->newsletter->ID . '\',parentid:\'' . $this->newsletter->ParentID . '\',text:\'' . $this->newsletter->Text . '\',open:0,contenttype:\'' . ($this->newsletter->IsFolder ? we_base_ContentTypes::FOLDER : 'we/newsletter') . '\',table:\'' . NEWSLETTER_TABLE . '\'});' :
+								'top.content.treeData.updateEntry({id:' . $this->newsletter->ID . ',text:"' . $this->newsletter->Text . '",parentid:' . $this->newsletter->ParentID . '});') .
 							'top.content.drawTree();' .
 							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', ($this->newsletter->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
 							'top.content.hot=0;';
@@ -554,7 +554,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter' . ($
 						if($this->newsletter->delete()){
 							$this->newsletter = new we_newsletter_newsletter();
 							echo we_html_element::jsElement('
-top.content.deleteEntry(' . $nid . ',"file");
+top.content.treeData.deleteEntry(' . $nid . ',"file");
 setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "IsFolder") ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);
 								');
 							$_REQUEST['home'] = 1;

@@ -102,7 +102,7 @@ top.clearEntries();
 				echo 'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
-	ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
+	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
 }
 ' .
 				($this->canSelectDir ?
@@ -155,9 +155,9 @@ top.clearEntries();
 					if(f('SELECT Text FROM ' . $this->table . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 						$folder->we_save();
 						echo 'var ref;
-if(top.opener.top.content.updateEntry){
+if(top.opener.top.content.treeData.updateEntry){
 	ref = top.opener.top.content;
-	ref.updateEntry({id:' . $folder->ID . ',parentid:"' . $folder->ParentID . '",text:"' . $txt . '"});
+	ref.treeData.updateEntry({id:' . $folder->ID . ',parentid:"' . $folder->ParentID . '",text:"' . $txt . '"});
 }
 ' . ($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";

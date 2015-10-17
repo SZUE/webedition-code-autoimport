@@ -85,7 +85,7 @@ function we_cmd() {
 				}, 10);
 			}
 			if ((window.treeData !== undefined) && treeData) {
-				treeData.unselectnode();
+				treeData.unselectNode();
 			}
 			break;
 		case "module_navigation_save":
@@ -178,11 +178,11 @@ function we_cmd() {
 			break;
 		case "del_mode":
 			top.content.treeData.setstate(treeData.tree_states["select"]);
-			top.content.treeData.unselectnode();
+			top.content.treeData.unselectNode();
 			top.content.drawTree();
 		case "move_mode":
 			top.content.treeData.setstate(treeData.tree_states["selectitem"]);
-			top.content.treeData.unselectnode();
+			top.content.treeData.unselectNode();
 			top.content.drawTree();
 			break;
 		case "exit_navigation":

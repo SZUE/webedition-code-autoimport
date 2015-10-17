@@ -59,42 +59,42 @@ container.prototype = {
 	selectNode: function () {
 		if (arguments[0]) {
 			var ind;
-			if (treeData.selection !== "" && treeData.selection_table == treeData.table) {
-				ind = treeData.indexOfEntry(treeData.selection);
-				if (ind != -1) {
-					var oldnode = get(treeData.selection);
+			if (this.selection !== "" && this.selection_table == this.table) {
+				ind = this.indexOfEntry(this.selection);
+				if (ind !== -1) {
+					var oldnode = this.get(this.selection);
 					oldnode.selected = 0;
 					oldnode.applylayout();
 				}
 			}
-			ind = treeData.indexOfEntry(arguments[0]);
+			ind = this.indexOfEntry(arguments[0]);
 			if (ind != -1) {
-				var newnode = get(arguments[0]);
+				var newnode = this.get(arguments[0]);
 				newnode.selected = 1;
 				newnode.applylayout();
 			}
-			treeData.selection = arguments[0];
-			treeData.selection_table = treeData.table;
+			this.selection = arguments[0];
+			this.selection_table = this.table;
 		}
 	},
 	unselectNode: function () {
-		if (treeData.selection !== "" && treeData.table == treeData.selection_table) {
-			var ind = treeData.indexOfEntry(treeData.selection);
-			if (ind != -1) {
-				var node = get(treeData.selection);
+		if (this.selection !== "" && this.table == this.selection_table) {
+			var ind = this.indexOfEntry(this.selection);
+			if (ind !== -1) {
+				var node = this.get(this.selection);
 				node.selected = 0;
 				if (node.applylayout)
 					node.applylayout();
 			}
-			treeData.selection = "";
+			this.selection = "";
 		}
 	},
 	clear: function () {
 		this.len = 0;
 	},
 	indexOfEntry: function (id) {
-		for (var ai = 1; ai <= treeData.len; ai++) {
-			if (treeData[ai].id == id) {
+		for (var ai = 1; ai <= this.len; ai++) {
+			if (this[ai].id == id) {
 				return ai;
 			}
 		}
@@ -113,7 +113,248 @@ container.prototype = {
 			this[i] = object;
 			break;
 		}
+	},
+	deleteEntry: function (id) {
+		var ind = 0;
+		for (var ai = 1; ai <= this.len; ai++) {
+			if (this[ai].id == id) {
+				ind = ai;
+				break;
+			}
+		}
+		if (ind !== 0) {
+			for (ai = ind; ai <= this.len - 1; ai++) {
+				this[ai] = this[ai + 1];
+			}
+			this.len[this.len] = null;
+			this.len--;
+			drawTree();
+		}
+	},
+	setSegment: function (id) {
+		var node = frames.top.treeData.get(id);
+		node.showsegment();
+	},
+	drawThreeDots: function (nf, ai) {
+		return '<span class="treeKreuz kreuzungend"></span>' +
+						'<a name="_' + nf[ai].id + '" href="javascript://"  onclick="' + this.topFrame + ".treeData.setSegment('" + nf[ai].id + '\');return true;">' +
+						'<span class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span></a><br/>';
+	},
+	drawItem: function (nf, ai) {
+		return '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>' + this.clickHandler(nf[ai]);
+	},
+	drawGroup: function (nf, ai, zweigEintrag) {
+		var newAst = zweigEintrag;
+		row = "<a href=\"javascript:" + this.topFrame + ".setScrollY();" + this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
+		row += this.clickHandler(nf[ai]);
+		if (nf[ai].open) {
+			newAst += (ai == nf.len ?
+							"<span class=\"treeKreuz\"></span>" :
+							'<span class="strich treeKreuz "></span>'
+							);
+			row += this.draw(nf[ai].id, newAst);
+		}
+		return row;
+	},
+	drawSort: function (nf, ai, zweigEintrag) {
+		//overwritten
+	},
+	makeFoldersOpenString: function () {
+		var op = "";
+		for (i = 1; i <= treeData.len; i++) {
+			if (treeData[i].typ == "group" && treeData[i].open) {
+				op += treeData[i].id + ",";
+			}
+		}
+		op = op.substring(0, op.length - 1);
+		return op;
+	},
+	updateEntry: function (attribs) {
+		if (attribs.table && treeData.table != attribs.table) {
+			return;
+		}
+		var updated = false;
+		for (var ai = 1; ai <= treeData.len; ai++) {
+			if (treeData[ai].id == attribs["id"]) {
+				updated = true;
+				for (aname in attribs) {
+					treeData[ai][aname] = attribs[aname];
+				}
+				break;
+			}
+		}
+		if (updated) {
+			drawTree();
+		}
+	},
+	search: function (eintrag) {
+		var nf = new container();
+		for (var ai = 1; ai <= this.len; ai++) {
+			if (this[ai].parentid == eintrag) {
+				nf.add(this[ai]);
+			}
+		}
+		return nf;
+	},
+	makeNewEntry: function (attribs) {
+		if (table && this.table != table) {
+			return;
+		}
+		var pos = this.indexOfEntry(attribs.parentid);
+		if (this[pos] && this[pos].loaded) {
+			attribs.typ = (attribs.contenttype === "folder" ? "group" : "item");
+			attribs.tooltip = attribs.id;
+			attribs.disabled = 0;
+			attribs.selected = 0;
+			if (attribs.typ == "item") {
+				attribs.published = 0;
+			}
+
+			this.addSort(new node(attribs));
+			drawTree();
+		}
+	},
+	clickHandler: function (cur) {
+		var row = "<span>";
+		var href = false;
+		var select = false;
+		if (this.selection_table == this.table && cur.id == this.selection) {
+			cur.selected = 1;
+		}
+		switch (cur.disabled ? -1 : this.state) {
+			case -1:
+				href = false;
+				break;
+			case this.tree_states.selectitem:
+				href = cur.typ != "group";
+				select = true;
+				break;
+			case this.tree_states.selectgroup:
+				href = cur.typ != "item";
+				select = true;
+				break;
+			case this.tree_states.select:
+				href = true;
+				select = true;
+				break;
+			default:
+				href = true;
+				row += "<a ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + this.topFrame + ".wasdblclick=true;clearTimeout(" + this.topFrame + ".tout);" + this.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + this.topFrame + ".tout=setTimeout('if(!" + this.topFrame + ".wasdblclick){" + this.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + this.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + this.topFrame + ".info('ID:" + cur.id + "')\" onmouseout=\"" + this.topFrame + ".info(' ');\">";
+		}
+		row += (select && href ? '<a href="javascript:' + this.topFrame + ".treeData.checkNode('img_" + cur.id + "')\">" : '') +
+						WE().util.getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
+						(cur.inschedule > 0 ? '<i class="fa fa-clock-o"></i> ' : '') +
+						(select && href ? '<i class="fa fa-' + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i>' : '') +
+						'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getLayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
+						(href ? "</a>" : "") +
+						"</span><br/>";
+		return row;
+	},
+	draw: function (startEntry, zweigEintrag) {
+		var nf = this.search(startEntry);
+		var row = "";
+		for (var ai = 1; ai <= nf.len; ai++) {
+			row += zweigEintrag;
+			var pind = this.indexOfEntry(nf[ai].parentid);
+			if (pind != -1) {
+				if (this[pind].open) {
+					switch (nf[ai].typ) {
+						case "item":
+							row += this.drawItem(nf, ai);
+							break;
+						case "threedots":
+							row += this.drawThreeDots(nf, ai);
+							break;
+						case "folder":
+							row += this.drawFolder(nf, ai, zweigEintrag);
+							break;
+						case "group":
+							row += this.drawGroup(nf, ai, zweigEintrag);
+							break;
+						case "sort":
+							row += this.drawSort(nf, ai, zweigEintrag);
+							break;
+						case "shop":
+							row += this.drawShop(nf, ai, zweigEintrag);
+							break;
+					}
+				}
+			}
+		}
+		return row;
+	},
+	openClose: function (id) {
+		if (id == "") {
+			return;
+		}
+
+		var eintragsIndex = this.indexOfEntry(id);
+		var openstatus = (this[eintragsIndex].open ? 0 : 1);
+		this[eintragsIndex].open = openstatus;
+		if (openstatus && this[eintragsIndex].loaded != 1) {
+			top.content.cmd.location = this.frameset + "?pnt=cmd&pid=" + id;
+		} else {
+			drawTree();
+		}
+		if (openstatus == 1) {
+			this[eintragsIndex].loaded = 1;
+		}
+	},
+	get: function (eintrag) {
+		var nf = new container();
+		for (var ai = 1; ai <= this.len; ai++) {
+			if (this[ai].id == eintrag) {
+				return this[ai];
+			}
+		}
+		return nf;
+	},
+	checkNode: function (imgName) {
+		var object_name = imgName.substring(4, imgName.length);
+		for (var i = 1; i <= this.len; i++) {
+			if (this[i].id != object_name) {
+				continue;
+			}
+			if (this[i].checked) {
+				this[i].checked = 0;
+				this[i].applylayout();
+				try {
+					eval("if(" + this.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + this.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
+				} catch (e) {
+
+				}
+				break;
+			}
+			this[i].checked = 1;
+			this[i].applylayout();
+			try {
+				eval("if(" + this.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + this.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
+			} catch (e) {
+
+			}
+			break;
+		}
+
+		if (!document.images) {
+			drawTree();
+		}
+	},
+	parentChecked: function (start) {
+		for (var i = 1; i <= this.len; i++) {
+			if (this[i].id == start) {
+				if (this[i].checked == 1) {
+					return true;
+				}
+
+				if (this[i].parentid !== 0) {
+					this.parentChecked(this[i].parentid);
+				}
+			}
+		}
+
+		return false;
 	}
+
 };
 
 function treeStartDrag(evt, type, table, id, ct) { // TODO: throw out setData
@@ -129,7 +370,7 @@ function rootEntry(id, text, rootstat, offset) {
 		loaded: 1,
 		typ: "root",
 		offset: offset,
-		rootstat: rootstat,
+		rootstat: rootstat
 	});
 }
 
@@ -148,7 +389,7 @@ node.prototype = {
 		return treeData.node_layouts[layout_key];
 	},
 	showSegment: function () {
-		parentnode = frames.top.get(this.parentid);
+		parentnode = frames.top.treeData.get(this.parentid);
 		parentnode.clear();
 		we_cmd("loadFolder", treeData.table, parentnode.id, "", "", "", this.offset);
 	},
@@ -182,213 +423,7 @@ node.prototype = {
 	}
 };
 
-function deleteEntry(id) {
-	var ind = 0;
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].id == id) {
-			ind = ai;
-			break;
-		}
-	}
-	if (ind !== 0) {
-		for (ai = ind; ai <= treeData.len - 1; ai++) {
-			treeData[ai] = treeData[ai + 1];
-		}
-		treeData.len[treeData.len] = null;
-		treeData.len--;
-		drawTree();
-	}
-}
-
-function makeFoldersOpenString() {
-	var op = "";
-	for (i = 1; i <= treeData.len; i++) {
-		if (treeData[i].typ == "group" && treeData[i].open) {
-			op += treeData[i].id + ",";
-		}
-	}
-	op = op.substring(0, op.length - 1);
-	return op;
-}
-
-function parentChecked(start) {
-	var obj = top.treeData;
-	for (var i = 1; i <= obj.len; i++) {
-		if (obj[i].id == start) {
-			if (obj[i].checked == 1) {
-				return true;
-			}
-
-			if (obj[i].parentid !== 0) {
-				parentChecked(obj[i].parentid);
-			}
-		}
-	}
-
-	return false;
-}
-
-
-function clickHandler(cur) {
-	var row = "<span>";
-	var href = false;
-	var select = false;
-	if (treeData.selection_table == treeData.table && cur.id == treeData.selection) {
-		cur.selected = 1;
-	}
-	switch (cur.disabled ? -1 : treeData.state) {
-		case -1:
-			href = false;
-			break;
-		case treeData.tree_states.selectitem:
-			href = cur.typ != "group";
-			select = true;
-			break;
-		case treeData.tree_states.selectgroup:
-			href = cur.typ != "item";
-			select = true;
-			break;
-		case treeData.tree_states.select:
-			href = true;
-			select = true;
-			break;
-		default:
-			href = true;
-			row += "<a ondragstart=\"treeStartDrag(event,'" + (cur.contenttype === 'folder' ? 'dragFolder' : 'dragItem') + "','" + cur.table + "'," + parseInt(cur.id) + ", '" + cur.contenttype + "')\" name=\"_" + cur.id + "\" href=\"javascript://\"  ondblclick=\"" + treeData.topFrame + ".wasdblclick=true;clearTimeout(" + treeData.topFrame + ".tout);" + treeData.topFrame + ".doClick('" + cur.id + "');return true;\" onclick=\"" + treeData.topFrame + ".tout=setTimeout('if(!" + treeData.topFrame + ".wasdblclick){" + treeData.topFrame + ".doClick(\\'" + cur.id + "\\'); }else{ " + treeData.topFrame + ".wasdblclick=false;}',300);return true;\" onmouseover=\"" + treeData.topFrame + ".info('ID:" + (cur.we_id ? cur.we_id : cur.id) + "')\" onmouseout=\"" + treeData.topFrame + ".info(' ');\">";
-	}
-	row += (select && href ? '<a href="javascript:' + treeData.topFrame + ".checkNode('img_" + cur.id + "')\">" : '') +
-					WE().util.getTreeIcon(cur.contenttype, cur.open, cur.text.replace(/^.*\./, ".")) +
-					(cur.inschedule > 0 ? '<i class="fa fa-clock-o"></i> ' : '') +
-					(select && href ? '<i class="fa fa-' + (cur.checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + cur.id + '"></i>' : '') +
-					'<label id="lab_' + cur.id + '"' + (cur.tooltip !== "" ? ' title="' + (cur.tooltip ? cur.tooltip : cur.id) + '"' : "") + ' class="' + cur.getLayout() + (cur.class ? ' ' + cur.class : '') + '">' + cur.text + "</label>" +
-					(href ? "</a>" : "") +
-					"</span><br/>";
-	return row;
-}
-
-function drawItem(nf, ai) {
-	return '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>' + clickHandler(nf[ai]);
-}
-
-function drawThreeDots(nf, ai) {
-	return '<span class="treeKreuz kreuzungend"></span>' +
-					'<a name="_' + nf[ai].id + '" href="javascript://"  onclick="' + treeData.topFrame + ".setSegment('" + nf[ai].id + '\');return true;">' +
-					'<span class="threedots"><i class="fa fa-' + (nf[ai].contenttype == 'arrowup' ? 'caret-up' : 'caret-down') + '"></i></span></a><br/>';
-}
-
-function drawGroup(nf, ai, zweigEintrag) {
-	var newAst = zweigEintrag;
-	row = "<a href=\"javascript:" + treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + nf[ai].id + "')\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
-	row += clickHandler(nf[ai]);
-	if (nf[ai].open) {
-		newAst += (ai == nf.len ?
-						"<span class=\"treeKreuz\"></span>" :
-						'<span class="strich treeKreuz "></span>'
-						);
-		row += draw(nf[ai].id, newAst);
-	}
-	return row;
-}
-
-
-function get(eintrag) {
-	var nf = new container();
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].id == eintrag) {
-			return treeData[ai];
-		}
-	}
-	return nf;
-}
-
-function search(eintrag) {
-	var nf = new container();
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].parentid == eintrag) {
-			nf.add(treeData[ai]);
-		}
-	}
-	return nf;
-}
-
-function openClose(id) {
-	if (id == "") {
-		return;
-	}
-
-	var eintragsIndex = treeData.indexOfEntry(id);
-	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
-	treeData[eintragsIndex].open = openstatus;
-	if (openstatus && treeData[eintragsIndex].loaded != 1) {
-		top.content.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id;
-	} else {
-		drawTree();
-	}
-	if (openstatus == 1) {
-		treeData[eintragsIndex].loaded = 1;
-	}
-}
-
 function info(text) {
-}
-
-function updateEntry(attribs) {
-	if (attribs.table && treeData.table != attribs.table) {
-		return;
-	}
-	var updated = false;
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].id == attribs["id"]) {
-			updated = true;
-			for (aname in attribs) {
-				treeData[ai][aname] = attribs[aname];
-			}
-			break;
-		}
-	}
-	if (updated) {
-		drawTree();
-	}
-}
-
-function checkNode(imgName) {
-	var object_name = imgName.substring(4, imgName.length);
-	for (var i = 1; i <= treeData.len; i++) {
-		if (treeData[i].id != object_name) {
-			continue;
-		}
-		if (treeData[i].checked) {
-			treeData[i].checked = 0;
-			treeData[i].applylayout();
-			try {
-				eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
-			} catch (e) {
-
-			}
-			break;
-		}
-		treeData[i].checked = 1;
-		treeData[i].applylayout();
-		try {
-			eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
-		} catch (e) {
-
-		}
-		break;
-	}
-
-	if (!document.images) {
-		drawTree();
-	}
-}
-
-function zeichne(startEntry, zweigEintrag) {
-	draw(startEntry, zweigEintrag);
-}
-
-function setSegment(id) {
-	var node = frames.top.get(id);
-	node.showsegment();
 }
 
 function setScrollY() {
@@ -398,60 +433,10 @@ function setScrollY() {
 		}
 	}
 }
-/*	if (attribs.table && treeData.table != attribs.table) {
- return;
- }
- */
-function makeNewEntry(attribs) {
-	if (table && treeData.table != table) {
-		return;
-	}
-	var pos = treeData.indexOfEntry(attribs.parentid);
-	if (treeData[pos] && treeData[pos].loaded) {
-		attribs.typ = (attribs.contenttype === "folder" ? "group" : "item");
-		attribs.tooltip = attribs.id;
-		attribs.disabled = 0;
-		attribs.selected = 0;
-		if (attribs.typ == "item") {
-			attribs.published = 0;
-		}
-
-		treeData.addSort(new node(attribs));
-		drawTree();
-	}
-}
 
 function setHot() {
 	hot = 1;
 }
 function usetHot() {
 	hot = 0;
-}
-
-function draw(startEntry, zweigEintrag) {
-	var nf = search(startEntry);
-	var row = "";
-	for (var ai = 1; ai <= nf.len; ai++) {
-		row += zweigEintrag;
-		var pind = treeData.indexOfEntry(nf[ai].parentid);
-		if (pind != -1) {
-			if (treeData[pind].open) {
-				switch (nf[ai].typ) {
-					case "item":
-						row += drawItem(nf, ai);
-						break;
-					case "threedots":
-						row += drawThreeDots(nf, ai);
-						break;
-					case "group":
-						row += drawGroup(nf, ai, zweigEintrag);
-						break;
-					case "sort":
-						row += drawSort(nf, ai, zweigEintrag);
-						break;
-				}
-			}
-		}
-	}
-	return row;
 }

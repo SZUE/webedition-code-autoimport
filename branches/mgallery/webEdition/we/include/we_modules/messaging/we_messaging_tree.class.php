@@ -35,8 +35,7 @@ class we_messaging_tree extends weTree{
 	}
 
 	function getJSStartTree(){
-		return parent::getTree_g_l() . '
-g_l.save_changed_folder="' . g_l('modules_messaging', '[save_changed_folder]') . '";
+		return  '
 var table="' . MESSAGES_TABLE . '";
 
 function startTree(){
@@ -129,8 +128,7 @@ function startTree(){
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
 var we_transaction = "' . $this->transaction . '";
-var we_frameset="' . $this->frameset . '";'
-				. parent::getTree_g_l() . '
+var we_frameset="' . $this->frameset . '";
 var table="' . MESSAGES_TABLE . '";
 ') .
 			we_html_element::jsScript(JS_DIR . 'messaging_tree.js') .

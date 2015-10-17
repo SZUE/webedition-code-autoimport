@@ -32,7 +32,6 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
  we_html_element::jsElement('
 var table="' . USER_TABLE . '";'
-	. we_modules_frame::getTree_g_l()
 ) .
  we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_usel_browse.js');
 

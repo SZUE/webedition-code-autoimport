@@ -433,8 +433,8 @@ WE().consts.g_l.banner.view = {
 					$this->banner->save($message);
 					echo we_html_element::jsElement(
 						($newone ?
-							'top.content.makeNewEntry({id:' . $this->banner->ID . ',parentid:' . $this->banner->ParentID . ',text:"' . $this->banner->Text . '",open:1,contenttype:"' . ($this->banner->IsFolder ? 'folder' : 'file') . '",table:"weBanner"});' :
-							'top.content.updateEntry({id:' . $this->banner->ID . ',parentid:' . $this->banner->ParentID . ',text:"' . $this->banner->Text . '"});') .
+							'top.content.treeData.makeNewEntry({id:' . $this->banner->ID . ',parentid:' . $this->banner->ParentID . ',text:"' . $this->banner->Text . '",open:1,contenttype:"' . ($this->banner->IsFolder ? 'folder' : 'file') . '",table:"weBanner"});' :
+							'top.content.treeData.updateEntry({id:' . $this->banner->ID . ',parentid:' . $this->banner->ParentID . ',text:"' . $this->banner->Text . '"});') .
 						$childs .
 						we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE));
 				}
@@ -450,7 +450,7 @@ WE().consts.g_l.banner.view = {
 					$this->banner = new we_banner_banner($bid);
 					if($this->banner->delete()){
 						$this->banner = new we_banner_banner(0, $this->banner->IsFolder);
-						echo we_html_element::jsElement('top.content.deleteEntry(' . $bid . ',"' .
+						echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $bid . ',"' .
 							($this->banner->IsFolder ? 'folder' : 'file') . '");' .
 							we_message_reporting::getShowMessageCall(g_l('modules_banner', ($this->banner->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.content.we_cmd("new_banner");');
 					} else {

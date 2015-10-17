@@ -173,7 +173,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank";
 				$idx = isset($this->messaging->available_folders[$aid]) ? $aid : -1;
 				if($idx > -1){
 					$js_out .= '
-					top.content.updateEntry({id:' . $aid . ',parentid: -1, text:"' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});';
+					top.content.treeData.updateEntry({id:' . $aid . ',parentid: -1, text:"' . $this->messaging->available_folders[$idx]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});';
 				}
 
 				return we_html_element::jsElement($js_out) . $this->update_treeview();
@@ -193,7 +193,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank";';
 
 				$aid = $this->messaging->Folder_ID;
 				$js_out = '
-					top.content.updateEntry({id:' . $aid . ',parentid: -1, text:"' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});
+					top.content.treeData.updateEntry({id:' . $aid . ',parentid: -1, text:"' . $this->messaging->available_folders[we_messaging_messaging::array_ksearch('ID', $aid, $this->messaging->available_folders)]['Name'] . ' - (' . $this->messaging->get_message_count($aid) . ')", published:1});
 				';
 				return we_html_element::jsElement($js_out);
 			case 'update_treeview':
@@ -362,7 +362,7 @@ if (top.content.editor.edbody.messaging_messages_overview) {
 	private function update_treeview(){
 		$tmp = '';
 		foreach($this->messaging->available_folders as $f){
-			$tmp.='top.content.updateEntry({id:' . $f['ID'] . ', parentid:' . $f['ParentID'] . ', text:"' . $f['Name'] . ' - (' . $this->messaging->get_message_count($f['ID']) . ')", published:1});';
+			$tmp.='top.content.treeData.updateEntry({id:' . $f['ID'] . ', parentid:' . $f['ParentID'] . ', text:"' . $f['Name'] . ' - (' . $this->messaging->get_message_count($f['ID']) . ')", published:1});';
 		}
 		$tmp.='top.content.drawEintraege();';
 		return we_html_element::jsElement($tmp);

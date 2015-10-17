@@ -619,7 +619,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 					$childs = '';
 					$this->workflowDef->loadDocuments();
 					foreach($this->workflowDef->documents as $v){
-						$childs.="top.content.deleteEntry(" . $v["ID"] . ",'file');";
+						$childs.="top.content.treeData.deleteEntry(" . $v["ID"] . ",'file');";
 					}
 					if(($dts = we_base_request::_(we_base_request::INTLISTA, $this->uid . '_DocType')) !== false){
 						$this->workflowDef->DocType = $dts;
@@ -628,8 +628,8 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 					$this->workflowDef->save();
 					echo we_html_element::jsElement(
 						($newone ?
-							'top.content.makeNewEntry({id:' . $this->workflowDef->ID . ',parentid:0,text:"' . $this->workflowDef->Text . '",open:1,contenttype:"folder",table:"we_workflow_workflowDef",published:"' . $this->workflowDef->Status . '"});' :
-							'top.content.updateEntry({id:' . $this->workflowDef->ID . ',text:"' . $this->workflowDef->Text . '",published:"' . $this->workflowDef->Status . '"});'
+							'top.content.treeData.makeNewEntry({id:' . $this->workflowDef->ID . ',parentid:0,text:"' . $this->workflowDef->Text . '",open:1,contenttype:"folder",table:"we_workflow_workflowDef",published:"' . $this->workflowDef->Status . '"});' :
+							'top.content.treeData.updateEntry({id:' . $this->workflowDef->ID . ',text:"' . $this->workflowDef->Text . '",published:"' . $this->workflowDef->Status . '"});'
 						) . $childs .
 						'top.content.editor.edheader.document.getElementById("headrow").innerHTML="' . addcslashes(we_html_element::htmlB(g_l('modules_workflow', '[workflow]') . ': ' . oldHtmlspecialchars($this->workflowDef->Text)), '"') . '";' .
 						we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
@@ -657,7 +657,7 @@ top.content.editor.edfooter.location="' . WE_WORKFLOW_MODULE_DIR . 'edit_workflo
 						$this->workflowDef = new we_workflow_workflow($id);
 						if($this->workflowDef->delete()){
 							$this->workflowDef = new we_workflow_workflow();
-							echo we_html_element::jsElement('top.content.deleteEntry(' . $id . ',"folder");' .
+							echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $id . ',"folder");' .
 								we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
 						} else {
 							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));

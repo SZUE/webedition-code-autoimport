@@ -29,75 +29,74 @@
 function drawEintraege() {
 	fr = top.content.tree;
 	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
-					"<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + g_l.treeYearClick + "\" >" + g_l.treeYear + ": <strong>" + top.yearshop + " </strong></a> <br/>" +
-					zeichne(0, "") +
+					"<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + top.yearshop + " </strong></a> <br/>" +
+					treeData.draw(0, "") +
 					"</nobr></div>" +
 					"</body></html>";
 }
 
-function zeichne(startEntry, zweigEintrag) {
-	var nf = search(startEntry);
-	ret = "";
-	for (var ai = 1; ai <= nf.len; ai++) {
-		ret += zweigEintrag;
-		if (nf[ai].typ === 'shop') {
-			ret += '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
-			if (perm_EDIT_SHOP_ORDER) { // make  in tree clickable
+container.prototype.drawShop=function (nf, ai, zweigEintrag){
+	var perm=WE().util.hasPerm("EDIT_SHOP_ORDER");
+			var ret= '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
+			if (perm) { // make  in tree clickable
 				if (nf[ai].id !== -1) {
 					ret += "<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">";
 				}
 			}
 			ret += WE().util.getTreeIcon('we/shop') +
-							(perm_EDIT_SHOP_ORDER ?
+							(perm ?
 											"</a>" :
 											"") +
-							(perm_EDIT_SHOP_ORDER ? // make orders in tree clickable
+							(perm ? // make orders in tree clickable
 											"<a href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 											"") +
 							//changed for #6786
 							"<span style='" + nf[ai].st + "'>" + nf[ai].text + "</span>" +
-							(perm_EDIT_SHOP_ORDER ?
+							(perm ?
 											"</a>" : ""
 											) +
 							"<br/>";
-		} else {
-			var newAst = zweigEintrag;
+	return  ret;
+};
 
-			ret += "<a href=\"javascript:top.content.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
-			ret += (perm_EDIT_SHOP_ORDER ?
+container.prototype.drawFolder=function (nf, ai, zweigEintrag){
+				var newAst = zweigEintrag;
+var perm=WE().util.hasPerm("EDIT_SHOP_ORDER");
+			var ret= "<a href=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>"+
+							(perm ?
 							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 							"") +
 							WE().util.getTreeIcon('folder', nf[ai].open) +
-							(perm_EDIT_SHOP_ORDER ?
+							(perm ?
 											"</a>" +
 											// make the month in tree clickable
 											"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
 											"") +
 							(parseInt(nf[ai].published) ? " <b>" : "") + nf[ai].text + (parseInt(nf[ai].published) ? " </b>" : "") +
-							(perm_EDIT_SHOP_ORDER ?
+							(perm ?
 											"</a>" : "") +
 							"<br/>";
 			if (nf[ai].open) {
 				newAst += (ai === nf.len ?
 								'<span class="treeKreuz"></span>' :
 								'<span class="strich treeKreuz "></span>');
-				ret += zeichne(nf[ai].id, newAst);
+				ret += this.draw(nf[ai].id, newAst);
 			}
-		}
-	}
-	return ret;
-}
+			return ret;
+};
 
-function openClose(id, status) {
+container.prototype.openClose = function(id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawEintraege();
 }
 
-container.indexOfEntry=function (id) {
+container.prototype.indexOfEntry=function (id) {
 	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ === 'root') || (treeData[ai].typ === 'folder')) {
-			if (treeData[ai].id == id) {
+		switch(this[ai].typ){
+			case 'root':
+			case 'folder':
+			if (this[ai].id == id) {
 				return ai;
 			}
 		}
@@ -105,15 +104,15 @@ container.indexOfEntry=function (id) {
 	return -1;
 }
 
-function search(eintrag) {
+container.prototype.search = function (eintrag) {
 	var nf = new container();
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].parentid == eintrag) {
-			nf.add(treeData[ai]);
+	for (var ai = 1; ai <= this.len; ai++) {
+		if (this[ai].parentid == eintrag) {
+			nf.add(this[ai]);
 		}
 	}
 	return nf;
-}
+};
 
 function rootEntry(id, text, rootstat) {
 	return new node({
@@ -121,6 +120,7 @@ function rootEntry(id, text, rootstat) {
 		text: text,
 		loaded: true,
 		typ: 'root',
+		open:1,
 		rootstat: rootstat,
 	});
 }

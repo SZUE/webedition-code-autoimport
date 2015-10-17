@@ -210,7 +210,7 @@ var attribs = {
 }
 top.content.treeData.addSort(new top.content.node(attribs));
 top.content.applySort();' :
-							'top.content.updateEntry({id:' . $this->customer->ID . ',text:"' . $tt . '"});
+							'top.content.treeData.updateEntry({id:' . $this->customer->ID . ',text:"' . $tt . '"});
 							top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $this->customer->Username . '";'
 						);
 				} else {
@@ -231,7 +231,7 @@ top.content.applySort();' :
 
 				echo we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[customer_deleted]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-					'top.content.deleteEntry("' . $oldid . '");
+					'top.content.treeData.deleteEntry("' . $oldid . '");
 top.content.editor.edheader.location="' . $this->frameset . '?home=1&pnt=edheader";
 top.content.editor.edbody.location="' . $this->frameset . '?home=1&pnt=edbody"
 top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfooter";'

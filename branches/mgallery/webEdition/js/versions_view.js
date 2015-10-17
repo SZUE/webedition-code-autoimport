@@ -83,12 +83,10 @@ var ajaxCallbackParametersBottom = {
 }
 
 function search(newSearch) {
-
 	if (newSearch) {
 		document.we_form.searchstart.value = 0;
 	}
 	makeAjaxRequestDoclist();
-
 }
 
 var ajaxCallbackDeleteVersion = {

@@ -67,7 +67,7 @@ class we_search_frames extends we_tool_frames{
 										$rootjs . $this->Tree->getJSLoadTree(!$pid, $_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))));
 
 		if(isset($_SESSION['weS']['weSearch']['modelidForTree'])){
-			$out .= we_html_element::jsElement($this->topFrame . '.treeData.selectnode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
+			$out .= we_html_element::jsElement($this->topFrame . '.treeData.selectNode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
 			unset($_SESSION['weS']['weSearch']['modelidForTree']);
 		}
 

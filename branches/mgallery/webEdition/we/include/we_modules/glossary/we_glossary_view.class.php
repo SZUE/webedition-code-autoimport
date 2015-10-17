@@ -238,10 +238,10 @@ top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectLin
 					$this->Glossary->Title = htmlentities($this->Glossary->Title, ENT_QUOTES);
 
 					if($isNew){
-						$js = 'top.content.makeNewEntry(id:\'' . $this->Glossary->ID . '\',parentid:\'' . $this->Glossary->Language . '_' . $this->Glossary->Type . '\',text:\'' . $this->Glossary->Text . '\',open:0,contenttype:\'' . ($this->Glossary->IsFolder ? 'folder' : 'we/glossary') . '\',table:\'' . GLOSSARY_TABLE . '\',published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});
+						$js = 'top.content.treeData.makeNewEntry(id:\'' . $this->Glossary->ID . '\',parentid:\'' . $this->Glossary->Language . '_' . $this->Glossary->Type . '\',text:\'' . $this->Glossary->Text . '\',open:0,contenttype:\'' . ($this->Glossary->IsFolder ? 'folder' : 'we/glossary') . '\',table:\'' . GLOSSARY_TABLE . '\',published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});
 								top.content.drawTree();';
 					} else {
-						$js = 'top.content.updateEntry({id:' . $this->Glossary->ID . ',text:"' . $this->Glossary->Text . '",parentid:"' . $this->Glossary->Language . '_' . $this->Glossary->Type . '",published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});';
+						$js = 'top.content.treeData.updateEntry({id:' . $this->Glossary->ID . ',text:"' . $this->Glossary->Text . '",parentid:"' . $this->Glossary->Language . '_' . $this->Glossary->Type . '",published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});';
 					}
 
 					$this->Glossary->Text = html_entity_decode($this->Glossary->Text, ENT_QUOTES);
@@ -290,7 +290,7 @@ top.content.hot=0;
 				}
 				if($this->Glossary->delete()){
 					echo we_html_element::jsElement('
-top.content.deleteEntry(' . $this->Glossary->ID . ');
+top.content.treeData.deleteEntry(' . $this->Glossary->ID . ');
 setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_glossary', ($this->Glossary->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);
 ');
 

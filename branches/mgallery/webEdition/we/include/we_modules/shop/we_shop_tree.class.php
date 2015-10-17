@@ -29,7 +29,7 @@ class we_shop_tree extends weTree{
 	}
 
 	function getJSStartTree(){
-		return parent::getTree_g_l() . '
+		return '
 function startTree(){
 			frames={
 	"top":' . $this->topFrame . ',
@@ -43,11 +43,11 @@ function startTree(){
 	function getJSTreeCode(){
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::jsElement('
-var table="' . SHOP_TABLE . '";'
-				. parent::getTree_g_l() . '
-g_l.treeYearClick="' . g_l('modules_shop', '[treeYearClick]') . '";
-g_l.treeYear="' . g_l('modules_shop', '[treeYear]') . '";
-var perm_EDIT_SHOP_ORDER=' . permissionhandler::hasPerm("EDIT_SHOP_ORDER") . ';
+var table="' . SHOP_TABLE . '";
+WE().consts.g_l.shop.tree={
+	treeYearClick:"' . g_l('modules_shop', '[treeYearClick]') . '",
+	treeYear:"' . g_l('modules_shop', '[treeYear]') . '"
+};
 ') .
 			we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
 			we_html_element::jsScript(JS_DIR . 'shop_tree.js');

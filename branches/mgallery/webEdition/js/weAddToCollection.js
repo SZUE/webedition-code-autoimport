@@ -103,7 +103,7 @@ weAddToCollection = {
 				} else {
 					for (var i = 1; i <= top.treeData.len; i++) {
 						if (top.treeData[i].constructor.name === 'node' && top.treeData[i].checked) {
-							top.checkNode('img_' + top.treeData[i].id);
+							top.treeData.checkNode('img_' + top.treeData[i].id);
 						}
 					}
 				}

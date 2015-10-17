@@ -27,7 +27,7 @@
 //FIXME: compare & unite all _tree.js files
 
 function doClick(id) {
-	var item = top.content.get(id);
+	var item = top.content.treeData.get(id);
 	ct = item.contenttype;
 	table = item.table;
 	top.content.we_cmd('display_user', id, ct, table);

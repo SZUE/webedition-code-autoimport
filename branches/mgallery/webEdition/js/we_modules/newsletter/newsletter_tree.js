@@ -22,14 +22,14 @@
  */
 
 function doClick(id, typ) {
-	var node = frames.top.get(id);
+	var node = frames.top.treeData.get(id);
 	frames.top.we_cmd('newsletter_edit', node.id, node.typ, node.table);
 }
 
 function info(text) {
 }
 
-function openClose(id) {
+container.prototype.openClose = function(id) {
 	var sort = "";
 	if (id === "") {
 		return;

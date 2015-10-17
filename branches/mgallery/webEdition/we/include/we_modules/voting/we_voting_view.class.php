@@ -312,8 +312,8 @@ function we_cmd() {
 					}
 
 					$js = ($newone ?
-									'top.content.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
-									'top.content.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
+									'top.content.treeData.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
+									'top.content.treeData.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
 							);
 					echo we_html_element::jsElement($js .
 							'top.content.editor.edheader.location.reload();' .
@@ -330,7 +330,7 @@ function we_cmd() {
 				}
 				if($this->voting->delete()){
 					echo we_html_element::jsElement(
-							'top.content.deleteEntry(' . $this->voting->ID . ');
+							'top.content.treeData.deleteEntry(' . $this->voting->ID . ');
 setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_voting', ($this->voting->IsFolder ? '[group_deleted]' : '[voting_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);');
 					$this->voting = new we_voting_voting();
 					$_REQUEST['home'] = '1';

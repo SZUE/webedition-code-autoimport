@@ -64,9 +64,6 @@ abstract class we_modules_frame{
 			'</head>' . $body . '</html>';
 	}
 
-	static function getTree_g_l(){//FIXME:remove
-	}
-
 	function getJSCmdCode(){
 		return we_html_element::jsElement('function we_cmd(){}');
 	}

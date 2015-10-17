@@ -241,9 +241,9 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 				}
 
 				$js = ($newone ?
-								'top.content.makeNewEntry({id:\'' . $this->export->ID . '\',parentid:\'' . $this->export->ParentID . '\',text:\'' . $this->export->Text . '\',open:0,contenttype:\'' . ($this->export->IsFolder ? 'folder' : 'we/export') . '\',table:\'' . EXPORT_TABLE . '\'});' .
+								'top.content.treeData.makeNewEntry({id:\'' . $this->export->ID . '\',parentid:\'' . $this->export->ParentID . '\',text:\'' . $this->export->Text . '\',open:0,contenttype:\'' . ($this->export->IsFolder ? 'folder' : 'we/export') . '\',table:\'' . EXPORT_TABLE . '\'});' .
 								'top.content.drawTree();' :
-								'top.content.updateEntry({id:' . $this->export->ID . ',text:"' . $this->export->Text . '",parentid:"' . $this->export->ParentID . '"});'
+								'top.content.treeData.updateEntry({id:' . $this->export->ID . ',text:"' . $this->export->Text . '",parentid:"' . $this->export->ParentID . '"});'
 						);
 				echo we_html_element::jsElement(
 						$js .
@@ -261,7 +261,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 
 				if($this->export->delete()){
 					echo we_html_element::jsElement('
-									top.content.deleteEntry(' . $this->export->ID . ');
+									top.content.treeData.deleteEntry(' . $this->export->ID . ');
 									' . we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder ? '[delete_group_ok]' : '[delete_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
 									top.content.we_cmd("home");
 							');

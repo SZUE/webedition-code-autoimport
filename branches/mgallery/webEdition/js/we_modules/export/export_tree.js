@@ -24,19 +24,19 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function openClose(id) {
+container.prototype.openClose = function (id) {
 	if (id == "") {
 		return;
 	}
 
-	var eintragsIndex = treeData.indexOfEntry(id);
+	var eintragsIndex = this.indexOfEntry(id);
 	var status;
 
-	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
+	openstatus = (this[eintragsIndex].open ? 0 : 1);
 
-	treeData[eintragsIndex].open = openstatus;
-	if (openstatus && treeData[eintragsIndex].loaded != 1) {
-		frames.cmd.location = treeData.frameset + "?pnt=load&tab=" + frames.top.table + "&cmd=load&pid=" + id;
+	this[eintragsIndex].open = openstatus;
+	if (openstatus && this[eintragsIndex].loaded != 1) {
+		frames.cmd.location = this.frameset + "?pnt=load&tab=" + frames.top.table + "&cmd=load&pid=" + id;
 		frames.top.openFolders[frames.top.table] += "," + id;
 	} else {
 		var arr = frames.top.openFolders[frames.top.table].split(",");
@@ -49,25 +49,25 @@ function openClose(id) {
 		drawTree();
 	}
 	if (openstatus == 1) {
-		treeData[eintragsIndex].loaded = 1;
+		this[eintragsIndex].loaded = 1;
 	}
-}
+};
 
-function checkNode(imgName) {
+container.prototype.checkNode = function (imgName) {
 	var object_name = imgName.substring(4, imgName.length);
-	for (i = 1; i <= treeData.len; i++) {
-		if (treeData[i].id == object_name) {
-			frames.tree.populate(treeData[i].id, treeData.table);
-			if (treeData[i].checked == 1) {
+	for (i = 1; i <= this.len; i++) {
+		if (this[i].id == object_name) {
+			frames.tree.populate(this[i].id, this.table);
+			if (this[i].checked == 1) {
 				if (document.images) {
-					eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
+					eval("if(" + this.treeFrame + ".document.getElementsByName(imgName)){var tmp=" + this.treeFrame + ".document.getElementsByName(imgName)[0];tmp.classList.remove('fa-check-square-o');tmp.classList.add('fa-square-o');}");
 				}
-				treeData[i].checked = 0;
+				this[i].checked = 0;
 				if (frames.top.SelectedItems[frames.top.table].length > 1) {
 					found = false;
 					frames.top.SelectedItems[frames.top.table].length = frames.top.SelectedItems[frames.top.table].length + 1;
 					for (z = 0; z < frames.top.SelectedItems[frames.top.table].length; z++) {
-						if (frames.top.SelectedItems[frames.top.table][z] == treeData[i].id)
+						if (frames.top.SelectedItems[frames.top.table][z] == this[i].id)
 							found = true;
 						if (found) {
 							frames.top.SelectedItems[frames.top.table][z] = frames.top.SelectedItems[frames.top.table][z + 1];
@@ -78,15 +78,15 @@ function checkNode(imgName) {
 					frames.top.SelectedItems[frames.top.table] = [];
 				}
 
-				treeData[i].applylayout();
+				this[i].applylayout();
 				break;
 			} else {
 				if (document.images) {
-					eval("if(" + treeData.treeFrame + ".document.getElementsByName(imgName)){ var tmp=" + treeData.treeFrame + ".document.getElementsByName(imgName)[0]; tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
+					eval("if(" + this.treeFrame + ".document.getElementsByName(imgName)){ var tmp=" + this.treeFrame + ".document.getElementsByName(imgName)[0]; tmp.classList.remove('fa-square-o');tmp.classList.add('fa-check-square-o');}");
 				}
-				treeData[i].checked = 1;
-				frames.top.SelectedItems[frames.top.table].push(treeData[i].id);
-				treeData[i].applylayout();
+				this[i].checked = 1;
+				frames.top.SelectedItems[frames.top.table].push(this[i].id);
+				this[i].applylayout();
 				break;
 			}
 		}
@@ -100,12 +100,12 @@ function checkNode(imgName) {
 	if (!document.images) {
 		drawTree();
 	}
-}
+};
 
 function info(text) {
 }
 
-container.addSort = function (object) {
+container.prototype.addSort = function (object) {
 	this.len++;
 	for (var i = this.len; i > 0; i--) {
 		if (i > 1 && (this[i - 1].order > object.order)) {

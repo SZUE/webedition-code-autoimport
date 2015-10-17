@@ -157,8 +157,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
 top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Model->Text) . '";
 top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 if(top.content.treeData){
-	top.content.treeData.unselectnode();
-	top.content.treeData.selectnode(' . $this->Model->ID . ');
+	top.content.treeData.unselectNode();
+	top.content.treeData.selectNode(' . $this->Model->ID . ');
 }');
 				break;
 			case 'module_navigation_save':
@@ -227,20 +227,20 @@ if(top.content.treeData){
 				}
 
 				$js = ($newone ?
-						'top.content.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
-						'top.content.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
+						'top.content.treeData.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
+						'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
 					$_old_items = array();
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
 						foreach($_old_items as $_id){
-							$js .= 'top.content.deleteEntry(' . $_id['ID'] . ');';
+							$js .= 'top.content.treeData.deleteEntry(' . $_id['ID'] . ');';
 						}
 					}
 					$_items = $this->Model->populateGroup($_old_items);
 					foreach($_items as $_k => $_item){
-						$js .= 'top.content.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
+						$js .= 'top.content.treeData.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
@@ -248,7 +248,7 @@ if(top.content.treeData){
 					if($this->Model->hasDynChilds()){
 						$_old_items = $this->Model->depopulateGroup();
 						foreach($_old_items as $_id){
-							$js .= 'top.content.deleteEntry(' . $_id['ID'] . ');';
+							$js .= 'top.content.treeData.deleteEntry(' . $_id['ID'] . ');';
 						}
 					}
 				}
@@ -282,7 +282,7 @@ if(top.content.makeNewDoc) {
 				}
 				if($this->Model->delete()){
 					echo we_html_element::jsElement('
-top.content.deleteEntry(' . $this->Model->ID . ');
+top.content.treeData.deleteEntry(' . $this->Model->ID . ');
 setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);
 ');
 					$this->Model = new we_navigation_navigation();
@@ -369,8 +369,8 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '
 				$_items = $this->Model->populateGroup();
 				$_js = '';
 				foreach($_items as $_k => $_item){
-					$_js .= 'top.content.deleteEntry(' . $_item['id'] . ');
-						top.content.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
+					$_js .= 'top.content.treeData.deleteEntry(' . $_item['id'] . ');
+						top.content.treeData.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
 				}
 				echo we_html_element::jsElement(
 					$_js .
@@ -381,7 +381,7 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '
 				$_items = $this->Model->depopulateGroup();
 				$_js = '';
 				foreach($_items as $_id){
-					$_js .= 'top.content.deleteEntry(' . $_id . ');
+					$_js .= 'top.content.treeData.deleteEntry(' . $_id . ');
 						';
 				}
 				$_js .= we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE);

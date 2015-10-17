@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function openClose(id) {
+container.prototype.openClose = function(id) {
 	var sort = "";
 	if (id === "") {
 		return;
@@ -46,18 +46,18 @@ function openClose(id) {
 function doClick(id, typ) {
 	var cmd = "";
 	if (top.content.hot === 1) {
-		if (confirm(g_l.save_changed_voting)) {
+		if (confirm(WE().consts.g_l.voting.save_changed_voting)) {
 			cmd = "save_voting";
 			top.content.we_cmd("save_voting");
 		} else {
 			top.content.usetHot();
 			cmd = "voting_edit";
-			var node = frames.top.get(id);
+			var node = frames.top.treeData.get(id);
 			frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 		}
 	} else {
 		cmd = "voting_edit";
-		var node = frames.top.get(id);
+		var node = frames.top.treeData.get(id);
 		frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 	}
 }
@@ -65,8 +65,8 @@ function doClick(id, typ) {
 function info(text) {
 }
 
-node.showSegment = function () {
-	parentnode = frames.top.get(this.parentid);
+node.prototype.showSegment = function () {
+	parentnode = frames.top.treeData.get(this.parentid);
 	parentnode.clear();
 	frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();

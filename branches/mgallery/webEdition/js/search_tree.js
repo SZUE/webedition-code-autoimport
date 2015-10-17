@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-node.showSegment = function () {
+node.prototype.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
 };
 
@@ -49,7 +49,7 @@ function info(text) {
 	}
 }
 
-function openClose(id) {
+container.prototype.openClose = function(id) {
 	if (id == "") {
 		return;
 	}
@@ -71,6 +71,6 @@ function openClose(id) {
 }
 
 function doClick(id, typ) {
-	var node = top.content.get(id);
+	var node = top.content.treeData.get(id);
 	top.content.editor.edbody.we_cmd("tool_weSearch_edit", node.id);
 }

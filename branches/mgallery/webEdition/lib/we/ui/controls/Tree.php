@@ -351,115 +351,114 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 		}
 
 		$js = '
-			var tree_' . $this->_id . ';
-			var tree_' . $this->_id . '_activEl = 0;
+var tree_' . $this->_id . ';
+var tree_' . $this->_id . '_activEl = 0;
 
-			(function() {
+(function() {
 
-				function tree_' . $this->_id . '_Init() {
-					tree_' . $this->_id . ' = new YAHOO.widget.TreeView("' . $this->_id . '");
-					tree_' . $this->_id . '.setDynamicLoad(loadNodeData);
+	function tree_' . $this->_id . '_Init() {
+		tree_' . $this->_id . ' = new YAHOO.widget.TreeView("' . $this->_id . '");
+		tree_' . $this->_id . '.setDynamicLoad(loadNodeData);
 
-					' . $this->getNodesJS() . '
+		' . $this->getNodesJS() . '
 
-					tree_' . $this->_id . '.subscribe("collapse", function(node) {
-						var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id +  "&close=1";
-					    var callback = {
-					        success: function(oResponse) {
-					        	var _node = document.getElementById(node.labelElId);
-					        	if(_node) {
-									_node.className = "' . $this->getTreeIconClass('folder') . '";
-								}
-					        },
-					        failure: function(oResponse) {
-					        }
-					    };
-					    YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
-					});
+		tree_' . $this->_id . '.subscribe("collapse", function(node) {
+			var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id +  "&close=1";
+				var callback = {
+						success: function(oResponse) {
+							var _node = document.getElementById(node.labelElId);
+							if(_node) {
+						_node.className = "' . $this->getTreeIconClass('folder') . '";
+					}
+						},
+						failure: function(oResponse) {
+						}
+				};
+				YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+		});
 
-					tree_' . $this->_id . '.subscribe("expand", function(node) {
-						var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id + "&close=0";
-					    var callback = {
-					        success: function(oResponse) {
-								var _node = document.getElementById(node.labelElId);
-								_node.className = "' . $this->getTreeIconClass('folderOpen') . '";
-					        },
-					        failure: function(oResponse) {
-					        }
-					    };
-					    YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
-					});
+		tree_' . $this->_id . '.subscribe("expand", function(node) {
+			var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?sessionname=' . $this->_sessionName . '&id=" + node.data.id + "&close=0";
+				var callback = {
+						success: function(oResponse) {
+					var _node = document.getElementById(node.labelElId);
+					_node.className = "' . $this->getTreeIconClass('folderOpen') . '";
+						},
+						failure: function(oResponse) {
+						}
+				};
+				YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+		});
 
-					tree_' . $this->_id . '.draw();
-				}
+		tree_' . $this->_id . '.draw();
+	}
 
-				function loadNodeData(node, fnLoadComplete)  {
+	function loadNodeData(node, fnLoadComplete)  {
 
-					var nodeId = node.data.id;
-					var nodeTable = encodeURI("' . $this->getTable() . '");
-				    var nodeLabel = encodeURI(node.label);
+		var nodeId = node.data.id;
+		var nodeTable = encodeURI("' . $this->getTable() . '");
+			var nodeLabel = encodeURI(node.label);
 
-				    //prepare URL for XHR request:
-				    var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?treeclass=' . get_class($this) . '&datasource=' . $this->getDatasource() . '&sessionname=' . $this->_sessionName . '&id=" + nodeId + "&table=" + nodeTable;
+			//prepare URL for XHR request:
+			var sUrl = "' . LIB_DIR . 'we/ui/controls/TreeSuggest.php?treeclass=' . get_class($this) . '&datasource=' . $this->getDatasource() . '&sessionname=' . $this->_sessionName . '&id=" + nodeId + "&table=" + nodeTable;
 
-				    //prepare our callback object
-				    var callback = {
+			//prepare our callback object
+			var callback = {
 
-				        //if our XHR call is successful, we want to make use
-				        //of the returned data and create child nodes.
-				        success: function(oResponse) {
-				            YAHOO.log("XHR transaction was successful.", "info", "example");
-				            var oResults = eval("(" + oResponse.responseText + ")");
-				            if((oResults.ResultSet.Result) && (oResults.ResultSet.Result.length)) {
-				                //Result is an array if more than one result, string otherwise
-				                if(YAHOO.lang.isArray(oResults.ResultSet.Result)) {
-				                    for (var i=0, j=oResults.ResultSet.Result.length; i<j; i++) {
-				                    	' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id[i]+"', '"+oResults.ResultSet.Result[i]+"', '"+oResults.ResultSet.Classes[i]+"', '"+oResults.ResultSet.Status[i]+"') . '
-				                    	var tmpNode = new YAHOO.widget.TextNode(myobj, node, oResults.ResultSet.open[i]);
-				                    	tmpNode.labelStyle = oResults.ResultSet.LabelStyle[i];
-				                    	if(tmpNode.labelStyle!=="folder") {
-				                    		tmpNode.isLeaf = true;
-				                    	}
-				                    	if(oResults.ResultSet.open[i]) {
-				                    		tmpNode.labelStyle = "folderOpen";
-				                    	}
-				                    }
-				                } else {
-				                    //there is only one result; comes as string:
-									' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id+"', '"+oResults.ResultSet.Result+"', '"+oResults.ResultSet.Published+"', '"+oResults.ResultSet.Status+"') . '
-				                    var tmpNode = new YAHOO.widget.TextNode(myobj, node, false);
-				                    tmpNode.labelStyle = oResults.ResultSet.LabelStyle;
-				                    if(tmpNode.labelStyle!=="folder") {
-				                    	tmpNode.isLeaf = true;
-				                    }
-				                    if(oResults.ResultSet.open) {
-				                    	tmpNode.labelStyle = "folderOpen";
-				                    }
-				                }
-				            }
-				            oResponse.argument.fnLoadComplete();
-				        },
+					//if our XHR call is successful, we want to make use
+					//of the returned data and create child nodes.
+					success: function(oResponse) {
+							YAHOO.log("XHR transaction was successful.", "info", "example");
+							var oResults = eval("(" + oResponse.responseText + ")");
+							if((oResults.ResultSet.Result) && (oResults.ResultSet.Result.length)) {
+									//Result is an array if more than one result, string otherwise
+									if(YAHOO.lang.isArray(oResults.ResultSet.Result)) {
+											for (var i=0, j=oResults.ResultSet.Result.length; i<j; i++) {
+												' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id[i]+"', '"+oResults.ResultSet.Result[i]+"', '"+oResults.ResultSet.Classes[i]+"', '"+oResults.ResultSet.Status[i]+"') . '
+												var tmpNode = new YAHOO.widget.TextNode(myobj, node, oResults.ResultSet.open[i]);
+												tmpNode.labelStyle = oResults.ResultSet.LabelStyle[i];
+												if(tmpNode.labelStyle!=="folder") {
+													tmpNode.isLeaf = true;
+												}
+												if(oResults.ResultSet.open[i]) {
+													tmpNode.labelStyle = "folderOpen";
+												}
+											}
+									} else {
+											//there is only one result; comes as string:
+						' . $this->getNodeObjectSuggest('"+oResults.ResultSet.Id+"', '"+oResults.ResultSet.Result+"', '"+oResults.ResultSet.Published+"', '"+oResults.ResultSet.Status+"') . '
+											var tmpNode = new YAHOO.widget.TextNode(myobj, node, false);
+											tmpNode.labelStyle = oResults.ResultSet.LabelStyle;
+											if(tmpNode.labelStyle!=="folder") {
+												tmpNode.isLeaf = true;
+											}
+											if(oResults.ResultSet.open) {
+												tmpNode.labelStyle = "folderOpen";
+											}
+									}
+							}
+							oResponse.argument.fnLoadComplete();
+					},
 
-				        failure: function(oResponse) {
-				            YAHOO.log("Failed to process XHR transaction.", "info", "example");
-				            oResponse.argument.fnLoadComplete();
-				        },
+					failure: function(oResponse) {
+							YAHOO.log("Failed to process XHR transaction.", "info", "example");
+							oResponse.argument.fnLoadComplete();
+					},
 
-				        argument: {
-				            "node": node,
-				            "fnLoadComplete": fnLoadComplete
-				        },
+					argument: {
+							"node": node,
+							"fnLoadComplete": fnLoadComplete
+					},
 
-				        timeout: 7000
-				    };
+					timeout: 7000
+			};
 
-				    YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
-				}
+			YAHOO.util.Connect.asyncRequest("GET", sUrl, callback);
+	}
 
-				YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init);
+	YAHOO.util.Event.addListener(window, "load", tree_' . $this->_id . '_Init);
 
-			})();
-		';
+})();';
 
 		$page = we_ui_layout_HTMLPage::getInstance();
 		$page->addInlineJS($js);

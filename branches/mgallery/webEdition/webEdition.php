@@ -50,7 +50,9 @@ function pWebEdition_Tree(){
 			break;
 		case we_base_constants::MODE_SEE:
 			echo we_html_element::jsElement('
-function makeNewEntry(){
+var treeData={
+	makeNewEntry:function(){
+	}
 }
 function drawTree(){
 }
@@ -401,7 +403,7 @@ if($diff){
 					// return !! important for multiEditor
 					return new (WE().util.jsWindow)(window, url, "exit_doc_question", - 1, - 1, 380, 130, true, false, true);
 	case "loadVTab":
-		var op = top.makeFoldersOpenString();
+		var op = top.treeData.makeFoldersOpenString();
 		parent.we_cmd("load", arguments[1], 0, op, top.treeData.table);
 		break;
 	case "eplugin_exit_doc" :

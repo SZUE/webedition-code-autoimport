@@ -33,7 +33,7 @@ var cont = new top.container();
 for(var i=1;i<=obj.len;i++){
 	if(obj[i].checked!=1 ' . ($dontMoveClassFolders ? ' || obj[i].parentid==0' : '') . '){
 		if(obj[i].parentid != 0){
-			if(!parentChecked(obj[i].parentid)){
+			if(!top.treeData.parentChecked(obj[i].parentid)){
 				cont.add(obj[i]);
 			}
 		}else{
@@ -43,19 +43,7 @@ for(var i=1;i<=obj.len;i++){
 }
 top.treeData = cont;
 top.drawTree();
-function parentChecked(start){
-	var obj = top.treeData;
-	for(var i=1;i<=obj.len;i++){
-		if(obj[i].id == start){
-			if(obj[i].checked==1){
-				return true;
-			} else if(obj[i].parentid != 0){
-				parentChecked(obj[i].parentid);
-			}
-		}
-	}
-	return false;
-}';
+';
 }
 
 function checkMoveItem($DB_WE, $targetDirectoryID, $id, $table, &$items2move){

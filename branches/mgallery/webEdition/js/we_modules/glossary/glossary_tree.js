@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function openClose(id) {
+container.prototype.openClose = function(id) {
 	var sort = "";
 	if (id === "") {
 		return;
@@ -44,15 +44,15 @@ function openClose(id) {
 function doClick(id, typ) {
 	var node;
 	if (top.content.hot === 1) {
-		if (confirm(g_l.save_changed_glossary)) {
+		if (confirm(WE().consts.g_l.glossary.view.save_changed_glossary)) {
 			top.content.we_cmd("save_glossary");
 		} else {
 			top.content.usetHot();
-			node = frames.top.get(id);
+			node = frames.top.treeData.get(id);
 			frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + node.cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 		}
 	} else {
-		node = frames.top.get(id);
+		node = frames.top.treeData.get(id);
 		frames.top.editor.edbody.location = treeData.frameset + "?pnt=edbody&cmd=" + node.cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 	}
 }
@@ -60,8 +60,8 @@ function doClick(id, typ) {
 function info(text) {
 }
 
-node.showSegment = function () {
-	parentnode = frames.top.get(this.parentid);
+node.prototype.showSegment = function () {
+	parentnode = frames.top.treeData.get(this.parentid);
 	parentnode.clear();
 	frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();

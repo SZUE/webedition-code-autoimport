@@ -861,7 +861,7 @@ EOF;
 		foreach(array_keys($weg) as $tid){
 			if(permissionhandler::checkIfRestrictUserIsAllowed($tid, OBJECT_FILES_TABLE, $this->DB_WE)){
 				we_base_delete::deleteEntry($tid, OBJECT_FILES_TABLE, $this->DB_WE);
-				$javascript .= 'top.deleteEntry(' . $tid . ');';
+				$javascript .= 'top.treeData.deleteEntry(' . $tid . ');';
 				$deletedItems[] = $tid;
 			}
 		}
@@ -1001,7 +1001,7 @@ for ( frameId in _usedEditors ) {
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	 top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
-weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
+weWindow.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
 			} else {
 
 				$obj = new we_objectFile();
@@ -1016,7 +1016,7 @@ weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
 }
-weWindow.treeData.selectnode(" . $GLOBALS['we_doc']->ID . ");";
+weWindow.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
 				}
 			}
 		}

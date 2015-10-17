@@ -408,8 +408,8 @@ function we_cmd() {
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[user_path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 			} else {
 				$tree_code = ($id ?
-						'top.content.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
-						'top.content.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "folder" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
+						'top.content.treeData.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
+						'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "folder" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
 					'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
 
 				switch($user_object->Type){
@@ -506,7 +506,7 @@ function we_cmd() {
 			}
 			if($user_object->deleteMe()){
 				echo we_html_element::jsElement('
-		top.content.deleteEntry(' . $user_object->ID . ');
+		top.content.treeData.deleteEntry(' . $user_object->ID . ');
 		top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&home=1";
 		top.content.editor.edbody.location="' . $this->frameset . '?pnt=edbody&home=1";
 		top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter&home=1";');

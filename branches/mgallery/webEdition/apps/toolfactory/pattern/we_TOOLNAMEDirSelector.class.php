@@ -206,7 +206,7 @@ print we_html_element('<script>
 	$folder - > we_save();
 					print 'var ref = top.opener.top.content;
 					if (ref.makeNewEntry){
-	ref.makeNewEntry({id:'.$folder->ID.', parentid:"'.$folder->ParentID.'", text:"'.$txt.'", open:1, contenttype:"folder", table:"'.$this->table.'"});
+	ref.treeData.makeNewEntry({id:'.$folder->ID.', parentid:"'.$folder->ParentID.'", text:"'.$txt.'", open:1, contenttype:"folder", table:"'.$this->table.'"});
 	}
 	';
 					if ($this - > canSelectDir){
@@ -268,8 +268,8 @@ echo '<script><!--
 	if (f('SELECT Text FROM '.$this - > db - > escape($this - > table)." WHERE ID=".intval($this - > we_editDirID), "Text", $this - > db) != $txt){
 	$folder - > we_save();
 					echo 'var ref = top.opener.top.content;
-					if (ref.updateEntry){
-	ref.updateEntry({id:'.$folder->ID.', text:"'.$txt.'", parentid:"'.$folder->ParentID.'"});
+					if (ref.treeData.updateEntry){
+	ref.treeData.updateEntry({id:'.$folder->ID.', text:"'.$txt.'", parentid:"'.$folder->ParentID.'"});
 	}
 	';
 					if ($this - > canSelectDir){

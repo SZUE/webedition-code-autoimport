@@ -41,7 +41,7 @@ class we_users_tree extends weTree{
 			}
 		}
 
-		return parent::getTree_g_l() . '
+		return '
 function startTree(){
 			frames={
 	"top":' . $this->topFrame . ',

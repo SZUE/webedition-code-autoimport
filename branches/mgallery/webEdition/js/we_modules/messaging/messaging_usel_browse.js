@@ -91,10 +91,10 @@ function check(entry) {
 	}
 }
 
-function zeichne(startEntry, zweigEintrag) {
+function draw (startEntry, zweigEintrag) {
 	var nf = search(startEntry);
 	ret = "";
-	for(var ai = 1;ai <= nf.len;ai++) {
+	for (var ai = 1; ai <= nf.len; ai++) {
 		ret += zweigEintrag;
 		if (nf[ai].typ == 'user') {
 			ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
@@ -107,7 +107,7 @@ function zeichne(startEntry, zweigEintrag) {
 		} else {
 			var newAst = zweigEintrag;
 
-			ret += '<a href="javascript:top.openClose(\'' + nf[ai].id + '\',1)"><span class="treeKreuz fa-stack ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span>";
+			ret += '<a href="javascript:top.treeData.openClose(\'' + nf[ai].id + '\',1)"><span class="treeKreuz fa-stack ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open === 0 ? "plus" : "minus") + "-square-o fa-stack-1x'></i></span>";
 			ret += "<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" + WE().util.getTreeIcon('we/userGroup') + "</a>" +
 							"<a name='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" +
 							"&nbsp;<b>" + nf[ai].text + "</b></a>" +
@@ -118,7 +118,7 @@ function zeichne(startEntry, zweigEintrag) {
 				} else {
 					newAst += '<span class="strich treeKreuz "></span>';
 				}
-				ret += zeichne(nf[ai].id, newAst);
+				ret += draw(nf[ai].id, newAst);
 			}
 		}
 	}
@@ -144,16 +144,16 @@ function deleteEntry(id) {
 }
 
 
-function openClose(id, status) {
+container.prototype.openClose = function(id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
 	drawEintraege();
 }
 
-container.indexOfEntry=function (id) {
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ == 'root') || (treeData[ai].typ == 'folder')) {
-			if (treeData[ai].id == id) {
+container.prototype.indexOfEntry = function (id) {
+	for (var ai = 1; ai <= this.len; ai++) {
+		if ((this[ai].typ == 'root') || (this[ai].typ == 'folder')) {
+			if (this[ai].id == id) {
 				return ai;
 			}
 		}
@@ -185,7 +185,7 @@ function rootEntry(id, text, rootstat) {
 
 function drawEintraege() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
 	messaging_usel_main.window.document.body.innerHTML = "<table class=\"default\" style=\"width:100%\"><tr><td class=\"tree\"><nobr>" +
-					zeichne(top.startloc, "") +
+					draw(top.startloc, "") +
 					"</nobr></td></tr></table>";
 
 

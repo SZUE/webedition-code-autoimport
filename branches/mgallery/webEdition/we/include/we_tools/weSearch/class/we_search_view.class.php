@@ -112,7 +112,7 @@ function we_cmd() {
 		setTimeout(function(){we_cmd("tool_weSearch_new");}, 10);
 	 }
 	 if(treeData){
-		treeData.unselectnode();
+		treeData.unselectNode();
 	 }
 	break;
 
@@ -186,7 +186,7 @@ function we_cmd() {
 		 setTimeout(function(){we_cmd("tool_weSearch_new_forDocuments");}, 10);
 	 }
 	 if(treeData){
-		 treeData.unselectnode();
+		 treeData.unselectNode();
 	 }
 	 break;
 
@@ -202,7 +202,7 @@ function we_cmd() {
 		 setTimeout(function(){we_cmd("tool_weSearch_new_forTemplates");}, 10);
 	}
 	 if(treeData){
-	 treeData.unselectnode();
+	 treeData.unselectNode();
 	 }
 	 break;
 
@@ -218,7 +218,7 @@ function we_cmd() {
 	 setTimeout(function(){we_cmd("tool_weSearch_new_forObjects");}, 10);
 	}
 		 if(treeData){
-	 treeData.unselectnode();
+	 treeData.unselectNode();
 	}
 		 break;
 
@@ -235,7 +235,7 @@ function we_cmd() {
 	 setTimeout(function(){we_cmd("tool_weSearch_new_advSearch");}, 10);
 	}
 	 if(treeData){
-		 treeData.unselectnode();
+		 treeData.unselectNode();
 	 }
 	 break;
 	default:
@@ -284,8 +284,8 @@ function mark() {
 						urlencode($this->Model->Text) . '";' .
 						$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
         if(' . $this->topFrame . '.treeData){
-         ' . $this->topFrame . '.treeData.unselectnode();
-         ' . $this->topFrame . '.treeData.selectnode("' . $this->Model->ID . '");
+         ' . $this->topFrame . '.treeData.unselectNode();
+         ' . $this->topFrame . '.treeData.selectNode("' . $this->Model->ID . '");
         }
      ');
 				break;
@@ -330,8 +330,8 @@ function mark() {
 					$this->Model->updateChildPaths($oldpath);
 
 					$js = we_html_element::jsElement(($newone ?
-											$this->topFrame . '.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
-											$this->topFrame . '.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
+											$this->topFrame . '.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
+											$this->topFrame . '.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
 									$this->editorHeaderFrame . '.location.reload();' .
 									we_message_reporting::getShowMessageCall(
 											g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
@@ -360,7 +360,7 @@ function mark() {
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 				if($this->Model->delete()){
 					echo we_html_element::jsElement(
-							$this->topFrame . '.deleteEntry("' . $this->Model->ID . '");
+							$this->topFrame . '.treeData.deleteEntry("' . $this->Model->ID . '");
         setTimeout(function(){' . we_message_reporting::getShowMessageCall(
 									g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')), we_message_reporting::WE_MESSAGE_NOTICE) . '},500);' .
 							$this->topFrame . '.we_cmd("tool_weSearch_edit");'

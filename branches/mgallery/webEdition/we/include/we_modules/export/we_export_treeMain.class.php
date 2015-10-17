@@ -30,9 +30,6 @@ class we_export_treeMain extends weTree{
 
 	function getJSStartTree(){
 		return '
-var g_l={
-	"save_changed_export":"' . g_l('export', '[save_changed_export]') . '"
-};
 function startTree(){
 			frames={
 	"top":' . $this->topFrame . ',

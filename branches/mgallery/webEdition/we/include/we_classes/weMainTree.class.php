@@ -28,10 +28,10 @@ class weMainTree extends weTree{
 		return '
 we_scrollY["' . FILE_TABLE . '"] = 0;
 we_scrollY["' . TEMPLATES_TABLE . '"] = 0;' .
-				(defined('OBJECT_TABLE') ? '
+			(defined('OBJECT_TABLE') ? '
 we_scrollY["' . OBJECT_TABLE . '"] = 0;
 we_scrollY["' . OBJECT_FILES_TABLE . '"] = 0;' :
-						'') . '
+				'') . '
 treeData.table="' . FILE_TABLE . '";';
 	}
 
@@ -64,10 +64,10 @@ while(1){
 		$s .= '
 if(weWindow.treeData){
 	var obj = weWindow.treeData;' .
-				($select ? '
+			($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
 	weWindow.treeData.selection="' . $doc->ID . '";' :
-						'weWindow.treeData.unselectnode();') . '
+				'weWindow.treeData.unselectNode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.treeData.indexOfEntry(' . $doc->ParentID . ')]){
 			var attribs={
@@ -83,7 +83,7 @@ if(weWindow.treeData){
 				' . $this->topFrame . '.treeData[' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ParentID . ')].open:
 					0);
 			if(' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
-				' . $this->topFrame . '.updateEntry(attribs);
+				' . $this->topFrame . '.treeData.updateEntry(attribs);
 			}else{
 			//FIXME: makenewentry!
 				attribs.contenttype=\'' . $doc->ContentType . '\';
@@ -97,12 +97,10 @@ if(weWindow.treeData){
 			}
 			weWindow.drawTree();
 		}else if(' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
-		' . $this->topFrame . '.deleteEntry(' . $doc->ID . ');
+		' . $this->topFrame . '.treeData.deleteEntry(' . $doc->ID . ');
 		}
 	}
 }';
-
-
 		return $s;
 	}
 
@@ -116,11 +114,11 @@ if(weWindow.treeData){
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
 				$js.= ($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){') .
-						$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
+					$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
 				foreach($item as $k => $v){
 					$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-									intval($v) :
-									'\'' . addslashes($v) . '\'') . ',';
+							intval($v) :
+							'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
 				}
 				$js.='}));' . ($clear ? '' : '}');
 			}

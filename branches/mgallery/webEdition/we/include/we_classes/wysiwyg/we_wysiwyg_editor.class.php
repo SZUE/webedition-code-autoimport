@@ -1157,25 +1157,6 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 			' : '') . '
 		});
 
-		/*
-		ed.onBeforeSetContent.add(function(ed, o) { // FIXME: do this in parseInternalImageSrc() using regex
-			if(o.content.search("/webEdition/images/icons/no_image.gif") !== -1){
-				var div = document.createElement("div");
-				div.innerHTML = o.content;
-
-				var imgs = div.getElementsByTagName("IMG");
-				for(var i = 0; i < imgs.length; i++){
-					if(imgs[i].src.search("/webEdition/images/icons/no_image.gif") !== -1){
-						imgs[i].removeAttribute("width");
-						imgs[i].removeAttribute("height");
-					}
-				}
-				o.content = div.innerHTML;
-				div = imgs = null;
-			}
-		});
-		*/
-
 		ed.onPostProcess.add(function(ed, o) {
 			var c = document.createElement("div");
 			c.innerHTML = o.content;

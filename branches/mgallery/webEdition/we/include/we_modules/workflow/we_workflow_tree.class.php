@@ -29,7 +29,7 @@ class we_workflow_tree extends weTree{
 	}
 
 	function getJSStartTree(){
-		return parent::getTree_g_l() . '
+		return '
 function startTree(){
 			frames={
 	"top":' . $this->topFrame . ',

@@ -182,7 +182,7 @@ function submitForm() {
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 		if(we_base_request::_(we_base_request::BOOL, 'deletethisorder')){
 			$this->db->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid);
-			echo we_html_element::jsElement('top.content.deleteEntry(' . $bid . ')') .
+			echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $bid . ')') .
 			'</head>
 			<body class="weEditorBody" onunload="doUnload()">
 			<table width="300">
@@ -772,7 +772,7 @@ var cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';
 			} else { // This order has no more entries
 				echo we_html_element::jsElement('
 				top.content.editor.location="' . WE_SHOP_MODULE_DIR . 'edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
-				top.content.deleteEntry(' . $_REQUEST['bid'] . ');
+				top.content.treeData.deleteEntry(' . $_REQUEST['bid'] . ');
 			') . '
 		</head>
 		<body bgcolor="#ffffff">';
@@ -1426,7 +1426,7 @@ var attribs = {
 };
 top.content.treeData.addSort(new top.content.node(attribs));
 top.content.drawTree();' :
-						'top.content.updateEntry({id:' . $this->raw->ID . ',text:"' . $tt . '"});'
+						'top.content.treeData.updateEntry({id:' . $this->raw->ID . ',text:"' . $tt . '"});'
 					);
 				echo we_html_element::jsElement(
 					$js .
@@ -1434,7 +1434,7 @@ top.content.drawTree();' :
 				);
 				break;
 			case 'delete_raw':
-				$js = 'top.content.deleteEntry(' . $this->raw->ID . ');';
+				$js = 'top.content.treeData.deleteEntry(' . $this->raw->ID . ');';
 
 				$this->raw->delete();
 				$this->raw = new weShop();

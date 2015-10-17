@@ -69,7 +69,7 @@ class we_export_tree extends weTree{
 		return '
 function drawTree(){
 	var out=\'<div class="treetable \'+treeData.getLayout()+\'"><nobr>\'+
-		draw(treeData.startloc,"")+
+		treeData.draw(treeData.startloc,"")+
 		"</nobr></div>";
 	frames.tree.document.getElementById("treetable").innerHTML=out;
 	}';

@@ -88,8 +88,7 @@ function delaySubcriptionForIE9(){
 		if(text!=""){
 			field.style.display="block";
 			field.innerHTML = "ID:"+text;
-		}
-		else {
+		}else {
 			field.style.display="none";
 			field.innerHTML = "";
 		}

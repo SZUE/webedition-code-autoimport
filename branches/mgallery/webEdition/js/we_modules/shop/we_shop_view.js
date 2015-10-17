@@ -68,5 +68,5 @@ function neuerartikel() {
 
 function deleteorder() {
 	top.content.editor.location = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_frameset.php?pnt=edbody&deletethisorder=1&bid=" + bid;
-	top.content.deleteEntry(bid);
+	top.content.treeData.deleteEntry(bid);
 }

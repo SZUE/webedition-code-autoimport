@@ -320,7 +320,7 @@ if(top.opener.top.makeNewEntry){
 }else if(top.opener.top.opener){
 	ref = top.opener.top.opener.top;
 }
-ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});' .
+ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});' .
 			($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
@@ -407,7 +407,7 @@ ref = top.opener.top;
 }else if(top.opener.top.opener){
 ref = top.opener.top.opener.top;
 }
-ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '",table:"' . $this->table . '"});' .
+ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '",table:"' . $this->table . '"});' .
 				($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";

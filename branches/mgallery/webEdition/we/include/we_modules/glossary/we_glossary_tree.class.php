@@ -30,9 +30,6 @@ class we_glossary_tree extends weTree{
 
 	function getJSStartTree(){
 		return '
-var g_l={
-	"save_changed_glossary":"' . g_l('modules_glossary', '[save_changed_glossary]') . '"
-};
 function startTree(){
 			frames={
 	"top":' . $this->topFrame . ',

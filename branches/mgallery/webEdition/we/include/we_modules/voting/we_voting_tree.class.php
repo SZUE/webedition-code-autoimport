@@ -29,11 +29,8 @@ class we_voting_tree extends weTree{
 	}
 
 	function getJSStartTree(){
-		return 'var g_l={
-			"save_changed_voting":"' . g_l('modules_voting', '[save_changed_voting]') . '"
-
-			};
-			function startTree(){
+		return '
+function startTree(){
 			frames={
 	"top":' . $this->topFrame . ',
 	"cmd":' . $this->cmdFrame . '

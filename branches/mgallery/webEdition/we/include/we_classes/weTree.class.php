@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTree{
-
 	const DefaultWidth = 300;
 	const MinWidth = 200;
 	const MaxWidth = 1000;
@@ -114,8 +113,8 @@ frames={
 
 	function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
-				$this->customJSFile() .
-				we_html_element::jsElement('
+			$this->customJSFile() .
+			we_html_element::jsElement('
 var frames={
 	top:' . $this->topFrame . ',
 	cmd:' . $this->cmdFrame . '
@@ -123,9 +122,9 @@ var frames={
 var treeData = new container();
 var we_scrollY = [];
 ' .
-						$this->getJSDrawTree() .
-						$this->getJSContainer() .
-						$this->getJSStartTree()
+				$this->getJSDrawTree() .
+				$this->getJSContainer() .
+				$this->getJSStartTree()
 		);
 	}
 
@@ -164,12 +163,12 @@ var we_scrollY = [];
 
 	function getHTMLContruct($onresize = ''){
 		return
-				we_html_element::cssLink(CSS_DIR . 'tree.css') .
-				we_html_element::htmlDiv(array(
-					'id' => 'treetable',
-					'class' => 'tree',
-					'onresize' => $onresize
-						), ''
+			we_html_element::cssLink(CSS_DIR . 'tree.css') .
+			we_html_element::htmlDiv(array(
+				'id' => 'treetable',
+				'class' => 'tree',
+				'onresize' => $onresize
+				), ''
 		);
 	}
 
@@ -182,9 +181,9 @@ function drawTree(){
 	}
 
 	var out="<div class=\""+treeData.getLayout()+"\"><nobr>"+
-		draw(treeData.startloc,"")+
+		treeData.draw(treeData.startloc,"")+
 		"</nobr></div>";' .
-				$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
+			$this->treeFrame . '.document.getElementById("treetable").innerHTML=out;
 }';
 	}
 
@@ -193,11 +192,11 @@ function drawTree(){
 		foreach($treeItems as $item){
 			$item['id'] = (is_numeric($item['id'])) ? $item['id'] : '"' . $item['id'] . '"';
 			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry(' . $item['id'] . ')<0){' ) .
-					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
+				$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			foreach($item as $k => $v){
 				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-								intval($v) :
-								'\'' . addslashes($v) . '\'') . ',';
+						intval($v) :
+						'\'' . str_replace(array('"', '\'', '\\'), '',$v) . '\'') . ',';
 			}
 			$js.='}));' . ($clear ? '' : '}');
 		}
@@ -213,7 +212,7 @@ var cont = new top.container();
 for(var i=1;i<=obj.len;i++){
 	if(obj[i].checked!=1 ' . ($dontDeleteClassFolders ? ' || obj[i].parentid==0' : '') . '){
 		if(obj[i].parentid != 0){
-			if(!top.parentChecked(obj[i].parentid)){
+			if(!top.treeData.parentChecked(obj[i].parentid)){
 				cont.add(obj[i]);
 			}
 		}else{
@@ -223,13 +222,6 @@ for(var i=1;i<=obj.len;i++){
 }
 top.treeData = cont;
 top.drawTree();
-';
-	}
-
-	protected static function getTree_g_l(){
-		return 'if(g_l===undefined){
-	var g_l={};
-}
 ';
 	}
 

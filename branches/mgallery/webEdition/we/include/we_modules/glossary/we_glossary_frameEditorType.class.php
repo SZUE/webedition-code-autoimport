@@ -45,7 +45,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				case 'delete':
 					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . implode(',', $id) . ')')){
 						foreach($id as $_id){
-							$_js .= $weGlossaryFrames->View->topFrame . '.deleteEntry(' . $_id . ');';
+							$_js .= $weGlossaryFrames->View->topFrame . '.treeData.deleteEntry(' . $_id . ');';
 						}
 					}
 					$Cache->write();

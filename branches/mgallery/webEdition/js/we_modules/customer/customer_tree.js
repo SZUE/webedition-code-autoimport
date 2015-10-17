@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function openClose(id) {
+container.prototype.openClose = function(id) {
 	var sort = "";
 	if (id === "") {
 		return;
@@ -50,15 +50,15 @@ function openClose(id) {
 	}
 }
 
-node.showSegment = function () {
+node.prototype.showSegment = function () {
 	var sort = "";
-	parentnode = frames.top.get(this.parentid);
+	parentnode = frames.top.treeData.get(this.parentid);
 	parentnode.clear();
 	sort = frames.top.document.we_form_treheader.sort.value;
 	we_cmd("load", parentnode.id, this.offset, sort);
 };
 
-node.getLayout = function () {
+node.prototype.getLayout = function () {
 	if (this.typ == "threedots") {
 		return treeData.node_layouts.threedots;
 	}
@@ -68,16 +68,16 @@ node.getLayout = function () {
 };
 
 function doClick(id, typ) {
-	var node = frames.top.get(id);
+	var node = frames.top.treeData.get(id);
 	if (node.typ == "item") {
 		frames.top.we_cmd('customer_edit', node.id, node.typ, node.table);
 	}
 }
 
-function drawGroup(nf, ai, zweigEintrag) {
+container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
 	var cur = nf[ai];
 	var newAst = zweigEintrag;
-	var oc_js = treeData.topFrame + ".setScrollY();" + treeData.topFrame + ".openClose('" + cur.id + "')\"";
+	var oc_js = this.topFrame + ".setScrollY();" + this.topFrame + ".treeData.openClose('" + cur.id + "')\"";
 	row = "<a href=\"javascript:" + oc_js + " border=0><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
 
 	row += (cur.disabled ?
@@ -97,30 +97,28 @@ function drawGroup(nf, ai, zweigEintrag) {
 						'<span class="treeKreuz"></span>' :
 						'<span class="strich treeKreuz"></span>');
 
-		row += draw(cur.id, newAst);
+		row += this.draw(cur.id, newAst);
 	}
 	return row;
 }
 
-function drawSort(nf, ai, zweigEintrag) {
+container.prototype.drawSort = function (nf, ai, zweigEintrag) {
 	var newAst = zweigEintrag;
-	var oc_js = treeData.topFrame + ".openClose('" + nf[ai].id + "')\"";
+	var oc_js = this.topFrame + ".treeData.openClose('" + nf[ai].id + "')\"";
 
 	row += "<a href=\"javascript:" + oc_js + "><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\" border=0>" +
 					WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
 					"</a>" +
 					"<a name=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + oc_js + ";return true;\">" +
-					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + treeData.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +
+					"<label id=\"lab_" + nf[ai].id + "\" class=\"" + this.node_layout[nf[ai].state] + "\">" + nf[ai].text + "</label>" +
 					"</a>" +
 					"<br/>";
 
 	if (nf[ai].open) {
-		if (ai == nf.len) {
-			newAst += "<span class=\"treeKreuz\"></span>";
-		} else {
-			newAst += '<span class="strich treeKreuz "></span>';
-		}
-		row += draw(nf[ai].id, newAst);
+		newAst += (ai == nf.len ?
+						"<span class=\"treeKreuz\"></span>" :
+						'<span class="strich treeKreuz "></span>');
+		row += this.draw(nf[ai].id, newAst);
 	}
 }

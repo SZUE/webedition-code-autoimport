@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function openClose(id) {
+container.prototype.openClose = function(id) {
 	var sort = "";
 	if (id == "")
 		return;
@@ -48,7 +48,7 @@ function openClose(id) {
 	}
 }
 
-node.showSegment = function () {
+node.prototype.showSegment = function () {
 	top.reloadGroup(this.parentid, this.offset);
 };
 
@@ -72,7 +72,7 @@ function info(text) {
 	}
 }
 
-container.addSort = function (object) {
+container.prototype.addSort = function (object) {
 	this.len++;
 	for (var i = this.len; i > 0; i--) {
 		if (i > 1 && (this[i - 1].order > object.order)) {
@@ -92,6 +92,6 @@ container.addSort = function (object) {
 }
 
 function doClick(id, typ) {
-	var node = frames.top.get(id);
+	var node = frames.top.treeData.get(id);
 	top.content.editor.edbody.we_cmd("module_navigation_edit", node.id);
 }

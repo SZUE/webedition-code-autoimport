@@ -181,10 +181,10 @@ function EditorFrameController() {
 
 				// activate in tree
 				if (top.treeData && top.treeData.table === table) {
-					top.treeData.selectnode(id);
+					top.treeData.selectNode(id);
 
 				} else if (top.treeData) {
-					top.treeData.unselectnode();
+					top.treeData.unselectNode();
 
 				}
 
@@ -208,7 +208,7 @@ function EditorFrameController() {
 
 					// deactivate tree
 					if (top.treeData) {
-						top.treeData.unselectnode();
+						top.treeData.unselectNode();
 					}
 					top.we_cmd(editcmd);
 
@@ -491,7 +491,7 @@ function EditorFrameController() {
 			// remove from tree, if possible
 			// deactivate in tree
 			if (top.treeData && top.treeData.table === this.getEditorFrame(frameId).getEditorEditorTable() && this.ActiveEditorFrameId === frameId) {
-				top.treeData.unselectnode();
+				top.treeData.unselectNode();
 			}
 
 			// about:blank
@@ -565,10 +565,10 @@ function EditorFrameController() {
 
 				// highlight tree
 				if (top.treeData && top.treeData.table === _currentEditor.getEditorEditorTable() && parseInt(_currentEditor.getEditorDocumentId())) {
-					top.treeData.selectnode(_currentEditor.getEditorDocumentId());
+					top.treeData.selectNode(_currentEditor.getEditorDocumentId());
 
 				} else if (top.treeData) {
-					top.treeData.unselectnode();
+					top.treeData.unselectNode();
 
 				}
 				this.setActiveEditorFrame(editorId);

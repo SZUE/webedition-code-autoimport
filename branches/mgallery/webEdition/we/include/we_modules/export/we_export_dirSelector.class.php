@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -58,14 +57,14 @@ class we_export_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = ''){
 		$makefolderState = permissionhandler::hasPerm("NEW_EXPORT");
 		return parent::printHeaderTable('<td>' .
-						we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
-						we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
-						'</td>');
+				we_html_element::jsElement('makefolderState=' . $makefolderState . ';') .
+				we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", "javascript:if(makefolderState==1){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
+				'</td>');
 	}
 
 	protected function getFramsetJSFile(){
 		return parent::getFramsetJSFile() .
-				we_html_element::jsScript(JS_DIR . 'selectors/exportdir_selector.js');
+			we_html_element::jsScript(JS_DIR . 'selectors/exportdir_selector.js');
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -99,7 +98,7 @@ top.clearEntries();
 				echo 'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
-	ref.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
+	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
 }
 ';
 				if($this->canSelectDir){
@@ -153,9 +152,9 @@ top.clearEntries();
 					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), '', $this->db) != $txt){
 						$folder->we_save();
 						echo 'var ref;
-if(top.opener.top.content.updateEntry){
+if(top.opener.top.content.treeData.updateEntry){
 	ref = top.opener.top.content;
-	ref.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
+	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
 }
 ';
 						if($this->canSelectDir){
@@ -169,10 +168,9 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			}
 		}
 
-		print
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.makeNewFolder = 0;
+		echo $this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() .
+		'top.makeNewFolder = 0;
 top.selectFile(top.currentID);
 //-->
 </script>
