@@ -35,7 +35,7 @@ container.prototype.openClose = function (id) {
 	openstatus = (this[eintragsIndex].open ? 0 : 1);
 
 	this[eintragsIndex].open = openstatus;
-	if (openstatus && this[eintragsIndex].loaded != 1) {
+	if (openstatus && !this[eintragsIndex].loaded) {
 		frames.cmd.location = this.frameset + "?pnt=load&tab=" + frames.top.table + "&cmd=load&pid=" + id;
 		frames.top.openFolders[frames.top.table] += "," + id;
 	} else {
@@ -48,8 +48,8 @@ container.prototype.openClose = function (id) {
 		}
 		drawTree();
 	}
-	if (openstatus == 1) {
-		this[eintragsIndex].loaded = 1;
+	if (openstatus) {
+		this[eintragsIndex].loaded = true;
 	}
 };
 

@@ -69,8 +69,9 @@ function doSelectMessage(id) {
 
 	parent.parent.last_entry_selected = id;
 
-	if (document.images["read_" + id] !== undefined) {
-		document.images["read_" + id].src = WE().consts.dirs.IMAGE_DIR + "msg_read.gif";
+	if (document.getElementsByName("read_0")) {
+		document.getElementsByName("read_0")[0].classList.remove("msgUnRead");
+		document.getElementsByName("read_0")[0].classList.add("msgRead");
 	}
 	highlight_TR(id, sel_color, sel_text_color);
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,6 +30,8 @@ $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $mode = we_base_request::_(we_base_request::INT, "art", 0);
 
 $weFrame = new we_banner_frames(WEBEDITION_DIR . 'we/include/we_modules/banner/edit_banner_frameset.php');
-echo $weFrame->getHTMLDocumentHeader();
+ob_start();
 $weFrame->process();
+$GLOBALS['extraJS'] = ob_get_clean();
+
 echo $weFrame->getHTML($what, $mode);

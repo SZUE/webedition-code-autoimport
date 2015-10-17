@@ -115,12 +115,12 @@ function we_cmd() {
 			if (exc.substring(exc.length - 10, exc.length) == "_exception") {
 				args[0] = "save_exception";
 			}
-			if (top.content.editor.edbody.document.we_form.cmd.value == "home")
-				return;
-			if (top.content.editor.edbody.document.we_form.cmd.value == "glossary_view_folder")
-				return;
-			if (top.content.editor.edbody.document.we_form.cmd.value == "glossary_view_type")
-				return;
+			switch (top.content.editor.edbody.document.we_form.cmd.value) {
+				case "home":
+				case "glossary_view_folder":
+				case "glossary_view_type":
+					return;
+			}
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;

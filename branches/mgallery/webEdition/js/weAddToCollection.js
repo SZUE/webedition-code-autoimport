@@ -12,7 +12,7 @@ weAddToCollection = {
 		this.conf = conf;
 		this.g_l = g_l;
 
-		top.treeData.setstate(top.treeData.tree_states.select);
+		top.treeData.setState(top.treeData.tree_states.select);
 		if (top.treeData.table != this.conf.table) {
 			top.treeData.table = this.conf.table;
 			this.we_cmd("load", this.conf.table);

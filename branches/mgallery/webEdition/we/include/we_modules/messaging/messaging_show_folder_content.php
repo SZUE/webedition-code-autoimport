@@ -68,7 +68,7 @@ echo we_html_element::jsElement('
 				<td id="td_' . $val['ID'] . '_0" width="200" style="text-align:left" class="defaultfont">' . oldHtmlspecialchars($val['hdrs']['Subject']) . '</td>
 				<td id="td_' . $val['ID'] . '_1" width="170" style="text-align:left" class="defaultfont">' . date(g_l('date', '[format][default]'), $val['hdrs']['Date']) . '</td>
 				<td id="td_' . $val['ID'] . '_2" width="140" style="text-align:left" class="defaultfont">' . $val['hdrs']['From'] . '</td>
-				<td id="td_' . $val['ID'] . '_3" width="40" style="text-align:left" class="defaultfont"><img src="' . IMAGE_DIR . 'msg_' . ($val['hdrs']['seenStatus'] & we_messaging_proto::STATUS_READ ? '' : 'un') . 'read.gif" border="0" width="16" height="18" name="read_' . $val['ID'] . '" /></td>
+				<td id="td_' . $val['ID'] . '_3" width="40" style="text-align:left" class="defaultfont"><span class="fa fa-circle '.($val['hdrs']['seenStatus'] & we_messaging_proto::STATUS_READ ? 'msgRead' : 'msgUnRead').'" name="read_' . $val['ID'] . '"></span></td>
 			</tr>';
 			}
 		}

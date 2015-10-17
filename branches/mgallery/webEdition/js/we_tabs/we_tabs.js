@@ -82,7 +82,8 @@ WE().layout.we_tabs.prototype = {
 				tabsHeight = this.doc.getElementById('main').offsetHeight;
 				this.doc.getElementById('naviDiv').style.height = tabsHeight + "px";
 				this.doc.getElementById('contentDiv').style.top = tabsHeight + "px";
-			} else if (this.doc.parent.document.getElementById("edheaderDiv")) {
+			} else if(this.doc.parent){
+				if (this.doc.parent.document.getElementById("edheaderDiv")) {
 				tabsHeight = this.doc.getElementById('main').offsetHeight;
 				this.doc.parent.document.getElementById('edheaderDiv').style.height = tabsHeight + "px";
 				this.doc.parent.document.getElementById('edbodyDiv').style.top = tabsHeight + "px";
@@ -96,6 +97,10 @@ WE().layout.we_tabs.prototype = {
 			} else if (this.doc.parent.document.getElementById('updatetabsDiv')) {
 				//no need to resize
 			}
+		}else{
+			console.log('no parent');
+			console.log(this.doc);
+		}
 		}
 	}
 };

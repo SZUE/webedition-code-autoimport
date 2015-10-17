@@ -1534,14 +1534,12 @@ top.content.drawTree();' :
 		$content = we_html_button::create_button("pref_shop", "javascript:top.opener.top.we_cmd('pref_shop');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>' .
 			we_html_button::create_button("payment_val", "javascript:top.opener.top.we_cmd('payment_val');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>';
 		if(($resultD) && $resultO){ //docs and objects
-			$prefshop2 = we_html_button::create_button("quick_rev", "javascript:top.content.editor.location='" . WE_MODULES_DIR . "shop/edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true);
+			$content.= we_html_button::create_button("quick_rev", "javascript:top.content.editor.location='" . WE_MODULES_DIR . "shop/edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true) . '<br/>';
 		} elseif((!$resultD) && $resultO){ // no docs but objects
-			$prefshop2 = we_html_button::create_button("quick_rev", "javascript:top.content.editor.location='" . WE_MODULES_DIR . "shop/edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true);
+			$content.= we_html_button::create_button("quick_rev", "javascript:top.content.editor.location='" . WE_MODULES_DIR . "shop/edit_shop_frameset.php?pnt=editor&top=1&typ=object&ViewClass=$classid '", true) . '<br/>';
 		} elseif(($resultD) && !$resultO){ // docs but no objects
-			$prefshop2 = we_html_button::create_button("quick_rev", "javascript:top.content.editor.location='" . WE_MODULES_DIR . "shop/edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true);
+			$content.= we_html_button::create_button("quick_rev", "javascript:top.content.editor.location='" . WE_MODULES_DIR . "shop/edit_shop_frameset.php?pnt=editor&top=1&typ=document '", true) . '<br/>';
 		}
-
-		$prefshop .= (isset($prefshop2) ? $prefshop2 . '<br/>' : '');
 
 		return parent::getHomeScreen('shop', "shop.gif", $content);
 	}

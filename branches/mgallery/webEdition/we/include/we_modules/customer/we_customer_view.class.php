@@ -47,7 +47,7 @@ class we_customer_view extends we_modules_view{
 	function getCommonHiddens($cmds = array()){
 		return we_html_element::htmlHiddens(array(
 				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
-				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
+				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : 'edbody'),
 				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
 				'activ_sort' => (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : ''),
 				'branch' => we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'))

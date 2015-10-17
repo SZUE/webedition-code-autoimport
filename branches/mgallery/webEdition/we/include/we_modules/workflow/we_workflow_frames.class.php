@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_frames extends we_modules_frame{
-
 	public $module = "workflow";
 
 	function __construct(){
@@ -89,21 +88,21 @@ function setTab(tab){
 			break;
 	}
 }') .
-				$tab_header;
+			$tab_header;
 
 		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
-										we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
-										we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
-						)) .
-						$we_tabs->getHTML()
+						we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
+						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+				)) .
+				$we_tabs->getHTML()
 		);
 
 		$body = we_html_element::htmlBody(array(
-					'onresize' => 'weTabs.setFrameSize()',
-					'onload' => 'weTabs.setFrameSize()',
-					'id' => 'eHeaderBody',
-						), $mainDiv .
-						we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
+				'onresize' => 'weTabs.setFrameSize()',
+				'onload' => 'weTabs.setFrameSize()',
+				'id' => 'eHeaderBody',
+				), $mainDiv .
+				we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -118,8 +117,11 @@ function setTab(tab){
 function setStatusCheck(){
 	var a=document.we_form.status_workflow;
 	var b;
-	if(top.content.editor.edbody.loaded) b=top.content.editor.edbody.getStatusContol();
-	else setTimeout(setStatusCheck,100);
+	if(top.content.editor.edbody.loaded){
+		b=top.content.editor.edbody.getStatusContol();
+	}else{
+		setTimeout(setStatusCheck,100);
+	}
 
 	if(b==1) a.checked=true;
 	else a.checked=false;
@@ -134,9 +136,9 @@ function we_save() {
 		$table2->setCol(0, 1, array('nowrap' => null, 'class' => 'defaultfont'), $this->View->getStatusHTML());
 
 		$body = we_html_element::htmlBody(array(
-					'id' => 'footerBody',
-					'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
-						), we_html_element::htmlForm($attribs = array(), $table2->getHtml())
+				'id' => 'footerBody',
+				'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
+				), we_html_element::htmlForm($attribs = array(), $table2->getHtml())
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -144,7 +146,7 @@ function we_save() {
 
 	function getHTMLLog($docID, $type = 0){
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'self.focus();'), we_workflow_view::getLogForDocument($docID, $type))
+				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'self.focus();'), we_workflow_view::getLogForDocument($docID, $type))
 		);
 	}
 
@@ -156,20 +158,20 @@ function we_save() {
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		$rootjs = ($pid ? '' :
-						$this->Tree->topFrame . '.treeData.clear();' .
-						$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
 
 		$hiddens = we_html_element::htmlHiddens(array(
-					"wcmd" => "",
-					"wopt" => ""));
+				"wcmd" => "",
+				"wopt" => ""));
 
 		return $this->getHTMLDocument(
-						we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-										$this->View->getCmdJS() . we_html_element::jsElement($rootjs .
-												$this->Tree->getJSLoadTree(!$pid, we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
-										)
-								)
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+						$this->View->getCmdJS() . we_html_element::jsElement($rootjs .
+							$this->Tree->getJSLoadTree(!$pid, we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
 						)
+					)
+				)
 		);
 	}
 
@@ -178,6 +180,13 @@ function we_save() {
 		$body = we_html_element::htmlBody(array(), $form);
 
 		return $this->getHTMLDocument($body);
+	}
+
+	protected function getHTMLEditorBody(){
+		if(we_base_request::_(we_base_request::BOOL, 'home')){
+			return $this->View->getHomeScreen();
+		}
+		return $this->View->getProperties();
 	}
 
 }

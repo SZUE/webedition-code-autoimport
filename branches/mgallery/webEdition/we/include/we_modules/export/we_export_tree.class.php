@@ -39,7 +39,7 @@ class we_export_tree extends weTree{
 			foreach($item as $k => $v){
 				$elems.='"' . strtolower($k) . '":' .
 						(strtolower($k) === "checked" ?
-								'(in_array(' . $this->topFrame . '.SelectedItems.' . $item['table'] . ',"' . $item["id"] . '")?
+								'(WE().util.in_array(' . $this->topFrame . '.SelectedItems.' . $item['table'] . ',"' . $item["id"] . '")?
 	\'1\':
 	\'' . $v . '\'),
 ' :
@@ -47,7 +47,7 @@ class we_export_tree extends weTree{
 			}
 			$js.=rtrim($elems, ',') . '}));' . ($clear ? '' : '}');
 		}
-		$js.=$this->topFrame . '.treeData.setstate(' . $this->topFrame . '.treeData.tree_states["select"]);' .
+		$js.=$this->topFrame . '.treeData.setState(' . $this->topFrame . '.treeData.tree_states["select"]);' .
 				$this->topFrame . '.drawTree();';
 
 		return $js;
@@ -89,7 +89,7 @@ var SelectedItems={
 
 var openFolders= {
 	' . FILE_TABLE . ':"",
-	' . TEMPLATES_TABLE . ':""' .
+	' . TEMPLATES_TABLE . ':"",' .
 						(defined('OBJECT_FILES_TABLE') ? ('
 	' . OBJECT_FILES_TABLE . ':"",
 	' . OBJECT_TABLE . ':"",
@@ -254,7 +254,7 @@ if(!' . $this->topFrame . '.treeData) {' .
 }' .
 						($parentFolder ? '' :
 								$this->topFrame . '.treeData.clear();' .
-								$this->topFrame . '.treeData.add(' . $this->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
+								$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
 						) .
 						$this->getJSLoadTree(!$parentFolder, $treeItems)
 				), we_html_element::htmlBody(array("bgcolor" => "#ffffff"))

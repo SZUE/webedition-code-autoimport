@@ -26,13 +26,8 @@
 
 //FIXME: compare & unite all _tree.js files
 
-function drawEintraege() {
-	fr = top.content.tree;
-	fr.innerHTML = '<div id="treetable" class="tree"><nobr>' +
-					"<tr><td class=\"tree\"><nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + top.yearshop + " </strong></a> <br/>" +
-					treeData.draw(0, "") +
-					"</nobr></div>" +
-					"</body></html>";
+function drawTree() {
+	top.content.document.getElementById("treetable").innerHTML = "<nobr><a href=javascript:// onclick=\"doYearClick(" + top.yearshop + ");return true;\" title=\"" + WE().consts.g_l.shop.tree.treeYearClick + "\" >" + WE().consts.g_l.shop.tree.treeYear + ": <strong>" + top.yearshop + " </strong></a><br/>" + treeData.draw(0, "");
 }
 
 container.prototype.drawShop=function (nf, ai, zweigEintrag){
@@ -60,8 +55,8 @@ container.prototype.drawShop=function (nf, ai, zweigEintrag){
 };
 
 container.prototype.drawFolder=function (nf, ai, zweigEintrag){
-				var newAst = zweigEintrag;
-var perm=WE().util.hasPerm("EDIT_SHOP_ORDER");
+	var newAst = zweigEintrag;
+	var perm = WE().util.hasPerm("EDIT_SHOP_ORDER");
 			var ret= "<a href=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>"+
 							(perm ?
 							"<a href=\"javascript://\" onclick=\"doFolderClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');return true;\">" :
@@ -88,8 +83,8 @@ var perm=WE().util.hasPerm("EDIT_SHOP_ORDER");
 container.prototype.openClose = function(id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
-	drawEintraege();
-}
+	drawTree();
+};
 
 container.prototype.indexOfEntry=function (id) {
 	for (var ai = 1; ai <= treeData.len; ai++) {
@@ -102,7 +97,7 @@ container.prototype.indexOfEntry=function (id) {
 		}
 	}
 	return -1;
-}
+};
 
 container.prototype.search = function (eintrag) {
 	var nf = new container();
@@ -114,20 +109,9 @@ container.prototype.search = function (eintrag) {
 	return nf;
 };
 
-function rootEntry(id, text, rootstat) {
-	return new node({
-		id: id,
-		text: text,
-		loaded: true,
-		typ: 'root',
-		open:1,
-		rootstat: rootstat,
-	});
-}
-
 function startTree() {
 	loadData();
-	drawEintraege();
+	drawTree();
 }
 
 function doClick(id, ct, table) {

@@ -116,9 +116,6 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getProperties(){
-		if(we_base_request::_(we_base_request::BOOL, 'home')){ //TODO: find a better solution for this!
-			return $this->getHomeScreen();
-		}
 		$content = '<form name="we_form" onsubmit="return false">' .
 			$this->getHiddens();
 		if($this->show){

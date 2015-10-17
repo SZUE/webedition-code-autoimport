@@ -29,7 +29,6 @@ node.prototype.showSegment = function () {
 };
 
 function reloadGroup(pid) {
-	var ai = 1;
 	var it = get(pid);
 	offset = arguments[1] ? arguments[1] : 0;
 	if (it) {
@@ -60,13 +59,13 @@ container.prototype.openClose = function(id) {
 	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 	treeData[eintragsIndex].open = openstatus;
 
-	if (openstatus && treeData[eintragsIndex].loaded != 1) {
+	if (openstatus && !treeData[eintragsIndex].loaded) {
 		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
-	if (openstatus == 1) {
-		treeData[eintragsIndex].loaded = 1;
+	if (openstatus) {
+		treeData[eintragsIndex].loaded = true;
 	}
 }
 

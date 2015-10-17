@@ -49,10 +49,6 @@ class we_banner_frames extends we_modules_frame{
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
-	protected function getHTMLEditor(){
-		return parent::getHTMLEditor('&home=1');
-	}
-
 	function getJSCmdCode(){
 		return $this->View->getJSTopCode();
 	}
@@ -111,6 +107,7 @@ function setTab(tab){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->View->getHomeScreen();
 		}
+		return $this->getHTMLDocument('<body></body>');
 	}
 
 	protected function getHTMLEditorFooter($mode = 0){
@@ -128,7 +125,7 @@ function setTab(tab){
 		if(!$pid){
 			$rootjs.=
 					$this->Tree->topFrame . '.treeData.clear();' .
-					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
 		$hiddens = we_html_element::htmlHiddens(array(
 					"pnt" => "cmd",
@@ -147,5 +144,7 @@ function setTab(tab){
 	function getHTMLDCheck(){
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload' => 'self.focus();'), $this->View->getHTMLDCheck()));
 	}
+
+
 
 }

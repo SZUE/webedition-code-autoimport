@@ -23,7 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var loaded = 0;
+var loaded = false;
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);

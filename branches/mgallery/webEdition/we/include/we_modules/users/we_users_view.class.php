@@ -63,7 +63,7 @@ function we_cmd() {
 			parent::getJSProperty() .
 			weSuggest::getYuiFiles() .
 			we_html_element::jsElement('
-var loaded = 0;
+var loaded = false;
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
 

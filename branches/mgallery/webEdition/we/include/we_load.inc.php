@@ -256,7 +256,7 @@ function loadTreeData(){
 	}' .
 						($parentFolder ? '' :
 								$Tree->topFrame . '.treeData.clear();' .
-								$Tree->topFrame . '.treeData.add(' . $Tree->topFrame . '.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
+								$Tree->topFrame . '.treeData.add(' . $Tree->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
 						) .
 						$Tree->getJSLoadTree(!$parentFolder, $treeItems) . '
 }

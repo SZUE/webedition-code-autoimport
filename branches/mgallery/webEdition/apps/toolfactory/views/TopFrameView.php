@@ -360,7 +360,7 @@ weCmdController.register('help_top', 'app_{$this->appName}_help', function(cmdOb
 
 /* info */
 weCmdController.register('info_top', 'app_{$this->appName}_info', function(cmdObj) {
-	var dialog = new we_ui_layout_Dialog("/webEdition/we_cmd.php?we_cmd[0]=info", 432, 330, null);
+	var dialog = new we_ui_layout_Dialog(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=info", 432, 330, null);
 	dialog.open();
 });
 

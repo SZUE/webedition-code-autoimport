@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,7 +23,35 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
+
 $mod = we_base_request::_(we_base_request::STRING, 'mod');
+
 if(we_base_moduleInfo::isActive($mod)){
 	require_once(WE_MODULES_PATH . $mod . '/edit_' . $mod . '_frameset.php');
 }
+return;
+
+if(!we_base_moduleInfo::isActive($mod)){
+	return;
+}
+
+switch($mod){
+	case 'banner':
+		$protect = we_base_moduleInfo::isActive('banner') && we_users_util::canEditModule('banner') ? null : array(false);
+		we_html_tools::protect($protect);
+
+		$what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
+		$mode = we_base_request::_(we_base_request::INT, "art", 0);
+
+		$weFrame = new we_banner_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		break;
+	default:
+		echo 'no module';
+		return;
+}
+
+//FIXME: process will generate js output without doctype
+ob_start();
+$weFrame->process();
+$GLOBALS['extraJS'] = ob_get_clean();
+echo $weFrame->getHTML($what, $mode);

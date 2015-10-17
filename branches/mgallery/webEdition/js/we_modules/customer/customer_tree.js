@@ -1,3 +1,5 @@
+/* global node, treeData, container */
+
 /**
  * webEdition CMS
  *
@@ -28,7 +30,7 @@ container.prototype.openClose = function(id) {
 	}
 	var eintragsIndex = treeData.indexOfEntry(id);
 
-	if (treeData[eintragsIndex].typ == "group") {
+	if (treeData[eintragsIndex].typ === "group") {
 		sort = frames.top.document.we_form_treeheader.sort.value;
 	}
 
@@ -46,9 +48,9 @@ container.prototype.openClose = function(id) {
 		drawTree();
 	}
 	if (openstatus) {
-		treeData[eintragsIndex].loaded = 1;
+		treeData[eintragsIndex].loaded = true;
 	}
-}
+};
 
 node.prototype.showSegment = function () {
 	var sort = "";
@@ -59,17 +61,17 @@ node.prototype.showSegment = function () {
 };
 
 node.prototype.getLayout = function () {
-	if (this.typ == "threedots") {
+	if (this.typ === "threedots") {
 		return treeData.node_layouts.threedots;
 	}
-	var layout_key = (this.typ == "group" ? "group" : "item");
+	var layout_key = (this.typ === "group" ? "group" : "item");
 
-	return treeData.node_layouts[layout_key] + (this.typ == "item" && this.published == 1 ? " loginDenied" : "");
+	return treeData.node_layouts[layout_key] + (this.typ === "item" && this.published ? " loginDenied" : "");
 };
 
 function doClick(id, typ) {
 	var node = frames.top.treeData.get(id);
-	if (node.typ == "item") {
+	if (node.typ === "item") {
 		frames.top.we_cmd('customer_edit', node.id, node.typ, node.table);
 	}
 }

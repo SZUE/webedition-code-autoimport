@@ -751,7 +751,7 @@ weSearch = {
 		}
 	},
 	deleteDocs: function (whichSearch) {
-		var checkAll = document.getElementsByName("action_all_" + whichSearch);
+		//var checkAll = document.getElementsByName("action_all_" + whichSearch);
 		var checkboxes = document.getElementsByName("delete_docs_" + whichSearch);
 		var check = false;
 
@@ -782,7 +782,8 @@ weSearch = {
 		if (elem) {
 			elem.style.display = elem.style.display === 'block' ? 'none' : 'block';
 		}
-		btn.firstChild.src = WE().consts.dirs.IMAGE_DIR + 'button/icons/direction_' + (elem.style.display === 'block' ? 'down' : 'right') + '.gif';
+		//FIXME: this image doesn't exist anymore
+		//btn.firstChild.src = WE().consts.dirs.IMAGE_DIR + 'button/icons/direction_' + (elem.style.display === 'block' ? 'down' : 'right') + '.gif';
 	},
 	ajaxCallbackPublishDocs: {
 		success: function (o) {

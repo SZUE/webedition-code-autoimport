@@ -37,19 +37,19 @@ class we_users_tree extends weTree{
 			} else {
 				$foo = getHash('SELECT Path,ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $db);
 				$parent_path = str_replace("\\", "/", dirname($foo["Path"]));
-				$startloc = $foo["ParentID"];
+				$startloc = $foo['ParentID'];
 			}
 		}
 
 		return '
 function startTree(){
-			frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
-};
-var table="' . USER_TABLE . '";
-treeData.frames=frames;
-treeData.startloc=' . $startloc . ';
+	frames={
+		"top":' . $this->topFrame . ',
+		"cmd":' . $this->cmdFrame . '
+	};
+	var table="' . USER_TABLE . '";
+	treeData.frames=frames;
+	treeData.startloc=' . $startloc . ';
 	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid=0";
 }';
 	}

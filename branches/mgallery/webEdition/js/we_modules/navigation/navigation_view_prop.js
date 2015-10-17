@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var loaded = 0;
+var loaded = false;
 var table = WE().consts.tables.FILE_TABLE;
 
 function setFieldValue(fieldNameTo, fieldFrom) {

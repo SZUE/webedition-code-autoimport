@@ -68,14 +68,14 @@ body.radient{
 .radient,
 #fsheader{
 	background-color:lightgrey;/*for old browsers*/
-	background: linear-gradient(white, #E7E7E7); /*backgrounds/radient.gif*/
+	background: linear-gradient(white, #E7E7E7);
 }
 
 #footerBody{
 	border-top: 2px groove white;
 	padding:8px 0px 10px 0px;
 	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);
 	height:100%;
 }
 
@@ -120,7 +120,7 @@ body.radient{
 	width:24px;
 	overflow: hidden;
 	background-color:#dddddd;
-	background: linear-gradient(to right,#EAEAEA, #CFCFCF); /*menu/background.gif*/
+	background: linear-gradient(to right,#EAEAEA, #CFCFCF);
 	border-top:1px solid black;
 }
 
@@ -188,7 +188,7 @@ td.boxHeader{
 	background-repeat:repeat;
 	margin:0px;
 	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);
 }
 
 #bframeDiv{
@@ -274,13 +274,13 @@ td.boxHeader{
 #naviDiv,
 #eHeaderBody{
 	background-color: #C8D8EC;
-	background: linear-gradient(#c9d9ed, #afc3de); /*backgrounds/header.gif*/
+	background: linear-gradient(#c9d9ed, #afc3de);
 	margin: 0px;
 }
 
 #iconBar{
 	border-top: 1px solid #a5a4a4;
-	background: linear-gradient(white, #e6e7e6); /*backgrounds/header.gif*/
+	background: linear-gradient(white, #e6e7e6);
 }
 
 
@@ -683,7 +683,7 @@ optgroup.lvl2{
 	bottom:0px;
 	width:100%;
 	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);
 }
 
 .weDialogButtonsBody {
@@ -692,7 +692,7 @@ optgroup.lvl2{
 	/*padding left for rebuild*/
 	padding:5px 10px 10px 0px;
 	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);
 }
 
 
@@ -736,7 +736,7 @@ optgroup.lvl2{
 #toolMenu,
 #headerDiv{
 	background-color:#f0f0f0;
-	background: linear-gradient(#F7F7F7, #E8E8E8); /*menu/background.gif*/
+	background: linear-gradient(#F7F7F7, #E8E8E8);
 }
 
 #headerDiv{
@@ -1397,9 +1397,16 @@ div.collection-content{
 }
 
 .clearfix:after {
-    content: ".";
-    clear: both;
-    display: block;
-    visibility: hidden;
-    height: 0px;
+	content: ".";
+	clear: both;
+	display: block;
+	visibility: hidden;
+	height: 0px;
+}
+
+span.msgRead{
+	color:#e7e7e7;
+}
+span.msgUnRead{
+	color:#006db8;
 }

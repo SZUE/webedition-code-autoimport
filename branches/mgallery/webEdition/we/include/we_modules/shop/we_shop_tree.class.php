@@ -54,7 +54,7 @@ WE().consts.g_l.shop.tree={
 		$menu = '
 function loadData() {
 	treeData.clear();
-	treeData.add(self.rootEntry(0, "root", "root"));';
+	treeData.add(node.prototype.rootEntry(0, "root", "root"));';
 
 
 		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') as orddate, DATE_FORMAT(DateOrder,'%c%Y') as mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');

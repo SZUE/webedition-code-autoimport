@@ -50,11 +50,11 @@ div.tabNormal {
 
 div.tabNormal {
 	background-color: #D3D3D3;
-	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);/*tabsBG_normal.gif*/
+	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
 }
 
 div.tabActive {
-	background-color:#ededed;/*tabsBG_active2.gif*/
+	background-color:#ededed;
 }
 
 span.text{

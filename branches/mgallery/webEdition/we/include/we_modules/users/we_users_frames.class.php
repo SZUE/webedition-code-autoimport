@@ -75,7 +75,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 		if(!$pid){
 			$rootjs.=
 					$this->Tree->topFrame . '.treeData.clear();' .
-					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
 		$hiddens = we_html_element::htmlHiddens(array(
 					"pnt" => "cmd",

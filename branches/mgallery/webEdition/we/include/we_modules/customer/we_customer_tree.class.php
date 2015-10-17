@@ -69,7 +69,7 @@ function startTree(){
 
 		$js = (!$rootID ?
 				$this->topFrame . '.treeData.clear();' .
-				$this->topFrame . '.treeData.add(' . $this->topFrame . '.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
+				$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
 			'var attribs={};';
 		foreach($treeItems as $item){
 			$js.=($rootID ? 'if(' . $this->topFrame . '.treeData.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' : '') .

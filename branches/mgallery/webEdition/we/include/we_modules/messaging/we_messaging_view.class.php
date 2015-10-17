@@ -241,13 +241,13 @@ top.content.treeData.add({
 	viewclass : "' . ($type === 'we_todo' ? 'todo_folder' : 'msg_folder') . '",
 	}"));' .
 										we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[folder_created]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-top.content.drawEintraege();
+top.content.drawTree();
 						');
 					} else {
 						$js_out = '
 top.content.treeData.clear();
-top.content.startloc=0;
-top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
+top.content.treeData.startloc=0;
+top.content.treeData.add(top.content.node.prototype.rootEntry(0,"root","root"));';
 
 						foreach($this->messaging->available_folders as $folder){
 							if(($sf_cnt = $this->messaging->get_subfolder_count($folder['ID'])) >= 0){
@@ -279,7 +279,7 @@ top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
 						}
 
 						$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
-						$js_out .= 'top.content.drawEintraege();';
+						$js_out .= 'top.content.drawTree();';
 
 						$out .= we_html_element::jsElement($js_out);
 					}
@@ -291,7 +291,7 @@ top.content.treeData.add(top.content.self.rootEntry(0,"root","root"));';
 					$out .= we_html_element::jsElement('
 top.content.delete_menu_entries([String(' . implode('), String(', $folders) . ')]);
 top.content.folders_removed([String(' . implode('), String(', $folders) . ')]);
-top.content.drawEintraege();');
+top.content.drawTree();');
 				}
 				return $out;
 			case 'edit_settings':
@@ -364,7 +364,7 @@ if (top.content.editor.edbody.messaging_messages_overview) {
 		foreach($this->messaging->available_folders as $f){
 			$tmp.='top.content.treeData.updateEntry({id:' . $f['ID'] . ', parentid:' . $f['ParentID'] . ', text:"' . $f['Name'] . ' - (' . $this->messaging->get_message_count($f['ID']) . ')", published:1});';
 		}
-		$tmp.='top.content.drawEintraege();';
+		$tmp.='top.content.drawTree();';
 		return we_html_element::jsElement($tmp);
 	}
 

@@ -26,7 +26,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-var startloc = 0;
 var treeHTML;
 var wasdblclick = false;
 var tout = null;
@@ -46,7 +45,7 @@ container.prototype = {
 	getLayout: function () {
 		return this.tree_layouts[this.state];
 	},
-	setTreeState: function () {
+	setState: function () {
 		this.state = arguments[0];
 		if (this.state == this.tree_states.edit) {
 			for (var i = 1; i <= this.len; i++) {
@@ -291,13 +290,13 @@ container.prototype = {
 		var eintragsIndex = this.indexOfEntry(id);
 		var openstatus = (this[eintragsIndex].open ? 0 : 1);
 		this[eintragsIndex].open = openstatus;
-		if (openstatus && this[eintragsIndex].loaded != 1) {
+		if (openstatus && !this[eintragsIndex].loaded) {
 			top.content.cmd.location = this.frameset + "?pnt=cmd&pid=" + id;
 		} else {
 			drawTree();
 		}
-		if (openstatus == 1) {
-			this[eintragsIndex].loaded = 1;
+		if (openstatus) {
+			this[eintragsIndex].loaded = true;
 		}
 	},
 	get: function (eintrag) {
@@ -362,17 +361,6 @@ function treeStartDrag(evt, type, table, id, ct) { // TODO: throw out setData
 	evt.dataTransfer.setData('text', type + ',' + table + ',' + id + ',' + ct);
 }
 
-function rootEntry(id, text, rootstat, offset) {
-	return new node({
-		id: id,
-		text: text,
-		open: 1,
-		loaded: 1,
-		typ: "root",
-		offset: offset,
-		rootstat: rootstat
-	});
-}
 
 function node(attribs) {
 	for (var aname in attribs) {
@@ -384,6 +372,17 @@ function node(attribs) {
 }
 
 node.prototype = {
+	rootEntry: function (id, text, rootstat, offset) {
+		return new node({
+			id: id,
+			text: text,
+			open: 1,
+			loaded: true,
+			typ: "root",
+			offset: offset,
+			rootstat: rootstat
+		});
+	},
 	getLayout: function () {
 		var layout_key = (this.typ === "group" ? "group" : "item");
 		return treeData.node_layouts[layout_key];

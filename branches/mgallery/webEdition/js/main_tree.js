@@ -46,14 +46,14 @@ container.prototype.openClose = function (id) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	var openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 	treeData[eintragsIndex].open = openstatus;
-	if (openstatus && treeData[eintragsIndex].loaded != 1) {
+	if (openstatus && !treeData[eintragsIndex].loaded) {
 		we_cmd("loadFolder", top.treeData.table, treeData[eintragsIndex].id);
 	} else {
 		we_cmd("closeFolder", top.treeData.table, treeData[eintragsIndex].id);
 		drawTree();
 	}
-	if (openstatus == 1) {
-		treeData[eintragsIndex].loaded = 1;
+	if (openstatus) {
+		treeData[eintragsIndex].loaded = true;
 	}
 };
 

@@ -58,6 +58,7 @@ abstract class we_modules_frame{
 	function getHTMLDocument($body, $extraHead = ''){
 		return $this->getHTMLDocumentHeader() .
 			$extraHead .
+			(empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/event-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/connection-min.js') .

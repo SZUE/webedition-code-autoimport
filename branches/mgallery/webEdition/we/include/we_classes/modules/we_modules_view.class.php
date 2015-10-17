@@ -92,11 +92,11 @@ function submitForm() {
 		$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
 
 		echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
-		(isset($GLOBALS["we_head_insert"]) ? $GLOBALS["we_head_insert"] : "");
+		(isset($GLOBALS['we_head_insert']) ? $GLOBALS['we_head_insert'] : "");
 		?>
 		</head>
 
-		<body bgcolor="#F0EFF0" onload="loaded = 1;
+		<body bgcolor="#F0EFF0" onload="loaded = true;
 						var we_is_home = 1;">
 			<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
 			<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $icon; ?>" width="335" height="329" /></div>

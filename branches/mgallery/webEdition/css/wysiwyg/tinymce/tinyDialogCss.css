@@ -37,7 +37,8 @@ body form table{
 }
 
 .tabs{
-	background: url("/webEdition/images/multiTabs/tabsBG_border.gif") repeat-x scroll 0 0 transparent;
+	background-color: c8d8ed;
+	border-bottom: 1px solid #888888;
 	display:block;
 	border: none;
 	height: 21px;
@@ -55,8 +56,9 @@ body form table{
 
 .tabs li {
 	height: 21px;
-	background-image: url("/webEdition/images/multiTabs/tabsBG_normal.gif");
-	background-repeat: repeat-x;
+	border-bottom: 1px solid #888888;
+	background-color: #D3D3D3;
+	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
 	border-right: 1px solid gray;
 	cursor: pointer;
 	display: inline-block;
@@ -160,7 +162,6 @@ height:19px;
 .mceActionPanel #apply,
 body .mceActionPanel #replaceBtn,
 .mceActionPanel #replaceAllBtn {
-/*	background-image: url("/webEdition/images/button/btn_normal_middle.gif");*/
 	background-position: left top;
 	height: 22px !important;
 	color: black !important;
@@ -217,7 +218,7 @@ body[role=application] textarea{
 
 body[role=application] .mceActionPanel{
 	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);
 	height: 30px;
 	position:absolute;
 	bottom: 0px;
@@ -262,7 +263,7 @@ body.useWeFooter textarea{
 
 body.useWeFooter .mceActionPanel{
 	background-color:grey;/*for old browsers*/
-	background: linear-gradient(#B4B3B3, #C6C5C5);/*edit/editfooterback.gif*/
+	background: linear-gradient(#B4B3B3, #C6C5C5);
 	height: 30px;
 	position:absolute;
 	bottom: 0px;

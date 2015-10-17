@@ -140,7 +140,7 @@ function cb_incstate() {
 		' . (isset($f) ?
 					'r_tree_open(' . $f['ID'] . ');
 we_cmd("show_folder_content", ' . $f['ID'] . ');' :
-					'drawEintraege();'
+					'drawTree();'
 				) . '
 }');
 	}

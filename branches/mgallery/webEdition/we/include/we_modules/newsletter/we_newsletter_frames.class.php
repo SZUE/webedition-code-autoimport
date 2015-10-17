@@ -219,7 +219,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = "";
-	var url = /webEdition/we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	for(var i = 0; i < arguments.length; i++){
 	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
 	if(i < (arguments.length - 1)){
@@ -261,10 +261,10 @@ function populateGroups() {
 					num++;
 				}
 
-				addGroup(sprintf("' . g_l('modules_newsletter', '[all_list]') . '",0),0);
+				addGroup(WE().util.sprintf("' . g_l('modules_newsletter', '[all_list]') . '",0),0);
 
 				for (i = 1; i < num; i++) {
-					addGroup(sprintf("' . g_l('modules_newsletter', '[mailing_list]') . '",i),i);
+					addGroup(WE().util.sprintf("' . g_l('modules_newsletter', '[mailing_list]') . '",i),i);
 				}
 		} else {
 			setTimeout(populateGroups,100);
@@ -448,7 +448,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 
 		$rootjs = (!$pid ?
 						$this->Tree->topFrame . '.treeData.clear();' .
-						$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
+						$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
 						'');
 
 
@@ -1087,7 +1087,7 @@ function extraInit(){
 	if(typeof weWysiwygInitializeIt == "function"){
 		weWysiwygInitializeIt();
 	}
-	loaded = 1;
+	loaded = true;
 }
 window.onload=extraInit;');
 
@@ -1275,7 +1275,7 @@ window.onload=extraInit;');
 						$this->weAutoCompleter->getYuiJs();
 		}
 
-		$body = we_html_element::htmlBody(array("onload" => "self.loaded=1;if(self.doScrollTo){self.doScrollTo();}; setHeaderTitle();", "class" => "weEditorBody", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onsubmit" => "return false;"), $out
+		$body = we_html_element::htmlBody(array("onload" => "self.loaded=true;if(self.doScrollTo){self.doScrollTo();}; setHeaderTitle();", "class" => "weEditorBody", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onsubmit" => "return false;"), $out
 						)
 		);
 //$this->getHTMLDocumentHeader();

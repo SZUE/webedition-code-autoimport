@@ -363,7 +363,7 @@ foreach($jsCmd as $cur){
 ?>
 <script><!--
 	function we_cmd() {
-	var url = "/webEdition/we_cmd.php?";
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 					for (var i = 0; i < arguments.length; i++) {
 	url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 					if (i < (arguments.length - 1))

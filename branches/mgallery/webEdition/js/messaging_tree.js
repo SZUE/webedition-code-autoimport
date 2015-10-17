@@ -69,7 +69,7 @@ function check(img) {
 	}
 }
 if (!document.images) {
-	drawEintraege();
+	drawTree();
 
 }
 
@@ -96,26 +96,11 @@ function update_messaging() {
 }
 
 function update_icon(fid) {
-	var s = 0;
 	if (fid == open_folder) {
 		return 1;
 	}
-	for (var ai = 1; ai <= treeData.len; ai++) {
-		if (treeData[ai].id == fid) {
-			treeData[ai].icon = treeData[ai].iconbasename + "_open.gif";
-			if (++s == 2) {
-				break;
-			}
-		}
-		if (treeData[ai].id == open_folder) {
-			treeData[ai].icon = treeData[ai].iconbasename + ".gif";
-			if (++s == 2) {
-				break;
-			}
-		}
-	}
 	open_folder = fid;
-	drawEintraege();
+	drawTree();
 }
 
 function set_frames(vc) {
@@ -178,7 +163,7 @@ function we_cmd() {
 			deleteMode = false;
 			mode = "show_folder_content";
 			entries_selected = [];
-			drawEintraege();
+			drawTree();
 			top.content.editor.edbody.location = "about:blank";
 			top.content.usetHot();
 			break;
@@ -188,7 +173,7 @@ function we_cmd() {
 			break;
 		case "messaging_delete_mode_on":
 			deleteMode = true;
-			drawEintraege();
+			drawTree();
 			top.content.editor.edbody.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_delete_folders.php?we_transaction=" + we_transaction;
 			break;
 		case "messaging_delete_folders":
@@ -224,67 +209,59 @@ function we_cmd() {
 	}
 }
 
-function drawEintraege() {
-	fr = top.content.tree;
-	fr.innerHTML = '<div id="treetable"><nobr>' +
-					treeData.draw(top.content.startloc, "") +
-					"</nobr></div>" +
-					"</body></html>";
+function drawTree() {
+	top.content.document.getElementById("treetable").innerHTML = treeData.draw(treeData.startloc, "");
 }
 
-container.prototype.draw = function (startEntry, zweigEintrag) {
-	var nf = this.search(startEntry);
-	ret = "";
-	for (var ai = 1; ai <= nf.len; ai++) {
-		ret += zweigEintrag;
-		if (nf[ai].typ == "item") {
-			ret += '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
-
-			if (nf[ai].id != -1) {
-				ret += '<a id="_' + nf[ai].id + '" href="javascript://" onclick="doClick(' + nf[ai].id + ');return true;">';
-			}
-			if (deleteMode) {
-				if (nf[ai].id != -1) {
-					trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
-					ret += '<a href="' + trg + '"><i class="fa fa-' + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>';
-				}
-			} else {
-				ret += '<a id="_' + nf[ai].id + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ");return true;\">" +
-								WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
-								"</a>";
-				trg = "doClick(" + nf[ai].id + ");return true;";
-			}
-			ret += "<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\" style=\"color:black\">" + (parseInt(nf[ai].published) ? " <b>" : "") + translate(nf[ai].text) + (parseInt(nf[ai].published) ? " </b>" : "") + "</a><br/>";
-		} else {
-			var newAst = zweigEintrag;
-			ret += "<a href=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
-			if (deleteMode) {
-				if (nf[ai].id != -1) {
-					trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
-					ret += "<a href=\"" + trg + "\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>';
-				}
-			} else {
-				trg = "doClick(" + nf[ai].id + ");return true;";
-			}
-
-			ret += "<a id='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"" + trg + "\">" +
-							WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
-							"</a>" +
-							"<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\">" +
-							"" + translate(nf[ai].text) + "</a>" +
-							"<br/>";
-			if (nf[ai].open) {
-				if (ai == nf.len) {
-					newAst += "<span class=\"treeKreuz\"></span>";
-				} else {
-					newAst += '<span class="strich treeKreuz "></span>';
-				}
-				ret += this.draw(nf[ai].id, newAst);
-			}
+container.prototype.drawGroup = function (nf, ai, zweigEintrag) {
+	var newAst = zweigEintrag;
+	var ret = "<a href=\"javascript:top.content.treeData.openClose('" + nf[ai].id + "',1)\"><span class='treeKreuz fa-stack " + (ai == nf.len ? "kreuzungend" : "kreuzung") + "'><i class='fa fa-square fa-stack-1x we-color'></i><i class='fa fa-" + (nf[ai].open ? "minus" : "plus") + "-square-o fa-stack-1x'></i></span></a>";
+	if (deleteMode) {
+		if (nf[ai].id != -1) {
+			trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
+			ret += "<a href=\"" + trg + "\"><i class=\"fa fa-" + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i></a>';
 		}
+	} else {
+		trg = "doClick(" + nf[ai].id + ");return true;";
+	}
+
+	ret += "<a id='_" + nf[ai].id + "' href=\"javascript://\" onclick=\"" + trg + "\">" +
+					WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
+					"</a>" +
+					"<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\">" +
+					"" + translate(nf[ai].text) + "</a>" +
+					"<br/>";
+	if (nf[ai].open) {
+		if (ai == nf.len) {
+			newAst += "<span class=\"treeKreuz\"></span>";
+		} else {
+			newAst += '<span class="strich treeKreuz "></span>';
+		}
+		ret += this.draw(nf[ai].id, newAst);
 	}
 	return ret;
-}
+};
+
+container.prototype.drawItem = function (nf, ai) {
+	var ret = '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span>';
+
+	if (nf[ai].id != -1) {
+		ret += '<a id="_' + nf[ai].id + '" href="javascript://" onclick="doClick(' + nf[ai].id + ');return true;">';
+	}
+	if (deleteMode) {
+		if (nf[ai].id != -1) {
+			trg = "javascript:top.content.check(\"img_" + nf[ai].id + "\");";
+			ret += '<a href="' + trg + '"><i class="fa fa-' + (nf[ai].checked ? 'check-' : '') + 'square-o wecheckIcon" name="img_' + nf[ai].id + '"></i>';
+		}
+	} else {
+		ret += '<a id="_' + nf[ai].id + "\" href=\"javascript://\" onclick=\"doClick(" + nf[ai].id + ");return true;\">" +
+						WE().util.getTreeIcon(nf[ai].contenttype, nf[ai].open) +
+						"</a>";
+		trg = "doClick(" + nf[ai].id + ");return true;";
+	}
+	ret += "<a id=\"_" + nf[ai].id + "\" href=\"javascript://\" onclick=\"" + trg + "\" style=\"color:black\">" + (parseInt(nf[ai].published) ? " <b>" : "") + translate(nf[ai].text) + (parseInt(nf[ai].published) ? " </b>" : "") + "</a><br/>";
+	return ret;
+};
 
 container.prototype.updateEntry = function (id, pid, text, pub, redraw) {
 	var ai = 1;
@@ -304,14 +281,14 @@ container.prototype.updateEntry = function (id, pid, text, pub, redraw) {
 		}
 	}
 	if (redraw == 1) {
-		drawEintraege();
+		drawTree();
 	}
 };
 
-container.prototype.openClose = function(id, status) {
+container.prototype.openClose = function (id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
-	drawEintraege();
+	drawTree();
 }
 
 container.prototype.search = function (eintrag) {
@@ -390,20 +367,9 @@ function delete_menu_entries(ids) {
 	treeData = cont;
 }
 
-function rootEntry(id, text, rootstat) {
-	return new node({
-		id: id,
-		text: text,
-		loaded: true,
-		typ: 'root',
-		rootstat: rootstat,
-		open: 1,
-	});
-}
-
 function msg_start() {
 	loadData();
-	drawEintraege();
+	drawTree();
 }
 
 function doClick(id) {
@@ -412,8 +378,8 @@ function doClick(id) {
 
 function loadData() {
 	treeData.clear();
-	startloc = 0;
-	treeData.add(self.rootEntry(0, "root", "root"));
+	treeData.startloc = 0;
+	treeData.add(node.prototype.rootEntry(0, "root", "root"));
 }
 
 function translate(inp) {

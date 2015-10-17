@@ -586,8 +586,8 @@ setTimeout(function(){' . we_message_reporting::getShowMessageCall(g_l('modules_
 
 	public function getHomeScreen(){
 		$hiddens["cmd"] = "home";
-		$GLOBALS["we_head_insert"] = $this->View->getJSProperty();
-		$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0));
+		$GLOBALS["we_head_insert"] = $this->getJSProperty();
+		$GLOBALS["we_body_insert"] = we_html_element::htmlForm(array("name" => "we_form"), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0));
 		$content = we_html_button::create_button("new_voting", "javascript:top.opener.top.we_cmd('new_voting');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING")) .
 				'<br/>' .
 				we_html_button::create_button("new_voting_group", "javascript:top.opener.top.we_cmd('new_voting_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));

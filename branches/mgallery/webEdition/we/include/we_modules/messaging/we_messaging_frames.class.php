@@ -116,7 +116,7 @@ class we_messaging_frames extends we_modules_frame{
 
 			$rootjs = ($pid ? '' :
 					$this->Tree->topFrame . '.treeData.clear();' .
-					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(' . $pid . ',\'root\',\'root\'));'
+					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(' . $pid . ',\'root\',\'root\'));'
 				);
 
 

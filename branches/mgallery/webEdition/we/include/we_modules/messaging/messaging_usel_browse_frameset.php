@@ -44,8 +44,8 @@ function loadData() {
 <?php
 $entries = array();
 $DB_WE->query('SELECT ID,ParentID,username,Permissions,Type FROM ' . USER_TABLE . ' ORDER BY username ASC');
-echo "startloc=0 ;
-treeData.add(self.rootEntry('0','root','root'));";
+echo "treeData.startloc=0 ;
+treeData.add(node.prototype.rootEntry('0','root','root'));";
 while($DB_WE->next_record()){
 	if($DB_WE->f('Type') == 1){
 		echo "  treeData.add({
@@ -90,10 +90,10 @@ checked : checked
 
 	function start() {
 		loadData();
-		drawEintraege();
+		drawTree();
 	}
 
-	var startloc = 0;
+	treeData.startloc = 0;
 
 
 	sel_color = "#697ace";

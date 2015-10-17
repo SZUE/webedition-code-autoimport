@@ -121,7 +121,8 @@ function setTab(tab) {
 			return $this->View->getHomeScreen();
 		}
 		$yuiSuggest = & weSuggest::getInstance();
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;startTree();", "onunload" => "doUnload()"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
+		//FIXME: folder don't have a tree to start.
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;if(window.startTree){startTree();}", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
 		);
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -398,7 +399,7 @@ function closeAllType(){
 
 			$js = ($pid ? '' :
 							$this->Tree->topFrame . '.treeData.clear();' .
-							$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.rootEntry(\'' . we_base_request::_(we_base_request::STRING, "pid") . '\',\'root\',\'root\'));');
+							$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . we_base_request::_(we_base_request::STRING, "pid") . '\',\'root\',\'root\'));');
 
 			return we_html_element::jsElement($js . $this->Tree->getJSLoadTree($pid, we_export_treeMain::getItemsFromDB($pid)));
 		}

@@ -388,36 +388,36 @@ if($wecmd0 != "delete_single_document"){ // no select mode in delete_single_docu
 	switch($table){
 		case FILE_TABLE:
 			if(permissionhandler::hasPerm("DELETE_DOC_FOLDER") && permissionhandler::hasPerm("DELETE_DOCUMENT")){
-				echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
+				echo 'top.treeData.setState(top.treeData.tree_states["select"]);';
 			} elseif(permissionhandler::hasPerm("DELETE_DOCUMENT")){
-				echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+				echo 'top.treeData.setState(top.treeData.tree_states["selectitem"]);';
 			}
 			break;
 		case TEMPLATES_TABLE:
 			if(permissionhandler::hasPerm("DELETE_TEMP_FOLDER") && permissionhandler::hasPerm("DELETE_TEMPLATE")){
-				echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
+				echo 'top.treeData.setState(top.treeData.tree_states["select"]);';
 			} elseif(permissionhandler::hasPerm("DELETE_TEMPLATE")){
-				echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+				echo 'top.treeData.setState(top.treeData.tree_states["selectitem"]);';
 			}
 			break;
 		case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 1):
 			if(permissionhandler::hasPerm("DELETE_OBJECTFILE")){
-				echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
+				echo 'top.treeData.setState(top.treeData.tree_states["select"]);';
 			}
 			break;
 		case VFILE_TABLE:
 			// FIXME: implement prefs for collections
 			//if(permissionhandler::hasPerm("DELETE_DOC_FOLDER") && permissionhandler::hasPerm("DELETE_DOCUMENT")){
-			echo 'top.treeData.setstate(top.treeData.tree_states["select"]);';
+			echo 'top.treeData.setState(top.treeData.tree_states["select"]);';
 			/*
 			  } elseif(permissionhandler::hasPerm("DELETE_DOCUMENT")){
-			  echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+			  echo 'top.treeData.setState(top.treeData.tree_states["selectitem"]);';
 			  }
 			 *
 			 */
 			break;
 		default:
-			echo 'top.treeData.setstate(top.treeData.tree_states["selectitem"]);';
+			echo 'top.treeData.setState(top.treeData.tree_states["selectitem"]);';
 	}
 }
 ?>

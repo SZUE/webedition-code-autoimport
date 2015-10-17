@@ -33,13 +33,13 @@ container.prototype.openClose = function(id) {
 
 	treeData[eintragsIndex].open = openstatus;
 
-	if (openstatus && treeData[eintragsIndex].loaded != 1) {
+	if (openstatus && !treeData[eintragsIndex].loaded) {
 		frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
 	if (openstatus) {
-		treeData[eintragsIndex].loaded = 1;
+		treeData[eintragsIndex].loaded = true;
 	}
 }
 

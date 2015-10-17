@@ -34,7 +34,7 @@ container.prototype.openClose = function(id) {
 	openstatus = (treeData[eintragsIndex].open ? 0 : 1);
 	treeData[eintragsIndex].open = openstatus;
 
-	if (openstatus && treeData[eintragsIndex].loaded != 1) {
+	if (openstatus && !treeData[eintragsIndex].loaded) {
 		if (sort != "") {
 			frames.cmd.location = treeData.frameset + "?pnt=cmd&pid=" + id + "&sort=" + sort;
 		} else {
@@ -43,8 +43,8 @@ container.prototype.openClose = function(id) {
 	} else {
 		drawTree();
 	}
-	if (openstatus == 1) {
-		treeData[eintragsIndex].loaded = 1;
+	if (openstatus) {
+		treeData[eintragsIndex].loaded = true;
 	}
 }
 

@@ -43,7 +43,7 @@ div.tab{
 	border-right: 1px solid #888888;
 	display:inline-block;
 	background-color: #D3D3D3;
-	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);/*tabsBG_normal.gif*/
+	background: linear-gradient(#dbdbdb, #cccccc 50%,#999999);
 	line-height:21px;
 	cursor:pointer;
 }
@@ -52,7 +52,7 @@ div.tab:hover{
 	border-bottom: 1px solid #888888;
 	border-right: 1px solid #888888;
 	display:inline-block;
-	background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);/*tabsBG_over.gif*/
+	background: linear-gradient(#cbd3dc, #bfc6cf 50%,#999999);
 	line-height:21px;
 	cursor:pointer;
 }

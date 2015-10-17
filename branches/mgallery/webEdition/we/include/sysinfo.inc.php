@@ -226,7 +226,7 @@ $_info = array(
 	),
 	'<a href="javascript:showPhpInfo();">PHP</a>' => array(
 		g_l('sysinfo', '[php_version]') => /* version_compare(PHP_VERSION, '5.3.8', '<') ? getWarning('>5.3.8', PHP_VERSION) : */ PHP_VERSION,
-		/*g_l('sysinfo', '[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning(sprintf(g_l('sysinfo', '[zend_framework warning]'), WE_ZFVERSION), Zend_Version::VERSION) : Zend_Version::VERSION,*/
+		/* g_l('sysinfo', '[zendframework_version]') => (Zend_Version::VERSION != WE_ZFVERSION) ? getWarning(sprintf(g_l('sysinfo', '[zend_framework warning]'), WE_ZFVERSION), Zend_Version::VERSION) : Zend_Version::VERSION, */
 		'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo', '[register_globals warning]'), ini_get('register_globals')) : getOK('', ini_get_message('register_globals')),
 		'max_execution_time' => ini_get('max_execution_time'),
 		'memory_limit' => we_convertIniSizes(ini_get('memory_limit')),
@@ -306,7 +306,7 @@ echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'));
 	function showPhpInfo() {
 		document.getElementById("info").style.display = "none";
 		document.getElementById("more").style.display = "block";
-		document.getElementById("phpinfo").src = "/webEdition/we_cmd.php?we_cmd[0]=phpinfo";
+		document.getElementById("phpinfo").src = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=phpinfo";
 	}
 
 	function showInfoTable() {

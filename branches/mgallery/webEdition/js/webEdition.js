@@ -357,7 +357,7 @@ function openBrowser(url) {
 		url = "/";
 	}
 	try {
-		browserwind = window.open("/webEdition/openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
+		browserwind = window.open(WE().consts.dirs.WEBEDITION_DIR + "openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 	} catch (e) {
 		top.we_showMessage(WE().consts.g_l.main.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
@@ -431,7 +431,7 @@ function doUnloadSEEM(whichWindow) {
 
 	if (whichWindow != "include") {
 		if (opener) {
-			opener.location.replace('/webEdition/we_loggingOut.php');
+			opener.location.replace(WE().consts.dirs.WEBEDITION_DIR + 'we_loggingOut.php');
 		}
 	}
 }
@@ -468,17 +468,17 @@ function doUnloadNormal(whichWindow) {
 			var logoutpopup;
 			if (top.opener) {
 				if (specialUnload) {
-					top.opener.location.replace('/webEdition/we_loggingOut.php?isopener=1');
+					top.opener.location.replace(WE().consts.dirs.WEBEDITION_DIR + 'we_loggingOut.php?isopener=1');
 					top.opener.focus();
 				} else {
 					top.opener.history.back();
-					logoutpopup = window.open('/webEdition/we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+					logoutpopup = window.open(WE().consts.dirs.WEBEDITION_DIR + 'we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 					if (logoutpopup) {
 						logoutpopup.focus();
 					}
 				}
 			} else {
-				logoutpopup = window.open('/webEdition/we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
+				logoutpopup = window.open(WE().consts.dirs.WEBEDITION_DIR + 'we_loggingOut.php?isopener=0', "webEdition", "width=350,height=70,toolbar=no,menubar=no,directories=no,location=no,resizable=no,status=no,scrollbars=no,top=300,left=500");
 				if (logoutpopup) {
 					logoutpopup.focus();
 				}
@@ -599,29 +599,29 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(window, url, "we_change_passwd", -1, -1, 250, 220, true, false, true, false);
 			break;
 		case "update":
-			new (WE().util.jsWindow)(window, "/webEdition/liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "upgrade":
-			new (WE().util.jsWindow)(window, "/webEdition/liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "languageinstallation":
-			new (WE().util.jsWindow)(window, "/webEdition/liveUpdate/liveUpdate.php?active=languages", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=languages", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
 			break;
 		case "del":
 			we_cmd('delete', 1, args[2]);
-			treeData.setstate(treeData.tree_states.select);
+			treeData.setState(treeData.tree_states.select);
 			top.treeData.unselectNode();
 			top.drawTree();
 			break;
 		case "mv":
 			we_cmd('move', 1, args[2]);
-			treeData.setstate(treeData.tree_states.selectitem);
+			treeData.setState(treeData.tree_states.selectitem);
 			top.treeData.unselectNode();
 			top.drawTree();
 			break;//add_to_collection
 		case "tocollection":
 			we_cmd('addToCollection', 1, args[2]);
-			treeData.setstate(treeData.tree_states.select);
+			treeData.setState(treeData.tree_states.select);
 			top.treeData.unselectNode();
 			top.drawTree();
 			break;
@@ -683,7 +683,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "info_modules":
 			WE().util.jsWindow.prototype.focus('edit_module');
-			url = "/webEdition/we_cmd.php?we_cmd[0]=info";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=info";
 			new (WE().util.jsWindow)(window, url, "info", -1, -1, 432, 350, true, false, true);
 			break;
 		case "help_tools":
@@ -697,7 +697,7 @@ function we_cmd_base(args, url) {
 			WE().util.jsWindow.prototype.focus('tool_window') ||
 							WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
 							WE().util.jsWindow.prototype.focus('tool_window_weSearch');
-			url = "/webEdition/we_cmd.php?we_cmd[0]=info";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=info";
 			new (WE().util.jsWindow)(window, url, "info", -1, -1, 432, 350, true, false, true);
 			break;
 		case "help":
@@ -960,7 +960,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(window, url, "copyfolder", -1, -1, 550, 320, true, true, true);
 			break;
 		case "del_frag":
-			new (WE().util.jsWindow)(window, "/webEdition/delFrag.php?currentID=" + args[1], "we_del", -1, -1, 600, 130, true, true, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "delFrag.php?currentID=" + args[1], "we_del", -1, -1, 600, 130, true, true, true);
 			break;
 		case "open_wysiwyg_window":
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
@@ -994,14 +994,14 @@ function we_cmd_base(args, url) {
 			break;
 		case "edit_home":
 			if (args[1] === 'add') {
-				self.load.location = '/webEdition/we/include/we_widgets/cmd.php?we_cmd[0]=' + args[1] + '&we_cmd[1]=' + args[2] + '&we_cmd[2]=' + args[3];
+				self.load.location = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php?we_cmd[0]=' + args[1] + '&we_cmd[1]=' + args[2] + '&we_cmd[2]=' + args[3];
 			}
 			break;
 		case "edit_navi":
 			new (WE().util.jsWindow)(window, url, "we_navieditor", -1, -1, 400, 360, true, true, true, true);
 			break;
 		case "initPlugin":
-			weplugin_wait = new (WE().util.jsWindow)(window, "/webEdition/editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
+			weplugin_wait = new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
 			break;
 		case "edit_settings_newsletter":
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
@@ -1032,16 +1032,16 @@ function we_cmd_base(args, url) {
 			we_cmd("glossary_settings");
 			break;
 		case "sysinfo":
-			new (WE().util.jsWindow)(window, "/webEdition/we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", -1, -1, 720, 660, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", -1, -1, 720, 660, true, false, true);
 			break;
 		case "showerrorlog":
-			new (WE().util.jsWindow)(window, "/webEdition/errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
 			break;
 		case "view_backuplog":
-			new (WE().util.jsWindow)(window, "/webEdition/we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", -1, -1, 720, 660, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", -1, -1, 720, 660, true, false, true);
 			break;
 		case "show_message_console":
-			new (WE().util.jsWindow)(window, "/webEdition/we/include/jsMessageConsole/messageConsole.php", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR + "jsMessageConsole/messageConsole.php", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
 			break;
 		case "remove_from_editor_plugin":
 			if (args[1] && top.plugin && top.plugin.remove) {
@@ -1081,7 +1081,7 @@ function we_cmd_base(args, url) {
 			deleteMode = false;
 			if (WE().session.seemode) {
 			} else {
-				treeData.setstate(treeData.tree_states.edit);
+				treeData.setState(treeData.tree_states.edit);
 				drawTree();
 
 				self.document.getElementById("bm_treeheaderDiv").style.height = "1px";
@@ -1103,7 +1103,7 @@ function we_cmd_base(args, url) {
 					top.deleteMode = args[1];
 				}
 				if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
-					treeData.setstate(treeData.tree_states.edit);
+					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "150px";
@@ -1140,7 +1140,7 @@ function we_cmd_base(args, url) {
 					top.deleteMode = args[1];
 				}
 				if (!top.deleteMode && treeData.state == treeData.tree_states.selectitem) {
-					treeData.setstate(treeData.tree_states.edit);
+					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "160px";
@@ -1172,7 +1172,7 @@ function we_cmd_base(args, url) {
 					top.deleteMode = args[1];
 				}
 				if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
-					treeData.setstate(treeData.tree_states.edit);
+					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
 				self.document.getElementById("bm_treeheaderDiv").style.height = "205px";
@@ -1198,7 +1198,7 @@ function we_cmd_base(args, url) {
 			if (_currEditor && _currEditor.getEditorType() === "cockpit") {
 				if (confirm(WE().consts.g_l.main.cockpit_reset_settings)) {
 					//FIXME: currently this doesn't work
-					WE().layout.weEditorFrameController.getActiveDocumentReference().location = '/webEdition/we/include/we_widgets/cmd.php?we_cmd[0]=' + args[0];
+					WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/cmd.php?we_cmd[0]=' + args[0];
 					if ((window.treeData !== undefined) && treeData) {
 						treeData.unselectNode();
 					}
@@ -1227,16 +1227,16 @@ function we_cmd_base(args, url) {
 			break;
 		case "open_document":
 			we_cmd("load", WE().consts.tables.FILE_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new (WE().util.jsWindow)(window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "open_collection":
 			we_cmd("load", WE().consts.tables.VFILE_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new (WE().util.jsWindow)(window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "edit_new_collection":
-			url = "/webEdition/we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
 			new (WE().util.jsWindow)(window, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		case "help_documentation":
@@ -1255,7 +1255,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "open_template":
 			we_cmd("load", WE().consts.tables.TEMPLATES_TABLE);
-			url = "/webEdition/we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=" + WE().consts.contentTypes.TEMPLATE + "&we_cmd[2]=" + WE().consts.tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[8]=" + WE().consts.contentTypes.TEMPLATE + "&we_cmd[2]=" + WE().consts.tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,currentID,currentType)") + "&we_cmd[9]=1";
 			new (WE().util.jsWindow)(window, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "switch_edit_page":
@@ -1313,7 +1313,7 @@ function we_cmd_base(args, url) {
 			if (_isEditpageContent && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
 				// tell the backend the right edit page nr and break (don't send the form)
 				//YAHOO.util.Connect.setForm(_sendFromFrame.document.we_form);
-				YAHOO.util.Connect.asyncRequest('POST', "/webEdition/rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction=' + _we_activeTransaction + "&editPageNr=" + args[1]);
+				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc/rpc.php", setPageNrCallback, 'protocol=json&cmd=SetPageNr&transaction=' + _we_activeTransaction + "&editPageNr=" + args[1]);
 				if (_visibleEditorFrame.reloadContent === false) {
 					break;
 				}

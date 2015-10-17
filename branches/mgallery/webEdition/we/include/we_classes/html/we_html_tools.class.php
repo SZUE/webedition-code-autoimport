@@ -365,7 +365,7 @@ this.selectedIndex = 0;' .
 		return '<table class="default"><tr><td>' . $textField . '</td><td>' . $selectMenue . '</td></tr></table>';
 	}
 
-	static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
+	/*static function gifButton($name, $href, $language = "Deutsch", $alt = "", $width = "", $height = "", $onClick = "", $bname = "", $target = "", $disabled = false){
 		$img = we_html_element::htmlImg(array(
 				'src' => IMAGE_DIR . 'buttons/' . $name . ($disabled ? '_d' : "") . ($language ? '_' : '') . $language . '.gif',
 				'style' => ($width ? ' width:' . $width . 'px;' : '') . ($height ? ' height:' . $height . 'px' : ''),
@@ -379,7 +379,7 @@ this.selectedIndex = 0;' .
 					'<a href="' . $href . '" onmouseover="window.status=\'' . $alt . '\';return true;" onmouseout="window.status=\'\';return true;"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($target ? (' target="' . $target . '"') : '') . '>' . $img . '</a>' :
 					'<input type="image" src="' . IMAGE_DIR . 'buttons/' . $name . ($language ? '_' : '') . $language . '.gif"' . ($width ? ' width="' . $width . '"' : '') . ($height ? ' height="' . $height . '"' : '') . ' border="0" alt="' . $alt . '"' . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($bname ? ' name="' . $bname . '"' : '') . ' />'
 				));
-	}
+	}*/
 
 	static function getExtensionPopup($name, $selected, $extensions, $width = '', $attribs = '', $permission = true){
 		if((isset($extensions)) && (count($extensions) > 1)){

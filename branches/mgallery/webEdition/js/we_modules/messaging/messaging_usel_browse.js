@@ -1,3 +1,5 @@
+/* global container, treeData */
+
 /**
  * webEdition SDK
  *
@@ -87,7 +89,7 @@ function check(entry) {
 		}
 	}
 	if (!document.images) {
-		drawEintraege();
+		drawTree();
 	}
 }
 
@@ -139,7 +141,7 @@ function deleteEntry(id) {
 		}
 		treeData.len[treeData.len] = null;
 		treeData.len--;
-		drawEintraege();
+		drawTree();
 	}
 }
 
@@ -147,24 +149,24 @@ function deleteEntry(id) {
 container.prototype.openClose = function(id, status) {
 	var eintragsIndex = treeData.indexOfEntry(id);
 	treeData[eintragsIndex].open = status;
-	drawEintraege();
-}
+	drawTree();
+};
 
 container.prototype.indexOfEntry = function (id) {
 	for (var ai = 1; ai <= this.len; ai++) {
-		if ((this[ai].typ == 'root') || (this[ai].typ == 'folder')) {
+		if ((this[ai].typ === 'root') || (this[ai].typ === 'folder')) {
 			if (this[ai].id == id) {
 				return ai;
 			}
 		}
 	}
 	return -1;
-}
+};
 
 function search(eintrag) {
 	var nf = new container();
 	for (var ai = 1; ai <= treeData.len; ai++) {
-		if ((treeData[ai].typ == 'folder') || (treeData[ai].typ == 'user')) {
+		if ((treeData[ai].typ === 'folder') || (treeData[ai].typ === 'user')) {
 			if (treeData[ai].parentid == eintrag) {
 				nf.add(treeData[ai]);
 			}
@@ -173,19 +175,9 @@ function search(eintrag) {
 	return nf;
 }
 
-function rootEntry(id, text, rootstat) {
-	return new node({
-		id: id,
-		text: text,
-		loaded: true,
-		typ: 'root',
-		rootstat: rootstat,
-	});
-}
-
-function drawEintraege() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
+function drawTree() {//FIXME: we don't have an existing document to write on, change this, as is changed in tree
 	messaging_usel_main.window.document.body.innerHTML = "<table class=\"default\" style=\"width:100%\"><tr><td class=\"tree\"><nobr>" +
-					draw(top.startloc, "") +
+					draw(treeData.startloc, "") +
 					"</nobr></td></tr></table>";
 
 

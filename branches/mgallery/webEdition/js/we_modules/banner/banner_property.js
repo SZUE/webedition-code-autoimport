@@ -42,14 +42,14 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1,WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url, "we_docselector", -1, -1,WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url, "we_dirselector", -1, -1,WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(window, url, "we_dirselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "we_banner_dirSelector":
 			new (WE().util.jsWindow)(window, url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
@@ -94,7 +94,7 @@ function we_cmd() {
 function submitForm() {
 	var f = self.document.we_form;
 	f.target = (arguments[0] ? arguments[0] : "edbody");
-	f.action = (arguments[1] ? arguments[1] : "");
+	f.action = (arguments[1] ? arguments[1] : WE().consts.dirs.WE_MODULES_DIR + "banner/edit_banner_frameset.php");
 	f.method = (arguments[2] ? arguments[2] : "post");
 	f.submit();
 }

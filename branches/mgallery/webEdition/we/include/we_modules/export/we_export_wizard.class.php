@@ -198,24 +198,24 @@ var filename="";
 var export_to="server";
 var path="/";
 
-var SelectedItems= [];
-SelectedItems["' . FILE_TABLE . '"]=[];' .
+var SelectedItems= {
+"' . FILE_TABLE . '":[],
+"' . TEMPLATES_TABLE . '":[],'.
 				(defined('OBJECT_FILES_TABLE') ? (
-					'SelectedItems["' . OBJECT_FILES_TABLE . '"]=[];
-	SelectedItems["' . OBJECT_TABLE . '"]=[];
+					'"' . OBJECT_FILES_TABLE . '":[],
+	"' . OBJECT_TABLE . '":[],
 	') : '') . '
+};
 
-
-SelectedItems["' . TEMPLATES_TABLE . '"]=[];
-
-var openFolders= [];
-openFolders["' . FILE_TABLE . '"]="";' .
+var openFolders= {
+	"' . FILE_TABLE . '":"",
+	"' . TEMPLATES_TABLE . '":"",' .
 				(defined('OBJECT_FILES_TABLE') ? ('
-openFolders["' . OBJECT_FILES_TABLE . '"]="";
-openFolders["' . OBJECT_TABLE . '"]="";
-') : '') . '
-openFolders["' . TEMPLATES_TABLE . '"]="";
-		');
+	"' . OBJECT_FILES_TABLE . '":"",
+	"' . OBJECT_TABLE . '":"",
+') : '') .
+				'};'
+		);
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->bodyFrame . ".location='" . $this->frameset . "?pnt=body" . $args . "&step=' + step;")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
