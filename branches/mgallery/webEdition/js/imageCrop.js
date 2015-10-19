@@ -57,6 +57,8 @@ var CropTool = {
 	triggered: false,
 	eventHandler: {},
 	crop: function (x, y, w, h) {
+		imageEditTools.deactivateAll();
+		imageEditTools.activeTool = 'crop';
 		this.triggered = true;
 		var elIdDiv = document.getElementById(this.imgDiv);
 		elIdDiv.style.border = "2px solid #CECECE";
@@ -959,27 +961,125 @@ var CropTool = {
 	);
 }*/
 
-function setFocusPositionByMouse(e) {
-	var img = document.getElementById("weImage");
-	document.getElementById("x_focus").value = ((e.offsetX - img.width / 2) / (img.width / 2)).toFixed(2);
-	document.getElementById("y_focus").value = ((e.offsetY - img.height / 2) / (img.height / 2)).toFixed(2);
-	setFocusPositionByValue();
-}
+var imageEditTools = {
+	activeTool: '',
+	deactivateAll: function(){
+		switch(imageEditTools.activeTool){
+			case 'focus':top.console.debug('case "focus"');
+				this.focus.drop();
+				break;
+			case 'crop':
+				CropTool.drop();
+				break;
+			default:top.console.debug('case "def"');
+				// as we have not yer integrated crop
+				if (typeof CropTool === 'object' && CropTool.triggered) {
+					CropTool.drop();
+				}
+		}
+		imageEditTools.activeTool = '';
+	},
 
-function setFocusPositionByValue() {
-	var x = document.getElementById("x_focus").value;
-	var y = document.getElementById("y_focus").value;
-	if (Math.abs(x) > 1) {
-		x = 0;
-	}
-	if (Math.abs(y) > 1) {
-		y = 0;
-	}
-	document.getElementById("focus").value = "[" + x + "," + y + "]";
+	focus : {
+		focusPoint : null,
+		image : null,
+		x_focus : null,
+		y_focus : null,
 
-	var img = document.getElementById("weImage");
-	var imgfocus_point = document.getElementById("imgfocus_point");
-	imgfocus_point.style.left = ((img.width / 2) + (x * (img.width / 2))).toFixed(0) + "px";
-	imgfocus_point.style.top = ((img.height / 2) + (y * (img.height / 2))).toFixed(0) + "px";
-	_EditorFrame.setEditorIsHot(true);
-}
+		start: function(){
+			var t = imageEditTools.focus;
+
+			imageEditTools.deactivateAll();
+			imageEditTools.activeTool = 'focus';
+
+			t.focusPoint = document.getElementById('imgfocus_point');
+			t.image = document.getElementById('weImage');
+			t.x_focus = document.getElementById('x_focus');
+			t.y_focus = document.getElementById('y_focus');
+
+			t.focusPoint.style.display = "block";
+			t.focusPoint.style.cursor = "move";
+			t.image.addEventListener("click", imageEditTools.focus.setFocusPositionByMouse, false);
+			document.getElementById('cursorVal').style.display = "block";
+			document.getElementById('weImage').style.cursor = "crosshair";
+
+			t.focusPoint.addEventListener("mousedown", imageEditTools.focus.startMoveFocusPosition, false);
+			t.focusPoint.addEventListener("dragstart", function(e){e.preventDefault();}, false);
+			t.focusPoint.addEventListener("mouseup", imageEditTools.focus.stopMoveFocusPosition, false);
+			t.image.addEventListener("mouseup", imageEditTools.focus.stopMoveFocusPosition, false);
+
+			var hot = _EditorFrame.getEditorIsHot();
+			this.setFocusPositionByValue();
+			_EditorFrame.setEditorIsHot(hot);
+		},
+
+		drop: function(){
+			var t = imageEditTools.focus;
+
+			t.focusPoint.style.display = "none";
+			t.image.style.cursor = "default";
+			t.image.removeEventListener("click", imageEditTools.focus.setFocusPositionByMouse, false);
+			t.focusPoint.removeEventListener("mousedown", imageEditTools.focus.startMoveFocusPosition, false);
+			t.focusPoint.removeEventListener("mouseup", imageEditTools.focus.stopMoveFocusPosition, false);
+			document.getElementById('cursorVal').style.display = "none";
+		},
+
+		startMoveFocusPosition : function(e){
+			var t = imageEditTools.focus;
+
+			t.referenceX = e.clientX;
+			t.referenceY = e.clientY;
+			t.origLeft = parseInt(t.focusPoint.style.left);
+			t.origTop = parseInt(t.focusPoint.style.top);
+			t.focusPoint.addEventListener("mousemove", t.moveFocusPosition, false);
+			t.image.addEventListener("mousemove", t.moveFocusPosition, false);
+		},
+
+		stopMoveFocusPosition : function(e){
+			var t = imageEditTools.focus;
+
+			t.focusPoint.removeEventListener("mousemove", t.moveFocusPosition, false);
+			t.image.removeEventListener("mousemove", t.moveFocusPosition, false);
+			//t.setFocusPositionByMouse(null, parseInt(t.focusPoint.style.left), parseInt(t.focusPoint.style.top));
+		},
+
+		moveFocusPosition : function(e){
+			var t = imageEditTools.focus,
+				top = t.origTop + (e.clientY - t.referenceY),
+				left = t.origLeft + (e.clientX - t.referenceX);
+
+			//t.focusPoint.style.left = left + 'px';
+			//t.focusPoint.style.top = top + 'px';
+			t.setFocusPositionByMouse(null, left, top);
+		},
+
+		setFocusPositionByMouse: function(e, top, left) {
+			var t = imageEditTools.focus;
+
+			top = e ? e.offsetX : (top ? top : false);
+			left = e ? e.offsetY : (left ? left : false);
+
+			t.x_focus.value = ((top - t.image.width / 2) / (t.image.width / 2)).toFixed(2);
+			t.y_focus.value = ((left - t.image.height / 2) / (t.image.height / 2)).toFixed(2);
+			t.setFocusPositionByValue();
+		},
+
+		setFocusPositionByValue : function(){
+			var t = imageEditTools.focus,
+				x = document.getElementById("x_focus").value,
+				y = document.getElementById("y_focus").value;
+
+			if (Math.abs(t.x_focus) > 1) {
+				t.x_focus = 0;
+			}
+			if (Math.abs(y) > 1) {
+				y = 0;
+			}
+			document.getElementById("focus").value = "[" + x + "," + y + "]";
+
+			t.focusPoint.style.left = ((t.image.width / 2) + (x * (t.image.width / 2))).toFixed(0) + "px";
+			t.focusPoint.style.top = ((t.image.height / 2) + (y * (t.image.height / 2))).toFixed(0) + "px";
+			_EditorFrame.setEditorIsHot(true);
+		}
+	}
+};

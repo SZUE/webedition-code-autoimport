@@ -287,9 +287,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "image_resize":
-			if (typeof CropTool === 'object' && CropTool.triggered) {
-				CropTool.drop();
-			}
+			imageEditTools.deactivateAll();
 			if (hasGD) {
 				new (WE().util.jsWindow)(window, url, "we_image_resize", -1, -1, 260, (gdType === "jpg" ? 250 : 190), true, false, true);
 			} else {
@@ -297,15 +295,11 @@ function we_cmd() {
 			}
 			break;
 		case "image_convertJPEG":
-			if (typeof CropTool === 'object' && CropTool.triggered) {
-				CropTool.drop();
-			}
+			imageEditTools.deactivateAll();
 			new (WE().util.jsWindow)(window, url, "we_convert_jpg", -1, -1, 260, 160, true, false, true);
 			break;
 		case "image_rotate":
-			if (typeof CropTool === 'object' && CropTool.triggered) {
-				CropTool.drop();
-			}
+			imageEditTools.deactivateAll();
 			if (canRotate) {
 				if (gdSupport) {
 					new (WE().util.jsWindow)(window, url, "we_rotate", -1, -1, 300, (gdType === "jpg" ? 230 : 170), true, false, true);
@@ -317,13 +311,7 @@ function we_cmd() {
 			}
 			break;
 		case "image_focus":
-			document.getElementById('imgfocus_point').style.display = "block";
-			document.getElementById('cursorVal').style.display = "block";
-			document.getElementById('weImage').style.cursor = "crosshair";
-			document.getElementById("weImage").addEventListener("click", setFocusPositionByMouse, false);
-			var hot = _EditorFrame.getEditorIsHot();
-			setFocusPositionByValue();
-			_EditorFrame.setEditorIsHot(hot);
+			imageEditTools.focus.start();
 			break;
 		case "image_crop":
 			if (WE_EDIT_IMAGE) {
@@ -335,7 +323,7 @@ function we_cmd() {
 			}
 			break;
 		case "crop_cancel":
-			CropTool.drop();
+			imageEditTools.deactivateAll();
 			break;
 		case "spellcheck":
 			if (WE_SPELLCHECKER_MODULE_DIR) {

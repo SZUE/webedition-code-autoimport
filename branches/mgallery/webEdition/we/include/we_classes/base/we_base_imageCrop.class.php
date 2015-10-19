@@ -58,7 +58,7 @@ var size={
       <div id="weImgDiv">
         <div id="weImagePanelBorder"><div id="weImagePanel">
           <img id="weImage" src="' . $attribs["src"] . '"' . (isset($attribs["width"]) ? ' width="' . $attribs["width"] . '"' : '' ) . (isset($attribs["height"]) ? ' height="' . $attribs["height"] . '"' : '') . (isset($attribs["alt"]) ? ' alt="' . $attribs["alt"] . '"' : '') . ' />
-<div id="imgfocus_point" style="display:none;"></div>
+<div id="imgfocus_point" style="display:none;" draggable="false"></div>
 </div>
 </div>
       </div>
