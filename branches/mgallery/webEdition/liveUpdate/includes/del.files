@@ -1,3 +1,7 @@
+we/include/we_modules/export/edit_export_frameset.php
+we/include/we_modules/glossary/edit_glossary_frameset.php
+we/include/we_modules/navigation/edit_navigation_frameset.php
+we/include/we_modules/voting/edit_voting_frameset.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js

@@ -182,10 +182,10 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		case "load":
-			top.content.cmd.location = WE().consts.dirs.WE_EXPORT_MODULE_DIR + "edit_export_frameset.php?pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
+			top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=export&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		case "home":
-			top.content.editor.edbody.parent.location = WE().consts.dirs.WE_EXPORT_MODULE_DIR + "edit_export_frameset.php?pnt=editor";
+			top.content.editor.edbody.parent.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=export&pnt=editor";
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);

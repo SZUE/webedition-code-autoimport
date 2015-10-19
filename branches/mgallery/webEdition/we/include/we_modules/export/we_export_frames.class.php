@@ -33,8 +33,8 @@ class we_export_frames extends we_modules_frame{
 	protected $treeDefaultWidth = 220;
 	public $module = "export";
 
-	function __construct(){
-		parent::__construct(WE_EXPORT_MODULE_DIR . "edit_export_frameset.php");
+	function __construct($frameset){
+		parent::__construct($frameset);
 		$this->Tree = new we_export_treeMain($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->SelectionTree = new we_export_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_export_view();
@@ -602,7 +602,7 @@ function closeAllType(){
 								we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(we_html_tools::getPixel(10, 1) . g_l('export', '[backup_finished]')) . "<br/>" .
 										addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', '[download_starting2]') . "<br/><br/>" .
 										addslashes(we_html_tools::getPixel(10, 1)) . g_l('export', '[download_starting3]') . "<br/>" .
-										addslashes(we_html_tools::getPixel(10, 1)) . we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
+										addslashes(we_html_tools::getPixel(10, 1)) . we_html_element::htmlB(we_html_element::htmlA(array("href" => $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"
 								) .
 								'\');') :
 						''
@@ -618,7 +618,7 @@ function closeAllType(){
 									"topmargin" => 5,
 									"onload" =>
 									($this->View->export->ExportTo === 'local' ?
-											($this->cmdFrame . ".location='" . $this->frameset . "?pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
+											($this->cmdFrame . ".location='" . $this->frameset . "&pnt=cmd&cmd=upload&exportfile=" . urlencode($this->View->export->ExportFilename) . "';") :
 											'showEndStatus();') .
 									"top.content.editor.edfooter.hideProgress();"
 								)
@@ -648,10 +648,10 @@ function closeAllType(){
 
 				readfile(TEMP_PATH . $_filename);
 			} else {
-				header("Location: " . $this->frameset . "?pnt=cmd&cmd=upload_failed");
+				header("Location: " . $this->frameset . "&pnt=cmd&cmd=upload_failed");
 			}
 		} else {
-			header("Location: " . $this->frameset . "?pnt=cmd&cmd=error=upload_failed");
+			header("Location: " . $this->frameset . "&pnt=cmd&cmd=error=upload_failed");
 		}
 		exit();
 	}

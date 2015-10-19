@@ -31,12 +31,12 @@ class we_export_treeMain extends weTree{
 	function getJSStartTree(){
 		return '
 function startTree(){
-			frames={
-	"top":' . $this->topFrame . ',
-	"cmd":' . $this->cmdFrame . '
+	frames={
+	top:' . $this->topFrame . ',
+	cmd:' . $this->cmdFrame . '
 };
 treeData.frames=frames;
-	frames.cmd.location=treeData.frameset+"?pnt=cmd&cmd=mainload&pid=0";
+	frames.cmd.location=treeData.frameset+"&pnt=cmd&cmd=mainload&pid=0";
 	drawTree();
 			}';
 	}

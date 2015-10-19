@@ -42,7 +42,7 @@ frames={
 };
 	pid = arguments[0] ? arguments[0] : 0;
 	offset = arguments[1] ? arguments[1] : 0;
-	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid="+pid+"&offset="+offset;
+	frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();
 }';
 	}

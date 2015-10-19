@@ -160,11 +160,11 @@ function we_cmd() {
 
 			break;
 		case "move_abs":
-			top.content.cmd.location = data.frameset + "?pnt=cmd&cmd=" + args[0] + "&pos=" + args[1];
+			top.content.cmd.location = data.frameset + "&pnt=cmd&cmd=" + args[0] + "&pos=" + args[1];
 			break;
 		case "move_up":
 		case "move_down":
-			top.content.cmd.location = data.frameset + "?pnt=cmd&cmd=" + args[0];
+			top.content.cmd.location = data.frameset + "&pnt=cmd&cmd=" + args[0];
 			break;
 		case "dyn_preview":
 		case "create_template":
@@ -191,7 +191,7 @@ function we_cmd() {
 			}
 			break;
 		case "exit_doc_question":
-			url = data.frameset + "?pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
+			url = data.frameset + "&pnt=exit_doc_question&delayCmd=" + top.content.editor.edbody.document.getElementsByName("delayCmd")[0].value + "&delayParam=" + top.content.editor.edbody.document.getElementsByName("delayParam")[0].value;
 			new (WE().util.jsWindow)(window, url, "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			break;
 

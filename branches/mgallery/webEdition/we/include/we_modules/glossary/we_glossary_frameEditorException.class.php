@@ -39,8 +39,8 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 
-		return self::buildBody($weGlossaryFrames, we_html_element::jsElement($weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_exception&cmdid=' . $cmdid . '";'
-					. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $cmdid . '"') . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false)));
+		return self::buildBody($weGlossaryFrames, we_html_element::jsElement($weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '&pnt=edheader&cmd=glossary_view_exception&cmdid=' . $cmdid . '";'
+					. $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '&pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $cmdid . '"') . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false)));
 	}
 
 	function getHTMLTabProperties($weGlossaryFrames){

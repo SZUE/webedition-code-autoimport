@@ -36,7 +36,7 @@ function startTree(){
 	"cmd":' . $this->cmdFrame . '
 };
 treeData.frames=frames;
-	frames.cmd.location=treeData.frameset+"?pnt=cmd&pid=0";
+	frames.cmd.location=treeData.frameset+"&pnt=cmd&pid=0";
 	drawTree();
 }';
 	}

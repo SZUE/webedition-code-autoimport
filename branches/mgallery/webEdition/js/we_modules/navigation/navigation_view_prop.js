@@ -108,7 +108,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		case "openFieldSelector":
-			url = WE().consts.dirs.WE_INCLUDES_DIR + "we_modules/navigation/edit_navigation_frameset.php?pnt=fields&cmd=" + arguments[1] + "&type=" + arguments[2] + "&selection=" + arguments[3] + "&multi=" + arguments[4];
+			url = WE().consts.dirs.WE_MODULE_DIR + "show.php?mod=navigation&pnt=fields&cmd=" + arguments[1] + "&type=" + arguments[2] + "&selection=" + arguments[3] + "&multi=" + arguments[4];
 			new (WE().util.jsWindow)(window, url, "we_navigation_field_selector", -1, -1, 380, 350, true, true, true);
 			break;
 		case "copyNaviFolder":

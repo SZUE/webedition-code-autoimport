@@ -32,7 +32,7 @@ class we_export_view extends we_modules_view{
 	private $page;
 
 	public function __construct(){
-		$frameset = WE_EXPORT_MODULE_DIR . "edit_export_frameset.php";
+		$frameset = WE_MODULES_DIR . "show.php?mod=export";
 		$topframe = "top.content";
 		parent::__construct($frameset, $topframe);
 		$this->export = new we_export_export();
@@ -131,8 +131,8 @@ function start() {
 				} else {
 					$this->export = new we_export_export();
 					echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->export->Text) . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 						');
 				}
 
@@ -148,8 +148,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 					$this->export->Text = g_l('export', '[newFolder]');
 					$this->export->IsFolder = 1;
 					echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->export->Text) . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 						');
 				}
 				break;
@@ -163,8 +163,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 				$this->export = new we_export_export(we_base_request::_(we_base_request::INT, "cmdid"));
 				echo we_html_element::jsElement('
 top.content.hot=0;
-top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->export->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->export->Text) . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 						');
 
 				break;

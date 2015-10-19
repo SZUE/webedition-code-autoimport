@@ -29,10 +29,10 @@ class we_voting_frames extends we_modules_frame{
 	var $_width_size = 535;
 	public $module = "voting";
 
-	public function __construct(){
-		parent::__construct(WE_VOTING_MODULE_DIR . "edit_voting_frameset.php");
+	public function __construct($frameset){
+		parent::__construct($frameset);
 		$this->Tree = new we_voting_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_voting_view();
+		$this->View = new we_voting_view($frameset);
 	}
 
 	function getHTML($what){
@@ -936,14 +936,14 @@ function setVisible(id,visible){
 
 			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 					($start < $size ?
-							we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
+							we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
 							we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 					) .
 					we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
 					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 					($next > 0 ?
-							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
+							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 					) .
 					"</td></tr></table>";
@@ -1066,14 +1066,14 @@ function setVisible(id,visible){
 
 			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 					($start < $size ?
-							we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
+							we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
 							we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 					) .
 					we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
 					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 					($next > 0 ?
-							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
+							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 					) .
 					"</td></tr></table>";
@@ -1180,14 +1180,14 @@ function setVisible(id,visible){
 
 			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
 					($start < $size ?
-							we_html_button::create_button(we_html_button::BACK, $this->frameset . "?pnt=show_log&start=" . $back) : //bt_back
+							we_html_button::create_button(we_html_button::BACK, $this->frameset . "&pnt=show_log&start=" . $back) : //bt_back
 							we_html_button::create_button(we_html_button::BACK, "", false, 100, 22, "", "", true)
 					) .
 					we_html_tools::getPixel(23, 1) . "</td><td style='text-align:center' class='defaultfont' width='120'><b>" . ($size - $start + 1) . "&nbsp;-&nbsp;" .
 					($size - $next) .
 					"&nbsp;" . g_l('global', '[from]') . " " . ($size + 1) . "</b></td><td>" . we_html_tools::getPixel(23, 1) .
 					($next > 0 ?
-							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "?pnt=show_log&start=" . $next) : //bt_next
+							we_html_button::create_button(we_html_button::NEXT, $this->frameset . "&pnt=show_log&start=" . $next) : //bt_next
 							we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)
 					) .
 					'</td></tr></table>';

@@ -28,11 +28,11 @@ class we_glossary_frames extends we_modules_frame{
 	var $_width_size = 535;
 	protected $treeDefaultWidth = 280;
 
-	function __construct(){
+	function __construct($frameset){
 		$this->module = "glossary";
-		parent::__construct(WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php");
+		parent::__construct($frameset);
 		$this->Tree = new we_glossary_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_glossary_view();
+		$this->View = new we_glossary_view($frameset);
 	}
 
 	function getJSCmdCode(){

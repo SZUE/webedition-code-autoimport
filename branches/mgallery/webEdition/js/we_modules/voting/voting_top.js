@@ -99,8 +99,8 @@ function we_cmd() {
 				if (confirm(WE().consts.g_l.voting.delete_alert)) {
 					top.content.editor.edbody.document.we_form.cmd.value = args[0];
 					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edheader.location = WE().consts.dirs.WE_VOTING_MODULE_DIR + "edit_voting_frameset.php?home=1&pnt=edheader";
-					top.content.editor.edfooter.location = WE().consts.dirs.WE_VOTING_MODULE_DIR + "edit_voting_frameset.php?home=1&pnt=edfooter";
+					top.content.editor.edheader.location = WE().consts.dirs.WE_MODULE_DIR + "show.php?mod=voting&home=1&pnt=edheader";
+					top.content.editor.edfooter.location = WE().consts.dirs.WE_MODULE_DIR + "show.php?mod=voting&home=1&pnt=edfooter";
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
@@ -109,14 +109,14 @@ function we_cmd() {
 			break;
 
 		case "save_voting":
-			if (top.content.editor.edbody.document.we_form.cmd.value == "home")
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home")
 				return;
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
 				top.content.editor.edbody.document.we_form.owners_name.value = top.content.editor.edbody.owners_label.name;
 				top.content.editor.edbody.document.we_form.owners_count.value = top.content.editor.edbody.owners_label.itemCount;
-				if (top.content.editor.edbody.document.we_form.IsFolder.value != 1) {
+				if (top.content.editor.edbody.document.we_form.IsFolder.value !== 1) {
 					top.content.editor.edbody.document.we_form.question_name.value = top.content.editor.edbody.question_edit.name;
 					top.content.editor.edbody.document.we_form.answers_name.value = top.content.editor.edbody.answers_edit.name;
 					top.content.editor.edbody.document.we_form.variant_count.value = top.content.editor.edbody.answers_edit.variantCount;
@@ -144,10 +144,10 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		case "load":
-			top.content.cmd.location = WE().consts.dirs.WE_VOTING_MODULE_DIR + "edit_voting_frameset.php?pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
+			top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=voting&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		case "home":
-			top.content.editor.edbody.parent.location = WE().consts.dirs.WE_VOTING_MODULE_DIR + "edit_voting_frameset.php?pnt=editor";
+			top.content.editor.edbody.parent.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=voting&pnt=editor";
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);

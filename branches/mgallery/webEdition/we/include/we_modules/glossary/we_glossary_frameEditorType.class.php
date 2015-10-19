@@ -94,8 +94,8 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		// ---> some javascript code
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 
-		$_js .= $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '?pnt=edheader&cmd=glossary_view_type&cmdid=' . $cmdid . '";
-						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '?pnt=edfooter&cmd=glossary_view_type&cmdid=' . $cmdid . '";
+		$_js .= $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '&pnt=edheader&cmd=glossary_view_type&cmdid=' . $cmdid . '";
+						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '&pnt=edfooter&cmd=glossary_view_type&cmdid=' . $cmdid . '";
 function AllItems(){
 	if(document.we_form.selectAll.value == 0) {
 		temp = true;
@@ -215,7 +215,7 @@ function jump(val) {
 					'bgcolor' => '#ffffff',
 				),
 				array(
-					'dat' => '<a href="javascript://" onclick="' . $weGlossaryFrames->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '?pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
+					'dat' => '<a href="javascript://" onclick="' . $weGlossaryFrames->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
 					'height' => 25,
 					'style' => 'text-align:left',
 					'bgcolor' => '#ffffff',

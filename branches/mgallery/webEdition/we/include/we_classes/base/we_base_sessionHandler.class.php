@@ -9,7 +9,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 	private $id = 0;
 	private $crypt = false;
 	private $hash = '';
-	private $releaseError=false;
+	private $releaseError = false;
 
 	function __construct(){
 		if(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION && !$this->id){
@@ -39,8 +39,8 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		}
 		session_start();
 		if($this->releaseError){
-			$this->releaseError=false;
-			t_e('session was not releases properly, emergency release done', $sessID, $this->sessionName);
+			$this->releaseError = false;
+			t_e('session was not releases properly, emergency release done, see restored (old) session below', session_id(), $this->sessionName);
 		}
 	}
 
@@ -82,8 +82,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 				//set this session our session
 				$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET lockid="' . $this->id . '",lockTime=NOW() WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 				//we need this construct, since the session is not restored now, so we don't have mich debug data
-				$this->releaseError=true;
-				t_e('session was not releases properly, emergency release done', $sessID, $this->sessionName);
+				$this->releaseError = true;
 			}
 			if($data){
 				$data = ($data[0] === '$' && $this->crypt ? we_customer_customer::decryptData($data, $this->crypt) : $data);

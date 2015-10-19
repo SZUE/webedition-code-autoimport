@@ -34,8 +34,7 @@ class we_glossary_view extends we_modules_view{
 	 * @param string $frameset
 	 * @param string $topframe
 	 */
-	public function __construct(){
-		$frameset = WE_GLOSSARY_MODULE_DIR . "edit_glossary_frameset.php";
+	public function __construct($frameset){
 		$topframe = "top.content";
 		parent::__construct($frameset, $topframe);
 
@@ -100,8 +99,8 @@ var data={
 				$this->Glossary->Type = array_pop(explode('_', $cmd, 4));
 
 				echo we_html_element::jsElement('
-top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
-top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
+top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 					');
 				break;
 
@@ -119,8 +118,8 @@ top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";
 				$this->Glossary = new we_glossary_glossary($cmdid);
 
 				echo we_html_element::jsElement(
-					'top.content.editor.edheader.location="' . $this->frameset . '?pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";' .
-					'top.content.editor.edfooter.location="' . $this->frameset . '?pnt=edfooter";');
+					'top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->Glossary->Text) . '";' .
+					'top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";');
 				break;
 
 			case 'populateWorkspaces':

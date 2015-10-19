@@ -24,23 +24,19 @@
  */
 class we_navigation_frames extends we_modules_frame{
 
-	var $toolUrl; //TODO: replace toll/module-wide by $module
 	var $_space_size = 120;
 	var $_width_size = 520;
 	var $Model;
 	public $Table = NAVIGATION_TABLE;
 
-	function __construct(){
+	function __construct($_frameset){
 		$this->module = 'navigation';
-		$this->toolUrl = WE_MODULES_DIR . 'navigation/'; //TODO: replace tool/module-wide by $module
-
-		$_frameset = $this->toolUrl . 'edit_navigation_frameset.php';
 		parent::__construct($_frameset);
 		$this->treeDefaultWidth = 220;
 		$this->treeFooterHeight = 40;
 
 		$this->Tree = new we_navigation_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
-		$this->View = new we_navigation_view();
+		$this->View = new we_navigation_view($_frameset);
 		$this->Model = &$this->View->Model;
 	}
 
@@ -809,7 +805,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		// build the page
 		$out = '<table border="0" class="defaultfont" class="default">
 		<tr>
-			<td><iframe name="preview" style="background: white; border: 1px solid black; width: 640px; height: 150px" src="edit_navigation_frameset.php?pnt=previewIframe"></iframe></td>
+			<td><iframe name="preview" style="background: white; border: 1px solid black; width: 640px; height: 150px" src="' . WE_MODULES_DIR . 'show.php?mod=navigation&pnt=previewIframe"></iframe></td>
 		</tr>
 		<tr>
 			<td height="30"><label for="previewCode">' . g_l('navigation', '[preview_code]') . '</label><br /></td>
