@@ -1263,7 +1263,7 @@ function doNext(){
 				$options["csv_delimiter"] = $csv_delimiter;
 				$options["csv_enclose"] = $csv_enclose;
 				$options["csv_lineend"] = $csv_lineend;
-				$options["csv_fieldnames"] = $csv_fieldnames;
+				$options["csv_fieldnames"] = ($firstexec == -999 ? $csv_fieldnames : false);
 			}
 			$success = we_customer_EI::exportCustomers($options);
 		}
