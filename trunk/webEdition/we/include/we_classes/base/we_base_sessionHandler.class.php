@@ -23,7 +23,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			$this->execTime = ($this->execTime > 60 ? 60 : $this->execTime); //time might be wrong (1&1)
 			$this->id = uniqid('', true);
 			if(!(extension_loaded('suhosin') && ini_get('suhosin.session.encrypt')) && defined('SYSTEM_WE_SESSION_CRYPT') && SYSTEM_WE_SESSION_CRYPT){
-				$key = $_SERVER['DOCUMENT_ROOT'] . (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT');
+				$key = $_SERVER['DOCUMENT_ROOT'] . (!empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'HTTP_USER_AGENT');
 				if(SYSTEM_WE_SESSION_CRYPT === 2){
 					if(!isset($_COOKIE['secure'])){
 						$_COOKIE['secure'] = we_users_user::getHashIV(30);
@@ -40,7 +40,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		session_start();
 		if($this->releaseError){
 			$this->releaseError=false;
-			t_e('session was not releases properly, emergency release done', $sessID, $this->sessionName);
+			t_e('session was not releases properly, emergency release done, see restored (old) session below', session_id(), $this->sessionName);
 		}
 	}
 
@@ -127,9 +127,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 					'session_id' => sql_function('x\'' . $sessID . '\''),
 					'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
 					'lockid' => $lock ? $this->id : '',
-					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),/*
-					'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
-					'tmp' => isset($_SESSION)?we_serialize($_SESSION,'serialize'):'', */
+					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
+						/* 'uid' => isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0),
+						  -				'tmp' => we_serialize($_SESSION), */
 		)));
 		return true;
 	}
