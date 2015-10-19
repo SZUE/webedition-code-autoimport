@@ -1,7 +1,3 @@
-we/include/we_modules/export/edit_export_frameset.php
-we/include/we_modules/glossary/edit_glossary_frameset.php
-we/include/we_modules/navigation/edit_navigation_frameset.php
-we/include/we_modules/voting/edit_voting_frameset.php
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -285,6 +281,7 @@ we/include/we_modules/workflow/we_webEditionCmd_workflow.inc.php
 we/include/we_modules/workflow/weModuleFrames.php
 we/include/we_modules/workflow/mod_home.inc.php
 we/include/we_modules/workflow/edit_workflow_header.php
+we/include/we_modules/workflow/edit_workflow_frameset.php
 we/include/we_modules/weModuleInfo.class.php
 we/include/we_modules/voting/we_webEditionCmd_voting.inc.php
 we/include/we_modules/voting/weVotingView.php
@@ -298,6 +295,7 @@ we/include/we_modules/voting/we_votingDirSelect.php
 we/include/we_modules/voting/we_votingDirSelector.php
 we/include/we_modules/voting/we_votingDirSelectorFrameset.php
 we/include/we_modules/voting/mod_home.inc.php
+we/include/we_modules/voting/edit_voting_frameset.php
 we/include/we_modules/users/we_webEditionCmd_users.inc.php
 we/include/we_modules/users/weUsersView.class.php
 we/include/we_modules/users/we_users_util.php
@@ -394,6 +392,7 @@ we/include/we_modules/newsletter/weNewsletterBlock.php
 we/include/we_modules/newsletter/weNewsletterBase.php
 we/include/we_modules/newsletter/we_dirfs.php
 we/include/we_modules/newsletter/mod_home.inc.php
+we/include/we_modules/newsletter/edit_newsletter_frameset.php
 we/include/we_modules/navi.php
 we/include/we_modules/navi_language.inc.php
 we/include/we_modules/navigation/we_webEditionCmd_navigation.inc.php
@@ -402,6 +401,7 @@ we/include/we_modules/navigation/layout/home.gif
 we/include/we_modules/navigation/layout
 we/include/we_modules/navigation/hook/we_jsCmdHook_navigation.inc.php
 we/include/we_modules/navigation/home.inc.php
+we/include/we_modules/navigation/edit_navigation_frameset.php
 we/include/we_modules/navigation/conf/we_navigationSettings.inc.php
 we/include/we_modules/navigation/conf/we_conf_navigation.inc.php
 we/include/we_modules/navigation/class/weNavigationView.class.php
@@ -447,6 +447,7 @@ we/include/we_modules/messaging/messaging_defs.inc.php
 we/include/we_modules/messaging/messaging_cmd.php
 we/include/we_modules/messaging/ieHResize.html
 we/include/we_modules/messaging/header_msg.php
+we/include/we_modules/messaging/edit_messaging_frameset.php
 we/include/we_modules/home.inc.php
 we/include/we_modules/glossary/we_webEditionCmd_glossary.inc.php
 we/include/we_modules/glossary/weGlossaryView.php
@@ -471,6 +472,7 @@ we/include/we_modules/glossary/weGlossaryCache.php
 we/include/we_modules/glossary/we_conf_glossary_settings.inc.php
 we/include/we_modules/glossary/mod_home.inc.php
 we/include/we_modules/glossary/languages.inc.php
+we/include/we_modules/glossary/edit_glossary_frameset.php
 we/include/we_modules/glossary/dict/dummy
 we/include/we_modules/glossary/cache/dummy
 we/include/we_modules/export/we_webEditionCmd_export.inc.php
@@ -484,6 +486,7 @@ we/include/we_modules/export/we_exportDirSelector.php
 we/include/we_modules/export/we_exportDirSelectorFrameset.php
 we/include/we_modules/export/mod_home.inc.php
 we/include/we_modules/export/exportLoadTree.php
+we/include/we_modules/export/edit_export_frameset.php
 we/include/we_modules/edit_separator.html
 we/include/we_modules/customer/we_webEditionCmd_customer.inc.php
 we/include/we_modules/customer/weNavigationCustomerFilterView.class.php

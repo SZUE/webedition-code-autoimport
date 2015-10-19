@@ -100,7 +100,7 @@ checked : checked
 	default_color = "#000000";
 
 	function showContent(id) {
-		top.cmd.location = "<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
+		top.cmd.location = "<?php echo WE_MODULES_DIR; ?>show.php?mod=messaging&pnt=cmd&we_transaction=<?php echo $we_transaction ?>&mcmd=show_message&id=" + id;
 	}
 	self.focus();
 //-->

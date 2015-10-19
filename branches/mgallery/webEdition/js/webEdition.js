@@ -1004,7 +1004,7 @@ function we_cmd_base(args, url) {
 			weplugin_wait = new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
 			break;
 		case "edit_settings_newsletter":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "newsletter/edit_newsletter_frameset.php?pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=newsletter&pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
 			break;
 		case "edit_settings_customer":
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=customer&pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);

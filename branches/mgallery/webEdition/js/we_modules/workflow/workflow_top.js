@@ -113,7 +113,7 @@ function we_cmd() {
 			 break;
 			 */
 		case "empty_log":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_WORKFLOW_MODULE_DIR + "edit_workflow_frameset.php?pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=workflow&pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);

@@ -34,7 +34,7 @@ container.prototype.openClose = function(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		frames.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=voting&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}
@@ -53,12 +53,12 @@ function doClick(id, typ) {
 			top.content.usetHot();
 			cmd = "voting_edit";
 			var node = frames.top.treeData.get(id);
-			frames.top.editor.edbody.location = treeData.frameset + "&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
+			frames.top.editor.edbody.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 		}
 	} else {
 		cmd = "voting_edit";
 		var node = frames.top.treeData.get(id);
-		frames.top.editor.edbody.location = treeData.frameset + "&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
+		frames.top.editor.edbody.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=voting&pnt=edbody&cmd=" + cmd + "&cmdid=" + node.id + "&tabnr=" + frames.top.activ_tab;
 	}
 }
 
@@ -68,6 +68,6 @@ function info(text) {
 node.prototype.showSegment = function () {
 	parentnode = frames.top.treeData.get(this.parentid);
 	parentnode.clear();
-	frames.cmd.location = treeData.frameset + "&pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
+	frames.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=voting&pnt=cmd&pid=" + this.parentid + "&offset=" + this.offset;
 	drawTree();
 };

@@ -77,7 +77,7 @@ switch(we_base_request::_(we_base_request::STRING, "mode")){
 }
 echo we_html_tools::getHtmlTop($heading) .
  STYLESHEET .
-	we_html_element::jsElement('top.opener.top.content.cmd.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR+"edit_messaging_frameset.php?pnt=cmd&mcmd=refresh_mwork&we_transaction=' . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . '";');
+	we_html_element::jsElement('top.opener.top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=messaging&pnt=cmd&mcmd=refresh_mwork&we_transaction=' . we_base_request::_(we_base_request::TRANSACTION, 'we_transaction') . '";');
 if($res['ok']){
 	echo we_html_element::jsElement('
 if (opener && opener.top && opener.top.content) {

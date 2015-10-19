@@ -159,7 +159,7 @@ function we_cmd() {
 			} else if (top.content.editor.edbody.document.we_form.IsFolder.value == 1) {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 			} else {
-				new (WE().util.jsWindow)(window, frameSet + "?pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
+				new (WE().util.jsWindow)(window, frameSet + "&pnt=qlog", "log_question", -1, -1, 330, 230, true, false, true);
 			}
 			break;
 
@@ -214,7 +214,7 @@ function we_cmd() {
 			break;
 
 		case "home":
-			top.content.editor.location = frameSet + "?pnt=editor";
+			top.content.editor.location = frameSet + "&pnt=editor";
 			break;
 
 		default:

@@ -61,7 +61,7 @@ class we_export_tree extends weTree{
 		tree:' . $this->treeFrame . '
 	};
 	treeData.frames=frames;
-	frames.cmd.location=treeData.frameset+"&pnt=load&cmd=load&tab="+frames.top.table+"&pid=0&openFolders="+frames.top.openFolders[frames.top.table];
+	frames.cmd.location=WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=export&pnt=load&cmd=load&tab="+frames.top.table+"&pid=0&openFolders="+frames.top.openFolders[frames.top.table];
 }';
 	}
 

@@ -314,7 +314,7 @@ abstract class we_workflow_utility{
 
 	static function getLogButton($docID, $table){
 		$type = self::getTypeForTable($table);
-		return we_html_button::create_button("logbook", "javascript:new (WE().util.jsWindow)(window, '" . WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php?pnt=log&art=" . $docID . "&type=" . $type . "','workflow_history',-1,-1,640,480,true,false,true);");
+		return we_html_button::create_button("logbook", "javascript:new (WE().util.jsWindow)(window, '" . WE_MODULES_DIR . "show.php?mod=workflow&pnt=log&art=" . $docID . "&type=" . $type . "','workflow_history',-1,-1,640,480,true,false,true);");
 	}
 
 }

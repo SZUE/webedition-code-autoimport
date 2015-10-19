@@ -91,7 +91,7 @@ function update_messaging() {
 		} else {
 			ent_str = "";
 		}
-		cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=update_msgs" + ent_str;
+		cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=update_msgs" + ent_str;
 	}
 }
 
@@ -145,19 +145,19 @@ function we_cmd() {
 				}
 				top.content.viewclass = treeData[ind].viewclass;
 			}
-			cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + arguments[1];
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=show_folder_content&id=" + arguments[1];
 			break;
 		case "edit_folder":
 			update_icon(arguments[1]);
-			top.content.cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + arguments[1];
+			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + arguments[1];
 			break;
 		case "folder_new":
 			break;
 		case "messaging_new_message":
-			cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_message&mode=new";
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_message&mode=new";
 			break;
 		case "messaging_new_todo":
-			cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_todo";
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=new_todo";
 			break;
 		case "messaging_start_view":
 			deleteMode = false;
@@ -169,7 +169,7 @@ function we_cmd() {
 			break;
 		case "messaging_new_folder":
 			mode = "folder_new";
-			cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=new";
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=new";
 			break;
 		case "messaging_delete_mode_on":
 			deleteMode = true;
@@ -177,27 +177,27 @@ function we_cmd() {
 			top.content.editor.edbody.location = WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_delete_folders.php?we_transaction=" + we_transaction;
 			break;
 		case "messaging_delete_folders":
-			cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=delete_folders&folders=" + entries_selected.join(",");
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=delete_folders&folders=" + entries_selected.join(",");
 			break;
 		case "messaging_edit_folder":
 			mode = "edit_folder";
-			cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + open_folder;
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_folder&mode=edit&fid=" + open_folder;
 			break;
 		case "messaging_settings":
-			cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_settings&mode=new";
+			cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=edit_settings&mode=new";
 			break;
 		case "messaging_copy":
 			if (editor && editor.edbody && editor.edbody.entries_selected && editor.edbody.entries_selected.length > 0) {
-				cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=copy_msg&entrsel=" + editor.edbody.entries_selected.join(",");
+				cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=copy_msg&entrsel=" + editor.edbody.entries_selected.join(",");
 			}
 			break;
 		case "messaging_cut":
 			if (editor && editor.edbody && editor.edbody.entries_selected && editor.edbody.entries_selected.length > 0) {
-				cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=cut_msg&entrsel=" + editor.edbody.entries_selected.join(",");
+				cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=cut_msg&entrsel=" + editor.edbody.entries_selected.join(",");
 			}
 			break;
 		case "messaging_paste":
-			top.content.cmd.location = we_frameset + "?pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
+			top.content.cmd.location = we_frameset + "&pnt=cmd&we_transaction=" + we_transaction + "&mcmd=paste_msg";
 			break;
 		default:
 			var args = [];

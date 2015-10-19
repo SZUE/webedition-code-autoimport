@@ -50,7 +50,7 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_folder_settings
 
 		$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 		?>
-		top.content.cmd.location = '<?php echo WE_MESSAGING_MODULE_DIR; ?>edit_messaging_frameset.php?pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=save_folder_settings&name=<?php echo $foldername; ?>&id=<?php echo $ID ?>&mode=<?php echo $mode; ?>&parent_id=<?php echo $parentfolder; ?>&type=<?php echo $types; ?>';
+		top.content.cmd.location = '<?php echo WE_MODULES_DIR; ?>show.php?mod=messaging&pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=save_folder_settings&name=<?php echo $foldername; ?>&id=<?php echo $ID ?>&mode=<?php echo $mode; ?>&parent_id=<?php echo $parentfolder; ?>&type=<?php echo $types; ?>';
 			top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ""); ?>');
 			//-->
 		</script>

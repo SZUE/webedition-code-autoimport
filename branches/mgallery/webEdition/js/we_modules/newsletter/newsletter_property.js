@@ -358,18 +358,18 @@ function we_cmd() {
 				popAndSubmit(arguments[0], arguments[0], 650, 650);
 			break;
 		case "newsletter_settings":
-			new (WE().util.jsWindow)(window, modFrameSet + "?pnt=" + arguments[0], arguments[0], -1, -1, 600, 750, true, true, true, true);
+			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + arguments[0], arguments[0], -1, -1, 600, 750, true, true, true, true);
 			break;
 
 		case "black_list":
-			new (WE().util.jsWindow)(window, modFrameSet + "?pnt=" + arguments[0], arguments[0], -1, -1, 560, 460, true, true, true, true);
+			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + arguments[0], arguments[0], -1, -1, 560, 460, true, true, true, true);
 			break;
 
 		case "edit_file":
 			if (arguments[1]) {
-				new (WE().util.jsWindow)(window, modFrameSet + "?pnt=" + arguments[0] + "&art=" + arguments[1], arguments[0], -1, -1, 950, 640, true, true, true, true);
+				new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + arguments[0] + "&art=" + arguments[1], arguments[0], -1, -1, 950, 640, true, true, true, true);
 			} else {
-				new (WE().util.jsWindow)(window, modFrameSet + "?pnt=" + arguments[0], arguments[0], -1, -1, 950, 640, true, true, true, true);
+				new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + arguments[0], arguments[0], -1, -1, 950, 640, true, true, true, true);
 			}
 			break;
 
@@ -419,12 +419,12 @@ function we_cmd() {
 
 		case "upload_csv":
 		case "upload_black":
-			new (WE().util.jsWindow)(window, modFrameSet + "?pnt=" + arguments[0] + "&grp=" + arguments[1], arguments[0], -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + arguments[0] + "&grp=" + arguments[1], arguments[0], -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "add_email":
 			var email = document.we_form.group = arguments[1];
-			new (WE().util.jsWindow)(window, modFrameSet + "?pnt=eemail&grp=" + arguments[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=eemail&grp=" + arguments[1], "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "edit_email":
@@ -456,7 +456,7 @@ function we_cmd() {
 			firstname = encodeURIComponent(firstname.replace("+", "[:plus:]"));
 			lastname = encodeURIComponent(lastname.replace("+", "[:plus:]"));
 			email = encodeURIComponent(email);
-			new (WE().util.jsWindow)(window, modFrameSet + "?pnt=eemail&grp=" + arguments[1] + "&etyp=1&eid=" + eid + "&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
+			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=eemail&grp=" + arguments[1] + "&etyp=1&eid=" + eid + "&email=" + email + "&htmlmail=" + htmlmail + "&salutation=" + salutation + "&title=" + title + "&firstname=" + firstname + "&lastname=" + lastname, "edit_email", -1, -1, 450, 270, true, true, true, true);
 			break;
 
 		case "save_black":
@@ -478,7 +478,7 @@ function we_cmd() {
 
 			break;
 		case "clear_log":
-			new (WE().util.jsWindow)(window, modFrameSet + "?pnt=" + arguments[0], arguments[0], -1, -1, 450, 300, true, true, true, true);
+			new (WE().util.jsWindow)(window, modFrameSet + "&pnt=" + arguments[0], arguments[0], -1, -1, 450, 300, true, true, true, true);
 			break;
 
 		default:

@@ -46,8 +46,13 @@ $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $mode = we_base_request::_(we_base_request::INT, "art", 0);
 $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
-$protect = we_base_moduleInfo::isActive($mod) && we_users_util::canEditModule($mod) ? null : array(false);
-we_html_tools::protect($protect);
+switch($mod){
+	case 'workflow':
+		$override = ($what === 'log');
+	default:
+		$protect = we_base_moduleInfo::isActive($mod) && (we_users_util::canEditModule($mod) || !empty($override)) ? null : array(false);
+		we_html_tools::protect($protect);
+}
 
 switch($mod){
 	case 'banner':
@@ -108,6 +113,80 @@ switch($mod){
 		$weFrame->process();
 		break;
 
+	case 'workflow':
+		$type = we_base_request::_(we_base_request::INTLIST, 'type', 0);
+		$weFrame = new we_workflow_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame->process();
+		echo $weFrame->getHTML($what, $mode, $type);
+		return;
+	case 'messaging':
+
+		if(!isset($we_transaction)){//FIXME: can this ever be set except register globals???
+			$we_transaction = 0;
+		}
+		$transaction = $what === 'frameset' ? $we_transaction : we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'); //FIXME: is $transaction used anywhere?
+
+		$weFrame = new we_messaging_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod, we_base_request::_(we_base_request::STRING, 'viewclass', 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
+		$weFrame->process();
+		break;
+
+	case 'newsletter':
+		$ncmd = we_base_request::_(we_base_request::STRING, 'ncmd', '');
+
+		$weFrame = new we_newsletter_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		switch($what){
+			case 'edit_file':
+				$mode = we_base_request::_(we_base_request::FILE, 'art');
+				break;
+			default:
+				$mode = we_base_request::_(we_base_request::INT, 'art', 0);
+				break;
+		}
+
+		switch($ncmd){
+			case 'do_upload_csv':
+			case 'do_upload_black':
+				break;
+			default:
+				echo $weFrame->getHTMLDocumentHeader($what, $mode);
+		}
+
+		if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
+			$weFrame->View->newsletter = new we_newsletter_newsletter($id);
+		} else {
+			switch($what){
+				case 'export_csv_mes':
+				case 'newsletter_settings':
+				case 'qsend':
+				case 'eedit':
+				case 'black_list':
+				case 'upload_csv':
+					break;
+				default:
+					$weFrame->View->processVariables();
+			}
+		}
+
+		switch($what){
+			case 'export_csv_mes':
+			case 'preview':
+			case 'domain_check':
+			case 'newsletter_settings':
+			case 'show_log':
+			case 'print_lists':
+			case 'qsend':
+			case 'eedit':
+			case 'black_list':
+				break;
+			default:
+				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
+				$weFrame->View->processCommands();
+		}
+
+		if($weFrame->View->isJsonOnly()){
+			return;
+		}
+		break;
 	default:
 		echo 'no module';
 		return;

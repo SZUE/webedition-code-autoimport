@@ -28,10 +28,10 @@ class we_newsletter_frames extends we_modules_frame{
 
 	private $weAutoCompleter;
 
-	function __construct(){
-		parent::__construct(WE_NEWSLETTER_MODULE_DIR . 'edit_newsletter_frameset.php');
+	function __construct($frameset){
+		parent::__construct($frameset);
 		$this->module = 'newsletter';
-		$this->View = new we_newsletter_view();
+		$this->View = new we_newsletter_view($frameset);
 		$this->Tree = new we_newsletter_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 		$this->weAutoCompleter = &weSuggest::getInstance();
 	}
@@ -1528,7 +1528,7 @@ self.focus();
 				$fname = rtrim(we_base_request::_(we_base_request::FILE, "csv_dir", ''), '/') . '/blacklist_export_' . time() . '.csv';
 				we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, str_replace(",", "\n", $this->View->settings["black_list"]));
 
-				$js.= we_html_element::jsElement('new (WE().util.jsWindow)(window, "' . $this->frameset . '?pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
+				$js.= we_html_element::jsElement('new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=export_csv_mes&lnk=' . $fname . '","edit_email",-1,-1,440,250,true,true,true,true);');
 				break;
 		}
 
@@ -1841,7 +1841,7 @@ self.focus();
 				we_html_element::jsElement('
 self.focus();
 function editEmailFile(eid,email,htmlmail,salutation,title,firstname,lastname){
-	new (WE().util.jsWindow)(window, "' . $this->frameset . '?pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
+	new (WE().util.jsWindow)(window, "' . $this->frameset . '&pnt=eemail&eid="+eid+"&etyp=2&email="+email+"&htmlmail="+htmlmail+"&salutation="+salutation+"&title="+title+"&firstname="+firstname+"&lastname="+lastname,"edit_email",-1,-1,430,270,true,true,true,true);
 }
 
 function setAndSave(eid,email,htmlmail,salutation,title,firstname,lastname){
@@ -2072,19 +2072,19 @@ function cancel(){
 }
 
 function ask(start,group){
-	new (WE().util.jsWindow)(window, "' . $this->View->frameset . '?pnt=qsend&start="+start+"&grp="+group,"send_question",-1,-1,400,200,true,true,true,false);
+	new (WE().util.jsWindow)(window, "' . $this->View->frameset . '&pnt=qsend&start="+start+"&grp="+group,"send_question",-1,-1,400,200,true,true,true,false);
 }
 
 function doSend(start,group){
 	self.focus();
-	top.send_cmd.location="' . $this->frameset . '?pnt=send_cmd&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"] . '&start="+start+"&egc="+group;
+	top.send_cmd.location="' . $this->frameset . '&pnt=send_cmd&nid=' . $nid . '&test=' . $test . '&blockcache=' . $ret["blockcache"] . '&emailcache=' . $ret["emailcache"] . '&ecount=' . $ret["ecount"] . '&gcount=' . $ret["gcount"] . '&start="+start+"&egc="+group;
 }
 self.focus();
 ');
 
 		$body = we_html_element::htmlIFrame('send_body', $this->frameset . '?we_transaction=' . $this->transaction . '&pnt=msg_fv_headers', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;', '', '', false) .
-				we_html_element::htmlIFrame('send_cmd', $this->frameset . "?pnt=send_cmd", 'position:absolute;width:0px;height:0px;', '', '', false) .
-				we_html_element::htmlIFrame('send_control', $this->frameset . "?pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
+				we_html_element::htmlIFrame('send_cmd', $this->frameset . "&pnt=send_cmd", 'position:absolute;width:0px;height:0px;', '', '', false) .
+				we_html_element::htmlIFrame('send_control', $this->frameset . "&pnt=send_control&nid=$nid&test=$test&blockcache=" . $ret["blockcache"] . "&emailcache=" . $ret["emailcache"] . "&ecount=" . $ret["ecount"] . "&gcount=" . $ret["gcount"], 'position:absolute;width:0px;height:0px;', '', '', false)
 		;
 		return $this->getHTMLDocument(we_html_element::htmlBody(array("onload" => (($this->View->newsletter->Step != 0 || $this->View->newsletter->Offset != 0) ? "ask(" . $this->View->newsletter->Step . "," . $this->View->newsletter->Offset . ");" : "no();")), $body), $head);
 	}

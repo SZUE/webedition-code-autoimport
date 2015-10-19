@@ -25,10 +25,10 @@
 class we_workflow_frames extends we_modules_frame{
 	public $module = "workflow";
 
-	function __construct(){
-		parent::__construct(WE_WORKFLOW_MODULE_DIR . "edit_workflow_frameset.php");
+	function __construct($frameset){
+		parent::__construct($frameset);
 		$this->Tree = new we_workflow_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_workflow_view();
+		$this->View = new we_workflow_view($frameset);
 	}
 
 	function getHTML($what = '', $mode = 0, $type = 0){
