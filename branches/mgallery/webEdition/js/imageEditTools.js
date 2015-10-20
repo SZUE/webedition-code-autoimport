@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-WE().ImageEditTools = {
+WE().util.ImageEditTools = {
 	activeTool : '',
 	deactivateAll: function(){
 		//top.console.debug("this", this.activeTool);
@@ -33,7 +33,7 @@ WE().ImageEditTools = {
 				this.Focus.drop();
 				break;
 			case 'crop':
-				CropTool.drop();
+				this.Crop.drop();
 				break;
 			case 'resize':
 				this.Resize.drop();
@@ -51,8 +51,8 @@ WE().ImageEditTools = {
 	}
 };
 
-WE().ImageEditTools.Crop = {
-	up: WE().ImageEditTools,
+WE().util.ImageEditTools.Crop = {
+	up: WE().util.ImageEditTools,
 
 	imgSrc: "",
 	imgW: 0,
@@ -86,10 +86,10 @@ WE().ImageEditTools.Crop = {
 	triggered: false,
 	eventHandler: {},
 	crop: function (x, y, w, h) {
-		var CropTool = WE().ImageEditTools.Crop;
+		var CropTool = WE().util.ImageEditTools.Crop;
+		WE().util.ImageEditTools.deactivateAll();
+		WE().util.ImageEditTools.activeTool = 'crop';
 
-		WE().ImageEditTools.deactivateAll();
-		WE().ImageEditTools.activeTool = 'crop';
 		this.triggered = true;
 		var elIdDiv = document.getElementById(this.imgDiv);
 		elIdDiv.style.border = "2px solid #CECECE";
@@ -148,7 +148,7 @@ WE().ImageEditTools.Crop = {
 		elIdBottom = null;
 	},
 	addLs: function (object, eventName, listener) {
-		var CropTool = WE().ImageEditTools.Crop;
+		var CropTool = WE().util.ImageEditTools.Crop;
 		if (CropTool === null || CropTool === undefined) {
 			CropTool = window;
 		}
@@ -172,7 +172,7 @@ WE().ImageEditTools.Crop = {
 		return false;
 	},
 	getLs: function (object, eventName) {
-		var CropTool = WE().ImageEditTools.Crop;
+		var CropTool = WE().util.ImageEditTools.Crop;
 
 		object[eventName + "listeners"] = [];
 		if (typeof object[eventName] == "function") {
@@ -412,7 +412,7 @@ WE().ImageEditTools.Crop = {
 		return false;
 	},
 	dragLeft: function (e) {
-		var CropTool = WE().ImageEditTools.Crop;
+		var CropTool = WE().util.ImageEditTools.Crop;
 		var x1 = this.posX1 + e.clientX - this.coords.x;
 		var old_x1 = this.sel.getLeft();
 		var old_w = this.sel.getWidth();
@@ -429,7 +429,7 @@ WE().ImageEditTools.Crop = {
 		return false;
 	},
 	dragTop: function (e) {
-		var CropTool = WE().ImageEditTools.Crop;
+		var CropTool = WE().util.ImageEditTools.Crop;
 		var y1 = this.posY1 + e.clientY - this.coords.y;
 		var old_h = this.sel.getHeight();
 		var old_y1 = this.sel.getTop();
@@ -446,7 +446,7 @@ WE().ImageEditTools.Crop = {
 		return false;
 	},
 	dragRight: function (e) {
-		var CropTool = WE().ImageEditTools.Crop;
+		var CropTool = WE().util.ImageEditTools.Crop;
 		var x1 = this.sel.getLeft();
 		var new_x1 = x1 + e.clientX - this.coords.x;
 		var new_x2 = this.sel.getRight();
@@ -466,7 +466,7 @@ WE().ImageEditTools.Crop = {
 		return false;
 	},
 	dragBottom: function (e) {
-		var CropTool = WE().ImageEditTools.Crop;
+		var CropTool = WE().util.ImageEditTools.Crop;
 		var y1 = this.sel.getTop();
 		var new_y1 = y1 + e.clientY - this.coords.y;
 		var new_y2 = this.sel.getBottom();
@@ -658,7 +658,7 @@ WE().ImageEditTools.Crop = {
 		}
 	},
 	getElements: function () {
-		var CropTool = WE().ImageEditTools.Crop;
+		var CropTool = WE().util.ImageEditTools.Crop;
 		var xy = document.getElementById("weImagePanel");
 
 		this.sel = {
@@ -1007,8 +1007,8 @@ WE().ImageEditTools.Crop = {
 
 
 
-WE().ImageEditTools.Focus = {
-	up: WE().ImageEditTools,
+WE().util.ImageEditTools.Focus = {
+	up: WE().util.ImageEditTools,
 	elems: {
 		focusPoint : null,
 		image : null,
@@ -1119,8 +1119,8 @@ WE().ImageEditTools.Focus = {
 	}
 };
 
-WE().ImageEditTools.Rotate = {
-	up: WE().ImageEditTools,
+WE().util.ImageEditTools.Rotate = {
+	up: WE().util.ImageEditTools,
 	win: null,
 
 	start: function(url, gdType){
@@ -1133,8 +1133,8 @@ WE().ImageEditTools.Rotate = {
 	}
 };
 
-WE().ImageEditTools.Resize = {
-	up: WE().ImageEditTools,
+WE().util.ImageEditTools.Resize = {
+	up: WE().util.ImageEditTools,
 	win: null,
 
 	start: function(url, gdType){top.console.debug('res', this);
@@ -1147,8 +1147,8 @@ WE().ImageEditTools.Resize = {
 	}
 };
 
-WE().ImageEditTools.ConvertJPEG = {
-	up: WE().ImageEditTools,
+WE().util.ImageEditTools.ConvertJPEG = {
+	up: WE().util.ImageEditTools,
 	win: null,
 
 	start: function(url){
@@ -1162,11 +1162,11 @@ WE().ImageEditTools.ConvertJPEG = {
 };
 
 /*
-WE().ImageEditTools.convertPNG = {
+WE().util.ImageEditTools.convertPNG = {
 	up: WE().ImageEditTool
 };
 
-WE().ImageEditTools.convertGIF = {
+WE().util.ImageEditTools.convertGIF = {
 	up: WE().ImageEditTool
 };
 */

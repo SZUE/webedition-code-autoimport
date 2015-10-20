@@ -288,18 +288,18 @@ function we_cmd() {
 			break;
 		case "image_resize":
 			if (hasGD) {
-				WE().ImageEditTools.Resize.start(url, gdType);
+				WE().util.ImageEditTools.Resize.start(url, gdType);
 			} else {
 				top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "image_convertJPEG":
-			WE().ImageEditTools.ConvertJPEG.start(url);
+			WE().util.ImageEditTools.ConvertJPEG.start(url);
 			break;
 		case "image_rotate":
 			if (canRotate) {
 				if (gdSupport) {
-					WE().ImageEditTools.Rotate.start(url, gdType);
+					WE().util.ImageEditTools.Rotate.start(url, gdType);
 				} else {
 					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
@@ -308,12 +308,12 @@ function we_cmd() {
 			}
 			break;
 		case "image_focus":
-			WE().ImageEditTools.Focus.start();
+			WE().util.ImageEditTools.Focus.start();
 			break;
 		case "image_crop":
 			if (WE_EDIT_IMAGE) {
 				if (gdSupport) {
-					WE().ImageEditTools.Crop.crop();
+					WE().util.ImageEditTools.Crop.crop();
 				} else {
 					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
@@ -325,7 +325,7 @@ function we_cmd() {
 			
 		case "image_convertGIF":
 		case "image_convertPNG":
-			WE().ImageEditTools().deactivateAll();
+			WE().util.ImageEditTools().deactivateAll();
 			var args = [];
 			for (var i = 0; i < arguments.length; i++) {
 				args.push(arguments[i]);
