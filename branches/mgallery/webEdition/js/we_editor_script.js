@@ -322,7 +322,9 @@ function we_cmd() {
 		case "crop_cancel":
 			imageEditTools.deactivateAll();
 			break;
-			
+		case "imageEditTools_reset":
+			WE().util.ImageEditTools.deactivateAll();
+			break;
 		case "image_convertGIF":
 		case "image_convertPNG":
 			WE().util.ImageEditTools().deactivateAll();
