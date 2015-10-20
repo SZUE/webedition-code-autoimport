@@ -42,11 +42,11 @@ var size={
 	origW:' . $GLOBALS['we_doc']->getElement("origwidth", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").width : 0') . ',
 	origH:' . $GLOBALS['we_doc']->getElement("origheight", "dat", 'document.getElementById("weImage") ? document.getElementById("weImage").height : 0') . '
 };') .
-			we_html_element::jsScript(JS_DIR . 'imageCrop.js');
+			we_html_element::jsScript(JS_DIR . 'imageEditTools.js');
 	}
 
 	static function getCSS(){
-		return we_html_element::cssLink(CSS_DIR . 'imageCrop.css');
+		return we_html_element::cssLink(CSS_DIR . 'imageEditTools.css');
 	}
 
 	static function getCrop($attribs){

@@ -287,22 +287,19 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "image_resize":
-			imageEditTools.deactivateAll();
 			if (hasGD) {
-				new (WE().util.jsWindow)(window, url, "we_image_resize", -1, -1, 260, (gdType === "jpg" ? 250 : 190), true, false, true);
+				WE().ImageEditTools.Resize.start(url, gdType);
 			} else {
 				top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 			break;
 		case "image_convertJPEG":
-			imageEditTools.deactivateAll();
-			new (WE().util.jsWindow)(window, url, "we_convert_jpg", -1, -1, 260, 160, true, false, true);
+			WE().ImageEditTools.ConvertJPEG.start(url);
 			break;
 		case "image_rotate":
-			imageEditTools.deactivateAll();
 			if (canRotate) {
 				if (gdSupport) {
-					new (WE().util.jsWindow)(window, url, "we_rotate", -1, -1, 300, (gdType === "jpg" ? 230 : 170), true, false, true);
+					WE().ImageEditTools.Rotate.start(url, gdType);
 				} else {
 					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
@@ -311,12 +308,12 @@ function we_cmd() {
 			}
 			break;
 		case "image_focus":
-			imageEditTools.focus.start();
+			WE().ImageEditTools.Focus.start();
 			break;
 		case "image_crop":
 			if (WE_EDIT_IMAGE) {
 				if (gdSupport) {
-					CropTool.crop();
+					WE().ImageEditTools.Crop.crop();
 				} else {
 					top.we_showMessage(g_l.gdTypeNotSupported, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
@@ -324,6 +321,16 @@ function we_cmd() {
 			break;
 		case "crop_cancel":
 			imageEditTools.deactivateAll();
+			break;
+			
+		case "image_convertGIF":
+		case "image_convertPNG":
+			WE().ImageEditTools().deactivateAll();
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			parent.we_cmd.apply(this, args);
 			break;
 		case "spellcheck":
 			if (WE_SPELLCHECKER_MODULE_DIR) {

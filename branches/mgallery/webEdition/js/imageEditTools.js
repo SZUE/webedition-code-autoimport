@@ -2,9 +2,9 @@
  * webEdition SDK
  *
  * webEdition CMS
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 10630 $
+ * $Author: lukasimhof $
+ * $Date: 2015-10-20 01:16:21 +0200 (Di, 20 Okt 2015) $
  *
  * This source is part of the webEdition SDK. The webEdition SDK is
  * free software; you can redistribute it and/or modify
@@ -24,7 +24,36 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-var CropTool = {
+WE().ImageEditTools = {
+	activeTool : '',
+	deactivateAll: function(){
+		//top.console.debug("this", this.activeTool);
+		switch(this.activeTool){
+			case 'focus':
+				this.Focus.drop();
+				break;
+			case 'crop':
+				CropTool.drop();
+				break;
+			case 'resize':
+				this.Resize.drop();
+				break;
+			case 'rotate':
+				this.Rotate.drop();
+				break;
+			case 'convertJPEG':
+				this.ConvertJPEG.drop();
+				break;
+			default:
+				//
+		}
+		this.activeTool = '';
+	}
+};
+
+WE().ImageEditTools.Crop = {
+	up: WE().ImageEditTools,
+
 	imgSrc: "",
 	imgW: 0,
 	imgH: 0,
@@ -57,8 +86,10 @@ var CropTool = {
 	triggered: false,
 	eventHandler: {},
 	crop: function (x, y, w, h) {
-		imageEditTools.deactivateAll();
-		imageEditTools.activeTool = 'crop';
+		var CropTool = WE().ImageEditTools.Crop;
+
+		WE().ImageEditTools.deactivateAll();
+		WE().ImageEditTools.activeTool = 'crop';
 		this.triggered = true;
 		var elIdDiv = document.getElementById(this.imgDiv);
 		elIdDiv.style.border = "2px solid #CECECE";
@@ -117,6 +148,7 @@ var CropTool = {
 		elIdBottom = null;
 	},
 	addLs: function (object, eventName, listener) {
+		var CropTool = WE().ImageEditTools.Crop;
 		if (CropTool === null || CropTool === undefined) {
 			CropTool = window;
 		}
@@ -140,6 +172,8 @@ var CropTool = {
 		return false;
 	},
 	getLs: function (object, eventName) {
+		var CropTool = WE().ImageEditTools.Crop;
+
 		object[eventName + "listeners"] = [];
 		if (typeof object[eventName] == "function") {
 			object[eventName + "listeners"][0] = [object[eventName], object];
@@ -378,6 +412,7 @@ var CropTool = {
 		return false;
 	},
 	dragLeft: function (e) {
+		var CropTool = WE().ImageEditTools.Crop;
 		var x1 = this.posX1 + e.clientX - this.coords.x;
 		var old_x1 = this.sel.getLeft();
 		var old_w = this.sel.getWidth();
@@ -394,6 +429,7 @@ var CropTool = {
 		return false;
 	},
 	dragTop: function (e) {
+		var CropTool = WE().ImageEditTools.Crop;
 		var y1 = this.posY1 + e.clientY - this.coords.y;
 		var old_h = this.sel.getHeight();
 		var old_y1 = this.sel.getTop();
@@ -410,6 +446,7 @@ var CropTool = {
 		return false;
 	},
 	dragRight: function (e) {
+		var CropTool = WE().ImageEditTools.Crop;
 		var x1 = this.sel.getLeft();
 		var new_x1 = x1 + e.clientX - this.coords.x;
 		var new_x2 = this.sel.getRight();
@@ -429,6 +466,7 @@ var CropTool = {
 		return false;
 	},
 	dragBottom: function (e) {
+		var CropTool = WE().ImageEditTools.Crop;
 		var y1 = this.sel.getTop();
 		var new_y1 = y1 + e.clientY - this.coords.y;
 		var new_y2 = this.sel.getBottom();
@@ -620,6 +658,7 @@ var CropTool = {
 		}
 	},
 	getElements: function () {
+		var CropTool = WE().ImageEditTools.Crop;
 		var xy = document.getElementById("weImagePanel");
 
 		this.sel = {
@@ -961,125 +1000,173 @@ var CropTool = {
 	);
 }*/
 
-var imageEditTools = {
-	activeTool: '',
-	deactivateAll: function(){
-		switch(imageEditTools.activeTool){
-			case 'focus':top.console.debug('case "focus"');
-				this.focus.drop();
-				break;
-			case 'crop':
-				CropTool.drop();
-				break;
-			default:top.console.debug('case "def"');
-				// as we have not yer integrated crop
-				if (typeof CropTool === 'object' && CropTool.triggered) {
-					CropTool.drop();
-				}
-		}
-		imageEditTools.activeTool = '';
-	},
 
-	focus : {
+
+
+
+
+
+
+WE().ImageEditTools.Focus = {
+	up: WE().ImageEditTools,
+	elems: {
 		focusPoint : null,
 		image : null,
 		x_focus : null,
-		y_focus : null,
+		y_focus : null
+	},
+	vals: {
+		referenceX: 0,
+		referenceY: 0,
+		origLeft: 0,
+		origTop: 0
+	},
+	boundFNs: {
+		setFocus: null,
+		moveFocus: null,
+		startMove: null,
+		stopMove: null
+	},
 
-		start: function(){
-			var t = imageEditTools.focus;
+	start: function(){
+		this.up.deactivateAll();
+		this.up.activeTool = 'focus';
 
-			imageEditTools.deactivateAll();
-			imageEditTools.activeTool = 'focus';
+		// references to some gui elements
+		this.elems.focusPoint = document.getElementById('imgfocus_point');
+		this.elems.image = document.getElementById('weImage');
+		this.elems.x_focus = document.getElementById('x_focus');
+		this.elems.y_focus = document.getElementById('y_focus');
 
-			t.focusPoint = document.getElementById('imgfocus_point');
-			t.image = document.getElementById('weImage');
-			t.x_focus = document.getElementById('x_focus');
-			t.y_focus = document.getElementById('y_focus');
+		// set tool visible
+		this.elems.focusPoint.style.display = "block";
+		this.elems.focusPoint.style.cursor = "move";
+		this.elems.image.style.cursor = "crosshair";
+		this.elems.x_focus.parentNode.style.display = "block";
 
-			t.focusPoint.style.display = "block";
-			t.focusPoint.style.cursor = "move";
-			t.image.addEventListener("click", imageEditTools.focus.setFocusPositionByMouse, false);
-			document.getElementById('cursorVal').style.display = "block";
-			document.getElementById('weImage').style.cursor = "crosshair";
+		// add listeners (using late binding to set scope, and hold reference to bound fns!)
+		this.elems.image.addEventListener('click', (this.boundFNs.setFocus = this.setFocusPositionByMouse.bind(this)), false);
+		this.elems.focusPoint.addEventListener('mousedown', (this.boundFNs.startMove  = this.startMoveFocusPosition.bind(this)), false);
+		this.elems.focusPoint.addEventListener('mouseup',(this.boundFNs.stopMove = this.stopMoveFocusPosition.bind(this)), false);
+		this.elems.image.addEventListener('mouseup', this.boundFNs.stopMove, false);
+		this.elems.focusPoint.addEventListener('dragstart', function(e){e.preventDefault();}, false);
 
-			t.focusPoint.addEventListener("mousedown", imageEditTools.focus.startMoveFocusPosition, false);
-			t.focusPoint.addEventListener("dragstart", function(e){e.preventDefault();}, false);
-			t.focusPoint.addEventListener("mouseup", imageEditTools.focus.stopMoveFocusPosition, false);
-			t.image.addEventListener("mouseup", imageEditTools.focus.stopMoveFocusPosition, false);
+		var hot = _EditorFrame.getEditorIsHot();
+		this.setFocusPositionByValue();
+		_EditorFrame.setEditorIsHot(hot);
+	},
+			
+	drop: function(){
+		this.elems.focusPoint.style.display = "none";
+		this.elems.image.style.cursor = "default";
+		this.elems.image.removeEventListener("click", this.boundFNs.setFocus, false);
+		this.elems.focusPoint.removeEventListener("mousedown", this.boundFNs.startMove, false);
+		this.elems.focusPoint.removeEventListener("mouseup", this.boundFNs.stopMove, false);
+		this.elems.image.removeEventListener("mouseup", this.boundFNs.stopMove, false);
+		this.elems.focusPoint.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
+		this.elems.image.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
+		this.elems.x_focus.parentNode.style.display = "none";
+	},
 
-			var hot = _EditorFrame.getEditorIsHot();
-			this.setFocusPositionByValue();
-			_EditorFrame.setEditorIsHot(hot);
-		},
+	startMoveFocusPosition : function(e){
+		this.vals.referenceX = e.clientX;
+		this.vals.referenceY = e.clientY;
+		this.vals.origLeft = parseInt(this.elems.focusPoint.style.left);
+		this.vals.origTop = parseInt(this.elems.focusPoint.style.top);
+		this.boundFNs.moveFocus = this.moveFocusPosition.bind(this);
+		this.elems.focusPoint.addEventListener('mousemove', (this.boundFNs.moveFocus = this.moveFocusPosition.bind(this)), false);
+		this.elems.image.addEventListener('mousemove', this.boundFNs.moveFocus, false);
+	},
 
-		drop: function(){
-			var t = imageEditTools.focus;
+	stopMoveFocusPosition : function(e){
+		this.elems.focusPoint.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
+		this.elems.image.removeEventListener('mousemove', this.boundFNs.moveFocus, false);
+	},
 
-			t.focusPoint.style.display = "none";
-			t.image.style.cursor = "default";
-			t.image.removeEventListener("click", imageEditTools.focus.setFocusPositionByMouse, false);
-			t.focusPoint.removeEventListener("mousedown", imageEditTools.focus.startMoveFocusPosition, false);
-			t.focusPoint.removeEventListener("mouseup", imageEditTools.focus.stopMoveFocusPosition, false);
-			document.getElementById('cursorVal').style.display = "none";
-		},
+	moveFocusPosition : function(e){
+		var topVal = this.vals.origTop + (e.clientY - this.vals.referenceY),
+			leftVal = this.vals.origLeft + (e.clientX - this.vals.referenceX);
 
-		startMoveFocusPosition : function(e){
-			var t = imageEditTools.focus;
+		this.setFocusPositionByMouse(null, leftVal, topVal);
+	},
 
-			t.referenceX = e.clientX;
-			t.referenceY = e.clientY;
-			t.origLeft = parseInt(t.focusPoint.style.left);
-			t.origTop = parseInt(t.focusPoint.style.top);
-			t.focusPoint.addEventListener("mousemove", t.moveFocusPosition, false);
-			t.image.addEventListener("mousemove", t.moveFocusPosition, false);
-		},
+	setFocusPositionByMouse: function(e, topVal, leftVal) {
+		//var me = this;
 
-		stopMoveFocusPosition : function(e){
-			var t = imageEditTools.focus;
+		topVal = e ? e.offsetX : (topVal ? topVal : false);
+		leftVal = e ? e.offsetY : (leftVal ? leftVal : false);
 
-			t.focusPoint.removeEventListener("mousemove", t.moveFocusPosition, false);
-			t.image.removeEventListener("mousemove", t.moveFocusPosition, false);
-			//t.setFocusPositionByMouse(null, parseInt(t.focusPoint.style.left), parseInt(t.focusPoint.style.top));
-		},
+		this.elems.x_focus.value = ((topVal - this.elems.image.width / 2) / (this.elems.image.width / 2)).toFixed(2);
+		this.elems.y_focus.value = ((leftVal - this.elems.image.height / 2) / (this.elems.image.height / 2)).toFixed(2);
+		this.setFocusPositionByValue();
+	},
 
-		moveFocusPosition : function(e){
-			var t = imageEditTools.focus,
-				top = t.origTop + (e.clientY - t.referenceY),
-				left = t.origLeft + (e.clientX - t.referenceX);
+	setFocusPositionByValue : function(){
+		var x = document.getElementById("x_focus").value,
+			y = document.getElementById("y_focus").value;
 
-			//t.focusPoint.style.left = left + 'px';
-			//t.focusPoint.style.top = top + 'px';
-			t.setFocusPositionByMouse(null, left, top);
-		},
-
-		setFocusPositionByMouse: function(e, top, left) {
-			var t = imageEditTools.focus;
-
-			top = e ? e.offsetX : (top ? top : false);
-			left = e ? e.offsetY : (left ? left : false);
-
-			t.x_focus.value = ((top - t.image.width / 2) / (t.image.width / 2)).toFixed(2);
-			t.y_focus.value = ((left - t.image.height / 2) / (t.image.height / 2)).toFixed(2);
-			t.setFocusPositionByValue();
-		},
-
-		setFocusPositionByValue : function(){
-			var t = imageEditTools.focus,
-				x = document.getElementById("x_focus").value,
-				y = document.getElementById("y_focus").value;
-
-			if (Math.abs(t.x_focus) > 1) {
-				t.x_focus = 0;
-			}
-			if (Math.abs(y) > 1) {
-				y = 0;
-			}
-			document.getElementById("focus").value = "[" + x + "," + y + "]";
-
-			t.focusPoint.style.left = ((t.image.width / 2) + (x * (t.image.width / 2))).toFixed(0) + "px";
-			t.focusPoint.style.top = ((t.image.height / 2) + (y * (t.image.height / 2))).toFixed(0) + "px";
-			_EditorFrame.setEditorIsHot(true);
+		if (Math.abs(this.elems.x_focus) > 1) {
+			this.elems.x_focus = 0;
 		}
+		if (Math.abs(y) > 1) {
+			y = 0;
+		}
+		document.getElementById("focus").value = "[" + x + "," + y + "]";
+
+		this.elems.focusPoint.style.left = ((this.elems.image.width / 2) + (x * (this.elems.image.width / 2))).toFixed(0) + "px";
+		this.elems.focusPoint.style.top = ((this.elems.image.height / 2) + (y * (this.elems.image.height / 2))).toFixed(0) + "px";
+		_EditorFrame.setEditorIsHot(true);
 	}
 };
+
+WE().ImageEditTools.Rotate = {
+	up: WE().ImageEditTools,
+	win: null,
+
+	start: function(url, gdType){
+		this.up.deactivateAll();
+		this.up.activeTool = 'rotate';
+		this.win = new (WE().util.jsWindow)(window, url, "we_rotate", -1, -1, 300, (gdType === "jpg" ? 230 : 170), true, false, true);
+	},
+	drop: function(){top.console.debug('do close rot');
+		this.win.close();
+	}
+};
+
+WE().ImageEditTools.Resize = {
+	up: WE().ImageEditTools,
+	win: null,
+
+	start: function(url, gdType){top.console.debug('res', this);
+		this.up.deactivateAll();
+		this.up.activeTool = 'resize';
+		this.win = new (WE().util.jsWindow)(window, url, "we_image_resize", -1, -1, 260, (gdType === "jpg" ? 250 : 190), true, false, true);
+	},
+	drop: function(){top.console.debug('do close resize');
+		this.win.close();
+	}
+};
+
+WE().ImageEditTools.ConvertJPEG = {
+	up: WE().ImageEditTools,
+	win: null,
+
+	start: function(url){
+		this.up.deactivateAll();
+		this.up.activeTool = 'convertJPEG';
+		this.win = new (WE().util.jsWindow)(window, url, "we_convert_jpg", -1, -1, 260, 160, true, false, true);
+	},
+	drop: function(){top.console.debug('do close convjpg');
+		this.win.close();
+	}
+};
+
+/*
+WE().ImageEditTools.convertPNG = {
+	up: WE().ImageEditTool
+};
+
+WE().ImageEditTools.convertGIF = {
+	up: WE().ImageEditTool
+};
+*/
