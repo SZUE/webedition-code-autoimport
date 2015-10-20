@@ -50,7 +50,7 @@ function startTree(){
 	var table="' . USER_TABLE . '";
 	treeData.frames=frames;
 	treeData.startloc=' . $startloc . ';
-	frames.cmd.location=WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=users&pnt=cmd&pid=0";
+	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&pid=0";
 }';
 	}
 

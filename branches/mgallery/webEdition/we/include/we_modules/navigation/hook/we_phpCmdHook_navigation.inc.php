@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,12 +21,17 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//FIXME: remove this
+t_e('notice', 'called incompatible api');
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '')){
 	case 'module_navigation_rules':
 		$toolInclude = 'navigation/edit_navigation_rules_frameset.php';
 		break;
 	case 'module_navigation_edit':
-		$toolInclude = 'show_frameset.php';
+		$_REQUEST['mod'] = 'navigation';
+		$_REQUEST['pnt'] = 'show_frameset';
+		$toolInclude = '../../we_showMod.php';
+
 		break;
 	case 'module_navigation_edit_navi':
 		$toolInclude = 'navigation/weNaviEditor.php';
@@ -38,5 +42,5 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '')){
 }
 
 if(isset($toolInclude)){
-	include(WE_INCLUDES_PATH . 'we_modules/' . $toolInclude);
+	include(WE_MODULES_DIR . $toolInclude);
 }

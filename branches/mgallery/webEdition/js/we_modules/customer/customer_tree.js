@@ -43,7 +43,7 @@ container.prototype.openClose = function(id) {
 		sort = encodeURI(sort);
 		id = id.replace(/\+/g, "%2B");
 		sort = sort.replace(/\+/g, "%2B");
-		frames.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=customer&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
+		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=" + id + (sort !== "" ? "&sort=" + sort : "");
 	} else {
 		drawTree();
 	}

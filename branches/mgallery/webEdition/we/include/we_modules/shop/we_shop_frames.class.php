@@ -30,10 +30,10 @@ class we_shop_frames extends we_modules_frame{
 	protected $treeDefaultWidth = 204;
 
 	function __construct($frameset){
-		parent::__construct(WE_MODULES_DIR . 'show.php?mod=shop');
+		parent::__construct($frameset);
 		$this->hasIconbar = true;
 		$this->Tree = new we_shop_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_shop_view(WE_MODULES_DIR . 'show.php?mod=shop', 'top.content');
+		$this->View = new we_shop_view($frameset, 'top.content');
 	}
 
 	function getJSCmdCode(){
@@ -81,7 +81,7 @@ function we_cmd(){
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
 	switch (arguments[0]){
 		case "new_shop":
-			top.content.editor.location="' . WE_MODULES_DIR . 'show.php?mod=shop&pnt=editor";
+			top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor";
 			break;
 		case "delete_shop":
 			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot === 1 ) {
@@ -101,9 +101,9 @@ function we_cmd(){
 			break;
 		case "revenue_view":
 		//FIXME: this is not correct; document doesnt work like this
-			' . ($resultD ? 'top.content.editor.location="' . WE_MODULES_DIR . 'show.php?mod=shop&pnt=editor&top=1&typ=document";' :
-				(!empty($resultO) ? 'top.content.editor.location="' . WE_MODULES_DIR . 'show.php?mod=shop&pnt=editor&top=1&typ=object&ViewClass=' . $classid . '";' :
-					'top.content.editor.location="' . WE_MODULES_DIR . 'show.php?mod=shop&pnt=editor&top=1&typ=document";')) . '
+			' . ($resultD ? 'top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=document";' :
+				(!empty($resultO) ? 'top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=object&ViewClass=' . $classid . '";' :
+					'top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=document";')) . '
 			break;
 		';
 
@@ -111,7 +111,7 @@ function we_cmd(){
 		foreach($years as $cur){
 			$out .= '
 		case "year' . $cur . '":
-			top.content.location="' . WE_MODULES_DIR . 'show.php?mod=shop&year=' . $cur . '";
+			top.content.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&year=' . $cur . '";
 				break;
 		';
 		}
@@ -223,10 +223,10 @@ function we_cmd() {
 
 		if($resultD){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_sum,fa-lg fa-line-chart', "javascript:top.content.editor.location='show.php?mod=shop&pnt=editor&top=1&typ=document '", true));
+			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_sum,fa-lg fa-line-chart', "javascript:top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=shop&pnt=editor&top=1&typ=document '", true));
 		} elseif($resultO){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_sum,fa-lg fa-line-chart', "javascript:top.content.editor.location='show.php?mod=shop&pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
+			$iconBarTable->setCol(0, $c++, null, we_html_button::create_button('fa:btn_shop_sum,fa-lg fa-line-chart', "javascript:top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=shop&pnt=editor&top=1&typ=object&ViewClass=$classid '", true));
 		}
 
 		$iconBarTable->setCol(0, $c++, null, we_html_button::create_button("fa:btn_shop_pref,fa-lg fa-pencil,fa-lg fa-list-alt", "javascript:top.opener.top.we_cmd('pref_shop')", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")));
@@ -267,7 +267,7 @@ function we_cmd() {
 		} elseif($yearView){
 			$bodyURL = WE_SHOP_MODULE_DIR . 'edit_shop_revenueTop.php?ViewYear=' . $yearView;
 		} else {
-			$bodyURL = WE_MODULES_DIR . 'show.php?mod=shop&bid=' . $bid;
+			$bodyURL = WEBEDITION_DIR . 'we_showMod.php?mod=shop&bid=' . $bid;
 		}
 
 		return $this->getHTMLDocument(
@@ -312,7 +312,7 @@ function we_cmd() {
 			$bodyURL = 'edit_shop_article_extend.php?typ=document';
 		}
 
-		$body = we_html_element::htmlIFrame('edheader', 'show.php?mod=shop&pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
+		$body = we_html_element::htmlIFrame('edheader', WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=shop&pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
 			we_html_element::htmlIFrame('edbody', $bodyURL, 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;', '', '', true);
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
 	}
@@ -353,7 +353,7 @@ function we_cmd() {
 function setTab(tab) {
 	switch (tab) {
 		case 0:
-			parent.edbody.document.location = "show.php?mod=shop&pnt=edbody&bid=' . $bid . '";
+			parent.edbody.document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&bid=' . $bid . '";
 			break;
 		case 1:
 			parent.edbody.document.location = "edit_shop_orderlist.php?cid=' . $cid . '";

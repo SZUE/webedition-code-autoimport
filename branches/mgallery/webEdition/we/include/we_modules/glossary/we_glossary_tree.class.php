@@ -36,7 +36,7 @@ function startTree(){
 	"cmd":' . $this->cmdFrame . '
 };
 treeData.frames=frames;
-	frames.cmd.location=WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=glossary&pnt=cmd&pid=0";
+	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=cmd&pid=0";
 	drawTree();
 }';
 	}

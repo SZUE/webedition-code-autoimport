@@ -37,7 +37,7 @@ class we_export_frames extends we_modules_frame{
 		parent::__construct($frameset);
 		$this->Tree = new we_export_treeMain($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->SelectionTree = new we_export_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
-		$this->View = new we_export_view();
+		$this->View = new we_export_view($frameset);
 	}
 
 	public function getHTMLDocumentHeader($what = '', $mode = ''){

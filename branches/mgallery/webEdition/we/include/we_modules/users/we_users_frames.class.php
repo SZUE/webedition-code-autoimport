@@ -123,11 +123,10 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 
 	protected function getHTMLEditorHeader(){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){//FIXME: find one working condition
-			echo $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), ''));
-			return;
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'background-color:#F0EFF0;'), ''));
 		}
 		$user_object = $_SESSION["user_session_data"];
-		echo $this->getHTMLDocument(we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody')), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody')), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
 	}
 
 	protected function getHTMLEditorBody(){
@@ -175,7 +174,7 @@ var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USE
 				'autocomplete' => 'off',
 				'onsubmit' => 'return false'
 				), $_content);
-		echo $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form));
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form));
 	}
 
 	protected function getHTMLEditorFooter(){

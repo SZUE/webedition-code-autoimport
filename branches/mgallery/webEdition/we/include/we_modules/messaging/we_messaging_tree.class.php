@@ -48,7 +48,7 @@ function startTree(){
 	//FIXME: we have too much frames, this module is not separated well
 		setTimeout("startTree()",500);
 	}else{
-		frames.cmd.location=WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=messaging&pnt=cmd&pid=0&we_transaction="+we_transaction;
+		frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&pid=0&we_transaction="+we_transaction;
 	}
 }';
 	}

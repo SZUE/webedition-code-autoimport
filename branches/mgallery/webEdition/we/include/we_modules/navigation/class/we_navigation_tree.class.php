@@ -42,7 +42,7 @@ frames={
 };
 	pid = arguments[0] ? arguments[0] : 0;
 	offset = arguments[1] ? arguments[1] : 0;
-	frames.cmd.location=WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=navigation&pnt=cmd&pid="+pid+"&offset="+offset;
+	frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();
 }';
 	}

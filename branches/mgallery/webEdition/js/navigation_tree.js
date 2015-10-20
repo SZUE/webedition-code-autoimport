@@ -35,11 +35,7 @@ container.prototype.openClose = function(id) {
 	treeData[eintragsIndex].open = openstatus;
 
 	if (openstatus && !treeData[eintragsIndex].loaded) {
-		if (sort != "") {
-			frames.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=navigation&pnt=cmd&pid=" + id + "&sort=" + sort;
-		} else {
-			frames.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=navigation&pnt=cmd&pid=" + id;
-		}
+		frames.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&pid=" + id +(sort != ""? "&sort=" + sort:"");
 	} else {
 		drawTree();
 	}

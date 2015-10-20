@@ -805,7 +805,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 		// build the page
 		$out = '<table border="0" class="defaultfont" class="default">
 		<tr>
-			<td><iframe name="preview" style="background: white; border: 1px solid black; width: 640px; height: 150px" src="' . WE_MODULES_DIR . 'show.php?mod=navigation&pnt=previewIframe"></iframe></td>
+			<td><iframe name="preview" style="background: white; border: 1px solid black; width: 640px; height: 150px" src="' . WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=previewIframe"></iframe></td>
 		</tr>
 		<tr>
 			<td height="30"><label for="previewCode">' . g_l('navigation', '[preview_code]') . '</label><br /></td>

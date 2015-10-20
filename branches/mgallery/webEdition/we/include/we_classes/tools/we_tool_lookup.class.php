@@ -124,7 +124,7 @@ abstract class we_tool_lookup{
 				$_REQUEST['tool'] = $tmps[1];
 				return 'we_tools/' . $tmps[1] . '/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
 			case 'navigation':
-				//TODO: does this work after refactoring navigation as a module
+				//FIMXE: remove this
 				$_REQUEST['mod'] = 'navigation';
 				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
 		}

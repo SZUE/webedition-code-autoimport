@@ -25,9 +25,9 @@
 switch($cmd){
 	case 'customer_edit_ifthere':
 	case 'customer_edit':
-		$GLOBALS['mod'] = 'customer';
-		return 'we_modules/show_frameset.php';
-
+		$_REQUEST['mod'] = 'customer';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 	case 'customer_applyWeDocumentCustomerFilterFromFolder':
 		return 'we_editors/we_editor.inc.php';
 	case 'we_customer_selector':

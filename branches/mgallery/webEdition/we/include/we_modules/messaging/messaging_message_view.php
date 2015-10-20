@@ -49,7 +49,7 @@ echo we_html_tools::getHtmlTop() .
 ?>
 <script><!--
 	function todo_markdone() {
-		top.content.cmd.location = '<?php echo WE_MODULES_DIR; ?>show.php?mod=messaging&pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&mcmd=todo_markdone&we_transaction=<?php echo $transaction; ?>';
 			}
 //-->
 </script>

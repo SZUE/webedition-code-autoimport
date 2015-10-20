@@ -44,8 +44,8 @@ class we_customer_EIWizard{
 	const ART_IMPORT = 'import';
 	const ART_EXPORT = 'export';
 
-	function __construct(){
-		$this->setFrameset(WE_MODULES_DIR . "show.php?mod=customer");
+	function __construct($frameset){
+		$this->setFrameset($frameset);
 		$this->db = new DB_WE();
 	}
 

@@ -25,6 +25,7 @@
 switch($cmd){
 	case 'messaging_start':
 	case 'messaging_edit_ifthere':
-		$GLOBALS['mod'] = 'messaging';
-		return 'we_modules/show_frameset.php';
+		$_REQUEST['mod'] = 'messaging';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 }

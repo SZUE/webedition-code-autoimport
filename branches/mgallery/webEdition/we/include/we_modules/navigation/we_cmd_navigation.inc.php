@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,8 +26,9 @@
 switch($cmd){
 	case 'navigation_edit_ifthere':
 	case 'navigation_edit':
-		$GLOBALS['mod'] = 'navigation';
-		return 'we_modules/show_frameset.php';
-		case 'we_navigation_dirSelector':
-			return 'selectors.inc.php';
+		$_REQUEST['mod'] = 'navigation';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
+	case 'we_navigation_dirSelector':
+		return 'selectors.inc.php';
 }

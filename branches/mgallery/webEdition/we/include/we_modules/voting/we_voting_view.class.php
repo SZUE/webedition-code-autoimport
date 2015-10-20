@@ -139,7 +139,7 @@ function we_cmd() {
 
 		case "reset_ipdata":
 			if(confirm("' . g_l('modules_voting', '[delete_ipdata_question]') . '")){
-				url = WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=voting&pnt="+arguments[0];
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt="+arguments[0];
 				new (WE().util.jsWindow)(window, url,arguments[0],-1,-1,420,230,true,false,true);
 				var t = document.getElementById("ip_mem_size");
 				setVisible("delete_ip_data",false);
@@ -148,12 +148,12 @@ function we_cmd() {
 		break;
 		case "delete_log":
 			if(confirm("' . g_l('modules_voting', '[delete_log_question]') . '")){
-				url = WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=voting&pnt="+arguments[0];
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt="+arguments[0];
 				new (WE().util.jsWindow)(window, url,arguments[0],-1,-1,420,230,true,false,true);
 			}
 		break;
 		case "show_log":
-			url = WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=voting&pnt="+arguments[0];
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt="+arguments[0];
 			new (WE().util.jsWindow)(window, url,arguments[0],-1,-1,810,600,true,true,true);
 		break;
 		break;
@@ -186,8 +186,8 @@ function we_cmd() {
 				$this->voting = new we_voting_voting();
 				$this->voting->IsFolder = we_base_request::_(we_base_request::STRING, "cmd") === 'new_voting_group' ? 1 : 0;
 				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location=WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
-						top.content.editor.edfooter.location=WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=voting&pnt=edfooter";');
+						'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
+						top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";');
 				break;
 			case "voting_edit":
 				if(!permissionhandler::hasPerm("EDIT_VOTING")){
@@ -210,8 +210,8 @@ function we_cmd() {
 					break;
 				}
 				echo we_html_element::jsElement(
-						'top.content.editor.edheader.location=WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
-						top.content.editor.edfooter.location=WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=voting&pnt=edfooter";');
+						'top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edheader&text=' . urlencode($this->voting->Text) . '";
+						top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=edfooter";');
 				break;
 			case "save_voting":
 				if(!permissionhandler::hasPerm("NEW_VOTING") && !permissionhandler::hasPerm("EDIT_VOTING")){

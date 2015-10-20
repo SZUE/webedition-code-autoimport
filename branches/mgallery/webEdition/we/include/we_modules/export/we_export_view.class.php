@@ -31,8 +31,7 @@ class we_export_view extends we_modules_view{
 	var $editorBodyDoc;
 	private $page;
 
-	public function __construct(){
-		$frameset = WE_MODULES_DIR . "show.php?mod=export";
+	public function __construct($frameset){
 		$topframe = "top.content";
 		parent::__construct($frameset, $topframe);
 		$this->export = new we_export_export();

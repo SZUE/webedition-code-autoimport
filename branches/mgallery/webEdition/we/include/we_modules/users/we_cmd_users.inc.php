@@ -24,8 +24,9 @@
 switch($cmd){
 	case 'users_edit':
 	case 'users_edit_ifthere':
-		$GLOBALS['mod'] = 'users';
-		return 'we_modules/show_frameset.php';
+		$_REQUEST['mod'] = 'users';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 	case 'users_unlock':
 		return 'we_modules/users/we_users_unlock.inc.php';
 	case 'users_add_owner':

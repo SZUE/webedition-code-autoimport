@@ -392,7 +392,7 @@ top.content.editor.edbody.document.we_form.Position.innerHTML=\'' . $posText . '
 			case 'dyn_preview':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement('
-						url = "' . WE_MODULES_DIR . 'show.php?mod=navigation&pnt=dyn_preview";
+						url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=dyn_preview";
 						new (WE().util.jsWindow)(window, url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
 				);
 				break;

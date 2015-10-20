@@ -25,8 +25,9 @@
 switch($cmd){
 	case 'export_edit_ifthere':
 	case 'export_edit':
-		$GLOBALS['mod'] = 'export';
-		return 'we_modules/show_frameset.php';
+		$_REQUEST['mod'] = 'export';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 
 	case 'we_export_dirSelector':
 		return 'selectors.inc.php';

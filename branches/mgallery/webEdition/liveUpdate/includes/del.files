@@ -1,3 +1,6 @@
+we/include/we_modules/show.php
+we/include/we_modules/show_frameset.php
+editors/content/eplugin/initPlugin.html
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js

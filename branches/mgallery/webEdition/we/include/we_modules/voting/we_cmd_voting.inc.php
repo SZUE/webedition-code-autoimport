@@ -24,8 +24,9 @@
 switch($cmd){
 	case 'voting_edit_ifthere':
 	case 'voting_edit':
-		$GLOBALS['mod'] = 'voting';
-		return 'we_modules/show_frameset.php';
+		$_REQUEST['mod'] = 'voting';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 	case 'we_voting_dirSelector':
 		return 'selectors.inc.php';
 }

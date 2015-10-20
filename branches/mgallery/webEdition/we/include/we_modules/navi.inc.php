@@ -51,14 +51,14 @@ echo $tab_header .
 			if(confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
 				if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
 				current = module;
-				top.content.location.replace(WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=" + module);
+				top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
 			} else {
 				weTabs.setActiveTab(current);
 			}
 		} else {
 			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
 			current = module;
-			top.content.location.replace(WE().consts.dirs.WE_MODULES_DIR+"show.php?mod=" + module);
+			top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
 
 		}
 

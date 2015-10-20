@@ -34,8 +34,7 @@ class we_customer_view extends we_modules_view{
 	const ERR_SAVE_FIELD_EXISTS = -4;
 	const ERR_SAVE_FIELD_NOT_EMPTY = -3;
 
-	function __construct(){
-		$frameset = WE_MODULES_DIR . 'show.php?mod=customer';
+	function __construct($frameset){
 		$topframe = 'top.content';
 		parent::__construct($frameset, $topframe);
 		$this->customer = new we_customer_customer();
@@ -244,7 +243,7 @@ top.content.editor.edfooter.location="' . $this->frameset . '?home=1&pnt=edfoote
 			case 'show_admin':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 				we_html_element::jsElement('
-url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=customer_admin";
+url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=customer_admin";
 new (WE().util.jsWindow)(window, url,"customer_admin",-1,-1,600,420,true,true,true,false);');
 				break;
 			case 'save_field':
@@ -443,7 +442,7 @@ close();');
 				break;
 			case 'show_sort_admin':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=sort_admin";
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=sort_admin";
 new (WE().util.jsWindow)(window, url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 
 				break;
@@ -505,22 +504,22 @@ self.close();');
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
 						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
 				break;
 			case 'show_customer_settings':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=settings";
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings";
 						new (WE().util.jsWindow)(window, url,"customer_settings",-1,-1,550,250,true,true,true,false);');
 				break;
 			case 'import_customer':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=import";
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import";
 						new (WE().util.jsWindow)(window, url,"import_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'export_customer':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url ="' . WE_MODULES_DIR . 'show.php?mod=customer&pnt=export";
+				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export";
 						new (WE().util.jsWindow)(window, url,"export_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'save_settings':

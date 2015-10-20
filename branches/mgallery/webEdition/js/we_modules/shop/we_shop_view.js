@@ -54,7 +54,7 @@ function we_cmd() {
 			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "edit_order_customer", -1, -1, 545, 600, true, true, true, false);
 			break;
 		case "customer_edit":
-			top.document.location = WE().consts.dirs.WE_MODULES_DIR + 'show_frameset.php?mod=customer&sid=' + cid;
+			top.document.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=customer&pnt=show_frameset&sid=' + cid;
 			break;
 		case "add_new_article":
 			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "add_new_article", -1, -1, 650, 600, true, false, true, false);
@@ -67,6 +67,6 @@ function neuerartikel() {
 }
 
 function deleteorder() {
-	top.content.editor.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=shop&pnt=edbody&deletethisorder=1&bid=" + bid;
+	top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&deletethisorder=1&bid=" + bid;
 	top.content.treeData.deleteEntry(bid);
 }

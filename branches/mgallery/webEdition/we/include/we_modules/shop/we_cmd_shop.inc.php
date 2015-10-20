@@ -25,8 +25,9 @@
 switch($cmd){
 	case 'shop_edit_ifthere':
 	case 'shop_edit':
-		$GLOBALS['mod'] = 'shop';
-		return 'we_modules/show_frameset.php';
+		$_REQUEST['mod'] = 'shop';
+		$_REQUEST['pnt'] = 'show_frameset';
+		return '../../we_showMod.php';
 	case 'shop_insert_variant':
 	case 'shop_move_variant_up':
 	case 'shop_move_variant_down':

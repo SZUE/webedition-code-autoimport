@@ -99,8 +99,8 @@ function we_cmd() {
 				if (confirm(WE().consts.g_l.voting.delete_alert)) {
 					top.content.editor.edbody.document.we_form.cmd.value = args[0];
 					top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
-					top.content.editor.edheader.location = WE().consts.dirs.WE_MODULE_DIR + "show.php?mod=voting&home=1&pnt=edheader";
-					top.content.editor.edfooter.location = WE().consts.dirs.WE_MODULE_DIR + "show.php?mod=voting&home=1&pnt=edfooter";
+					top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&home=1&pnt=edheader";
+					top.content.editor.edfooter.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&home=1&pnt=edfooter";
 					top.content.editor.edbody.submitForm();
 				}
 			} else {
@@ -144,10 +144,10 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		case "load":
-			top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=voting&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
 			break;
 		case "home":
-			top.content.editor.edbody.parent.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=voting&pnt=editor";
+			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=editor";
 			break;
 		default:
 			top.opener.top.we_cmd.apply(this, args);

@@ -30,19 +30,19 @@ function new_message(mode) {
 
 function copy_messages() {
 	if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-		top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=messaging&pnt=cmd&we_transaction=" + transaction + "&mcmd=copy_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + transaction + "&mcmd=copy_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
 	}
 }
 
 function cut_messages() {
 	if (top.content.editor.edbody.entries_selected && top.content.editor.edbody.entries_selected.length > 0) {
-		top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=messaging&pnt=cmd&we_transaction=" + transaction + "&mcmd=cut_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + transaction + "&mcmd=cut_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
 	}
 }
 
 function paste_messages() {
 	if (top.content.editor.edbody.entries_selected) {
-		top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=messaging&pnt=cmd&we_transaction=" + transaction + "&mcmd=paste_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + transaction + "&mcmd=paste_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
 	}
 }
 
@@ -52,7 +52,7 @@ function delete_messages(isTodo) {
 		if (c === false) {
 			return;
 		}
-		top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=messaging&pnt=cmd&we_transaction=" + transaction + "&mcmd=delete_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&we_transaction=" + transaction + "&mcmd=delete_msg&entrsel=" + top.content.editor.edbody.entries_selected.join(",");
 	}
 }
 
@@ -62,7 +62,7 @@ function refresh() {
 
 function launch_todo() {
 	if (top.content.editor.edbody.entries_selected) {
-		top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=messaging&pnt=cmd&mcmd=launch&mode=todo&we_transaction=" + transaction + "";
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=launch&mode=todo&we_transaction=" + transaction + "";
 	}
 }
 
@@ -90,6 +90,6 @@ function update_todo() {
 
 function launch_msg() {
 	if (top.content.editor.edbody.entries_selected) {
-		top.content.cmd.location = WE().consts.dirs.WE_MODULES_DIR + "show.php?mod=messaging&pnt=cmd&mcmd=launch&mode=message&we_transaction=" + transaction;
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=launch&mode=message&we_transaction=" + transaction;
 	}
 }

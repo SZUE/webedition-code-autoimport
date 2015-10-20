@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -42,9 +41,44 @@ if(strpos($mod, '?')){
 if(!we_base_moduleInfo::isActive($mod)){
 	return;
 }
+
 $what = we_base_request::_(we_base_request::STRING, "pnt", "frameset");
 $mode = we_base_request::_(we_base_request::INT, "art", 0);
 $step = we_base_request::_(we_base_request::INT, 'step', 0);
+
+
+if($pnt === 'show_frameset'){ //old call to show_frameset.php
+	echo we_html_tools::getHtmlTop() .
+	we_html_element::jsElement('
+var makeNewEntryCheck = 0;
+var publishWhenSave = 0;
+var weModuleWindow = true;
+
+function we_cmd() {
+			var args = [];
+			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
+			}
+			top.content.we_cmd.apply(this, args);
+	}
+');
+	?>
+	</head>
+	<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
+		<?php
+		$_REQUEST['mod'] = $mod = (isset($mod) ? $mod : we_base_request::_(we_base_request::STRING, 'mod'));
+
+		//TODO: we should loop through all we_cmd and process them in respective we_module_frames.class only
+		$cmd1 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 1); //to be used only for IDs or integer constants!
+		$sid = we_base_request::_(we_base_request::RAW, 'sid');
+		$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
+
+		echo we_html_element::htmlExIFrame('navi', WE_MODULES_PATH . 'navi.inc.php', 'background-color:white;position:absolute;top:0px;height:21px;left:0px;right:0px;overflow: hidden;') .
+		we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), 'position:absolute;top:21px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false)
+		;
+		?></body></html><?php
+	return;
+}
 
 switch($mod){
 	case 'workflow':
@@ -56,13 +90,13 @@ switch($mod){
 
 switch($mod){
 	case 'banner':
-		$weFrame = new we_banner_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		ob_start();
 		$weFrame->process();
 		$GLOBALS['extraJS'] = ob_get_clean();
 		break;
 	case 'shop':
-		$weFrame = new we_shop_frames(WE_MODULES_DIR . 'show.php?mod=shop');
+		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->View->processCommands();
 		break;
 	case 'customer':
@@ -73,49 +107,49 @@ switch($mod){
 			case 'eiload':
 			case 'import':
 			case 'eiupload':
-				$weFrame = new we_customer_EIWizard();
+				$weFrame = new we_customer_EIWizard(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 				break;
 			default:
-				$weFrame = new we_customer_frames();
+				$weFrame = new we_customer_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 				$weFrame->process();
 		}
 		break;
 	case 'users':
-		$weFrame = new we_users_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame = new we_users_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 
 		ob_start();
 		$weFrame->process();
 		$GLOBALS['extraJS'] = ob_get_clean();
 		break;
 	case 'export':
-		$weFrame = new we_export_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame = new we_export_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 
 		$weFrame->getHTMLDocumentHeader($what);
 		$weFrame->process();
 		break;
 	case 'glossary':
 
-		$weFrame = new we_glossary_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame = new we_glossary_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		echo $weFrame->getHTMLDocumentHeader();
 		$weFrame->process();
 		break;
 
 	case 'voting':
 
-		$weFrame = new we_voting_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame = new we_voting_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		echo $weFrame->getHTMLDocumentHeader();
 		$weFrame->process();
 		break;
 	case 'navigation':
 
-		$weFrame = new we_navigation_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame = new we_navigation_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		echo $weFrame->getHTMLDocumentHeader();
 		$weFrame->process();
 		break;
 
 	case 'workflow':
 		$type = we_base_request::_(we_base_request::INTLIST, 'type', 0);
-		$weFrame = new we_workflow_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame = new we_workflow_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		echo $weFrame->getHTML($what, $mode, $type);
 		return;
@@ -126,14 +160,14 @@ switch($mod){
 		}
 		$transaction = $what === 'frameset' ? $we_transaction : we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'); //FIXME: is $transaction used anywhere?
 
-		$weFrame = new we_messaging_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod, we_base_request::_(we_base_request::STRING, 'viewclass', 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
+		$weFrame = new we_messaging_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod, we_base_request::_(we_base_request::STRING, 'viewclass', 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
 		$weFrame->process();
 		break;
 
 	case 'newsletter':
 		$ncmd = we_base_request::_(we_base_request::STRING, 'ncmd', '');
 
-		$weFrame = new we_newsletter_frames(WE_MODULES_DIR . 'show.php?mod=' . $mod);
+		$weFrame = new we_newsletter_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		switch($what){
 			case 'edit_file':
 				$mode = we_base_request::_(we_base_request::FILE, 'art');

@@ -1,3 +1,5 @@
+/* global top */
+
 /**
  * webEdition SDK
  *
@@ -143,6 +145,7 @@ function initPlugin() {
 function nojava() {
 	alert(g_l.no_java);
 	top.opener.top.plugin.location = "about:blank";
+	wait_count = 0;
 	self.close();
 }
 
