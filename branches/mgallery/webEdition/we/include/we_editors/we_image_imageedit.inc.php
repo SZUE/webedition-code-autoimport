@@ -55,9 +55,8 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 		$supported = we_base_imageEdit::supported_image_types();
 		$focus = we_unserialize($GLOBALS['we_doc']->getElement('focus', 'dat'), array(0, 0));
-		echo '<table class="default">
-' . ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT ?
-			'<tr><td style="padding-bottom:20px;"><select name="editmenue" size="1" onchange="changeOption(this);"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
+		echo we_html_element::htmlDiv(array(), '
+<select name="editmenue" size="1" onchange="changeOption(this);"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
 <option value="imageEditTools_reset" selected="selected" style="color:grey"></option>
 <optgroup label="' . g_l('weClass', '[edit]') . '">
 <option value="image_resize">' . g_l('weClass', '[resize]') . '&hellip;</option>
@@ -70,7 +69,13 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			(($_gdtype != "gif" && in_array('gif', $supported)) ? '<option value="doImage_convertGIF">' . g_l('weClass', '[convert_gif]') . '</option>' : '') .
 			(($_gdtype != "png" && in_array('png', $supported)) ? '<option value="doImage_convertPNG">' . g_l('weClass', '[convert_png]') . '</option>' : '') .
 			'</optgroup>
-</select></td></tr>' :
+</select>'
+			) .
+			we_html_element::htmlDiv(array('id' => 'focus_info', 'style' => 'margin-top:10px; display:none'), we_html_tools::htmlAlertAttentionBox(/*g_l('weClass', '[focus_info]')*/'Der Bildfokus findet Verwendung beim Erstellen von Miniaturansichten: Er definiert den (neuen) Mittelpunkt, um den herum beim "Beschneiden" und "Größe einpassen" das Bild abgeschnitten wird.', we_html_tools::TYPE_INFO, 640)) .
+
+'<table class="default">
+' . ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT ?
+			'<tr><td style="padding-bottom:20px;"></td></tr>' :
 			''
 		) . '<tr><td>' . $we_doc->getHtml(true) . '
 <div id="cursorVal" style="display:none">
