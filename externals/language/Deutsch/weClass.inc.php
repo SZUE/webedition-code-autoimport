@@ -86,6 +86,7 @@ $l_weClass=array(
 	'file_not_saved'=>'Datei wurde noch nicht gespeichert.',
 	'file_on_liveserver'=>'Diese Datei existiert schon !',
 	'filename'=>'Dateiname',
+	'focus_info'=>'Der Bildfokus findet Verwendung beim Erstellen von Miniaturansichten: Er definiert den (neuen) Mittelpunkt, um den herum beim "Beschneiden" und "Größe einpassen" das Bild abgeschnitten wird.',
 	'folder_saved_ok'=>'Das Verzeichnis `%s` wurde erfolgreich gespeichert!',
 	'foldername'=>'Verzeichnisname',
 	'function'=>'Funktion',

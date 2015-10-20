@@ -86,6 +86,7 @@ $l_weClass=array(
 	'file_not_saved'=>'Le fichier n`a pas encore été enregistré.',
 	'file_on_liveserver'=>'Ce fichier existe déjà!',
 	'filename'=>'Nom du fichier',
+	'focus_info'=>'The focus point is used when thumbnails created: It defines the new center point of an image when applying the options "Crop" or "Fit inside".',
 	'folder_saved_ok'=>'Le répertoire `%s` a été enregistré avec succès!',
 	'foldername'=>'Folder name',
 	'function'=>'Function',

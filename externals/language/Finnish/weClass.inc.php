@@ -86,6 +86,7 @@ $l_weClass=array(
 	'file_not_saved'=>'Tiedostoa ei tallennettu vielä.',
 	'file_on_liveserver'=>'Tiedosto on jo olemassa',
 	'filename'=>'Tiedoston nimi',
+	'focus_info'=>'The focus point is used when thumbnails created: It defines the new center point of an image when applying the options "Crop" or "Fit inside".',
 	'folder_saved_ok'=>'Hakemisto `%s` on tallennettu!',
 	'foldername'=>'Folder name',
 	'function'=>'Toiminto',

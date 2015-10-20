@@ -86,6 +86,7 @@ $l_weClass=array(
 	'file_not_saved'=>'File wasn`t saved yet.',
 	'file_on_liveserver'=>'Archivo ya existe',
 	'filename'=>'Nombre de archivo',
+	'focus_info'=>'The focus point is used when thumbnails created: It defines the new center point of an image when applying the options "Crop" or "Fit inside".',
 	'folder_saved_ok'=>'La carpeta `%s` ha sido exitosamente salvada!',
 	'foldername'=>'Folder name',
 	'function'=>'Función',

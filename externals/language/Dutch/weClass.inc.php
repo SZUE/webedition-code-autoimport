@@ -86,6 +86,7 @@ $l_weClass=array(
 	'file_not_saved'=>'Het bestand is nog niet bewaard.',
 	'file_on_liveserver'=>'Bestand bestaat al',
 	'filename'=>'Bestandsnaam',
+	'focus_info'=>'The focus point is used when thumbnails created: It defines the new center point of an image when applying the options "Crop" or "Fit inside".',
 	'folder_saved_ok'=>'De map `%s` is succesvol bewaard!',
 	'foldername'=>'Folder name',
 	'function'=>'Functie',
