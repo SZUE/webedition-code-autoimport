@@ -44,7 +44,7 @@ function we_cmd_navigation(args, url) {
 			return true;
 		case "module_navigation_rules":
 			WE().util.jsWindow.prototype.focus('edit_module');
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "navigation/edit_navigation_rules_frameset.php", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=ruleFrameset", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
 			return true;
 		case "module_navigation_edit_navi":
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MODULES_DIR + "navigation/weNaviEditor.php?we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);

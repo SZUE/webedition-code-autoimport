@@ -29,7 +29,6 @@ define('CUSTOMER_AUTOLOGIN_LIFETIME', 31536000);
 define('CUSTOMER_SESSION_LIFETIME', 300);
 define('WE_CUSTOMER_MODULE_PATH', WE_MODULES_PATH . 'customer/');
 define('WE_CUSTOMER_MODULE_DIR', WE_MODULES_DIR . 'customer/');
-define('WE_JS_CUSTOMER_MODULE_DIR', WE_JS_MODULES_DIR . 'customer/');
 
 we_base_request::registerTables(array(
 	'CUSTOMER_TABLE' => CUSTOMER_TABLE,

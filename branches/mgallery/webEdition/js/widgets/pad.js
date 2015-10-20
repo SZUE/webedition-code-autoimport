@@ -190,12 +190,7 @@ function setColor(theRow, theRowNum, newColor) {
 		return false;
 	}
 	var rowCellsCnt = theCells.length;
-	var domDetect = null;
-	if (window.opera === undefined && theCells[0].getAttribute !== undefined) {
-		domDetect = true;
-	} else {
-		domDetect = false;
-	}
+	var domDetect = (window.opera === undefined && theCells[0].getAttribute !== undefined);
 	var c = null;
 	if (domDetect) {
 		for (c = 0; c < rowCellsCnt; c++) {
@@ -221,16 +216,18 @@ function convertDate(sDate, sFormat) {
 }
 
 function toggleTblValidity() {
-	var weNoteValidity = getCurrentQuery().Validity;
-	if (getCurrentQuery().Validity == "always") {
-		document.getElementById("f_ValidFrom_cell").style.visibility = "hidden";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
-	} else if (weNoteValidity == "date") {
-		document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
-	} else {
-		document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
-		document.getElementById("f_ValidUntil_cell").style.visibility = "visible";
+	switch (getCurrentQuery().Validity) {
+		case "always":
+			document.getElementById("f_ValidFrom_cell").style.visibility = "hidden";
+			document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
+			break;
+		case "date":
+			document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
+			document.getElementById("f_ValidUntil_cell").style.visibility = "hidden";
+			break;
+		default:
+			document.getElementById("f_ValidFrom_cell").style.visibility = "visible";
+			document.getElementById("f_ValidUntil_cell").style.visibility = "visible";
 	}
 }
 
@@ -242,8 +239,7 @@ function init() {
 function saveNote() {
 	var fo = document.forms[0];
 	var _id = fo.elements.mark.value;
-	var q_init;
-	q_init = (_id !== '' ?
+	var q_init = (_id !== '' ?
 					getInitialQueryById(_id) :
 					{'Validity': 'always', 'ValidFrom': '', 'ValidUntil': '', 'Priority': 'low', 'Title': '', 'Text': ''});
 	var q_curr = getCurrentQuery();

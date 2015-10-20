@@ -76,11 +76,11 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		var _bDgSave = false;
 		var bInitDrag = false;
 		var oTblWidgets = null;
-		var g_l = {
-			'reduce_size': '<?php echo g_l('cockpit', '[reduce_size]') ?>',
-			'increase_size': '<?php echo g_l('cockpit', '[increase_size]'); ?>',
-			'pre_remove': '<?php echo g_l('cockpit', '[pre_remove]'); ?>"',
-			'post_remove': '" <?php echo g_l('cockpit', '[post_remove]'); ?>'
+		WE().consts.g_l.cockpit = {
+			reduce_size: '<?php echo g_l('cockpit', '[reduce_size]') ?>',
+			increase_size: '<?php echo g_l('cockpit', '[increase_size]'); ?>',
+			pre_remove: '<?php echo g_l('cockpit', '[pre_remove]'); ?>"',
+			post_remove: '" <?php echo g_l('cockpit', '[post_remove]'); ?>'
 		};
 		var has_messaging =<?php echo intval(defined('WE_MESSAGING_MODULE_DIR')); ?>;
 		var transact = "<?php echo md5(uniqid(__FILE__, true)); ?>";
@@ -193,7 +193,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 						break;
 				}
 				$newSCurrId = 'm_' . $iCurrId;
-				include(WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');
+				include(WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
 			}
 			if($aProps[2]){
 				$bExtendedCol = true;

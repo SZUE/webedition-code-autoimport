@@ -111,7 +111,7 @@ function setTab(tab){
 	}
 
 	protected function getHTMLEditorFooter($mode = 0){
-		return parent::getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_footer.js'));
+		return parent::getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
 	}
 
 	function getHTMLCmd(){

@@ -113,11 +113,6 @@ function set_state_auth() {
 	document.getElementsByName('newconf[HTTP_PASSWORD]')[0].disabled = _new_state;
 }
 
-function IsDigit(e) {
-	var key = (e !== null && e.charCode ? e.charCode : event.keyCode);
-	return (((key >= 48) && (key <= 57)) || (key === 0) || (key === 13));
-}
-
 function setJavaEditorDisabled(disabled) {
 	document.getElementById("_newconf[specify_jeditor_colors]").disabled = disabled;
 	document.getElementById("label__newconf[specify_jeditor_colors]").style.color = (disabled ? "grey" : "");

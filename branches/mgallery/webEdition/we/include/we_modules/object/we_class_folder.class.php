@@ -421,9 +421,9 @@ class we_class_folder extends we_folder{
 						) . '></i>'//FIXME: add text as in others shown
 					),
 					array(
-						'dat' => '<i class="fa fa-lg fa-circle" style="color:#' . ($this->searchclass->f("OF_IsSearchable") ?
-							'006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') :
-							'E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]')) .
+						'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($this->searchclass->f("OF_IsSearchable") ?
+							'#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') :
+							'#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]')) .
 						'"></i>'
 					),
 					array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("OF_ID") . ',\'objectFile\');" class="middlefont" title="' . $this->searchclass->f("OF_Path") . '">' . $this->searchclass->f("OF_ID") . '</a>'),

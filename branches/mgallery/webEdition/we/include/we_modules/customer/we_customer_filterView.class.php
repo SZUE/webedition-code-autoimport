@@ -394,7 +394,7 @@ var buttons={
 	"add":\'' . we_html_button::create_button(we_html_button::PLUS, "javascript:addRow(__CNT__)", true, 25) . '\',
 	"trash":\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__CNT__)", true, 25) . '\'
 };') .
-			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_filter.js') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filter.js') .
 			$_filterTable .
 			'<div style="height:5px;"></div>' .
 			we_html_button::create_button(we_html_button::PLUS, "javascript:addRow()");

@@ -25,7 +25,7 @@
 class we_voting_tree extends weTree{
 
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_VOTING_MODULE_DIR . 'voting_tree.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'voting/voting_tree.js');
 	}
 
 	function getJSStartTree(){

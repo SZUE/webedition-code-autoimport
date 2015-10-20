@@ -112,6 +112,9 @@ class we_dialog_base{
 	function getFramesetHTML(){
 		return we_html_element::jsElement(
 				((!(we_base_browserDetect::isGecko() || we_base_browserDetect::isOpera())) ? 'document.onkeydown = doKeyDown;' : '') . '
+function closeOnEscape() {
+	return true;
+}
 
 function doKeyDown() {
 	var key = event.keyCode;

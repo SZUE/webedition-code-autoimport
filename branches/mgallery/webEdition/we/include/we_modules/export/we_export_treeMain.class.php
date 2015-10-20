@@ -25,7 +25,7 @@
 class we_export_treeMain extends weTree{
 
 	function customJSFile(){
-		return parent::customJSFile() . we_html_element::jsScript(WE_JS_EXPORT_MODULE_DIR . 'export_treeMain.js');
+		return parent::customJSFile() . we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_treeMain.js');
 	}
 
 	function getJSStartTree(){

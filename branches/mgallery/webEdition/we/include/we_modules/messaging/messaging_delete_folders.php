@@ -47,7 +47,7 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 				sel += (top.treeData[i].name + ",");
 		}
 		if (!sel) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+			top.we_showMessage(WE().consts.g_l.main.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 			return;
 		}
 		sel = sel.substring(0, sel.length - 1);
@@ -72,7 +72,6 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 		$res = $messaging->delete_folders($folders);
 		$v = array_shift($res);
 		if($v > 0){
-
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 			?>
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=delete_folders&folders=<?php echo implode(',', $v) ?>';
@@ -89,7 +88,6 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 	}
 }
 ?>
-
 //-->
 </script>
 <?php

@@ -59,23 +59,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 }
 
 echo we_html_element::jsElement('
-if (window.addEventListener) {
-	document.addEventListener("keyup",doKeyDown,true);
-}else{
-	document.onkeydown = doKeyDown;
-}
-
-function doKeyDown(e) {
-	var key=e.keyCode===undefined?event.keyCode:e.keyCode;
-	switch (key) {
-		case 27:
-			top.close();
-			break;	}
-}
-
-function IsDigit(e) {
-	var key=e.keyCode===undefined?event.keyCode:e.keyCode;
-	return ( (key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13)  || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+function closeOnEscape() {
+	return true;
 }
 
 function doUnload() {
@@ -264,9 +249,9 @@ if(isset($weShipping)){ // show the shipping which must be edited
 
 			$tblPart .= '
 			<tr id="' . $tblRowName . '">
-				<td>' . we_class::htmlTextInput('weShipping_cartValue[]', 24, $weShipping->cartValue[$i], '', 'onkeypress="return IsDigit(event);"') . '</td>
+				<td>' . we_class::htmlTextInput('weShipping_cartValue[]', 24, $weShipping->cartValue[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
 				<td></td>
-				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return IsDigit(event);"') . '</td>
+				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
 				<td></td>
 				<td>' . we_html_button::create_button(we_html_button::TRASH, "we_cmd('deleteShippingCostTableRow','" . $tblRowName . "');") . '</td>
 			</tr>';
@@ -302,6 +287,7 @@ if(isset($weShipping)){ // show the shipping which must be edited
 echo we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
 		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
-) . '
+);
+?>
 </form>
-</body></html>';
+</body></html>

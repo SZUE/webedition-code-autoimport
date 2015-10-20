@@ -219,11 +219,11 @@ WE().consts.g_l.banner.view = {
 	deleteStatConfirm: "' . g_l('modules_banner', '[deleteStatConfirm]') . '"
 };
 ') .
-			we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_top.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js');
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'banner_property.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_property.js');
 	}
 
 	function processCommands(){

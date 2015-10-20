@@ -29,7 +29,7 @@ $aProps = array(
 	0,
 	we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
 );
-require_once('../../mod/upb.php');
+require_once('../../mod/upb.inc.php');
 
 $sTb = g_l('cockpit', ($bTypeDoc && $bTypeObj ? '[upb_docs_and_objs]' : ($bTypeDoc ? '[upb_docs]' : ($bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]'))));
 

@@ -1346,11 +1346,11 @@ WE().util.in_array = function (haystack, needle) {
 		}
 	}
 	return false;
-}
+};
 
 WE().util.hasPerm = function (perm) {
 	return (WE().session.permissions.ADMINISTRATOR || WE().session.permissions[perm] ? true : false);
-}
+};
 
 
 /**
@@ -1363,7 +1363,7 @@ WE().util.setIconOfDocClass = function (doc, classname) {
 	for (var i = 0; i < elements.length; i++) {
 		elements[i].innerHTML = this.getTreeIcon(elements[i].getAttribute("data-contenttype"), false, elements[i].getAttribute("data-extension"));
 	}
-}
+};
 
 
 /**
@@ -1478,7 +1478,7 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 		default:
 			return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
 	}
-}
+};
 
 WE().util.sprintf = function () {
 	if (!arguments || arguments.length < 1)
@@ -1511,4 +1511,20 @@ WE().util.sprintf = function () {
 		argum = left + replace + right;
 	}
 	return argum;
-}
+};
+
+WE().util.IsDigitPercent = function (e) {
+	var key;
+	if (e.charCode === undefined) {
+		key = event.keyCode;
+	} else {
+		key = e.charCode;
+	}
+
+	return (((key >= 48) && (key <= 57)) || (key === 37) || (key === 0) || (key === 46) || (key === 101) || (key === 109) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
+};
+
+WE().util.IsDigit = function (e) {
+	var key = e.charCode === undefined ? event.keyCode : e.charCode;
+	return ((key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13) || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+};

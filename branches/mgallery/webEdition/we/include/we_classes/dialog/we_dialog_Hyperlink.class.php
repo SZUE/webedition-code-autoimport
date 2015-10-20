@@ -414,7 +414,7 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 
 
 		$_accesskey = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[accesskey]", 30, $this->args["accesskey"], "", "", "text", 145), "accesskey");
-		$_tabindex = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[tabindex]", 30, $this->args["tabindex"], "", ' onkeypress="return IsDigit(event);"', "text", 145), "tabindex");
+		$_tabindex = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[tabindex]", 30, $this->args["tabindex"], "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 145), "tabindex");
 
 
 		$_rev = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rev"), "rev");

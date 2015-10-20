@@ -25,7 +25,7 @@
 class we_export_tree extends weTree{
 
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_EXPORT_MODULE_DIR . 'export_tree.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js');
 	}
 
 	function getJSLoadTree($clear, array $treeItems){

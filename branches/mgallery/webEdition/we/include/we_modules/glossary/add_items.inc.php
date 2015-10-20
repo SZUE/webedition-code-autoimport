@@ -52,7 +52,7 @@ var consts={
 	TYPE_ACRONYM:"' . we_glossary_glossary::TYPE_ACRONYM . '",
 };
 ') .
- we_html_element::jsScript(WE_JS_GLOSSARY_MODULE_DIR . 'add_items.js');
+ we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/add_items.js');
 
 
 //

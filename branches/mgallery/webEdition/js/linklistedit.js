@@ -40,7 +40,6 @@ function applyOnEnter(evt) {
 	}
 }
 
-
 function changeTypeSelect(s) {
 	for (var i = 0; i < s.options.length; i++) {
 		var trObj = document.getElementById(s.options[i].value + "_tr");
@@ -75,30 +74,6 @@ function changeCTypeSelect(s) {
 	} else {
 		imgPropsObj.style.display = "";
 	}
-}
-
-function IsDigit(e) {
-	var key;
-
-	if (e && e.charCode) {
-		key = e.charCode;
-	} else {
-		key = event.keyCode;
-	}
-
-	return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
-}
-
-function IsDigitPercent(e) {
-	var key;
-
-	if (e && e.charCode) {
-		key = e.charCode;
-	} else {
-		key = event.keyCode;
-	}
-
-	return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0) || (key == 13));
 }
 
 function doUnload() {

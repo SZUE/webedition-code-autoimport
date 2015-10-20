@@ -65,7 +65,7 @@ class we_messaging_iconbar{
 		return we_html_element::jsElement('
 var transaction="' . $this->weTransaction . '";
 ') .
-			we_html_element::jsScript(WE_JS_MESSAGING_MODULE_DIR . 'messaging_iconbar.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_iconbar.js');
 	}
 
 	private function getHTMLBody(){

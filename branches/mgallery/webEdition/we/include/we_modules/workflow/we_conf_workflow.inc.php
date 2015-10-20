@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define('WE_WORKFLOW_MODULE_DIR', WE_MODULES_DIR . 'workflow/');
-define('WE_JS_WORKFLOW_MODULE_DIR', WE_JS_MODULES_DIR . 'workflow/');
 define('WE_WORKFLOW_MODULE_PATH', WE_MODULES_PATH . 'workflow/');
 
 define('WORKFLOW_TABLE', TBL_PREFIX . 'tblWorkflowDef');

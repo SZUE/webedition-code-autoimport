@@ -26,7 +26,7 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5);
-require_once('../../mod/fdl.php');
+require_once('../../mod/fdl.inc.php');
 
 $sJsCode = "
 var _sObjId='" . $newSCurrId . "';
@@ -44,7 +44,7 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[kv_failedLogins][headline]') . '
 		"marginheight" => 10,
 		"leftmargin" => 15,
 		"topmargin" => 10,
-		"onload" => "if(parent!=self)init();"
+		"onload" => "if(parent!=self){init();}"
 		), we_html_element::htmlDiv(array(
 			"id" => "fdl"
 			), we_html_element::htmlDiv(array('id' => 'fdl_data'), $failedLoginHTML)

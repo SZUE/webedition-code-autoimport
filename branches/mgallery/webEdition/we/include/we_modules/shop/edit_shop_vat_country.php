@@ -161,16 +161,17 @@ $parts = array(
 	)
 );
 
-echo we_html_element::jsElement($jsFunction) .
- '</head>
+echo we_html_element::jsElement($jsFunction);
+?></head>
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post">
-	<input type="hidden" name="we_cmd[0]" value="saveVatRule" />
-' .
- we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
-		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
-	), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
-) .
- '</form>
+		<input type="hidden" name="we_cmd[0]" value="saveVatRule" />
+		<?php
+		echo we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
+				we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
+			), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
+		);
+		?>
+	</form>
 </body>
-</html>';
+</html>

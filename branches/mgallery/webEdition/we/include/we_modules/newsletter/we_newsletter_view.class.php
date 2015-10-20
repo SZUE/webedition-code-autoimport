@@ -235,7 +235,7 @@ WE().consts.g_l.newsletter = {
 };
 var topFrame=top.content;
 var frameSet="' . $this->frameset . '";
-') . we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_top.js');
+') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
 	}
 
 	function getJSCmd(){
@@ -264,7 +264,7 @@ var checkMail=' . intval(!empty($this->settings['reject_save_malformed'])) . ';
 function getStatusContol() {
 	return document.we_form.' . (isset($this->uid) ? $this->uid : "") . '_Status.value;
 }') .
-			we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_property.js', $load);
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_property.js', $load);
 	}
 
 	function processCommands(){

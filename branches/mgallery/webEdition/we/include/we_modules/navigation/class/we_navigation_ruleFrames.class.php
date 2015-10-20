@@ -28,7 +28,7 @@ class we_navigation_ruleFrames{
 	public $db;
 
 	function __construct(){
-		$this->Frameset = WE_INCLUDES_DIR . 'we_modules/navigation/edit_navigation_rules_frameset.php';
+		$this->Frameset = WEBEDITION_DIR . 'we_showMod.php?mod=navigation';
 		$this->Controller = new we_navigation_ruleControl();
 		$this->db = new DB_WE();
 		$yuiSuggest = &weSuggest::getInstance();
@@ -36,10 +36,10 @@ class we_navigation_ruleFrames{
 
 	function getHTML($what){
 		switch($what){
-			case 'frameset' :
+			case 'ruleFrameset' :
 				echo $this->getHTMLFrameset();
 				break;
-			case 'content' :
+			case 'ruleContent' :
 				echo $this->getHTMLContent();
 				break;
 			default :
@@ -51,7 +51,7 @@ class we_navigation_ruleFrames{
 		return we_html_tools::getHtmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
 			we_html_element::htmlBody(array('class ' => 'weDialogBody')
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-					, we_html_element::htmlIFrame('content', $this->Frameset . '?pnt=content', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+					, we_html_element::htmlIFrame('content', $this->Frameset . '&pnt=ruleContent', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('cmdFrame', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			)) .
 			'</html>';
@@ -75,11 +75,11 @@ class we_navigation_ruleFrames{
 				'headline' => g_l('navigation', '[rules][available_rules]'),
 				'space' => 200,
 				'html' => weSuggest::getYuiFiles() . '<table class="default">
-										<tr><td>' . we_html_tools::htmlSelect('navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
-											<td style="vertical-align:top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
-											</td>
-										</tr>
-										</table>'
+	<tr><td>' . we_html_tools::htmlSelect('navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
+		<td style="vertical-align:top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
+		</td>
+	</tr>
+</table>'
 			),
 			array(
 				'headline' => g_l('navigation', '[rules][rule_name]'),
@@ -145,11 +145,8 @@ class we_navigation_ruleFrames{
 		$yuiSuggest->setWidth(275);
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderIDPath.value");
-		$yuiSuggest->setSelectButton(
-			we_html_button::create_button(
-				'select', "javascript:we_cmd('we_selector_directory', document.we_form.elements.FolderID.value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "')"), 10);
-		$yuiSuggest->setTrashButton(
-			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory', document.we_form.elements.FolderID.value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "')"), 10);
+		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
@@ -208,119 +205,18 @@ class we_navigation_ruleFrames{
 
 		$saveButton = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();');
-		$acErrorMsg = we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR);
 		return we_html_tools::getHtmlTop() . STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
 			we_html_element::jsElement('
-var allFields = ["FolderID", "DoctypeID", "ClassID", "WorkspaceID"];
-var resetFields = ["NavigationName", "NavigationID", "NavigationIDPath", "FolderID", "FolderIDPath", "DoctypeID", "ClassID", "ClassIDPath", "WorkspaceID"];
-
 var dependencies = {;
-"' . we_navigation_navigation::STYPE_CLASS . '":["ClassID", "WorkspaceID", "Categories"],
-"' . we_navigation_navigation::STYPE_DOCTYPE . '": ["FolderID", "DoctypeID", "Categories"]
+	' . we_navigation_navigation::STYPE_CLASS . ':["ClassID", "WorkspaceID", "Categories"],
+	' . we_navigation_navigation::STYPE_DOCTYPE . ': ["FolderID", "DoctypeID", "Categories"]
 };
-
-function switchType(value) {
-	// 1st hide all
-	for (i=0; i<allFields.length;i++) {
-		if (elem = document.getElementById("tr" + allFields[i])) {
-			elem.style.display = "none";
-		}
-	}
-
-	// show needed
-	if (dependencies[value]) {
-
-		for (j=0;j<dependencies[value].length;j++) {
-			if (elem = document.getElementById("tr" + dependencies[value][j])) {
-				elem.style.display = "";
-			}
-		}
-	}
-}
-
-function clearNavigationForm() {
-	for (i=0;i<resetFields.length;i++) {
-		if (document.we_form[resetFields[i]]) {
-			document.we_form[resetFields[i]].value = "";
-		}
-	}
-
-	document.we_form["ID"].value="0";
-	weSelect.removeOptions("WorkspaceID");
-
-	removeAllCats();
-}
-
-function we_cmd(){
-
-	var args = "";
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
-
-	switch (arguments[0]){
-
-		case "switchType":
-			switchType(arguments[1]);
-		break;
-
-		case "new_navigation_rule":
-			clearNavigationForm();
-		break;
-
-		case "save_navigation_rule":
-			var isValid=1;
-			if(document.we_form.SelectionType.options[0].selected==true){
-				isValid=YAHOO.autocoml.isValidById("yuiAcInputFolderIDPath");
-			} else if(document.we_form.SelectionType.options[1]!==undefined && document.we_form.SelectionType.options[1].selected==true){
-				isValid=YAHOO.autocoml.isValidById("yuiAcInputClassIDPath");
-			}
-			if(isValid && YAHOO.autocoml.isValidById("yuiAcInputNavigationIDPath")) {
-				weInput.setValue("cmd", "save_navigation_rule");
-				document.we_form.submit();
-			} else {
-				' . $acErrorMsg . '
-				return false;
-			}
-		break;
-
-		case "delete_navigation_rule":
-			if (navId = document.we_form["navigationRules"].value) {
-			    document.we_form["NavigationName"].value = "";
-				weInput.setValue("cmd", "delete_navigation_rule");
-				weInput.setValue("ID", navId);
-				document.we_form.submit();
-			}
-		break;
-
-		case "navigation_edit_rule":
-			weInput.setValue("cmd", "navigation_edit_rule");
-			weInput.setValue("ID", arguments[1]);
-			document.we_form.submit();
-		break;
-
-		case "get_workspaces":
-			weInput.setValue("cmd", "get_workspaces");
-			document.we_form.submit();
-		break;
-
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(window, url,arguments[0],-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
-		break;
-		case "we_selector_category":
-			new (WE().util.jsWindow)(window, url,arguments[0],-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
-		break;
-		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url,arguments[0],-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
-		break;
-		case "we_selector_image":
-		case "we_selector_document":
-			new (WE().util.jsWindow)(window, url,arguments[0],-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
-		break;
-	}
-}') . '
+') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js') . '
 </head>
 <body onload="switchType(document.we_form[\'SelectionType\'].value)" class="weDialogBody">
-	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '">' .
+	<form name="we_form" target="cmdFrame" action="' . $this->Frameset . '&pnt=ruleCmd">' .
 			we_html_tools::hidden('cmd', '') .
 			we_html_tools::hidden('ID', '0') .
 			we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '
@@ -330,20 +226,9 @@ function we_cmd(){
 	}
 
 	function getHTMLCategory(){
-
-		$addbut = we_html_button::create_button(
-				"add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
+		$addbut = we_html_button::create_button("add", "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
-		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-			we_html_element::jsElement('
-			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",400,false);
-			categories_edit.addVariant();
-			document.we_form.CategoriesControl.value = categories_edit.name;
-
-
-			categories_edit.showVariant(0);
-		');
 
 		$table = new we_html_table(
 			array(
@@ -361,31 +246,14 @@ function we_cmd(){
 
 		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
-		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) . $js . we_html_element::jsElement('
-							function removeAllCats(){
-
-								if(categories_edit.itemCount>0){
-									while(categories_edit.itemCount>0){
-										categories_edit.delItem(categories_edit.itemCount);
-									}
-								}
-								document.we_form.CategoriesCount.value = categories_edit.itemCount;
-							}
-
-							function addCat(paths, ids){
-
-								var path = paths.split(",");
-								var id = ids.split(",");
-								for (var i = 0; i < path.length; i++) {
-									if(path[i]!="") {
-										categories_edit.addItem();
-										categories_edit.setItem(0,(categories_edit.itemCount-1),path[i], id[i]);
-									}
-								}
-								categories_edit.showVariant(0);
-								document.we_form.CategoriesCount.value = categories_edit.itemCount;
-							}
-					');
+		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) .
+			we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
+			we_html_element::jsElement('
+			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",400,false);
+			categories_edit.addVariant();
+			document.we_form.CategoriesControl.value = categories_edit.name;
+			categories_edit.showVariant(0);
+		');
 	}
 
 }

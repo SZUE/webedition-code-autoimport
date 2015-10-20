@@ -88,20 +88,6 @@ var height = ' . $height . ';
 var ratio_wh = width / height;
 var ratio_hw = height / width;
 
-function IsDigit(e,inp) {
-	var key;
-	if (navigator.product == \'Gecko\') {
-		if(e.metaKey || e.altKey || e.ctrlKey){
-			return true;
-		}
-		key = e.charCode;
-	} else {
-		key = event.keyCode;
-	}
-
-	return (((key >= 48) && (key <= 57)) || isSpecialKey(key) || (key == 46 && (inp.value.indexOf(".") == -1)));
-}
-
 function isSpecialKey(key) {
 	return (key >= 63232 && key <= 63235) || key == 8 || key == 63272 || key == 0 || key == 13;
 }
@@ -247,8 +233,8 @@ function we_getImageResizeDialog(){
 
 	$buttons = we_html_button::position_yes_no_cancel($okbut, null, $cancelbut);
 
-	$widthInput = we_html_tools::htmlTextInput("width", 10, $width, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"', "text", 60);
-	$heightInput = we_html_tools::htmlTextInput("height", 10, $height, "", 'onkeypress="return IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"', "text", 60);
+	$widthInput = we_html_tools::htmlTextInput("width", 10, $width, "", 'onkeypress="return WE().util.IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"', "text", 60);
+	$heightInput = we_html_tools::htmlTextInput("height", 10, $height, "", 'onkeypress="return WE().util.IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"', "text", 60);
 
 	$widthSelect = '<select class="weSelect" size="1" name="widthSelect" onchange="we_switchPixelPercent(this.form.width,this);"><option value="pixel">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
 	$heightSelect = '<select class="weSelect" size="1" name="heightSelect" onchange="we_switchPixelPercent(this.form.height,this);"><option value="pixel">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';

@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $aCols = we_base_request::_(we_base_request::STRING, 'we_cmd');
 $newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5);
-require_once('../../mod/shp.php');
+require_once('../../mod/shp.inc.php');
 
 $sJsCode = "
 var _sObjId='" . $newSCurrId . "';

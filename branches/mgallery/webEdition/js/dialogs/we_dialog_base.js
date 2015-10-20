@@ -24,29 +24,9 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-function IsDigitPercent(e) {
-	var key;
-	if (e.charCode === undefined) {
-		key = event.keyCode;
-	} else {
-		key = e.charCode;
-	}
-
-	return (((key >= 48) && (key <= 57)) || (key === 37) || (key === 0) || (key === 46) || (key === 101) || (key === 109) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
-}
-
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
-
-function IsDigit(e) {
-	var key = (e.charCode === undefined ?
-					event.keyCode :
-					e.charCode);
-
-	return (((key >= 48) && (key <= 57)) || (key === 0) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
-}
-
 
 function weSaveToGlossaryFn() {
 	document.we_form.elements.weSaveToGlossary.value = 1;

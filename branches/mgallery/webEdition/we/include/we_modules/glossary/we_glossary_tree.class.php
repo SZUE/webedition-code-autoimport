@@ -25,7 +25,7 @@
 class we_glossary_tree extends weTree{
 
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_GLOSSARY_MODULE_DIR . 'glossary_tree.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_tree.js');
 	}
 
 	function getJSStartTree(){

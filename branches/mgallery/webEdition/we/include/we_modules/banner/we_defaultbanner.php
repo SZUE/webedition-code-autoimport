@@ -62,7 +62,7 @@ function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $id
 	return $yuiSuggest->getHTML();
 }
 
-echo we_html_element::jsScript(WE_JS_BANNER_MODULE_DIR . 'we_defaultbanner.js') .
+echo we_html_element::jsScript(WE_JS_MODULES_DIR. 'banner/we_defaultbanner.js') .
  weSuggest::getYuiFiles();
 ?>
 </head>

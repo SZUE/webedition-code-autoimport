@@ -45,16 +45,6 @@ function weDoOk() {
 	top.close();
 }
 
-function IsDigit(e) {
-	var key = (e.charCode === undefined ?event.keyCode:e.charCode);
-	return (((key >= 48) && (key <= 57)) || (key == 0) || (key == 13));
-}
-
-function IsDigitPercent(e) {
-	var key = (e.charCode === undefined ?event.keyCode:e.charCode);
-	return (((key >= 48) && (key <= 57)) || (key == 37) || (key == 0)  || (key == 13));
-}
-
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }

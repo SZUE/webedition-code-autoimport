@@ -134,7 +134,7 @@ $formVat = '
 </tr>
 <tr>
 	<td>' . g_l('modules_shop', '[vat][vat_form_vat]') . ':</td>
-	<td><input class="wetextinput" type="text" id="weShopVatVat" name="weShopVatVat" value="' . $weShopVat->vat . '" onkeypress="return IsDigit(event);" />%</td>
+	<td><input class="wetextinput" type="text" id="weShopVatVat" name="weShopVatVat" value="' . $weShopVat->vat . '" onkeypress="return WE().util.IsDigit(event);" />%</td>
 </tr>
 
 <tr>
@@ -185,5 +185,6 @@ echo we_html_element::jsElement(
  we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::position_yes_no_cancel(
 		'', '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 	), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
-) . '
-</body></html>';
+);
+?>
+</body></html>

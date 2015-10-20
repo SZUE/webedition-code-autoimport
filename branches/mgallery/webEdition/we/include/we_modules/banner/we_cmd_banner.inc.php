@@ -34,5 +34,5 @@ switch($cmd){
 	case 'banner_default':
 		return 'we_modules/banner/we_defaultbanner.php';
 	case 'banner_code':
-		return 'we_modules/banner/we_bannercode.php';
+		return 'we_modules/banner/we_bannercode.inc.php';
 }

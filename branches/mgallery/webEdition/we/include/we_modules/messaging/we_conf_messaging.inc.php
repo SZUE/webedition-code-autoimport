@@ -31,7 +31,6 @@ define('MSG_TODOHISTORY_TABLE', TBL_PREFIX . 'tblTODOHistory');
 
 
 define('WE_MESSAGING_MODULE_DIR', WE_MODULES_DIR . 'messaging/');
-define('WE_JS_MESSAGING_MODULE_DIR', WE_JS_MODULES_DIR . 'messaging/');
 define('WE_MESSAGING_MODULE_PATH', WE_MODULES_PATH . 'messaging/');
 
 we_base_request::registerTables(array(

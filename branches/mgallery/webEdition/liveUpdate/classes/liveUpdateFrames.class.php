@@ -277,10 +277,6 @@ class liveUpdateFrames{
 		include(LIVEUPDATE_TEMPLATE_DIR . 'nextVersion.inc.php');
 	}
 
-	function htmlModules(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'modules.inc.php');
-	}
-
 	function htmlLanguages(){
 		include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
 	}

@@ -82,7 +82,7 @@ WE().consts.g_l.customer.admin={
 var topFrame=top.content;
 var frameUrl="' . $this->frameset . '";
 ') .
-			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_top.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js');
 	}
 
 	function getJSProperty(){
@@ -95,7 +95,7 @@ function refreshForm(){
 		top.content.editor.edheader.location="' . $this->frameset . '&pnt=edheader&text=' . urlencode($this->customer->Username) . '";
 	}
 }' . $this->getJSSubmitFunction()) .
-			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_property.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js');
 	}
 
 	function getJSAdmin(){
@@ -103,12 +103,12 @@ function refreshForm(){
 var frameUrl="' . $this->frameset . '";
 ' . $this->getJSSubmitFunction("customer_admin")
 			) .
-			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_admin.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_admin.js');
 	}
 
 	function getJSTreeHeader(){
 		return we_html_element::jsElement($this->getJSSubmitFunction('cmd', 'post', 'we_form_treeheader')) .
-			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_treeHeader.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_treeHeader.js');
 	}
 
 	function getJSSearch(){
@@ -119,7 +119,7 @@ var frames={
 ' .
 				$this->getJSSubmitFunction("search")
 			) .
-			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_search.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_search.js');
 	}
 
 	function getJSSettings(){

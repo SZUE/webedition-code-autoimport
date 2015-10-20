@@ -25,7 +25,7 @@
 class we_newsletter_tree extends weTree{
 
 	function customJSFile(){
-		return we_html_element::jsScript(WE_JS_NEWSLETTER_MODULE_DIR . 'newsletter_tree.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_tree.js');
 	}
 
 	function getJSStartTree(){

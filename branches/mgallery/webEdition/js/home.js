@@ -873,13 +873,12 @@ function getUser() {
 	new (WE().util.jsWindow)(window, url, 'browse_users', -1, -1, 500, 300, true, false, true);
 }
 
-
 function resizeIdx(a, id) {
 	var res = gel(id + '_res').value;
 	switch (a) {
 		case 'swap':
 			gel(id + '_res').value = (res === "0") ? "1" : "0";
-			gel(id + '_icon_resize').title = (res === "0") ? g_l.reduce_size : g_l.increase_size;
+			gel(id + '_icon_resize').title = (res === "0") ? WE().consts.g_l.cockpit.reduce_size : WE().consts.g_l.cockpit.increase_size;
 			break;
 		case 'get':
 			return res;
@@ -887,7 +886,7 @@ function resizeIdx(a, id) {
 }
 
 function removeWidget(wizId) {
-	var remove = confirm(g_l.pre_remove + getLabel(wizId) + g_l.post_remove);
+	var remove = confirm(WE().consts.g_l.cockpit.pre_remove + getLabel(wizId) + WE().consts.g_l.cockpit.post_remove);
 	if (remove === true) {
 		gel(wizId).parentNode.removeChild(gel(wizId));
 		updateJsStyleCls();

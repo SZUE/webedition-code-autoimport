@@ -1,3 +1,16 @@
+#we/include/we_modules/navigation/hook/we_phpCmdHook_navigation.inc.php
+we/include/we_widgets/mod/fdl.php
+we/include/we_widgets/mod/mdc.php
+we/include/we_widgets/mod/mfd.php
+we/include/we_widgets/mod/msg.php
+we/include/we_widgets/mod/rss.php
+we/include/we_widgets/mod/sct.php
+we/include/we_widgets/mod/shp.php
+we/include/we_widgets/mod/upb.php
+we/include/we_widgets/mod/usr.php
+we/include/we_modules/banner/we_bannercode.php
+liveUpdate/templates/modules.inc.php
+we/include/we_modules/navigation/edit_navigation_rules_frameset.php
 we/include/we_modules/show.php
 we/include/we_modules/show_frameset.php
 editors/content/eplugin/initPlugin.html

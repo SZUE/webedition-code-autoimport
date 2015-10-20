@@ -54,7 +54,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			if($aProps[0] === 'msg'){
 				$_transact = md5(uniqid(__FUNCTION__, true));
 			}
-			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.php');
+			include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
 		}
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 

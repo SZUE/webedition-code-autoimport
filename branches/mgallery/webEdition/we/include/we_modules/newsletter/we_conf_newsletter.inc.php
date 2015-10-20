@@ -28,7 +28,6 @@ define('NEWSLETTER_GROUP_TABLE', TBL_PREFIX . 'tblNewsletterGroup');
 define('NEWSLETTER_LOG_TABLE', TBL_PREFIX . 'tblNewsletterLog');
 
 define('WE_NEWSLETTER_MODULE_DIR', WE_MODULES_DIR . 'newsletter/');
-define('WE_JS_NEWSLETTER_MODULE_DIR', WE_JS_MODULES_DIR . 'newsletter/');
 define('WE_NEWSLETTER_CACHE_DIR', $_SERVER['DOCUMENT_ROOT'] . WE_NEWSLETTER_MODULE_DIR . '/cache/');
 
 we_base_request::registerTables(array(

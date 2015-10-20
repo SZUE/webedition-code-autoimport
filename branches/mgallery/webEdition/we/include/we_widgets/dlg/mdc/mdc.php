@@ -38,7 +38,7 @@ $aCsv = array(
 	$dt_tid,
 	$cats
 );
-require_once('../../mod/mdc.php');
+require_once('../../mod/mdc.inc.php');
 $cmd4 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4);
 
 $js = "

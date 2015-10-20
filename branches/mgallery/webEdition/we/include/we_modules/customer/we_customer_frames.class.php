@@ -425,7 +425,7 @@ function setTab(tab) {
 var date_format_dateonly = '" . g_l('date', '[format][mysqlDate]') . "';
 var fieldDate = new weDate(date_format_dateonly);
 ") .
-					we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_functions.js') .
+					we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_functions.js') .
 					we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 						we_html_tools::htmlDialogLayout(
 							$table->getHtml(), g_l('modules_customer', '[search]'), we_html_button::position_yes_no_cancel(null, we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")), "100%", 30, 558

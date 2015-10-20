@@ -412,7 +412,7 @@ var g_l = {
 	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '"
 };
 ') .
-			we_html_element::jsScript(WE_JS_WORKFLOW_MODULE_DIR . 'workflow_top.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js');
 	}
 
 	function getCmdJS(){
@@ -446,7 +446,7 @@ function getNumOfDocs(){
 	return ' . $this->workflowDef->loadDocuments() . count($this->workflowDef->documents) . ';
 }
 ' : '')) .
-			we_html_element::jsScript(WE_JS_WORKFLOW_MODULE_DIR . 'workflow_property.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_property.js');
 	}
 
 	function processCommands(){

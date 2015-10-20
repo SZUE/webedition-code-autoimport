@@ -45,19 +45,8 @@ function addListeners() {
 	}
 }
 
-function doKeyDown(e) {
-	var key = e.keyCode === undefined ? event.keyCode : e.keyCode;
-
-	switch (key) {
-		case 27:
-			top.close();
-			break;
-	}
-}
-
-function IsDigit(e) {
-	var key = e.charCode === undefined ? event.keyCode : e.charCode;
-	return ((key == 46) || ((key >= 48) && (key <= 57)) || (key == 0) || (key == 13) || (key == 8) || (key <= 63235 && key >= 63232) || (key == 63272));
+function closeOnEscape() {
+	return true;
 }
 
 function changeFormTextField(theId, newVal) {

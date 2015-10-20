@@ -565,11 +565,11 @@ if($ok && $cmd === "edit_link_at_class"){
 		<td class="small">' . g_l('global', '[align]') . '</td>
 	</tr>
 	<tr>
-		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("width", 4, $width, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
-		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("height", 4, $height, "", ' onkeypress="return IsDigitPercent(event);"', "text", 40) . '</td>
-		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("border", 4, $border, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
-		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
-		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return IsDigit(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("width", 4, $width, "", ' onkeypress="return WE().util.IsDigitPercent(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("height", 4, $height, "", ' onkeypress="return WE().util.IsDigitPercent(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("border", 4, $border, "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 40) . '</td>
+		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 40) . '</td>
 		<td>
 			<select class="defaultfont" name="align" size="1">
 			<option value="">Default</option>

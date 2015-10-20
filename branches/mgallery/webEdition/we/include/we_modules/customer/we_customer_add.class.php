@@ -190,7 +190,7 @@ function setScrollTo(){
 		opener.' . $pob->topFrame . '.scrollToVal=pageYOffset;
 }' .
 				$pob->getJSSubmitFunction("sort_admin")) .
-			we_html_element::jsScript(WE_JS_CUSTOMER_MODULE_DIR . 'customer_sortAdmin.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_sortAdmin.js');
 	}
 
 	public static function getHTMLSearch(&$pob, &$search, &$select){
