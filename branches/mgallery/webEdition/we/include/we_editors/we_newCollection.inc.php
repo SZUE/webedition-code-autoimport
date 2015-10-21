@@ -83,10 +83,11 @@ function we_submitForm(url){
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
 	var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '";
 	for (var i = 0; i < arguments.length; i++) {
+		args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";

@@ -94,10 +94,10 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			$this->getCss() .
 			$this->getHiddens() .
 
-			we_html_element::htmlDiv(array('style' => 'width:200px'), 
+			we_html_element::htmlDiv(array('style' => 'width:200px'),
 				$divButtons
 			) .
-			we_html_element::htmlDiv(array('style' => 'width:200px'), 
+			we_html_element::htmlDiv(array('style' => 'width:200px'),
 				we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style'=>"position:relative;"),
 					$this->getHtmlDropZone('preview', $noImage)
 				)
@@ -170,7 +170,7 @@ doOnImportSuccess = function(importedDocument){
 			ed.setScrollTo();
 			ed._EditorFrame.setEditorIsHot(true);
 			//var t = opener.top;
-			we_cmd("reload_editpage","jux","change_image"); 
+			we_cmd("reload_editpage","jux","change_image");
 			//t.hot = 1;
 			//setTimeout(self.close, 250);
 			*/
@@ -207,9 +207,10 @@ documentWriteback = function(importedDocument){
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
@@ -220,10 +221,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			opener.we_cmd.apply(this, args);
 	}
 }
@@ -274,7 +271,7 @@ function we_cmd() {
 				return $yuiSuggest->getHTML();
 			} else {
 				$value = is_numeric($this->importToID['preset']) ? id_to_path($this->importToID['preset']) : $this->importToID['preset'];
-				
+
 				return we_html_element::htmlInput(array('value' => $value, 'disabled' => 'disabled')) .
 					we_html_button::create_button(we_html_button::SELECT, '', '', '', '', '', '', true) .
 					we_html_element::htmlHiddens(array(
@@ -284,7 +281,7 @@ function we_cmd() {
 			}
 		}
 
-		
+
 	}
 
 	protected function getFormThumbnails(){
@@ -344,7 +341,7 @@ function we_cmd() {
 			"headline" => g_l('weClass', '[rotate]'),
 			"html" => $_radio0 . $_radio180 . $_radio90l . $_radio90r,
 			"class" => 'paddingTop',
-			'noline' => $this->editorProperties['isLayoutSmall'], 
+			'noline' => $this->editorProperties['isLayoutSmall'],
 			'forceRightHeadline' => $this->editorProperties['isLayoutSmall']
 		);
 
@@ -370,7 +367,7 @@ function we_cmd() {
 	public function setDoImport($doImport = true){
 		$this->doImport = $doImport;
 		$this->responseClass = $this->doImport ? 'we_fileupload_resp_import' : 'we_fileupload_resp_base';
-		
+
 	}
 
 

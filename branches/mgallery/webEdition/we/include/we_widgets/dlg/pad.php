@@ -134,7 +134,8 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
 	we_html_element::jsScript(JS_DIR . "weCombobox.js") .
-	we_html_element::jsElement($jsPrefs) .
+	$jsFile.
+		we_html_element::jsElement($jsPrefs) .
 	we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "initDlg();"

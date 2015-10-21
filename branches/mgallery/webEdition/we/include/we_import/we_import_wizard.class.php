@@ -170,9 +170,10 @@ class we_import_wizard extends we_import_wizardBase{
 		 */
 		return array(
 			"function we_cmd() {
-				var args = '';
+								var args = [];
 				var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 				for(var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 					url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 					if(i < (arguments.length - 1)) {
 						url += '&';
@@ -180,10 +181,6 @@ class we_import_wizard extends we_import_wizardBase{
 				}
 				switch (arguments[0]) {
 					default:
-								var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 				}
@@ -266,20 +263,17 @@ class we_import_wizard extends we_import_wizardBase{
 
 		$functions = "
 function we_cmd() {
-	var args = '';
+					var args = [];
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
 		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
+				args.push(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
 		}
 	}
 	switch (arguments[0]) {
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 	}
@@ -438,9 +432,10 @@ function we_submit_form(we_form, target, url) {
 
 		$functions = "
 function we_cmd() {
-	var args = '';
+					var args = [];
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
@@ -459,10 +454,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url,'we_selector',-1,-1," . we_selector_file::WINDOW_SELECTOR_WIDTH . "," . we_selector_file::WINDOW_SELECTOR_HEIGHT . ",true,true,true,true);
 			break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 	}
@@ -820,9 +811,10 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	var args = '';
+					var args = [];
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
@@ -830,10 +822,6 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 	}
@@ -1602,9 +1590,10 @@ function handle_event(evt) {
 
 		$functions = "
 function we_cmd() {
-	var args = '';
+					var args = [];
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
@@ -1612,10 +1601,6 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 	}
@@ -1822,9 +1807,10 @@ function handle_eventNext(){
 
 		$functions = "
 function we_cmd() {
-	var args = '';
+					var args = [];
 	var url = '" . WEBEDITION_DIR . "we_cmd.php?';
 	for(var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 		url += 'we_cmd['+i+']='+encodeURI(arguments[i]);
 		if(i < (arguments.length - 1)) {
 			url += '&';
@@ -1832,10 +1818,6 @@ function we_cmd() {
 	}
 	switch (arguments[0]) {
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 	}

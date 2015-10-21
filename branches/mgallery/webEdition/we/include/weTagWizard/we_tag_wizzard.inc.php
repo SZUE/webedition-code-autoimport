@@ -93,20 +93,24 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 	we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
 	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
 	we_html_element::jsElement('
-var allAttributes = [' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . '];
-var reqAttributes = {' . implode(',', $jsReqAttributes) . '};
 
 weTagWizard = new weTagWizard("' . $weTag->getName() . '");
-weTagWizard.allAttributes = allAttributes;
-weTagWizard.reqAttributes = reqAttributes;
+weTagWizard.allAttributes = [' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . '];
+weTagWizard.reqAttributes = {' . implode(',', $jsReqAttributes) . '};
 weTagWizard.needsEndTag = ' . ($weTag->needsEndTag() ? 'true' : 'false') . ';
 
 // information about the type-attribute
 ' . $typeAttributeJs . '
 function we_cmd(){
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-	for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}
+	}
 	switch (arguments[0]){
 		case "switch_type":
 			weTagWizard.changeType(arguments[1]);
@@ -156,10 +160,6 @@ function we_cmd(){
 	        new (WE().util.jsWindow)(window, url,"browse_users",-1,-1,500,300,true,false,true);
 	        break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			opener.we_cmd.apply(this, args);
 
 			break;

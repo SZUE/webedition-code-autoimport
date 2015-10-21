@@ -180,7 +180,8 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("shpProps", $parts, 30, $buttons, -1, "", "", "", "Shop", "", 390);
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]'), '', '', STYLESHEET .
-	we_html_element::jsElement($jsPrefs . $jsCode), we_html_element::htmlBody(
+	$jsFile.
+		we_html_element::jsElement($jsPrefs . $jsCode), we_html_element::htmlBody(
 		array(
 		"class" => "weDialogBody", "onload" => "init();"
 		), we_html_element::htmlForm("", $sTblWidget)));

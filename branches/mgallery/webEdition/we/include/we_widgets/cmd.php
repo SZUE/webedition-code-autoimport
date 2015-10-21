@@ -59,9 +59,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 
 		$js = "
-function gel(id_){
-	return document.getElementById?document.getElementById(id_):null;
-}
 function transmit(){
 	if(WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart){
 		WE().layout.weEditorFrameController.getActiveDocumentReference().pushContent('" . $aProps[0] . "','m_" . $iCurrId . "',gel('content').innerHTML,gel('prefix').innerHTML,gel('postfix').innerHTML,gel('csv').innerHTML);

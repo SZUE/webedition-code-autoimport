@@ -82,10 +82,11 @@ function disableLangDefault(allnames, allvalues, deselect) {
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
+		args.push(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
@@ -133,10 +134,6 @@ function we_cmd() {
 			self.location = url;
 			break;
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			opener.top.we_cmd.apply(this, args);
 
 	}

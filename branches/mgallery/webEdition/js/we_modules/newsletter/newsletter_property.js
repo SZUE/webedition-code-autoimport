@@ -201,10 +201,11 @@ function doUnload() {
  * Newsletter command controler
  */
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	var i;
 	for (i = 0; i < arguments.length; i++) {
+		args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
@@ -482,10 +483,6 @@ function we_cmd() {
 			break;
 
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.content.we_cmd.apply(this, args);
 
 	}

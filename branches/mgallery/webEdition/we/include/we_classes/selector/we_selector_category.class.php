@@ -494,19 +494,21 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 			we_html_element::jsElement('
 function we_cmd(){
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
-		for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+		for(var i = 0; i < arguments.length; i++){
+						args.push(arguments[i]);
+url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		if(i < (arguments.length - 1)){
+		url += "&";
+		}
+		}
 
 	switch (arguments[0]){
 		case "we_selector_file":
 			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . self::WINDOW_SELECTOR_WIDTH . ',' . self::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
 			break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 	}

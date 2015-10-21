@@ -220,9 +220,10 @@ function goTemplate(tid) {
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + encodeURIComponent(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
@@ -328,10 +329,6 @@ function we_cmd() {
 		case "image_convertGIF":
 		case "image_convertPNG":
 			ImageEditTools().deactivateAll();
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 			break;
 		case "spellcheck":
@@ -349,10 +346,6 @@ function we_cmd() {
 			}
 			//no break;
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 	}

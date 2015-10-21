@@ -41,17 +41,19 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = "";
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var args = [];
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}}
 	switch (arguments[0]) {
 		case "load":
 			' . $this->topFrame . '.cmd.location="' . $this->frameset . '&pnt=cmd&pid="+arguments[1]+"&offset="+arguments[2]+"&sort="+arguments[3];
 		break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			top.opener.top.we_cmd.apply(this, args);
 
 	}

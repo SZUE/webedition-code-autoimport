@@ -59,10 +59,11 @@ function addKeyListener() {
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
+		args.push(arguments[i]);
+		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
 		}
@@ -79,5 +80,8 @@ function we_cmd() {
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + arguments[1] + "&we_cmd[2]=" + arguments[2] + "&fixedpid=" + arguments[3] + "&fixedremtable=" + arguments[4] + "&caller=" + arguments[5];
 			new (WE().util.jsWindow)(window, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
+		default:
+			opener.we_cmd.apply(this, args);
+
 	}
 }

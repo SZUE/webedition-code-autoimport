@@ -76,18 +76,19 @@ function add_thumbnails(){
 }
 
 function we_cmd(){
-	var args = "";
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var args = [];
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){
+	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+				args.push(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}}
 
 	switch (arguments[0]){
 		case "editThumbs":
 			new (WE().util.jsWindow)(window, url, "thumbnails", -1, -1, 500, 550, true, true, true);
 			break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 	}
 }');

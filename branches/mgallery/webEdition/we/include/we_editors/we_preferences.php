@@ -2499,7 +2499,14 @@ for(i=1;i<childs.length;++i){
 	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
 	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
-		 for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+			var args = [];
+
+for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+		 url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+		 if(i < (arguments.length - 1)){
+		 url += "&";
+		 }}
 switch (arguments[0]){
 case "browse_server":
 new (WE().util.jsWindow)(window, url,"browse_server",-1,-1,840,400,true,false,true);
@@ -2521,10 +2528,6 @@ new (WE().util.jsWindow)(window, url,"we_colorChooser",-1,-1,430,370,true,true,t
 break;
 
 default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			parent.we_cmd.apply(this, args);
 
 }

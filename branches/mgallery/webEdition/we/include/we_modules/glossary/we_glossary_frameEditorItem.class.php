@@ -132,8 +132,14 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = "";
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){ url += "we_cmd["+i+"]="+encodeURI(arguments[i]); if(i < (arguments.length - 1)){ url += "&"; }}
+	var args = [];
+	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?";
+	for(var i = 0; i < arguments.length; i++){
+				args.push(arguments[i]);
+	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
+	if(i < (arguments.length - 1)){
+	url += "&";
+	}}
 	switch (arguments[0]) {
 		case "populateWorkspaces":
 			document.we_form.cmd.value=arguments[0];
@@ -155,10 +161,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
 			break;
 		default:
-					var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			' . $this->topFrame . '.we_cmd.apply(this, args);
 
 	}

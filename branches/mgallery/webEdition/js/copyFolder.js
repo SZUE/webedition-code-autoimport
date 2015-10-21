@@ -55,7 +55,7 @@ function addCat(paths) {
 
 function toggleButton() {
 	if (document.getElementById('CreateTemplate').checked) {
-		WE().layout.button.enable(document,'select');
+		WE().layout.button.enable(document, 'select');
 		if (acin = document.getElementById('yuiAcInputTemplate')) {
 			document.getElementById('yuiAcInputTemplate').disabled = false;
 			lastCFolder = acin.value;
@@ -63,7 +63,7 @@ function toggleButton() {
 		}
 		return true;
 	} else {
-		WE().layout.button.disable(document,'select');
+		WE().layout.button.disable(document, 'select');
 		if (acin = document.getElementById('yuiAcInputTemplate')) {
 			document.getElementById('yuiAcInputTemplate').disabled = true;
 			acin.readOnly = true;
@@ -90,9 +90,10 @@ function incTemp(val) {
 }
 
 function we_cmd() {
-	var args = "";
+	var args = [];
 	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 	for (var i = 0; i < arguments.length; i++) {
+		args.push(arguments[i]);
 		url += "we_cmd[" + i + "]=" + escape(arguments[i]);
 		if (i < (arguments.length - 1)) {
 			url += "&";
@@ -107,10 +108,6 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		default:
-			var args = [];
-			for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-			}
 			opener.we_cmd.apply(this, args);
 	}
 }

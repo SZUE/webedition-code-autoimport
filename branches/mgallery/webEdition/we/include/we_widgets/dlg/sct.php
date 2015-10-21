@@ -173,7 +173,8 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML("sctProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[shortcuts]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', STYLESHEET .
-	we_html_element::jsElement($jsPrefs . "
+	$jsFile.
+		we_html_element::jsElement($jsPrefs . "
 _aLang={" . implode(',', $jsLang) . "};
 var g_l={
 all_selected:'" . g_l('cockpit', '[all_selected]') . "',

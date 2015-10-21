@@ -380,10 +380,11 @@ if($ok && $cmd === "edit_link_at_class"){
 } else {
 	?>
 		function we_cmd() {
-			var args = "";
+			var args = [];
 			var url = "<?php echo WEBEDITION_DIR; ?>we_cmd.php?";
 
 			for (var i = 0; i < arguments.length; i++) {
+				args.push(arguments[i]);
 				url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
 				if (i < (arguments.length - 1)) {
 					url += "&";
@@ -401,10 +402,6 @@ if($ok && $cmd === "edit_link_at_class"){
 					break;
 
 				default:
-					var args = [];
-					for (var i = 0; i < arguments.length; i++) {
-						args.push(arguments[i]);
-					}
 					opener.parent.we_cmd.apply(this, args);
 
 			}

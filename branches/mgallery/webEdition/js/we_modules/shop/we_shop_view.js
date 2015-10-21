@@ -30,7 +30,6 @@ function doUnload() {
 }
 
 function we_cmd() {
-	var args = "";
 	var url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_properties.php?";
 
 	for (var i = 0; i < arguments.length; i++) {
@@ -41,7 +40,6 @@ function we_cmd() {
 	}
 	var wind;
 	switch (arguments[0]) {
-
 		case "edit_shipping_cost":
 			wind = new (WE().util.jsWindow)(window, url + "&bid=" + bid, "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
 			break;
