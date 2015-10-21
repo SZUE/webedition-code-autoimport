@@ -23,9 +23,6 @@
  */
 // exit if script called directly
 //FIXME: make this a function!
-if(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']) == str_replace(dirname(__FILE__), '', __FILE__)){
-	exit();
-}
 if(isset($GLOBALS['we_ContentType']) && !isset($we_ContentType)){
 	$we_ContentType = $GLOBALS['we_ContentType'];
 }
@@ -48,7 +45,7 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 		$showDoc = !empty($GLOBALS['FROM_WE_SHOW_DOC']);
 		$we_doc = new we_webEditionDocument(); //($showDoc ? new we_webEditionDocument() : new we_view_webEditionDocument());
 		break;
-	* 
+	*
 	*/
 	case we_base_ContentTypes::FOLDER:
 		if(isset($we_dt)){
@@ -67,7 +64,7 @@ switch(isset($we_ContentType) ? $we_ContentType : ''){
 				new $classname() :
 				new we_webEditionDocument());
 		break;
-	default: 
+	default:
 		$we_doc = we_base_ContentTypes::inst()->getObject($we_ContentType);
 }
 if(!$we_doc){

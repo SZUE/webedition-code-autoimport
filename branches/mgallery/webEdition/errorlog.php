@@ -35,7 +35,7 @@ function getInfoTable($infoArr){
 		}
 		try{
 			@$tmp = htmlentities($tmp, ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET']);
-		} catch (Exception $e){
+		}catch(Exception $e){
 			//try another encoding since last conversion failed.
 			@$tmp = htmlentities($tmp, ENT_COMPAT, $GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8' ? 'ISO-8859-15' : 'UTF-8');
 		}
@@ -68,21 +68,21 @@ function getNavButtons($size, $pos, $id){
 
 	$div = max(intval($size / 10), 1);
 
-
+	$file = WEBEDITION_DIR . basename(__FILE__);
 	return '<table style="margin-top: 10px;width:100%;" class="default"><tr><td>' .
-		we_html_button::create_button("fa:first,fa-lg fa-fast-backward", WEBEDITION_DIR . __FILE__ . '?function=first', true, 0, 0, '', '', ($pos == 1)) .
-		we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . WEBEDITION_DIR . __FILE__ . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)) .
-		we_html_button::create_button(we_html_button::BACK, WEBEDITION_DIR . __FILE__ . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1))
-		.
-		'</td><td style="text-align:center">' .
-		we_html_button::create_button("export", WEBEDITION_DIR . __FILE__ . '?function=export&ID=' . $id, true, 0, 0) .
-		we_html_button::create_button(we_html_button::DELETE, WEBEDITION_DIR . __FILE__ . '?function=delete&ID=' . $id, true, 0, 0) .
-		'</td><td style="text-align:right">' .
-		we_html_button::create_button(we_html_button::NEXT, WEBEDITION_DIR . __FILE__ . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
-		we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . WEBEDITION_DIR . __FILE__ . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
-		we_html_button::create_button("fa:last,fa-lg fa-fast-forward", WEBEDITION_DIR . __FILE__ . '?function=last', true) .
-		'</td></tr><tr><td colspan="3" style="text-align:center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
-		'</td></table>';
+			we_html_button::create_button("fa:first,fa-lg fa-fast-backward", $file . '?function=first', true, 0, 0, '', '', ($pos == 1)) .
+			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $file . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)) .
+			we_html_button::create_button(we_html_button::BACK, $file . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1))
+			.
+			'</td><td style="text-align:center">' .
+			we_html_button::create_button("export", $file . '?function=export&ID=' . $id, true, 0, 0) .
+			we_html_button::create_button(we_html_button::DELETE, $file . '?function=delete&ID=' . $id, true, 0, 0) .
+			'</td><td style="text-align:right">' .
+			we_html_button::create_button(we_html_button::NEXT, $file . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
+			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $file . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
+			we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $file . '?function=last', true) .
+			'</td></tr><tr><td colspan="3" style="text-align:center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
+			'</td></table>';
 }
 
 /* function formatLine(&$val, $key){
@@ -122,8 +122,8 @@ foreach(array_keys($GLOBALS['trans']) as $key){
 	$options.='<option value="' . str_replace(' ', '', $key) . '">' . $key . '</option>';
 }
 $buttons = g_l('searchtool', '[anzeigen]') . ': <select onchange="document.getElementById(this.value).scrollIntoView();">' . $options . '</select>' .
-	we_html_button::position_yes_no_cancel(
-		we_html_button::create_button(we_html_button::DELETE_ALL, WEBEDITION_DIR . __FILE__ . '?deleteAll=1'), we_html_button::create_button(we_html_button::REFRESH, WEBEDITION_DIR . __FILE__), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()")
+		we_html_button::position_yes_no_cancel(
+				we_html_button::create_button(we_html_button::DELETE_ALL, $file . '?deleteAll=1'), we_html_button::create_button(we_html_button::REFRESH, $file), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()")
 );
 
 
@@ -161,7 +161,7 @@ switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 		$data.='WE-Info:
 Version: ' . WE_VERSION . '
 SVN: ' . WE_SVNREV . ' ' . WE_VERSION_BRANCH . ' ' . WE_VERSION_SUPP . $sep .
-			'System:
+				'System:
 PHP: ' . phpversion() . '
 max_execution_time: ' . ini_get('max_execution_time') . '
 memory_limit: ' . ini_get('memory_limit') . '
@@ -169,7 +169,7 @@ short_open_tag: ' . ini_get('short_open_tag') . '
 post_max_size: ' . ini_get('post_max_size') . '
 max_input_vars: ' . ini_get('max_input_vars') . '
 session.auto_start: ' . ini_get('session.auto_start') . $sep .
-			'Mysql:
+				'Mysql:
 ' . $GLOBALS['DB_WE']->getInfo(false);
 
 		echo str_replace($_SERVER['DOCUMENT_ROOT'], 'DOCUMENT_ROOT', $data);

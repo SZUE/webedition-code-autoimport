@@ -48,7 +48,7 @@ $xml = we_base_request::_(we_base_request::BOOL, 'xml');
 $c = we_base_request::_(we_base_request::RAW, 'c', 0);
 
 if($type && $type != 'pixel'){
-	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, WEBEDITION_DIR . __FILE__, $type, $page, $nocount, $xml);
+	$code = we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $dt, $cats, $bannername, $link, $referer, $bannerclick, WEBEDITION_DIR . basename(__FILE__), $type, $page, $nocount, $xml);
 }
 switch($type){
 	case 'js':

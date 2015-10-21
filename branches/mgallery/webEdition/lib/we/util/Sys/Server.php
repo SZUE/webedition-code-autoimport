@@ -152,7 +152,7 @@ class we_util_Sys_Server extends we_util_Sys{
 			return $_SERVER['DOCUMENT' . '_ROOT'];
 		}
 		// mostly on Microsoft IIS servers (Windows) without DOCUMENT_ROOT:
-		return realpath(dirname(__FILE__) . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
+		return realpath(__DIR__ . "/.." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR);
 	}
 
 }

@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $protocol = we_base_request::_(we_base_request::STRING, 'protocol', 'json');
-define('RPC_DIR', str_replace('\\', '/', dirname(__FILE__)) . '/');
+define('RPC_DIR', str_replace('\\', '/', __DIR__) . '/');
 define('RPC_URL', str_replace($_SERVER['DOCUMENT_ROOT'], '', RPC_DIR));
 
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . RPC_DIR);

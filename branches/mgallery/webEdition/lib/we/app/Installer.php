@@ -92,7 +92,7 @@ class we_app_Installer{
 
 		// identify all available installer classes:
 		$validInstallerClasses = array();
-		$classdir = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Installer' . DIRECTORY_SEPARATOR;
+		$classdir = __DIR__ . DIRECTORY_SEPARATOR . 'Installer' . DIRECTORY_SEPARATOR;
 		$installerList = scandir($classdir);
 		foreach($installerList as $installerClass){
 			if($installerClass{0} != "." && !is_link($classdir . $installerClass) && !is_dir($classdir . $installerClass) && is_readable($classdir . $installerClass) && substr($installerClass, -4) === '.php'){
