@@ -33,6 +33,6 @@ $oTblCont->setCol(
 			"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
 				), $mdc));
 $aLang = array(
-	($splitMdc[0] != "") ? base64_decode($splitMdc[0]) : g_l('cockpit', (!$splitMdc[1][1] ? '[my_documents]' : '[my_objects]')),
+	($splitMdc[0]) ? base64_decode($splitMdc[0]) : g_l('cockpit', (empty($splitMdc[1][1]) ? '[my_documents]' : '[my_objects]')),
 	""
 );
