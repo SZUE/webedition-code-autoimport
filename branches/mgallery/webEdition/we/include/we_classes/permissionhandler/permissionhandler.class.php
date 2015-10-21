@@ -131,8 +131,8 @@ abstract class permissionhandler{
 	}
 
 	static function checkIfRestrictUserIsAllowed($id, $table, we_database_base $DB_WE){
-		$row = getHash('SELECT CreatorID,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
-		if((isset($row['CreatorID']) && $_SESSION['user']['ID'] == $row['CreatorID']) || permissionhandler::hasPerm('ADMINISTRATOR')){ //	Owner or admin
+		$row = getHash('SELECT CreatorID=' . $_SESSION['user']['ID'] . ' AS isCreator,RestrictOwners,Owners,OwnersReadOnly FROM ' . $DB_WE->escape($table) . ' WHERE ID=' . intval($id), $DB_WE);
+		if(!$row || $row['isCreator'] || permissionhandler::hasPerm('ADMINISTRATOR')){ //	Owner or admin or file doesn't exist
 			return true;
 		}
 

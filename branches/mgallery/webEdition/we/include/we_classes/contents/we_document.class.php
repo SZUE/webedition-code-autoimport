@@ -768,13 +768,6 @@ class we_document extends we_root{
 
 				$img->initByID($val, FILE_TABLE);
 
-				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
-					case 'path':
-						return $img->Path;
-					case 'id':
-						return $img->ID;
-				}
-
 				$altField = $img->Name . we_imageDocument::ALT_FIELD;
 				$titleField = $img->Name . we_imageDocument::TITLE_FIELD;
 
@@ -825,6 +818,15 @@ class we_document extends we_root{
 						$img->setElement('name', $img->getElement('name'), 'attrib');
 					}
 				}
+				
+				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
+					case 'src': //TODO: make separate case for multi domain project to devide between path and src
+					case 'path':
+						return (isset($attribs['thumbnail']) ? $img->getHtml(false, true, $pathOnly) : $img->Path);
+					case 'id':
+						return $img->ID;
+				}
+				
 				return $img->getHtml(false, true);
 			case 'binary':
 				$bin = new we_otherDocument();

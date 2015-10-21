@@ -39,7 +39,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		}
 		session_start();
 		if($this->releaseError){
-			$this->releaseError = false;
+			$this->releaseError=false;
 			t_e('session was not releases properly, emergency release done, see restored (old) session below', session_id(), $this->sessionName);
 		}
 	}
