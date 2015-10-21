@@ -32,7 +32,7 @@ $yuiSuggest->setAutocompleteField(
 	"yuiAcIdDoc"
 	), 1, "296px");
 
-list($sTitle, $selBinary, $sCsv) = explode(";", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
+list($sTitle, $selBinary, $sCsv) = explode(";", we_base_request::_(we_base_request::STRING, 'we_cmd', ';;', 1));
 $_title = base64_decode($sTitle);
 $_selection = (bool) $selBinary{0};
 $_selType = (bool) $selBinary{1};
