@@ -92,7 +92,7 @@ class we_wizard_code{
 			} elseif(is_dir($this->SnippetPath . $SnippetDir . '/' . $_entry) && $Depth < 2){
 
 				$information = array();
-				$_infoFile = $this->SnippetPath . $SnippetDir . '/' . $_entry . '/_information.php';
+				$_infoFile = $this->SnippetPath . $SnippetDir . '/' . $_entry . '/_information.inc.php';
 				if(file_exists($_infoFile) && is_file($_infoFile)){
 					include ($_infoFile);
 				}

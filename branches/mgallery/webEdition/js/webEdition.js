@@ -1041,7 +1041,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", -1, -1, 720, 660, true, false, true);
 			break;
 		case "show_message_console":
-			new (WE().util.jsWindow)(window, WE().consts.dirs.WE_INCLUDES_DIR + "jsMessageConsole/messageConsole.php", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
+			new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=messageConsole", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
 			break;
 		case "remove_from_editor_plugin":
 			if (args[1] && top.plugin && top.plugin.remove) {
@@ -1339,7 +1339,7 @@ function we_cmd_base(args, url) {
 	return true;
 }
 
-WE().util.in_array = function (haystack, needle) {
+WE().util.in_array = function (needle, haystack) {
 	for (var i = 0; i < haystack.length; i++) {
 		if (haystack[i] == needle) {
 			return true;

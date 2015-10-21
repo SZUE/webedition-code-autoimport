@@ -22,16 +22,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 $wizard = new we_import_wizard();
 
-we_html_tools::protect();
-
-$what = we_base_request::_(we_base_request::STRING,"pnt",'wizframeset');
-$type = we_base_request::_(we_base_request::STRING,"type",'');
-$step = we_base_request::_(we_base_request::INT,"step", 0);
-$mode = we_base_request::_(we_base_request::INT,"mode",0);
+$what = we_base_request::_(we_base_request::STRING, "pnt", 'wizframeset');
+$type = we_base_request::_(we_base_request::STRING, "type", '');
+$step = we_base_request::_(we_base_request::INT, "step", 0);
+$mode = we_base_request::_(we_base_request::INT, "mode", 0);
 
 if($type && ($step == 1) && $what === 'wizbody'){
 	$acceptedMime = $acceptedExt = array();
@@ -50,7 +47,7 @@ if($type && ($step == 1) && $what === 'wizbody'){
 			break;
 		case we_import_functions::TYPE_CSV:
 			$name = 'uploaded_csv_file';
-			$acceptedExt = array('csv','txt');
+			$acceptedExt = array('csv', 'txt');
 			$genericFileNameTemp = TEMP_DIR . 'we_csv_' . we_fileupload::REPLACE_BY_UNIQUEID . '.csv';
 			break;
 		default:
@@ -67,4 +64,4 @@ if($type && ($step == 1) && $what === 'wizbody'){
 	$wizard->fileUploader->setDimensions(array('width' => 410, 'marginTop' => 12));
 }
 
-echo $wizard->getHTML($what,$type, $step, $mode);
+echo $wizard->getHTML($what, $type, $step, $mode);

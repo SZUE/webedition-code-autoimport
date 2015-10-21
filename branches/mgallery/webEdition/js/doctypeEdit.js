@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition SDK
  *
@@ -118,7 +120,7 @@ function we_cmd() {
 					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else if (name === "") {
 					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
-				} else if (WE().util.in_array(docTypeNames, name)) {
+				} else if (WE().util.in_array(name, docTypeNames)) {
 					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
 					/*						if (top.opener.top.header) {

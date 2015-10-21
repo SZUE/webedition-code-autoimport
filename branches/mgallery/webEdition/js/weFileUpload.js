@@ -960,15 +960,15 @@ var weFileUpload = (function () {
 					return false;
 				}
 				if (tc.accepted.all && tc.accepted.all.length > 0 &&
-						!this.inArray(type, tc.accepted.all) &&
-						!this.inArray(typeGroup, tc.accepted.all) &&
-						!this.inArray(ext, tc.accepted.all)) {
+						!WE().util.in_array(type, tc.accepted.all) &&
+						!WE().util.in_array(typeGroup, tc.accepted.all) &&
+						!WE().util.in_array(ext, tc.accepted.all)) {
 					return false;
 				}
 				if (tc.forbidden.all && tc.forbidden.all.length > 0 &&
-						(this.inArray(type, tc.forbidden.all) ||
-						this.inArray(typeGroup, tc.forbidden.all) ||
-						this.inArray(ext, tc.forbidden.all))) {
+						(WE().util.in_array(type, tc.forbidden.all) ||
+						WE().util.in_array(typeGroup, tc.forbidden.all) ||
+						WE().util.in_array(ext, tc.forbidden.all))) {
 					return false;
 				}
 
@@ -978,16 +978,6 @@ var weFileUpload = (function () {
 
 			this.computeSize = function (size) {
 				return (size / 1024 > 1023 ? ((size / 1024) / 1024).toFixed(1) + ' MB' : (size / 1024).toFixed(1) + ' KB');
-			};
-
-			this.inArray = function (needle, haystack) {
-				var length = haystack.length;
-				for (var i = 0; i < length; i++) {
-					if (haystack[i] === needle) {
-						return true;
-					}
-				}
-				return false;
 			};
 
 			/* GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */

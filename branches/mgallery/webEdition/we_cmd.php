@@ -220,15 +220,17 @@ function findInclude($cmd){
 		case 'browse_server':
 			return 'we_editors/we_sfileselector_frameset.inc.php';
 		case 'make_backup':
-			return 'we_editors/we_make_backup.php';
+			return 'we_editors/we_make_backup.inc.php';
 		case 'recover_backup':
-			return 'we_editors/we_recover_backup.php';
+			return 'we_editors/we_recover_backup.inc.php';
+		case 'messageConsole':
+			return 'jsMessageConsole/messageConsole.inc.php';
 		case 'import_docs':
 			return 'we_editors/we_import_documents.inc.php';
 		case 'start_multi_editor':
 			return 'multiEditor/start_multi_editor.inc.php';
 		case 'import':
-			return 'we_import/we_wiz_frameset.php';
+			return 'we_import/we_import_frameset.inc.php';
 		case 'export':
 			return 'we_modules/export/export_frameset.php';
 		case 'copyFolder':

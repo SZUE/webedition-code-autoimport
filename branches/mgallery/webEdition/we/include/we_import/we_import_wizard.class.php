@@ -407,7 +407,7 @@ function handle_event(evt) {
 			we_form.elements.step.value=3;
 			we_form.mode.value=1;
 			we_form.elements["v[mode]"].value=1;
-			we_submit_form(we_form,"wizbusy","' . $this->path . '?pnt=wizcmd");
+			we_submit_form(we_form,"wizbusy","' . $this->path . '&pnt=wizcmd");
 			break;
 		case "cancel":
 			top.close();
@@ -1372,7 +1372,7 @@ function handle_event(evt) {
 			f.mode.value=1;
 			f.elements['v[mode]'].value=1;
 			top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
-			we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
+			we_submit_form(f, 'wizbody', '" . $this->path . "&mode=1');
 			break;
 		case 'cancel':
 			top.close();
@@ -2243,7 +2243,7 @@ function handle_event(evt) {
 		f.elements['v[mode]'].value=1;
 		f.elements['v[startCSVImport]'].value=1;
 		top.wizbusy.next_enabled = top.WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'disabled');
-		we_submit_form(f, 'wizbody', '" . $this->path . "?mode=1');
+		we_submit_form(f, 'wizbody', '" . $this->path . "&mode=1');
 		break;
 	case 'cancel':
 		top.close();

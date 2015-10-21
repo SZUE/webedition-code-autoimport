@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,10 +21,26 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
 
-$_SERVER['SCRIPT_NAME'] = WEBEDITION_DIR . 'we_imgSelect.php?';
+$weBackupWizard = new we_backup_wizard(WEBEDITION_DIR. 'we_cmd.php?we_cmd[0]=make_backup', we_backup_wizard::BACKUP);
 
+switch($what = we_base_request::_(we_base_request::STRING, "pnt", 'frameset')){
+	case "frameset":
+		echo $weBackupWizard->getHTMLFrameset();
+		break;
+	case "body":
+		echo $weBackupWizard->getHTMLStep(we_base_request::_(we_base_request::INT, "step", 1));
+		break;
+	case "cmd":
+		echo $weBackupWizard->getHTMLCmd();
+		break;
+	case "busy":
+		echo $weBackupWizard->getHTMLBusy();
+		break;
+	case "extern":
+		echo $weBackupWizard->getHTMLExtern();
+		break;
+	default:
+		t_e(__FILE__ . ' unknown reference: ' . $what);
+}
 
-$fs->printHTML(we_base_request::_(we_base_request::INT, 'what', we_selector_file::FRAMESET));

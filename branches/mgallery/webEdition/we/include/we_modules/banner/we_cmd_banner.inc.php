@@ -32,7 +32,7 @@ switch($cmd){
 	case 'we_banner_selector':
 		return 'selectors.inc.php';
 	case 'banner_default':
-		return 'we_modules/banner/we_defaultbanner.php';
+		return 'we_modules/banner/we_defaultbanner.inc.php';
 	case 'banner_code':
 		return 'we_modules/banner/we_bannercode.inc.php';
 }

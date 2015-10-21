@@ -27,7 +27,7 @@ abstract class we_import_wizardBase{
 	public $fileUploader = null;
 
 	protected function __construct(){
-		$this->path = WE_INCLUDES_DIR . 'we_import/we_wiz_frameset.php';
+		$this->path = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import';
 	}
 
 	public function getHTML($what, $type, $step, $mode){
@@ -47,11 +47,11 @@ abstract class we_import_wizardBase{
 		$args = 'pnt=wizbody' .
 			(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1)) ? '&we_cmd[1]=' . $cmd1 : '');
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "wiz_next('wizbody', '" . $this->path . '?' . $args . "');")
+		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "wiz_next('wizbody', '" . $this->path . '&' . $args . "');")
 				, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
 					, we_html_element::htmlIFrame('wizbody', "about:blank", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 					we_html_element::htmlIFrame('wizbusy', "about:blank", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
-					we_html_element::htmlIFrame('wizcmd', $this->path . "?pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+					we_html_element::htmlIFrame('wizcmd', $this->path . "&pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		));
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsScript(LIB_DIR . 'additional/yui/yahoo-min.js') .
@@ -93,7 +93,7 @@ var path='" . $this->path . "';") .
 						($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
 						we_html_element::jsElement($js), we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
-						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "?pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
+						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "&pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
 						), we_html_element::htmlForm($a, we_html_element::htmlHiddens(array(
 								"pnt" => "wizbody",
 								"type" => $type,
@@ -626,13 +626,13 @@ function cycle() {
 }
 function we_import(mode, cid) {
 	if(arguments[2]==1){
-		top.wizbody.location = '" . $this->path . "?pnt=wizbody&step=3&type=" . we_import_functions::TYPE_WE_XML . "&noload=1';
+		top.wizbody.location = '" . $this->path . "&pnt=wizbody&step=3&type=" . we_import_functions::TYPE_WE_XML . "&noload=1';
 	};
 	var we_form = self.document.we_form;
 	we_form.elements['v[mode]'].value = mode;
 	we_form.elements['v[cid]'].value = cid;
 	we_form.target = 'wizcmd';
-	we_form.action = '" . $this->path . "?pnt=wizcmd';
+	we_form.action = '" . $this->path . "&pnt=wizcmd';
 	we_form.method = 'post';
 	we_form.submit();
 }"

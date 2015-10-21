@@ -62,9 +62,9 @@ if($editname !== false){
 	var mode = "<?php echo $_mode; ?>";
 	var editname = "<?php echo $editname; ?>";
 	var g_l = {
-		"checking": "<?php echo g_l('modules_spellchecker', '[checking]'); ?>",
-		"no_java": "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
-		"finished": "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
+		checking: "<?php echo g_l('modules_spellchecker', '[checking]'); ?>",
+		no_java: "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
+		finished: "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
 
 	};
 	var retryjava = 0;

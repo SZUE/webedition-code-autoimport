@@ -62,7 +62,7 @@ $sUsrContent = '<table class="default" width="300"><tr><td>' . we_html_element::
 		"UserIDTmp" => ""
 	)) . '</td></tr>' . (permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td style="text-align:right;padding-top:1em;">' .
 		we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", ($users ? false : true)) .
-		we_html_button::create_button(we_html_button::ADD, "javascript:opener.getUser('we_users_selector','WE().layout.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements[\"UserIDTmp\"].value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);") .
+		we_html_button::create_button(we_html_button::ADD, "javascript:opener.getUser('we_users_selector','WE().layout.weEditorFrameController.getActiveDocumentReference()._propsDlg[\"" . $cmd0 . "\"].document.forms[0].elements.UserIDTmp.value','" . $wecmdenc2 . "','','','" . $wecmdenc5 . "','','',1);") .
 		'</td></tr>' : '') . '</table>';
 
 $oShowUser = we_html_tools::htmlFormElementTable($sUsrContent, g_l('cockpit', '[following_users]'), "left", "defaultfont");

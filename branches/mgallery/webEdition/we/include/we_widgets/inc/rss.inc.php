@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -53,8 +54,7 @@ $_iFrmRss = we_html_element::jsElement("
 	window.addEventListener(
 		'load',
 		function() {
-			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode(
-			$_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
+			WE().layout.cockpitFrame.executeAjaxRequest('" . base64_decode($_rssUri) . "', '" . $_rssCont . "', '" . $_rssNumItems . "', '" . $_rssTb . "', '" . $sTbPrefix . "', '" . 'm_' . $iCurrId . "');
 		},
 		true
 	);

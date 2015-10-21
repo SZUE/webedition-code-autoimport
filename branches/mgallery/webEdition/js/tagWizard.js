@@ -146,17 +146,6 @@ function weTagWizard(tagName) {
 		}
 	};
 
-	this.inArray = function (needle, haystack) {
-
-		for (var i = 0; i < haystack.length; i++) {
-
-			if (needle == haystack[i]) {
-				return true;
-			}
-		}
-		return false;
-	};
-
 	this.getWeTag = function () { // build the we:tag in this function and return it.
 
 		ret = "<we:" + this.tagName;
@@ -181,7 +170,6 @@ function weTagWizard(tagName) {
 				} else {
 
 					// check if attribute is required by the value of the type-Attribut
-					//if (this.typeAttributeRequires[typeValue] && (!fieldValue || fieldValue == '-') && WE().util.in_array(fieldId, typeAttributeRequires[typeValue]) ) { //#4483
 					if (this.typeAttributeRequires[typeValue] && (!fieldValue) && WE().util.in_array(fieldId, typeAttributeRequires[typeValue])) {
 						this.missingFields.push(fieldName);
 					}

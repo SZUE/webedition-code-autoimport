@@ -91,15 +91,6 @@ function makeArrayFromCSV(csv) {
 	return csv.split(/,/);
 }
 
-function inArray(needle, haystack) {
-	for (var i = 0; i < haystack.length; i++) {
-		if (haystack[i] == needle) {
-			return true;
-		}
-	}
-	return false;
-}
-
 function makeCSVFromArray(arr) {
 	if (arr.length == 0) {
 		return "";

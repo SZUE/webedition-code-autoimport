@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -38,62 +39,12 @@ if(!($we_doc instanceof we_imageDocument)){
 
 echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]')) .
  we_html_element::jsElement('
-function select_thumbnails(sel){
-	var thumbs = [];
+var transaction="'.$we_transaction.'";
+');
 
-	for(var i=0; i<sel.options.length; i++){
-		if(sel.options[i].selected){
-			thumbs.push(sel.options[i].value);
-		}
-	}
-
-	if(thumbs.length){
-		WE().layout.button.switch_button_state(document, "add", "enabled");
-	}else{
-		WE().layout.button.switch_button_state(document, "add", "disabled");
-	}
-
-	self.showthumbs.location = WE().consts.dirs.WEBEDITION_DIR+"showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id="+encodeURI(thumbs.join(","));
-
-}
-
-function add_thumbnails(){
-	sel = document.getElementById("Thumbnails");
-	var thumbs = "";
-	for(var i=0; i<sel.options.length; i++){
-		if(sel.options[i].selected){
-			thumbs += (sel.options[i].value + ",");
-		}
-	}
-
-	if(thumbs.length){
-		thumbs = "," + thumbs;
-		opener.we_cmd("do_add_thumbnails",thumbs);
-	}
-
-	self.close();
-
-}
-
-function we_cmd(){
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?"; for(var i = 0; i < arguments.length; i++){
-	url += "we_cmd["+i+"]="+encodeURI(arguments[i]);
-				args.push(arguments[i]);
-	if(i < (arguments.length - 1)){
-	url += "&";
-	}}
-
-	switch (arguments[0]){
-		case "editThumbs":
-			new (WE().util.jsWindow)(window, url, "thumbnails", -1, -1, 500, 550, true, true, true);
-			break;
-		default:
-			parent.we_cmd.apply(this, args);
-	}
-}');
-
-echo STYLESHEET . "</head>";
+echo STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'add_thumb.js') .
+ "</head>";
 
 // SELECT Box with thumbnails
 $_thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
@@ -101,7 +52,7 @@ $DB_WE->query('SELECT ID,Name,Format,description FROM ' . THUMBNAILS_TABLE . ' O
 
 $_thumbnail_counter_firsttime = true;
 
-$doc_thumbs = ($we_doc->Thumbs == -1) ? array() : makeArrayFromCSV($we_doc->Thumbs);
+$doc_thumbs = ($we_doc->Thumbs == -1) ? array() : explode(',', $we_doc->Thumbs);
 
 $selectedID = 0;
 $_enabled_buttons = false;
@@ -110,7 +61,7 @@ while($DB_WE->next_record()){
 		$_enabled_buttons = true;
 		$_thumbnail_counter = $DB_WE->f('ID');
 		if(we_base_imageEdit::is_imagetype_read_supported(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)]) && we_base_imageEdit::is_imagetype_supported(trim($DB_WE->f("Format")) ? $DB_WE->f("Format") : we_base_imageEdit::$GDIMAGE_TYPE[strtolower($we_doc->Extension)])){
-			$_thumbnails->addOption($DB_WE->f("ID"), $DB_WE->f("Name"));
+			$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
 		}
 		if($_thumbnail_counter_firsttime){
 			$selectedID = $DB_WE->f("ID");

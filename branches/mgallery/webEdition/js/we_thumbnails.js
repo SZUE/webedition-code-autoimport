@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -73,7 +75,7 @@ function add_thumbnail() {
 		top.we_showMessage(g_l.thumbnail_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (name == '') {
 		top.we_showMessage(g_l.thumbnail_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
-	} else if (WE().util.in_array(thumbnail_names, name)) {
+	} else if (WE().util.in_array(name, thumbnail_names)) {
 		top.we_showMessage(g_l.thumbnail_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
 		self.location = consts.reloadUrl + '&newthumbnail=' + encodeURI(name);

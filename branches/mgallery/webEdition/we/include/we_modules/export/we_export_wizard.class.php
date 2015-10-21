@@ -113,7 +113,7 @@ class we_export_wizard{
 	);
 
 	public function __construct($frameset = ""){
-		$this->setFrameset($frameset);
+		$this->frameset = $frameset;
 		$this->db = new DB_WE();
 
 		if(isset($_SESSION['weS']['exportVars_session'])){
@@ -145,10 +145,6 @@ class we_export_wizard{
 			default :
 				die("Unknown command: " . $what . "\n");
 		}
-	}
-
-	private function setFrameset($frameset){
-		$this->frameset = $frameset;
 	}
 
 	private function getJSTop(){

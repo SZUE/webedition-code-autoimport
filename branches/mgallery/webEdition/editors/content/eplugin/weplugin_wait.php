@@ -29,7 +29,7 @@ $_callback = we_base_request::_(we_base_request::JS, 'callback');
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 	we_html_element::jsElement('
 var g_l={
-"no_java":"' . g_l('eplugin', '[no_java]') . '"
+no_java:"' . g_l('eplugin', '[no_java]') . '"
 };
 var callBack="' . $_callback . '";') .
 	we_html_element::jsScript(JS_DIR . 'weplugin.js'), we_html_element::htmlBody(array("style" => "background-color:#ffffff;margin:20px;", "onload" => "initPlugin();"), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlCenter(

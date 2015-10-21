@@ -45,12 +45,8 @@ class we_customer_EIWizard{
 	const ART_EXPORT = 'export';
 
 	function __construct($frameset){
-		$this->setFrameset($frameset);
-		$this->db = new DB_WE();
-	}
-
-	function setFrameset($frameset){
 		$this->frameset = $frameset;
+		$this->db = new DB_WE();
 	}
 
 	function getHTML($what = '', $mode = '', $step = ''){

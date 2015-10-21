@@ -1,19 +1,3 @@
-#we/include/we_modules/navigation/hook/we_phpCmdHook_navigation.inc.php
-we/include/we_widgets/mod/fdl.php
-we/include/we_widgets/mod/mdc.php
-we/include/we_widgets/mod/mfd.php
-we/include/we_widgets/mod/msg.php
-we/include/we_widgets/mod/rss.php
-we/include/we_widgets/mod/sct.php
-we/include/we_widgets/mod/shp.php
-we/include/we_widgets/mod/upb.php
-we/include/we_widgets/mod/usr.php
-we/include/we_modules/banner/we_bannercode.php
-liveUpdate/templates/modules.inc.php
-we/include/we_modules/navigation/edit_navigation_rules_frameset.php
-we/include/we_modules/show.php
-we/include/we_modules/show_frameset.php
-editors/content/eplugin/initPlugin.html
 wysiwyg/weWysiwygSafari.js
 wysiwyg/weWysiwygLang.php
 wysiwyg/weWysiwyg.js
@@ -43,16 +27,25 @@ we_sselector_footer.php
 we_lcmd.php
 we/include/xhtml.inc.php
 we/include/we_widgets/mod/wePadFunctions.inc.php
+we/include/we_widgets/mod/usr.php
 we/include/we_widgets/mod/usr.inc.php
+we/include/we_widgets/mod/upb.php
 we/include/we_widgets/mod/upb.inc.php
+we/include/we_widgets/mod/shp.php
+we/include/we_widgets/mod/sct.php
 we/include/we_widgets/mod/sct.inc.php
+we/include/we_widgets/mod/rss.php
 we/include/we_widgets/mod/rss.inc.php
 we/include/we_widgets/mod/plg.php
 we/include/we_widgets/mod/plg.inc.php
 we/include/we_widgets/mod/pad.inc.php
+we/include/we_widgets/mod/msg.php
 we/include/we_widgets/mod/msg.inc.php
+we/include/we_widgets/mod/mfd.php
 we/include/we_widgets/mod/mfd.inc.php
+we/include/we_widgets/mod/mdc.php
 we/include/we_widgets/mod/mdc.inc.php
+we/include/we_widgets/mod/fdl.php
 we/include/we_widgets/inc/plg.inc.php
 we/include/we_widgets/inc/plg/chart.php
 we/include/we_widgets/inc/plg
@@ -340,6 +333,8 @@ we/include/we_modules/users/edit_users_cmd.php
 we/include/we_modules/users/edit_users_bcmd.php
 we/include/we_modules/users/browse_users_frameset.inc.php
 we/include/we_modules/spellchecker/we_webEditionCmd_spellchecker.inc.php
+we/include/we_modules/show.php
+we/include/we_modules/show_frameset.php
 we/include/we_modules/shop/we_webEditionCmd_shop.inc.php
 we/include/we_modules/shop/we_template_variant.inc.php
 we/include/we_modules/shop/weShopView.php
@@ -415,8 +410,10 @@ we/include/we_modules/navigation/we_webEditionCmd_navigation.inc.php
 we/include/we_modules/navigation/we_navigationDirSelect.php
 we/include/we_modules/navigation/layout/home.gif
 we/include/we_modules/navigation/layout
+we/include/we_modules/navigation/hook/we_phpCmdHook_navigation.inc.php
 we/include/we_modules/navigation/hook/we_jsCmdHook_navigation.inc.php
 we/include/we_modules/navigation/home.inc.php
+we/include/we_modules/navigation/edit_navigation_rules_frameset.php
 we/include/we_modules/navigation/edit_navigation_frameset.php
 we/include/we_modules/navigation/conf/we_navigationSettings.inc.php
 we/include/we_modules/navigation/conf/we_conf_navigation.inc.php
@@ -532,6 +529,7 @@ we/include/we_modules/customer/copyWeDocumentCustomerFilter.inc.php
 we/include/we_modules/banner/we_webEditionCmd_banner.inc.php
 we/include/we_modules/banner/weModuleFrames.php
 we/include/we_modules/banner/we_listview_banner.inc.php
+we/include/we_modules/banner/we_defaultbanner.php
 we/include/we_modules/banner/weBannerView.php
 we/include/we_modules/banner/we_bannerSelect.php
 we/include/we_modules/banner/we_bannerSelector.php
@@ -541,6 +539,7 @@ we/include/we_modules/banner/weBannerFrames.php
 we/include/we_modules/banner/we_bannerDirSelect.php
 we/include/we_modules/banner/we_bannerDirSelector.php
 we/include/we_modules/banner/we_bannerDirSelectorFrameset.php
+we/include/we_modules/banner/we_bannercode.php
 we/include/we_modules/banner/weBannerBase.php
 we/include/we_modules/banner/mod_home.inc.php
 we/include/we_modules/banner/edit_banner_header.php
@@ -2088,6 +2087,7 @@ we/include/we_language/Deutsch_UTF-8/accessibility.inc.php
 we/include/we_language/Deutsch_UTF-8
 we/include/we_installed_modules.inc.php
 we/include/we_import/we_wiz_import.inc.php
+we/include/we_import/we_wiz_frameset.php
 we/include/we_import/we_wizard.inc.php
 we/include/we_import/we_import_CSVFix.class.php
 we/include/we_import/importFunctions.class.inc.php
@@ -2127,6 +2127,7 @@ we/include/we_exim/backup/weBackupExport.class.php
 we/include/we_editors/we_thumbnails.php
 we/include/we_editors/we_thumbnails_frameset.inc.php
 we/include/we_editors/we_thumbnails_footer.php
+we/include/we_editors/we_recover_backup.php
 we/include/we_editors/we_preferences_header.php
 we/include/we_editors/we_preferences_header.inc.php
 we/include/we_editors/we_preferences_footer.php
@@ -2135,6 +2136,7 @@ we/include/we_editors/we_metadata_fields/footer.php
 we/include/we_editors/we_metadata_fields/editor.php
 we/include/we_editors/we_metadata_fields/edit_metadatafields.inc.php
 we/include/we_editors/we_metadata_fields
+we/include/we_editors/we_make_backup.php
 we/include/we_editors/we_file_locked.inc.php
 we/include/we_editors/file_restricted_footer.inc.php
 we/include/we_editors/file_no_save_footer.inc.php
@@ -2172,6 +2174,9 @@ we/include/weCodeWizard/data/Deutsch_UTF-8/customer/LoginLogout.xml
 we/include/weCodeWizard/data/Deutsch_UTF-8/customer/_information.php
 we/include/weCodeWizard/data/Deutsch_UTF-8/customer
 we/include/weCodeWizard/data/Deutsch_UTF-8
+we/include/weCodeWizard/data/default/search/_information.php
+we/include/weCodeWizard/data/default/miscellaneous/_information.php
+we/include/weCodeWizard/data/custom/_information.php
 we/include/weCodeWizard/data/custom/dummy
 we/include/weCodeWizard/classes/weCodeWizardSnippet.inc.php
 we/include/weCodeWizard/classes/weCodeWizard.inc.php
@@ -2387,6 +2392,7 @@ we/include/we_active_integrated_modules.inc.php
 we/include/treeInfo.inc.php
 we/include/notInstalledModules.inc.php
 we/include/messageModuleNotActivated.inc.php
+we/include/jsMessageConsole/messageConsole.php
 we/include/jsMessageConsole/messageConsole.inc.php
 we/include/java_menu/we_menu_seem.inc.php
 we/include/java_menu/we_menu_navigation.inc.php
@@ -2413,6 +2419,7 @@ we/include/define_styles.inc.php
 we/include/db_mysql.inc.php
 we/include/clear_cache.inc.php
 we/include/accessibility/checkDocument.inc.php
+we_imgSelect.php
 we_docSelect.php
 we_dirSelect.php
 we_delSelect.php
@@ -2459,6 +2466,7 @@ menuapplet
 mages/tree/arrowup.gif
 liveUpdate/tmp/dummy
 liveUpdate/templates/register.inc.php
+liveUpdate/templates/modules.inc.php
 liveUpdate/sqldumps/tblWebAdmin.sql
 liveUpdate/sqldumps/tblNewsletterPrefs.sql
 liveUpdate/sqldumps/tblMessages.sql
@@ -4253,6 +4261,7 @@ editors/content/tinymce/jscripts/tiny_mce
 editors/content/tinymce/jscripts
 editors/content/tinymce/changelog.txt
 editors/content/tinymce
+editors/content/eplugin/initPlugin.html
 editors/content/eplugin/gal
 editor/initEditor.html
 editor/getAttribsForTag.php

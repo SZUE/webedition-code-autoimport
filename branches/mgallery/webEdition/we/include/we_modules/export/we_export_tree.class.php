@@ -39,7 +39,7 @@ class we_export_tree extends weTree{
 			foreach($item as $k => $v){
 				$elems.='"' . strtolower($k) . '":' .
 						(strtolower($k) === "checked" ?
-								'(WE().util.in_array(' . $this->topFrame . '.SelectedItems.' . $item['table'] . ',"' . $item["id"] . '")?
+								'(WE().util.in_array("' . $item["id"] . '", ' . $this->topFrame . '.SelectedItems.' . $item['table'] . ')?
 	\'1\':
 	\'' . $v . '\'),
 ' :

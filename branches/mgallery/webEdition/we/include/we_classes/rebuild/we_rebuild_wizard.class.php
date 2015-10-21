@@ -431,8 +431,7 @@ function setNavStatDocDisabled() {
 		$catAndCheck = we_html_forms::checkbox(1, $catAnd, "catAnd", g_l('rebuild', '[catAnd]'), false, "defaultfont", "document.we_form.btype[2].checked=true;");
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:document.we_form.btype[2].checked=true;we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22);
-		$butTable = $delallbut . $addbut;
-		$upperTable = '<table class="default" width="495"><tr><td style="text-align:left">' . $catAndCheck . '</td><td style="text-align:right">' . $butTable . '</td></tr></table>';
+		$upperTable = '<table class="default" width="495"><tr><td style="text-align:left">' . $catAndCheck . '</td><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>';
 
 		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', '"we/category"', CATEGORY_TABLE);
 		return g_l('global', '[categorys]') . '<br/><br/>' . $cats->get();
@@ -447,13 +446,13 @@ function setNavStatDocDisabled() {
 	static function formDoctypes($doctypes){
 
 		$GLOBALS['DB_WE']->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
-		$DTselect = g_l('global', '[doctypes]') . "<br/><br/>" . '<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">' . "\n";
+		$DTselect = g_l('global', '[doctypes]') . "<br/><br/>" . '<select class="defaultfont" name="doctypes[]" size="5" multiple style="width: 495px" onchange="document.we_form.btype[2].checked=true;">';
 
 		$doctypesArray = makeArrayFromCSV($doctypes);
 		while($GLOBALS['DB_WE']->next_record()){
-			$DTselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $doctypesArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("DocType") . "</option>\n";
+			$DTselect .= '<option value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $doctypesArray) ? " selected" : "") . '>' . $GLOBALS['DB_WE']->f("DocType") . "</option>";
 		}
-		$DTselect .= "</select>\n";
+		$DTselect .= '</select>';
 		return $DTselect;
 	}
 
@@ -469,9 +468,9 @@ function setNavStatDocDisabled() {
 		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
-		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", $delallbut . $addbut, "", 'ContentType', FILE_TABLE);
+		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", $delallbut . $addbut, '', 'ContentType', FILE_TABLE);
 
-		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . "<br/><br/>" . $dirs->get();
+		return g_l('rebuild', ($thumnailpage ? '[thumbdirs]' : '[dirs]')) . '<br/><br/>' . $dirs->get();
 	}
 
 	/**
@@ -481,13 +480,13 @@ function setNavStatDocDisabled() {
 	 * @param string $thumbs csv value with thumb IDs
 	 */
 	private static function formThumbs($thumbs){
-		$GLOBALS['DB_WE']->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER By Name');
+		$GLOBALS['DB_WE']->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 		$Thselect = g_l('rebuild', '[thumbnails]') . '<br/><br/>' .
 				'<select class="defaultfont" name="thumbs[]" size="10" multiple style="width: 520px">';
 
 		$thumbsArray = makeArrayFromCSV($thumbs);
 		while($GLOBALS['DB_WE']->next_record()){
-			$Thselect .= '<option title="' . $GLOBALS['DB_WE']->f('description') . '" value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? ' selected' : '') . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>\n";
+			$Thselect .= '<option title="' . $GLOBALS['DB_WE']->f('description') . '" value="' . $GLOBALS['DB_WE']->f("ID") . '"' . (in_array($GLOBALS['DB_WE']->f("ID"), $thumbsArray) ? ' selected' : '') . '>' . $GLOBALS['DB_WE']->f("Name") . "</option>";
 		}
 		$Thselect .= '</select>';
 		return $Thselect;
@@ -496,9 +495,9 @@ function setNavStatDocDisabled() {
 	static function formMetadata($metaFields, $onlyEmpty){
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
-		$_html = we_html_element::jsElement('document._errorMessage=' . (!empty($metaFields) ? '""' : '"' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '"')) .
+		$_html = we_html_element::jsElement('document._errorMessage=' . (empty($metaFields) ? '"' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '"' : '""' )) .
 				we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
-				'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>' . "\n";
+				'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>';
 
 		$selAllBut = we_html_button::create_button("selectAll", "javascript:we_cmd('select_all_fields');");
 		$deselAllBut = we_html_button::create_button("deselectAll", "javascript:we_cmd('deselect_all_fields');");
@@ -720,7 +719,6 @@ function setNavStatDocDisabled() {
 				'html' => $content,
 				'space' => 0)
 		);
-
 
 		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
@@ -961,7 +959,7 @@ set_button_state();';
 	 * @return string
 	 * @param array first element (array[0]) must be a javascript, second element (array[1]) must be the Body HTML
 	 */
-	static function getPage($contents){
+	static function getPage(array $contents){
 		if(!$contents){
 			return '';
 		}

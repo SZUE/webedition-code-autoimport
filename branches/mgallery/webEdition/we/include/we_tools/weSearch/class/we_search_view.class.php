@@ -1635,16 +1635,16 @@ WE().consts.g_l.weSearch = {
 											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $_result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"', 'dat' => $this->makeAdditionalContentMedia($_result[$f])),
 										))
 								), 'colgroup' => '</colgroup>
-											<col style="text-align:left;"/>
-											<col style="width:40px;text-align:left;"/>
-											<col style="width:70px;text-align:left;"/>
-											<col style="width:45px;text-align:left;"/>
-											<col style="width:45px;text-align:left;"/>
-											<col style="width:45px;text-align:left;"/>
-											<col style="width:90px;text-align:left;"/>
-											<col style="width:90px;text-align:left;"/>
-											<col style="width:50px;text-align:left;"/>
-											</colgroup>'
+	<col style="text-align:left;"/>
+	<col style="width:40px;text-align:left;"/>
+	<col style="width:70px;text-align:left;"/>
+	<col style="width:45px;text-align:left;"/>
+	<col style="width:45px;text-align:left;"/>
+	<col style="width:45px;text-align:left;"/>
+	<col style="width:90px;text-align:left;"/>
+	<col style="width:90px;text-align:left;"/>
+	<col style="width:50px;text-align:left;"/>
+</colgroup>'
 							)
 						)),
 				);
@@ -1661,7 +1661,7 @@ WE().consts.g_l.weSearch = {
 
 					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
-						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
+						$DB_WE->query('SELECT ID,Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
 						while($DB_WE->next_record()){
 							$templateText = we_base_util::shortenPath($DB_WE->f('Text'), 20) . ' (ID=' . $DB_WE->f('ID') . ')';
 						}
@@ -2023,8 +2023,7 @@ WE().consts.g_l.weSearch = {
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['searchAdvSearch[" . $i . "]'].value");
 
-						$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
-						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
+						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput(
 									'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
@@ -2038,8 +2037,7 @@ WE().consts.g_l.weSearch = {
 						$_linkPath = $this->Model->searchAdvSearch[$i];
 						$_rootDirID = 0;
 
-						$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')";
-						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 70, 22, '', '', false);
+						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['searchAdvSearchParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'searchAdvSearchParentID[" . $i . "]\\'].value','document.we_form.elements[\\'searchAdvSearch[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')", true, 70, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(
 								we_html_tools::htmlTextInput(
 									'searchAdvSearch[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden(
@@ -2581,10 +2579,6 @@ WE().consts.g_l.weSearch = {
 		));
 	}
 
-	function getPropertyJSAdditional(){
-		return '';
-	}
-
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsElement('
@@ -2619,7 +2613,6 @@ function we_cmd() {
 			}
 			new (WE().util.jsWindow)(window, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
 			break;
-			' . $this->getPropertyJSAdditional() . '
 		default:
 			' . $this->topFrame . '.we_cmd.apply(this, args);
 	}
