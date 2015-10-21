@@ -68,19 +68,19 @@ function getNavButtons($size, $pos, $id){
 
 	$div = max(intval($size / 10), 1);
 
-	$file = WEBEDITION_DIR . basename(__FILE__);
+	$url = WEBEDITION_DIR . basename(__FILE__);
 	return '<table style="margin-top: 10px;width:100%;" class="default"><tr><td>' .
-			we_html_button::create_button("fa:first,fa-lg fa-fast-backward", $file . '?function=first', true, 0, 0, '', '', ($pos == 1)) .
-			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $file . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)) .
-			we_html_button::create_button(we_html_button::BACK, $file . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1))
+			we_html_button::create_button("fa:first,fa-lg fa-fast-backward", $url . '?function=first', true, 0, 0, '', '', ($pos == 1)) .
+			we_html_button::getButton("-" . $div, 'btn', "window.location.href='" . $url . '?function=prevX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos - $div < 1)) .
+			we_html_button::create_button(we_html_button::BACK, $url . '?function=prev&ID=' . $id, true, 0, 0, "", "", ($pos == 1))
 			.
 			'</td><td style="text-align:center">' .
-			we_html_button::create_button("export", $file . '?function=export&ID=' . $id, true, 0, 0) .
-			we_html_button::create_button(we_html_button::DELETE, $file . '?function=delete&ID=' . $id, true, 0, 0) .
+			we_html_button::create_button("export", $url . '?function=export&ID=' . $id, true, 0, 0) .
+			we_html_button::create_button(we_html_button::DELETE, $url . '?function=delete&ID=' . $id, true, 0, 0) .
 			'</td><td style="text-align:right">' .
-			we_html_button::create_button(we_html_button::NEXT, $file . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
-			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $file . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
-			we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $file . '?function=last', true) .
+			we_html_button::create_button(we_html_button::NEXT, $url . '?function=next&ID=' . $id, true, 0, 0, "", "", ($pos == $size)) .
+			we_html_button::getButton("+" . $div, 'btn2', "window.location.href='" . $url . '?function=nextX&ID=' . $id . '&step=' . $div . "';", -1, '', ($pos + $div > $size)) .
+			we_html_button::create_button("fa:last,fa-lg fa-fast-forward", $url . '?function=last', true) .
 			'</td></tr><tr><td colspan="3" style="text-align:center" class="defaultfont" width="120"><b>' . $pos . "&nbsp;" . g_l('global', '[from]') . ' ' . $size . '</b>' .
 			'</td></table>';
 }
@@ -121,9 +121,10 @@ $options = '';
 foreach(array_keys($GLOBALS['trans']) as $key){
 	$options.='<option value="' . str_replace(' ', '', $key) . '">' . $key . '</option>';
 }
+$url = WEBEDITION_DIR . basename(__FILE__);
 $buttons = g_l('searchtool', '[anzeigen]') . ': <select onchange="document.getElementById(this.value).scrollIntoView();">' . $options . '</select>' .
 		we_html_button::position_yes_no_cancel(
-				we_html_button::create_button(we_html_button::DELETE_ALL, $file . '?deleteAll=1'), we_html_button::create_button(we_html_button::REFRESH, $file), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()")
+				we_html_button::create_button(we_html_button::DELETE_ALL, $url . '?deleteAll=1'), we_html_button::create_button(we_html_button::REFRESH, $url), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()")
 );
 
 
