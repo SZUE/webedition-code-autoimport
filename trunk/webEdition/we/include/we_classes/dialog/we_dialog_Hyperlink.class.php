@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_Hyperlink extends we_dialog_base{
-
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
 		'type', 'extHref', 'fileID', 'href', 'fileHref', 'objID', 'objHref', 'mailHref', 'target', 'class',
@@ -43,8 +42,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
 			$okBut = $back && $next ?
-					we_html_button::create_button_table(array($back, $next)) :
-					($back ? : $next );
+				we_html_button::create_button_table(array($back, $next)) :
+				($back ? : $next );
 		} else {
 			$back = $this->getBackBut();
 			$ok = $this->getOkBut();
@@ -60,7 +59,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$href = explode(':', $this->args['href']);
 			if(count($href) == 2){
 				list($type, $ref) = $href;
-			$type.=':';
+				$type.=':';
 			} else {
 				$ref = '';
 				$type = we_base_link::TYPE_EXT;
@@ -69,8 +68,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
 			if(($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)) && (
-					$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
-					)
+				$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
+				)
 			){
 				$this->args['href'] = $type = $ref = '';
 			}
@@ -84,13 +83,13 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';
-					$this->args['objID'] = $ref;
+					$this->args['objID'] = trim($ref, '/?#');
 					$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
 					break;
 				case we_base_link::TYPE_INT_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_INT;
 					$this->args['extHref'] = '';
-					$this->args['fileID'] = $ref;
+					$this->args['fileID'] = trim($ref, '/?#');
 					$this->args['fileHref'] = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), 'Path', $this->db);
 					$this->args['mailHref'] = '';
 					$this->args['objID'] = '';
@@ -98,7 +97,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					break;
 				case we_base_link::TYPE_MAIL_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_MAIL;
-					$this->args['mailHref'] = preg_replace('|^([^\?#]+).*$|', '$1', $ref);
+					$this->args['mailHref'] = trim($ref, '/?#');
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
@@ -113,12 +112,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				default:
 					$this->args['type'] = we_base_link::TYPE_EXT;
 					$this->args['extHref'] = preg_replace(
-							array(
+						array(
 						'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 						'|^' . WEBEDITION_DIR . '|',
 						'|^([^\?#]+).*$|'
-							), array('$1', '', '$1')
-							, $this->args["href"]);
+						), array('$1', '', '$1')
+						, $this->args["href"]);
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';
@@ -222,12 +221,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			return false;
 		}
 		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) === 'mailto') ? '' : '//') : '') .
-				($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
-				($parsed['host'] ? : '') .
-				($parsed['port'] ? ':' . $parsed['port'] : '') .
-				($parsed['path'] ? : '') .
-				($parsed['query'] ? '?' . $parsed['query'] : '') .
-				($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
+			($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
+			($parsed['host'] ? : '') .
+			($parsed['port'] ? ':' . $parsed['port'] : '') .
+			($parsed['path'] ? : '') .
+			($parsed['query'] ? '?' . $parsed['query'] : '') .
+			($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
 	}
 
 	function initByHttp(){
@@ -326,10 +325,10 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>' .
-					((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
-							'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
-							''
-					);
+				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
+					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
+					''
+				);
 
 			// EXTERNAL LINK
 			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extHref]'].value");
@@ -549,7 +548,7 @@ function weonsubmit() {
 
 	public static function getTinyMceJS(){
 		return parent::getTinyMceJS() .
-				we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_init.js');
+			we_html_element::jsScript(TINYMCE_JS_DIR . 'plugins/welink/js/welink_init.js');
 	}
 
 	function getJs(){
@@ -578,21 +577,21 @@ function weDoCheckAcFields(){
 	acStatus = YAHOO.autocoml.checkACFields();
 	acStatusType = typeof acStatus;
 	if (weAcCheckLoop > 10) {' .
-						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 		weAcCheckLoop = 0;
 	} else if(acStatusType.toLowerCase() == "object") {
 		if(acStatus.running) {
 			weAcCheckLoop++;
 			setTimeout("weDoCheckAcFields",100);
 		} else if(!acStatus.valid) {' .
-						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 			weAcCheckLoop=0;
 		} else {
 			weAcCheckLoop=0;
 			document.forms["we_form"].submit();
 		}
 	} else {' .
-						we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall(g_l('alert', '[save_error_fields_value_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	}
 }
 
@@ -622,7 +621,7 @@ function checkMakeEmptyHrefExt(){
 	} else if(!(anchor || params) && !hrefField.value ){
 		hrefField.value = we_const.EMPTY_EXT;
 	}
-	
+
 }
 
 function we_cmd() {
@@ -642,7 +641,7 @@ function we_cmd() {
 }
 
 function showclasss(name, val, onCh) {' .
-						(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ? '
+				(isset($this->args["cssClasses"]) && $this->args["cssClasses"] ? '
 	var classCSV = "' . $this->args['cssClasses'] . '";
 	classNames = classCSV.split(/,/);' : ($this->args["editor"] === 'tinyMce' ? '
 	classNames = top.opener.weclassNames_tinyMce;' : '
@@ -659,7 +658,7 @@ function showclasss(name, val, onCh) {' .
 	}
 	document.writeln(\'</select>\');
 }' .
-						(isset($this->args["editname"]) ? '
+				(isset($this->args["editname"]) ? '
 
 function showanchors(name, val, onCh) {
 	var pageAnchors = top.opener.document.getElementsByTagName("A");
