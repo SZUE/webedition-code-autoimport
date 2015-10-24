@@ -108,7 +108,7 @@ class we_base_browserDetect{
 							self::$v = (preg_match('/netscape\/(7.+)/i', $post, $regs) ? trim($regs[1]) : 7);
 						} elseif(stristr($post, 'edge')) {
 							self::$br = self::EDGE;
-							self::$v = (preg_match('/edge/(.+)/i', $post, $regs) ? trim($regs[1]) : 12);
+							self::$v = (preg_match('-edge/(.+)-i', $post, $regs) ? trim($regs[1]) : 12);
 						} elseif(preg_match('/AppleWebKit\/([0-9.]+)/i', $post, $regs)){
 
 							if(stristr($post, 'chrome')){
