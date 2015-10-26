@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_Hyperlink extends we_dialog_base{
-
 	var $ClassName = __CLASS__;
 	var $changeableArgs = array(
 		'type', 'extHref', 'fileID', 'href', 'fileHref', 'fileCT', 'objID', 'objHref', 'mailHref', 'target', 'class',
@@ -45,7 +44,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$back = $this->getBackBut();
 			$next = $this->getNextBut();
 			$okBut = $back && $next ?
-					$back . $next :
+					($back . $next) :
 					($back ? : $next );
 		} else {
 			$back = $this->getBackBut();
@@ -71,8 +70,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			// Object Links and internal links are not possible when outside webEdition
 			// for exmaple in the wysiwyg (Mantis Bug #138)
 			if(($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)) && (
-					$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
-					)
+				$type == we_base_link::TYPE_OBJ_PREFIX || $type == we_base_link::TYPE_INT_PREFIX
+				)
 			){
 				$this->args['href'] = $type = $ref = '';
 			}
@@ -87,13 +86,13 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['fileHref'] = '';
 					$this->args['fileCT'] = '';
 					$this->args['mailHref'] = '';
-					$this->args['objID'] = $ref;
+					$this->args['objID'] = trim($ref, '/?#');
 					$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
 					break;
 				case we_base_link::TYPE_INT_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_INT;
 					$this->args['extHref'] = '';
-					$this->args['fileID'] = $ref;
+					$this->args['fileID'] = trim($ref, '/?#');
 					$hash = getHash('SELECT Path,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->args['fileID']), $this->db);
 					$this->args['fileHref'] = $hash['Path'];
 					$this->args['fileCT'] = $hash['ContentType'];
@@ -103,7 +102,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					break;
 				case we_base_link::TYPE_MAIL_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_MAIL;
-					$this->args['mailHref'] = preg_replace('|^([^\?#]+).*$|', '$1', $ref);
+					$this->args['mailHref'] = trim($ref, '/?#');
 					$this->args['extHref'] = '';
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
@@ -119,12 +118,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				default:
 					$this->args['type'] = we_base_link::TYPE_EXT;
 					$this->args['extHref'] = preg_replace(
-							array(
+						array(
 						'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 						'|^' . WEBEDITION_DIR . '|',
 						'|^([^\?#]+).*$|'
-							), array('$1', '', '$1')
-							, $this->args["href"]);
+						), array('$1', '', '$1')
+						, $this->args["href"]);
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';
@@ -233,12 +232,12 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			return false;
 		}
 		return ($parsed['scheme'] ? $parsed['scheme'] . ':' . ((strtolower($parsed['scheme']) === 'mailto') ? '' : '//') : '') .
-				($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
-				($parsed['host'] ? : '') .
-				($parsed['port'] ? ':' . $parsed['port'] : '') .
-				($parsed['path'] ? : '') .
-				($parsed['query'] ? '?' . $parsed['query'] : '') .
-				($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
+			($parsed['user'] ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '') .
+			($parsed['host'] ? : '') .
+			($parsed['port'] ? ':' . $parsed['port'] : '') .
+			($parsed['path'] ? : '') .
+			($parsed['query'] ? '?' . $parsed['query'] : '') .
+			($parsed['fragment'] ? '#' . $parsed['fragment'] : '');
 	}
 
 	function initByHttp(){
@@ -326,7 +325,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		// Initialize we_button class
 		$yuiSuggest = &weSuggest::getInstance();
 
-		$extHref = (!$this->args['extHref'] ? we_base_link::EMPTY_EXT : (utf8_decode((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref'])));
+		$extHref = (!$this->args['extHref'] ? we_base_link::EMPTY_EXT : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>';
@@ -338,10 +337,10 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>' .
-					((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
-							'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
-							''
-					);
+				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
+					'<option value="' . we_base_link::TYPE_OBJ . '"' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[objectFile]') . '</option>' :
+					''
+				);
 
 			// EXTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
