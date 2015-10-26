@@ -146,8 +146,11 @@ abstract class we_base_delete{
 				$DB_WE->query('UPDATE ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID SET BDID=0 WHERE l.Type IN ("href","img") AND c.BDID=' . intval($id));
 				$DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=0 AND ID=' . intval($id));
 
-				if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
+				if(defined('SCHEDULE_TABLE')){ //	Delete entries from schedule as well
 					$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName!="we_objectFile"');
+				}
+				if(defined('CUSTOMER_FILTER_TABLE')){
+					$DB_WE->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblFile" AND modelId=' . intval($id));
 				}
 
 				$DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE Selection="static" AND SelectionType="' . we_navigation_navigation::STPYE_DOCLINK . '" AND LinkID=' . intval($id));
@@ -190,9 +193,13 @@ abstract class we_base_delete{
 					$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND DID=' . intval($id));
 					$DB_WE->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblObjectFile" AND LDID=' . intval($id));
 				}
-				if(we_base_moduleInfo::isActive('schedule')){ //	Delete entries from schedule as well
+				if(defined('SCHEDULE_TABLE')){ //	Delete entries from schedule as well
 					$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($id) . ' AND ClassName="we_objectFile"');
 				}
+				if(defined('CUSTOMER_FILTER_TABLE')){
+					$DB_WE->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblObjectFiles" AND modelId=' . intval($id));
+				}
+
 				break;
 		}
 

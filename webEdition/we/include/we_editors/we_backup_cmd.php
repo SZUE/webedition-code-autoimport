@@ -152,18 +152,18 @@ run();');
 			flush();
 		} else {
 
-			$files = array();
+			$_files = array();
 // export spellchecker files
 			if(defined('SPELLCHECKER') && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
 				we_backup_util::addLog('Exporting data for spellchecker');
 
-				$files[] = WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php';
+				$_files[] = WE_SPELLCHECKER_MODULE_DIR . 'spellchecker.conf.inc.php';
 				$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 				while(false !== ($entry = $_dir->read())){
 					if($entry === '.' || $entry === '..' || (substr($entry, -4) === '.zip') || is_dir(WE_SPELLCHECKER_MODULE_PATH . 'dict/' . $entry)){
 						continue;
 					}
-					$files[] = WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry;
+					$_files[] = WE_SPELLCHECKER_MODULE_DIR . 'dict/' . $entry;
 				}
 				$_dir->close();
 			}
@@ -171,7 +171,7 @@ run();');
 // export settings from the file
 			if($_SESSION['weS']['weBackupVars']['handle_options']['settings']){
 				we_backup_util::addLog('Exporting settings');
-				$files = array_merge($files, we_backup_backup::getSettingsFiles(false));
+				$files = array_merge($_files, we_backup_backup::getSettingsFiles(false));
 			}
 
 			if($_SESSION['weS']['weBackupVars']['handle_options']['hooks']){
@@ -183,8 +183,8 @@ run();');
 				we_backup_preparer::getFileList($files, WE_INCLUDES_PATH . 'weTagWizard/we_tags/custom_tags');
 			}
 
-			if($files){
-				we_backup_util::exportFiles($_SESSION['weS']['weBackupVars']['backup_file'], $files);
+			if($_files){
+				we_backup_util::exportFiles($_SESSION['weS']['weBackupVars']['backup_file'], $_files);
 			}
 			we_backup_util::writeLog();
 

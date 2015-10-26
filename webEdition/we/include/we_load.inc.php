@@ -24,6 +24,10 @@
  */
 we_html_tools::protect();
 
+$loadExtTree = isset($loadExtTree) ? $loadExtTree : false;
+$timestamp = time();
+$compareStamp = isset($_REQUEST['timestamp']) ? $_REQUEST['timestamp'] : 0;
+
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
@@ -54,14 +58,15 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		return ($out ? implode(' OR ', $out) : '');
 	}
 
-	function getItems($ParentID, $offset = 0, $segment = 0){
+	function getItems($ParentID, $offset = 0, $segment = 0, $loadExtTree = false, $timestamp = 0){
 		global $table, $openFolders, $parentpaths, $wsQuery, $treeItems;
-
 		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("CAN_SEE_TEMPLATES")) || ($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS"))){
 			return 0;
 		}
 		$prevoffset = max(0,$offset - $segment);
-		if($offset && $segment){
+
+		//IMPORTANT: tree segments are not yet implemented for ext
+		if(!$loadExtTree && $offset && $segment){
 			$treeItems[] = array(
 				"icon" => "arrowup.gif",
 				"id" => "prev_" . $ParentID,
@@ -80,7 +85,9 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 			);
 		}
 		$DB_WE = new DB_WE();
-		$tmp = array_filter($openFolders);
+		
+		//WEEXT: actually we load just one folder at once: maybe make load behaviour customizable
+		$tmp = $loadExtTree ? array() : array_filter($openFolders);
 		$tmp[] = $ParentID;
 		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
 
@@ -94,6 +101,11 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$ct = we_base_ContentTypes::inst();
 
 		$tree_count = 0;
+
+		//WEEXT: some aditional vars
+		$c = 0;
+		$checked = isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] ? false : null;
+
 		while($DB_WE->next_record()){
 			$tree_count++;
 			$ID = $DB_WE->f("ID");
@@ -104,23 +116,49 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 						-1 :
 						$DB_WE->f("Published")) :
 					1);
-
-			$treeItems[] = array(
+			if($loadExtTree){
+				$item = array(
+					'iconCls' => 'tree_item_' . strstr($ct->getIcon($ContentType, we_base_ContentTypes::LINK_ICON, $DB_WE->f('Extension')), '.', true),
+					'cls' => $DB_WE->f('IsFolder') ? 'tree_item_bold' : ($published == 0 ? 'tree_item_notpublished' : ($published == -1 ? 'tree_item_changed' : '')),
+					'id' => $ID,
+					'text' => $DB_WE->f('Text'),
+					'ct' => $ContentType,
+					//"isclassfolder" => $DB_WE->f("IsClassFolder"),
+					'table' => $table,
+					//'isTblFile' => $table == FILE_TABLE ? true : false,
+					'qtip' => $ID,
+					//"checked" => 0,
+					'leaf' => ($DB_WE->f('IsFolder') ? false : true),
+					'expanded' => (in_array($ID, $openFolders) ? true : false),
+					//'published' => $published,
+					'disabled' => (in_array($Path, $parentpaths) ? 1 : 0),
+					//"offset" => $offset
+					'checked' => $checked
+					
+				);
+				if($c == 0){
+					$item['timestamp'] = $timestamp;
+				}
+				$treeItems[] = $item;
+			} else {
+				$treeItems[] = array(
 				"icon" => $ct->getIcon($ContentType, we_base_ContentTypes::FILE_ICON, $DB_WE->f("Extension")),
-				"id" => $ID,
-				"parentid" => $DB_WE->f("ParentID"),
-				"text" => $DB_WE->f("Text"),
-				"contenttype" => $ContentType,
-				"isclassfolder" => $DB_WE->f("IsClassFolder"),
-				"table" => $table,
-				"checked" => 0,
-				"typ" => ($DB_WE->f("IsFolder") ? "group" : "item"),
-				"open" => (in_array($ID, $openFolders) ? 1 : 0),
-				"published" => $published,
-				"disabled" => (in_array($Path, $parentpaths) ? 1 : 0),
-				"tooltip" => $ID,
-				"offset" => $offset
-			);
+					"id" => $ID,
+					"parentid" => $DB_WE->f("ParentID"),
+					"text" => $DB_WE->f("Text"),
+					"contenttype" => $ContentType,
+					"isclassfolder" => $DB_WE->f("IsClassFolder"),
+					"table" => $table,
+					"checked" => 0,
+					"typ" => ($DB_WE->f("IsFolder") ? "group" : "item"),
+					"open" => (in_array($ID, $openFolders) ? 1 : 0),
+					"published" => $published,
+					"disabled" => (in_array($Path, $parentpaths) ? 1 : 0),
+					"tooltip" => $ID,
+					"offset" => $offset
+				);
+			}
+
 
 			/* if($typ == "group" && $OpenCloseStatus == 1){
 			  getItems($ID, 0, $segment);
@@ -128,7 +166,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		}
 		$total = f('SELECT COUNT(1) as total FROM ' . $table . ' ' . $where, 'total', $DB_WE);
 		$nextoffset = $offset + $segment;
-		if($segment && $total > $nextoffset){
+		if(!$loadExtTree && $segment && $total > $nextoffset){
 			$treeItems[] = array(
 				"icon" => "arrowdown.gif",
 				"id" => "next_" . $ParentID,
@@ -146,6 +184,76 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 				"offset" => $nextoffset
 			);
 		}
+		return $treeItems;
+	}
+	
+	function getCompareItems($ParentID, $offset = 0, $segment = 0, $loadExtTree = false, $timestamp = 0, $compareStamp = 0){
+		global $table, $openFolders, $parentpaths, $wsQuery, $treeItems;
+		if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("CAN_SEE_TEMPLATES")) || ($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS"))){
+			return 0;
+		}
+		
+		$DB_WE = new DB_WE();
+		
+		//WEEXT: actually we load just one folder at once: maybe make load behaviour customizable
+		$tmp = $loadExtTree ? array() : array_filter($openFolders);
+		$tmp[] = $ParentID;
+		$where = ' WHERE  ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
+
+		$elem = "ID,ParentID,Path,Text,IsFolder,Icon,ModDate" .
+			(($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE)) ? ",Published" : "") .
+			((defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) ? ",IsClassFolder,IsNotEditable" : "") .
+			($table == FILE_TABLE || $table == TEMPLATES_TABLE ? ",Extension" : '') .
+			($table == FILE_TABLE || $table == TEMPLATES_TABLE || (defined("OBJECT_TABLE") && $table == OBJECT_TABLE) || (defined("OBJECT_FILES_TABLE") && $table == OBJECT_FILES_TABLE) ? ",ContentType" : '');
+
+		$DB_WE->query('SELECT ' . $elem . ', LOWER(Text) AS lowtext, ABS(REPLACE(Text,"info","")) AS Nr, (Text REGEXP "^[0-9]") AS isNr FROM ' . $table . ' ' . $where . ' ORDER BY IsFolder DESC,isNr DESC,Nr,lowtext' . ($segment != 0 ? ' LIMIT ' . $offset . ',' . $segment : ''));
+		$ct = we_base_ContentTypes::inst();
+
+		$tree_count = 0;
+		$c = 0;
+		$checked = isset($_REQUEST['we_cmd'][7]) && $_REQUEST['we_cmd'][7] ? false : null;
+
+		while($DB_WE->next_record()){
+			$tree_count++;
+			$ID = $DB_WE->f("ID");
+			if($DB_WE->f("ModDate") > $compareStamp) {
+				$Path = $DB_WE->f("Path");
+				$ContentType = $DB_WE->f("ContentType");
+				$published = ($table == FILE_TABLE || (defined("OBJECT_FILES_TABLE") && ($table == OBJECT_FILES_TABLE)) ?
+					(($DB_WE->f("Published") != 0) && ($DB_WE->f("Published") < $DB_WE->f("ModDate")) ?
+						-1 :
+						$DB_WE->f("Published")) :
+					1);
+
+				$treeItems[$ID]['data'] = array(
+					"we_id" => $ID,
+					"parentid" => $DB_WE->f("ParentID"),
+					"text" => $DB_WE->f("Text") . '_ch',
+					"published" => $published,
+					"mod" => true,
+					'leaf' => ($DB_WE->f('IsFolder') ? false : true),
+					'expanded' => false,
+					'disabled' => (in_array($Path, $parentpaths) ? 1 : 0),
+					'iconCls' => 'tree_item_' . strstr($ct->getIcon($ContentType, we_base_ContentTypes::LINK_ICON, $DB_WE->f('Extension')), '.', true),
+					'cls' => $DB_WE->f('IsFolder') ? 'tree_item_folder' : ($published == 0 ? 'tree_item_notpublished' : ($published == -1 ? 'tree_item_changed' : '')),
+					'ct' => $ContentType,
+					'table' => $table
+				);
+			} else {
+				//make this shorter: 
+				$treeItems[$ID] = 0;
+				/*
+				$treeItems[$ID]['data'] = array(
+					"we_id" => $ID,
+					"mod" => false
+				);
+				 * 
+				 */
+			}
+		}
+
+		return $treeItems;
+
 	}
 
 	$wspaces = array();
@@ -186,7 +294,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		}
 	}
 
-	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
+	if(!$loadExtTree && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 		$Tree = new weMainTree("webEdition.php", "top", "top.left.tree", "top.load");
 		$treeItems = array();
 		getItems($parentFolder, $offset, $Tree->default_segment);
@@ -194,7 +302,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$js = we_html_element::jsElement('
 function loadTreeData(){
 	if(!' . $Tree->topFrame . '.treeData) {
-		window.setTimeout("loadTreeData()",500);
+		//window.setTimeout("loadTreeData()",500);
 		return;
 	}' .
 				($parentFolder ? '' :
@@ -214,10 +322,29 @@ loadTreeData();');
 		$js = '';
 	}
 
-	echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
-				we_html_tools::getHtmlInnerHead('File-Tree') .
-				$js
-			) . we_html_element::htmlBody(array("bgcolor" => "white"))
-	);
+	if(!$loadExtTree){
+		echo we_html_element::htmlDocType() . we_html_element::htmlHtml(we_html_element::htmlHead(
+					we_html_tools::getHtmlInnerHead('File-Tree') .
+					$js
+				) . we_html_element::htmlBody(array("bgcolor" => "white"))
+		);
+	} else {
+		if(isset($getCompareTree) && $getCompareTree){
+			$newTimestamp = time();
+			$ret = array(
+				'success' => true,
+				'timestamp' => $newTimestamp,
+				'compareItems' => getCompareItems($parentFolder, 0, 0, false, $timestamp, $compareStamp)
+			);
+		} else {
+			$Tree = new weMainTree("webEdition.php", "top", "top.left.tree", "top.load");
+			$ret = array(
+				'success' => true,
+				'items' => getItems($parentFolder, $offset, $Tree->default_segment, true, $timestamp)
+			);
+		}
+		echo json_encode($ret);
+	}
+
 }
 we_users_user::writePrefs($_SESSION["prefs"]["userID"], $GLOBALS['DB_WE']);

@@ -401,9 +401,13 @@ function dealWithKeyboardShortCut(evt) {
 
 		case 45://ins
 		case 46://del
+			return true;
 		case 67: //C
 		case 86: //V
-			break;
+			if (evt["ctrlKey"] || evt["metaKey"]) {
+				//console.log('Copy/paste' + evt['keyCode']);
+				return true;
+			}
 		default:
 			//console.log('deal' + evt['keyCode']);
 			return (evt["ctrlKey"] || evt["metaKey"] ?

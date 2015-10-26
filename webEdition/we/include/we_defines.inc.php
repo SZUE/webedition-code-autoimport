@@ -123,7 +123,6 @@ if(!defined('DATETIME_INITIALIZED')){// to prevent additional initialization if 
 	}
 	define('DATETIME_INITIALIZED', 1);
 }
-
 if(!isset($GLOBALS['WE_LANGUAGE'])){
 	$GLOBALS['WE_LANGUAGE'] = WE_LANGUAGE;
 }
@@ -131,4 +130,8 @@ if(!isset($GLOBALS['WE_BACKENDCHARSET'])){
 	$GLOBALS['WE_BACKENDCHARSET'] = WE_BACKENDCHARSET;
 }
 
-
+//WEEXT: development modi
+define('USE_EXT', false);
+define('USE_EXT_WE_NO_MULTIEDITOR_CONTENT', false);
+define('USE_EXT_EXTHYBRID', false);
+define('USE_EXT_WEHYBRID', false);

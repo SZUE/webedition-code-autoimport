@@ -43,6 +43,7 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 		$_REQUEST['rootDirID'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
 		$_REQUEST['filter'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 8);
 		$_REQUEST['multiple'] = we_base_request::_(we_base_request::BOOL, 'we_cmd', '', 9);
+		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 	case 'openDocselector':
 	case 'openImgselector':
@@ -60,6 +61,7 @@ switch($cmd0){//FIMXE most of the stuff can be handled via session! transfer is 
 			$cmd0 = 'openImgselector';
 			//t_e('notice', 'called incorrect selector');
 		}
+		$extInstanceId = isset($_REQUEST['we_cmd'][3]) && $_REQUEST['we_cmd'][3] == 'returnToExt' ? (isset($_REQUEST['we_cmd'][4]) ? $_REQUEST['we_cmd'][4] : '') : '';
 		break;
 }
 

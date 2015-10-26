@@ -42,8 +42,9 @@ class we_selector_document extends we_selector_directory{
 		we_base_ContentTypes::VIDEO => 'btn_add_video',
 	);
 
-	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false){
-		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter);
+
+	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $extInstanceId = ""){
+		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $extInstanceId);
 		$this->fields.=',ModDate,RestrictOwners,Owners,OwnersReadOnly,CreatorID' . ($this->table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE) ? ',Published' : '');
 		$this->canSelectDir = $canSelectDir;
 
@@ -124,12 +125,12 @@ class we_selector_document extends we_selector_directory{
 		}
 	}
 
-	protected function getExitOpen(){
+	protected function getExitOpenWe(){
 		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ?
 			substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
 			'';
-		return we_html_element::jsElement('
-function exit_open() {
+		return '
+function exit_open() {//alert("exit_open standard on docselector");
 	if(currentID) {' . ($this->JSIDName ?
 					'top.opener.' . $this->JSIDName . '= currentID ? currentID : "";' : '') .
 				($this->JSTextName ?
@@ -140,7 +141,7 @@ function exit_open() {
 					$this->JSCommand . ';' : '') . '
 	}
 	self.close();
-}');
+}';
 	}
 
 	protected function setDefaultDirAndID($setLastDir){

@@ -340,7 +340,8 @@ if(inWorkflow($we_doc)){
 }
 ?>
 
-<body style="background-color:#f0f0f0; background-image: url('<?php echo EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px" onload="we_footerLoaded();">
+<?php //WEEXT: registerWeIframe ?>
+<body onLoad="if(top.WE !== undefined){top.WE.app.getController('Bridge').registerWeIframe(this, true);}" style="background-color:#f0f0f0; background-image: url('<?php echo EDIT_IMAGE_DIR ?>editfooterback.gif');background-repeat:repeat;margin:10px 0px 10px 0px">
 	<form name="we_form" action=""<?php if(isset($we_doc->IsClassFolder) && $we_doc->IsClassFolder){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
 		<input type="hidden" name="sel" value="<?php echo $we_doc->ID; ?>" />

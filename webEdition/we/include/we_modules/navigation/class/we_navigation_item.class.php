@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * simplified representation of the navigation item
  */
 class we_navigation_item{
-
 	var $id;
 	var $icon;
 	var $docid;
@@ -193,9 +191,10 @@ class we_navigation_item{
 				$tmpRefarrq = $refarrq;
 			}
 			$allfound = true;
-			//current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
-			foreach($tmpRefarrq as $key => $val){
-				$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
+			if(($allfound &= (count($tmpUriarrq) == count($tmpRefarrq)))){
+				foreach($tmpRefarrq as $key => $val){
+					$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
+				}
 			}
 
 			if($allfound){
@@ -230,10 +229,6 @@ class we_navigation_item{
 			$this->visible &=$this->customerAccess;
 		}
 		return $this->visible;
-	}
-
-	public function setLevel(){
-		self::$currentPosition[$this->level] = 0;
 	}
 
 	function writeItem(&$weNavigationItems, $depth = false){
@@ -281,37 +276,23 @@ class we_navigation_item{
 		// name
 		if($fieldname){
 			$val = (isset($this->$fieldname) && $this->$fieldname ?
-							$this->$fieldname :
-							(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
-									$this->attributes[$fieldname] :
-									''));
-			switch($fieldname){
-				case 'title':
-					return oldHtmlspecialchars($val);
-				case 'href':
-					return $this->linkValid ? $val : '';
-				default:
-					return $val;
-			}
+					$this->$fieldname :
+					(isset($this->attributes[$fieldname]) && $this->attributes[$fieldname] ?
+						$this->attributes[$fieldname] :
+						''));
+			return ($fieldname === 'title' ? oldHtmlspecialchars($val) : $val);
 		}
 
 		// complete
 		if($_compl){
 			unset($attribs['complete']);
-			$attribs['attributes'] = $_compl;
-			switch($_compl){
-				case 'link':
-					if(empty($this->text)){
-						return '';
-					}
-					$attribs = $this->getNavigationFieldAttributes($attribs);
-					return (empty($attribs['href']) || !$this->linkValid ? $this->text : getHtmlTag('a', $attribs, $this->text));
-				case 'image':
-					if(empty($this->icon) || $this->icon == '/'){
-						return '';
-					}
-					$attribs = $this->getNavigationFieldAttributes($attribs);
-					return getHtmlTag('img', $attribs);
+			if((($_compl === 'link' && isset($this->text)) || ($_compl === 'image' && isset($this->icon) && $this->icon != '/'))){
+				unset($attribs['complete']);
+				$attribs['attributes'] = $_compl;
+				$attribs = $this->getNavigationFieldAttributes($attribs);
+				return ($_compl === 'image' ?
+						getHtmlTag('img', $attribs) :
+						(isset($attribs['href']) && !empty($attribs['href']) ? getHtmlTag('a', $attribs, $this->text) : $this->text));
 			}
 			return '';
 		}
@@ -321,14 +302,7 @@ class we_navigation_item{
 		if(isset($attribs['attributes'])){
 			$_attributes = $this->getNavigationFieldAttributes($attribs);
 			foreach($_attributes as $key => $value){
-				switch($key){
-					case 'href':
-						if(!$this->linkValid){
-							break;
-						}
-					default:
-						$code .= ' ' . ($key === 'link_attribute' ? $value : $key . '="' . $value . '"');
-				}
+				$code .= ' ' . ($key === 'link_attribute' ? $value : $key . '="' . $value . '"');
 			}
 		}
 		return $code;
@@ -360,12 +334,12 @@ class we_navigation_item{
 						foreach($useFields as $field){
 							if(isset($this->$field) && $this->$field != ''){
 								$attribs[$field] = ($field === 'title' ?
-												oldHtmlspecialchars($this->$field) :
-												$this->$field);
+										oldHtmlspecialchars($this->$field) :
+										$this->$field);
 							} elseif(isset($this->attributes[$field]) && $this->attributes[$field] != ''){
 								$attribs[$field] = ($field === 'link_attribute' ? // Bug #3741
-												$this->attributes[$field] :
-												oldHtmlspecialchars($this->attributes[$field]));
+										$this->attributes[$field] :
+										oldHtmlspecialchars($this->attributes[$field]));
 							}
 						}
 
@@ -445,12 +419,12 @@ if (window.screen) {
 		}
 
 		$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ((isset($this->attributes['popup_status']) && $this->attributes['popup_status']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location']) ? 'yes' : 'no') . '\';' .
-				'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar']) ? 'yes' : 'no') . '\';' .
-				"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
+			'we_winOpts += \',scrollbars=' . ((isset($this->attributes['popup_scrollbars']) && $this->attributes['popup_scrollbars']) ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',menubar=' . ((isset($this->attributes['popup_menubar']) && $this->attributes['popup_menubar']) ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',resizable=' . ((isset($this->attributes['popup_resizable']) && $this->attributes['popup_resizable']) ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',location=' . ((isset($this->attributes['popup_location']) && $this->attributes['popup_location']) ? 'yes' : 'no') . '\';' .
+			'we_winOpts += \',toolbar=' . ((isset($this->attributes['popup_toolbar']) && $this->attributes['popup_toolbar']) ? 'yes' : 'no') . '\';' .
+			"var we_win = window.open('" . $this->href . "','" . "we_ll_" . $this->id . "',we_winOpts);";
 
 		$attributes = removeAttribs($attributes, array(
 			'name', 'target', 'onClick', 'onclick'

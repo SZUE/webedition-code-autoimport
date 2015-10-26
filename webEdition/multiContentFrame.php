@@ -54,7 +54,8 @@ echo we_html_tools::getHtmlTop();
 include(WEBEDITION_PATH . 'multiEditor/EditorFrameController.inc.php');
 ?>
 </head>
-<body onresize="setFrameSize()">
+<?php //WEEXT: registerWeIframe ?>
+<body onLoad="if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}" onresize="setFrameSize()">
 	<div style="position:absolute;top:0px;bottom:0px;right:0px;left:0px;overflow: hidden;background-color: white;">
 		<div style="position:absolute;top:0px;height:22px;width:100%;background-color: Silver; border-top: 1px solid #000000;" id="multiEditorDocumentTabsFrameDiv">
 			<?php include(WEBEDITION_PATH . 'multiEditor/multiTabs.inc.php'); ?>

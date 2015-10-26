@@ -382,12 +382,12 @@ abstract class we_database_base{
 
 		$this->Insert_ID = 0;
 		$this->Affected_Rows = 0;
-		$isSelect = stripos($Query_String, 'select') === 0;
+		$isSelect = stripos($Query_String, 'select')===0;
 		//FIX for current MySQL Versions which do not cache queries with dates
 		if($isSelect){
 			$Query_String = str_replace(array('CURDATE()', 'CURRENT_DATE()'), '"' . $date . '"', $Query_String);
 		}
-
+		//FIX for current MySQL Versions which do not cache queries with dates
 		$this->Query_ID = $this->_query($Query_String, $unbuffered);
 		$this->Errno = $this->errno();
 		$this->Error = $this->error();

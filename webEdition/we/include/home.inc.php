@@ -1058,7 +1058,7 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 
 	// this is the clone widget
 	$oClone = we_base_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
-
+	//WEEXT: registerWeIframe
 	echo
 	we_html_element::htmlBody(
 		array(
@@ -1066,30 +1066,33 @@ if(permissionhandler::hasPerm("CAN_SEE_QUICKSTART")){
 		'style' => 'margin:10px;'
 		), we_html_element::htmlForm(
 			array(
-			"name" => "we_form"
-			), we_html_element::htmlHidden(array(
-				"name" => "we_cmd[0]", "value" => "save"
-			)) . we_html_element::htmlHidden(array(
-				"name" => "we_cmd[1]", "value" => ""
-			)) . we_html_element::htmlHidden(array(
-				"name" => "we_cmd[2]", "value" => ""
-		))) . we_html_element::htmlDiv(
-			array(
-			"id" => "rpcBusy", "style" => "display:none;"
-			), we_html_element::htmlImg(
-				array(
-					"src" => IMAGE_DIR . "pd/busy.gif",
-					"width" => '32px',
-					"height" => '32px',
-					"border" => '0px',
-					"style" => "margin-left:10px;"
-		))) . we_html_element::htmlDiv(array(
-			"id" => "widgets"
-			), "") . $oTblWidgets->getHtml() . we_html_element::jsElement(
-			"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_html_element::htmlDiv(
-			array(
-			"id" => "divClone", "style" => "position:relative;display:none;"
-			), $oClone->getHtml()));
+				'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false}); if(typeof top.WE !== 'undefined'){top.WE.app.getController('Bridge').registerWeIframe(this, true);}",
+				'style' => 'margin: 10px;',
+						"name" => "we_form"
+							), we_html_element::htmlHidden(array(
+								"name" => "we_cmd[0]", "value" => "save"
+							)) . we_html_element::htmlHidden(array(
+								"name" => "we_cmd[1]", "value" => ""
+							)) . we_html_element::htmlHidden(array(
+								"name" => "we_cmd[2]", "value" => ""
+					))) . we_html_element::htmlDiv(
+							array(
+						"id" => "rpcBusy", "style" => "display:none;"
+							), we_html_element::htmlImg(
+									array(
+										"src" => IMAGE_DIR . "pd/busy.gif",
+										"width" => '32px',
+										"height" => '32px',
+										"border" => '0px',
+										"style" => "margin-left:10px;"
+					))) . we_html_element::htmlDiv(array(
+						"id" => "widgets"
+							), "") . $oTblWidgets->getHtml() . we_html_element::jsElement(
+							"oTblWidgets=gel('le_tblWidgets');initDragWidgets();") . we_html_element::htmlDiv(
+							array(
+						"id" => "divClone", "style" => "position:relative;display:none;"
+							), $oClone->getHtml()));
+
 } else { // no right to see cockpit!!!
 	echo
 	we_html_element::jsElement('

@@ -291,6 +291,12 @@ echo we_message_reporting::getShowMessageCall(g_l('multiEditor', '[no_editor_lef
 						}
 
 					} else {
+						//WEEXT: rm item from main store when closed in WE
+						//TODO: is extNoExec not obsolete? 
+						if(typeof extNoExec === 'undefined' || !extNoExec){
+							top.WE.app.getController('Bridge').multieditorCloseTab(this.getEditorFrame(editorId).getEditorTransaction(), '', '');
+							console.log('closeTab programmatically');
+						}
 
 						// free frame select next active frame
 						this.closeEditorFrame(editorId);
@@ -577,6 +583,10 @@ echo we_message_reporting::getShowMessageCall(g_l('multiEditor', '[no_editor_lef
 						top.treeData.unselectnode();
 
 					}
+
+					//WEEXT: select multieditor tab
+					top.WE.app.getController('Bridge').selectMultieditorTab(_currentEditor.getEditorEditorTable(), _currentEditor.getEditorDocumentId());
+
 					this.setActiveEditorFrame(editorId);
 					this.toggleFrames();
 				}

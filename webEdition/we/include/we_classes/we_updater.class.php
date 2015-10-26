@@ -67,9 +67,6 @@ abstract class we_updater{
 			$DB_WE->query('DROP TABLE ' . TBL_PREFIX . 'tblOwner');
 		}
 
-		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
-		$DB_WE->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
-
 		$DB_WE->query('DROP TABLE IF EXISTS ' . PREFS_TABLE . '_old');
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', null, MYSQL_ASSOC)) > 3){
 			//make a backup
@@ -343,22 +340,26 @@ abstract class we_updater{
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
 UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')', true);
-		$del = $db->getAll(true);
 
-		if($del){
+		if(($del = $db->getAll(true))){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
 		}
 
 		$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 
-		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-			$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName != "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
+		//FIXME: this has to be integrated in we_delete code!
+		if(defined('SCHEDULE_TABLE')){
+			$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName!="we_objectFile" AND DID NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
 
 			if(defined('OBJECT_FILES_TABLE')){
-				$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName = "we_objectFile" AND DID NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
+				$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE ClassName="we_objectFile" AND DID NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
 			}
 		}
-		//FIXME: clean customerfilter
+		//clean customerfilter
+		if(defined('CUSTOMER_FILTER_TABLE')){
+			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblFile" AND modelId NOT IN (SELECT ID FROM ' . FILE_TABLE . ')');
+			$db->query('DELETE FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="tblObjectFiles" AND modelId NOT IN (SELECT ID FROM ' . OBJECT_FILES_TABLE . ')');
+		}
 		//FIXME: clean inconsistent objects
 	}
 
@@ -374,6 +375,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NO
 
 	private static function updateCats(){
 		$db = $GLOBALS['DB_WE'];
+		//FIXME the next 2 queries are old, remove them after 6.5
+		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Text=Category WHERE Text=""');
+		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("/",Category) WHERE Path=""');
+
 		if($db->isColExist(CATEGORY_TABLE, 'Catfields') && f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
 			$db->query('SELECT ID,Catfields FROM ' . CATEGORY_TABLE . ' WHERE Catfields!="" AND Title="" AND Description=""');
 			$udb = new DB_WE();

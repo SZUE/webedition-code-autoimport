@@ -30,13 +30,9 @@ $mdc = "";
 if(!isset($aCsv)){
 	$aCsv = explode(';', $aProps[3]);
 }
-if($aCsv && count($aCsv) == 3){
-	$_binary = $aCsv[1];
-	$_csv = $aCsv[2];
-	$_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
-} else {
-	$_csv = '';
-}
+$_binary = $aCsv[1];
+$_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
+$_csv = $aCsv[2];
 
 if($_csv){
 	if($_binary{0}){
@@ -48,9 +44,9 @@ if($_csv){
 		}
 		$_query = ($_where ?
 				'SELECT ID,Path,Icon,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0'/* . ($ct["image"] ?
-				  '' :
-				  ' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"'
-				  ) */ :
+					'' :
+					' AND ContentType!="' . we_base_ContentTypes::IMAGE . '"'
+				)*/ :
 				false);
 	} else {
 		list($folderID, $folderPath) = explode(",", $_csv);

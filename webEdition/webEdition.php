@@ -11,7 +11,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * any later version.
- *
+ * 
  * The GNU General Public License can be found at
  * http://www.gnu.org/copyleft/gpl.html.
  * A copy is found in the textfile
@@ -35,6 +35,7 @@ if(!isset($_SESSION['weS']['we_mode']) || $_SESSION['weS']['we_mode'] == we_base
 	include_once(WE_INCLUDES_PATH . 'webEdition_seem.inc.php');
 }
 
+//WEEXT
 //	check session
 we_html_tools::protect(null, WEBEDITION_DIR . 'index.php');
 
@@ -1411,18 +1412,24 @@ pWebEdition_JSFunctions();
 <?php
 $SEEM_edit_include = we_base_request::_(we_base_request::BOOL, "SEEM_edit_include");
 we_main_header::pCSS($SEEM_edit_include);
-?>
-</head>
-<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">
-	<?php
+
+//WEEXT
+if(defined('USE_EXT') && USE_EXT){
+	include_once(WE_INCLUDES_PATH . 'webEdition_extHeader.inc.php');
+	pWebEdition_Tree();
+	echo '</head>';
+} else {
+	echo '</head>
+	<body style="background-color:grey;margin: 0px;position:fixed;top:0px;left:0px;right:0px;bottom:0px;border:0px none;" onbeforeunload="doUnload()">';
 	flush();
-//	get the frameset for the actual mode.
+	//	get the frameset for the actual mode.
 	pWebEdition_Frameset($SEEM_edit_include);
 	we_main_header::pJS($SEEM_edit_include);
-//	get the Treefunctions for docselector
+	//	get the Treefunctions for docselector
 	pWebEdition_Tree();
-	?>
-</body>
+	echo '</body>';
+}
+?>
 </html>
 <?php
 flush();
