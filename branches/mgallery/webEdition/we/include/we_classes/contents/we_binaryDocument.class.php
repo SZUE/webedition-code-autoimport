@@ -382,11 +382,10 @@ class we_binaryDocument extends we_document{
 		$c = 0;
 		foreach($references as $groupname => $group){
 			$values[$groupname] = we_html_tools::OPTGROUP;
-			foreach($group as $k => $v){
+			foreach($group as $v){
 				$values[++$c] = $v['path'];
 				$js .= "id_" . $c . ": {type: '" . $v['type'] . "', id: " . $v['id'] . ", table: '" . $v['table'] . "', ct: '" . $v['ct'] . "', mod: '" . $v['mod'] . "', referencedIn: '" . $v['referencedIn'] . "', isTempPossible: " . ($v['isTempPossible'] ? 1 : 0) . ", isModified: " . ($v['isModified'] ? 1 : 0) . "},";
 			}
-			$values[$groupname . 'end'] = we_html_tools::OPTGROUP;
 		}
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.we_form.elements['MediaReferences'].value);");
 
