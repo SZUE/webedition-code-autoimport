@@ -26,7 +26,8 @@ class we_dialog_image extends we_dialog_base{
 
 	private $weFileupload = null;
 	var $ClassName = __CLASS__;
-	var $changeableArgs = array("type",
+	var $changeableArgs = array(
+		"type",
 		"extSrc",
 		"fileID",
 		"src",
@@ -206,7 +207,6 @@ class we_dialog_image extends we_dialog_base{
 						$alt = $preserveData ? $alt : f('SELECT c.Dat as Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND l.DID=' . intval($fileID) . ' AND l.Name="alt"', '', $this->db);
 					}
 					$this->initByFileID($fileID, $width, $height, $hspace, $vspace, $border, $alt, $align, $name, $thumbnail, $class, $title, $longdesc);
-					t_e('warning', 'this', $this);
 					break;
 			}
 		} else {
@@ -248,6 +248,10 @@ class we_dialog_image extends we_dialog_base{
 			'writebackTarget' => '',
 			'customCallback' => '',
 			'predefinedCallback' => 'imagedialog'
+		));
+		$this->weFileupload->setFieldImportToID(array(
+			'setField' => true,
+			'preset' => IMAGESTARTID_DEFAULT,
 		));
 	}
 

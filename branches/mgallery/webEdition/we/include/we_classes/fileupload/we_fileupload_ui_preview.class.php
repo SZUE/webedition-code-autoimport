@@ -27,8 +27,8 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected $isExternalBtnUpload = false;
 	protected $importToID = array(
 		'setField' => false,
-		'preset' => 0,
-		'setFixed' => false
+		'preset' => IMAGESTARTID_DEFAULT,
+		'setFixed' => false,
 	);
 	protected $transaction;
 	protected $contentType;

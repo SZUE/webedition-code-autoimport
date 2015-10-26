@@ -107,9 +107,12 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 
 		$parts = array(
 			array('icon' => '', 'headline' => 'Dateiauswahl', 'html' => $formUploader, 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']),
-			array('icon' => '', 'headline' => '', 'html' => $this->getFormSameName(), 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']),
-			array('icon' => '', 'headline' => g_l('importFiles', '[destination_dir]'), 'html' => $this->getFormTargetDir(), "class" => 'paddingTop', 'noline' => true, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall'])
+			array('icon' => '', 'headline' => '', 'html' => $this->getFormSameName(), 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall'])
 		);
+
+		if($this->importToID['setField']){
+			$parts[] = array('icon' => '', 'headline' => g_l('importFiles', '[destination_dir]'), 'html' => $this->getFormTargetDir(), "class" => 'paddingTop', 'noline' => true, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']);
+		}
 
 		if($this->doImport){
 			$parts[] = array('icon' => '', 'headline' => 'Metadaten', 'html' => $this->getFormImportMeta(), 'space' => 0, 'noline' => false, 'forceRightHeadline' => $this->editorProperties['isLayoutSmall']);
@@ -205,26 +208,6 @@ reloadMainTree = function (table) {
 documentWriteback = function(importedDocument){
 	' . ($this->editorJS['writebackTarget'] ? 'WE().layout.weEditorFrameController.getVisibleEditorFrame().' . $this->editorJS['writebackTarget'] . ' = importedDocument.id;' : '//no writeback') . '
 }
-
-function we_cmd() {
-	var args = [];
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-	for (var i = 0; i < arguments.length; i++) {
-				args.push(arguments[i]);
-		url += "we_cmd[" + i + "]=" + encodeURI(arguments[i]);
-		if (i < (arguments.length - 1)) {
-			url += "&";
-		}
-	}
-	switch (arguments[0]) {
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(top.window, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
-			break;
-		default:
-			opener.we_cmd.apply(this, args);
-	}
-}
-
 ');
 	}
 
@@ -249,18 +232,16 @@ function we_cmd() {
 	}
 
 	protected function getFormTargetDir(){
-		if($this->importToID['setField']){
-
 			if(!$this->importToID['setFixed'] && is_numeric($this->importToID['preset'])){
 				$yuiSuggest = &weSuggest::getInstance();
 				$cmd1 = "document.we_form.importToID.value";
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.importToDir.value");
 				$wecmdenc3 = ''; //we_base_request::encCmd();
-				$startID = $this->importToID['presetID'] !== false ? $this->importToID['preset'] : (IMAGESTARTID_DEFAULT ? : 0);
+				$startID = $this->importToID['preset'] !== false ? $this->importToID['preset'] : (IMAGESTARTID_DEFAULT ? : 0);
 				$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "',''," . $startID . ",'" . we_base_ContentTypes::FOLDER . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 				$yuiSuggest->setAcId("importToID");
 				$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-				$yuiSuggest->setInput("importToDir", $startID ? id_to_path($startID, FILE_TABLE) : '/', '', $this->importToID['setDisabled']);
+				$yuiSuggest->setInput("importToDir", $startID ? id_to_path($startID, FILE_TABLE) : '/', '', false);
 				$yuiSuggest->setMaxResults(10);
 				$yuiSuggest->setMayBeEmpty(true);
 				$yuiSuggest->setResult("importToID", $startID);
@@ -279,9 +260,6 @@ function we_cmd() {
 						'saveToDir' => $value,
 					));
 			}
-		}
-
-
 	}
 
 	protected function getFormThumbnails(){
