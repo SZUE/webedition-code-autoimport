@@ -42,7 +42,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		$progress->setProgressTextPlace(0);
 		$progress->setName('_fileupload');
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML());
-		$divFileInfo = we_html_element::htmlDiv(array('style' => 'margin-top: ' . $leftMarginTop . 'px'), $fs . '<br />' . $ft . '<br />' . $md);
+		$divFileInfo = we_html_element::htmlDiv(array(), $fs . '<br />' . $ft . '<br />' . $md);
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:204px'),
 				$this->getDivBtnInputReset($isIE10 ? 84 : 170) .
 				$divProgressbar .
