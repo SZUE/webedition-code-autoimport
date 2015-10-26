@@ -334,7 +334,7 @@ self.focus();');
 	}
 
 	function getHttpVar($type, $name, $alt = ""){
-		return we_base_request::_($type, "we_dialog_args", $alt, $name);
+		return we_base_request::_($type, 'we_dialog_args', $alt, $name);
 	}
 
 	function getLangField($name, $title, $width){
