@@ -196,7 +196,7 @@ container.prototype = {
 		return nf;
 	},
 	makeNewEntry: function (attribs) {
-		if (table && this.table != table) {
+		if (window.table && this.table != window.table) {
 			return;
 		}
 		var pos = this.indexOfEntry(attribs.parentid);
