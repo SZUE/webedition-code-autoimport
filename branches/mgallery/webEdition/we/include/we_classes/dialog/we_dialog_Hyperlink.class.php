@@ -345,11 +345,14 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			// EXTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
 			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
+			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extHref]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){window.open(f.value);}", true, 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
 			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? consts.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
 if(this.value === \'\' || this.value === consts.EMPTY_EXT){
+	document.getElementById(\'btn_edit_ext\').disabled=true;
 	checkMakeEmptyHrefExt();
 }else{
+	document.getElementById(\'btn_edit_ext\').disabled=false;
 	var x=this.value.match(/(.*:\/\/[^#?]*)(\?([^?#]*))?(#([^?#]*))?/);
 	this.value=x[1];
 	if(x[3]!=undefined){
@@ -357,12 +360,12 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 	}
 	if(x[5]!=undefined){
 		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[5];
-	}}"', "url", 300), "", "left", "defaultfont", $_external_select_button, '', '', '', '', 0) . '</div>';
+	}}"', "url", 300), "", "left", "defaultfont", $_external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
 
 			// INTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
-			$cmd3 = "if(currentID){opener.document.we_form.yuiAcResultCT.value = currentType;opener.document.getElementById(\"btn_edit_file\").disabled=false;}";
-			$_internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','" . we_base_request::encCmd($cmd3) . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$wecmdenc3 = we_base_request::encCmd("if(currentID){opener.document.we_form.yuiAcResultCT.value = currentType;opener.document.getElementById(\"btn_edit_int\").disabled=false;}");
+			$_internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','" . $wecmdenc3 . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 			$yuiSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
@@ -372,20 +375,18 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
 			$yuiSuggest->setSelectButton($_internal_select_button, 10);
-			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultPath'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value, '" . FILE_TABLE . "'); }", true, 0, 0, '', '', ($this->args["fileID"] ? false: true), false, '_file'));
+			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultPath'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value, '" . FILE_TABLE . "'); }", true, 0, 0, '', '', ($this->args["fileID"] ? false: true), false, '_int'));
 			$_internal_link = $yuiSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
 
 			// E-MAIL LINK
-
 			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
 			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
 				$cmd1 = "document.we_form.elements['we_dialog_args[objID]'].value";
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
-				//$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-				$_object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
-
+				$wecmdenc3 = we_base_request::encCmd("if(currentID){opener.document.getElementById(\"btn_edit_obj\").disabled=false;}");
+				$_object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '" . $wecmdenc3 . "', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 				$yuiSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
@@ -396,7 +397,7 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);
 				$yuiSuggest->setSelectButton($_object_select_button, 10);
-
+				$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultObj'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "'); }", true, 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
 				$_object_link = $yuiSuggest->getHTML();
 				/*
 				  $_object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")) .
